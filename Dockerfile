@@ -13,8 +13,8 @@ RUN true \
  && echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config \
  && echo "Host gitlab\n\tHostName gitlab.com\n\tIdentityFile ~/.ssh/id_rsa\n\tUser git\n" >> ~/.ssh/config \
  && git config --global url.ssh://git@gitlab.com/.insteadOf https://gitlab.com/ \
- && npm install --progress=false --loglevel=warn \
- && npm run build $BUILD_ENV \
+ && yarn install --progress=false --loglevel=warn \
+ && yarn run build $BUILD_ENV \
  && rm ~/.ssh/id_rsa \
  && true
 
