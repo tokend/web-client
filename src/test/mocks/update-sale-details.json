@@ -1,0 +1,34 @@
+{
+  "id": "182",
+  "paging_token": "182",
+  "requestor": "GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O",
+  "reviewer": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
+  "reference": "5b9cb779336c4e25a382b6785779a7313e388fa8944c6e267aeb0d5e9f475d3f",
+  "reject_reason": "",
+  "hash": "71e802e46a8a05deebf94c0859ffa746d4c07f6349d24e80bcf60e1701d60abc",
+  "details": {
+    "request_type_i": 10,
+    "request_type": "update_sale_details",
+    "two_step_withdrawal": null,
+    "limits_update": null,
+    "aml_alert": null,
+    "update_sale_details": {
+      "sale_id": 10,
+      "new_details": {
+        "description": "XZUXFXNYKU3DYN46RZITWRNDP6FAW2BDCY4JZEOMOKNZFBOYKJMA",
+        "logo": {
+          "key": "dpurah4inf7edjhcost7fvlmu3oygszwf7lho4e3h6rqujdxnpwfrkn3",
+          "type": "fund_logo"
+        },
+        "name": "2312321",
+        "short_description": "EVERYBODY LOVES KITTENS"
+      }
+    },
+    "update_sale_end_time": null,
+    "promotion_update_request": null
+  },
+  "created_at": "2018-05-15T20:31:28Z",
+  "updated_at": "2018-05-15T21:52:04Z",
+  "request_state_i": 3,
+  "request_state": "approved"
+}

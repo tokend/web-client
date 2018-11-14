@@ -1,0 +1,8 @@
+{
+  "limits": {
+    "dailyOut": "1000.000000",
+    "monthlyOut": "1000.000000",
+    "weeklyOut": "1000.000000",
+    "annualOut": "1000.000000"
+  }
+}

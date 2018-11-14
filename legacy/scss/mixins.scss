@@ -1,0 +1,185 @@
+@import 'variables';
+
+/* https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints */
+$xsmall: 480px;
+$small: 600px;
+$tablet: 768px;
+$medium: 1024px;
+$xmedium: 1200px;
+$large: 1440px;
+$xlarge: 1920px;
+
+@mixin center {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 50%;
+}
+
+@mixin list-reset () {
+  list-style-type: none;
+}
+
+@mixin button () {
+  display: inline-block;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  min-height: 36px;
+  background-color: transparent;
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+}
+
+@mixin button-icon () {
+  @include button();
+
+  padding: 8px;
+  border-radius: 50%;
+  transition: .3s ease-out;
+
+  &:hover {
+    background-color: $col-button-flat-hover;
+  }
+}
+
+@mixin button-raised () {
+  @include button();
+
+  border-radius: 2px;
+  background-color: $col-button-raised;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .15);
+  color: $col-button-raised-txt;
+
+  &[disabled] {
+    box-shadow: none;
+    opacity: .5;
+  }
+}
+
+@mixin button-accent () {
+  @include button();
+  transition: .3s ease-out;
+  color: $col-button-flat-accent-txt;
+
+  &[disabled] {
+    color: $col-button-flat-accent-disabled-txt;
+  }
+
+  &:not([disabled]):hover {
+    background-color: $col-button-flat-accent-hover;
+  }
+}
+
+@mixin button-flat () {
+  @include button();
+
+  color: $col-button-flat-txt;
+  transition: .3s ease-out;
+
+  &[disabled] {
+    color: $col-button-flat-disabled-txt;
+  }
+
+  &:not([disabled]):hover {
+    background-color: $col-button-flat-hover;
+  }
+}
+
+@mixin box-shadow () { box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .15) }
+
+@mixin center-horizontally () {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin center-vertically () {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin respond-to($media) {
+  @if $media == xsmall {
+    @media only screen and (max-width: $xsmall - 1px) {
+      @content;
+    }
+  } @else if $media == small {
+    @media only screen and (max-width: $small - 1px) {
+      @content;
+    }
+  } @else if $media == tablet {
+    @media only screen and (max-width: $tablet - 1px) {
+      @content;
+    }
+  } @else if $media == medium {
+    @media only screen and (max-width: $medium) {
+      @content;
+    }
+  } @else if $media == xmedium {
+    @media only screen and (max-width: $xmedium - 1px) {
+      @content;
+    }
+  } @else if $media == large {
+    @media only screen and (max-width: $large - 1px) {
+      @content;
+    }
+  } @else if $media == xlarge {
+    @media only screen and (max-width: $xlarge - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin respond-to-custom($media) {
+  @media only screen and (max-width: $media) {
+    @content;
+  }
+}
+
+@mixin respond-to-height($media) {
+  @media only screen and (max-height: $media) {
+    @content;
+  }
+}
+
+@mixin respond-to-width-height($width, $height) {
+  @media only screen and (max-width: $width) and (max-width: $height) {
+    @content;
+  }
+}
+
+@mixin overwrite-tabs ($width) {
+  .md-tabs-navigation {
+    border-bottom: 2px solid $col-tabs-default-border-bottom;
+
+    @if $width == auto {
+      max-width: inherit;
+    } @else {
+      max-width: $width * $point;
+    }
+    margin-bottom: 4 * $point;
+
+    a, button {
+      font-size: 1.8 * $point;
+      text-transform: none !important;
+
+      .md-button-content {
+        color: $col-tabs-txt;
+      }
+    }
+
+    button[disabled] {
+      .md-button-content {
+        color: $col-tabs-disabled-txt;
+      }
+    }
+
+    .md-tabs-indicator {
+      background: $col-tabs-indicator;
+      bottom: -2px
+    }
+  }
+}

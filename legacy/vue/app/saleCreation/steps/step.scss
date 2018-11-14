@@ -1,0 +1,61 @@
+.step {
+  width: 100%;
+  margin-left: 10px;
+
+  @media only screen and (max-width: 600px) {
+    width: calc(100% + 25px);
+    margin-left: -25px;
+  }
+}
+
+.step__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.step__input-field {
+  align-self: flex-start;
+  margin-top: 1.1rem;
+  margin-right: .5rem;
+}
+
+.step__input-field:last-child { margin-right: 0; }
+.step__file-field { width: 100%; min-width: 50%; margin-right: .5rem }
+.step__file-field:last-child { margin-right: 0 }
+
+.step__column {
+  display: flex;
+  flex-direction: column;
+}
+
+.step__remove-phase-btn {
+  position: relative;
+  bottom: .65rem;
+}
+
+.step__actions {
+  display: flex;
+  justify-content: space-between;
+
+  & > .md-button:first-child { margin-left: -1rem }
+  & > .md-button:last-child { margin-right: -1rem }
+}
+
+.step__action {
+  display: flex;
+  justify-content: flex-end;
+
+  & > .md-button { margin-right: -1rem }
+}
+
+.step__list-actions {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem;
+}
+
+.step__submit-btn {
+  margin-right: -1rem;
+}

@@ -1,0 +1,37 @@
+{
+  "id": "8",
+  "paging_token": "8",
+  "requestor": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",
+  "reviewer": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
+  "reference": "3b28a6c3766c6295adad976d349705ef49393fbfdebe4facb5862d2cdfa285d3",
+  "reject_reason": "",
+  "hash": "2ab87437a6872833e723ca853f0c0db84d40970a98e3b71a2b53e54ba20c28a5",
+  "details": {
+    "request_type_i": 9,
+    "request_type": "update_kyc",
+    "update_kyc": {
+      "account_to_update_kyc": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",
+      "account_type_to_set": {
+        "int": 2,
+        "string": "general"
+      },
+      "kyc_level": 0,
+      "kyc_data": {
+        "blob_id": "IE2Y72WTREFRVISICOHFWSJJ44AMWGLWOEJTX46L2AXWNQF7LCVA"
+      },
+      "all_tasks": 31,
+      "pending_tasks": 1,
+      "sequence_number": 0,
+      "external_details": [
+        {},
+        {
+          "rejector": "Some service"
+        }
+      ]
+    }
+  },
+  "created_at": "2018-04-07T18:02:07Z",
+  "updated_at": "2018-05-27T08:14:38Z",
+  "request_state_i": 1,
+  "request_state": "pending"
+}

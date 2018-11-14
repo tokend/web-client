@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "type": "email",
+      "id": 785,
+      "attributes": {
+        "priority": 1
+      }
+    },
+    {
+      "type": "password",
+      "id": 652,
+      "attributes": {
+        "priority": 1
+      }
+    },
+    {
+      "type": "totp",
+      "id": 991,
+      "attributes": {
+        "priority": 1
+      }
+    }
+  ]
+}

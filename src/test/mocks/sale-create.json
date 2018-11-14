@@ -1,0 +1,63 @@
+{
+  "id": "49",
+  "paging_token": "49",
+  "requestor": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+  "reviewer": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP",
+  "reference": null,
+  "reject_reason": "",
+  "hash": "a654a51fa96981dc70aaab89ae7e6cb8af33bf4d662b669227ef68434854d22c",
+  "details": {
+    "request_type_i": 5,
+    "request_type": "sale",
+    "two_step_withdrawal": null,
+    "sale": {
+      "base_asset": "ETH2",
+      "default_quote_asset": "USD",
+      "start_time": "2018-02-11T21:22:00Z",
+      "end_time": "2020-04-22T12:11:00Z",
+      "soft_cap": "10000.000000",
+      "hard_cap": "20000.000000",
+      "sale_type": {
+        "name": "crowd_funding",
+        "value": 2
+      },
+      "base_asset_for_hard_cap": "150000.000000",
+      "details": {
+        "description": "BUDXEPAFDOG4EQA2C5ZGWFM2BIOS5BFEDE3U465RWLFG6XMSE7OQ",
+        "logo": {
+          "key": "dpurah4infpebjhcost7fvo3l3qinkqqg73q7gakvchkiuvbjsje4osa",
+          "mime_type": "image/jpeg",
+          "name": "flat,800x800,070,f.jpg"
+        },
+        "name": "Eth 2.0 sale",
+        "short_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vulputate tristique diam ut efficitur. Fusce dapibus ex vel eros egestas cursus",
+        "youtube_video_id": "ewqweqwewqeqwe",
+        "return_of_investment": {
+          "from": "20",
+          "to": "55"
+        }
+      },
+      "quote_assets": [
+        {
+          "quote_asset": "BTC",
+          "price": "1.000000"
+        },
+        {
+          "quote_asset": "ETH",
+          "price": "2.000000"
+        }
+      ],
+      "state": {
+        "name": "none",
+        "value": 0
+      }
+    },
+    "limits_update": null,
+    "aml_alert": null,
+    "update_sale_details": null
+  },
+  "created_at": "2018-06-20T18:19:35Z",
+  "updated_at": "2018-06-20T18:19:35Z",
+  "request_state_i": 3,
+  "request_state": "approved"
+}

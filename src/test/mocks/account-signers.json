@@ -1,0 +1,125 @@
+{
+  "signers": [
+    {
+      "public_key": "GDTPGOO2N4PDZKR2BBHKEV6TE3BPGFRD4W5RVDRVXY7BGDCAPPOKGYCW",
+      "weight": 255,
+      "signer_type_i": 268435455,
+      "signer_types": [
+        {
+          "name": "SignerTypeReader",
+          "value": 1
+        },
+        {
+          "name": "SignerTypeNotVerifiedAccManager",
+          "value": 2
+        },
+        {
+          "name": "SignerTypeGeneralAccManager",
+          "value": 4
+        },
+        {
+          "name": "SignerTypeDirectDebitOperator",
+          "value": 8
+        },
+        {
+          "name": "SignerTypeAssetManager",
+          "value": 16
+        },
+        {
+          "name": "SignerTypeAssetRateManager",
+          "value": 32
+        },
+        {
+          "name": "SignerTypeBalanceManager",
+          "value": 64
+        },
+        {
+          "name": "SignerTypeIssuanceManager",
+          "value": 128
+        },
+        {
+          "name": "SignerTypeInvoiceManager",
+          "value": 256
+        },
+        {
+          "name": "SignerTypePaymentOperator",
+          "value": 512
+        },
+        {
+          "name": "SignerTypeLimitsManager",
+          "value": 1024
+        },
+        {
+          "name": "SignerTypeAccountManager",
+          "value": 2048
+        },
+        {
+          "name": "SignerTypeCommissionBalanceManager",
+          "value": 4096
+        },
+        {
+          "name": "SignerTypeOperationalBalanceManager",
+          "value": 8192
+        },
+        {
+          "name": "SignerTypeEventsChecker",
+          "value": 16384
+        },
+        {
+          "name": "SignerTypeExchangeAccManager",
+          "value": 32768
+        },
+        {
+          "name": "SignerTypeSyndicateAccManager",
+          "value": 65536
+        },
+        {
+          "name": "SignerTypeUserAssetManager",
+          "value": 131072
+        },
+        {
+          "name": "SignerTypeUserIssuanceManager",
+          "value": 262144
+        },
+        {
+          "name": "SignerTypeWithdrawManager",
+          "value": 524288
+        },
+        {
+          "name": "SignerTypeFeesManager",
+          "value": 1048576
+        },
+        {
+          "name": "SignerTypeTxSender",
+          "value": 2097152
+        },
+        {
+          "name": "SignerTypeAmlAlertManager",
+          "value": 4194304
+        },
+        {
+          "name": "SignerTypeAmlAlertReviewer",
+          "value": 8388608
+        },
+        {
+          "name": "SignerTypeKycAccManager",
+          "value": 16777216
+        },
+        {
+          "name": "SignerTypeKycSuperAdmin",
+          "value": 33554432
+        },
+        {
+          "name": "SignerTypeExternalSystemAccountIdPoolManager",
+          "value": 67108864
+        },
+        {
+          "name": "SignerTypeKeyValueManager",
+          "value": 134217728
+        }
+      ],
+      "signer_identity": 0,
+      "signer_name": ""
+    }
+  ]
+}

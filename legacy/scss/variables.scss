@@ -1,0 +1,183 @@
+/* eslint-disable */
+
+// use as multiplier for more convenient way to calculating sizes
+$point: 0.625rem; /* 10px in case of 1rem=16px */
+
+$size-icon-super-big: 128px;
+$content-side-paddings: 4 * $point;
+$content-side-paddings-sm: 2 * $point;
+$sidebar-width: 23 * $point;
+$sidebar-hide-bp: 768px;
+
+/* colors: */
+/* CAUTION: do not use these colors externally */
+
+$_gray:#e2e3e3;
+$_green: #33A494;
+$_red: #c2243b;
+$_red-invalid: #ff1744;
+$_orange: #EF6C00;
+$_white: #ffffff;
+$_lightRed: #ef5350;
+$_lightGray: #c6c6c6;
+$_mediumGray: #ccc;
+$_thinGray: #f2f2f4;
+$_athensGray: #e9eaed;
+$_waterloo: #837fa1;
+$_eastBay: #3a4180;
+$_cornflowerBlue: #7b6eff;
+$_orangePeel: #f2a100;
+$_black: '#333';
+
+$col-primary: $_eastBay;
+$col-primary-inactive: rgba($col-primary, .7);
+$col-primary-flat-hover: rgba($col-primary, .2);
+$col-primary-secondary: $_cornflowerBlue;
+$col-background: $_thinGray;
+$col-primary-txt: $_white;
+$col-unfocused: rgba(0, 0, 0, .54);
+
+// Use these ones instead
+
+// global colors
+$col-app-background: $_gray;
+$col-app-content-background: $col-background;
+$col-sidebar-background: $_athensGray;
+$col-sidebar-background-media-small: $_thinGray;
+$col-sidebar-icon: $col-primary;
+$col-navbar-background: $col-background;
+$col-navbar-avatar-background: $_mediumGray;
+$col-navbar-avatar-color: $col-primary-txt;
+$col-auth-page-title: $_white;
+
+$col-success: $_green;
+$col-accent: $_lightRed;
+$col-pending: $_orange;
+$col-reject: $_red;
+$col-invalid: $_red-invalid;
+$col-warning: $_orangePeel;
+
+// base colors:
+$col-text: $_eastBay;
+$col-text-inactive: rgba($_eastBay, .7);
+$col-text-accented: $_cornflowerBlue;
+$col-text-on-dark-bg: $_white;
+$col-block-bg: $_white;
+$col-dropdown-bg: $_white;
+$col-link: $col-text-accented;
+
+// text colors:
+$col-heading: $col-text;
+$col-text-page-explanations: $col-text;
+$col-text-page-explanations-inactive: $col-text-inactive;
+$col-text-page-heading: $col-heading;
+
+// instead-of-avatar colors:
+$col-avatar-instead-text: $col-text-on-dark-bg;
+$col-avatar-instead-bg: rgba($_eastBay, .15);
+
+// details colors:
+$col-details-label: $col-primary-inactive;
+$col-details-value: $col-primary;
+$col-details-border: rgba($col-primary, .2);
+
+// chart colors:
+$col-chart-tabs-title: $col-primary;
+$col-chart-line: $col-primary-secondary;
+$col-chart-fill: $_white;
+$col-chart-ticks: $col-primary-inactive;
+$col-chart-text: $col-primary-inactive;
+$col-chart-tip-circle-border: $_white;
+$col-chart-tip-circle: $col-primary;
+$col-chart-tip-line-inactive: $col-primary;
+$col-chart-tip-line-active: $col-primary-secondary;
+$col-chart-tip-text-box: $_white;
+$col-chart-tip-text-price: $col-primary;
+$col-chart-tip-date-dd: $col-primary;
+$col-chart-tip-date-mm: rgba($col-primary, .6);
+$col-chart-message-wrapper: rgba($col-background, .25);
+$col-chart-message-background: $_white;
+$col-chart-message-text: $col-primary;
+
+// list colors:
+$col-list-text: $col-primary;
+$col-list-block-background: $col-block-bg;
+$col-list-btn-details-text: $col-primary;
+$col-list-btn-details-background: rgba($col-primary, .1);
+$col-list-status-label-color: $col-primary-txt;
+$col-list-status-label-color-rejected: $col-accent;
+$col-list-status-label-color-pending: $col-pending;
+$col-list-status-label-color-success: $col-success;
+
+// fields colors:
+$col-field-text: $col-primary;
+$col-field-text-unfocused: $col-primary-inactive;
+$col-field-icon: $col-primary;
+$col-field-autofill: $_white;
+$col-field-group-label: $col-primary;
+$col-field-background: $_thinGray;
+$col-select-field-hover: rgba($col-primary, .1);
+$col-file-field-icon-text: $_white;
+$col-radio-field-border: $col-primary;
+$col-radio-field-background: $_white;
+$col-checkbox-field-background: $col-primary;
+$col-text-field-hint: $col-primary;
+$col-text-field-hint-inactive: $col-primary-inactive;
+
+// button colors:
+$col-button-raised: $col-primary-secondary;
+$col-button-raised-txt: $col-primary-txt;
+
+$col-button-flat-hover: $col-primary-flat-hover;
+$col-button-flat-txt: $col-primary;
+$col-button-flat-txt-inactive: $col-primary-inactive;
+$col-button-flat-disabled-txt: $_lightGray;
+
+$col-button-flat-accent-hover: rgba($col-accent, .2);
+$col-button-flat-accent-txt: $col-accent;
+$col-button-flat-accent-disabled-txt: $_lightGray;
+
+$col-button-back-icon: $col-primary-inactive;
+$col-button-back-icon-hover: $col-primary-secondary;
+
+// tabs colors:
+$col-tabs-txt: $col-primary;
+$col-tabs-disabled-txt: $col-primary-inactive;
+$col-tabs-indicator: $col-primary-secondary;
+$col-tabs-default-border-bottom: rgba($col-tabs-indicator, .1);
+$col-tabs-hover-bg: rgba($col-primary-secondary, .05);
+
+// sidebar colors:
+$col-sidebar-text: $col-primary-inactive;
+$col-sidebar-active-elem-text: $col-primary;
+$col-sidebar-active-elem-background: $_thinGray;
+$col-sidebar-background: $_athensGray;
+
+// fund colors:
+$col-fund-card-heading: $col-primary;
+$col-fund-card-text: $col-primary;
+$col-fund-card-progress-background: $_lightGray;
+$col-fund-card-progress-color: $col-primary-secondary;
+$col-fund-card-state-tip: $_white;
+$col-fund-video-border: $col-primary;
+
+// token colors:
+$col-token-code: $col-primary;
+$col-token-instead-icon-abbreviation: $col-primary-txt;
+$col-token-code-border: $col-primary;
+$col-token-name: $col-primary-inactive;
+$col-token-list-background: $col-sidebar-background;
+$col-token-item-selected-background: $col-background;
+
+// no-data-message colors:
+$col-no-data-message-text: $col-primary;
+$col-no-data-message-description: $col-primary-inactive;
+$col-no-data-message-icon-color: rgba($col-primary, .4);
+
+// loader colors:
+$col-loader-text: $col-primary;
+$col-loader-icon: $col-primary-inactive;
+
+// snackbar colors:
+$col-snackbar-text: $col-primary-txt;
+$col-snackbar-text-hover: rgba($col-primary, .2);

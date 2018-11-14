@@ -1,0 +1,56 @@
+{
+  "id": "114",
+  "paging_token": "114",
+  "requestor": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
+  "reviewer": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
+  "reference": "ETH",
+  "reject_reason": "",
+  "hash": "04cb5cb9ff39b333bcd0b83245d97e0513a07ce6381a5adfc231dbbc0dbe301e",
+  "details": {
+    "request_type_i": 1,
+    "request_type": "asset_update",
+    "asset_update": {
+      "code": "ETH",
+      "policies": [
+        {
+          "name": "AssetPolicyTransferable",
+          "value": 1
+        },
+        {
+          "name": "AssetPolicyBaseAsset",
+          "value": 2
+        },
+        {
+          "name": "AssetPolicyWithdrawable",
+          "value": 8
+        },
+        {
+          "name": "AssetPolicyTwoStepWithdrawal",
+          "value": 16
+        }
+      ],
+      "details": {
+        "logo": {
+          "key": "",
+          "type": ""
+        },
+        "name": "",
+        "terms": {
+          "key": "",
+          "name": "",
+          "type": ""
+        }
+      }
+    },
+    "two_step_withdrawal": null,
+    "limits_update": null,
+    "aml_alert": null,
+    "update_sale_details": null,
+    "update_sale_end_time": null,
+    "promotion_update_request": null
+  },
+  "created_at": "2018-04-20T14:39:07Z",
+  "updated_at": "2018-04-20T14:39:07Z",
+  "request_state_i": 3,
+  "request_state": "approved"
+}

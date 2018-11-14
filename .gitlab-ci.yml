@@ -1,0 +1,31 @@
+services:
+  - docker:dind
+
+variables:
+  # dockerfile for building artifact image
+  BUILD_DOCKERFILE: build.dockerfile
+  IMAGE_NAME: registry.gitlab.com/tokend/client-scaffold
+  IMAGE_BUILD_NAME: $IMAGE_NAME:$CI_COMMIT_SHA
+  DEPLOYMENT_DIR: /root/v2
+  DEPLOYMENT_INV: $DEPLOYMENT_DIR/env/hosts
+  DEPLOYMENT_SECRETS: $DEPLOYMENT_DIR/secrets/ops.yml
+  # demo.tokend.io
+  DEPLOYMENT_INV_DTIO: $DEPLOYMENT_DIR/env/demo_tokend_io.ini
+
+stages:
+  - build
+  - deploy
+
+build:
+  image: docker:latest
+  stage: build
+  tags:
+    - tokend
+  only:
+    - master
+  script:
+    # TODO check env files exists first
+    # login to docker registry
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build --build-arg RSA_KEY="$SSH_PRIVATE_KEY" --build-arg BUILD_ENV=config/$CI_COMMIT_REF_NAME.env.js --pull -t $IMAGE_BUILD_NAME .
+    - docker push $IMAGE_BUILD_NAME

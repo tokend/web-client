@@ -1,0 +1,42 @@
+{
+  "id": "11",
+  "paging_token": "11",
+  "requestor": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+  "reviewer": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP",
+  "reference": "CAT",
+  "reject_reason": "",
+  "hash": "e3ef53ae1b817e1870f3bc99d5c83cc1a2bccdddcb0d57919538893af3a2d36d",
+  "details": {
+    "request_type_i": 0,
+    "request_type": "asset_create",
+    "asset_create": {
+      "code": "CAT",
+      "policies": [],
+      "pre_issued_asset_signer": "GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4",
+      "max_issuance_amount": "213123.000000",
+      "initial_preissued_amount": "213123.000000",
+      "details": {
+        "logo": {
+          "key": "dpurgh4infpebjhcost7fvijeh5zh732at53ry4mkuwkvkyx6xxffusl",
+          "name": "A-gray-kitten-meowing.jpg",
+          "type": "image/jpeg"
+        },
+        "name": "CAT",
+        "terms": {
+          "key": "dpurgh4infpebjhcost7fvi3313123123jeh5zh732at53ry4mkuwkvksl",
+          "name": "Foo bar",
+          "type": "image/png"
+        },
+        "external_system_type": "20"
+      }
+    },
+    "two_step_withdrawal": null,
+    "limits_update": null,
+    "aml_alert": null,
+    "update_sale_details": null
+  },
+  "created_at": "2018-05-19T16:58:47Z",
+  "updated_at": "2018-05-19T16:58:47Z",
+  "request_state_i": 2,
+  "request_state": "canceled"
+}

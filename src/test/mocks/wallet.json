@@ -1,0 +1,14 @@
+{
+  "data": {
+    "type": "wallet",
+    "id": "4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c",
+    "attributes": {
+      "account_id": "GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O",
+      "email": "booking@mailinator.com",
+      "keychain_data": "eyJJViI6IjJESXZJbjBUTDM3WDBQY1MiLCJjaXBoZXJUZXh0IjoibUV5b0Q3RWZ4UEQzY2dhZWlXUlhjcm93Nml1dHFNOExRdVpneFJTRmZhVmdKTTVmbHZFVmtQYVZLaUtxbm1lSTdOWUhmUHo5VkZVcTNraWZZTUdqSm1KSTJmQ3c2MVRHVDg1ak5kcVhCbnRvTWJqTEZScVF5b1cvMC9nckg4NDlldEhvWXRhWFJ0ZHdGSHRUaUZsYkg5N2VYL1VrS2ZqWTZhTXFhamhEOTRkMXF1K0FWbGxLL293YmtzaHh6L0k5Sm1HdGIxb01wK1JwOHc9PSIsImNpcGhlck5hbWUiOiJhZXMiLCJtb2RlTmFtZSI6ImdjbSJ9",
+      "verified": true,
+      "last_sent_at": "2018-04-20T14:29:35.816633Z"
+    },
+    "relationships": {}
+  }
+}

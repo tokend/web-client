@@ -1,0 +1,26 @@
+[
+  {
+    "balance_id": "BC4KJXXXGWLOZPKOMFNV33XS3WWPD2STKMFWE5YBSL5P6AVWTJ4OLAZZ",
+    "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+    "asset": "USD",
+    "balance": "0.000000",
+    "locked": "0.000000",
+    "require_review": false
+  },
+  {
+    "balance_id": "BDA5XOKOHG2IRYSDCU442GQKEPATIZP62QXFVCYR4J37O56WBJVV4OCH",
+    "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+    "asset": "BTC",
+    "balance": "0.000000",
+    "locked": "0.000000",
+    "require_review": false
+  },
+  {
+    "balance_id": "BDHTFOKCCWSJKQV3M7YPISAXOSEU34VPN64WJ3FUJJXZDMFYLDDVJKRZ",
+    "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+    "asset": "ETH",
+    "balance": "0.000000",
+    "locked": "0.000000",
+    "require_review": false
+  }
+]

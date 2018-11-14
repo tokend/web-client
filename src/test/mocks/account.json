@@ -1,0 +1,313 @@
+{
+  "id": "GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O",
+  "account_id": "GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O",
+  "is_blocked": false,
+  "block_reasons_i": 0,
+  "block_reasons": [],
+  "account_type_i": 6,
+  "account_type": "AccountTypeSyndicate",
+  "referrer": "",
+  "thresholds": {
+    "low_threshold": 0,
+    "med_threshold": 0,
+    "high_threshold": 0
+  },
+  "balances": [
+    {
+      "balance_id": "BBKVOTHCUDI4X5MFYNQN7YEAJYY7OPS3HO7J3BBESPQCV23MXW7LLMKR",
+      "account_id": "GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O",
+      "asset": "ETH",
+      "balance": "1799.530466",
+      "locked": "56.010000",
+      "require_review": false
+    },
+    {
+      "balance_id": "BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV",
+      "account_id": "GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O",
+      "asset": "BTC",
+      "balance": "2885.709765",
+      "locked": "100.100000",
+      "require_review": false
+    }
+  ],
+  "signers": [
+    {
+      "public_key": "GCRGLJNM4LUGY4NK4KYBFFCIJ2DB3UMKAGVY4HFKFR3LAE4DERZZ46GV",
+      "weight": 1,
+      "signer_type_i": 268435455,
+      "signer_types": [
+        {
+          "name": "SignerTypeReader",
+          "value": 1
+        },
+        {
+          "name": "SignerTypeNotVerifiedAccManager",
+          "value": 2
+        },
+        {
+          "name": "SignerTypeGeneralAccManager",
+          "value": 4
+        },
+        {
+          "name": "SignerTypeDirectDebitOperator",
+          "value": 8
+        },
+        {
+          "name": "SignerTypeAssetManager",
+          "value": 16
+        },
+        {
+          "name": "SignerTypeAssetRateManager",
+          "value": 32
+        },
+        {
+          "name": "SignerTypeBalanceManager",
+          "value": 64
+        },
+        {
+          "name": "SignerTypeIssuanceManager",
+          "value": 128
+        },
+        {
+          "name": "SignerTypeInvoiceManager",
+          "value": 256
+        },
+        {
+          "name": "SignerTypePaymentOperator",
+          "value": 512
+        },
+        {
+          "name": "SignerTypeLimitsManager",
+          "value": 1024
+        },
+        {
+          "name": "SignerTypeAccountManager",
+          "value": 2048
+        },
+        {
+          "name": "SignerTypeCommissionBalanceManager",
+          "value": 4096
+        },
+        {
+          "name": "SignerTypeOperationalBalanceManager",
+          "value": 8192
+        },
+        {
+          "name": "SignerTypeEventsChecker",
+          "value": 16384
+        },
+        {
+          "name": "SignerTypeExchangeAccManager",
+          "value": 32768
+        },
+        {
+          "name": "SignerTypeSyndicateAccManager",
+          "value": 65536
+        },
+        {
+          "name": "SignerTypeUserAssetManager",
+          "value": 131072
+        },
+        {
+          "name": "SignerTypeUserIssuanceManager",
+          "value": 262144
+        },
+        {
+          "name": "SignerTypeWithdrawManager",
+          "value": 524288
+        },
+        {
+          "name": "SignerTypeFeesManager",
+          "value": 1048576
+        },
+        {
+          "name": "SignerTypeTxSender",
+          "value": 2097152
+        },
+        {
+          "name": "SignerTypeAmlAlertManager",
+          "value": 4194304
+        },
+        {
+          "name": "SignerTypeAmlAlertReviewer",
+          "value": 8388608
+        },
+        {
+          "name": "SignerTypeKycAccManager",
+          "value": 16777216
+        },
+        {
+          "name": "SignerTypeKycSuperAdmin",
+          "value": 33554432
+        },
+        {
+          "name": "SignerTypeExternalSystemAccountIdPoolManager",
+          "value": 67108864
+        },
+        {
+          "name": "SignerTypeKeyValueManager",
+          "value": 134217728
+        }
+      ],
+      "signer_identity": 0,
+      "signer_name": ""
+    },
+    {
+      "public_key": "GBUJPJ5OOJNP4D4334UAVQNOQBEEWXB7LTRB4NFTV6RW3ALZTS3QUIKT",
+      "weight": 255,
+      "signer_type_i": 1073741823,
+      "signer_types": [
+        {
+          "name": "SignerTypeReader",
+          "value": 1
+        },
+        {
+          "name": "SignerTypeNotVerifiedAccManager",
+          "value": 2
+        },
+        {
+          "name": "SignerTypeGeneralAccManager",
+          "value": 4
+        },
+        {
+          "name": "SignerTypeDirectDebitOperator",
+          "value": 8
+        },
+        {
+          "name": "SignerTypeAssetManager",
+          "value": 16
+        },
+        {
+          "name": "SignerTypeAssetRateManager",
+          "value": 32
+        },
+        {
+          "name": "SignerTypeBalanceManager",
+          "value": 64
+        },
+        {
+          "name": "SignerTypeIssuanceManager",
+          "value": 128
+        },
+        {
+          "name": "SignerTypeInvoiceManager",
+          "value": 256
+        },
+        {
+          "name": "SignerTypePaymentOperator",
+          "value": 512
+        },
+        {
+          "name": "SignerTypeLimitsManager",
+          "value": 1024
+        },
+        {
+          "name": "SignerTypeAccountManager",
+          "value": 2048
+        },
+        {
+          "name": "SignerTypeCommissionBalanceManager",
+          "value": 4096
+        },
+        {
+          "name": "SignerTypeOperationalBalanceManager",
+          "value": 8192
+        },
+        {
+          "name": "SignerTypeEventsChecker",
+          "value": 16384
+        },
+        {
+          "name": "SignerTypeExchangeAccManager",
+          "value": 32768
+        },
+        {
+          "name": "SignerTypeSyndicateAccManager",
+          "value": 65536
+        },
+        {
+          "name": "SignerTypeUserAssetManager",
+          "value": 131072
+        },
+        {
+          "name": "SignerTypeUserIssuanceManager",
+          "value": 262144
+        },
+        {
+          "name": "SignerTypeWithdrawManager",
+          "value": 524288
+        },
+        {
+          "name": "SignerTypeFeesManager",
+          "value": 1048576
+        },
+        {
+          "name": "SignerTypeTxSender",
+          "value": 2097152
+        },
+        {
+          "name": "SignerTypeAmlAlertManager",
+          "value": 4194304
+        },
+        {
+          "name": "SignerTypeAmlAlertReviewer",
+          "value": 8388608
+        },
+        {
+          "name": "SignerTypeKycAccManager",
+          "value": 16777216
+        },
+        {
+          "name": "SignerTypeKycSuperAdmin",
+          "value": 33554432
+        },
+        {
+          "name": "SignerTypeExternalSystemAccountIdPoolManager",
+          "value": 67108864
+        },
+        {
+          "name": "SignerTypeKeyValueManager",
+          "value": 134217728
+        },
+        {
+          "name": "SignerTypeSuperIssuanceManager",
+          "value": 268435456
+        },
+        {
+          "name": "SignerTypeContractManager",
+          "value": 536870912
+        }
+      ],
+      "signer_identity": 0,
+      "signer_name": ""
+    }
+  ],
+  "policies": {
+    "account_policies_type_i": 0,
+    "account_policies_types": null
+  },
+  "account_kyc": {
+    "KYCData": {
+      "blob_id": "CLHFZSU4WIQIVBVVT7QFDNWIH4LKF6NQOXUCDW5NJUH7MWWDRFIQ"
+    }
+  },
+  "external_system_accounts": [
+    {
+      "type": {
+        "name": "Bitcoin",
+        "value": 1
+      },
+      "data": "mutsYGuQyAKjyT4a7d9t2T2kDhjbxwFZju",
+      "asset_code": "BTC"
+    },
+    {
+      "type": {
+        "name": "Ethereum",
+        "value": 2
+      },
+      "data": "0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E35e",
+      "asset_code": "ETH"
+    }
+  ],
+  "referrals": []
+}

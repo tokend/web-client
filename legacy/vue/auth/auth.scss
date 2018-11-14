@@ -1,0 +1,127 @@
+@import '~L@scss/variables';
+@import '~L@scss/mixins';
+
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.auth-page__titles,
+.auth-page__form {
+  width: 50%;
+}
+
+.auth-page__titles {
+  background: #332f5c; /* Old browsers */
+  background: linear-gradient(#5d5882 0%,#2a2749 65%);
+  padding: 0 110px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  @include respond-to(large) {
+    padding: 0 70px;
+  }
+
+  @include respond-to(medium) {
+    display: none;
+  }
+}
+
+.auth-page__form {
+  padding: 80px 110px;
+  position: relative;
+
+  @include respond-to(large) {
+    padding: 60px 70px;
+  }
+
+  @include respond-to(medium) {
+    width: 100%;
+    padding: 60px 16px;
+    margin: 0 auto;
+    max-width: 480px;
+  }
+}
+
+.auth-page__form-title {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 24px;
+  color: $col-text-page-heading;
+}
+
+.auth-page__form-title--center { text-align: center; }
+
+.auth-page__form-logotype {
+  margin-bottom: 165px;
+  display: inline-block;
+
+  @include respond-to-height(950px) {
+    margin-bottom: 120px;
+  }
+
+  @include respond-to-height(750px) {
+    margin-bottom: 64px;
+  }
+}
+
+.auth-page__submit {
+  width: 100%;
+  margin-top: 48px;
+  margin-bottom: 55px;
+}
+
+.auth-page__submit-btn {
+  @include button-raised();
+
+  width: 200px;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.auth-page__submit-btn-secondary {
+  @include button-flat();
+
+  width: 150px;
+  margin-left: 20px;
+}
+
+.auth-page__tips {
+  margin-right: auto;
+  color: $col-text-field-hint;
+}
+
+.auth-page .auth-page__tip-link { // WARN: icreased weight for break vue-material styles
+  color: $col-text-accented !important;
+  text-decoration: underline;
+}
+
+.auth-page__title {
+  color: $col-auth-page-title;
+  font-size: 56px;
+  line-height: 1.2;
+
+  @include respond-to(large) {
+    font-size: 40px;
+  }
+}
+
+.auth-page__title-small {
+  font-size: 24px;
+  margin-bottom: 56px;
+  color: $col-text-accented;
+
+  @include respond-to(large) {
+    font-size: 20px;
+  }
+}
+
+.auth-page__form-descr {
+  margin-bottom: 8px;
+}
+
+.auth-page__form-descr-info {
+  color: $col-text-accented;
+}

@@ -1,0 +1,58 @@
+@import '../../../scss/mixins';
+@import '../../../scss/variables';
+
+.legal {
+  width: 100%;
+}
+
+.legal__inner {
+  background: #fff;
+  border-radius: 10px;
+  padding: 90px 40px 30px 40px;
+  line-height: 160%;
+  margin: 0 auto;
+  max-width: 880px;
+}
+
+.legal__top-heading {
+  margin-bottom: 1.5 * $point;
+}
+
+.legal__content-section {
+  margin-bottom: 1.25 * $point;
+}
+
+.legal__paragraph,
+.legal__list,
+.legal__link {
+  font-size: 1.2 * $point;
+}
+
+.legal__paragraph {
+  margin-bottom: .9 * $point;
+
+  &--important {
+    font-weight: 500;
+  }
+}
+
+.legal__question {
+  font-style: italic;
+  margin-bottom: .5 * $point;
+}
+
+.legal__highlighted {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.legal__list {
+  padding-left: 20px;
+  margin-bottom: 1.25 * $point;
+}
+
+.legal__link {
+  cursor: pointer;
+  color: $col-text-accented;
+  text-decoration: underline;
+}
