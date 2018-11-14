@@ -107,8 +107,8 @@ export default {
     transform: translateX(100%);
   }
   to {
-    transform: translateX(0);
     opacity: 1;
+    transform: translateX(0);
   }
 }
 </style>
