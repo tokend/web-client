@@ -6,13 +6,13 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn test"
     }
   },
   "scripts": {
     "dev": "node build/dev-server.js",
-    "start": "npm run dev",
+    "start": "yarn dev",
     "build": "node build/build.js",
     "build.prod": "node build/build.js prod",
     "build.staging": "node build/build.js staging",
@@ -116,7 +116,7 @@
   },
   "engines": {
     "node": ">= 8.0.0",
-    "npm": ">= 5.0.0"
+    "yarn": ">= 1.0.0"
   },
   "browserslist": [
     "> 1%",
