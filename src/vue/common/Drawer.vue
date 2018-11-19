@@ -1,7 +1,7 @@
 <template>
   <transition name="drawer-transition">
-    <div class="drawer" v-if="shown">
-      <div class="drawer__backdrop" />
+    <div class="drawer" v-if="isShown">
+      <div class="drawer__backdrop" @click="$emit('update:isShown', false)" />
       <div class="drawer__pane">
         <div class="drawer__head">
           <h2 class="drawer__heading">
@@ -19,7 +19,7 @@
 <script>
 export default {
   props: {
-    shown: { type: Boolean, default: true }
+    isShown: { type: Boolean, default: true }
   }
 }
 </script>
