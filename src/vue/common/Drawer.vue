@@ -17,6 +17,18 @@
 </template>
 
 <script>
+/**
+ * Drawer component serves as a wrapper for modal content.
+ *
+ * To use it pass your content as a slot inside and sync it's prop with the
+ * data field in your parent component:
+ *
+ * <drawer :is-shown.sync="isContentShown">
+ *    <content>
+ * </drawer>
+ *
+ * As long as `isContentShown` is `true`, your content will be displayed.
+ */
 export default {
   props: {
     isShown: { type: Boolean, default: true }
