@@ -86,6 +86,7 @@ export default {
   top: 0;
   right: 0;
   width: 52.8 * $point;
+  max-width: 100%;
   min-height: 100%;
   box-shadow: 0 1 * $point 2 * $point 0 rgba(0, 0, 0, 0.1);
   display: flex;
