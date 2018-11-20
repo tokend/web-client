@@ -7,6 +7,9 @@
           <h2 class="drawer__heading">
             <slot name="heading" />
           </h2>
+          <button class="app__button-icon" @click="closeSelf">
+            <md-icon>close</md-icon>
+          </button>
         </div>
         <div class="drawer__body">
           <slot />
@@ -90,6 +93,9 @@ export default {
 .drawer__head {
   padding: 30px;
   background-color: #e9eaed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .drawer__heading {
