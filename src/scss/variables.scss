@@ -1,0 +1,14 @@
+// use as multiplier for more convenient way to calculating sizes
+$point: 0.625rem; /* 10px in case of 1rem=16px */
+
+$_athensGray: #e9eaed;
+$_eastBay: #3a4180;
+$_white: #ffffff;
+
+// base colors:
+$col-text: $_eastBay;
+
+// drawer:
+$col-drawer-bg: $_white;
+$col-drawer-head-bg: $_athensGray;
+$col-drawer-head-text: $_eastBay;
