@@ -1,7 +1,7 @@
 <template>
   <transition name="drawer-transition">
     <div class="drawer" v-if="isShown">
-      <div class="drawer__backdrop" @click="$emit('update:isShown', false)" />
+      <div class="drawer__backdrop" @click="closeSelf" />
       <div class="drawer__pane">
         <div class="drawer__head">
           <h2 class="drawer__heading">
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { KEY_CODES } from '@/js/const/key-codes.const'
+
 /**
  * Drawer component serves as a wrapper for modal content.
  *
@@ -32,6 +34,24 @@
 export default {
   props: {
     isShown: { type: Boolean, default: true }
+  },
+  created () {
+    document.addEventListener('keydown', this.onDocumentKeyDown)
+  },
+  destroyed () {
+    document.removeEventListener('keydown', this.onDocumentKeyDown)
+  },
+  methods: {
+    onDocumentKeyDown () {
+      const keyCode = event.which || event.keyCode
+
+      if (keyCode === KEY_CODES.escape) {
+        this.closeSelf()
+      }
+    },
+    closeSelf () {
+      this.$emit('update:isShown', false)
+    }
   }
 }
 </script>
