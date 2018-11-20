@@ -60,6 +60,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~@scss/variables';
+
 .drawer {
   position: fixed;
   width: 100vw;
@@ -92,7 +94,7 @@ export default {
 
 .drawer__head {
   padding: 30px;
-  background-color: #e9eaed;
+  background-color: $col-drawer-head-bg;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,13 +102,13 @@ export default {
 
 .drawer__heading {
   font-size: 26px;
-  color: #3a4180;
+  color: $col-drawer-head-text;
   line-height: normal;
 }
 
 .drawer__body {
   padding: 30px;
-  background-color: #ffffff;
+  background-color: $col-drawer-bg;
   flex: 1;
 }
 
