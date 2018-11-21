@@ -4,11 +4,51 @@ $point: 0.625rem; /* 10px in case of 1rem=16px */
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
+$_gray: #e2e3e3;
+$_thinGray: #f2f2f4;
+$_lightGray: #c6c6c6;
+$_lightRed: #ef5350;
+$_cornflowerBlue: #7b6eff;
 
 // base colors:
-$col-text: $_eastBay;
+$col-primary: $_eastBay;
+$col-primary-lighten: $_cornflowerBlue;
+$col-primary-txt: $_white;
 
-// drawer:
+$col-primary-inactive: rgba($col-primary, .7);
+$col-primary-flat-hover: rgba($col-primary, .2);
+
+$col-accent: $_lightRed;
+
+// global colors
+$col-text: $_eastBay;
+$col-block-bg: $_white;
+$col-app-background: $_gray;
+$col-app-content-background: $_thinGray;
+
+// button colors:
+$col-button-raised: $col-primary-lighten;
+$col-button-raised-txt: $col-primary-txt;
+
+$col-button-flat-hover: $col-primary-flat-hover;
+$col-button-flat-txt: $col-primary;
+$col-button-flat-txt-inactive: $col-primary-inactive;
+$col-button-flat-disabled-txt: $_lightGray;
+
+$col-button-flat-accent-hover: rgba($col-accent, .2);
+$col-button-flat-accent-txt: $col-accent;
+$col-button-flat-accent-disabled-txt: $_lightGray;
+
+$col-button-back-icon: $col-primary-inactive;
+$col-button-back-icon-hover: $col-primary-lighten;
+
+// text colors:
+$col-heading: $col-text;
+$col-text-page-heading: $col-heading;
+
+// drawer colors:
 $col-drawer-bg: $_white;
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
+
+// TODO: paste here variables that are ready to use during the refactor process

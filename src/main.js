@@ -4,6 +4,7 @@
 import Vue from 'vue'
 import App from '../legacy/vue/root/App'
 import '../legacy/scss/app.scss'
+import './scss/app.scss'
 
 // vue default plugins
 import router from '../legacy/vue-router'
