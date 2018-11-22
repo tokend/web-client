@@ -26,6 +26,10 @@ $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinGray;
 
+// text colors:
+$col-heading: $col-text;
+$col-text-page-heading: $col-heading;
+
 // button colors:
 $col-button-raised: $col-primary-lighten;
 $col-button-raised-txt: $col-primary-txt;
@@ -42,9 +46,9 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
 $col-button-back-icon: $col-primary-inactive;
 $col-button-back-icon-hover: $col-primary-lighten;
 
-// text colors:
-$col-heading: $col-text;
-$col-text-page-heading: $col-heading;
+// fields:
+$col-field-text: $col-primary;
+$col-field-text-unfocused: $col-primary-inactive;
 
 // drawer colors:
 $col-drawer-bg: $_white;
