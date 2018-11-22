@@ -1,9 +1,11 @@
 {
-  "Starts in": "Starts in",
-  "Starts": "Starts",
-  "days": "days",
-  "Finished": "Finished",
-  "Canceled": "Canceled",
-  "ends": "ends",
-  "days left": "days left"
+  "sale_state": {
+    "starts_in": "Starts in %{days} days",
+    "starts": "Starts %{time}",
+    "days": "days",
+    "finished": "finished",
+    "canceled": "canceled",
+    "ends": "ends",
+    "days_left": "days left"
+  }
 }
