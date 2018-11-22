@@ -120,7 +120,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "./variables";
+  @import "scss/variables";
 
   .date-field-flatpickr {
     position: relative;

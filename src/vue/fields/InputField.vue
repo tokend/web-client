@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./variables";
+@import "scss/variables";
 
 .input-field {
   position: relative;

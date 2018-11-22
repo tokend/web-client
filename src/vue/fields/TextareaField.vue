@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./variables";
+  @import "scss/variables";
 
   .text-field__label {
     margin-bottom: .5rem;

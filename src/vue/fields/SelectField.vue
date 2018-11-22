@@ -191,7 +191,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "./variables";
+@import "scss/variables";
 
 .select-field {
   width: 100%;
