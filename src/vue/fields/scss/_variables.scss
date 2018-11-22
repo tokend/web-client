@@ -1,5 +1,10 @@
 @import '../../../scss/variables';
 
+$col-field-text: $col-primary;
+$col-field-text-unfocused: $col-primary-inactive;
+$col-field-icon: $col-primary;
+$col-dropdown-bg: $_white;
+
 $field-color-text: $col-field-text;
 $field-color-focused: $field-color-text;
 $field-color-unfocused: $col-field-text-unfocused;
@@ -17,6 +22,7 @@ $field-input-padding-bottom: .6 * $point;
 $field-input-padding: $field-input-padding-top 0 $field-input-padding-bottom 0;
 $field-placeholer-color: $col-field-text-unfocused;
 $textarea-background-color: #fafafa;
+$col-select-field-hover: rgba($col-primary, .1);
 
 @mixin input-paddings {
   font-size: $field-text-font-size;
