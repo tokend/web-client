@@ -24,48 +24,6 @@
         />
       </template>
     </template>
-
-    <select-field-custom v-model="test1" :values="[
-      'a',
-      'b',
-      'c'
-    ]" />
-
-    <select-field-custom v-model="test2" :values="[
-      {
-        label: 'One',
-        value: '1'
-      },
-      {
-        label: 'Two',
-        value: '2'
-      },
-      {
-        label: 'Three',
-        value: '3'
-      }
-    ]" />
-
-    <select-field v-model="test3" :values="[
-      'a',
-      'b',
-      'c'
-    ]" />
-
-    <select-field v-model="test4" :values="[
-      {
-        label: 'One',
-        value: '1'
-      },
-      {
-        label: 'Two',
-        value: '2'
-      },
-      {
-        label: 'Three',
-        value: '3'
-      }
-    ]" />
   </div>
 </template>
 
@@ -79,30 +37,20 @@ import { i18n } from 'L@/js/i18n'
 import Loader from 'L@/vue/app/common/Loader'
 import config from '@/config'
 
-import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
-import SelectField from '@/vue/fields/SelectField'
-
-
 export default {
   name: 'dashboard',
   components: {
     PortfolioWidget,
     InfoWidget,
     Chart,
-    Loader,
-    SelectFieldCustom,
-    SelectField
+    Loader
   },
   data: _ => ({
     currentAsset: null,
     isLoading: false,
     scale: 'month',
     i18n,
-    config,
-    test1: '',
-    test2: '',
-    test3: '',
-    test4: ''
+    config
   }),
   computed: {
     ...mapGetters([
