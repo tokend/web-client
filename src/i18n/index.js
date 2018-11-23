@@ -17,7 +17,7 @@ export const i18nOptions = {
     }
   },
   whitelist: ['en'],
-  // set to true later when needed en-US/en-UK lng's:
+  // set to true if you need en-US/en-UK lng's:
   nonExplicitWhitelist: false,
   interpolation: {
     format: (param, format) => {
