@@ -1,11 +1,49 @@
 {
-  "sale_state": {
-    "starts_in": "Starts in %{days} days",
-    "starts": "Starts %{time}",
-    "days": "days",
-    "finished": "finished",
-    "canceled": "canceled",
-    "ends": "ends",
-    "days_left": "days left"
+  "config": {
+    "number": {
+      "formats": {
+        "amounts": {
+          "usd": "$0,0.[00]",
+          "eur": "0,0.[00]€",
+          "gbp": "0,0.[00]£",
+          "default": "0,0.[000000]"
+        },
+        "default": "0,0.[000000]",
+        "integer": "0",
+        "percent": "0.[00]%",
+        "order_number": "0o"
+      }
+    },
+
+    "date": {
+      "presets": {
+        "time": "h:mm",
+        "date": "MMMM D, YYYY",
+        "datetime": "MMMM D, YYYY [at] h:mm"
+      },
+      "formats": {
+        "same_day": "[today at] HH:mm",
+        "last_day": "[yesterday at] HH:mm",
+        "next_day": "[tomorrow at] HH:mm",
+        "last_week": "[last] dddd [at] HH:mm",
+        "next_week": "[next] dddd [at] HH:mm"
+      }
+    }
+  },
+
+  "translations": {
+    "formats": {
+      "money": "{{value, money}}"
+    },
+
+    "sale-state": {
+      "starts-in": "Starts in %{days} days",
+      "starts": "Starts %{time}",
+      "days": "days",
+      "finished": "finished",
+      "canceled": "canceled",
+      "ends": "ends",
+      "days-left": "days left"
+    }
   }
 }
