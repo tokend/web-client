@@ -23,26 +23,24 @@
 </template>
 
 <script>
-import { translate } from '@/vue/filters/translate'
-
 export default {
   props: {
     message: {
       type: String,
       default () {
-        return translate('form_confirmation_default_message')
+        return '' // translate('form_confirmation_default_message')
       }
     },
     okButtonText: {
       type: String,
       default () {
-        return translate('form_confirmation_default_ok_btn')
+        return '' // translate('form_confirmation_default_ok_btn')
       }
     },
     cancelButtonText: {
       type: String,
       default () {
-        return translate('form_confirmation_default_cancel_btn')
+        return '' // translate('form_confirmation_default_cancel_btn')
       }
     },
     isPending: {

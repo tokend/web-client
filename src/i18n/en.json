@@ -9,7 +9,7 @@
           "default": "0,0.[000000]"
         },
         "default": "0,0.[000000]",
-        "integer": "0",
+        "integer": "0,0",
         "percent": "0.[00]%",
         "order_number": "0o"
       }
@@ -33,7 +33,11 @@
 
   "translations": {
     "formats": {
-      "money": "{{value, money}}"
+      "money": "{{value, money}}",
+      "date":  "{{value, date}}",
+      "number": "{{value, number}}",
+      "order_number":  "{{value, order_number}}",
+      "integer": "{{value, integer}}"
     },
 
     "sale-state": {

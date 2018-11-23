@@ -2,33 +2,33 @@
   <span class="sale-state-formatter">
     <template v-if="sale.isUpcoming">
       <template v-if="sale.startsIn <= 1">
-        {{ 'sale-state.starts' | translate }}
-        {{ sale.startTime | humanDate }}
+        {{ 'sale-state.starts' | globalize }}
+        {{ sale.startTime | formatDate }}
       </template>
       <template v-else>
-        {{ 'sale-state.starts-in' | translate }}
+        {{ 'sale-state.starts-in' | globalize }}
         {{ sale.startsIn }}
-        {{ 'sale-state.days' | translate }}
+        {{ 'sale-state.days' | globalize }}
       </template>
     </template>
 
     <template v-else-if="sale.isOpened">
       <template v-if="sale.daysToGo >= 1">
-        {{ 'sale-state.ends' | translate }}
-        {{ sale.endTime | humanDate }}
+        {{ 'sale-state.ends' | globalize }}
+        {{ sale.endTime | formatDate }}
       </template>
       <template v-else>
         {{ sale.daysToGo }}
-        {{ 'sale-state.days-left' | translate }}
+        {{ 'sale-state.days-left' | globalize }}
       </template>
     </template>
 
     <template v-else-if="sale.isClosed">
-      {{ 'sale-state.finished' | translate }}
+      {{ 'sale-state.finished' | globalize }}
     </template>
 
     <template v-else-if="sale.isCanceled">
-      {{ 'sale-state.canceled' | translate }}
+      {{ 'sale-state.canceled' | globalize }}
     </template>
   </span>
 </template>
