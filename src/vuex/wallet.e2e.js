@@ -65,22 +65,30 @@ describe('wallet.module end-to-end test', () => {
     })
 
     it('walletId', () => {
-      expect(store.getters.walletId).to.equal(walletId)
+      expect(store.getters[vuexTypes.walletId])
+        .to
+        .equal(walletId)
     })
     it('walletEmail', () => {
-      expect(store.getters.walletEmail).to.equal(email)
+      expect(store.getters[vuexTypes.walletEmail])
+        .to
+        .equal(email)
     })
     it('walletSeed', () => {
-      expect(store.getters.walletSeed).to.equal(seed)
+      expect(store.getters[vuexTypes.walletSeed])
+        .to
+        .equal(seed)
     })
     it('walletKeypair', () => {
-      expect(store.getters.walletKeypair)
+      expect(store.getters[vuexTypes.walletKeypair])
         .to
         .deep
         .equal(base.Keypair.fromSecret(seed))
     })
     it('walletPublicKey', () => {
-      expect(store.getters.walletPublicKey).to.equal(publicKey)
+      expect(store.getters[vuexTypes.walletPublicKey])
+        .to
+        .equal(publicKey)
     })
   })
 })

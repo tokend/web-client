@@ -25,7 +25,7 @@ describe('wallet.module', () => {
       const wallet = { id: 'someWalletID', walletData: 'someWalletData' }
       const state = { wallet: {} }
 
-      mutations.SET_WALLET(state, wallet)
+      mutations[vuexTypes.SET_WALLET](state, wallet)
 
       expect(state).to.deep.equal({ wallet })
     })
@@ -51,7 +51,7 @@ describe('wallet.module', () => {
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
       const expectedMutations = { [vuexTypes.SET_WALLET]: mockWallet }
 
-      await actions.LOAD_WALLET(store, credentials)
+      await actions[vuexTypes.LOAD_WALLET](store, credentials)
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
@@ -66,7 +66,9 @@ describe('wallet.module', () => {
         }
       }
 
-      expect(getters.walletId(state)).to.equal(id)
+      expect(getters[vuexTypes.walletId](state))
+        .to
+        .equal(id)
     })
 
     it('walletEmail', () => {
@@ -77,7 +79,9 @@ describe('wallet.module', () => {
         }
       }
 
-      expect(getters.walletEmail(state)).to.equal(email)
+      expect(getters[vuexTypes.walletEmail](state))
+        .to
+        .equal(email)
     })
 
     it('walletSeed', () => {
@@ -88,7 +92,9 @@ describe('wallet.module', () => {
         }
       }
 
-      expect(getters.walletSeed(state)).to.equal(secretSeed)
+      expect(getters[vuexTypes.walletSeed](state))
+        .to
+        .equal(secretSeed)
     })
 
     it('walletKeypair', () => {
@@ -99,7 +105,10 @@ describe('wallet.module', () => {
         }
       }
 
-      expect(getters.walletKeypair(state)).to.deep.equal(keypair)
+      expect(getters[vuexTypes.walletKeypair](state))
+        .to
+        .deep
+        .equal(keypair)
     })
 
     it('walletPublicKey', () => {
@@ -111,7 +120,9 @@ describe('wallet.module', () => {
         }
       }
 
-      expect(getters.walletPublicKey(state)).to.equal(publicKey)
+      expect(getters[vuexTypes.walletPublicKey](state))
+        .to
+        .equal(publicKey)
     })
   })
 })

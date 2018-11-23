@@ -20,27 +20,27 @@ export const state = {
 }
 
 export const mutations = {
-  SET_KYC_LATEST_REQUEST (state, request) {
+  [vuexTypes.SET_KYC_LATEST_REQUEST] (state, request) {
     state.request = request
   },
 
-  SET_KYC_APPROVED_DATA (state, data) {
+  [vuexTypes.SET_KYC_APPROVED_DATA] (state, data) {
     state.approvedData = data
   },
 
-  SET_KYC_LATEST_DATA (state, data) {
+  [vuexTypes.SET_KYC_LATEST_DATA] (state, data) {
     state.latestData = data
   }
 }
 
 export const actions = {
-  async LOAD_KYC ({ dispatch }) {
+  async [vuexTypes.LOAD_KYC] ({ dispatch }) {
     await dispatch(vuexTypes.LOAD_KYC_LATEST_REQUEST)
     await dispatch(vuexTypes.LOAD_KYC_DATA)
   },
 
-  async LOAD_KYC_LATEST_REQUEST ({ rootGetters, commit }) {
-    const requestor = rootGetters.accountId
+  async [vuexTypes.LOAD_KYC_LATEST_REQUEST] ({ rootGetters, commit }) {
+    const requestor = rootGetters[vuexTypes.accountId]
 
     // kinda optimization cause we are interested only in the latest
     // update_kyc request
@@ -65,7 +65,7 @@ export const actions = {
     )
   },
 
-  async LOAD_KYC_DATA ({ state, getters, rootGetters, commit }) {
+  async [vuexTypes.LOAD_KYC_DATA] ({ state, rootGetters, commit }) {
     const latestBlobId = state.request.blobId
     if (!latestBlobId) {
       return
@@ -77,7 +77,7 @@ export const actions = {
 
     // we know for sure that blob id is being stored in account can be
     // considered as approved
-    const approvedBlobId = rootGetters.accountKycBlobId
+    const approvedBlobId = rootGetters[vuexTypes.accountKycBlobId]
 
     if (approvedBlobId === latestBlobId) {
       commit(vuexTypes.SET_KYC_APPROVED_DATA, latestData)
@@ -89,10 +89,10 @@ export const actions = {
 }
 
 export const getters = {
-  kycState: state => state.request.state,
-  kycStateI: state => state.request.stateI,
-  kycLatestData: state => JSON.parse(state.latestData),
-  kycApprovedData: state => JSON.parse(state.approvedData)
+  [vuexTypes.kycState]: state => state.request.state,
+  [vuexTypes.kycStateI]: state => state.request.stateI,
+  [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
+  [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData)
 }
 
 export default {

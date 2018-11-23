@@ -6,23 +6,23 @@ export const state = {
 }
 
 export const mutations = {
-  SET_WALLET (state, wallet) {
+  [vuexTypes.SET_WALLET] (state, wallet) {
     state.wallet = wallet
   }
 }
 
 export const actions = {
-  async LOAD_WALLET ({ commit }, { email, password }) {
+  async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
     commit(vuexTypes.SET_WALLET, await Sdk.api.wallets.get(email, password))
   }
 }
 
 export const getters = {
-  walletId: state => state.wallet.id,
-  walletEmail: state => state.wallet.email,
-  walletSeed: state => state.wallet.secretSeed,
-  walletKeypair: state => state.wallet.keypair,
-  walletPublicKey: state => state.wallet.keypair
+  [vuexTypes.walletId]: state => state.wallet.id,
+  [vuexTypes.walletEmail]: state => state.wallet.email,
+  [vuexTypes.walletSeed]: state => state.wallet.secretSeed,
+  [vuexTypes.walletKeypair]: state => state.wallet.keypair,
+  [vuexTypes.walletPublicKey]: state => state.wallet.keypair
     ? state.wallet.keypair.accountId()
     : ''
 }
