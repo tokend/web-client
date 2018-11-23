@@ -23,9 +23,9 @@ textarea {
   background: $col-app-background;
   color: $col-primary;
   font-family: 'Circular', 'Noto Sans', '-apple-system', 'BlinkMacSystemFont', sans-serif !important;
-  font-size: 10px;
+  font-size: 1.0 * $point;
   font-weight: 400;
-  letter-spacing: 0.005em;
+  letter-spacing: 0.005 * $point;
 }
 
 input,
