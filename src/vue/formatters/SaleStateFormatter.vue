@@ -7,7 +7,7 @@
       </template>
       <template v-else>
         {{ 'sale-state.starts-in' | globalize }}
-        {{ sale.startsIn }}
+        {{ sale.startsIn | formatDate }}
         {{ 'sale-state.days' | globalize }}
       </template>
     </template>

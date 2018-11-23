@@ -34,7 +34,7 @@
   "translations": {
     "formats": {
       "money": "{{value, money}}",
-      "date":  "{{value, date}}",
+      "calendar":  "{{value, calendar}}",
       "number": "{{value, number}}",
       "order_number":  "{{value, order_number}}",
       "integer": "{{value, integer}}"

@@ -10,14 +10,15 @@ const translation = {
   withFormattedNumber: 'Congrats, it is your {{count, number}} visit!',
   withFormattedCurrency: 'Your balance is {{amount, money}}',
   withFormattedOrderNumber: 'You are in the {{place, order_number}} place',
-  withFormattedDateFuture: 'The offer ends {{when, date}}',
-  withFormattedDatePast: 'The offer ended {{when, date}}',
+  withFormattedDateFuture: 'The offer ends {{when, calendar}}',
+  withFormattedDatePast: 'The offer ended {{when, calendar}}',
   withFormattedInteger: 'John bought {{amount, integer}} apples'
 }
 
 describe('the i18n is properly configured', () => {
   beforeEach(() => {
     const options = _cloneDeep(i18nOptions)
+    options.lng = 'en'
     options.resources.en.translation = translation
     options.debug = false // Set to true, if something is not working
     i18next.init(options)

@@ -22,7 +22,7 @@ export const i18nOptions = {
   interpolation: {
     format: (param, format) => {
       switch (format.toLowerCase()) {
-        case 'date':
+        case 'calendar':
           return moment(param).calendar(null, {
             sameDay: i18n.config.date.formats.same_day,
             lastDay: i18n.config.date.formats.last_day,
