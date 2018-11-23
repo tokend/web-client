@@ -23,24 +23,32 @@
 </template>
 
 <script>
+import { globalize } from '@/vue/filters/globalize'
+
 export default {
   props: {
     message: {
       type: String,
       default () {
-        return '' // translate('form_confirmation_default_message')
+        return globalize('form-confirmation.message-text', {
+          context: 'default'
+        })
       }
     },
     okButtonText: {
       type: String,
       default () {
-        return '' // translate('form_confirmation_default_ok_btn')
+        return globalize('form-confirmation.button-text', {
+          context: 'ok'
+        })
       }
     },
     cancelButtonText: {
       type: String,
       default () {
-        return '' // translate('form_confirmation_default_cancel_btn')
+        return globalize('form-confirmation.button-text', {
+          context: 'cancel'
+        })
       }
     },
     isPending: {

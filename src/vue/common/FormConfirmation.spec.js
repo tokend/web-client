@@ -1,7 +1,13 @@
 import FormConfirmation from './FormConfirmation'
 import { mount } from '@vue/test-utils'
+import i18next from 'i18next'
+import { i18nOptions } from '@/i18n'
 
 describe('FormConfirmation component test', () => {
+  beforeEach(() => {
+    i18next.init(i18nOptions)
+  })
+
   it('template properly renders the data provided through props', () => {
     const message = 'Please ensure everything is OK!'
     const okButtonText = 'I\'m okay, let\'s go!'
@@ -14,6 +20,28 @@ describe('FormConfirmation component test', () => {
         cancelButtonText
       }
     })
+
+    const renderedMessage = wrapper
+      .find('.form-confirmation__msg')
+      .text()
+    const renderedOkButtonText = wrapper
+      .find('.form-confirmation__ok-btn')
+      .text()
+    const renderedCancelButtonText = wrapper
+      .find('.form-confirmation__cancel-btn')
+      .text()
+
+    expect(renderedMessage).to.equal(message)
+    expect(renderedOkButtonText).to.equal(okButtonText)
+    expect(renderedCancelButtonText).to.equal(cancelButtonText)
+  })
+
+  it('properly renders the default data if no props provided', () => {
+    const message = 'Please recheck the form before confirmation'
+    const okButtonText = 'Confirm'
+    const cancelButtonText = 'Cancel'
+
+    const wrapper = mount(FormConfirmation)
 
     const renderedMessage = wrapper
       .find('.form-confirmation__msg')

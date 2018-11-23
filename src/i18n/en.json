@@ -48,6 +48,12 @@
       "canceled": "canceled",
       "ends": "ends",
       "days-left": "days left"
+    },
+
+    "form-confirmation": {
+      "message-text_default": "Please recheck the form before confirmation",
+      "button-text_ok": "Confirm",
+      "button-text_cancel": "Cancel"
     }
   }
 }
