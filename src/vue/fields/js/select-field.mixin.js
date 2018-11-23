@@ -33,7 +33,6 @@ export default {
       if (value) {
         document.addEventListener('click', this.onDocumentClick)
       }
-      // closeElement('select__list', value, this.closeList)
     }
   },
 
