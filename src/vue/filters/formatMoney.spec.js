@@ -5,18 +5,37 @@ import i18next from 'i18next'
 describe('formatMoney filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
+    sinon.restore()
   })
 
   it('formats the money amount', () => {
-    expect(formatMoney('1000.21000'))
-      .to
-      .equal('1,000.21')
+    const spy = sinon.spy(i18next, 't')
+
+    formatMoney('1000.21000')
+
+    expect(
+      spy
+        .withArgs('formats.money', { value: '1000.21000' })
+        .calledOnce
+    ).to.equal(true)
   })
 
   it('formats the money amount with preset currency', () => {
-    expect(formatMoney({
+    const spy = sinon.spy(i18next, 't')
+    formatMoney({
       value: '5012.200',
       currency: 'USD'
-    })).to.equal('$5,012.2')
+    })
+
+    expect(
+      spy
+        .withArgs('formats.money', {
+          value: {
+            value: '5012.200',
+            currency: 'USD'
+          }
+        })
+        .calledOnce
+    ).to.equal(true)
   })
 })

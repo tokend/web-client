@@ -5,11 +5,17 @@ import i18next from 'i18next'
 describe('formatInteger filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
+    sinon.restore()
   })
 
   it('formats the integer', () => {
-    expect(formatInteger('2321.12312'))
-      .to
-      .equal('2,321')
+    const spy = sinon.spy(i18next, 't')
+    formatInteger('2321.12312')
+
+    expect(spy
+      .withArgs('formats.integer', { value: '2321.12312' })
+      .calledOnce
+    )
+      .to.equal(true)
   })
 })

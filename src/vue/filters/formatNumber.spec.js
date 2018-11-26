@@ -5,11 +5,20 @@ import i18next from 'i18next'
 describe('formatNumber filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
+    sinon.restore()
   })
 
   it('formats the number', () => {
-    expect(formatNumber('2000.50500'))
-      .to
-      .equal('2,000.505')
+    const spy = sinon.spy(i18next, 't')
+
+    formatNumber('2000.50500')
+
+    expect(
+      spy
+        .withArgs('formats.number', {
+          value: '2000.50500'
+        })
+        .calledOnce
+    ).to.equal(true)
   })
 })
