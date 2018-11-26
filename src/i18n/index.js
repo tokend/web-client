@@ -30,6 +30,8 @@ export const i18nOptions = {
   interpolation: {
     format: (param, format) => {
       switch (format.toLowerCase()) {
+        case 'date':
+          return moment(param).format(i18n.config.date.presets.datetime)
         case 'calendar':
           return moment(param).calendar(null, {
             sameDay: i18n.config.date.formats.same_day,

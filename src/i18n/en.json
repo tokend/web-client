@@ -17,16 +17,16 @@
 
     "date": {
       "presets": {
-        "time": "h:mm",
+        "time": "H:mm",
         "date": "MMMM D, YYYY",
-        "datetime": "MMMM D, YYYY [at] h:mm"
+        "datetime": "MMMM D, YYYY [at] H:mm"
       },
       "formats": {
-        "same_day": "[today at] HH:mm",
-        "last_day": "[yesterday at] HH:mm",
-        "next_day": "[tomorrow at] HH:mm",
-        "last_week": "[last] dddd [at] HH:mm",
-        "next_week": "[next] dddd [at] HH:mm"
+        "same_day": "[today at] H:mm",
+        "last_day": "[yesterday at] H:mm",
+        "next_day": "[tomorrow at] H:mm",
+        "last_week": "[last] dddd [at] H:mm",
+        "next_week": "[next] dddd [at] H:mm"
       }
     }
   },
@@ -34,6 +34,7 @@
   "translations": {
     "formats": {
       "money": "{{value, money}}",
+      "date":  "{{value, date}}",
       "calendar":  "{{value, calendar}}",
       "number": "{{value, number}}",
       "order_number":  "{{value, order_number}}",

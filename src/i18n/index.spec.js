@@ -20,16 +20,16 @@ const mockEn = {
 
     'date': {
       'presets': {
-        'time': 'h:mm',
+        'time': 'H:mm',
         'date': 'MMMM D, YYYY',
-        'datetime': 'MMMM D, YYYY [at] h:mm'
+        'datetime': 'MMMM D, YYYY [at] H:mm'
       },
       'formats': {
-        'same_day': '[today at] HH:mm',
-        'last_day': '[yesterday at] HH:mm',
-        'next_day': '[tomorrow at] HH:mm',
-        'last_week': '[last] dddd [at] HH:mm',
-        'next_week': '[next] dddd [at] HH:mm'
+        'same_day': '[today at] H:mm',
+        'last_day': '[yesterday at] H:mm',
+        'next_day': '[tomorrow at] H:mm',
+        'last_week': '[last] dddd [at] H:mm',
+        'next_week': '[next] dddd [at] H:mm'
       }
     }
   },
@@ -40,8 +40,8 @@ const mockEn = {
     'withFormattedNumber': 'Congrats, it is your {{count, number}} visit!',
     'withFormattedCurrency': 'Your balance is {{amount, money}}',
     'withFormattedOrderNumber': 'You are in the {{place, order_number}} place',
-    'withFormattedDateFuture': 'The offer ends {{when, calendar}}',
-    'withFormattedDatePast': 'The offer ended {{when, calendar}}',
+    'withFormattedCalendar': 'The offer end date is {{when, calendar}}',
+    'withFormattedDate': 'The offer end date is {{when, calendar}}',
     'withFormattedInteger': 'John bought {{amount, integer}} apples'
   }
 }
@@ -219,7 +219,7 @@ describe('the i18n is properly configured', () => {
     })
   })
 
-  describe('formats dates', () => {
+  describe('formats calendars', () => {
     beforeEach(() => {
       sinon.restore()
       sinon.useFakeTimers({
@@ -227,34 +227,43 @@ describe('the i18n is properly configured', () => {
       })
     })
 
-    it('formats the today\'s date', () => {
-      const when = '2018-11-23T10:23:45Z'
-      const result = i18next.t('withFormattedDateFuture', { when })
-      expect(result).to.equal('The offer ends today at 10:23')
+    const dates = {
+      '2018-11-23T17:40:30Z': 'today at 17:40',
+      '2018-11-29T09:55:12Z': 'next Thursday at 9:55',
+      '2018-11-24T11:11:40Z': 'tomorrow at 11:11',
+      '2018-11-22T23:53:55Z': 'yesterday at 23:53',
+      '2018-11-17T12:22:10Z': 'last Saturday at 12:22'
+    }
+
+    for (const [given, expected] of Object.entries(dates)) {
+      it(expected, () => {
+        const result = i18next.t('withFormattedCalendar', { when: given })
+        expect(result).to.equal(`The offer end date is ${expected}`)
+      })
+    }
+  })
+
+  describe('formats date', () => {
+    beforeEach(() => {
+      sinon.restore()
+      sinon.useFakeTimers({
+        now: 1542968022000 // 23 Nov 2018
+      })
     })
 
-    it('formats the next week date', () => {
-      const when = '2018-11-29T10:23:45Z'
-      const result = i18next.t('withFormattedDateFuture', { when })
-      expect(result).to.equal('The offer ends next Thursday at 10:23')
-    })
+    const dates = {
+      '2016-05-11T10:56:10Z': 'May 11, 2016 at 10:56',
+      '1990-10-29T21:44:02Z': 'October 29, 1990 at 21:44',
+      '2010-09-14T20:40:40Z': 'September 14, 2010 at 20:40',
+      '2022-01-20T12:55:22Z': 'January 20, 2022 at 12:55',
+      '2040-02-10T10:12:59Z': 'February 10, 2040 at 10:12'
+    }
 
-    it('formats the tomorrow\'s date', () => {
-      const when = '2018-11-24T10:23:45Z'
-      const result = i18next.t('withFormattedDateFuture', { when })
-      expect(result).to.equal('The offer ends tomorrow at 10:23')
-    })
-
-    it('formats the yesterday\'s date', () => {
-      const when = '2018-11-22T10:23:45Z'
-      const result = i18next.t('withFormattedDatePast', { when })
-      expect(result).to.equal('The offer ended yesterday at 10:23')
-    })
-
-    it('formats the last week date', () => {
-      const when = '2018-11-17T10:23:45Z'
-      const result = i18next.t('withFormattedDatePast', { when })
-      expect(result).to.equal('The offer ended last Saturday at 10:23')
-    })
+    for (const [given, expected] of Object.entries(dates)) {
+      it(expected, () => {
+        const result = i18next.t('withFormattedDate', { when: given })
+        expect(result).to.equal(`The offer end date is ${expected}`)
+      })
+    }
   })
 })

@@ -34,6 +34,7 @@ import { i18nOptions } from '@/i18n'
 
 // filters
 import { formatDate } from '@/vue/filters/formatDate'
+import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
@@ -67,6 +68,7 @@ Vue.filter('globalize', globalize)
 Vue.filter('formatDate', formatDate)
 Vue.filter('formatMoney', formatMoney)
 Vue.filter('formatNumber', formatNumber)
+Vue.filter('formatCalendar', formatCalendar)
 Vue.filter('formatOrderNumber', formatOrderNumber)
 Vue.filter('formatInteger', formatInteger)
 Vue.filter('localizeFeeType', localizeFeeType)
