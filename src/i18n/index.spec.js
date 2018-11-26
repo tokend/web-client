@@ -1,25 +1,61 @@
-import i18next from 'i18next'
-import { i18nOptions } from '@/i18n/index'
-
 import _cloneDeep from 'lodash/cloneDeep'
+import i18next from 'i18next'
 
-// HERE we can overwrite the translations for easier unit-testing
-const translation = {
-  simple: 'simple string',
-  interpolated: 'The text with some {{stuff}}',
-  withFormattedNumber: 'Congrats, it is your {{count, number}} visit!',
-  withFormattedCurrency: 'Your balance is {{amount, money}}',
-  withFormattedOrderNumber: 'You are in the {{place, order_number}} place',
-  withFormattedDateFuture: 'The offer ends {{when, calendar}}',
-  withFormattedDatePast: 'The offer ended {{when, calendar}}',
-  withFormattedInteger: 'John bought {{amount, integer}} apples'
+const mockEn = {
+  'config': {
+    'number': {
+      'formats': {
+        'amounts': {
+          'usd': '$0,0.[00]',
+          'eur': '0,0.[00]€',
+          'gbp': '0,0.[00]£',
+          'default': '0,0.[000000]'
+        },
+        'default': '0,0.[000000]',
+        'integer': '0,0',
+        'percent': '0.[00]%',
+        'order_number': '0o'
+      }
+    },
+
+    'date': {
+      'presets': {
+        'time': 'h:mm',
+        'date': 'MMMM D, YYYY',
+        'datetime': 'MMMM D, YYYY [at] h:mm'
+      },
+      'formats': {
+        'same_day': '[today at] HH:mm',
+        'last_day': '[yesterday at] HH:mm',
+        'next_day': '[tomorrow at] HH:mm',
+        'last_week': '[last] dddd [at] HH:mm',
+        'next_week': '[next] dddd [at] HH:mm'
+      }
+    }
+  },
+
+  'translations': {
+    'simple': 'simple string',
+    'interpolated': 'The text with some {{stuff}}',
+    'withFormattedNumber': 'Congrats, it is your {{count, number}} visit!',
+    'withFormattedCurrency': 'Your balance is {{amount, money}}',
+    'withFormattedOrderNumber': 'You are in the {{place, order_number}} place',
+    'withFormattedDateFuture': 'The offer ends {{when, calendar}}',
+    'withFormattedDatePast': 'The offer ended {{when, calendar}}',
+    'withFormattedInteger': 'John bought {{amount, integer}} apples'
+  }
 }
+
+/* eslint-disable-next-line import/no-webpack-loader-syntax */
+const webpackInjector = require('inject-loader!babel-loader!./index.js')
+const { i18nOptions } = webpackInjector({
+  './en': mockEn
+})
 
 describe('the i18n is properly configured', () => {
   beforeEach(() => {
     const options = _cloneDeep(i18nOptions)
     options.lng = 'en'
-    options.resources.en.translation = translation
     options.debug = false // Set to true, if something is not working
     i18next.init(options)
   })

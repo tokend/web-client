@@ -4,11 +4,19 @@ import numeral from 'numeral'
 import _isObject from 'lodash/isObject'
 
 const language = 'en'
-const i18n = require(`./${language}`)
+let i18n
+
+switch (language) {
+  case 'en':
+    i18n = require(`./en`)
+    break
+  default:
+    throw new Error('Locale not found')
+}
 
 export const i18nOptions = {
   lng: language,
-  debug: true,
+  debug: false,
   resources: {
     en: {
       translation: {
