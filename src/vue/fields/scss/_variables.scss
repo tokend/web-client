@@ -1,0 +1,69 @@
+@import '../../../scss/variables';
+
+$col-field-text: $col-primary;
+$col-field-text-unfocused: $col-primary-inactive;
+$col-field-icon: $col-primary;
+$col-dropdown-bg: $_white;
+
+$field-color-text: $col-field-text;
+$field-color-focused: $field-color-text;
+$field-color-unfocused: $col-field-text-unfocused;
+$field-color-error: $col-accent;
+$field-label-font-size: 1.2 * $point;
+$field-label-line-height: 1;
+$field-text-font-size: 1.6 * $point;
+$field-text-line-height: 1.25;
+$field-error-font-size: 1.2 * $point;
+$field-error-line-height: 1.25;
+$field-transition-duration: .2s;
+$field-error-margin-top: .4 * $point;
+$field-input-padding-top: 1.7 * $point;
+$field-input-padding-bottom: .6 * $point;
+$field-input-padding: $field-input-padding-top 0 $field-input-padding-bottom 0;
+$field-placeholer-color: $col-field-text-unfocused;
+$textarea-background-color: #fafafa;
+$col-select-field-hover: rgba($col-primary, .1);
+
+@mixin input-paddings {
+  font-size: $field-text-font-size;
+  line-height: $field-text-line-height;
+}
+
+@mixin text-font-sizes {
+  font-size: $field-text-font-size;
+  line-height: $field-text-line-height;
+}
+
+@mixin label-font-sizes {
+  font-size: $field-label-font-size;
+  line-height: $field-label-line-height;
+}
+
+@mixin material-border($color-focused, $color-unfocused, $focused-selector:'') {
+  border-bottom: .1 * $point solid $color-unfocused;
+  background: radial-gradient($color-focused, $color-focused) bottom -.1 * $point center no-repeat;
+  background-size: 0 .2 * $point;
+  -webkit-transition-property: background-size, border-color;
+  -moz-transition-property: background-size, border-color;
+  -ms-transition-property: background-size, border-color;
+  -o-transition-property: background-size, border-color;
+  transition-property: background-size, border-color;
+  transition-duration: $field-transition-duration;
+
+  @if $focused-selector != '' {
+    #{$focused-selector},
+    &:focus {
+      background-size: 100% .2 * $point;
+    }
+  } @else {
+    &:focus {
+      background-size: 100% .2 * $point;
+    }
+  }
+}
+
+@mixin readonly-material-border($color) {
+  border-bottom: .1 * $point dashed $color;
+  background: none !important;
+}
+
