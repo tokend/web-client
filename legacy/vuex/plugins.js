@@ -26,7 +26,11 @@ const sessionStoragePlugin = store => {
       auth: state.auth,
       account: state.account,
       user: state.user,
-      wallet: state.wallet
+      wallet: state.wallet,
+      'new-account': state['new-account'],
+      'new-factors': state['new-factors'],
+      'new-wallet': state['new-wallet'],
+      'new-kyc': state['new-kyc']
     }
 
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(forSave))

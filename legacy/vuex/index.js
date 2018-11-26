@@ -21,7 +21,13 @@ import requests from './modules/requests.module'
 import sales from './modules/sales.module'
 // import withdrawals from './modules/withdrawals.module'
 
+import newAccount from '@/vuex/account.module'
+import newFactors from '@/vuex/factors.module'
+import newWallet from '@/vuex/wallet.module'
+import newKyc from '@/vuex/kyc.module'
+
 Vue.use(Vuex)
+
 checkForSavedData()
 
 const store = new Vuex.Store({
@@ -39,8 +45,13 @@ const store = new Vuex.Store({
     pairs,
     offers,
     requests,
-    sales
-    // withdrawals
+    sales,
+    // FIXME Temporarily making new modules namespaced to avoid collisions
+    //       with the new ones
+    'new-account': { ...newAccount, namespaced: true },
+    'new-factors': { ...newFactors, namespaced: true },
+    'new-wallet': { ...newWallet, namespaced: true },
+    'new-kyc': { ...newKyc, namespaced: true }
   }
 })
 
@@ -55,5 +66,18 @@ function checkForSavedData () {
   }
   if (state.wallet && !isEmptyObject(state.wallet)) {
     wallet.state = state.wallet
+  }
+
+  if (state['new-account'] && !isEmptyObject(state['new-account'])) {
+    newAccount.state = state['new-account']
+  }
+  if (state['new-factors'] && !isEmptyObject(state['new-factors'])) {
+    newAccount.state = state['new-factors']
+  }
+  if (state['new-wallet'] && !isEmptyObject(state['new-wallet'])) {
+    newAccount.state = state['new-wallet']
+  }
+  if (state['new-kyc'] && !isEmptyObject(state['new-kyc'])) {
+    newAccount.state = state['new-kyc']
   }
 }
