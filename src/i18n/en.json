@@ -10,8 +10,8 @@
         },
         "default": "0,0.[000000]",
         "integer": "0,0",
-        "percent": "0.[00]%",
-        "order_number": "0o"
+        "percent": "0,0.[00]%",
+        "order_number": "0,0o"
       }
     },
 

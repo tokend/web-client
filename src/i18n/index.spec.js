@@ -13,8 +13,8 @@ const mockEn = {
         },
         'default': '0,0.[000000]',
         'integer': '0,0',
-        'percent': '0.[00]%',
-        'order_number': '0o'
+        'percent': '0,0.[00]%',
+        'order_number': '0,0o'
       }
     },
 
@@ -72,65 +72,150 @@ describe('the i18n is properly configured', () => {
   })
 
   describe('formats the number', () => {
-    it('formats the simple number', () => {
-      const result = i18next.t('withFormattedNumber', {
-        count: '1000'
-      })
-      expect(result).to.equal('Congrats, it is your 1,000 visit!')
+    describe('formats the simple number', () => {
+      const numbers = {
+        '1': '1',
+        '15.233': '15.233',
+        '105.23400': '105.234',
+        '509.22119821': '509.221198',
+        '152.123000': '152.123',
+        '1200': '1,200',
+        '1200.123123': '1,200.123123',
+        '10500': '10,500',
+        '21500.2300': '21,500.23',
+        '400000': '400,000'
+      }
+
+      for (const [given, expected] of Object.entries(numbers)) {
+        it(`given = ${given}`, () => {
+          const result = i18next.t('withFormattedNumber', { count: given })
+          expect(result).to.equal(`Congrats, it is your ${expected} visit!`)
+        })
+      }
     })
 
-    it('formats the custom currency', () => {
-      const result = i18next.t('withFormattedCurrency', {
-        amount: {
-          value: '1020',
-          currency: 'ETH'
-        }
-      })
-      expect(result).to.equal('Your balance is 1,020 ETH')
+    describe('formats the custom currency', () => {
+      const amounts = {
+        '1': '1 ETH',
+        '15.233': '15.233 ETH',
+        '105.23400': '105.234 ETH',
+        '509.22119821': '509.221198 ETH',
+        '152.123000': '152.123 ETH',
+        '1200': '1,200 ETH',
+        '1200.123123': '1,200.123123 ETH',
+        '10500': '10,500 ETH',
+        '21500.2300': '21,500.23 ETH',
+        '400000': '400,000 ETH'
+      }
+
+      for (const [given, expected] of Object.entries(amounts)) {
+        it(`given = ${given}`, () => {
+          const result = i18next.t('withFormattedCurrency', {
+            amount: {
+              value: given,
+              currency: 'ETH'
+            }
+          })
+          expect(result).to.equal(`Your balance is ${expected}`)
+        })
+      }
     })
 
-    it('formats the custom currency with floating point', () => {
-      const result = i18next.t('withFormattedCurrency', {
-        amount: {
-          value: '5000.560010',
-          currency: 'QTK'
-        }
-      })
-      expect(result).to.equal('Your balance is 5,000.56001 QTK')
+    describe('formats the preset currency', () => {
+      const amounts = {
+        '1': '$1',
+        '15.233': '$15.23',
+        '105.23400': '$105.23',
+        '509.22119821': '$509.22',
+        '152.123000': '$152.12',
+        '1200': '$1,200',
+        '1200.123123': '$1,200.12',
+        '10500': '$10,500',
+        '21500.2300': '$21,500.23',
+        '400000': '$400,000'
+      }
+
+      for (const [given, expected] of Object.entries(amounts)) {
+        it(`given = ${given}`, () => {
+          const result = i18next.t('withFormattedCurrency', {
+            amount: {
+              value: given,
+              currency: 'USD'
+            }
+          })
+          expect(result).to.equal(`Your balance is ${expected}`)
+        })
+      }
     })
 
-    it('formats the preset currency', () => {
-      const result = i18next.t('withFormattedCurrency', {
-        amount: {
-          value: '1002.500000',
-          currency: 'USD'
-        }
-      })
-      expect(result).to.equal('Your balance is $1,002.5')
+    describe('formats the currency without the provided code', () => {
+      const amounts = {
+        '1': '1',
+        '15.233': '15.233',
+        '105.23400': '105.234',
+        '509.22119821': '509.221198',
+        '152.123000': '152.123',
+        '1200': '1,200',
+        '1200.123123': '1,200.123123',
+        '10500': '10,500',
+        '21500.2300': '21,500.23',
+        '400000': '400,000'
+      }
+
+      for (const [given, expected] of Object.entries(amounts)) {
+        it(`given = ${given}`, () => {
+          const result = i18next.t('withFormattedCurrency', {
+            amount: given
+          })
+          expect(result).to.equal(`Your balance is ${expected}`)
+        })
+      }
     })
 
-    it('formats the currency without the provided code', () => {
-      const result = i18next.t('withFormattedCurrency', {
-        amount: '2010.500000'
-      })
+    describe('formats the order number', () => {
+      const numbers = {
+        '1': '1st',
+        '2': '2nd',
+        '3': '3rd',
+        '4': '4th',
+        '10': '10th',
+        '126': '126th',
+        '1210': '1,210th',
+        '100500': '100,500th'
+      }
 
-      expect(result).to.equal('Your balance is 2,010.5')
+      for (const [given, expected] of Object.entries(numbers)) {
+        it(`given = ${given}`, () => {
+          const result = i18next.t('withFormattedOrderNumber', {
+            place: given
+          })
+          expect(result).to.equal(`You are in the ${expected} place`)
+        })
+      }
     })
 
-    it('formats the order number', () => {
-      const result = i18next.t('withFormattedOrderNumber', {
-        place: 1
-      })
+    describe('formats the integer', () => {
+      const numbers = {
+        '1': '1',
+        '15.233': '15',
+        '105.23400': '105',
+        '509.22119821': '509',
+        '152.123000': '152',
+        '1200': '1,200',
+        '1200.123123': '1,200',
+        '10500': '10,500',
+        '21500.2300': '21,500',
+        '400000': '400,000'
+      }
 
-      expect(result).to.equal('You are in the 1st place')
-    })
-
-    it('formats the integer', () => {
-      const result = i18next.t('withFormattedInteger', {
-        amount: 5.00001
-      })
-
-      expect(result).to.equal('John bought 5 apples')
+      for (const [given, expected] of Object.entries(numbers)) {
+        it(`given = ${given}`, () => {
+          const result = i18next.t('withFormattedInteger', {
+            amount: given
+          })
+          expect(result).to.equal(`John bought ${expected} apples`)
+        })
+      }
     })
   })
 
