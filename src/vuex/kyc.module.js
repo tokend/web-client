@@ -15,8 +15,8 @@ import { Sdk } from '@/sdk'
 
 export const state = {
   request: {},
-  approvedData: '', // JSON string
-  latestData: '' // JSON string
+  approvedData: '{}', // JSON string
+  latestData: '{}' // JSON string
 }
 
 export const mutations = {

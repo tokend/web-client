@@ -9,6 +9,8 @@ import * as mutations from './mutations'
 import { state } from './state/index'
 import plugins from './plugins'
 
+import { sessionStoragePlugin } from '@/vuex/plugins/session-storage'
+
 // modules:
 import account from './modules/account.module'
 import tokens from './modules/tokens.module'
@@ -34,7 +36,7 @@ const store = new Vuex.Store({
   actions,
   getters,
   mutations,
-  plugins,
+  plugins: [...plugins, sessionStoragePlugin],
   state,
   modules: {
     account,
@@ -47,7 +49,7 @@ const store = new Vuex.Store({
     requests,
     sales,
     // FIXME Temporarily making new modules namespaced to avoid collisions
-    //       with the new ones
+    //       with the old ones
     'new-account': { ...newAccount, namespaced: true },
     'new-factors': { ...newFactors, namespaced: true },
     'new-wallet': { ...newWallet, namespaced: true },
@@ -66,18 +68,5 @@ function checkForSavedData () {
   }
   if (state.wallet && !isEmptyObject(state.wallet)) {
     wallet.state = state.wallet
-  }
-
-  if (state['new-account'] && !isEmptyObject(state['new-account'])) {
-    newAccount.state = state['new-account']
-  }
-  if (state['new-factors'] && !isEmptyObject(state['new-factors'])) {
-    newAccount.state = state['new-factors']
-  }
-  if (state['new-wallet'] && !isEmptyObject(state['new-wallet'])) {
-    newAccount.state = state['new-wallet']
-  }
-  if (state['new-kyc'] && !isEmptyObject(state['new-kyc'])) {
-    newAccount.state = state['new-kyc']
   }
 }
