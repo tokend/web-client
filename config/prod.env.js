@@ -1,6 +1,6 @@
-const merge = require('webpack-merge')
-const env = require('./default.env')
-
-module.exports = merge(env, {
-  NODE_ENV: '"prod"'
-})
+module.exports = {
+  NODE_ENV: '"default"',
+  HORIZON_SERVER: '"https://testnet.tokend.org/_/api"',
+  FILE_STORAGE: '"https://storage.testnet.tokend.org/api"',
+  NETWORK_PASSPHRASE: '"TokenD Testnet Network"'
+}

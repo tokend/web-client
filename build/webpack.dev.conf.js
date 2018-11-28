@@ -28,7 +28,7 @@ module.exports = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev-local.env')
+      'process.env': require('../config/local.env')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
