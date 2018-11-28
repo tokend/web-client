@@ -126,6 +126,7 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
+      this.$store.commit(vuexTypes.POP_STATE)
     },
     detectIE () {
       const edge = window.navigator.userAgent.indexOf('Edge/')

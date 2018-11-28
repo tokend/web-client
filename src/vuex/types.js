@@ -50,6 +50,7 @@ const getters = {
   accountKycBlobId: 'accountKycBlobId',
 
   // wallet
+  wallet: 'wallet',
   walletId: 'walletId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',

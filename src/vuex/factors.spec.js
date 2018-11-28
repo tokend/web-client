@@ -22,7 +22,7 @@ describe('factors.module', () => {
         { id: '2', resourceType: 'totp' }
       ]
 
-      mutations.SET_FACTORS(state, factors)
+      mutations[vuexTypes.SET_FACTORS](state, factors)
 
       expect(state).to.deep.equal({ factors })
     })
@@ -49,9 +49,12 @@ describe('factors.module', () => {
         [vuexTypes.SET_FACTORS]: MockWrapper.makeApiResponse(factorsJSON).data
       }
 
-      await actions.LOAD_FACTORS(store)
+      await actions[vuexTypes.LOAD_FACTORS](store)
 
-      expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
+      expect(store.commit.args)
+        .to
+        .deep
+        .equal(Object.entries(expectedMutations))
     })
   })
 
@@ -60,7 +63,10 @@ describe('factors.module', () => {
       const factors = ['a', 'b', 'c']
       const state = { factors }
 
-      expect(getters.factors(state)).to.deep.equal(factors)
+      expect(getters[vuexTypes.factors](state))
+        .to
+        .deep
+        .equal(factors)
     })
 
     it('factorsTotp', () => {
@@ -74,7 +80,10 @@ describe('factors.module', () => {
         { 'resourceType': 'totp', 'id': 991, 'priority': 1 }
       ]
 
-      expect(getters.factorsTotp(state)).to.deep.equal(expectedResult)
+      expect(getters[vuexTypes.factorsTotp](state))
+        .to
+        .deep
+        .equal(expectedResult)
     })
 
     it('factorsPassword', () => {
@@ -88,7 +97,10 @@ describe('factors.module', () => {
         { 'resourceType': 'password', 'id': 652, 'priority': 1 }
       ]
 
-      expect(getters.factorsPassword(state)).to.deep.equal(expectedResult)
+      expect(getters[vuexTypes.factorsPassword](state))
+        .to
+        .deep
+        .equal(expectedResult)
     })
 
     it('factorsEmail', () => {
@@ -103,7 +115,10 @@ describe('factors.module', () => {
         { 'resourceType': 'email', 'id': 785, 'priority': 1 }
       ]
 
-      expect(getters.factorsEmail(state)).to.deep.equal(expectedResult)
+      expect(getters[vuexTypes.factorsEmail](state))
+        .to
+        .deep
+        .equal(expectedResult)
     })
 
     it('factorsTotpEnabled', () => {
@@ -119,13 +134,13 @@ describe('factors.module', () => {
       }
 
       let _getters = { factorsTotp: [factorTotpEnabled] }
-      expect(getters.factorsTotpEnabled({}, _getters))
+      expect(getters[vuexTypes.factorsTotpEnabled]({}, _getters))
         .to
         .deep
         .equal([factorTotpEnabled])
 
       _getters = { factorsTotp: [factorTotpDisabled] }
-      expect(getters.factorsTotpEnabled({}, _getters))
+      expect(getters[vuexTypes.factorsTotpEnabled]({}, _getters))
         .to
         .deep
         .equal([])
@@ -139,12 +154,16 @@ describe('factors.module', () => {
           { 'resourceType': 'totp', 'id': 991, 'priority': 1 }
         ]
       }
-      expect(getters.isTotpEnabled({}, _getters)).to.equal(true)
+      expect(getters[vuexTypes.isTotpEnabled]({}, _getters))
+        .to
+        .equal(true)
 
       _getters = {
         factorsTotpEnabled: []
       }
-      expect(getters.isTotpEnabled({}, _getters)).to.equal(false)
+      expect(getters[vuexTypes.isTotpEnabled]({}, _getters))
+        .to
+        .equal(false)
     })
   })
 })

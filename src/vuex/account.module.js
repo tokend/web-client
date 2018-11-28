@@ -9,22 +9,22 @@ export const state = {
 }
 
 export const mutations = {
-  SET_ACCOUNT (state, account) {
+  [vuexTypes.SET_ACCOUNT] (state, account) {
     state.account = account
   },
 
-  SET_ACCOUNT_BALANCES_DETAILS (state, balancesDetails) {
+  [vuexTypes.SET_ACCOUNT_BALANCES_DETAILS] (state, balancesDetails) {
     state.balancesDetails = balancesDetails
   }
 }
 
 export const actions = {
-  async LOAD_ACCOUNT ({ commit }, accountId) {
+  async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
     const response = await Sdk.horizon.account.get(accountId)
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },
 
-  async LOAD_ACCOUNT_BALANCES_DETAILS ({ commit, getters }) {
+  async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
     const accountId = getters[vuexTypes.accountId]
     const response = await Sdk.horizon.account.getDetails(accountId)
 
@@ -33,27 +33,31 @@ export const actions = {
 }
 
 export const getters = {
-  account: state => state.account,
-  accountId: state => state.account.id,
-  accountIsBlocked: state => state.account.isBlocked,
-  accountBlockReasons: state => state.account.blockReasons,
-  accountType: state => state.account.accountType,
-  accountTypeI: state => state.account.accountTypeI,
-  accountThresholds: state => state.account.thresholds,
-  accountReferrer: state => state.account.referrer,
-  accountReferrals: state => state.account.referrals,
-  accountPoliciesTypeI: state => _get(
+  [vuexTypes.account]: state => state.account,
+  [vuexTypes.accountId]: state => state.account.id,
+  [vuexTypes.accountIsBlocked]: state => state.account.isBlocked,
+  [vuexTypes.accountBlockReasons]: state => state.account.blockReasons,
+  [vuexTypes.accountType]: state => state.account.accountType,
+  [vuexTypes.accountTypeI]: state => state.account.accountTypeI,
+  [vuexTypes.accountThresholds]: state => state.account.thresholds,
+  [vuexTypes.accountReferrer]: state => state.account.referrer,
+  [vuexTypes.accountReferrals]: state => state.account.referrals,
+  [vuexTypes.accountPoliciesTypeI]: state => _get(
     state.account, 'policies.accountPoliciesTypeI'
   ),
-  accountPoliciesTypes: state => _get(
+  [vuexTypes.accountPoliciesTypes]: state => _get(
     state.account, 'policies.accountPoliciesTypes', []
   ), // accountPoliciesTypes can be null if not present, so here we
   // overwrite it for easier interface
   // accountBalances: [], // TODO
-  accountDepositAddresses: state => AccountHelper.groupExternalSystemAccounts(
-    state.account.externalSystemAccounts
-  ),
-  accountKycBlobId: state => _get(state.account, 'accountKyc.kycData.blobId')
+  [vuexTypes.accountDepositAddresses]: state =>
+    AccountHelper.groupExternalSystemAccounts(
+      state.account.externalSystemAccounts
+    ),
+  [vuexTypes.accountKycBlobId]: state => _get(
+    state.account,
+    'accountKyc.kycData.blobId'
+  )
 }
 
 export default {

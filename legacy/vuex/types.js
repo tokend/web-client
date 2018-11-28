@@ -2,6 +2,7 @@ const mutations = {
   // root:
   SET_LOGGED_OUT_STATE: 'SET_LOGGED_OUT_STATE',
   KEEP_SESSION: 'KEEP_SESSION',
+  POP_STATE: 'POP_STATE',
 
   // wallet:
   SET_WALLET_ID: 'SET_WALLET_ID',

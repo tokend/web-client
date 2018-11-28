@@ -9,6 +9,8 @@ import * as mutations from './mutations'
 import { state } from './state/index'
 import plugins from './plugins'
 
+import { sessionStoragePlugin } from '@/vuex/plugins/session-storage'
+
 // modules:
 import account from './modules/account.module'
 import tokens from './modules/tokens.module'
@@ -21,14 +23,20 @@ import requests from './modules/requests.module'
 import sales from './modules/sales.module'
 // import withdrawals from './modules/withdrawals.module'
 
+import newAccount from '@/vuex/account.module'
+import newFactors from '@/vuex/factors.module'
+import newWallet from '@/vuex/wallet.module'
+import newKyc from '@/vuex/kyc.module'
+
 Vue.use(Vuex)
+
 checkForSavedData()
 
 const store = new Vuex.Store({
   actions,
   getters,
   mutations,
-  plugins,
+  plugins: [...plugins, sessionStoragePlugin],
   state,
   modules: {
     account,
@@ -39,8 +47,13 @@ const store = new Vuex.Store({
     pairs,
     offers,
     requests,
-    sales
-    // withdrawals
+    sales,
+    // FIXME Temporarily making new modules namespaced to avoid collisions
+    //       with the old ones
+    'new-account': { ...newAccount, namespaced: true },
+    'new-factors': { ...newFactors, namespaced: true },
+    'new-wallet': { ...newWallet, namespaced: true },
+    'new-kyc': { ...newKyc, namespaced: true }
   }
 })
 

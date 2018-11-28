@@ -46,7 +46,11 @@ describe('factors.module end-to-end test', () => {
         responseDefaultRaw
       )
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.factors).to.deep.equal(responseDefaultParsed)
+
+      expect(store.getters[vuexTypes.factors])
+        .to
+        .deep
+        .equal(responseDefaultParsed)
     })
 
     it('factorsTotp', async () => {
@@ -55,9 +59,11 @@ describe('factors.module end-to-end test', () => {
         responseDefaultRaw
       )
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.factorsTotp).to.deep.equal(
-        responseDefaultParsed.slice(2, 3)
-      )
+
+      expect(store.getters[vuexTypes.factorsTotp])
+        .to
+        .deep
+        .equal(responseDefaultParsed.slice(2, 3))
     })
 
     it('factorsPassword', async () => {
@@ -66,7 +72,8 @@ describe('factors.module end-to-end test', () => {
         responseDefaultRaw
       )
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.factorsPassword)
+
+      expect(store.getters[vuexTypes.factorsPassword])
         .to
         .deep
         .equal(responseDefaultParsed.slice(1, 2))
@@ -78,7 +85,8 @@ describe('factors.module end-to-end test', () => {
         responseDefaultRaw
       )
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.factorsEmail)
+
+      expect(store.getters[vuexTypes.factorsEmail])
         .to
         .deep
         .equal(responseDefaultParsed.slice(0, 1))
@@ -93,9 +101,13 @@ describe('factors.module end-to-end test', () => {
         ]
       })
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.factorsTotpEnabled).to.deep.equal([
-        { resourceType: 'totp', id: 991, priority: 1 }
-      ])
+
+      expect(store.getters[vuexTypes.factorsTotpEnabled])
+        .to
+        .deep
+        .equal([
+          { resourceType: 'totp', id: 991, priority: 1 }
+        ])
     })
 
     it('factorsTotpEnabled when no enabled totp factor', async () => {
@@ -107,7 +119,11 @@ describe('factors.module end-to-end test', () => {
       })
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.factorsTotpEnabled).to.deep.equal([])
+
+      expect(store.getters[vuexTypes.factorsTotpEnabled])
+        .to
+        .deep
+        .equal([])
     })
 
     it('isTotpEnabled with enabled totp factor', async () => {
@@ -120,7 +136,10 @@ describe('factors.module end-to-end test', () => {
       })
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.isTotpEnabled).to.equal(true)
+
+      expect(store.getters[vuexTypes.isTotpEnabled])
+        .to
+        .equal(true)
     })
 
     it('isTotpEnabled whe no enabled totp factor', async () => {
@@ -132,7 +151,10 @@ describe('factors.module end-to-end test', () => {
       })
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
-      expect(store.getters.isTotpEnabled).to.equal(false)
+
+      expect(store.getters[vuexTypes.isTotpEnabled])
+        .to
+        .equal(false)
     })
   })
 })
