@@ -8,6 +8,16 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: '#cheap-module-eval-source-map',
+  devServer: {
+    port: 8095,
+    hot: true,
+    host: 'localhost',
+    overlay: true,
+    open: true,
+    stats: "errors-only",
+    historyApiFallback: true,
+    progress: true
+  },
   module: {
     rules: [
       {
