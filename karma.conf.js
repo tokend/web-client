@@ -1,4 +1,4 @@
-const webpackConfig = require('./build/webpack.dev.conf')
+const webpackConfig = require('./webpack/webpack.dev.conf')
 
 module.exports = function (config) {
   // HACK: Chrome relies on this variable, so by overwriting it we can ensure
