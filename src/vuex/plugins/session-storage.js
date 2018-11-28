@@ -11,36 +11,35 @@ const config = Object.freeze({
 
 export const sessionStoragePlugin = store => {
   store.subscribe((mutation, state) => {
-    if (config.DONT_SAVE_ON_MUTATIONS.includes(mutation.type)) {
-      return
-    }
-
-    if (config.CLEAR_ON_MUTATIONS.includes(mutation.type)) {
-      sessionStorage.removeItem(config.STORAGE_KEY)
-      return
-    }
-
-    if (config.RESTORE_ON_MUTATIONS.includes(mutation.type)) {
-      let savedStore = sessionStorage.getItem(config.STORAGE_KEY)
-
-      if (!savedStore) {
-        return
+    switch (mutation.type) {
+      case LVuexTypes.KEEP_SESSION:
+        break
+      case LVuexTypes.SET_LOGGED_OUT_STATE: {
+        sessionStorage.removeItem(config.STORAGE_KEY)
+        break
       }
+      case LVuexTypes.POP_STATE: {
+        let savedStore = sessionStorage.getItem(config.STORAGE_KEY)
 
-      savedStore = JSON.parse(savedStore)
+        if (!savedStore) {
+          break
+        }
 
-      store.replaceState({
-        ...state,
-        'new-account': savedStore['new-account'],
-        'new-wallet': savedStore['new-wallet']
-      })
+        savedStore = JSON.parse(savedStore)
 
-      return
+        store.replaceState({
+          ...state,
+          'new-account': savedStore['new-account'],
+          'new-wallet': savedStore['new-wallet']
+        })
+
+        break
+      }
+      default:
+        sessionStorage.setItem(config.STORAGE_KEY, JSON.stringify({
+          'new-account': state['new-account'],
+          'new-wallet': state['new-wallet']
+        }))
     }
-
-    sessionStorage.setItem(config.STORAGE_KEY, JSON.stringify({
-      'new-account': state['new-account'],
-      'new-wallet': state['new-wallet']
-    }))
   })
 }
