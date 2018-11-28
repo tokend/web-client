@@ -11,12 +11,9 @@
     }
   },
   "scripts": {
-    "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --config ./webpack/local.conf.js",
     "start": "yarn dev",
-    "build": "node build/build.js",
-    "build.prod": "node build/build.js prod",
-    "build.staging": "node build/build.js staging",
-    "build.dev": "node build/build.js dev",
+    "build": "node webpack/build.js",
     "test": "karma start",
     "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0"
   },

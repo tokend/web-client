@@ -1,7 +1,7 @@
 'use strict'
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
+const baseWebpackConfig = require('./base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
@@ -14,7 +14,7 @@ module.exports = merge(baseWebpackConfig, {
     host: 'localhost',
     overlay: true,
     open: true,
-    stats: "errors-only",
+    stats: 'errors-only',
     historyApiFallback: true,
     progress: true
   },
@@ -28,7 +28,7 @@ module.exports = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/local.env')
+      'process.env': require('../envs/local')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

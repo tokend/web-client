@@ -4,7 +4,7 @@ pipeline:
     secrets: [ dockerhub_user, dockerhub_pwd, rsa_key ]
     commands:
       - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PWD
-      - docker build --build-arg RSA_KEY="$RSA_KEY" --build-arg BUILD_ENV=config/prod.env.js --pull -t tokend/web-client:${DRONE_COMMIT_SHA} .
+      - docker build --build-arg RSA_KEY="$RSA_KEY" --build-arg BUILD_ENV=envs/prod.js --pull -t tokend/web-client:${DRONE_COMMIT_SHA} .
       - docker push tokend/web-client:${DRONE_COMMIT_SHA}
       - docker tag tokend/web-client:${DRONE_COMMIT_SHA} tokend/web-client:latest
       - docker push tokend/web-client:latest
