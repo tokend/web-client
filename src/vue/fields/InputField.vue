@@ -68,7 +68,8 @@ export default {
   @include text-font-sizes;
 
   &:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 50px $col-field-background; // autofill hack
+    -webkit-box-shadow: inset 0 0 0 50px $field-color-background
+    // autofill hack
   }
 
   &--autofill-white:not([readonly]) {
