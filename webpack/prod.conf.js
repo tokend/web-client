@@ -26,7 +26,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       }
     ]
   },
-  devtool: true,
+  // The TokenD production is actually a demo without real users and assets, so
+  // we will leave the source maps to simplify the debugging process
+  devtool: '#cheap-module-eval-source-map',
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
