@@ -22,6 +22,8 @@ import 'vue-material/dist/vue-material.min.css'
 
 // validator:
 import VeeValidate from 'vee-validate'
+import Vuelidate from 'vuelidate'
+
 import { extendValidator } from '../legacy/validator/validator'
 
 // directives
@@ -59,6 +61,7 @@ Vue.use(VueResource)
 Vue.use(VeeValidate)
 Vue.use(VueMaterial)
 Vue.use(VueSimpleMDE)
+Vue.use(Vuelidate)
 
 VeeValidate.Validator = extendValidator(VeeValidate.Validator)
 
