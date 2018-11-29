@@ -41,6 +41,11 @@
       "integer": "{{value, integer}}"
     },
 
+    "auth": {
+      "small-title": "Create, distribute and trade",
+      "big-title": "Start tokenizing your assets in minutes"
+    },
+
     "sale-state": {
       "starts-in": "Starts in %{days} days",
       "starts": "Starts %{time}",

@@ -8,7 +8,8 @@ import { PAGES_NAMES } from 'L@/js/const/const'
 import { resolveRedirect } from './redirect'
 
 // route components:
-import Auth from 'L@/vue/auth/Auth'
+import Auth from '@/vue/pages/Auth'
+
 import Login from 'L@/vue/auth/Login'
 import Signup from 'L@/vue/auth/Signup'
 import Recovery from 'L@/vue/auth/Recovery'
