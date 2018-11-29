@@ -11,12 +11,9 @@
     }
   },
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "webpack-dev-server --config ./webpack/local.conf.js",
     "start": "yarn dev",
-    "build": "node build/build.js",
-    "build.prod": "node build/build.js prod",
-    "build.staging": "node build/build.js staging",
-    "build.dev": "node build/build.js dev",
+    "build": "node webpack/build.js",
     "test": "karma start",
     "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0"
   },
@@ -112,7 +109,9 @@
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.17.2",
     "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^3.2.0",
+    "webpack-dev-server": "^3.1.10",
     "webpack-hot-middleware": "^2.23.1",
     "webpack-merge": "^4.1.4",
     "xhr-mock": "^2.4.1"

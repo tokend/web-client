@@ -1,13 +1,23 @@
 'use strict'
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.base.conf')
+const baseWebpackConfig = require('./base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: '#cheap-module-eval-source-map',
+  devServer: {
+    port: 8095,
+    hot: true,
+    host: 'localhost',
+    overlay: true,
+    open: true,
+    stats: 'errors-only',
+    historyApiFallback: true,
+    progress: true
+  },
   module: {
     rules: [
       {
@@ -18,7 +28,7 @@ module.exports = merge(baseWebpackConfig, {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev-local.env')
+      'process.env': require('../envs/local')
     }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
