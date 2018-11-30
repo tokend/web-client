@@ -41,6 +41,22 @@
       "integer": "{{value, integer}}"
     },
 
+    "errors": {
+      "default": "Something bad happened. Please try again later",
+      "server":  "This service is temporary unavailable. Please try again later",
+      "internal":  "This service is temporary unavailable. Please try again later",
+      "not-found": "Such item not found",
+      "conflict": "Such item already exists",
+      "bad-request": "The request you sent is invalid in some way",
+      "not-allowed": "Your account don't have permissions to perform this request",
+      "unauthorized": "Access denied",
+      "forbidden": "Request forbidden",
+      "tfa-required":  "2FA required",
+      "verification-required": "Verification required",
+      "timeout": "Timeout exceeded. Please re-check your internet connection and try again",
+      "network": "Network error. Please re-check your internet connection and try again"
+    },
+
     "auth": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing your assets in minutes",
