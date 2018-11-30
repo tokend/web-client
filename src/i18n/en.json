@@ -43,7 +43,14 @@
 
     "auth": {
       "small-title": "Create, distribute and trade",
-      "big-title": "Start tokenizing your assets in minutes"
+      "big-title": "Start tokenizing your assets in minutes",
+      "email": "Email",
+      "password": "Password",
+      "sign-in": "Sign In",
+      "no-account-question": "Don't have an account?",
+      "no-account-answer": "Register now",
+      "forgot-pwd-question": "Forgot your password?",
+      "forgot-pwd-answer": "Recover it"
     },
 
     "sale-state": {

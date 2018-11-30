@@ -6,6 +6,7 @@
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
+      <router-view />
     </div>
   </div>
 </template>
