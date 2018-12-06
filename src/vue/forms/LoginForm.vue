@@ -40,9 +40,11 @@ import { globalize } from '@/vue/filters/globalize'
 import { required } from '@validators'
 
 import { vuexTypes } from '@/vuex'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
+import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { errors } from '@tokend/js-sdk'
 
 export default {
   name: 'login-form',
@@ -59,6 +61,11 @@ export default {
       password: { required }
     }
   },
+  computed: {
+    ...mapGetters('new-wallet', [
+      vuexTypes.wallet
+    ])
+  },
   methods: {
     ...mapActions('new-wallet', {
       loadWallet: vuexTypes.LOAD_WALLET
@@ -69,10 +76,38 @@ export default {
       this.disableForm()
       try {
         await this.loadWallet(this.form)
+        const accountId = this.wallet.accountId
+        if (!await this.isUserExist(accountId)) {
+          await Sdk.api.users.create(accountId)
+        }
+        await this._doLegacyStuff()
       } catch (e) {
         ErrorHandler.processUnexpected(e)
       }
       this.enableForm()
+    },
+    async isUserExist (accountId) {
+      try {
+        await Sdk.api.users.get(accountId)
+        return true
+      } catch (e) {
+        if (e instanceof errors.NotFoundError) {
+          return false
+        }
+        throw e
+      }
+    },
+    // TODO: we supporting old vuex for the legacy components. Remove once
+    // the legacy will be completely removed
+    async _doLegacyStuff () {
+      await this.$store.dispatch('PROCESS_USER_WALLET', this.form)
+      await Promise.all([
+        await this.$store.dispatch('GET_ACCOUNT_DETAILS'),
+        await this.$store.dispatch('GET_USER_DETAILS'),
+        await this.$store.dispatch('GET_ACCOUNT_BALANCES')
+      ])
+      this.$store.dispatch('LOG_IN')
+      this.$router.push({ name: 'app' })
     }
   }
 }
