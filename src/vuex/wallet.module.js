@@ -20,10 +20,12 @@ export const mutations = {
     // FIXME All the fields we're copying from wallet are getters here and are
     //  not being properly serialized. Can be resolved later after implementing
     //  custom toJSON in the sdk Wallet class
-    state.wallet.email = wallet.email
-    state.wallet.secretSeed = wallet.secretSeed
-    state.wallet.id = wallet.id
-    state.wallet.accountId = wallet.accountId
+    state.wallet = {
+      accountId: wallet.accountId,
+      secretSeed: wallet.secretSeed,
+      email: wallet.email,
+      id: wallet.id
+    }
   }
 }
 
