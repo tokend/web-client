@@ -98,7 +98,7 @@ export default {
         throw e
       }
     },
-    // TODO: we supporting old vuex for the legacy components. Remove once
+    // TODO: we support old vuex for the legacy components. Remove once
     // the legacy will be completely removed
     async _doLegacyStuff () {
       await this.$store.dispatch('PROCESS_USER_WALLET', this.form)
