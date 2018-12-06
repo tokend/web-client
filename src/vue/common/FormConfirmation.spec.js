@@ -1,24 +1,17 @@
 import FormConfirmation from './FormConfirmation'
-import { mount } from '@vue/test-utils'
-import i18next from 'i18next'
-import { i18nOptions } from '@/i18n'
 
-import _cloneDeep from 'lodash/cloneDeep'
+import { TestHelper } from '@/test/test-helper'
+import { mount } from '@vue/test-utils'
 
 describe('FormConfirmation component test', () => {
   beforeEach(() => {
-    const options = _cloneDeep(i18nOptions)
-    options.lng = 'en'
-    options.debug = false
-    options.translations = {
+    TestHelper.useTranslations({
       'form-confirmation': {
         'message-text_default': 'Please recheck the form before confirmation',
         'button-text_ok': 'Confirm',
         'button-text_cancel': 'Cancel'
       }
-    }
-
-    i18next.init(i18nOptions)
+    })
   })
 
   it('template properly renders the data provided through props', () => {
