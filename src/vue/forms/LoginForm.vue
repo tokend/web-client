@@ -4,7 +4,9 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
+          @blur="$v.form.email.$touch()"
           :label="globalize('auth.email')"
+          :error-message="errorMessage(`form.email`)"
         />
       </div>
     </div>
@@ -12,13 +14,19 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
+          @blur="$v.form.email.$touch()"
+          :error-message="errorMessage(`form.password`)"
           :label="globalize('auth.password')"
-          type="password"
+          :type="`password`"
         />
       </div>
     </div>
     <div class="app__form-actions">
-      <button class="login-form__submit-btn">
+      <button
+        type="submit"
+        class="login-form__submit-btn"
+        :disabled="formMixin.isDisabled"
+      >
         {{ 'auth.sign-in' | globalize }}
       </button>
     </div>
@@ -29,6 +37,12 @@
 import FormMixin from '../mixins/form.mixin'
 
 import { globalize } from '@/vue/filters/globalize'
+import { required } from '@validators'
+
+import { vuexTypes } from '@/vuex'
+import { mapActions } from 'vuex'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'login-form',
@@ -41,14 +55,24 @@ export default {
   }),
   validations: {
     form: {
-      email: {},
-      password: {}
+      email: { required },
+      password: { required }
     }
   },
   methods: {
+    ...mapActions('new-wallet', {
+      loadWallet: vuexTypes.LOAD_WALLET
+    }),
     globalize,
-    submit () {
-      // TODO
+    async submit () {
+      if (!this.isFormValid()) return
+      this.disableForm()
+      try {
+        await this.loadWallet(this.form)
+      } catch (e) {
+        ErrorHandler.processUnexpected(e)
+      }
+      this.enableForm()
     }
   }
 }
