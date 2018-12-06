@@ -41,6 +41,13 @@
       "integer": "{{value, integer}}"
     },
 
+    "status-message": {
+      "close-lbl_warning": "OK",
+      "close-lbl_success": "OK",
+      "close-lbl_error": "Close",
+      "close-lbl_info": "Got it"
+    },
+
     "errors": {
       "default": "Something bad happened. Please try again later",
       "server":  "This service is temporary unavailable. Please try again later",

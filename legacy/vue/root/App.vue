@@ -18,6 +18,7 @@
             <snackbar />
             <file-viewer />
             <loader-bar />
+            <status-message />
           </div>
         </div>
       </div>
@@ -30,14 +31,19 @@
       <router-view />
       <loader-bar />
       <snackbar />
+      <status-message />
     </template>
     <template v-else>
       <router-view />
+      <status-message />
     </template>
   </div>
 </template>
 
 <script>
+import StatusMessage from '@/vue/common/StatusMessage'
+
+// legacy:
 import Navbar from '../navigation/Navbar.vue'
 import Sidebar from '../navigation/Sidebar.vue'
 import Snackbar from '../common/messages/Snackbar'
@@ -64,6 +70,9 @@ export default {
   name: 'app',
 
   components: {
+    StatusMessage,
+
+    // legacy
     Navbar,
     Sidebar,
     Snackbar,

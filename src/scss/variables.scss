@@ -9,6 +9,8 @@ $_thinGray: #f2f2f4;
 $_lightGray: #c6c6c6;
 $_lightRed: #ef5350;
 $_cornflowerBlue: #7b6eff;
+$_green: #33A494;
+$_orangePeel: #f2a100;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -19,6 +21,12 @@ $col-primary-inactive: rgba($col-primary, .7);
 $col-primary-flat-hover: rgba($col-primary, .2);
 
 $col-accent: $_lightRed;
+
+// status colors:
+$col-error: $_lightRed;
+$col-warning: $_orangePeel;
+$col-info: $_cornflowerBlue;
+$col-success: $_green;
 
 // global colors
 $col-text: $_eastBay;
@@ -32,6 +40,7 @@ $col-text-page-heading: $col-heading;
 $col-text-auth-title-big: $_white;
 $col-text-auth-title-small: $_cornflowerBlue;
 $col-text-auth-tip-link: $_cornflowerBlue;
+$col-text-status-message: $_white;
 
 // button colors:
 $col-button-raised: $col-primary-lighten;
@@ -53,5 +62,8 @@ $col-button-back-icon-hover: $col-primary-lighten;
 $col-drawer-bg: $_white;
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
+
+// status-message colors:
+$col-status-msg-shadow: rgba(0, 0, 0, 0.25);
 
 // TODO: paste here variables that are ready to use during the refactor process
