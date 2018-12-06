@@ -77,6 +77,7 @@ export default {
       try {
         await this.loadWallet(this.form)
         const accountId = this.wallet.accountId
+        Sdk.sdk.useWallet(this.wallet)
         if (!await this.isUserExist(accountId)) {
           await Sdk.api.users.create(accountId)
         }
