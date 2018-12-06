@@ -4,6 +4,8 @@ import { Bus } from '@/js/helpers/event-bus'
 
 export class ErrorHandler {
   static processUnexpected (error) {
+    console.error(error)
+
     let translationId
 
     switch (error.constructor) {
