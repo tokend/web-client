@@ -48,6 +48,11 @@
       "close-lbl_info": "Got it"
     },
 
+    "validation": {
+      "failed": "Please fill out all the fields before continuing",
+      "field-error_required": "Please fill out this field"
+    },
+
     "errors": {
       "default": "Something bad happened. Please try again later",
       "server":  "This service is temporary unavailable. Please try again later",
