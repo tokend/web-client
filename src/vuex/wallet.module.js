@@ -2,6 +2,8 @@ import { vuexTypes } from './types'
 import { Sdk } from '../sdk'
 import { Wallet } from '@tokend/js-sdk'
 
+import isEmpty from 'lodash/isEmpty'
+
 export const state = {
   wallet: {}
 }
@@ -32,7 +34,7 @@ export const actions = {
 }
 
 export const getters = {
-  [vuexTypes.wallet]: state => new Wallet(
+  [vuexTypes.wallet]: state => isEmpty(state.wallet) ? {} : new Wallet(
     state.wallet.email,
     state.wallet.secretSeed,
     state.wallet.accountId,
