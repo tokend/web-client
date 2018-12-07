@@ -83,6 +83,7 @@ export default {
         }
         await this._doLegacyStuff()
       } catch (e) {
+        console.error(e)
         ErrorHandler.processUnexpected(e)
       }
       this.enableForm()
