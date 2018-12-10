@@ -53,7 +53,8 @@
       "field-error_required": "Please fill out this field",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_email": "This field should be a valid email",
-      "field-error_sameAsPassword": "Passwords don't match"
+      "field-error_sameAsPassword": "Passwords don't match",
+      "field-error_seed": "This field should be a valid secret seed"
     },
 
     "errors": {
@@ -78,9 +79,11 @@
       "email": "Email",
       "password": "Password",
       "confirm-password": "Confirm password",
+      "recovery-seed": "Recovery seed",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "get-started": "Get started",
+      "recover-account": "Recover your account",
       "no-account-question": "Don't have an account?",
       "no-account-answer": "Register now",
       "forgot-pwd-question": "Forgot your password?",
@@ -91,7 +94,9 @@
       "save-recovery-seed": "Save this seed to your offline device",
       "save-recovery-seed-details": "For security reasons, please put this seed in some secret place. You will need it to recover access in case if your account will be lost",
       "lbl-recovery-seed": "Recovery seed",
-      "lbl-continue": "Continue"
+      "lbl-continue": "Continue",
+      "auth-know-credentials-question": "Know your credentials?",
+      "auth-know-credentials-answer": "Sign in now"
     },
 
     "sale-state": {

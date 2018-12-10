@@ -1,9 +1,9 @@
 <template>
   <div class="auth-page">
-    <h2 class="auth-page__title">{{ 'auth.sign-in' | globalize }}</h2>
+    <h2 class="auth-page__title">{{ 'auth.recover-account' | globalize }}</h2>
 
     <div class="auth-page__content">
-      <login-form />
+      <recovery-form />
     </div>
 
     <div class="auth-page__tips">
@@ -13,27 +13,21 @@
           {{ 'auth.no-account-answer' | globalize }}
         </router-link>
       </div>
-      <div class="auth-page__tip">
-        {{ 'auth.forgot-pwd-question' | globalize }}
-        <router-link class="auth-page__tip-link" to="/recovery">
-          {{ 'auth.forgot-pwd-answer' | globalize }}
-        </router-link>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import LoginForm from '../forms/LoginForm'
+import RecoveryForm from '../forms/RecoveryForm'
 
 export default {
-  name: 'login',
+  name: 'recovery',
   components: {
-    LoginForm
+    RecoveryForm
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import './auth-page';
+  @import './auth-page';
 </style>
