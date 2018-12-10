@@ -14,7 +14,7 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="$v.form.email.$touch()"
+          @blur="$v.form.password.$touch()"
           :error-message="errorMessage(`form.password`)"
           :label="globalize('auth.password')"
           :type="`password`"
