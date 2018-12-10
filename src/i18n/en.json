@@ -87,7 +87,11 @@
       "forgot-pwd-answer": "Recover it",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
-      "error-user-exist": "User with such email already exists"
+      "error-user-exist": "User with such email already exists",
+      "save-recovery-seed": "Save this seed to your offline device",
+      "save-recovery-seed-details": "For security reasons, please put this seed in some secret place. You will need it to recover access in case if your account will be lost",
+      "lbl-recovery-seed": "Recovery seed",
+      "lbl-continue": "Continue"
     },
 
     "sale-state": {
