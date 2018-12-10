@@ -10,8 +10,8 @@ import { resolveRedirect } from './redirect'
 // route components:
 import Auth from '@/vue/pages/Auth'
 import Login from '@/vue/pages/Login'
+import Signup from '@/vue/pages/Signup'
 
-import Signup from 'L@/vue/auth/Signup'
 import Recovery from 'L@/vue/auth/Recovery'
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'

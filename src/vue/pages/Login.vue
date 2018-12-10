@@ -1,21 +1,21 @@
 <template>
-  <div class="login">
-    <h2 class="login__title">{{ 'auth.sign-in' | globalize }}</h2>
+  <div class="auth-page">
+    <h2 class="auth-page__title">{{ 'auth.sign-in' | globalize }}</h2>
 
-    <div class="login__content">
+    <div class="auth-page__content">
       <login-form />
     </div>
 
-    <div class="login__tips">
-      <div class="login__tip">
+    <div class="auth-page__tips">
+      <div class="auth-page__tip">
         {{ 'auth.no-account-question' | globalize }}
-        <router-link class="login__tip-link" to="/sign-in">
+        <router-link class="auth-page__tip-link" to="/sign-up">
           {{ 'auth.no-account-answer' | globalize }}
         </router-link>
       </div>
-      <div class="login__tip">
+      <div class="auth-page__tip">
         {{ 'auth.forgot-pwd-question' | globalize }}
-        <router-link class="login__tip-link" to="/sign-in">
+        <router-link class="auth-page__tip-link" to="/sign-in">
           {{ 'auth.forgot-pwd-answer' | globalize }}
         </router-link>
       </div>
@@ -35,22 +35,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
-
-.login__title {
-  font-size: 3.2 * $point;
-  font-weight: 400;
-  margin-bottom: 2.4 * $point;
-  color: $col-text-page-heading;
-}
-
-.login__content {
-  margin-bottom: 5.5 * $point;
-}
-
-.login__tip-link {
-  // TODO: remove !important once md will be completely out
-  color: $col-text-auth-tip-link !important;
-  text-decoration: underline;
-}
+@import './auth-page';
 </style>

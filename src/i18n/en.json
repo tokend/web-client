@@ -50,7 +50,10 @@
 
     "validation": {
       "failed": "Please fill out all the fields before continuing",
-      "field-error_required": "Please fill out this field"
+      "field-error_required": "Please fill out this field",
+      "field-error_password": "Password should contain minimum 6 symbols",
+      "field-error_email": "This field should be a valid email",
+      "field-error_sameAsPassword": "Passwords don't match"
     },
 
     "errors": {
@@ -74,11 +77,16 @@
       "big-title": "Start tokenizing your assets in minutes",
       "email": "Email",
       "password": "Password",
+      "confirm-password": "Confirm password",
       "sign-in": "Sign In",
+      "sign-up": "Sign Up",
+      "get-started": "Get started",
       "no-account-question": "Don't have an account?",
       "no-account-answer": "Register now",
       "forgot-pwd-question": "Forgot your password?",
-      "forgot-pwd-answer": "Recover it"
+      "forgot-pwd-answer": "Recover it",
+      "have-an-account-question": "Already have an account?",
+      "have-an-account-answer": "Sign in now"
     },
 
     "sale-state": {
