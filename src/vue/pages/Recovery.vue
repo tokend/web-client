@@ -9,7 +9,7 @@
     <div class="auth-page__tips">
       <div class="auth-page__tip">
         {{ 'auth.know-credentials-question' | globalize }}
-        <router-link class="auth-page__tip-link" to="/sign-up">
+        <router-link class="auth-page__tip-link" :to="vueRoutes.login">
           {{ 'auth.know-credentials-answer' | globalize }}
         </router-link>
       </div>
@@ -19,12 +19,16 @@
 
 <script>
 import RecoveryForm from '../forms/RecoveryForm'
+import { vueRoutes } from '@/vue-router'
 
 export default {
   name: 'recovery',
   components: {
     RecoveryForm
-  }
+  },
+  data: _ => ({
+    vueRoutes
+  })
 }
 </script>
 

@@ -38,7 +38,7 @@
     <div class="auth-page__tips">
       <div class="auth-page__tip">
         {{ 'auth.have-an-account-question' | globalize }}
-        <router-link class="auth-page__tip-link" to="/sign-in">
+        <router-link class="auth-page__tip-link" :to="vueRoutes.login">
           {{ 'auth.have-an-account-answer' | globalize }}
         </router-link>
       </div>
@@ -55,6 +55,7 @@ import KeyViewer from '../common/KeyViewer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
+import { vueRoutes } from '@/vue-router'
 
 export default {
   name: 'signup',
@@ -66,7 +67,8 @@ export default {
   data: _ => ({
     recoverySeed: null,
     password: null,
-    email: null
+    email: null,
+    vueRoutes
   }),
   methods: {
     handleFormSubmit (form) {

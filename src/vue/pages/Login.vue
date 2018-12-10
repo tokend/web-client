@@ -9,13 +9,13 @@
     <div class="auth-page__tips">
       <div class="auth-page__tip">
         {{ 'auth.no-account-question' | globalize }}
-        <router-link class="auth-page__tip-link" to="/sign-up">
+        <router-link class="auth-page__tip-link" :to="vueRoutes.signup">
           {{ 'auth.no-account-answer' | globalize }}
         </router-link>
       </div>
       <div class="auth-page__tip">
         {{ 'auth.forgot-pwd-question' | globalize }}
-        <router-link class="auth-page__tip-link" to="/recovery">
+        <router-link class="auth-page__tip-link" :to="vueRoutes.recovery">
           {{ 'auth.forgot-pwd-answer' | globalize }}
         </router-link>
       </div>
@@ -25,12 +25,16 @@
 
 <script>
 import LoginForm from '../forms/LoginForm'
+import { vueRoutes } from '@/vue-router'
 
 export default {
   name: 'login',
   components: {
     LoginForm
-  }
+  },
+  data: _ => ({
+    vueRoutes
+  })
 }
 </script>
 
