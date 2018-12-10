@@ -10,4 +10,16 @@ export class TestHelper {
     options.resources.en.translation = translations
     i18next.init(options)
   }
+
+  static isFieldValid (componentWrapper, invalidFieldName, invalidFieldValue) {
+    componentWrapper.setData({
+      form: {
+        [invalidFieldName]: invalidFieldValue
+      }
+    })
+
+    const field = componentWrapper.vm.$v.form[invalidFieldName]
+    field.$touch()
+    return !field.$invalid
+  }
 }
