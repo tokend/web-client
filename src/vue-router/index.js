@@ -1,5 +1,5 @@
 export const vueRoutes = Object.freeze({
-  login: { path: '/sign-in' },
+  login: { path: '/log-in' },
   signup: { path: '/sign-up' },
   recovery: { path: '/recovery' }
 })

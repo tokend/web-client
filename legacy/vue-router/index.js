@@ -125,7 +125,7 @@ const router = new Router({
       redirect: { name: 'login' },
       children: [
         {
-          path: '/sign-in',
+          path: '/log-in',
           name: 'login',
           component: Login,
           beforeEnter: authPageGuard
