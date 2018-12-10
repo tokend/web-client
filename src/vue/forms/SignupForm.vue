@@ -100,16 +100,15 @@ export default {
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
         Bus.error('auth.error-user-exist')
-        return
       } catch (e) {
-        if (!(e instanceof errors.NotFoundError)) {
-          console.error(e)
-          ErrorHandler.processUnexpected(e)
+        if (e instanceof errors.NotFoundError) {
+          this.$emit(this.submitEvent, this.form)
           return
         }
+        console.error(e)
+        ErrorHandler.processUnexpected(e)
         // If user not found - it's our case, so we will continue sign-up
       }
-      this.$emit(this.submitEvent, this.form)
       this.enableForm()
     }
   }
