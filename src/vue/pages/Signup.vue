@@ -2,7 +2,7 @@
   <div class="auth-page">
     <h2 class="auth-page__title">
       {{
-        recoverySeed
+        recoveryKeypair
           ? 'auth.save-recovery-seed'
           : 'auth.get-started'
             | globalize
@@ -11,7 +11,7 @@
 
     <div class="auth-page__content">
       <signup-form
-        v-if="!recoverySeed"
+        v-if="!recoveryKeypair"
         :submit-event="'submit'"
         @submit="handleFormSubmit"
       />
@@ -21,7 +21,7 @@
           {{ 'auth.save-recovery-seed-details' | globalize }}
         </p>
 
-        <key-viewer :value="recoverySeed" />
+        <key-viewer :value="recoveryKeypair.secret()" />
 
         <div class="signup__actions">
           <button
@@ -65,7 +65,7 @@ export default {
   },
   mixins: [FormMixin],
   data: _ => ({
-    recoverySeed: null,
+    recoveryKeypair: null,
     password: null,
     email: null,
     vueRoutes
@@ -74,13 +74,9 @@ export default {
     handleFormSubmit (form) {
       this.email = form.email
       this.password = form.password
-      this.generateSeed()
-    },
-    generateSeed () {
-      this.recoverySeed = base
+      this.recoveryKeypair = base
         .Keypair
         .random()
-        .secret()
     },
     async submit () {
       this.disableForm()
@@ -88,7 +84,7 @@ export default {
         await Sdk.api.wallets.create(
           this.email,
           this.password,
-          base.Keypair.fromSecret(this.recoverySeed)
+          this.recoveryKeypair
         )
         this.$router.push('/auth-done')
       } catch (e) {
