@@ -29,7 +29,7 @@
             :disabled="formMixin.isDisabled"
             class="app__button-raised auth-page__submit-btn"
           >
-            {{ 'auth.lbl-continue' | globalize }}
+            {{ 'auth.continue' | globalize }}
           </button>
         </div>
       </div>

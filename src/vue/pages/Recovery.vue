@@ -8,9 +8,9 @@
 
     <div class="auth-page__tips">
       <div class="auth-page__tip">
-        {{ 'auth.no-account-question' | globalize }}
+        {{ 'auth.know-credentials-question' | globalize }}
         <router-link class="auth-page__tip-link" to="/sign-up">
-          {{ 'auth.no-account-answer' | globalize }}
+          {{ 'auth.know-credentials-answer' | globalize }}
         </router-link>
       </div>
     </div>
