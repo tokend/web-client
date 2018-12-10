@@ -65,6 +65,7 @@ import {
   email,
   seed
 } from '@validators'
+import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -93,16 +94,22 @@ export default {
   },
   methods: {
     globalize,
-    submit () {
+    async submit () {
       if (!this.isFormValid()) {
         return
       }
-
+      this.disableForm()
       try {
-        // TODO
+        await Sdk.api.wallets.recovery(
+          this.form.email,
+          this.form.recoverySeed,
+          this.form.password
+        )
       } catch (e) {
+        console.error(e)
         ErrorHandler.processUnexpected(e)
       }
+      this.enableForm()
     }
   }
 }
