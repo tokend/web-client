@@ -57,10 +57,19 @@ import {
 } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { errors } from '@tokend/js-sdk'
+import { Bus } from '@/js/helpers/event-bus'
+import { Sdk } from '@/sdk'
 
 export default {
   name: 'signup-form',
   mixins: [FormMixin],
+  props: {
+    submitEvent: {
+      type: String,
+      required: true
+    }
+  },
   data: _ => ({
     form: {
       email: '',
@@ -81,15 +90,26 @@ export default {
   },
   methods: {
     globalize,
-    submit () {
-      if (!this.isFormValid()) return
+    async submit () {
+      if (!this.isFormValid()) {
+        return
+      }
       this.disableForm()
       try {
-        // TODO
+        await Sdk.api.wallets.getKdfParams(this.form.email)
+        // If no error came - the user exists - we obviously won't succeed in
+        // sign-up flow
+        Bus.error('auth.error-user-exist')
+        return
       } catch (e) {
-        console.error(e)
-        ErrorHandler.processUnexpected(e)
+        if (!(e instanceof errors.NotFoundError)) {
+          console.error(e)
+          ErrorHandler.processUnexpected(e)
+          return
+        }
+        // If user not found - it's our case, so we will continue sign-up
       }
+      this.$emit(this.submitEvent, this.form)
       this.enableForm()
     }
   }

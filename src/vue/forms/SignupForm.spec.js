@@ -5,7 +5,10 @@ import Vuelidate from 'vuelidate'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { TestHelper } from '@/test/test-helper'
+import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
+import { errors } from '@tokend/js-sdk'
+import { Bus } from '@/js/helpers/event-bus'
 
 const localVue = createLocalVue()
 
@@ -57,6 +60,92 @@ describe('SignupForm component test', () => {
       })
 
       expect(wrapper.vm.isFormValid()).to.be.true
+    })
+  })
+
+  describe('submit method', () => {
+    let mockHelper = new MockHelper()
+    // let wrapper
+    let sdk = {
+      api: {
+        users: {}
+      }
+    }
+
+    beforeEach(() => {
+      wrapper = shallowMount(SignupForm, {
+        localVue,
+        propsData: {
+          submitEvent: 'submit-event'
+        },
+        data: _ => ({
+          form: {
+            email: 'alice@mail.com',
+            password: 'qwe123',
+            confirmPassword: 'qwe123'
+          }
+        })
+      })
+
+      sdk.api.wallets = mockHelper.getApiResourcePrototype('wallets')
+    })
+
+    afterEach(() => {
+      sinon.restore()
+      mockHelper = new MockHelper()
+    })
+
+    it('loads kdf params for provided email', async () => {
+      sdk.api.wallets.getKdfParams = sinon.spy()
+
+      await wrapper.vm.submit()
+
+      expect(sdk.api.wallets.getKdfParams.withArgs('alice@mail.com').calledOnce)
+        .to
+        .be
+        .true
+    })
+
+    it('emits the global error event if user exist', async () => {
+      Bus.error = sinon.spy()
+      sdk.api.wallets.getKdfParams = sinon
+        .stub()
+        .resolves()
+
+      await wrapper.vm.submit()
+
+      expect(Bus.error.calledOnce).to.be.true
+    })
+
+    it('doesn\'t emit the submitted event if user exist', async () => {
+      Bus.error = sinon.spy()
+      sdk.api.wallets.getKdfParams = sinon
+        .stub()
+        .resolves()
+
+      await wrapper.vm.submit()
+
+      expect(wrapper.emitted()['submit-event']).to.not.exist
+    })
+
+    it('properly emits the submitted event if user doesn\'t exist', async () => {
+      sdk.api.wallets.getKdfParams = sinon
+        .stub()
+        .throws(new errors.NotFoundError({
+          response: {
+            data: {
+              errors: [{
+                status: 404,
+                title: 'Not Found',
+                details: 'User not found'
+              }]
+            }
+          }
+        }))
+
+      await wrapper.vm.submit()
+
+      expect(wrapper.emitted()['submit-event']).to.exist
     })
   })
 })

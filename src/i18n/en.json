@@ -86,7 +86,8 @@
       "forgot-pwd-question": "Forgot your password?",
       "forgot-pwd-answer": "Recover it",
       "have-an-account-question": "Already have an account?",
-      "have-an-account-answer": "Sign in now"
+      "have-an-account-answer": "Sign in now",
+      "error-user-exist": "User with such email already exists"
     },
 
     "sale-state": {

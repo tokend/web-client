@@ -3,7 +3,7 @@
     <h2 class="auth-page__title">{{ 'auth.get-started' | globalize }}</h2>
 
     <div class="auth-page__content">
-      <signup-form />
+      <signup-form :submit-event="'submit'" />
     </div>
 
     <div class="auth-page__tips">
