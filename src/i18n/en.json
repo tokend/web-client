@@ -95,8 +95,7 @@
       "know-credentials-answer": "Sign in now",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
-      "error-user-exist": "User with such email already exists",
-      "label-recovery-seed": "Recovery seed"
+      "error-user-exist": "User with such email already exists"
     },
 
     "sale-state": {
