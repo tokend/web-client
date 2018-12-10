@@ -13,7 +13,7 @@
       <signup-form
         v-if="!recoverySeed"
         :submit-event="'submit'"
-        @submit="generateSeed"
+        @submit="handleFormSubmit"
       />
 
       <div class="signup__seed-wrp" v-else>
@@ -26,6 +26,7 @@
         <div class="signup__actions">
           <button
             @click="submit"
+            :disabled="formMixin.isDisabled"
             class="app__button-raised auth-page__submit-btn"
           >
             {{ 'auth.lbl-continue' | globalize }}
@@ -46,10 +47,14 @@
 </template>
 
 <script>
+import FormMixin from '../mixins/form.mixin'
+
 import SignupForm from '../forms/SignupForm'
 import KeyViewer from '../common/KeyViewer'
 
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
+import { Sdk } from '@/sdk'
 
 export default {
   name: 'signup',
@@ -57,18 +62,38 @@ export default {
     SignupForm,
     KeyViewer
   },
+  mixins: [FormMixin],
   data: _ => ({
-    recoverySeed: 'SBMN5JKUS6K2VNVFRJVIHDVW2OH5X7KMC2PB2SN23MWSCHKASCN55FIL'
+    recoverySeed: null,
+    password: null,
+    email: null
   }),
   methods: {
+    handleFormSubmit (form) {
+      this.email = form.email
+      this.password = form.password
+      this.generateSeed()
+    },
     generateSeed () {
       this.recoverySeed = base
         .Keypair
         .random()
         .secret()
     },
-    submit () {
-      // TODO
+    async submit () {
+      this.disableForm()
+      try {
+        await Sdk.api.wallets.create(
+          this.email,
+          this.password,
+          base.Keypair.fromSecret(this.recoverySeed)
+        )
+        this.$router.push('/auth-done')
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.processUnexpected(e)
+      }
+      this.enableForm()
     }
   }
 }
