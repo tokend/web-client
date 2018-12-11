@@ -27,7 +27,7 @@
         class="login-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth.log-in' | globalize }}
+        {{ 'auth-pages.log-in' | globalize }}
       </button>
     </div>
   </form>

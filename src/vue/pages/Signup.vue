@@ -3,8 +3,8 @@
     <h2 class="auth-page__title">
       {{
         recoveryKeypair
-          ? 'auth.save-recovery-seed'
-          : 'auth.get-started'
+          ? 'auth-pages.save-recovery-seed'
+          : 'auth-pages.get-started'
             | globalize
       }}
     </h2>
@@ -18,7 +18,7 @@
 
       <div class="signup__seed-wrp" v-else>
         <p class="signup__seed-explanations">
-          {{ 'auth.save-recovery-seed-details' | globalize }}
+          {{ 'auth-pages.save-recovery-seed-details' | globalize }}
         </p>
 
         <key-viewer :value="recoveryKeypair.secret()" />
@@ -29,7 +29,7 @@
             :disabled="formMixin.isDisabled"
             class="app__button-raised auth-page__submit-btn"
           >
-            {{ 'auth.continue' | globalize }}
+            {{ 'auth-pages.continue' | globalize }}
           </button>
         </div>
       </div>
@@ -37,9 +37,9 @@
 
     <div class="auth-page__tips">
       <div class="auth-page__tip">
-        {{ 'auth.have-an-account-question' | globalize }}
+        {{ 'auth-pages.have-an-account-question' | globalize }}
         <router-link class="auth-page__tip-link" :to="vueRoutes.login">
-          {{ 'auth.have-an-account-answer' | globalize }}
+          {{ 'auth-pages.have-an-account-answer' | globalize }}
         </router-link>
       </div>
     </div>

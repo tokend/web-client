@@ -1,8 +1,10 @@
 <template>
   <div class="auth">
     <div class="auth__titles">
-      <h3 class="auth__title-small">{{ 'auth.small-title' | globalize }}</h3>
-      <h1 class="auth__title-big">{{ 'auth.big-title' | globalize }}</h1>
+      <h3 class="auth__title-small">
+        {{ 'auth-pages.small-title' | globalize }}
+      </h3>
+      <h1 class="auth__title-big">{{ 'auth-pages.big-title' | globalize }}</h1>
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />

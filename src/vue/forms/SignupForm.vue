@@ -39,7 +39,7 @@
         class="signup-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth.sign-up' | globalize }}
+        {{ 'auth-pages.sign-up' | globalize }}
       </button>
     </div>
   </form>

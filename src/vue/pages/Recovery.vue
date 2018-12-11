@@ -1,6 +1,8 @@
 <template>
   <div class="auth-page">
-    <h2 class="auth-page__title">{{ 'auth.recover-account' | globalize }}</h2>
+    <h2 class="auth-page__title">
+      {{ 'auth-pages.recover-account' | globalize }}
+    </h2>
 
     <div class="auth-page__content">
       <recovery-form />
@@ -8,9 +10,9 @@
 
     <div class="auth-page__tips">
       <div class="auth-page__tip">
-        {{ 'auth.know-credentials-question' | globalize }}
+        {{ 'auth-pages.know-credentials-question' | globalize }}
         <router-link class="auth-page__tip-link" :to="vueRoutes.login">
-          {{ 'auth.know-credentials-answer' | globalize }}
+          {{ 'auth-pages.know-credentials-answer' | globalize }}
         </router-link>
       </div>
     </div>
