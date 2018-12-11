@@ -12,7 +12,7 @@
     <div class="key-viewer__clipboard-wrp">
       <clipboard-field
         :value="value"
-        :label="globalize('auth.recovery-seed')"
+        :label="globalize('auth-pages.recovery-seed')"
       />
     </div>
   </div>

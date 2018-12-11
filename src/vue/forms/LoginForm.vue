@@ -5,7 +5,7 @@
         <input-field
           v-model="form.email"
           @blur="$v.form.email.$touch()"
-          :label="globalize('auth.email')"
+          :label="globalize('auth-pages.email')"
           :error-message="errorMessage(`form.email`)"
         />
       </div>
@@ -16,7 +16,7 @@
           v-model="form.password"
           @blur="$v.form.password.$touch()"
           :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth.password')"
+          :label="globalize('auth-pages.password')"
           :type="`password`"
         />
       </div>

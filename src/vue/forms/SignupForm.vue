@@ -5,7 +5,7 @@
         <input-field
           v-model="form.email"
           @blur="$v.form.email.$touch()"
-          :label="globalize('auth.email')"
+          :label="globalize('auth-pages.email')"
           :error-message="errorMessage(`form.email`)"
         />
       </div>
@@ -16,7 +16,7 @@
           v-model="form.password"
           @blur="$v.form.password.$touch()"
           :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth.password')"
+          :label="globalize('auth-pages.password')"
           :type="`password`"
         />
       </div>
@@ -27,7 +27,7 @@
           v-model="form.confirmPassword"
           @blur="$v.form.confirmPassword.$touch()"
           :error-message="errorMessage(`form.confirmPassword`)"
-          :label="globalize('auth.confirm-password')"
+          :label="globalize('auth-pages.confirm-password')"
           :type="`password`"
         />
       </div>
@@ -99,7 +99,7 @@ export default {
         await Sdk.api.wallets.getKdfParams(this.form.email)
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
-        Bus.error('auth.error-user-exist')
+        Bus.error('auth-pages.error-user-exist')
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
           this.$emit(this.submitEvent, this.form)
