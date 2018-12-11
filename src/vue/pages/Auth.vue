@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Logo from '../Logo'
+import Logo from '../assets/Logo'
 
 export default {
   name: 'auth',
