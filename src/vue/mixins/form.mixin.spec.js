@@ -58,4 +58,13 @@ describe('form.mixin unit test', () => {
 
     expect(wrapper.vm.isFormValid()).to.be.true
   })
+
+  it('touchField should modify dirty param for the validation model', () => {
+    wrapper.vm.touchField('form.firstName')
+    expect(wrapper.vm.$v.form.firstName.$dirty).to.be.true
+    expect(wrapper.vm.$v.form.lastName.$dirty).to.be.false
+
+    wrapper.vm.touchField('form.lastName')
+    expect(wrapper.vm.$v.form.lastName.$dirty).to.be.true
+  })
 })
