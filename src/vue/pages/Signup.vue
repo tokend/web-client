@@ -99,6 +99,7 @@ export default {
 
 <style lang="scss" scoped>
 @import './auth-page';
+
 .signup__seed-wrp {
   max-width: 51* $point;
 }

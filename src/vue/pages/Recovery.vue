@@ -35,5 +35,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './auth-page';
+@import './auth-page';
 </style>
