@@ -1,7 +1,7 @@
 export const vueRoutes = Object.freeze({
   login: { name: 'login' },
   signup: { name: 'signup' },
+  verify: { name: 'verify' },
   recovery: { name: 'recovery' },
-  dashboard: { name: 'dashboard' },
-  verify: { name: 'verify' }
+  dashboard: { name: 'app.dashboard' }
 })
