@@ -1,5 +1,5 @@
 <template>
-  <form class="auth-form" @submit.prevent="submit">
+  <form class="app-form auth-form" @submit.prevent="submit">
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -117,5 +117,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import './app-form';
 @import './auth-form';
 </style>
