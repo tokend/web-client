@@ -148,24 +148,41 @@ describe('SignupForm component test', () => {
       expect(wrapper.emitted()['submit-event']).to.not.exist
     })
 
-    it('properly emits the submitted event if user doesn\'t exist', async () => {
-      sdk.api.wallets.getKdfParams = sinon
-        .stub()
-        .throws(new errors.NotFoundError({
-          response: {
-            data: {
-              errors: [{
-                status: 404,
-                title: 'Not Found',
-                details: 'User not found'
-              }]
+    describe('properly emits the submitted event if user doesn\'t exist', () => {
+      const form = {
+        email: 'foo@bar.com',
+        password: 'Tw15m#ewq',
+        confirmPassword: 'Tw15m#ewq'
+      }
+      beforeEach(async () => {
+        sdk.api.wallets.getKdfParams = sinon
+          .stub()
+          .throws(new errors.NotFoundError({
+            response: {
+              data: {
+                errors: [{
+                  status: 404,
+                  title: 'Not Found',
+                  details: 'User not found'
+                }]
+              }
             }
-          }
-        }))
+          }))
 
-      await wrapper.vm.submit()
+        wrapper.setData({ form })
 
-      expect(wrapper.emitted()['submit-event']).to.exist
+        await wrapper.vm.submit()
+      })
+
+      it('emits event', () => {
+        expect(wrapper.emitted()['submit-event']).to.exist
+      })
+      it('emits event exactly one time', () => {
+        expect(wrapper.emitted()['submit-event'].length).to.equal(1)
+      })
+      it('emits event with valid params', () => {
+        expect(wrapper.emitted()['submit-event'][0]).to.deep.equal([form])
+      })
     })
   })
 })
