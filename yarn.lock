@@ -657,10 +657,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/samsam/-/samsam-2.1.2.tgz#16947fce5f57258d01f1688fdc32723093c55d3f"
   integrity sha512-ZwTHAlC9akprWDinwEPD4kOuwaYZlyMwVJIANsKNC3QVp0AHB04m7RnB4eqeWfgmxw8MGTzS9uMaw93Z3QcZbw==
 
-"@tokend/js-sdk@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.4.tgz#b72dcc1dce4ba59c06b16b94c24d329fabc7aec1"
-  integrity sha512-na7N9vPGHRwQvFehMLXLptlM0oHRtfV+7ouK51VC7G6rkVVYqpNeBGx2rNUMMZ6IPZQlp6uOujueQcmBnzEMiA==
+"@tokend/js-sdk@^0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.5.tgz#05c7985c01e69f17a91b38c9c65776efa26220de"
+  integrity sha512-1gzQ8hZ+EfPfPrd4zJgeqkvoMqTxtRQ3DO/VwmSwZFiT5U+UoqBrbZMwGYby0ZZTAQhsenoklhkJkJfzxKCtzg==
   dependencies:
     axios "^0.16.0"
     base32.js "~0.1.0"
