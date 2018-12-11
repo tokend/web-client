@@ -12,6 +12,7 @@ import Auth from '@/vue/pages/Auth'
 import Login from '@/vue/pages/Login'
 import Signup from '@/vue/pages/Signup'
 import Recovery from '@/vue/pages/Recovery'
+import Verify from '@/vue/pages/Verify'
 
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'
@@ -135,6 +136,13 @@ const router = new Router({
           name: 'signup',
           component: Signup,
           beforeEnter: authPageGuard
+        },
+        {
+          path: '/verify/:paramsBase64',
+          name: 'verify',
+          component: Verify,
+          beforeEnter: authPageGuard,
+          props: true
         },
         {
           path: '/verify-email',
