@@ -102,12 +102,13 @@ export default {
         Bus.error('auth-pages.error-user-exist')
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
+          // If user not found - it's our case, so we will continue sign-up
           this.$emit(this.submitEvent, this.form)
+          this.enableForm()
           return
         }
         console.error(e)
         ErrorHandler.processUnexpected(e)
-        // If user not found - it's our case, so we will continue sign-up
       }
       this.enableForm()
     }
