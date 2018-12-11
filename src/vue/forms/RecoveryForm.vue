@@ -5,6 +5,7 @@
         <input-field
           v-model="form.email"
           @blur="touchField(`form.email`)"
+          id="recovery-email"
           :label="globalize('auth-pages.email')"
           :error-message="errorMessage(`form.email`)"
         />
@@ -15,6 +16,7 @@
         <input-field
           v-model="form.password"
           @blur="touchField(`form.password`)"
+          id="recovery-password"
           :error-message="errorMessage(`form.password`)"
           :label="globalize('auth-pages.password')"
           :type="`password`"
@@ -26,6 +28,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField(`form.confirmPassword`)"
+          id="recovery-confirm-password"
           :error-message="errorMessage(`form.confirmPassword`)"
           :label="globalize('auth-pages.confirm-password')"
           :type="`password`"
@@ -37,6 +40,7 @@
         <input-field
           v-model="form.recoverySeed"
           @blur="touchField(`form.recoverySeed`)"
+          id="recovery-seed"
           :error-message="errorMessage(`form.recoverySeed`)"
           :label="globalize('auth-pages.recovery-seed')"
           :type="`password`"

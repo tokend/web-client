@@ -7,7 +7,7 @@ import Vue from 'vue'
 
 import { Wallet, errors } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 
 import { MockHelper } from '@/test'
@@ -32,7 +32,7 @@ describe('LoginForm component unit test', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(LoginForm, { localVue })
+      wrapper = mount(LoginForm, { localVue })
     })
 
     const fields = {
@@ -67,6 +67,22 @@ describe('LoginForm component unit test', () => {
             .to.be.false
         })
       }
+    }
+
+    const fieldBindings = {
+      '#login-email': 'form.email',
+      '#login-password': 'form.password'
+    }
+
+    for (const [selector, model] of Object.entries(fieldBindings)) {
+      it(`$v.${model} is touched after blur event emitted on ${selector}`, async () => {
+        const touchField = sinon.spy()
+
+        wrapper.setMethods({ touchField })
+        wrapper.find(selector).vm.$emit('blur')
+
+        expect(touchField.withArgs(model).calledOnce).to.be.true
+      })
     }
   })
 

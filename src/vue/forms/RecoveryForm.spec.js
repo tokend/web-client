@@ -92,6 +92,24 @@ describe('RecoveryForm component test', () => {
 
       expect(wrapper.vm.isFormValid()).to.be.true
     })
+
+    const fieldBindings = {
+      '#recovery-email': 'form.email',
+      '#recovery-password': 'form.password',
+      '#recovery-confirm-password': 'form.confirmPassword',
+      '#recovery-seed': 'form.recoverySeed'
+    }
+
+    for (const [selector, model] of Object.entries(fieldBindings)) {
+      it(`$v.${model} is touched after blur event emitted on ${selector}`, async () => {
+        const touchField = sinon.spy()
+
+        wrapper.setMethods({ touchField })
+        wrapper.find(selector).vm.$emit('blur')
+
+        expect(touchField.withArgs(model).calledOnce).to.be.true
+      })
+    }
   })
 
   describe('submit method', () => {

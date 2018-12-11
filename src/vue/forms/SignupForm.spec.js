@@ -81,6 +81,23 @@ describe('SignupForm component test', () => {
 
       expect(wrapper.vm.isFormValid()).to.be.true
     })
+
+    const fieldBindings = {
+      '#signup-email': 'form.email',
+      '#signup-password': 'form.password',
+      '#signup-confirm-password': 'form.confirmPassword'
+    }
+
+    for (const [selector, model] of Object.entries(fieldBindings)) {
+      it(`$v.${model} is touched after blur event emitted on ${selector}`, async () => {
+        const touchField = sinon.spy()
+
+        wrapper.setMethods({ touchField })
+        wrapper.find(selector).vm.$emit('blur')
+
+        expect(touchField.withArgs(model).calledOnce).to.be.true
+      })
+    }
   })
 
   describe('submit method', () => {
