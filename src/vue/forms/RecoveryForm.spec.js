@@ -22,26 +22,51 @@ describe('RecoveryForm component test', () => {
   })
 
   describe('validation works correctly', () => {
-    it('email', () => {
-      let isValid = TestHelper.isFieldValid(wrapper, 'email', 'invalid-mail-com')
-      expect(isValid).to.be.false
-      isValid = TestHelper.isFieldValid(wrapper, 'email', 'valid@mail.com')
-      expect(isValid).to.be.true
-    })
+    const fields = {
+      email: {
+        valid: ['valid@mail.com', 'alice@mail.com', 'qq@mail.com'],
+        invalid: ['qweq', '@wqeqe', 'mail.com', '']
+      },
+      password: {
+        valid: ['qwe123', 'wTqw12Zewq', '1234qwe'],
+        invalid: ['qq', 'qqq13', '']
+      },
+      recoverySeed: {
+        valid: [
+          'SARPAUUZMPDS2HKGVCZZJZUQJNDYSEM4IFPINJWILIWPMFEGF4PDGVRH',
+          'SA4R2XPR4NN4BMEYBCHHVJIWUE2KT3NLB5RZBT4QXHT2IEQW5GRJ5CUA',
+          'SDXVH22GAK7E65G2M6ZGAUW3SDWRCTQJVNWNHIJR5SXRIJ5NT5ANZLW5'
+        ],
+        invalid: [
+          'GAEYQRQD4NIG7MRIZJ4NMZZEH7XPS7JRVYFYLBXF7HNBJQADUKJ6N6LL',
+          'foobar',
+          ''
+        ]
+      }
+    }
 
-    it('password', () => {
-      let isValid = TestHelper.isFieldValid(wrapper, 'password', 'qqq')
-      expect(isValid).to.be.false
-      isValid = TestHelper.isFieldValid(wrapper, 'password', 'qqq123')
-      expect(isValid).to.be.true
-    })
-
-    it('recoverySeed', () => {
-      let isValid = TestHelper.isFieldValid(wrapper, 'recoverySeed', 'qqq')
-      expect(isValid).to.be.false
-      isValid = TestHelper.isFieldValid(wrapper, 'recoverySeed', 'SCLEBNULYANXPNXV5ACUN62KZKASKKKYJJJYDG2EALGWI5WWKOIVH57E')
-      expect(isValid).to.be.true
-    })
+    for (const [fieldName, fieldValues] of Object.entries(fields)) {
+      for (const fieldValue of fieldValues.valid) {
+        it(`considers ${fieldValue} a valid ${fieldName}`, () => {
+          expect(TestHelper.isFieldValid(
+            wrapper,
+            fieldName,
+            fieldValue
+          ))
+            .to.be.true
+        })
+      }
+      for (const fieldValue of fieldValues.invalid) {
+        it(`considers ${fieldValue} an invalid ${fieldName}`, () => {
+          expect(TestHelper.isFieldValid(
+            wrapper,
+            fieldName,
+            fieldValue
+          ))
+            .to.be.false
+        })
+      }
+    }
 
     it('confirmPassword', () => {
       wrapper.setData({

@@ -1,3 +1,4 @@
+import { TestHelper } from '@/test/test-helper'
 import LoginForm from './LoginForm'
 
 import Vuelidate from 'vuelidate'
@@ -25,6 +26,48 @@ describe('LoginForm component unit test', () => {
   beforeEach(() => {
     sinon.restore()
     mockHelper = new MockHelper()
+  })
+
+  describe('validation works correctly', () => {
+    let wrapper
+
+    beforeEach(() => {
+      wrapper = shallowMount(LoginForm, { localVue })
+    })
+
+    const fields = {
+      email: {
+        valid: ['anything', 'alice@mail.com', 'qq'],
+        invalid: ['']
+      },
+      password: {
+        valid: ['anything', 'q', 'qqww'],
+        invalid: ['']
+      }
+    }
+
+    for (const [fieldName, fieldValues] of Object.entries(fields)) {
+      for (const fieldValue of fieldValues.valid) {
+        it(`considers ${fieldValue} a valid ${fieldName}`, () => {
+          expect(TestHelper.isFieldValid(
+            wrapper,
+            fieldName,
+            fieldValue
+          ))
+            .to.be.true
+        })
+      }
+      for (const fieldValue of fieldValues.invalid) {
+        it(`considers ${fieldValue} an invalid ${fieldName}`, () => {
+          expect(TestHelper.isFieldValid(
+            wrapper,
+            fieldName,
+            fieldValue
+          ))
+            .to.be.false
+        })
+      }
+    }
   })
 
   describe('methods', () => {
