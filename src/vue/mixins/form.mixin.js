@@ -25,6 +25,24 @@ export default {
       }
       return isValid
     },
+    /**
+    * errorMessage decides if the validation error is present for the field. To
+    * be invalid the vuelidate $touch method should be called on it. You have
+    * to call $touch on the level of your component, the good time to do this is
+    * `input`, `change` or `blur` events:
+    *
+    *   <input-field
+    *     v-model="form.email"
+    *     @blur="$v.form.email.$touch()"
+    *     :error-message="errorMessage(`form.email`)"
+    *  />
+    *
+    * @param {string} field - the string with the field name. Works also for
+     *                nested fields, such as `form.email`.
+    *
+    * @returns {string} the human-readable error message if the
+     *                  field is invalid, empty string - otherwise
+    */
     errorMessage (field) {
       if (!this.$v.$invalid) {
         return ''
