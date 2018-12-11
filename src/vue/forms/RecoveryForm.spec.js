@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { TestHelper } from '@/test/test-helper'
+import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
 
 const localVue = createLocalVue()
@@ -94,35 +95,48 @@ describe('RecoveryForm component test', () => {
   })
 
   describe('submit method', () => {
-    // let mockHelper = new MockHelper()
-    // // let wrapper
-    // let sdk = {
-    //   api: {
-    //     users: {}
-    //   }
-    // }
-    //
-    // beforeEach(() => {
-    //   wrapper = shallowMount(SignupForm, {
-    //     localVue,
-    //     propsData: {
-    //       submitEvent: 'submit-event'
-    //     },
-    //     data: _ => ({
-    //       form: {
-    //         email: 'alice@mail.com',
-    //         password: 'qwe123',
-    //         confirmPassword: 'qwe123'
-    //       }
-    //     })
-    //   })
-    //
-    //   sdk.api.wallets = mockHelper.getApiResourcePrototype('wallets')
-    // })
-    //
-    // afterEach(() => {
-    //   sinon.restore()
-    //   mockHelper = new MockHelper()
-    // })
+    let mockHelper = new MockHelper()
+    // let wrapper
+    let sdk = {
+      api: {
+        users: {}
+      }
+    }
+
+    beforeEach(() => {
+      wrapper = shallowMount(RecoveryForm, {
+        localVue
+      })
+
+      sdk.api.wallets = mockHelper.getApiResourcePrototype('wallets')
+    })
+
+    it('calls SDK wallets.recovery with proper set of params', async () => {
+      sdk.api.wallets.recovery = sinon.spy()
+      const form = {
+        email: 'alice@mail.com',
+        password: 'qwe123',
+        confirmPassword: 'qwe123',
+        recoverySeed: 'SDE44JILVL2YU5VXESXRT4ZZYN7U2DHOZTMMIOMVEVIGL5BATGCYZD7Q'
+      }
+
+      wrapper.setData({ form })
+
+      await wrapper.vm.submit()
+
+      expect(sdk.api.wallets.recovery.withArgs(
+        form.email,
+        form.recoverySeed,
+        form.password
+      ).calledOnce)
+        .to
+        .be
+        .true
+    })
+
+    afterEach(() => {
+      sinon.restore()
+      mockHelper = new MockHelper()
+    })
   })
 })
