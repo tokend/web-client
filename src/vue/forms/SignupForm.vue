@@ -1,5 +1,5 @@
 <template>
-  <form class="signup-form" @submit.prevent="submit">
+  <form class="auth-form" @submit.prevent="submit">
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -36,7 +36,7 @@
     <div class="app__form-actions">
       <button
         type="submit"
-        class="signup-form__submit-btn"
+        class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
@@ -117,14 +117,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/mixins';
-@import '~@scss/variables';
-
-.signup-form__submit-btn {
-  @include button-raised();
-
-  margin-right: auto;
-  margin-bottom: 2 * $point;
-  width: 20 * $point;
-}
+@import './auth-form';
 </style>
