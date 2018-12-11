@@ -53,17 +53,15 @@ export default {
   }),
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.from = from.name
+      if (from.name === vueRoutes.login.name) {
+        Sdk.api.wallets.resendEmail(vm.walletId)
+      }
     })
   },
   created () {
     const params = JSON.parse(atob(this.paramsBase64))
     this.email = params.email
     this.walletId = params.walletId
-
-    if (this.from.name === vueRoutes.login.name) {
-      this.submit()
-    }
   },
   methods: {
     async submit () {

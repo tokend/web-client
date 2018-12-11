@@ -43,6 +43,7 @@ import { required } from '@validators'
 
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
+import { vueRoutes } from '@/vue-router'
 
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -85,6 +86,18 @@ export default {
         }
         await this._doLegacyStuff()
       } catch (e) {
+        if (e instanceof errors.VerificationRequiredError) {
+          this.$router.push({
+            ...vueRoutes.verify,
+            params: {
+              paramsBase64: btoa(JSON.stringify({
+                walletId: e.meta.walletId,
+                email: this.form.email
+              }))
+            }
+          })
+          return
+        }
         console.error(e)
         ErrorHandler.processUnexpected(e)
       }

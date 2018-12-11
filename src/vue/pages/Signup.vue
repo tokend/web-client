@@ -81,12 +81,20 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await Sdk.api.wallets.create(
+        const { wallet } = await Sdk.api.wallets.create(
           this.email,
           this.password,
           this.recoveryKeypair
         )
-        this.$router.push('/auth-done')
+        this.$router.push({
+          ...vueRoutes.verify,
+          params: {
+            paramsBase64: btoa(JSON.stringify({
+              email: wallet.email,
+              walletId: wallet.id
+            }))
+          }
+        })
       } catch (e) {
         console.error(e)
         ErrorHandler.processUnexpected(e)
