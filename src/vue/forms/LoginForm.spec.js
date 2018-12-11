@@ -151,7 +151,7 @@ describe('LoginForm component unit test', () => {
         isUserExist: sinon.stub().resolves(true)
       })
       await wrapper.vm.submit()
-      expect(sdk.api.users.create.calledOnce).to.be.false
+      expect(sdk.api.users.create.notCalled).to.be.true
     })
 
     it('isUserExist method returns false for 404 error', async () => {
