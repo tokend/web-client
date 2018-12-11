@@ -42,6 +42,10 @@
     },
 
     "status-message": {
+      "default-message_warning": "Something you are doing is not recommended",
+      "default-message_success": "Action successful",
+      "default-message_error": "Something went wrong",
+      "default-message_info": "Something is happening. Just want you to know that",
       "close-lbl_warning": "OK",
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",

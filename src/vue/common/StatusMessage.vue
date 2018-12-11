@@ -15,6 +15,7 @@
 
 <script>
 import { Bus } from '@/js/helpers/event-bus'
+import { globalize } from '@/vue/filters/globalize'
 
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
@@ -31,19 +32,21 @@ export default {
     isShown: false
   }),
   created () {
-    Bus.on(Bus.eventList.success,
-      message => this.show(MESSAGE_TYPES.success, message))
-    Bus.on(Bus.eventList.warning,
-      message => this.show(MESSAGE_TYPES.warning, message))
-    Bus.on(Bus.eventList.error,
-      message => this.show(MESSAGE_TYPES.error, message))
-    Bus.on(Bus.eventList.info,
-      message => this.show(MESSAGE_TYPES.info, message))
+    Bus.on(Bus.eventList.success, message =>
+      this.show(MESSAGE_TYPES.success, message))
+    Bus.on(Bus.eventList.warning, message =>
+      this.show(MESSAGE_TYPES.warning, message))
+    Bus.on(Bus.eventList.error, message =>
+      this.show(MESSAGE_TYPES.error, message))
+    Bus.on(Bus.eventList.info, message =>
+      this.show(MESSAGE_TYPES.info, message))
   },
   methods: {
     show (messageType, message) {
       this.messageType = messageType
-      this.message = message
+      this.message = message || globalize('status-message.default-message', {
+        context: messageType
+      })
       this.isShown = true
     }
   }

@@ -100,4 +100,34 @@ describe('StatusMessage component test', () => {
       })
     }
   })
+
+  describe('renders default messages when nothing passed to the emitted event', () => {
+    before(() => {
+      TestHelper.useTranslations({
+        'status-message': {
+          'default-message_warning': 'Default warning message',
+          'default-message_success': 'Default success message',
+          'default-message_error': 'Default error message',
+          'default-message_info': 'Default info message'
+        }
+      })
+    })
+
+    const expectedResults = {
+      [Bus.eventList.warning]: 'Default warning message',
+      [Bus.eventList.success]: 'Default success message',
+      [Bus.eventList.error]: 'Default error message',
+      [Bus.eventList.info]: 'Default info message'
+    }
+
+    for (const [eventName, message] of Object.entries(expectedResults)) {
+      it(`${eventName} event`, () => {
+        const wrapper = mount(StatusMessage, { localVue })
+        Bus.emit(eventName)
+        const paragraph = wrapper.find('.status-message__content')
+
+        expect(paragraph.text()).to.equal(message)
+      })
+    }
+  })
 })
