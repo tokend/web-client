@@ -12,6 +12,10 @@
   margin-bottom: 5.5 * $point;
 }
 
+.auth-page__explanations {
+  line-height: 2.6 * $point;
+}
+
 .auth-page__tip-link {
   // TODO: remove !important once md will be completely out
   color: $col-text-auth-tip-link !important;
@@ -24,4 +28,16 @@
   margin-right: auto;
   margin-bottom: 2 * $point;
   width: 20 * $point;
+
+  &:not(:only-child):not(:last-child) {
+    margin-right: .75 * $point;
+  }
+}
+
+.auth-page__cancel-btn {
+  @include button();
+
+  margin-right: auto;
+  margin-bottom: 2 * $point;
+  width: 15 * $point;
 }

@@ -27,7 +27,7 @@
           <button
             @click="submit"
             :disabled="formMixin.isDisabled"
-            class="app__button-raised auth-page__submit-btn"
+            class="auth-page__submit-btn"
           >
             {{ 'auth-pages.continue' | globalize }}
           </button>
@@ -101,7 +101,7 @@ export default {
 @import './auth-page';
 
 .signup__seed-wrp {
-  max-width: 51* $point;
+  max-width: 51 * $point;
 }
 
 .signup__seed-explanations {
