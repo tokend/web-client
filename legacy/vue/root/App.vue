@@ -18,7 +18,6 @@
             <snackbar />
             <file-viewer />
             <loader-bar />
-            <status-message />
           </div>
         </div>
       </div>
@@ -31,12 +30,12 @@
       <router-view />
       <loader-bar />
       <snackbar />
-      <status-message />
     </template>
     <template v-else>
       <router-view />
-      <status-message />
     </template>
+
+    <status-message />
   </div>
 </template>
 
