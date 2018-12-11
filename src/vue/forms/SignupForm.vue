@@ -4,7 +4,7 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="$v.form.email.$touch()"
+          @blur="touchField(`form.email`)"
           :label="globalize('auth-pages.email')"
           :error-message="errorMessage(`form.email`)"
         />
@@ -14,7 +14,7 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="$v.form.password.$touch()"
+          @blur="touchField(`form.password`)"
           :error-message="errorMessage(`form.password`)"
           :label="globalize('auth-pages.password')"
           :type="`password`"
@@ -25,7 +25,7 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="$v.form.confirmPassword.$touch()"
+          @blur="touchField(`form.confirmPassword`)"
           :error-message="errorMessage(`form.confirmPassword`)"
           :label="globalize('auth-pages.confirm-password')"
           :type="`password`"

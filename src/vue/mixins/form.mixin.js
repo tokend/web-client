@@ -62,6 +62,13 @@ export default {
         }
       }
     },
+    touchField (fieldName) {
+      const field = safeGet(this.$v, fieldName)
+      if (!field) {
+        return
+      }
+      field.$touch()
+    },
     disableForm () {
       this.formMixin.isDisabled = true
     },
