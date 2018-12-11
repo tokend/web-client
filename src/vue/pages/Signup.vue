@@ -56,6 +56,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import { vueRoutes } from '@/vue-router'
+import { mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'signup',
@@ -71,6 +73,9 @@ export default {
     vueRoutes
   }),
   methods: {
+    ...mapActions('new-wallet', {
+      storeWallet: vuexTypes.STORE_WALLET
+    }),
     handleFormSubmit (form) {
       this.email = form.email
       this.password = form.password
@@ -81,25 +86,50 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        const { wallet } = await Sdk.api.wallets.create(
+        const { response, wallet } = await Sdk.api.wallets.create(
           this.email,
           this.password,
           this.recoveryKeypair
         )
-        this.$router.push({
-          ...vueRoutes.verify,
-          params: {
-            paramsBase64: btoa(JSON.stringify({
-              email: wallet.email,
-              walletId: wallet.id
-            }))
-          }
-        })
+        if (response.data.verified) {
+          await Sdk.api.users.create(wallet.accountId)
+          this.storeWallet(wallet)
+          await this._doLegacyStuff(wallet)
+        } else {
+          this.$router.push({
+            ...vueRoutes.verify,
+            params: {
+              paramsBase64: btoa(JSON.stringify({
+                email: wallet.email,
+                walletId: wallet.id
+              }))
+            }
+          })
+        }
       } catch (e) {
         console.error(e)
         ErrorHandler.processUnexpected(e)
       }
       this.enableForm()
+    },
+    // TODO: we support old vuex for the legacy components. Remove once
+    // the legacy will be completely removed
+    async _doLegacyStuff (wallet) {
+      await this.$store.dispatch('STORE_USER_DATA_FROM_WALLET', {
+        walletId: wallet.id,
+        email: wallet.email,
+        accountId: wallet.accountId,
+        publicKey: wallet.keypair.accountId(),
+        seed: wallet.secretSeed
+      })
+
+      await Promise.all([
+        await this.$store.dispatch('GET_ACCOUNT_DETAILS'),
+        await this.$store.dispatch('GET_USER_DETAILS'),
+        await this.$store.dispatch('GET_ACCOUNT_BALANCES')
+      ])
+      this.$store.dispatch('LOG_IN')
+      this.$router.push({ name: 'app' })
     }
   }
 }

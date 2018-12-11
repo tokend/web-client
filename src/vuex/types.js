@@ -22,6 +22,7 @@ const actions = {
 
   // wallet
   LOAD_WALLET: 'LOAD_WALLET',
+  STORE_WALLET: 'STORE_WALLET',
 
   // factors
   LOAD_FACTORS: 'LOAD_FACTORS',

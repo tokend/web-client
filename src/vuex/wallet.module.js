@@ -32,6 +32,9 @@ export const mutations = {
 export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
     commit(vuexTypes.SET_WALLET, await Sdk.api.wallets.get(email, password))
+  },
+  [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
+    commit(vuexTypes.SET_WALLET, wallet)
   }
 }
 
