@@ -17,6 +17,7 @@
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
+const CLOSE_TIMEOUT_MS = 5000
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
@@ -29,7 +30,8 @@ export default {
   data: _ => ({
     message: '',
     messageType: '',
-    isShown: false
+    isShown: false,
+    timeoutId: null
   }),
   created () {
     Bus.on(Bus.eventList.success, message =>
@@ -48,6 +50,14 @@ export default {
         context: messageType
       })
       this.isShown = true
+
+      if (this.timeoutId) {
+        window.clearTimeout(this.timeoutId)
+      }
+
+      this.timeoutId = window.setTimeout(_ => {
+        this.isShown = false
+      }, CLOSE_TIMEOUT_MS)
     }
   }
 }
