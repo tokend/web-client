@@ -26,6 +26,8 @@
 <script>
 import LoginForm from '../forms/LoginForm'
 import { vueRoutes } from '@/vue-router'
+import { Sdk } from '@/sdk'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'login',
@@ -34,7 +36,15 @@ export default {
   },
   data: _ => ({
     vueRoutes
-  })
+  }),
+  async created () {
+    // Verifying email if user came here from email link
+    const emailAction = this.$route.params.encodedEmailAction
+    if (emailAction) {
+      await Sdk.api.wallets.verifyEmail(emailAction)
+      Bus.success('auth-pages.email-verified')
+    }
+  }
 }
 </script>
 
