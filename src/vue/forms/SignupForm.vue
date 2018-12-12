@@ -38,6 +38,7 @@
 
     <div class="app__form-actions">
       <button
+        v-ripple
         type="submit"
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"

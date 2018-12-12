@@ -1,4 +1,7 @@
-const Ripple = {
+const COLOR_DEFAULT = 'rgba(58, 65, 128, .2)'
+const DURATION_DEFAULT = 500
+
+export default {
   bind (el, binding) {
     el.onmousedown = function (e) {
       const target = this
@@ -13,8 +16,8 @@ const Ripple = {
       const maxY = Math.max(dy, height - dy)
       const radius = Math.sqrt((maxX * maxX) + (maxY * maxY))
 
-      const bgColor = getProperty(binding, 'color') || Ripple.color || 'rgba(0, 0, 0, 0.25)'
-      const duration = getProperty(binding, 'duration') || Ripple.duration || 500
+      const bgColor = binding.color || COLOR_DEFAULT
+      const duration = binding.color || DURATION_DEFAULT
 
       const ripple = document.createElement('div')
       const rippleContainer = document.createElement('div')
@@ -61,12 +64,3 @@ const Ripple = {
     }
   }
 }
-
-function getProperty (binding, propertyName) {
-  if (binding.value) {
-    return binding.value[propertyName] ? binding.value[propertyName] : false
-  }
-  return false
-}
-
-export default Ripple

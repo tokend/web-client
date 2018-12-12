@@ -11,6 +11,7 @@
 
     <div class="auth-page__actions">
       <button
+        v-ripple
         @click="submit"
         class="auth-page__submit-btn"
         :disabled="formMixin.isDisabled"
@@ -18,6 +19,7 @@
         {{ 'auth-pages.request-new-email' | globalize }}
       </button>
       <router-link
+        v-ripple
         class="auth-page__cancel-btn"
         :to="vueRoutes.login"
         tag="button"

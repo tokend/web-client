@@ -25,6 +25,7 @@
 
         <div class="signup__actions">
           <button
+            v-ripple
             @click="submit"
             :disabled="formMixin.isDisabled"
             class="auth-page__submit-btn"
