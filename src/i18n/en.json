@@ -91,6 +91,7 @@
       "continue": "Continue",
       "get-started": "Get started",
       "recover-account": "Recover your account",
+      "recovered": "Account recovered. You can now use the new credentials to log in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
       "save-recovery-seed": "Save this seed to your offline device",

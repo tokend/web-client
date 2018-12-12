@@ -70,8 +70,10 @@ import {
   seed
 } from '@validators'
 import { Sdk } from '@/sdk'
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router'
 
 export default {
   name: 'recovery-form',
@@ -109,6 +111,8 @@ export default {
           this.form.recoverySeed,
           this.form.password
         )
+        Bus.success('auth-pages.recovered')
+        this.$router.push(vueRoutes.login)
       } catch (e) {
         console.error(e)
         ErrorHandler.processUnexpected(e)
