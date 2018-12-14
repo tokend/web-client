@@ -125,13 +125,11 @@
     },
 
     "fee": {
-      "fees_your_fees": "Your %{asset} fees",
-      "fees_asset": "Asset",
-      "fees_payment_fee": "Payment fee",
-      "fees_offer_fee": "Offer fee",
-      "fees_withdrawal_fee": "Withdrawal fee",
-      "fees_issuance_fee": "Issuance fee",
-      "fees_invest_fee": "Invest fee",
+      "fees_payment_fee": "Payment",
+      "fees_offer_fee": "Offer",
+      "fees_withdrawal_fee": "Withdrawal",
+      "fees_issuance_fee": "Issuance",
+      "fees_invest_fee": "Invest",
       "fees_incoming_outgoing": "Incoming & Outgoing",
       "fees_outgoing": "Outgoing",
       "fees_incoming": "Incoming",

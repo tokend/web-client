@@ -7,28 +7,25 @@
           v-for="(assetFees, asset) in overviewFees"
           :key="asset"
         >
-          <div class="fee__header">
-            {{ i18n.fees_your_fees({ asset: asset }) }}
-          </div>
           <md-table>
             <md-table-row>
               <md-table-head>
-                {{ i18n.fees_fee_type() }}
+                {{ 'fee.fees_fee_type' | globalize }}
               </md-table-head>
               <md-table-head>
-                {{ i18n.fees_subtype() }}
+                {{ 'fee.fees_subtype' | globalize }}
               </md-table-head>
               <md-table-head>
-                {{ i18n.fees_fixed() }}
+                {{ 'fee.fees_fixed' | globalize }}
               </md-table-head>
               <md-table-head>
-                {{ i18n.fees_percent() }}
+                {{ 'fee.fees_percent' | globalize }}
               </md-table-head>
               <md-table-head>
-                {{ i18n.fees_lower_bound() }} ({{ asset }})
+                {{ 'fee.fees_lower_bound' | globalize }} ({{ asset }})
               </md-table-head>
               <md-table-head>
-                {{ i18n.fees_upper_bound() }} ({{ asset }})
+                {{ 'fee.fees_upper_bound' | globalize }} ({{ asset }})
               </md-table-head>
             </md-table-row>
             <md-table-row
@@ -42,23 +39,23 @@
                 {{ fee.subtype | localizeFeeSubType }}
               </md-table-cell>
               <md-table-cell>
-                {{ i18n.c(fee.fixed) }} {{ fee.fee_asset }}
+                {{ fee.fixed | formatMoney }} {{ fee.fee_asset }}
               </md-table-cell>
               <md-table-cell>
-                {{ i18n.c(fee.percent) }}%
+                {{ fee.percent | formatMoney }}%
               </md-table-cell>
               <md-table-cell>
-                {{ i18n.c(fee.lower_bound) }}
+                {{ fee.lower_bound | formatMoney }}
               </md-table-cell>
               <md-table-cell>
-                {{ i18n.c(fee.upper_bound) }}
+                {{ fee.upper_bound | formatMoney }}
               </md-table-cell>
             </md-table-row>
           </md-table>
         </div>
       </md-card-content>
       <md-card-content v-else>
-        {{ i18n.lbl_loading() }}
+        {{ 'fee.lbl_loading' | globalize }}
       </md-card-content>
     </md-card>
   </div>
