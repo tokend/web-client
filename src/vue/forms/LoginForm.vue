@@ -100,7 +100,7 @@ export default {
           return
         }
         console.error(e)
-        ErrorHandler.processUnexpected(e)
+        ErrorHandler.process(e)
       }
       this.enableForm()
     },

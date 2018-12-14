@@ -14,7 +14,7 @@ const { ErrorHandler } = webpackInjector({
 })
 
 describe('error-handler unit test', () => {
-  it('processUnexpected() emits Bus.error event', () => {
+  it('process() emits Bus.error event', () => {
     const error = new Error('some error')
 
     ErrorHandler.processUnexpected(error)
@@ -22,7 +22,7 @@ describe('error-handler unit test', () => {
     expect(Bus.error.calledOnce).to.be.true
   })
 
-  describe('processUnexpected calls globalize() with proper translation id for sdk errors', () => {
+  describe('process calls globalize() with proper translation id for sdk errors', () => {
     const expectedTranslations = {
       NetworkError: 'errors.network',
       TimeoutError: 'errors.timeout',

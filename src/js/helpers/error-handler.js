@@ -3,7 +3,7 @@ import { errors } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 
 export class ErrorHandler {
-  static processUnexpected (error) {
+  static process (error) {
     let translationId
 
     switch (error.constructor) {

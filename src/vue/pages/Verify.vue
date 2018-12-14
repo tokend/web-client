@@ -72,7 +72,7 @@ export default {
         await Sdk.api.wallets.resendEmail(this.walletId)
         Bus.success('auth-pages.email-requested')
       } catch (e) {
-        ErrorHandler.processUnexpected(e)
+        ErrorHandler.process(e)
       }
       this.enableForm()
     }
