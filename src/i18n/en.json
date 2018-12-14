@@ -138,7 +138,8 @@
       "fees_percent": "Percent",
       "fees_lower_bound": "Lower bound",
       "fees_upper_bound": "Upper bound",
-      "fees_subtype": "Subtype"
+      "fees_subtype": "Subtype",
+      "lbl_loading": "Loading"
     }
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="fee">
     <md-card>
-      <md-card-content v-if="overviewFees">
+      <md-card-content v-if="fees">
         <div
           class="fee__asset-info"
-          v-for="(assetFees, asset) in overviewFees"
+          v-for="(assetFees, asset) in fees"
           :key="asset"
         >
           <md-table>
@@ -22,10 +22,10 @@
                 {{ 'fee.fees_percent' | globalize }}
               </md-table-head>
               <md-table-head>
-                {{ 'fee.fees_lower_bound' | globalize }} ({{ asset }})
+                {{ 'fee.fees_lower_bound' | globalize }}
               </md-table-head>
               <md-table-head>
-                {{ 'fee.fees_upper_bound' | globalize }} ({{ asset }})
+                {{ 'fee.fees_upper_bound' | globalize }}
               </md-table-head>
             </md-table-row>
             <md-table-row
@@ -33,7 +33,7 @@
               :key="i"
             >
               <md-table-cell>
-                {{ fee.fee_type | localizeFeeType }}
+                {{ fee.feeType | localizeFeeType }}
               </md-table-cell>
               <md-table-cell>
                 {{ fee.subtype | localizeFeeSubType }}
@@ -45,10 +45,10 @@
                 {{ fee.percent | formatMoney }}%
               </md-table-cell>
               <md-table-cell>
-                {{ fee.lower_bound | formatMoney }}
+                {{ fee.lowerBound | formatMoney }}
               </md-table-cell>
               <md-table-cell>
-                {{ fee.upper_bound | formatMoney }}
+                {{ fee.upperBound | formatMoney }}
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -62,17 +62,25 @@
 </template>
 
 <script>
-import { i18n } from 'L@/js/i18n/index'
-import { feeService } from 'L@/js/services/fees.service'
+import { Sdk } from '@/sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   data: _ => ({
-    i18n,
-    overviewFees: null
+    fees: null
   }),
+  computed: {
+    ...mapGetters('new-wallet', [
+      vuexTypes.wallet
+    ])
+  },
   async created () {
     try {
-      this.overviewFees = await feeService.loadAccountFees()
+      this.fees = (await Sdk.horizon.fees.getAll({
+        account_id: this.wallet.account_id
+      }))._data.fees
+      console.log(this.fees)
     } catch (error) {
       console.error(error)
     }
