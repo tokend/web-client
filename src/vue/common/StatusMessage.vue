@@ -72,7 +72,7 @@ export default {
     .6 * $point
     .6 * $point
     -.4 * $point
-          $col-status-msg-shadow;
+    $col-status-msg-shadow;
   border-radius: .3 * $point;
   font-size: 1.6 * $point;
   padding: 2 * $point 4 * $point;
