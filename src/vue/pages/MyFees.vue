@@ -1,12 +1,14 @@
 <template>
   <div class="fee">
+    <select-field-custom
+      v-if="fees"
+      v-model="currentAssetName"
+      :values="assetNames"
+      :key="currentAssetName"
+    />
     <md-card>
       <md-card-content v-if="fees">
-        <div
-          class="fee__asset-info"
-          v-for="(assetFees, asset) in fees"
-          :key="asset"
-        >
+        <div class="fee__asset-info">
           <md-table>
             <md-table-row>
               <md-table-head>
@@ -62,25 +64,37 @@
 </template>
 
 <script>
+import SelectFieldCustom from '../fields/SelectFieldCustom'
+
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
+  components: {
+    SelectFieldCustom
+  },
   data: _ => ({
-    fees: null
+    fees: null,
+    currentAssetName: ''
   }),
   computed: {
     ...mapGetters('new-wallet', [
       vuexTypes.wallet
-    ])
+    ]),
+    assetNames () {
+      return Object.keys(this.fees)
+    },
+    assetFees () {
+      return this.fees[this.currentAssetName]
+    }
   },
   async created () {
     try {
       this.fees = (await Sdk.horizon.fees.getAll({
         account_id: this.wallet.account_id
       }))._data.fees
-      console.log(this.fees)
+      this.currentAssetName = this.assetNames[0]
     } catch (error) {
       console.error(error)
     }
