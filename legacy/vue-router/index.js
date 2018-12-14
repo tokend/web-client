@@ -14,6 +14,8 @@ import Signup from '@/vue/pages/Signup'
 import Recovery from '@/vue/pages/Recovery'
 import Verify from '@/vue/pages/Verify'
 
+import MyFees from '@/vue/pages/MyFees'
+
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'
 import Downloads from 'L@/vue/public/Public.Downloads'
@@ -65,9 +67,6 @@ import SaleCreationIndex from 'L@/vue/app/saleCreation/SaleCreation.Index'
 
 import Requests from 'L@/vue/app/requests/Requests.Entry'
 import RequestsIndex from 'L@/vue/app/requests/index/Requests.Index'
-
-import Fee from 'L@/vue/app/fee/Fee.Entry'
-import FeeIndex from 'L@/vue/app/fee/index/Fee.Index'
 
 import Sales from 'L@/vue/app/sales/Sales.Entry'
 import SalesDetails from 'L@/vue/app/sales/sale_details/Sales.Details'
@@ -445,15 +444,7 @@ const router = new Router({
           feature_flag: config.FEATURE_FLAGS.feesExplorer,
           name: 'app.fees',
           path: '/fee',
-          component: Fee,
-          redirect: { path: '/fee/index' },
-          children: [
-            {
-              path: '/fee/index',
-              name: 'fee.index',
-              component: FeeIndex
-            }
-          ]
+          component: MyFees
         },
         {
           feature_flag: config.FEATURE_FLAGS.sales,
