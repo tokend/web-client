@@ -120,7 +120,13 @@ describe('LoginForm component unit test', () => {
 
       await wrapper.vm.submit()
 
-      expect(spyLoadWallet.calledWithMatch({ email, password })).to.be.true
+      expect(spyLoadWallet
+        .withArgs(sinon.match.any, { email, password })
+        .calledOnce
+      )
+        .to
+        .be
+        .true
     })
 
     it('submit() creates user when it doesn\'t exist', async () => {
