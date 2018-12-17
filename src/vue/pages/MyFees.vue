@@ -6,48 +6,48 @@
       :key="currentAssetName"
     />
     <div class="fee__asset-info">
-      <md-table>
-        <md-table-row>
-          <md-table-head>
+      <table-custom>
+        <table-custom-row>
+          <table-custom-head>
             {{ 'fee.fee_type' | globalize }}
-          </md-table-head>
-          <md-table-head>
+          </table-custom-head>
+          <table-custom-head>
             {{ 'fee.subtype' | globalize }}
-          </md-table-head>
-          <md-table-head>
+          </table-custom-head>
+          <table-custom-head>
             {{ 'fee.fixed' | globalize }}
-          </md-table-head>
-          <md-table-head>
+          </table-custom-head>
+          <table-custom-head>
             {{ 'fee.percent' | globalize }}
-          </md-table-head>
-          <md-table-head>
+          </table-custom-head>
+          <table-custom-head>
             {{ 'fee.lower_bound' | globalize }}
-          </md-table-head>
-          <md-table-head>
+          </table-custom-head>
+          <table-custom-head>
             {{ 'fee.upper_bound' | globalize }}
-          </md-table-head>
-        </md-table-row>
-        <md-table-row v-for="(fee, i) in assetFees" :key="i">
-          <md-table-cell>
+          </table-custom-head>
+        </table-custom-row>
+        <table-custom-row v-for="(fee, i) in assetFees" :key="i">
+          <table-custom-cell>
             {{ fee.feeType | localizeFeeType }}
-          </md-table-cell>
-          <md-table-cell>
+          </table-custom-cell>
+          <table-custom-cell>
             {{ fee.subtype | localizeFeeSubType }}
-          </md-table-cell>
-          <md-table-cell>
+          </table-custom-cell>
+          <table-custom-cell>
             {{ fee.fixed | formatMoney }} {{ fee.feeAsset }}
-          </md-table-cell>
-          <md-table-cell>
+          </table-custom-cell>
+          <table-custom-cell>
             {{ fee.percent | formatMoney }}%
-          </md-table-cell>
-          <md-table-cell>
+          </table-custom-cell>
+          <table-custom-cell>
             {{ fee.lowerBound | formatMoney }}
-          </md-table-cell>
-          <md-table-cell>
+          </table-custom-cell>
+          <table-custom-cell>
             {{ fee.upperBound | formatMoney }}
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
+          </table-custom-cell>
+        </table-custom-row>
+      </table-custom>
     </div>
   </div>
   <div v-else>
@@ -57,6 +57,10 @@
 
 <script>
 import SelectFieldCustom from '../fields/SelectFieldCustom'
+import TableCustom from '../common/TableCustom'
+import TableCustomRow from '../common/TableCustomRow'
+import TableCustomHead from '../common/TableCustomHead'
+import TableCustomCell from '../common/TableCustomCell'
 
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -65,7 +69,11 @@ import { vuexTypes } from '@/vuex'
 export default {
   name: 'my-fees',
   components: {
-    SelectFieldCustom
+    SelectFieldCustom,
+    TableCustom,
+    TableCustomRow,
+    TableCustomHead,
+    TableCustomCell
   },
   data: _ => ({
     fees: null,
@@ -96,20 +104,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "L@/scss/variables";
+@import "@/scss/variables";
 
 .fee {
   width: 100%;
-  max-width: 1100px;
+  max-width: 110 * $point;
 }
 
 .fee__asset-info {
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.fee__header {
-  padding-left: 1.5rem;
-  font-weight: 600;
+  margin: 2.1 * $point 0;
 }
 </style>

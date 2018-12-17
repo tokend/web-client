@@ -11,6 +11,8 @@ $_lightRed: #ef5350;
 $_cornflowerBlue: #7b6eff;
 $_green: #33A494;
 $_orangePeel: #f2a100;
+$_solitude: #f5f6f9;
+$_deluge: #837fa1;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -65,5 +67,12 @@ $col-drawer-head-text: $_eastBay;
 
 // status-message colors:
 $col-status-msg-shadow: rgba(0, 0, 0, 0.25);
+
+// table colors
+$col-table-background: $_white;
+$col-table-alt-row-background: $_solitude;
+$col-table-cell-text: $col-primary;
+$col-table-head-text: $_deluge;
+$col-table-row-selected: darken($_solitude, 10%)
 
 // TODO: paste here variables that are ready to use during the refactor process
