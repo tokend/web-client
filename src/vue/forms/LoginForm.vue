@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField(`form.email`)"
+          @blur="touchField('form.email')"
           id="login-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="errorMessage(`form.email`)"
+          :error-message="errorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,11 +15,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField(`form.password`)"
+          @blur="touchField('form.password')"
           id="login-password"
-          :error-message="errorMessage(`form.password`)"
+          :error-message="errorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
-          :type="`password`"
+          :type="'password'"
         />
       </div>
     </div>
