@@ -23,10 +23,15 @@ $col-primary-flat-hover: rgba($col-primary, .2);
 $col-accent: $_lightRed;
 
 // status colors:
-$col-error: $_lightRed;
 $col-warning: $_orangePeel;
-$col-info: $_cornflowerBlue;
 $col-success: $_green;
+$col-error: $_lightRed;
+$col-info: $_cornflowerBlue;
+
+$col-text-msg-warning: $_white;
+$col-text-msg-success: $_white;
+$col-text-msg-error: $_white;
+$col-text-msg-info: $_white;
 
 // global colors
 $col-text: $_eastBay;
