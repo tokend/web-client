@@ -43,10 +43,11 @@ import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatInteger } from '@/vue/filters/formatInteger'
 import { globalize } from '@/vue/filters/globalize'
 
+import { localizeFeeType } from '@/vue/filters/localizeFeeType'
+import { localizeFeeSubType } from '@/vue/filters/localizeFeeSubType'
+
 // legacy filters
 import { translate } from 'L@/vue/common/filters/translate'
-import { localizeFeeType } from '@/vue/filters/localizeFeeType'
-import { localizeFeeSubType } from '../legacy/vue/common/filters/localizeFeeSubType'
 
 i18next.init(i18nOptions)
 
