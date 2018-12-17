@@ -24,6 +24,7 @@ export default {
   line-height: 1.6 * $point;
   text-align: left;
 }
+
 .table-custom__head-container {
   height: 4.2 * $point;
   padding-top: 1.5 * $point;
@@ -32,6 +33,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .table-custom__head-label {
   color: $col-table-head-text;
   height: 2.8 * $point;

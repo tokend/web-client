@@ -23,6 +23,7 @@ export default {
   line-height: 1.8 * $point;
   color: $col-table-cell-text;
 }
+
 .table-custom__cell-container {
   padding: .6 * $point 1.6 * $point;
 }
