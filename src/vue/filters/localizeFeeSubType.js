@@ -1,11 +1,11 @@
-import { globalize } from '@/vue/filters/globalize'
+import i18next from 'i18next'
 
 const FEE_SUBTYPE = Object.freeze({
-  0: 'my-fee-page.incoming_outgoing',
-  1: 'my-fee-page.outgoing',
-  2: 'my-fee-page.incoming'
+  0: 'fee.incoming_outgoing',
+  1: 'fee.outgoing',
+  2: 'fee.incoming'
 })
 
 export function localizeFeeSubType (subtype) {
-  return globalize(FEE_SUBTYPE[subtype])
+  return i18next.t(FEE_SUBTYPE[subtype])
 }

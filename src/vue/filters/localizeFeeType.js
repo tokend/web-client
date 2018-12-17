@@ -1,4 +1,4 @@
-import { globalize } from '@/vue/filters/globalize'
+import i18next from 'i18next'
 
 const FEE_TYPE = Object.freeze({
   0: 'fee.payment_fee',
@@ -8,9 +8,9 @@ const FEE_TYPE = Object.freeze({
   4: 'fee.invest_fee',
   5: 'fee.capital_deployment_fee',
   6: 'fee.operation_fee',
-  7: 'fee.invest_fee'
+  7: 'fee.payout_fee'
 })
 
 export function localizeFeeType (type) {
-  return globalize(FEE_TYPE[type])
+  return i18next.t(FEE_TYPE[type])
 }

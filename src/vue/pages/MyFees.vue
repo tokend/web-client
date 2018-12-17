@@ -96,8 +96,8 @@ export default {
       this.fees = (await Sdk.horizon.fees.getAll({
         account_id: this.wallet.account_id
       }))._data.fees
-      this.currentAssetName = this.assetNames.length > 0 ?
-        this.assetNames[0].toUpperCase() : ''
+      this.currentAssetName = this.assetNames.length > 0
+        ? this.assetNames[0].toUpperCase() : ''
     } catch (error) {
       console.error(error)
     }
