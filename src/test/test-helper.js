@@ -11,18 +11,6 @@ export class TestHelper {
     i18next.init(options)
   }
 
-  static isFieldValid (componentWrapper, invalidFieldName, invalidFieldValue) {
-    componentWrapper.setData({
-      form: {
-        [invalidFieldName]: invalidFieldValue
-      }
-    })
-
-    const field = componentWrapper.vm.$v.form[invalidFieldName]
-    field.$touch()
-    return !field.$invalid
-  }
-
   static resetTranslations () {
     const options = _cloneDeep(i18nOptions)
     options.lng = 'en'
