@@ -92,14 +92,20 @@ export default {
     }
   },
   async created () {
-    try {
-      this.fees = (await Sdk.horizon.fees.getAll({
-        account_id: this.wallet.account_id
-      }))._data.fees
-      this.currentAssetName = this.assetNames.length > 0
-        ? this.assetNames[0].toUpperCase() : ''
-    } catch (error) {
-      console.error(error)
+    await this.fetchFees()
+    this.currentAssetName = this.assetNames.length > 0
+      ? this.assetNames[0].toUpperCase() : ''
+  },
+  methods: {
+    async fetchFees () {
+      try {
+        const response = await Sdk.horizon.fees.getAll({
+          account_id: this.wallet.account_id
+        })
+        this.fees = response._data.fees
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }
