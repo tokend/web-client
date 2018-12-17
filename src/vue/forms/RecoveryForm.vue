@@ -6,7 +6,7 @@
           v-model="form.email"
           @blur="touchField(`form.email`)"
           id="recovery-email"
-          :label="globalize('auth-pages.email')"
+          :label="'auth-pages.email' | globalize"
           :error-message="errorMessage(`form.email`)"
         />
       </div>
@@ -18,7 +18,7 @@
           @blur="touchField(`form.password`)"
           id="recovery-password"
           :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth-pages.password')"
+          :label="'auth-pages.password' | globalize"
           :type="`password`"
         />
       </div>
@@ -30,7 +30,7 @@
           @blur="touchField(`form.confirmPassword`)"
           id="recovery-confirm-password"
           :error-message="errorMessage(`form.confirmPassword`)"
-          :label="globalize('auth-pages.confirm-password')"
+          :label="'auth-pages.confirm-password' | globalize"
           :type="`password`"
         />
       </div>
@@ -42,7 +42,7 @@
           @blur="touchField(`form.recoverySeed`)"
           id="recovery-seed"
           :error-message="errorMessage(`form.recoverySeed`)"
-          :label="globalize('auth-pages.recovery-seed')"
+          :label="'auth-pages.recovery-seed' | globalize"
           :type="`password`"
         />
       </div>
@@ -73,7 +73,6 @@ import {
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { globalize } from '@/vue/filters/globalize'
 import { vueRoutes } from '@/vue-router'
 
 export default {
@@ -100,7 +99,6 @@ export default {
     }
   },
   methods: {
-    globalize,
     async submit () {
       if (!this.isFormValid()) {
         return

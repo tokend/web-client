@@ -12,7 +12,7 @@
     <div class="key-viewer__clipboard-wrp">
       <clipboard-field
         :value="value"
-        :label="globalize('auth-pages.recovery-seed')"
+        :label="'auth-pages.recovery-seed' | globalize"
       />
     </div>
   </div>
@@ -26,8 +26,6 @@
 import QrCode from 'vue-qr'
 import ClipboardField from '../fields/ClipboardField'
 
-import { globalize } from '@/vue/filters/globalize'
-
 export default {
   name: 'key-viewer',
   components: {
@@ -39,8 +37,7 @@ export default {
       type: String,
       required: true
     }
-  },
-  methods: { globalize }
+  }
 }
 </script>
 

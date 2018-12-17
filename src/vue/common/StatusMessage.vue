@@ -1,6 +1,12 @@
 <template>
   <div v-if="isShown" :class="`status-message status-message--${messageType}`">
-    <p class="status-message__content">{{ message | globalize }}</p>
+    <p class="status-message__content">
+      {{
+        messageId | globalize({
+          context: messageType
+        })
+      }}
+    </p>
     <div class="status-message__btn-wrp">
       <button class="status-message__btn" @click="isShown = false">
         {{
@@ -15,7 +21,6 @@
 
 <script>
 import { Bus } from '@/js/helpers/event-bus'
-import { globalize } from '@/vue/filters/globalize'
 
 const CLOSE_TIMEOUT_MS = 5000
 const MESSAGE_TYPES = Object.freeze({
@@ -28,7 +33,7 @@ const MESSAGE_TYPES = Object.freeze({
 export default {
   name: 'message',
   data: _ => ({
-    message: '',
+    messageId: '',
     messageType: '',
     isShown: false,
     timeoutId: null
@@ -46,9 +51,7 @@ export default {
   methods: {
     show (messageType, message) {
       this.messageType = messageType
-      this.message = message || globalize('status-message.default-message', {
-        context: messageType
-      })
+      this.messageId = message || 'status-message.default-message'
       this.isShown = true
 
       if (this.timeoutId) {

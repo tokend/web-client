@@ -6,7 +6,7 @@
           v-model="form.email"
           @blur="touchField(`form.email`)"
           id="signup-email"
-          :label="globalize('auth-pages.email')"
+          :label="'auth-pages.email' | globalize"
           :error-message="errorMessage(`form.email`)"
         />
       </div>
@@ -18,7 +18,7 @@
           @blur="touchField(`form.password`)"
           id="signup-password"
           :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth-pages.password')"
+          :label="'auth-pages.password' | globalize"
           :type="`password`"
         />
       </div>
@@ -30,7 +30,7 @@
           @blur="touchField(`form.confirmPassword`)"
           id="signup-confirm-password"
           :error-message="errorMessage(`form.confirmPassword`)"
-          :label="globalize('auth-pages.confirm-password')"
+          :label="'auth-pages.confirm-password' | globalize"
           :type="`password`"
         />
       </div>
@@ -52,7 +52,6 @@
 <script>
 import FormMixin from '../mixins/form.mixin'
 
-import { globalize } from '@/vue/filters/globalize'
 import {
   email,
   required,
@@ -93,7 +92,6 @@ export default {
     }
   },
   methods: {
-    globalize,
     async submit () {
       if (!this.isFormValid()) {
         return
