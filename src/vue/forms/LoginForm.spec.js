@@ -5,13 +5,15 @@ import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
-// import { vuexTypes } from '@/vuex'
-// import { errors } from '@tokend/js-sdk'
-import { createLocalVue, mount } from '@vue/test-utils'
+import { vuexTypes } from '@/vuex'
+import { errors } from '@tokend/js-sdk'
+import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
-//
-// import { MockHelper } from '@/test'
-// import { TestHelper } from '@/test/test-helper'
+
+import walletModule from '@/vuex/wallet.module'
+
+import { MockHelper } from '@/test'
+import { TestHelper } from '@/test/test-helper'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -70,89 +72,89 @@ describe('LoginForm component unit test', () => {
     }
   })
 
-  // describe('methods', () => {
-  //   let wrapper
-  //   let mockHelper
-  //
-  //   let spyLoadWallet
-  //
-  //   beforeEach(() => {
-  //     mockHelper = new MockHelper()
-  //     const actions = walletModule.actions
-  //     const getters = walletModule.getters
-  //
-  //     spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
-  //     sinon.stub(getters, vuexTypes.wallet).returns(
-  //       mockHelper.getMockWallet()
-  //     )
-  //
-  //     const store = new Vuex.Store({
-  //       modules: {
-  //         'new-wallet': {
-  //           namespaced: true,
-  //           actions,
-  //           getters
-  //         }
-  //       }
-  //     })
-  //
-  //     wrapper = shallowMount(LoginForm, {
-  //       store,
-  //       localVue,
-  //       methods: {
-  //         isFormValid: sinon.stub().returns(true),
-  //         _doLegacyStuff: sinon.stub().resolves()
-  //       }
-  //     })
-  //   })
-  //
-  //   it('submit() loads wallet with provided credentials', async () => {
-  //     const email = 'alice@mail.com'
-  //     const password = 'qwe123'
-  //
-  //     sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
-  //
-  //     wrapper.setData({
-  //       form: { email, password }
-  //     })
-  //
-  //     await wrapper.vm.submit()
-  //
-  //     expect(spyLoadWallet.calledWithMatch({ email, password })).to.be.true
-  //   })
-  //
-  //   it('submit() creates user when it doesn\'t exist', async () => {
-  //     sinon.stub(wrapper.vm, 'isUserExist').resolves(false)
-  //
-  //     const resource = mockHelper.getApiResourcePrototype('users')
-  //     const spy = sinon.stub(resource, 'create').resolves()
-  //
-  //     await wrapper.vm.submit()
-  //
-  //     expect(spy.calledOnce).to.be.true
-  //   })
-  //
-  //   it('submit() doesn\'t create user when it exists', async () => {
-  //     sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
-  //
-  //     const resource = mockHelper.getApiResourcePrototype('users')
-  //     const spy = sinon.stub(resource, 'create').resolves()
-  //
-  //     await wrapper.vm.submit()
-  //
-  //     expect(spy.notCalled).to.be.true
-  //   })
-  //
-  //   it('isUserExist method returns false for 404 error', async () => {
-  //     const resource = mockHelper.getApiResourcePrototype('users')
-  //
-  //     sinon
-  //       .stub(resource, 'get')
-  //       .throws(TestHelper.getError(errors.NotFoundError))
-  //
-  //     const result = await wrapper.vm.isUserExist()
-  //
-  //     expect(result).to.be.false
-  //   })
-  // })
+  describe('methods', () => {
+    let wrapper
+    let mockHelper
+
+    let spyLoadWallet
+
+    beforeEach(() => {
+      mockHelper = new MockHelper()
+      const actions = walletModule.actions
+      const getters = walletModule.getters
+
+      spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
+      sinon.stub(getters, vuexTypes.wallet).returns(
+        mockHelper.getMockWallet()
+      )
+
+      const store = new Vuex.Store({
+        modules: {
+          'new-wallet': {
+            namespaced: true,
+            actions,
+            getters
+          }
+        }
+      })
+
+      wrapper = shallowMount(LoginForm, {
+        store,
+        localVue,
+        methods: {
+          isFormValid: sinon.stub().returns(true),
+          _doLegacyStuff: sinon.stub().resolves()
+        }
+      })
+    })
+
+    it('submit() loads wallet with provided credentials', async () => {
+      const email = 'alice@mail.com'
+      const password = 'qwe123'
+
+      sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
+
+      wrapper.setData({
+        form: { email, password }
+      })
+
+      await wrapper.vm.submit()
+
+      expect(spyLoadWallet.calledWithMatch({ email, password })).to.be.true
+    })
+
+    it('submit() creates user when it doesn\'t exist', async () => {
+      sinon.stub(wrapper.vm, 'isUserExist').resolves(false)
+
+      const resource = mockHelper.getApiResourcePrototype('users')
+      const spy = sinon.stub(resource, 'create').resolves()
+
+      await wrapper.vm.submit()
+
+      expect(spy.calledOnce).to.be.true
+    })
+
+    it('submit() doesn\'t create user when it exists', async () => {
+      sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
+
+      const resource = mockHelper.getApiResourcePrototype('users')
+      const spy = sinon.stub(resource, 'create').resolves()
+
+      await wrapper.vm.submit()
+
+      expect(spy.notCalled).to.be.true
+    })
+
+    it('isUserExist method returns false for 404 error', async () => {
+      const resource = mockHelper.getApiResourcePrototype('users')
+
+      sinon
+        .stub(resource, 'get')
+        .throws(TestHelper.getError(errors.NotFoundError))
+
+      const result = await wrapper.vm.isUserExist()
+
+      expect(result).to.be.false
+    })
+  })
 })
