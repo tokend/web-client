@@ -37,7 +37,7 @@ describe('factors.module end-to-end test', () => {
         state: {},
         modules: { factors }
       })
-      mockHelper.mockWallet({ walletId })
+      mockHelper.useMockWallet({ walletId })
     })
 
     it('factors', async () => {

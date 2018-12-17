@@ -2,8 +2,7 @@ import RecoveryForm from './RecoveryForm'
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
-import { createLocalVue, shallowMount } from '@vue/test-utils'
-import { TestHelper } from '@/test/test-helper'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -17,120 +16,72 @@ localVue.filter('globalize', globalize)
 Vue.config.silent = true
 
 describe('RecoveryForm component test', () => {
-  let wrapper
   beforeEach(() => {
-    wrapper = shallowMount(RecoveryForm, { localVue })
+    sinon.restore()
   })
 
-  describe('validation works correctly', () => {
-    const fields = {
-      email: {
-        valid: ['valid@mail.com', 'alice@mail.com', 'qq@mail.com'],
-        invalid: ['qweq', '@wqeqe', 'mail.com', '']
-      },
-      password: {
-        valid: ['qwe123', 'wTqw12Zewq', '1234qwe'],
-        invalid: ['qq', 'qqq13', '']
-      },
-      recoverySeed: {
-        valid: [
-          'SARPAUUZMPDS2HKGVCZZJZUQJNDYSEM4IFPINJWILIWPMFEGF4PDGVRH',
-          'SA4R2XPR4NN4BMEYBCHHVJIWUE2KT3NLB5RZBT4QXHT2IEQW5GRJ5CUA',
-          'SDXVH22GAK7E65G2M6ZGAUW3SDWRCTQJVNWNHIJR5SXRIJ5NT5ANZLW5'
-        ],
-        invalid: [
-          'GAEYQRQD4NIG7MRIZJ4NMZZEH7XPS7JRVYFYLBXF7HNBJQADUKJ6N6LL',
-          'foobar',
-          ''
-        ]
-      }
-    }
+  describe('validation rules assigned correctly', () => {
+    let wrapper
 
-    for (const [fieldName, fieldValues] of Object.entries(fields)) {
-      for (const fieldValue of fieldValues.valid) {
-        it(`considers ${fieldValue} a valid ${fieldName}`, () => {
-          expect(TestHelper.isFieldValid(
-            wrapper,
-            fieldName,
-            fieldValue
-          ))
-            .to.be.true
-        })
-      }
-      for (const fieldValue of fieldValues.invalid) {
-        it(`considers ${fieldValue} an invalid ${fieldName}`, () => {
-          expect(TestHelper.isFieldValid(
-            wrapper,
-            fieldName,
-            fieldValue
-          ))
-            .to.be.false
-        })
-      }
-    }
-
-    it('confirmPassword', () => {
-      wrapper.setData({
-        form: {
-          email: 'valid@mail.com',
-          password: 'pwd123',
-          confirmPassword: 'pwd456',
-          recoverySeed: 'SCLEBNULYANXPNXV5ACUN62KZKASKKKYJJJYDG2EALGWI5WWKOIVH57E'
-        }
-      })
-
-      expect(wrapper.vm.isFormValid()).to.be.false
-
-      wrapper.setData({
-        form: {
-          email: 'valid@mail.com',
-          password: 'pwd123',
-          confirmPassword: 'pwd123',
-          recoverySeed: 'SCLEBNULYANXPNXV5ACUN62KZKASKKKYJJJYDG2EALGWI5WWKOIVH57E'
-        }
-      })
-
-      expect(wrapper.vm.isFormValid()).to.be.true
+    beforeEach(() => {
+      wrapper = mount(RecoveryForm, { localVue })
     })
 
+    const expectedResults = {
+      email: ['required', 'email'],
+      password: ['required', 'password'],
+      confirmPassword: ['required', 'password', 'sameAsPassword'],
+      recoverySeed: ['required', 'seed']
+    }
+
+    for (const [model, rules] of Object.entries(expectedResults)) {
+      it(`${model} model is validating by proper set of rules`, () => {
+        expect(Object.keys(wrapper.vm.$v.form[model].$params))
+          .to
+          .deep
+          .equal(rules)
+      })
+    }
+
     const fieldBindings = {
-      '#recovery-email': 'form.email',
-      '#recovery-password': 'form.password',
-      '#recovery-confirm-password': 'form.confirmPassword',
-      '#recovery-seed': 'form.recoverySeed'
+      '#recovery-email': 'email',
+      '#recovery-password': 'password',
+      '#recovery-confirm-password': 'confirmPassword',
+      '#recovery-seed': 'recoverySeed'
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
-      it(`$v.${model} is touched after blur event emitted on ${selector}`, async () => {
-        const touchField = sinon.spy()
+      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
-        wrapper.setMethods({ touchField })
-        wrapper.find(selector).vm.$emit('blur')
+        wrapper
+          .find(selector)
+          .vm
+          .$emit('blur')
 
-        expect(touchField.withArgs(model).calledOnce).to.be.true
+        expect(spy.calledOnce)
+          .to
+          .be
+          .true
       })
     }
   })
 
   describe('submit method', () => {
-    let mockHelper = new MockHelper()
-    // let wrapper
-    let sdk = {
-      api: {
-        users: {}
-      }
-    }
+    let mockHelper
+    let wrapper
 
     beforeEach(() => {
+      mockHelper = new MockHelper()
       wrapper = shallowMount(RecoveryForm, {
         localVue
       })
-
-      sdk.api.wallets = mockHelper.getApiResourcePrototype('wallets')
     })
 
     it('calls SDK wallets.recovery with proper set of params', async () => {
-      sdk.api.wallets.recovery = sinon.spy()
+      const resource = mockHelper.getApiResourcePrototype('wallets')
+      const spy = sinon.stub(resource, 'recovery').resolves()
+
       const form = {
         email: 'alice@mail.com',
         password: 'qwe123',
@@ -142,7 +93,7 @@ describe('RecoveryForm component test', () => {
 
       await wrapper.vm.submit()
 
-      expect(sdk.api.wallets.recovery.withArgs(
+      expect(spy.withArgs(
         form.email,
         form.recoverySeed,
         form.password
@@ -150,11 +101,6 @@ describe('RecoveryForm component test', () => {
         .to
         .be
         .true
-    })
-
-    afterEach(() => {
-      sinon.restore()
-      mockHelper = new MockHelper()
     })
   })
 })

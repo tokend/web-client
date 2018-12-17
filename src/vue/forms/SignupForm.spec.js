@@ -3,7 +3,7 @@ import SignupForm from './SignupForm'
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { TestHelper } from '@/test/test-helper'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
@@ -20,96 +20,61 @@ localVue.filter('globalize', globalize)
 Vue.config.silent = true
 
 describe('SignupForm component test', () => {
-  let wrapper
   beforeEach(() => {
-    wrapper = shallowMount(SignupForm, { localVue })
+    sinon.restore()
   })
 
   describe('validation works correctly', () => {
-    const fields = {
-      email: {
-        valid: ['valid@mail.com', 'alice@mail.com', 'qq@mail.com'],
-        invalid: ['qweq', '@wqeqe', 'mail.com', '']
-      },
-      password: {
-        valid: ['qwe123', 'wTqw12Zewq', '1234qwe'],
-        invalid: ['qq', 'qqq13', '']
-      }
-    }
+    let wrapper
 
-    for (const [fieldName, fieldValues] of Object.entries(fields)) {
-      for (const fieldValue of fieldValues.valid) {
-        it(`considers ${fieldValue} a valid ${fieldName}`, () => {
-          expect(TestHelper.isFieldValid(
-            wrapper,
-            fieldName,
-            fieldValue
-          ))
-            .to.be.true
-        })
-      }
-      for (const fieldValue of fieldValues.invalid) {
-        it(`considers ${fieldValue} an invalid ${fieldName}`, () => {
-          expect(TestHelper.isFieldValid(
-            wrapper,
-            fieldName,
-            fieldValue
-          ))
-            .to.be.false
-        })
-      }
-    }
-
-    it('confirmPassword', () => {
-      wrapper.setData({
-        form: {
-          email: 'valid@mail.com',
-          password: 'pwd123',
-          confirmPassword: 'pwd456'
-        }
-      })
-
-      expect(wrapper.vm.isFormValid()).to.be.false
-
-      wrapper.setData({
-        form: {
-          email: 'valid@mail.com',
-          password: 'pwd123',
-          confirmPassword: 'pwd123'
-        }
-      })
-
-      expect(wrapper.vm.isFormValid()).to.be.true
+    beforeEach(() => {
+      wrapper = mount(SignupForm, { localVue })
     })
 
+    const expectedResults = {
+      email: ['required', 'email'],
+      password: ['required', 'password'],
+      confirmPassword: ['required', 'password', 'sameAsPassword']
+    }
+
+    for (const [model, rules] of Object.entries(expectedResults)) {
+      it(`${model} model is validating by proper set of rules`, () => {
+        expect(Object.keys(wrapper.vm.$v.form[model].$params))
+          .to
+          .deep
+          .equal(rules)
+      })
+    }
+
     const fieldBindings = {
-      '#signup-email': 'form.email',
-      '#signup-password': 'form.password',
-      '#signup-confirm-password': 'form.confirmPassword'
+      '#signup-email': 'email',
+      '#signup-password': 'password',
+      '#signup-confirm-password': 'confirmPassword'
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
-      it(`$v.${model} is touched after blur event emitted on ${selector}`, async () => {
-        const touchField = sinon.spy()
+      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
-        wrapper.setMethods({ touchField })
-        wrapper.find(selector).vm.$emit('blur')
+        wrapper
+          .find(selector)
+          .vm
+          .$emit('blur')
 
-        expect(touchField.withArgs(model).calledOnce).to.be.true
+        expect(spy.calledOnce)
+          .to
+          .be
+          .true
       })
     }
   })
 
   describe('submit method', () => {
-    let mockHelper = new MockHelper()
-    // let wrapper
-    let sdk = {
-      api: {
-        users: {}
-      }
-    }
+    let mockHelper
+    let wrapper
 
     beforeEach(() => {
+      mockHelper = new MockHelper()
       wrapper = shallowMount(SignupForm, {
         localVue,
         propsData: {
@@ -123,83 +88,61 @@ describe('SignupForm component test', () => {
           }
         })
       })
-
-      sdk.api.wallets = mockHelper.getApiResourcePrototype('wallets')
-    })
-
-    afterEach(() => {
-      sinon.restore()
-      mockHelper = new MockHelper()
     })
 
     it('loads kdf params for provided email', async () => {
-      sdk.api.wallets.getKdfParams = sinon.spy()
+      const resource = mockHelper.getApiResourcePrototype('wallets')
+      const spy = sinon.stub(resource, 'getKdfParams').resolves()
 
       await wrapper.vm.submit()
 
-      expect(sdk.api.wallets.getKdfParams.withArgs('alice@mail.com').calledOnce)
+      expect(spy.withArgs('alice@mail.com').calledOnce)
         .to
         .be
         .true
     })
 
     it('emits the global error event if user exist', async () => {
-      Bus.error = sinon.spy()
-      sdk.api.wallets.getKdfParams = sinon
-        .stub()
-        .resolves()
+      const resource = mockHelper.getApiResourcePrototype('wallets')
+      sinon.stub(resource, 'getKdfParams').resolves()
+      const spy = sinon.stub(Bus, 'error')
 
       await wrapper.vm.submit()
 
-      expect(Bus.error.calledOnce).to.be.true
+      expect(spy.calledOnce).to.be.true
     })
 
     it('doesn\'t emit the submitted event if user exist', async () => {
-      Bus.error = sinon.spy()
-      sdk.api.wallets.getKdfParams = sinon
-        .stub()
-        .resolves()
+      const resource = mockHelper.getApiResourcePrototype('wallets')
+
+      sinon.stub(resource, 'getKdfParams').resolves()
+      sinon.stub(Bus, 'error')
 
       await wrapper.vm.submit()
 
       expect(wrapper.emitted()['submit-event']).to.not.exist
     })
 
-    describe('properly emits the submitted event if user doesn\'t exist', () => {
+    it('properly emits the submitted event if user doesn\'t exist', async () => {
+      const resource = mockHelper.getApiResourcePrototype('wallets')
+
       const form = {
         email: 'foo@bar.com',
-        password: 'Tw15m#ewq',
-        confirmPassword: 'Tw15m#ewq'
+        password: 'Nwr2mW21m',
+        confirmPassword: 'Nwr2mW21m'
       }
-      beforeEach(async () => {
-        sdk.api.wallets.getKdfParams = sinon
-          .stub()
-          .throws(new errors.NotFoundError({
-            response: {
-              data: {
-                errors: [{
-                  status: 404,
-                  title: 'Not Found',
-                  details: 'User not found'
-                }]
-              }
-            }
-          }))
 
-        wrapper.setData({ form })
+      wrapper.setData({ form })
 
-        await wrapper.vm.submit()
-      })
+      sinon
+        .stub(resource, 'getKdfParams')
+        .throws(TestHelper.getError(errors.NotFoundError))
 
-      it('emits event', () => {
-        expect(wrapper.emitted()['submit-event']).to.exist
-      })
-      it('emits event exactly one time', () => {
-        expect(wrapper.emitted()['submit-event'].length).to.equal(1)
-      })
-      it('emits event with valid params', () => {
-        expect(wrapper.emitted()['submit-event'][0]).to.deep.equal([form])
-      })
+      await wrapper.vm.submit()
+
+      expect(wrapper.emitted()['submit-event']).to.exist
+      expect(wrapper.emitted()['submit-event'].length).to.equal(1)
+      expect(wrapper.emitted()['submit-event'][0]).to.deep.equal([form])
     })
   })
 })

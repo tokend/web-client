@@ -22,4 +22,18 @@ export class TestHelper {
     field.$touch()
     return !field.$invalid
   }
+
+  static getError (constructor) {
+    return new constructor({
+      status: 0,
+      response: {
+        data: {
+          errors: [{
+            title: 'Error',
+            detail: 'Mocked error'
+          }]
+        }
+      }
+    })
+  }
 }
