@@ -10,6 +10,10 @@ const localVue = createLocalVue()
 localVue.filter('globalize', globalize)
 
 describe('FormConfirmation component test', () => {
+  beforeEach(() => {
+    TestHelper.resetTranslations()
+  })
+
   it('template properly renders the data provided through props', () => {
     TestHelper.useTranslations({
       'form-confirmation': {

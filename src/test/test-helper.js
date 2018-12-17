@@ -23,6 +23,13 @@ export class TestHelper {
     return !field.$invalid
   }
 
+  static resetTranslations () {
+    const options = _cloneDeep(i18nOptions)
+    options.lng = 'en'
+    options.debug = false
+    i18next.init(options)
+  }
+
   static getError (constructor) {
     return new constructor({
       status: 0,

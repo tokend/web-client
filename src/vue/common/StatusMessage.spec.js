@@ -71,6 +71,10 @@ describe('StatusMessage component test', () => {
       })
     })
 
+    after(() => {
+      TestHelper.resetTranslations()
+    })
+
     const expectedResults = {
       [Bus.eventList.warning]: {
         id: 'messages.warning',
@@ -111,6 +115,10 @@ describe('StatusMessage component test', () => {
           'default-message_info': 'Default info message'
         }
       })
+    })
+
+    after(() => {
+      TestHelper.resetTranslations()
     })
 
     const expectedResults = {
