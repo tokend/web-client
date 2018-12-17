@@ -11,6 +11,7 @@
     </div>
     <div class="key-viewer__clipboard-wrp">
       <clipboard-field
+        :id="value"
         :value="value"
         :label="'auth-pages.recovery-seed' | globalize"
       />
