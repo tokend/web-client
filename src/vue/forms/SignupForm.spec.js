@@ -110,16 +110,6 @@ describe('SignupForm component test', () => {
       await wrapper.vm.submit()
 
       expect(spy.calledOnce).to.be.true
-    })
-
-    it('doesn\'t emit the submitted event if user exist', async () => {
-      const resource = mockHelper.getApiResourcePrototype('wallets')
-
-      sinon.stub(resource, 'getKdfParams').resolves()
-      sinon.stub(Bus, 'error')
-
-      await wrapper.vm.submit()
-
       expect(wrapper.emitted()['submit-event']).to.not.exist
     })
 
