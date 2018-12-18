@@ -73,11 +73,15 @@ $col-drawer-head-text: $_eastBay;
 // status-message colors:
 $col-status-msg-shadow: rgba(0, 0, 0, 0.25);
 
-// table colors
+// table colors:
 $col-table-background: $_white;
 $col-table-alt-row-background: $_solitude;
 $col-table-cell-text: $col-primary;
 $col-table-head-text: $_deluge;
-$col-table-row-selected: darken($_solitude, 10%)
+$col-table-row-selected: darken($_solitude, 10%);
+
+// loader colors:
+$col-loader-text: $col-primary;
+$col-loader-icon: $col-primary-inactive;
 
 // TODO: paste here variables that are ready to use during the refactor process

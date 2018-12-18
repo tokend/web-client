@@ -50,9 +50,10 @@
       </table-custom>
     </div>
   </div>
-  <div v-else>
-    <p>{{ 'fee.lbl_loading' | globalize }}</p>
-  </div>
+  <loader
+    v-else
+    :message="'fee.lbl_loading' | globalize"
+  />
 </template>
 
 <script>
@@ -61,6 +62,7 @@ import TableCustom from '../common/TableCustom'
 import TableCustomRow from '../common/TableCustomRow'
 import TableCustomHead from '../common/TableCustomHead'
 import TableCustomCell from '../common/TableCustomCell'
+import Loader from '../common/Loader'
 
 import { Sdk } from '@/sdk'
 
@@ -74,7 +76,8 @@ export default {
     TableCustom,
     TableCustomRow,
     TableCustomHead,
-    TableCustomCell
+    TableCustomCell,
+    Loader
   },
   data: _ => ({
     fees: null,
