@@ -120,9 +120,9 @@
     },
 
     "form-confirmation": {
-      "message-text_default": "Please recheck the form before confirmation",
-      "button-text_ok": "Confirm",
-      "button-text_cancel": "Cancel"
+      "message-text-default": "Please recheck the form before confirmation",
+      "button-text-ok": "Confirm",
+      "button-text-cancel": "Cancel"
     },
 
     "fee": {
@@ -143,7 +143,8 @@
       "lower-bound": "Lower bound",
       "upper-bound": "Upper bound",
       "subtype": "Subtype",
-      "lbl-loading": "Loading"
+      "lbl-loading": "Loading",
+      "lbl-loading-error": "There was an error while loading."
     }
   }
 }

@@ -81,14 +81,18 @@ describe('Fees component unit test', () => {
 
   it('assetFees returns only the fees with the code currentAssetCode', () => {
     wrapper.setData({
-      currentAssetCode: 'ALI'
+      filters: {
+        asset: 'ALI'
+      }
     })
     expect(wrapper.vm.assetFees.length).to.equal(1)
   })
 
   it('assetFees property changes after changing currentAssetCode', () => {
     wrapper.setData({
-      currentAssetCode: 'BTC'
+      filters: {
+        asset: 'BTC'
+      }
     })
     expect(wrapper.vm.assetFees.length).to.equal(2)
   })

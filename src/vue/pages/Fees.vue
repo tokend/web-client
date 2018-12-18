@@ -1,13 +1,17 @@
 <template>
   <div class="fee" v-if="fees">
+    <!--
+      :key is a hack to ensure that the component will be updated
+      after computed calculated
+      -->
     <select-field-custom
-      v-model="currentAssetCode"
+      v-model="filters.asset"
       :values="assetCodes"
-      :key="currentAssetCode"
+      :key="filters.asset"
     />
     <div class="fee__asset-info">
       <table-custom>
-        <table-custom-row>
+        <table-custom-row slot="header">
           <table-custom-head>
             {{ 'fee.fee-type' | globalize }}
           </table-custom-head>
@@ -35,7 +39,7 @@
             {{ fee.subtype | globalizeFeeSubType }}
           </table-custom-cell>
           <table-custom-cell>
-            {{ fee.fixed | formatMoney({ currency: fee.feeAsset }) }}
+            {{ { value: fee.fixed, currency: fee.feeAsset } | formatMoney }}
           </table-custom-cell>
           <table-custom-cell>
             {{ fee.percent | formatPercent }}
@@ -50,10 +54,15 @@
       </table-custom>
     </div>
   </div>
-  <loader
-    v-else
-    :message="'fee.lbl-loading' | globalize"
-  />
+  <div v-else>
+    <loader
+      v-if="!loadingError"
+      :message="'fee.lbl-loading' | globalize"
+    />
+    <p v-else>
+      {{ 'fee.lbl-loading-error' | globalize }}
+    </p>
+  </div>
 </template>
 
 <script>
@@ -81,7 +90,10 @@ export default {
   },
   data: _ => ({
     fees: null,
-    currentAssetCode: ''
+    loadingError: false,
+    filters: {
+      asset: ''
+    }
   }),
   computed: {
     ...mapGetters('new-wallet', [
@@ -94,14 +106,14 @@ export default {
     },
     assetFees () {
       return this.fees !== null
-        ? this.fees[this.currentAssetCode.toLowerCase()]
+        ? this.fees[this.filters.asset.toLowerCase()]
         : []
     }
   },
   async created () {
     await this.loadFees()
     if (this.assetCodes.length > 0) {
-      this.currentAssetCode = this.assetCodes[0]
+      this.filters.asset = this.assetCodes[0]
     }
   },
   methods: {
@@ -112,6 +124,7 @@ export default {
         })
         this.fees = response.data.fees
       } catch (error) {
+        this.loadingError = true
         console.error(error)
       }
     }

@@ -2,7 +2,12 @@
   <div class="table-custom">
     <div class="table-custom__content">
       <table>
-        <slot />
+        <thead>
+          <slot name="header" />
+        </thead>
+        <tbody>
+          <slot />
+        </tbody>
       </table>
     </div>
   </div>
@@ -21,7 +26,7 @@ export default {
   display: flex;
   flex-flow: column wrap;
   overflow-x: auto;
-  box-shadow: 0 0.6 * $point $point 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
 
   .table-custom__content {
     flex: 1;
@@ -36,13 +41,15 @@ export default {
     overflow: hidden;
     background-color: $col-table-background;
 
-    & tr {
-      &:nth-child(even) {
-        background-color: $col-table-alt-row-background;;
-      }
+    tbody {
+      tr {
+        &:nth-child(odd) {
+          background-color: $col-table-alt-row-background;;
+        }
 
-      &:hover:not(:first-child) {
-        background-color: $col-table-row-selected;
+        &:hover {
+          background-color: $col-table-row-selected;
+        }
       }
     }
   }
