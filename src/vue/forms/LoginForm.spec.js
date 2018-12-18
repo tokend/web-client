@@ -100,12 +100,10 @@ describe('LoginForm component unit test', () => {
 
       wrapper = shallowMount(LoginForm, {
         store,
-        localVue,
-        methods: {
-          isFormValid: sinon.stub().returns(true),
-          _doLegacyStuff: sinon.stub().resolves()
-        }
+        localVue
       })
+      sinon.stub(wrapper.vm, 'isFormVaild').returns(true)
+      sinon.stub(wrapper.vm, '_doLegacyStuff').returns(true)
     })
 
     it('submit() loads wallet with provided credentials', async () => {
