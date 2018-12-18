@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import FormMixin from '../mixins/form.mixin'
+import FormMixin from '@/vue/mixins/form.mixin'
 
 import SignupForm from '../forms/SignupForm'
 import KeyViewer from '../common/KeyViewer'
