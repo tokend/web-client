@@ -57,7 +57,7 @@ describe('LoginForm component unit test', () => {
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        const spy = sinon.stub(wrapper.vm, 'touchField')
+        const spy = sinon.stub(wrapper.vm, '_touchField')
 
         wrapper
           .find(selector)
@@ -100,12 +100,10 @@ describe('LoginForm component unit test', () => {
 
       wrapper = shallowMount(LoginForm, {
         store,
-        localVue,
-        methods: {
-          isFormValid: sinon.stub().returns(true),
-          _doLegacyStuff: sinon.stub().resolves()
-        }
+        localVue
       })
+      sinon.stub(wrapper.vm, '_isFormValid').returns(true)
+      sinon.stub(wrapper.vm, '_doLegacyStuff').returns(true)
     })
 
     it('submit() loads wallet with provided credentials', async () => {
