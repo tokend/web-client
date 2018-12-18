@@ -33,6 +33,8 @@ $col-text-msg-success: $_white;
 $col-text-msg-error: $_white;
 $col-text-msg-info: $_white;
 
+$col-msg-shadow: rgba(0, 0, 0, 0.25);
+
 // global colors
 $col-text: $_eastBay;
 $col-block-bg: $_white;
@@ -67,8 +69,5 @@ $col-button-back-icon-hover: $col-primary-lighten;
 $col-drawer-bg: $_white;
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
-
-// status-message colors:
-$col-status-msg-shadow: rgba(0, 0, 0, 0.25);
 
 // TODO: paste here variables that are ready to use during the refactor process
