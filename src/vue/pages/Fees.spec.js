@@ -1,4 +1,4 @@
-import MyFees from './MyFees'
+import Fees from './Fees'
 
 import Vuex from 'vuex'
 import Vue from 'vue'
@@ -24,7 +24,7 @@ localVue.filter('globalize', globalize)
 localVue.filter('localizeFeeType', localizeFeeType)
 localVue.filter('localizeFeeSubType', localizeFeeSubType)
 
-describe('MyFees component unit test', () => {
+describe('Fees component unit test', () => {
   let mockHelper
   let wrapper
   let feesResource
@@ -48,20 +48,16 @@ describe('MyFees component unit test', () => {
     })
 
     feesResource = mockHelper.getHorizonResourcePrototype('fees')
-    sinon.stub(feesResource, 'getAll').returns(
-      // eslint-disable-next-line
-      new Promise((resolve) => {
-        resolve({
-          _data: {
-            fees: {
-              ali: new Array(1),
-              btc: new Array(2)
-            }
-          }
-        })
-      }))
+    sinon.stub(feesResource, 'getAll').resolves({
+      _data: {
+        fees: {
+          ali: new Array(1),
+          btc: new Array(2)
+        }
+      }
+    })
 
-    wrapper = shallowMount(MyFees, {
+    wrapper = shallowMount(Fees, {
       store,
       localVue
     })

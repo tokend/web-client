@@ -14,7 +14,7 @@ import Signup from '@/vue/pages/Signup'
 import Recovery from '@/vue/pages/Recovery'
 import Verify from '@/vue/pages/Verify'
 
-import MyFees from '@/vue/pages/MyFees'
+import Fees from '@/vue/pages/Fees'
 
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'
@@ -444,7 +444,7 @@ const router = new Router({
           feature_flag: config.FEATURE_FLAGS.feesExplorer,
           name: 'app.fees',
           path: '/fee',
-          component: MyFees
+          component: Fees
         },
         {
           feature_flag: config.FEATURE_FLAGS.sales,

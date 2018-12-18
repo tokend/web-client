@@ -3,7 +3,6 @@
     <select-field-custom
       v-model="currentAssetName"
       :values="assetNames"
-      :key="currentAssetName"
     />
     <div class="fee__asset-info">
       <table-custom>
@@ -35,7 +34,7 @@
             {{ fee.subtype | localizeFeeSubType }}
           </table-custom-cell>
           <table-custom-cell>
-            {{ fee.fixed | formatMoney }} {{ fee.feeAsset }}
+            {{ fee.fixed | formatMoney({ currency: fee.feeAsset }) }}
           </table-custom-cell>
           <table-custom-cell>
             {{ fee.percent | formatMoney }}%
@@ -68,7 +67,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
-  name: 'my-fees',
+  name: 'fees',
   components: {
     SelectFieldCustom,
     TableCustom,
