@@ -13,7 +13,7 @@
       <signup-form
         v-if="!recoveryKeypair"
         :submit-event="'submit'"
-        @submit="handleFormSubmit"
+        @submit="handleChildFormSubmit"
       />
 
       <div class="signup__seed-wrp" v-else>
@@ -77,7 +77,7 @@ export default {
     ...mapActions('new-wallet', {
       storeWallet: vuexTypes.STORE_WALLET
     }),
-    handleFormSubmit (form) {
+    handleChildFormSubmit (form) {
       this.email = form.email
       this.password = form.password
       this.recoveryKeypair = base
