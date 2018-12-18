@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField('form.email')"
+          @blur="_touchField('form.email')"
           id="recovery-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="errorMessage('form.email')"
+          :error-message="_getErrorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,9 +15,9 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField('form.password')"
+          @blur="_touchField('form.password')"
           id="recovery-password"
-          :error-message="errorMessage('form.password')"
+          :error-message="_getErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
           :type="'password'"
         />
@@ -27,9 +27,9 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="touchField('form.confirmPassword')"
+          @blur="_touchField('form.confirmPassword')"
           id="recovery-confirm-password"
-          :error-message="errorMessage('form.confirmPassword')"
+          :error-message="_getErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
           :type="'password'"
         />
@@ -39,9 +39,9 @@
       <div class="app__form-field">
         <input-field
           v-model="form.recoverySeed"
-          @blur="touchField('form.recoverySeed')"
+          @blur="_touchField('form.recoverySeed')"
           id="recovery-seed"
-          :error-message="errorMessage('form.recoverySeed')"
+          :error-message="_getErrorMessage('form.recoverySeed')"
           :label="'auth-pages.recovery-seed' | globalize"
           :type="'password'"
         />
@@ -53,7 +53,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn"
-        :disabled="formMixin.isDisabled"
+        :disabled="_isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
       </button>
@@ -100,10 +100,10 @@ export default {
   },
   methods: {
     async submit () {
-      if (!this.isFormValid()) {
+      if (!this._isFormValid()) {
         return
       }
-      this.disableForm()
+      this._disableForm()
       try {
         await Sdk.api.wallets.recovery(
           this.form.email,
@@ -116,7 +116,7 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      this.enableForm()
+      this._enableForm()
     }
   }
 }

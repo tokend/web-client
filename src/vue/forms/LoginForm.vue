@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField('form.email')"
+          @blur="_touchField('form.email')"
           id="login-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="errorMessage('form.email')"
+          :error-message="_getErrorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,9 +15,9 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField('form.password')"
+          @blur="_touchField('form.password')"
           id="login-password"
-          :error-message="errorMessage('form.password')"
+          :error-message="_getErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
           :type="'password'"
         />
@@ -28,7 +28,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn"
-        :disabled="formMixin.isDisabled"
+        :disabled="_isDisabled"
       >
         {{ 'auth-pages.log-in' | globalize }}
       </button>
@@ -73,8 +73,8 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET
     }),
     async submit () {
-      if (!this.isFormValid()) return
-      this.disableForm()
+      if (!this._isFormValid()) return
+      this._disableForm()
       try {
         await this.loadWallet(this.form)
         const accountId = this.wallet.accountId
@@ -99,7 +99,7 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      this.enableForm()
+      this._enableForm()
     },
     async isUserExist (accountId) {
       try {

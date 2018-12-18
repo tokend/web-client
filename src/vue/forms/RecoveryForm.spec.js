@@ -52,7 +52,7 @@ describe('RecoveryForm component test', () => {
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        const spy = sinon.stub(wrapper.vm, 'touchField')
+        const spy = sinon.stub(wrapper.vm, '_touchField')
 
         wrapper
           .find(selector)

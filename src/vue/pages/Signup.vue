@@ -27,7 +27,7 @@
           <button
             v-ripple
             @click="submit"
-            :disabled="formMixin.isDisabled"
+            :disabled="_isDisabled"
             class="auth-page__submit-btn"
           >
             {{ 'auth-pages.continue' | globalize }}
@@ -85,7 +85,7 @@ export default {
         .random()
     },
     async submit () {
-      this.disableForm()
+      this._disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
           this.email,
@@ -111,7 +111,7 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      this.enableForm()
+      this._enableForm()
     },
     // TODO: we support old vuex for the legacy components. Remove once
     // the legacy will be completely removed
