@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 
 import { vuexTypes } from '@/vuex'
+import walletModule from '@/vuex/wallet.module'
+
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { globalize } from '@/vue/filters/globalize'
@@ -25,30 +27,28 @@ localVue.filter('localizeFeeSubType', localizeFeeSubType)
 describe('MyFees component unit test', () => {
   let mockHelper
   let wrapper
-  let sdk = {
-    horizon: {
-      fees: {}
-    }
-  }
+  let feesResource
 
   beforeEach(async () => {
     sinon.restore()
     mockHelper = new MockHelper()
+    const getters = walletModule.getters
+
+    sinon.stub(getters, vuexTypes.wallet).returns(
+      mockHelper.getMockWallet()
+    )
+
     const store = new Vuex.Store({
       modules: {
         'new-wallet': {
           namespaced: true,
-          getters: {
-            [vuexTypes.wallet]: sinon.stub().returns({
-              account_id: 'GBTRYNKYER5QMJ7LMVI2I5PIZWDLXVUCNZZKQSWPOOQCUUCCYX3X7532'
-            })
-          }
+          getters
         }
       }
     })
 
-    sdk.horizon.fees = mockHelper.getHorizonResourcePrototype('fees')
-    sinon.stub(sdk.horizon.fees, 'getAll').returns(
+    feesResource = mockHelper.getHorizonResourcePrototype('fees')
+    sinon.stub(feesResource, 'getAll').returns(
       // eslint-disable-next-line
       new Promise((resolve) => {
         resolve({
@@ -69,10 +69,9 @@ describe('MyFees component unit test', () => {
   })
 
   it('Fees loaded by current account ID', () => {
-    const accountId = 'GBTRYNKYER5QMJ7LMVI2I5PIZWDLXVUCNZZKQSWPOOQCUUCCYX3X7532'
     expect(
-      sdk.horizon.fees.getAll
-        .withArgs({ account_id: accountId })
+      feesResource.getAll
+        .withArgs({ account_id: mockHelper.getMockWallet().accountId })
         .calledTwice)
       .to
       .be

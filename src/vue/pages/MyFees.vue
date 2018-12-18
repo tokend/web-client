@@ -100,7 +100,7 @@ export default {
     async fetchFees () {
       try {
         const response = await Sdk.horizon.fees.getAll({
-          account_id: this.wallet.account_id
+          account_id: this[vuexTypes.wallet][vuexTypes.accountId]
         })
         this.fees = response._data.fees
       } catch (error) {
