@@ -2,6 +2,8 @@ import RecoveryForm from './RecoveryForm'
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
+import VueRouter from 'vue-router'
+
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
@@ -9,6 +11,7 @@ import { globalize } from '@/vue/filters/globalize'
 const localVue = createLocalVue()
 
 localVue.use(Vuelidate)
+localVue.use(VueRouter)
 localVue.filter('globalize', globalize)
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
