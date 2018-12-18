@@ -28,6 +28,12 @@ describe('Fees component unit test', () => {
   let mockHelper
   let wrapper
   let feesResource
+  let feesSampleData = {
+    fees: {
+      ali: [0],
+      btc: [0, 1]
+    }
+  }
 
   beforeEach(async () => {
     sinon.restore()
@@ -49,52 +55,40 @@ describe('Fees component unit test', () => {
 
     feesResource = mockHelper.getHorizonResourcePrototype('fees')
     sinon.stub(feesResource, 'getAll').resolves(
-      MockWrapper.makeHorizonResponse({
-        fees: {
-          ali: new Array(1),
-          btc: new Array(2)
-        }
-      })
+      MockWrapper.makeHorizonResponse(feesSampleData)
     )
 
-    wrapper = shallowMount(Fees, {
+    wrapper = await shallowMount(Fees, {
       store,
       localVue
     })
-    await wrapper.vm.loadFees()
   })
 
-  it('Fees loaded by current account ID', () => {
+  it('loadFees() calls the horizon.fees.getAll() with the correct params', () => {
     expect(
       feesResource.getAll
         .withArgs({ account_id: mockHelper.getMockWallet().accountId })
-        .calledTwice)
+        .calledOnce)
       .to
       .be
       .true
   })
 
-  it('fetchFees() changes fees data after loading', async () => {
+  it('loadFees() changes fees data after loading', async () => {
+    wrapper.setData({
+      fees: null
+    })
     await wrapper.vm.loadFees()
     expect(wrapper.vm.fees).to.not.equal(null)
   })
 
-  it('assetFees returns only the fees with the code currentAssetCode', () => {
-    wrapper.setData({
-      filters: {
-        asset: 'ALI'
-      }
-    })
-    expect(wrapper.vm.assetFees.length).to.equal(1)
-  })
-
-  it('assetFees property changes after changing currentAssetCode', () => {
+  it('assetFees returns only the fees with the code filters.asset', () => {
     wrapper.setData({
       filters: {
         asset: 'BTC'
       }
     })
-    expect(wrapper.vm.assetFees.length).to.equal(2)
+    expect(wrapper.vm.assetFees).to.deep.equal(feesSampleData.fees.btc)
   })
 
   it('assetCodes returns array of assets', () => {
