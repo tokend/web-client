@@ -1,4 +1,5 @@
 import { localizeFeeType } from './localizeFeeType'
+
 import { i18nOptions } from '@/i18n'
 import i18next from 'i18next'
 
@@ -8,7 +9,7 @@ describe('localizeFeeType filter test', () => {
     sinon.restore()
   })
 
-  it('fee type code 0 stands for payment fee type', () => {
+  it('Code 0 stands for payment fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(0)
 
@@ -19,7 +20,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 1 stands for offer fee type', () => {
+  it('Code 1 stands for offer fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(1)
 
@@ -30,7 +31,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 2 stands for withdrawal fee type', () => {
+  it('Code 2 stands for withdrawal fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(2)
 
@@ -41,7 +42,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 3 stands for issuance fee type', () => {
+  it('Code 3 stands for issuance fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(3)
 
@@ -52,7 +53,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 4 stands for invest fee type', () => {
+  it('Code 4 stands for invest fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(4)
 
@@ -63,7 +64,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 5 stands for capital deployment fee type', () => {
+  it('Code 5 stands for capital deployment fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(5)
 
@@ -74,7 +75,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 6 stands for operation fee type', () => {
+  it('Code 6 stands for operation fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(6)
 
@@ -85,7 +86,7 @@ describe('localizeFeeType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee type code 7 stands for payout fee type', () => {
+  it('Code 7 stands for payout fee type', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeType(7)
 

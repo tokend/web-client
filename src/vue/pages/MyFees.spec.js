@@ -1,11 +1,10 @@
-// import { TestHelper } from '@/test/test-helper'
 import MyFees from './MyFees'
 
 import Vuex from 'vuex'
 import Vue from 'vue'
 
 import { vuexTypes } from '@/vuex'
-import { createLocalVue, mount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { globalize } from '@/vue/filters/globalize'
 import { localizeFeeType } from '@/vue/filters/localizeFeeType'
@@ -23,7 +22,7 @@ localVue.filter('globalize', globalize)
 localVue.filter('localizeFeeType', localizeFeeType)
 localVue.filter('localizeFeeSubType', localizeFeeSubType)
 
-describe('MyFeesPage component unit test', () => {
+describe('MyFees component unit test', () => {
   let mockHelper
   let wrapper
   let sdk = {
@@ -51,7 +50,7 @@ describe('MyFeesPage component unit test', () => {
     sdk.horizon.fees = mockHelper.getHorizonResourcePrototype('fees')
     sinon.stub(sdk.horizon.fees, 'getAll').returns(
       // eslint-disable-next-line
-      new Promise((resolve, reject) => {
+      new Promise((resolve) => {
         resolve({
           _data: {
             fees: {
@@ -62,7 +61,7 @@ describe('MyFeesPage component unit test', () => {
         })
       }))
 
-    wrapper = mount(MyFees, {
+    wrapper = shallowMount(MyFees, {
       store,
       localVue
     })
@@ -88,14 +87,14 @@ describe('MyFeesPage component unit test', () => {
     expect(wrapper.vm.fees).to.not.equal(null)
   })
 
-  it('assetFees returns only fees with the name currentAssetName', async () => {
+  it('assetFees returns only the fees with the name currentAssetName', async () => {
     wrapper.setData({
       currentAssetName: 'ALI'
     })
     expect(wrapper.vm.assetFees.length).to.equal(1)
   })
 
-  it('assetFees changes fees after changing currentAssetName', async () => {
+  it('assetFees property changes after changing currentAssetName', async () => {
     wrapper.setData({
       currentAssetName: 'BTC'
     })

@@ -37,7 +37,6 @@ export default {
     background-color: $col-table-background;
 
     & tr {
-
       &:nth-child(even) {
         background-color: $col-table-alt-row-background;;
       }

@@ -1,4 +1,5 @@
 import { localizeFeeSubType } from './localizeFeeSubType'
+
 import { i18nOptions } from '@/i18n'
 import i18next from 'i18next'
 
@@ -8,7 +9,7 @@ describe('localizeFeeSubType filter test', () => {
     sinon.restore()
   })
 
-  it('fee subtype code 0 stands for incoming/outgoing fee subtype', () => {
+  it('Code 0 stands for incoming/outgoing fee subtype', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeSubType(0)
 
@@ -19,7 +20,7 @@ describe('localizeFeeSubType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee subtype 1 stands for outgoing fee', () => {
+  it('Code 1 stands for outgoing fee subtype', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeSubType(1)
 
@@ -30,7 +31,7 @@ describe('localizeFeeSubType filter test', () => {
     ).to.equal(true)
   })
 
-  it('fee subtype code 2 stands for incoming fee subtype', () => {
+  it('Code 2 stands for incoming fee subtype', () => {
     const spy = sinon.spy(i18next, 't')
     localizeFeeSubType(2)
 

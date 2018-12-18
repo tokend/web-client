@@ -27,7 +27,7 @@ export default {
 
 .table-custom__head-container {
   height: 4.2 * $point;
-  padding-top: 1.5 * $point;
+  padding-top: 1.6 * $point;
   padding-bottom: 1.1 * $point;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -35,13 +35,12 @@ export default {
 }
 
 .table-custom__head-label {
+  height: 1.5 * $point;
   color: $col-table-head-text;
-  height: 2.8 * $point;
   padding: 0 1.6 * $point;
   display: inline-block;
   position: relative;
   overflow: hidden;
-  line-height: 1.5 * $point;
   font-size: 1.2 * $point;
   font-weight: normal;
   text-overflow: ellipsis;

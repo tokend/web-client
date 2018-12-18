@@ -94,7 +94,7 @@ export default {
   async created () {
     await this.fetchFees()
     this.currentAssetName = this.assetNames.length > 0
-      ? this.assetNames[0].toUpperCase() : ''
+      ? this.assetNames[0] : ''
   },
   methods: {
     async fetchFees () {
