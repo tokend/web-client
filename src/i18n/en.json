@@ -126,24 +126,24 @@
     },
 
     "fee": {
-      "payment_fee": "Payment",
-      "offer_fee": "Offer",
-      "withdrawal_fee": "Withdrawal",
-      "issuance_fee": "Issuance",
-      "invest_fee": "Invest",
-      "capital_deployment_fee": "Capital deployment",
-      "operation_fee": "Operation",
-      "payout_fee": "Payout",
-      "incoming_outgoing": "Incoming & Outgoing",
+      "payment-fee": "Payment",
+      "offer-fee": "Offer",
+      "withdrawal-fee": "Withdrawal",
+      "issuance-fee": "Issuance",
+      "invest-fee": "Invest",
+      "capital-deployment-fee": "Capital deployment",
+      "operation-fee": "Operation",
+      "payout-fee": "Payout",
+      "incoming-outgoing": "Incoming & Outgoing",
       "outgoing": "Outgoing",
       "incoming": "Incoming",
-      "fee_type": "Fee type",
+      "fee-type": "Fee type",
       "fixed": "Fixed",
       "percent": "Percent",
-      "lower_bound": "Lower bound",
-      "upper_bound": "Upper bound",
+      "lower-bound": "Lower bound",
+      "upper-bound": "Upper bound",
       "subtype": "Subtype",
-      "lbl_loading": "Loading"
+      "lbl-loading": "Loading"
     }
   }
 }

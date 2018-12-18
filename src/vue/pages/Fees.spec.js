@@ -9,10 +9,10 @@ import walletModule from '@/vuex/wallet.module'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { globalize } from '@/vue/filters/globalize'
-import { localizeFeeType } from '@/vue/filters/localizeFeeType'
-import { localizeFeeSubType } from '@/vue/filters/localizeFeeSubType'
+import { globalizeFeeType } from '@/vue/filters/globalizeFeeType'
+import { globalizeFeeSubType } from '@/vue/filters/globalizeFeeSubType'
 
-import { MockHelper } from '@/test'
+import { MockHelper, MockWrapper } from '@/test'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -21,8 +21,8 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
-localVue.filter('localizeFeeType', localizeFeeType)
-localVue.filter('localizeFeeSubType', localizeFeeSubType)
+localVue.filter('globalizeFeeType', globalizeFeeType)
+localVue.filter('globalizeFeeSubType', globalizeFeeSubType)
 
 describe('Fees component unit test', () => {
   let mockHelper
@@ -48,20 +48,20 @@ describe('Fees component unit test', () => {
     })
 
     feesResource = mockHelper.getHorizonResourcePrototype('fees')
-    sinon.stub(feesResource, 'getAll').resolves({
-      _data: {
+    sinon.stub(feesResource, 'getAll').resolves(
+      MockWrapper.makeHorizonResponse({
         fees: {
           ali: new Array(1),
           btc: new Array(2)
         }
-      }
-    })
+      })
+    )
 
     wrapper = shallowMount(Fees, {
       store,
       localVue
     })
-    await wrapper.vm.fetchFees()
+    await wrapper.vm.loadFees()
   })
 
   it('Fees loaded by current account ID', () => {
@@ -74,29 +74,26 @@ describe('Fees component unit test', () => {
       .true
   })
 
-  it('fetchFees() changes fees data after fetching', async () => {
-    wrapper.setData({
-      fees: null
-    })
-    await wrapper.vm.fetchFees()
+  it('fetchFees() changes fees data after loading', async () => {
+    await wrapper.vm.loadFees()
     expect(wrapper.vm.fees).to.not.equal(null)
   })
 
-  it('assetFees returns only the fees with the name currentAssetName', async () => {
+  it('assetFees returns only the fees with the code currentAssetCode', () => {
     wrapper.setData({
-      currentAssetName: 'ALI'
+      currentAssetCode: 'ALI'
     })
     expect(wrapper.vm.assetFees.length).to.equal(1)
   })
 
-  it('assetFees property changes after changing currentAssetName', async () => {
+  it('assetFees property changes after changing currentAssetCode', () => {
     wrapper.setData({
-      currentAssetName: 'BTC'
+      currentAssetCode: 'BTC'
     })
     expect(wrapper.vm.assetFees.length).to.equal(2)
   })
 
-  it('assetNames returns array of assets', async () => {
-    expect(wrapper.vm.assetNames).to.deep.equal(['ALI', 'BTC'])
+  it('assetCodes returns array of assets', () => {
+    expect(wrapper.vm.assetCodes).to.deep.equal(['ALI', 'BTC'])
   })
 })
