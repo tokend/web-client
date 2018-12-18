@@ -11,15 +11,24 @@ export class TestHelper {
     i18next.init(options)
   }
 
-  static isFieldValid (componentWrapper, invalidFieldName, invalidFieldValue) {
-    componentWrapper.setData({
-      form: {
-        [invalidFieldName]: invalidFieldValue
+  static resetTranslations () {
+    const options = _cloneDeep(i18nOptions)
+    options.lng = 'en'
+    options.debug = false
+    i18next.init(options)
+  }
+
+  static getError (constructor) {
+    return new constructor({
+      status: 0,
+      response: {
+        data: {
+          errors: [{
+            title: 'Error',
+            detail: 'Mocked error'
+          }]
+        }
       }
     })
-
-    const field = componentWrapper.vm.$v.form[invalidFieldName]
-    field.$touch()
-    return !field.$invalid
   }
 }

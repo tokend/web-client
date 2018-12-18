@@ -3,7 +3,7 @@
     <button
       class="clipboard-field__button"
       id="clipboard-btn"
-      data-clipboard-target="#clipboard-target"
+      :data-clipboard-target="`#clipboard-target-${id}`"
     >
       <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
     </button>
@@ -11,7 +11,7 @@
       <label class="clipboard-field__label">
         {{ label }}
       </label>
-      <span class="clipboard-field__value" id="clipboard-target">
+      <span class="clipboard-field__value" :id="`clipboard-target-${id}`">
         {{ value }}
       </span>
     </div>
@@ -25,7 +25,8 @@ export default {
   name: 'clipboard-field',
   props: {
     value: { type: String, default: '' },
-    label: { type: String, default: '' }
+    label: { type: String, default: '' },
+    id: { type: String, required: true }
   },
   mounted () {
     const btn = document.querySelector('#clipboard-btn')

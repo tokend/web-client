@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField(`form.email`)"
+          @blur="touchField('form.email')"
           id="signup-email"
-          :label="globalize('auth-pages.email')"
-          :error-message="errorMessage(`form.email`)"
+          :label="'auth-pages.email' | globalize"
+          :error-message="errorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,11 +15,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField(`form.password`)"
+          @blur="touchField('form.password')"
           id="signup-password"
-          :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth-pages.password')"
-          :type="`password`"
+          :error-message="errorMessage('form.password')"
+          :label="'auth-pages.password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -27,11 +27,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="touchField(`form.confirmPassword`)"
+          @blur="touchField('form.confirmPassword')"
           id="signup-confirm-password"
-          :error-message="errorMessage(`form.confirmPassword`)"
-          :label="globalize('auth-pages.confirm-password')"
-          :type="`password`"
+          :error-message="errorMessage('form.confirmPassword')"
+          :label="'auth-pages.confirm-password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -52,7 +52,6 @@
 <script>
 import FormMixin from '../mixins/form.mixin'
 
-import { globalize } from '@/vue/filters/globalize'
 import {
   email,
   required,
@@ -93,7 +92,6 @@ export default {
     }
   },
   methods: {
-    globalize,
     async submit () {
       if (!this.isFormValid()) {
         return
@@ -112,7 +110,7 @@ export default {
           return
         }
         console.error(e)
-        ErrorHandler.processUnexpected(e)
+        ErrorHandler.process(e)
       }
       this.enableForm()
     }

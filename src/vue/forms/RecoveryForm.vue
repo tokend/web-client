@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField(`form.email`)"
+          @blur="touchField('form.email')"
           id="recovery-email"
-          :label="globalize('auth-pages.email')"
-          :error-message="errorMessage(`form.email`)"
+          :label="'auth-pages.email' | globalize"
+          :error-message="errorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,11 +15,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField(`form.password`)"
+          @blur="touchField('form.password')"
           id="recovery-password"
-          :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth-pages.password')"
-          :type="`password`"
+          :error-message="errorMessage('form.password')"
+          :label="'auth-pages.password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -27,11 +27,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="touchField(`form.confirmPassword`)"
+          @blur="touchField('form.confirmPassword')"
           id="recovery-confirm-password"
-          :error-message="errorMessage(`form.confirmPassword`)"
-          :label="globalize('auth-pages.confirm-password')"
-          :type="`password`"
+          :error-message="errorMessage('form.confirmPassword')"
+          :label="'auth-pages.confirm-password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -39,11 +39,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.recoverySeed"
-          @blur="touchField(`form.recoverySeed`)"
+          @blur="touchField('form.recoverySeed')"
           id="recovery-seed"
-          :error-message="errorMessage(`form.recoverySeed`)"
-          :label="globalize('auth-pages.recovery-seed')"
-          :type="`password`"
+          :error-message="errorMessage('form.recoverySeed')"
+          :label="'auth-pages.recovery-seed' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -73,7 +73,6 @@ import {
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { globalize } from '@/vue/filters/globalize'
 import { vueRoutes } from '@/vue-router'
 
 export default {
@@ -100,7 +99,6 @@ export default {
     }
   },
   methods: {
-    globalize,
     async submit () {
       if (!this.isFormValid()) {
         return
@@ -116,7 +114,7 @@ export default {
         this.$router.push(vueRoutes.login)
       } catch (e) {
         console.error(e)
-        ErrorHandler.processUnexpected(e)
+        ErrorHandler.process(e)
       }
       this.enableForm()
     }

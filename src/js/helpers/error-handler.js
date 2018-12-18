@@ -1,9 +1,8 @@
-import { globalize } from '@/vue/filters/globalize'
 import { errors } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 
 export class ErrorHandler {
-  static processUnexpected (error) {
+  static process (error) {
     let translationId
 
     switch (error.constructor) {
@@ -44,6 +43,6 @@ export class ErrorHandler {
         translationId = 'errors.default'
     }
 
-    Bus.error(globalize(translationId))
+    Bus.error(translationId)
   }
 }

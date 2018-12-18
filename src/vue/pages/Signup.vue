@@ -109,7 +109,7 @@ export default {
         }
       } catch (e) {
         console.error(e)
-        ErrorHandler.processUnexpected(e)
+        ErrorHandler.process(e)
       }
       this.enableForm()
     },

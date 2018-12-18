@@ -1,16 +1,19 @@
-import { TestHelper } from '@/test/test-helper'
 import LoginForm from './LoginForm'
+// import walletModule from '@/vuex/wallet.module'
 
 import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
-import { Wallet, errors } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
+import { errors } from '@tokend/js-sdk'
 import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 
+import walletModule from '@/vuex/wallet.module'
+
 import { MockHelper } from '@/test'
+import { TestHelper } from '@/test/test-helper'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -22,105 +25,78 @@ localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
 describe('LoginForm component unit test', () => {
-  let mockHelper
   beforeEach(() => {
     sinon.restore()
-    mockHelper = new MockHelper()
   })
 
-  describe('validation works correctly', () => {
+  describe('validation rules assigned correctly', () => {
     let wrapper
 
     beforeEach(() => {
       wrapper = mount(LoginForm, { localVue })
     })
 
-    const fields = {
-      email: {
-        valid: ['anything', 'alice@mail.com', 'qq'],
-        invalid: ['']
-      },
-      password: {
-        valid: ['anything', 'q', 'qqww'],
-        invalid: ['']
-      }
+    const expectedResults = {
+      email: ['required'],
+      password: ['required']
     }
 
-    for (const [fieldName, fieldValues] of Object.entries(fields)) {
-      for (const fieldValue of fieldValues.valid) {
-        it(`considers ${fieldValue} a valid ${fieldName}`, () => {
-          expect(TestHelper.isFieldValid(
-            wrapper,
-            fieldName,
-            fieldValue
-          ))
-            .to.be.true
-        })
-      }
-      for (const fieldValue of fieldValues.invalid) {
-        it(`considers ${fieldValue} an invalid ${fieldName}`, () => {
-          expect(TestHelper.isFieldValid(
-            wrapper,
-            fieldName,
-            fieldValue
-          ))
-            .to.be.false
-        })
-      }
+    for (const [model, rules] of Object.entries(expectedResults)) {
+      it(`${model} model is validating by proper set of rules`, () => {
+        expect(Object.keys(wrapper.vm.$v.form[model].$params))
+          .to
+          .deep
+          .equal(rules)
+      })
     }
 
     const fieldBindings = {
-      '#login-email': 'form.email',
-      '#login-password': 'form.password'
+      '#login-email': 'email',
+      '#login-password': 'password'
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
-      it(`$v.${model} is touched after blur event emitted on ${selector}`, async () => {
-        const touchField = sinon.spy()
+      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
-        wrapper.setMethods({ touchField })
-        wrapper.find(selector).vm.$emit('blur')
+        wrapper
+          .find(selector)
+          .vm
+          .$emit('blur')
 
-        expect(touchField.withArgs(model).calledOnce).to.be.true
+        expect(spy.calledOnce)
+          .to
+          .be
+          .true
       })
     }
   })
 
   describe('methods', () => {
-    let spies
     let wrapper
-    let sdk = {
-      api: {
-        users: {}
-      }
-    }
+    let mockHelper
+
+    let spyLoadWallet
 
     beforeEach(() => {
-      spies = {
-        loadWallet: sinon.spy()
-      }
+      mockHelper = new MockHelper()
+      const actions = walletModule.actions
+      const getters = walletModule.getters
+
+      spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
+      sinon.stub(getters, vuexTypes.wallet).returns(
+        mockHelper.getMockWallet()
+      )
 
       const store = new Vuex.Store({
         modules: {
           'new-wallet': {
             namespaced: true,
-            actions: {
-              [vuexTypes.LOAD_WALLET]: spies.loadWallet
-            },
-            getters: {
-              [vuexTypes.wallet]: sinon.stub().returns(new Wallet(
-                'foo@mail.com',
-                'SCKPYOBGIQ5CM3NEZYM25H5SIWZONRUHNMXZ47JBLM6RMBGDIY5NLERG',
-                'GBYJOGI4T7RHIOJFXXSCMOQYXC5BD63Z4FVCUAWZ27UQ4CQPZGG432T6',
-                '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-              ))
-            }
+            actions,
+            getters
           }
         }
       })
-
-      sdk.api.users = mockHelper.getApiResourcePrototype('users')
-      sdk.api.users.create = sinon.spy()
 
       wrapper = shallowMount(LoginForm, {
         store,
@@ -136,53 +112,55 @@ describe('LoginForm component unit test', () => {
       const email = 'alice@mail.com'
       const password = 'qwe123'
 
-      wrapper.setMethods({
-        isUserExist: sinon.stub().resolves(true)
-      })
+      sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
+
       wrapper.setData({
-        form: {
-          email,
-          password
-        }
+        form: { email, password }
       })
 
       await wrapper.vm.submit()
-      // Vue will dispatch the action with the store object as a first param
-      // so it's much easier to check only needed param instead of doing
-      // spy.withArgs()
-      expect(spies.loadWallet.calledOnce).to.be.true
-      expect(spies.loadWallet.args[0][1]).to.deep.equal({ email, password })
+
+      expect(spyLoadWallet
+        .withArgs(sinon.match.any, { email, password })
+        .calledOnce
+      )
+        .to
+        .be
+        .true
     })
 
     it('submit() creates user when it doesn\'t exist', async () => {
-      wrapper.setMethods({
-        isUserExist: sinon.stub().resolves(false)
-      })
+      sinon.stub(wrapper.vm, 'isUserExist').resolves(false)
+
+      const resource = mockHelper.getApiResourcePrototype('users')
+      const spy = sinon.stub(resource, 'create').resolves()
+
       await wrapper.vm.submit()
-      expect(sdk.api.users.create.calledOnce).to.be.true
+
+      expect(spy.calledOnce).to.be.true
     })
 
     it('submit() doesn\'t create user when it exists', async () => {
-      wrapper.setMethods({
-        isUserExist: sinon.stub().resolves(true)
-      })
+      sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
+
+      const resource = mockHelper.getApiResourcePrototype('users')
+      const spy = sinon.stub(resource, 'create').resolves()
+
       await wrapper.vm.submit()
-      expect(sdk.api.users.create.notCalled).to.be.true
+
+      expect(spy.notCalled).to.be.true
     })
 
     it('isUserExist method returns false for 404 error', async () => {
-      sinon.stub(sdk.api.users, 'get').throws(new errors.NotFoundError({
-        status: 404,
-        response: {
-          data: {
-            errors: [{
-              title: 'Not found',
-              detail: 'User not found'
-            }]
-          }
-        }
-      }))
-      expect(await wrapper.vm.isUserExist()).to.be.false
+      const resource = mockHelper.getApiResourcePrototype('users')
+
+      sinon
+        .stub(resource, 'get')
+        .throws(TestHelper.getError(errors.NotFoundError))
+
+      const result = await wrapper.vm.isUserExist()
+
+      expect(result).to.be.false
     })
   })
 })

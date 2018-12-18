@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField(`form.email`)"
+          @blur="touchField('form.email')"
           id="login-email"
-          :label="globalize('auth-pages.email')"
-          :error-message="errorMessage(`form.email`)"
+          :label="'auth-pages.email' | globalize"
+          :error-message="errorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,11 +15,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField(`form.password`)"
+          @blur="touchField('form.password')"
           id="login-password"
-          :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth-pages.password')"
-          :type="`password`"
+          :error-message="errorMessage('form.password')"
+          :label="'auth-pages.password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -39,9 +39,7 @@
 <script>
 import FormMixin from '../mixins/form.mixin'
 
-import { globalize } from '@/vue/filters/globalize'
 import { required } from '@validators'
-
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router'
@@ -74,7 +72,6 @@ export default {
     ...mapActions('new-wallet', {
       loadWallet: vuexTypes.LOAD_WALLET
     }),
-    globalize,
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
@@ -100,7 +97,7 @@ export default {
           return
         }
         console.error(e)
-        ErrorHandler.processUnexpected(e)
+        ErrorHandler.process(e)
       }
       this.enableForm()
     },

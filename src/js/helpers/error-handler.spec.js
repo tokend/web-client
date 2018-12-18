@@ -1,28 +1,15 @@
 import { errors } from '@tokend/js-sdk'
+import { Bus } from '@/js/helpers/event-bus'
+import { TestHelper } from '@/test/test-helper'
 
-const Bus = {
-  error: sinon.spy()
-}
-
-const globalize = sinon.spy()
-
-/* eslint-disable-next-line import/no-webpack-loader-syntax */
-const webpackInjector = require('inject-loader!babel-loader!./error-handler.js')
-const { ErrorHandler } = webpackInjector({
-  '@/vue/filters/globalize': { globalize },
-  '@/js/helpers/event-bus': { Bus }
-})
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 describe('error-handler unit test', () => {
-  it('processUnexpected() emits Bus.error event', () => {
-    const error = new Error('some error')
-
-    ErrorHandler.processUnexpected(error)
-
-    expect(Bus.error.calledOnce).to.be.true
+  beforeEach(() => {
+    sinon.restore()
   })
 
-  describe('processUnexpected calls globalize() with proper translation id for sdk errors', () => {
+  describe('process calls Bus.error() with proper translation id for sdk errors', () => {
     const expectedTranslations = {
       NetworkError: 'errors.network',
       TimeoutError: 'errors.timeout',
@@ -39,21 +26,14 @@ describe('error-handler unit test', () => {
 
     for (const [error, translationId] of Object.entries(expectedTranslations)) {
       it(`${error}-${translationId}`, () => {
-        const mockResponse = {
-          response: {
-            data: {
-              errors: [{
-                title: 'Some error',
-                detail: 'foo',
-                meta: 'bar'
-              }]
-            }
-          }
-        }
+        const spy = sinon.stub(Bus, 'error')
 
-        ErrorHandler.processUnexpected(new errors[error](mockResponse))
+        ErrorHandler.process((TestHelper.getError(errors[error])))
 
-        expect(globalize.withArgs(translationId).calledOnce).to.be.true
+        expect(spy.withArgs(translationId).calledOnce)
+          .to
+          .be
+          .true
       })
     }
   })
