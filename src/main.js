@@ -41,6 +41,7 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatInteger } from '@/vue/filters/formatInteger'
+import { formatPercent } from '@/vue/filters/formatPercent'
 import { globalize } from '@/vue/filters/globalize'
 
 import { localizeFeeType } from '@/vue/filters/localizeFeeType'
@@ -76,6 +77,7 @@ Vue.filter('localizeFeeType', localizeFeeType)
 Vue.filter('localizeFeeSubType', localizeFeeSubType)
 Vue.filter('formatDate', formatDate)
 Vue.filter('formatMoney', formatMoney)
+Vue.filter('formatPercent', formatPercent)
 
 /* eslint-disable no-new */
 new Vue({

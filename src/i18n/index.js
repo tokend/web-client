@@ -66,6 +66,10 @@ export const i18nOptions = {
           return numeral(param).format(
             i18n.config.number.formats.integer
           )
+        case 'percent':
+          return numeral(param).format(
+            i18n.config.number.formats.percent
+          )
         default:
           console.warn(`Unknown format: ${format}, skipping..`)
           return param

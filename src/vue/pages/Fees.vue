@@ -3,6 +3,7 @@
     <select-field-custom
       v-model="currentAssetName"
       :values="assetNames"
+      :key="currentAssetName"
     />
     <div class="fee__asset-info">
       <table-custom>
@@ -37,7 +38,7 @@
             {{ fee.fixed | formatMoney({ currency: fee.feeAsset }) }}
           </table-custom-cell>
           <table-custom-cell>
-            {{ fee.percent | formatMoney }}%
+            {{ fee.percent | formatPercent }}
           </table-custom-cell>
           <table-custom-cell>
             {{ fee.lowerBound | formatMoney }}
