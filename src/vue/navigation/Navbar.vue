@@ -126,7 +126,6 @@ export default {
       if (value) {
         handleClickOutsideHelper(
           'navbar__user-card',
-          value,
           this.toggleUserCardVisibility
         )
       }
@@ -135,7 +134,6 @@ export default {
       if (value) {
         handleClickOutsideHelper(
           'navbar__user-notif',
-          value,
           this.toggleNotificationCardVisibility
         )
       }

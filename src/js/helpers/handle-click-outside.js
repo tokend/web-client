@@ -1,8 +1,8 @@
-export function handleClickOutsideHelper (className, status, callback) {
+export function handleClickOutsideHelper (className, callback) {
   document.addEventListener('click', handleClickOutside, false)
 
   function handleClickOutside (event) {
-    if (status && !event.target.closest(`.${className}`)) {
+    if (!event.target.closest(`.${className}`)) {
       callback()
       document.removeEventListener('click', handleClickOutside, false)
     }
