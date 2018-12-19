@@ -8,8 +8,8 @@ import walletModule from '@/vuex/wallet.module'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { globalize } from '@/vue/filters/globalize'
-import { globalizeFeeType } from '@/vue/filters/globalizeFeeType'
-import { globalizeFeeSubType } from '@/vue/filters/globalizeFeeSubType'
+import { formatFeeType } from '@/vue/filters/formatFeeType'
+import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatPercent } from '@/vue/filters/formatPercent'
 
@@ -18,8 +18,8 @@ import { MockHelper, MockWrapper } from '@/test'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
-localVue.filter('globalizeFeeType', globalizeFeeType)
-localVue.filter('globalizeFeeSubType', globalizeFeeSubType)
+localVue.filter('formatFeeType', formatFeeType)
+localVue.filter('formatFeeSubType', formatFeeSubType)
 localVue.filter('formatMoney', formatMoney)
 localVue.filter('formatPercent', formatPercent)
 

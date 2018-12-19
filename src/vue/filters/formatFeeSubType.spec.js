@@ -3,26 +3,30 @@ import { formatFeeSubType } from './formatFeeSubType'
 import { i18nOptions } from '@/i18n'
 import i18next from 'i18next'
 
-describe('formatFeeSubType filter test', () => {
-  const translationCodes = {
-    0: 'incoming-outgoing',
-    1: 'outgoing',
-    2: 'incoming'
-  }
+import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 
+describe('formatFeeSubType filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
     sinon.restore()
   })
 
-  for (const [code, translation] of Object.entries(translationCodes)) {
-    it(`Code ${code} stands for ${translation} fee subtype`, () => {
+  for (const subtype of Object.values(PAYMENT_FEE_SUBTYPES)) {
+    it(`Filter calls the i18next.t() with the payment fee type and subtype ${subtype}`, () => {
       const spy = sinon.spy(i18next, 't')
-      formatFeeSubType(code)
+      formatFeeSubType({
+        type: FEE_TYPES.paymentFee,
+        subtype: subtype
+      })
 
       expect(
         spy
-          .withArgs(`fee.${translation}`)
+          .withArgs('formats.fee_subtype', {
+            value: {
+              type: FEE_TYPES.paymentFee,
+              subtype: subtype
+            }
+          })
           .calledOnce
       ).to.be.true
     })
