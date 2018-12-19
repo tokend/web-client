@@ -8,10 +8,12 @@ import { PAGES_NAMES } from 'L@/js/const/const'
 import { resolveRedirect } from './redirect'
 
 // route components:
-import Auth from 'L@/vue/auth/Auth'
-import Login from 'L@/vue/auth/Login'
-import Signup from 'L@/vue/auth/Signup'
-import Recovery from 'L@/vue/auth/Recovery'
+import Auth from '@/vue/pages/Auth'
+import Login from '@/vue/pages/Login'
+import Signup from '@/vue/pages/Signup'
+import Recovery from '@/vue/pages/Recovery'
+import Verify from '@/vue/pages/Verify'
+
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'
 import Downloads from 'L@/vue/public/Public.Downloads'
@@ -124,7 +126,7 @@ const router = new Router({
       redirect: { name: 'login' },
       children: [
         {
-          path: '/sign-in',
+          path: '/log-in',
           name: 'login',
           component: Login,
           beforeEnter: authPageGuard
@@ -134,6 +136,13 @@ const router = new Router({
           name: 'signup',
           component: Signup,
           beforeEnter: authPageGuard
+        },
+        {
+          path: '/verify/:paramsBase64',
+          name: 'verify',
+          component: Verify,
+          beforeEnter: authPageGuard,
+          props: true
         },
         {
           path: '/verify-email',

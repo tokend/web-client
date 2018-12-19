@@ -66,7 +66,7 @@ describe('account.module', () => {
       modules: { account }
     })
 
-    mockHelper.mockWallet()
+    mockHelper.useMockWallet()
     mockHelper.mockEndpoint(`/accounts/${id}`, {
       'id': id,
       'account_id': id,

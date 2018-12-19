@@ -34,13 +34,17 @@ export class MockHelper {
     return sdkInstance.api[resource].constructor.prototype
   }
 
-  mockWallet ({ walletId, accountId } = {}) {
-    sdkInstance.useWallet(new Wallet(
+  getMockWallet ({ walletId, accountId } = {}) {
+    return new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
       accountId || 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J',
       walletId || '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ))
+    )
+  }
+
+  useMockWallet ({ walletId, accountId } = {}) {
+    sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
   }
 
   mockEndpoint (endpoint, response) {

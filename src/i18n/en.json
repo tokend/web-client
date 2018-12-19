@@ -33,12 +33,79 @@
 
   "translations": {
     "formats": {
-      "money": "{{value, money}}",
       "date":  "{{value, date}}",
-      "calendar":  "{{value, calendar}}",
+      "money": "{{value, money}}",
       "number": "{{value, number}}",
-      "order_number":  "{{value, order_number}}",
-      "integer": "{{value, integer}}"
+      "integer": "{{value, integer}}",
+      "calendar":  "{{value, calendar}}",
+      "order_number":  "{{value, order_number}}"
+    },
+
+    "status-message": {
+      "default-message_warning": "Something you are doing is not recommended",
+      "default-message_success": "Action successful",
+      "default-message_error": "Something went wrong",
+      "default-message_info": "Something is happening. Just want you to know that",
+      "close-lbl_warning": "OK",
+      "close-lbl_success": "OK",
+      "close-lbl_error": "Close",
+      "close-lbl_info": "Got it"
+    },
+
+    "validation": {
+      "failed": "Please fill out all the fields before continuing",
+      "field-error_email": "This field should be a valid email",
+      "field-error_seed": "This field should be a valid secret seed",
+      "field-error_required": "Please fill out this field",
+      "field-error_password": "Password should contain minimum 6 symbols",
+      "field-error_sameAsPassword": "Passwords don't match"
+    },
+
+    "errors": {
+      "default": "Something bad happened. Please try again later",
+      "server":  "This service is temporary unavailable. Please try again later",
+      "timeout": "Timeout exceeded. Please re-check your internet connection and try again",
+      "network": "Network error. Please re-check your internet connection and try again",
+      "internal":  "This service is temporary unavailable. Please try again later",
+      "conflict": "Such item already exists",
+      "not-found": "Such item not found",
+      "forbidden": "Request forbidden",
+      "bad-request": "The request you sent is invalid in some way",
+      "not-allowed": "Your account don't have permissions to perform this request",
+      "unauthorized": "Access denied",
+      "tfa-required":  "2FA required",
+      "verification-required": "Verification required"
+    },
+
+    "auth-pages": {
+      "small-title": "Create, distribute and trade",
+      "big-title": "Start tokenizing your assets in minutes",
+      "email": "Email",
+      "password": "Password",
+      "recovery-seed": "Recovery seed",
+      "confirm-password": "Confirm password",
+      "log-in": "Log In",
+      "sign-up": "Sign Up",
+      "almost-done": "Almost done",
+      "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
+      "continue": "Continue",
+      "email-verified": "Email successfully verified",
+      "get-started": "Get started",
+      "recover-account": "Recover your account",
+      "recovered": "Account recovered. You can now use the new credentials to log in",
+      "request-new-email": "Request new email",
+      "email-requested": "Email sent. Please check your inbox",
+      "save-recovery-seed": "Save this seed to your offline device",
+      "save-recovery-seed-details": "For security reasons, please put this seed in some secret place. You will need it to recover access in case if your account will be lost",
+      "no-account-question": "Don't have an account?",
+      "no-account-answer": "Register now",
+      "forgot-pwd-question": "Forgot your password?",
+      "forgot-pwd-answer": "Recover it",
+      "know-credentials-question": "Know your credentials?",
+      "know-credentials-answer": "Sign in now",
+      "have-an-account-question": "Already have an account?",
+      "have-an-account-answer": "Sign in now",
+      "error-user-exist": "User with such email already exists"
     },
 
     "sale-state": {
@@ -52,9 +119,9 @@
     },
 
     "form-confirmation": {
-      "message-text_default": "Please recheck the form before confirmation",
-      "button-text_ok": "Confirm",
-      "button-text_cancel": "Cancel"
+      "message-text-default": "Please recheck the form before confirmation",
+      "button-text-ok": "Confirm",
+      "button-text-cancel": "Cancel"
     }
   }
 }

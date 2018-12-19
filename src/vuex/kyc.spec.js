@@ -10,7 +10,7 @@ import { vuexTypes } from './types'
 import responseJSON from '../test/mocks/update-kyc-multiple'
 
 describe('kyc.module', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 

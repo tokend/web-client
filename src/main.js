@@ -22,11 +22,13 @@ import 'vue-material/dist/vue-material.min.css'
 
 // validator:
 import VeeValidate from 'vee-validate'
+import Vuelidate from 'vuelidate'
+
 import { extendValidator } from '../legacy/validator/validator'
 
 // directives
 import tableScrollShadow from '../legacy/directives/tableScrollShadow'
-import rippleEffect from '../legacy/directives/rippleEffect'
+import ripple from './vue/directives/ripple'
 
 // i18n
 import i18next from 'i18next'
@@ -46,19 +48,17 @@ import { translate } from 'L@/vue/common/filters/translate'
 import { localizeFeeType } from '../legacy/vue/common/filters/localizeFeeType'
 import { localizeFeeSubType } from '../legacy/vue/common/filters/localizeFeeSubType'
 
-// ripple effects:
-rippleEffect.color = 'rgba(58, 65, 128, .2)'
-
 i18next.init(i18nOptions)
 
 Vue.directive('table-scroll-shadow', tableScrollShadow)
-Vue.directive('ripple', rippleEffect)
+Vue.directive('ripple', ripple)
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(VeeValidate)
 Vue.use(VueMaterial)
 Vue.use(VueSimpleMDE)
+Vue.use(Vuelidate)
 
 VeeValidate.Validator = extendValidator(VeeValidate.Validator)
 

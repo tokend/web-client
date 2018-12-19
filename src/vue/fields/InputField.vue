@@ -9,6 +9,7 @@
   >
     <input
       v-bind="$attrs"
+      v-on="listeners"
       class="input-field__input"
       :class="{
         'input-field__input--autofill-white': whiteAutofill
@@ -16,7 +17,6 @@
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
-      @input="onInput"
     >
 
     <span class="input-field__label">{{ label }}</span>
@@ -39,9 +39,19 @@ export default {
     whiteAutofill: { type: Boolean, default: false }
   },
 
+  computed: {
+    listeners () {
+      return {
+        ...this.$listeners,
+        input: event => {
+          this.$emit('input', event.target.value)
+        }
+      }
+    }
+  },
+
   methods: {
     onInput (event) {
-      this.$emit('input', event.target.value)
     }
   }
 }
@@ -68,7 +78,8 @@ export default {
   @include text-font-sizes;
 
   &:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 50px $col-field-background; // autofill hack
+    -webkit-box-shadow: inset 0 0 0 50px $field-color-background
+    // autofill hack
   }
 
   &--autofill-white:not([readonly]) {

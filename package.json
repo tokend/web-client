@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@mdi/font": "^2.7.94",
-    "@tokend/js-sdk": "^0.3.0",
+    "@tokend/js-sdk": "^0.3.5",
     "@tokend/wallet.js": "git+https://github.com/tokend/wallet.js.git",
     "accounting": "^0.4.1",
     "bignumber.js": "^7.2.1",
@@ -45,6 +45,7 @@
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue-simplemde": "^0.4.8",
+    "vuelidate": "^0.7.4",
     "vuex": "^3.0.1",
     "wallet-address-validator": "^0.1.7"
   },

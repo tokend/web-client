@@ -118,3 +118,9 @@ $x-large: 192 * $point;
     }
   }
 }
+
+@mixin respond-to-height($media) {
+  @media only screen and (max-height: $media) {
+    @content;
+  }
+}

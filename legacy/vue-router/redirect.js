@@ -13,8 +13,6 @@ export const resolveRedirect = (to, from, next) => {
   }
 }
 
-function handleEmailRedirect (action, next) {
-  const token = action.meta.token
-  const walletId = action.meta.wallet_id
-  next({ name: 'login', params: { token, walletId } })
+function handleEmailRedirect (encodedAction, next) {
+  next({ name: 'login', params: { encodedEmailAction: encodedAction } })
 }

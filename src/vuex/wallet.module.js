@@ -2,6 +2,8 @@ import { vuexTypes } from './types'
 import { Sdk } from '../sdk'
 import { Wallet } from '@tokend/js-sdk'
 
+import isEmpty from 'lodash/isEmpty'
+
 export const state = {
   wallet: {}
 }
@@ -18,21 +20,26 @@ export const mutations = {
     // FIXME All the fields we're copying from wallet are getters here and are
     //  not being properly serialized. Can be resolved later after implementing
     //  custom toJSON in the sdk Wallet class
-    state.wallet.email = wallet.email
-    state.wallet.secretSeed = wallet.secretSeed
-    state.wallet.id = wallet.id
-    state.wallet.accountId = wallet.accountId
+    state.wallet = {
+      accountId: wallet.accountId,
+      secretSeed: wallet.secretSeed,
+      email: wallet.email,
+      id: wallet.id
+    }
   }
 }
 
 export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
     commit(vuexTypes.SET_WALLET, await Sdk.api.wallets.get(email, password))
+  },
+  [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
+    commit(vuexTypes.SET_WALLET, wallet)
   }
 }
 
 export const getters = {
-  [vuexTypes.wallet]: state => new Wallet(
+  [vuexTypes.wallet]: state => isEmpty(state.wallet) ? {} : new Wallet(
     state.wallet.email,
     state.wallet.secretSeed,
     state.wallet.accountId,

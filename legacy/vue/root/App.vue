@@ -34,10 +34,15 @@
     <template v-else>
       <router-view />
     </template>
+
+    <status-message />
   </div>
 </template>
 
 <script>
+import StatusMessage from '@/vue/common/StatusMessage'
+
+// legacy:
 import Navbar from '../navigation/Navbar.vue'
 import Sidebar from '../navigation/Sidebar.vue'
 import Snackbar from '../common/messages/Snackbar'
@@ -64,6 +69,9 @@ export default {
   name: 'app',
 
   components: {
+    StatusMessage,
+
+    // legacy
     Navbar,
     Sidebar,
     Snackbar,

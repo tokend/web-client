@@ -68,5 +68,64 @@ Also there are the set of proxies to
 format only the values (not the whole string). All the proxies are available 
 inside the `vue/filters` directory.
 
+## And some details:
 
-[i18next]: https://i18next.com
+### Adding validator errors
+
+To handle the validator error we're using `i18next`'s [context][context] feature.
+Consider an example: you're adding a validation rule to your component
+
+```javascript
+// IMPORTANT: form mixin will handle for you most of the work for linking
+// vuelidate to proper i18n messages
+import FormMixin from '@/vue/mixins/form.mixin'
+
+export default {
+  validations: {
+    // Don't forget to nest the validation rules in the form object, if your
+    // fields are also nested there
+    form: {
+      email: { required, email, max10: maxLength(10) }
+    }
+  },
+  mixins: [FormMixin]
+}
+```
+
+You'll simply need to add a `validation.field-error` field to the i18n list
+with the context === name of your validator:
+
+```json
+{
+  "validations": {
+    "field-error_required": "Something should be here",
+    "field-error_email": "This should be a valid email",
+    "field-error_max10": "Only 10 symbols please!"
+  }
+}
+```
+
+And now the `errorMessage` of the `FormMixin` will know where to find the message
+when it decides the field is invalid.
+
+> NOTE: if the validator rule is camelCased in your component, the i18next context
+should be camelCased too:
+
+```
+export default {
+  validations: {
+    myField: { myAwesomeValidationRule }
+  }
+}
+```
+
+```json
+{
+  "validations": {
+    "field-error_myAwesomeValidationRule": "Your message here"
+  }
+}
+```
+
+[i18next]: https://www.i18next.com
+[context]: https://www.i18next.com/translation-function/context
