@@ -176,8 +176,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~L@scss/mixins";
-@import "~L@scss/variables";
+@import "~@scss/mixins";
+@import "~@scss/variables";
 
 $custom-breakpoint: 800px;
 
