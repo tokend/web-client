@@ -17,9 +17,9 @@
           v-model="form.password"
           @blur="_touchField('form.password')"
           id="signup-password"
+          type="password"
           :error-message="_getErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
-          :type="'password'"
         />
       </div>
     </div>
@@ -29,9 +29,9 @@
           v-model="form.confirmPassword"
           @blur="_touchField('form.confirmPassword')"
           id="signup-confirm-password"
+          type="password"
           :error-message="_getErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
-          :type="'password'"
         />
       </div>
     </div>
