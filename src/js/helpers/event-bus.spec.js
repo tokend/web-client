@@ -29,6 +29,8 @@ describe('event-bus unit test', () => {
   })
 
   it('emits preset events with correct payload', () => {
+    sinon.restore()
+
     const warningFn = sinon.spy()
     const successFn = sinon.spy()
     const infoFn = sinon.spy()
