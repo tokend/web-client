@@ -17,9 +17,9 @@
           v-model="form.password"
           @blur="_touchField('form.password')"
           id="login-password"
+          type="password"
           :error-message="_getErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
-          :type="'password'"
         />
       </div>
     </div>

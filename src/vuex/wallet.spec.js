@@ -16,7 +16,7 @@ describe('wallet.module', () => {
     '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
   )
 
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 

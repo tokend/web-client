@@ -5,7 +5,7 @@ import { TestHelper } from '@/test/test-helper'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 describe('error-handler unit test', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 

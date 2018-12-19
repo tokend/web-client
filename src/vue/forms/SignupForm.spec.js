@@ -20,7 +20,7 @@ localVue.filter('globalize', globalize)
 Vue.config.silent = true
 
 describe('SignupForm component test', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 

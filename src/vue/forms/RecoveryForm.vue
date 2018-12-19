@@ -17,9 +17,9 @@
           v-model="form.password"
           @blur="_touchField('form.password')"
           id="recovery-password"
+          type="password"
           :error-message="_getErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
-          :type="'password'"
         />
       </div>
     </div>
@@ -29,9 +29,9 @@
           v-model="form.confirmPassword"
           @blur="_touchField('form.confirmPassword')"
           id="recovery-confirm-password"
+          type="password"
           :error-message="_getErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
-          :type="'password'"
         />
       </div>
     </div>
@@ -41,9 +41,9 @@
           v-model="form.recoverySeed"
           @blur="_touchField('form.recoverySeed')"
           id="recovery-seed"
+          type="password"
           :error-message="_getErrorMessage('form.recoverySeed')"
           :label="'auth-pages.recovery-seed' | globalize"
-          :type="'password'"
         />
       </div>
     </div>
