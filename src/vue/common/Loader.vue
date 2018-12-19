@@ -3,8 +3,8 @@
     <div class="loader__animation" />
     <div
       class="loader__message"
-      v-if="message">
-      {{ message }}
+      v-if="messageId">
+      {{ messageId | globalize }}
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 export default {
   name: 'loader',
   props: {
-    message: { type: String, default: '' }
+    messageId: { type: String, default: '' }
   }
 }
 </script>

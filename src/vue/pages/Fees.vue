@@ -13,22 +13,22 @@
       <table-custom>
         <table-custom-row slot="header">
           <table-custom-head>
-            {{ 'fee.fee-type' | globalize }}
+            {{ 'fee-table.fee-type' | globalize }}
           </table-custom-head>
           <table-custom-head>
-            {{ 'fee.subtype' | globalize }}
+            {{ 'fee-table.subtype' | globalize }}
           </table-custom-head>
           <table-custom-head>
-            {{ 'fee.fixed' | globalize }}
+            {{ 'fee-table.fixed' | globalize }}
           </table-custom-head>
           <table-custom-head>
-            {{ 'fee.percent' | globalize }}
+            {{ 'fee-table.percent' | globalize }}
           </table-custom-head>
           <table-custom-head>
-            {{ 'fee.lower-bound' | globalize }}
+            {{ 'fee-table.lower-bound' | globalize }}
           </table-custom-head>
           <table-custom-head>
-            {{ 'fee.upper-bound' | globalize }}
+            {{ 'fee-table.upper-bound' | globalize }}
           </table-custom-head>
         </table-custom-row>
         <table-custom-row v-for="(fee, i) in assetFees" :key="i">
@@ -55,13 +55,14 @@
       </table-custom>
     </div>
   </div>
-  <div v-else>
+  <div v-else-if="!isFailed">
     <loader
-      v-if="!loadingError"
-      :message="'fee.lbl-loading' | globalize"
+      :message-id="'fee-table.lbl-loading'"
     />
-    <p v-else>
-      {{ 'fee.lbl-loading-error' | globalize }}
+  </div>
+  <div v-else>
+    <p>
+      {{ 'fee-table.lbl-loading-error' | globalize }}
     </p>
   </div>
 </template>
@@ -91,7 +92,7 @@ export default {
   },
   data: _ => ({
     fees: null,
-    loadingError: false,
+    isFailed: false,
     filters: {
       asset: ''
     }
@@ -125,7 +126,7 @@ export default {
         })
         this.fees = response.data.fees
       } catch (error) {
-        this.loadingError = true
+        this.isFailed = true
         console.error(error)
       }
     }

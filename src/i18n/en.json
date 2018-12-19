@@ -141,18 +141,7 @@
       "incoming": "Incoming"
     },
 
-    "fee": {
-      "payment-fee": "Payment",
-      "offer-fee": "Offer",
-      "withdrawal-fee": "Withdrawal",
-      "issuance-fee": "Issuance",
-      "invest-fee": "Invest",
-      "capital-deployment-fee": "Capital deployment",
-      "operation-fee": "Operation",
-      "payout-fee": "Payout",
-      "incoming-outgoing": "Incoming & Outgoing",
-      "outgoing": "Outgoing",
-      "incoming": "Incoming",
+    "fee-table": {
       "fee-type": "Fee type",
       "fixed": "Fixed",
       "percent": "Percent",
