@@ -25,7 +25,7 @@ localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
 describe('LoginForm component unit test', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 

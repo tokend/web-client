@@ -2,14 +2,16 @@ import { Bus } from '@/js/helpers/event-bus'
 
 describe('event-bus unit test', () => {
   beforeEach(() => {
-    sinon.restore()
-    Bus.reset()
-
     const eventList = {
       'my-event': 'my-event'
     }
 
     sinon.stub(Bus, 'eventList').get(_ => eventList)
+  })
+
+  afterEach(() => {
+    sinon.restore()
+    Bus.reset()
   })
 
   it('emits proper listeners attached to event', () => {
@@ -27,8 +29,6 @@ describe('event-bus unit test', () => {
   })
 
   it('emits preset events with correct payload', () => {
-    sinon.restore()
-
     const warningFn = sinon.spy()
     const successFn = sinon.spy()
     const infoFn = sinon.spy()

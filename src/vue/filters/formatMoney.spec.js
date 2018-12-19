@@ -5,6 +5,9 @@ import i18next from 'i18next'
 describe('formatMoney filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
+  })
+
+  afterEach(() => {
     sinon.restore()
   })
 
