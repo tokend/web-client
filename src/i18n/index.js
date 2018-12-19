@@ -3,6 +3,8 @@ import numeral from 'numeral'
 
 import _isObject from 'lodash/isObject'
 
+import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+
 const language = 'en'
 let i18n
 
@@ -70,6 +72,21 @@ export const i18nOptions = {
           return numeral(param).format(
             i18n.config.number.formats.percent
           )
+        case 'fee_type':
+          const feeTypeIndex = Object.values(FEE_TYPES).indexOf(param)
+          const feeTypeLabel = Object.keys(FEE_TYPES)[feeTypeIndex]
+          return i18n.translations['fee-types'][feeTypeLabel]
+        case 'fee_subtype':
+          const isPaymentFeeType = param.type === FEE_TYPES.paymentFee
+          let feeSubtypeLabel
+          if (isPaymentFeeType) {
+            const feeSubtypeIndex =
+              Object.values(PAYMENT_FEE_SUBTYPES).indexOf(param.subtype)
+            feeSubtypeLabel = Object.keys(PAYMENT_FEE_SUBTYPES)[feeSubtypeIndex]
+          } else {
+            feeSubtypeLabel = 'incoming-outgoing'
+          }
+          return i18n.translations['fee-types'][feeSubtypeLabel]
         default:
           console.warn(`Unknown format: ${format}, skipping..`)
           return param

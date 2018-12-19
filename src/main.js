@@ -44,8 +44,8 @@ import { formatInteger } from '@/vue/filters/formatInteger'
 import { formatPercent } from '@/vue/filters/formatPercent'
 import { globalize } from '@/vue/filters/globalize'
 
-import { globalizeFeeType } from '@/vue/filters/globalizeFeeType'
-import { globalizeFeeSubType } from '@/vue/filters/globalizeFeeSubType'
+import { formatFeeType } from '@/vue/filters/formatFeeType'
+import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 
 // legacy filters
 import { translate } from 'L@/vue/common/filters/translate'
@@ -73,8 +73,8 @@ Vue.filter('formatNumber', formatNumber)
 Vue.filter('formatCalendar', formatCalendar)
 Vue.filter('formatOrderNumber', formatOrderNumber)
 Vue.filter('formatInteger', formatInteger)
-Vue.filter('globalizeFeeType', globalizeFeeType)
-Vue.filter('globalizeFeeSubType', globalizeFeeSubType)
+Vue.filter('formatFeeType', formatFeeType)
+Vue.filter('formatFeeSubType', formatFeeSubType)
 Vue.filter('formatDate', formatDate)
 Vue.filter('formatMoney', formatMoney)
 Vue.filter('formatPercent', formatPercent)

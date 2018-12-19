@@ -33,10 +33,11 @@
         </table-custom-row>
         <table-custom-row v-for="(fee, i) in assetFees" :key="i">
           <table-custom-cell>
-            {{ fee.feeType | globalizeFeeType }}
+            {{ fee.feeType | formatFeeType }}
           </table-custom-cell>
           <table-custom-cell>
-            {{ fee.subtype | globalizeFeeSubType }}
+            <!-- eslint-disable-next-line -->
+            {{ { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType }}
           </table-custom-cell>
           <table-custom-cell>
             {{ { value: fee.fixed, currency: fee.feeAsset } | formatMoney }}

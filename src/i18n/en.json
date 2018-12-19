@@ -39,7 +39,9 @@
       "integer": "{{value, integer}}",
       "calendar":  "{{value, calendar}}",
       "order_number":  "{{value, order_number}}",
-      "percent": "{{value, percent}}"
+      "percent": "{{value, percent}}",
+      "fee_type": "{{value, fee_type}}",
+      "fee_subtype": "{{value, fee_subtype}}"
     },
 
     "status-message": {
@@ -123,6 +125,20 @@
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel"
+    },
+
+    "fee-types": {
+      "paymentFee": "Payment",
+      "offerFee": "Offer",
+      "withdrawalFee": "Withdrawal",
+      "issuanceFee": "Issuance",
+      "investFee": "Invest",
+      "capitalDeploymentFee": "Capital deployment",
+      "operationFee": "Operation",
+      "payoutFee": "Payout",
+      "incoming-outgoing": "Incoming & Outgoing",
+      "outgoing": "Outgoing",
+      "incoming": "Incoming"
     },
 
     "fee": {

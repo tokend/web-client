@@ -1,13 +1,18 @@
-import { globalizeFeeSubType } from './globalizeFeeSubType'
+import { formatFeeType } from './formatFeeType'
 
 import { i18nOptions } from '@/i18n'
 import i18next from 'i18next'
 
-describe('globalizeFeeSubType filter test', () => {
+describe('formatFeeType filter test', () => {
   const translationCodes = {
-    0: 'incoming-outgoing',
-    1: 'outgoing',
-    2: 'incoming'
+    0: 'payment-fee',
+    1: 'offer-fee',
+    2: 'withdrawal-fee',
+    3: 'issuance-fee',
+    4: 'invest-fee',
+    5: 'capital-deployment-fee',
+    6: 'operation-fee',
+    7: 'payout-fee'
   }
 
   beforeEach(() => {
@@ -16,9 +21,9 @@ describe('globalizeFeeSubType filter test', () => {
   })
 
   for (const [code, translation] of Object.entries(translationCodes)) {
-    it(`Code ${code} stands for ${translation} fee subtype`, () => {
+    it(`Code ${code} stands for ${translation} fee type`, () => {
       const spy = sinon.spy(i18next, 't')
-      globalizeFeeSubType(code)
+      formatFeeType(code)
 
       expect(
         spy
