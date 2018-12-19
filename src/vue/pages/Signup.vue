@@ -13,7 +13,7 @@
       <signup-form
         v-if="!recoveryKeypair"
         :submit-event="'submit'"
-        @submit="handleFormSubmit"
+        @submit="handleChildFormSubmit"
       />
 
       <div class="signup__seed-wrp" v-else>
@@ -27,7 +27,7 @@
           <button
             v-ripple
             @click="submit"
-            :disabled="formMixin.isDisabled"
+            :disabled="_isDisabled"
             class="auth-page__submit-btn"
           >
             {{ 'auth-pages.continue' | globalize }}
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import FormMixin from '../mixins/form.mixin'
+import FormMixin from '@/vue/mixins/form.mixin'
 
 import SignupForm from '../forms/SignupForm'
 import KeyViewer from '../common/KeyViewer'
@@ -77,7 +77,7 @@ export default {
     ...mapActions('new-wallet', {
       storeWallet: vuexTypes.STORE_WALLET
     }),
-    handleFormSubmit (form) {
+    handleChildFormSubmit (form) {
       this.email = form.email
       this.password = form.password
       this.recoveryKeypair = base
@@ -85,7 +85,7 @@ export default {
         .random()
     },
     async submit () {
-      this.disableForm()
+      this._disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
           this.email,
@@ -111,7 +111,7 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      this.enableForm()
+      this._enableForm()
     },
     // TODO: we support old vuex for the legacy components. Remove once
     // the legacy will be completely removed

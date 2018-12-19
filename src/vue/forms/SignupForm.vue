@@ -4,10 +4,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="touchField(`form.email`)"
+          @blur="_touchField('form.email')"
           id="signup-email"
-          :label="globalize('auth-pages.email')"
-          :error-message="errorMessage(`form.email`)"
+          :label="'auth-pages.email' | globalize"
+          :error-message="_getErrorMessage('form.email')"
         />
       </div>
     </div>
@@ -15,11 +15,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="touchField(`form.password`)"
+          @blur="_touchField('form.password')"
           id="signup-password"
-          :error-message="errorMessage(`form.password`)"
-          :label="globalize('auth-pages.password')"
-          :type="`password`"
+          :error-message="_getErrorMessage('form.password')"
+          :label="'auth-pages.password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -27,11 +27,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="touchField(`form.confirmPassword`)"
+          @blur="_touchField('form.confirmPassword')"
           id="signup-confirm-password"
-          :error-message="errorMessage(`form.confirmPassword`)"
-          :label="globalize('auth-pages.confirm-password')"
-          :type="`password`"
+          :error-message="_getErrorMessage('form.confirmPassword')"
+          :label="'auth-pages.confirm-password' | globalize"
+          :type="'password'"
         />
       </div>
     </div>
@@ -41,7 +41,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn"
-        :disabled="formMixin.isDisabled"
+        :disabled="_isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
       </button>
@@ -50,9 +50,8 @@
 </template>
 
 <script>
-import FormMixin from '../mixins/form.mixin'
+import FormMixin from '@/vue/mixins/form.mixin'
 
-import { globalize } from '@/vue/filters/globalize'
 import {
   email,
   required,
@@ -93,12 +92,11 @@ export default {
     }
   },
   methods: {
-    globalize,
     async submit () {
-      if (!this.isFormValid()) {
+      if (!this._isFormValid()) {
         return
       }
-      this.disableForm()
+      this._disableForm()
       try {
         await Sdk.api.wallets.getKdfParams(this.form.email)
         // If no error came - the user exists - we obviously won't succeed in
@@ -108,13 +106,13 @@ export default {
         if (e instanceof errors.NotFoundError) {
           // If user not found - it's our case, so we will continue sign-up
           this.$emit(this.submitEvent, this.form)
-          this.enableForm()
+          this._enableForm()
           return
         }
         console.error(e)
         ErrorHandler.process(e)
       }
-      this.enableForm()
+      this._enableForm()
     }
   }
 }

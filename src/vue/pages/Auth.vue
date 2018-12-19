@@ -40,8 +40,11 @@ export default {
 }
 
 .auth__titles {
-  background: #332f5c; /* Old browsers */
-  background: linear-gradient(#5d5882 0%,#2a2749 65%);
+  background: $col-auth-titles-background-fallback; /* Old browsers */
+  background: linear-gradient(
+      $col-auth-titles-background-light 0%,
+      $col-auth-titles-background-dark 65%
+  );
   display: flex;
   flex-direction: column;
   justify-content: center;

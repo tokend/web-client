@@ -2,6 +2,8 @@ import RecoveryForm from './RecoveryForm'
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
+import VueRouter from 'vue-router'
+
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
@@ -9,6 +11,7 @@ import { globalize } from '@/vue/filters/globalize'
 const localVue = createLocalVue()
 
 localVue.use(Vuelidate)
+localVue.use(VueRouter)
 localVue.filter('globalize', globalize)
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
@@ -52,7 +55,7 @@ describe('RecoveryForm component test', () => {
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        const spy = sinon.stub(wrapper.vm, 'touchField')
+        const spy = sinon.stub(wrapper.vm, '_touchField')
 
         wrapper
           .find(selector)

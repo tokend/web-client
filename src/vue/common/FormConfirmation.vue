@@ -2,20 +2,20 @@
   <transition name="form-confirmation__transition">
     <div class="form-confirmation">
       <p class="form-confirmation__msg">
-        {{ message }}
+        {{ messageId | globalize }}
       </p>
       <div class="form-confirmation__btns">
         <button
           class="form-confirmation__cancel-btn"
           @click.prevent="emitCancel"
           :disabled="isPending">
-          {{ cancelButtonText }}
+          {{ cancelButtonTextId | globalize }}
         </button>
         <button
           class="form-confirmation__ok-btn"
           @click.prevent="emitOk"
           :disabled="isPending">
-          {{ okButtonText }}
+          {{ okButtonTextId | globalize }}
         </button>
       </div>
     </div>
@@ -23,33 +23,19 @@
 </template>
 
 <script>
-import { globalize } from '@/vue/filters/globalize'
-
 export default {
   props: {
-    message: {
+    messageId: {
       type: String,
-      default () {
-        return globalize('form-confirmation.message-text', {
-          context: 'default'
-        })
-      }
+      default: 'form-confirmation.message-text-default'
     },
-    okButtonText: {
+    okButtonTextId: {
       type: String,
-      default () {
-        return globalize('form-confirmation.button-text', {
-          context: 'ok'
-        })
-      }
+      default: 'form-confirmation.button-text-ok'
     },
-    cancelButtonText: {
+    cancelButtonTextId: {
       type: String,
-      default () {
-        return globalize('form-confirmation.button-text', {
-          context: 'cancel'
-        })
-      }
+      default: 'form-confirmation.button-text-cancel'
     },
     isPending: {
       type: Boolean,

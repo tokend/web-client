@@ -1,6 +1,12 @@
 <template>
   <div v-if="isShown" :class="`status-message status-message--${messageType}`">
-    <p class="status-message__content">{{ message | globalize }}</p>
+    <p class="status-message__content">
+      {{
+        messageId | globalize({
+          context: messageType
+        })
+      }}
+    </p>
     <div class="status-message__btn-wrp">
       <button class="status-message__btn" @click="isShown = false">
         {{
@@ -15,7 +21,6 @@
 
 <script>
 import { Bus } from '@/js/helpers/event-bus'
-import { globalize } from '@/vue/filters/globalize'
 
 const CLOSE_TIMEOUT_MS = 5000
 const MESSAGE_TYPES = Object.freeze({
@@ -28,7 +33,7 @@ const MESSAGE_TYPES = Object.freeze({
 export default {
   name: 'message',
   data: _ => ({
-    message: '',
+    messageId: '',
     messageType: '',
     isShown: false,
     timeoutId: null
@@ -46,9 +51,7 @@ export default {
   methods: {
     show (messageType, message) {
       this.messageType = messageType
-      this.message = message || globalize('status-message.default-message', {
-        context: messageType
-      })
+      this.messageId = message || 'status-message.default-message'
       this.isShown = true
 
       if (this.timeoutId) {
@@ -72,7 +75,7 @@ export default {
     .6 * $point
     .6 * $point
     -.4 * $point
-    $col-status-msg-shadow;
+    $col-msg-shadow;
   border-radius: .3 * $point;
   font-size: 1.6 * $point;
   padding: 2 * $point 4 * $point;
@@ -80,15 +83,22 @@ export default {
   right: 4 * $point;
   top: 4 * $point;
 
-  &--warning { background: $col-warning }
-  &--success { background: $col-success }
-  &--error { background: $col-error }
-  &--info { background: $col-info }
-}
+  @mixin apply-theme ($col-msg-background, $col-msg-text) {
+    background: $col-msg-background;
 
-.status-message__content,
-.status-message__btn {
-  color: $col-text-status-message;
+    .status-message__content,
+    .status-message__btn {
+      color: $col-msg-text;
+    }
+    .status-message__btn {
+      border: .1 * $point solid $col-msg-text;
+    }
+  }
+
+  &--warning { @include apply-theme($col-warning, $col-text-msg-warning) }
+  &--success { @include apply-theme($col-success, $col-text-msg-success) }
+  &--error { @include apply-theme($col-error, $col-text-msg-error) }
+  &--info { @include apply-theme($col-info, $col-text-msg-info) }
 }
 
 .status-message__content {
@@ -102,7 +112,6 @@ export default {
 .status-message__btn {
   background: transparent;
   border-radius: .5 * $point;
-  border: .1 * $point solid $col-text-status-message;
   font-size: 1.4 * $point;
   padding: .5 * $point 2 * $point;
   cursor: pointer;
