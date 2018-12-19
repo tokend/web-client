@@ -1,7 +1,6 @@
 import Fees from './Fees'
 
 import Vuex from 'vuex'
-import Vue from 'vue'
 
 import { vuexTypes } from '@/vuex'
 import walletModule from '@/vuex/wallet.module'
@@ -11,18 +10,18 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 import { globalizeFeeType } from '@/vue/filters/globalizeFeeType'
 import { globalizeFeeSubType } from '@/vue/filters/globalizeFeeSubType'
+import { formatMoney } from '@/vue/filters/formatMoney'
+import { formatPercent } from '@/vue/filters/formatPercent'
 
 import { MockHelper, MockWrapper } from '@/test'
-
-// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
-// Vue 2.6 so everything get fixed
-Vue.config.silent = true
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 localVue.filter('globalizeFeeType', globalizeFeeType)
 localVue.filter('globalizeFeeSubType', globalizeFeeSubType)
+localVue.filter('formatMoney', formatMoney)
+localVue.filter('formatPercent', formatPercent)
 
 describe('Fees component unit test', () => {
   let mockHelper
