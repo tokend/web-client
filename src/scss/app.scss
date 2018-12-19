@@ -252,6 +252,59 @@ h4 {
   }
 }
 
+.app__table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  background-color: $col-table-background;
+
+  thead {
+    th {
+      font-size: 1.2 * $point;
+      text-align: left;
+      height: 4.2 * $point;
+      padding:
+        1.6 * $point
+        1.6 * $point
+        1.1 * $point
+        1.6 * $point;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: $col-table-head-text;
+      font-weight: normal;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: .3s;
+      transition-property: background-color;
+      will-change: background-color;
+
+      &:nth-child(odd) {
+        background-color: $col-table-alt-row-background;;
+      }
+
+      &:hover {
+        background-color: $col-table-row-selected;
+      }
+
+      td {
+        height: 4 * $point;
+        position: relative;
+        transition: .3s;
+        font-size: 1.4 * $point;
+        line-height: 1.8 * $point;
+        color: $col-table-cell-text;
+        padding: .6 * $point 1.6 * $point;
+      }
+    }
+  }
+}
+
+
 .app__table-left-shadow {
   position: relative;
 

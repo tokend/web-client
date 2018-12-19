@@ -10,49 +10,64 @@
       :key="filters.asset"
     />
     <div class="fee__asset-info">
-      <table-custom>
-        <table-custom-row slot="header">
-          <table-custom-head>
-            {{ 'fee-table.fee-type' | globalize }}
-          </table-custom-head>
-          <table-custom-head>
-            {{ 'fee-table.subtype' | globalize }}
-          </table-custom-head>
-          <table-custom-head>
-            {{ 'fee-table.fixed' | globalize }}
-          </table-custom-head>
-          <table-custom-head>
-            {{ 'fee-table.percent' | globalize }}
-          </table-custom-head>
-          <table-custom-head>
-            {{ 'fee-table.lower-bound' | globalize }}
-          </table-custom-head>
-          <table-custom-head>
-            {{ 'fee-table.upper-bound' | globalize }}
-          </table-custom-head>
-        </table-custom-row>
-        <table-custom-row v-for="(fee, i) in assetFees" :key="i">
-          <table-custom-cell>
-            {{ fee.feeType | formatFeeType }}
-          </table-custom-cell>
-          <table-custom-cell>
-            <!-- eslint-disable-next-line -->
-            {{ { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType }}
-          </table-custom-cell>
-          <table-custom-cell>
-            {{ { value: fee.fixed, currency: fee.feeAsset } | formatMoney }}
-          </table-custom-cell>
-          <table-custom-cell>
-            {{ fee.percent | formatPercent }}
-          </table-custom-cell>
-          <table-custom-cell>
-            {{ fee.lowerBound | formatMoney }}
-          </table-custom-cell>
-          <table-custom-cell>
-            {{ fee.upperBound | formatMoney }}
-          </table-custom-cell>
-        </table-custom-row>
-      </table-custom>
+      <div class="fees__table">
+        <div class="fees__table-content">
+          <table class="app__table">
+            <thead>
+              <tr>
+                <th>
+                  {{ 'fee-table.fee-type' | globalize }}
+                </th>
+                <th>
+                  {{ 'fee-table.subtype' | globalize }}
+                </th>
+                <th>
+                  {{ 'fee-table.fixed' | globalize }}
+                </th>
+                <th>
+                  {{ 'fee-table.percent' | globalize }}
+                </th>
+                <th>
+                  {{ 'fee-table.lower-bound' | globalize }}
+                </th>
+                <th>
+                  {{ 'fee-table.upper-bound' | globalize }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(fee, i) in assetFees" :key="i">
+                <td>
+                  {{ fee.feeType | formatFeeType }}
+                </td>
+                <td>
+                  {{
+                    {
+                      type: fee.feeType,
+                      subtype: fee.subtype }
+                      | formatFeeSubType
+                  }}
+                </td>
+                <td>
+                  {{ {
+                    value: fee.fixed,
+                    currency: fee.feeAsset }
+                    | formatMoney }}
+                </td>
+                <td>
+                  {{ fee.percent | formatPercent }}
+                </td>
+                <td>
+                  {{ fee.lowerBound | formatMoney }}
+                </td>
+                <td>
+                  {{ fee.upperBound | formatMoney }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
   <div v-else-if="!isFailed">
@@ -69,10 +84,6 @@
 
 <script>
 import SelectFieldCustom from '../fields/SelectFieldCustom'
-import TableCustom from '../common/TableCustom'
-import TableCustomRow from '../common/TableCustomRow'
-import TableCustomHead from '../common/TableCustomHead'
-import TableCustomCell from '../common/TableCustomCell'
 import Loader from '../common/Loader'
 
 import { Sdk } from '@/sdk'
@@ -84,10 +95,6 @@ export default {
   name: 'fees',
   components: {
     SelectFieldCustom,
-    TableCustom,
-    TableCustomRow,
-    TableCustomHead,
-    TableCustomCell,
     Loader
   },
   data: _ => ({
@@ -144,5 +151,18 @@ export default {
 
 .fee__asset-info {
   margin: 2.1 * $point 0;
+}
+
+.fees__table {
+  display: flex;
+  flex-flow: column wrap;
+  overflow-x: auto;
+  box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
+
+  .fees__table-content {
+    flex: 1;
+    overflow-x: auto;
+    transition: height .3s;
+  }
 }
 </style>
