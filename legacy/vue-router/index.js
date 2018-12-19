@@ -14,8 +14,11 @@ import Signup from '@/vue/pages/Signup'
 import Recovery from '@/vue/pages/Recovery'
 import Verify from '@/vue/pages/Verify'
 
+<<<<<<< HEAD
 import Fees from '@/vue/pages/Fees'
 
+=======
+>>>>>>> dev
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'
 import Downloads from 'L@/vue/public/Public.Downloads'
