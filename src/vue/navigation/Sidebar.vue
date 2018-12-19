@@ -1,0 +1,530 @@
+<template>
+  <div class="sidebar">
+    <div
+      class="sidebar__backdrop"
+      :class="{ 'sidebar__backdrop--active': isSidebarOpened }"
+      @click="closeSidebar"
+    />
+
+    <button
+      @click="openSidebar"
+      class="sidebar__burger-btn"
+      :class="{ 'sidebar__burger-btn--sidebar-active': isSidebarOpened }"
+    >
+      <md-icon>menu</md-icon>
+    </button>
+
+    <div
+      class="sidebar__lists"
+      :class="{ 'sidebar__lists--closed': !isSidebarOpened }"
+    >
+      <section class="sidebar__logotype">
+        <router-link
+          @click.native="closeSidebar"
+          :to="vueRoutes.dashboard"
+        >
+          <logo class="sidebar__logotype-icon" />
+        </router-link>
+      </section>
+
+      <section class="sidebar__list">
+        <ul>
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.dashboard"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.dashboard"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              dashboard
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.dashboard' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.deposit"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.deposit"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              file_download
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.deposit' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.withdrawal"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.withdrawal"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              file_upload
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.withdraw' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.transfers"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.transfers"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              send
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.send' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.history"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.history"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              calendar_view_day
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.history' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.limits"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.limits"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              insert_chart
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.limits' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.massTransfers"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.massTransfers"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              people
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.mass-transfer' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.trade"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.trade"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              compare_arrows
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.trade' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.fees"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.feesExplorer"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              flash_on
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.fees' | globalize }}
+            </span>
+          </router-link>
+        </ul>
+      </section>
+
+      <section class="sidebar__section sidebar__section--account sidebar__list">
+        <div class="sidebar__list-title">
+          {{ 'sidebar.section-explore' | globalize }}
+        </div>
+        <ul>
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.tokens"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.tokens"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              toll
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.explore-tokens' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.sales"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.sales"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              trending_up
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.explore-sales' | globalize }}
+            </span>
+          </router-link>
+        </ul>
+      </section>
+
+      <section
+        class="sidebar__section sidebar__section--account sidebar__list"
+        v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
+      >
+        <div class="sidebar__list-title">
+          {{ 'sidebar.section-corporate' | globalize }}
+        </div>
+        <ul>
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.tokenCreation"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.tokenCreation"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              add_circle
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.create-token' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.saleCreation"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.saleCreation"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              calendar_today
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.create-sale' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.preissuanceUpload"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.preIssuanceUpload"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              zoom_out_map
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.upload-pre-issuance' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.issuanceCreation"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.issuanceCreation"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              bar_chart
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.create-issuance' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.requests"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.requests"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              import_contacts
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.requests' | globalize }}
+            </span>
+          </router-link>
+        </ul>
+      </section>
+
+      <section class="sidebar__section sidebar__section--account sidebar__list">
+        <div class="sidebar__list-title">
+          {{ 'sidebar.section-account' | globalize }}
+        </div>
+        <ul>
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.verification"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.verification"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              verified_user
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.verification' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
+            :to="vueRoutes.settings"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.settings"
+          >
+            <md-icon class="sidebar__list-item-icon">
+              settings
+            </md-icon>
+            <span class="md-list-item-text">
+              {{ 'pages-names.settings' | globalize }}
+            </span>
+          </router-link>
+        </ul>
+      </section>
+
+      <app-footer />
+    </div>
+  </div>
+</template>
+
+<script>
+import config from '@/config'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import Logo from '@/vue/assets/Logo'
+import AppFooter from '@/vue/navigation/Footer'
+import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
+import { vueRoutes } from '@/vue-router'
+
+export default {
+  name: 'sidebar',
+
+  components: {
+    Logo,
+    AppFooter
+  },
+
+  data: () => ({
+    isSidebarOpened: false,
+    config,
+    ACCOUNT_TYPES,
+    vueRoutes
+  }),
+
+  computed: {
+    ...mapGetters({
+      accountTypeI: `new-account/${vuexTypes.accountTypeI}`
+    })
+  },
+
+  methods: {
+    openSidebar () {
+      this.isSidebarOpened = true
+    },
+    closeSidebar () {
+      this.isSidebarOpened = false
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "~@scss/variables";
+@import "~@scss/mixins";
+
+.sidebar {
+  position: relative;
+  background-color: $col-sidebar-background !important;
+  box-shadow: inset -10px -10px 20px 0 rgba(0, 0, 0, 0.03);
+  min-height: 100%;
+}
+
+.sidebar__lists {
+  width: $sidebar-width;
+  min-height: 100%;
+  padding-bottom: 70px;
+  z-index: 120;
+  list-style: none;
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    opacity: 1;
+    width: $sidebar-width;
+    background-color: $col-sidebar-background-media-small !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.sidebar__lists--closed {
+    @include respond-to-custom($sidebar-hide-bp) {
+      opacity: 0;
+      width: 0;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+}
+
+.sidebar__backdrop {
+  @include respond-to-custom($sidebar-hide-bp) {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    z-index: 115;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.sidebar__backdrop--active {
+    left: $sidebar-width;
+    opacity: 1;
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+  }
+}
+
+.sidebar__burger-btn {
+  position: absolute;
+  left: 5px;
+  top: 41px;
+  z-index: 110;
+  width: 40px;
+  height: 40px;
+  margin-right: 0;
+  margin-left: 8px !important;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  background-color: $col-button-flat-txt !important;
+  transform: translateX($sidebar-width);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.sidebar__burger-btn--sidebar-active {
+    transform: translateX($sidebar-width);
+  }
+
+  .md-icon {
+    color: $col-button-raised-txt !important;
+  }
+}
+
+.sidebar__list-item {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  cursor: pointer;
+  color: $col-sidebar-text;
+
+  &.router-link-active {
+    background-color: $col-sidebar-active-elem-background;
+    color: $col-sidebar-active-elem-text;
+  }
+}
+
+.sidebar__list-title,
+.sidebar__list-item,
+.sidebar__logotype {
+  padding: 0 24px 0 40px;
+}
+
+.sidebar__logotype {
+  padding-top: 40px;
+  padding-bottom: 50px;
+}
+
+.sidebar__logotype-icon {
+  max-width: 95px;
+  width: 100%;
+  height: 31px;
+  display: block;
+}
+
+.sidebar__list-item-icon {
+  margin-right: 16px;
+  // TODO: remove important rule when possible
+  color: $col-sidebar-text !important;
+
+  .router-link-active & {
+    color: $col-sidebar-active-elem-text !important;
+  }
+}
+
+.sidebar__section--account {
+  margin-top: 50px;
+}
+
+.sidebar__list-title {
+  color: $col-sidebar-active-elem-text;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+</style>

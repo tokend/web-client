@@ -124,3 +124,9 @@ $x-large: 192 * $point;
     @content;
   }
 }
+
+@mixin respond-to-custom($media) {
+  @media only screen and (max-width: $media) {
+    @content;
+  }
+}

@@ -1,6 +1,9 @@
 // use as multiplier for more convenient way to calculating sizes
 $point: 0.625rem; /* 10px in case of 1rem=16px */
 
+$sidebar-width: 27.5 * $point;
+$sidebar-hide-bp: 768px;
+
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
@@ -16,6 +19,7 @@ $_orangePeel: #f2a100;
 $col-primary: $_eastBay;
 $col-primary-lighten: $_cornflowerBlue;
 $col-primary-txt: $_white;
+$col-link: $col-primary-lighten;
 
 $col-primary-inactive: rgba($col-primary, .7);
 $col-primary-flat-hover: rgba($col-primary, .2);
@@ -58,10 +62,20 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
 $col-button-back-icon: $col-primary-inactive;
 $col-button-back-icon-hover: $col-primary-lighten;
 
+// block
+$col-block-bg: $_white;
+
 // drawer colors:
-$col-drawer-bg: $_white;
+$col-drawer-bg: $col-block-bg;
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
+
+// sidebar
+$col-sidebar-background: $_athensGray;
+$col-sidebar-background-media-small: $_thinGray;
+$col-sidebar-text: $col-primary-inactive;
+$col-sidebar-active-elem-text: $col-primary;
+$col-sidebar-active-elem-background: $_thinGray;
 
 // status-message colors:
 $col-status-msg-shadow: rgba(0, 0, 0, 0.25);
