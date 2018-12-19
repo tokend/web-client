@@ -1,5 +1,4 @@
 import LoginForm from './LoginForm'
-// import walletModule from '@/vuex/wallet.module'
 
 import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
