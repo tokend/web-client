@@ -24,46 +24,52 @@ localVue.filter('formatMoney', formatMoney)
 localVue.filter('formatPercent', formatPercent)
 
 describe('Fees component unit test', () => {
-  let mockHelper
-  let wrapper
-  let feesResource
-  let feesSampleData = {
-    fees: {
-      ali: [0],
-      btc: [0, 1]
-    }
+  const mockHelper = new MockHelper()
+  const feesResource = mockHelper.getHorizonResourcePrototype('fees')
+  const feesSampleData = {
+    ali: [0],
+    btc: [0, 1]
   }
-
-  beforeEach(async () => {
-    sinon.restore()
-    mockHelper = new MockHelper()
-    const getters = walletModule.getters
-
-    sinon.stub(getters, vuexTypes.wallet).returns(
-      mockHelper.getMockWallet()
-    )
-
-    const store = new Vuex.Store({
-      modules: {
-        'new-wallet': {
-          namespaced: true,
-          getters
-        }
+  const getters = walletModule.getters
+  let store = new Vuex.Store({
+    modules: {
+      'new-wallet': {
+        namespaced: true,
+        getters
       }
-    })
+    }
+  })
+  let wrapper
 
-    feesResource = mockHelper.getHorizonResourcePrototype('fees')
-    sinon.stub(feesResource, 'getAll').resolves(
-      MockWrapper.makeHorizonResponse(feesSampleData)
-    )
-
-    wrapper = await shallowMount(Fees, {
+  beforeEach(() => {
+    sinon.stub(Fees, 'created').resolves()
+    wrapper = shallowMount(Fees, {
       store,
       localVue
     })
   })
 
-  it('loadFees() calls the horizon.fees.getAll() with the correct params', () => {
+  afterEach(() => {
+    sinon.restore()
+  })
+
+  it('loadFees() calls the horizon.fees.getAll() in the created hook with the correct params', () => {
+    sinon.restore()
+    sinon.stub(feesResource, 'getAll').resolves()
+    sinon.stub(getters, vuexTypes.wallet).returns(
+      mockHelper.getMockWallet()
+    )
+    shallowMount(Fees, {
+      localVue,
+      store: new Vuex.Store({
+        modules: {
+          'new-wallet': {
+            namespaced: true,
+            getters
+          }
+        }
+      })
+    })
     expect(
       feesResource.getAll
         .withArgs({ account_id: mockHelper.getMockWallet().accountId })
@@ -74,23 +80,36 @@ describe('Fees component unit test', () => {
   })
 
   it('loadFees() changes fees data after loading', async () => {
-    wrapper.setData({
-      fees: null
-    })
+    sinon.stub(feesResource, 'getAll').resolves(
+      MockWrapper.makeHorizonResponse({ fees: feesSampleData })
+    )
     await wrapper.vm.loadFees()
-    expect(wrapper.vm.fees).to.not.equal(null)
+    expect(wrapper.vm.fees)
+      .to
+      .not
+      .equal(null)
   })
 
   it('assetFees returns only the fees with the code filters.asset', () => {
     wrapper.setData({
+      fees: feesSampleData,
       filters: {
         asset: 'BTC'
       }
     })
-    expect(wrapper.vm.assetFees).to.deep.equal(feesSampleData.fees.btc)
+    expect(wrapper.vm.assetFees)
+      .to
+      .deep
+      .equal(feesSampleData.btc)
   })
 
   it('assetCodes returns array of assets', () => {
-    expect(wrapper.vm.assetCodes).to.deep.equal(['ALI', 'BTC'])
+    wrapper.setData({
+      fees: feesSampleData
+    })
+    expect(wrapper.vm.assetCodes)
+      .to
+      .deep
+      .equal(['ALI', 'BTC'])
   })
 })
