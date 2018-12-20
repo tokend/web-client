@@ -315,6 +315,8 @@ describe('the i18n is properly configured', () => {
       [PAYMENT_FEE_SUBTYPES.incoming]: 'Incoming'
     }
     const otherFeeSubtypes = {
+      [PAYMENT_FEE_SUBTYPES.outgoing]: 'Incoming & Outgoing',
+      [PAYMENT_FEE_SUBTYPES.incoming]: 'Incoming & Outgoing',
       '0': 'Incoming & Outgoing'
     }
 
@@ -328,9 +330,15 @@ describe('the i18n is properly configured', () => {
 
     for (const [given, expected] of Object.entries(otherFeeSubtypes)) {
       it(`given (offer fee) = ${given}`, () => {
-        const result = i18next.t('withFormattedFeeSubtype',
-          { value: { type: FEE_TYPES.offerFee, subtype: given } })
-        expect(result.replace('&amp;', '&')).to.equal(`It's the ${expected} fee subtype`)
+        const result = i18next.t('withFormattedFeeSubtype', {
+          value: {
+            type: FEE_TYPES.offerFee,
+            subtype: given
+          }
+        }).replace('&amp;', '&')
+        expect(result)
+          .to
+          .equal(`It's the ${expected} fee subtype`)
       })
     }
   })
