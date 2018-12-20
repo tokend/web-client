@@ -103,7 +103,7 @@ import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router'
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
-import { handleClickOutsideHelper } from '@/js/helpers/handle-click-outside'
+import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 
 export default {
   name: 'root-navbar',
@@ -124,7 +124,7 @@ export default {
   watch: {
     isUserCardOpen (value) {
       if (value) {
-        handleClickOutsideHelper(
+        handleClickOutside(
           'navbar__user-card',
           this.toggleUserCardVisibility
         )
