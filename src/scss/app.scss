@@ -266,6 +266,8 @@ h4 {
         1.6 * $point
         1.1 * $point
         1.6 * $point;
+      overflow: hidden;
+      max-width: 12 * $point;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: $col-table-head-text;
@@ -286,6 +288,9 @@ h4 {
       td {
         font-size: 1.4 * $point;
         text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 12 * $point;
+        white-space: nowrap;
         color: $col-table-cell-text;
         padding: $point 1.6 * $point;
       }
