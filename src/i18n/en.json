@@ -128,14 +128,14 @@
     },
 
     "fee-types": {
-      "paymentFee": "Payment",
-      "offerFee": "Offer",
-      "withdrawalFee": "Withdrawal",
-      "issuanceFee": "Issuance",
-      "investFee": "Invest",
-      "capitalDeploymentFee": "Capital deployment",
-      "operationFee": "Operation",
-      "payoutFee": "Payout",
+      "payment": "Payment",
+      "offer": "Offer",
+      "withdrawal": "Withdrawal",
+      "issuance": "Issuance",
+      "invest": "Invest",
+      "capital-deployment": "Capital deployment",
+      "operation": "Operation",
+      "payout": "Payout",
       "incoming-outgoing": "Incoming & Outgoing",
       "outgoing": "Outgoing",
       "incoming": "Incoming"

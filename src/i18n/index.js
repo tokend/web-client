@@ -3,7 +3,11 @@ import numeral from 'numeral'
 
 import _isObject from 'lodash/isObject'
 
-import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
+import {
+  FEE_TYPE_TRANSLATION_CODES,
+  PAYMENT_FEE_SUBTYPE_TRANSLATION_CODES
+} from '@/js/const/fee-translation-codes.const'
 
 const language = 'en'
 let i18n
@@ -73,19 +77,13 @@ export const i18nOptions = {
             i18n.config.number.formats.percent
           )
         case 'fee_type':
-          const feeTypeIndex = Object.values(FEE_TYPES).indexOf(param)
-          const feeTypeLabel = Object.keys(FEE_TYPES)[feeTypeIndex]
+          const feeTypeLabel = FEE_TYPE_TRANSLATION_CODES[param]
           return i18n.translations['fee-types'][feeTypeLabel]
         case 'fee_subtype':
           const isPaymentFeeType = param.type === FEE_TYPES.paymentFee
-          let feeSubtypeLabel
-          if (isPaymentFeeType) {
-            const feeSubtypeIndex =
-              Object.values(PAYMENT_FEE_SUBTYPES).indexOf(param.subtype)
-            feeSubtypeLabel = Object.keys(PAYMENT_FEE_SUBTYPES)[feeSubtypeIndex]
-          } else {
-            feeSubtypeLabel = 'incoming-outgoing'
-          }
+          let feeSubtypeLabel = isPaymentFeeType
+            ? PAYMENT_FEE_SUBTYPE_TRANSLATION_CODES[param.subtype]
+            : 'incoming-outgoing'
           return i18n.translations['fee-types'][feeSubtypeLabel]
         default:
           console.warn(`Unknown format: ${format}, skipping..`)
