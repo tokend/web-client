@@ -336,9 +336,7 @@ describe('the i18n is properly configured', () => {
             subtype: given
           }
         }).replace('&amp;', '&')
-        expect(result)
-          .to
-          .equal(`It's the ${expected} fee subtype`)
+        expect(result).to.equal(`It's the ${expected} fee subtype`)
       })
     }
   })

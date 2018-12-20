@@ -15,7 +15,6 @@ describe('formatFeeType filter test', () => {
     it(`Filter calls the i18next.t() with the code ${type}`, () => {
       const spy = sinon.spy(i18next, 't')
       formatFeeType(type)
-
       expect(
         spy
           .withArgs('formats.fee_type', { value: type })

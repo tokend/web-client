@@ -18,7 +18,6 @@ describe('formatFeeSubType filter test', () => {
         type: FEE_TYPES.paymentFee,
         subtype: subtype
       })
-
       expect(
         spy
           .withArgs('formats.fee_subtype', {
