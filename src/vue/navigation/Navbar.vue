@@ -23,12 +23,10 @@
           @click="isUserCardOpen = true"
         >
           {{ walletEmail }}
-          <md-icon
-            class="navbar__user-name-icon"
+          <i
+            class="navbar__user-name-icon mdi mdi-chevron-down"
             :class="{ 'navbar__user-name-icon--active': isUserCardOpen }"
-          >
-            keyboard_arrow_down
-          </md-icon>
+          />
         </button>
         <div class="navbar__account-type">
           <template v-if="accountTypeI === ACCOUNT_TYPES.notVerified">
@@ -223,8 +221,7 @@ $custom-breakpoint: 80 * $point;
 .navbar__user-name-icon {
   font-size: 1.8 * $point;
   cursor: pointer;
-  // TODO: remove important rule when possible
-  color: $col-text-field-hint !important;
+  color: $col-text-field-hint;
 }
 
 .navbar__user-name:hover > .navbar__user-email {
@@ -236,13 +233,13 @@ $custom-breakpoint: 80 * $point;
   font-size: 1.2 * $point;
 }
 
-.navbar__user-name-icon {
+.navbar__user-name-icon:before {
   transition: 0.3s ease-out;
   will-change: transform;
 
-  &.navbar__user-name-icon--active {
-    transform: rotate(-180deg);
-  }
+}
+.navbar__user-name-icon--active:before {
+  transform: rotate(-180deg);
 }
 
 .navbar__root-links {

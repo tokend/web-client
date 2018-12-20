@@ -11,7 +11,7 @@
       class="sidebar__burger-btn"
       :class="{ 'sidebar__burger-btn--sidebar-active': isSidebarOpened }"
     >
-      <md-icon>menu</md-icon>
+      <i class="mdi mdi-menu" />
     </button>
 
     <div
@@ -37,9 +37,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.dashboard"
           >
-            <md-icon class="sidebar__list-item-icon">
-              dashboard
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-view-dashboard" />
             <span class="md-list-item-text">
               {{ 'pages-names.dashboard' | globalize }}
             </span>
@@ -53,9 +51,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.deposit"
           >
-            <md-icon class="sidebar__list-item-icon">
-              file_download
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-download" />
             <span class="md-list-item-text">
               {{ 'pages-names.deposit' | globalize }}
             </span>
@@ -69,9 +65,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.withdrawal"
           >
-            <md-icon class="sidebar__list-item-icon">
-              file_upload
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-upload" />
             <span class="md-list-item-text">
               {{ 'pages-names.withdraw' | globalize }}
             </span>
@@ -85,9 +79,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.transfers"
           >
-            <md-icon class="sidebar__list-item-icon">
-              send
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-send" />
             <span class="md-list-item-text">
               {{ 'pages-names.send' | globalize }}
             </span>
@@ -101,9 +93,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.history"
           >
-            <md-icon class="sidebar__list-item-icon">
-              calendar_view_day
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-view-sequential" />
             <span class="md-list-item-text">
               {{ 'pages-names.history' | globalize }}
             </span>
@@ -117,9 +107,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.limits"
           >
-            <md-icon class="sidebar__list-item-icon">
-              insert_chart
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-poll-box" />
             <span class="md-list-item-text">
               {{ 'pages-names.limits' | globalize }}
             </span>
@@ -133,9 +121,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.massTransfers"
           >
-            <md-icon class="sidebar__list-item-icon">
-              people
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-account-multiple" />
             <span class="md-list-item-text">
               {{ 'pages-names.mass-transfer' | globalize }}
             </span>
@@ -149,9 +135,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.trade"
           >
-            <md-icon class="sidebar__list-item-icon">
-              compare_arrows
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-swap-horizontal" />
             <span class="md-list-item-text">
               {{ 'pages-names.trade' | globalize }}
             </span>
@@ -165,9 +149,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.feesExplorer"
           >
-            <md-icon class="sidebar__list-item-icon">
-              flash_on
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-flash" />
             <span class="md-list-item-text">
               {{ 'pages-names.fees' | globalize }}
             </span>
@@ -188,9 +170,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.tokens"
           >
-            <md-icon class="sidebar__list-item-icon">
-              toll
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-coins" />
             <span class="md-list-item-text">
               {{ 'pages-names.explore-tokens' | globalize }}
             </span>
@@ -204,9 +184,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.sales"
           >
-            <md-icon class="sidebar__list-item-icon">
-              trending_up
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-trending-up" />
             <span class="md-list-item-text">
               {{ 'pages-names.explore-sales' | globalize }}
             </span>
@@ -230,9 +208,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.tokenCreation"
           >
-            <md-icon class="sidebar__list-item-icon">
-              add_circle
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-plus-circle" />
             <span class="md-list-item-text">
               {{ 'pages-names.create-token' | globalize }}
             </span>
@@ -246,9 +222,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.saleCreation"
           >
-            <md-icon class="sidebar__list-item-icon">
-              calendar_today
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-calendar-blank" />
             <span class="md-list-item-text">
               {{ 'pages-names.create-sale' | globalize }}
             </span>
@@ -262,9 +236,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.preIssuanceUpload"
           >
-            <md-icon class="sidebar__list-item-icon">
-              zoom_out_map
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-arrow-expand-all" />
             <span class="md-list-item-text">
               {{ 'pages-names.upload-pre-issuance' | globalize }}
             </span>
@@ -278,9 +250,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.issuanceCreation"
           >
-            <md-icon class="sidebar__list-item-icon">
-              bar_chart
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-chart-bar" />
             <span class="md-list-item-text">
               {{ 'pages-names.create-issuance' | globalize }}
             </span>
@@ -294,9 +264,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.requests"
           >
-            <md-icon class="sidebar__list-item-icon">
-              import_contacts
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-book-open-variant" />
             <span class="md-list-item-text">
               {{ 'pages-names.requests' | globalize }}
             </span>
@@ -317,9 +285,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.verification"
           >
-            <md-icon class="sidebar__list-item-icon">
-              verified_user
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-shield" />
             <span class="md-list-item-text">
               {{ 'pages-names.verification' | globalize }}
             </span>
@@ -333,9 +299,7 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.settings"
           >
-            <md-icon class="sidebar__list-item-icon">
-              settings
-            </md-icon>
+            <i class="sidebar__list-item-icon mdi mdi-settings" />
             <span class="md-list-item-text">
               {{ 'pages-names.settings' | globalize }}
             </span>
@@ -471,10 +435,6 @@ export default {
   &.sidebar__burger-btn--sidebar-active {
     transform: translateX($sidebar-width);
   }
-
-  .md-icon {
-    color: $col-button-raised-txt !important;
-  }
 }
 
 .sidebar__list-item {
@@ -510,11 +470,11 @@ export default {
 
 .sidebar__list-item-icon {
   margin-right: 1.6 * $point;
-  // TODO: remove important rule when possible
-  color: $col-sidebar-text !important;
+  color: $col-sidebar-text;
+  font-size: 2.4 * $point;
 
   .router-link-active & {
-    color: $col-sidebar-active-elem-text !important;
+    color: $col-sidebar-active-elem-text;
   }
 }
 
