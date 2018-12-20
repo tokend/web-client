@@ -221,10 +221,13 @@ describe('the i18n is properly configured', () => {
 
   describe('formats calendars', () => {
     beforeEach(() => {
-      sinon.restore()
       sinon.useFakeTimers({
         now: 1542968022000 // 23 Nov 2018
       })
+    })
+
+    afterEach(() => {
+      sinon.restore()
     })
 
     const dates = {
@@ -245,10 +248,13 @@ describe('the i18n is properly configured', () => {
 
   describe('formats date', () => {
     beforeEach(() => {
-      sinon.restore()
       sinon.useFakeTimers({
         now: 1542968022000 // 23 Nov 2018
       })
+    })
+
+    afterEach(() => {
+      sinon.restore()
     })
 
     const dates = {

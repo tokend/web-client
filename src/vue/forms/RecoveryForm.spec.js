@@ -19,7 +19,7 @@ localVue.filter('globalize', globalize)
 Vue.config.silent = true
 
 describe('RecoveryForm component test', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 

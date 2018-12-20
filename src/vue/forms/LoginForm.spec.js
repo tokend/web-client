@@ -1,5 +1,4 @@
 import LoginForm from './LoginForm'
-// import walletModule from '@/vuex/wallet.module'
 
 import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
@@ -25,7 +24,7 @@ localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
 describe('LoginForm component unit test', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 
