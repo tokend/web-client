@@ -24,24 +24,34 @@ localVue.filter('formatMoney', formatMoney)
 localVue.filter('formatPercent', formatPercent)
 
 describe('Fees component unit test', () => {
-  const mockHelper = new MockHelper()
-  const feesResource = mockHelper.getHorizonResourcePrototype('fees')
   const feesSampleData = {
     ali: [0],
     btc: [0, 1]
   }
-  const getters = walletModule.getters
-  let store = new Vuex.Store({
-    modules: {
-      'new-wallet': {
-        namespaced: true,
-        getters
-      }
-    }
-  })
+  let mockHelper
+  let feesResource
+  let getters
+  let store
   let wrapper
 
   beforeEach(() => {
+    mockHelper = new MockHelper()
+    feesResource = mockHelper.getHorizonResourcePrototype('fees')
+    getters = walletModule.getters
+
+    sinon.stub(getters, vuexTypes.wallet).returns(
+      mockHelper.getMockWallet()
+    )
+
+    store = new Vuex.Store({
+      modules: {
+        'new-wallet': {
+          namespaced: true,
+          getters
+        }
+      }
+    })
+
     sinon.stub(Fees, 'created').resolves()
     wrapper = shallowMount(Fees, {
       store,
@@ -53,27 +63,30 @@ describe('Fees component unit test', () => {
     sinon.restore()
   })
 
-  it('loadFees() calls the horizon.fees.getAll() in the created hook with the correct params', () => {
-    sinon.restore()
-    sinon.stub(feesResource, 'getAll').resolves()
-    sinon.stub(getters, vuexTypes.wallet).returns(
-      mockHelper.getMockWallet()
-    )
-    shallowMount(Fees, {
-      localVue,
-      store: new Vuex.Store({
-        modules: {
-          'new-wallet': {
-            namespaced: true,
-            getters
-          }
-        }
-      })
-    })
+  it('loadFees() calls the horizon.fees.getAll() with the correct params', async () => {
+    const spy = sinon.stub(feesResource, 'getAll').resolves()
+
+    await wrapper.vm.loadFees()
+
     expect(
-      feesResource.getAll
+      spy
         .withArgs({ account_id: mockHelper.getMockWallet().accountId })
         .calledOnce)
+      .to
+      .be
+      .true
+  })
+
+  it('loadFees() method is called inside created hook', () => {
+    sinon.restore()
+    const spy = sinon.stub(Fees.methods, 'loadFees')
+
+    shallowMount(Fees, {
+      store,
+      localVue
+    })
+
+    expect(spy.calledOnce)
       .to
       .be
       .true
@@ -83,7 +96,9 @@ describe('Fees component unit test', () => {
     sinon.stub(feesResource, 'getAll').resolves(
       MockWrapper.makeHorizonResponse({ fees: feesSampleData })
     )
+
     await wrapper.vm.loadFees()
+
     expect(wrapper.vm.fees)
       .to
       .not
@@ -97,6 +112,7 @@ describe('Fees component unit test', () => {
         asset: 'BTC'
       }
     })
+
     expect(wrapper.vm.assetFees)
       .to
       .deep
@@ -107,6 +123,7 @@ describe('Fees component unit test', () => {
     wrapper.setData({
       fees: feesSampleData
     })
+
     expect(wrapper.vm.assetCodes)
       .to
       .deep
