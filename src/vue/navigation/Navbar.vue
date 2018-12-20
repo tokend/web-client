@@ -110,8 +110,6 @@ export default {
 
   data: () => ({
     isUserCardOpen: false,
-    isNotificationCardOpen: false,
-    hasSeenNotif: null,
     ACCOUNT_TYPES
   }),
   computed: {
@@ -129,18 +127,7 @@ export default {
           this.toggleUserCardVisibility
         )
       }
-    },
-    isNotificationCardOpen (value) {
-      if (value) {
-        handleClickOutsideHelper(
-          'navbar__user-notif',
-          this.toggleNotificationCardVisibility
-        )
       }
-    }
-  },
-  created () {
-    this.hasSeenNotif = localStorage.hasOwnProperty('seen')
   },
   methods: {
     ...mapActions([
@@ -148,16 +135,6 @@ export default {
     ]),
     toggleUserCardVisibility () {
       this.isUserCardOpen = !this.isUserCardOpen
-      this.isNotificationCardOpen = false
-    },
-
-    toggleNotificationCardVisibility () {
-      this.isNotificationCardOpen = !this.isNotificationCardOpen
-      this.isUserCardOpen = false
-      if (!this.hasSeenNotif) {
-        localStorage.setItem('seen', 'User saw it')
-        this.hasSeenNotif = true
-      }
     },
     signOut () {
       this.LOG_OUT()
@@ -168,7 +145,6 @@ export default {
     },
     goKyc () {
       this.isUserCardOpen = false
-      this.isNotificationCardOpen = false
       this.$router.push(vueRoutes.verification)
     }
   }
@@ -274,7 +250,6 @@ $custom-breakpoint: 800px;
   flex-wrap: nowrap;
 }
 
-.navbar__notif,
 .navbar__user {
   position: relative;
 }
