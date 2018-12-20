@@ -11,14 +11,14 @@
       </h2>
     </div>
     <div class="navbar__user">
-      <div
+      <button
         class="navbar__user-picture"
         @click="isUserCardOpen = true"
       >
         {{ walletEmail.substr(0, 1).toUpperCase() }}
-      </div>
+      </button>
       <div class="navbar__user-info">
-        <div
+        <button
           class="navbar__user-name"
           @click="isUserCardOpen = true"
         >
@@ -29,7 +29,7 @@
           >
             keyboard_arrow_down
           </md-icon>
-        </div>
+        </button>
         <div class="navbar__account-type">
           <template v-if="accountTypeI === ACCOUNT_TYPES.notVerified">
             {{ 'navbar.account-type-unverified' | globalize }}
