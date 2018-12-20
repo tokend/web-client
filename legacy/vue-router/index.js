@@ -443,7 +443,7 @@ const router = new Router({
         {
           feature_flag: config.FEATURE_FLAGS.feesExplorer,
           name: 'app.fees',
-          path: '/fee',
+          path: '/fees',
           component: Fees
         },
         {

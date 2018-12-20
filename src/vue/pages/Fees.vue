@@ -1,73 +1,71 @@
 <template>
-  <div class="fee" v-if="fees">
-    <!--
-      :key is a hack to ensure that the component will be updated
-      after computed calculated
+  <div class="fees" v-if="fees">
+    <div class="fees__assets">
+      <!--
+        :key is a hack to ensure that the component will be updated
+        after computed calculated
       -->
-    <select-field-custom
-      v-model="filters.asset"
-      :values="assetCodes"
-      :key="filters.asset"
-    />
-    <div class="fee__asset-info">
-      <div class="fees__table">
-        <div class="fees__table-content">
-          <table class="app__table">
-            <thead>
-              <tr>
-                <th>
-                  {{ 'fee-table.fee-type' | globalize }}
-                </th>
-                <th>
-                  {{ 'fee-table.subtype' | globalize }}
-                </th>
-                <th>
-                  {{ 'fee-table.fixed' | globalize }}
-                </th>
-                <th>
-                  {{ 'fee-table.percent' | globalize }}
-                </th>
-                <th>
-                  {{ 'fee-table.lower-bound' | globalize }}
-                </th>
-                <th>
-                  {{ 'fee-table.upper-bound' | globalize }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(fee, i) in assetFees" :key="i">
-                <td>
-                  {{ fee.feeType | formatFeeType }}
-                </td>
-                <td>
-                  {{
-                    {
-                      type: fee.feeType,
-                      subtype: fee.subtype }
-                      | formatFeeSubType
-                  }}
-                </td>
-                <td>
-                  {{ {
-                    value: fee.fixed,
-                    currency: fee.feeAsset }
-                    | formatMoney }}
-                </td>
-                <td>
-                  {{ fee.percent | formatPercent }}
-                </td>
-                <td>
-                  {{ fee.lowerBound | formatMoney }}
-                </td>
-                <td>
-                  {{ fee.upperBound | formatMoney }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <select-field-custom
+        v-model="filters.asset"
+        :values="assetCodes"
+        :key="filters.asset"
+      />
+    </div>
+    <div class="fees__table">
+      <table class="app__table">
+        <thead>
+          <tr>
+            <th>
+              {{ 'fee-table.fee-type' | globalize }}
+            </th>
+            <th>
+              {{ 'fee-table.subtype' | globalize }}
+            </th>
+            <th>
+              {{ 'fee-table.fixed' | globalize }}
+            </th>
+            <th>
+              {{ 'fee-table.percent' | globalize }}
+            </th>
+            <th>
+              {{ 'fee-table.lower-bound' | globalize }}
+            </th>
+            <th>
+              {{ 'fee-table.upper-bound' | globalize }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(fee, i) in assetFees" :key="i">
+            <td>
+              {{ fee.feeType | formatFeeType }}
+            </td>
+            <td>
+              {{
+                {
+                  type: fee.feeType,
+                  subtype: fee.subtype }
+                  | formatFeeSubType
+              }}
+            </td>
+            <td>
+              {{ {
+                value: fee.fixed,
+                currency: fee.feeAsset }
+                | formatMoney }}
+            </td>
+            <td>
+              {{ fee.percent | formatPercent }}
+            </td>
+            <td>
+              {{ fee.lowerBound | formatMoney }}
+            </td>
+            <td>
+              {{ fee.upperBound | formatMoney }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div v-else-if="!isFailed">
@@ -144,25 +142,17 @@ export default {
 <style lang="scss" scoped>
 @import "@/scss/variables";
 
-.fee {
+.fees {
   width: 100%;
   max-width: 105 * $point;
 }
 
-.fee__asset-info {
-  margin: 2.1 * $point 0;
+.fees__assets {
+  margin-bottom: 2.1 * $point;
 }
 
 .fees__table {
-  display: flex;
-  flex-flow: column wrap;
   overflow-x: auto;
   box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
-
-  .fees__table-content {
-    flex: 1;
-    overflow-x: auto;
-    transition: height .3s;
-  }
 }
 </style>
