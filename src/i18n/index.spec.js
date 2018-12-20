@@ -315,9 +315,8 @@ describe('the i18n is properly configured', () => {
       [PAYMENT_FEE_SUBTYPES.incoming]: 'Incoming'
     }
     const otherFeeSubtypes = {
-      [PAYMENT_FEE_SUBTYPES.outgoing]: 'Incoming & Outgoing',
-      [PAYMENT_FEE_SUBTYPES.incoming]: 'Incoming & Outgoing',
-      '0': 'Incoming & Outgoing'
+      '0': 'Incoming & Outgoing',
+      '1': 'Incoming & Outgoing'
     }
 
     for (const [given, expected] of Object.entries(paymentFeeSubtypes)) {
@@ -334,8 +333,11 @@ describe('the i18n is properly configured', () => {
           value: {
             type: FEE_TYPES.offerFee,
             subtype: given
+          },
+          interpolation: {
+            escapeValue: false
           }
-        }).replace('&amp;', '&')
+        })
         expect(result).to.equal(`It's the ${expected} fee subtype`)
       })
     }

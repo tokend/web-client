@@ -24,6 +24,9 @@ describe('formatFeeSubType filter test', () => {
             value: {
               type: FEE_TYPES.paymentFee,
               subtype: subtype
+            },
+            interpolation: {
+              escapeValue: false
             }
           })
           .calledOnce
