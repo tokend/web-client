@@ -23,7 +23,7 @@ import { vueRoutes } from '@/vue-router'
 
 export default {
   name: 'app-footer',
-  data: _ => ({
+  data: () => ({
     vueRoutes
   })
 }
@@ -49,8 +49,7 @@ export default {
   }
 
   .footer__link {
-    $margin: 1 * $point;
-    margin: 0 $margin;
+    margin: 0 1 * $point;
     color: $col-link;
     &:not(:first-child) { margin-left: 0 }
   }

@@ -86,7 +86,7 @@ export default {
 
 .form-confirmation__btns {
   display: flex;
-  max-width: 250px;
+  max-width: 25 * $point;
 }
 
 .form-confirmation__ok-btn,

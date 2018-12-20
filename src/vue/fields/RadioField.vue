@@ -54,8 +54,8 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 8px 0;
-    margin: 8px 0;
+    padding: .8 * $point 0;
+    margin: .8 * $point 0;
   }
 
   .radio-field__input {
@@ -67,10 +67,10 @@ export default {
       &:after {
         content: '';
         position: absolute;
-        top: 3px;
-        left: 3px;
-        width: 7px;
-        height: 7px;
+        top: .3 * $point;
+        left: .3 * $point;
+        width: .7 * $point;
+        height: .7 * $point;
         background-color: $col-radio-field-border;
         border-radius: 50%;
       }
@@ -78,11 +78,11 @@ export default {
   }
 
   .radio-field__input-custom {
-    width: 15px;
-    height: 15px;
+    width: 1.5 * $point;
+    height: 1.5 * $point;
     background-color: $col-radio-field-background;
-    border: 1px solid $col-radio-field-border;
+    border: .1 * $point solid $col-radio-field-border;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: .8 * $point;
   }
 </style>

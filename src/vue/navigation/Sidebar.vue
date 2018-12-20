@@ -397,14 +397,14 @@ export default {
 .sidebar {
   position: relative;
   background-color: $col-sidebar-background !important;
-  box-shadow: inset -10px -10px 20px 0 rgba(0, 0, 0, 0.03);
+  box-shadow: inset -1 * $point -1 * $point 2 * $point 0 rgba(0, 0, 0, 0.03);
   min-height: 100%;
 }
 
 .sidebar__lists {
   width: $sidebar-width;
   min-height: 100%;
-  padding-bottom: 70px;
+  padding-bottom: 7 * $point;
   z-index: 120;
   list-style: none;
 
@@ -446,13 +446,13 @@ export default {
 
 .sidebar__burger-btn {
   position: absolute;
-  left: 5px;
-  top: 41px;
+  left: .5 * $point;
+  top: 4.1 * $point;
   z-index: 110;
-  width: 40px;
-  height: 40px;
+  width: 4 * $point;
+  height: 4 * $point;
   margin-right: 0;
-  margin-left: 8px !important;
+  margin-left: .8 * $point !important;
   border: none;
   outline: none;
   border-radius: 50%;
@@ -480,7 +480,7 @@ export default {
 .sidebar__list-item {
   display: flex;
   align-items: center;
-  min-height: 48px;
+  min-height: 4.8 * $point;
   cursor: pointer;
   color: $col-sidebar-text;
 
@@ -493,23 +493,23 @@ export default {
 .sidebar__list-title,
 .sidebar__list-item,
 .sidebar__logotype {
-  padding: 0 24px 0 40px;
+  padding: 0 2.4 * $point 0 4 * $point;
 }
 
 .sidebar__logotype {
-  padding-top: 40px;
-  padding-bottom: 50px;
+  padding-top: 4 * $point;
+  padding-bottom: 5 * $point;
 }
 
 .sidebar__logotype-icon {
-  max-width: 95px;
+  max-width: 9.5 * $point;
   width: 100%;
-  height: 31px;
+  height: 3.1 * $point;
   display: block;
 }
 
 .sidebar__list-item-icon {
-  margin-right: 16px;
+  margin-right: 1.6 * $point;
   // TODO: remove important rule when possible
   color: $col-sidebar-text !important;
 
@@ -519,12 +519,12 @@ export default {
 }
 
 .sidebar__section--account {
-  margin-top: 50px;
+  margin-top: 5 * $point;
 }
 
 .sidebar__list-title {
   color: $col-sidebar-active-elem-text;
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 1.6 * $point;
+  margin-bottom: .8 * $point;
 }
 </style>

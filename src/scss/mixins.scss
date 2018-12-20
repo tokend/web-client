@@ -12,11 +12,11 @@ $x-large: 192 * $point;
 @mixin button () {
   display: inline-block;
   border: none;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: .8 * $point 1.6 * $point;
+  font-size: 1.4 * $point;
   font-weight: 700;
   text-align: center;
-  min-height: 36px;
+  min-height: 3.6 * $point;
   background-color: transparent;
 
   &:not([disabled]) {
@@ -27,7 +27,7 @@ $x-large: 192 * $point;
 @mixin button-icon () {
   @include button();
 
-  padding: 8px;
+  padding: .8 * $point;
   border-radius: 50%;
   transition: .3s ease-out;
 
@@ -39,9 +39,9 @@ $x-large: 192 * $point;
 @mixin button-raised () {
   @include button();
 
-  border-radius: 2px;
+  border-radius: .2 * $point;
   background-color: $col-button-raised;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .15);
+  box-shadow: 0 .5 * $point 1 * $point 0 rgba(0, 0, 0, .15);
   color: $col-button-raised-txt;
 
   &[disabled] {

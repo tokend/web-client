@@ -127,7 +127,7 @@ export default {
           this.toggleUserCardVisibility
         )
       }
-      }
+    }
   },
   methods: {
     ...mapActions([
@@ -155,11 +155,11 @@ export default {
 @import "~@scss/mixins";
 @import "~@scss/variables";
 
-$custom-breakpoint: 800px;
+$custom-breakpoint: 80 * $point;
 
 .navbar {
   width: 100%;
-  min-height: 121px;
+  min-height: 12 * $point;
   background-color: $col-navbar-background;
   padding: 0 $content-side-paddings;
   display: flex;
@@ -180,14 +180,14 @@ $custom-breakpoint: 800px;
 
 .navbar__title {
   color: $col-text-page-heading;
-  font-size: 40px;
+  font-size: 4 * $point;
   line-height: 1.5;
   font-weight: 400;
 }
 
 .navbar__sub-title {
-  margin-bottom: 8px;
-  font-size: 14px;
+  margin-bottom: 0.8 * $point;
+  font-size: 1.4 * $point;
   font-weight: 400;
 }
 
@@ -198,11 +198,11 @@ $custom-breakpoint: 800px;
 }
 
 .navbar__user-picture {
-  width: 55px;
-  height: 55px;
-  font-size: 24px;
-  box-shadow: 0 4px 10px 0 $col-avatar-instead-bg;
-  margin-right: 16px;
+  width: 5.5 * $point;
+  height: 5.5 * $point;
+  font-size: 2.4 * $point;
+  box-shadow: 0 .4 * $point 1 * $point 0 $col-avatar-instead-bg;
+  margin-right: 1.6 * $point;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,7 +221,7 @@ $custom-breakpoint: 800px;
 
 .navbar__user-name,
 .navbar__user-name-icon {
-  font-size: 18px;
+  font-size: 1.8 * $point;
   cursor: pointer;
   // TODO: remove important rule when possible
   color: $col-text-field-hint !important;
@@ -233,7 +233,7 @@ $custom-breakpoint: 800px;
 
 .navbar__account-type {
   color: $col-text-field-hint;
-  font-size: 12px;
+  font-size: 1.2 * $point;
 }
 
 .navbar__user-name-icon {
@@ -262,44 +262,44 @@ $custom-breakpoint: 800px;
 .navbar__user-card {
   position: absolute;
   right: 0;
-  top: calc(100% + 14px);
+  top: calc(100% + (1.4 * #{$point}));
   overflow: visible;
   visibility: hidden;
   opacity: 0;
-  margin-top: -15px;
+  margin-top: -1.5 * $point;
   transition: 0.3s ease-out;
-  padding: 24px 24px 0 24px;
+  padding: 2.4 * $point 2.4 * $point 0 2.4 * $point;
   background: $col-block-bg;
   @include box-shadow();
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 8px 8px 8px;
+    border-width: 0 .8 * $point .8 * $point .8 * $point;
     border-color: transparent transparent $col-block-bg transparent;
-    top: -8px;
-    right: 4px;
+    top: -.8 * $point;
+    right: .4 * $point;
 
     @include respond-to-custom($custom-breakpoint) {
-      right: 19px;
+      right: 1.9 * $point;
     }
   }
 
   @include respond-to-custom($custom-breakpoint) {
-    width: calc(100vw - #{$sidebar-width} - 40px);
+    width: calc(100vw - #{$sidebar-width} - 4 * #{$point});
   }
 
   @include respond-to(small) {
-    padding: 16px 16px 0 16px;
-    width: calc(100vw - 16px);
-    max-width: 404px;
+    padding: 1.6 * $point 1.6 * $point 0 1.6 * $point;
+    width: calc(100vw - 1.6 * #{$point});
+    max-width: 40.4 * $point;
   }
 
   @include respond-to(xsmall) {
-    width: calc(100vw - 40px);
+    width: calc(100vw - 4 * #{$point});
   }
 }
 
@@ -311,7 +311,7 @@ $custom-breakpoint: 800px;
 
 .navbar__user-card-content {
   display: flex;
-  padding-bottom: 21px;
+  padding-bottom: 2.1 * $point;
   position: relative;
 
   @include respond-to(small) {
@@ -322,7 +322,7 @@ $custom-breakpoint: 800px;
 
 .navbar__user-actions {
   position: relative;
-  padding: 8px 0;
+  padding: .8 * $point 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -330,22 +330,22 @@ $custom-breakpoint: 800px;
   &:after {
     content: "";
     position: absolute;
-    height: 1px;
-    width: calc(100% + 48px);
+    height: .1 * $point;
+    width: calc(100% + (4.8 * #{$point}));
     background-color: $col-navbar-background;
-    left: -24px;
+    left: -2.4 * $point;
     top: 0;
   }
 }
 
 .navbar__user-avatar {
-  width: 102px;
-  height: 102px;
+  width: 10.2 * $point;
+  height: 10.2 * $point;
   border-radius: 50%;
-  font-size: 48px;
+  font-size: 4.8 * $point;
   color: $col-navbar-avatar-color;
   background-color: $col-navbar-avatar-background;
-  margin-right: 27px;
+  margin-right: 2.7 * $point;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -353,17 +353,17 @@ $custom-breakpoint: 800px;
 
   @include respond-to(small) {
     margin-right: 0;
-    margin-bottom: 12px;
+    margin-bottom: 1.2 * $point;
   }
 }
 
 .navbar__user-card-name {
-  font-size: 16px;
+  font-size: 1.6 * $point;
   line-height: 1;
   text-align: left;
   color: $col-text-field-hint;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: .4 * $point;
+  margin-bottom: .4 * $point;
   white-space: nowrap;
 
   @include respond-to-custom($custom-breakpoint) {
@@ -372,7 +372,7 @@ $custom-breakpoint: 800px;
 }
 
 .navbar__user-card-status {
-  font-size: 12px;
+  font-size: 1.2 * $point;
   line-height: 1;
   text-align: left;
   color: $col-text-field-hint;
@@ -383,7 +383,7 @@ $custom-breakpoint: 800px;
 }
 
 .navbar__user-card-account-btn {
-  margin: 26px 0 0 0;
+  margin: 2.6 * $point 0 0 0;
   white-space: nowrap;
 
   @include button-raised();
