@@ -72,9 +72,7 @@ describe('Fees component unit test', () => {
       spy
         .withArgs({ account_id: mockHelper.getMockWallet().accountId })
         .calledOnce)
-      .to
-      .be
-      .true
+      .to.be.true
   })
 
   it('loadFees() method is called inside created hook', () => {
@@ -86,10 +84,7 @@ describe('Fees component unit test', () => {
       localVue
     })
 
-    expect(spy.calledOnce)
-      .to
-      .be
-      .true
+    expect(spy.calledOnce).to.be.true
   })
 
   it('loadFees() changes fees data after loading', async () => {
@@ -99,10 +94,7 @@ describe('Fees component unit test', () => {
 
     await wrapper.vm.loadFees()
 
-    expect(wrapper.vm.fees)
-      .to
-      .not
-      .equal(null)
+    expect(wrapper.vm.fees).to.not.equal(null)
   })
 
   it('assetFees returns only the fees with the code filters.asset', () => {
@@ -113,10 +105,7 @@ describe('Fees component unit test', () => {
       }
     })
 
-    expect(wrapper.vm.assetFees)
-      .to
-      .deep
-      .equal(feesSampleData.btc)
+    expect(wrapper.vm.assetFees).to.deep.equal(feesSampleData.btc)
   })
 
   it('assetCodes returns array of assets', () => {
@@ -124,9 +113,6 @@ describe('Fees component unit test', () => {
       fees: feesSampleData
     })
 
-    expect(wrapper.vm.assetCodes)
-      .to
-      .deep
-      .equal(['ALI', 'BTC'])
+    expect(wrapper.vm.assetCodes).to.deep.equal(['ALI', 'BTC'])
   })
 })

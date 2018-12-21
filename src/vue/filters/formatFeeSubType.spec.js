@@ -8,6 +8,9 @@ import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 describe('formatFeeSubType filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
+  })
+
+  afterEach(() => {
     sinon.restore()
   })
 

@@ -8,6 +8,9 @@ import { FEE_TYPES } from '@tokend/js-sdk'
 describe('formatFeeType filter test', () => {
   beforeEach(() => {
     i18next.init(i18nOptions)
+  })
+
+  afterEach(() => {
     sinon.restore()
   })
 

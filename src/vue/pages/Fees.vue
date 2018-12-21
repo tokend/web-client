@@ -42,20 +42,12 @@
             </td>
             <td>
               {{
-                {
-                  type: fee.feeType,
-                  subtype: fee.subtype
-                }
-                  | formatFeeSubType
+                { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType
               }}
             </td>
             <td>
               {{
-                {
-                  value: fee.fixed,
-                  currency: fee.feeAsset
-                }
-                  | formatMoney
+                { value: fee.fixed, currency: fee.feeAsset } | formatMoney
               }}
             </td>
             <td>
