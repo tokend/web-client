@@ -10,7 +10,9 @@ Currently available formats are:
 * `date` - format the date to human-friendly format;
 * `number` - format the number;
 * `order_number` - format the order number (1 -> 1st, 10 -> 10th);
-* `integer` - convert and round number to a localized human-readable format (1000.3412 -> 1,000)
+* `integer` - convert and round number to a localized human-readable format (1000.3412 -> 1,000);
+* `fee_type` - convert fee type code to a localized fee type string;
+* `fee_subtype` - convert fee subtype code (depending on fee type code) to a localized fee subtype string
 
 The `money` formatter is a bit tricky. You can work with it like with any 
 other default formatter by just passing the value to format:
