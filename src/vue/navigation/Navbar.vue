@@ -121,7 +121,7 @@ export default {
     isUserCardOpen (value) {
       if (value) {
         handleClickOutside(
-          'navbar__user-card',
+          '.navbar__user-card',
           this.toggleUserCardVisibility
         )
       }
