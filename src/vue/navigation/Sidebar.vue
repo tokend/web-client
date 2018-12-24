@@ -38,7 +38,7 @@
             v-if="config.FEATURE_FLAGS.dashboard"
           >
             <i class="sidebar__list-item-icon mdi mdi-view-dashboard" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.dashboard' | globalize }}
             </span>
           </router-link>
@@ -52,7 +52,7 @@
             v-if="config.FEATURE_FLAGS.deposit"
           >
             <i class="sidebar__list-item-icon mdi mdi-download" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.deposit' | globalize }}
             </span>
           </router-link>
@@ -66,7 +66,7 @@
             v-if="config.FEATURE_FLAGS.withdrawal"
           >
             <i class="sidebar__list-item-icon mdi mdi-upload" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.withdraw' | globalize }}
             </span>
           </router-link>
@@ -80,7 +80,7 @@
             v-if="config.FEATURE_FLAGS.transfers"
           >
             <i class="sidebar__list-item-icon mdi mdi-send" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.send' | globalize }}
             </span>
           </router-link>
@@ -94,7 +94,7 @@
             v-if="config.FEATURE_FLAGS.history"
           >
             <i class="sidebar__list-item-icon mdi mdi-view-sequential" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.history' | globalize }}
             </span>
           </router-link>
@@ -108,7 +108,7 @@
             v-if="config.FEATURE_FLAGS.limits"
           >
             <i class="sidebar__list-item-icon mdi mdi-poll-box" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.limits' | globalize }}
             </span>
           </router-link>
@@ -122,7 +122,7 @@
             v-if="config.FEATURE_FLAGS.massTransfers"
           >
             <i class="sidebar__list-item-icon mdi mdi-account-multiple" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.mass-transfer' | globalize }}
             </span>
           </router-link>
@@ -136,7 +136,7 @@
             v-if="config.FEATURE_FLAGS.trade"
           >
             <i class="sidebar__list-item-icon mdi mdi-swap-horizontal" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.trade' | globalize }}
             </span>
           </router-link>
@@ -150,7 +150,7 @@
             v-if="config.FEATURE_FLAGS.feesExplorer"
           >
             <i class="sidebar__list-item-icon mdi mdi-flash" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
@@ -171,7 +171,7 @@
             v-if="config.FEATURE_FLAGS.tokens"
           >
             <i class="sidebar__list-item-icon mdi mdi-coins" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.explore-tokens' | globalize }}
             </span>
           </router-link>
@@ -185,7 +185,7 @@
             v-if="config.FEATURE_FLAGS.sales"
           >
             <i class="sidebar__list-item-icon mdi mdi-trending-up" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.explore-sales' | globalize }}
             </span>
           </router-link>
@@ -209,7 +209,7 @@
             v-if="config.FEATURE_FLAGS.tokenCreation"
           >
             <i class="sidebar__list-item-icon mdi mdi-plus-circle" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.create-token' | globalize }}
             </span>
           </router-link>
@@ -223,7 +223,7 @@
             v-if="config.FEATURE_FLAGS.saleCreation"
           >
             <i class="sidebar__list-item-icon mdi mdi-calendar-blank" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.create-sale' | globalize }}
             </span>
           </router-link>
@@ -237,7 +237,7 @@
             v-if="config.FEATURE_FLAGS.preIssuanceUpload"
           >
             <i class="sidebar__list-item-icon mdi mdi-arrow-expand-all" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.upload-pre-issuance' | globalize }}
             </span>
           </router-link>
@@ -251,7 +251,7 @@
             v-if="config.FEATURE_FLAGS.issuanceCreation"
           >
             <i class="sidebar__list-item-icon mdi mdi-chart-bar" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.create-issuance' | globalize }}
             </span>
           </router-link>
@@ -265,7 +265,7 @@
             v-if="config.FEATURE_FLAGS.requests"
           >
             <i class="sidebar__list-item-icon mdi mdi-book-open-variant" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.requests' | globalize }}
             </span>
           </router-link>
@@ -286,7 +286,7 @@
             v-if="config.FEATURE_FLAGS.verification"
           >
             <i class="sidebar__list-item-icon mdi mdi-shield" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.verification' | globalize }}
             </span>
           </router-link>
@@ -300,7 +300,7 @@
             v-if="config.FEATURE_FLAGS.settings"
           >
             <i class="sidebar__list-item-icon mdi mdi-settings" />
-            <span class="md-list-item-text">
+            <span>
               {{ 'pages-names.settings' | globalize }}
             </span>
           </router-link>
