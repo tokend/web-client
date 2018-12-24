@@ -15,6 +15,7 @@ import Recovery from '@/vue/pages/Recovery'
 import Verify from '@/vue/pages/Verify'
 
 import Fees from '@/vue/pages/Fees'
+import Issuance from '@/vue/pages/Issuance'
 
 import EmailResend from 'L@/vue/auth/ConfirmEmail'
 import Terms from 'L@/vue/public/legals/Legal.Terms'
@@ -393,6 +394,12 @@ const router = new Router({
               props: true
             }
           ]
+        },
+        {
+          feature_flag: config.FEATURE_FLAGS.issuanceCreation,
+          name: 'app.issuance',
+          path: '/issuance',
+          component: Issuance
         },
         {
           feature_flag: config.FEATURE_FLAGS.issuanceCreation,
