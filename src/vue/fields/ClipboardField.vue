@@ -42,7 +42,7 @@ export default {
 @import '~@scss/mixins';
 
 .clipboard-field {
-  border-bottom: 1px solid $col-primary;
+  border-bottom: .1 * $point solid $col-primary;
   display: flex;
   align-items: center;
   width: 100%;

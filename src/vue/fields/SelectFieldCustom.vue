@@ -81,7 +81,7 @@ export default {
     position: absolute;
     left: 0;
     min-width: 17.0 * $point;
-    top: calc(100% + 4px);
+    top: calc(100% + (.4 * #{$point}));
     background-color: $col-dropdown-bg;
     box-shadow: 0 .4 * $point 1.0 * $point 0 rgba(0, 0, 0, .15);
     border-radius: .3 * $point;

@@ -94,7 +94,7 @@ $field-to-field-gap: 2 * $point;
 .app__form-submit-btn {
   @include button-raised();
   min-width: 16 * $point;
-  height: 36px;
+  height: 3.6 * $point;
 }
 
 .app__form-subheading {
