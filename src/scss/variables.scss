@@ -1,12 +1,18 @@
 // use as multiplier for more convenient way to calculating sizes
 $point: 0.625rem; /* 10px in case of 1rem=16px */
 
+$sidebar-width: 27.5 * $point;
+$sidebar-hide-bp: 76.8 * $point;
+$content-side-paddings: 4 * $point;
+$content-side-paddings-sm: 2 * $point;
+
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
 $_gray: #e2e3e3;
 $_thinGray: #f2f2f4;
 $_lightGray: #c6c6c6;
+$_mediumGray: #ccc;
 $_lightRed: #ef5350;
 $_cornflowerBlue: #7b6eff;
 $_green: #33A494;
@@ -18,6 +24,8 @@ $_lightPurple: #837fa1;
 $col-primary: $_eastBay;
 $col-primary-lighten: $_cornflowerBlue;
 $col-primary-txt: $_white;
+$col-link: $col-primary-lighten;
+$col-text-on-dark-bg: $_white;
 
 $col-primary-inactive: rgba($col-primary, .7);
 $col-primary-flat-hover: rgba($col-primary, .2);
@@ -67,16 +75,38 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
 $col-button-back-icon: $col-primary-inactive;
 $col-button-back-icon-hover: $col-primary-lighten;
 
+// block
+$col-block-bg: $_white;
+
 // drawer colors:
-$col-drawer-bg: $_white;
+$col-drawer-bg: $col-block-bg;
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
+
+// sidebar
+$col-sidebar-background: $_athensGray;
+$col-sidebar-background-media-small: $_thinGray;
+$col-sidebar-text: $col-primary-inactive;
+$col-sidebar-active-elem-text: $col-primary;
+$col-sidebar-active-elem-background: $_thinGray;
+
+// navbar
+$col-navbar-background: $col-app-content-background;
+$col-navbar-avatar-background: $_mediumGray;
+$col-navbar-avatar-color: $col-primary-txt;
+
+// instead-of-avatar colors:
+$col-avatar-instead-text: $col-text-on-dark-bg;
+$col-avatar-instead-bg: rgba($_eastBay, .15);
+
+// fields colors
+$col-text-field-hint: $col-primary;
+$col-text-field-hint-inactive: $col-primary-inactive;
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
-
 
 // table colors:
 $col-table-background: $_white;
