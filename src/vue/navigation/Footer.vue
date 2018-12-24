@@ -1,18 +1,18 @@
 <template>
   <footer class="footer">
     <span class="footer__item footer__text">
-      {{ 'auth-pages.copyright' | globalize }}
+      {{ 'footer.copyright' | globalize }}
     </span>
     <span class="footer__links">
       <router-link
         class="footer__item footer__link"
         :to="vueRoutes.terms">
-        {{ 'auth-pages.terms' | globalize }}
+        {{ 'footer.terms' | globalize }}
       </router-link>
       <router-link
         class="footer__item footer__link"
         :to="vueRoutes.downloads">
-        {{ 'auth-pages.download-apps' | globalize }}
+        {{ 'footer.download-apps' | globalize }}
       </router-link>
     </span>
   </footer>
