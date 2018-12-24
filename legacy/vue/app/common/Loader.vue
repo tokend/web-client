@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~L@scss/variables';
+  @import '~@scss/variables';
 
   .loader {
     display: flex;

@@ -120,4 +120,14 @@ $col-table-shadow: rgba(0, 0, 0, 0.1);
 $col-loader-text: $col-primary;
 $col-loader-icon: $col-primary-inactive;
 
+// details colors:
+$col-details-label: $col-primary-inactive;
+$col-details-value: $col-primary;
+$col-details-border: rgba($col-primary, .2);
+
+// no-data-message colors:
+$col-no-data-message-text: $col-primary;
+$col-no-data-message-description: $col-primary-inactive;
+$col-no-data-message-icon-color: rgba($col-primary, .4);
+
 // TODO: paste here variables that are ready to use during the refactor process
