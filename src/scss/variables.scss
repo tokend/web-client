@@ -1,16 +1,10 @@
 // use as multiplier for more convenient way to calculating sizes
 $point: 0.625rem; /* 10px in case of 1rem=16px */
 
-<<<<<<< HEAD
-$content-side-paddings: 6 * $point;
-$content-side-paddings-sm: 2 * $point;
-$sidebar-hide-bp: 76.8 * $point;
-=======
 $sidebar-width: 27.5 * $point;
 $sidebar-hide-bp: 76.8 * $point;
 $content-side-paddings: 4 * $point;
 $content-side-paddings-sm: 2 * $point;
->>>>>>> dev
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
