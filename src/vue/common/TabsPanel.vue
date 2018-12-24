@@ -22,11 +22,14 @@ export default {
 .tabs-panel {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: calc(100% + 2 * $content-side-paddings);
   min-height: 6.5 * $point;
   background-color: $col-tabs-panel-background;
-  margin-top: 2 * $point;
-  margin-bottom: 4 * $point;
+  margin:
+    0
+    -1 * $content-side-paddings
+    4 * $point
+    -1 * $content-side-paddings;
   padding: 1.4 * $point $content-side-paddings;
 
   .tabs-panel__main {
@@ -53,8 +56,13 @@ export default {
   }
 
   @include respond-to($sidebar-hide-bp) {
-    width: 100vw;
+    width: calc(100vw + 2 * $content-side-paddings);
     padding: 1.4 * $point $content-side-paddings-sm;
+    margin:
+      0
+      -1 * $content-side-paddings-sm
+      4 * $point
+      -1 * $content-side-paddings-sm;
     flex-direction: column;
     align-items: start;
 
