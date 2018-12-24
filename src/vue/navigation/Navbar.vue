@@ -29,15 +29,7 @@
           />
         </button>
         <div class="navbar__account-type">
-          <template v-if="accountTypeI === ACCOUNT_TYPES.notVerified">
-            {{ 'navbar.account-type-unverified' | globalize }}
-          </template>
-          <template v-else-if="accountTypeI === ACCOUNT_TYPES.individual">
-            {{ 'navbar.account-type-general' | globalize }}
-          </template>
-          <template v-else-if="accountTypeI === ACCOUNT_TYPES.syndicate">
-            {{ 'navbar.account-type-corporate' | globalize }}
-          </template>
+          {{ getVerboseAccountType(accountTypeI) }}
         </div>
       </div>
 
@@ -55,15 +47,7 @@
                 {{ walletEmail }}
               </p>
               <div class="navbar__user-card-status">
-                <template v-if="accountTypeI === ACCOUNT_TYPES.notVerified">
-                  {{ 'navbar.account-type-unverified' | globalize }}
-                </template>
-                <template v-else-if="accountTypeI === ACCOUNT_TYPES.individual">
-                  {{ 'navbar.account-type-general' | globalize }}
-                </template>
-                <template v-else-if="accountTypeI === ACCOUNT_TYPES.syndicate">
-                  {{ 'navbar.account-type-corporate' | globalize }}
-                </template>
+                {{ getVerboseAccountType(accountTypeI) }}
               </div>
               <button
                 v-ripple="'rgba(255, 255, 255, .2)'"
@@ -128,9 +112,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      vuexTypes.LOG_OUT
-    ]),
+    getVerboseAccountType (accountTypeI) {
+      switch (accountTypeI) {
+        case ACCOUNT_TYPES.notVerified:
+          return globalize('navbar.account-unverified')
+        case ACCOUNT_TYPES.individual:
+          return globalize('navbar.account-general')
+        case ACCOUNT_TYPES.syndicate:
+          return globalize('navbar.account-corporate')
+      }
+    },
     toggleUserCardVisibility () {
       this.isUserCardOpen = !this.isUserCardOpen
     },
