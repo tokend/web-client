@@ -172,10 +172,7 @@
       "know-credentials-answer": "Sign in now",
       "have-an-account-question": "Already have an account?",
       "have-an-account-answer": "Sign in now",
-      "error-user-exist": "User with such email already exists",
-      "copyright": "2018 © Distributed Lab.",
-      "terms": "Terms",
-      "download-apps": "Downloads"
+      "error-user-exist": "User with such email already exists"
     },
 
     "sale-state": {
@@ -189,9 +186,9 @@
     },
 
     "form-confirmation": {
-      "message-text_default": "Please recheck the form before confirmation",
-      "button-text_ok": "Confirm",
-      "button-text_cancel": "Cancel"
+      "message-text-default": "Please recheck the form before confirmation",
+      "button-text-ok": "Confirm",
+      "button-text-cancel": "Cancel"
     },
 
     "pages-names": {
@@ -232,15 +229,21 @@
       "my-account": "My account",
       "settings": "Settings",
       "signout": "Sign Out",
-      "account-type-unverified": "Unverified account",
-      "account-type-general": "General account",
-      "account-type-corporate": "Corporate account"
+      "account-unverified": "Unverified account",
+      "account-general": "General account",
+      "account-corporate": "Corporate account"
     },
 
     "sidebar": {
       "section-explore": "Explorations",
       "section-corporate": "Corporate",
       "section-account": "My account"
+    },
+
+    "footer": {
+      "copyright": "2018 © Distributed Lab.",
+      "terms": "Terms",
+      "download-apps": "Downloads"
     }
   }
 }
