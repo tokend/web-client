@@ -1,4 +1,4 @@
-import { VueRoutes } from './routes'
+import { vueRoutes } from './routes'
 
 const REDIRECT_TYPES = {
   email: 1
@@ -16,5 +16,5 @@ export const resolveRedirect = (to, from, next) => {
 }
 
 function handleEmailRedirect (encodedAction, next) {
-  next({ ...VueRoutes.login, params: { encodedEmailAction: encodedAction } })
+  next({ ...vueRoutes.login, params: { encodedEmailAction: encodedAction } })
 }
