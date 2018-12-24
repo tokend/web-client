@@ -38,7 +38,10 @@
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
       "calendar":  "{{value, calendar}}",
-      "order_number":  "{{value, order_number}}"
+      "order_number":  "{{value, order_number}}",
+      "percent": "{{value, percent}}",
+      "fee_type": "{{value, fee_type}}",
+      "fee_subtype": "{{value, fee_subtype}}"
     },
 
     "status-message": {
@@ -122,6 +125,31 @@
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel"
+    },
+
+    "fee-types": {
+      "payment": "Payment",
+      "offer": "Offer",
+      "withdrawal": "Withdrawal",
+      "issuance": "Issuance",
+      "invest": "Invest",
+      "capital-deployment": "Capital deployment",
+      "operation": "Operation",
+      "payout": "Payout",
+      "incoming-outgoing": "Incoming & Outgoing",
+      "outgoing": "Outgoing",
+      "incoming": "Incoming"
+    },
+
+    "fee-table": {
+      "fee-type": "Fee type",
+      "fixed": "Fixed",
+      "percent": "Percent",
+      "lower-bound": "Lower bound",
+      "upper-bound": "Upper bound",
+      "subtype": "Subtype",
+      "lbl-loading": "Loading",
+      "lbl-loading-error": "There was an error while loading."
     }
   }
 }
