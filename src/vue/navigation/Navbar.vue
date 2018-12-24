@@ -69,7 +69,7 @@
             <button
               v-ripple
               class="navbar__user-action"
-              @click="signOut"
+              @click="logOut"
             >
               {{ 'navbar.signout' | globalize }}
             </button>
@@ -86,6 +86,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router'
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
+import { globalize } from '@/vue/filters/globalize'
 
 export default {
   name: 'root-navbar',
@@ -112,6 +113,10 @@ export default {
     }
   },
   methods: {
+    globalize,
+    ...mapActions({
+      logOut: vuexTypes.LOG_OUT
+    }),
     getVerboseAccountType (accountTypeI) {
       switch (accountTypeI) {
         case ACCOUNT_TYPES.notVerified:
@@ -124,9 +129,6 @@ export default {
     },
     toggleUserCardVisibility () {
       this.isUserCardOpen = !this.isUserCardOpen
-    },
-    signOut () {
-      this.LOG_OUT()
     },
     goSettings () {
       this.isUserCardOpen = false

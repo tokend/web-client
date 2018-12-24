@@ -2,21 +2,21 @@
   <div class="sidebar">
     <div
       class="sidebar__backdrop"
-      :class="{ 'sidebar__backdrop--active': isSidebarOpened }"
+      :class="{ 'sidebar__backdrop--active': isOpened }"
       @click="closeSidebar"
     />
 
     <button
       @click="openSidebar"
       class="sidebar__burger-btn"
-      :class="{ 'sidebar__burger-btn--sidebar-active': isSidebarOpened }"
+      :class="{ 'sidebar__burger-btn--sidebar-active': isOpened }"
     >
       <i class="mdi mdi-menu" />
     </button>
 
     <div
       class="sidebar__lists"
-      :class="{ 'sidebar__lists--closed': !isSidebarOpened }"
+      :class="{ 'sidebar__lists--closed': !isOpened }"
     >
       <section class="sidebar__logotype">
         <router-link
@@ -331,24 +331,24 @@ export default {
   },
 
   data: () => ({
-    isSidebarOpened: false,
+    isOpened: false,
     config,
     ACCOUNT_TYPES,
     vueRoutes
   }),
 
   computed: {
-    ...mapGetters({
-      accountTypeI: `new-account/${vuexTypes.accountTypeI}`
-    })
+    ...mapGetters('new-account', [
+      vuexTypes.accountTypeI
+    ])
   },
 
   methods: {
     openSidebar () {
-      this.isSidebarOpened = true
+      this.isOpened = true
     },
     closeSidebar () {
-      this.isSidebarOpened = false
+      this.isOpened = false
     }
   }
 }
