@@ -103,19 +103,19 @@ const router = new Router({
       path: '/terms',
       name: 'terms',
       component: Terms,
-      meta: { pageName: 'pages-names.terms' }
+      meta: { pageNameTranslationId: 'pages-names.terms' }
     },
     {
       path: '/downloads',
       name: 'downloads',
       component: Downloads,
-      meta: { pageName: 'pages-names.downloads' }
+      meta: { pageNameTranslationId: 'pages-names.downloads' }
     },
     {
       path: '/ios-install-guide',
       name: 'ios-install-guide',
       component: iosInstallGuide,
-      meta: { pageName: 'pages-names.ios-install-guide' }
+      meta: { pageNameTranslationId: 'pages-names.ios-install-guide' }
     },
     {
       path: '/auth',
@@ -175,7 +175,7 @@ const router = new Router({
             {
               path: '/dashboard/index',
               name: 'dashboard.index',
-              meta: { pageName: 'pages-names.dashboard' },
+              meta: { pageNameTranslationId: 'pages-names.dashboard' },
               component: DashboardIndex
             }
           ]
@@ -190,7 +190,7 @@ const router = new Router({
             {
               path: '/deposit/make',
               name: 'deposit.make',
-              meta: { pageName: 'pages-names.deposit' },
+              meta: { pageNameTranslationId: 'pages-names.deposit' },
               component: DepositMake
             }
           ]
@@ -205,7 +205,7 @@ const router = new Router({
             {
               path: '/limits/index',
               name: 'limits.index',
-              meta: { pageName: 'pages-names.limits' },
+              meta: { pageNameTranslationId: 'pages-names.limits' },
               component: LimitsIndex
             }
           ]
@@ -220,13 +220,13 @@ const router = new Router({
             {
               path: '/transfers/make',
               name: 'transfers.make',
-              meta: { pageName: 'pages-names.send' },
+              meta: { pageNameTranslationId: 'pages-names.send' },
               component: TransfersMake
             },
             {
               path: '/transfers/make/:tokenCode',
               name: 'transfers.make:tokenCode',
-              meta: { pageName: 'pages-names.send' },
+              meta: { pageNameTranslationId: 'pages-names.send' },
               component: TransfersMake
             }
           ]
@@ -255,7 +255,7 @@ const router = new Router({
             {
               path: '/withdrawal/make',
               name: 'withdrawal.make',
-              meta: { pageName: 'pages-names.withdraw' },
+              meta: { pageNameTranslationId: 'pages-names.withdraw' },
               component: WithdrawalMake
             }
           ]
@@ -270,7 +270,7 @@ const router = new Router({
             {
               path: '/tokens/explore',
               name: 'tokens.explore',
-              meta: { pageName: 'pages-names.explore-tokens' },
+              meta: { pageNameTranslationId: 'pages-names.explore-tokens' },
               component: TokensExplore
             }
           ]
@@ -285,13 +285,13 @@ const router = new Router({
             {
               path: '/history/index',
               name: 'history.index',
-              meta: { pageName: 'pages-names.history' },
+              meta: { pageNameTranslationId: 'pages-names.history' },
               component: HistoryIndex
             },
             {
               path: '/history/index/:tokenCode',
               name: 'history.index:tokenCode',
-              meta: { pageName: 'pages-names.history' },
+              meta: { pageNameTranslationId: 'pages-names.history' },
               component: HistoryIndex
             }
           ]
@@ -307,8 +307,8 @@ const router = new Router({
               path: '/trade/index',
               name: 'trade.index',
               meta: {
-                pageName: 'pages-names.trade',
-                pageSubname: 'pages-subnames.exchange-tokens'
+                pageNameTranslationId: 'pages-names.trade',
+                pageSubnameTranslationId: 'pages-subnames.exchange-tokens'
               },
               component: TradeIndex
             }
@@ -324,7 +324,7 @@ const router = new Router({
             {
               path: '/settings/security',
               name: 'settings.security',
-              meta: { pageName: 'pages-names.settings' },
+              meta: { pageNameTranslationId: 'pages-names.settings' },
               component: SettingsSecurity
             }
           ]
@@ -339,7 +339,7 @@ const router = new Router({
             {
               path: '/verification/make',
               name: 'verification.make',
-              meta: { pageName: 'pages-names.verification' },
+              meta: { pageNameTranslationId: 'pages-names.verification' },
               component: VerificationMake
             }
           ]
@@ -354,21 +354,21 @@ const router = new Router({
             {
               path: '/token-creation/index',
               name: 'token-creation.index',
-              meta: { pageName: 'pages-names.create-token' },
+              meta: { pageNameTranslationId: 'pages-names.create-token' },
               component: TokenCreationIndex,
               props: true
             },
             {
               path: '/token-creation/index/:id',
               name: 'token-creation.index:id',
-              meta: { pageName: 'pages-names.create-token' },
+              meta: { pageNameTranslationId: 'pages-names.create-token' },
               component: TokenCreationIndex,
               props: true
             },
             {
               path: '/token-creation/index/:code',
               name: 'token-creation.index.code',
-              meta: { pageName: 'pages-names.update-token' },
+              meta: { pageNameTranslationId: 'pages-names.update-token' },
               component: TokenCreationIndex,
               props: true
             }
@@ -384,14 +384,14 @@ const router = new Router({
             {
               path: '/sale-creation/index',
               name: 'sale-creation.index',
-              meta: { pageName: 'pages-names.create-sale' },
+              meta: { pageNameTranslationId: 'pages-names.create-sale' },
               component: SaleCreationIndex,
               props: true
             },
             {
               path: '/sale-creation/index/:id',
               name: 'sale-creation.index:id',
-              meta: { pageName: 'pages-names.create-sale' },
+              meta: { pageNameTranslationId: 'pages-names.create-sale' },
               component: SaleCreationIndex,
               props: true
             }
@@ -407,7 +407,7 @@ const router = new Router({
             {
               path: '/issuance-creation/index',
               name: 'issuance-creation.index',
-              meta: { pageName: 'pages-names.create-issuance' },
+              meta: { pageNameTranslationId: 'pages-names.create-issuance' },
               component: IssuanceCreationIndex,
               props: true
             }
@@ -424,21 +424,21 @@ const router = new Router({
               path: '/requests',
               name: 'requests.token-creation',
               hash: '#token-creation',
-              meta: { pageName: 'pages-names.requests' },
+              meta: { pageNameTranslationId: 'pages-names.requests' },
               component: RequestsIndex
             },
             {
               path: '/requests',
               name: 'requests.sale-creation',
               hash: '#sale-creation',
-              meta: { pageName: 'pages-names.requests' },
+              meta: { pageNameTranslationId: 'pages-names.requests' },
               component: RequestsIndex
             },
             {
               path: '/requests',
               name: 'requests.pre-issuance-upload',
               hash: '#pre-issuance-upload',
-              meta: { pageName: 'pages-names.requests' },
+              meta: { pageNameTranslationId: 'pages-names.requests' },
               component: RequestsIndex
             }
           ]
@@ -453,7 +453,7 @@ const router = new Router({
             {
               path: '/fee/index',
               name: 'fee.index',
-              meta: { pageName: 'pages-names.fees' },
+              meta: { pageNameTranslationId: 'pages-names.fees' },
               component: FeeIndex
             }
           ]
@@ -468,13 +468,13 @@ const router = new Router({
             {
               path: '/sales/explore',
               name: 'sales.explore',
-              meta: { pageName: 'pages-names.explore-sales' },
+              meta: { pageNameTranslationId: 'pages-names.explore-sales' },
               component: SalesExplore
             },
             {
               path: '/sales/details/:id',
               name: 'sales.sale-details',
-              meta: { pageName: 'pages-names.explore-sales' },
+              meta: { pageNameTranslationId: 'pages-names.explore-sales' },
               component: SalesDetails,
               props: true
             }
@@ -504,7 +504,7 @@ const router = new Router({
             {
               path: '/preissuance-upload/index',
               name: 'preissuance-upload.index',
-              meta: { pageName: 'pages-names.upload-pre-issuance' },
+              meta: { pageNameTranslationId: 'pages-names.upload-pre-issuance' },
               component: PreissuanceUploadIndex,
               props: true
             }

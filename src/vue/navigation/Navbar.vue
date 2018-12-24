@@ -1,13 +1,13 @@
 <template>
   <nav class="navbar">
     <div class="navbar__title-wrapper">
-      <template v-if="$route.meta.pageSubname">
+      <template v-if="$route.meta.pageSubnameTranslationId">
         <h3 class="navbar__sub-title">
-          {{ $route.meta.pageSubname | globalize }}
+          {{ $route.meta.pageSubnameTranslationId | globalize }}
         </h3>
       </template>
       <h2 class="navbar__title">
-        {{ $route.meta.pageName | globalize }}
+        {{ $route.meta.pageNameTranslationId | globalize }}
       </h2>
     </div>
     <div class="navbar__user">
