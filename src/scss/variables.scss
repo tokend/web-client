@@ -1,6 +1,10 @@
 // use as multiplier for more convenient way to calculating sizes
 $point: 0.625rem; /* 10px in case of 1rem=16px */
 
+$content-side-paddings: 6 * $point;
+$content-side-paddings-sm: 2 * $point;
+$sidebar-hide-bp: 76.8 * $point;
+
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
@@ -75,5 +79,8 @@ $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
 
+// tabs panel colors
+$col-tabs-panel-background: $_white;
+$col-tabs-panel-tab-active: $_cornflowerBlue;
 
 // TODO: paste here variables that are ready to use during the refactor process

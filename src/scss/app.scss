@@ -279,3 +279,16 @@ h4 {
     box-shadow: inset -.5 * $point -.6 * $point .6 * $point 0 rgba(0, 0, 0, .2);
   }
 }
+
+.app__content {
+  padding: 0 $content-side-paddings;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background-color: $col-app-content-background;
+
+  @include respond-to($sidebar-hide-bp) {
+    width: 100vw;
+    padding: 0 $content-side-paddings-sm;
+  }
+}
