@@ -41,10 +41,11 @@
 
 <script>
 import StatusMessage from '@/vue/common/StatusMessage'
+import Navbar from '@/vue/navigation/Navbar.vue'
+import Sidebar from '@/vue/navigation/Sidebar.vue'
 
 // legacy:
-import Navbar from '../navigation/Navbar.vue'
-import Sidebar from '../navigation/Sidebar.vue'
+
 import Snackbar from '../common/messages/Snackbar'
 import FileViewer from '../common/modals/FileViewer'
 import LoaderBar from '../common/messages/LoaderBar'
@@ -88,9 +89,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.userAccountId,
       vuexTypes.isLoggedIn,
-      vuexTypes.userEmail,
       vuexTypes.accountSeed,
       vuexTypes.walletId,
       vuexTypes.accountId

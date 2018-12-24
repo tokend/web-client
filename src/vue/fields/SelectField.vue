@@ -92,7 +92,7 @@ export default {
   background-color: transparent;
   border: none;
   color: $field-color-text;
-  font-size: 16px;
+  font-size: 1.6 * $point;
   font-weight: 500;
   cursor: pointer;
 }
@@ -127,9 +127,9 @@ export default {
   will-change: transform;
   color: $col-field-icon !important;
   transition: 0.2s ease-out;
-  margin-top: -2px;
-  width: 20px;
-  height: 20px;
+  margin-top: -.2 * $point;
+  width: 2 * $point;
+  height: 2 * $point;
 
   &.select-field__selected-icon--active {
     transform: rotate(-180deg);
@@ -140,18 +140,18 @@ export default {
   opacity: 0;
   visibility: hidden;
   transition: 0.2s ease-out;
-  margin-top: -10px;
+  margin-top: -1 * $point;
   position: absolute;
   left: 0;
-  min-width: 170px;
-  top: calc(100% + 4px);
+  min-width: 17 * $point;
+  top: calc(100% + (.4 * #{$point}));
   background-color: $col-dropdown-bg;
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
+  box-shadow: 0 .4 * $point 1 * $point 0 rgba(0, 0, 0, 0.15);
+  border-radius: .3 * $point;
   z-index: 5;
-  max-height: 244px;
+  max-height: 24.4 * $point;
   overflow-y: auto;
-  padding: 8px 0;
+  padding: .8 * $point 0;
 }
 
 .select-field__list--active {
@@ -161,8 +161,8 @@ export default {
 }
 
 .select-field__list-item {
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: .8 * $point 1.6 * $point;
+  font-size: 1.6 * $point;
   transition: background-color 0.15s ease-out;
   cursor: pointer;
   border: none;

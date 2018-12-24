@@ -7,7 +7,7 @@ import '../legacy/scss/app.scss'
 import './scss/app.scss'
 
 // vue default plugins
-import router from '../legacy/vue-router'
+import { router } from '@/vue-router'
 import store from '../legacy/vuex'
 
 // vue http-client
