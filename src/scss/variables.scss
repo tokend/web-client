@@ -17,6 +17,8 @@ $_lightRed: #ef5350;
 $_cornflowerBlue: #7b6eff;
 $_green: #33A494;
 $_orangePeel: #f2a100;
+$_whiteSmoke: #f5f6f9;
+$_lightPurple: #837fa1;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -105,5 +107,17 @@ $col-text-field-hint-inactive: $col-primary-inactive;
 $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
+
+// table colors:
+$col-table-background: $_white;
+$col-table-alt-row-background: $_whiteSmoke;
+$col-table-cell-text: $col-primary;
+$col-table-head-text: $_lightPurple;
+$col-table-row-selected: darken($_whiteSmoke, 10%);
+$col-table-shadow: rgba(0, 0, 0, 0.1);
+
+// loader colors:
+$col-loader-text: $col-primary;
+$col-loader-icon: $col-primary-inactive;
 
 // TODO: paste here variables that are ready to use during the refactor process

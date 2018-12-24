@@ -41,12 +41,14 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatInteger } from '@/vue/filters/formatInteger'
+import { formatPercent } from '@/vue/filters/formatPercent'
 import { globalize } from '@/vue/filters/globalize'
+
+import { formatFeeType } from '@/vue/filters/formatFeeType'
+import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 
 // legacy filters
 import { translate } from 'L@/vue/common/filters/translate'
-import { localizeFeeType } from '../legacy/vue/common/filters/localizeFeeType'
-import { localizeFeeSubType } from '../legacy/vue/common/filters/localizeFeeSubType'
 
 i18next.init(i18nOptions)
 
@@ -71,10 +73,11 @@ Vue.filter('formatNumber', formatNumber)
 Vue.filter('formatCalendar', formatCalendar)
 Vue.filter('formatOrderNumber', formatOrderNumber)
 Vue.filter('formatInteger', formatInteger)
-Vue.filter('localizeFeeType', localizeFeeType)
-Vue.filter('localizeFeeSubType', localizeFeeSubType)
+Vue.filter('formatFeeType', formatFeeType)
+Vue.filter('formatFeeSubType', formatFeeSubType)
 Vue.filter('formatDate', formatDate)
 Vue.filter('formatMoney', formatMoney)
+Vue.filter('formatPercent', formatPercent)
 
 /* eslint-disable no-new */
 new Vue({
