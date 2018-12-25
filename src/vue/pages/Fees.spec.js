@@ -59,7 +59,11 @@ describe('Fees component unit test', () => {
   })
 
   it('loadFees() calls the horizon.fees.getAll() with the correct params', async () => {
-    const spy = sinon.stub(feesResource, 'getAll').resolves()
+    const spy = sinon.stub(feesResource, 'getAll').resolves({
+      data: {
+        fees: {}
+      }
+    })
 
     await wrapper.vm.loadFees()
 

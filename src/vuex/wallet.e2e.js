@@ -6,7 +6,7 @@ import { base } from '@tokend/js-sdk'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { wallet } from './index'
+import wallet from './wallet.module'
 
 Vue.use(Vuex)
 

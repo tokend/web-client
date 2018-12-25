@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router'
 
 const localVue = createLocalVue()
 
@@ -76,8 +77,18 @@ describe('RecoveryForm component test', () => {
 
     beforeEach(() => {
       mockHelper = new MockHelper()
+
+      const router = new VueRouter({
+        mode: 'history',
+        routes: [{
+          name: vueRoutes.login.name,
+          path: '/foo'
+        }]
+      })
+
       wrapper = shallowMount(RecoveryForm, {
-        localVue
+        localVue,
+        router
       })
     })
 

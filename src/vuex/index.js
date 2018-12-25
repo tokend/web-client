@@ -13,7 +13,7 @@ import _isEmpty from 'lodash/isEmpty'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export const rootModule = {
   actions: {},
   mutations: {
     // These mutations are being subscribed by plugins
@@ -26,7 +26,11 @@ const store = new Vuex.Store({
       getters[vuexTypes.account]
     )
   },
-  state: {},
+  state: {}
+}
+
+const store = new Vuex.Store({
+  ...rootModule,
   modules: {
     account,
     factors,
@@ -39,5 +43,4 @@ const store = new Vuex.Store({
 store.commit(vuexTypes.POP_STATE)
 
 export { store }
-
 export { vuexTypes } from './types'
