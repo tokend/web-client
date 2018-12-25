@@ -275,7 +275,7 @@
     },
 
     "issuance": {
-      "create-issuance": "Create Issuance",
+      "create-issuance": "Create issuance",
       "upload-pre-issuance": "Upload pre-issuance",
       "counterparty": "Counterparty",
       "amount": "Amount",

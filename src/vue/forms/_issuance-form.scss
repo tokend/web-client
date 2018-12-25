@@ -1,0 +1,19 @@
+@import '~@scss/mixins';
+@import '~@scss/variables';
+
+.issuance-form__submit-btn {
+  @include button-raised();
+
+  margin-bottom: 2 * $point;
+  width: 18 * $point;
+}
+
+.issuance-form__cancel-btn {
+  @include button();
+
+  padding-left: .1 * $point;
+  padding-right: .1 * $point;
+  margin-left: auto !important;
+  margin-bottom: 2 * $point;
+  font-weight: normal;
+}

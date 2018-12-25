@@ -14,15 +14,16 @@
     >
       {{ 'issuance.create-issuance' | globalize }}
     </button>
-    <drawer :is-shown.sync="isCreateDrawerShown">
-      <template slot="heading">
-        {{ 'issuance.create-issuance' | globalize }}
-      </template>
-    </drawer>
     <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance' | globalize }}
       </template>
+    </drawer>
+    <drawer :is-shown.sync="isCreateDrawerShown">
+      <template slot="heading">
+        {{ 'issuance.create-issuance' | globalize }}
+      </template>
+      <create-issuance-form />
     </drawer>
     <div class="issuance" v-if="isLoaded">
       <div class="issuance-history__table">
@@ -88,6 +89,7 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
+import CreateIssuanceForm from '@/vue/forms/CreateIssuanceForm'
 
 import { Sdk } from '@/sdk'
 
@@ -100,7 +102,8 @@ export default {
   name: 'issuance',
   components: {
     Loader,
-    Drawer
+    Drawer,
+    CreateIssuanceForm
   },
   data: _ => ({
     issuanceHistory: null,
