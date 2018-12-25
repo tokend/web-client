@@ -10,10 +10,31 @@
 </template>
 
 <script>
+/**
+ * TopBar component represents a bar on top of the page content.
+ *
+ * To use it pass your content as a slot inside. Main slot 
+ * (aligned to the left side) should contain router links, filters, etc.
+ * Extra slot (aligned to the right side) should contain action buttons.
+ *
+ * <top-bar>
+ *    <template slot="main">
+ *      <router-link />
+ *      ...
+ *      <filter />
+ *      ...
+ *     </template>
+ *     <template slot="extra">
+ *       <button>Some action</button>
+ *       ...
+ *   </template>
+ * </top-bar>
+ */
 export default {
   name: 'top-bar'
 }
 </script>
+
 
 <style lang="scss" scoped>
 @import "~@scss/variables";
@@ -53,6 +74,7 @@ export default {
   .top-bar__extra {
     display: flex;
     margin-left: auto;
+    padding-left: 2 * $point;
 
     & > :not(:first-child) {
       margin-left: 1.2 * $point;
@@ -70,8 +92,16 @@ export default {
     align-items: start;
 
     .top-bar__extra {
-      margin-top: 2 * $point;
-      margin-left: 0;
+      margin-top: $point;
+      margin-left: -1.2 * $point;
+      padding-left: 0;
+      flex-wrap: wrap;
+
+      & > * {
+        margin-left: 1.2 * $point;
+        margin-top: 0.7 * $point;
+        margin-bottom: 0.7 * $point;
+      }
     }
   }
 }
