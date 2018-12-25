@@ -39,6 +39,10 @@
 import FlatPickr from 'vue-flatpickr-component'
 import moment from 'moment'
 
+const EVENTS = {
+  getNewValue: 'getNewValue'
+}
+
 export default {
   name: 'date-field-flatpickr',
 
@@ -55,12 +59,11 @@ export default {
     label: { type: String, default: '' }
   },
 
-  data () {
-    return {
-      flatpickrDate: '',
-      isCalendarOpen: false
-    }
-  },
+  data: () => ({
+    flatpickrDate: '',
+    isCalendarOpen: false,
+    EVENTS
+  }),
 
   computed: {
     config () {
@@ -108,11 +111,11 @@ export default {
     },
     onClose () {
       this.isCalendarOpen = false
-      this.$emit('getNewValue', this.flatpickrDate)
+      this.$emit(this.EVENTS.getNewValue, this.flatpickrDate)
     },
     onBlur (event) {
       this.flatpickrDate = event
-      this.$emit('getNewValue', this.flatpickrDate)
+      this.$emit(this.EVENTS.getNewValue, this.flatpickrDate)
     }
   }
 }

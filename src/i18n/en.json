@@ -19,7 +19,8 @@
       "presets": {
         "time": "H:mm",
         "date": "MMMM D, YYYY",
-        "datetime": "MMMM D, YYYY [at] H:mm"
+        "datetime": "MMMM D, YYYY [at] H:mm",
+        "dmy": "DD MM YYYY"
       },
       "formats": {
         "same_day": "[today at] H:mm",
@@ -34,6 +35,7 @@
   "translations": {
     "formats": {
       "date":  "{{value, date}}",
+      "dmy":  "{{value, dmy}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
@@ -272,6 +274,44 @@
       "subtype": "Subtype",
       "lbl-loading": "Loading",
       "lbl-loading-error": "There was an error while loading."
+    },
+
+    "tx-history": {
+      "transaction-history": "Transaction history",
+      "failed-to-load-tx": "Failed to load history",
+      "no-transaction-history": "No transaction history",
+      "here-will-be-the-list": "Here will be the list of your transactions",
+      "here-will-be-the-tokens": "Here will be the list of your assets",
+      "no-assets-in-your-wallet": "No assets in your wallet",
+      "locked": "Locked"
+    },
+
+    "dashboard": {
+      "data-loading": "Fetching dashboard data...",
+      "transaction-details": "Transaction details",
+      "close": "Close",
+      "activity": "Activity",
+      "date": "Date",
+      "transaction-type": "Transaction type",
+      "asset": "Asset",
+      "amount": "Amount",
+      "counterparty": "Counterparty",
+      "status": "Status",
+      "no-transaction-history": "No transaction history",
+      "here-will-transactions-list": "Here will be the list of your transactions"
+    },
+
+    "email-getter": {
+      "loading": "Loading..."
+    },
+
+    "chart": {
+      "year": "Year",
+      "month": "Month",
+      "day": "Day",
+      "hour": "Hour",
+      "fetching-the-price-history": "Fetching the price history...",
+      "no-price-history-of-selected-token": "No price history of selected token yet"
     }
   }
 }

@@ -42,6 +42,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input'
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -64,12 +69,11 @@ export default {
     cols: { type: [String, Number], default: undefined }
   },
 
-  data () {
-    return {
-      hasValue: false,
-      currentLength: '0'
-    }
-  },
+  data: () => ({
+    hasValue: false,
+    currentLength: '0',
+    EVENTS
+  }),
 
   computed: {
     isNoLabel () {
@@ -81,7 +85,7 @@ export default {
     onInput (event) {
       event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
-      this.$emit('input', event.target.value)
+      this.$emit(this.EVENTS.input, event.target.value)
     }
   }
 }

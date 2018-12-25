@@ -30,6 +30,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input'
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -39,20 +44,23 @@ export default {
     whiteAutofill: { type: Boolean, default: false }
   },
 
+  data: () => ({
+    EVENTS
+  }),
+
   computed: {
     listeners () {
       return {
         ...this.$listeners,
         input: event => {
-          this.$emit('input', event.target.value)
+          this.$emit(this.EVENTS.input, event.target.value)
         }
       }
     }
   },
 
   methods: {
-    onInput (event) {
-    }
+    onInput (event) {}
   }
 }
 </script>

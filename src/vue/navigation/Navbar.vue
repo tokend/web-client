@@ -119,12 +119,12 @@ export default {
     }),
     getVerboseAccountType (accountTypeI) {
       switch (accountTypeI) {
-        case ACCOUNT_TYPES.notVerified:
-          return globalize('navbar.account-unverified')
-        case ACCOUNT_TYPES.individual:
+        case ACCOUNT_TYPES.general:
           return globalize('navbar.account-general')
         case ACCOUNT_TYPES.syndicate:
           return globalize('navbar.account-corporate')
+        default:
+          return globalize('navbar.account-unverified')
       }
     },
     toggleUserCardVisibility () {

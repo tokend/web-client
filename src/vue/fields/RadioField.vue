@@ -23,6 +23,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input'
+}
+
 export default {
   props: {
     name: { type: String, default: undefined },
@@ -33,6 +38,10 @@ export default {
     required: { type: Boolean, default: false }
   },
 
+  data: () => ({
+    EVENTS
+  }),
+
   computed: {
     id () {
       return `radio-field-${this._uid}`
@@ -41,7 +50,7 @@ export default {
 
   methods: {
     onChange (event) {
-      this.$emit('input', event.target.value)
+      this.$emit(this.EVENTS.input, event.target.value)
     }
   }
 }

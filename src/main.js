@@ -36,6 +36,7 @@ import { i18nOptions } from '@/i18n'
 
 // filters
 import { formatDate } from '@/vue/filters/formatDate'
+import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
@@ -68,6 +69,7 @@ VeeValidate.Validator = extendValidator(VeeValidate.Validator)
 Vue.filter('translate', translate)
 Vue.filter('globalize', globalize)
 Vue.filter('formatDate', formatDate)
+Vue.filter('formatDateDMY', formatDateDMY)
 Vue.filter('formatMoney', formatMoney)
 Vue.filter('formatNumber', formatNumber)
 Vue.filter('formatCalendar', formatCalendar)

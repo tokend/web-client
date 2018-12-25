@@ -20,8 +20,7 @@ import iosInstallGuide from 'L@/vue/public/Public.IosInstallGuide'
 
 import AppContent from 'L@/vue/root/AppContent'
 
-import Dashboard from 'L@/vue/app/dashboard/Dashboard.Entry'
-import DashboardIndex from 'L@/vue/app/dashboard/index/Dashboard.Index'
+import Dashboard from '@/vue/pages/dashboard/Dashboard.Index'
 
 import Deposit from 'L@/vue/app/deposit/Deposit.Entry'
 import DepositMake from 'L@/vue/app/deposit/make/Deposit.Make'
@@ -169,16 +168,8 @@ const router = new Router({
           feature_flag: config.FEATURE_FLAGS.dashboard,
           name: 'app.dashboard',
           path: '/dashboard',
-          component: Dashboard,
-          redirect: { path: '/dashboard/index' },
-          children: [
-            {
-              path: '/dashboard/index',
-              name: 'dashboard.index',
-              meta: { pageNameTranslationId: 'pages-names.dashboard' },
-              component: DashboardIndex
-            }
-          ]
+          meta: { pageNameTranslationId: 'pages-names.dashboard' },
+          component: Dashboard
         },
         {
           feature_flag: config.FEATURE_FLAGS.deposit,
