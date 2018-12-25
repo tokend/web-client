@@ -122,6 +122,9 @@
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel"
+    },
+    "pagination": {
+      "btn-label-more": "More"
     }
   }
 }
