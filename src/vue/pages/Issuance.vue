@@ -1,81 +1,113 @@
 <template>
-  <div class="issuance" v-if="isLoaded">
-    <div class="issuance-history__table">
-      <table class="app__table">
-        <thead>
-          <tr>
-            <th>
-              {{ 'issuance-table.counterparty' | globalize }}
-            </th>
-            <th>
-              {{ 'issuance-table.amount' | globalize }}
-            </th>
-            <th>
-              {{ 'issuance-table.asset-code' | globalize }}
-            </th>
-            <th>
-              {{ 'issuance-table.date' | globalize }}
-            </th>
-            <th>
-              {{ 'issuance-table.reference' | globalize }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="issuance in issuanceHistory" :key="issuance.id">
-            <td>
-              {{ issuance.counterparty }}
-            </td>
-            <td>
-              {{
-                issuance.amount | formatMoney
-              }}
-            </td>
-            <td>
-              {{
-                issuance.asset
-              }}
-            </td>
-            <td>
-              {{ issuance.ledgerCloseTime | formatDate }}
-            </td>
-            <td>
-              {{ issuance.reference }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div>
+    <button
+      v-ripple
+      class="issuance-btn"
+      @click="isPreIssuanceDrawerShown = true"
+    >
+      {{ 'issuance.upload-pre-issuance' | globalize }}
+    </button>
+    <button
+      v-ripple
+      class="issuance-btn"
+      @click="isCreateDrawerShown = true"
+    >
+      {{ 'issuance.create-issuance' | globalize }}
+    </button>
+    <drawer :is-shown.sync="isCreateDrawerShown">
+      <template slot="heading">
+        {{ 'issuance.create-issuance' | globalize }}
+      </template>
+    </drawer>
+    <drawer :is-shown.sync="isPreIssuanceDrawerShown">
+      <template slot="heading">
+        {{ 'issuance.upload-pre-issuance' | globalize }}
+      </template>
+    </drawer>
+    <div class="issuance" v-if="isLoaded">
+      <div class="issuance-history__table">
+        <table class="app__table">
+          <thead>
+            <tr>
+              <th>
+                {{ 'issuance.counterparty' | globalize }}
+              </th>
+              <th>
+                {{ 'issuance.amount' | globalize }}
+              </th>
+              <th>
+                {{ 'issuance.asset-code' | globalize }}
+              </th>
+              <th>
+                {{ 'issuance.date' | globalize }}
+              </th>
+              <th>
+                {{ 'issuance.reference' | globalize }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="issuance in issuanceHistory" :key="issuance.id">
+              <td>
+                {{ issuance.counterparty }}
+              </td>
+              <td>
+                {{
+                  issuance.amount | formatMoney
+                }}
+              </td>
+              <td>
+                {{
+                  issuance.asset
+                }}
+              </td>
+              <td>
+                {{ issuance.ledgerCloseTime | formatCalendar }}
+              </td>
+              <td>
+                {{ issuance.reference }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <div v-else-if="!isFailed">
-    <loader
-      :message-id="'issuance-table.lbl-loading'"
-    />
-  </div>
-  <div v-else>
-    <p>
-      {{ 'issuance-table.lbl-loading-error' | globalize }}
-    </p>
+    <div v-else-if="!isLoadingFailed">
+      <loader
+        :message-id="'issuance.lbl-loading'"
+      />
+    </div>
+    <div v-else>
+      <p>
+        {{ 'issuance.lbl-loading-error' | globalize }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import Loader from '../common/Loader'
+import Loader from '@/vue/common/Loader'
+import Drawer from '@/vue/common/Drawer'
 
 import { Sdk } from '@/sdk'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { errors } from '@tokend/js-sdk'
+
 export default {
   name: 'issuance',
   components: {
-    Loader
+    Loader,
+    Drawer
   },
   data: _ => ({
     issuanceHistory: null,
     isLoaded: false,
-    isFailed: false
+    isLoadingFailed: false,
+    isCreateDrawerShown: false,
+    isPreIssuanceDrawerShown: false
   }),
   computed: {
     ...mapGetters('new-wallet', [
@@ -97,11 +129,11 @@ export default {
         await this.loadCounterpartyEmails()
         this.isLoaded = true
       } catch (error) {
-        this.isFailed = true
+        this.isLoadingFailed = true
         console.error(error)
       }
     },
-    getCounterparty (issuance) {
+    getCounterpartyId (issuance) {
       const participants = issuance.participants
       return participants[0].accountId === this[vuexTypes.wallet].accountId
         ? participants[1].accountId
@@ -109,7 +141,7 @@ export default {
     },
     async loadCounterpartyEmails () {
       const counterpartyIds = this.issuanceHistory.map(issuance =>
-        this.getCounterparty(issuance)
+        this.getCounterpartyId(issuance)
       )
       const counterpartyEmails = (await Promise.all(
         counterpartyIds.map(async id =>
@@ -117,7 +149,7 @@ export default {
             .catch(error => error)
         )
       )).map((response, i) => {
-        return response instanceof Error
+        return response instanceof errors.NotFoundError
           ? counterpartyIds[i]
           : response.data.email
       })
@@ -130,10 +162,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
+@import "~@scss/variables";
+@import "~@scss/mixins";
 
 .issuance-history__table {
   overflow-x: auto;
   box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
+}
+
+.issuance-btn {
+  @include button-raised;
 }
 </style>
