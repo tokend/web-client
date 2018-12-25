@@ -33,118 +33,6 @@
             v-ripple
             class="sidebar__list-item"
             @click.native="closeSidebar"
-            :to="vueRoutes.app"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.dashboard"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-view-dashboard" />
-            <span>
-              {{ 'pages-names.dashboard' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.deposit"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.deposit"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-download" />
-            <span>
-              {{ 'pages-names.deposit' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.withdrawal"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.withdrawal"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-upload" />
-            <span>
-              {{ 'pages-names.withdraw' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.transfers"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.transfers"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-send" />
-            <span>
-              {{ 'pages-names.send' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.history"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.history"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-view-sequential" />
-            <span>
-              {{ 'pages-names.history' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.limits"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.limits"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-poll-box" />
-            <span>
-              {{ 'pages-names.limits' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.massTransfers"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.massTransfers"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-account-multiple" />
-            <span>
-              {{ 'pages-names.mass-transfer' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.trade"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.trade"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-swap-horizontal" />
-            <span>
-              {{ 'pages-names.trade' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="li"
             v-if="config.FEATURE_FLAGS.fees"
@@ -157,172 +45,18 @@
         </ul>
       </section>
 
-      <section class="sidebar__section sidebar__section--account sidebar__list">
-        <!-- FIXME: hidden because no items in list -->
-        <!--<div class="sidebar__list-title">-->
-        <!--{{ 'sidebar.section-explore' | globalize }}-->
-        <!--</div>-->
-        <ul>
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.tokens"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.tokens"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-coins" />
-            <span>
-              {{ 'pages-names.explore-tokens' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.sales"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.sales"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-trending-up" />
-            <span>
-              {{ 'pages-names.explore-sales' | globalize }}
-            </span>
-          </router-link>
-        </ul>
-      </section>
-
-      <section
-        class="sidebar__section sidebar__section--account sidebar__list"
-        v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
-      >
-        <div class="sidebar__list-title">
-          {{ 'sidebar.section-corporate' | globalize }}
-        </div>
-        <ul>
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.tokenCreation"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.tokenCreation"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-plus-circle" />
-            <span>
-              {{ 'pages-names.create-token' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.saleCreation"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.saleCreation"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-calendar-blank" />
-            <span>
-              {{ 'pages-names.create-sale' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.preissuanceUpload"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.preIssuanceUpload"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-arrow-expand-all" />
-            <span>
-              {{ 'pages-names.upload-pre-issuance' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.issuanceCreation"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.issuanceCreation"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-chart-bar" />
-            <span>
-              {{ 'pages-names.create-issuance' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.requests"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.requests"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-book-open-variant" />
-            <span>
-              {{ 'pages-names.requests' | globalize }}
-            </span>
-          </router-link>
-        </ul>
-      </section>
-
-      <section class="sidebar__section sidebar__section--account sidebar__list">
-        <!-- FIXME: hidden because no items in list -->
-        <!--<div class="sidebar__list-title">-->
-        <!--{{ 'sidebar.section-account' | globalize }}-->
-        <!--</div>-->
-        <ul>
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.verification"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.verification"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-shield" />
-            <span>
-              {{ 'pages-names.verification' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__list-item"
-            @click.native="closeSidebar"
-            :to="vueRoutes.settings"
-            tag="li"
-            v-if="config.FEATURE_FLAGS.settings"
-          >
-            <i class="sidebar__list-item-icon mdi mdi-settings" />
-            <span>
-              {{ 'pages-names.settings' | globalize }}
-            </span>
-          </router-link>
-        </ul>
-      </section>
-
       <app-footer />
     </div>
   </div>
 </template>
 
 <script>
-import config from '@/config'
-
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
-import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
+
 import { vueRoutes } from '@/vue-router'
+
+import config from '@/config'
 
 export default {
   name: 'sidebar',
@@ -335,15 +69,8 @@ export default {
   data: () => ({
     isOpened: false,
     config,
-    ACCOUNT_TYPES,
     vueRoutes
   }),
-
-  computed: {
-    ...mapGetters([
-      vuexTypes.accountTypeI
-    ])
-  },
 
   methods: {
     openSidebar () {
