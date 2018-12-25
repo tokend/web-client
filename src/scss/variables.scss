@@ -1,10 +1,14 @@
-// use as multiplier for more convenient way to calculating sizes
-$point: 0.625rem; /* 10px in case of 1rem=16px */
+$point: 10px;
 
-$sidebar-width: 27.5 * $point;
+// NOTE: This variables are for using in media-queries. We use the $point here
+// because the `rem`s values passed to media queries don't rely on html's
+// font-size and taking the default browser's value.
+// See https://drafts.csswg.org/mediaqueries/#units
 $sidebar-hide-bp: 76.8 * $point;
-$content-side-paddings: 4 * $point;
-$content-side-paddings-sm: 2 * $point;
+
+$sidebar-width: 27.5rem;
+$content-side-paddings: 4rem;
+$content-side-paddings-sm: 2rem;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;

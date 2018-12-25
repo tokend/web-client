@@ -147,7 +147,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 4 * $point $content-side-paddings;
+  padding: 4rem $content-side-paddings;
   background-color: $col-app-content-background;
 
   @include respond-to-custom($sidebar-hide-bp) {

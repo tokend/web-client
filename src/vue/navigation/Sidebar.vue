@@ -363,14 +363,14 @@ export default {
 .sidebar {
   position: relative;
   background-color: $col-sidebar-background !important;
-  box-shadow: inset -1 * $point -1 * $point 2 * $point 0 rgba(0, 0, 0, 0.03);
+  box-shadow: inset -1rem -1rem 2rem 0 rgba(0, 0, 0, 0.03);
   min-height: 100%;
 }
 
 .sidebar__lists {
   width: $sidebar-width;
   min-height: 100%;
-  padding-bottom: 7 * $point;
+  padding-bottom: 7rem;
   z-index: 120;
   list-style: none;
 
@@ -412,13 +412,13 @@ export default {
 
 .sidebar__burger-btn {
   position: absolute;
-  left: .5 * $point;
-  top: 4.1 * $point;
+  left: .5rem;
+  top: 4.1rem;
   z-index: 110;
-  width: 4 * $point;
-  height: 4 * $point;
+  width: 4rem;
+  height: 4rem;
   margin-right: 0;
-  margin-left: .8 * $point !important;
+  margin-left: .8rem !important;
   border: none;
   outline: none;
   border-radius: 50%;
@@ -442,7 +442,7 @@ export default {
 .sidebar__list-item {
   display: flex;
   align-items: center;
-  min-height: 4.8 * $point;
+  min-height: 4.8rem;
   cursor: pointer;
   color: $col-sidebar-text;
 
@@ -455,25 +455,25 @@ export default {
 .sidebar__list-title,
 .sidebar__list-item,
 .sidebar__logotype {
-  padding: 0 2.4 * $point 0 4 * $point;
+  padding: 0 2.4rem 0 4rem;
 }
 
 .sidebar__logotype {
-  padding-top: 4 * $point;
-  padding-bottom: 5 * $point;
+  padding-top: 4rem;
+  padding-bottom: 5rem;
 }
 
 .sidebar__logotype-icon {
-  max-width: 9.5 * $point;
+  max-width: 9.5rem;
   width: 100%;
-  height: 3.1 * $point;
+  height: 3.1rem;
   display: block;
 }
 
 .sidebar__list-item-icon {
-  margin-right: 1.6 * $point;
+  margin-right: 1.6rem;
   color: $col-sidebar-text;
-  font-size: 2.4 * $point;
+  font-size: 2.4rem;
 
   .router-link-active & {
     color: $col-sidebar-active-elem-text;
@@ -481,12 +481,12 @@ export default {
 }
 
 .sidebar__section--account {
-  margin-top: 5 * $point;
+  margin-top: 5rem;
 }
 
 .sidebar__list-title {
   color: $col-sidebar-active-elem-text;
-  font-size: 1.6 * $point;
-  margin-bottom: .8 * $point;
+  font-size: 1.6rem;
+  margin-bottom: .8rem;
 }
 </style>

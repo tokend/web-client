@@ -81,12 +81,12 @@ export default {
 .form-confirmation__msg {
   font-size: 1rem;
   line-height: 1.25;
-  padding-right: 1 * $point;
+  padding-right: 1rem;
 }
 
 .form-confirmation__btns {
   display: flex;
-  max-width: 25 * $point;
+  max-width: 25rem;
 }
 
 .form-confirmation__ok-btn,

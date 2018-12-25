@@ -120,15 +120,15 @@ export default {
 @import './auth-page';
 
 .signup__seed-wrp {
-  max-width: 51 * $point;
+  max-width: 51rem;
 }
 
 .signup__seed-explanations {
-  margin-bottom: 2 * $point;
+  margin-bottom: 2rem;
 }
 
 .signup__actions {
-  margin-top: 2 * $point;
+  margin-top: 2rem;
   text-align: center;
 }
 

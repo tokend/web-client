@@ -18,10 +18,10 @@ export default {
 @import '~@scss/variables';
 
 .warning-banner {
-  min-height: 8 * $point;
-  padding: 1.6 * $point 4.8 * $point;
+  min-height: 8rem;
+  padding: 1.6rem 4.8rem;
   background-color: $col-warning;
-  font-size: 1.6 * $point;
+  font-size: 1.6rem;
   color: #fff;
   display: flex;
   align-items: center;

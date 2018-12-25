@@ -12,11 +12,11 @@ $x-large: 192 * $point;
 @mixin button () {
   display: inline-block;
   border: none;
-  padding: .8 * $point 1.6 * $point;
-  font-size: 1.4 * $point;
+  padding: .8rem 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
-  min-height: 3.6 * $point;
+  min-height: 3.6rem;
   background-color: transparent;
 
   &:not([disabled]) {
@@ -27,7 +27,7 @@ $x-large: 192 * $point;
 @mixin button-icon () {
   @include button();
 
-  padding: .8 * $point;
+  padding: .8rem;
   border-radius: 50%;
   transition: .3s ease-out;
 
@@ -39,9 +39,9 @@ $x-large: 192 * $point;
 @mixin button-raised () {
   @include button();
 
-  border-radius: .2 * $point;
+  border-radius: .2rem;
   background-color: $col-button-raised;
-  box-shadow: 0 .5 * $point 1 * $point 0 rgba(0, 0, 0, .15);
+  box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, .15);
   color: $col-button-raised-txt;
 
   &[disabled] {
@@ -80,7 +80,7 @@ $x-large: 192 * $point;
 }
 
 @mixin box-shadow () {
-  box-shadow: 0 .4 * $point 1 * $point 0 rgba(0, 0, 0, .15)
+  box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, .15)
 }
 
 @mixin respond-to($media) {
