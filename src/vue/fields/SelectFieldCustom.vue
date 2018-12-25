@@ -10,11 +10,10 @@
       <button class="select__selected-value">
         {{ getLabel(currentValue) }}
       </button>
-      <md-icon
-        class="select__selected-icon"
-        :class="{ 'select__selected-icon--active': isExpanded }">
-        keyboard_arrow_down
-      </md-icon>
+      <i
+        class="select__selected-icon mdi mdi-chevron-down"
+        :class="{ 'select__selected-icon--active': isExpanded }"
+      />
     </div>
     <div
       class="select__list"
@@ -64,9 +63,9 @@ export default {
 
   .select__selected-icon {
     will-change: transform;
-    color: $field-color-text !important;
+    color: $field-color-text;
+    font-size: 2.2 * $point;
     transition: .2s ease-out;
-    margin: -.2 * $point 0 0;
 
     &.select__selected-icon--active {
       transform: rotate(-180deg)

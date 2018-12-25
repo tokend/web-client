@@ -82,25 +82,25 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { vueRoutes } from '@/vue-router'
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { globalize } from '@/vue/filters/globalize'
 
 export default {
-  name: 'root-navbar',
+  name: 'navbar',
 
   data: () => ({
     isUserCardOpen: false,
     ACCOUNT_TYPES
   }),
   computed: {
-    ...mapGetters({
-      walletEmail: `new-wallet/${vuexTypes.walletEmail}`,
-      accountType: `new-account/${vuexTypes.accountType}`,
-      accountTypeI: `new-account/${vuexTypes.accountTypeI}`
-    })
+    ...mapGetters([
+      vuexTypes.walletEmail,
+      vuexTypes.accountType,
+      vuexTypes.accountTypeI
+    ])
   },
   watch: {
     isUserCardOpen (value) {
@@ -114,9 +114,13 @@ export default {
   },
   methods: {
     globalize,
-    ...mapActions({
-      logOut: vuexTypes.LOG_OUT
+    ...mapMutations({
+      clearState: vuexTypes.CLEAR_STATE
     }),
+    logOut () {
+      this.clearState()
+      location.reload()
+    },
     getVerboseAccountType (accountTypeI) {
       switch (accountTypeI) {
         case ACCOUNT_TYPES.notVerified:

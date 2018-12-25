@@ -135,8 +135,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "scss/fields-variables";
-@import "~L@scss/variables";
+@import "./scss/variables";
+@import "~@scss/variables";
 
 .tick-field {
   position: relative;

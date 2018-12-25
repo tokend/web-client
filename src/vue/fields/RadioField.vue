@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~L@scss/variables';
+  @import '~@scss/variables';
 
   .radio-field {
     width: 100%;

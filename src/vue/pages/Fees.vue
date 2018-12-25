@@ -99,7 +99,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters('new-wallet', [
+    ...mapGetters([
       vuexTypes.wallet
     ]),
     assetCodes () {

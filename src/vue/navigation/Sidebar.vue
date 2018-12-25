@@ -21,7 +21,7 @@
       <section class="sidebar__logotype">
         <router-link
           @click.native="closeSidebar"
-          :to="vueRoutes.dashboard"
+          :to="vueRoutes.app"
         >
           <logo class="sidebar__logotype-icon" />
         </router-link>
@@ -33,7 +33,7 @@
             v-ripple
             class="sidebar__list-item"
             @click.native="closeSidebar"
-            :to="vueRoutes.dashboard"
+            :to="vueRoutes.app"
             tag="li"
             v-if="config.FEATURE_FLAGS.dashboard"
           >
@@ -147,7 +147,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="li"
-            v-if="config.FEATURE_FLAGS.feesExplorer"
+            v-if="config.FEATURE_FLAGS.fees"
           >
             <i class="sidebar__list-item-icon mdi mdi-flash" />
             <span>
@@ -158,9 +158,10 @@
       </section>
 
       <section class="sidebar__section sidebar__section--account sidebar__list">
-        <div class="sidebar__list-title">
-          {{ 'sidebar.section-explore' | globalize }}
-        </div>
+        <!-- FIXME: hidden because no items in list -->
+        <!--<div class="sidebar__list-title">-->
+        <!--{{ 'sidebar.section-explore' | globalize }}-->
+        <!--</div>-->
         <ul>
           <router-link
             v-ripple
@@ -273,9 +274,10 @@
       </section>
 
       <section class="sidebar__section sidebar__section--account sidebar__list">
-        <div class="sidebar__list-title">
-          {{ 'sidebar.section-account' | globalize }}
-        </div>
+        <!-- FIXME: hidden because no items in list -->
+        <!--<div class="sidebar__list-title">-->
+        <!--{{ 'sidebar.section-account' | globalize }}-->
+        <!--</div>-->
         <ul>
           <router-link
             v-ripple
@@ -338,7 +340,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('new-account', [
+    ...mapGetters([
       vuexTypes.accountTypeI
     ])
   },

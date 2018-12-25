@@ -44,12 +44,7 @@ describe('Fees component unit test', () => {
     )
 
     store = new Vuex.Store({
-      modules: {
-        'new-wallet': {
-          namespaced: true,
-          getters
-        }
-      }
+      getters
     })
 
     sinon.stub(Fees, 'created').resolves()

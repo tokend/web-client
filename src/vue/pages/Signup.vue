@@ -27,7 +27,7 @@
           <button
             v-ripple
             @click="submit"
-            :disabled="_isDisabled"
+            :disabled="formMixin.isDisabled"
             class="auth-page__submit-btn"
           >
             {{ 'auth-pages.continue' | globalize }}
@@ -74,7 +74,7 @@ export default {
     vueRoutes
   }),
   methods: {
-    ...mapActions('new-wallet', {
+    ...mapActions({
       storeWallet: vuexTypes.STORE_WALLET
     }),
     handleChildFormSubmit (form) {
@@ -85,7 +85,7 @@ export default {
         .random()
     },
     async submit () {
-      this._disableForm()
+      this.disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
           this.email,
@@ -95,7 +95,6 @@ export default {
         if (response.data.verified) {
           await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
-          await this._doLegacyStuff(wallet)
         } else {
           this.$router.push({
             ...vueRoutes.verify,
@@ -111,26 +110,7 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      this._enableForm()
-    },
-    // TODO: we support old vuex for the legacy components. Remove once
-    // the legacy will be completely removed
-    async _doLegacyStuff (wallet) {
-      await this.$store.dispatch('STORE_USER_DATA_FROM_WALLET', {
-        walletId: wallet.id,
-        email: wallet.email,
-        accountId: wallet.accountId,
-        publicKey: wallet.keypair.accountId(),
-        seed: wallet.secretSeed
-      })
-
-      await Promise.all([
-        await this.$store.dispatch('GET_ACCOUNT_DETAILS'),
-        await this.$store.dispatch('GET_USER_DETAILS'),
-        await this.$store.dispatch('GET_ACCOUNT_BALANCES')
-      ])
-      this.$store.dispatch('LOG_IN')
-      this.$router.push({ name: 'app' })
+      this.enableForm()
     }
   }
 }

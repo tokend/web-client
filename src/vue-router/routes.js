@@ -1,4 +1,5 @@
 export const vueRoutes = Object.freeze({
+  app: { name: 'app' },
   login: { name: 'login' },
   signup: { name: 'signup' },
   verify: { name: 'verify' },
