@@ -1,10 +1,4 @@
-$point: 10px;
-
-// NOTE: This variables are for using in media-queries. We use the $point here
-// because the `rem`s values passed to media queries don't rely on html's
-// font-size and taking the default browser's value.
-// See https://drafts.csswg.org/mediaqueries/#units
-$sidebar-hide-bp: 76.8 * $point;
+$sidebar-hide-bp: 768px;
 
 $sidebar-width: 27.5rem;
 $content-side-paddings: 4rem;

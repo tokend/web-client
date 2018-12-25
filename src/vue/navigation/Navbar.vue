@@ -150,10 +150,7 @@ export default {
 @import "~@scss/mixins";
 @import "~@scss/variables";
 
-// NOTE: we use the $point variable here because the `rem`s values passed to
-// media queries don't rely on html's font-size and taking the default browser's
-// value. See https://drafts.csswg.org/mediaqueries/#units
-$custom-breakpoint: 80 * $point;
+$custom-breakpoint: 800px;
 
 .navbar {
   width: 100%;

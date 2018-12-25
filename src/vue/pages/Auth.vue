@@ -99,11 +99,11 @@ export default {
   display: inline-block;
   margin-bottom: 16.5rem;
 
-  @include respond-to-height(95 * $point) {
+  @include respond-to-height(950px) {
     margin-bottom: 12rem;
   }
 
-  @include respond-to-height(75 * $point) {
+  @include respond-to-height(750px) {
     margin-bottom: 6.4rem;
   }
 }
