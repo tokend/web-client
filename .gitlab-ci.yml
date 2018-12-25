@@ -1,6 +1,9 @@
 services:
   - docker:dind
 
+variables:
+  GITHUB_REF: $CI_COMMIT_SHA
+  
 stages:
   - build
 
