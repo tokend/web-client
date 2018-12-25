@@ -77,6 +77,10 @@
       "verification-required": "Verification required"
     },
 
+    "common": {
+      "button-label-more": "More"
+    },
+
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing your assets in minutes",
@@ -122,9 +126,6 @@
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel"
-    },
-    "pagination": {
-      "btn-label-more": "More"
     }
   }
 }
