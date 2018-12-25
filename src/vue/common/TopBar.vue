@@ -1,9 +1,9 @@
 <template>
-  <div class="tabs-panel">
-    <div class="tabs-panel__main">
-      <slot />
+  <div class="top-bar">
+    <div class="top-bar__main">
+      <slot name="main" />
     </div>
-    <div class="tabs-panel__extra">
+    <div class="top-bar__extra">
       <slot name="extra" />
     </div>
   </div>
@@ -11,20 +11,20 @@
 
 <script>
 export default {
-  name: 'tabs-panel'
+  name: 'top-bar'
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
-@import "@/scss/mixins";
+@import "~@scss/variables";
+@import "~@scss/mixins";
 
-.tabs-panel {
+.top-bar {
   display: flex;
   align-items: center;
-  width: calc(100% + 2 * $content-side-paddings);
   min-height: 6.5 * $point;
-  background-color: $col-tabs-panel-background;
+  background-color: $col-top-bar-background;
+  color: $col-top-bar-text;
   margin:
     0
     -1 * $content-side-paddings
@@ -32,31 +32,34 @@ export default {
     -1 * $content-side-paddings;
   padding: 1.4 * $point $content-side-paddings;
 
-  .tabs-panel__main {
+  .top-bar__main {
     display: flex;
     font-size: 1.7 * $point;
 
-    & :not(:first-child) {
-      margin-left: 3 * $point;
+    a {
+      color: $col-top-bar-tab;
     }
 
-    .tabs-panel__main--active {
+    .router-link-exact-active {
       font-weight: bold;
-      color: $col-tabs-panel-tab-active;
+      color: $col-top-bar-tab-active;
+    }
+
+    & > :not(:first-child) {
+      margin-left: 3 * $point;
     }
   }
 
-  .tabs-panel__extra {
+  .top-bar__extra {
     display: flex;
     margin-left: auto;
 
-    & :not(:first-child) {
+    & > :not(:first-child) {
       margin-left: 1.2 * $point;
     }
   }
 
   @include respond-to($sidebar-hide-bp) {
-    width: calc(100vw + 2 * $content-side-paddings);
     padding: 1.4 * $point $content-side-paddings-sm;
     margin:
       0
@@ -66,7 +69,7 @@ export default {
     flex-direction: column;
     align-items: start;
 
-    .tabs-panel__extra {
+    .top-bar__extra {
       margin-top: 2 * $point;
       margin-left: 0;
     }
