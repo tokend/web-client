@@ -15,7 +15,7 @@
     "start": "yarn dev",
     "build": "node webpack/build.js",
     "test": "karma start",
-    "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0"
+    "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --max-warnings=0"
   },
   "dependencies": {
     "@mdi/font": "^2.7.94",
