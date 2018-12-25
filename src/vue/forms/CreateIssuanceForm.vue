@@ -2,12 +2,9 @@
   <form class="app-form issuance-form" @submit.prevent="submit">
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <select-field-unchained
           v-model="form.asset"
-          @blur="_touchField('form.email')"
-          id="create-issuance-asset"
-          :label="'Asset' | globalize"
-          :error-message="_getErrorMessage('form.asset')"
+          :values="['BTC', 'ETH', 'USD']"
         />
       </div>
     </div>
@@ -68,18 +65,17 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import SelectFieldUnchained from '@/vue/fields/SelectFieldUnchained'
 
 import { required } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import { vueRoutes } from '@/vue-router'
-
-import { Sdk } from '@/sdk'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { errors } from '@tokend/js-sdk'
 
 export default {
   name: 'create-issuance-form',
+  components: {
+    SelectFieldUnchained
+  },
   mixins: [FormMixin],
   data: _ => ({
     form: {
@@ -104,7 +100,7 @@ export default {
   },
   methods: {
     submit () {
-      if (!this._isFormValid()) return
+      return this._isFormValid()
     }
   }
 }
