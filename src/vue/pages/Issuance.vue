@@ -1,5 +1,5 @@
 <template>
-  <div class="issuance" v-if="issuanceHistory">
+  <div class="issuance" v-if="isLoaded">
     <div class="issuance-history__table">
       <table class="app__table">
         <thead>
@@ -24,20 +24,20 @@
         <tbody>
           <tr v-for="issuance in issuanceHistory" :key="issuance.id">
             <td>
-              {{ issuance.details.issuanceCreate.receiver }}
+              {{ issuance.counterparty }}
             </td>
             <td>
               {{
-                issuance.details.issuanceCreate.amount | formatMoney
+                issuance.amount | formatMoney
               }}
             </td>
             <td>
               {{
-                issuance.details.issuanceCreate.asset
+                issuance.asset
               }}
             </td>
             <td>
-              {{ issuance.createdAt | formatDate }}
+              {{ issuance.ledgerCloseTime | formatDate }}
             </td>
             <td>
               {{ issuance.reference }}
@@ -49,7 +49,7 @@
   </div>
   <div v-else-if="!isFailed">
     <loader
-      :message-id="'issaunce-table.lbl-loading'"
+      :message-id="'issuance-table.lbl-loading'"
     />
   </div>
   <div v-else>
@@ -74,6 +74,7 @@ export default {
   },
   data: _ => ({
     issuanceHistory: null,
+    isLoaded: false,
     isFailed: false
   }),
   computed: {
@@ -87,14 +88,42 @@ export default {
   methods: {
     async loadIssuanceHistory () {
       try {
-        const response = await Sdk.horizon.request.getAllForIssuances({
-          requestor: this[vuexTypes.wallet].accountId
+        const response = await Sdk.horizon.operations.getPage({
+          account_id: this[vuexTypes.wallet].accountId,
+          operation_type: 3,
+          limit: 200
         })
         this.issuanceHistory = response.data
+        await this.loadCounterpartyEmails()
+        this.isLoaded = true
       } catch (error) {
         this.isFailed = true
         console.error(error)
       }
+    },
+    getCounterparty (issuance) {
+      const participants = issuance.participants
+      return participants[0].accountId === this[vuexTypes.wallet].accountId
+        ? participants[1].accountId
+        : participants[0].accountId
+    },
+    async loadCounterpartyEmails () {
+      const counterpartyIds = this.issuanceHistory.map(issuance =>
+        this.getCounterparty(issuance)
+      )
+      const counterpartyEmails = (await Promise.all(
+        counterpartyIds.map(async id =>
+          Sdk.api.users.get(id)
+            .catch(error => error)
+        )
+      )).map((response, i) => {
+        return response instanceof Error
+          ? counterpartyIds[i]
+          : response.data.email
+      })
+      this.issuanceHistory.map((issuance, i) => {
+        issuance.counterparty = counterpartyEmails[i]
+      })
     }
   }
 }
