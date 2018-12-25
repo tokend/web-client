@@ -8,15 +8,7 @@ import {
 import config from '@/config'
 
 import { resolveRedirect } from './redirect'
-
-// route components:
-import AppContent from '@/vue/AppContent'
-import Auth from '@/vue/pages/Auth'
-import Login from '@/vue/pages/Login'
-import Signup from '@/vue/pages/Signup'
-import Recovery from '@/vue/pages/Recovery'
-import Verify from '@/vue/pages/Verify'
-import Fees from '@/vue/pages/Fees'
+import { vueRoutes } from './routes'
 
 Vue.use(Router)
 
@@ -34,34 +26,34 @@ const router = new Router({
     },
     {
       path: '/auth',
-      name: 'auth',
-      component: Auth,
+      name: vueRoutes.auth.name,
+      component: require('@/vue/pages/Auth'),
       meta: { routeWithAuth: true },
-      redirect: { name: 'login' },
+      redirect: vueRoutes.login,
       children: [
         {
           path: '/log-in',
-          name: 'login',
-          component: Login,
+          name: vueRoutes.login.name,
+          component: require('@/vue/pages/Login'),
           beforeEnter: authPageGuard
         },
         {
           path: '/sign-up',
-          name: 'signup',
-          component: Signup,
+          name: vueRoutes.signup.name,
+          component: require('@/vue/pages/Signup'),
           beforeEnter: authPageGuard
         },
         {
           path: '/verify/:paramsBase64',
-          name: 'verify',
-          component: Verify,
+          name: vueRoutes.verify.name,
+          component: require('@/vue/pages/Verify'),
           beforeEnter: authPageGuard,
           props: true
         },
         {
           path: '/recovery',
-          name: 'recovery',
-          component: Recovery,
+          name: vueRoutes.recovery.name,
+          component: require('@/vue/pages/Recovery'),
           beforeEnter: authPageGuard
         }
       ]
@@ -69,15 +61,15 @@ const router = new Router({
     {
       path: '/',
       name: 'app',
-      component: AppContent,
+      component: require('@/vue/AppContent'),
       featureFlag: config.FEATURE_FLAGS.fees,
       beforeEnter: inAppRouteGuard,
-      redirect: { name: 'app.fees' },
+      redirect: vueRoutes.fees,
       children: [
         {
           path: '/fees',
-          name: 'app.fees',
-          component: Fees
+          name: vueRoutes.fees.name,
+          component: require('@/vue/pages/Fees')
         }
       ].filter(route => route.featureFlag !== false)
     }
