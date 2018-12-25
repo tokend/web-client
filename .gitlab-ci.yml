@@ -3,16 +3,18 @@ services:
 
 variables:
   GITHUB_REF: $CI_COMMIT_SHA
-  
+
 stages:
   - build
 
 build:
   image: registry.gitlab.com/tokend/deployment/docker-build:latest
   stage: build
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   tags:
     - tokend
   script:
     - ci-little-helper set-pending build
-    - STATE=$(.ci/build.sh)
+    - .ci/build.sh && STATE=0 || STATE=1
     - ci-little-helper set-state $STATE build
