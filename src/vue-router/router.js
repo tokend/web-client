@@ -12,12 +12,12 @@ import { vueRoutes } from './routes'
 
 Vue.use(Router)
 
-const router = new Router({
+export const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '*',
-      redirect: { name: 'app' }
+      redirect: vueRoutes.app
     },
     {
       path: '/r/*',
@@ -27,33 +27,32 @@ const router = new Router({
     {
       path: '/auth',
       name: vueRoutes.auth.name,
-      component: require('@/vue/pages/Auth'),
-      meta: { routeWithAuth: true },
       redirect: vueRoutes.login,
+      component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
           path: '/log-in',
           name: vueRoutes.login.name,
-          component: require('@/vue/pages/Login'),
+          component: resolve => require(['@/vue/pages/Login'], resolve),
           beforeEnter: authPageGuard
         },
         {
           path: '/sign-up',
           name: vueRoutes.signup.name,
-          component: require('@/vue/pages/Signup'),
+          component: resolve => require(['@/vue/pages/Signup'], resolve),
           beforeEnter: authPageGuard
         },
         {
           path: '/verify/:paramsBase64',
           name: vueRoutes.verify.name,
-          component: require('@/vue/pages/Verify'),
+          component: resolve => require(['@/vue/pages/Verify'], resolve),
           beforeEnter: authPageGuard,
           props: true
         },
         {
           path: '/recovery',
           name: vueRoutes.recovery.name,
-          component: require('@/vue/pages/Recovery'),
+          component: resolve => require(['@/vue/pages/Recovery'], resolve),
           beforeEnter: authPageGuard
         }
       ]
@@ -61,7 +60,7 @@ const router = new Router({
     {
       path: '/',
       name: 'app',
-      component: require('@/vue/AppContent'),
+      component: resolve => require(['@/vue/AppContent'], resolve),
       featureFlag: config.FEATURE_FLAGS.fees,
       beforeEnter: inAppRouteGuard,
       redirect: vueRoutes.fees,
@@ -69,7 +68,7 @@ const router = new Router({
         {
           path: '/fees',
           name: vueRoutes.fees.name,
-          component: require('@/vue/pages/Fees')
+          component: resolve => require(['@/vue/pages/Fees'], resolve)
         }
       ].filter(route => route.featureFlag !== false)
     }
@@ -94,5 +93,3 @@ function inAppRouteGuard (to, from, next) {
     ? next()
     : next({ name: 'login' })
 }
-
-export { router }

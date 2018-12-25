@@ -73,7 +73,7 @@ import {
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   name: 'recovery-form',

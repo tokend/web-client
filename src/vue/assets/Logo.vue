@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   data: _ => ({

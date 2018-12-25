@@ -42,7 +42,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { required } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'

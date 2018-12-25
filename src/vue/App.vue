@@ -40,7 +40,7 @@ import {
 import { Sdk } from '@/sdk'
 import { Wallet } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 

@@ -32,7 +32,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'

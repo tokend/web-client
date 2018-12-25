@@ -56,7 +56,7 @@ import KeyViewer from '../common/KeyViewer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 

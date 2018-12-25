@@ -83,7 +83,7 @@
 <script>
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapMutations } from 'vuex'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { globalize } from '@/vue/filters/globalize'

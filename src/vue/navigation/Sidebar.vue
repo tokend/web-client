@@ -54,7 +54,7 @@
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 

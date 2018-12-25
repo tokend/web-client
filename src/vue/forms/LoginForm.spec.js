@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 
 import { vuexTypes } from '@/vuex'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 import { errors } from '@tokend/js-sdk'
 import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'

@@ -21,7 +21,7 @@
 
 <script>
 import RecoveryForm from '../forms/RecoveryForm'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   name: 'recovery',

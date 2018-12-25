@@ -7,7 +7,7 @@ import VueRouter from 'vue-router'
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 const localVue = createLocalVue()
 
