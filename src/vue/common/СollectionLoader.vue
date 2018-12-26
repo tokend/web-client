@@ -1,7 +1,7 @@
 <template>
   <div class="collection-loader">
     <button
-      v-if="!allDataLoaded"
+      v-if="!isCollectionFetched"
       class="collection-loader__more-button"
       @click="loadNextPage">
       {{ 'common.button-text-more' | globalize }}
@@ -45,7 +45,7 @@ export default {
   },
   data: _ => ({
     nextPageLoader: null,
-    allDataLoaded: false
+    isCollectionFetched: false
   }),
   watch: {
     firstPageLoader: {
@@ -65,7 +65,7 @@ export default {
         const response = await loaderFn()
         this.$emit(eventName, response.data)
         this.nextPageLoader = response.fetchNext
-        this.allDataLoaded = !response.data ||
+        this.isCollectionFetched =
           response.data.length < config.REQUESTS_PER_PAGE
       } catch (e) {
         console.error(e)
@@ -77,8 +77,8 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../../scss/variables';
-  @import '../../scss/mixins';
+  @import '~@scss/variables';
+  @import '~@scss/mixins';
 
   .collection-loader__more-button {
     @include button-flat();
