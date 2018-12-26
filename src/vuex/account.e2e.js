@@ -1,7 +1,7 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { account } from './index'
+import account from './account.module'
 
 import Vuex from 'vuex'
 import Vue from 'vue'

@@ -1,23 +1,5 @@
 const featureFlags = {
-  dashboard: true,
-  deposit: true,
-  withdrawal: true,
-  transfers: true,
-  history: true,
-  trade: true,
-  verification: true,
-  tokenCreation: true,
-  issuanceCreation: true,
-  saleCreation: true,
-  preIssuanceUpload: true,
-  settings: true,
-  tfa: true,
-  tokens: true,
-  sales: true,
-  limits: true,
-  requests: true,
-  massTransfers: false,
-  feesExplorer: true
+  fees: true
 }
 
 export default Object.assign(

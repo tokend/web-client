@@ -12,10 +12,12 @@ export default {
   },
   mixins: [validationMixin],
   data: _ => ({
-    _isDisabled: false
+    formMixin: {
+      isDisabled: false
+    }
   }),
   methods: {
-    _isFormValid () {
+    isFormValid () {
       this.$v.$touch()
       const isValid = !this.$v.$invalid
       if (!isValid) {
@@ -41,7 +43,7 @@ export default {
     * @returns {string} the human-readable error message if the
      *                  field is invalid, empty string - otherwise
     */
-    _getErrorMessage (field) {
+    getFieldErrorMessage (field) {
       if (!this.$v.$invalid) {
         return ''
       }
@@ -60,18 +62,18 @@ export default {
         }
       }
     },
-    _touchField (fieldName) {
+    touchField (fieldName) {
       const field = safeGet(this.$v, fieldName)
       if (!field) {
         return
       }
       field.$touch()
     },
-    _disableForm () {
-      this._isDisabled = true
+    disableForm () {
+      this.formMixin.isDisabled = true
     },
-    _enableForm () {
-      this._isDisabled = false
+    enableForm () {
+      this.formMixin.isDisabled = false
     }
   }
 }

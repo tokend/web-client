@@ -24,6 +24,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~@scss/variables';
+
 .hint-wrapper {
   position: relative;
   display: inline-block;
@@ -44,31 +46,31 @@ export default {
   padding: 0.625rem;
   width: auto;
   background: rgba(0, 0, 0, 0.92);
-  border-radius: .5 * $point;
+  border-radius: .5rem;
   color: rgb(248, 248, 248);
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
   transition: opacity 0.2s, bottom 0.2s;
   opacity: 1;
-  bottom: calc(100% + (1.1 * #{$point}));
+  bottom: calc(100% + 1.1rem);
 
   &:after {
     content: "";
     display: block;
     width: 0;
     height: 0;
-    border: .5 * $point rgba(0, 0, 0, 0.92) solid;
+    border: .5rem rgba(0, 0, 0, 0.92) solid;
     border-top-color: transparent;
     border-left-color: transparent;
     position: absolute;
-    left: calc(50% - (.25 * #{$point}));
+    left: calc(50% - (.25rem));
     transform: translate(-50%, 50%) rotate(45deg);
   }
 }
 
 .hint-wrapper__hint-text {
-  width: 22 * $point;
+  width: 22rem;
 }
 
 .hint-wrapper__target:not(:hover) ~ .hint-wrapper__hint-box {
