@@ -3,7 +3,7 @@
     <button
       class="pagination__more-button"
       @click="getNextPage">
-      {{ 'common.button-label-more' | globalize }}
+      {{ 'common.button-text-more' | globalize }}
     </button>
   </div>
 </template>
