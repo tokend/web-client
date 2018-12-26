@@ -1,6 +1,11 @@
-const webpackConfig = require('./build/webpack.dev.conf')
+const webpackConfig = require('./webpack/local.conf')
 
 module.exports = function (config) {
+  // HACK: Chrome relies on this variable, so by overwriting it we can ensure
+  // that all the tests related to Date object will be executed in deterministic
+  // environment
+  process.env.TZ = 'Etc/UTC'
+
   config.set({
     autoWatch: false,
     singleRun: true,

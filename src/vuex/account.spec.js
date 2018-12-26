@@ -23,7 +23,7 @@ describe('account.module', () => {
     })
 
     it('SET_ACCOUNT should properly modify state', () => {
-      mutations.SET_ACCOUNT(state, obj)
+      mutations[vuexTypes.SET_ACCOUNT](state, obj)
 
       expect(state).to.deep.equal({
         account: obj,
@@ -32,7 +32,7 @@ describe('account.module', () => {
     })
 
     it('SET_ACCOUNT_BALANCES_DETAILS should properly modify state', () => {
-      mutations.SET_ACCOUNT_BALANCES_DETAILS(state, obj)
+      mutations[vuexTypes.SET_ACCOUNT_BALANCES_DETAILS](state, obj)
       expect(state).to.deep.equal({
         account: {},
         balancesDetails: obj
@@ -63,7 +63,7 @@ describe('account.module', () => {
         [vuexTypes.SET_ACCOUNT]: MockWrapper.makeHorizonData(accountJSON)
       }
 
-      await actions.LOAD_ACCOUNT(store)
+      await actions[vuexTypes.LOAD_ACCOUNT](store)
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
@@ -81,7 +81,7 @@ describe('account.module', () => {
           [type]: payload
         }
 
-        await actions.LOAD_ACCOUNT_BALANCES_DETAILS(store)
+        await actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS](store)
 
         expect(store.commit.args)
           .to
@@ -95,14 +95,20 @@ describe('account.module', () => {
       const account = MockWrapper.makeHorizonData(accountJSON)
       const state = { account }
 
-      expect(getters.account(state)).to.deep.equal(account)
+      expect(getters[vuexTypes.account](state))
+        .to
+        .deep
+        .equal(account)
     })
 
     it('accountId', () => {
       const id = 'GDH5GJRAA43JUFR62ETZD7R3LCTCTKMXQ5DDMOFI5TMAPTQVIUY5FJPG'
       const state = { account: { id } }
 
-      expect(getters.accountId(state)).to.deep.equal(id)
+      expect(getters[vuexTypes.accountId](state))
+        .to
+        .deep
+        .equal(id)
     })
 
     it('accountIsBlocked', () => {
@@ -112,28 +118,37 @@ describe('account.module', () => {
         }
       }
 
-      expect(getters.accountIsBlocked(state)).to.equal(true)
+      expect(getters[vuexTypes.accountIsBlocked](state))
+        .to
+        .equal(true)
     })
 
     it('accountBlockReasons', () => {
       const blockReasons = [1, 2]
       const state = { account: { blockReasons } }
 
-      expect(getters.accountBlockReasons(state)).to.deep.equal(blockReasons)
+      expect(getters[vuexTypes.accountBlockReasons](state))
+        .to
+        .deep
+        .equal(blockReasons)
     })
 
     it('accountType', () => {
       const accountType = 'AccountTypeVerified'
       const state = { account: { accountType } }
 
-      expect(getters.accountType(state)).to.equal(accountType)
+      expect(getters[vuexTypes.accountType](state))
+        .to
+        .equal(accountType)
     })
 
     it('accountTypeI', () => {
       const accountTypeI = 7
       const state = { account: { accountTypeI } }
 
-      expect(getters.accountTypeI(state)).to.equal(accountTypeI)
+      expect(getters[vuexTypes.accountTypeI](state))
+        .to
+        .equal(accountTypeI)
     })
 
     it('accountThresholds', () => {
@@ -148,13 +163,18 @@ describe('account.module', () => {
         }
       }
 
-      expect(getters.accountThresholds(state)).to.deep.equal(thresholds)
+      expect(getters[vuexTypes.accountThresholds](state))
+        .to
+        .deep
+        .equal(thresholds)
     })
 
     it('accountReferrer', () => {
       const referrer = 'GDH5GJRAA43JUFR62ETZD7R3LCTCTKMXQ5DDMOFI5TMAPTQVIUY5FJPG'
       const state = { account: { referrer } }
-      expect(getters.accountReferrer(state)).to.equal(referrer)
+      expect(getters[vuexTypes.accountReferrer](state))
+        .to
+        .equal(referrer)
     })
 
     it('accountReferrals', () => {
@@ -165,7 +185,10 @@ describe('account.module', () => {
       ]
       const state = { account: { referrals } }
 
-      expect(getters.accountReferrals(state)).to.deep.equal(referrals)
+      expect(getters[vuexTypes.accountReferrals](state))
+        .to
+        .deep
+        .equal(referrals)
     })
 
     it('accountPoliciesTypeI', () => {
@@ -178,7 +201,9 @@ describe('account.module', () => {
         }
       }
 
-      expect(getters.accountPoliciesTypeI(state)).to.equal(accountPoliciesTypeI)
+      expect(getters[vuexTypes.accountPoliciesTypeI](state))
+        .to
+        .equal(accountPoliciesTypeI)
     })
 
     it('accountPoliciesTypes', () => {
@@ -191,7 +216,7 @@ describe('account.module', () => {
         }
       }
 
-      expect(getters.accountPoliciesTypes(state))
+      expect(getters[vuexTypes.accountPoliciesTypes](state))
         .to
         .deep
         .equal(accountPoliciesTypes)
@@ -236,7 +261,7 @@ describe('account.module', () => {
       }
 
       const state = { account: { externalSystemAccounts } }
-      expect(getters.accountDepositAddresses(state))
+      expect(getters[vuexTypes.accountDepositAddresses](state))
         .to
         .deep
         .equal(expectedResult)
@@ -254,7 +279,10 @@ describe('account.module', () => {
         }
       }
 
-      expect(getters.accountKycBlobId(state)).to.deep.equal(blobId)
+      expect(getters[vuexTypes.accountKycBlobId](state))
+        .to
+        .deep
+        .equal(blobId)
     })
   })
 })

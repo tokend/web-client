@@ -1,0 +1,43 @@
+@import '~@scss/variables';
+@import '~@scss/mixins';
+
+.auth-page__title {
+  font-size: 3.2rem;
+  font-weight: 400;
+  margin-bottom: 2.4rem;
+  color: $col-text-page-heading;
+}
+
+.auth-page__content {
+  margin-bottom: 5.5rem;
+}
+
+.auth-page__explanations {
+  line-height: 2.6rem;
+}
+
+.auth-page__tip-link {
+  // TODO: remove !important once md will be completely out
+  color: $col-text-auth-tip-link !important;
+  text-decoration: underline;
+}
+
+.auth-page__submit-btn {
+  @include button-raised();
+
+  margin-right: auto;
+  margin-bottom: 2rem;
+  width: 20rem;
+
+  &:not(:only-child):not(:last-child) {
+    margin-right: .75rem;
+  }
+}
+
+.auth-page__cancel-btn {
+  @include button();
+
+  margin-right: auto;
+  margin-bottom: 2rem;
+  width: 15rem;
+}

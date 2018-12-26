@@ -1,7 +1,7 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { kyc } from './index'
+import kyc from './kyc.module'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -32,7 +32,7 @@ describe('kyc.module end-to-end test', () => {
         state: {},
         modules: { kyc }
       })
-      mockHelper.mockWallet({ accountId })
+      mockHelper.useMockWallet({ accountId })
       mockHelper.mockEndpoint(`/blobs/${latestBlobId}`, {
         data: {
           value: JSON.stringify(latestKycData)
@@ -105,19 +105,29 @@ describe('kyc.module end-to-end test', () => {
     })
 
     it('kycState', () => {
-      expect(store.getters.kycState).to.equal(kycState)
+      expect(store.getters[vuexTypes.kycState])
+        .to
+        .equal(kycState)
     })
 
     it('kycStateI', () => {
-      expect(store.getters.kycStateI).to.equal(kycStateI)
+      expect(store.getters[vuexTypes.kycStateI])
+        .to
+        .equal(kycStateI)
     })
 
     it('kycLatestData', () => {
-      expect(store.getters.kycLatestData).to.deep.equal(latestKycData)
+      expect(store.getters[vuexTypes.kycLatestData])
+        .to
+        .deep
+        .equal(latestKycData)
     })
 
     it('kycApprovedData', () => {
-      expect(store.getters.kycApprovedData).to.deep.equal(approvedKycData)
+      expect(store.getters[vuexTypes.kycApprovedData])
+        .to
+        .deep
+        .equal(approvedKycData)
     })
   })
 })

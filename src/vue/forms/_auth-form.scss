@@ -1,0 +1,10 @@
+@import '~@scss/mixins';
+@import '~@scss/variables';
+
+.auth-form__submit-btn {
+  @include button-raised();
+
+  margin-right: auto;
+  margin-bottom: 2rem;
+  width: 20rem;
+}

@@ -22,33 +22,35 @@ const state = {
 }
 
 export const mutations = {
-  SET_FACTORS (state, factors) {
+  [vuexTypes.SET_FACTORS] (state, factors) {
     state.factors = factors
   }
 }
 
 export const actions = {
-  async LOAD_FACTORS ({ commit }) {
+  async [vuexTypes.LOAD_FACTORS] ({ commit }) {
     const response = await Sdk.api.factors.getAll()
     commit(vuexTypes.SET_FACTORS, response.data)
   }
 }
 
 export const getters = {
-  factors: state => state.factors,
-  factorsTotp: state => state.factors.filter(
+  [vuexTypes.factors]: state => state.factors,
+  [vuexTypes.factorsTotp]: state => state.factors.filter(
     factor => factor.resourceType === FACTOR_TYPES.totp
   ),
-  factorsPassword: state => state.factors.filter(
+  [vuexTypes.factorsPassword]: state => state.factors.filter(
     factor => factor.resourceType === FACTOR_TYPES.password
   ),
-  factorsEmail: state => state.factors.filter(
+  [vuexTypes.factorsEmail]: state => state.factors.filter(
     factor => factor.resourceType === FACTOR_TYPES.email
   ),
-  factorsTotpEnabled: (_, getters) => getters.factorsTotp.filter(
-    factor => factor.priority === ENABLED_FACTOR_PRIORITY
-  ),
-  isTotpEnabled: (_, getters) => !!getters.factorsTotpEnabled.length
+  [vuexTypes.factorsTotpEnabled]: (_, getters) =>
+    getters[vuexTypes.factorsTotp].filter(
+      factor => factor.priority === ENABLED_FACTOR_PRIORITY
+    ),
+  [vuexTypes.isTotpEnabled]: (_, getters) =>
+    !!getters[vuexTypes.factorsTotpEnabled].length
 }
 
 export default {

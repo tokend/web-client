@@ -1,4 +1,8 @@
 const mutations = {
+  // root
+  CLEAR_STATE: 'CLEAR_STATE',
+  POP_STATE: 'POP_STATE',
+
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
   SET_ACCOUNT_BALANCES_DETAILS: 'SET_ACCOUNT_BALANCES_DETAILS',
@@ -22,6 +26,7 @@ const actions = {
 
   // wallet
   LOAD_WALLET: 'LOAD_WALLET',
+  STORE_WALLET: 'STORE_WALLET',
 
   // factors
   LOAD_FACTORS: 'LOAD_FACTORS',
@@ -33,6 +38,9 @@ const actions = {
 }
 
 const getters = {
+  // root
+  isLoggedIn: 'isLoggedIn',
+
   // account
   account: 'account',
   accountId: 'accountId',
@@ -50,6 +58,7 @@ const getters = {
   accountKycBlobId: 'accountKycBlobId',
 
   // wallet
+  wallet: 'wallet',
   walletId: 'walletId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',

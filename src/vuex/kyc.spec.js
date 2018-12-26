@@ -10,7 +10,7 @@ import { vuexTypes } from './types'
 import responseJSON from '../test/mocks/update-kyc-multiple'
 
 describe('kyc.module', () => {
-  beforeEach(() => {
+  afterEach(() => {
     sinon.restore()
   })
 
@@ -30,7 +30,7 @@ describe('kyc.module', () => {
         id: '2255625342224',
         details: {}
       }
-      mutations.SET_KYC_LATEST_REQUEST(state, request)
+      mutations[vuexTypes.SET_KYC_LATEST_REQUEST](state, request)
 
       expect(state).to.deep.equal({
         request,
@@ -44,7 +44,7 @@ describe('kyc.module', () => {
         first_name: 'Jonh',
         last_name: 'Doe'
       })
-      mutations.SET_KYC_LATEST_DATA(state, latestData)
+      mutations[vuexTypes.SET_KYC_LATEST_DATA](state, latestData)
 
       expect(state).to.deep.equal({
         request: {},
@@ -58,7 +58,7 @@ describe('kyc.module', () => {
         first_name: 'Bob',
         last_name: 'Smith'
       })
-      mutations.SET_KYC_APPROVED_DATA(state, approvedData)
+      mutations[vuexTypes.SET_KYC_APPROVED_DATA](state, approvedData)
 
       expect(state).to.deep.equal({
         request: {},
@@ -88,13 +88,17 @@ describe('kyc.module', () => {
         [vuexTypes.LOAD_KYC_DATA]
       ]
 
-      await actions.LOAD_KYC(store)
+      await actions[vuexTypes.LOAD_KYC](store)
 
       expect(store.dispatch.args).to.deep.equal(expectedActions)
     })
 
     it('LOAD_KYC_LATEST_REQUEST commits the proper set of mutations', async () => {
-      mockHelper.mockHorizonMethod('request', 'getAllForUpdateKyc', responseJSON)
+      mockHelper.mockHorizonMethod(
+        'request',
+        'getAllForUpdateKyc',
+        responseJSON
+      )
 
       const expectedRequest = MockWrapper.makeHorizonResponse(
         responseJSON
@@ -106,10 +110,10 @@ describe('kyc.module', () => {
       }
 
       store.rootGetters = {
-        accountId: 'GA3LMODDZGFASADC4NOSPBQRAAEJWZH76PHZAVUY2V3PHE7OAX52DXQH'
+        [vuexTypes.accountId]: 'GA3LMODDZGFASADC4NOSPBQRAAEJWZH76PHZAVUY2V3PHE7OAX52DXQH'
       }
 
-      await actions.LOAD_KYC_LATEST_REQUEST(store)
+      await actions[vuexTypes.LOAD_KYC_LATEST_REQUEST](store)
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
     })
@@ -156,9 +160,9 @@ describe('kyc.module', () => {
       })
 
       it('should properly commit the mutations when latest blob id === account blob id', async () => {
-        store.rootGetters = { accountKycBlobId: blobId }
+        store.rootGetters = { [vuexTypes.accountKycBlobId]: blobId }
 
-        await actions.LOAD_KYC_DATA(store)
+        await actions[vuexTypes.LOAD_KYC_DATA](store)
 
         const expectedMutations = {
           [vuexTypes.SET_KYC_LATEST_DATA]: latestDataPayload,
@@ -172,9 +176,9 @@ describe('kyc.module', () => {
       })
 
       it('should properly commit the mutations when latest blob id !== account blob id', async () => {
-        store.rootGetters = { accountKycBlobId: anotherBlobId }
+        store.rootGetters = { [vuexTypes.accountKycBlobId]: anotherBlobId }
 
-        await actions.LOAD_KYC_DATA(store)
+        await actions[vuexTypes.LOAD_KYC_DATA](store)
 
         const expectedMutations = {
           [vuexTypes.SET_KYC_LATEST_DATA]: latestDataPayload,
@@ -195,7 +199,9 @@ describe('kyc.module', () => {
         request: { state: REQUEST_STATES_STR.approved }
       }
 
-      expect(getters.kycState(state)).to.equal(REQUEST_STATES_STR.approved)
+      expect(getters[vuexTypes.kycState](state))
+        .to
+        .equal(REQUEST_STATES_STR.approved)
     })
 
     it('kycStateI', () => {
@@ -203,7 +209,9 @@ describe('kyc.module', () => {
         request: { stateI: REQUEST_STATES.approved }
       }
 
-      expect(getters.kycStateI(state)).to.equal(REQUEST_STATES.approved)
+      expect(getters[vuexTypes.kycStateI](state))
+        .to
+        .equal(REQUEST_STATES.approved)
     })
 
     it('kycLatestData', () => {
@@ -214,10 +222,13 @@ describe('kyc.module', () => {
         })
       }
 
-      expect(getters.kycLatestData(state)).to.deep.equal({
-        first_name: 'Jack',
-        last_name: 'Smith'
-      })
+      expect(getters[vuexTypes.kycLatestData](state))
+        .to
+        .deep
+        .equal({
+          first_name: 'Jack',
+          last_name: 'Smith'
+        })
     })
 
     it('kycApprovedData', () => {
@@ -228,10 +239,13 @@ describe('kyc.module', () => {
         })
       }
 
-      expect(getters.kycApprovedData(state)).to.deep.equal({
-        first_name: 'Jane',
-        last_name: 'Doe'
-      })
+      expect(getters[vuexTypes.kycApprovedData](state))
+        .to
+        .deep
+        .equal({
+          first_name: 'Jane',
+          last_name: 'Doe'
+        })
     })
   })
 })

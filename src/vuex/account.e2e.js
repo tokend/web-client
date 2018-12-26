@@ -1,7 +1,7 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { account } from './index'
+import account from './account.module'
 
 import Vuex from 'vuex'
 import Vue from 'vue'
@@ -66,7 +66,7 @@ describe('account.module', () => {
       modules: { account }
     })
 
-    mockHelper.mockWallet()
+    mockHelper.useMockWallet()
     mockHelper.mockEndpoint(`/accounts/${id}`, {
       'id': id,
       'account_id': id,
@@ -99,27 +99,42 @@ describe('account.module', () => {
   })
 
   it('accountId', () => {
-    expect(store.getters.accountId).to.deep.equal(id)
+    expect(store.getters[vuexTypes.accountId])
+      .to
+      .deep
+      .equal(id)
   })
 
   it('accountIsBlocked', () => {
-    expect(store.getters.accountIsBlocked).to.deep.equal(isBlocked)
+    expect(store.getters[vuexTypes.accountIsBlocked])
+      .to
+      .deep
+      .equal(isBlocked)
   })
 
   it('accountBlockReasons', () => {
-    expect(store.getters.accountBlockReasons).to.deep.equal(blockReasons)
+    expect(store.getters[vuexTypes.accountBlockReasons])
+      .to
+      .deep
+      .equal(blockReasons)
   })
 
   it('accountType', () => {
-    expect(store.getters.accountType).to.deep.equal(type)
+    expect(store.getters[vuexTypes.accountType])
+      .to
+      .deep
+      .equal(type)
   })
 
   it('accountTypeI', () => {
-    expect(store.getters.accountTypeI).to.deep.equal(typeI)
+    expect(store.getters[vuexTypes.accountTypeI])
+      .to
+      .deep
+      .equal(typeI)
   })
 
   it('accountThresholds', () => {
-    expect(store.getters.accountThresholds)
+    expect(store.getters[vuexTypes.accountThresholds])
       .to
       .deep
       .equal({
@@ -130,19 +145,31 @@ describe('account.module', () => {
   })
 
   it('accountReferrer', () => {
-    expect(store.getters.accountReferrer).to.deep.equal(referrer)
+    expect(store.getters[vuexTypes.accountReferrer])
+      .to
+      .deep
+      .equal(referrer)
   })
 
   it('accountReferrals', () => {
-    expect(store.getters.accountReferrals).to.deep.equal(referrals)
+    expect(store.getters[vuexTypes.accountReferrals])
+      .to
+      .deep
+      .equal(referrals)
   })
 
   it('accountPoliciesTypeI', () => {
-    expect(store.getters.accountPoliciesTypeI).to.deep.equal(policiesTypeI)
+    expect(store.getters[vuexTypes.accountPoliciesTypeI])
+      .to
+      .deep
+      .equal(policiesTypeI)
   })
 
   it('accountPoliciesTypes', () => {
-    expect(store.getters.accountPoliciesTypes).to.deep.equal(policiesTypes)
+    expect(store.getters[vuexTypes.accountPoliciesTypes])
+      .to
+      .deep
+      .equal(policiesTypes)
   })
 
   it('accountDepositAddresses', () => {
@@ -152,14 +179,14 @@ describe('account.module', () => {
       7: '0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E55e'
     }
 
-    expect(store.getters.accountDepositAddresses)
+    expect(store.getters[vuexTypes.accountDepositAddresses])
       .to
       .deep
       .equal(expectedDepositAddresses)
   })
 
   it('accountKycBlobId', () => {
-    expect(store.getters.accountKycBlobId)
+    expect(store.getters[vuexTypes.accountKycBlobId])
       .to
       .deep
       .equal(kycBlobId)
