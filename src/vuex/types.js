@@ -1,6 +1,5 @@
 const mutations = {
   // root
-  KEEP_SESSION: 'KEEP_SESSION',
   CLEAR_STATE: 'CLEAR_STATE',
   POP_STATE: 'POP_STATE',
 

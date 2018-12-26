@@ -7,8 +7,6 @@ const config = Object.freeze({
 export const sessionStoragePlugin = store => {
   store.subscribe((mutation, state) => {
     switch (mutation.type) {
-      case vuexTypes.KEEP_SESSION:
-        break
       case vuexTypes.CLEAR_STATE: {
         sessionStorage.removeItem(config.STORAGE_KEY)
         break

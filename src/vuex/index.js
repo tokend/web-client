@@ -17,7 +17,6 @@ export const rootModule = {
   actions: {},
   mutations: {
     // These mutations are being subscribed by plugins
-    [vuexTypes.KEEP_SESSION] () {},
     [vuexTypes.POP_STATE] () {},
     [vuexTypes.CLEAR_STATE] () {}
   },

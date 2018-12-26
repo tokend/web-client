@@ -41,7 +41,6 @@ import {
 import { Sdk } from '@/sdk'
 import { Wallet } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
-import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 
@@ -70,12 +69,7 @@ export default {
   async created () {
     await this.initApp()
 
-    window.setTimeout(() => {
-      this.$store.commit(vuexTypes.KEEP_SESSION)
-    }, 1000)
-
     this.detectIE()
-    this.waitLogout()
 
     this.isAppInitialized = true
   },
@@ -98,15 +92,6 @@ export default {
       const edge = window.navigator.userAgent.indexOf('Edge/')
 
       if (edge > 0) this.isNotSupportedBrowser = true
-    },
-    waitLogout () {
-      this.$store.subscribe(mutation => {
-        switch (mutation.type) {
-          case vuexTypes.CLEAR_STATE:
-            this.$router.push(vueRoutes.login)
-            break
-        }
-      })
     }
   }
 }
