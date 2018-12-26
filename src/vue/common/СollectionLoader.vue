@@ -1,8 +1,8 @@
 <template>
-  <div class="pagination">
+  <div class="collection-loader">
     <button
-      class="pagination__more-button"
-      @click="getNextPage">
+      class="collection-loader__more-button"
+      @click="loadNextPage">
       {{ 'common.button-text-more' | globalize }}
     </button>
   </div>
@@ -10,9 +10,10 @@
 
 <script>
 /**
- * This component is responsible for downloading pageable collections
- * which there is a pagination. After loading emits the event (describe
- * what event) with the loaded data and decide whether or not it still show
+ * CollectionLoader is responsible for downloading pageable collections
+ * which there is a pagination. After loading emits the event ('first-page-load'
+ * - when loaded first page and 'next-page-load' - when load next page)
+ * with the loaded data and decide whether or not it still show
  * itself.
  *
  * @props {Function} firstPageLoader - function for downloading first page of
@@ -20,10 +21,10 @@
  *
  * Example:
  *
- * <collection-renderer
- *    :first-page-loader="function() {Sdk.horizon.transaction.getAll()}"
- *    @load-first-page="handlerData"/>
- *    @load-next-page="handlerNextData"
+ * <collection-loader
+ *    :first-page-loader="Sdk.horizon.transactions.getAll"
+ *    @first-page-load="onFirstPageLoad"/>
+ *    @next-page-load="handlerNextData"
  * />
 **/
 
@@ -35,7 +36,7 @@ const PAGINATION_EVENTS = {
 }
 
 export default {
-  name: 'loading-collection-button',
+  name: 'collection-loader',
   props: {
     firstPageLoader: {
       type: Function,
@@ -76,7 +77,7 @@ export default {
   @import '../../scss/variables';
   @import '../../scss/mixins';
 
-  .pagination__more-button {
+  .collection-loader__more-button {
     @include button-flat;
   }
 </style>
