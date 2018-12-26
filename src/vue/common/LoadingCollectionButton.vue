@@ -43,26 +43,26 @@ export default {
     }
   },
   data: _ => ({
-    nextPageCaller: null
+    nextPageLoader: null
   }),
   watch: {
     firstPageLoader: {
       immediate: true,
-      handler: 'getFirstPage'
+      handler: 'loadFirstPage'
     }
   },
   methods: {
-    getFirstPage () {
+    loadFirstPage () {
       this.loadPage(PAGINATION_EVENTS.firstPageLoad, this.firstPageLoader)
     },
-    getNextPage () {
-      this.loadPage(PAGINATION_EVENTS.nextPageLoad, this.nextPageCaller)
+    loadNextPage () {
+      this.loadPage(PAGINATION_EVENTS.nextPageLoad, this.nextPageLoader)
     },
     async loadPage (eventName, loaderFn) {
       try {
         const response = await loaderFn()
         this.$emit(eventName, response.data)
-        this.nextPageCaller = response.fetchNext
+        this.nextPageLoader = response.fetchNext
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
