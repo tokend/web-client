@@ -33,7 +33,7 @@
 
 <script>
 import PortfolioWidget from './Dashboard.PortfolioWidget'
-import CreateIssuance from './Dashboard.CreateIssuance'
+import CreateIssuance from '@/vue/forms/CreateIssuanceForm'
 import InfoWidget from './Dashboard.InfoWidget'
 import Chart from '@/vue/common/chart/Chart'
 import { mapGetters, mapActions } from 'vuex'

@@ -26,6 +26,7 @@
       </div>
       <div class="portfolio-widget__actions">
         <button
+          v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
           class="app__button-raised portfolio-widget__action"
           @click="$emit(EVENTS.showCreateIssuanceForm, true)">
           Create issuance
@@ -84,7 +85,7 @@ import config from '@/config'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 // FIXME: move XDR-dependent object imports to sdk
-import { ASSET_POLICIES } from '@/js/const/xdr.const'
+import { ASSET_POLICIES, ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { mapGetters, mapActions } from 'vuex'
 // FIXME: change it to actual
 import { vuexTypes } from 'L@/vuex/types'
@@ -118,11 +119,13 @@ export default {
       all: 'all'
     },
     config,
-    ASSET_POLICIES
+    ASSET_POLICIES,
+    ACCOUNT_TYPES
   }),
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
+      accountTypeI: vuexTypes.accountTypeI,
       userTransferableTokens: vuexTypes.userTransferableTokens,
       tokens: vuexTypes.tokens
     }),

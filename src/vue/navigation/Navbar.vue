@@ -99,7 +99,8 @@ export default {
     ...mapGetters({
       walletEmail: `new-wallet/${vuexTypes.walletEmail}`,
       accountType: `new-account/${vuexTypes.accountType}`,
-      accountTypeI: `new-account/${vuexTypes.accountTypeI}`
+      // FIXME: set actual getter
+      accountTypeI: vuexTypes.accountTypeI
     })
   },
   watch: {

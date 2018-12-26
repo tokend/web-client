@@ -338,9 +338,10 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('new-account', [
-      vuexTypes.accountTypeI
-    ])
+    ...mapGetters({
+      // FIXME: set actual getter
+      accountTypeI: vuexTypes.accountTypeI
+    })
   },
 
   methods: {
