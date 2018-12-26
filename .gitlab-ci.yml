@@ -17,7 +17,7 @@ build:
   script:
     - ci-little-helper set-pending build
     - .ci/build.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE build
+    - ci-little-helper set-state $STATE build && exit $STATE
 
 lint:
   image: registry.gitlab.com/tokend/deployment/js-build:latest
@@ -27,7 +27,7 @@ lint:
   script:
     - ci-little-helper set-pending lint
     - .ci/lint.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE lint
+    - ci-little-helper set-state $STATE lint && exit $STATE
 
 unit_test:
   image: registry.gitlab.com/tokend/deployment/js-build:latest
@@ -37,5 +37,5 @@ unit_test:
   script:
     - ci-little-helper set-pending unit_test
     - .ci/test.sh && STATE=0 || STATE=1
-    - ci-little-helper set-state $STATE unit_test
+    - ci-little-helper set-state $STATE unit_test && exit $STATE
 
