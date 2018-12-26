@@ -1,0 +1,35 @@
+@import '~@scss/mixins';
+@import '~@scss/variables';
+
+.issuance-form__submit-btn {
+  @include button-raised();
+
+  margin-bottom: 2rem;
+  width: 18rem;
+}
+
+.issuance-form__cancel-btn {
+  @include button();
+
+  padding-left: .1rem;
+  padding-right: .1rem;
+  margin-left: auto !important;
+  margin-bottom: 2rem;
+  font-weight: normal;
+}
+
+.issuance-form__amount {
+  display: flex;
+}
+
+.issuance-form__amount-label {
+  font-size: 1.7rem;
+  margin-left: 1rem;
+  padding-top: 1rem;
+}
+
+.issuance-form__available {
+  color: #837fa1;
+  font-size: 1.2rem;
+  margin-top: .6rem;
+}
