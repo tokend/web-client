@@ -18,15 +18,15 @@
  * Extra slot (aligned to the right side) should contain action buttons.
  *
  * <top-bar>
- *    <template slot="main">
- *      <router-link />
- *      ...
- *      <filter />
- *      ...
- *     </template>
- *     <template slot="extra">
- *       <button>Some action</button>
- *       ...
+ *   <template slot="main">
+ *     <router-link />
+ *     ...
+ *     <filter />
+ *     ...
+ *   </template>
+ *   <template slot="extra">
+ *     <button>Some action</button>
+ *     ...
  *   </template>
  * </top-bar>
  */
