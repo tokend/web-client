@@ -13,7 +13,7 @@
 /**
  * TopBar component represents a bar on top of the page content.
  *
- * To use it pass your content as a slot inside. Main slot 
+ * To use it pass your content as a slot inside. Main slot
  * (aligned to the left side) should contain router links, filters, etc.
  * Extra slot (aligned to the right side) should contain action buttons.
  *
@@ -34,7 +34,6 @@ export default {
   name: 'top-bar'
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import "~@scss/variables";
