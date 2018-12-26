@@ -18,15 +18,15 @@
  * Extra slot (aligned to the right side) should contain action buttons.
  *
  * <top-bar>
- *    <template slot="main">
- *      <router-link />
- *      ...
- *      <filter />
- *      ...
- *     </template>
- *     <template slot="extra">
- *       <button>Some action</button>
- *       ...
+ *   <template slot="main">
+ *     <router-link />
+ *     ...
+ *     <filter />
+ *     ...
+ *   </template>
+ *   <template slot="extra">
+ *     <button>Some action</button>
+ *     ...
  *   </template>
  * </top-bar>
  */
@@ -42,19 +42,19 @@ export default {
 .top-bar {
   display: flex;
   align-items: center;
-  min-height: 6.5 * $point;
+  min-height: 6.5rem;
   background-color: $col-top-bar-background;
   color: $col-top-bar-text;
   margin:
     0
     -1 * $content-side-paddings
-    4 * $point
+    4rem
     -1 * $content-side-paddings;
-  padding: 1.4 * $point $content-side-paddings;
+  padding: 1.4rem $content-side-paddings;
 
   .top-bar__main {
     display: flex;
-    font-size: 1.7 * $point;
+    font-size: 1.7rem;
 
     a {
       color: $col-top-bar-tab;
@@ -66,40 +66,40 @@ export default {
     }
 
     & > :not(:first-child) {
-      margin-left: 3 * $point;
+      margin-left: 3rem;
     }
   }
 
   .top-bar__extra {
     display: flex;
     margin-left: auto;
-    padding-left: 2 * $point;
+    padding-left: 2rem;
 
     & > :not(:first-child) {
-      margin-left: 1.2 * $point;
+      margin-left: 1.2rem;
     }
   }
 
   @include respond-to($sidebar-hide-bp) {
-    padding: 1.4 * $point $content-side-paddings-sm;
+    padding: 1.4rem $content-side-paddings-sm;
     margin:
       0
       -1 * $content-side-paddings-sm
-      4 * $point
+      4rem
       -1 * $content-side-paddings-sm;
     flex-direction: column;
     align-items: start;
 
     .top-bar__extra {
-      margin-top: $point;
-      margin-left: -1.2 * $point;
+      margin-top: 1rem;
+      margin-left: -1.2rem;
       padding-left: 0;
       flex-wrap: wrap;
 
       & > * {
-        margin-left: 1.2 * $point;
-        margin-top: 0.7 * $point;
-        margin-bottom: 0.7 * $point;
+        margin-left: 1.2rem;
+        margin-top: 0.7rem;
+        margin-bottom: 0.7rem;
       }
     }
   }
