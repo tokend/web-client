@@ -1,6 +1,4 @@
-import { deepFreeze } from '@/js/helpers/deep-freeze'
-
-export const vueRoutes = deepFreeze({
+export const vueRoutes = Object.freeze({
   // existing routes:
   app: { name: 'app' },
   auth: { name: 'auth' },
