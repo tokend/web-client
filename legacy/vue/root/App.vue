@@ -167,8 +167,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~L@scss/mixins";
-@import "~L@scss/variables";
+@import "~@scss/mixins";
+@import "~@scss/variables";
 
 .app__container {
   display: flex;
