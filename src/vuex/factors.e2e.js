@@ -1,7 +1,7 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { factors } from './index'
+import factors from './factors.module'
 
 import Vue from 'vue'
 import Vuex from 'vuex'

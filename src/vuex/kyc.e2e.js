@@ -1,7 +1,7 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { kyc } from './index'
+import kyc from './kyc.module'
 
 import Vue from 'vue'
 import Vuex from 'vuex'

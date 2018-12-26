@@ -14,7 +14,7 @@
     "dev": "webpack-dev-server --config ./webpack/local.conf.js",
     "start": "yarn dev",
     "build": "node webpack/build.js",
-    "test": "karma start",
+    "test": "node --max-old-space-size=4096 node_modules/.bin/karma start",
     "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0"
   },
   "dependencies": {

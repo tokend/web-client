@@ -94,8 +94,8 @@ export default {
     margin-bottom: .5rem;
     display: block;
     position: absolute;
-    top: 1.6 * $point;
-    left: 1.6 * $point;
+    top: 1.6rem;
+    left: 1.6rem;
     color: $field-color-unfocused;
     transition: .2s ease-out;
     font-size: 1rem;
@@ -103,27 +103,27 @@ export default {
     .text-field__input:focus + &,
     .text-field__input.text-field__input--dirty + & {
       color: $field-color-text;
-      top: .6 * $point;
+      top: .6rem;
       font-size: .75rem;
     }
   }
 
   .text-field__input {
     caret-color: $field-color-text;
-    padding: 1.6 * $point 1.6 * $point 3.6 * $point;
+    padding: 1.6rem 1.6rem 3.6rem;
     background-color: $textarea-background-color !important;
-    border: .2 * $point solid rgba($field-color-unfocused, 0.5);
+    border: .2rem solid rgba($field-color-unfocused, 0.5);
     width: 100%;
     resize: none;
     display: block;
-    border-radius: .4 * $point;
+    border-radius: .4rem;
     font-size: 1rem;
     transition: all 0s, border-color .2s ease-out;
 
     &:focus,
     &.text-field__input--dirty {
-      padding-top: 2.6 * $point;
-      padding-bottom: 2.6 * $point;
+      padding-top: 2.6rem;
+      padding-bottom: 2.6rem;
       border-color: $field-color-focused;
     }
 
@@ -135,8 +135,8 @@ export default {
 
   .text-field__length {
     position: absolute;
-    bottom: .8 * $point;
-    right: 1.6 * $point;
+    bottom: .8rem;
+    right: 1.6rem;
     font-size: .75rem;
     color: $field-color-text;
   }

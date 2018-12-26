@@ -99,7 +99,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters('new-wallet', [
+    ...mapGetters([
       vuexTypes.wallet
     ]),
     assetCodes () {
@@ -136,19 +136,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
+@import "~@scss/variables";
 
 .fees {
   width: 100%;
-  max-width: 105 * $point;
+  max-width: 105rem;
 }
 
 .fees__assets {
-  margin-bottom: 2.1 * $point;
+  margin-bottom: 2.1rem;
 }
 
 .fees__table {
   overflow-x: auto;
-  box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
+  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
 }
 </style>

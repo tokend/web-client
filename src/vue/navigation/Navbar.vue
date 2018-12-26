@@ -82,25 +82,25 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapActions, mapGetters } from 'vuex'
-import { vueRoutes } from '@/vue-router'
+import { mapGetters, mapMutations } from 'vuex'
+import { vueRoutes } from '@/vue-router/routes'
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { globalize } from '@/vue/filters/globalize'
 
 export default {
-  name: 'root-navbar',
+  name: 'navbar',
 
   data: () => ({
     isUserCardOpen: false,
     ACCOUNT_TYPES
   }),
   computed: {
-    ...mapGetters({
-      walletEmail: `new-wallet/${vuexTypes.walletEmail}`,
-      accountType: `new-account/${vuexTypes.accountType}`,
-      accountTypeI: `new-account/${vuexTypes.accountTypeI}`
-    })
+    ...mapGetters([
+      vuexTypes.walletEmail,
+      vuexTypes.accountType,
+      vuexTypes.accountTypeI
+    ])
   },
   watch: {
     isUserCardOpen (value) {
@@ -114,9 +114,13 @@ export default {
   },
   methods: {
     globalize,
-    ...mapActions({
-      logOut: vuexTypes.LOG_OUT
+    ...mapMutations({
+      clearState: vuexTypes.CLEAR_STATE
     }),
+    logOut () {
+      this.clearState()
+      location.reload()
+    },
     getVerboseAccountType (accountTypeI) {
       switch (accountTypeI) {
         case ACCOUNT_TYPES.notVerified:
@@ -146,11 +150,11 @@ export default {
 @import "~@scss/mixins";
 @import "~@scss/variables";
 
-$custom-breakpoint: 80 * $point;
+$custom-breakpoint: 800px;
 
 .navbar {
   width: 100%;
-  min-height: 12 * $point;
+  min-height: 12rem;
   background-color: $col-navbar-background;
   padding: 0 $content-side-paddings;
   display: flex;
@@ -158,8 +162,7 @@ $custom-breakpoint: 80 * $point;
   justify-content: space-between;
 
   @include respond-to-custom($sidebar-hide-bp) {
-    padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2 *
-      $point;
+    padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2rem;
   }
 }
 
@@ -171,14 +174,14 @@ $custom-breakpoint: 80 * $point;
 
 .navbar__title {
   color: $col-text-page-heading;
-  font-size: 4 * $point;
+  font-size: 4rem;
   line-height: 1.5;
   font-weight: 400;
 }
 
 .navbar__sub-title {
-  margin-bottom: 0.8 * $point;
-  font-size: 1.4 * $point;
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
   font-weight: 400;
 }
 
@@ -189,11 +192,11 @@ $custom-breakpoint: 80 * $point;
 }
 
 .navbar__user-picture {
-  width: 5.5 * $point;
-  height: 5.5 * $point;
-  font-size: 2.4 * $point;
-  box-shadow: 0 .4 * $point 1 * $point 0 $col-avatar-instead-bg;
-  margin-right: 1.6 * $point;
+  width: 5.5rem;
+  height: 5.5rem;
+  font-size: 2.4rem;
+  box-shadow: 0 .4rem 1rem 0 $col-avatar-instead-bg;
+  margin-right: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,7 +215,7 @@ $custom-breakpoint: 80 * $point;
 
 .navbar__user-name,
 .navbar__user-name-icon {
-  font-size: 1.8 * $point;
+  font-size: 1.8rem;
   cursor: pointer;
   color: $col-text-field-hint;
 }
@@ -223,7 +226,7 @@ $custom-breakpoint: 80 * $point;
 
 .navbar__account-type {
   color: $col-text-field-hint;
-  font-size: 1.2 * $point;
+  font-size: 1.2rem;
 }
 
 .navbar__user-name-icon:before {
@@ -252,13 +255,13 @@ $custom-breakpoint: 80 * $point;
 .navbar__user-card {
   position: absolute;
   right: 0;
-  top: calc(100% + (1.4 * #{$point}));
+  top: calc(100% + 1.4rem);
   overflow: visible;
   visibility: hidden;
   opacity: 0;
-  margin-top: -1.5 * $point;
+  margin-top: -1.5rem;
   transition: 0.3s ease-out;
-  padding: 2.4 * $point 2.4 * $point 0 2.4 * $point;
+  padding: 2.4rem 2.4rem 0 2.4rem;
   background: $col-block-bg;
   @include box-shadow();
 
@@ -268,28 +271,28 @@ $custom-breakpoint: 80 * $point;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 .8 * $point .8 * $point .8 * $point;
+    border-width: 0 .8rem .8rem .8rem;
     border-color: transparent transparent $col-block-bg transparent;
-    top: -.8 * $point;
-    right: .4 * $point;
+    top: -.8rem;
+    right: .4rem;
 
     @include respond-to-custom($custom-breakpoint) {
-      right: 1.9 * $point;
+      right: 1.9rem;
     }
   }
 
   @include respond-to-custom($custom-breakpoint) {
-    width: calc(100vw - #{$sidebar-width} - 4 * #{$point});
+    width: calc(100vw - #{$sidebar-width} - 4rem);
   }
 
   @include respond-to(small) {
-    padding: 1.6 * $point 1.6 * $point 0 1.6 * $point;
-    width: calc(100vw - 1.6 * #{$point});
-    max-width: 40.4 * $point;
+    padding: 1.6rem 1.6rem 0 1.6rem;
+    width: calc(100vw - 1.6rem);
+    max-width: 40.4rem;
   }
 
   @include respond-to(xsmall) {
-    width: calc(100vw - 4 * #{$point});
+    width: calc(100vw - 4rem);
   }
 }
 
@@ -301,7 +304,7 @@ $custom-breakpoint: 80 * $point;
 
 .navbar__user-card-content {
   display: flex;
-  padding-bottom: 2.1 * $point;
+  padding-bottom: 2.1rem;
   position: relative;
 
   @include respond-to(small) {
@@ -312,7 +315,7 @@ $custom-breakpoint: 80 * $point;
 
 .navbar__user-actions {
   position: relative;
-  padding: .8 * $point 0;
+  padding: .8rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -320,22 +323,22 @@ $custom-breakpoint: 80 * $point;
   &:after {
     content: "";
     position: absolute;
-    height: .1 * $point;
-    width: calc(100% + (4.8 * #{$point}));
+    height: .1rem;
+    width: calc(100% + 4.8rem);
     background-color: $col-navbar-background;
-    left: -2.4 * $point;
+    left: -2.4rem;
     top: 0;
   }
 }
 
 .navbar__user-avatar {
-  width: 10.2 * $point;
-  height: 10.2 * $point;
+  width: 10.2rem;
+  height: 10.2rem;
   border-radius: 50%;
-  font-size: 4.8 * $point;
+  font-size: 4.8rem;
   color: $col-navbar-avatar-color;
   background-color: $col-navbar-avatar-background;
-  margin-right: 2.7 * $point;
+  margin-right: 2.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,17 +346,17 @@ $custom-breakpoint: 80 * $point;
 
   @include respond-to(small) {
     margin-right: 0;
-    margin-bottom: 1.2 * $point;
+    margin-bottom: 1.2rem;
   }
 }
 
 .navbar__user-card-name {
-  font-size: 1.6 * $point;
+  font-size: 1.6rem;
   line-height: 1;
   text-align: left;
   color: $col-text-field-hint;
-  margin-top: .4 * $point;
-  margin-bottom: .4 * $point;
+  margin-top: .4rem;
+  margin-bottom: .4rem;
   white-space: nowrap;
 
   @include respond-to-custom($custom-breakpoint) {
@@ -362,7 +365,7 @@ $custom-breakpoint: 80 * $point;
 }
 
 .navbar__user-card-status {
-  font-size: 1.2 * $point;
+  font-size: 1.2rem;
   line-height: 1;
   text-align: left;
   color: $col-text-field-hint;
@@ -373,7 +376,7 @@ $custom-breakpoint: 80 * $point;
 }
 
 .navbar__user-card-account-btn {
-  margin: 2.6 * $point 0 0 0;
+  margin: 2.6rem 0 0 0;
   white-space: nowrap;
 
   @include button-raised();

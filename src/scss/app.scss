@@ -22,9 +22,18 @@ textarea {
   background: $col-app-background;
   color: $col-primary;
   font-family: 'Circular', 'Noto Sans', '-apple-system', 'BlinkMacSystemFont', sans-serif !important;
-  font-size: 1.0 * $point;
   font-weight: 400;
-  letter-spacing: 0.005 * $point;
+  letter-spacing: 0.005rem;
+}
+
+textarea,
+button,
+select,
+input,
+body,
+span,
+p {
+  font-size: 1.4rem;
 }
 
 button {
@@ -64,6 +73,7 @@ textarea {
 }
 
 html {
+  font-size: 10px;
   // Fixes the bug:
   // https://www.igorkromin.net/index.php/2016/05/20/mobile-safari-scrolling-problem-with-an-input-field-inside-a-fixed-div/
   overflow: auto !important;
@@ -90,7 +100,7 @@ body {
   .app__page-content-wrp {
     flex: 1;
     width: 100%;
-    max-width: 46 * $point;
+    max-width: 46rem;
     margin: 0 auto;
   }
 
@@ -258,28 +268,28 @@ h4 {
 
 .app__card-content,
 .app__card-header {
-  padding: 3.2 * $point;
+  padding: 3.2rem;
 
   @include respond-to(medium) {
-    padding: 2.4 * $point;
+    padding: 2.4rem;
   }
 
   @include respond-to(small) {
-    padding: 1.2 * $point 1.6 * $point;
+    padding: 1.2rem 1.6rem;
   }
 }
 
 .app__card-actions {
-  padding: 1.2 * $point 3.2 * $point 3.2 * $point;
+  padding: 1.2rem 3.2rem 3.2rem;
   display: flex;
   justify-content: flex-end;
 
   @include respond-to(medium) {
-    padding: .8 * $point 2.4 * $point 2.4 * $point;
+    padding: .8rem 2.4rem 2.4rem;
   }
 
   @include respond-to(small) {
-    padding: .8 * $point 1.6 * $point 1.6 * $point;
+    padding: .8rem 1.6rem 1.6rem;
   }
 }
 
@@ -290,15 +300,15 @@ h4 {
 
   thead {
     th {
-      font-size: 1.2 * $point;
+      font-size: 1.2rem;
       text-align: left;
       padding:
-        1.6 * $point
-        1.6 * $point
-        1.1 * $point
-        1.6 * $point;
+        1.6rem
+        1.6rem
+        1.1rem
+        1.6rem;
       overflow: hidden;
-      max-width: 12 * $point;
+      max-width: 12rem;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: $col-table-head-text;
@@ -317,13 +327,13 @@ h4 {
       }
 
       td {
-        font-size: 1.4 * $point;
+        font-size: 1.4rem;
         text-overflow: ellipsis;
         overflow: hidden;
-        max-width: 12 * $point;
+        max-width: 12rem;
         white-space: nowrap;
         color: $col-table-cell-text;
-        padding: $point 1.6 * $point;
+        padding: 1rem 1.6rem;
       }
     }
   }
@@ -335,11 +345,11 @@ h4 {
   &:before {
     content: '';
     position: absolute;
-    top: -1 * $point;
-    bottom: -1 * $point;
+    top: -1rem;
+    bottom: -1rem;
     left: 0;
-    width: 0.8 * $point;
-    box-shadow: inset .5 * $point -.6 * $point .6 * $point 0 rgba(0, 0, 0, .2);
+    width: 0.8rem;
+    box-shadow: inset .5rem -.6rem .6rem 0 rgba(0, 0, 0, .2);
   }
 }
 
@@ -349,10 +359,10 @@ h4 {
   &:after {
     content: '';
     position: absolute;
-    top: -1 * $point;
-    bottom: -1 * $point;
+    top: -1rem;
+    bottom: -1rem;
     right: 0;
-    width: .8 * $point;
-    box-shadow: inset -.5 * $point -.6 * $point .6 * $point 0 rgba(0, 0, 0, .2);
+    width: .8rem;
+    box-shadow: inset -.5rem -.6rem .6rem 0 rgba(0, 0, 0, .2);
   }
 }

@@ -10,11 +10,10 @@
       <button class="select__selected-value">
         {{ getLabel(currentValue) }}
       </button>
-      <md-icon
-        class="select__selected-icon"
-        :class="{ 'select__selected-icon--active': isExpanded }">
-        keyboard_arrow_down
-      </md-icon>
+      <i
+        class="select__selected-icon mdi mdi-chevron-down"
+        :class="{ 'select__selected-icon--active': isExpanded }"
+      />
     </div>
     <div
       class="select__list"
@@ -55,7 +54,7 @@ export default {
   .select__selected {
     color: $field-color-text;
     white-space: nowrap;
-    font-size: 1.8 * $point;
+    font-size: 1.8rem;
     display: flex;
     cursor: pointer;
   }
@@ -64,9 +63,9 @@ export default {
 
   .select__selected-icon {
     will-change: transform;
-    color: $field-color-text !important;
+    color: $field-color-text;
+    font-size: 2.2rem;
     transition: .2s ease-out;
-    margin: -.2 * $point 0 0;
 
     &.select__selected-icon--active {
       transform: rotate(-180deg)
@@ -77,18 +76,18 @@ export default {
     opacity: 0;
     visibility: hidden;
     transition: .2s ease-out;
-    margin-top: -1.0 * $point;
+    margin-top: -1.0rem;
     position: absolute;
     left: 0;
-    min-width: 17.0 * $point;
-    top: calc(100% + (.4 * #{$point}));
+    min-width: 17.0rem;
+    top: calc(100% + .4rem);
     background-color: $col-dropdown-bg;
-    box-shadow: 0 .4 * $point 1.0 * $point 0 rgba(0, 0, 0, .15);
-    border-radius: .3 * $point;
+    box-shadow: 0 .4rem 1.0rem 0 rgba(0, 0, 0, .15);
+    border-radius: .3rem;
     z-index: 5;
-    max-height: 24.4 * $point;
+    max-height: 24.4rem;
     overflow-y: auto;
-    padding: .8 * $point 0;
+    padding: .8rem 0;
   }
 
   .select__list--active {
@@ -98,8 +97,8 @@ export default {
   }
 
   .select__list-item {
-    padding: .8 * $point 1.6 * $point;
-    font-size: 1.6 * $point;
+    padding: .8rem 1.6rem;
+    font-size: 1.6rem;
     transition: .15s ease-out;
     cursor: pointer;
     white-space: nowrap;
@@ -118,14 +117,14 @@ export default {
     background-color: transparent;
     border: none;
     color: $field-color-text;
-    font-size: 1.8 * $point;
+    font-size: 1.8rem;
     font-weight: 500;
     cursor: pointer;
   }
 
   .select__label {
     color: $field-color-unfocused;
-    font-size: 1.2 * $point;
+    font-size: 1.2rem;
   }
 
   .select__list-item--selected {
