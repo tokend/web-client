@@ -53,12 +53,12 @@ export default {
   },
   methods: {
     getFirstPage () {
-      this.loadData(PAGINATION_EVENTS.firstPageLoad, this.firstPageLoader)
+      this.loadPage(PAGINATION_EVENTS.firstPageLoad, this.firstPageLoader)
     },
     getNextPage () {
-      this.loadData(PAGINATION_EVENTS.firstPageLoad, this.nextPageCaller)
+      this.loadPage(PAGINATION_EVENTS.nextPageLoad, this.nextPageCaller)
     },
-    async loadData (eventName, loaderFn) {
+    async loadPage (eventName, loaderFn) {
       try {
         const response = await loaderFn()
         this.$emit(eventName, response.data)
