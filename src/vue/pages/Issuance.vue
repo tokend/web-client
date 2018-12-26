@@ -119,7 +119,7 @@ export default {
     isPreIssuanceDrawerShown: false
   }),
   computed: {
-    ...mapGetters('new-wallet', [
+    ...mapGetters([
       vuexTypes.wallet
     ])
   },
@@ -176,8 +176,8 @@ export default {
 
 .issuance-history__table {
   overflow-x: auto;
-  box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
-  max-width: 105 * $point;
+  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
+  max-width: 105rem;
 }
 
 .issuance-btn {

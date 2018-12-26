@@ -1,5 +1,9 @@
 <template>
-  <form class="app-form issuance-form" @submit.prevent="submit">
+  <form
+    v-if="userOwnedTokens"
+    class="app-form issuance-form"
+    @submit.prevent="submit"
+  >
     <div class="app__form-row">
       <div class="app__form-field">
         <!--
@@ -21,12 +25,15 @@
             type="number"
             step="0.00001"
             v-model="form.amount"
-            @blur="_touchField('form.amount')"
+            @blur="touchField('form.amount')"
             id="create-issuance-amount"
             :label="'Amount' | globalize"
-            :error-message="_getErrorMessage('form.amount')"
+            :error-message="getFieldErrorMessage('form.amount')"
           />
-          <div class="issuance-form__amount-label">
+          <div
+            v-if="availableTokensAmount"
+            class="issuance-form__amount-label"
+          >
             <span>{{ availableTokensAmount.currency }}</span>
           </div>
         </div>
@@ -41,10 +48,10 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="_touchField('form.email')"
+          @blur="touchField('form.email')"
           id="create-issuance-email"
           :label="'Email' | globalize"
-          :error-message="_getErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email')"
         />
       </div>
     </div>
@@ -52,9 +59,9 @@
       <div class="app__form-field">
         <input-field
           v-model="form.reference"
-          @blur="_touchField('form.reference')"
+          @blur="touchField('form.reference')"
           id="create-issuance-reference"
-          :error-message="_getErrorMessage('form.reference')"
+          :error-message="getFieldErrorMessage('form.reference')"
           :label="'Reference' | globalize"
         />
       </div>
@@ -64,7 +71,7 @@
         v-ripple
         type="submit"
         class="issuance-form__submit-btn"
-        :disabled="$data._isDisabled"
+        :disabled="formMixin.isDisabled"
       >
         {{ 'Issue' | globalize }}
       </button>
@@ -72,7 +79,7 @@
         v-ripple
         type="button"
         class="issuance-form__cancel-btn"
-        :disabled="$data._isDisabled"
+        :disabled="formMixin.isDisabled"
         @click.prevent="cancel"
       >
         {{ 'CANCEL' | globalize }}
@@ -119,7 +126,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('new-wallet', [
+    ...mapGetters([
       vuexTypes.wallet
     ]),
     ownedTokensAssets () {
@@ -161,7 +168,7 @@ export default {
       //   base.CreateIssuanceRequestBuilder.createIssuanceRequest({
       //     asset: this.form.asset,
       //     amount: this.form.amount.toString(),
-      //     receiver: 
+      //     receiver:
       //       'BBKVOTHCUDI4X5MFYNQN7YEAJYY7OPS3HO7J3BBESPQCV23MXW7LLMKR',
       //     reference: this.form.reference,
       //     externalDetails: {}

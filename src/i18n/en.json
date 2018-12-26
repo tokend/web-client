@@ -209,6 +209,18 @@
       "subtype": "Subtype",
       "lbl-loading": "Loading",
       "lbl-loading-error": "There was an error while loading."
+    },
+
+    "issuance": {
+      "create-issuance": "Create issuance",
+      "upload-pre-issuance": "Upload pre-issuance",
+      "counterparty": "Counterparty",
+      "amount": "Amount",
+      "asset-code": "Asset code",
+      "date": "Date",
+      "reference": "Reference",
+      "lbl-loading": "Loading",
+      "lbl-loading-error": "There was an error while loading."
     }
   }
 }

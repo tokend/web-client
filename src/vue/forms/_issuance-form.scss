@@ -23,9 +23,12 @@
 }
 
 .issuance-form__amount-label {
-  font-size: 1.7rem;
   margin-left: 1rem;
   padding-top: 1rem;
+
+  span {
+    font-size: 1.8rem;
+  }
 }
 
 .issuance-form__available {

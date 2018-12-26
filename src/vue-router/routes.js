@@ -7,6 +7,7 @@ export const vueRoutes = Object.freeze({
   fees: { name: 'app.fees' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
+  issuance: { name: 'app.issuance' },
 
   // stubs:
   terms: { name: 'terms' },
