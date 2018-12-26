@@ -220,7 +220,16 @@
       "date": "Date",
       "reference": "Reference",
       "lbl-loading": "Loading",
-      "lbl-loading-error": "There was an error while loading."
+      "lbl-loading-error": "There was an error while loading.",
+      "history": "History",
+      "asset": "Asset",
+      "available-for-issuance": "Available for issuance:",
+      "email": "Email",
+      "issue": "Issue",
+      "cancel": "CANCEL",
+      "next": "Next",
+      "lbl-pre-issuance": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
+      "lbl-file-type": "Pre-issuance asset file (.iss)"
     }
   }
 }

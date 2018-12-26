@@ -14,7 +14,7 @@
           :key="form.asset"
           v-model="form.asset"
           :values="ownedTokensAssets"
-          :label="'Asset' | globalize"
+          :label="'issuance.asset' | globalize"
         />
       </div>
     </div>
@@ -27,7 +27,7 @@
             v-model="form.amount"
             @blur="touchField('form.amount')"
             id="create-issuance-amount"
-            :label="'Amount' | globalize"
+            :label="'issuance.amount' | globalize"
             :error-message="getFieldErrorMessage('form.amount')"
           />
           <div
@@ -39,7 +39,8 @@
         </div>
         <div class="issuance-form__available">
           <span>
-            Available for issuance: {{ availableTokensAmount | formatMoney }}
+            {{ 'issuance.available-for-issuance' | globalize }}
+            {{ availableTokensAmount | formatMoney }}
           </span>
         </div>
       </div>
@@ -50,7 +51,7 @@
           v-model="form.email"
           @blur="touchField('form.email')"
           id="create-issuance-email"
-          :label="'Email' | globalize"
+          :label="'issuance.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
         />
       </div>
@@ -62,7 +63,7 @@
           @blur="touchField('form.reference')"
           id="create-issuance-reference"
           :error-message="getFieldErrorMessage('form.reference')"
-          :label="'Reference' | globalize"
+          :label="'issuance.reference' | globalize"
         />
       </div>
     </div>
@@ -73,7 +74,7 @@
         class="issuance-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'Issue' | globalize }}
+        {{ 'issuance.issue' | globalize }}
       </button>
       <button
         v-ripple
@@ -82,7 +83,7 @@
         :disabled="formMixin.isDisabled"
         @click.prevent="cancel"
       >
-        {{ 'CANCEL' | globalize }}
+        {{ 'issuance.cancel' | globalize }}
       </button>
     </div>
   </form>
@@ -163,7 +164,7 @@ export default {
         asset.owner === this[vuexTypes.wallet].accountId)
     },
     async submit () {
-      return this._isFormValid()
+      return this.isFormValid()
       // const operation =
       //   base.CreateIssuanceRequestBuilder.createIssuanceRequest({
       //     asset: this.form.asset,

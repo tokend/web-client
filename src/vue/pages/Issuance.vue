@@ -4,7 +4,7 @@
       v-ripple
       :to="{ name: 'app.issuance' }"
     >
-      <span>History</span>
+      <span>{{ 'issuance.history' | globalize }}</span>
     </router-link>
     <button
       v-ripple
@@ -24,6 +24,7 @@
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance' | globalize }}
       </template>
+      <upload-pre-issuance-form :is-shown.sync="isPreIssuanceDrawerShown" />
     </drawer>
     <drawer :is-shown.sync="isCreateDrawerShown">
       <template slot="heading">
@@ -96,6 +97,7 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CreateIssuanceForm from '@/vue/forms/CreateIssuanceForm'
+import UploadPreIssuanceForm from '@/vue/forms/UploadPreIssuanceForm'
 
 import { Sdk } from '@/sdk'
 
@@ -109,7 +111,8 @@ export default {
   components: {
     Loader,
     Drawer,
-    CreateIssuanceForm
+    CreateIssuanceForm,
+    UploadPreIssuanceForm
   },
   data: _ => ({
     issuanceHistory: null,
