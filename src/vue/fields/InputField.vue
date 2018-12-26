@@ -41,7 +41,7 @@ export default {
     value: { type: [String, Number], default: undefined },
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
-    whiteAutofill: { type: Boolean, default: false }
+    whiteAutofill: { type: Boolean, default: true }
   },
 
   data: () => ({
@@ -86,7 +86,7 @@ export default {
   @include text-font-sizes;
 
   &:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 5 * $point $field-color-background
+    -webkit-box-shadow: inset 0 0 0 5 * $point $field-color-background;
     // autofill hack
   }
 
