@@ -1,6 +1,7 @@
 <template>
   <div class="collection-loader">
     <button
+      v-if="!allDataLoaded"
       class="collection-loader__more-button"
       @click="loadNextPage">
       {{ 'common.button-text-more' | globalize }}
@@ -27,7 +28,7 @@
  *    @next-page-load="handlerNextData"
  * />
 **/
-
+import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const PAGINATION_EVENTS = {
@@ -44,7 +45,8 @@ export default {
     }
   },
   data: _ => ({
-    nextPageLoader: null
+    nextPageLoader: null,
+    allDataLoaded: false
   }),
   watch: {
     firstPageLoader: {
@@ -64,6 +66,8 @@ export default {
         const response = await loaderFn()
         this.$emit(eventName, response.data)
         this.nextPageLoader = response.fetchNext
+        this.allDataLoaded = !response.data ||
+          response.data.length < config.REQUESTS_PER_PAGE
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
