@@ -82,6 +82,7 @@ export default {
   position: fixed;
   right: 4 * $point;
   top: 4 * $point;
+  z-index: 10;
 
   @mixin apply-theme ($col-msg-background, $col-msg-text) {
     background: $col-msg-background;

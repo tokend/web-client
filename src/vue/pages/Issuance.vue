@@ -1,5 +1,11 @@
 <template>
   <div>
+    <router-link
+      v-ripple
+      :to="{ name: 'app.issuance' }"
+    >
+      <span>History</span>
+    </router-link>
     <button
       v-ripple
       class="issuance-btn"
@@ -23,7 +29,7 @@
       <template slot="heading">
         {{ 'issuance.create-issuance' | globalize }}
       </template>
-      <create-issuance-form />
+      <create-issuance-form :is-shown.sync="isCreateDrawerShown" />
     </drawer>
     <div class="issuance" v-if="isLoaded">
       <div class="issuance-history__table">
@@ -171,6 +177,7 @@ export default {
 .issuance-history__table {
   overflow-x: auto;
   box-shadow: 0 0.6 * $point $point 0 $col-table-shadow;
+  max-width: 105 * $point;
 }
 
 .issuance-btn {

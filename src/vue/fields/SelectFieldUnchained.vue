@@ -3,13 +3,14 @@
     class="select-field"
     :class="{
       'select-field--disabled': disabled,
-      'select-field--label-minimized': selected
+      'select-field--label-minimized': value
     }"
   >
     <div v-if="label" class="select-field__label">
       {{ label }}
     </div>
     <button
+      type="button"
       class="select-field__selected"
       :class="{'select-field__selected--focused': isExpanded}"
       @click="toggleListVisibility()"
@@ -30,6 +31,7 @@
       :class="{ 'select-field__list--active': isExpanded }">
       <template v-for="(item, i) in values">
         <button
+          type="button"
           class="select-field__list-item"
           :key="i"
           :class="{
@@ -50,12 +52,15 @@ import SelectFieldMixin from './js/select-field.mixin'
 
 export default {
   name: 'select-field-unchained',
-  mixins: [SelectFieldMixin]
+  mixins: [SelectFieldMixin],
+  props: {
+    label: { type: String, default: '' }
+  }
 }
 </script>
 
 <style scoped lang="scss">
-@import "scss/_variables";
+@import "./scss/_variables";
 
 .select-field {
   width: 100%;
@@ -89,7 +94,7 @@ export default {
   background-color: transparent;
   border: none;
   color: $field-color-text;
-  font-size: 16px;
+  font-size: 1.6 * $point;
   font-weight: 500;
   cursor: pointer;
 }
@@ -104,14 +109,14 @@ export default {
   @include text-font-sizes;
 }
 
-.select-field--readonly > .select-field__selected {
+.select-field--disabled > .select-field__selected {
   cursor: default;
   @include readonly-material-border($field-color-focused);
 }
 
-.select-field--disabled > .select-field__selected {
-  cursor: default;
-  @include readonly-material-border($field-color-focused);
+.select-field--label-minimized > .select-field__label {
+  top: 0;
+  @include label-font-sizes;
 }
 
 .select-field__selected-icon {
@@ -120,9 +125,9 @@ export default {
   will-change: transform;
   color: $col-field-icon !important;
   transition: 0.2s ease-out;
-  margin-top: -2px;
-  width: 16px;
-  height: 16px;
+  margin-top: -.2 * $point;
+  width: 1.6 * $point;
+  height: 1.6 * $point;
 
   &.select-field__selected-icon--active {
     transform: rotate(-180deg);
@@ -133,18 +138,18 @@ export default {
   opacity: 0;
   visibility: hidden;
   transition: 0.2s ease-out;
-  margin-top: -10px;
+  margin-top: -1 * $point;
   position: absolute;
   left: 0;
   width: 100%;
-  top: calc(100% + 4px);
+  top: calc(100% + .4 * $point);
   background-color: $col-dropdown-bg;
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
+  box-shadow: 0 .4 * $point $point 0 rgba(0, 0, 0, 0.15);
+  border-radius: .3 * $point;
   z-index: 5;
-  max-height: 244px;
+  max-height: 24.4 * $point;
   overflow-y: auto;
-  padding: 8px 0;
+  padding: .8 * $point 0;
 }
 
 .select-field__list--active {
@@ -154,8 +159,8 @@ export default {
 }
 
 .select-field__list-item {
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: .8 * $point 1.6 * $point;
+  font-size: 1.6 * $point;
   transition: background-color 0.15s ease-out;
   cursor: pointer;
   border: none;

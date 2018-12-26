@@ -17,3 +17,19 @@
   margin-bottom: 2 * $point;
   font-weight: normal;
 }
+
+.issuance-form__amount {
+  display: flex;
+}
+
+.issuance-form__amount-label {
+  font-size: 1.7 * $point;
+  margin-left: $point;
+  padding-top: $point;
+}
+
+.issuance-form__available {
+  color: #837fa1;
+  font-size: 1.2 * $point;
+  margin-top: .6 * $point;
+}
