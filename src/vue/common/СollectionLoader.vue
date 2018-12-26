@@ -11,11 +11,10 @@
 
 <script>
 /**
- * CollectionLoader is responsible for downloading pageable collections
- * which there is a pagination. After loading emits the event ('first-page-load'
+ * CollectionLoader is responsible for downloading pageable collections.
+ * After loading emits the event ('first-page-load'
  * - when loaded first page and 'next-page-load' - when load next page)
- * with the loaded data and decide whether or not it still show
- * itself.
+ * with the loaded data and decide whether or not it should still show itself.
  *
  * @props {Function} firstPageLoader - function for downloading first page of
  * data
@@ -31,7 +30,7 @@
 import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-const PAGINATION_EVENTS = {
+const EVENTS = {
   firstPageLoad: 'first-page-load',
   nextPageLoad: 'next-page-load'
 }
@@ -56,10 +55,10 @@ export default {
   },
   methods: {
     loadFirstPage () {
-      this.loadPage(PAGINATION_EVENTS.firstPageLoad, this.firstPageLoader)
+      this.loadPage(EVENTS.firstPageLoad, this.firstPageLoader)
     },
     loadNextPage () {
-      this.loadPage(PAGINATION_EVENTS.nextPageLoad, this.nextPageLoader)
+      this.loadPage(EVENTS.nextPageLoad, this.nextPageLoader)
     },
     async loadPage (eventName, loaderFn) {
       try {
@@ -82,6 +81,6 @@ export default {
   @import '../../scss/mixins';
 
   .collection-loader__more-button {
-    @include button-flat;
+    @include button-flat();
   }
 </style>
