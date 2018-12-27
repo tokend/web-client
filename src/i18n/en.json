@@ -67,7 +67,7 @@
       "field-error_required": "Please fill out this field",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
-      "field-error_amount": "Amount should be in the range from 0 to available for issuance"
+      "field-error_amount": "Amount should be in the range from 0.000001 to available for issuance"
     },
 
     "errors": {

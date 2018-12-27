@@ -25,7 +25,7 @@
         type="button"
         class="issuance-form__cancel-btn"
         :disabled="formMixin.isDisabled"
-        @click.prevent="cancel"
+        @click.prevent="closeForm"
       >
         {{ 'issuance.cancel' | globalize }}
       </button>
@@ -57,18 +57,8 @@ export default {
   methods: {
     async submit () {
       return this.isFormValid()
-      // const operation =
-      //   base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-      //     asset: this.form.asset,
-      //     amount: this.form.amount.toString(),
-      //     receiver:
-      //       'BBKVOTHCUDI4X5MFYNQN7YEAJYY7OPS3HO7J3BBESPQCV23MXW7LLMKR',
-      //     reference: this.form.reference,
-      //     externalDetails: {}
-      //   })
-      // await Sdk.horizon.transactions.submitOperations(operation)
     },
-    cancel () {
+    closeForm () {
       this.$emit('update:isShown', false)
     }
   }

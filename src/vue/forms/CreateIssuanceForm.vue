@@ -1,5 +1,6 @@
 <template>
   <form
+    novalidate
     v-if="userOwnedTokens"
     class="app-form issuance-form"
     @submit.prevent="submit"
@@ -8,12 +9,12 @@
       <div class="app__form-field">
         <!--
           :key is a hack to ensure that the component will be updated
-          after computed calculated
+          after property change
         -->
         <select-field-unchained
           :key="form.asset"
           v-model="form.asset"
-          :values="ownedTokensAssets"
+          :values="ownedTokenAssets"
           :label="'issuance.asset' | globalize"
         />
       </div>
@@ -31,16 +32,16 @@
             :error-message="getFieldErrorMessage('form.amount')"
           />
           <div
-            v-if="availableTokensAmount"
+            v-if="availableAmount"
             class="issuance-form__amount-label"
           >
-            <span>{{ availableTokensAmount.currency }}</span>
+            <span>{{ availableAmount.currency }}</span>
           </div>
         </div>
         <div class="issuance-form__available">
           <span>
             {{ 'issuance.available-for-issuance' | globalize }}
-            {{ availableTokensAmount | formatMoney }}
+            {{ availableAmount | formatMoney }}
           </span>
         </div>
       </div>
@@ -128,10 +129,8 @@ export default {
         amount: {
           required,
           amount: between(
-            0.00001,
-            this.availableTokensAmount
-              ? this.availableTokensAmount.value
-              : 0
+            0.000001,
+            this.availableAmount ? this.availableAmount.value : 0
           )
         },
         email: { required, email },
@@ -143,13 +142,13 @@ export default {
     ...mapGetters([
       vuexTypes.wallet
     ]),
-    ownedTokensAssets () {
+    ownedTokenAssets () {
       if (this.userOwnedTokens != null) {
         return this.userOwnedTokens.map(token =>
           `${token.details.name} (${token.code})`)
       }
     },
-    availableTokensAmount () {
+    availableAmount () {
       if (this.form.asset) {
         const token = this.userOwnedTokens.filter(token =>
           `${token.details.name} (${token.code})` === this.form.asset
@@ -163,8 +162,8 @@ export default {
   },
   async created () {
     await this.loadUserOwnedTokens()
-    if (this.ownedTokensAssets.length > 0) {
-      this.form.asset = this.ownedTokensAssets[0]
+    if (this.ownedTokenAssets.length > 0) {
+      this.form.asset = this.ownedTokenAssets[0]
     }
   },
   methods: {
@@ -179,42 +178,42 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
-      const assetCode = this.form.asset.match(/\((.*?)\)/)[1]
-      const receiverAccount = (await Sdk.api.users.getPage({
-        email: this.form.email
-      })).data.filter(info => info.email === this.form.email)[0]
-
-      if (!receiverAccount) {
-        Bus.error('errors.wrong-email')
-        this.enableForm()
-        return
-      }
-
-      const receiverBalance = (await Sdk.horizon.account.getBalances(
-        receiverAccount.id
-      )).data.filter(balance => balance.asset === assetCode)[0]
-
-      if (!receiverBalance) {
-        Bus.error('errors.balance-required')
-        this.enableForm()
-        return
-      }
-
-      const operation =
-        base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-          asset: assetCode,
-          amount: this.form.amount.toString(),
-          receiver: receiverBalance.balanceId,
-          reference: this.form.reference,
-          externalDetails: {}
-        })
       try {
+        const assetCode = this.form.asset.match(/\((.*?)\)/)[1]
+        const receiverAccount = (await Sdk.api.users.getPage({
+          email: this.form.email
+        })).data.filter(info => info.email === this.form.email)[0]
+
+        if (!receiverAccount) {
+          Bus.error('errors.wrong-email')
+          this.enableForm()
+          return
+        }
+
+        const receiverBalance = (await Sdk.horizon.account.getBalances(
+          receiverAccount.id
+        )).data.filter(balance => balance.asset === assetCode)[0]
+
+        if (!receiverBalance) {
+          Bus.error('errors.balance-required')
+          this.enableForm()
+          return
+        }
+
+        const operation =
+          base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+            asset: assetCode,
+            amount: this.form.amount.toString(),
+            receiver: receiverBalance.balanceId,
+            reference: this.form.reference,
+            externalDetails: {}
+          })
         await Sdk.horizon.transactions.submitOperations(operation)
+        Bus.success('status-message.tokens-issued')
+        this.closeForm()
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.closeForm()
-      Bus.success('status-message.tokens-issued')
       this.enableForm()
     },
     closeForm () {

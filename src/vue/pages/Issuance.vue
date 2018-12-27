@@ -6,20 +6,22 @@
     >
       <span>{{ 'issuance.history' | globalize }}</span>
     </router-link>
-    <button
-      v-ripple
-      class="issuance-btn"
-      @click="isPreIssuanceDrawerShown = true"
-    >
-      {{ 'issuance.upload-pre-issuance' | globalize }}
-    </button>
-    <button
-      v-ripple
-      class="issuance-btn"
-      @click="isCreateDrawerShown = true"
-    >
-      {{ 'issuance.create-issuance' | globalize }}
-    </button>
+    <template v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate">
+      <button
+        v-ripple
+        class="issuance-btn"
+        @click="isPreIssuanceDrawerShown = true"
+      >
+        {{ 'issuance.upload-pre-issuance' | globalize }}
+      </button>
+      <button
+        v-ripple
+        class="issuance-btn"
+        @click="isCreateDrawerShown = true"
+      >
+        {{ 'issuance.create-issuance' | globalize }}
+      </button>
+    </template>
     <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance' | globalize }}
@@ -100,6 +102,8 @@ import CreateIssuanceForm from '@/vue/forms/CreateIssuanceForm'
 import UploadPreIssuanceForm from '@/vue/forms/UploadPreIssuanceForm'
 
 import { Sdk } from '@/sdk'
+// FIXME: move XDR-dependent object imports to sdk
+import { ACCOUNT_TYPES, OPERATION_TYPES } from '@/js/const/xdr.const'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -119,11 +123,13 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isCreateDrawerShown: false,
-    isPreIssuanceDrawerShown: false
+    isPreIssuanceDrawerShown: false,
+    ACCOUNT_TYPES
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.wallet
+      vuexTypes.wallet,
+      vuexTypes.account
     ])
   },
   async created () {
@@ -132,9 +138,10 @@ export default {
   methods: {
     async loadIssuanceHistory () {
       try {
+        // FIXME: Add pagination
         const response = await Sdk.horizon.operations.getPage({
           account_id: this[vuexTypes.wallet].accountId,
-          operation_type: 3,
+          operation_type: OPERATION_TYPES.createIssuanceRequest,
           limit: 200
         })
         this.issuanceHistory = response.data
