@@ -1,7 +1,7 @@
 <template>
   <form
     novalidate
-    v-if="userOwnedTokens"
+    v-if="isShown"
     class="app-form issuance-form"
     @submit.prevent="submit"
   >
@@ -16,6 +16,8 @@
           v-model="form.asset"
           :values="ownedTokenAssets"
           :label="'issuance.asset' | globalize"
+          id="create-issuance-asset"
+          @blur="touchField('form.asset')"
         />
       </div>
     </div>
@@ -38,7 +40,10 @@
             <span>{{ availableAmount.currency }}</span>
           </div>
         </div>
-        <div class="issuance-form__available">
+        <div
+          v-if="availableAmount"
+          class="issuance-form__available"
+        >
           <span>
             {{ 'issuance.available-for-issuance' | globalize }}
             {{ availableAmount | formatMoney }}
@@ -143,7 +148,7 @@ export default {
       vuexTypes.wallet
     ]),
     ownedTokenAssets () {
-      if (this.userOwnedTokens != null) {
+      if (this.userOwnedTokens) {
         return this.userOwnedTokens.map(token =>
           `${token.details.name} (${token.code})`)
       }
