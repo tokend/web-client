@@ -2,7 +2,7 @@
   <div class="chart-tabs">
     <button
       class="chart-tabs__tab"
-      @click="$emit(common.inputEvent, tabs.hour)"
+      @click="$emit(EVENTS.input, tabs.hour)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.hour }"
       :disabled="isPending"
     >
@@ -11,7 +11,7 @@
 
     <button
       class="chart-tabs__tab"
-      @click="$emit(common.inputEvent, tabs.day)"
+      @click="$emit(EVENTS.input, tabs.day)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.day }"
       :disabled="isPending"
     >
@@ -20,7 +20,7 @@
 
     <button
       class="chart-tabs__tab"
-      @click="$emit(common.inputEvent, tabs.month)"
+      @click="$emit(EVENTS.input, tabs.month)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.month }"
       :disabled="isPending"
     >
@@ -29,7 +29,7 @@
 
     <button
       class="chart-tabs__tab"
-      @click="$emit(common.inputEvent, tabs.year)"
+      @click="$emit(EVENTS.input, tabs.year)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.year }"
       :disabled="isPending"
     >
@@ -39,7 +39,9 @@
 </template>
 
 <script>
-import { commonEvents } from 'L@/js/events/common_events'
+const EVENTS = {
+  input: 'input'
+}
 
 export default {
   name: 'chart-tabs',
@@ -49,9 +51,7 @@ export default {
   },
 
   data: () => ({
-    common: {
-      inputEvent: commonEvents.inputEvent
-    },
+    EVENTS,
     tabs: {
       hour: 'hour',
       day: 'day',
@@ -65,13 +65,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~L@scss/variables";
-  @import "~L@scss/mixins";
+  @import "~@scss/variables";
+  @import "~@scss/mixins";
 
   .chart-tabs__prefix {
     white-space: nowrap;
     display: inline-block;
-    margin-right: 1 * $point;
+    margin-right: 1rem;
   }
 
   .chart-tabs__tab {

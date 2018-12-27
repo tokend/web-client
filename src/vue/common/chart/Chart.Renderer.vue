@@ -481,7 +481,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~L@scss/variables";
+  @import "~@scss/variables";
 
    .chart-renderer {
     position: relative;
@@ -499,11 +499,11 @@ export default {
 
   .chart-renderer__wrapper-message {
     background-color: $col-chart-message-background;
-    padding: 16px 28px;
+    padding: 1.6rem 2.8rem;
     min-width: 20rem;
     color: $col-chart-message-text;
     text-align: center;
-    box-shadow: 0 0 14px 1px $col-chart-message-background;
+    box-shadow: 0 0 1.4rem .1rem $col-chart-message-background;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -514,8 +514,8 @@ export default {
   .chart-renderer__chart svg {
     transition: .2s;
 
-    @media (min-width: 767px) {
-      min-height: 200px;
+    @media (min-width: 76.7rem) {
+      min-height: 20rem;
     }
   }
 
@@ -534,7 +534,7 @@ export default {
 
   .chart__line {
     fill: none;
-    stroke-width: 2px;
+    stroke-width: .2rem;
     stroke: $col-chart-line;
     stroke-linecap: round;
   }
@@ -568,12 +568,12 @@ export default {
     &--hidden { opacity: 0 !important; }
   }
   .chart__tip-line {
-    stroke-width: 1px;
+    stroke-width: .1rem;
     stroke: $col-chart-tip-line-inactive;
   }
 
   .chart__tip-circle {
-    stroke-width: 5px;
+    stroke-width: .5rem;
     stroke: $col-chart-tip-circle-border;
     fill: $col-chart-tip-circle;
   }
@@ -591,12 +591,12 @@ export default {
   }
 
   .chart__tip-text-time-dd {
-    font-size: 18px;
+    font-size: 1.8rem;
     fill: $col-chart-tip-date-dd;
   }
 
   .chart__tip-text-time-mm {
-    font-size: 12px;
+    font-size: 1.2rem;
     fill: $col-chart-tip-date-mm;
   }
 

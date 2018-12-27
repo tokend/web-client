@@ -23,7 +23,7 @@ import ChartRenderer from './Chart.Renderer'
 import ScaleTabs from './Chart.Tabs'
 
 import { chartsService } from 'L@/js/services/charts.service'
-import { errors } from 'L@/js/errors/factory'
+import { errors } from '@tokend/js-sdk'
 import config from '@/config'
 
 export default {
@@ -90,6 +90,7 @@ export default {
           : await chartsService.loadChartsForToken(this.lockedAssets.base)
         this.data = response.data()
       } catch (error) {
+        // ErrorHandler.process(e)
         if (error instanceof errors.NotFoundError) {
           this.isActualData = false
           this.data = {
@@ -116,7 +117,7 @@ export default {
 }
 
 .chart__tabs {
-  margin-bottom: 24px;
+  margin-bottom: 2.4rem;
   display: flex;
   justify-content: flex-end;
   transition: all 0.25s;
