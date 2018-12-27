@@ -108,15 +108,15 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import { mapGetters } from 'vuex'
-// FIXME: change it to actual
-import { vuexTypes } from 'L@/vuex/types'
-import { EventDispatcher } from 'L@/js/events/event_dispatcher'
-import { ErrorHandler } from 'L@/js/errors/error_handler'
-import { issuanceService } from 'L@/js/services/issuances.service'
-import { accountsService } from 'L@/js/services/accounts.service'
+import { vuexTypes } from '@/vuex'
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+// import { issuanceService } from 'L@/js/services/issuances.service'
+// import { accountsService } from 'L@/js/services/accounts.service'
 // FIXME: move XDR-dependent object imports to sdk
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
-import { errors } from 'L@/js/errors/factory'
+import { errors } from '@tokend/js-sdk'
+// import { errors } from '@/js/helpers/errors/factory'
 import { required, email, amount } from '@validators'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -172,24 +172,22 @@ export default {
       if (!await this._isFormValid()) return
       this.disable()
       try {
-        const receiver = await accountsService.loadBalanceIdByEmail(
-          this.request.receiver,
-          this.request.code
-        )
-        await issuanceService.createIssuanceRequest({
-          token: this.request.code,
-          amount: this.request.amount,
-          receiver: receiver,
-          reference: this.request.reference,
-          externalDetails: {}
-        })
-        EventDispatcher.dispatchShowSuccessEvent(
-          globalize('create-issuance-form.submit-success')
-        )
-        this.rerenderForm()
+        // const receiver = await accountsService.loadBalanceIdByEmail(
+        //   this.request.receiver,
+        //   this.request.code
+        // )
+        // await issuanceService.createIssuanceRequest({
+        //   token: this.request.code,
+        //   amount: this.request.amount,
+        //   receiver: receiver,
+        //   reference: this.request.reference,
+        //   externalDetails: {}
+        // })
+        // Bus.success('create-issuance-form.submit-success')
+        // this.rerenderForm()
       } catch (error) {
         if (error.constructor === errors.NotFoundError) {
-          EventDispatcher.dispatchShowErrorEvent(
+          Bus.error(
             globalize('create-issuance-form.no-balance', {
               asset: this.request.code
             })
@@ -197,7 +195,7 @@ export default {
           this.enable()
           return
         }
-        ErrorHandler.processUnexpected(error)
+        ErrorHandler.process(error)
       }
       this.enable()
     },

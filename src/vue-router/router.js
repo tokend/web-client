@@ -66,6 +66,11 @@ export const router = new Router({
       redirect: vueRoutes.fees,
       children: [
         {
+          path: '/dashboard',
+          name: vueRoutes.dashboard.name,
+          component: resolve => require(['@/vue/pages/dashboard/Dashboard'], resolve)
+        },
+        {
           path: '/fees',
           name: vueRoutes.fees.name,
           component: resolve => require(['@/vue/pages/Fees'], resolve)
