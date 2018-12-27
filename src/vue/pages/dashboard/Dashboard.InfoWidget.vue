@@ -132,13 +132,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { MatchRecord } from '@/js/records/operations/match.record'
 // FIXME: change it to actual
-import { vuexTypes } from 'L@/vuex/types'
-// FIXME: change it to actual
-import { RecordTypes } from 'L@/js/records/types'
 import { PricesHelper } from '@/js/helpers/prices'
 // FIXME: change it to actual
-import { DEFAULT_CONVERSION_ASSET } from 'L@/js/const/configs.const'
+import config from '@/config'
 import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import RecordDetailsViewer from '@/vue/common/RecordDetailsViewer'
@@ -158,7 +157,7 @@ export default {
   },
   data: () => ({
     transactionsToShow: 10,
-    DEFAULT_CONVERSION_ASSET,
+    config,
     TX_STATES,
     index: -1
   }),
@@ -170,7 +169,7 @@ export default {
     list () {
       return (get(this.transactions, `${this.currentAsset}.records`) || [])
         .reduce((list, item) => {
-          if (item instanceof RecordTypes.MatchRecord) {
+          if (item instanceof MatchRecord) {
             item.transactions.forEach(tx => { list.push(tx) })
             return list
           }
@@ -201,7 +200,7 @@ export default {
       return PricesHelper.baseToQuote(
         amount,
         this.currentAsset,
-        DEFAULT_CONVERSION_ASSET
+        config.DEFAULT_QUOTE_ASSET
       )
     }
   }
@@ -214,27 +213,27 @@ export default {
   @import '~@scss/mixins';
 
   .info-widget__list {
-    padding: 0 .4 * $point .6 * $point .4 * $point;
+    padding: 0 .4rem .6rem .4rem;
 
-    @include respond-to-custom(130 * $point) {
+    @include respond-to-custom(130rem) {
       overflow-x: auto;
     }
   }
 
   .info-widget__title {
     color: $col-text-page-heading;
-    font-size: 1.6 * $point;
+    font-size: 1.6rem;
     font-weight: bold;
-    margin-bottom: 1.6 * $point;
+    margin-bottom: 1.6rem;
 
-    @include respond-to(medium) { margin-top: 2.4 * $point }
+    @include respond-to(medium) { margin-top: 2.4rem }
   }
 
   .info-widget__list-header,
   .info-widget__list-body-row {
     display: flex;
     justify-content: space-between;
-    padding: .8 * $point 0;
+    padding: .8rem 0;
   }
 
   .info-widget__list-body-row--details {
@@ -244,20 +243,20 @@ export default {
       content: '';
       position: absolute;
       top: 0;
-      left: 1.6 * $point;
-      right: 3.0 * $point;
-      height: .1 * $point;
+      left: 1.6rem;
+      right: 3.0rem;
+      height: .1rem;
       background-color: $col-details-border;
 
       @include respond-to(medium) {
-        right: 1 * $point;
+        right: 1rem;
       }
     }
   }
 
   .info-widget__list-header {
     @include respond-to(medium) {
-      min-width: 67 * $point;
+      min-width: 67rem;
     }
   }
 
@@ -270,25 +269,25 @@ export default {
   .info-widget__list-body-elem--success {
     &:before {
       position: absolute;
-      left: -2.5 * $point;
-      margin-top: 2.2 * $point;
-      width: 1.6 * $point;
-      height: 1.6 * $point;
+      left: -2.5rem;
+      margin-top: 2.2rem;
+      width: 1.6rem;
+      height: 1.6rem;
       border-radius: 50%;
       color: $col-block-bg;
-      font-size: 1.0 * $point;
-      line-height: 1.8 * $point;
+      font-size: 1.0rem;
+      line-height: 1.8rem;
 
       @include respond-to(medium) {
-        left: -2.5 * $point;
+        left: -2.5rem;
       }
 
-      @include respond-to-custom(80 * $point) {
-        left: -2.1 * $point;
+      @include respond-to-custom(80rem) {
+        left: -2.1rem;
       }
 
       @include respond-to(xsmall) {
-        left: -1.7 * $point;
+        left: -1.7rem;
       }
     }
   }
@@ -296,7 +295,7 @@ export default {
   .info-widget__list-body-elem--failed:before {
     content: '\2715';
     background-color: $col-accent;
-    padding: 0 .4 * $point;
+    padding: 0 .4rem;
   }
 
   .info-widget__list-body-elem--pending:before {
@@ -307,7 +306,7 @@ export default {
   .info-widget__list-body-elem--success:before {
     content: '\2713';
     background-color: $col-success;
-    padding: 0 .3 * $point;
+    padding: 0 .3rem;
   }
 
   .info-widget__list-body-elem {
@@ -316,17 +315,17 @@ export default {
     background-color: $col-list-block-background;
 
     @include respond-to(medium) {
-      min-width: 67 * $point;
+      min-width: 67rem;
     }
 
     &:not(:last-child) {
-      margin-bottom: .6 * $point;
+      margin-bottom: .6rem;
     }
   }
 
   .info-widget__list-body-item,
   .info-widget__list-header-item {
-    padding: .8 * $point 1.2 * $point;
+    padding: .8rem 1.2rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -334,29 +333,29 @@ export default {
   }
 
   .info-widget__list-body-row-details {
-    padding-top: 1.7 * $point;
-    padding-bottom: 1.7 * $point;
-    margin: 0 2 * $point;
-    min-width: 40 * $point;
+    padding-top: 1.7rem;
+    padding-bottom: 1.7rem;
+    margin: 0 2rem;
+    min-width: 40rem;
   }
 
   .info-widget__history {
-    max-width: 28 * $point;
+    max-width: 28rem;
 
     @include respond-to(medium) {
       margin-left: auto;
-      margin-right: 3 * $point;
+      margin-right: 3rem;
     }
   }
 
   .info-widget__list-body-item--btn,
   .info-widget__list-header-item--btn {
-    width: 7 * $point;
+    width: 7rem;
     flex: none;
     padding: 0;
 
     @include respond-to(medium) {
-      width: 4.7 * $point;
+      width: 4.7rem;
     }
   }
 
@@ -366,14 +365,14 @@ export default {
 
     color: $col-list-btn-details-text;
     background: $col-list-btn-details-background;
-    font-size: 1 * $point;
-    border-radius: .4 * $point;
-    padding: .8 * $point;
+    font-size: 1rem;
+    border-radius: .4rem;
+    padding: .8rem;
   }
 
   .info-widget__list-body-item-icon {
     color: $col-list-text !important;
-    font-size: 2 * $point !important;
+    font-size: 2rem !important;
     font-weight: 400;
     transition: transform .15s ease-out;
     will-change: transform;
@@ -387,7 +386,7 @@ export default {
 
     @include respond-to(medium) {
       width: 16%;
-      min-width: 11.4 * $point;
+      min-width: 11.4rem;
   }
   }
 
@@ -397,7 +396,7 @@ export default {
 
     @include respond-to(medium) {
       width: 15%;
-      min-width: 16.6 * $point;
+      min-width: 16.6rem;
     }
   }
 
@@ -416,7 +415,7 @@ export default {
 
     @include respond-to(medium) {
       width: 11%;
-      min-width: 10.7 * $point;
+      min-width: 10.7rem;
     }
   }
 
@@ -426,7 +425,7 @@ export default {
 
     @include respond-to(medium) {
       width: 18%;
-      min-width: 11.8 * $point;
+      min-width: 11.8rem;
     }
   }
 
@@ -437,7 +436,7 @@ export default {
     @include respond-to(medium) {
       display: none;
       width: 15%;
-      min-width: 9.7 * $point;
+      min-width: 9.7rem;
     }
   }
 

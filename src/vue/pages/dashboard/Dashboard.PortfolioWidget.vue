@@ -87,8 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 // FIXME: move XDR-dependent object imports to sdk
 import { ASSET_POLICIES, ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { mapGetters, mapActions } from 'vuex'
-// FIXME: change it to actual
-import { vuexTypes } from 'L@/vuex/types'
+import { vuexTypes } from '@/vuex'
 import get from 'lodash/get'
 
 const EVENTS = {
@@ -191,7 +190,7 @@ export default {
 @import "~@scss/variables.scss";
 @import "~@scss/mixins.scss";
 
-$custom-breakpoint: 80 * $point;
+$custom-breakpoint: 80rem;
 
 .portfolio-widget__wrapper {
   display: flex;
@@ -218,25 +217,25 @@ $custom-breakpoint: 80 * $point;
 .portfolio-widget__select {
   display: flex;
   align-items: center;
-  margin-right: 1.6 * $point;
+  margin-right: 1.6rem;
 }
 
 .portfolio-widget__select-picture {
-  width: 5.5 * $point;
-  height: 5.5 * $point;
-  padding: .4 * $point;
-  border-radius: .2 * $point;
+  width: 5.5rem;
+  height: 5.5rem;
+  padding: .4rem;
+  border-radius: .2rem;
   background-color: $col-block-bg;
-  box-shadow: 0 .4 * $point 1 * $point 0 rgba(0, 0, 0, 0.15);
-  margin-right: 1.6 * $point;
+  box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);
+  margin-right: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: none;
 
   @include respond-to(small) {
-    width: 4 * $point;
-    height: 4 * $point;
+    width: 4rem;
+    height: 4rem;
   }
 
   img {
@@ -247,17 +246,17 @@ $custom-breakpoint: 80 * $point;
 }
 
 .portfolio-widget__asset-available {
-  margin-top: 3.2 * $point;
+  margin-top: 3.2rem;
 }
 
 .portfolio-widget__asset-value {
-  font-size: 3 * $point;
+  font-size: 3rem;
   color: $col-details-value;
 }
 
 .portfolio-widget__asset-subvalue {
-  margin-top: .8 * $point;
-  font-size: 1.6 * $point;
+  margin-top: .8rem;
+  font-size: 1.6rem;
   color: $col-details-label;
 }
 
@@ -267,7 +266,7 @@ $custom-breakpoint: 80 * $point;
 
 .portfolio-widget__action {
   &:not(:first-child) {
-    margin-left: 1.6 * $point;
+    margin-left: 1.6rem;
   }
 }
 </style>

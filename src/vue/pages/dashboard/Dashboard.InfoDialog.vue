@@ -57,43 +57,43 @@ export default {
   @import '~@scss/mixins.scss';
 
   .info-dialog {
-    padding: .8 * $point 1.6 * $point;
+    padding: .8rem 1.6rem;
   }
 
   .info-dialog__history {
     width: 100%;
-    padding-right: 4.6 * $point;
-    min-width: 40 * $point;
+    padding-right: 4.6rem;
+    min-width: 40rem;
 
     @include respond-to(xsmall) {
       min-width: inherit;
-      padding-right: 2.5 * $point;
+      padding-right: 2.5rem;
     }
   }
 
   .info-dialog__list {
-    @include respond-to-height(70 * $point) {
+    @include respond-to-height(70rem) {
       overflow: auto;
     }
   }
 
   .info-dialog__label {
-    width: 22 * $point;
-    padding-right: 1.6 * $point;
+    width: 22rem;
+    padding-right: 1.6rem;
 
     @include respond-to(small) {
-      width: 15 * $point;
+      width: 15rem;
     }
 
     @include respond-to(xsmall) {
       width: 100%;
-      margin-bottom: .8 * $point;
+      margin-bottom: .8rem;
     }
   }
 
   .info-dialog__value {
-    width: 24 * $point;
-    padding-right: 3 * $point;
+    width: 24rem;
+    padding-right: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -119,11 +119,11 @@ export default {
   }
 
   .info-dialog__item {
-    margin-bottom: .8 * $point;
-    padding-bottom: .8 * $point;
+    margin-bottom: .8rem;
+    padding-bottom: .8rem;
 
     &:not(:last-child) {
-      border-bottom: .1 * $point solid $_gray;
+      border-bottom: .1rem solid $_gray;
     }
   }
 

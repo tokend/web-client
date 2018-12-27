@@ -13,16 +13,16 @@
       />
       <template v-if="currentAsset">
         <div class="dashboard__chart">
-          <chart
+          <!-- <chart
             v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
             :base-asset="currentAsset"
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
-          />
+          /> -->
         </div>
-        <info-widget
+        <!-- <info-widget
           class="dashboard__activity"
           :current-asset="currentAsset"
-        />
+        /> -->
       </template>
     </template>
     <drawer :is-shown.sync="createIssuanceFormIsShown">
@@ -34,11 +34,10 @@
 <script>
 import PortfolioWidget from './Dashboard.PortfolioWidget'
 import CreateIssuance from '@/vue/forms/CreateIssuanceForm'
-import InfoWidget from './Dashboard.InfoWidget'
-import Chart from '@/vue/common/chart/Chart'
+// import InfoWidget from './Dashboard.InfoWidget'
+// import Chart from '@/vue/common/chart/Chart'
 import { mapGetters, mapActions } from 'vuex'
-// FIXME: change it to actual
-import { vuexTypes } from 'L@/vuex/types'
+import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
@@ -48,8 +47,8 @@ export default {
   components: {
     PortfolioWidget,
     CreateIssuance,
-    InfoWidget,
-    Chart,
+    // InfoWidget,
+    // Chart,
     Loader,
     Drawer
   },
@@ -101,7 +100,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-$custom-breakpoint: 80 * $point;
+$custom-breakpoint: 80rem;
 
 .dashboard {
   flex: 1;
@@ -109,8 +108,8 @@ $custom-breakpoint: 80 * $point;
 }
 
 .dashboard__chart {
-  margin-bottom: 2.4 * $point;
-  margin-top: -4 * $point;
+  margin-bottom: 2.4rem;
+  margin-top: -4rem;
 }
 
 .dashboard__activity {
