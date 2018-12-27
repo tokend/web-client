@@ -27,13 +27,13 @@
  *    @next-page-load="handlerNextData"
  * />
 **/
-import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   firstPageLoad: 'first-page-load',
   nextPageLoad: 'next-page-load'
 }
+const REQUESTS_PER_PAGE = 10
 
 export default {
   name: 'collection-loader',
@@ -41,6 +41,10 @@ export default {
     firstPageLoader: {
       type: Function,
       required: true
+    },
+    requestPerPage: {
+      type: Number,
+      default: REQUESTS_PER_PAGE
     }
   },
   data: _ => ({
@@ -66,7 +70,7 @@ export default {
         this.$emit(eventName, response.data)
         this.nextPageLoader = response.fetchNext
         this.isCollectionFetched =
-          response.data.length < config.REQUESTS_PER_PAGE
+          response.data.length < this.requestPerPage
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
