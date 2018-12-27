@@ -46,7 +46,7 @@ export default {
 @import '~@scss/variables';
 
 .key-viewer__qr-wrp {
-  margin-bottom: 3 * $point;
+  margin-bottom: 3rem;
   text-align: center;
 }
 </style>

@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/scss/variables';
+@import '~@scss/variables';
 
 .loader {
   display: flex;
@@ -31,8 +31,8 @@ export default {
 }
 
 .loader__animation {
-  width: 5 * $point;
-  height: 5 * $point;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   position: relative;
   margin-right: .5rem;
@@ -45,17 +45,17 @@ export default {
     top: 0;
     bottom: 0;
     margin: auto;
-    width: 3 * $point;
-    height: 3 * $point;
-    border: .5 * $point solid transparent;
-    border-bottom: .5 * $point solid $col-loader-icon;
+    width: 3rem;
+    height: 3rem;
+    border: .5rem solid transparent;
+    border-bottom: .5rem solid $col-loader-icon;
     border-radius: 50%;
     animation: rotate 1s linear infinite;
   }
 
   &:before {
-    width: 4 * $point;
-    height: 4 * $point;
+    width: 4rem;
+    height: 4rem;
     animation-direction: reverse;
   }
 }

@@ -1,15 +1,18 @@
 import LoginForm from './LoginForm'
 
 import Vuelidate from 'vuelidate'
+import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
 import { vuexTypes } from '@/vuex'
+import { vueRoutes } from '@/vue-router/routes'
 import { errors } from '@tokend/js-sdk'
 import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 
 import walletModule from '@/vuex/wallet.module'
+import accountModule from '@/vuex/account.module'
 
 import { MockHelper } from '@/test'
 import { TestHelper } from '@/test/test-helper'
@@ -20,6 +23,7 @@ Vue.config.silent = true
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
+localVue.use(VueRouter)
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
@@ -56,7 +60,7 @@ describe('LoginForm component unit test', () => {
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        const spy = sinon.stub(wrapper.vm, '_touchField')
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
         wrapper
           .find(selector)
@@ -79,30 +83,35 @@ describe('LoginForm component unit test', () => {
 
     beforeEach(() => {
       mockHelper = new MockHelper()
-      const actions = walletModule.actions
+      const actions = {
+        ...walletModule.actions,
+        ...accountModule.actions
+      }
       const getters = walletModule.getters
 
       spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
-      sinon.stub(getters, vuexTypes.wallet).returns(
-        mockHelper.getMockWallet()
-      )
+      sinon.stub(getters, vuexTypes.wallet).returns(mockHelper.getMockWallet())
+      sinon.stub(actions, vuexTypes.LOAD_ACCOUNT).resolves()
 
       const store = new Vuex.Store({
-        modules: {
-          'new-wallet': {
-            namespaced: true,
-            actions,
-            getters
-          }
-        }
+        actions,
+        getters
+      })
+
+      const router = new VueRouter({
+        mode: 'history',
+        routes: [{
+          name: vueRoutes.app.name,
+          path: '/foo'
+        }]
       })
 
       wrapper = shallowMount(LoginForm, {
         store,
+        router,
         localVue
       })
-      sinon.stub(wrapper.vm, '_isFormValid').returns(true)
-      sinon.stub(wrapper.vm, '_doLegacyStuff').returns(true)
+      sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
 
     it('submit() loads wallet with provided credentials', async () => {

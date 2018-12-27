@@ -137,8 +137,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "scss/fields-variables";
-@import "~L@scss/variables";
+@import "./scss/variables";
+@import "~@scss/variables";
 
 .tick-field {
   position: relative;
@@ -149,7 +149,7 @@ export default {
 .tick-field__label {
   @include text-font-sizes;
   color: $field-color-focused;
-  padding-left: 2.5 * $point;
+  padding-left: 2.5rem;
 }
 
 .tick-field__tick,
@@ -158,20 +158,20 @@ export default {
 }
 
 .tick-field__tick {
-  width: 1.6 * $point;
-  min-width: 1.6 * $point;
-  height: 1.6 * $point;
-  margin: 0.2 * $point 1.3 * $point 0 0;
+  width: 1.6rem;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  margin: 0.2rem 1.3rem 0 0;
   z-index: 0;
-  border: solid 0.2 * $point;
-  border-radius: 0.3 * $point;
+  border: solid 0.2rem;
+  border-radius: 0.3rem;
   border-color: $field-color-unfocused;
   position: absolute;
   left: 0;
   display: block;
   pointer-events: none;
-  outline: 0.25 * $point solid transparent;
-  outline-offset: -0.1 * $point;
+  outline: 0.25rem solid transparent;
+  outline-offset: -0.1rem;
   transition: outline-color $field-transition-duration;
 
   &:after {
@@ -179,12 +179,12 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translateY(-0.1 * $point) rotate(45deg);
+    transform: translate(-50%, -50%) translateY(-0.1rem) rotate(45deg);
     display: block;
-    height: 1 * $point;
-    width: 0.6 * $point;
+    height: 1rem;
+    width: 0.6rem;
     border: solid white;
-    border-width: 0 0.2 * $point 0.2 * $point 0;
+    border-width: 0 0.2rem 0.2rem 0;
 
     opacity: 0;
   }

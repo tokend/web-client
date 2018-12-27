@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   name: 'app-footer',
@@ -45,11 +45,11 @@ export default {
 
   .footer__text,
   .footer__link {
-    line-height: 2.5 * $point;
+    line-height: 2.5rem;
   }
 
   .footer__link {
-    margin: 0 1 * $point;
+    margin: 0 1rem;
     color: $col-link;
     &:not(:first-child) { margin-left: 0 }
   }

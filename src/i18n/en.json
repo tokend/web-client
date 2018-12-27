@@ -46,6 +46,10 @@
       "fee_subtype": "{{value, fee_subtype}}"
     },
 
+    "common": {
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work"
+    },
+
     "status-message": {
       "default-message_warning": "Something you are doing is not recommended",
       "default-message_success": "Action successful",
