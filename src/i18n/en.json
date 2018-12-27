@@ -56,7 +56,8 @@
       "close-lbl_warning": "OK",
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
-      "close-lbl_info": "Got it"
+      "close-lbl_info": "Got it",
+      "tokens-issued": "Your tokens were successfully issued"
     },
 
     "validation": {
@@ -65,7 +66,8 @@
       "field-error_seed": "This field should be a valid secret seed",
       "field-error_required": "Please fill out this field",
       "field-error_password": "Password should contain minimum 6 symbols",
-      "field-error_sameAsPassword": "Passwords don't match"
+      "field-error_sameAsPassword": "Passwords don't match",
+      "field-error_amount": "Amount should be in the range from 0 to available for issuance"
     },
 
     "errors": {
@@ -81,7 +83,9 @@
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
       "tfa-required":  "2FA required",
-      "verification-required": "Verification required"
+      "verification-required": "Verification required",
+      "balance-required": "The receiver doesn't have this token balance",
+      "wrong-email": "The account with such email was not found"
     },
 
     "auth-pages": {

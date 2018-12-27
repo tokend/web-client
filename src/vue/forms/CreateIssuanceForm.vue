@@ -81,7 +81,7 @@
         type="button"
         class="issuance-form__cancel-btn"
         :disabled="formMixin.isDisabled"
-        @click.prevent="cancel"
+        @click.prevent="closeForm"
       >
         {{ 'issuance.cancel' | globalize }}
       </button>
@@ -93,10 +93,13 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import SelectFieldUnchained from '@/vue/fields/SelectFieldUnchained'
 
-import { Sdk } from '@/sdk'
-// import { base } from '@tokend/js-sdk'
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { required } from '@validators'
+import { Sdk } from '@/sdk'
+import { base } from '@tokend/js-sdk'
+
+import { required, email, between } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
@@ -118,12 +121,22 @@ export default {
     },
     userOwnedTokens: null
   }),
-  validations: {
-    form: {
-      asset: { required },
-      amount: { required },
-      email: { required },
-      reference: { required }
+  validations () {
+    return {
+      form: {
+        asset: { required },
+        amount: {
+          required,
+          amount: between(
+            0.00001,
+            this.availableTokensAmount
+              ? this.availableTokensAmount.value
+              : 0
+          )
+        },
+        email: { required, email },
+        reference: { required }
+      }
     }
   },
   computed: {
@@ -142,7 +155,7 @@ export default {
           `${token.details.name} (${token.code})` === this.form.asset
         )[0]
         return {
-          value: token.availableForIssuance - this.form.amount,
+          value: token.availableForIssuance,
           currency: token.code
         }
       }
@@ -164,19 +177,47 @@ export default {
         asset.owner === this[vuexTypes.wallet].accountId)
     },
     async submit () {
-      return this.isFormValid()
-      // const operation =
-      //   base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-      //     asset: this.form.asset,
-      //     amount: this.form.amount.toString(),
-      //     receiver:
-      //       'BBKVOTHCUDI4X5MFYNQN7YEAJYY7OPS3HO7J3BBESPQCV23MXW7LLMKR',
-      //     reference: this.form.reference,
-      //     externalDetails: {}
-      //   })
-      // await Sdk.horizon.transactions.submitOperations(operation)
+      if (!this.isFormValid()) return
+      this.disableForm()
+      const assetCode = this.form.asset.match(/\((.*?)\)/)[1]
+      const receiverAccount = (await Sdk.api.users.getPage({
+        email: this.form.email
+      })).data.filter(info => info.email === this.form.email)[0]
+
+      if (!receiverAccount) {
+        Bus.error('errors.wrong-email')
+        this.enableForm()
+        return
+      }
+
+      const receiverBalance = (await Sdk.horizon.account.getBalances(
+        receiverAccount.id
+      )).data.filter(balance => balance.asset === assetCode)[0]
+
+      if (!receiverBalance) {
+        Bus.error('errors.balance-required')
+        this.enableForm()
+        return
+      }
+
+      const operation =
+        base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+          asset: assetCode,
+          amount: this.form.amount.toString(),
+          receiver: receiverBalance.balanceId,
+          reference: this.form.reference,
+          externalDetails: {}
+        })
+      try {
+        await Sdk.horizon.transactions.submitOperations(operation)
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.closeForm()
+      Bus.success('status-message.tokens-issued')
+      this.enableForm()
     },
-    cancel () {
+    closeForm () {
       this.$emit('update:isShown', false)
     }
   }
