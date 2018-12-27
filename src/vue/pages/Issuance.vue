@@ -134,6 +134,8 @@ export default {
   },
   async created () {
     await this.loadIssuanceHistory()
+    await this.loadCounterpartyEmails()
+    this.isLoaded = true
   },
   methods: {
     async loadIssuanceHistory () {
@@ -145,8 +147,6 @@ export default {
           limit: 200
         })
         this.issuanceHistory = response.data
-        await this.loadCounterpartyEmails()
-        this.isLoaded = true
       } catch (error) {
         this.isLoadingFailed = true
         console.error(error)

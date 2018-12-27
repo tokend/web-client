@@ -43,6 +43,14 @@ export class MockHelper {
     )
   }
 
+  getMockAccount () {
+    return {
+      accountId: 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J',
+      accountType: 'AccountTypeSyndycate',
+      accountTypeI: 6
+    }
+  }
+
   useMockWallet ({ walletId, accountId } = {}) {
     sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
   }
