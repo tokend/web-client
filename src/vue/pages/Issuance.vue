@@ -137,7 +137,6 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
       vuexTypes.account
     ])
   },
@@ -151,7 +150,7 @@ export default {
       try {
         // FIXME: Add pagination
         const response = await Sdk.horizon.operations.getPage({
-          account_id: this[vuexTypes.wallet].accountId,
+          account_id: this[vuexTypes.account].id,
           operation_type: OPERATION_TYPES.createIssuanceRequest,
           limit: 200
         })
@@ -163,7 +162,7 @@ export default {
     },
     getCounterpartyId (issuance) {
       const participants = issuance.participants
-      return participants[0].accountId === this[vuexTypes.wallet].accountId
+      return participants[0].accountId === this[vuexTypes.account].id
         ? participants[1].accountId
         : participants[0].accountId
     },

@@ -7,7 +7,7 @@
       <div
         class="file-input__file-preview"
         v-if="fileUrl">
-        <span>{{ 'file-filed.selected' | globalize }}  {{ fileUrl }}</span>
+        <span>{{ 'file-field.selected' | globalize }}  {{ fileUrl }}</span>
       </div>
       <div class="file-input__input-inner">
         <div class="file-input__text">
@@ -49,14 +49,16 @@ export default {
   methods: {
     onChange (event) {
       const file = FileHelper.deriveFileFromChangeEvent(event)
-      this.fileUrl = file.name
 
-      this.$emit('input', new DocumentContainer({
-        mimeType: file.type,
-        type: this.type,
-        name: file.name,
-        file: file
-      }))
+      if (file) {
+        this.fileUrl = file.name
+        this.$emit('input', new DocumentContainer({
+          mimeType: file.type,
+          type: this.type,
+          name: file.name,
+          file: file
+        }))
+      }
     }
   }
 }

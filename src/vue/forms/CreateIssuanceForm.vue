@@ -145,7 +145,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.wallet
+      vuexTypes.account
     ]),
     ownedTokenAssets () {
       if (this.userOwnedTokens) {
@@ -174,11 +174,11 @@ export default {
   methods: {
     async loadUserOwnedTokens () {
       const response = await Sdk.horizon.account.getDetails(
-        this[vuexTypes.wallet].accountId
+        this[vuexTypes.account].id
       )
       this.userOwnedTokens = response.data.map(balance =>
         balance.assetDetails).filter(asset =>
-        asset.owner === this[vuexTypes.wallet].accountId)
+        asset.owner === this[vuexTypes.account].id)
     },
     async submit () {
       if (!this.isFormValid()) return

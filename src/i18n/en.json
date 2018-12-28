@@ -57,7 +57,8 @@
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
       "close-lbl_info": "Got it",
-      "tokens-issued": "Your tokens were successfully issued"
+      "tokens-issued": "Your tokens were successfully issued",
+      "pre-issuance-uploaded": "Pre-issuance request was successfully uploaded"
     },
 
     "validation": {
@@ -85,7 +86,9 @@
       "tfa-required":  "2FA required",
       "verification-required": "Verification required",
       "balance-required": "The receiver doesn't have this token balance",
-      "wrong-email": "The account with such email was not found"
+      "wrong-email": "The account with such email was not found",
+      "null-asset-signer": "The asset has no pre-issuance signer",
+      "pre-issuance-not-allowed": "You cannot upload the asset that is not owned by you"
     },
 
     "auth-pages": {
@@ -232,9 +235,10 @@
       "email": "Email",
       "issue": "Issue",
       "cancel": "CANCEL",
-      "next": "Next",
+      "upload": "Upload",
       "lbl-pre-issuance": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
-      "lbl-file-type": "Pre-issuance asset file (.iss)"
+      "lbl-file-type": "Pre-issuance asset file (.iss)",
+      "pre-issuance-info": "Pre-issuance info"
     },
 
     "file-field": {
