@@ -88,7 +88,8 @@
       "balance-required": "The receiver doesn't have this token balance",
       "wrong-email": "The account with such email was not found",
       "null-asset-signer": "The asset has no pre-issuance signer",
-      "pre-issuance-not-allowed": "You cannot upload the asset that is not owned by you"
+      "pre-issuance-not-allowed": "You cannot upload the asset that is not owned by you",
+      "file-corrupted": "Your file is corrupted"
     },
 
     "auth-pages": {

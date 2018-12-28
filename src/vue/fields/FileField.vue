@@ -37,7 +37,6 @@ export default {
   props: {
     label: { type: String, default: '' },
     type: { type: String, default: 'default' },
-    value: { type: Object, default: null },
     accept: { type: String, default: '*' },
     note: { type: String, default: '' },
     fileType: { type: String, default: 'default' },

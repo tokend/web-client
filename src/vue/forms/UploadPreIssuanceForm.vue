@@ -8,7 +8,7 @@
         <file-field
           :label="'issuance.lbl-pre-issuance' | globalize"
           :note="'issuance.lbl-file-type' | globalize"
-          :accept="'.iss'"
+          accept=".iss"
           v-model="documents.preIssuance"
         />
       </div>
@@ -99,7 +99,11 @@ export default {
     'documents.preIssuance': async function (value) {
       if (value) {
         const extracted = await FileHelper.readFileAsText(value.file)
-        this.parsePreIssuances(JSON.parse(extracted).issuances)
+        try {
+          this.parsePreIssuances(JSON.parse(extracted).issuances)
+        } catch (e) {
+          Bus.error('errors.file-corrupted')
+        }
       }
     }
   },

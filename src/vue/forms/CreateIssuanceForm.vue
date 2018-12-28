@@ -1,6 +1,5 @@
 <template>
   <form
-    novalidate
     v-if="isShown"
     class="app-form issuance-form"
     @submit.prevent="submit"
@@ -11,7 +10,7 @@
           :key is a hack to ensure that the component will be updated
           after property change
         -->
-        <select-field-unchained
+        <select-field
           :key="form.asset"
           v-model="form.asset"
           :values="ownedTokenAssets"
@@ -97,7 +96,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import SelectFieldUnchained from '@/vue/fields/SelectFieldUnchained'
+import SelectField from '@/vue/fields/SelectField'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -112,7 +111,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'create-issuance-form',
   components: {
-    SelectFieldUnchained
+    SelectField
   },
   mixins: [FormMixin],
   props: {
