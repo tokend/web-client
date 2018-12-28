@@ -16,15 +16,17 @@
  * - when loaded first page and 'next-page-load' - when load next page)
  * with the loaded data and decide whether or not it should still show itself.
  *
- * @props {Function} firstPageLoader - function for downloading first page of
+ * @prop {Function} firstPageLoader - function for downloading first page of
  * data
+ * @prop {Function} pageLimit - quantity request per page
  *
  * Example:
  *
  * <collection-loader
  *    :first-page-loader="Sdk.horizon.transactions.getAll"
+ *    :pageLimit="10"
  *    @first-page-load="onFirstPageLoad"/>
- *    @next-page-load="handlerNextData"
+ *    @next-page-load="onNextPageLoad"
  * />
 **/
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -33,7 +35,7 @@ const EVENTS = {
   firstPageLoad: 'first-page-load',
   nextPageLoad: 'next-page-load'
 }
-const REQUESTS_PER_PAGE = 10
+const DEFAULT_PAGE_LIMIT = 10
 
 export default {
   name: 'collection-loader',
@@ -42,13 +44,13 @@ export default {
       type: Function,
       required: true
     },
-    requestPerPage: {
+    pageLimit: {
       type: Number,
-      default: REQUESTS_PER_PAGE
+      default: DEFAULT_PAGE_LIMIT
     }
   },
   data: _ => ({
-    nextPageLoader: null,
+    nextPageLoader: () => {},
     isCollectionFetched: false
   }),
   watch: {
@@ -70,7 +72,7 @@ export default {
         this.$emit(eventName, response.data)
         this.nextPageLoader = response.fetchNext
         this.isCollectionFetched =
-          response.data.length < this.requestPerPage
+          response.data.length < this.pageLimit
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
