@@ -16,7 +16,7 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 // import { Bus } from '@/js/helpers/event-bus'
 
 import { vuexTypes } from '@/vuex'
-import walletModule from '@/vuex/wallet.module'
+import accountModule from '@/vuex/account.module'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -109,8 +109,9 @@ describe('CreateIssuanceForm component unit test', () => {
     beforeEach(() => {
       mockHelper = new MockHelper()
       accountResource = mockHelper.getHorizonResourcePrototype('account')
-      const getters = walletModule.getters
-      sinon.stub(getters, vuexTypes.wallet).returns(mockHelper.getMockWallet())
+      const getters = accountModule.getters
+      sinon.stub(getters, vuexTypes.account)
+        .returns(mockHelper.getMockAccount())
 
       store = new Vuex.Store({
         getters
@@ -126,7 +127,7 @@ describe('CreateIssuanceForm component unit test', () => {
     it('loadUserOwnedTokens() calls the horizon.account.getDetails() with the correct params', async () => {
       const responseData = [{
         assetDetails: {
-          owner: mockHelper.getMockWallet().accountId,
+          owner: mockHelper.getMockAccount().id,
           ...sampleData.userOwnedTokens[0]
         }
       }]
@@ -138,7 +139,7 @@ describe('CreateIssuanceForm component unit test', () => {
 
       expect(
         spy
-          .withArgs(mockHelper.getMockWallet().accountId)
+          .withArgs(mockHelper.getMockAccount().id)
           .calledOnce)
         .to.be.true
     })
@@ -160,7 +161,7 @@ describe('CreateIssuanceForm component unit test', () => {
     it('loadUserOwnedTokens() changes fees data after loading', async () => {
       const responseData = [{
         assetDetails: {
-          owner: mockHelper.getMockWallet().accountId,
+          owner: mockHelper.getMockAccount().id,
           ...sampleData.userOwnedTokens[0]
         }
       }]
