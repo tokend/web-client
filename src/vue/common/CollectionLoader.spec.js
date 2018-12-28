@@ -1,11 +1,10 @@
 import CollectionLoader from './CollectionLoader'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import { globalize } from '@/vue/filters/globalize'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { eventHandlerTest } from '@/js/helpers/test-helper'
+import { Helper } from '@/js/helpers/test-helper'
 
 const localVue = createLocalVue()
-localVue.filter('globalize', globalize)
+localVue.filter('globalize', sinon.stub())
 
 describe('CollectionLoader component test', () => {
   const firstPageLoader = sinon.stub().resolves({
@@ -28,7 +27,7 @@ describe('CollectionLoader component test', () => {
       fetchNext: () => {}
     })
 
-    await wrapper.vm.loadPage('some-event', spy)
+    await wrapper.vm.loadPage('event', spy)
 
     expect(spy.calledOnce).to.be.true
   })
@@ -40,12 +39,12 @@ describe('CollectionLoader component test', () => {
       },
       localVue
     })
-    const mockData = []
-    const someEvent = 'some-event'
-    await wrapper.vm.loadPage(someEvent, sinon.stub().resolves({
-      data: mockData
+    const data = []
+    const event = 'event'
+    await wrapper.vm.loadPage(event, sinon.stub().resolves({
+      data
     }))
-    expect(eventHandlerTest(wrapper, someEvent, mockData)).to.be.true
+    expect(Helper.isEmittedOnce(wrapper, event, data)).to.be.true
   })
 
   it('loadPage saves fetchNext returned in response', async () => {
@@ -62,57 +61,57 @@ describe('CollectionLoader component test', () => {
       data: []
     })
 
-    await wrapper.vm.loadPage('some-event', spy)
+    await wrapper.vm.loadPage('event', spy)
 
     expect(wrapper.vm.nextPageLoader).to.equal(fetchNext)
   })
 
   it('isCollectionFetched false when data is not fully loaded', async () => {
     const fetchNext = () => {}
-    const mockData = []
+    const data = []
     const pageLimit = 10
     const wrapper = shallowMount(CollectionLoader, {
       propsData: {
         firstPageLoader: sinon.stub().resolves({
-          data: mockData,
+          data,
           fetchNext
         }),
         pageLimit
       },
       localVue
     })
-    mockData.length = pageLimit + 1
+    data.length = pageLimit + 1
     const spy = sinon.stub().resolves({
       fetchNext,
-      data: mockData
+      data
     })
 
-    await wrapper.vm.loadPage('some-event', spy)
+    await wrapper.vm.loadPage('event', spy)
 
     expect(wrapper.vm.isCollectionFetched).to.be.false
   })
 
   it('isCollectionFetched true when data is fully loaded', async () => {
     const fetchNext = () => {}
-    const mockData = []
+    const data = []
     const pageLimit = 10
     const wrapper = shallowMount(CollectionLoader, {
       propsData: {
         firstPageLoader: sinon.stub().resolves({
-          data: mockData,
+          data,
           fetchNext
         }),
         pageLimit
       },
       localVue
     })
-    mockData.length = pageLimit - 1
+    data.length = pageLimit - 1
     const spy = sinon.stub().resolves({
       fetchNext,
-      data: mockData
+      data
     })
 
-    await wrapper.vm.loadPage('some-event', spy)
+    await wrapper.vm.loadPage('event', spy)
 
     expect(wrapper.vm.isCollectionFetched).to.be.true
   })
@@ -128,12 +127,12 @@ describe('CollectionLoader component test', () => {
     const spy = sinon.stub().throws(error)
     const spyError = sinon.stub(ErrorHandler, 'process')
 
-    await wrapper.vm.loadPage('some-event', spy)
+    await wrapper.vm.loadPage('event', spy)
 
     expect(spyError.withArgs(error).calledOnce).to.be.true
   })
 
-  it('loadFirstPage calls loadPage', () => {
+  it('loadFirstPage calls loadPage with a proper set of params', () => {
     const firstPageLoader = sinon.stub().resolves({
       data: [],
       fetchNext: () => {}
@@ -153,10 +152,10 @@ describe('CollectionLoader component test', () => {
       .to.be.true
   })
 
-  it('loadNextPage calls loadPage', () => {
+  it('loadNextPage calls loadPage with a proper set of params', () => {
     const wrapper = shallowMount(CollectionLoader, {
       propsData: {
-        firstPageLoader: () => { return { data: [] } }
+        firstPageLoader: () => ({ data: [] })
       },
       localVue
     })
@@ -178,7 +177,8 @@ describe('CollectionLoader component test', () => {
     const wrapper = shallowMount(CollectionLoader, {
       propsData: {
         firstPageLoader
-      }
+      },
+      localVue
     })
     wrapper.setData({ isCollectionFetched: false })
 
@@ -195,7 +195,7 @@ describe('CollectionLoader component test', () => {
 
     expect(wrapper.contains('button')).to.be.false
   })
-  it('calls firstPageLoader when creating a component', () => {
+  it('firstPageLoader is immediately called after component created', () => {
     const firstPageLoader = sinon.stub().resolves({ data: [] })
     shallowMount(CollectionLoader, {
       propsData: {

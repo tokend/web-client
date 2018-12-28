@@ -18,7 +18,7 @@
  *
  * @prop {Function} firstPageLoader - function for downloading first page of
  * data
- * @prop {Function} pageLimit - quantity request per page
+ * @prop {Function} pageLimit - the maximum quantity of records per page
  *
  * Example:
  *
