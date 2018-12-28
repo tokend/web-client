@@ -1,27 +1,34 @@
 <template>
   <div>
-    <router-link
-      v-ripple
-      :to="{ name: 'app.issuance' }"
-    >
-      <span>{{ 'issuance.history' | globalize }}</span>
-    </router-link>
-    <template v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate">
-      <button
-        v-ripple
-        class="issuance-btn"
-        @click="isPreIssuanceDrawerShown = true"
+    <top-bar>
+      <template slot="main">
+        <router-link
+          v-ripple
+          :to="{ name: 'app.issuance' }"
+        >
+          <span>{{ 'issuance.history' | globalize }}</span>
+        </router-link>
+      </template>
+      <template
+        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
+        slot="extra"
       >
-        {{ 'issuance.upload-pre-issuance' | globalize }}
-      </button>
-      <button
-        v-ripple
-        class="issuance-btn"
-        @click="isCreateDrawerShown = true"
-      >
-        {{ 'issuance.create-issuance' | globalize }}
-      </button>
-    </template>
+        <button
+          v-ripple
+          class="issuance-btn"
+          @click="isPreIssuanceDrawerShown = true"
+        >
+          {{ 'issuance.upload-pre-issuance' | globalize }}
+        </button>
+        <button
+          v-ripple
+          class="issuance-btn"
+          @click="isCreateDrawerShown = true"
+        >
+          {{ 'issuance.create-issuance' | globalize }}
+        </button>
+      </template>
+    </top-bar>
     <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance' | globalize }}
@@ -98,6 +105,7 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
+import TopBar from '@/vue/common/TopBar'
 import CreateIssuanceForm from '@/vue/forms/CreateIssuanceForm'
 import UploadPreIssuanceForm from '@/vue/forms/UploadPreIssuanceForm'
 
@@ -115,6 +123,7 @@ export default {
   components: {
     Loader,
     Drawer,
+    TopBar,
     CreateIssuanceForm,
     UploadPreIssuanceForm
   },

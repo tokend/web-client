@@ -235,6 +235,11 @@
       "next": "Next",
       "lbl-pre-issuance": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
       "lbl-file-type": "Pre-issuance asset file (.iss)"
+    },
+
+    "file-field": {
+      "title": "Drop files here or click to browse",
+      "selected": "Selected file:"
     }
   }
 }

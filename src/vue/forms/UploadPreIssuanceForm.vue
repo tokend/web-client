@@ -8,6 +8,8 @@
         <file-field
           :label="'issuance.lbl-pre-issuance' | globalize"
           :note="'issuance.lbl-file-type' | globalize"
+          :accept="'.iss'"
+          v-model="preIssuanceFile"
         />
       </div>
     </div>
@@ -49,6 +51,9 @@ export default {
   props: {
     isShown: { type: Boolean, default: true }
   },
+  data: _ => ({
+    preIssuanceFile: null
+  }),
   computed: {
     ...mapGetters([
       vuexTypes.wallet

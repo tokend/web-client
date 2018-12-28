@@ -7,52 +7,56 @@
       <div
         class="file-input__file-preview"
         v-if="fileUrl">
-        <span>{{ fileUrl }}</span>
+        <span>{{ 'file-filed.selected' | globalize }}  {{ fileUrl }}</span>
       </div>
       <div class="file-input__input-inner">
         <div class="file-input__text">
-          <div class="title">{{ 'Drop files here or click to browse' }}</div>
+          <div class="title">{{ 'file-field.title' | globalize }}</div>
           <div class="notes">
             <p class="file-input__note">{{ note }}</p>
           </div>
         </div>
-        <input
-          type="file"
-          class="file-field__file-input"
-          :disabled="disabled"
-          :accept="accept"
-        >
       </div>
+      <input
+        type="file"
+        class="file-field__file-input"
+        :disabled="disabled"
+        :accept="accept"
+        @change="onChange"
+      >
     </div>
   </div>
 </template>
 
 <script>
+import { FileHelper } from '@/js/helpers/file.helper'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
 export default {
   name: 'file-field',
   props: {
     label: { type: String, default: '' },
     type: { type: String, default: 'default' },
-    private: { type: Boolean, default: false },
-    minSize: { type: Number, default: null },
-    maxSize: { type: Number, default: 5 },
-    minWidth: { type: Number, default: null },
-    minHeight: { type: Number, default: null },
-    accept: { type: String, default: 'image/png, image/jpeg' },
+    value: { type: Object, default: null },
+    accept: { type: String, default: '*' },
     note: { type: String, default: '' },
     fileType: { type: String, default: 'default' },
     disabled: { type: Boolean, default: false }
   },
-  computed: {
-    fileUrl () {
-      if (!this.value) return ''
-      if (this.value.file) {
-        return this.value.dataUrl
-      }
-      if (!this.private) {
-        return this.value.publicUrl
-      }
-      return this.value.privateUrl
+  data: _ => ({
+    fileUrl: ''
+  }),
+  methods: {
+    onChange (event) {
+      const file = FileHelper.deriveFileFromChangeEvent(event)
+      this.fileUrl = file.name
+
+      this.$emit('input', new DocumentContainer({
+        mimeType: file.type,
+        type: this.type,
+        name: file.name,
+        file: file
+      }))
     }
   }
 }
@@ -63,7 +67,6 @@ export default {
 @import '~@scss/mixins';
 
 .file-field {
-  position: relative;
   display: flex;
   flex-direction: column;
 }
@@ -74,21 +77,25 @@ export default {
   margin-bottom: 1.2rem;
 }
 
-.file-field__input {
-  width: .01rem;
-  height: .01rem;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-
 .file-input {
   border: .2rem dashed #c4c8cb;
   background-color: #f5f6f9;
   border-radius: .4rem;
   transition: .2s;
   width: 100%;
+  text-align: center;
+  position: relative;
+  min-height: 9.8rem;
+
+  input[type='file'] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+  }
 
   &:hover {
     border-color: $field-color-text;
@@ -96,26 +103,12 @@ export default {
 }
 
 .file-input__input-inner {
-  height: 9.4rem;
-  position: relative;
   overflow: hidden;
-  width: 100%;
-
-  input[type='file'] {
-    cursor: pointer;
-    opacity: 0;
-    height: 100%;
-    width: 100%;
-  }
+  margin-bottom: 1rem;
 }
 
 .file-input__text {
-  height: 100%;
-  left: 0;
-  position: absolute;
-  text-align: center;
-  top: .5rem;
-  width: 100%;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -134,10 +127,6 @@ export default {
 }
 
 .file-input__file-preview {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  overflow: hidden;
+  margin-top: 1rem;
 }
 </style>
