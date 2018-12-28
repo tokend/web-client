@@ -22,13 +22,12 @@
 import ChartRenderer from './Chart.Renderer'
 import ScaleTabs from './Chart.Tabs'
 
-import { chartsService } from 'L@/js/services/charts.service'
 import { errors } from '@tokend/js-sdk'
+import { Sdk } from '@/sdk'
 import config from '@/config'
 
 export default {
   name: 'chart',
-
   components: {
     ChartRenderer,
     ScaleTabs
@@ -83,12 +82,11 @@ export default {
       try {
         this.isActualData = true
         const response = this.quoteAsset
-          ? await chartsService.loadChartsForTokenPair(
-            this.lockedAssets.base,
-            this.lockedAssets.quote
+          ? await Sdk.horizon.charts.get(
+            `${this.lockedAssets.base}-${this.lockedAssets.quote}`
           )
-          : await chartsService.loadChartsForToken(this.lockedAssets.base)
-        this.data = response.data()
+          : await Sdk.horizon.charts.get(this.lockedAssets.base)
+        this.data = response.data
       } catch (error) {
         // ErrorHandler.process(e)
         if (error instanceof errors.NotFoundError) {

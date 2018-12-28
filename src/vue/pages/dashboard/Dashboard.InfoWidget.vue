@@ -93,15 +93,15 @@
                     <button
                       class="info-widget__list-body-item-btn"
                       @click="toggleDetails(i)">
-                      <md-icon
-                        class="info-widget__list-body-item-icon"
+                      <i
+                        class="mdi
+                              mdi-menu-down
+                              info-widget__list-body-item-icon"
                         :class="{
                           'info-widget__list-body-item-icon--active':
                             isSelected(i)
                         }"
-                      >
-                        keyboard_arrow_down
-                      </md-icon>
+                      />
                     </button>
                   </div>
                 </div>
@@ -109,10 +109,10 @@
                   class="info-widget__list-body-row
                          info-widget__list-body-row--details"
                   v-if="isSelected(i)">
-                  <record-details-viewer
+                  <!-- <record-details-viewer
                     class="info-widget__list-body-row-details"
                     :tx="tx"
-                  />
+                  /> -->
                 </div>
               </div>
             </template>
@@ -134,22 +134,19 @@
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { MatchRecord } from '@/js/records/operations/match.record'
-// FIXME: change it to actual
 import { PricesHelper } from '@/js/helpers/prices'
-// FIXME: change it to actual
 import config from '@/config'
 import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import RecordDetailsViewer from '@/vue/common/RecordDetailsViewer'
-// FIXME: change it to actual
-import EmailGetter from 'L@/vue/app/common/EmailGetter'
+// import RecordDetailsViewer from '@/vue/common/RecordDetailsViewer'
+import EmailGetter from '@/vue/common/EmailGetter'
 import get from 'lodash/get'
 
 export default {
   name: 'info-widget',
   components: {
     NoDataMessage,
-    RecordDetailsViewer,
+    // RecordDetailsViewer,
     EmailGetter
   },
   props: {
@@ -163,8 +160,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.transactions,
-      vuexTypes.userWalletTokens
+      vuexTypes.transactions
     ]),
     list () {
       return (get(this.transactions, `${this.currentAsset}.records`) || [])
@@ -215,7 +211,7 @@ export default {
   .info-widget__list {
     padding: 0 .4rem .6rem .4rem;
 
-    @include respond-to-custom(130rem) {
+    @include respond-to-custom(1300px) {
       overflow-x: auto;
     }
   }
@@ -282,7 +278,7 @@ export default {
         left: -2.5rem;
       }
 
-      @include respond-to-custom(80rem) {
+      @include respond-to-custom(800px) {
         left: -2.1rem;
       }
 

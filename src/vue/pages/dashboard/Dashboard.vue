@@ -13,16 +13,16 @@
       />
       <template v-if="currentAsset">
         <div class="dashboard__chart">
-          <!-- <chart
+          <chart
             v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
             :base-asset="currentAsset"
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
-          /> -->
+          />
         </div>
-        <!-- <info-widget
+        <info-widget
           class="dashboard__activity"
           :current-asset="currentAsset"
-        /> -->
+        />
       </template>
     </template>
     <drawer :is-shown.sync="createIssuanceFormIsShown">
@@ -34,8 +34,8 @@
 <script>
 import PortfolioWidget from './Dashboard.PortfolioWidget'
 import CreateIssuance from '@/vue/forms/CreateIssuanceForm'
-// import InfoWidget from './Dashboard.InfoWidget'
-// import Chart from '@/vue/common/chart/Chart'
+import InfoWidget from './Dashboard.InfoWidget'
+import Chart from '@/vue/common/chart/Chart'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
@@ -47,8 +47,8 @@ export default {
   components: {
     PortfolioWidget,
     CreateIssuance,
-    // InfoWidget,
-    // Chart,
+    InfoWidget,
+    Chart,
     Loader,
     Drawer
   },
@@ -77,14 +77,14 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadBalances: vuexTypes.GET_ACCOUNT_BALANCES
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
     }),
     setCurrentAsset (value) {
       const regExp = /\(([^)]+)\)/
       if (value) {
         this.currentAsset = regExp.exec(value)[1]
       } else {
-        const keys = Object.keys(this.accountBalances)
+        const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
           keys.filter(a => a === 'ETH')[0] || keys[0] || null
       }

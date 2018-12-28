@@ -1,10 +1,6 @@
 <template>
   <div class="no-data-message">
-    <md-icon
-      v-if="iconName"
-      class="md-size-4x">
-      {{ iconName }}
-    </md-icon>
+    <i v-if="iconName" :class="`mdi mdi-${iconName}`" />
     <h2>{{ msgTitle }}</h2>
     <p>{{ msgMessage }}</p>
   </div>
@@ -39,8 +35,8 @@ export default {
     color: $col-no-data-message-description;
   }
 
-  .md-icon {
-    color: $col-no-data-message-icon-color !important;
+  i {
+    color: $col-no-data-message-icon-color;
   }
 }
 </style>

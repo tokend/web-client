@@ -57,7 +57,8 @@ export const getters = {
   [vuexTypes.accountKycBlobId]: state => _get(
     state.account,
     'accountKyc.kycData.blobId'
-  )
+  ),
+  [vuexTypes.accountBalances]: state => state.balancesDetails
 }
 
 export default {

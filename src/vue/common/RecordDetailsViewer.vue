@@ -14,9 +14,10 @@
         </template>
 
         <template v-else-if="value.processor === 'convert'">
-          <converted-amount-getter
+          <!-- <converted-amount-getter
             :amount="value.processorArg.amount"
-            :asset="value.processorArg.asset" />
+            :asset="value.processorArg.asset"
+          /> -->
         </template>
 
         <template v-else>
@@ -35,13 +36,13 @@ import { translate } from 'L@/vue/common/filters/translate'
 import cloneDeep from 'lodash/cloneDeep'
 import snakeCase from 'lodash/snakeCase'
 
-import EmailGetter from 'L@/vue/app/common/EmailGetter'
-import ConvertedAmountGetter from 'L@/vue/app/common/ConvertedAmountGetter'
+import EmailGetter from '@/vue/common/EmailGetter'
+// import ConvertedAmountGetter from 'L@/vue/app/common/ConvertedAmountGetter'
 
 export default {
   components: {
-    EmailGetter,
-    ConvertedAmountGetter
+    EmailGetter
+    // ConvertedAmountGetter
   },
   filters: {
     processor (tx, { name, arg }) {

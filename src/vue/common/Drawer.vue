@@ -8,7 +8,7 @@
             <slot name="heading" />
           </h2>
           <button class="app__button-icon" @click="closeSelf">
-            <md-icon>close</md-icon>
+            <i class="mdi mdi-close" />
           </button>
         </div>
         <div class="drawer__body">

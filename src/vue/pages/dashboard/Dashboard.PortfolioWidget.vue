@@ -42,12 +42,16 @@
         <div class="portfolio-widget__asset-available">
           <div class="portfolio-widget__asset-value">
             <span class="portfolio-widget__asset-value-main">
-              {{ balance | formatMoney({ currency: currentAsset }) }}
+              {{
+                currentAssetBalanceDetails.balance | formatMoney({
+                  currency: currentAsset
+                })
+              }}
             </span>
             <span class="portfolio-widget__asset-value-secondary">
               &asymp;
               {{
-                convertedBalance | formatMoney({
+                currentAssetBalanceDetails.convertedBalance | formatMoney({
                   currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
                 })
               }}
@@ -56,12 +60,16 @@
           <div class="portfolio-widget__asset-subvalue">
             <span class="portfolio-widget__asset-value-secondary">
               {{ 'tx-history.locked' | globalize }}
-              {{ locked | formatMoney({ currency: currentAsset }) }}
+              {{
+                currentAssetBalanceDetails.locked | formatMoney({
+                  currency: currentAsset
+                })
+              }}
             </span>
             <span class="portfolio-widget__asset-value-secondary">
               &asymp;
               {{
-                convertedLocked | formatMoney({
+                currentAssetBalanceDetails.convertedLocked | formatMoney({
                   currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
                 })
               }}
@@ -86,8 +94,9 @@ import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 // FIXME: move XDR-dependent object imports to sdk
 import { ASSET_POLICIES, ACCOUNT_TYPES } from '@/js/const/xdr.const'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { Sdk } from '@/sdk'
 import get from 'lodash/get'
 
 const EVENTS = {
@@ -117,6 +126,7 @@ export default {
       year: 'year',
       all: 'all'
     },
+    tokens: [],
     config,
     ASSET_POLICIES,
     ACCOUNT_TYPES
@@ -125,12 +135,12 @@ export default {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
       accountTypeI: vuexTypes.accountTypeI,
-      userTransferableTokens: vuexTypes.userTransferableTokens,
-      tokens: vuexTypes.tokens
+      userTransferableTokens: vuexTypes.userTransferableTokens
     }),
     tokensList () {
+      const balances = this.balances.map(i => i.asset)
       const tokens = this.tokens
-        .filter(token => Object.keys(this.balances).includes(token.code))
+        .filter(token => balances.includes(token.code))
       const baseAssets = tokens
         .filter(token => token.policies.includes(ASSET_POLICIES.baseAsset))
         .sort((a, b) => a.code.localeCompare(b.code))
@@ -146,23 +156,15 @@ export default {
       return this.tokens.filter(token => token.code === this.currentAsset)
         .map(item => `${item.name} (${item.code})`)[0]
     },
-    balance () {
-      return get(this.balances, `${this.currentAsset}.balance`) || 0
-    },
-    convertedBalance () {
-      return get(this.balances, `${this.currentAsset}.converted_balance`) || 0
-    },
-    locked () {
-      return get(this.balances, `${this.currentAsset}.locked`) || 0
-    },
-    convertedLocked () {
-      return get(this.balances, `${this.currentAsset}.converted_locked`) || 0
+    currentAssetBalanceDetails () {
+      return this.balances
+        .find(i => i.asset === this.currentAsset).balance || {}
     },
     imgUrl () {
       const defaultUrl = '../../../../../static/coin-picture.png'
       const logoKey = get(
-        this.balances,
-        `${this.currentAsset}.asset_details.details.logo.key`
+        this.balances.find(i => i.asset === this.currentAsset),
+        'asset_details.details.logo.key'
       )
       if (logoKey) {
         return `${config.FILE_STORAGE}/${logoKey}`
@@ -179,9 +181,9 @@ export default {
     await this.loadTokens()
   },
   methods: {
-    ...mapActions({
-      loadTokens: vuexTypes.GET_ALL_TOKENS
-    })
+    async loadTokens () {
+      this.tokens = (await Sdk.horizon.assets.getAll()).data
+    }
   }
 }
 </script>
@@ -190,14 +192,36 @@ export default {
 @import "~@scss/variables.scss";
 @import "~@scss/mixins.scss";
 
-$custom-breakpoint: 80rem;
+$custom-breakpoint-small: 540px;
+$custom-breakpoint: 800px;
+$custom-breakpoint-medium: 870px;
+
+.portfolio-widget {
+  @include respond-to-custom($custom-breakpoint-medium) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 
 .portfolio-widget__wrapper {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
-  @include respond-to-custom($custom-breakpoint) {
-    flex-direction: column-reverse;
+  @include respond-to-custom($custom-breakpoint-medium) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @include respond-to(tablet) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  @include respond-to-custom($custom-breakpoint-small) {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -218,6 +242,18 @@ $custom-breakpoint: 80rem;
   display: flex;
   align-items: center;
   margin-right: 1.6rem;
+
+  @include respond-to-custom($custom-breakpoint-medium) {
+    margin-bottom: 2.4rem;
+  }
+
+  @include respond-to(tablet) {
+    margin-bottom: 0;
+  }
+
+  @include respond-to-custom($custom-breakpoint-small) {
+    margin-bottom: 2.4rem;
+  }
 }
 
 .portfolio-widget__select-picture {

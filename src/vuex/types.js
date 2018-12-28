@@ -23,6 +23,7 @@ const actions = {
   // account
   LOAD_ACCOUNT: 'LOAD_ACCOUNT',
   LOAD_ACCOUNT_BALANCES_DETAILS: 'LOAD_ACCOUNT_BALANCES_DETAILS',
+  LOAD_BALANCE_ID_BY_EMAIL: 'LOAD_BALANCE_ID_BY_EMAIL',
 
   // wallet
   LOAD_WALLET: 'LOAD_WALLET',
@@ -53,7 +54,7 @@ const getters = {
   accountReferrals: 'accountReferrals',
   accountPoliciesTypeI: 'accountPoliciesTypeI',
   accountPoliciesTypes: 'accountPoliciesTypes',
-  // accountBalances: 'accountBalances', FIXME: tmp-hidden
+  accountBalances: 'accountBalances',
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycBlobId: 'accountKycBlobId',
 

@@ -25,7 +25,7 @@
  * renders the qr-code and copyable field for it
  */
 import QrCode from 'vue-qr'
-import ClipboardField from '../fields/ClipboardField'
+import ClipboardField from '@/vue/fields/ClipboardField'
 
 export default {
   name: 'key-viewer',

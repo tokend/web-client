@@ -1,4 +1,5 @@
 const featureFlags = {
+  dashboard: true,
   fees: true
 }
 

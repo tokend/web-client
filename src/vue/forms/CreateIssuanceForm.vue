@@ -109,6 +109,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { Sdk } from '@/Sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 // import { issuanceService } from 'L@/js/services/issuances.service'
@@ -150,7 +151,8 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountOwnedTokens,
-      vuexTypes.accountTypeI
+      vuexTypes.accountTypeI,
+      vuexTypes.walletEmail
     ]),
     accountOwnedTokenCodes () {
       return this.accountOwnedTokens.map(item => item.asset)
@@ -172,19 +174,10 @@ export default {
       if (!await this._isFormValid()) return
       this.disable()
       try {
-        // const receiver = await accountsService.loadBalanceIdByEmail(
+        // const receiver = await this.loadBalanceIdByEmailAndCode(
         //   this.request.receiver,
         //   this.request.code
         // )
-        // await issuanceService.createIssuanceRequest({
-        //   token: this.request.code,
-        //   amount: this.request.amount,
-        //   receiver: receiver,
-        //   reference: this.request.reference,
-        //   externalDetails: {}
-        // })
-        // Bus.success('create-issuance-form.submit-success')
-        // this.rerenderForm()
       } catch (error) {
         if (error.constructor === errors.NotFoundError) {
           Bus.error(
@@ -198,6 +191,18 @@ export default {
         ErrorHandler.process(error)
       }
       this.enable()
+    },
+
+    async loadBalanceIdByEmailAndCode (email, assetCode) {
+      const accountId =
+        (await Sdk.api.users.getPage({ email: email })).data[0].id
+
+      const balanceId = (await Sdk.horizon.balances.getPage({
+        account: accountId,
+        asset: assetCode
+      })).data[0].balanceId
+
+      return balanceId
     },
 
     setTokenCode () {

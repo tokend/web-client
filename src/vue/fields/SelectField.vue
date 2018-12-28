@@ -20,11 +20,10 @@
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
       <div>
-        <md-icon
-          class="select-field__selected-icon"
-          :class="{ 'select-field__selected-icon--active': isExpanded }">
-          keyboard_arrow_down
-        </md-icon>
+        <i
+          class="mdi mdi-menu-down select-field__selected-icon"
+          :class="{ 'select-field__selected-icon--active': isExpanded }"
+        />
       </div>
     </button>
     <div

@@ -63,7 +63,7 @@ export const router = new Router({
       component: resolve => require(['@/vue/AppContent'], resolve),
       featureFlag: config.FEATURE_FLAGS.fees,
       beforeEnter: inAppRouteGuard,
-      redirect: vueRoutes.fees,
+      redirect: vueRoutes.dashboard,
       children: [
         {
           path: '/dashboard',

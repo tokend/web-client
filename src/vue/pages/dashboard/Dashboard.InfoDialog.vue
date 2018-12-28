@@ -8,10 +8,10 @@
     </md-dialog-title>
 
     <div class="app__dialog-inner">
-      <record-details-viewer
+      <!-- <record-details-viewer
         class="info-dialog__history"
         :tx="dialogValues"
-      />
+      /> -->
     </div>
 
     <md-dialog-actions class="info-dialog__actions">
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import RecordDetailsViewer from '@/vue/common/RecordDetailsViewer'
+// import RecordDetailsViewer from '@/vue/common/RecordDetailsViewer'
 
 const EVENTS = {
   closeDealog: 'close-dialog'
@@ -34,7 +34,7 @@ const EVENTS = {
 
 export default {
   name: 'info-dialog',
-  components: { RecordDetailsViewer },
+  // components: { RecordDetailsViewer },
   props: {
     showDialog: { type: Boolean, default: false },
     dialogValues: { type: Object, default: () => {} }
