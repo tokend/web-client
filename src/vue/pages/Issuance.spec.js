@@ -28,8 +28,10 @@ localVue.filter('formatMoney', formatMoney)
 describe('Issuance component unit test', () => {
   let issuanceHistorySampleData
   let mockHelper
+
   let operationsResource
   let usersResource
+
   let getters
   let store
   let wrapper
@@ -42,16 +44,15 @@ describe('Issuance component unit test', () => {
       ...walletModule.getters,
       ...accountModule.getters
     }
+
     issuanceHistorySampleData = [{
-      participants: [
-        {
-          accountId: mockHelper.getMockWallet().accountId
-        },
-        {
-          accountId: ''
-        }
-      ]
+      participants: [{
+        accountId: mockHelper.getMockWallet().accountId
+      }, {
+        accountId: ''
+      }]
     }]
+
     sinon.stub(getters, vuexTypes.wallet).returns(
       mockHelper.getMockWallet()
     )
@@ -82,15 +83,14 @@ describe('Issuance component unit test', () => {
 
     await wrapper.vm.loadIssuanceHistory()
 
-    expect(
-      spy
-        .withArgs({
-          account_id: mockHelper.getMockWallet().accountId,
-          operation_type: OPERATION_TYPES.createIssuanceRequest,
-          limit: 200
-        })
-        .calledOnce)
-      .to.be.true
+    expect(spy
+      .withArgs({
+        account_id: mockHelper.getMockWallet().accountId,
+        operation_type: OPERATION_TYPES.createIssuanceRequest,
+        limit: 200
+      })
+      .calledOnce
+    ).to.be.true
   })
 
   it('loadCounterpartyEmails() calls the api.users.get() with the correct params', async () => {
@@ -103,11 +103,10 @@ describe('Issuance component unit test', () => {
 
     await wrapper.vm.loadCounterpartyEmails()
 
-    expect(
-      spy
-        .withArgs(issuanceHistorySampleData[0].participants[1].accountId)
-        .calledOnce)
-      .to.be.true
+    expect(spy
+      .withArgs(issuanceHistorySampleData[0].participants[1].accountId)
+      .calledOnce
+    ).to.be.true
   })
 
   it('loadIssuanceHistory() method is called inside created hook', () => {

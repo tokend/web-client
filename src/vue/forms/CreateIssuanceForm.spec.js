@@ -142,6 +142,7 @@ describe('CreateIssuanceForm component unit test', () => {
       store = new Vuex.Store({
         getters
       })
+
       sinon.stub(CreateIssuanceForm, 'created').resolves()
       wrapper = shallowMount(CreateIssuanceForm, {
         store,
@@ -159,11 +160,10 @@ describe('CreateIssuanceForm component unit test', () => {
 
       await wrapper.vm.loadUserOwnedTokens()
 
-      expect(
-        spy
-          .withArgs(mockHelper.getMockAccount().id)
-          .calledOnce)
-        .to.be.true
+      expect(spy
+        .withArgs(mockHelper.getMockAccount().id)
+        .calledOnce
+      ).to.be.true
     })
 
     it('loadUserOwnedTokens() method is called inside created hook', () => {
@@ -195,6 +195,15 @@ describe('CreateIssuanceForm component unit test', () => {
       })
       expect(wrapper.vm.ownedTokenAssets)
         .to.deep.equal(['Bitcoin (BTC)', 'Ethereum (ETH)'])
+    })
+
+    it('availableTokensAmount returns available tokens for issuance', () => {
+      wrapper.setData(sampleIssuanceData)
+      expect(wrapper.vm.availableTokensAmount)
+        .to.deep.equal({
+          value: sampleIssuanceData.userOwnedTokens[0].availableForIssuance,
+          currency: sampleIssuanceData.userOwnedTokens[0].code
+        })
     })
 
     it('submit() loads receiver account info with provided credentials', async () => {

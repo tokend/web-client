@@ -25,7 +25,6 @@
         <div class="issuance-form__amount">
           <input-field
             type="number"
-            step="0.00001"
             v-model="form.amount"
             @blur="touchField('form.amount')"
             id="create-issuance-amount"

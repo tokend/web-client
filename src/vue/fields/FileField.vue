@@ -31,6 +31,9 @@
 <script>
 import { FileHelper } from '@/js/helpers/file.helper'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Bus } from '@/js/helpers/event-bus'
+
+const MAX_FILE_MEGABYTES = 5
 
 export default {
   name: 'file-field',
@@ -38,18 +41,26 @@ export default {
     label: { type: String, default: '' },
     type: { type: String, default: 'default' },
     accept: { type: String, default: '*' },
-    note: { type: String, default: '' },
+    maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
+    note: { type: String, default: 'All files' },
     fileType: { type: String, default: 'default' },
     disabled: { type: Boolean, default: false }
   },
   data: _ => ({
     fileUrl: ''
   }),
+  computed: {
+    maxSizeBytes () {
+      return this.maxSize * 1024 * 1024
+    }
+  },
   methods: {
     onChange (event) {
       const file = FileHelper.deriveFileFromChangeEvent(event)
 
       if (file) {
+        if (!this.isValidFileSize(file)) return
+
         this.fileUrl = file.name
         this.$emit('input', new DocumentContainer({
           mimeType: file.type,
@@ -57,7 +68,22 @@ export default {
           name: file.name,
           file: file
         }))
+      } else {
+        this.clear()
       }
+    },
+    isValidFileSize (file) {
+      if (file.size > this.maxSizeBytes) {
+        Bus.error('errors.max-size-exceeded')
+        this.clear()
+        return false
+      }
+
+      return true
+    },
+    clear () {
+      this.$el.querySelector('input').value = ''
+      this.fileUrl = ''
     }
   }
 }

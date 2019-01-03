@@ -96,12 +96,13 @@ export default {
     ])
   },
   watch: {
-    'documents.preIssuance': async value => {
+    'documents.preIssuance': async function (value) {
       if (value) {
         const extracted = await FileHelper.readFileAsText(value.file)
         try {
           this.parsePreIssuances(JSON.parse(extracted).issuances)
         } catch (e) {
+          console.error(e)
           Bus.error('errors.file-corrupted')
         }
       }

@@ -123,6 +123,8 @@ import { vuexTypes } from '@/vuex'
 
 import { errors } from '@tokend/js-sdk'
 
+const PAGE_LIMIT = 200
+
 export default {
   name: 'issuance',
   components: {
@@ -157,7 +159,7 @@ export default {
         const response = await Sdk.horizon.operations.getPage({
           account_id: this[vuexTypes.account].id,
           operation_type: OPERATION_TYPES.createIssuanceRequest,
-          limit: 200
+          limit: PAGE_LIMIT
         })
         this.issuanceHistory = response.data
       } catch (error) {
