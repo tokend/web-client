@@ -172,15 +172,15 @@ export default {
         : participants[0].accountId
     },
     async loadCounterpartyEmails () {
-      this.issuanceHistory.forEach(async issuance => {
-        const counterpartyId = this.getCounterpartyId(issuance)
+      for (let i = 0; i < this.issuanceHistory.length; i++) {
+        const counterpartyId = this.getCounterpartyId(this.issuanceHistory[i])
         const response = await Sdk.api.users.get(counterpartyId)
           .catch(error => error)
         const counterparty = response instanceof errors.NotFoundError
           ? counterpartyId
           : response.data.email
-        this.$set(issuance, 'counterparty', counterparty)
-      })
+        this.$set(this.issuanceHistory[i], 'counterparty', counterparty)
+      }
     }
   }
 }
