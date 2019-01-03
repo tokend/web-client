@@ -1,6 +1,5 @@
 import CreateIssuanceForm from './CreateIssuanceForm'
 
-import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
@@ -8,19 +7,17 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 import { MockHelper, MockWrapper } from '@/test'
 
+import { ripple } from '@/vue/directives/ripple'
 import { globalize } from '@/vue/filters/globalize'
 import { formatMoney } from '@/vue/filters/formatMoney'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 
-// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
-// Vue 2.6 so everything get fixed
-Vue.config.silent = true
-
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
+localVue.directive('ripple', ripple)
 localVue.filter('globalize', globalize)
 localVue.filter('formatMoney', formatMoney)
 
@@ -181,7 +178,7 @@ describe('CreateIssuanceForm component unit test', () => {
       expect(spy.calledOnce).to.be.true
     })
 
-    it('loadUserOwnedTokens() changes fees data after loading', async () => {
+    it('loadUserOwnedTokens() changes user tokens data after loading', async () => {
       sinon.stub(accountResource, 'getDetails').resolves(
         MockWrapper.makeHorizonResponse([sampleBalanceData])
       )

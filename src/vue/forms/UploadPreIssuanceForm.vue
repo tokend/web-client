@@ -96,7 +96,7 @@ export default {
     ])
   },
   watch: {
-    'documents.preIssuance': async function (value) {
+    'documents.preIssuance': async value => {
       if (value) {
         const extracted = await FileHelper.readFileAsText(value.file)
         try {
@@ -133,11 +133,11 @@ export default {
           .createPreIssuanceRequestOp({
             request: issuance.xdr
           })
-
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('status-message.pre-issuance-uploaded')
         this.closeForm()
       } catch (e) {
+        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
@@ -146,16 +146,15 @@ export default {
       this.$emit('update:isShown', false)
     },
     parsePreIssuances (issuances) {
-      const items = issuances
-        .map(function (item) {
-          const _xdr = base.xdr.PreIssuanceRequest.fromXDR(item.preEmission, 'hex')
-          const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
-          result.xdr = _xdr
-          result.isUsed = item.used
-          return result
-        }).filter(item => {
-          return !this.issuances.find(el => el.reference === item.reference)
-        })
+      const items = issuances.map(item => {
+        const _xdr = base.xdr.PreIssuanceRequest.fromXDR(item.preEmission, 'hex')
+        const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
+        result.xdr = _xdr
+        result.isUsed = item.used
+        return result
+      }).filter(item => {
+        return !this.issuances.find(el => el.reference === item.reference)
+      })
       for (let i = 0; i < items.length; i++) {
         const assetCode = items[i].asset
         if (!this.isAssetDefined(assetCode)) {
@@ -169,8 +168,9 @@ export default {
       this.enableForm()
     },
     isAssetDefined (assetCode) {
-      return !!this.userOwnedTokens
+      return Boolean(this.userOwnedTokens
         .filter(item => item.code === assetCode).length
+      )
     },
     isNullAssetSigner (asset) {
       const nullSigner = this.userOwnedTokens.filter(item =>

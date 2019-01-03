@@ -1,6 +1,5 @@
 import Issuance from './Issuance'
 
-import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 
@@ -13,16 +12,16 @@ import accountModule from '@/vuex/account.module'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
+import { ripple } from '@/vue/directives/ripple'
 import { globalize } from '@/vue/filters/globalize'
 import { formatMoney } from '@/vue/filters/formatMoney'
 
 import { MockHelper, MockWrapper } from '@/test'
 
-Vue.config.silent = true
-
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 localVue.use(Vuex)
+localVue.directive('ripple', ripple)
 localVue.filter('globalize', globalize)
 localVue.filter('formatMoney', formatMoney)
 
