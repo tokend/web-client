@@ -33,19 +33,19 @@
             :error-message="getFieldErrorMessage('form.amount')"
           />
           <div
-            v-if="availableAmount"
+            v-if="availableTokensAmount"
             class="issuance-form__amount-label"
           >
-            <span>{{ availableAmount.currency }}</span>
+            <span>{{ availableTokensAmount.currency }}</span>
           </div>
         </div>
         <div
-          v-if="availableAmount"
+          v-if="availableTokensAmount"
           class="issuance-form__available"
         >
           <span>
             {{ 'issuance.available-for-issuance' | globalize }}
-            {{ availableAmount | formatMoney }}
+            {{ availableTokensAmount | formatMoney }}
           </span>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default {
           required,
           amount: between(
             0.000001,
-            this.availableAmount ? this.availableAmount.value : 0
+            this.availableTokensAmount ? this.availableTokensAmount.value : 0
           )
         },
         email: { required, email },
@@ -153,7 +153,7 @@ export default {
         )
       }
     },
-    availableAmount () {
+    availableTokensAmount () {
       if (this.userOwnedTokens && this.form.asset) {
         const token = this.userOwnedTokens.filter(token =>
           `${token.details.name} (${token.code})` === this.form.asset

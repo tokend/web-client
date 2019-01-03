@@ -65,8 +65,13 @@
           </thead>
           <tbody>
             <tr v-for="issuance in issuanceHistory" :key="issuance.id">
-              <td>
+              <td v-if="issuance.counterparty">
                 {{ issuance.counterparty }}
+              </td>
+              <td v-else>
+                <loader
+                  :message-id="'issuance.lbl-loading'"
+                />
               </td>
               <td>
                 {{
@@ -142,8 +147,8 @@ export default {
   },
   async created () {
     await this.loadIssuanceHistory()
-    await this.loadCounterpartyEmails()
     this.isLoaded = true
+    await this.loadCounterpartyEmails()
   },
   methods: {
     async loadIssuanceHistory () {
@@ -167,21 +172,14 @@ export default {
         : participants[0].accountId
     },
     async loadCounterpartyEmails () {
-      const counterpartyIds = this.issuanceHistory.map(issuance =>
-        this.getCounterpartyId(issuance)
-      )
-      const counterpartyEmails = (await Promise.all(
-        counterpartyIds.map(async id =>
-          Sdk.api.users.get(id)
-            .catch(error => error)
-        )
-      )).map((response, i) => {
-        return response instanceof errors.NotFoundError
-          ? counterpartyIds[i]
+      this.issuanceHistory.forEach(async issuance => {
+        const counterpartyId = this.getCounterpartyId(issuance)
+        const response = await Sdk.api.users.get(counterpartyId)
+          .catch(error => error)
+        const counterparty = response instanceof errors.NotFoundError
+          ? counterpartyId
           : response.data.email
-      })
-      this.issuanceHistory.map((issuance, i) => {
-        issuance.counterparty = counterpartyEmails[i]
+        this.$set(issuance, 'counterparty', counterparty)
       })
     }
   }

@@ -185,7 +185,10 @@ describe('CreateIssuanceForm component unit test', () => {
       sinon.stub(accountResource, 'getDetails').resolves(
         MockWrapper.makeHorizonResponse([sampleBalanceData])
       )
+      wrapper.setData({ userOwnedTokens: null })
+
       await wrapper.vm.loadUserOwnedTokens()
+
       expect(wrapper.vm.userOwnedTokens).to.not.equal(null)
     })
 
