@@ -149,11 +149,12 @@ export default {
     ownedTokenAssets () {
       if (this.userOwnedTokens) {
         return this.userOwnedTokens.map(token =>
-          `${token.details.name} (${token.code})`)
+          `${token.details.name} (${token.code})`
+        )
       }
     },
     availableAmount () {
-      if (this.form.asset) {
+      if (this.userOwnedTokens && this.form.asset) {
         const token = this.userOwnedTokens.filter(token =>
           `${token.details.name} (${token.code})` === this.form.asset
         )[0]
@@ -216,6 +217,7 @@ export default {
         Bus.success('status-message.tokens-issued')
         this.closeForm()
       } catch (e) {
+        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()

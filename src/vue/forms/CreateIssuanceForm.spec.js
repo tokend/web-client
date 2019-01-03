@@ -6,14 +6,10 @@ import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
-// import { TestHelper } from '@/test/test-helper'
 import { MockHelper, MockWrapper } from '@/test'
 
 import { globalize } from '@/vue/filters/globalize'
 import { formatMoney } from '@/vue/filters/formatMoney'
-
-// import { errors } from '@tokend/js-sdk'
-// import { Bus } from '@/js/helpers/event-bus'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
@@ -66,21 +62,16 @@ describe('CreateIssuanceForm component unit test', () => {
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
         const spy = sinon.stub(wrapper.vm, 'touchField')
-        wrapper
-          .find(selector)
-          .vm
-          .$emit('blur')
 
-        expect(spy.calledOnce)
-          .to
-          .be
-          .true
+        wrapper.find(selector).vm.$emit('blur')
+
+        expect(spy.calledOnce).to.be.true
       })
     }
   })
 
   describe('methods', () => {
-    const sampleData = {
+    const sampleIssuanceData = {
       form: {
         asset: 'Bitcoin (BTC)',
         amount: 10,
@@ -101,14 +92,52 @@ describe('CreateIssuanceForm component unit test', () => {
         availableForIssuance: 200
       }]
     }
+
     let wrapper
     let mockHelper
+
     let accountResource
+    let spyLoadReceiverInfo
+    let spyLoadBalances
+    let spySubmitOperations
+
+    let sampleReceiverData
+    let sampleBalanceData
+
     let store
 
     beforeEach(() => {
       mockHelper = new MockHelper()
+
       accountResource = mockHelper.getHorizonResourcePrototype('account')
+      const usersResource = mockHelper.getApiResourcePrototype('users')
+      const transactionsResource =
+        mockHelper.getHorizonResourcePrototype('transactions')
+
+      sampleReceiverData = {
+        data: [{
+          id: mockHelper.getMockAccount().id,
+          attributes: {
+            email: 'foo@bar.com'
+          }
+        }]
+      }
+      sampleBalanceData = {
+        asset: 'BTC',
+        balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV',
+        assetDetails: {
+          owner: mockHelper.getMockAccount().id,
+          ...sampleIssuanceData.userOwnedTokens[0]
+        }
+      }
+
+      spyLoadReceiverInfo = sinon.stub(usersResource, 'getPage')
+        .resolves(MockWrapper.makeApiResponse(sampleReceiverData))
+      spyLoadBalances = sinon.stub(accountResource, 'getBalances')
+        .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
+      spySubmitOperations = sinon.stub(transactionsResource,
+        'submitOperations').resolves()
+
       const getters = accountModule.getters
       sinon.stub(getters, vuexTypes.account)
         .returns(mockHelper.getMockAccount())
@@ -119,20 +148,16 @@ describe('CreateIssuanceForm component unit test', () => {
       sinon.stub(CreateIssuanceForm, 'created').resolves()
       wrapper = shallowMount(CreateIssuanceForm, {
         store,
-        localVue
+        localVue,
+        data: _ => Object.assign({}, sampleIssuanceData),
+        sync: false
       })
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
 
     it('loadUserOwnedTokens() calls the horizon.account.getDetails() with the correct params', async () => {
-      const responseData = [{
-        assetDetails: {
-          owner: mockHelper.getMockAccount().id,
-          ...sampleData.userOwnedTokens[0]
-        }
-      }]
       const spy = sinon.stub(accountResource, 'getDetails').resolves(
-        MockWrapper.makeHorizonResponse(responseData)
+        MockWrapper.makeHorizonResponse([sampleBalanceData])
       )
 
       await wrapper.vm.loadUserOwnedTokens()
@@ -150,36 +175,47 @@ describe('CreateIssuanceForm component unit test', () => {
 
       shallowMount(CreateIssuanceForm, {
         store,
-        localVue,
-        data: _ => sampleData,
-        sync: false
+        localVue
       })
 
       expect(spy.calledOnce).to.be.true
     })
 
     it('loadUserOwnedTokens() changes fees data after loading', async () => {
-      const responseData = [{
-        assetDetails: {
-          owner: mockHelper.getMockAccount().id,
-          ...sampleData.userOwnedTokens[0]
-        }
-      }]
       sinon.stub(accountResource, 'getDetails').resolves(
-        MockWrapper.makeHorizonResponse(responseData)
+        MockWrapper.makeHorizonResponse([sampleBalanceData])
       )
-
       await wrapper.vm.loadUserOwnedTokens()
-
       expect(wrapper.vm.userOwnedTokens).to.not.equal(null)
     })
 
     it('ownedTokenAssets returns formatted owned assets', () => {
       wrapper.setData({
-        userOwnedTokens: sampleData.userOwnedTokens
+        userOwnedTokens: sampleIssuanceData.userOwnedTokens
       })
       expect(wrapper.vm.ownedTokenAssets)
         .to.deep.equal(['Bitcoin (BTC)', 'Ethereum (ETH)'])
+    })
+
+    it('submit() loads receiver account info with provided credentials', async () => {
+      await wrapper.vm.submit()
+      expect(spyLoadReceiverInfo
+        .withArgs({ email: sampleIssuanceData.form.email })
+        .called
+      ).to.be.true
+    })
+
+    it('submit() loads receiver balances info with provided credentials', async () => {
+      await wrapper.vm.submit()
+      expect(spyLoadBalances
+        .withArgs(sampleReceiverData.data[0].id)
+        .calledOnce
+      ).to.be.true
+    })
+
+    it('submit() calls horizon.submitOperations()', async () => {
+      await wrapper.vm.submit()
+      expect(spySubmitOperations.calledOnce).to.be.true
     })
   })
 })
