@@ -1,4 +1,8 @@
 const mutations = {
+  // root
+  CLEAR_STATE: 'CLEAR_STATE',
+  POP_STATE: 'POP_STATE',
+
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
   SET_ACCOUNT_BALANCES_DETAILS: 'SET_ACCOUNT_BALANCES_DETAILS',
@@ -34,6 +38,9 @@ const actions = {
 }
 
 const getters = {
+  // root
+  isLoggedIn: 'isLoggedIn',
+
   // account
   account: 'account',
   accountId: 'accountId',

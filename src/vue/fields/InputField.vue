@@ -78,12 +78,12 @@ export default {
   @include text-font-sizes;
 
   &:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 50px $field-color-background
+    -webkit-box-shadow: inset 0 0 0 5rem $field-color-background
     // autofill hack
   }
 
   &--autofill-white:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 50px $col-block-bg !important;
+    -webkit-box-shadow: inset 0 0 0 5rem $col-block-bg !important;
   }
 }
 

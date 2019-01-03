@@ -48,14 +48,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~L@scss/variables';
+  @import '~@scss/variables';
 
   .radio-field {
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 8px 0;
-    margin: 8px 0;
+    padding: .8rem 0;
+    margin: .8rem 0;
   }
 
   .radio-field__input {
@@ -67,10 +67,10 @@ export default {
       &:after {
         content: '';
         position: absolute;
-        top: 3px;
-        left: 3px;
-        width: 7px;
-        height: 7px;
+        top: .3rem;
+        left: .3rem;
+        width: .7rem;
+        height: .7rem;
         background-color: $col-radio-field-border;
         border-radius: 50%;
       }
@@ -78,11 +78,11 @@ export default {
   }
 
   .radio-field__input-custom {
-    width: 15px;
-    height: 15px;
+    width: 1.5rem;
+    height: 1.5rem;
     background-color: $col-radio-field-background;
-    border: 1px solid $col-radio-field-border;
+    border: .1rem solid $col-radio-field-border;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: .8rem;
   }
 </style>

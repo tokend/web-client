@@ -41,6 +41,10 @@ describe('StatusMessage component test', () => {
       })
     })
 
+    after(() => {
+      TestHelper.resetTranslations()
+    })
+
     const expectedResults = {
       [Bus.eventList.warning]: 'Warning label',
       [Bus.eventList.success]: 'Success label',

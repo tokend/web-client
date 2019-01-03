@@ -38,7 +38,14 @@
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
       "calendar":  "{{value, calendar}}",
-      "order_number":  "{{value, order_number}}"
+      "order_number":  "{{value, order_number}}",
+      "percent": "{{value, percent}}",
+      "fee_type": "{{value, fee_type}}",
+      "fee_subtype": "{{value, fee_subtype}}"
+    },
+
+    "common": {
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work"
     },
 
     "status-message": {
@@ -126,6 +133,86 @@
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel"
+    },
+
+    "pages-names": {
+      "dashboard": "Dashboard",
+      "deposit": "Deposit",
+      "limits": "Limits",
+      "withdraw": "Withdraw",
+      "send": "Send",
+      "explore-tokens": "Explore tokens",
+      "create-token": "Create token",
+      "create-issuance": "Create issuance",
+      "upload-pre-issuance": "Upload pre-issuance",
+      "explore-sales": "Explore sales",
+      "create-sale": "Create sale",
+      "requests": "Requests",
+      "history": "History",
+      "trade": "Trade",
+      "verification": "Verification",
+      "settings": "Settings",
+      "help": "Help",
+      "fees": "My fees",
+      "downloads": "TokenD downloads",
+      "ios-install-guide": "iOS install guide",
+      "terms": "Terms",
+      "mass-transfer": "Mass transfer",
+      "upload-document": "Upload document",
+      "view-document": "View document",
+      "explore-documents": "Explore documents",
+      "find-document": "Find document",
+      "update-token": "Update token"
+    },
+
+    "pages-subnames": {
+      "exchange-tokens": "Exchange tokens"
+    },
+
+    "navbar": {
+      "my-account": "My account",
+      "settings": "Settings",
+      "signout": "Sign Out",
+      "account-unverified": "Unverified account",
+      "account-general": "General account",
+      "account-corporate": "Corporate account"
+    },
+
+    "sidebar": {
+      "section-explore": "Explorations",
+      "section-corporate": "Corporate",
+      "section-account": "My account"
+    },
+
+    "footer": {
+      "copyright": "2018 © Distributed Lab.",
+      "terms": "Terms",
+      "download-apps": "Downloads"
+    },
+
+    "fee-types": {
+      "payment": "Payment",
+      "offer": "Offer",
+      "withdrawal": "Withdrawal",
+      "issuance": "Issuance",
+      "invest": "Invest",
+      "capital-deployment": "Capital deployment",
+      "operation": "Operation",
+      "payout": "Payout",
+      "incoming-outgoing": "Incoming & Outgoing",
+      "outgoing": "Outgoing",
+      "incoming": "Incoming"
+    },
+
+    "fee-table": {
+      "fee-type": "Fee type",
+      "fixed": "Fixed",
+      "percent": "Percent",
+      "lower-bound": "Lower bound",
+      "upper-bound": "Upper bound",
+      "subtype": "Subtype",
+      "lbl-loading": "Loading",
+      "lbl-loading-error": "There was an error while loading."
     }
   }
 }

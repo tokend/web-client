@@ -42,7 +42,7 @@ export default {
 @import '~@scss/mixins';
 
 .clipboard-field {
-  border-bottom: 1px solid $col-primary;
+  border-bottom: .1rem solid $col-primary;
   display: flex;
   align-items: center;
   width: 100%;
@@ -76,9 +76,9 @@ export default {
 
 .clipboard-field__button {
   @include button-icon();
-  margin-right: .75 * $point;
+  margin-right: .75rem;
 }
 .clipboard-field__copy-icon {
-  font-size: 2.4 * $point;
+  font-size: 2.4rem;
 }
 </style>

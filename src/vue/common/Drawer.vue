@@ -85,16 +85,16 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  width: 52.8 * $point;
+  width: 52.8rem;
   max-width: 100%;
   min-height: 100%;
-  box-shadow: 0 1 * $point 2 * $point 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
 
 .drawer__head {
-  padding: 3 * $point;
+  padding: 3rem;
   background-color: $col-drawer-head-bg;
   display: flex;
   align-items: center;
@@ -102,13 +102,13 @@ export default {
 }
 
 .drawer__heading {
-  font-size: 2.6 * $point;
+  font-size: 2.6rem;
   color: $col-drawer-head-text;
   line-height: normal;
 }
 
 .drawer__body {
-  padding: 3 * $point;
+  padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
 }
