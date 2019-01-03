@@ -148,7 +148,8 @@ export default {
     },
     parsePreIssuances (issuances) {
       const items = issuances.map(item => {
-        const _xdr = base.xdr.PreIssuanceRequest.fromXDR(item.preEmission, 'hex')
+        const _xdr = base.xdr.PreIssuanceRequest
+          .fromXDR(item.preEmission, 'hex')
         const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
         result.xdr = _xdr
         result.isUsed = item.used

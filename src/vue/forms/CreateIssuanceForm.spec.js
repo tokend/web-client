@@ -206,7 +206,7 @@ describe('CreateIssuanceForm component unit test', () => {
         })
     })
 
-    it('submit() loads receiver account info with provided credentials', async () => {
+    it('submit() loads receiver account info with the correct params', async () => {
       await wrapper.vm.submit()
       expect(spyLoadReceiverInfo
         .withArgs({ email: sampleIssuanceData.form.email })
@@ -214,7 +214,7 @@ describe('CreateIssuanceForm component unit test', () => {
       ).to.be.true
     })
 
-    it('submit() loads receiver balances info with provided credentials', async () => {
+    it('submit() loads receiver balances info with the correct params', async () => {
       await wrapper.vm.submit()
       expect(spyLoadBalances
         .withArgs(sampleReceiverData.data[0].id)

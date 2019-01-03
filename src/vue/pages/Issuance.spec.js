@@ -148,8 +148,12 @@ describe('Issuance component unit test', () => {
   it('loadCounterpartyEmails() sets issuance counterparty property', async () => {
     sinon.restore()
     const userSampleData = {
-      email: 'example@mail.com',
-      url: 'url'
+      data: {
+        id: mockHelper.getMockAccount().id,
+        attributes: {
+          email: 'foo@bar.com'
+        }
+      }
     }
 
     wrapper.setData({
@@ -162,6 +166,6 @@ describe('Issuance component unit test', () => {
     await wrapper.vm.loadCounterpartyEmails()
 
     expect(wrapper.vm.issuanceHistory[0].counterparty)
-      .to.equal(userSampleData.email)
+      .to.equal(userSampleData.data.attributes.email)
   })
 })
