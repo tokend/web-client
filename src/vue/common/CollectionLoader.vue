@@ -24,7 +24,7 @@
  *
  * <collection-loader
  *    :first-page-loader="Sdk.horizon.transactions.getAll"
- *    :pageLimit="10"
+ *    :page-limit="10"
  *    @first-page-load="onFirstPageLoad"/>
  *    @next-page-load="onNextPageLoad"
  * />
