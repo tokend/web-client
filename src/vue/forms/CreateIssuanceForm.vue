@@ -2,7 +2,7 @@
   <form
     novalidate
     v-if="isShown"
-    class="app-form issuance-form"
+    class="app__form issuance-form"
     @submit.prevent="submit"
   >
     <div class="app__form-row">

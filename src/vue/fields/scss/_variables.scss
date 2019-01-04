@@ -23,6 +23,9 @@ $field-input-padding-bottom: .6rem;
 $field-input-padding: $field-input-padding-top 0 $field-input-padding-bottom 0;
 $field-placeholer-color: $col-field-text-unfocused;
 $textarea-background-color: #fafafa;
+$file-field-background-color: $_whiteSmoke;
+$file-field-border-color: #c4c8cb;
+$file-field-note-color: $_lightPurple;
 $col-select-field-hover: rgba($col-primary, .1);
 
 @mixin input-paddings {

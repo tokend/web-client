@@ -92,7 +92,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "scss/variables";
-@import '~@scss/mixins';
 
 .file-field {
   display: flex;
@@ -101,13 +100,13 @@ export default {
 
 .file-field__label {
   font-size: 1.1rem;
-  color: #3a4180;
+  color: $field-color-text;
   margin-bottom: 1.2rem;
 }
 
 .file-input {
-  border: .2rem dashed #c4c8cb;
-  background-color: #f5f6f9;
+  border: .2rem dashed $file-field-border-color;
+  background-color: $file-field-background-color;
   border-radius: .4rem;
   transition: .2s;
   width: 100%;
@@ -149,9 +148,9 @@ export default {
 }
 
 .file-input__note {
-  color: #837fa1;
+  color: $file-field-note-color;
   font-size: 1.4rem;
-  line-height: 160%;
+  line-height: 2.2rem;
 }
 
 .file-input__file-preview {
