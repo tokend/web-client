@@ -7,17 +7,18 @@
       <div
         class="file-input__file-preview"
         v-if="fileUrl">
-        <span>{{ 'file-field.selected' | globalize }}  {{ fileUrl }}</span>
+        <span>{{ 'file-field.selected-file' | globalize }}  {{ fileUrl }}</span>
       </div>
       <div class="file-input__input-inner">
         <div class="file-input__text">
-          <div class="title">{{ 'file-field.title' | globalize }}</div>
-          <div class="notes">
-            <p class="file-input__note">{{ note }}</p>
+          <div class="file-input__title">
+            {{ 'file-field.title' | globalize }}
           </div>
+          <div class="file-input__note">{{ note }}</div>
         </div>
       </div>
       <input
+        v-bind="$attrs"
         type="file"
         class="file-field__file-input"
         :disabled="disabled"
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import { FileHelper } from '@/js/helpers/file.helper'
+import { FileUtil } from '@/js/utils/file.util'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 
@@ -56,7 +57,7 @@ export default {
   },
   methods: {
     onChange (event) {
-      const file = FileHelper.deriveFileFromChangeEvent(event)
+      const file = FileUtil.getFileFromEvent(event)
 
       if (file) {
         if (!this.isValidFileSize(file)) return
@@ -140,7 +141,7 @@ export default {
   flex-direction: column;
   justify-content: center;
 
-  .title {
+  .file-input__title {
     color: $field-color-text;
     font-size: 1.6rem;
     margin-bottom: .8rem;

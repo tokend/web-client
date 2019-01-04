@@ -68,7 +68,7 @@ export default {
   min-height: 100vh;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: $drawer-z-index;
 }
 
 .drawer__backdrop {

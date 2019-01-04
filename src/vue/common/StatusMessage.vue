@@ -82,7 +82,7 @@ export default {
   position: fixed;
   right: 4rem;
   top: 4rem;
-  z-index: 10;
+  z-index: $status-message-z-index;
 
   @mixin apply-theme ($col-msg-background, $col-msg-text) {
     background: $col-msg-background;

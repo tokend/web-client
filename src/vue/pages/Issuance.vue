@@ -70,7 +70,7 @@
               </td>
               <td v-else>
                 <loader
-                  :message-id="'issuance.lbl-loading'"
+                  :message-id="'issuance.loading-lbl'"
                 />
               </td>
               <td>
@@ -96,12 +96,12 @@
     </div>
     <div v-else-if="!isLoadingFailed">
       <loader
-        :message-id="'issuance.lbl-loading'"
+        :message-id="'issuance.loading-lbl'"
       />
     </div>
     <div v-else>
       <p>
-        {{ 'issuance.lbl-loading-error' | globalize }}
+        {{ 'issuance.loading-error-lbl' | globalize }}
       </p>
     </div>
   </div>
@@ -174,14 +174,14 @@ export default {
         : participants[0].accountId
     },
     async loadCounterpartyEmails () {
-      for (let i = 0; i < this.issuanceHistory.length; i++) {
-        const counterpartyId = this.getCounterpartyId(this.issuanceHistory[i])
+      for (let issuance of this.issuanceHistory) {
+        const counterpartyId = this.getCounterpartyId(issuance)
         const response = await Sdk.api.users.get(counterpartyId)
           .catch(error => error)
         const counterparty = response instanceof errors.NotFoundError
           ? counterpartyId
           : response.data.email
-        this.$set(this.issuanceHistory[i], 'counterparty', counterparty)
+        this.$set(issuance, 'counterparty', counterparty)
       }
     }
   }

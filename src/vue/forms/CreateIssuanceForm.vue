@@ -1,5 +1,6 @@
 <template>
   <form
+    novalidate
     v-if="isShown"
     class="app-form issuance-form"
     @submit.prevent="submit"
@@ -24,12 +25,16 @@
       <div class="app__form-field">
         <div class="issuance-form__amount">
           <input-field
+            white-autofill
             type="number"
             v-model="form.amount"
             @blur="touchField('form.amount')"
             id="create-issuance-amount"
             :label="'issuance.amount' | globalize"
-            :error-message="getFieldErrorMessage('form.amount')"
+            :error-message="getFieldErrorMessage(
+              'form.amount',
+              { lowerBound: 0.000001, upperBound: availableTokensAmount.value }
+            )"
           />
           <div
             v-if="availableTokensAmount"
@@ -52,6 +57,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
+          white-autofill
           v-model="form.email"
           @blur="touchField('form.email')"
           id="create-issuance-email"
@@ -63,6 +69,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
+          white-autofill
           v-model="form.reference"
           @blur="touchField('form.reference')"
           id="create-issuance-reference"
@@ -184,27 +191,11 @@ export default {
       this.disableForm()
       try {
         const assetCode = this.form.asset.match(/\((.*?)\)/)[1]
-        const receiverAccount = (await Sdk.api.users.getPage({
-          email: this.form.email
-        })).data.filter(info => info.email === this.form.email)[0]
+        const receiverBalance =
+          await this.getReceiverBalance(this.form.email, assetCode)
 
-        if (!receiverAccount) {
-          Bus.error('errors.wrong-email')
-          this.enableForm()
-          return
-        }
-
-        const receiverBalance = (await Sdk.horizon.account.getBalances(
-          receiverAccount.id
-        )).data.filter(balance => balance.asset === assetCode)[0]
-
-        if (!receiverBalance) {
-          Bus.error('errors.balance-required')
-          this.enableForm()
-          return
-        }
-
-        const operation =
+        if (receiverBalance) {
+          const operation =
           base.CreateIssuanceRequestBuilder.createIssuanceRequest({
             asset: assetCode,
             amount: this.form.amount.toString(),
@@ -212,14 +203,42 @@ export default {
             reference: this.form.reference,
             externalDetails: {}
           })
-        await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('status-message.tokens-issued')
-        this.closeForm()
+          await Sdk.horizon.transactions.submitOperations(operation)
+          Bus.success('issuance.tokens-issued')
+          this.closeForm()
+        }
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
+    },
+    async getAccountInfoByEmail (email) {
+      const account = (await Sdk.api.users.getPage({
+        email: email
+      })).data.filter(info => info.email === email)[0]
+
+      if (account) {
+        return account
+      }
+
+      Bus.error('issuance.wrong-email')
+      return null
+    },
+    async getReceiverBalance (email, asset) {
+      const receiverAccount = await this.getAccountInfoByEmail(email)
+      if (!receiverAccount) return null
+
+      const receiverBalance = (await Sdk.horizon.account.getBalances(
+        receiverAccount.id
+      )).data.filter(balance => balance.asset === asset)[0]
+
+      if (receiverBalance) {
+        return receiverBalance
+      }
+
+      Bus.error('issuance.balance-required')
+      return null
     },
     closeForm () {
       this.$emit('update:isShown', false)

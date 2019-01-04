@@ -69,7 +69,7 @@ import config from '@/config'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { FileHelper } from '@/js/helpers/file.helper'
+import { FileUtil } from '@/js/utils/file.util'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -98,12 +98,12 @@ export default {
   watch: {
     'documents.preIssuance': async function (value) {
       if (value) {
-        const extracted = await FileHelper.readFileAsText(value.file)
+        const extracted = await FileUtil.getText(value.file)
         try {
           this.parsePreIssuances(JSON.parse(extracted).issuances)
         } catch (e) {
           console.error(e)
-          Bus.error('errors.file-corrupted')
+          Bus.error('file-field.file-corrupted')
         }
       }
     }
@@ -126,7 +126,7 @@ export default {
       try {
         const issuance = this.issuances[0]
         if (this.isNullAssetSigner(issuance.asset)) {
-          Bus.error('errors.null-asset-signer')
+          Bus.error('issuance.null-asset-signer')
           this.enableForm()
           return
         }
@@ -135,7 +135,7 @@ export default {
             request: issuance.xdr
           })
         await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('status-message.pre-issuance-uploaded')
+        Bus.success('issuance.pre-issuance-uploaded')
         this.closeForm()
       } catch (e) {
         console.error(e)
@@ -160,7 +160,7 @@ export default {
       for (let i = 0; i < items.length; i++) {
         const assetCode = items[i].asset
         if (!this.isAssetDefined(assetCode)) {
-          Bus.error('errors.pre-issuance-not-allowed')
+          Bus.error('issuance.pre-issuance-not-allowed')
           this.issuances = []
           this.disableForm()
           return
