@@ -31,7 +31,7 @@
         </td>
       </tr>
     </table>
-    <transaction-details v-if="isOpenDetails" :tx="tx" />
+    <!--<transaction-details v-if="isOpenDetails" :tx="tx" />-->
   </div>
 </template>
 
@@ -39,13 +39,10 @@
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { TX_STATES } from '@/js/const/transaction-statuses'
-import TransactionDetails from './TransactionDetails'
 
 export default {
   name: '',
-  components: {
-    TransactionDetails
-  },
+  components: {},
   props: {
     tx: { type: Object, require: true, default: () => {} }
   },

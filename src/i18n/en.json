@@ -150,6 +150,7 @@
       "settings": "Settings",
       "help": "Help",
       "fees": "My fees",
+      "transactions": "Transactions",
       "downloads": "TokenD downloads",
       "ios-install-guide": "iOS install guide",
       "terms": "Terms",
@@ -239,7 +240,12 @@
       "senderEmail": "Sender email",
       "receiverEmail": "Receiver email",
       "counterpartyEmail": "Counterparty email",
-      "convertedAmount": "Converted amount"
+      "convertedAmount": "Converted amount",
+      "txType": "Transaction type",
+      "status": "Status",
+      "noTransactionHistory": "No transaction history",
+      "hereWillBeTheList": "Here will be the list of your transactions",
+      "failedToLoadTx": "Failed to load history"
     }
   }
 }

@@ -14,9 +14,9 @@
         </template>
 
         <template v-else-if="value.processor === 'convert'">
-          <converted-amount-getter
-            :amount="value.processorArg.amount"
-            :asset="value.processorArg.asset" />
+          <!--<converted-amount-getter-->
+          <!--:amount="value.processorArg.amount"-->
+          <!--:asset="value.processorArg.asset" />-->
         </template>
 
         <template v-else>
@@ -34,12 +34,8 @@ import { humanizePastDate, getDateByDMY } from 'L@/js/utils/dates.util'
 import cloneDeep from 'lodash/cloneDeep'
 import snakeCase from 'lodash/snakeCase'
 
-import ConvertedAmountGetter from 'c@/ConvertedAmountGetter'
-
 export default {
-  components: {
-    ConvertedAmountGetter
-  },
+  components: {},
   filters: {
     processor (tx, { name, arg }) {
       // TODO: handle locale change

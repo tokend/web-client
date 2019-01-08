@@ -33,6 +33,19 @@
             v-ripple
             class="sidebar__list-item"
             @click.native="closeSidebar"
+            :to="vueRoutes.transactions"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.transactions"
+          >
+            <i class="sidebar__list-item-icon mdi mdi-menu" />
+            <span>
+              {{ 'pages-names.transactions' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__list-item"
+            @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="li"
             v-if="config.FEATURE_FLAGS.fees"

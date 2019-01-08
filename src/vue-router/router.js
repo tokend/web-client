@@ -69,6 +69,11 @@ export const router = new Router({
           path: '/fees',
           name: vueRoutes.fees.name,
           component: resolve => require(['@/vue/pages/Fees'], resolve)
+        },
+        {
+          path: '/transactions',
+          name: vueRoutes.transactions.name,
+          component: resolve => require(['@/vue/pages/Transactions'], resolve)
         }
       ].filter(route => route.featureFlag !== false)
     }

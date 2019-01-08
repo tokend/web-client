@@ -1,5 +1,6 @@
 const featureFlags = {
-  fees: true
+  fees: true,
+  transactions: true
 }
 
 export default Object.assign(
