@@ -1,6 +1,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Sdk } from '@/sdk'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -17,12 +18,14 @@ export default {
   },
   methods: {
     async loadAssets () {
-      const response = await Sdk.horizon.account.getDetails(
-        this[vuexTypes.account].accountId
-      )
-      this.ownedAssets = response.data.map(balance =>
-        balance.assetDetails).filter(asset =>
-        asset.owner === this[vuexTypes.account].accountId)
+      try {
+        const response = await Sdk.horizon.assets.getAll()
+        this.ownedAssets = response.data
+          .filter(asset => asset.owner === this[vuexTypes.account].accountId)
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.process(e)
+      }
     }
   }
 }

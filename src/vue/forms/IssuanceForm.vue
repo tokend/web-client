@@ -15,7 +15,7 @@
           :key="form.asset"
           v-model="form.asset"
           :values="assetListValues"
-          :label="'issuance.asset' | globalize"
+          :label="'issuance.asset-lbl' | globalize"
           id="create-issuance-asset"
           @blur="touchField('form.asset')"
         />
@@ -33,25 +33,20 @@
             v-model="form.amount"
             @blur="touchField('form.amount')"
             id="create-issuance-amount"
-            :label="'issuance.amount' | globalize"
+            :label="'issuance.amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.amount',
               { from: 0.000001, to: availableAmount.value }
             )"
           />
-          <div class="issuance-form__amount-label">
-            <span>{{ availableAmount.currency }}</span>
-          </div>
+          <p class="issuance-form__amount-label">
+            {{ availableAmount.currency }}
+          </p>
         </div>
-        <div
-          v-if="availableAmount"
-          class="issuance-form__available"
-        >
-          <span>
-            {{ 'issuance.available-for-issuance' | globalize }}
-            {{ availableAmount | formatMoney }}
-          </span>
-        </div>
+        <p class="issuance-form__available-amount-hint">
+          {{ 'issuance.available-for-issuance-lbl' | globalize }}
+          {{ availableAmount | formatMoney }}
+        </p>
       </div>
     </div>
     <div class="app__form-row">
@@ -61,7 +56,7 @@
           v-model="form.email"
           @blur="touchField('form.email')"
           id="create-issuance-email"
-          :label="'issuance.email' | globalize"
+          :label="'issuance.email-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
         />
       </div>
@@ -74,7 +69,7 @@
           @blur="touchField('form.reference')"
           id="create-issuance-reference"
           :error-message="getFieldErrorMessage('form.reference')"
-          :label="'issuance.reference' | globalize"
+          :label="'issuance.reference-lbl' | globalize"
         />
       </div>
     </div>
@@ -85,7 +80,7 @@
         class="issuance-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'issuance.issue' | globalize }}
+        {{ 'issuance.issue-btn' | globalize }}
       </button>
       <button
         v-ripple
@@ -94,7 +89,7 @@
         :disabled="formMixin.isDisabled"
         @click.prevent="cancelForm"
       >
-        {{ 'issuance.cancel' | globalize }}
+        {{ 'issuance.cancel-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -102,7 +97,6 @@
 
 <script>
 import IssuanceFormMixin from '@/vue/mixins/issuance-form.mixin'
-import SelectField from '@/vue/fields/SelectField'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -114,9 +108,6 @@ import { required, email, amountRange } from '@validators'
 
 export default {
   name: 'issuance-form',
-  components: {
-    SelectField
-  },
   mixins: [IssuanceFormMixin],
   data: _ => ({
     form: {
@@ -161,6 +152,7 @@ export default {
           currency: asset.code
         }
       }
+      return null
     }
   },
   async created () {
@@ -179,15 +171,15 @@ export default {
 
         if (receiverBalance) {
           const operation =
-          base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-            asset: this.form.asset,
-            amount: this.form.amount.toString(),
-            receiver: receiverBalance.balanceId,
-            reference: this.form.reference,
-            externalDetails: {}
-          })
+            base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+              asset: this.form.asset,
+              amount: this.form.amount.toString(),
+              receiver: receiverBalance.balanceId,
+              reference: this.form.reference,
+              externalDetails: {}
+            })
           await Sdk.horizon.transactions.submitOperations(operation)
-          Bus.success('issuance.tokens-issued')
+          Bus.success('issuance.tokens-issued-msg')
           this.cancelForm()
         }
       } catch (e) {
@@ -200,7 +192,7 @@ export default {
       const response = await Sdk.api.users.getPage({ email: email })
       const account = response.data.find(info => info.email === email)
       if (account) return account
-      Bus.error('issuance.wrong-email')
+      Bus.error('issuance.wrong-email-err')
       return null
     },
     async getReceiverBalance (email, asset) {
@@ -213,7 +205,7 @@ export default {
         .find(balance => balance.asset === asset)
 
       if (receiverBalance) return receiverBalance
-      Bus.error('issuance.balance-required')
+      Bus.error('issuance.balance-required-err')
       return null
     },
     cancelForm () {

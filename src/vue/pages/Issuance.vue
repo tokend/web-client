@@ -6,7 +6,7 @@
           v-ripple
           :to="{ name: 'app.issuance' }"
         >
-          <span>{{ 'issuance.history' | globalize }}</span>
+          <span>{{ 'issuance.history-title' | globalize }}</span>
         </router-link>
       </template>
       <template
@@ -18,26 +18,26 @@
           class="issuance-btn"
           @click="isPreIssuanceDrawerShown = true"
         >
-          {{ 'issuance.upload-pre-issuance' | globalize }}
+          {{ 'issuance.upload-pre-issuance-btn' | globalize }}
         </button>
         <button
           v-ripple
           class="issuance-btn"
           @click="isIssuanceDrawerShown = true"
         >
-          {{ 'issuance.create-issuance' | globalize }}
+          {{ 'issuance.create-issuance-btn' | globalize }}
         </button>
       </template>
     </top-bar>
     <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
-        {{ 'issuance.upload-pre-issuance' | globalize }}
+        {{ 'issuance.upload-pre-issuance-btn' | globalize }}
       </template>
       <pre-issuance-form @cancel="isPreIssuanceDrawerShown = false" />
     </drawer>
     <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
-        {{ 'issuance.create-issuance' | globalize }}
+        {{ 'issuance.create-issuance-btn' | globalize }}
       </template>
       <issuance-form @cancel="isIssuanceDrawerShown = false" />
     </drawer>
@@ -47,19 +47,19 @@
           <thead>
             <tr>
               <th>
-                {{ 'issuance.counterparty' | globalize }}
+                {{ 'issuance.counterparty-lbl' | globalize }}
               </th>
               <th>
-                {{ 'issuance.amount' | globalize }}
+                {{ 'issuance.amount-lbl' | globalize }}
               </th>
               <th>
-                {{ 'issuance.asset-code' | globalize }}
+                {{ 'issuance.asset-code-lbl' | globalize }}
               </th>
               <th>
-                {{ 'issuance.date' | globalize }}
+                {{ 'issuance.date-lbl' | globalize }}
               </th>
               <th>
-                {{ 'issuance.reference' | globalize }}
+                {{ 'issuance.reference-lbl' | globalize }}
               </th>
             </tr>
           </thead>

@@ -18,20 +18,13 @@
   font-weight: normal;
 }
 
-.issuance-form__amount {
-  display: flex;
-}
-
 .issuance-form__amount-label {
   margin-left: 1rem;
   padding-top: 1.8rem;
-
-  span {
-    font-size: 1.8rem;
-  }
+  font-size: 1.8rem;
 }
 
-.issuance-form__available {
+.issuance-form__available-amount-hint {
   color: $_lightPurple;
   font-size: 1.2rem;
   margin-top: .6rem;

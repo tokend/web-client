@@ -6,8 +6,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <file-field
-          :label="'issuance.lbl-pre-issuance' | globalize"
-          :note="'issuance.lbl-file-type' | globalize"
+          :label="'issuance.pre-issuance-lbl' | globalize"
+          :note="'issuance.file-type-lbl' | globalize"
           accept=".iss"
           v-model="documents.preIssuance"
         />
@@ -17,11 +17,11 @@
       v-if="issuances.length"
       class="pre-issuance-form__info"
     >
-      <h3>{{ 'issuance.pre-issuance-info' | globalize }}</h3>
+      <h3>{{ 'issuance.pre-issuance-info-title' | globalize }}</h3>
       <table class="app__table">
         <thead>
-          <th>{{ 'issuance.asset' | globalize }}</th>
-          <th>{{ 'issuance.amount' | globalize }}</th>
+          <th>{{ 'issuance.asset-lbl' | globalize }}</th>
+          <th>{{ 'issuance.amount-lbl' | globalize }}</th>
         </thead>
         <tbody>
           <tr v-for="issuance in issuances" :key="issuance.asset">
@@ -44,7 +44,7 @@
         class="issuance-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'issuance.upload' | globalize }}
+        {{ 'issuance.upload-btn' | globalize }}
       </button>
       <button
         v-ripple
@@ -52,7 +52,7 @@
         class="issuance-form__cancel-btn"
         @click.prevent="cancelForm"
       >
-        {{ 'issuance.cancel' | globalize }}
+        {{ 'issuance.cancel-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -60,11 +60,9 @@
 
 <script>
 import IssuanceFormMixin from '@/vue/mixins/issuance-form.mixin'
-import FileField from '@/vue/fields/FileField'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
-import config from '@/config'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -73,9 +71,6 @@ import { FileUtil } from '@/js/utils/file.util'
 
 export default {
   name: 'pre-issuance-form',
-  components: {
-    FileField
-  },
   mixins: [IssuanceFormMixin],
   data: _ => ({
     documents: {
@@ -86,8 +81,8 @@ export default {
   watch: {
     'documents.preIssuance': async function (value) {
       if (value) {
-        const extracted = await FileUtil.getText(value.file)
         try {
+          const extracted = await FileUtil.getText(value.file)
           this.parsePreIssuances(JSON.parse(extracted).issuances)
         } catch (e) {
           console.error(e)
@@ -99,17 +94,17 @@ export default {
   async created () {
     this.disableForm()
     await this.loadAssets()
+    this.enableForm()
   },
   methods: {
     async submit () {
+      if (!this.documents.preIssuance) {
+        Bus.error('file-field.file-not-selected')
+        return
+      }
       this.disableForm()
       try {
         const issuance = this.issuances[0]
-        if (this.isNullAssetSigner(issuance.asset)) {
-          Bus.error('issuance.null-asset-signer')
-          this.enableForm()
-          return
-        }
         const operation = base.PreIssuanceRequestOpBuilder
           .createPreIssuanceRequestOp({
             request: issuance.xdr
@@ -127,16 +122,18 @@ export default {
       this.$emit('cancel')
     },
     parsePreIssuances (issuances) {
-      const items = issuances.map(item => {
-        const _xdr = base.xdr.PreIssuanceRequest
-          .fromXDR(item.preEmission, 'hex')
-        const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
-        result.xdr = _xdr
-        result.isUsed = item.used
-        return result
-      }).filter(item => {
-        return !this.issuances.find(el => el.reference === item.reference)
-      })
+      const items = issuances
+        .map(item => {
+          const _xdr = base.xdr.PreIssuanceRequest
+            .fromXDR(item.preEmission, 'hex')
+          const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
+          result.xdr = _xdr
+          result.isUsed = item.used
+          return result
+        })
+        .filter(item => {
+          return !this.issuances.find(el => el.reference === item.reference)
+        })
       for (let i = 0; i < items.length; i++) {
         const assetCode = items[i].asset
         if (!this.isAssetDefined(assetCode)) {
@@ -153,12 +150,6 @@ export default {
       return Boolean(this.ownedAssets
         .filter(item => item.code === assetCode).length
       )
-    },
-    isNullAssetSigner (asset) {
-      const nullSigner = this.ownedAssets.filter(item =>
-        item.preissuedAssetSigner === config.NULL_ASSET_SIGNER
-      )
-      return Boolean(nullSigner.filter(item => item.code === asset).length)
     }
   }
 }
