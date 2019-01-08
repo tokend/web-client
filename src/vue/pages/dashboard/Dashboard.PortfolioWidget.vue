@@ -32,7 +32,8 @@
           Create issuance
         </button>
         <button
-          class="app__button-raised portfolio-widget__action">
+          class="app__button-raised portfolio-widget__action"
+          @click="$emit(EVENTS.showTransferForm, true)">
           Send {{ currentAsset }}
         </button>
       </div>
@@ -101,7 +102,8 @@ import get from 'lodash/get'
 
 const EVENTS = {
   assetChange: 'asset-change',
-  showCreateIssuanceForm: 'show-create-issuance-form'
+  showCreateIssuanceForm: 'show-create-issuance-form',
+  showTransferForm: 'show-transfer-form'
 }
 
 export default {

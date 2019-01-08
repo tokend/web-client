@@ -9,6 +9,7 @@
         :current-asset="currentAsset"
         @asset-change="setCurrentAsset"
         @show-create-issuance-form="showCreateIssuanceForm"
+        @show-transfer-form="showTransferForm"
         :scale="scale"
       />
       <template v-if="currentAsset">
@@ -25,8 +26,13 @@
         />
       </template>
     </template>
-    <drawer :is-shown.sync="createIssuanceFormIsShown">
-      <create-issuance />
+    <drawer :is-shown.sync="showDrawer">
+      <template v-if="createIssuanceFormIsShown">
+        <create-issuance />
+      </template>
+      <template v-if="transferFormIsShown">
+        <transfer />
+      </template>
     </drawer>
   </div>
 </template>
@@ -34,6 +40,7 @@
 <script>
 import PortfolioWidget from './Dashboard.PortfolioWidget'
 import CreateIssuance from '@/vue/forms/CreateIssuanceForm'
+import Transfer from '@/vue/forms/TransferForm'
 import InfoWidget from './Dashboard.InfoWidget'
 import Chart from '@/vue/common/chart/Chart'
 import { mapGetters, mapActions } from 'vuex'
@@ -47,6 +54,7 @@ export default {
   components: {
     PortfolioWidget,
     CreateIssuance,
+    Transfer,
     InfoWidget,
     Chart,
     Loader,
@@ -56,6 +64,8 @@ export default {
     currentAsset: null,
     isLoading: false,
     createIssuanceFormIsShown: false,
+    transferFormIsShown: false,
+    showDrawer: false,
     scale: 'month',
     config
   }),
@@ -67,6 +77,18 @@ export default {
   watch: {
     accountBalances () {
       this.setCurrentAsset()
+    },
+    showDrawer (status) {
+      if (!status) {
+        this.createIssuanceFormIsShown = false
+        this.transferFormIsShown = false
+      }
+    },
+    createIssuanceFormIsShown (status) {
+      this.showDrawer = status
+    },
+    transferFormIsShown (status) {
+      this.showDrawer = status
     }
   },
   async created () {
@@ -91,6 +113,9 @@ export default {
     },
     showCreateIssuanceForm (status) {
       this.createIssuanceFormIsShown = status
+    },
+    showTransferForm (status) {
+      this.transferFormIsShown = status
     }
   }
 }

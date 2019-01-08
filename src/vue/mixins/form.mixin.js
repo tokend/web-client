@@ -2,6 +2,8 @@ import { validationMixin } from 'vuelidate'
 
 import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
+import TextareaField from '@/vue/fields/TextareaField'
+import TickField from '@/vue/fields/TickField'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -10,7 +12,9 @@ import safeGet from 'lodash/get'
 export default {
   components: {
     InputField,
-    SelectField
+    SelectField,
+    TextareaField,
+    TickField
   },
   mixins: [validationMixin],
   data: _ => ({
