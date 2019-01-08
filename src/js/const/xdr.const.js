@@ -7,3 +7,7 @@ export const ACCOUNT_TYPES = Object.freeze(
 export const ASSET_POLICIES = Object.freeze(
   xdrEnumToConstant('AssetPolicy')
 )
+
+export const PAYMENT_FEE_SUBTYPES = Object.freeze(
+  xdrEnumToConstant('PaymentFeeType')
+)
