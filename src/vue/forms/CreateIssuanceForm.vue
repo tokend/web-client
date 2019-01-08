@@ -15,7 +15,7 @@
       </router-link>
     </template>
 
-    <template v-else-if="!accountOwnedTokenCodes.length">
+    <template v-else-if="!accountOwnedTokensCodes.length">
       <h2 class="app__page-heading">
         {{ 'create-issuance-form.no-assets-heading' | globalize }}
       </h2>
@@ -41,7 +41,7 @@
 
         <div class="app__form-row">
           <select-field
-            :values="accountOwnedTokenCodes"
+            :values="accountOwnedTokensCodes"
             v-model="request.code"
             :label="'create-issuance-form.asset-lbl' | globalize"
           />
@@ -55,8 +55,8 @@
               type="number"
               :max="selectedTokenAvailableToIssuance"
               :label="'create-issuance-form.amount-lbl' | globalize"
-              @blur="_touchField('request.amount')"
-              :error-message="_getErrorMessage('request.amount')"
+              @blur="touchField('request.amount')"
+              :error-message="getFieldErrorMessage('request.amount')"
             />
             <div class="app__form-field-description">
               <p>
@@ -77,8 +77,8 @@
             name="issuance email"
             v-model="request.receiver"
             :label="'create-issuance-form.email-lbl' | globalize"
-            @blur="_touchField('request.receiver')"
-            :error-message="_getErrorMessage('request.receiver')"
+            @blur="touchField('request.receiver')"
+            :error-message="getFieldErrorMessage('request.receiver')"
           />
         </div>
 
@@ -87,8 +87,8 @@
             name="reference"
             v-model="request.reference"
             :label="'create-issuance-form.reference-lbl' | globalize"
-            @blur="_touchField('request.reference')"
-            :error-message="_getErrorMessage('request.reference')"
+            @blur="touchField('request.reference')"
+            :error-message="getFieldErrorMessage('request.reference')"
           />
         </div>
 
@@ -109,7 +109,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Sdk } from '@/Sdk'
+import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 // import { issuanceService } from 'L@/js/services/issuances.service'
@@ -117,7 +117,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 // FIXME: move XDR-dependent object imports to sdk
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
 import { errors } from '@tokend/js-sdk'
-// import { errors } from '@/js/helpers/errors/factory'
 import { required, email, amount } from '@validators'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -131,7 +130,9 @@ export default {
     formShown: true,
     unissued: '', // TODO: unissued amount label, exceeding check
     selectedTokenAvailableToIssuance: null,
-    ACCOUNT_TYPES
+    ACCOUNT_TYPES,
+    accountOwnedTokens: [],
+    accountOwnedTokensCodes: []
   }),
   validations: {
     request: {
@@ -150,26 +151,34 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountOwnedTokens,
       vuexTypes.accountTypeI,
-      vuexTypes.walletEmail
-    ]),
-    accountOwnedTokenCodes () {
-      return this.accountOwnedTokens.map(item => item.asset)
-    }
+      vuexTypes.walletEmail,
+      vuexTypes.accountId
+    ])
   },
   watch: {
     'request.code' (value) {
       if (this.request.code) this.getAvailableToIssuance(value)
+    },
+    'accountOwnedTokensCodes' (value) {
+      this.setTokenCode()
     }
   },
   created () {
+    this.getAccountOwnedTokens()
     this.setTokenCode()
     if (this.request.code) {
       this.getAvailableToIssuance(this.request.code)
     }
   },
   methods: {
+    async getAccountOwnedTokens () {
+      const tokens = (await Sdk.horizon.assets.getAll()).data
+      this.accountOwnedTokens = tokens.filter(i => i.owner === this.accountId)
+      this.accountOwnedTokensCodes = tokens
+        .filter(i => i.owner === this.accountId)
+        .map(i => i.code)
+    },
     async submit () {
       if (!await this._isFormValid()) return
       this.disable()
@@ -206,13 +215,13 @@ export default {
     },
 
     setTokenCode () {
-      this.request.code = this.accountOwnedTokenCodes[0] || null
+      this.request.code = this.accountOwnedTokensCodes[0] || null
     },
 
     getAvailableToIssuance (tokenCode) {
       this.selectedTokenAvailableToIssuance = this.accountOwnedTokens
-        .filter(item => item.asset === tokenCode)[0]
-        .asset_details.available_for_issuance
+        .filter(item => item.code === tokenCode)[0]
+        .availableForIssuance
     },
     rerenderForm () {
       this.formShown = false
