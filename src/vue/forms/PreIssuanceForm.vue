@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
+import IssuanceFormMixin from '@/vue/mixins/issuance-form.mixin'
 import FileField from '@/vue/fields/FileField'
 
 import { Sdk } from '@/sdk'
@@ -71,27 +71,18 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
 
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'pre-issuance-form',
   components: {
     FileField
   },
-  mixins: [FormMixin],
+  mixins: [IssuanceFormMixin],
   data: _ => ({
     documents: {
       preIssuance: null
     },
-    userOwnedTokens: null,
     issuances: []
   }),
-  computed: {
-    ...mapGetters([
-      vuexTypes.account
-    ])
-  },
   watch: {
     'documents.preIssuance': async function (value) {
       if (value) {
@@ -110,14 +101,6 @@ export default {
     await this.loadAssets()
   },
   methods: {
-    async loadAssets () {
-      const response = await Sdk.horizon.account.getDetails(
-        this[vuexTypes.account].id
-      )
-      this.userOwnedTokens = response.data.map(balance =>
-        balance.assetDetails).filter(asset =>
-        asset.owner === this[vuexTypes.account].accountId)
-    },
     async submit () {
       this.disableForm()
       try {
@@ -167,12 +150,12 @@ export default {
       this.enableForm()
     },
     isAssetDefined (assetCode) {
-      return Boolean(this.userOwnedTokens
+      return Boolean(this.ownedAssets
         .filter(item => item.code === assetCode).length
       )
     },
     isNullAssetSigner (asset) {
-      const nullSigner = this.userOwnedTokens.filter(item =>
+      const nullSigner = this.ownedAssets.filter(item =>
         item.preissuedAssetSigner === config.NULL_ASSET_SIGNER
       )
       return Boolean(nullSigner.filter(item => item.code === asset).length)

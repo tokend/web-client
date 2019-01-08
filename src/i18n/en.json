@@ -187,11 +187,7 @@
       "terms": "Terms",
       "download-apps": "Downloads"
     },
-    "balance-required": "The receiver doesn't have this token balance",
-    "wrong-email": "The account with such email was not found",
-    "null-asset-signer": "The asset has no pre-issuance signer",
-    "pre-issuance-not-allowed": "You cannot upload the asset that is not owned by you",
-   
+    
     "fee-types": {
       "payment": "Payment",
       "offer": "Offer",
@@ -251,6 +247,10 @@
       "file-corrupted": "Your file is corrupted",
       "max-size-exceeded": "You cannot upload a file exceeding maximum file size",
       "file-not-selected": "A file was not selected"
+    },
+
+    "email-getter": {
+      "loading-lbl": "Loading..."
     }
   }
 }

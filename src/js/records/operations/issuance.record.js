@@ -12,6 +12,7 @@ export class IssuanceRecord extends OpRecord {
     this.percentFee = record.feePercent
     this.id = record.id
     this.subject = record.reference
+    this.date = record.ledgerCloseTime
 
     this.externalDetails = record.externalDetails
 

@@ -65,30 +65,13 @@
           </thead>
           <tbody>
             <tr v-for="issuance in issuanceHistory" :key="issuance.id">
-              <td v-if="issuance.counterparty">
-                {{ issuance.counterparty }}
-              </td>
-              <td v-else>
-                <loader
-                  :message-id="'issuance.loading-lbl'"
-                />
-              </td>
               <td>
-                {{
-                  issuance.amount | formatMoney
-                }}
+                <email-getter :account-id="issuance.counterparty" />
               </td>
-              <td>
-                {{
-                  issuance.asset
-                }}
-              </td>
-              <td>
-                {{ issuance.ledgerCloseTime | formatCalendar }}
-              </td>
-              <td>
-                {{ issuance.reference }}
-              </td>
+              <td>{{ issuance.amount | formatMoney }}</td>
+              <td>{{ issuance.asset }}</td>
+              <td>{{ issuance.date | formatCalendar }}</td>
+              <td>{{ issuance.subject }}</td>
             </tr>
           </tbody>
         </table>
@@ -111,17 +94,18 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
+import EmailGetter from '@/vue/common/EmailGetter'
+
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 
 import { Sdk } from '@/sdk'
 // FIXME: move XDR-dependent object imports to sdk
 import { ACCOUNT_TYPES, OPERATION_TYPES } from '@/js/const/xdr.const'
+import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-
-import { errors } from '@tokend/js-sdk'
 
 const PAGE_LIMIT = 200
 
@@ -131,6 +115,7 @@ export default {
     Loader,
     Drawer,
     TopBar,
+    EmailGetter,
     IssuanceForm,
     PreIssuanceForm
   },
@@ -150,7 +135,6 @@ export default {
   async created () {
     await this.loadHistory()
     this.isLoaded = true
-    await this.loadCounterpartyEmails()
   },
   methods: {
     async loadHistory () {
@@ -162,26 +146,10 @@ export default {
           limit: PAGE_LIMIT
         })
         this.issuanceHistory = response.data
+          .map(issuance => new IssuanceRecord(issuance))
       } catch (error) {
         this.isLoadingFailed = true
         console.error(error)
-      }
-    },
-    getCounterpartyId (issuance) {
-      const participants = issuance.participants
-      return participants[0].accountId === this[vuexTypes.account].id
-        ? participants[1].accountId
-        : participants[0].accountId
-    },
-    async loadCounterpartyEmails () {
-      for (let issuance of this.issuanceHistory) {
-        const counterpartyId = this.getCounterpartyId(issuance)
-        const response = await Sdk.api.users.get(counterpartyId)
-          .catch(error => error)
-        const counterparty = response instanceof errors.NotFoundError
-          ? counterpartyId
-          : response.data.email
-        this.$set(issuance, 'counterparty', counterparty)
       }
     }
   }

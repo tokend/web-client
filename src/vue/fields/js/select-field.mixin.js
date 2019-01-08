@@ -37,8 +37,10 @@ export default {
   },
 
   created () {
-    this.selectedValue = this.value
-    this.currentValue = this.value
+    const value = this.values.find(v => this.getValue(v) === this.value)
+
+    this.selectedValue = value
+    this.currentValue = value
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
   },
