@@ -269,6 +269,37 @@
       "issue-btn": "Issue",
       "submit-success": "Issuance succeeded",
       "no-balance": "No account with such email or receiver has no {{asset}} balance. If so, please ask him to add it first"
+    },
+
+    "transfer-form": {
+      "no-assets-heading": "No assets, no transfers",
+      "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets",
+      "form-heading": "Transfer form",
+      "asset": "Asset",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "amount": "Amount",
+      "insufficient-funds": "Insufficient funds",
+      "recipient-email-or-account-id": "Recipient email or account ID",
+      "add-note": "Add note (under {{length}} symbols)",
+      "sender-fees": "Sender fees",
+      "sender-fixed-fee": "sender’s fixed fee",
+      "sender-percent-fee": "sender’s percent fee",
+      "recipient-fixed-fee": "recipient’s fixed fee",
+      "recipient-percent-fee": "recipient’s percent fee",
+      "source-no-fees": "Sender won’t pay any fees for this transaction.",
+      "recipient-fees": "Recipient fees",
+      "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
+      "total": "total",
+      "total-sender-fee": "Total sender fee",
+      "total-receiver-fee": "Total receiver fee",
+      "total-amount": "Total amount",
+      "pay-fees-for-recipient": "Pay fees for recipient",
+      "continue-btn": "Continue",
+      "recheck-form": "Please recheck the form before proceeding",
+      "submit-btn": "Send",
+      "payment-successful": "Payment successful",
+      "recipient-not-found": "Recipient not found"
     }
   }
 }
