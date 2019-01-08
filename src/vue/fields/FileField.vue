@@ -40,11 +40,10 @@ export default {
   name: 'file-field',
   props: {
     label: { type: String, default: '' },
-    type: { type: String, default: 'default' },
+    documentType: { type: String, default: 'default' },
     accept: { type: String, default: '*' },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
-    fileType: { type: String, default: 'default' },
     disabled: { type: Boolean, default: false }
   },
   data: _ => ({
@@ -57,32 +56,31 @@ export default {
   },
   methods: {
     onChange (event) {
-      const file = FileUtil.getFileFromEvent(event)
-
-      if (file) {
-        if (!this.isValidFileSize(file)) return
-
-        this.fileUrl = file.name
-        this.$emit('input', new DocumentContainer({
-          mimeType: file.type,
-          type: this.type,
-          name: file.name,
-          file: file
-        }))
-      } else {
-        this.clear()
+      let file
+      try {
+        file = FileUtil.getFileFromEvent(event)
+      } catch (e) {
+        Bus.error('file-field.file-not-selected')
+        this.dropFile()
+        return
       }
+      if (!this.isValidFileSize(file)) {
+        Bus.error('file-field.max-size-exceeded')
+        this.dropFile()
+        return
+      }
+      this.fileUrl = file.name
+      this.$emit('input', new DocumentContainer({
+        mimeType: file.type,
+        type: this.documentType,
+        name: file.name,
+        file: file
+      }))
     },
     isValidFileSize (file) {
-      if (file.size > this.maxSizeBytes) {
-        Bus.error('errors.max-size-exceeded')
-        this.clear()
-        return false
-      }
-
-      return true
+      return file.size <= this.maxSizeBytes
     },
-    clear () {
+    dropFile () {
       this.$el.querySelector('input').value = ''
       this.fileUrl = ''
     }

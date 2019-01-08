@@ -1,6 +1,6 @@
 <template>
   <form
-    class="app-form issuance-form"
+    class="app__form issuance-form"
     @submit.prevent="submit"
   >
     <div class="app__form-row">
@@ -50,7 +50,7 @@
         v-ripple
         type="button"
         class="issuance-form__cancel-btn"
-        @click.prevent="closeForm"
+        @click.prevent="cancelForm"
       >
         {{ 'issuance.cancel' | globalize }}
       </button>
@@ -75,14 +75,11 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'create-issuance-form',
+  name: 'pre-issuance-form',
   components: {
     FileField
   },
   mixins: [FormMixin],
-  props: {
-    isShown: { type: Boolean, default: true }
-  },
   data: _ => ({
     documents: {
       preIssuance: null
@@ -110,10 +107,10 @@ export default {
   },
   async created () {
     this.disableForm()
-    await this.loadUserOwnedTokens()
+    await this.loadAssets()
   },
   methods: {
-    async loadUserOwnedTokens () {
+    async loadAssets () {
       const response = await Sdk.horizon.account.getDetails(
         this[vuexTypes.account].id
       )
@@ -143,8 +140,8 @@ export default {
       }
       this.enableForm()
     },
-    closeForm () {
-      this.$emit('update:isShown', false)
+    cancelForm () {
+      this.$emit('cancel')
     },
     parsePreIssuances (issuances) {
       const items = issuances.map(item => {

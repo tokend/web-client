@@ -23,7 +23,7 @@
         <button
           v-ripple
           class="issuance-btn"
-          @click="isCreateDrawerShown = true"
+          @click="isIssuanceDrawerShown = true"
         >
           {{ 'issuance.create-issuance' | globalize }}
         </button>
@@ -33,13 +33,13 @@
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance' | globalize }}
       </template>
-      <upload-pre-issuance-form :is-shown.sync="isPreIssuanceDrawerShown" />
+      <pre-issuance-form @cancel="isPreIssuanceDrawerShown = false" />
     </drawer>
-    <drawer :is-shown.sync="isCreateDrawerShown">
+    <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.create-issuance' | globalize }}
       </template>
-      <create-issuance-form :is-shown.sync="isCreateDrawerShown" />
+      <issuance-form @cancel="isIssuanceDrawerShown = false" />
     </drawer>
     <div class="issuance" v-if="isLoaded">
       <div class="issuance-history__table">
@@ -111,8 +111,8 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
-import CreateIssuanceForm from '@/vue/forms/CreateIssuanceForm'
-import UploadPreIssuanceForm from '@/vue/forms/UploadPreIssuanceForm'
+import IssuanceForm from '@/vue/forms/IssuanceForm'
+import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 
 import { Sdk } from '@/sdk'
 // FIXME: move XDR-dependent object imports to sdk
@@ -131,14 +131,14 @@ export default {
     Loader,
     Drawer,
     TopBar,
-    CreateIssuanceForm,
-    UploadPreIssuanceForm
+    IssuanceForm,
+    PreIssuanceForm
   },
   data: _ => ({
     issuanceHistory: null,
     isLoaded: false,
     isLoadingFailed: false,
-    isCreateDrawerShown: false,
+    isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
     ACCOUNT_TYPES
   }),
@@ -148,12 +148,12 @@ export default {
     ])
   },
   async created () {
-    await this.loadIssuanceHistory()
+    await this.loadHistory()
     this.isLoaded = true
     await this.loadCounterpartyEmails()
   },
   methods: {
-    async loadIssuanceHistory () {
+    async loadHistory () {
       try {
         // FIXME: Add pagination
         const response = await Sdk.horizon.operations.getPage({

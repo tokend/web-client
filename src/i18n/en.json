@@ -66,7 +66,7 @@
       "field-error_required": "Please fill out this field",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
-      "field-error_amount": "Amount should be in the range from {{lowerBound}} to {{upperBound}}"
+      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}"
     },
 
     "errors": {
@@ -249,7 +249,8 @@
       "title": "Drop files here or click to browse",
       "selected-file": "Selected file:",
       "file-corrupted": "Your file is corrupted",
-      "max-size-exceeded": "You cannot upload a file exceeding maximum file size"
+      "max-size-exceeded": "You cannot upload a file exceeding maximum file size",
+      "file-not-selected": "A file was not selected"
     }
   }
 }

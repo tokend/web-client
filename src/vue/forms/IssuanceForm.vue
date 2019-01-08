@@ -1,7 +1,6 @@
 <template>
   <form
     novalidate
-    v-if="isShown"
     class="app__form issuance-form"
     @submit.prevent="submit"
   >
@@ -23,7 +22,10 @@
     </div>
     <div class="app__form-row">
       <div class="app__form-field">
-        <div class="issuance-form__amount">
+        <div
+          v-if="availableAmount"
+          class="issuance-form__amount"
+        >
           <input-field
             white-autofill
             type="number"
@@ -33,23 +35,20 @@
             :label="'issuance.amount' | globalize"
             :error-message="getFieldErrorMessage(
               'form.amount',
-              { lowerBound: 0.000001, upperBound: availableTokensAmount.value }
+              { from: 0.000001, to: availableAmount.value }
             )"
           />
-          <div
-            v-if="availableTokensAmount"
-            class="issuance-form__amount-label"
-          >
-            <span>{{ availableTokensAmount.currency }}</span>
+          <div class="issuance-form__amount-label">
+            <span>{{ availableAmount.currency }}</span>
           </div>
         </div>
         <div
-          v-if="availableTokensAmount"
+          v-if="availableAmount"
           class="issuance-form__available"
         >
           <span>
             {{ 'issuance.available-for-issuance' | globalize }}
-            {{ availableTokensAmount | formatMoney }}
+            {{ availableAmount | formatMoney }}
           </span>
         </div>
       </div>
@@ -92,7 +91,7 @@
         type="button"
         class="issuance-form__cancel-btn"
         :disabled="formMixin.isDisabled"
-        @click.prevent="closeForm"
+        @click.prevent="cancelForm"
       >
         {{ 'issuance.cancel' | globalize }}
       </button>
@@ -110,27 +109,24 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { required, email, between } from '@validators'
+import { required, email, amountRange } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'create-issuance-form',
+  name: 'issuance-form',
   components: {
     SelectField
   },
   mixins: [FormMixin],
-  props: {
-    isShown: { type: Boolean, default: true }
-  },
   data: _ => ({
     form: {
       asset: '',
-      amount: 0.00001,
+      amount: 0,
       email: '',
       reference: ''
     },
-    userOwnedTokens: null
+    ownedAssets: null
   }),
   validations () {
     return {
@@ -138,9 +134,9 @@ export default {
         asset: { required },
         amount: {
           required,
-          amount: between(
+          amountRange: amountRange(
             0.000001,
-            this.availableTokensAmount ? this.availableTokensAmount.value : 0
+            this.availableAmount ? this.availableAmount.value : 0
           )
         },
         email: { required, email },
@@ -153,15 +149,15 @@ export default {
       vuexTypes.account
     ]),
     ownedTokenAssets () {
-      if (this.userOwnedTokens) {
-        return this.userOwnedTokens.map(token =>
+      if (this.ownedAssets) {
+        return this.ownedAssets.map(token =>
           `${token.details.name} (${token.code})`
         )
       }
     },
-    availableTokensAmount () {
-      if (this.userOwnedTokens && this.form.asset) {
-        const token = this.userOwnedTokens.filter(token =>
+    availableAmount () {
+      if (this.ownedAssets && this.form.asset) {
+        const token = this.ownedAssets.filter(token =>
           `${token.details.name} (${token.code})` === this.form.asset
         )[0]
         return {
@@ -172,19 +168,19 @@ export default {
     }
   },
   async created () {
-    await this.loadUserOwnedTokens()
+    await this.loadAssets()
     if (this.ownedTokenAssets.length > 0) {
       this.form.asset = this.ownedTokenAssets[0]
     }
   },
   methods: {
-    async loadUserOwnedTokens () {
+    async loadAssets () {
       const response = await Sdk.horizon.account.getDetails(
-        this[vuexTypes.account].id
+        this[vuexTypes.account].accountId
       )
-      this.userOwnedTokens = response.data.map(balance =>
+      this.ownedAssets = response.data.map(balance =>
         balance.assetDetails).filter(asset =>
-        asset.owner === this[vuexTypes.account].id)
+        asset.owner === this[vuexTypes.account].accountId)
     },
     async submit () {
       if (!this.isFormValid()) return
@@ -214,14 +210,9 @@ export default {
       this.enableForm()
     },
     async getAccountInfoByEmail (email) {
-      const account = (await Sdk.api.users.getPage({
-        email: email
-      })).data.filter(info => info.email === email)[0]
-
-      if (account) {
-        return account
-      }
-
+      const response = await Sdk.api.users.getPage({ email: email })
+      const account = response.data.find(info => info.email === email)
+      if (account) return account
       Bus.error('issuance.wrong-email')
       return null
     },
@@ -229,19 +220,17 @@ export default {
       const receiverAccount = await this.getAccountInfoByEmail(email)
       if (!receiverAccount) return null
 
-      const receiverBalance = (await Sdk.horizon.account.getBalances(
-        receiverAccount.id
-      )).data.filter(balance => balance.asset === asset)[0]
+      const response =
+        await Sdk.horizon.account.getBalances(receiverAccount.id)
+      const receiverBalance = response.data
+        .find(balance => balance.asset === asset)
 
-      if (receiverBalance) {
-        return receiverBalance
-      }
-
+      if (receiverBalance) return receiverBalance
       Bus.error('issuance.balance-required')
       return null
     },
-    closeForm () {
-      this.$emit('update:isShown', false)
+    cancelForm () {
+      this.$emit('cancel')
     }
   }
 }
