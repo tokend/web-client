@@ -53,11 +53,11 @@
       <div class="app__form-field">
         <input-field
           white-autofill
-          v-model="form.email"
-          @blur="touchField('form.email')"
-          id="create-issuance-email"
-          :label="'issuance.email-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.email')"
+          v-model="form.receiver"
+          @blur="touchField('form.receiver')"
+          id="create-issuance-receiver"
+          :label="'issuance.receiver-lbl' | globalize"
+          :error-message="getFieldErrorMessage('form.receiver')"
         />
       </div>
     </div>
@@ -104,7 +104,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { required, email, amountRange } from '@validators'
+import { required, amountRange } from '@validators'
 
 export default {
   name: 'issuance-form',
@@ -113,7 +113,7 @@ export default {
     form: {
       asset: '',
       amount: 0,
-      email: '',
+      receiver: '',
       reference: ''
     }
   }),
@@ -128,7 +128,7 @@ export default {
             this.availableAmount ? this.availableAmount.value : 0
           )
         },
-        email: { required, email },
+        receiver: { required },
         reference: { required }
       }
     }
@@ -167,7 +167,7 @@ export default {
       this.disableForm()
       try {
         const receiverBalance =
-          await this.getReceiverBalance(this.form.email, this.form.asset)
+          await this.getReceiverBalance(this.form.receiver, this.form.asset)
 
         if (receiverBalance) {
           const operation =
@@ -195,18 +195,31 @@ export default {
       Bus.error('issuance.wrong-email-err')
       return null
     },
-    async getReceiverBalance (email, asset) {
-      const receiverAccount = await this.getAccountInfoByEmail(email)
-      if (!receiverAccount) return null
+    async getReceiverBalance (receiver, asset) {
+      let receiverAccountId
 
-      const response =
-        await Sdk.horizon.account.getBalances(receiverAccount.id)
-      const receiverBalance = response.data
-        .find(balance => balance.asset === asset)
+      if (receiver.indexOf('@') !== -1) {
+        const receiverAccount = await this.getAccountInfoByEmail(receiver)
+        if (!receiverAccount) return null
+        receiverAccountId = receiverAccount.id
+      } else {
+        receiverAccountId = receiver
+      }
 
-      if (receiverBalance) return receiverBalance
-      Bus.error('issuance.balance-required-err')
-      return null
+      try {
+        const response =
+          await Sdk.horizon.account.getBalances(receiverAccountId)
+        const receiverBalance = response.data
+          .find(balance => balance.asset === asset)
+
+        if (receiverBalance) return receiverBalance
+        Bus.error('issuance.balance-required-err')
+        return null
+      } catch (e) {
+        Bus.error('issuance.wrong-account-id-err')
+        console.error(e)
+        return null
+      }
     },
     cancelForm () {
       this.$emit('cancel')

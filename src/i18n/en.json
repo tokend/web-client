@@ -226,7 +226,7 @@
       "history-title": "History",
       "asset-lbl": "Asset",
       "available-for-issuance-lbl": "Available for issuance:",
-      "email-lbl": "Email",
+      "receiver-lbl": "Email or account ID",
       "issue-btn": "Issue",
       "cancel-btn": "CANCEL",
       "upload-btn": "Upload",
@@ -237,6 +237,7 @@
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
       "balance-required-err": "The receiver doesn't have this token balance",
       "wrong-email-err": "The account with such email was not found",
+      "wrong-account-id-err": "The account with such ID was not found",
       "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you"
     },
 
