@@ -10,6 +10,7 @@ export class IssuanceRecord extends OpRecord {
     this.feeAsset = record.asset
     this.fixedFee = record.feeFixed
     this.percentFee = record.feePercent
+    this.name = 'Issuance request'
     this.id = record.id
     this.subject = record.reference
 

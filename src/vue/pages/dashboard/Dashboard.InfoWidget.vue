@@ -1,6 +1,6 @@
 <template>
   <div class="info-widget">
-    <template v-if="list.length">
+    <template v-if="transactions.length">
       <div class="info-widget__title">
         {{ 'dashboard.activity' | globalize }}
       </div>
@@ -44,7 +44,7 @@
                      info-widget__list-header-item--btn" />
           </div>
           <div class="info-widget__list-body">
-            <template v-for="(tx, i) in list">
+            <template v-for="(tx, i) in transactions">
               <div
                 class="info-widget__list-body-elem"
                 v-if="i < transactionsToShow"
@@ -131,22 +131,20 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { MatchRecord } from '@/js/records/operations/match.record'
 import { PricesHelper } from '@/js/helpers/prices'
 import config from '@/config'
 import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-// import RecordDetailsViewer from '@/vue/common/RecordDetailsViewer'
 import EmailGetter from '@/vue/common/EmailGetter'
-import get from 'lodash/get'
+import { Sdk } from '@/sdk'
+import { RecordWrapper } from '@/js/records'
 
 export default {
   name: 'info-widget',
   components: {
     NoDataMessage,
-    // RecordDetailsViewer,
     EmailGetter
   },
   props: {
@@ -154,38 +152,38 @@ export default {
   },
   data: () => ({
     transactionsToShow: 10,
+    transactionsOrder: 'desc',
     config,
     TX_STATES,
-    index: -1
+    index: -1,
+    transactions: []
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.transactions
-    ]),
-    list () {
-      return (get(this.transactions, `${this.currentAsset}.records`) || [])
-        .reduce((list, item) => {
-          if (item instanceof MatchRecord) {
-            item.transactions.forEach(tx => { list.push(tx) })
-            return list
-          }
-          list.push(item)
-          return list
-        }, [])
-    }
+      vuexTypes.accountId
+    ])
   },
   watch: {
-    currentAsset (value) {
-      this.loadList(value)
+    currentAsset () {
+      this.loadList()
     }
   },
   created () {
-    this.loadList(this.currentAsset)
+    this.loadList()
   },
   methods: {
-    ...mapActions({
-      loadList: vuexTypes.GET_TX_LIST
-    }),
+    async loadList () {
+      const transactions = (await Sdk.horizon.payments.getPage({
+        asset: this.currentAsset,
+        account_id: this.accountId,
+        limit: this.transactionsToShow,
+        order: this.transactionsOrder
+      })).data
+
+      this.transactions = transactions.map(el => {
+        return RecordWrapper.operation(el, { accountId: this.accountId })
+      })
+    },
     toggleDetails (index) {
       this.index = this.index === index ? -1 : index
     },
