@@ -141,7 +141,7 @@ export default {
       try {
         // FIXME: Add pagination
         const response = await Sdk.horizon.operations.getPage({
-          account_id: this[vuexTypes.account].id,
+          account_id: this[vuexTypes.account].accountId,
           operation_type: OPERATION_TYPES.createIssuanceRequest,
           limit: PAGE_LIMIT
         })

@@ -1,7 +1,6 @@
 <template>
   <form
     novalidate
-    v-if="ownedAssets.length"
     class="app__form issuance-form"
     @submit.prevent="submit"
   >
@@ -16,34 +15,37 @@
           v-model="form.asset"
           :values="assetListValues"
           :label="'issuance.asset-lbl' | globalize"
-          id="create-issuance-asset"
+          id="issuance-asset"
           @blur="touchField('form.asset')"
         />
       </div>
     </div>
     <div class="app__form-row">
       <div class="app__form-field">
-        <div
-          v-if="availableAmount"
-          class="issuance-form__amount"
-        >
+        <div class="issuance-form__amount">
           <input-field
             white-autofill
             type="number"
             v-model="form.amount"
             @blur="touchField('form.amount')"
-            id="create-issuance-amount"
+            id="issuance-amount"
             :label="'issuance.amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.amount',
               { from: 0.000001, to: availableAmount.value }
             )"
           />
-          <p class="issuance-form__amount-label">
+          <p
+            v-if="availableAmount"
+            class="issuance-form__amount-label"
+          >
             {{ availableAmount.currency }}
           </p>
         </div>
-        <p class="issuance-form__available-amount-hint">
+        <p
+          v-if="availableAmount"
+          class="issuance-form__available-amount-hint"
+        >
           {{ 'issuance.available-for-issuance-lbl' | globalize }}
           {{ availableAmount | formatMoney }}
         </p>
@@ -55,7 +57,7 @@
           white-autofill
           v-model="form.receiver"
           @blur="touchField('form.receiver')"
-          id="create-issuance-receiver"
+          id="issuance-receiver"
           :label="'issuance.receiver-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.receiver')"
         />
@@ -67,7 +69,7 @@
           white-autofill
           v-model="form.reference"
           @blur="touchField('form.reference')"
-          id="create-issuance-reference"
+          id="issuance-reference"
           :error-message="getFieldErrorMessage('form.reference')"
           :label="'issuance.reference-lbl' | globalize"
         />
@@ -135,16 +137,14 @@ export default {
   },
   computed: {
     assetListValues () {
-      if (this.ownedAssets) {
-        return this.ownedAssets
-          .map(asset => ({
-            value: asset.code,
-            label: `${asset.details.name} (${asset.code})`
-          }))
-      }
+      return this.ownedAssets
+        .map(asset => ({
+          value: asset.code,
+          label: `${asset.details.name} (${asset.code})`
+        }))
     },
     availableAmount () {
-      if (this.ownedAssets && this.form.asset) {
+      if (this.ownedAssets.length && this.form.asset) {
         const asset = this.ownedAssets
           .find(asset => asset.code === this.form.asset)
         return {
@@ -152,7 +152,7 @@ export default {
           currency: asset.code
         }
       }
-      return null
+      return { value: 0 }
     }
   },
   async created () {

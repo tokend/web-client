@@ -14,7 +14,7 @@
       </div>
     </div>
     <div
-      v-if="issuances.length"
+      v-if="issuance"
       class="pre-issuance-form__info"
     >
       <h3>{{ 'issuance.pre-issuance-info-title' | globalize }}</h3>
@@ -24,15 +24,9 @@
           <th>{{ 'issuance.amount-lbl' | globalize }}</th>
         </thead>
         <tbody>
-          <tr v-for="issuance in issuances" :key="issuance.asset">
-            <td>
-              {{ issuance.asset }}
-            </td>
-            <td>
-              {{
-                issuance.amount | formatMoney
-              }}
-            </td>
+          <tr>
+            <td>{{ issuance.asset }}</td>
+            <td>{{ issuance.amount | formatMoney }}</td>
           </tr>
         </tbody>
       </table>
@@ -76,14 +70,14 @@ export default {
     documents: {
       preIssuance: null
     },
-    issuances: []
+    issuance: null
   }),
   watch: {
     'documents.preIssuance': async function (value) {
       if (value) {
         try {
           const extracted = await FileUtil.getText(value.file)
-          this.parsePreIssuances(JSON.parse(extracted).issuances)
+          this.parsePreIssuance(JSON.parse(extracted).issuances[0])
         } catch (e) {
           console.error(e)
           Bus.error('file-field.file-corrupted')
@@ -99,19 +93,18 @@ export default {
   methods: {
     async submit () {
       if (!this.documents.preIssuance) {
-        Bus.error('file-field.file-not-selected')
+        Bus.error('file-field.file-not-selected-err')
         return
       }
       this.disableForm()
       try {
-        const issuance = this.issuances[0]
         const operation = base.PreIssuanceRequestOpBuilder
           .createPreIssuanceRequestOp({
-            request: issuance.xdr
+            request: this.issuance.xdr
           })
         await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('issuance.pre-issuance-uploaded')
-        this.closeForm()
+        Bus.success('issuance.pre-issuance-uploaded-msg')
+        this.cancelForm()
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
@@ -121,29 +114,21 @@ export default {
     cancelForm () {
       this.$emit('cancel')
     },
-    parsePreIssuances (issuances) {
-      const items = issuances
-        .map(item => {
-          const _xdr = base.xdr.PreIssuanceRequest
-            .fromXDR(item.preEmission, 'hex')
-          const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
-          result.xdr = _xdr
-          result.isUsed = item.used
-          return result
-        })
-        .filter(item => {
-          return !this.issuances.find(el => el.reference === item.reference)
-        })
-      for (let i = 0; i < items.length; i++) {
-        const assetCode = items[i].asset
-        if (!this.isAssetDefined(assetCode)) {
-          Bus.error('issuance.pre-issuance-not-allowed')
-          this.issuances = []
-          this.disableForm()
-          return
-        }
+    parsePreIssuance (issuance) {
+      const _xdr = base.xdr.PreIssuanceRequest
+        .fromXDR(issuance.preEmission, 'hex')
+      const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
+      result.xdr = _xdr
+      result.isUsed = issuance.used
+
+      if (!this.isAssetDefined(result.asset)) {
+        Bus.error('issuance.pre-issuance-not-allowed-err')
+        this.issuance = null
+        this.disableForm()
+        return
       }
-      this.issuances = items
+
+      this.issuance = result
       this.enableForm()
     },
     isAssetDefined (assetCode) {

@@ -1,231 +1,204 @@
-/* eslint-disable */
-// import CreateIssuanceForm from './CreateIssuanceForm'
+import IssuanceForm from './IssuanceForm'
 
-// import Vuex from 'vuex'
-// import Vuelidate from 'vuelidate'
+import Vue from 'vue'
+import Vuex from 'vuex'
+import Vuelidate from 'vuelidate'
 
-// import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
-// import { MockHelper, MockWrapper } from '@/test'
+import { MockHelper, MockWrapper } from '@/test'
 
-// import { ripple } from '@/vue/directives/ripple'
-// import { globalize } from '@/vue/filters/globalize'
-// import { formatMoney } from '@/vue/filters/formatMoney'
+import { globalize } from '@/vue/filters/globalize'
+import { formatMoney } from '@/vue/filters/formatMoney'
 
-// import { vuexTypes } from '@/vuex'
-// import accountModule from '@/vuex/account.module'
+import { vuexTypes } from '@/vuex'
+import accountModule from '@/vuex/account.module'
 
-// const localVue = createLocalVue()
-// localVue.use(Vuelidate)
-// localVue.use(Vuex)
-// localVue.directive('ripple', ripple)
-// localVue.filter('globalize', globalize)
-// localVue.filter('formatMoney', formatMoney)
+// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
+// Vue 2.6 so everything get fixed
+Vue.config.silent = true
 
-// describe('CreateIssuanceForm component unit test', () => {
-//   afterEach(() => {
-//     sinon.restore()
-//   })
+const localVue = createLocalVue()
+localVue.use(Vuelidate)
+localVue.use(Vuex)
+localVue.filter('globalize', globalize)
+localVue.filter('formatMoney', formatMoney)
 
-//   describe('validation rules assigned correctly', () => {
-//     let wrapper
+describe('IssuanceForm component unit test', () => {
+  const sampleIssuanceData = {
+    form: {
+      asset: 'BTC',
+      amount: 10,
+      receiver: 'foo@bar.com',
+      reference: 'ref'
+    },
+    ownedAssets: [{
+      code: 'BTC',
+      details: {
+        name: 'Bitcoin'
+      },
+      availableForIssuance: 100
+    }, {
+      code: 'ETH',
+      details: {
+        name: 'Ethereum'
+      },
+      availableForIssuance: 200
+    }]
+  }
 
-//     beforeEach(() => {
-//       wrapper = mount(CreateIssuanceForm, { localVue })
-//     })
+  afterEach(() => {
+    sinon.restore()
+  })
 
-//     const expectedResults = {
-//       asset: ['required'],
-//       amount: ['required', 'amount'],
-//       email: ['required', 'email'],
-//       reference: ['required']
-//     }
+  describe('validation rules assigned correctly', () => {
+    let wrapper
 
-//     for (const [model, rules] of Object.entries(expectedResults)) {
-//       it(`${model} model is validating by proper set of rules`, () => {
-//         expect(Object.keys(wrapper.vm.$v.form[model].$params))
-//           .to
-//           .deep
-//           .equal(rules)
-//       })
-//     }
+    beforeEach(() => {
+      sinon.stub(IssuanceForm, 'created').resolves()
+      wrapper = mount(IssuanceForm, { localVue })
+    })
 
-//     const fieldBindings = {
-//       '#create-issuance-asset': 'asset',
-//       '#create-issuance-amount': 'amount',
-//       '#create-issuance-email': 'email',
-//       '#create-issuance-reference': 'reference'
-//     }
+    const expectedResults = {
+      asset: ['required'],
+      amount: ['required', 'amountRange'],
+      receiver: ['required'],
+      reference: ['required']
+    }
 
-//     for (const [selector, model] of Object.entries(fieldBindings)) {
-//       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-//         const spy = sinon.stub(wrapper.vm, 'touchField')
+    for (const [model, rules] of Object.entries(expectedResults)) {
+      it(`${model} model is validating by proper set of rules`, () => {
+        expect(Object.keys(wrapper.vm.$v.form[model].$params))
+          .to
+          .deep
+          .equal(rules)
+      })
+    }
 
-//         wrapper.find(selector).vm.$emit('blur')
+    const fieldBindings = {
+      '#issuance-asset': 'asset',
+      '#issuance-amount': 'amount',
+      '#issuance-receiver': 'receiver',
+      '#issuance-reference': 'reference'
+    }
 
-//         expect(spy.calledOnce).to.be.true
-//       })
-//     }
-//   })
+    for (const [selector, model] of Object.entries(fieldBindings)) {
+      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
-//   describe('methods', () => {
-//     const sampleIssuanceData = {
-//       form: {
-//         asset: 'Bitcoin (BTC)',
-//         amount: 10,
-//         email: 'foo@bar.com',
-//         reference: 'ref'
-//       },
-//       userOwnedTokens: [{
-//         code: 'BTC',
-//         details: {
-//           name: 'Bitcoin'
-//         },
-//         availableForIssuance: 100
-//       }, {
-//         code: 'ETH',
-//         details: {
-//           name: 'Ethereum'
-//         },
-//         availableForIssuance: 200
-//       }]
-//     }
+        wrapper.find(selector).vm.$emit('blur')
 
-//     let wrapper
-//     let mockHelper
+        expect(spy.calledOnce).to.be.true
+      })
+    }
+  })
 
-//     let accountResource
-//     let spyLoadReceiverInfo
-//     let spyLoadBalances
-//     let spySubmitOperations
+  describe('methods', () => {
+    let wrapper
+    let mockHelper
 
-//     let sampleReceiverData
-//     let sampleBalanceData
+    let accountResource
+    let usersResource
+    let transactionsResource
 
-//     let store
+    let store
 
-//     beforeEach(() => {
-//       mockHelper = new MockHelper()
+    beforeEach(() => {
+      mockHelper = new MockHelper()
 
-//       accountResource = mockHelper.getHorizonResourcePrototype('account')
-//       const usersResource = mockHelper.getApiResourcePrototype('users')
-//       const transactionsResource =
-//         mockHelper.getHorizonResourcePrototype('transactions')
+      accountResource = mockHelper.getHorizonResourcePrototype('account')
+      usersResource = mockHelper.getApiResourcePrototype('users')
+      transactionsResource =
+        mockHelper.getHorizonResourcePrototype('transactions')
 
-//       sampleReceiverData = {
-//         data: [{
-//           id: mockHelper.getMockAccount().id,
-//           attributes: {
-//             email: 'foo@bar.com'
-//           }
-//         }]
-//       }
-//       sampleBalanceData = {
-//         asset: 'BTC',
-//         balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV',
-//         assetDetails: {
-//           owner: mockHelper.getMockAccount().id,
-//           ...sampleIssuanceData.userOwnedTokens[0]
-//         }
-//       }
+      const getters = accountModule.getters
+      sinon.stub(getters, vuexTypes.account)
+        .returns({ accountId: mockHelper.getMockWallet().accountId })
+      store = new Vuex.Store({
+        getters
+      })
 
-//       spyLoadReceiverInfo = sinon.stub(usersResource, 'getPage')
-//         .resolves(MockWrapper.makeApiResponse(sampleReceiverData))
-//       spyLoadBalances = sinon.stub(accountResource, 'getBalances')
-//         .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
-//       spySubmitOperations = sinon.stub(transactionsResource,
-//         'submitOperations').resolves()
+      sinon.stub(IssuanceForm, 'created').resolves()
+      wrapper = shallowMount(IssuanceForm, {
+        store,
+        localVue,
+        data: _ => Object.assign({}, sampleIssuanceData),
+        sync: false
+      })
+      sinon.stub(wrapper.vm, 'isFormValid').returns(true)
+    })
 
-//       const getters = accountModule.getters
-//       sinon.stub(getters, vuexTypes.account)
-//         .returns(mockHelper.getMockAccount())
+    it('assetListValues returns formatted owned assets for select field', () => {
+      wrapper.setData({
+        ownedAssets: sampleIssuanceData.ownedAssets
+      })
+      expect(wrapper.vm.assetListValues)
+        .to.deep.equal([{
+          value: 'BTC', label: 'Bitcoin (BTC)'
+        }, {
+          value: 'ETH', label: 'Ethereum (ETH)'
+        }])
+    })
 
-//       store = new Vuex.Store({
-//         getters
-//       })
+    it('availableAmount returns available assets for issuance', () => {
+      wrapper.setData(sampleIssuanceData)
+      expect(wrapper.vm.availableAmount)
+        .to.deep.equal({
+          value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
+          currency: sampleIssuanceData.ownedAssets[0].code
+        })
+    })
 
-//       sinon.stub(CreateIssuanceForm, 'created').resolves()
-//       wrapper = shallowMount(CreateIssuanceForm, {
-//         store,
-//         localVue,
-//         data: _ => Object.assign({}, sampleIssuanceData),
-//         sync: false
-//       })
-//       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
-//     })
+    it('getAccountInfoByEmail() loads receiver account info with the correct params', async () => {
+      const sampleReceiverData = {
+        data: [{
+          id: mockHelper.getMockWallet().accountId,
+          attributes: {
+            email: 'foo@bar.com'
+          }
+        }]
+      }
+      const spy = sinon.stub(usersResource, 'getPage')
+        .resolves(MockWrapper.makeApiResponse(sampleReceiverData))
 
-//     it('loadUserOwnedTokens() calls the horizon.account.getDetails() with the correct params', async () => {
-//       const spy = sinon.stub(accountResource, 'getDetails').resolves(
-//         MockWrapper.makeHorizonResponse([sampleBalanceData])
-//       )
+      await wrapper.vm.getAccountInfoByEmail(sampleIssuanceData.form.receiver)
 
-//       await wrapper.vm.loadUserOwnedTokens()
+      expect(spy
+        .withArgs({ email: sampleIssuanceData.form.receiver })
+        .called
+      ).to.be.true
+    })
 
-//       expect(spy
-//         .withArgs(mockHelper.getMockAccount().id)
-//         .calledOnce
-//       ).to.be.true
-//     })
+    it('getReceiverBalance() loads receiver balances info with the correct params', async () => {
+      const sampleBalanceData = {
+        asset: 'BTC',
+        balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
+      }
+      const spy =
+        sinon.stub(accountResource, 'getBalances')
+          .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
 
-//     it('loadUserOwnedTokens() method is called inside created hook', () => {
-//       sinon.restore()
-//       const spy = sinon.stub(CreateIssuanceForm.methods, 'loadUserOwnedTokens')
+      await wrapper.vm.getReceiverBalance(mockHelper.getMockWallet().accountId,
+        sampleIssuanceData.form.asset)
 
-//       shallowMount(CreateIssuanceForm, {
-//         store,
-//         localVue
-//       })
+      expect(spy
+        .withArgs(mockHelper.getMockWallet().accountId)
+        .calledOnce
+      ).to.be.true
+    })
 
-//       expect(spy.calledOnce).to.be.true
-//     })
+    it('submit() calls horizon.submitOperations()', async () => {
+      const sampleBalanceData = {
+        balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
+      }
 
-//     it('loadUserOwnedTokens() changes user tokens data after loading', async () => {
-//       sinon.stub(accountResource, 'getDetails').resolves(
-//         MockWrapper.makeHorizonResponse([sampleBalanceData])
-//       )
-//       wrapper.setData({ userOwnedTokens: null })
+      sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(sampleBalanceData)
+      const spy = sinon.stub(transactionsResource,
+        'submitOperations').resolves()
 
-//       await wrapper.vm.loadUserOwnedTokens()
+      await wrapper.vm.submit()
 
-//       expect(wrapper.vm.userOwnedTokens).to.not.equal(null)
-//     })
-
-//     it('ownedTokenAssets returns formatted owned assets', () => {
-//       wrapper.setData({
-//         userOwnedTokens: sampleIssuanceData.userOwnedTokens
-//       })
-//       expect(wrapper.vm.ownedTokenAssets)
-//         .to.deep.equal(['Bitcoin (BTC)', 'Ethereum (ETH)'])
-//     })
-
-//     it('availableTokensAmount returns available tokens for issuance', () => {
-//       wrapper.setData(sampleIssuanceData)
-//       expect(wrapper.vm.availableTokensAmount)
-//         .to.deep.equal({
-//           value: sampleIssuanceData.userOwnedTokens[0].availableForIssuance,
-//           currency: sampleIssuanceData.userOwnedTokens[0].code
-//         })
-//     })
-
-//     it('submit() loads receiver account info with the correct params', async () => {
-//       await wrapper.vm.submit()
-//       expect(spyLoadReceiverInfo
-//         .withArgs({ email: sampleIssuanceData.form.email })
-//         .called
-//       ).to.be.true
-//     })
-
-//     it('submit() loads receiver balances info with the correct params', async () => {
-//       await wrapper.vm.submit()
-//       expect(spyLoadBalances
-//         .withArgs(sampleReceiverData.data[0].id)
-//         .calledOnce
-//       ).to.be.true
-//     })
-
-//     it('submit() calls horizon.submitOperations()', async () => {
-//       await wrapper.vm.submit()
-//       expect(spySubmitOperations.calledOnce).to.be.true
-//     })
-//   })
-// })
+      expect(spy.calledOnce).to.be.true
+    })
+  })
+})
