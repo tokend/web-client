@@ -28,7 +28,7 @@
     </template>
     <drawer :is-shown.sync="showDrawer">
       <template v-if="createIssuanceFormIsShown">
-        <create-issuance />
+        <create-issuance @close-drawer="showDrawer = false" />
       </template>
       <template v-if="transferFormIsShown">
         <transfer />

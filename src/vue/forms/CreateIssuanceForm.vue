@@ -96,6 +96,7 @@
           <button
             v-ripple
             type="submit"
+            :disabled="formMixin.isDisabled"
             class="app__form-submit-btn">
             {{ 'create-issuance-form.issue-btn' | globalize }}
           </button>
@@ -112,13 +113,15 @@ import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-// import { issuanceService } from 'L@/js/services/issuances.service'
-// import { accountsService } from 'L@/js/services/accounts.service'
 // FIXME: move XDR-dependent object imports to sdk
 import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
-import { errors } from '@tokend/js-sdk'
+import { errors, base } from '@tokend/js-sdk'
 import { required, email, amount } from '@validators'
 import { globalize } from '@/vue/filters/globalize'
+
+const EVENTS = {
+  closeDrawer: 'close-drawer'
+}
 
 export default {
   name: 'create-issuance-form',
@@ -132,7 +135,8 @@ export default {
     selectedTokenAvailableToIssuance: null,
     ACCOUNT_TYPES,
     accountOwnedTokens: [],
-    accountOwnedTokensCodes: []
+    accountOwnedTokensCodes: [],
+    receiver: null
   }),
   validations: {
     request: {
@@ -180,13 +184,24 @@ export default {
         .map(i => i.code)
     },
     async submit () {
-      if (!await this._isFormValid()) return
-      this.disable()
+      if (!await this.isFormValid()) return
+      this.disableForm()
       try {
-        // const receiver = await this.loadBalanceIdByEmailAndCode(
-        //   this.request.receiver,
-        //   this.request.code
-        // )
+        const receiver = await this.loadBalanceIdByEmailAndCode(
+          this.request.receiver,
+          this.request.code
+        )
+        if (!receiver) return false
+        const operation = await base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+          asset: this.request.code,
+          amount: this.request.amount,
+          receiver: receiver,
+          reference: this.request.reference,
+          externalDetails: {}
+        })
+        await Sdk.horizon.transactions.submitOperations(operation)
+        Bus.success(globalize('create-issuance-form.issuance-succeeded'))
+        this.$emit(EVENTS.closeDrawer)
       } catch (error) {
         if (error.constructor === errors.NotFoundError) {
           Bus.error(
@@ -194,24 +209,33 @@ export default {
               asset: this.request.code
             })
           )
-          this.enable()
+          this.enableForm()
           return
         }
         ErrorHandler.process(error)
       }
-      this.enable()
+      this.enableForm()
     },
 
     async loadBalanceIdByEmailAndCode (email, assetCode) {
-      const accountId =
-        (await Sdk.api.users.getPage({ email: email })).data[0].id
-
-      const balanceId = (await Sdk.horizon.balances.getPage({
-        account: accountId,
+      // TODO: add sign
+      const account = (await Sdk.api.users.getPage({ email: email })).data[0]
+      if (!account) {
+        Bus.error(globalize('create-issuance-form.user-does-not-found'))
+        return false
+      }
+      // TODO: add sign
+      const balances = (await Sdk.horizon.balances.getPage({
+        account: account.id,
         asset: assetCode
-      })).data[0].balanceId
+      })).data
 
-      return balanceId
+      if (!balances.length) {
+        Bus.error(globalize('create-issuance-form.user-does-not-have-balance'))
+        return false
+      }
+
+      return balances[0].balanceId
     },
 
     setTokenCode () {
@@ -222,12 +246,6 @@ export default {
       this.selectedTokenAvailableToIssuance = this.accountOwnedTokens
         .filter(item => item.code === tokenCode)[0]
         .availableForIssuance
-    },
-    rerenderForm () {
-      this.formShown = false
-      this.request = {}
-      this.setTokenCode()
-      setTimeout(() => (this.formShown = true), 1)
     }
   }
 }

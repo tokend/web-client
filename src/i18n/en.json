@@ -255,6 +255,7 @@
 
     "create-issuance-form": {
       "not-available-heading": "Issuance unavailable",
+      "issuance-succeeded": "Issuance succeeded",
       "not-available": "Issuance creation is available only for corporate users, complete verification to become one.",
       "to-verification-btn": "To Verification",
       "no-assets-heading": "Nothing to issue yet",
@@ -267,6 +268,9 @@
       "email-lbl": "Email",
       "reference-lbl": "Reference",
       "issue-btn": "Issue",
+      "receiver-doesnt-found": "Receiver does not found",
+      "user-does-not-found": "User with this email does not found",
+      "user-does-not-have-balance": "Specified user does not have balance for this asset",
       "submit-success": "Issuance succeeded",
       "no-balance": "No account with such email or receiver has no {{asset}} balance. If so, please ask him to add it first"
     },
