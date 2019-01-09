@@ -102,13 +102,13 @@ export default {
     left: 1.6rem;
     color: $field-color-unfocused;
     transition: .2s ease-out;
-    font-size: 1rem;
+    font-size: 1.6rem;
 
     .text-field__input:focus + &,
     .text-field__input.text-field__input--dirty + & {
       color: $field-color-text;
       top: .6rem;
-      font-size: .75rem;
+      font-size: 1.2rem;
     }
   }
 
@@ -121,7 +121,7 @@ export default {
     resize: none;
     display: block;
     border-radius: .4rem;
-    font-size: 1rem;
+    font-size: 1.6rem;
     transition: all 0s, border-color .2s ease-out;
 
     &:focus,
