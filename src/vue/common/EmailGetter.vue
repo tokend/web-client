@@ -26,7 +26,10 @@ export default {
     async getEmail () {
       this.isLoading = true
       try {
-        this.email = (await Sdk.horizon.account.get(this.id))
+        const user = (await Sdk.api.users.getPage({
+          address: this.id
+        })).data
+        this.email = user.length ? user[0].email : ''
       } catch (e) {
         console.error(e)
       }
