@@ -7,7 +7,8 @@ import Vuelidate from 'vuelidate'
 
 import { store } from '@/vuex'
 import { router } from '@/vue-router'
-import { ripple } from './vue/directives/ripple'
+import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
+import { ripple } from '@/vue/directives/ripple'
 import { i18nOptions } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { formatDate } from '@/vue/filters/formatDate'
@@ -25,6 +26,7 @@ i18next.init(i18nOptions)
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
+Vue.directive('table-scroll-shadow', tableScrollShadow)
 Vue.directive('ripple', ripple)
 Vue.filter('globalize', globalize)
 Vue.filter('formatDate', formatDate)
