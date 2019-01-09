@@ -100,6 +100,7 @@ describe('PreIssuanceForm component unit test', () => {
         used: false
       }
       wrapper.vm.parsePreIssuance(preIssuance)
+
       expect(wrapper.vm.issuance).to.not.equal(null)
     })
   })

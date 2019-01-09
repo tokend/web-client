@@ -43,7 +43,7 @@
           </p>
         </div>
         <p
-          v-if="availableAmount"
+          v-if="availableAmount.value"
           class="issuance-form__available-amount-hint"
         >
           {{ 'issuance.available-for-issuance-lbl' | globalize }}
@@ -157,8 +157,8 @@ export default {
   },
   async created () {
     await this.loadAssets()
-    if (this.assetListValues.length > 0) {
-      this.form.asset = this.assetListValues[0].value
+    if (this.ownedAssets.length > 0) {
+      this.form.asset = this.ownedAssets[0].code
     }
   },
   methods: {

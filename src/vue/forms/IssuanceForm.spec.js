@@ -69,9 +69,7 @@ describe('IssuanceForm component unit test', () => {
     for (const [model, rules] of Object.entries(expectedResults)) {
       it(`${model} model is validating by proper set of rules`, () => {
         expect(Object.keys(wrapper.vm.$v.form[model].$params))
-          .to
-          .deep
-          .equal(rules)
+          .to.deep.equal(rules)
       })
     }
 
@@ -94,6 +92,11 @@ describe('IssuanceForm component unit test', () => {
   })
 
   describe('methods', () => {
+    const sampleBalanceData = {
+      asset: 'BTC',
+      balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
+    }
+
     let wrapper
     let mockHelper
 
@@ -122,8 +125,7 @@ describe('IssuanceForm component unit test', () => {
       wrapper = shallowMount(IssuanceForm, {
         store,
         localVue,
-        data: _ => Object.assign({}, sampleIssuanceData),
-        sync: false
+        data: _ => Object.assign({}, sampleIssuanceData)
       })
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
@@ -170,10 +172,6 @@ describe('IssuanceForm component unit test', () => {
     })
 
     it('getReceiverBalance() loads receiver balances info with the correct params', async () => {
-      const sampleBalanceData = {
-        asset: 'BTC',
-        balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
-      }
       const spy = sinon.stub(accountResource, 'getBalances')
         .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
 
@@ -187,10 +185,6 @@ describe('IssuanceForm component unit test', () => {
     })
 
     it('submit() calls horizon.submitOperations()', async () => {
-      const sampleBalanceData = {
-        balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
-      }
-
       sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(sampleBalanceData)
       const spy = sinon.stub(transactionsResource,
         'submitOperations').resolves()

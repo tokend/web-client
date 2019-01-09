@@ -146,7 +146,9 @@ export default {
           limit: PAGE_LIMIT
         })
         this.issuanceHistory = response.data
-          .map(issuance => new IssuanceRecord(issuance))
+          .map(issuance => new IssuanceRecord(
+            issuance, this[vuexTypes.account].accountId)
+          )
       } catch (error) {
         this.isLoadingFailed = true
         console.error(error)

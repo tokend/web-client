@@ -16,7 +16,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 import { formatMoney } from '@/vue/filters/formatMoney'
 
-import { MockHelper, MockWrapper } from '@/test'
+import { MockHelper } from '@/test'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -29,7 +29,6 @@ localVue.filter('globalize', globalize)
 localVue.filter('formatMoney', formatMoney)
 
 describe('Issuance component unit test', () => {
-  let issuanceHistorySampleData
   let mockHelper
   let operationsResource
 
@@ -40,19 +39,13 @@ describe('Issuance component unit test', () => {
   beforeEach(() => {
     mockHelper = new MockHelper()
     operationsResource = mockHelper.getHorizonResourcePrototype('operations')
+
+    sinon.stub(xdrEnumToConstant, 'arguments').returns({})
+
     getters = {
       ...walletModule.getters,
       ...accountModule.getters
     }
-
-    issuanceHistorySampleData = [{
-      participants: [{
-        accountId: mockHelper.getMockWallet().accountId
-      }, {
-        accountId: ''
-      }]
-    }]
-
     sinon.stub(getters, vuexTypes.wallet).returns(
       mockHelper.getMockWallet()
     )
@@ -60,8 +53,6 @@ describe('Issuance component unit test', () => {
       accountId: mockHelper.getMockWallet().accountId,
       accountType: 'AccountTypeSyndycate'
     })
-    sinon.stub(xdrEnumToConstant, 'arguments').returns({})
-
     store = new Vuex.Store({
       getters
     })
@@ -101,14 +92,15 @@ describe('Issuance component unit test', () => {
       store,
       localVue
     })
+
     expect(spy.calledOnce).to.be.true
   })
 
   it('loadHistory() changes issuance history data after loading', async () => {
-    sinon.stub(operationsResource, 'getPage').resolves(
-      MockWrapper.makeHorizonResponse(issuanceHistorySampleData)
-    )
+    sinon.stub(operationsResource, 'getPage').resolves({ data: [] })
+
     await wrapper.vm.loadHistory()
+
     expect(wrapper.vm.issuanceHistory).to.not.equal(null)
   })
 })
