@@ -8,7 +8,9 @@
     }"
   >
     <template v-if="label">
-      <div class="select-field__label">{{ label }}</div>
+      <div class="select-field__label">
+        {{ label }}
+      </div>
     </template>
     <button
       class="select-field__selected"

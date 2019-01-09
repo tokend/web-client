@@ -1,6 +1,8 @@
 <template>
   <div class="auth-page">
-    <h2 class="auth-page__title">{{ 'auth-pages.log-in' | globalize }}</h2>
+    <h2 class="auth-page__title">
+      {{ 'auth-pages.log-in' | globalize }}
+    </h2>
 
     <div class="auth-page__content">
       <login-form />

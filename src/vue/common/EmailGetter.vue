@@ -2,7 +2,9 @@
   <span class="email-getter" v-if="isLoading">
     {{ 'email-getter.loading' }}
   </span>
-  <span class="email-getter" v-else>{{ email || fallback || id }}</span>
+  <span class="email-getter" v-else>
+    {{ email || fallback || id }}
+  </span>
 </template>
 
 <script>

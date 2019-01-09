@@ -6,7 +6,9 @@
       :class="{ 'chart-tabs__tab--selected': value === tabs.hour }"
       :disabled="isPending"
     >
-      <span class="mobile-hidden">{{ 'chart.hour' | globalize }}</span>
+      <span class="mobile-hidden">
+        {{ 'chart.hour' | globalize }}
+      </span>
     </button>
 
     <button
@@ -15,7 +17,9 @@
       :class="{ 'chart-tabs__tab--selected': value === tabs.day }"
       :disabled="isPending"
     >
-      <span class="mobile-hidden">{{ 'chart.day' | globalize }}</span>
+      <span class="mobile-hidden">
+        {{ 'chart.day' | globalize }}
+      </span>
     </button>
 
     <button
@@ -24,7 +28,9 @@
       :class="{ 'chart-tabs__tab--selected': value === tabs.month }"
       :disabled="isPending"
     >
-      <span class="mobile-hidden">{{ 'chart.month' | globalize }}</span>
+      <span class="mobile-hidden">
+        {{ 'chart.month' | globalize }}
+      </span>
     </button>
 
     <button
@@ -33,7 +39,9 @@
       :class="{ 'chart-tabs__tab--selected': value === tabs.year }"
       :disabled="isPending"
     >
-      <span class="mobile-hidden">{{ 'chart.year' | globalize }}</span>
+      <span class="mobile-hidden">
+        {{ 'chart.year' | globalize }}
+      </span>
     </button>
   </div>
 </template>
