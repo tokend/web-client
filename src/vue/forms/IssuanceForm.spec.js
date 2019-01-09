@@ -174,9 +174,8 @@ describe('IssuanceForm component unit test', () => {
         asset: 'BTC',
         balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
       }
-      const spy =
-        sinon.stub(accountResource, 'getBalances')
-          .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
+      const spy = sinon.stub(accountResource, 'getBalances')
+        .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
 
       await wrapper.vm.getReceiverBalance(mockHelper.getMockWallet().accountId,
         sampleIssuanceData.form.asset)
