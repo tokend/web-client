@@ -549,7 +549,7 @@ export default {
 
   .chart__y-axis {
     text {
-      font-size: 1rem;
+      font-size: 1.6rem;
       fill: $col-chart-text;
     }
     line {
@@ -580,7 +580,7 @@ export default {
 
   .chart__tip-text-box { fill: $col-chart-tip-text-box }
   .chart__tip-text-price {
-    font-size: 1rem;
+    font-size: 1.6rem;
     fill: $col-chart-tip-text-price;
     font-weight: 800;
   }
