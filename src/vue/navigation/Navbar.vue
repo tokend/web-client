@@ -174,7 +174,7 @@ $custom-breakpoint: 800px;
 
 .navbar__title {
   color: $col-text-page-heading;
-  font-size: 4rem;
+  font-size: 2.8rem;
   line-height: 1.5;
   font-weight: 400;
 }

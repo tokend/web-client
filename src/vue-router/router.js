@@ -68,11 +68,13 @@ export const router = new Router({
         {
           path: '/dashboard',
           name: vueRoutes.dashboard.name,
+          meta: { pageNameTranslationId: 'pages-names.dashboard' },
           component: resolve => require(['@/vue/pages/dashboard/Dashboard'], resolve)
         },
         {
           path: '/fees',
           name: vueRoutes.fees.name,
+          meta: { pageNameTranslationId: 'pages-names.fees' },
           component: resolve => require(['@/vue/pages/Fees'], resolve)
         }
       ].filter(route => route.featureFlag !== false)
