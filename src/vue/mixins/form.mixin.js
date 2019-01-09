@@ -68,6 +68,12 @@ export default {
         }
       }
     },
+    clearFields () {
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = ''
+      })
+      this.$v.$reset()
+    },
     touchField (fieldName) {
       const field = safeGet(this.$v, fieldName)
       if (!field) {
