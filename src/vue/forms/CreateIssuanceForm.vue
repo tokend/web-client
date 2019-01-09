@@ -192,13 +192,14 @@ export default {
           this.request.code
         )
         if (!receiver) return false
-        const operation = await base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-          asset: this.request.code,
-          amount: this.request.amount,
-          receiver: receiver,
-          reference: this.request.reference,
-          externalDetails: {}
-        })
+        const operation =
+          await base.CreateIssuanceRequestBuilder.createIssuanceRequest({
+            asset: this.request.code,
+            amount: this.request.amount,
+            receiver: receiver,
+            reference: this.request.reference,
+            externalDetails: {}
+          })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success(globalize('create-issuance-form.issuance-succeeded'))
         this.$emit(EVENTS.closeDrawer)

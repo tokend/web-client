@@ -54,42 +54,43 @@
               type="number"
               v-model.trim="form.amount"
               autocomplete="off"
-              v-validate="'required|amount'"
               :label="'transfer-form.amount' | globalize"
               :readonly="view.mode === VIEW_MODES.confirm"
               @blur="touchField('form.amount')"
               :error-message="getFieldErrorMessage('form.amount') ||
                 (isLimitExceeded
-                  ? 'transfer-form.insufficient-funds' | globalize : '')
+                  ? globalize('transfer-form.insufficient-funds') : '')
               "
             />
           </div>
         </div>
 
         <div class="app__form-row">
-          <input-field
-            name="recipient"
-            v-model.trim="form.recipient"
-            v-validate="'required|email_or_account_id'"
-            :label="'transfer-form.recipient-email-or-account-id' | globalize"
-            :error-message="getFieldErrorMessage('form.recipient')"
-            @blur="touchField('form.recipient')"
-            :readonly="view.mode === VIEW_MODES.confirm"
-          />
+          <div class="app__form-field">
+            <input-field
+              name="recipient"
+              v-model.trim="form.recipient"
+              :label="'transfer-form.recipient-email-or-account-id' | globalize"
+              :error-message="getFieldErrorMessage('form.recipient')"
+              @blur="touchField('form.recipient')"
+              :readonly="view.mode === VIEW_MODES.confirm"
+            />
+          </div>
         </div>
 
         <div class="app__form-row">
-          <textarea-field
-            id="transfer-description"
-            name="description"
-            v-model="form.subject"
-            v-validate="'max:250'"
-            @blur="touchField('form.subject')"
-            :label="'transfer-form.add-note' | globalize({ length: 250 })"
-            :maxlength="250"
-            :error-message="getFieldErrorMessage('form.subject')"
-            :readonly="view.mode === VIEW_MODES.confirm"
-          />
+          <div class="app__form-field">
+            <textarea-field
+              id="transfer-description"
+              name="description"
+              v-model="form.subject"
+              @blur="touchField('form.subject')"
+              :label="'transfer-form.add-note' | globalize({ length: 250 })"
+              :maxlength="250"
+              :error-message="getFieldErrorMessage('form.subject')"
+              :readonly="view.mode === VIEW_MODES.confirm"
+            />
+          </div>
         </div>
       </form>
 
@@ -222,14 +223,14 @@
           v-if="view.mode === VIEW_MODES.submit"
           type="submit"
           class="app__form-submit-btn"
-          :disabled="isPending"
+          :disabled="formMixin.isDisabled"
           form="transfer-form">
           {{ 'transfer-form.continue-btn' | globalize }}
         </button>
 
         <form-confirmation
           v-if="view.mode === VIEW_MODES.confirm"
-          :pending="isPending"
+          :pending="formMixin.isDisabled"
           :message="'transfer-form.recheck-form' | globalize"
           :ok-button="'transfer-form.submit-btn' | globalize"
           @cancel="updateView(VIEW_MODES.submit)"
@@ -249,15 +250,16 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-// import { Keypair } from 'tokend-js-sdk'
-import { errors } from '@tokend/js-sdk'
+import { errors, base } from '@tokend/js-sdk'
 import config from '@/config'
+import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
-import { PAYMENT_FEE_SUBTYPES, ASSET_POLICIES } from '@/js/const/xdr.const'
-
-// import { accountsService } from 'L@/js/services/accounts.service'
-// import { feeService } from 'L@/js/services/fees.service'
-// import { transferService } from 'L@/js/services/transfers.service'
+// FIXME: move XDR-dependent object imports to sdk
+import {
+  PAYMENT_FEE_SUBTYPES,
+  ASSET_POLICIES,
+  FEE_TYPES
+} from '@/js/const/xdr.const'
 import { globalize } from '@/vue/filters/globalize'
 import { required, emailOrAccountId, amount } from '@validators'
 
@@ -268,7 +270,7 @@ const VIEW_MODES = {
 }
 
 export default {
-  name: 'transfers-make',
+  name: 'transfers-form',
   components: {
     FormConfirmation
   },
@@ -299,7 +301,7 @@ export default {
     },
     isFeesLoaded: false,
     VIEW_MODES,
-    PAYMENT_FEE_SUBTYPES,
+    FEE_TYPES,
     config
   }),
   validations: {
@@ -319,7 +321,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountBalances
+      vuexTypes.accountBalances,
+      vuexTypes.accountId
     ]),
     userTransferableTokens () {
       return this.accountBalances.filter(i => {
@@ -328,11 +331,7 @@ export default {
       })
     },
     tokenCodes () {
-      if (this.userTransferableTokens) {
-        return this.userTransferableTokens.map(token => token.code)
-      } else {
-        return []
-      }
+      return this.userTransferableTokens.map(token => token.asset)
     },
     balance () {
       return this.accountBalances.find(i => i.asset === this.form.tokenCode)
@@ -348,29 +347,46 @@ export default {
     this.loadCurrentBalances()
   },
   methods: {
+    globalize,
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
     }),
     async submit (feeFromSource) {
-      this.disable()
+      this.disableForm()
       try {
-        // await transferService.createTransfer({
-        //   ...this.view.opts,
-        //   feeFromSource,
-        //   asset: this.form.tokenCode
-        // })
-        Bus.success(globalize('payment-successful'))
+        const opts = {
+          sourceBalanceId: this.view.opts.sourceBalanceId,
+          destination: this.view.opts.destinationAccountId,
+          amount: this.view.opts.amount,
+          feeData: {
+            sourceFee: {
+              maxPaymentFee: +this.view.opts.sourcePercentFee,
+              fixedFee: +this.view.opts.sourceFixedFee,
+              feeAsset: this.view.opts.sourceFeeAsset
+            },
+            destinationFee: {
+              maxPaymentFee: +this.view.opts.destinationPercentFee,
+              fixedFee: +this.view.opts.destinationFixedFee,
+              feeAsset: this.view.opts.destinationFeeAsset
+            },
+            sourcePaysForDest: this.view.opts.feeFromSource
+          },
+          subject: this.view.opts.subject,
+          asset: this.form.tokenCode
+        }
+        const operation = base.PaymentV2Builder.paymentV2({ ...opts })
+        await Sdk.horizon.transactions.submitOperations(operation)
+        Bus.success(globalize('transfer-form.payment-successful'))
         await this.loadCurrentBalances()
         this.rerenderForm()
       } catch (error) {
-        console.error(error)
         ErrorHandler.process(error)
       }
-      this.enable()
+      this.enableForm()
     },
     async processTransfer () {
-      if (!await this.isValid()) return
-      this.disable()
+      if (!await this.isFormValid()) return
+      this.disableForm()
       try {
         const counterparty = await this.loadCounterparty()
         const fees = await this.loadFees(counterparty.accountId)
@@ -384,7 +400,7 @@ export default {
           destinationFixedFee: fees.destination.fixed,
           destinationPercentFee: fees.destination.percent,
           destinationFeeAsset: fees.destination.feeAsset,
-          sourceBalanceId: this.balance.balance_id,
+          sourceBalanceId: this.balance.balanceId,
           sourceFixedFee: fees.source.fixed,
           sourcePercentFee: fees.source.percent,
           sourceFeeAsset: fees.source.feeAsset,
@@ -393,57 +409,76 @@ export default {
         }
         this.updateView(VIEW_MODES.confirm, opts)
       } catch (error) {
-        console.error(error)
         if (error instanceof errors.NotFoundError) {
-          error.showBanner(globalize('recipient-not-found'))
-          this.enable()
+          error.showBanner(globalize('transfer-form.recipient-not-found'))
+          this.enableForm()
           return
         }
         ErrorHandler.process(error)
       }
-      this.enable()
+      this.enableForm()
     },
     async loadCounterparty () {
       const counterparty = {}
-      // const providedRecipient = this.form.recipient
-      // if (Keypair.isValidPublicKey(providedRecipient)) {
-      //   counterparty.accountId = providedRecipient
-      //   counterparty.email =
-      //     await accountsService.loadEmailByAccountId(providedRecipient)
-      //   return counterparty
-      // }
-      // counterparty.email = providedRecipient
-      // counterparty.accountId =
-      //   await accountsService.loadAccountIdByEmail(providedRecipient)
+      const providedRecipient = this.form.recipient
+      if (base.Keypair.isValidPublicKey(providedRecipient)) {
+        counterparty.accountId = providedRecipient
+        // TODO: add sign
+        counterparty.email = (await Sdk.api.users.getPage({
+          address: providedRecipient
+        })).data[0].email
+        return counterparty
+      }
+      counterparty.email = providedRecipient
+      // TODO: add sign
+      counterparty.accountId = (await Sdk.api.users.getPage({
+        email: providedRecipient
+      })).data[0].id
       return counterparty
     },
     async loadFees (recipientAccountId) {
       const fees = { source: {}, destination: {} }
-      // const [senderFees, recipientFees] = await Promise.all([
-      //   feeService.loadPaymentFeeByAmount(
-      //     this.form.tokenCode,
-      //     this.form.amount
-      //   ),
-      //   feeService.loadPaymentFeeByAmount(
-      //     this.form.tokenCode,
-      //     this.form.amount,
-      //     recipientAccountId,
-      //     PAYMENT_FEE_SUBTYPES.incoming
-      //   )
-      // ])
-      // fees.source.fixed = senderFees.fixed
-      // fees.source.percent = senderFees.percent
-      // fees.source.feeAsset = senderFees.feeAsset
-      // fees.destination.fixed = recipientFees.fixed
-      // fees.destination.percent = recipientFees.percent
-      // fees.destination.feeAsset = recipientFees.feeAsset
+      const [senderFees, recipientFees] = await Promise.all([
+        this.loadPaymentFeeByAmount(
+          this.form.tokenCode,
+          this.form.amount
+        ),
+        this.loadPaymentFeeByAmount(
+          this.form.tokenCode,
+          this.form.amount,
+          recipientAccountId,
+          PAYMENT_FEE_SUBTYPES.incoming
+        )
+      ])
+      fees.source.fixed = senderFees.fixed
+      fees.source.percent = senderFees.percent
+      fees.source.feeAsset = senderFees.feeAsset
+      fees.destination.fixed = recipientFees.fixed
+      fees.destination.percent = recipientFees.percent
+      fees.destination.feeAsset = recipientFees.feeAsset
       return fees
+    },
+    async loadPaymentFeeByAmount (
+      asset,
+      amount,
+      accountId = this.accountId,
+      subtype = PAYMENT_FEE_SUBTYPES.outgoing
+    ) {
+      // TODO: add sign
+      const response = (await Sdk.horizon.fees.get(FEE_TYPES.paymentFee, {
+        asset: asset,
+        subtype: subtype,
+        account: accountId,
+        amount: amount
+      })).data
+
+      return response
     },
     updateView (mode, opts = {}, clear = false) {
       this.view.mode = mode
       this.view.opts = opts
       if (clear) {
-        this.clear()
+        this.clearFields()
         this.setTokenCode()
       }
     },
@@ -463,6 +498,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import './app-form';
 @import "~@scss/variables";
 
 .transfer__fee-box {
