@@ -16,15 +16,7 @@ const mutations = {
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
   SET_KYC_APPROVED_DATA: 'SET_KYC_APPROVED_DATA',
-  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
-
-  // tokens:
-  SET_ALL_TOKENS: 'SET_ALL_TOKENS',
-
-  // transactions:
-  SET_TX_LIST_INITIALIZED: 'SET_TX_LIST_INITIALIZED',
-  UPDATE_TX_LIST: 'UPDATE_TX_LIST',
-  UPDATE_TX_LIST_ITEM: 'UPDATE_TX_LIST_ITEM'
+  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA'
 }
 
 const actions = {
@@ -42,16 +34,7 @@ const actions = {
   // kyc
   LOAD_KYC: 'LOAD_KYC',
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
-  LOAD_KYC_DATA: 'LOAD_KYC_DATA',
-
-  // tokens:
-  GET_ALL_TOKENS: 'GET_ALL_TOKENS',
-
-  // transactions:
-  INIT_TX_LIST: 'INIT_TX_LIST',
-  GET_TX_LIST: 'GET_TX_LIST',
-  NEXT_TX_LIST: 'NEXT_TX_LIST',
-  UPDATE_TX_COUNTERPARTIES: 'UPDATE_TX_COUNTERPARTIES'
+  LOAD_KYC_DATA: 'LOAD_KYC_DATA'
 }
 
 const getters = {
@@ -94,21 +77,7 @@ const getters = {
   kycState: 'kycState',
   kycStateI: 'kycStateI',
   kycLatestData: 'kycLatestData',
-  kycApprovedData: 'kycApprovedData',
-
-  // tokens:
-  tokens: 'tokens',
-  walletTokens: 'walletTokens',
-  userOwnedTokens: 'userOwnedTokens',
-  userAcquiredTokens: 'userAcquiredTokens',
-  userWalletTokens: 'userWalletTokens',
-  userTransferableTokens: 'userTransferableTokens',
-  userWithdrawableTokens: 'userWithdrawableTokens',
-  userKycDetails: 'userKycDetails',
-  userKycDocuments: 'userKycDocuments',
-
-  // transactions:
-  transactions: 'transactions'
+  kycApprovedData: 'kycApprovedData'
 }
 
 export const vuexTypes = {
