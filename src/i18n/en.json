@@ -84,6 +84,10 @@
       "verification-required": "Verification required"
     },
 
+    "common": {
+      "button-text-more": "More"
+    },
+
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing your assets in minutes",
