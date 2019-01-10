@@ -44,8 +44,8 @@ export default {
     async loadEmail () {
       try {
         const accountId = await this.getAccountId()
-        const userResponse = await Sdk.api.users.get(accountId)
-        this.result = userResponse.data.email
+        const response = await Sdk.api.users.get(accountId)
+        this.result = response.data.email
       } catch (e) {
         this.result = this.accountId || this.balanceId
       }

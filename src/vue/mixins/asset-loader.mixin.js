@@ -1,5 +1,3 @@
-import FormMixin from '@/vue/mixins/form.mixin'
-
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -7,7 +5,6 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 export default {
-  mixins: [FormMixin],
   data: _ => ({
     ownedAssets: []
   }),

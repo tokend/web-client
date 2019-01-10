@@ -54,6 +54,7 @@
 
 <script>
 import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
+import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
@@ -69,7 +70,7 @@ const EVENTS = {
 
 export default {
   name: 'pre-issuance-form',
-  mixins: [AssetLoaderMixin],
+  mixins: [AssetLoaderMixin, FormMixin],
   data: _ => ({
     preIssuanceDocument: null,
     issuance: null

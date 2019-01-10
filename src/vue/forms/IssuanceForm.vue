@@ -101,6 +101,7 @@
 
 <script>
 import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
+import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -116,7 +117,7 @@ const EVENTS = {
 
 export default {
   name: 'issuance-form',
-  mixins: [AssetLoaderMixin],
+  mixins: [AssetLoaderMixin, FormMixin],
   data: _ => ({
     form: {
       asset: '',
