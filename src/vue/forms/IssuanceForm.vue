@@ -22,7 +22,7 @@
     </div>
     <div class="app__form-row">
       <div class="app__form-field">
-        <div class="issuance-form__amount">
+        <div class="issuance-form__amount-wrapper">
           <input-field
             white-autofill
             type="number"
@@ -36,8 +36,8 @@
             )"
           />
           <p
-            v-if="availableAmount"
-            class="issuance-form__amount-label"
+            v-if="availableAmount.currency"
+            class="issuance-form__amount-asset"
           >
             {{ availableAmount.currency }}
           </p>
@@ -46,8 +46,9 @@
           v-if="availableAmount.value"
           class="issuance-form__available-amount-hint"
         >
-          {{ 'issuance.available-for-issuance-lbl' | globalize }}
-          {{ availableAmount | formatMoney }}
+          {{ 'issuance.available-for-issuance-hint'
+            | globalize(availableAmount | formatMoney)
+          }}
         </p>
       </div>
     </div>
@@ -89,7 +90,7 @@
         type="button"
         class="issuance-form__cancel-btn"
         :disabled="formMixin.isDisabled"
-        @click.prevent="cancelForm"
+        @click.prevent="emitCancel"
       >
         {{ 'issuance.cancel-btn' | globalize }}
       </button>
@@ -106,7 +107,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { required, amountRange } from '@validators'
+import { required, amountRange, emailOrAccountId } from '@validators'
 
 export default {
   name: 'issuance-form',
@@ -130,7 +131,7 @@ export default {
             this.availableAmount ? this.availableAmount.value : 0
           )
         },
-        receiver: { required },
+        receiver: { required, emailOrAccountId },
         reference: { required }
       }
     }
@@ -180,7 +181,7 @@ export default {
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           Bus.success('issuance.tokens-issued-msg')
-          this.cancelForm()
+          this.emitCancel()
         }
       } catch (e) {
         console.error(e)
@@ -189,15 +190,15 @@ export default {
       this.enableForm()
     },
     async getAccountInfoByEmail (email) {
-      const response = await Sdk.api.users.getPage({ email: email })
-      const account = response.data.find(info => info.email === email)
-      if (account) return account
-      Bus.error('issuance.wrong-email-err')
-      return null
+      const response = await Sdk.api.users.getPage({ email })
+      return response.data.find(info => info.email === email)
+
+      // if (account) return account
+      // Bus.error('issuance.wrong-email-err')
+      // return null
     },
     async getReceiverBalance (receiver, asset) {
       let receiverAccountId
-
       if (receiver.indexOf('@') !== -1) {
         const receiverAccount = await this.getAccountInfoByEmail(receiver)
         if (!receiverAccount) return null
@@ -221,7 +222,7 @@ export default {
         return null
       }
     },
-    cancelForm () {
+    emitCancel () {
       this.$emit('cancel')
     }
   }
@@ -230,5 +231,37 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
-@import './issuance-form';
+
+.issuance-form__submit-btn {
+  @include button-raised();
+
+  margin-bottom: 2rem;
+  width: 18rem;
+}
+
+.issuance-form__cancel-btn {
+  @include button();
+
+  padding-left: .1rem;
+  padding-right: .1rem;
+  margin-left: auto !important;
+  margin-bottom: 2rem;
+  font-weight: normal;
+}
+
+.issuance-form__amount-wrapper {
+  display: flex;
+}
+
+.issuance-form__amount-asset {
+  margin-left: 1rem;
+  padding-top: 1.8rem;
+  font-size: 1.8rem;
+}
+
+.issuance-form__available-amount-hint {
+  color: $col-field-text-secondary;
+  font-size: 1.2rem;
+  margin-top: .6rem;
+}
 </style>

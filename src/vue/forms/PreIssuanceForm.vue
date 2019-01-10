@@ -1,6 +1,6 @@
 <template>
   <form
-    class="app__form issuance-form"
+    class="app__form pre-issuance-form"
     @submit.prevent="submit"
   >
     <div class="app__form-row">
@@ -9,15 +9,15 @@
           :label="'issuance.pre-issuance-lbl' | globalize"
           :note="'issuance.file-type-lbl' | globalize"
           accept=".iss"
-          v-model="documents.preIssuance"
+          v-model="preIssuanceDocument"
         />
       </div>
     </div>
     <div
       v-if="issuance"
-      class="pre-issuance-form__info"
+      class="pre-issuance-form__issuance-details"
     >
-      <h3>{{ 'issuance.pre-issuance-info-title' | globalize }}</h3>
+      <h3>{{ 'issuance.pre-issuance-details-title' | globalize }}</h3>
       <table class="app__table">
         <thead>
           <th>{{ 'issuance.asset-lbl' | globalize }}</th>
@@ -35,7 +35,7 @@
       <button
         v-ripple
         type="submit"
-        class="issuance-form__submit-btn"
+        class="pre-issuance-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
         {{ 'issuance.upload-btn' | globalize }}
@@ -43,8 +43,8 @@
       <button
         v-ripple
         type="button"
-        class="issuance-form__cancel-btn"
-        @click.prevent="cancelForm"
+        class="pre-issuance-form__cancel-btn"
+        @click.prevent="emitCancel"
       >
         {{ 'issuance.cancel-btn' | globalize }}
       </button>
@@ -67,21 +67,13 @@ export default {
   name: 'pre-issuance-form',
   mixins: [IssuanceFormMixin],
   data: _ => ({
-    documents: {
-      preIssuance: null
-    },
+    preIssuanceDocument: null,
     issuance: null
   }),
   watch: {
-    'documents.preIssuance': async function (value) {
-      if (value) {
-        try {
-          const extracted = await FileUtil.getText(value.file)
-          this.parsePreIssuance(JSON.parse(extracted).issuances[0])
-        } catch (e) {
-          console.error(e)
-          Bus.error('file-field.file-corrupted')
-        }
+    'preIssuanceDocument': async function (value) {
+      if (value.file) {
+        await this.loadIssuance(value.file)
       }
     }
   },
@@ -92,7 +84,7 @@ export default {
   },
   methods: {
     async submit () {
-      if (!this.documents.preIssuance) {
+      if (!this.preIssuanceDocument) {
         Bus.error('file-field.file-not-selected-err')
         return
       }
@@ -104,15 +96,24 @@ export default {
           })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('issuance.pre-issuance-uploaded-msg')
-        this.cancelForm()
+        this.emitCancel()
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
     },
-    cancelForm () {
+    emitCancel () {
       this.$emit('cancel')
+    },
+    async loadIssuance (file) {
+      try {
+        const extracted = await FileUtil.getText(file)
+        this.parsePreIssuance(JSON.parse(extracted).issuances[0])
+      } catch (e) {
+        console.error(e)
+        Bus.error('file-field.file-corrupted')
+      }
     },
     parsePreIssuance (issuance) {
       const _xdr = base.xdr.PreIssuanceRequest
@@ -142,5 +143,25 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
-@import './issuance-form';
+
+.pre-issuance-form__submit-btn {
+  @include button-raised();
+
+  margin-bottom: 2rem;
+  width: 18rem;
+}
+
+.pre-issuance-form__cancel-btn {
+  @include button();
+
+  padding-left: .1rem;
+  padding-right: .1rem;
+  margin-left: auto !important;
+  margin-bottom: 2rem;
+  font-weight: normal;
+}
+
+.pre-issuance-form__issuance-details {
+  margin-top: 2rem;
+}
 </style>

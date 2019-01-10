@@ -22,6 +22,7 @@ $_green: #33A494;
 $_orangePeel: #f2a100;
 $_whiteSmoke: #f5f6f9;
 $_lightPurple: #837fa1;
+$_ghostWhite: #c4c8cb;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -105,6 +106,9 @@ $col-avatar-instead-bg: rgba($_eastBay, .15);
 // fields colors
 $col-text-field-hint: $col-primary;
 $col-text-field-hint-inactive: $col-primary-inactive;
+$col-file-field-background: $_whiteSmoke;
+$col-file-field-border: $_ghostWhite;
+$col-field-text-secondary: $_lightPurple;
 
 // other colors
 $col-auth-titles-background-light: #5d5882;

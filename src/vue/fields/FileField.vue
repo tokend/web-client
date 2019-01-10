@@ -21,7 +21,6 @@
         v-bind="$attrs"
         type="file"
         class="file-field__file-input"
-        :disabled="disabled"
         :accept="accept"
         @change="onChange"
       >
@@ -43,8 +42,7 @@ export default {
     documentType: { type: String, default: 'default' },
     accept: { type: String, default: '*' },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
-    note: { type: String, default: 'All files' },
-    disabled: { type: Boolean, default: false }
+    note: { type: String, default: 'All files' }
   },
   data: _ => ({
     fileUrl: ''

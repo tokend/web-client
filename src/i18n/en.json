@@ -66,7 +66,8 @@
       "field-error_required": "Please fill out this field",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
-      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}"
+      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
+      "field-error_emailOrAccountId": "This field should be a valid email or account ID"
     },
 
     "errors": {
@@ -225,14 +226,14 @@
       "reference-lbl": "Reference",
       "history-title": "History",
       "asset-lbl": "Asset",
-      "available-for-issuance-lbl": "Available for issuance:",
+      "available-for-issuance-hint": "Available for issuance: {{value}}",
       "receiver-lbl": "Email or account ID",
       "issue-btn": "Issue",
       "cancel-btn": "CANCEL",
       "upload-btn": "Upload",
       "pre-issuance-lbl": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
       "file-type-lbl": "Pre-issuance asset file (.iss)",
-      "pre-issuance-info-title": "Pre-issuance info",
+      "pre-issuance-details-title": "Pre-issuance info",
       "tokens-issued-msg": "Your tokens were successfully issued",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
       "balance-required-err": "The receiver doesn't have this token balance",

@@ -2,18 +2,20 @@
   <span
     v-if="isLoaded"
     class="email-getter"
-    :title="isTitled && (email || id)"
+    :title="isTitled && result"
   >
-    {{ email || id }}
+    {{ result }}
   </span>
-  <span v-else>
+  <span
+    v-else
+    class="email-getter"
+  >
     {{ 'email-getter.loading-lbl' | globalize }}
   </span>
 </template>
 
 <script>
 import { Sdk } from '@/sdk'
-import { errors } from '@tokend/js-sdk'
 
 export default {
   props: {
@@ -31,36 +33,32 @@ export default {
     }
   },
   data: _ => ({
-    email: '',
+    result: '',
     isLoaded: false
   }),
-  computed: {
-    id () {
-      return this.accountId || this.balanceId
-    }
-  },
   async created () {
     await this.loadEmail()
     this.isLoaded = true
   },
   methods: {
     async loadEmail () {
-      let accountId
-
+      try {
+        const accountId = await this.getAccountId()
+        const userResponse = await Sdk.api.users.get(accountId)
+        this.result = userResponse.data.email
+      } catch (e) {
+        this.result = this.accountId || this.balanceId
+      }
+    },
+    async getAccountId () {
       if (this.accountId) {
-        accountId = this.accountId
-      } else if (this.balanceId) {
+        return this.accountId
+      }
+      if (this.balanceId) {
         const response = await Sdk.horizon.balances.getAccount(this.balanceId)
-        accountId = response.data.accountId
-      } else {
-        throw new Error('You should provide either account or balance id')
+        return response.data.accountId
       }
-
-      const userResponse = await Sdk.api.users.get(accountId)
-        .catch(error => error)
-      if (!(userResponse instanceof errors.NotFoundError)) {
-        this.email = userResponse.data.email
-      }
+      throw new Error('You should provide either account or balance id')
     }
   }
 }

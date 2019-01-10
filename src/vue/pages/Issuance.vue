@@ -100,8 +100,8 @@ import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 
 import { Sdk } from '@/sdk'
-// FIXME: move XDR-dependent object imports to sdk
-import { ACCOUNT_TYPES, OPERATION_TYPES } from '@/js/const/xdr.const'
+import { ACCOUNT_TYPES, OP_TYPES } from '@tokend/js-sdk'
+
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
 import { mapGetters } from 'vuex'
@@ -142,7 +142,7 @@ export default {
         // FIXME: Add pagination
         const response = await Sdk.horizon.operations.getPage({
           account_id: this[vuexTypes.account].accountId,
-          operation_type: OPERATION_TYPES.createIssuanceRequest,
+          operation_type: OP_TYPES.createIssuanceRequest,
           limit: PAGE_LIMIT
         })
         this.issuanceHistory = response.data
