@@ -116,7 +116,7 @@ export default {
         this.parsePreIssuance(JSON.parse(extracted).issuances[0])
       } catch (e) {
         console.error(e)
-        Bus.error('file-field.file-corrupted')
+        Bus.error('file-field.file-corrupted-err')
       }
     },
     parsePreIssuance (issuance) {

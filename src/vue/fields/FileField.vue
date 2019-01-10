@@ -31,9 +31,11 @@
 </template>
 
 <script>
-import { FileUtil } from '@/js/utils/file.util'
+import { FileUtil, FileNotFoundError } from '@/js/utils/file.util'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
 import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const MAX_FILE_MEGABYTES = 5
 
@@ -56,33 +58,36 @@ export default {
   },
   methods: {
     onChange (event) {
+      this.fileName = ''
       let file
       try {
         file = FileUtil.getFileFromEvent(event)
       } catch (e) {
-        Bus.error('file-field.file-not-selected')
-        this.dropFile()
-        return
+        if (e instanceof FileNotFoundError) {
+          Bus.error('file-field.file-not-selected-err')
+          return
+        }
+        console.error(e)
+        ErrorHandler.process(e)
       }
-      if (!this.isValidFileSize(file)) {
-        Bus.error('file-field.max-size-exceeded')
+      if (this.isValidFileSize(file)) {
+        this.fileName = file.name
+        this.$emit('input', new DocumentContainer({
+          mimeType: file.type,
+          type: this.documentType,
+          name: file.name,
+          file: file
+        }))
+      } else {
+        Bus.error('file-field.max-size-exceeded-err')
         this.dropFile()
-        return
       }
-      this.fileName = file.name
-      this.$emit('input', new DocumentContainer({
-        mimeType: file.type,
-        type: this.documentType,
-        name: file.name,
-        file: file
-      }))
     },
     isValidFileSize (file) {
       return file.size <= this.maxSizeBytes
     },
     dropFile () {
       this.$el.querySelector('input').value = ''
-      this.fileName = ''
     }
   }
 }

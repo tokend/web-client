@@ -244,9 +244,9 @@
     "file-field": {
       "title": "Drop files here or click to browse",
       "selected-file": "Selected file:",
-      "file-corrupted": "Your file is corrupted",
-      "max-size-exceeded": "You cannot upload a file exceeding maximum file size",
-      "file-not-selected": "A file was not selected"
+      "file-corrupted-err": "Your file is corrupted",
+      "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
+      "file-not-selected-err": "A file was not selected"
     },
 
     "email-getter": {
