@@ -9,8 +9,7 @@ localVue.filter('globalize', sinon.stub())
 describe('CollectionLoader component test', () => {
   const firstPageLoader = sinon.stub().resolves({
     data: [],
-    fetchNext: () => {
-    }
+    fetchNext: () => {}
   })
 
   describe('loadPage function test', () => {
@@ -27,8 +26,7 @@ describe('CollectionLoader component test', () => {
     it('loadPage calls provided loaderFn', async () => {
       const loaderFn = sinon.stub().resolves({
         data: [],
-        fetchNext: () => {
-        }
+        fetchNext: () => {}
       })
 
       await wrapper.vm.loadPage('event', loaderFn)
@@ -48,8 +46,7 @@ describe('CollectionLoader component test', () => {
     })
 
     it('loadPage saves fetchNext returned in response', async () => {
-      const fetchNext = () => {
-      }
+      const fetchNext = () => {}
       const spy = sinon.stub().resolves({
         fetchNext,
         data: []
@@ -108,8 +105,7 @@ describe('CollectionLoader component test', () => {
   it('loadFirstPage calls loadPage with a proper set of params', () => {
     const firstPageLoader = sinon.stub().resolves({
       data: [],
-      fetchNext: () => {
-      }
+      fetchNext: () => {}
     })
     const wrapper = shallowMount(CollectionLoader, {
       propsData: {
