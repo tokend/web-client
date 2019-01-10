@@ -15,7 +15,7 @@
       </router-link>
     </template>
 
-    <template v-else-if="!accountOwnedTokensCodes.length">
+    <template v-else-if="!accountOwnedTokens.length">
       <h2 class="app__page-heading">
         {{ 'create-issuance-form.no-assets-heading' | globalize }}
       </h2>
@@ -167,7 +167,7 @@ export default {
   },
   watch: {
     'form.assetCode' (value) {
-      if (this.form.assetCode) this.getAvailableToIssuance(value)
+      if (value) this.getAvailableToIssuance(value)
     },
     'accountOwnedTokensCodes' (value) {
       this.setTokenCode()
@@ -182,11 +182,11 @@ export default {
   },
   methods: {
     async getAccountOwnedTokens () {
-      const tokens = (await Sdk.horizon.assets.getAll()).data
-      this.accountOwnedTokens = tokens.filter(i => i.owner === this.accountId)
-      this.accountOwnedTokensCodes = tokens
-        .filter(i => i.owner === this.accountId)
-        .map(i => i.code)
+      const tokens = await this.loadAllTokens()
+      const accountOwnedTokens = tokens.filter(i => i.owner === this.accountId)
+
+      this.accountOwnedTokens = accountOwnedTokens
+      this.accountOwnedTokensCodes = accountOwnedTokens.map(i => i.code)
     },
     async submit () {
       if (!await this.isFormValid()) return
@@ -227,17 +227,17 @@ export default {
 
     async loadBalanceIdByEmailAndCode (email, assetCode) {
       // TODO: add sign
-      const account = (await Sdk.api.users.getPage({ email: email })).data[0]
+      const account = await this.loadAccountByEmail(email)
       if (!account) {
         Bus.error(globalize('create-issuance-form.user-does-not-found'))
         return false
       }
-      // TODO: add sign
-      const balances = (await Sdk.horizon.balances.getPage({
-        account: account.id,
-        asset: assetCode
-      })).data
 
+      // TODO: add sign
+      const balances = await this.loadBalancesByAccountIdAndAssetCode(
+        account.id,
+        assetCode
+      )
       if (!balances.length) {
         Bus.error(globalize('create-issuance-form.user-does-not-have-balance'))
         return false
@@ -254,6 +254,24 @@ export default {
       this.selectedTokenAvailableToIssuance = this.accountOwnedTokens
         .find(item => item.code === tokenCode)
         .availableForIssuance
+    },
+
+    async loadAccountByEmail (email) {
+      const data = (await Sdk.api.users.getPage({ email: email })).data[0]
+      return data
+    },
+
+    async loadBalancesByAccountIdAndAssetCode (accountId, assetCode) {
+      const data = (await Sdk.horizon.balances.getPage({
+        account: accountId,
+        asset: assetCode
+      })).data
+      return data
+    },
+
+    async loadAllTokens () {
+      const data = (await Sdk.horizon.assets.getAll()).data
+      return data
     }
   }
 }
