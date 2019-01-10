@@ -33,16 +33,18 @@
     <template v-else>
       <form
         novalidate
-        @submit.prevent="submit"
-        v-if="formShown">
+        @submit.prevent="submit">
         <h2 class="app__page-heading">
           {{ 'create-issuance-form.issuance-form' | globalize }}
         </h2>
 
         <div class="app__form-row">
           <select-field
+            id="issuance-asset"
             :values="accountOwnedTokensCodes"
-            v-model="request.code"
+            v-model="form.assetCode"
+            @blur="touchField('form.assetCode')"
+            :error-message="getFieldErrorMessage('form.assetCode')"
             :label="'create-issuance-form.asset-lbl' | globalize"
           />
         </div>
@@ -50,20 +52,21 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
+              id="issuance-amount"
               name="amount"
-              v-model="request.amount"
+              v-model="form.amount"
               type="number"
               :max="selectedTokenAvailableToIssuance"
               :label="'create-issuance-form.amount-lbl' | globalize"
-              @blur="touchField('request.amount')"
-              :error-message="getFieldErrorMessage('request.amount')"
+              @blur="touchField('form.amount')"
+              :error-message="getFieldErrorMessage('form.amount')"
             />
             <div class="app__form-field-description">
               <p>
                 {{
                   'create-issuance-form.available-to-issuance' | globalize({
                     value: selectedTokenAvailableToIssuance,
-                    tokenCode: request.code
+                    tokenCode: form.assetCode
                   })
                 }}
               </p>
@@ -73,22 +76,23 @@
 
         <div class="app__form-row">
           <input-field
-            id="token-name"
+            id="issuance-receiver"
             name="issuance email"
-            v-model="request.receiver"
+            v-model="form.receiver"
             :label="'create-issuance-form.email-lbl' | globalize"
-            @blur="touchField('request.receiver')"
-            :error-message="getFieldErrorMessage('request.receiver')"
+            @blur="touchField('form.receiver')"
+            :error-message="getFieldErrorMessage('form.receiver')"
           />
         </div>
 
         <div class="app__form-row">
           <input-field
+            id="issuance-reference"
             name="reference"
-            v-model="request.reference"
+            v-model="form.reference"
             :label="'create-issuance-form.reference-lbl' | globalize"
-            @blur="touchField('request.reference')"
-            :error-message="getFieldErrorMessage('request.reference')"
+            @blur="touchField('form.reference')"
+            :error-message="getFieldErrorMessage('form.reference')"
           />
         </div>
 
@@ -127,19 +131,20 @@ export default {
   name: 'create-issuance-form',
   mixins: [FormMixin],
   data: () => ({
-    request: {
-      code: ''
+    form: {
+      assetCode: '',
+      amount: null,
+      receiver: '',
+      reference: ''
     },
-    formShown: true,
-    unissued: '', // TODO: unissued amount label, exceeding check
     selectedTokenAvailableToIssuance: null,
     ACCOUNT_TYPES,
     accountOwnedTokens: [],
-    accountOwnedTokensCodes: [],
-    receiver: null
+    accountOwnedTokensCodes: []
   }),
   validations: {
-    request: {
+    form: {
+      assetCode: { required },
       amount: {
         required,
         amount
@@ -161,8 +166,8 @@ export default {
     ])
   },
   watch: {
-    'request.code' (value) {
-      if (this.request.code) this.getAvailableToIssuance(value)
+    'form.assetCode' (value) {
+      if (this.form.assetCode) this.getAvailableToIssuance(value)
     },
     'accountOwnedTokensCodes' (value) {
       this.setTokenCode()
@@ -171,8 +176,8 @@ export default {
   created () {
     this.getAccountOwnedTokens()
     this.setTokenCode()
-    if (this.request.code) {
-      this.getAvailableToIssuance(this.request.code)
+    if (this.form.assetCode) {
+      this.getAvailableToIssuance(this.form.assetCode)
     }
   },
   methods: {
@@ -188,16 +193,18 @@ export default {
       this.disableForm()
       try {
         const receiver = await this.loadBalanceIdByEmailAndCode(
-          this.request.receiver,
-          this.request.code
+          this.form.receiver,
+          this.form.assetCode
         )
+        // error message for user with information about why receiver isn't
+        // present inside loadBalanceIdByEmailAndCode method
         if (!receiver) return false
         const operation =
           await base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-            asset: this.request.code,
-            amount: this.request.amount,
+            asset: this.form.assetCode,
+            amount: this.form.amount,
             receiver: receiver,
-            reference: this.request.reference,
+            reference: this.form.reference,
             externalDetails: {}
           })
         await Sdk.horizon.transactions.submitOperations(operation)
@@ -207,7 +214,7 @@ export default {
         if (error.constructor === errors.NotFoundError) {
           Bus.error(
             globalize('create-issuance-form.no-balance', {
-              asset: this.request.code
+              asset: this.form.assetCode
             })
           )
           this.enableForm()
@@ -240,12 +247,12 @@ export default {
     },
 
     setTokenCode () {
-      this.request.code = this.accountOwnedTokensCodes[0] || null
+      this.form.assetCode = this.accountOwnedTokensCodes[0] || null
     },
 
     getAvailableToIssuance (tokenCode) {
       this.selectedTokenAvailableToIssuance = this.accountOwnedTokens
-        .filter(item => item.code === tokenCode)[0]
+        .find(item => item.code === tokenCode)
         .availableForIssuance
     }
   }
