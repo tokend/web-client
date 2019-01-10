@@ -1,10 +1,13 @@
 <template>
   <div class="tx-history">
     <div class="tx-history__navigation">
+      <span class="tx-history__navigation-text">
+        {{ 'tx-pages.show' | globalize }}:
+      </span>
       <select-field-custom
-        :label="'tx-pages.asset'"
+        v-if="isLoad"
         v-model="tokenCode"
-        :values="tokens" />tx-history__navigation
+        :values="tokens" />
     </div>
     <div class="tx-history__list">
       <table class="tx-history__table">
@@ -13,91 +16,72 @@
           <td>{{ 'tx-pages.txType' | globalize }}</td>
           <td>{{ 'tx-pages.asset' | globalize }}</td>
           <td>{{ 'tx-pages.amount' | globalize }}</td>
-          <td>{{ 'tx-pages.counterparty' | globalize }}</td>
-          <td>{{ 'tx-pages.status' | globalize }}</td>
+          <td class="tx-history__counterparty">
+            {{ 'tx-pages.counterparty' | globalize }}
+          </td>
+          <td class="tx-history__status">
+            {{ 'tx-pages.status' | globalize }}
+          </td>
+          <td class="tx-history__td-btn" />
         </tr>
       </table>
-      <template v-for="(tx, i) in list">
-        <transaction-record :tx="tx" :key="`tx-row-${i}`" />
+      <template v-for="(tx, i) in operations">
+        <operation-record :tx="tx" :key="`tx-row-${i}`" />
       </template>
     </div>
   </div>
 </template>
 
 <script>
-import TransactionRecord from '@/vue/common/TransactionRecord'
+import OperationRecord from '@/vue/common/OperationRecord'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
-import { ErrorHandler } from '@/js/helpers/error-handler'
+// import { ErrorHandler } from '@/js/helpers/error-handler'
 // import { vuexTypes } from 'L@/vuex/types'
-// import { Sdk } from '@/sdk'
+import { Sdk } from '@/sdk'
 // import { globalize } from '@/vue/filters/globalize'
 import get from 'lodash/get'
 
 export default {
   name: 'history-index',
   components: {
-    TransactionRecord,
+    OperationRecord,
     SelectFieldCustom
   },
   data: _ => ({
-    isLoading: false,
     tokenCode: null,
-    index: -1
+    assets: [],
+    operations: [],
+    isLoad: false
   }),
   computed: {
     list () {
       return []
-      // return (get(this.transactions, `${this.tokenCode}.records`) || [])
-      //   .reduce((list, item) => {
-      //     if (item instanceof RecordTypes.MatchRecord) {
-      //       item.transactions.forEach(tx => {
-      //         list.push(tx)
-      //       })
-      //       return list
-      //     }
-      //     list.push(item)
-      //     return list
-      //   }, [])
     },
     isLoaded () {
-      return get(this.transactions, `${this.tokenCode}.isLoaded`)
+      return get(this.operations, `${this.tokenCode}.isLoaded`)
     },
     tokens () {
-      return ['BTC', 'ETH']
-      // return this.userAcquiredTokens.map(token => token.code)
+      return this.assets.map(item => {
+        return item.code
+      })
     }
   },
   watch: {
     tokenCode (code) {
-      // this.loadList(code)
     }
   },
   async created () {
-    // this.loadTokens()
+    const assetsResponse = await Sdk.horizon.assets.getAll()
+    this.assets = assetsResponse.data
     this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
-    // if (this.tokenCode) {
-    //   await this.loadList(this.tokenCode)
-    // }
+    if (this.tokenCode) {
+      const operationsResponse = await Sdk.horizon.payments
+        .getPage({ asset: 'BTC' })
+      this.operations = operationsResponse.data
+    }
+    this.isLoad = true
   },
   methods: {
-    toggleDetails (index) {
-      this.index = this.index === index ? -1 : index
-    },
-    isSelected (i) {
-      return this.index === i
-    },
-    async more () {
-      this.isLoading = true
-      try {
-        await this.loadNext(this.tokenCode)
-      } catch (e) {
-        console.error(e)
-        ErrorHandler.process(e)
-        // EventDispatcher
-        //   .dispatchShowErrorEvent(globalize('tx-pages.failedToLoadTx'))
-      }
-      this.isLoading = false
-    }
   }
 }
 </script>
@@ -162,7 +146,7 @@ export default {
     text-align: center;
   }
 
-  .tx-history__no-transactions {
+  .tx-history__no-operations {
     padding: 0 16px 32px;
     text-align: center;
 
@@ -172,17 +156,36 @@ export default {
   }
 
   .tx-history__navigation{
+    display: flex;
+    align-items: center;
     margin-bottom: 52px;
+  }
+
+  .tx-history__navigation-text{
+    margin-right: 15px;
   }
 
   .tx-history__table {
     width: 100%;
     table-layout: fixed;
-    td{
+    td {
       padding: 7px 15px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    .tx-history__td-btn {
+      text-align: right;
+      width: 67px;
+    }
+
+    .tx-history__counterparty{
+      width: 300px;
+    }
+
+    .tx-history__status{
+      width: 130px;
     }
   }
 </style>

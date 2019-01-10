@@ -45,7 +45,8 @@
     },
 
     "common": {
-      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work"
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work",
+      "button-text-more": "More"
     },
 
     "status-message": {
@@ -84,8 +85,13 @@
       "verification-required": "Verification required"
     },
 
-    "common": {
-      "button-text-more": "More"
+    "operation-names": {
+      "issuance": "Tokens received",
+      "investment": "Investment",
+      "match": "Order match",
+      "withdrawal": "Withdrawal",
+      "transfer": "Transfer",
+      "offer": "Offer"
     },
 
     "auth-pages": {
@@ -221,6 +227,11 @@
       "percentFee": "Percent fee",
       "asset": "Asset",
       "date": "Date",
+      "sender": "Sender",
+      "counterparty": "Counterparty",
+      "counterpartyEmail": "Counterparty email",
+      "convertedAmount": "Converted amount",
+
       "sourceFees": "Sender fees",
       "destinationFees": "Recipient fees",
       "sourceFeeAsset": "Sender fee asset",
@@ -234,17 +245,13 @@
       "fee": "Fee",
       "destinationAsset": "Destination asset",
       "destinationAmount": "Destination amount",
-      "sender": "Sender",
       "receiver": "Receiver",
       "feePaid": "Fee paid",
       "fundName": "Fund name",
-      "counterparty": "Counterparty",
       "baseAsset": "Base asset",
       "id": "Transaction ID",
       "senderEmail": "Sender email",
       "receiverEmail": "Receiver email",
-      "counterpartyEmail": "Counterparty email",
-      "convertedAmount": "Converted amount",
       "txType": "Transaction type",
       "status": "Status",
       "noTransactionHistory": "No transaction history",

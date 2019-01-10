@@ -2,36 +2,54 @@
   <div class="app__card transaction-record">
     <table class="transaction-record__table">
       <tr class="transaction-record__tr">
-        <td class="transaction-record__td">
-          <span class="transaction-record__date">{{ tx.date }}</span>
+        <td>
+          <span class="transaction-record__date">
+            {{ operation.date | formatCalendar }}
+          </span>
         </td>
-        <td class="transaction-record__td">{{ tx.name }}</td>
-        <td class="transaction-record__td">{{ getAssetName(tx.asset) }}</td>
-        <td class="transaction-record__td">
+        <td>
+          <template v-if="OP_TYPES.createIssuanceRequest === operation.typeI">
+            {{ 'operation-names.issuance' | globalize }}
+          </template>
+        </td>
+        <td>{{ operation.asset }}</td>
+        <td>
           <span
-            :class="{'ransaction-record__amount' : accountId === tx.sender}">
-            {{ tx.amount }} {{ tx.asset }}
+            :class="{'transaction-record__negative-amount'
+              : accountId === operation.sender}">
+            {{
+              { value: operation.amount, currency: operation.asset } |
+                formatMoney
+            }}
           </span>
         </td>
-        <td class="transaction-record__td transaction-record__id-td">
-          {{ tx.counterparty }}
+        <td class="transaction-record__counterparty">
+          {{ operation.counterparty }}
         </td>
-        <td class="transaction-record__td transaction-record__state">
-          <span :class="`transaction-record__status--${tx.state}`">
-            {{ tx.state }}
+        <td class="transaction-record__status">
+          <span :class="`transaction-record__status--${operation.state}`">
+            {{ operation.state }}
           </span>
         </td>
-        <td class="transaction-record__td transaction-record__btn-td">
+        <td class="transaction-record__td-btn">
           <button
             class="transaction-record__btn"
             @click="isOpenDetails = !isOpenDetails">
-            <md-icon v-if="isOpenDetails">keyboard_arrow_up</md-icon>
-            <md-icon v-else>keyboard_arrow_down</md-icon>
+            <i
+              v-if="isOpenDetails"
+              class="mdi mdi-chevron-up" />
+            <i
+              v-else
+              class="mdi mdi-chevron-down" />
           </button>
         </td>
       </tr>
     </table>
-    <!--<transaction-details v-if="isOpenDetails" :tx="tx" />-->
+    <template v-if="isOpenDetails">
+      <details-issuance
+        v-if="OP_TYPES.createIssuanceRequest === operation.typeI"
+        :operation="operation" />
+    </template>
   </div>
 </template>
 
@@ -39,15 +57,22 @@
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { TX_STATES } from '@/js/const/transaction-statuses'
+import { RecordWrapper } from '@/js/records'
+import { OP_TYPES } from '@tokend/js-sdk'
+import DetailsIssuance from './OperationRecord.Details/Details.Issuance'
 
 export default {
   name: '',
-  components: {},
+  components: {
+    DetailsIssuance
+  },
   props: {
-    tx: { type: Object, require: true, default: () => {} }
+    tx: { type: Object, required: true }
   },
   data: _ => ({
+    OP_TYPES,
     TX_STATES,
+    operation: {},
     isOpenDetails: false
   }),
   computed: {
@@ -57,7 +82,12 @@ export default {
     ])
   },
   watch: {},
-  created () {},
+  created () {
+    try {
+      this.operation = RecordWrapper.operation(this.tx, {})
+    } catch (e) {
+    }
+  },
   methods: {
     getAssetName (assetCode) {
       return (this.tokens.find(item => item.code === assetCode) || []).name
@@ -69,8 +99,6 @@ export default {
 <style lang="scss">
   @import '@/scss/variables';
 
-  $td-width: 100% / 7;
-
   .transaction-record {
     margin: 6px 0;
   }
@@ -78,37 +106,33 @@ export default {
   .transaction-record__table {
     width: 100%;
     table-layout: fixed;
+    td {
+      padding: 7px 15px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .transaction-record__td-btn {
+      text-align: right;
+      width: 67px;
+    }
+
+    .transaction-record__counterparty {
+      width: 300px;
+    }
+
+    .transaction-record__status{
+      padding-left: 27px;
+      width: 130px;
+    }
   }
 
-  .transaction-record__tr {
-  }
-
-  .transaction-record__td {
-    padding: 7px 15px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .transaction-record__state{
-    text-align: right;
-    width: 130px;
-  }
-
-  .transaction-record__btn-td {
-    text-align: right;
-    width: 67px;
-  }
-
-  .transaction-record__id-td{
-    width: 333px;
-  }
-
-  .transaction-record__date{
+  .transaction-record__date {
     font-weight: 600;
   }
 
-  .ransaction-record__amount{
+  .transaction-record__negative-amount {
     position: relative;
     &:before {
       content: '-';
@@ -158,6 +182,7 @@ export default {
       background-color: $col-warning;
     }
   }
+
   .transaction-record__btn {
     width: 37px;
     height: 37px;

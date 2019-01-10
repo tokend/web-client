@@ -4,13 +4,12 @@ import _get from 'lodash/get'
 export class IssuanceRecord extends OpRecord {
   constructor (record) {
     super(record)
-
+    this.id = record.id
     this.amount = record.amount
     this.asset = record.asset
     this.feeAsset = record.asset
     this.fixedFee = record.feeFixed
     this.percentFee = record.feePercent
-    this.id = record.id
     this.subject = record.reference
 
     this.externalDetails = record.externalDetails
@@ -18,6 +17,8 @@ export class IssuanceRecord extends OpRecord {
     this.blockNumber = _get(record, 'externalDetails.blockNumber')
     this.outIndex = _get(record, 'externalDetails.outIndex')
     this.txHash = _get(record, 'externalDetails.txHash')
+    this.typeI = record.typeI
+    this.type = record.type
   }
 
   get isIncoming () {
