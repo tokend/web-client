@@ -129,7 +129,6 @@ $custom-breakpoint: 80rem;
 
 .dashboard {
   flex: 1;
-  overflow: hidden;
 }
 
 .dashboard__chart {

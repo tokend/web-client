@@ -73,7 +73,7 @@
                     :title="tx.direction"
                     class="info-widget__list-body-item
                            info-widget__list-body-item--amount">
-                    {{ tx.direction === 'in' ? '+' : '-' }}{{ tx.amount }}
+                    {{ tx.receiver === accountId ? '+' : '-' }}{{ tx.amount }}
                   </div>
                   <div
                     :title="tx.counterparty"
@@ -268,6 +268,7 @@ export default {
       width: 1.6rem;
       height: 1.6rem;
       border-radius: 50%;
+      box-sizing: border-box;
       color: $col-block-bg;
       font-size: 1.0rem;
       line-height: 1.8rem;
