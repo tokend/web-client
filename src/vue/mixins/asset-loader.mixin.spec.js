@@ -1,4 +1,4 @@
-import IssuanceFormMixin from './issuance-form.mixin'
+import AssetLoaderMixin from './asset-loader.mixin'
 
 import Vuex from 'vuex'
 
@@ -49,20 +49,20 @@ describe('issuance-form.mixin unit test', () => {
     })
 
     wrapper = mount(Component, {
-      mixins: [IssuanceFormMixin],
+      mixins: [AssetLoaderMixin],
       store,
       localVue
     })
   })
 
-  it('loadAssets() calls the horizon.assets.getAll() with the correct params', async () => {
-    await wrapper.vm.loadAssets()
+  it('loadOwnedAssets() calls the horizon.assets.getAll() with the correct params', async () => {
+    await wrapper.vm.loadOwnedAssets()
     expect(assetsSpy.calledOnce).to.be.true
   })
 
-  it('loadAssets() changes user tokens data after loading', async () => {
+  it('loadOwnedAssets() changes user tokens data after loading', async () => {
     wrapper.setData({ ownedAssets: null })
-    await wrapper.vm.loadAssets()
+    await wrapper.vm.loadOwnedAssets()
     expect(wrapper.vm.ownedAssets).to.deep.equal(sampleAssetsData)
   })
 })

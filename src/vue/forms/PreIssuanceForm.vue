@@ -7,7 +7,7 @@
       <div class="app__form-field">
         <file-field
           :label="'issuance.pre-issuance-lbl' | globalize"
-          :note="'issuance.file-type-lbl' | globalize"
+          :note="'issuance.file-type-note' | globalize"
           accept=".iss"
           v-model="preIssuanceDocument"
         />
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import IssuanceFormMixin from '@/vue/mixins/issuance-form.mixin'
+import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
@@ -63,9 +63,13 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
 
+const EVENTS = {
+  cancel: 'cancel'
+}
+
 export default {
   name: 'pre-issuance-form',
-  mixins: [IssuanceFormMixin],
+  mixins: [AssetLoaderMixin],
   data: _ => ({
     preIssuanceDocument: null,
     issuance: null
@@ -79,7 +83,7 @@ export default {
   },
   async created () {
     this.disableForm()
-    await this.loadAssets()
+    await this.loadOwnedAssets()
     this.enableForm()
   },
   methods: {
@@ -104,7 +108,7 @@ export default {
       this.enableForm()
     },
     emitCancel () {
-      this.$emit('cancel')
+      this.$emit(EVENTS.cancel)
     },
     async loadIssuance (file) {
       try {

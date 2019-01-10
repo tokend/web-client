@@ -17,11 +17,11 @@ export default {
     ])
   },
   methods: {
-    async loadAssets () {
+    async loadOwnedAssets () {
       try {
         const response = await Sdk.horizon.assets.getAll()
         this.ownedAssets = response.data
-          .filter(asset => asset.owner === this[vuexTypes.account].accountId)
+          .filter(asset => asset.owner === this.account.accountId)
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)

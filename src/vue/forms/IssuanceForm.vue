@@ -46,8 +46,9 @@
           v-if="availableAmount.value"
           class="issuance-form__available-amount-hint"
         >
-          {{ 'issuance.available-for-issuance-hint'
-            | globalize(availableAmount | formatMoney)
+          {{
+            'issuance.available-for-issuance-hint'
+              | globalize({ value: availableAmount })
           }}
         </p>
       </div>
@@ -99,7 +100,7 @@
 </template>
 
 <script>
-import IssuanceFormMixin from '@/vue/mixins/issuance-form.mixin'
+import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -109,9 +110,13 @@ import { base } from '@tokend/js-sdk'
 
 import { required, amountRange, emailOrAccountId } from '@validators'
 
+const EVENTS = {
+  cancel: 'cancel'
+}
+
 export default {
   name: 'issuance-form',
-  mixins: [IssuanceFormMixin],
+  mixins: [AssetLoaderMixin],
   data: _ => ({
     form: {
       asset: '',
@@ -157,7 +162,7 @@ export default {
     }
   },
   async created () {
-    await this.loadAssets()
+    await this.loadOwnedAssets()
     if (this.ownedAssets.length > 0) {
       this.form.asset = this.ownedAssets[0].code
     }
@@ -182,6 +187,8 @@ export default {
           await Sdk.horizon.transactions.submitOperations(operation)
           Bus.success('issuance.tokens-issued-msg')
           this.emitCancel()
+        } else {
+          Bus.error('issuance.balance-required-err')
         }
       } catch (e) {
         console.error(e)
@@ -190,40 +197,37 @@ export default {
       this.enableForm()
     },
     async getAccountInfoByEmail (email) {
-      const response = await Sdk.api.users.getPage({ email })
-      return response.data.find(info => info.email === email)
-
-      // if (account) return account
-      // Bus.error('issuance.wrong-email-err')
-      // return null
+      try {
+        const response = await Sdk.api.users.getPage({ email })
+        return response.data.find(info => info.email === email)
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.process(e)
+      }
     },
     async getReceiverBalance (receiver, asset) {
-      let receiverAccountId
-      if (receiver.indexOf('@') !== -1) {
-        const receiverAccount = await this.getAccountInfoByEmail(receiver)
-        if (!receiverAccount) return null
-        receiverAccountId = receiverAccount.id
-      } else {
-        receiverAccountId = receiver
-      }
-
       try {
+        const receiverAccountId = await this.getReceiverAccountId(receiver)
         const response =
           await Sdk.horizon.account.getBalances(receiverAccountId)
         const receiverBalance = response.data
           .find(balance => balance.asset === asset)
-
-        if (receiverBalance) return receiverBalance
-        Bus.error('issuance.balance-required-err')
-        return null
+        return receiverBalance
       } catch (e) {
-        Bus.error('issuance.wrong-account-id-err')
         console.error(e)
-        return null
+        Bus.error('issuance.wrong-receiver-err')
       }
     },
+    async getReceiverAccountId (receiver) {
+      if (receiver.indexOf('@') !== -1) {
+        const receiverAccount = await this.getAccountInfoByEmail(receiver)
+        if (!receiverAccount) throw new Error('Wrong account email')
+        return receiverAccount.id
+      }
+      return receiver
+    },
     emitCancel () {
-      this.$emit('cancel')
+      this.$emit(EVENTS.cancel)
     }
   }
 }

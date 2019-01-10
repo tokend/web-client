@@ -6,8 +6,10 @@
     <div class="file-input">
       <div
         class="file-input__file-preview"
-        v-if="fileUrl">
-        <span>{{ 'file-field.selected-file' | globalize }}  {{ fileUrl }}</span>
+        v-if="fileName">
+        <span>
+          {{ 'file-field.selected-file' | globalize }}  {{ fileName }}
+        </span>
       </div>
       <div class="file-input__input-inner">
         <div class="file-input__text">
@@ -45,7 +47,7 @@ export default {
     note: { type: String, default: 'All files' }
   },
   data: _ => ({
-    fileUrl: ''
+    fileName: ''
   }),
   computed: {
     maxSizeBytes () {
@@ -67,7 +69,7 @@ export default {
         this.dropFile()
         return
       }
-      this.fileUrl = file.name
+      this.fileName = file.name
       this.$emit('input', new DocumentContainer({
         mimeType: file.type,
         type: this.documentType,
@@ -80,7 +82,7 @@ export default {
     },
     dropFile () {
       this.$el.querySelector('input').value = ''
-      this.fileUrl = ''
+      this.fileName = ''
     }
   }
 }

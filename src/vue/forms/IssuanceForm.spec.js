@@ -62,7 +62,7 @@ describe('IssuanceForm component unit test', () => {
     const expectedResults = {
       asset: ['required'],
       amount: ['required', 'amountRange'],
-      receiver: ['required'],
+      receiver: ['required', 'emailOrAccountId'],
       reference: ['required']
     }
 

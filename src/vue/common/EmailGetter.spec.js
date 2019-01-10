@@ -44,7 +44,7 @@ describe('EmailGetter component unit test', () => {
   })
 
   it('loadEmail() method is called inside created hook', async () => {
-    sinon.restore()
+    EmailGetter.created.restore()
     const spy = sinon.stub(EmailGetter.methods, 'loadEmail')
 
     await shallowMount(EmailGetter, { localVue })

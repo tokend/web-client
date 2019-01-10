@@ -38,9 +38,7 @@ describe('PreIssuanceForm component unit test', () => {
         asset: 'PLT',
         amount: 10
       },
-      documents: {
-        preIssuance: {}
-      }
+      preIssuanceDocument: {}
     }
 
     let wrapper
