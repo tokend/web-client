@@ -8,6 +8,7 @@ $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
 $_gray: #e2e3e3;
+$_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
 $_lightGray: #c6c6c6;
 $_mediumGray: #ccc;
@@ -20,6 +21,7 @@ $_lightPurple: #837fa1;
 
 // base colors:
 $col-primary: $_eastBay;
+$col-secondary: $_lightPurple;
 $col-primary-lighten: $_cornflowerBlue;
 $col-primary-txt: $_white;
 $col-link: $col-primary-lighten;
@@ -123,5 +125,10 @@ $col-top-bar-background: $_white;
 $col-top-bar-text: $_eastBay;
 $col-top-bar-tab: $_lightPurple;
 $col-top-bar-tab-active: $_cornflowerBlue;
+
+// request colors
+$col-request-approved: $_cyan;
+$col-request-pending: $_orangePeel;
+$col-request-rejected: $_lightRed;
 
 // TODO: paste here variables that are ready to use during the refactor process
