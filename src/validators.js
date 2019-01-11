@@ -1,4 +1,7 @@
 import { base } from '@tokend/js-sdk'
+
+import { validateEmail } from '@/js/helpers/validate-email'
+
 import * as validators from 'vuelidate/lib/validators'
 export { minLength } from 'vuelidate/lib/validators'
 
@@ -11,8 +14,3 @@ export const emailOrAccountId = value => {
 }
 
 export * from 'vuelidate/lib/validators'
-
-export function validateEmail (email) {
-  const reg = new RegExp('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')
-  return reg.test(email)
-}

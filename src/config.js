@@ -5,6 +5,7 @@ const featureFlags = {
 
 export default Object.assign(
   {
+    DEBUG: true,
     HORIZON_SERVER: process.env.HORIZON_SERVER,
     FILE_STORAGE: '',
     NETWORK_PASSPHRASE: '',

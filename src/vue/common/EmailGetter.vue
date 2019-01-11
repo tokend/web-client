@@ -16,6 +16,11 @@
 
 <script>
 import { Sdk } from '@/sdk'
+import config from '@/config'
+
+const FALLBACK_MESSAGES = {
+  NO_ACCOUNT_OR_BALANCE_ID: '—' // M-dash
+}
 
 export default {
   props: {
@@ -36,29 +41,51 @@ export default {
     result: '',
     isLoaded: false
   }),
+
   async created () {
-    await this.loadEmail()
+    if (this.isAccountIdOrBalanceIdPresent()) {
+      await this.loadResult()
+    } else {
+      this.showNoAccountOrBalanceIdFallback()
+    }
     this.isLoaded = true
   },
+
   methods: {
-    async loadEmail () {
+    isAccountIdOrBalanceIdPresent () {
+      return Boolean(this.accountId || this.balanceId)
+    },
+
+    async loadResult () {
       try {
         const accountId = await this.getAccountId()
-        const response = await Sdk.api.users.get(accountId)
-        this.result = response.data.email
-      } catch (e) {
+        this.result = await this.getEmailByAccountId(accountId)
+      } catch (error) {
+        if (config.DEBUG) {
+          console.error(error)
+        }
         this.result = this.accountId || this.balanceId
       }
     },
+
+    showNoAccountOrBalanceIdFallback () {
+      this.result = FALLBACK_MESSAGES.NO_ACCOUNT_OR_BALANCE_ID
+    },
+
     async getAccountId () {
       if (this.accountId) {
         return this.accountId
-      }
-      if (this.balanceId) {
+      } else if (this.balanceId) {
         const response = await Sdk.horizon.balances.getAccount(this.balanceId)
         return response.data.accountId
+      } else {
+        return ''
       }
-      throw new Error('You should provide either account or balance id')
+    },
+
+    async getEmailByAccountId (accountId) {
+      const response = await Sdk.api.users.get(accountId)
+      return response.data.email
     }
   }
 }
