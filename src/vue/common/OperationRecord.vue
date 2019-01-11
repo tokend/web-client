@@ -12,7 +12,6 @@
             {{ 'operation-names.issuance' | globalize }}
           </template>
         </td>
-        <td>{{ operation.asset }}</td>
         <td>
           <span
             :class="{'transaction-record__negative-amount'
@@ -59,7 +58,7 @@ import { vuexTypes } from '@/vuex/types'
 import { TX_STATES } from '@/js/const/transaction-statuses'
 import { RecordWrapper } from '@/js/records'
 import { OP_TYPES } from '@tokend/js-sdk'
-import DetailsIssuance from './OperationRecord.Details/Details.Issuance'
+import DetailsIssuance from './OperationDetails/Issuance.Details'
 
 export default {
   name: '',

@@ -230,7 +230,7 @@
       "sender": "Sender",
       "counterparty": "Counterparty",
       "counterpartyEmail": "Counterparty email",
-      "convertedAmount": "Converted amount",
+      "id": "Transaction ID",
 
       "sourceFees": "Sender fees",
       "destinationFees": "Recipient fees",
@@ -249,7 +249,6 @@
       "feePaid": "Fee paid",
       "fundName": "Fund name",
       "baseAsset": "Base asset",
-      "id": "Transaction ID",
       "senderEmail": "Sender email",
       "receiverEmail": "Receiver email",
       "txType": "Transaction type",

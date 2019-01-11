@@ -1,0 +1,18 @@
+@import '@/scss/variables';
+
+.details {
+  margin: 9px 15px 0 15px;
+  padding: 7px 0 7px 0;
+  border-top: 1px solid $col-button-flat-disabled-txt;
+}
+.details__table {
+  td {
+    padding: 7px 15px 7px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    &:first-child {
+      color: $col-table-head-text;
+    }
+  }
+}

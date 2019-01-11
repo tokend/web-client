@@ -14,7 +14,6 @@
         <tr>
           <td>{{ 'tx-pages.date' | globalize }}</td>
           <td>{{ 'tx-pages.txType' | globalize }}</td>
-          <td>{{ 'tx-pages.asset' | globalize }}</td>
           <td>{{ 'tx-pages.amount' | globalize }}</td>
           <td class="tx-history__counterparty">
             {{ 'tx-pages.counterparty' | globalize }}
