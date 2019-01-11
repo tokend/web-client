@@ -86,11 +86,11 @@
     },
 
     "operation-names": {
-      "issuance": "Tokens received",
+      "3": "Tokens received",
       "investment": "Investment",
       "match": "Order match",
       "withdrawal": "Withdrawal",
-      "transfer": "Transfer",
+      "23": "Transfer",
       "offer": "Offer"
     },
 
@@ -231,13 +231,11 @@
       "counterparty": "Counterparty",
       "counterpartyEmail": "Counterparty email",
       "id": "Transaction ID",
-
       "sourceFees": "Sender fees",
       "destinationFees": "Recipient fees",
-      "sourceFeeAsset": "Sender fee asset",
-      "destinationFeeAsset": "Recipient fee asset",
-      "sourcePaysForDest": "Sender paid fees",
       "subject": "Subject",
+
+      "sourcePaysForDest": "Sender paid fees",
       "baseAmount": "Base amount",
       "quoteAmount": "Quote amount",
       "order": "Order",

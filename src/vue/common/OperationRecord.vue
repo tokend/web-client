@@ -8,9 +8,7 @@
           </span>
         </td>
         <td>
-          <template v-if="OP_TYPES.createIssuanceRequest === operation.typeI">
-            {{ 'operation-names.issuance' | globalize }}
-          </template>
+          {{ `operation-names.${operation.typeI}` | globalize }}
         </td>
         <td>
           <span
@@ -48,6 +46,10 @@
       <details-issuance
         v-if="OP_TYPES.createIssuanceRequest === operation.typeI"
         :operation="operation" />
+      <payment-details
+        v-if="OP_TYPES.paymentV2 === operation.typeI ||
+          OP_TYPES.payment === operation.typeI"
+        :operation="operation" />
     </template>
   </div>
 </template>
@@ -59,11 +61,13 @@ import { TX_STATES } from '@/js/const/transaction-statuses'
 import { RecordWrapper } from '@/js/records'
 import { OP_TYPES } from '@tokend/js-sdk'
 import DetailsIssuance from './OperationDetails/Issuance.Details'
+import PaymentDetails from './OperationDetails/Payment.Details'
 
 export default {
   name: '',
   components: {
-    DetailsIssuance
+    DetailsIssuance,
+    PaymentDetails
   },
   props: {
     tx: { type: Object, required: true }
@@ -83,7 +87,9 @@ export default {
   watch: {},
   created () {
     try {
-      this.operation = RecordWrapper.operation(this.tx, {})
+      this.operation = RecordWrapper.operation(this.tx, {
+        accountId: this.accountId
+      })
     } catch (e) {
     }
   },

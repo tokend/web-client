@@ -17,8 +17,6 @@ export class IssuanceRecord extends OpRecord {
     this.blockNumber = _get(record, 'externalDetails.blockNumber')
     this.outIndex = _get(record, 'externalDetails.outIndex')
     this.txHash = _get(record, 'externalDetails.txHash')
-    this.typeI = record.typeI
-    this.type = record.type
   }
 
   get isIncoming () {
