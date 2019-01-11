@@ -2,21 +2,24 @@
   <div class="verification">
     <div class="request-message request-message--approved">
       <p class="request-message__content">
-        {{
-          'Your verification request is submitted.'
-        }}
+        {{ 'verification-page.approved-request-message' | globalize }}
       </p>
     </div>
     <div class="account-type">
-      <p class="account-type__label">Account type</p>
+      <p class="verification__label">
+        {{ 'verification-page.account-type-lbl' | globalize }}
+      </p>
       <div class="account-type__wrapper">
         <router-link
           :to="{ name: 'app.verification.general' }"
           class="account-type__item"
         >
-          <p class="account-type__item-title">General</p>
+          <p class="account-type__item-title">
+            {{ 'verification-page.account-type-general-title' | globalize }}
+          </p>
           <p class="account-type__item-description">
-            Deposit, withdraw, buy, sell and transfer tokens
+            {{ 'verification-page.account-type-general-description'
+              | globalize }}
           </p>
           <div class="account-type__selected-icon">
             <i class="mdi mdi-check" />
@@ -26,9 +29,12 @@
           :to="{ name: 'app.verification.corporate' }"
           class="account-type__item"
         >
-          <p class="account-type__item-title">Corporate</p>
+          <p class="account-type__item-title">
+            {{ 'verification-page.account-type-corporate-title' | globalize }}
+          </p>
           <p class="account-type__item-description">
-            Deposit, withdraw, buy, sell, transfer and create tokens
+            {{ 'verification-page.account-type-corporate-description'
+              | globalize }}
           </p>
           <div class="account-type__selected-icon">
             <i class="mdi mdi-check" />
@@ -36,7 +42,15 @@
         </router-link>
       </div>
     </div>
-    <router-view />
+    <div
+      v-if="$route.name !== 'app.verification'"
+      class="verification__form"
+    >
+      <p class="verification__label verification__form-label">
+        {{ 'verification-page.account-information-lbl' | globalize }}
+      </p>
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -74,7 +88,7 @@ export default {
   margin-top: 4rem;
 }
 
-.account-type__label {
+.verification__label {
   color: $col-primary;
   font-size: 1.3rem;
 }
@@ -139,5 +153,10 @@ export default {
     font-size: 1.6rem;
     color: $col-primary-lighten;
   }
+}
+
+.verification__form-label {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
 }
 </style>

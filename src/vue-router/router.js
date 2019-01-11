@@ -84,12 +84,12 @@ export const router = new Router({
                 {
                   path: '/verification/general',
                   name: vueRoutes.verification.general.name,
-                  component: resolve => require(['@/vue/pages/settings/Verification'], resolve)
+                  component: resolve => require(['@/vue/forms/VerificationGeneralForm'], resolve)
                 },
                 {
                   path: '/verification/corporate',
                   name: vueRoutes.verification.corporate.name,
-                  component: resolve => require(['@/vue/pages/settings/Verification'], resolve)
+                  component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve)
                 }
               ]
             }

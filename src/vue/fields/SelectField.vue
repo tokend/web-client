@@ -20,11 +20,10 @@
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
       <div>
-        <md-icon
-          class="select-field__selected-icon"
-          :class="{ 'select-field__selected-icon--active': isExpanded }">
-          keyboard_arrow_down
-        </md-icon>
+        <i
+          class="mdi mdi-chevron-down select-field__selected-icon"
+          :class="{ 'select-field__selected-icon--active': isExpanded }"
+        />
       </div>
     </button>
     <div
@@ -50,7 +49,6 @@
 
 <script>
 import SelectFieldMixin from './js/select-field.mixin'
-
 export default {
   name: 'select-field',
   mixins: [SelectFieldMixin]
@@ -59,13 +57,11 @@ export default {
 
 <style scoped lang="scss">
 @import "scss/variables";
-
 .select-field {
   width: 100%;
   flex: 1;
   position: relative;
 }
-
 .select-field__selected {
   display: flex;
   justify-content: space-between;
@@ -77,13 +73,12 @@ export default {
   color: $field-color-text;
   padding: $field-input-padding;
   @include material-border(
-      $field-color-focused,
-      $field-color-unfocused,
-      "&.select-field__selected--focused"
+    $field-color-focused,
+    $field-color-unfocused,
+    "&.select-field__selected--focused"
   );
   @include text-font-sizes;
 }
-
 .select-field__selected-value {
   min-width: 0;
   white-space: nowrap;
@@ -96,7 +91,6 @@ export default {
   font-weight: 500;
   cursor: pointer;
 }
-
 .select-field__label {
   position: absolute;
   left: 0;
@@ -106,36 +100,31 @@ export default {
   color: $field-color-unfocused;
   @include text-font-sizes;
 }
-
 .select-field--disabled > .select-field__selected {
   cursor: default;
   @include readonly-material-border($field-color-focused);
 }
-
 .select-field--focused > .select-field__label {
   color: $field-color-focused;
   @include label-font-sizes;
 }
-
 .select-field--label-minimized > .select-field__label {
   top: 0;
   @include label-font-sizes;
 }
-
 .select-field__selected-icon {
   margin: 0;
+  display: inline-block;
   will-change: transform;
   color: $col-field-icon !important;
   transition: 0.2s ease-out;
   margin-top: -.2rem;
-  width: 2rem;
-  height: 2rem;
-
+  width: 1.6rem;
+  height: 1.6rem;
   &.select-field__selected-icon--active {
     transform: rotate(-180deg);
   }
 }
-
 .select-field__list {
   opacity: 0;
   visibility: hidden;
@@ -143,7 +132,7 @@ export default {
   margin-top: -1rem;
   position: absolute;
   left: 0;
-  min-width: 17rem;
+  width: 100%;
   top: calc(100% + .4rem);
   background-color: $col-dropdown-bg;
   box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);
@@ -153,13 +142,11 @@ export default {
   overflow-y: auto;
   padding: .8rem 0;
 }
-
 .select-field__list--active {
   visibility: visible;
   opacity: 1;
   margin-top: 0;
 }
-
 .select-field__list-item {
   padding: .8rem 1.6rem;
   font-size: 1.6rem;
@@ -170,12 +157,10 @@ export default {
   width: 100%;
   text-align: left;
   background-color: transparent;
-
   &:not(.select-field__list-item--selected):hover {
     background-color: rgba(58, 65, 128, 0.05);
   }
 }
-
 .select-field__list-item--selected {
   background-color: rgba(58, 65, 128, 0.1);
   @include text-font-sizes;
