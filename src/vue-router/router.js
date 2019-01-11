@@ -84,11 +84,13 @@ export const router = new Router({
                 {
                   path: '/verification/general',
                   name: vueRoutes.verification.general.name,
+                  beforeEnter: verificationGuard,
                   component: resolve => require(['@/vue/forms/VerificationGeneralForm'], resolve)
                 },
                 {
                   path: '/verification/corporate',
                   name: vueRoutes.verification.corporate.name,
+                  beforeEnter: verificationGuard,
                   component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve)
                 }
               ]
@@ -117,4 +119,13 @@ function inAppRouteGuard (to, from, next) {
   isLoggedIn
     ? next()
     : next(vueRoutes.login)
+}
+
+// doesn't allow to visit verification pages if account is verified or pending
+function verificationGuard (to, from, next) {
+  const kycState = store.getters[vuexTypes.kycState]
+
+  kycState
+    ? next(vueRoutes.verification)
+    : next()
 }

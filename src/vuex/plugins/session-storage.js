@@ -23,7 +23,8 @@ export const sessionStoragePlugin = store => {
         store.replaceState({
           ...state,
           account: savedStore.account,
-          wallet: savedStore.wallet
+          wallet: savedStore.wallet,
+          kyc: savedStore.kyc
         })
 
         break
@@ -31,7 +32,8 @@ export const sessionStoragePlugin = store => {
       default:
         sessionStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
-          wallet: state.wallet
+          wallet: state.wallet,
+          kyc: state.kyc
         }))
     }
   })

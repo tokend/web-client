@@ -71,7 +71,8 @@ export default {
   methods: {
     ...mapActions({
       loadWallet: vuexTypes.LOAD_WALLET,
-      loadAccount: vuexTypes.LOAD_ACCOUNT
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKyc: vuexTypes.LOAD_KYC
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -84,6 +85,7 @@ export default {
           await Sdk.api.users.create(accountId)
         }
         await this.loadAccount(accountId)
+        await this.loadKyc()
         this.$router.push({ name: 'app' })
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {

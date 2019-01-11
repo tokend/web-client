@@ -60,7 +60,7 @@ export default {
       color: $col-top-bar-tab;
     }
 
-    .router-link-exact-active {
+    .router-link-active {
       font-weight: bold;
       color: $col-top-bar-tab-active;
     }
