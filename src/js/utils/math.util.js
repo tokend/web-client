@@ -72,7 +72,7 @@ export class MathUtil {
     const one = new BigNumber(a)
     const two = new BigNumber(b)
 
-    const result = one.abs(two)
+    const result = one.plus(two)
     return result
       .toFixed(DECIMAL_PLACES)
   }

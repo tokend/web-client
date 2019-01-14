@@ -50,6 +50,12 @@
         v-if="OP_TYPES.paymentV2 === operation.typeI ||
           OP_TYPES.payment === operation.typeI"
         :operation="operation" />
+      <match-details
+        v-if="OP_TYPES.manageOffer === operation.typeI"
+        :operation="operation" />
+      <withdrawal-details
+        v-if="OP_TYPES.createWithdrawalRequest === operation.typeI"
+        :operation="operation" />
     </template>
   </div>
 </template>
@@ -62,12 +68,16 @@ import { RecordWrapper } from '@/js/records'
 import { OP_TYPES } from '@tokend/js-sdk'
 import DetailsIssuance from './OperationDetails/Issuance.Details'
 import PaymentDetails from './OperationDetails/Payment.Details'
+import MatchDetails from './OperationDetails/Match.Details'
+import WithdrawalDetails from './OperationDetails/Withdrawal.Details'
 
 export default {
   name: '',
   components: {
     DetailsIssuance,
-    PaymentDetails
+    PaymentDetails,
+    MatchDetails,
+    WithdrawalDetails
   },
   props: {
     tx: { type: Object, required: true }
