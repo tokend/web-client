@@ -8,6 +8,7 @@
           id="signup-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -19,6 +20,7 @@
           id="signup-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
+          :white-autofill="false"
           :label="'auth-pages.password' | globalize"
         />
       </div>
@@ -31,6 +33,7 @@
           id="signup-confirm-password"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
+          :white-autofill="false"
           :label="'auth-pages.confirm-password' | globalize"
         />
       </div>
