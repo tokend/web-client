@@ -19,7 +19,9 @@
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
     >
 
-    <span class="input-field__label">{{ label }}</span>
+    <span class="input-field__label">
+      {{ label }}
+    </span>
 
     <transition name="input-field__err-transition">
       <p v-if="errorMessage" class="input-field__err-mes">
