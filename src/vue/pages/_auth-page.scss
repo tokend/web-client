@@ -8,8 +8,8 @@
   color: $col-text-page-heading;
 }
 
-.auth-page__content {
-  margin-bottom: 5.5rem;
+.auth-page__tips {
+  margin-top: 5.5rem;
 }
 
 .auth-page__explanations {
@@ -20,6 +20,7 @@
   // TODO: remove !important once md will be completely out
   color: $col-text-auth-tip-link !important;
   text-decoration: underline;
+  line-height: 1.5;
 }
 
 .auth-page__submit-btn {
