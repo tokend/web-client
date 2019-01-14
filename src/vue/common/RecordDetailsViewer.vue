@@ -13,13 +13,6 @@
           <email-getter :id="value.processorArg.id" fallback="—" />
         </template>
 
-        <template v-else-if="value.processor === 'convert'">
-          <!-- <converted-amount-getter
-            :amount="value.processorArg.amount"
-            :asset="value.processorArg.asset"
-          /> -->
-        </template>
-
         <template v-else>
           {{ tx | processor({name: value, arg: key}) }}
         </template>
@@ -37,12 +30,10 @@ import cloneDeep from 'lodash/cloneDeep'
 import snakeCase from 'lodash/snakeCase'
 
 import EmailGetter from '@/vue/common/EmailGetter'
-// import ConvertedAmountGetter from 'L@/vue/app/common/ConvertedAmountGetter'
 
 export default {
   components: {
     EmailGetter
-    // ConvertedAmountGetter
   },
   filters: {
     processor (tx, { name, arg }) {
