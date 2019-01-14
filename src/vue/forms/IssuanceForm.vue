@@ -37,7 +37,7 @@
               :label="'issuance.amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.amount',
-                { from: DEFAULT_MIN_AMOUNT, to: availableAmount.value }
+                { from: MIN_AMOUNT, to: availableAmount.value }
               )"
               :disabled="formMixin.isDisabled"
             />
@@ -124,7 +124,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
 
-import { DEFAULT_MIN_AMOUNT } from '@/js/const/configs.const'
+import config from '@/config'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -153,7 +153,7 @@ export default {
     },
     isLoaded: false,
     EVENTS,
-    DEFAULT_MIN_AMOUNT
+    MIN_AMOUNT: config.MIN_AMOUNT
   }),
   validations () {
     return {
@@ -162,7 +162,7 @@ export default {
         amount: {
           required,
           amountRange: amountRange(
-            DEFAULT_MIN_AMOUNT,
+            this.MIN_AMOUNT,
             this.availableAmount ? this.availableAmount.value : 0
           )
         },
@@ -217,7 +217,7 @@ export default {
           await Sdk.horizon.transactions.submitOperations(operation)
           Bus.success('issuance.tokens-issued-msg')
         } else {
-          // Bus.error('issuance.balance-required-err')
+          Bus.error('issuance.balance-required-err')
         }
       } catch (e) {
         console.error(e)

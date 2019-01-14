@@ -10,7 +10,7 @@
     v-else-if="isLoadingFailed"
     class="email-getter"
   >
-    {{ FALLBACK_MESSAGES.NO_ACCOUNT_OR_BALANCE_ID }}
+    &mdash;
   </span>
   <span
     v-else
@@ -23,10 +23,6 @@
 <script>
 import { Sdk } from '@/sdk'
 import config from '@/config'
-
-const FALLBACK_MESSAGES = {
-  NO_ACCOUNT_OR_BALANCE_ID: '—' // M-dash
-}
 
 export default {
   props: {
@@ -46,8 +42,7 @@ export default {
   data: _ => ({
     result: '',
     isLoaded: false,
-    isLoadingFailed: false,
-    FALLBACK_MESSAGES
+    isLoadingFailed: false
   }),
 
   async created () {

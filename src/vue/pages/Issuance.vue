@@ -84,9 +84,9 @@
     </div>
     <div class="issuance-history__collection-loader">
       <collection-loader
-        :first-page-loader="loadHistoryWrapper"
-        @first-page-load="loadHistory"
-        @next-page-load="concatHistory"
+        :first-page-loader="loadIssuanceOperations"
+        @first-page-load="setIssuanceHistory"
+        @next-page-load="extendIssuanceHistory"
       />
     </div>
   </div>
@@ -134,20 +134,20 @@ export default {
     ])
   },
   methods: {
-    async loadHistoryWrapper () {
+    async loadIssuanceOperations () {
       const response = await Sdk.horizon.operations.getPage({
         account_id: this[vuexTypes.account].accountId,
         operation_type: OP_TYPES.createIssuanceRequest
       })
       return response
     },
-    loadHistory (data) {
+    setIssuanceHistory (data) {
       this.issuanceHistory = data.map(issuance => new IssuanceRecord(
         issuance, this[vuexTypes.account].accountId)
       )
       this.isLoaded = true
     },
-    concatHistory (data) {
+    extendIssuanceHistory (data) {
       this.issuanceHistory = this.issuanceHistory
         .concat(data.map(issuance => new IssuanceRecord(
           issuance, this[vuexTypes.account].accountId)

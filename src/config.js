@@ -1,3 +1,5 @@
+import { base } from '@tokend/js-sdk'
+
 const featureFlags = {
   fees: true,
   issuance: true
@@ -22,7 +24,11 @@ export default Object.assign(
       // Descending priority
       /BTC.*\/.*ETH/,
       /ETH.*\/.*BTC/
-    ]
+    ],
+    MIN_AMOUNT: String(1 / base.Operation.ONE || 1000000),
+    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT,
+    CONVERSION_ASSET: 'USD',
+    CONVERSION_PRECISION: 2
   },
   process.env,
   document.ENV
