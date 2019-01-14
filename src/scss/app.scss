@@ -78,6 +78,9 @@ html {
   // https://www.igorkromin.net/index.php/2016/05/20/mobile-safari-scrolling-problem-with-an-input-field-inside-a-fixed-div/
   overflow: auto !important;
   -webkit-overflow-scrolling : touch !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
