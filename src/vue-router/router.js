@@ -7,8 +7,8 @@ import {
 } from '@/vuex'
 import config from '@/config'
 
-import { resolveRedirect } from './redirect'
-import { vueRoutes } from './routes'
+import { resolveRedirect } from '@/vue-router/redirect'
+import { vueRoutes } from '@/vue-router/routes'
 
 Vue.use(Router)
 
