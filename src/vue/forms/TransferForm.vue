@@ -250,7 +250,7 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { errors, base } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -275,7 +275,7 @@ export default {
     FormConfirmation
   },
   mixins: [FormMixin],
-  data: _ => ({
+  data: () => ({
     form: {
       tokenCode: null,
       amount: '',
@@ -302,6 +302,7 @@ export default {
     isFeesLoaded: false,
     VIEW_MODES,
     FEE_TYPES,
+    ASSET_POLICIES,
     config
   }),
   validations: {
@@ -351,32 +352,14 @@ export default {
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
     }),
-    async submit (feeFromSource) {
+    async submit () {
       this.disableForm()
       try {
-        const opts = {
-          sourceBalanceId: this.view.opts.sourceBalanceId,
-          destination: this.view.opts.destinationAccountId,
-          amount: this.view.opts.amount,
-          feeData: {
-            sourceFee: {
-              maxPaymentFee: +this.view.opts.sourcePercentFee,
-              fixedFee: +this.view.opts.sourceFixedFee,
-              feeAsset: this.view.opts.sourceFeeAsset
-            },
-            destinationFee: {
-              maxPaymentFee: +this.view.opts.destinationPercentFee,
-              fixedFee: +this.view.opts.destinationFixedFee,
-              feeAsset: this.view.opts.destinationFeeAsset
-            },
-            sourcePaysForDest: this.view.opts.feeFromSource
-          },
-          subject: this.view.opts.subject,
-          asset: this.form.tokenCode
-        }
-        const operation = base.PaymentV2Builder.paymentV2({ ...opts })
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Sdk.horizon.transactions
+          .submitOperations(this.buildPaymentOperation())
+
         Bus.success(globalize('transfer-form.payment-successful'))
+
         await this.loadCurrentBalances()
         this.rerenderForm()
       } catch (error) {
@@ -388,15 +371,15 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const counterparty = await this.loadCounterparty()
-        const fees = await this.loadFees(counterparty.accountId)
+        const recipientAccountId =
+          await this.getCounterparty(this.form.recipient)
+        const fees = await this.getFees(recipientAccountId)
         this.fees = fees
         this.isFeesLoaded = true
 
         const opts = {
           amount: this.form.amount,
-          destinationAccountId: counterparty.accountId,
-          destinationEmail: counterparty.email,
+          destinationAccountId: recipientAccountId,
           destinationFixedFee: fees.destination.fixed,
           destinationPercentFee: fees.destination.percent,
           destinationFeeAsset: fees.destination.feeAsset,
@@ -409,70 +392,72 @@ export default {
         }
         this.updateView(VIEW_MODES.confirm, opts)
       } catch (error) {
-        if (error instanceof errors.NotFoundError) {
-          error.showBanner(globalize('transfer-form.recipient-not-found'))
-          this.enableForm()
-          return
-        }
         ErrorHandler.process(error)
       }
       this.enableForm()
     },
-    async loadCounterparty () {
-      const counterparty = {}
-      const providedRecipient = this.form.recipient
-      if (base.Keypair.isValidPublicKey(providedRecipient)) {
-        counterparty.accountId = providedRecipient
-        // TODO: add sign
-        counterparty.email = (await Sdk.api.users.getPage({
-          address: providedRecipient
-        })).data[0].email
-        return counterparty
+    async getCounterparty (recipient) {
+      if (!base.Keypair.isValidPublicKey(recipient)) {
+        const response = await Sdk.api.users.getPage({
+          email: recipient
+        })
+        return response.data[0].id
+      } else {
+        return recipient
       }
-      counterparty.email = providedRecipient
-      // TODO: add sign
-      counterparty.accountId = (await Sdk.api.users.getPage({
-        email: providedRecipient
-      })).data[0].id
-      return counterparty
     },
-    async loadFees (recipientAccountId) {
-      const fees = { source: {}, destination: {} }
+    async getFees (recipientAccountId) {
       const [senderFees, recipientFees] = await Promise.all([
-        this.loadPaymentFeeByAmount(
-          this.form.tokenCode,
-          this.form.amount
-        ),
-        this.loadPaymentFeeByAmount(
-          this.form.tokenCode,
-          this.form.amount,
-          recipientAccountId,
-          PAYMENT_FEE_SUBTYPES.incoming
-        )
+        this.loadPaymentFee({
+          asset: this.form.tokenCode,
+          amount: this.form.amount,
+          account: this.accountId,
+          subtype: PAYMENT_FEE_SUBTYPES.outgoing
+        }),
+        this.loadPaymentFee({
+          asset: this.form.tokenCode,
+          amount: this.form.amount,
+          account: recipientAccountId,
+          subtype: PAYMENT_FEE_SUBTYPES.incoming
+        })
       ])
-      fees.source.fixed = senderFees.fixed
-      fees.source.percent = senderFees.percent
-      fees.source.feeAsset = senderFees.feeAsset
-      fees.destination.fixed = recipientFees.fixed
-      fees.destination.percent = recipientFees.percent
-      fees.destination.feeAsset = recipientFees.feeAsset
-      return fees
+      return {
+        source: senderFees,
+        destination: recipientFees
+      }
     },
-    async loadPaymentFeeByAmount (
-      asset,
-      amount,
-      accountId = this.accountId,
-      subtype = PAYMENT_FEE_SUBTYPES.outgoing
-    ) {
-      // TODO: add sign
-      const response = (await Sdk.horizon.fees.get(FEE_TYPES.paymentFee, {
-        asset: asset,
-        subtype: subtype,
-        account: accountId,
-        amount: amount
-      })).data
+    async loadPaymentFee ({ asset, amount, account, subtype }) {
+      try {
+        const response = await Sdk.horizon.fees
+          .get(FEE_TYPES.paymentFee, { asset, amount, account, subtype })
 
-      return response
+        return response.data
+      } catch (e) {
+        ErrorHandler.process(e)
+        return {}
+      }
+    },
+    buildPaymentOperation () {
+      return base.PaymentV2Builder.paymentV2({
+        sourceBalanceId: this.view.opts.sourceBalanceId,
+        destination: this.view.opts.destinationAccountId,
+        amount: this.view.opts.amount,
+        feeData: {
+          sourceFee: {
+            maxPaymentFee: +this.view.opts.sourcePercentFee,
+            fixedFee: +this.view.opts.sourceFixedFee,
+            feeAsset: this.view.opts.sourceFeeAsset
+          },
+          destinationFee: {
+            maxPaymentFee: +this.view.opts.destinationPercentFee,
+            fixedFee: +this.view.opts.destinationFixedFee,
+            feeAsset: this.view.opts.destinationFeeAsset
+          },
+          sourcePaysForDest: this.view.opts.feeFromSource
+        },
+        subject: this.view.opts.subject,
+        asset: this.form.tokenCode
+      })
     },
     updateView (mode, opts = {}, clear = false) {
       this.view.mode = mode
