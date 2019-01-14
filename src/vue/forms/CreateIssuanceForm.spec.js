@@ -5,12 +5,8 @@ import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
-
 import { MockHelper } from '@/test'
-
 import { globalize } from '@/vue/filters/globalize'
-import { formatMoney } from '@/vue/filters/formatMoney'
-
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 import { Bus } from '@/js/helpers/event-bus'
@@ -24,7 +20,6 @@ const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
-localVue.filter('formatMoney', formatMoney)
 
 describe('CreateIssuanceForm component unit test', () => {
   const sampleIssuanceData = {

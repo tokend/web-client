@@ -7,12 +7,6 @@
       <p class="app__page-explanations app__page-explanations--secondary">
         {{ 'create-issuance-form.not-available' | globalize }}
       </p>
-      <router-link
-        to="/verification"
-        tag="button"
-        class="app__button-raised">
-        {{ 'create-issuance-form.to-verification-btn' | globalize }}
-      </router-link>
     </template>
 
     <template v-else-if="!accountOwnedTokens.length">
@@ -22,12 +16,6 @@
       <p class="app__page-explanations app__page-explanations--secondary">
         {{ 'create-issuance-form.no-assets' | globalize }}
       </p>
-      <router-link
-        to="/token-creation"
-        tag="button"
-        class="app__button-raised">
-        {{ 'create-issuance-form.create-token-btn' | globalize }}
-      </router-link>
     </template>
 
     <template v-else>
@@ -257,21 +245,21 @@ export default {
     },
 
     async loadAccountByEmail (email) {
-      const data = (await Sdk.api.users.getPage({ email: email })).data[0]
-      return data
+      const response = await Sdk.api.users.getPage({ email: email })
+      return response.data[0]
     },
 
     async loadBalancesByAccountIdAndAssetCode (accountId, assetCode) {
-      const data = (await Sdk.horizon.balances.getPage({
+      const response = await Sdk.horizon.balances.getPage({
         account: accountId,
         asset: assetCode
-      })).data
-      return data
+      })
+      return response.data
     },
 
     async loadAllTokens () {
-      const data = (await Sdk.horizon.assets.getAll()).data
-      return data
+      const response = await Sdk.horizon.assets.getAll()
+      return response.data
     }
   }
 }
