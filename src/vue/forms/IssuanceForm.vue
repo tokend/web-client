@@ -21,6 +21,7 @@
             :label="'issuance.asset-lbl' | globalize"
             id="issuance-asset"
             @blur="touchField('form.asset')"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
@@ -38,6 +39,7 @@
                 'form.amount',
                 { from: DEFAULT_MIN_AMOUNT, to: availableAmount.value }
               )"
+              :disabled="formMixin.isDisabled"
             />
             <p
               v-if="availableAmount.currency"
@@ -66,6 +68,7 @@
             id="issuance-receiver"
             :label="'issuance.receiver-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.receiver')"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
@@ -78,6 +81,7 @@
             id="issuance-reference"
             :error-message="getFieldErrorMessage('form.reference')"
             :label="'issuance.reference-lbl' | globalize"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
@@ -219,7 +223,7 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      // TODO
+      this.loadOwnedAssets()
       this.enableForm()
     },
     async getAccountIdByEmail (email) {

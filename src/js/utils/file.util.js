@@ -14,10 +14,10 @@
  * const result = await FileUtil.getDataUrl(file)
  * doYourStuff(file)
  */
-export class FileNotFoundError extends Error {
+export class FileNotUploadedError extends Error {
   constructor (...args) {
     super(...args)
-    Error.captureStackTrace(this, FileNotFoundError)
+    Error.captureStackTrace(this, FileNotUploadedError)
   }
 }
 
@@ -26,7 +26,7 @@ export class FileUtil {
     const files = event.target.files || event.dataTransfer.files
 
     if (!files.length) {
-      throw new FileNotFoundError('No file present in event')
+      throw new FileNotUploadedError('No file present in event')
     }
 
     return files[0]

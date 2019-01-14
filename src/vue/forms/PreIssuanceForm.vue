@@ -99,7 +99,7 @@ export default {
   }),
   watch: {
     'preIssuanceDocument': async function (value) {
-      if (value.file) {
+      if (value && value.file) {
         await this.loadIssuance(value.file)
       }
     }
@@ -122,7 +122,7 @@ export default {
           })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('issuance.pre-issuance-uploaded-msg')
-        // TODO this.emitCancel()
+        this.reset()
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
@@ -159,6 +159,10 @@ export default {
       return Boolean(this.ownedAssets
         .filter(item => item.code === assetCode).length
       )
+    },
+    reset () {
+      this.issuance = null
+      this.preIssuanceDocument = null
     }
   }
 }
