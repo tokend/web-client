@@ -140,15 +140,14 @@ export default {
     async loadHistory () {
       try {
         // FIXME: Add pagination
-        const response = await Sdk.horizon.operations.getPage({
+        const { data } = await Sdk.horizon.operations.getPage({
           account_id: this[vuexTypes.account].accountId,
           operation_type: OP_TYPES.createIssuanceRequest,
           limit: PAGE_LIMIT
         })
-        this.issuanceHistory = response.data
-          .map(issuance => new IssuanceRecord(
-            issuance, this[vuexTypes.account].accountId)
-          )
+        this.issuanceHistory = data.map(issuance => new IssuanceRecord(
+          issuance, this[vuexTypes.account].accountId)
+        )
       } catch (error) {
         this.isLoadingFailed = true
         console.error(error)

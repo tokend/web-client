@@ -13,9 +13,6 @@ import accountModule from '@/vuex/account.module'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { globalize } from '@/vue/filters/globalize'
-import { formatMoney } from '@/vue/filters/formatMoney'
-
 import { MockHelper } from '@/test'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
@@ -25,8 +22,6 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 localVue.use(Vuex)
-localVue.filter('globalize', globalize)
-localVue.filter('formatMoney', formatMoney)
 
 describe('Issuance component unit test', () => {
   let mockHelper

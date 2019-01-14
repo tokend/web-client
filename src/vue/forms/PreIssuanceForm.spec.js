@@ -9,9 +9,6 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { MockHelper } from '@/test'
 
-import { globalize } from '@/vue/filters/globalize'
-import { formatMoney } from '@/vue/filters/formatMoney'
-
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 
@@ -21,15 +18,13 @@ Vue.config.silent = true
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
-localVue.filter('globalize', globalize)
-localVue.filter('formatMoney', formatMoney)
 
 describe('PreIssuanceForm component unit test', () => {
   afterEach(() => {
     sinon.restore()
   })
 
-  describe('methods', () => {
+  describe('method', () => {
     const sampleIssuanceData = {
       ownedAssets: [{
         code: 'PLT'
@@ -38,7 +33,8 @@ describe('PreIssuanceForm component unit test', () => {
         asset: 'PLT',
         amount: 10
       },
-      preIssuanceDocument: {}
+      preIssuanceDocument: {},
+      isLoaded: true
     }
 
     let wrapper

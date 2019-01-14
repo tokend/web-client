@@ -44,7 +44,8 @@ describe('IssuanceForm component unit test', () => {
         name: 'Ethereum'
       },
       availableForIssuance: 200
-    }]
+    }],
+    isLoaded: true
   }
 
   afterEach(() => {
@@ -56,7 +57,10 @@ describe('IssuanceForm component unit test', () => {
 
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
-      wrapper = mount(IssuanceForm, { localVue })
+      wrapper = mount(IssuanceForm, {
+        localVue,
+        data: _ => Object.assign({}, sampleIssuanceData)
+      })
     })
 
     const expectedResults = {
@@ -91,7 +95,7 @@ describe('IssuanceForm component unit test', () => {
     }
   })
 
-  describe('methods', () => {
+  describe('component', () => {
     const sampleBalanceData = {
       asset: 'BTC',
       balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
@@ -130,68 +134,73 @@ describe('IssuanceForm component unit test', () => {
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
 
-    it('assetListValues returns formatted owned assets for select field', () => {
-      wrapper.setData({
-        ownedAssets: sampleIssuanceData.ownedAssets
-      })
-      expect(wrapper.vm.assetListValues)
-        .to.deep.equal([{
-          value: 'BTC', label: 'Bitcoin (BTC)'
-        }, {
-          value: 'ETH', label: 'Ethereum (ETH)'
-        }])
-    })
-
-    it('availableAmount returns available assets for issuance', () => {
-      wrapper.setData(sampleIssuanceData)
-      expect(wrapper.vm.availableAmount)
-        .to.deep.equal({
-          value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
-          currency: sampleIssuanceData.ownedAssets[0].code
+    describe('property', () => {
+      it('assetListValues returns formatted owned assets for select field', () => {
+        wrapper.setData({
+          ownedAssets: sampleIssuanceData.ownedAssets
         })
+        expect(wrapper.vm.assetListValues)
+          .to.deep.equal([{
+            value: 'BTC', label: 'Bitcoin (BTC)'
+          }, {
+            value: 'ETH', label: 'Ethereum (ETH)'
+          }])
+      })
+
+      it('availableAmount returns available assets for issuance', () => {
+        wrapper.setData(sampleIssuanceData)
+        expect(wrapper.vm.availableAmount)
+          .to.deep.equal({
+            value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
+            currency: sampleIssuanceData.ownedAssets[0].code
+          })
+      })
     })
 
-    it('getAccountInfoByEmail() loads receiver account info with the correct params', async () => {
-      const sampleReceiverData = {
-        data: [{
-          id: mockHelper.getMockWallet().accountId,
-          attributes: {
-            email: 'foo@bar.com'
-          }
-        }]
-      }
-      const spy = sinon.stub(usersResource, 'getPage')
-        .resolves(MockWrapper.makeApiResponse(sampleReceiverData))
+    describe('method', () => {
+      it('getAccountIdByEmail() loads receiver account info with the correct params', async () => {
+        const sampleReceiverData = {
+          data: [{
+            id: mockHelper.getMockWallet().accountId,
+            attributes: {
+              email: 'foo@bar.com'
+            }
+          }]
+        }
+        const spy = sinon.stub(usersResource, 'getPage')
+          .resolves(MockWrapper.makeApiResponse(sampleReceiverData))
 
-      await wrapper.vm.getAccountInfoByEmail(sampleIssuanceData.form.receiver)
+        await wrapper.vm.getAccountIdByEmail(sampleIssuanceData.form.receiver)
 
-      expect(spy
-        .withArgs({ email: sampleIssuanceData.form.receiver })
-        .called
-      ).to.be.true
-    })
+        expect(spy
+          .withArgs({ email: sampleIssuanceData.form.receiver })
+          .called
+        ).to.be.true
+      })
 
-    it('getReceiverBalance() loads receiver balances info with the correct params', async () => {
-      const spy = sinon.stub(accountResource, 'getBalances')
-        .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
+      it('getReceiverBalance() loads receiver balances info with the correct params', async () => {
+        const spy = sinon.stub(accountResource, 'getBalances')
+          .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
 
-      await wrapper.vm.getReceiverBalance(mockHelper.getMockWallet().accountId,
-        sampleIssuanceData.form.asset)
+        await wrapper.vm.getReceiverBalance(
+          mockHelper.getMockWallet().accountId, sampleIssuanceData.form.asset
+        )
 
-      expect(spy
-        .withArgs(mockHelper.getMockWallet().accountId)
-        .calledOnce
-      ).to.be.true
-    })
+        expect(spy
+          .withArgs(mockHelper.getMockWallet().accountId)
+          .calledOnce
+        ).to.be.true
+      })
 
-    it('submit() calls horizon.submitOperations()', async () => {
-      sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(sampleBalanceData)
-      const spy = sinon.stub(transactionsResource,
-        'submitOperations').resolves()
+      it('submit() calls horizon.submitOperations()', async () => {
+        sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(sampleBalanceData)
+        const spy = sinon.stub(transactionsResource,
+          'submitOperations').resolves()
 
-      await wrapper.vm.submit()
+        await wrapper.vm.submit()
 
-      expect(spy.calledOnce).to.be.true
+        expect(spy.calledOnce).to.be.true
+      })
     })
   })
 })

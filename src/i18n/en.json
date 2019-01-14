@@ -247,7 +247,7 @@
       "selected-file": "Selected file:",
       "file-corrupted-err": "Your file is corrupted",
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
-      "file-not-selected-err": "A file was not selected"
+      "file-not-uploaded-err": "A file was not uploaded"
     },
 
     "email-getter": {

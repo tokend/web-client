@@ -64,7 +64,7 @@ export default {
         file = FileUtil.getFileFromEvent(event)
       } catch (e) {
         if (e instanceof FileNotFoundError) {
-          Bus.error('file-field.file-not-selected-err')
+          Bus.error('file-field.file-not-uploaded-err')
           return
         }
         console.error(e)
