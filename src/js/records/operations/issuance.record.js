@@ -1,5 +1,6 @@
 import { OpRecord } from '../op-record'
 import _get from 'lodash/get'
+import { globalize } from '@/vue/filters/globalize'
 
 export class IssuanceRecord extends OpRecord {
   constructor (record) {
@@ -10,7 +11,7 @@ export class IssuanceRecord extends OpRecord {
     this.feeAsset = record.asset
     this.fixedFee = record.feeFixed
     this.percentFee = record.feePercent
-    this.name = 'Issuance request'
+    this.name = globalize('record-names.issuance')
     this.id = record.id
     this.subject = record.reference
 

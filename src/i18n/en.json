@@ -304,6 +304,11 @@
       "submit-btn": "Send",
       "payment-successful": "Payment successful",
       "recipient-not-found": "Recipient not found"
+    },
+
+    "record-names": {
+      "issuance": "Issuance request",
+      "transfer": "Transfer"
     }
   }
 }
