@@ -1,8 +1,11 @@
 <template>
   <div class="verification">
-    <div class="request-message request-message--approved">
+    <div
+      class="request-message"
+      :class="`request-message--${kycState}`"
+    >
       <p class="request-message__content">
-        {{ 'verification-page.approved-request-message' | globalize }}
+        {{ kycRequestMessageId | globalize }}
       </p>
     </div>
     <div class="account-type">
@@ -55,8 +58,28 @@
 </template>
 
 <script>
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'verification'
+  name: 'verification',
+  computed: {
+    ...mapGetters([
+      vuexTypes.kycState
+    ]),
+    kycRequestMessageId () {
+      switch (this[vuexTypes.kycState]) {
+        case 'pending':
+          return 'verification-page.pending-request-message'
+        case 'approved':
+          return 'verification-page.approved-request-message'
+        case 'rejected':
+          return 'verification-page.rejected-request-message'
+        default:
+          return ''
+      }
+    }
+  }
 }
 </script>
 
@@ -67,9 +90,11 @@ export default {
 .request-message {
   min-height: 6.4rem;
   width: 100%;
+  display: none;
 
   @mixin apply-theme ($col-msg-background) {
     background-color: $col-msg-background;
+    display: block;
   }
 
   &--approved { @include apply-theme($col-request-approved) }

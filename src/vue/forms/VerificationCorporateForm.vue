@@ -1,5 +1,8 @@
 <template>
-  <form class="app-form verification-form" @submit.prevent="submit">
+  <form
+    novalidate
+    class="app-form verification-form"
+    @submit.prevent="submit">
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -9,6 +12,7 @@
           id="verification-corporate-name"
           :label="'verification-page.name-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.name')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -21,6 +25,7 @@
           id="verification-corporate-company"
           :label="'verification-page.company-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.company')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -33,6 +38,7 @@
           id="verification-corporate-headquarters"
           :label="'verification-page.headquarters-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.headquarters')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -45,6 +51,7 @@
           id="verification-corporate-industry"
           :label="'verification-page.industry-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.industry')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -57,6 +64,7 @@
           id="verification-corporate-founded"
           :label="'verification-page.founded-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.founded')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -64,11 +72,13 @@
       <div class="app__form-field">
         <input-field
           white-autofill
+          type="number"
           v-model="form.teamSize"
           @blur="touchField('form.teamSize')"
           id="verification-corporate-teamSize"
           :label="'verification-page.team-size-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.teamSize')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -81,6 +91,7 @@
           id="verification-corporate-website"
           :label="'verification-page.website-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.website')"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -101,7 +112,15 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
+
+// import { Sdk } from '@/sdk'
+// import { base, REQUEST_TYPES, ACCOUNT_TYPES } from '@tokend/js-sdk'
+
 import { required } from '@validators'
+
+// const KYC_LEVEL_TO_SET = 0
 
 export default {
   name: 'verification-corporate-form',
@@ -113,7 +132,7 @@ export default {
       headquarters: '',
       industry: '',
       founded: '',
-      teamSize: 0,
+      teamSize: '0',
       website: ''
     }
   }),
@@ -128,13 +147,51 @@ export default {
       website: { required }
     }
   },
+  computed: {
+    ...mapGetters([
+      vuexTypes.kycLatestData,
+      vuexTypes.kycState,
+      vuexTypes.kycRequestId
+    ])
+  },
+  created () {
+    if (this[vuexTypes.kycLatestData].name) {
+      this.setKycData()
+
+      if (this[vuexTypes.kycState !== 'rejected']) {
+        this.disableForm()
+      }
+    }
+  },
   methods: {
     async submit () {
       if (!this.isFormValid()) {
         return
       }
       this.disableForm()
+
+      // const operation =
+      //   base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
+      //     requestID: this.kycState === REQUEST_TYPES.rejected
+      //       ? this.kycRequestId
+      //       : '0',
+      //     accountToUpdateKYC: this.accountId,
+      //     accountTypeToSet: ACCOUNT_TYPES.syndicate,
+      //     kycLevelToSet: KYC_LEVEL_TO_SET,
+      //     kycData: { blob_id: blobId }
+      //   })
+      // await Sdk.horizon.transactions.submitOperations(operation)
+
       this.enableForm()
+    },
+    setKycData () {
+      this.form.name = this[vuexTypes.kycLatestData].name
+      this.form.company = this[vuexTypes.kycLatestData].company
+      this.form.headquarters = this[vuexTypes.kycLatestData].headquarters
+      this.form.industry = this[vuexTypes.kycLatestData].industry
+      this.form.founded = this[vuexTypes.kycLatestData].found_date
+      this.form.teamSize = this[vuexTypes.kycLatestData].team_size
+      this.form.website = this[vuexTypes.kycLatestData].homepage
     }
   }
 }

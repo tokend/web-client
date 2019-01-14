@@ -15,7 +15,7 @@
         class="date-field-flatpickr__input"
         :class="{ 'date-field-flatpickr__input--disabled': $attrs.disabled }"
         :config="config"
-        :value="flatpickrDate"
+        v-model="flatpickrDate"
         :placeholder="placeholder || ' '"
         :key="flatpickrDate + $attrs.disabled"
         @input.native="dateFieldUpdated"
@@ -46,6 +46,7 @@ export default {
   },
 
   props: {
+    value: { type: String, default: '' },
     enableTime: { type: Boolean, default: true },
     disableBefore: { type: String, default: '' },
     disableAfter: { type: String, default: '' },
@@ -85,7 +86,7 @@ export default {
   },
 
   watch: {
-    flatpickrDate () {
+    'value': function () {
       this.flatpickrDate = this.value
     }
   },
@@ -97,7 +98,7 @@ export default {
   methods: {
     dateFieldUpdated (event) {
       if (event) {
-        this.$emit(event.target.value)
+        this.$emit('input', this.flatpickrDate)
       }
     },
     onOpen () {
@@ -105,11 +106,10 @@ export default {
     },
     onClose () {
       this.isCalendarOpen = false
-      this.$emit('input', this.flatpickrDate)
+      this.$emit('getNewValue', this.flatpickrDate)
     },
     onBlur (event) {
-      this.flatpickrDate = event
-      this.$emit('input', this.flatpickrDate)
+      this.$emit('getNewValue', this.flatpickrDate)
     }
   }
 }

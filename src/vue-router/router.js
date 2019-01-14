@@ -79,6 +79,7 @@ export const router = new Router({
             {
               path: '/verification',
               name: vueRoutes.verification.name,
+              redirect: vueRoutes.verification.general,
               component: resolve => require(['@/vue/pages/settings/Verification'], resolve),
               children: [
                 {
@@ -123,9 +124,19 @@ function inAppRouteGuard (to, from, next) {
 
 // doesn't allow to visit verification pages if account is verified or pending
 function verificationGuard (to, from, next) {
-  const kycState = store.getters[vuexTypes.kycState]
+  const kycLatestData = store.getters[vuexTypes.kycLatestData]
 
-  kycState
-    ? next(vueRoutes.verification)
-    : next()
+  if (kycLatestData) {
+    if (kycLatestData.first_name) {
+      if (to.name === vueRoutes.verification.general.name) next()
+      else next(vueRoutes.verification.general)
+    } else if (kycLatestData.company) {
+      if (to.name === vueRoutes.verification.corporate.name) next()
+      else next(vueRoutes.verification.corporate)
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 }
