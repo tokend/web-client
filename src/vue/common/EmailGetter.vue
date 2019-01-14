@@ -7,6 +7,12 @@
     {{ result }}
   </span>
   <span
+    v-else-if="isLoadingFailed"
+    class="email-getter"
+  >
+    {{ FALLBACK_MESSAGES.NO_ACCOUNT_OR_BALANCE_ID }}
+  </span>
+  <span
     v-else
     class="email-getter"
   >
@@ -39,27 +45,26 @@ export default {
   },
   data: _ => ({
     result: '',
-    isLoaded: false
+    isLoaded: false,
+    isLoadingFailed: false,
+    FALLBACK_MESSAGES
   }),
 
   async created () {
-    if (this.isAccountIdOrBalanceIdPresent()) {
+    if (this.accountId || this.balanceId) {
       await this.loadResult()
+      this.isLoaded = true
     } else {
-      this.showNoAccountOrBalanceIdFallback()
+      this.isLoadingFailed = true
     }
-    this.isLoaded = true
   },
 
   methods: {
-    isAccountIdOrBalanceIdPresent () {
-      return Boolean(this.accountId || this.balanceId)
-    },
-
     async loadResult () {
       try {
         const accountId = await this.getAccountId()
-        this.result = await this.getEmailByAccountId(accountId)
+        const { data } = await Sdk.api.users.get(accountId)
+        this.result = data.email
       } catch (error) {
         if (config.DEBUG) {
           console.error(error)
@@ -68,24 +73,15 @@ export default {
       }
     },
 
-    showNoAccountOrBalanceIdFallback () {
-      this.result = FALLBACK_MESSAGES.NO_ACCOUNT_OR_BALANCE_ID
-    },
-
     async getAccountId () {
       if (this.accountId) {
         return this.accountId
       } else if (this.balanceId) {
-        const response = await Sdk.horizon.balances.getAccount(this.balanceId)
-        return response.data.accountId
+        const { data } = await Sdk.horizon.balances.getAccount(this.balanceId)
+        return data.accountId
       } else {
         return ''
       }
-    },
-
-    async getEmailByAccountId (accountId) {
-      const response = await Sdk.api.users.get(accountId)
-      return response.data.email
     }
   }
 }

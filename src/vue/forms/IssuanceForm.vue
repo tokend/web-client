@@ -1,107 +1,126 @@
 <template>
-  <form
-    novalidate
-    class="app__form issuance-form"
-    @submit.prevent="submit"
+  <div
+    v-if="isLoaded && ownedAssets.length"
+    class="issuance-form"
   >
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <!--
-          :key is a hack to ensure that the component will be updated
-          after property change
-        -->
-        <select-field
-          :key="form.asset"
-          v-model="form.asset"
-          :values="assetListValues"
-          :label="'issuance.asset-lbl' | globalize"
-          id="issuance-asset"
-          @blur="touchField('form.asset')"
-        />
-      </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <div class="issuance-form__amount-wrapper">
-          <input-field
-            white-autofill
-            type="number"
-            v-model="form.amount"
-            @blur="touchField('form.amount')"
-            id="issuance-amount"
-            :label="'issuance.amount-lbl' | globalize"
-            :error-message="getFieldErrorMessage(
-              'form.amount',
-              { from: 0.000001, to: availableAmount.value }
-            )"
+    <form
+      novalidate
+      class="app__form"
+      @submit.prevent="submit"
+    >
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <!--
+            :key is a hack to ensure that the component will be updated
+            after property change
+          -->
+          <select-field
+            :key="form.asset"
+            v-model="form.asset"
+            :values="assetListValues"
+            :label="'issuance.asset-lbl' | globalize"
+            id="issuance-asset"
+            @blur="touchField('form.asset')"
           />
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <div class="issuance-form__amount-wrapper">
+            <input-field
+              white-autofill
+              type="number"
+              v-model="form.amount"
+              @blur="touchField('form.amount')"
+              id="issuance-amount"
+              :label="'issuance.amount-lbl' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.amount',
+                { from: DEFAULT_MIN_AMOUNT, to: availableAmount.value }
+              )"
+            />
+            <p
+              v-if="availableAmount.currency"
+              class="issuance-form__issuance-asset-code"
+            >
+              {{ availableAmount.currency }}
+            </p>
+          </div>
           <p
-            v-if="availableAmount.currency"
-            class="issuance-form__amount-asset"
+            v-if="availableAmount.value"
+            class="issuance-form__available-amount-hint"
           >
-            {{ availableAmount.currency }}
+            {{
+              'issuance.available-for-issuance-hint'
+                | globalize({ value: availableAmount })
+            }}
           </p>
         </div>
-        <p
-          v-if="availableAmount.value"
-          class="issuance-form__available-amount-hint"
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.receiver"
+            @blur="touchField('form.receiver')"
+            id="issuance-receiver"
+            :label="'issuance.receiver-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.receiver')"
+          />
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.reference"
+            @blur="touchField('form.reference')"
+            id="issuance-reference"
+            :error-message="getFieldErrorMessage('form.reference')"
+            :label="'issuance.reference-lbl' | globalize"
+          />
+        </div>
+      </div>
+      <div class="app__form-actions">
+        <button
+          v-ripple
+          type="submit"
+          class="issuance-form__submit-btn"
+          :disabled="formMixin.isDisabled"
         >
-          {{
-            'issuance.available-for-issuance-hint'
-              | globalize({ value: availableAmount })
-          }}
-        </p>
+          {{ 'issuance.issue-btn' | globalize }}
+        </button>
+        <button
+          v-ripple
+          type="button"
+          class="issuance-form__cancel-btn"
+          :disabled="formMixin.isDisabled"
+          @click.prevent="$emit(EVENTS.cancel)"
+        >
+          {{ 'issuance.cancel-btn' | globalize }}
+        </button>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.receiver"
-          @blur="touchField('form.receiver')"
-          id="issuance-receiver"
-          :label="'issuance.receiver-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.receiver')"
-        />
-      </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.reference"
-          @blur="touchField('form.reference')"
-          id="issuance-reference"
-          :error-message="getFieldErrorMessage('form.reference')"
-          :label="'issuance.reference-lbl' | globalize"
-        />
-      </div>
-    </div>
-    <div class="app__form-actions">
-      <button
-        v-ripple
-        type="submit"
-        class="issuance-form__submit-btn"
-        :disabled="formMixin.isDisabled"
-      >
-        {{ 'issuance.issue-btn' | globalize }}
-      </button>
-      <button
-        v-ripple
-        type="button"
-        class="issuance-form__cancel-btn"
-        :disabled="formMixin.isDisabled"
-        @click.prevent="emitCancel"
-      >
-        {{ 'issuance.cancel-btn' | globalize }}
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
+  <div v-else-if="isLoaded && !ownedAssets.length">
+    <p>
+      {{ 'issuance.no-owned-tokens-lbl' | globalize }}
+    </p>
+  </div>
+  <div v-else>
+    <loader
+      :message-id="'issuance.loading-lbl'"
+    />
+  </div>
 </template>
 
 <script>
 import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
 import FormMixin from '@/vue/mixins/form.mixin'
+
+import Loader from '@/vue/common/Loader'
+
+import { DEFAULT_MIN_AMOUNT } from '@/js/const/configs.const'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -109,7 +128,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { required, amountRange, emailOrAccountId } from '@validators'
+import { required, amountRange, emailOrAccountId, email } from '@validators'
 
 const EVENTS = {
   cancel: 'cancel'
@@ -117,14 +136,20 @@ const EVENTS = {
 
 export default {
   name: 'issuance-form',
+  components: {
+    Loader
+  },
   mixins: [AssetLoaderMixin, FormMixin],
   data: _ => ({
     form: {
       asset: '',
-      amount: 0,
+      amount: '0',
       receiver: '',
       reference: ''
-    }
+    },
+    isLoaded: false,
+    EVENTS,
+    DEFAULT_MIN_AMOUNT
   }),
   validations () {
     return {
@@ -133,7 +158,7 @@ export default {
         amount: {
           required,
           amountRange: amountRange(
-            0.000001,
+            DEFAULT_MIN_AMOUNT,
             this.availableAmount ? this.availableAmount.value : 0
           )
         },
@@ -164,6 +189,7 @@ export default {
   },
   async created () {
     await this.loadOwnedAssets()
+    this.isLoaded = true
     if (this.ownedAssets.length > 0) {
       this.form.asset = this.ownedAssets[0].code
     }
@@ -175,7 +201,6 @@ export default {
       try {
         const receiverBalance =
           await this.getReceiverBalance(this.form.receiver, this.form.asset)
-
         if (receiverBalance) {
           const operation =
             base.CreateIssuanceRequestBuilder.createIssuanceRequest({
@@ -187,32 +212,35 @@ export default {
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           Bus.success('issuance.tokens-issued-msg')
-          this.emitCancel()
         } else {
-          Bus.error('issuance.balance-required-err')
+          // Bus.error('issuance.balance-required-err')
         }
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
       }
+      // TODO
       this.enableForm()
     },
-    async getAccountInfoByEmail (email) {
+    async getAccountIdByEmail (email) {
+      let user
       try {
-        const response = await Sdk.api.users.getPage({ email })
-        return response.data.find(info => info.email === email)
+        const { data } = await Sdk.api.users.getPage({ email })
+        user = data.find(info => info.email === email)
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
       }
+
+      if (user) return user.accountId
+      else throw new Error('Wrong account email')
     },
     async getReceiverBalance (receiver, asset) {
       try {
         const receiverAccountId = await this.getReceiverAccountId(receiver)
-        const response =
+        const { data } =
           await Sdk.horizon.account.getBalances(receiverAccountId)
-        const receiverBalance = response.data
-          .find(balance => balance.asset === asset)
+        const receiverBalance = data.find(balance => balance.asset === asset)
         return receiverBalance
       } catch (e) {
         console.error(e)
@@ -220,15 +248,11 @@ export default {
       }
     },
     async getReceiverAccountId (receiver) {
-      if (receiver.indexOf('@') !== -1) {
-        const receiverAccount = await this.getAccountInfoByEmail(receiver)
-        if (!receiverAccount) throw new Error('Wrong account email')
-        return receiverAccount.id
+      if (email(receiver)) {
+        const receiverAccountId = await this.getAccountIdByEmail(receiver)
+        return receiverAccountId
       }
       return receiver
-    },
-    emitCancel () {
-      this.$emit(EVENTS.cancel)
     }
   }
 }
@@ -244,12 +268,15 @@ export default {
   width: 18rem;
 }
 
+.issuance-form button + button {
+  margin-left: auto;
+}
+
 .issuance-form__cancel-btn {
   @include button();
 
   padding-left: .1rem;
   padding-right: .1rem;
-  margin-left: auto !important;
   margin-bottom: 2rem;
   font-weight: normal;
 }
@@ -258,7 +285,7 @@ export default {
   display: flex;
 }
 
-.issuance-form__amount-asset {
+.issuance-form__issuance-asset-code {
   margin-left: 1rem;
   padding-top: 1.8rem;
   font-size: 1.8rem;

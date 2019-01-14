@@ -154,7 +154,7 @@ export default {
   position: absolute;
   left: .5rem;
   top: 4.1rem;
-  z-index: $sidebar-burger-z-index;
+  z-index: $z-sidebar-burger;
   width: 4rem;
   height: 4rem;
   margin-right: 0;

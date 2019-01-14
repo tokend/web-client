@@ -233,6 +233,7 @@
       "upload-btn": "Upload",
       "pre-issuance-lbl": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
       "file-type-note": "Pre-issuance asset file (.iss)",
+      "no-owned-tokens-lbl": "You do not own any tokens. To issue tokens you should create them first",
       "pre-issuance-details-title": "Pre-issuance info",
       "tokens-issued-msg": "Your tokens were successfully issued",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",

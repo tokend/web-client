@@ -16,9 +16,10 @@ export default {
   methods: {
     async loadOwnedAssets () {
       try {
-        const response = await Sdk.horizon.assets.getAll()
-        this.ownedAssets = response.data
-          .filter(asset => asset.owner === this.account.accountId)
+        const { data } = await Sdk.horizon.assets.getAll({
+          owner: this.account.accountId
+        })
+        this.ownedAssets = data
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
