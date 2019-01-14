@@ -51,8 +51,6 @@ describe('Issuance component unit test', () => {
     store = new Vuex.Store({
       getters
     })
-
-    sinon.stub(Issuance, 'created').resolves()
     wrapper = shallowMount(Issuance, {
       store,
       localVue
@@ -63,38 +61,29 @@ describe('Issuance component unit test', () => {
     sinon.restore()
   })
 
-  it('loadHistory() calls the horizon.operations.getPage() with the correct params', async () => {
+  it('loadHistoryWrapper() calls the horizon.operations.getPage() with the correct params', async () => {
     const spy = sinon.stub(operationsResource, 'getPage').resolves({
       data: [{}]
     })
 
-    await wrapper.vm.loadHistory()
+    await wrapper.vm.loadHistoryWrapper()
 
     expect(spy
       .withArgs({
         account_id: mockHelper.getMockWallet().accountId,
-        operation_type: OPERATION_TYPES.createIssuanceRequest,
-        limit: 200
+        operation_type: OPERATION_TYPES.createIssuanceRequest
       })
       .calledOnce
     ).to.be.true
   })
 
-  it('loadHistory() method is called inside created hook', () => {
-    sinon.restore()
-    const spy = sinon.stub(Issuance.methods, 'loadHistory')
-    shallowMount(Issuance, {
-      store,
-      localVue
-    })
-
-    expect(spy.calledOnce).to.be.true
-  })
-
   it('loadHistory() changes issuance history data after loading', async () => {
-    sinon.stub(operationsResource, 'getPage').resolves({ data: [] })
+    const sampleData = [{
+      asset: 'BTC',
+      participants: []
+    }]
 
-    await wrapper.vm.loadHistory()
+    wrapper.vm.loadHistory(sampleData)
 
     expect(wrapper.vm.issuanceHistory).to.not.equal(null)
   })

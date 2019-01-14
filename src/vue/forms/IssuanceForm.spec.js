@@ -8,9 +8,6 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 import { MockHelper, MockWrapper } from '@/test'
 
-import { globalize } from '@/vue/filters/globalize'
-import { formatMoney } from '@/vue/filters/formatMoney'
-
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 
@@ -21,8 +18,6 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
-localVue.filter('globalize', globalize)
-localVue.filter('formatMoney', formatMoney)
 
 describe('IssuanceForm component unit test', () => {
   const sampleIssuanceData = {

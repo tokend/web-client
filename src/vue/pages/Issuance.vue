@@ -77,15 +77,17 @@
         </table>
       </div>
     </div>
-    <div v-else-if="!isLoadingFailed">
+    <div v-else>
       <loader
         :message-id="'issuance.loading-lbl'"
       />
     </div>
-    <div v-else>
-      <p>
-        {{ 'issuance.loading-error-lbl' | globalize }}
-      </p>
+    <div class="issuance-history__collection-loader">
+      <collection-loader
+        :first-page-loader="loadHistoryWrapper"
+        @first-page-load="loadHistory"
+        @next-page-load="concatHistory"
+      />
     </div>
   </div>
 </template>
@@ -95,6 +97,7 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import EmailGetter from '@/vue/common/EmailGetter'
+import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
@@ -107,8 +110,6 @@ import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-const PAGE_LIMIT = 200
-
 export default {
   name: 'issuance',
   components: {
@@ -116,13 +117,13 @@ export default {
     Drawer,
     TopBar,
     EmailGetter,
+    CollectionLoader,
     IssuanceForm,
     PreIssuanceForm
   },
   data: _ => ({
-    issuanceHistory: null,
+    issuanceHistory: [],
     isLoaded: false,
-    isLoadingFailed: false,
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
     ACCOUNT_TYPES
@@ -132,26 +133,25 @@ export default {
       vuexTypes.account
     ])
   },
-  async created () {
-    await this.loadHistory()
-    this.isLoaded = true
-  },
   methods: {
-    async loadHistory () {
-      try {
-        // FIXME: Add pagination
-        const { data } = await Sdk.horizon.operations.getPage({
-          account_id: this[vuexTypes.account].accountId,
-          operation_type: OP_TYPES.createIssuanceRequest,
-          limit: PAGE_LIMIT
-        })
-        this.issuanceHistory = data.map(issuance => new IssuanceRecord(
+    async loadHistoryWrapper () {
+      const response = await Sdk.horizon.operations.getPage({
+        account_id: this[vuexTypes.account].accountId,
+        operation_type: OP_TYPES.createIssuanceRequest
+      })
+      return response
+    },
+    loadHistory (data) {
+      this.issuanceHistory = data.map(issuance => new IssuanceRecord(
+        issuance, this[vuexTypes.account].accountId)
+      )
+      this.isLoaded = true
+    },
+    concatHistory (data) {
+      this.issuanceHistory = this.issuanceHistory
+        .concat(data.map(issuance => new IssuanceRecord(
           issuance, this[vuexTypes.account].accountId)
-        )
-      } catch (error) {
-        this.isLoadingFailed = true
-        console.error(error)
-      }
+        ))
     }
   }
 }
@@ -169,5 +169,9 @@ export default {
 
 .issuance-btn {
   @include button-raised;
+}
+
+.issuance-history__collection-loader {
+  margin-top: 1rem;
 }
 </style>
