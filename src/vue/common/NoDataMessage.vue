@@ -22,12 +22,12 @@ export default {
 
 .no-data-message {
   text-align: center;
-  max-width: 520px;
+  max-width: 52rem;
   margin: 0 auto;
-  padding: 0 8px;
+  padding: 0 .8rem;
 
   h2 {
-    margin-bottom: 8px;
+    margin-bottom: .8rem;
     color: $col-no-data-message-text;
   }
 
