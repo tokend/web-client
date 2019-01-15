@@ -140,7 +140,6 @@ export default {
 
 .fees {
   width: 100%;
-  max-width: 105rem;
 }
 
 .fees__assets {
