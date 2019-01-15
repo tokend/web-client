@@ -9,6 +9,7 @@
 
 <script>
 import { Sdk } from '@/sdk'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   props: {
@@ -30,8 +31,8 @@ export default {
           address: this.id
         })).data
         this.email = user.length ? user[0].email : ''
-      } catch (e) {
-        console.error(e)
+      } catch (error) {
+        ErrorHandler.process(error)
       }
       this.isLoading = false
     }
