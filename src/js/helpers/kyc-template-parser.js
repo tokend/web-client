@@ -1,5 +1,4 @@
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
-import { wrapDocuments } from './DocumentContainer'
 
 export class KycTemplateParser {
   static fromTemplate (template, type) {
@@ -18,7 +17,7 @@ export class KycTemplateParser {
             state: template.address.state,
             postal_code: template.address.postalCode
           },
-          documents: wrapDocuments(template.documents)
+          documents: KycTemplateParser.getSaveableDocuments(template.documents)
         }
       case ACCOUNT_TYPES.syndicate:
         return {

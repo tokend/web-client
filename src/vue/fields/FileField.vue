@@ -112,7 +112,7 @@ export default {
   background-color: $file-field-background-color;
   border-radius: .4rem;
   transition: .2s;
-  max-width: 60rem;
+  width: 100%;
   text-align: center;
   position: relative;
   min-height: 9.8rem;

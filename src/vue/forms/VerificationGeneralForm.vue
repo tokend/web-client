@@ -65,6 +65,7 @@
             v-model="form.documents.idDocument"
             :note="'verification-page.file-type-note' | globalize"
             accept="image/*, .pdf"
+            :document-type="DOCUMENT_TYPES.kycIdDocument"
             :label="'verification-page.id-document-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
@@ -159,6 +160,7 @@
             v-model="form.documents.proofDocument"
             :note="'verification-page.file-type-note' | globalize"
             accept="image/*, .pdf"
+            :document-type="DOCUMENT_TYPES.kycProofOfAddress"
             :label="'verification-page.proof-document-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
@@ -172,6 +174,9 @@
       </p>
       <div class="app__form-row">
         <div class="app__form-field">
+          <p class="verification-form__photo-explanation">
+            {{ 'verification-page.photo-explanation-lbl' | globalize }}
+          </p>
           <button
             v-ripple
             class="verification-form__verification-code-btn"
@@ -192,7 +197,8 @@
             v-model="form.documents.verificationPhoto"
             :note="'verification-page.file-type-note' | globalize"
             accept="image/*, .pdf"
-            :label="'verification-page.verification-photo-lbl' | globalize"
+            :document-type="DOCUMENT_TYPES.kycSelfie"
+            :label="'verification-page.photo-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -222,6 +228,7 @@ import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
 
 import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { required } from '@validators'
 
@@ -252,7 +259,8 @@ export default {
         verificationPhoto: null
       }
     },
-    isCodeShown: false
+    isCodeShown: false,
+    DOCUMENT_TYPES
   }),
   validations: {
     form: {
@@ -361,6 +369,7 @@ export default {
 
 .verification-form__verification-code-btn {
   @include button-raised();
+  margin-top: 1.5rem;
 }
 
 .verification-form {
@@ -378,5 +387,9 @@ export default {
   margin-bottom: -2.5rem;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.verification-form__photo-explanation {
+  font-size: 1.5rem;
 }
 </style>
