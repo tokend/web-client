@@ -33,13 +33,10 @@ export default {
   @import '~@scss/variables';
 
   .footer {
-    position: absolute;
     display: flex;
     align-items: center;
     flex-wrap: wrap-reverse;
     justify-content: center;
-    bottom: 0;
-    left: 0;
     width: 100%;
   }
 
