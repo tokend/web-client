@@ -133,7 +133,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { PricesHelper } from '@/js/helpers/prices'
 import config from '@/config'
 import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import NoDataMessage from '@/vue/common/NoDataMessage'
@@ -173,14 +172,14 @@ export default {
   },
   methods: {
     async loadList () {
-      const transactions = (await Sdk.horizon.payments.getPage({
+      const response = await Sdk.horizon.payments.getPage({
         asset: this.currentAsset,
         account_id: this.accountId,
         limit: this.transactionsToShow,
         order: this.transactionsOrder
-      })).data
+      })
 
-      this.transactions = transactions.map(el => {
+      this.transactions = response.data.map(el => {
         return RecordWrapper.operation(el, { accountId: this.accountId })
       })
     },
@@ -189,20 +188,12 @@ export default {
     },
     isSelected (i) {
       return this.index === i
-    },
-    convertAmount (amount) {
-      return PricesHelper.baseToQuote(
-        amount,
-        this.currentAsset,
-        config.DEFAULT_QUOTE_ASSET
-      )
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
   @import '~@scss/variables';
   @import '~@scss/mixins';
 
