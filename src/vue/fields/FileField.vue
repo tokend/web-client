@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { FileUtil, FileNotFoundError } from '@/js/utils/file.util'
+import { FileUtil, FileNotPresentInEventError } from '@/js/utils/file.util'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -63,7 +63,7 @@ export default {
       try {
         file = FileUtil.getFileFromEvent(event)
       } catch (e) {
-        if (e instanceof FileNotFoundError) {
+        if (e instanceof FileNotPresentInEventError) {
           Bus.error('file-field.file-not-uploaded-err')
           return
         }
