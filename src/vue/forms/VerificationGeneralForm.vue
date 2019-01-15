@@ -61,10 +61,10 @@
       </div>
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
-            white-autofill
+          <file-field
             v-model="form.documents.idDocument"
-            id="verification-general-id-document"
+            :note="'verification-page.file-type-note' | globalize"
+            accept="image/*, .pdf"
             :label="'verification-page.id-document-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
@@ -155,10 +155,10 @@
       </div>
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
-            white-autofill
+          <file-field
             v-model="form.documents.proofDocument"
-            id="verification-general-proof-document"
+            :note="'verification-page.file-type-note' | globalize"
+            accept="image/*, .pdf"
             :label="'verification-page.proof-document-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
@@ -188,10 +188,10 @@
       </div>
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
-            white-autofill
+          <file-field
             v-model="form.documents.verificationPhoto"
-            id="verification-general-verification-photo"
+            :note="'verification-page.file-type-note' | globalize"
+            accept="image/*, .pdf"
             :label="'verification-page.verification-photo-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
