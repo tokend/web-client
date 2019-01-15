@@ -1,4 +1,4 @@
-import AssetLoaderMixin from './asset-loader.mixin'
+import OwnedAssetsLoaderMixin from './owned-assets-loader.mixin'
 
 import Vuex from 'vuex'
 
@@ -50,7 +50,7 @@ describe('asset-loader.mixin unit test', () => {
       })
 
       wrapper = mount(Component, {
-        mixins: [AssetLoaderMixin],
+        mixins: [OwnedAssetsLoaderMixin],
         store,
         localVue
       })

@@ -219,8 +219,7 @@
     },
 
     "issuance": {
-      "loading-lbl": "Loading",
-      "loading-error-lbl": "There was an error while loading.",
+      "loading-msg": "Loading",
       "create-issuance-btn": "Create issuance",
       "upload-pre-issuance-btn": "Upload pre-issuance",
       "counterparty-lbl": "Counterparty",
@@ -255,7 +254,7 @@
     },
 
     "email-getter": {
-      "loading-lbl": "Loading..."
+      "loading-msg": "Loading..."
     }
   }
 }

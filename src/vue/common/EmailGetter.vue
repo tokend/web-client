@@ -1,22 +1,17 @@
 <template>
-  <span
-    v-if="isLoaded"
-    class="email-getter"
-    :title="isTitled && result"
-  >
-    {{ result }}
-  </span>
-  <span
-    v-else-if="isLoadingFailed"
-    class="email-getter"
-  >
-    &mdash;
-  </span>
-  <span
-    v-else
-    class="email-getter"
-  >
-    {{ 'email-getter.loading-lbl' | globalize }}
+  <span class="email-getter">
+    <template
+      v-if="isLoaded"
+      :title="isTitled && result"
+    >
+      {{ result }}
+    </template>
+    <template v-else-if="isLoadingFailed">
+      &mdash;
+    </template>
+    <template v-else>
+      {{ 'email-getter.loading-msg' | globalize }}
+    </template>
   </span>
 </template>
 

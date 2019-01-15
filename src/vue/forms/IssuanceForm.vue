@@ -113,13 +113,13 @@
   </div>
   <div v-else>
     <loader
-      :message-id="'issuance.loading-lbl'"
+      :message-id="'issuance.loading-msg'"
     />
   </div>
 </template>
 
 <script>
-import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
+import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
@@ -143,7 +143,7 @@ export default {
   components: {
     Loader
   },
-  mixins: [AssetLoaderMixin, FormMixin],
+  mixins: [OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
     form: {
       asset: '',
@@ -161,10 +161,7 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(
-            this.MIN_AMOUNT,
-            this.availableAmount ? this.availableAmount.value : 0
-          )
+          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value)
         },
         receiver: { required, emailOrAccountId },
         reference: { required }
@@ -180,7 +177,7 @@ export default {
         }))
     },
     availableAmount () {
-      if (this.ownedAssets.length && this.form.asset) {
+      if (this.form.asset) {
         const asset = this.ownedAssets
           .find(asset => asset.code === this.form.asset)
         return {
