@@ -222,6 +222,7 @@
       "lbl-loading-error": "There was an error while loading."
     },
     "tx-pages": {
+      "show": "Show",
       "amount": "Amount",
       "fixedFee": "Fixed fee",
       "percentFee": "Percent fee",
@@ -241,6 +242,10 @@
       "price": "Price",
       "destinationAsset": "Destination asset",
       "destinationAmount": "Destination amount",
+      "txType": "Transaction type",
+      "status": "Status",
+      "noTransactionHistory": "No transaction history",
+      "hereWillBeTheList": "Here will be the list of your transactions",
 
       "sourcePaysForDest": "Sender paid fees",
       "baseAmount": "Base amount",
@@ -249,12 +254,7 @@
       "fee": "Fee",
       "receiver": "Receiver",
       "senderEmail": "Sender email",
-      "receiverEmail": "Receiver email",
-      "txType": "Transaction type",
-      "status": "Status",
-      "noTransactionHistory": "No transaction history",
-      "hereWillBeTheList": "Here will be the list of your transactions",
-      "failedToLoadTx": "Failed to load history"
+      "receiverEmail": "Receiver email"
     }
   }
 }

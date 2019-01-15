@@ -65,22 +65,10 @@
 
 <script>
 export default {
-  name: 'trade-orders-buy',
-  components: {},
-  mixins: [],
+  name: 'withdrawal-details',
   props: {
     operation: { type: Object, required: true }
-  },
-  data () {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created () {
-  },
-  destroyed () {
-  },
-  methods: {}
+  }
 }
 </script>
 

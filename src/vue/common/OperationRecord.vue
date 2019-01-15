@@ -1,9 +1,9 @@
 <template>
-  <div class="app__card transaction-record">
-    <table class="transaction-record__table">
-      <tr class="transaction-record__tr">
+  <div class="app__card operation-record">
+    <table class="operation-record__table">
+      <tr class="operation-record__tr">
         <td>
-          <span class="transaction-record__date">
+          <span class="operation-record__date">
             {{ operation.date | formatCalendar }}
           </span>
         </td>
@@ -12,7 +12,7 @@
         </td>
         <td>
           <span
-            :class="{'transaction-record__negative-amount'
+            :class="{'operation-record__negative-amount'
               : accountId === operation.sender}">
             {{
               { value: operation.amount, currency: operation.asset } |
@@ -20,17 +20,17 @@
             }}
           </span>
         </td>
-        <td class="transaction-record__counterparty">
+        <td class="operation-record__counterparty">
           {{ operation.counterparty }}
         </td>
-        <td class="transaction-record__status">
-          <span :class="`transaction-record__status--${operation.state}`">
+        <td class="operation-record__status">
+          <span :class="`operation-record__status--${operation.state}`">
             {{ operation.state }}
           </span>
         </td>
-        <td class="transaction-record__td-btn">
+        <td class="operation-record__td-btn">
           <button
-            class="transaction-record__btn"
+            class="operation-record__btn"
             @click="isOpenDetails = !isOpenDetails">
             <i
               v-if="isOpenDetails"
@@ -53,6 +53,9 @@
       <match-details
         v-if="OP_TYPES.manageOffer === operation.typeI"
         :operation="operation" />
+      <match-details
+        v-if="OP_TYPES.checkSaleState === operation.typeI"
+        :operation="operation" />
       <withdrawal-details
         v-if="OP_TYPES.createWithdrawalRequest === operation.typeI"
         :operation="operation" />
@@ -61,15 +64,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex/types'
-import { TX_STATES } from '@/js/const/transaction-statuses'
-import { RecordWrapper } from '@/js/records'
-import { OP_TYPES } from '@tokend/js-sdk'
 import DetailsIssuance from './OperationDetails/Issuance.Details'
 import PaymentDetails from './OperationDetails/Payment.Details'
 import MatchDetails from './OperationDetails/Match.Details'
 import WithdrawalDetails from './OperationDetails/Withdrawal.Details'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex/types'
+import { RecordWrapper } from '@/js/records'
+import { OP_TYPES } from '@tokend/js-sdk'
 
 export default {
   name: '',
@@ -80,32 +82,29 @@ export default {
     WithdrawalDetails
   },
   props: {
-    tx: { type: Object, required: true }
+    operationData: { type: Object, required: true }
   },
   data: _ => ({
     OP_TYPES,
-    TX_STATES,
     operation: {},
     isOpenDetails: false
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.tokens,
       vuexTypes.accountId
     ])
   },
-  watch: {},
-  created () {
-    try {
-      this.operation = RecordWrapper.operation(this.tx, {
-        accountId: this.accountId
-      })
-    } catch (e) {
+  watch: {
+    operationData: {
+      immediate: true,
+      handler: 'parsOperation'
     }
   },
   methods: {
-    getAssetName (assetCode) {
-      return (this.tokens.find(item => item.code === assetCode) || []).name
+    parsOperation () {
+      this.operation = RecordWrapper.operation(this.operationData, {
+        accountId: this.accountId
+      })
     }
   }
 }
@@ -114,11 +113,11 @@ export default {
 <style lang="scss">
   @import '@/scss/variables';
 
-  .transaction-record {
+  .operation-record {
     margin: 6px 0;
   }
 
-  .transaction-record__table {
+  .operation-record__table {
     width: 100%;
     table-layout: fixed;
     td {
@@ -128,26 +127,26 @@ export default {
       text-overflow: ellipsis;
     }
 
-    .transaction-record__td-btn {
+    .operation-record__td-btn {
       text-align: right;
       width: 67px;
     }
 
-    .transaction-record__counterparty {
+    .operation-record__counterparty {
       width: 300px;
     }
 
-    .transaction-record__status{
+    .operation-record__status {
       padding-left: 27px;
       width: 130px;
     }
   }
 
-  .transaction-record__date {
+  .operation-record__date {
     font-weight: 600;
   }
 
-  .transaction-record__negative-amount {
+  .operation-record__negative-amount {
     position: relative;
     &:before {
       content: '-';
@@ -156,7 +155,7 @@ export default {
     }
   }
 
-  .transaction-record__status--success {
+  .operation-record__status--success {
     position: relative;
     &:before {
       content: '';
@@ -170,7 +169,7 @@ export default {
     }
   }
 
-  .transaction-record__status--failed {
+  .operation-record__status--failed {
     position: relative;
     &:before {
       content: '';
@@ -184,7 +183,7 @@ export default {
     }
   }
 
-  .transaction-record__status--pending {
+  .operation-record__status--pending {
     position: relative;
     &:before {
       content: '';
@@ -198,7 +197,7 @@ export default {
     }
   }
 
-  .transaction-record__btn {
+  .operation-record__btn {
     width: 37px;
     height: 37px;
     border-radius: 4px;

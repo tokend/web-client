@@ -9,24 +9,40 @@
         v-model="tokenCode"
         :values="tokens" />
     </div>
-    <div class="tx-history__list">
-      <table class="tx-history__table">
-        <tr>
-          <td>{{ 'tx-pages.date' | globalize }}</td>
-          <td>{{ 'tx-pages.txType' | globalize }}</td>
-          <td>{{ 'tx-pages.amount' | globalize }}</td>
-          <td class="tx-history__counterparty">
-            {{ 'tx-pages.counterparty' | globalize }}
-          </td>
-          <td class="tx-history__status">
-            {{ 'tx-pages.status' | globalize }}
-          </td>
-          <td class="tx-history__td-btn" />
-        </tr>
-      </table>
-      <template v-for="(tx, i) in operations">
-        <operation-record :tx="tx" :key="`tx-row-${i}`" />
+    <div class="tx-history__list" v-if="isLoad">
+      <template v-if="operations.length">
+        <table class="tx-history__table">
+          <tr>
+            <td>{{ 'tx-pages.date' | globalize }}</td>
+            <td>{{ 'tx-pages.txType' | globalize }}</td>
+            <td>{{ 'tx-pages.amount' | globalize }}</td>
+            <td class="tx-history__counterparty">
+              {{ 'tx-pages.counterparty' | globalize }}
+            </td>
+            <td class="tx-history__status">
+              {{ 'tx-pages.status' | globalize }}
+            </td>
+            <td class="tx-history__td-btn" />
+          </tr>
+        </table>
+        <template v-for="(operation, i) in operations">
+          <operation-record
+            :operation-data="operation"
+            :key="`tx-row-${i}}-${tokenCode}`" />
+        </template>
       </template>
+      <template v-else>
+        <div class="tx-history__no-transactions">
+          <i class="tx-history__no-tx-icon mdi mdi-trending-up" />
+          <h2>{{ 'tx-pages.noTransactionHistory' | globalize }}</h2>
+          <p>{{ 'tx-pages.hereWillBeTheList' | globalize }}</p>
+        </div>
+      </template>
+      <collection-loader
+        :first-page-loader="pageLoader"
+        @first-page-load="setFirstPageData"
+        @next-page-load="setNextPageData"
+      />
     </div>
   </div>
 </template>
@@ -34,31 +50,30 @@
 <script>
 import OperationRecord from '@/vue/common/OperationRecord'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
-// import { ErrorHandler } from '@/js/helpers/error-handler'
-// import { vuexTypes } from 'L@/vuex/types'
+import CollectionLoader from '@/vue/common/CollectionLoader'
 import { Sdk } from '@/sdk'
-// import { globalize } from '@/vue/filters/globalize'
-import get from 'lodash/get'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex/types'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'history-index',
   components: {
     OperationRecord,
-    SelectFieldCustom
+    SelectFieldCustom,
+    CollectionLoader
   },
   data: _ => ({
     tokenCode: null,
     assets: [],
     operations: [],
-    isLoad: false
+    isLoad: false,
+    pageLoader: () => {}
   }),
   computed: {
-    list () {
-      return []
-    },
-    isLoaded () {
-      return get(this.operations, `${this.tokenCode}.isLoaded`)
-    },
+    ...mapGetters([
+      vuexTypes.accountId
+    ]),
     tokens () {
       return this.assets.map(item => {
         return item.code
@@ -66,93 +81,42 @@ export default {
     }
   },
   watch: {
-    tokenCode (code) {
+    tokenCode () {
+      this.pageLoader = this.getPageLoader(this.accountId,
+        { asset: this.tokenCode })
     }
   },
   async created () {
-    const assetsResponse = await Sdk.horizon.assets.getAll()
-    this.assets = assetsResponse.data
-    this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
-    if (this.tokenCode) {
-      const operationsResponse = await Sdk.horizon.payments
-        .getPage({ asset: 'BTC' })
-      this.operations = operationsResponse.data
+    try {
+      const assetsResponse = await Sdk.horizon.assets.getAll()
+      this.assets = assetsResponse.data
+      this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
+      this.isLoad = true
+    } catch (e) {
+      console.error(e)
+      ErrorHandler.process(e)
     }
-    this.isLoad = true
   },
   methods: {
+    getPageLoader (accountId, filter) {
+      return function () {
+        return Sdk.horizon.account.getPayments(accountId, filter)
+      }
+    },
+
+    setFirstPageData (data) {
+      this.operations = [...data]
+    },
+
+    setNextPageData (data) {
+      this.operations = [...this.operations, ...data]
+    }
   }
 }
 </script>
 
 <style lang="scss">
   @import '../../scss/variables';
-
-  $padding-vertical: 20px;
-  $padding-horizontal: 25px;
-  $padding: $padding-vertical $padding-horizontal;
-
-  .tx-history {
-    width: 100%;
-    padding: 0 12px;
-  }
-
-  .tx-history__table {
-    margin: 0 !important;
-  }
-
-  .tx-history__table-toolbar {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-
-    @media (max-width: 840px) {
-      flex-direction: column;
-      padding-top: $padding-vertical;
-    }
-  }
-
-  .tx-history__row {
-    cursor: pointer;
-  }
-
-  .tx-history__table-cell {
-    overflow: hidden;
-    white-space: nowrap;
-
-    &--counterparty {
-      max-width: 10rem;
-    }
-
-    & > .md-table-cell-container {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
-
-  .tx-history__select-outer {
-    padding: 5px $padding-horizontal;
-  }
-
-  .tx-history__details {
-    padding: $padding;
-    max-width: 25rem;
-    width: 100%;
-  }
-
-  .tx-history__more-btn-outer {
-    text-align: center;
-  }
-
-  .tx-history__no-operations {
-    padding: 0 16px 32px;
-    text-align: center;
-
-    p {
-      margin-top: 10px;
-    }
-  }
 
   .tx-history__navigation{
     display: flex;
@@ -162,6 +126,12 @@ export default {
 
   .tx-history__navigation-text{
     margin-right: 15px;
+  }
+
+  .tx-history__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .tx-history__table {
@@ -186,5 +156,19 @@ export default {
     .tx-history__status{
       width: 130px;
     }
+  }
+
+  .tx-history__no-transactions {
+    padding: 0 16px 32px;
+    text-align: center;
+
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .tx-history__no-tx-icon {
+    margin-right: 1.6rem;
+    font-size: 6.4rem;
   }
 </style>

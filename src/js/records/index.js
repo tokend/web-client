@@ -31,6 +31,9 @@ export class RecordWrapper {
         return new WithdrawRecord(record, details)
       case OP_TYPES.manageOffer:
         if (record.orderBookId && record.orderBookId !== '0') {
+          console.warn('This manage offer operation should be in ' +
+            'pending state. Please review the code because something seems ' +
+            'to suck')
           return new ManageOfferRecord(record, details)
         }
         return new MatchRecord(record, details)
