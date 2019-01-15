@@ -87,11 +87,11 @@
 
     "operation-names": {
       "3": "Tokens received",
-      "investment": "Investment",
-      "match": "Order match",
-      "withdrawal": "Withdrawal",
+      "7": "Withdrawal",
       "23": "Transfer",
-      "offer": "Offer"
+      "1": "Transfer",
+      "16": "Offer",
+      "20": "Offer"
     },
 
     "auth-pages": {
