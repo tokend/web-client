@@ -17,7 +17,7 @@ export class KycTemplateParser {
             state: template.address.state,
             postal_code: template.address.postalCode
           },
-          documents: KycTemplateParser.getSaveableDocuments(template.documents)
+          documents: this.getSaveableDocuments(template.documents)
         }
       case ACCOUNT_TYPES.syndicate:
         return {
