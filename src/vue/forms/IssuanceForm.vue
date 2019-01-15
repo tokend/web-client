@@ -226,35 +226,17 @@ export default {
       this.loadOwnedAssets()
       this.enableForm()
     },
-    async getAccountIdByEmail (email) {
-      let user
-      try {
-        const { data } = await Sdk.api.users.getPage({ email })
-        user = data.find(info => info.email === email)
-      } catch (e) {
-        console.error(e)
-        ErrorHandler.process(e)
-      }
-
-      if (user) return user.accountId
-      else throw new Error('Wrong account email')
-    },
     async getReceiverBalance (receiver, asset) {
-      try {
-        const receiverAccountId = await this.getReceiverAccountId(receiver)
-        const { data } =
-          await Sdk.horizon.account.getBalances(receiverAccountId)
-        const receiverBalance = data.find(balance => balance.asset === asset)
-        return receiverBalance
-      } catch (e) {
-        console.error(e)
-        Bus.error('issuance.wrong-receiver-err')
-      }
+      const receiverAccountId = await this.getReceiverAccountId(receiver)
+      const { data } =
+        await Sdk.horizon.account.getBalances(receiverAccountId)
+      const receiverBalance = data.find(balance => balance.asset === asset)
+      return receiverBalance
     },
     async getReceiverAccountId (receiver) {
       if (email(receiver)) {
-        const receiverAccountId = await this.getAccountIdByEmail(receiver)
-        return receiverAccountId
+        const { data } = await Sdk.horizon.public.getAccountIdByEmail(receiver)
+        return data.accountId
       }
       return receiver
     }
