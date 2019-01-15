@@ -59,9 +59,9 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.personal.document"
-            id="verification-general-document"
-            :label="'verification-page.document-lbl' | globalize"
+            v-model="form.documents.idDocument"
+            id="verification-general-id-document"
+            :label="'verification-page.id-document-lbl' | globalize"
           />
         </div>
       </div>
@@ -145,7 +145,7 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.address.proofDocument"
+            v-model="form.documents.proofDocument"
             id="verification-general-proof-document"
             :label="'verification-page.proof-document-lbl' | globalize"
           />
@@ -161,7 +161,7 @@
         <div class="app__form-field">
           <input-field
             white-autofill
-            v-model="form.verificationPhoto"
+            v-model="form.documents.verificationPhoto"
             id="verification-general-verification-photo"
             :label="'verification-page.verification-photo-lbl' | globalize"
           />
@@ -196,8 +196,7 @@ export default {
         firstName: '',
         lastName: '',
         birthDate: '',
-        documentExpirationDate: '',
-        document: null
+        documentExpirationDate: ''
       },
       address: {
         firstLine: '',
@@ -205,10 +204,13 @@ export default {
         city: '',
         country: '',
         state: '',
-        postalCode: 0,
-        proofDocument: null
+        postalCode: '0'
       },
-      verificationPhoto: null
+      documents: {
+        idDocument: null,
+        proofDocument: null,
+        verificationPhoto: null
+      }
     }
   }),
   validations: {

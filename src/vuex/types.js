@@ -77,6 +77,7 @@ const getters = {
   kycState: 'kycState',
   kycStateI: 'kycStateI',
   kycRequestId: 'kycRequestId',
+  kycRequestRejectReason: 'kycRequestRejectReason',
   kycLatestData: 'kycLatestData',
   kycApprovedData: 'kycApprovedData'
 }

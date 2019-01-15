@@ -91,6 +91,7 @@ export const actions = {
 export const getters = {
   [vuexTypes.kycState]: state => state.request.state,
   [vuexTypes.kycStateI]: state => state.request.stateI,
+  [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData)

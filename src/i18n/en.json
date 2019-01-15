@@ -137,7 +137,7 @@
       "last-name-lbl": "Last name",
       "birth-date-lbl": "Date of birth",
       "document-expiration-date-lbl": "ID document expiration date",
-      "document-lbl": "ID document",
+      "id-document-lbl": "ID document",
       "address-first-line-lbl": "Line 1",
       "address-second-line-lbl": "Line 2",
       "city-lbl": "City",
@@ -150,7 +150,7 @@
       "company-lbl": "Company",
       "headquarters-lbl": "Headquarters",
       "industry-lbl": "Industry",
-      "founded-lbl": "Founded",
+      "found-date-lbl": "Founded",
       "team-size-lbl": "Team size",
       "website-lbl": "Website"
     },

@@ -58,12 +58,12 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <date-field
-          v-model="form.founded"
+          v-model="form.foundDate"
           :enable-time="false"
-          @blur="touchField('form.founded')"
-          id="verification-corporate-founded"
-          :label="'verification-page.founded-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.founded')"
+          @blur="touchField('form.foundDate')"
+          id="verification-corporate-found-date"
+          :label="'verification-page.found-date-lbl' | globalize"
+          :error-message="getFieldErrorMessage('form.foundDate')"
           :disabled="formMixin.isDisabled"
         />
       </div>
@@ -113,14 +113,16 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
-// import { Sdk } from '@/sdk'
-// import { base, REQUEST_TYPES, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { Sdk } from '@/sdk'
+import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
+
+import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
 
 import { required } from '@validators'
 
-// const KYC_LEVEL_TO_SET = 0
+const KYC_LEVEL_TO_SET = 0
 
 export default {
   name: 'verification-corporate-form',
@@ -131,7 +133,7 @@ export default {
       company: '',
       headquarters: '',
       industry: '',
-      founded: '',
+      foundDate: '',
       teamSize: '0',
       website: ''
     }
@@ -142,7 +144,7 @@ export default {
       company: { required },
       headquarters: { required },
       industry: { required },
-      founded: { required },
+      foundDate: { required },
       teamSize: { required },
       website: { required }
     }
@@ -151,47 +153,69 @@ export default {
     ...mapGetters([
       vuexTypes.kycLatestData,
       vuexTypes.kycState,
-      vuexTypes.kycRequestId
+      vuexTypes.kycRequestId,
+      vuexTypes.account
     ])
   },
-  created () {
-    if (this[vuexTypes.kycLatestData].name) {
-      this.setKycData()
+  async created () {
+    try {
+      await this.loadKyc()
+    } catch (error) {
+      console.error(error)
+    }
 
-      if (this[vuexTypes.kycState !== 'rejected']) {
+    if (this[vuexTypes.kycLatestData].name) {
+      this.form = KycTemplateParser.toTemplate(
+        this[vuexTypes.kycLatestData],
+        ACCOUNT_TYPES.syndicate
+      )
+
+      if (this[vuexTypes.kycState] !== 'rejected') {
         this.disableForm()
       }
     }
   },
   methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC
+    }),
     async submit () {
       if (!this.isFormValid()) {
         return
       }
       this.disableForm()
 
-      // const operation =
-      //   base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-      //     requestID: this.kycState === REQUEST_TYPES.rejected
-      //       ? this.kycRequestId
-      //       : '0',
-      //     accountToUpdateKYC: this.accountId,
-      //     accountTypeToSet: ACCOUNT_TYPES.syndicate,
-      //     kycLevelToSet: KYC_LEVEL_TO_SET,
-      //     kycData: { blob_id: blobId }
-      //   })
-      // await Sdk.horizon.transactions.submitOperations(operation)
+      const { data } = await Sdk.api.blobs.create(
+        'alpha',
+        JSON.stringify(KycTemplateParser.fromTemplate(
+          this.form,
+          ACCOUNT_TYPES.syndicate
+        )),
+        this[vuexTypes.account].accountId
+      )
+      const kycData = {
+        blob_id: data.id
+      }
 
+      // const response = await Sdk.api.kycEntities.create(
+      //   'syndicate',
+      //   kycData,
+      //   this[vuexTypes.account].accountId
+      // )
+
+      const operation =
+        base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
+          requestID: this[vuexTypes.kycState] === 'rejected'
+            ? this.kycRequestId
+            : '0',
+          accountToUpdateKYC: this[vuexTypes.account].accountId,
+          accountTypeToSet: ACCOUNT_TYPES.syndicate,
+          kycLevelToSet: KYC_LEVEL_TO_SET,
+          kycData: kycData
+        })
+      await Sdk.horizon.transactions.submitOperations(operation)
+      await this.loadKyc()
       this.enableForm()
-    },
-    setKycData () {
-      this.form.name = this[vuexTypes.kycLatestData].name
-      this.form.company = this[vuexTypes.kycLatestData].company
-      this.form.headquarters = this[vuexTypes.kycLatestData].headquarters
-      this.form.industry = this[vuexTypes.kycLatestData].industry
-      this.form.founded = this[vuexTypes.kycLatestData].found_date
-      this.form.teamSize = this[vuexTypes.kycLatestData].team_size
-      this.form.website = this[vuexTypes.kycLatestData].homepage
     }
   }
 }

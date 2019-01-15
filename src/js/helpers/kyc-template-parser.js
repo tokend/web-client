@@ -1,22 +1,22 @@
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
-// import { wrapDocuments } from './DocumentContainer'
+import { wrapDocuments } from './DocumentContainer'
 
 export class KycTemplateParser {
   static fromTemplate (template, type) {
     switch (type) {
       case ACCOUNT_TYPES.general:
         return {
-          first_name: template.first_name,
-          last_name: template.last_name,
-          line_1: template.address.line_1,
-          line_2: template.address.line_2,
+          first_name: template.personal.firstName,
+          last_name: template.personal.lastName,
+          date_of_birth: template.personal.birthDate,
+          id_expiration_date: template.personal.documentExpirationDate,
+          line_1: template.address.firstLine,
+          line_2: template.address.secondLine,
           city: template.address.city,
           country: template.address.country,
           state: template.address.state,
-          postal_code: template.address.postal_code,
-          id_expiration_date: template.id_expiration_date,
-          date_of_birth: template.date_of_birth
-          // documents: wrapDocuments(template.documents)
+          postal_code: template.address.postalCode,
+          documents: wrapDocuments(template.documents)
         }
       case ACCOUNT_TYPES.syndicate:
         return {
@@ -24,10 +24,9 @@ export class KycTemplateParser {
           company: template.company,
           headquarters: template.headquarters,
           industry: template.industry,
-          found_date: template.found_date,
-          team_size: template.team_size,
-          homepage: template.homepage
-          // documents: wrapDocuments(template.documents)
+          found_date: template.foundDate,
+          team_size: template.teamSize,
+          homepage: template.website
         }
     }
   }
@@ -36,17 +35,19 @@ export class KycTemplateParser {
     switch (type) {
       case ACCOUNT_TYPES.general:
         return {
-          first_name: form.first_name,
-          last_name: form.last_name,
-          date_of_birth: form.date_of_birth,
-          id_expiration_date: form.id_expiration_date,
+          personal: {
+            firstName: form.first_name,
+            lastName: form.last_name,
+            birthDate: form.date_of_birth,
+            documentExpirationDate: form.id_expiration_date
+          },
           address: {
-            line_1: form.line_1,
-            line_2: form.line_2,
+            firstLine: form.line_1,
+            secondLine: form.line_2,
             city: form.city,
             country: form.country,
             state: form.state,
-            postal_code: form.postal_code
+            postalCode: form.postal_code
           }
         }
       case ACCOUNT_TYPES.syndicate:
@@ -55,9 +56,9 @@ export class KycTemplateParser {
           company: form.company,
           headquarters: form.headquarters,
           industry: form.industry,
-          found_date: form.found_date,
-          team_size: form.team_size,
-          homepage: form.homepage
+          foundDate: form.found_date,
+          teamSize: form.team_size,
+          website: form.homepage
         }
     }
   }

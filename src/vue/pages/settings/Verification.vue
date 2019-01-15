@@ -5,7 +5,11 @@
       :class="`request-message--${kycState}`"
     >
       <p class="request-message__content">
-        {{ kycRequestMessageId | globalize }}
+        {{
+          kycRequestMessageId | globalize({
+            reason: kycRequestRejectReason
+          })
+        }}
       </p>
     </div>
     <div class="account-type">
@@ -65,7 +69,8 @@ export default {
   name: 'verification',
   computed: {
     ...mapGetters([
-      vuexTypes.kycState
+      vuexTypes.kycState,
+      vuexTypes.kycRequestRejectReason
     ]),
     kycRequestMessageId () {
       switch (this[vuexTypes.kycState]) {
