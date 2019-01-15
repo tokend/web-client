@@ -56,18 +56,20 @@ describe('asset-loader.mixin unit test', () => {
       })
     })
 
-    it('loadOwnedAssets() calls the horizon.assets.getAll() with the correct params', async () => {
-      await wrapper.vm.loadOwnedAssets()
-      expect(assetsSpy
-        .withArgs({ owner: mockHelper.getMockWallet().accountId })
-        .calledOnce
-      ).to.be.true
-    })
+    describe('loadOwnedAssets', () => {
+      it('calls the horizon.assets.getAll() with the correct params', async () => {
+        await wrapper.vm.loadOwnedAssets()
+        expect(assetsSpy
+          .withArgs({ owner: mockHelper.getMockWallet().accountId })
+          .calledOnce
+        ).to.be.true
+      })
 
-    it('loadOwnedAssets() changes user tokens data after loading', async () => {
-      wrapper.setData({ ownedAssets: null })
-      await wrapper.vm.loadOwnedAssets()
-      expect(wrapper.vm.ownedAssets).to.deep.equal(sampleAssetsData)
+      it('changes owned assets data after loading', async () => {
+        wrapper.setData({ ownedAssets: null })
+        await wrapper.vm.loadOwnedAssets()
+        expect(wrapper.vm.ownedAssets).to.deep.equal(sampleAssetsData)
+      })
     })
   })
 })

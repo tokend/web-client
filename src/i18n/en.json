@@ -214,8 +214,8 @@
       "lower-bound": "Lower bound",
       "upper-bound": "Upper bound",
       "subtype": "Subtype",
-      "loading-lbl": "Loading",
-      "loading-error-lbl": "There was an error while loading."
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading."
     },
 
     "issuance": {

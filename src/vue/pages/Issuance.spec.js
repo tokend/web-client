@@ -1,92 +1,129 @@
-// import Issuance from './Issuance'
+import Issuance from './Issuance'
 
-// import Vue from 'vue'
-// import VueRouter from 'vue-router'
-// import Vuex from 'vuex'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
-// import { OPERATION_TYPES } from '@/js/const/xdr.const'
-// import { xdrEnumToConstant } from '@/js/utils/xdr-enum-to-constant.util'
+import { OP_TYPES } from '@tokend/js-sdk'
+import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
-// import { vuexTypes } from '@/vuex'
-// import walletModule from '@/vuex/wallet.module'
-// import accountModule from '@/vuex/account.module'
+import { vuexTypes } from '@/vuex'
+import walletModule from '@/vuex/wallet.module'
+import accountModule from '@/vuex/account.module'
 
-// import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-// import { MockHelper } from '@/test'
+import { MockHelper } from '@/test'
 
-// // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
-// // Vue 2.6 so everything get fixed
-// Vue.config.silent = true
+// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
+// Vue 2.6 so everything get fixed
+Vue.config.silent = true
 
-// const localVue = createLocalVue()
-// localVue.use(VueRouter)
-// localVue.use(Vuex)
+const localVue = createLocalVue()
+localVue.use(VueRouter)
+localVue.use(Vuex)
 
-// describe('Issuance component unit test', () => {
-//   let mockHelper
-//   let operationsResource
+describe('Issuance component unit test', () => {
+  const sampleData = [{
+    asset: 'BTC',
+    participants: []
+  }]
 
-//   let getters
-//   let store
-//   let wrapper
+  let mockHelper
+  let operationsResource
 
-//   beforeEach(() => {
-//     mockHelper = new MockHelper()
-//     operationsResource = mockHelper.getHorizonResourcePrototype('operations')
+  let getters
+  let store
+  let wrapper
 
-//     sinon.stub(xdrEnumToConstant, 'arguments').returns({})
+  beforeEach(() => {
+    mockHelper = new MockHelper()
+    operationsResource = mockHelper.getHorizonResourcePrototype('operations')
 
-//     getters = {
-//       ...walletModule.getters,
-//       ...accountModule.getters
-//     }
-//     sinon.stub(getters, vuexTypes.wallet).returns(
-//       mockHelper.getMockWallet()
-//     )
-//     sinon.stub(getters, vuexTypes.account).returns({
-//       accountId: mockHelper.getMockWallet().accountId,
-//       accountType: 'AccountTypeSyndycate'
-//     })
-//     store = new Vuex.Store({
-//       getters
-//     })
-//     wrapper = shallowMount(Issuance, {
-//       store,
-//       localVue
-//     })
-//   })
+    getters = {
+      ...walletModule.getters,
+      ...accountModule.getters
+    }
+    sinon.stub(getters, vuexTypes.wallet).returns(
+      mockHelper.getMockWallet()
+    )
+    sinon.stub(getters, vuexTypes.account).returns({
+      accountId: mockHelper.getMockWallet().accountId
+    })
+    store = new Vuex.Store({
+      getters
+    })
 
-//   afterEach(() => {
-//     sinon.restore()
-//   })
+    wrapper = shallowMount(Issuance, {
+      store,
+      localVue
+    })
+  })
 
-//   it('loadHistoryWrapper() calls the
-// horizon.operations.getPage() with the correct params', async () => {
-//     const spy = sinon.stub(operationsResource, 'getPage').resolves({
-//       data: [{}]
-//     })
+  afterEach(() => {
+    sinon.restore()
+  })
 
-//     await wrapper.vm.loadHistoryWrapper()
+  describe('method', () => {
+    describe('getHistory', () => {
+      it('fetches issuance operations for provided account ID', async () => {
+        const spy = sinon.stub(operationsResource, 'getPage').resolves({
+          data: [{}]
+        })
 
-//     expect(spy
-//       .withArgs({
-//         account_id: mockHelper.getMockWallet().accountId,
-//         operation_type: OPERATION_TYPES.createIssuanceRequest
-//       })
-//       .calledOnce
-//     ).to.be.true
-//   })
+        await wrapper.vm.getHistory()
 
-//   it('loadHistory() changes issuance history data after loading',
-// async () => {
-//     const sampleData = [{
-//       asset: 'BTC',
-//       participants: []
-//     }]
+        expect(spy
+          .withArgs({
+            account_id: mockHelper.getMockWallet().accountId,
+            operation_type: OP_TYPES.createIssuanceRequest
+          })
+          .calledOnce
+        ).to.be.true
+      })
+    })
 
-//     wrapper.vm.loadHistory(sampleData)
+    describe('setHistory', () => {
+      it('changes issuance history data', () => {
+        wrapper.vm.setHistory(sampleData)
 
-//     expect(wrapper.vm.issuanceHistory).to.not.equal(null)
-//   })
-// })
+        expect(wrapper.vm.issuanceHistory.length).to.not.equal(0)
+      })
+
+      it('converts every arguments data record to IssuanceRecord', () => {
+        wrapper.vm.setHistory(sampleData)
+
+        expect(
+          wrapper.vm.issuanceHistory
+            .every(record => record instanceof IssuanceRecord)
+        ).to.be.true
+      })
+
+      it('set isLoaded property to true', async () => {
+        wrapper.vm.setHistory([])
+
+        expect(wrapper.vm.isLoaded).to.be.true
+      })
+    })
+
+    describe('extendHistory', () => {
+      it('pushes data records to issuance history', () => {
+        wrapper.setData({ issuanceHistory: sampleData })
+
+        wrapper.vm.extendHistory(sampleData)
+
+        expect(wrapper.vm.issuanceHistory.length)
+          .to.equal(sampleData.length * 2)
+      })
+
+      it('converts every arguments data record to IssuanceRecord', () => {
+        wrapper.vm.extendHistory(sampleData)
+
+        expect(
+          wrapper.vm.issuanceHistory
+            .every(record => record instanceof IssuanceRecord)
+        ).to.be.true
+      })
+    })
+  })
+})

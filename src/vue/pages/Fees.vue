@@ -66,12 +66,12 @@
   </div>
   <div v-else-if="!isFailed">
     <loader
-      :message-id="'fee-table.loading-lbl'"
+      :message-id="'fee-table.loading-msg'"
     />
   </div>
   <div v-else>
     <p>
-      {{ 'fee-table.loading-error-lbl' | globalize }}
+      {{ 'fee-table.loading-error-msg' | globalize }}
     </p>
   </div>
 </template>
