@@ -84,7 +84,7 @@
     </div>
     <div class="issuance-history__collection-loader">
       <collection-loader
-        :first-page-loader="loadIssuanceOperations"
+        :first-page-loader="getIssuanceOperationsResponse"
         @first-page-load="setIssuanceHistory"
         @next-page-load="extendIssuanceHistory"
       />
@@ -134,7 +134,7 @@ export default {
     ])
   },
   methods: {
-    async loadIssuanceOperations () {
+    async getIssuanceOperationsResponse () {
       const response = await Sdk.horizon.operations.getPage({
         account_id: this[vuexTypes.account].accountId,
         operation_type: OP_TYPES.createIssuanceRequest

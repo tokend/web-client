@@ -25,10 +25,10 @@ export default Object.assign(
       /BTC.*\/.*ETH/,
       /ETH.*\/.*BTC/
     ],
-    MIN_AMOUNT: String(1 / base.Operation.ONE || 1000000),
-    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT,
-    CONVERSION_ASSET: 'USD',
-    CONVERSION_PRECISION: 2
+    DEFAULT_CONVERSION_ASSET: 'USD',
+    CONVERSION_PRECISION: 2,
+    MIN_AMOUNT: String(1 / (base.Operation.ONE || 1000000)),
+    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT
   },
   process.env,
   document.ENV
