@@ -108,7 +108,7 @@ export default {
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.filter(a => a === 'ETH')[0] || keys[0] || null
+          keys.find(a => a === 'ETH') || keys[0] || null
       }
     },
     showCreateIssuanceForm (status) {
@@ -125,7 +125,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-$custom-breakpoint: 80rem;
+$custom-breakpoint: 800px;
 
 .dashboard {
   flex: 1;
