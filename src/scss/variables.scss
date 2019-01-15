@@ -4,6 +4,11 @@ $sidebar-width: 27.5rem;
 $content-side-paddings: 4rem;
 $content-side-paddings-sm: 2rem;
 
+// z-indices
+$z-sidebar-burger: 10;
+$z-status-message: 10;
+$z-drawer: 10;
+
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
@@ -18,6 +23,7 @@ $_green: #33A494;
 $_orangePeel: #f2a100;
 $_whiteSmoke: #f5f6f9;
 $_lightPurple: #837fa1;
+$_ghostWhite: #c4c8cb;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -102,6 +108,9 @@ $col-avatar-instead-bg: rgba($_eastBay, .15);
 // fields colors
 $col-text-field-hint: $col-primary;
 $col-text-field-hint-inactive: $col-primary-inactive;
+$col-file-field-background: $_whiteSmoke;
+$col-file-field-border: $_ghostWhite;
+$col-field-text-secondary: $_lightPurple;
 
 // other colors
 $col-auth-titles-background-light: #5d5882;

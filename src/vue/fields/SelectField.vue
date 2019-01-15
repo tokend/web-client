@@ -121,6 +121,7 @@ export default {
   margin-top: -.2rem;
   width: 1.6rem;
   height: 1.6rem;
+
   &.select-field__selected-icon--active {
     transform: rotate(-180deg);
   }

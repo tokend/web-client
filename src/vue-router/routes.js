@@ -7,6 +7,7 @@ export const vueRoutes = Object.freeze({
   fees: { name: 'app.fees' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
+<<<<<<< HEAD
   settings: { name: 'app.settings' },
   verification: {
     name: 'app.verification',
@@ -17,6 +18,9 @@ export const vueRoutes = Object.freeze({
       name: 'app.verification.corporate'
     }
   },
+=======
+  issuance: { name: 'app.issuance' },
+>>>>>>> issuance-page
 
   // stubs:
   terms: { name: 'terms' },
