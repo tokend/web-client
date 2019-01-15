@@ -99,6 +99,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import get from 'lodash/get'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   assetChange: 'asset-change',
@@ -120,14 +121,6 @@ export default {
   },
   data: () => ({
     EVENTS,
-    tabs: {
-      hour: 'hour',
-      day: 'day',
-      week: 'week',
-      month: 'month',
-      year: 'year',
-      all: 'all'
-    },
     tokens: [],
     config,
     ASSET_POLICIES,
@@ -136,13 +129,18 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
-      accountTypeI: vuexTypes.accountTypeI,
-      userTransferableTokens: vuexTypes.userTransferableTokens
+      accountTypeI: vuexTypes.accountTypeI
     }),
     tokensList () {
-      const balances = this.balances.map(i => i.asset)
+      const balancesAssetCodes = this.balances.map(i => i.asset)
       const tokens = this.tokens
-        .filter(token => balances.includes(token.code))
+        .filter(token => balancesAssetCodes.includes(token.code))
+      // this separation on baseAssets and otherAssets needed to display them
+      // correcty in the list of all tokens: baseAssets should be displayed at
+      // the beginning and otherAssets after baseAssets
+
+      // String.localeCompare() compare two strings and returns
+      // them in alphabet order
       const baseAssets = tokens
         .filter(token => token.policies.includes(ASSET_POLICIES.baseAsset))
         .sort((a, b) => a.code.localeCompare(b.code))
@@ -155,28 +153,27 @@ export default {
       ].map(item => `${item.name} (${item.code})`)
     },
     currentAssetForSelect () {
-      return this.tokens.filter(token => token.code === this.currentAsset)
-        .map(item => `${item.name} (${item.code})`)[0]
+      if (this.tokens.length) {
+        const token = this.tokens.find(t => t.code === this.currentAsset)
+        return `${token.name} (${token.code})`
+      } else {
+        return null
+      }
     },
     currentAssetBalanceDetails () {
       return this.balances
-        .find(i => i.asset === this.currentAsset).balance || {}
+        .find(i => i.asset === this.currentAsset) || {}
     },
     imgUrl () {
-      const defaultUrl = '../../../../../static/coin-picture.png'
+      const defaultUrl = '/static/coin-picture.png'
       const logoKey = get(
         this.balances.find(i => i.asset === this.currentAsset),
-        'asset_details.details.logo.key'
+        'assetDetails.details.logo.key'
       )
       if (logoKey) {
         return `${config.FILE_STORAGE}/${logoKey}`
       }
       return defaultUrl
-    },
-    checkTransferable () {
-      return !(this.userTransferableTokens
-        .map(token => token.code))
-        .includes(this.currentAsset)
     }
   },
   async created () {
@@ -184,7 +181,12 @@ export default {
   },
   methods: {
     async loadTokens () {
-      this.tokens = (await Sdk.horizon.assets.getAll()).data
+      try {
+        const response = await Sdk.horizon.assets.getAll()
+        this.tokens = response.data
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
     }
   }
 }
