@@ -1,49 +1,58 @@
 <template>
   <div class="tx-history">
-    <div class="tx-history__navigation">
-      <span class="tx-history__navigation-text">
-        {{ 'tx-pages.show' | globalize }}:
-      </span>
-      <select-field-custom
-        v-if="isLoad"
-        v-model="tokenCode"
-        :values="tokens" />
-    </div>
-    <div class="tx-history__list" v-if="isLoad">
-      <template v-if="operations.length">
-        <table class="tx-history__table">
-          <tr>
-            <td>{{ 'tx-pages.date' | globalize }}</td>
-            <td>{{ 'tx-pages.txType' | globalize }}</td>
-            <td>{{ 'tx-pages.amount' | globalize }}</td>
-            <td class="tx-history__counterparty">
-              {{ 'tx-pages.counterparty' | globalize }}
-            </td>
-            <td class="tx-history__status">
-              {{ 'tx-pages.status' | globalize }}
-            </td>
-            <td class="tx-history__td-btn" />
-          </tr>
-        </table>
-        <template v-for="(operation, i) in operations">
-          <operation-record
-            :operation-data="operation"
-            :key="`tx-row-${i}}-${tokenCode}`" />
+    <template v-if="!isError">
+      <div class="tx-history__navigation">
+        <span class="tx-history__navigation-text">
+          {{ 'tx-pages.show' | globalize }}:
+        </span>
+        <select-field-custom
+          v-if="isLoad"
+          v-model="tokenCode"
+          :values="tokens" />
+      </div>
+      <div class="tx-history__list" v-if="isLoad">
+        <template v-if="operations.length">
+          <table class="tx-history__table">
+            <tr>
+              <td>{{ 'tx-pages.date' | globalize }}</td>
+              <td>{{ 'tx-pages.txType' | globalize }}</td>
+              <td>{{ 'tx-pages.amount' | globalize }}</td>
+              <td class="tx-history__counterparty">
+                {{ 'tx-pages.counterparty' | globalize }}
+              </td>
+              <td class="tx-history__status">
+                {{ 'tx-pages.status' | globalize }}
+              </td>
+              <td class="tx-history__td-btn" />
+            </tr>
+          </table>
+          <template v-for="(operation, i) in operations">
+            <operation-record
+              :operation-data="operation"
+              :key="`tx-row-${i}}-${tokenCode}`" />
+          </template>
         </template>
-      </template>
-      <template v-else>
-        <div class="tx-history__no-transactions">
-          <i class="tx-history__no-tx-icon mdi mdi-trending-up" />
-          <h2>{{ 'tx-pages.noTransactionHistory' | globalize }}</h2>
-          <p>{{ 'tx-pages.hereWillBeTheList' | globalize }}</p>
-        </div>
-      </template>
-      <collection-loader
-        :first-page-loader="pageLoader"
-        @first-page-load="setFirstPageData"
-        @next-page-load="setNextPageData"
-      />
-    </div>
+        <template v-else>
+          <div class="tx-history__no-transactions">
+            <i class="tx-history__no-tx-icon mdi mdi-trending-up" />
+            <h2>{{ 'tx-pages.noTransactionHistory' | globalize }}</h2>
+            <p>{{ 'tx-pages.hereWillBeTheList' | globalize }}</p>
+          </div>
+        </template>
+        <collection-loader
+          :first-page-loader="pageLoader"
+          @first-page-load="setFirstPageData"
+          @next-page-load="setNextPageData"
+        />
+      </div>
+    </template>
+    <template v-else>
+      <div class="tx-history__error">
+        <i class="tx-history__error-icon mdi mdi-comment-alert-outline" />
+        <h2>{{ 'tx-pages.somethingWentWrong' | globalize }}</h2>
+        <p>{{ 'tx-pages.canNotLoadAssets' | globalize }}</p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -68,6 +77,7 @@ export default {
     assets: [],
     operations: [],
     isLoad: false,
+    isError: false,
     pageLoader: () => {}
   }),
   computed: {
@@ -93,6 +103,7 @@ export default {
       this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
       this.isLoad = true
     } catch (e) {
+      this.isError = true
       console.error(e)
       ErrorHandler.process(e)
     }
@@ -149,7 +160,7 @@ export default {
       width: 67px;
     }
 
-    .tx-history__counterparty{
+    .tx-history__counterparty {
       width: 300px;
     }
 
@@ -168,6 +179,20 @@ export default {
   }
 
   .tx-history__no-tx-icon {
+    margin-right: 1.6rem;
+    font-size: 6.4rem;
+  }
+
+  .tx-history__error {
+    padding: 0 16px 32px;
+    text-align: center;
+    color: $col-error;
+    p {
+      margin-top: 10px;
+    }
+  }
+
+  .tx-history__error-icon {
     margin-right: 1.6rem;
     font-size: 6.4rem;
   }

@@ -246,6 +246,8 @@
       "status": "Status",
       "noTransactionHistory": "No transaction history",
       "hereWillBeTheList": "Here will be the list of your transactions",
+      "somethingWentWrong": "Something went wrong",
+      "canNotLoadAssets": "Can not load assets",
 
       "sourcePaysForDest": "Sender paid fees",
       "baseAmount": "Base amount",
