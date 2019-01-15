@@ -70,11 +70,9 @@ export const actions = {
     if (!latestBlobId) {
       return
     }
-
     const latestBlobResponse = await Sdk.api.blobs.get(latestBlobId)
     const latestData = latestBlobResponse.data.value
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
-
     // we know for sure that blob id is being stored in account can be
     // considered as approved
     const approvedBlobId = rootGetters[vuexTypes.accountKycBlobId]

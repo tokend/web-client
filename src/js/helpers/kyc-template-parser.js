@@ -10,12 +10,14 @@ export class KycTemplateParser {
           last_name: template.personal.lastName,
           date_of_birth: template.personal.birthDate,
           id_expiration_date: template.personal.documentExpirationDate,
-          line_1: template.address.firstLine,
-          line_2: template.address.secondLine,
-          city: template.address.city,
-          country: template.address.country,
-          state: template.address.state,
-          postal_code: template.address.postalCode,
+          address: {
+            line_1: template.address.firstLine,
+            line_2: template.address.secondLine,
+            city: template.address.city,
+            country: template.address.country,
+            state: template.address.state,
+            postal_code: template.address.postalCode
+          },
           documents: wrapDocuments(template.documents)
         }
       case ACCOUNT_TYPES.syndicate:
@@ -42,12 +44,12 @@ export class KycTemplateParser {
             documentExpirationDate: form.id_expiration_date
           },
           address: {
-            firstLine: form.line_1,
-            secondLine: form.line_2,
-            city: form.city,
-            country: form.country,
-            state: form.state,
-            postalCode: form.postal_code
+            firstLine: form.address.line_1,
+            secondLine: form.address.line_2,
+            city: form.address.city,
+            country: form.address.country,
+            state: form.address.state,
+            postalCode: form.address.postal_code
           }
         }
       case ACCOUNT_TYPES.syndicate:

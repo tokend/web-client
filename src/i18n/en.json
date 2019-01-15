@@ -132,6 +132,7 @@
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
       "address-details-lbl": "Address details",
+      "verification-code-btn": "Show the key",
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
