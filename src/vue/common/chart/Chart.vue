@@ -25,6 +25,7 @@ import ScaleTabs from './Chart.Tabs'
 import { errors } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import config from '@/config'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'chart',
@@ -88,7 +89,7 @@ export default {
           : await Sdk.horizon.charts.get(this.lockedAssets.base)
         this.data = response.data
       } catch (error) {
-        // ErrorHandler.process(e)
+        ErrorHandler.process(error)
         if (error instanceof errors.NotFoundError) {
           this.isActualData = false
           this.data = {
