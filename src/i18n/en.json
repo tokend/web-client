@@ -247,16 +247,7 @@
       "noTransactionHistory": "No transaction history",
       "hereWillBeTheList": "Here will be the list of your transactions",
       "somethingWentWrong": "Something went wrong",
-      "canNotLoadAssets": "Can not load assets",
-
-      "sourcePaysForDest": "Sender paid fees",
-      "baseAmount": "Base amount",
-      "quoteAmount": "Quote amount",
-      "order": "Order",
-      "fee": "Fee",
-      "receiver": "Receiver",
-      "senderEmail": "Sender email",
-      "receiverEmail": "Receiver email"
+      "canNotLoadAssets": "Can not load assets"
     }
   }
 }
