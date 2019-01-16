@@ -17,8 +17,7 @@
 }
 
 .auth-page__tip-link {
-  // TODO: remove !important once md will be completely out
-  color: $col-text-auth-tip-link !important;
+  color: $col-text-auth-tip-link;
   text-decoration: underline;
   line-height: 1.5;
 }
