@@ -118,9 +118,12 @@ import { mapGetters, mapActions } from 'vuex'
 import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
 
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { BLOB_TYPES } from '@/js/const/blob-types.const'
+
 import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
 
-import { required } from '@validators'
+import { required, url } from '@validators'
 
 const KYC_LEVEL_TO_SET = 0
 
@@ -146,16 +149,16 @@ export default {
       industry: { required },
       foundDate: { required },
       teamSize: { required },
-      website: { required }
+      website: { required, url }
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.kycLatestData,
-      vuexTypes.kycState,
-      vuexTypes.kycRequestId,
-      vuexTypes.account
-    ])
+    ...mapGetters({
+      kycLatestData: vuexTypes.kycLatestData,
+      kycState: vuexTypes.kycState,
+      kycRequestId: vuexTypes.kycRequestId,
+      account: vuexTypes.account
+    })
   },
   async created () {
     try {
@@ -163,14 +166,13 @@ export default {
     } catch (error) {
       console.error(error)
     }
-
-    if (this[vuexTypes.kycLatestData].name) {
+    if (this.kycLatestData.name) {
       this.form = KycTemplateParser.toTemplate(
-        this[vuexTypes.kycLatestData],
+        this.kycLatestData,
         ACCOUNT_TYPES.syndicate
       )
 
-      if (this[vuexTypes.kycState] !== 'rejected') {
+      if (this.kycState !== REQUEST_STATES_STR.rejected) {
         this.disableForm()
       }
     }
@@ -186,29 +188,23 @@ export default {
       this.disableForm()
 
       const { data } = await Sdk.api.blobs.create(
-        'alpha',
+        BLOB_TYPES.kycSyndicate,
         JSON.stringify(KycTemplateParser.fromTemplate(
           this.form,
           ACCOUNT_TYPES.syndicate
         )),
-        this[vuexTypes.account].accountId
+        this.account.accountId
       )
       const kycData = {
         blob_id: data.id
       }
 
-      // const response = await Sdk.api.kycEntities.create(
-      //   'syndicate',
-      //   kycData,
-      //   this[vuexTypes.account].accountId
-      // )
-
       const operation =
         base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-          requestID: this[vuexTypes.kycState] === 'rejected'
+          requestID: this.kycState === REQUEST_STATES_STR.rejected
             ? this.kycRequestId
             : '0',
-          accountToUpdateKYC: this[vuexTypes.account].accountId,
+          accountToUpdateKYC: this.account.accountId,
           accountTypeToSet: ACCOUNT_TYPES.syndicate,
           kycLevelToSet: KYC_LEVEL_TO_SET,
           kycData: kycData

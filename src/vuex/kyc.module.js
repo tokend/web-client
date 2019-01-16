@@ -79,7 +79,7 @@ export const actions = {
 
     if (approvedBlobId === latestBlobId) {
       commit(vuexTypes.SET_KYC_APPROVED_DATA, latestData)
-    } else {
+    } else if (approvedBlobId) {
       const approvedBlobResponse = await Sdk.api.blobs.get(approvedBlobId)
       commit(vuexTypes.SET_KYC_APPROVED_DATA, approvedBlobResponse.data.value)
     }

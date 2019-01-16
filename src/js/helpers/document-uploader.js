@@ -2,7 +2,7 @@ import Vue from 'vue'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 
-export class FileUploader {
+export class DocumentUploader {
   /**
    * @async
    * Uploads the file into storage
@@ -15,16 +15,19 @@ export class FileUploader {
    *
    * @return {string}
    */
-  static async uploadFile (opts) {
+  static async uploadDocument (opts) {
     const { type, mimeType, file } = opts
     const configResponse = await Sdk.api.documents.create(type, mimeType)
-    const config = configResponse.attributes()
+    const config = {
+      ...configResponse.formData,
+      url: configResponse.url
+    }
     await this._uploadFile(file, config, mimeType)
-    return configResponse.attribute('key')
+    return config.key
   }
 
-  static async uploadFiles (...files) {
-    return Promise.all(files.map(file => this.uploadFile(file)))
+  static async uploadDocuments (...files) {
+    return Promise.all(files.map(file => this.uploadDocument(file)))
   }
 
   /**
@@ -45,7 +48,7 @@ export class FileUploader {
    */
   static async uploadSingleDocument (document) {
     const details = document.getDetailsForUpload()
-    const key = await this.uploadFile(details)
+    const key = await this.uploadDocument(details)
     document.setKey(key)
     return document
   }
@@ -60,9 +63,9 @@ export class FileUploader {
    */
   static _uploadFile (file, policy, mimeString) {
     const formData = new FormData()
-    delete policy.url
     for (const key in policy) {
-      formData.append(key, policy[key])
+      // FIXME: Fix config method in SDK
+      formData.append(key.replace(/_/g, '-'), policy[key])
     }
     const blob = new Blob([file], { type: mimeString })
     formData.append('file', blob)

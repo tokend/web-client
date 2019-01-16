@@ -6,9 +6,9 @@
     <div class="file-input">
       <div
         class="file-input__file-preview"
-        v-if="fileName">
+        v-if="document">
         <span>
-          {{ 'file-field.selected-file' | globalize }}  {{ fileName }}
+          {{ 'file-field.selected-file' | globalize }}  {{ document.name }}
         </span>
       </div>
       <div class="file-input__input-inner">
@@ -24,8 +24,15 @@
         type="file"
         class="file-field__file-input"
         :accept="accept"
+        title=""
         @change="onChange"
       >
+    </div>
+    <div
+      class="file-field__err-mes"
+      v-if="errorMessage"
+    >
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -42,42 +49,55 @@ const MAX_FILE_MEGABYTES = 5
 export default {
   name: 'file-field',
   props: {
+    value: { type: Object, default: null },
     label: { type: String, default: '' },
     documentType: { type: String, default: 'default' },
     accept: { type: String, default: '*' },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
-    note: { type: String, default: 'All files' }
+    note: { type: String, default: 'All files' },
+    errorMessage: { type: String, default: undefined }
   },
   data: _ => ({
-    fileName: ''
+    document: null
   }),
   computed: {
     maxSizeBytes () {
       return this.maxSize * 1024 * 1024
     }
   },
+  watch: {
+    'value': function (value) {
+      this.document = value
+    }
+  },
+  created () {
+    if (this.value) {
+      this.document = this.value
+    }
+  },
   methods: {
     onChange (event) {
-      this.fileName = ''
       let file
       try {
         file = FileUtil.getFileFromEvent(event)
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
           Bus.error('file-field.file-not-uploaded-err')
+          this.document = null
+          this.$emit('input', this.document)
           return
         }
         console.error(e)
         ErrorHandler.process(e)
       }
       if (this.isValidFileSize(file)) {
-        this.fileName = file.name
-        this.$emit('input', new DocumentContainer({
+        this.document = new DocumentContainer({
           mimeType: file.type,
           type: this.documentType,
           name: file.name,
           file: file
-        }))
+        })
+        this.$emit('input', this.document)
       } else {
         Bus.error('file-field.max-size-exceeded-err')
         this.dropFile()
@@ -158,5 +178,12 @@ export default {
 
 .file-input__file-preview {
   margin-top: 1rem;
+}
+
+.file-field__err-mes {
+  color: $field-color-error;
+  margin-top: $field-error-margin-top;
+  font-size: $field-error-font-size;
+  line-height: $field-error-line-height;
 }
 </style>

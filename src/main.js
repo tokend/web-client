@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from '@/vue/App'
 import i18next from 'i18next'
 import Vuelidate from 'vuelidate'
+import VueResource from 'vue-resource'
 
 import { store } from '@/vuex'
 import { router } from '@/vue-router'
@@ -24,6 +25,7 @@ i18next.init(i18nOptions)
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
+Vue.use(VueResource)
 Vue.directive('ripple', ripple)
 Vue.filter('globalize', globalize)
 Vue.filter('formatDate', formatDate)

@@ -1,4 +1,5 @@
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { DocumentContainer } from './DocumentContainer'
 
 export class KycTemplateParser {
   static fromTemplate (template, type) {
@@ -17,7 +18,14 @@ export class KycTemplateParser {
             state: template.address.state,
             postal_code: template.address.postalCode
           },
-          documents: this.getSaveableDocuments(template.documents)
+          documents: {
+            kyc_id_document: template.documents.idDocument
+              .getDetailsForSave(),
+            kyc_poa: template.documents.proofDocument
+              .getDetailsForSave(),
+            kyc_selfie: template.documents.verificationPhoto
+              .getDetailsForSave()
+          }
         }
       case ACCOUNT_TYPES.syndicate:
         return {
@@ -49,6 +57,23 @@ export class KycTemplateParser {
             country: form.address.country,
             state: form.address.state,
             postalCode: form.address.postal_code
+          },
+          documents: {
+            idDocument: new DocumentContainer({
+              mimeType: form.documents.kyc_id_document.mime_type,
+              name: form.documents.kyc_id_document.name,
+              key: form.documents.kyc_id_document.key
+            }),
+            proofDocument: new DocumentContainer({
+              mimeType: form.documents.kyc_poa.mime_type,
+              name: form.documents.kyc_poa.name,
+              key: form.documents.kyc_poa.key
+            }),
+            verificationPhoto: new DocumentContainer({
+              mimeType: form.documents.kyc_selfie.mime_type,
+              name: form.documents.kyc_selfie.name,
+              key: form.documents.kyc_selfie.key
+            })
           }
         }
       case ACCOUNT_TYPES.syndicate:

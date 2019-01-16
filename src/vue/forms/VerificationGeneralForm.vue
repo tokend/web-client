@@ -68,6 +68,7 @@
             :document-type="DOCUMENT_TYPES.kycIdDocument"
             :label="'verification-page.id-document-lbl' | globalize"
             :disabled="formMixin.isDisabled"
+            :error-message="getFieldErrorMessage('form.documents.idDocument')"
           />
         </div>
       </div>
@@ -163,6 +164,9 @@
             :document-type="DOCUMENT_TYPES.kycProofOfAddress"
             :label="'verification-page.proof-document-lbl' | globalize"
             :disabled="formMixin.isDisabled"
+            :error-message="getFieldErrorMessage(
+              'form.documents.proofDocument'
+            )"
           />
         </div>
       </div>
@@ -200,6 +204,9 @@
             :document-type="DOCUMENT_TYPES.kycSelfie"
             :label="'verification-page.photo-lbl' | globalize"
             :disabled="formMixin.isDisabled"
+            :error-message="getFieldErrorMessage(
+              'form.documents.verificationPhoto'
+            )"
           />
         </div>
       </div>
@@ -228,7 +235,10 @@ import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
 
 import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
+import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { required } from '@validators'
 
@@ -276,18 +286,23 @@ export default {
         country: { required },
         state: { required },
         postalCode: { required }
+      },
+      documents: {
+        idDocument: { required },
+        proofDocument: { required },
+        verificationPhoto: { required }
       }
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.kycLatestData,
-      vuexTypes.kycState,
-      vuexTypes.kycRequestId,
-      vuexTypes.account
-    ]),
+    ...mapGetters({
+      kycLatestData: vuexTypes.kycLatestData,
+      kycState: vuexTypes.kycState,
+      kycRequestId: vuexTypes.kycRequestId,
+      account: vuexTypes.account
+    }),
     verificationCode () {
-      return this[vuexTypes.account].accountId.slice(1, 6)
+      return this.account.accountId.slice(1, 6)
     }
   },
   async created () {
@@ -297,14 +312,14 @@ export default {
       console.error(error)
     }
 
-    if (this[vuexTypes.kycLatestData].first_name) {
+    if (this.kycLatestData.first_name) {
       const kycData = KycTemplateParser.toTemplate(
-        this[vuexTypes.kycLatestData],
+        this.kycLatestData,
         ACCOUNT_TYPES.general
       )
       this.form = Object.assign(this.form, kycData)
 
-      if (this[vuexTypes.kycState] !== 'rejected') {
+      if (this.kycState !== REQUEST_STATES_STR.rejected) {
         this.disableForm()
       }
     }
@@ -319,38 +334,42 @@ export default {
       }
       this.disableForm()
 
+      await this.uploadDocuments()
+
       const { data } = await Sdk.api.blobs.create(
-        'kyc_form',
+        BLOB_TYPES.kycGeneral,
         JSON.stringify(KycTemplateParser.fromTemplate(
           this.form,
           ACCOUNT_TYPES.general
         )),
-        this[vuexTypes.account].accountId
+        this.account.accountId
       )
       const kycData = {
         blob_id: data.id
       }
 
-      // const response = await Sdk.api.kycEntities.create(
-      //   'syndicate',
-      //   kycData,
-      //   this[vuexTypes.account].accountId
-      // )
-
       const operation =
         base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-          requestID: this[vuexTypes.kycState] === 'rejected'
+          requestID: this.kycState === REQUEST_STATES_STR.rejected
             ? this.kycRequestId
             : '0',
-          accountToUpdateKYC: this[vuexTypes.account].accountId,
+          accountToUpdateKYC: this.account.accountId,
           accountTypeToSet: ACCOUNT_TYPES.general,
           kycLevelToSet: KYC_LEVEL_TO_SET,
           kycData: kycData
         })
       await Sdk.horizon.transactions.submitOperations(operation)
       await this.loadKyc()
-
-      this.enableForm()
+    },
+    async uploadDocuments () {
+      for (let document of Object.values(this.form.documents)) {
+        if (!document.key) {
+          const documentKey = await DocumentUploader.uploadDocument(
+            document.getDetailsForUpload()
+          )
+          document.setKey(documentKey)
+        }
+      }
     }
   }
 }

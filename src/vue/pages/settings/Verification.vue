@@ -7,7 +7,7 @@
       <p class="request-message__content">
         {{
           kycRequestMessageId | globalize({
-            reason: kycRequestRejectReason
+            reason: kycRejectReason
           })
         }}
       </p>
@@ -65,20 +65,22 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+
 export default {
   name: 'verification',
   computed: {
-    ...mapGetters([
-      vuexTypes.kycState,
-      vuexTypes.kycRequestRejectReason
-    ]),
+    ...mapGetters({
+      kycState: vuexTypes.kycState,
+      kycRejectReason: vuexTypes.kycRequestRejectReason
+    }),
     kycRequestMessageId () {
-      switch (this[vuexTypes.kycState]) {
-        case 'pending':
+      switch (this.kycState) {
+        case REQUEST_STATES_STR.pending:
           return 'verification-page.pending-request-message'
-        case 'approved':
+        case REQUEST_STATES_STR.approved:
           return 'verification-page.approved-request-message'
-        case 'rejected':
+        case REQUEST_STATES_STR.rejected:
           return 'verification-page.rejected-request-message'
         default:
           return ''
