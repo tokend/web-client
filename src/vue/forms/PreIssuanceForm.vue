@@ -100,7 +100,7 @@ export default {
   watch: {
     'preIssuanceDocument': async function (value) {
       if (value && value.file) {
-        await this.extractPreissuanceRequest(value.file)
+        await this.extractPreIssuanceRequest(value.file)
       }
     }
   },
@@ -129,7 +129,7 @@ export default {
       }
       this.enableForm()
     },
-    async extractPreissuanceRequest (file) {
+    async extractPreIssuanceRequest (file) {
       try {
         const extracted = await FileUtil.getText(file)
         this.parsePreIssuance(JSON.parse(extracted).issuances[0])
@@ -138,12 +138,12 @@ export default {
         Bus.error('file-field.file-corrupted-err')
       }
     },
-    parsePreIssuance (issuance) {
+    parsePreIssuance (preIssuance) {
       const _xdr = base.xdr.PreIssuanceRequest
-        .fromXDR(issuance.preEmission, 'hex')
+        .fromXDR(preIssuance.preEmission, 'hex')
       const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
       result.xdr = _xdr
-      result.isUsed = issuance.used
+      result.isUsed = preIssuance.used
 
       if (!this.isAssetDefined(result.asset)) {
         Bus.error('issuance.pre-issuance-not-allowed-err')
