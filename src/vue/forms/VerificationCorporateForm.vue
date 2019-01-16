@@ -1,7 +1,7 @@
 <template>
   <form
     novalidate
-    class="app-form verification-form"
+    class="app-form verification-corporate-form"
     @submit.prevent="submit">
     <div class="app__form-row">
       <div class="app__form-field">
@@ -60,6 +60,7 @@
         <date-field
           v-model="form.foundDate"
           :enable-time="false"
+          :disable-after="new Date().toString()"
           @blur="touchField('form.foundDate')"
           id="verification-corporate-found-date"
           :label="'verification-page.found-date-lbl' | globalize"
@@ -100,7 +101,7 @@
       <button
         v-ripple
         type="submit"
-        class="verification-form__submit-btn"
+        class="verification-corporate-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
         {{ 'verification-page.submit-btn' | globalize }}
@@ -122,6 +123,7 @@ import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { required, url } from '@validators'
 
@@ -164,30 +166,43 @@ export default {
   async created () {
     try {
       await this.loadKyc()
-    } catch (error) {
-      console.error(error)
+    } catch (e) {
+      console.error(e)
+      ErrorHandler.process(e)
     }
-    if (this.kycLatestData.name) {
-      this.form = KycTemplateParser.fromTemplateToForm(
-        this.kycLatestData,
-        ACCOUNT_TYPES.syndicate
-      )
+    this.parseKycData()
 
-      if (this.kycState !== REQUEST_STATES_STR.rejected) {
-        this.disableForm()
-      }
+    if (this.kycState !== REQUEST_STATES_STR.rejected) {
+      this.disableForm()
     }
   },
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC
     }),
-    async submit () {
-      if (!this.isFormValid()) {
-        return
+    parseKycData () {
+      if (this.kycState) {
+        this.form = KycTemplateParser.fromTemplateToForm(
+          this.kycLatestData,
+          ACCOUNT_TYPES.syndicate
+        )
       }
+    },
+    async submit () {
+      if (!this.isFormValid()) return
       this.disableForm()
-
+      try {
+        const kycData = await this.createKycData()
+        const operation = this.createKycOperation(kycData)
+        await Sdk.horizon.transactions.submitOperations(operation)
+        await this.loadKyc()
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.process(e)
+        this.enableForm()
+      }
+    },
+    async createKycData () {
       const { data } = await Sdk.api.blobs.create(
         BLOB_TYPES.kycSyndicate,
         JSON.stringify(KycTemplateParser.fromFormToTemplate(
@@ -196,23 +211,20 @@ export default {
         )),
         this.account.accountId
       )
-      const kycData = {
+      return {
         blob_id: data.id
       }
-
-      const operation =
-        base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-          requestID: this.kycState === REQUEST_STATES_STR.rejected
-            ? this.kycRequestId
-            : '0',
-          accountToUpdateKYC: this.account.accountId,
-          accountTypeToSet: ACCOUNT_TYPES.syndicate,
-          kycLevelToSet: KYC_LEVEL_TO_SET,
-          kycData: kycData
-        })
-      await Sdk.horizon.transactions.submitOperations(operation)
-      await this.loadKyc()
-      this.enableForm()
+    },
+    createKycOperation (kycData) {
+      return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
+        requestID: this.kycState === REQUEST_STATES_STR.rejected
+          ? this.kycRequestId
+          : '0',
+        accountToUpdateKYC: this.account.accountId,
+        accountTypeToSet: ACCOUNT_TYPES.syndicate,
+        kycLevelToSet: KYC_LEVEL_TO_SET,
+        kycData: kycData
+      })
     }
   }
 }
@@ -221,7 +233,7 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.verification-form__submit-btn {
+.verification-corporate-form__submit-btn {
   @include button-raised();
 
   margin-right: auto;
@@ -229,10 +241,9 @@ export default {
   width: 20rem;
 }
 
-.verification-form {
+.verification-corporate-form {
   background-color: $col-block-bg;
-  // FIXME
-  box-shadow: 0 .6rem 1rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
   padding: 2.4rem;
 }
 </style>

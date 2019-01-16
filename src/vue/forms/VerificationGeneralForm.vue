@@ -1,7 +1,7 @@
 <template>
-  <form class="app-form verification-form" @submit.prevent="submit">
-    <div class="verification-form__block">
-      <p class="verification-form__block-label">
+  <form class="app-form verification-general-form" @submit.prevent="submit">
+    <div class="verification-general-form__block">
+      <p class="verification-general-form__block-label">
         {{ 'verification-page.personal-details-lbl' | globalize }}
       </p>
       <div class="app__form-row">
@@ -35,6 +35,7 @@
           <date-field
             v-model="form.personal.birthDate"
             :enable-time="false"
+            :disable-after="new Date().toString()"
             @blur="touchField('form.personal.birthDate')"
             id="verification-general-birth-date"
             :label="'verification-page.birth-date-lbl' | globalize"
@@ -48,6 +49,7 @@
           <date-field
             v-model="form.personal.documentExpirationDate"
             :enable-time="false"
+            :disable-before="new Date().toString()"
             @blur="touchField('form.personal.documentExpirationDate')"
             id="verification-general-document-expiration-date"
             :label="'verification-page.document-expiration-date-lbl'
@@ -74,8 +76,8 @@
       </div>
     </div>
 
-    <div class="verification-form__block">
-      <p class="verification-form__block-label">
+    <div class="verification-general-form__block">
+      <p class="verification-general-form__block-label">
         {{ 'verification-page.address-details-lbl' | globalize }}
       </p>
       <div class="app__form-row">
@@ -172,18 +174,18 @@
       </div>
     </div>
 
-    <div class="verification-form__block">
-      <p class="verification-form__block-label">
+    <div class="verification-general-form__block">
+      <p class="verification-general-form__block-label">
         {{ 'verification-page.photo-verification-lbl' | globalize }}
       </p>
       <div class="app__form-row">
         <div class="app__form-field">
-          <p class="verification-form__photo-explanation">
+          <p class="verification-general-form__photo-explanation">
             {{ 'verification-page.photo-explanation-lbl' | globalize }}
           </p>
           <button
             v-ripple
-            class="verification-form__verification-code-btn"
+            class="verification-general-form__verification-code-btn"
             :disabled="formMixin.isDisabled"
             @click.prevent="isCodeShown = true"
           >
@@ -216,7 +218,7 @@
       <button
         v-ripple
         type="submit"
-        class="verification-form__submit-btn"
+        class="verification-general-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
         {{ 'verification-page.submit-btn' | globalize }}
@@ -236,11 +238,13 @@ import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
 
 import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
-import { required } from '@validators'
+import { required, document } from '@validators'
 
 const KYC_LEVEL_TO_SET = 0
 
@@ -288,9 +292,9 @@ export default {
         postalCode: { required }
       },
       documents: {
-        idDocument: { required },
-        proofDocument: { required },
-        verificationPhoto: { required }
+        idDocument: { document },
+        proofDocument: { document },
+        verificationPhoto: { document }
       }
     }
   },
@@ -311,55 +315,38 @@ export default {
     } catch (error) {
       console.error(error)
     }
+    this.parseKycData()
 
-    if (this.kycLatestData.first_name) {
-      const kycData = KycTemplateParser.fromTemplateToForm(
-        this.kycLatestData,
-        ACCOUNT_TYPES.general
-      )
-      this.form = Object.assign(this.form, kycData)
-
-      if (this.kycState !== REQUEST_STATES_STR.rejected) {
-        this.disableForm()
-      }
+    if (this.kycState !== REQUEST_STATES_STR.rejected) {
+      this.disableForm()
     }
   },
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC
     }),
-    async submit () {
-      if (!this.isFormValid()) {
-        return
-      }
-      this.disableForm()
-
-      await this.uploadDocuments()
-
-      const { data } = await Sdk.api.blobs.create(
-        BLOB_TYPES.kycGeneral,
-        JSON.stringify(KycTemplateParser.fromFormToTemplate(
-          this.form,
+    parseKycData () {
+      if (this.kycState) {
+        this.form = KycTemplateParser.fromTemplateToForm(
+          this.kycLatestData,
           ACCOUNT_TYPES.general
-        )),
-        this.account.accountId
-      )
-      const kycData = {
-        blob_id: data.id
+        )
       }
-
-      const operation =
-        base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-          requestID: this.kycState === REQUEST_STATES_STR.rejected
-            ? this.kycRequestId
-            : '0',
-          accountToUpdateKYC: this.account.accountId,
-          accountTypeToSet: ACCOUNT_TYPES.general,
-          kycLevelToSet: KYC_LEVEL_TO_SET,
-          kycData: kycData
-        })
-      await Sdk.horizon.transactions.submitOperations(operation)
-      await this.loadKyc()
+    },
+    async submit () {
+      if (!this.isFormValid()) return
+      this.disableForm()
+      try {
+        await this.uploadDocuments()
+        const kycData = await this.createKycData()
+        const operation = this.createKycOperation(kycData)
+        await Sdk.horizon.transactions.submitOperations(operation)
+        await this.loadKyc()
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.process(e)
+        this.enableForm()
+      }
     },
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
@@ -370,6 +357,30 @@ export default {
           document.setKey(documentKey)
         }
       }
+    },
+    async createKycData () {
+      const { data } = await Sdk.api.blobs.create(
+        BLOB_TYPES.kycGeneral,
+        JSON.stringify(KycTemplateParser.fromFormToTemplate(
+          this.form,
+          ACCOUNT_TYPES.general
+        )),
+        this.account.accountId
+      )
+      return {
+        blob_id: data.id
+      }
+    },
+    createKycOperation (kycData) {
+      return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
+        requestID: this.kycState === REQUEST_STATES_STR.rejected
+          ? this.kycRequestId
+          : '0',
+        accountToUpdateKYC: this.account.accountId,
+        accountTypeToSet: ACCOUNT_TYPES.general,
+        kycLevelToSet: KYC_LEVEL_TO_SET,
+        kycData: kycData
+      })
     }
   }
 }
@@ -378,7 +389,7 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.verification-form__submit-btn {
+.verification-general-form__submit-btn {
   @include button-raised();
 
   margin-right: auto;
@@ -386,29 +397,28 @@ export default {
   width: 20rem;
 }
 
-.verification-form__verification-code-btn {
+.verification-general-form__verification-code-btn {
   @include button-raised();
   margin-top: 1.5rem;
 }
 
-.verification-form {
+.verification-general-form {
   background-color: $col-block-bg;
-  // FIXME
-  box-shadow: 0 .6rem 1rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
   padding: 2.4rem;
 
-  & > .verification-form__block:not(:first-child) {
+  & > .verification-general-form__block:not(:first-child) {
     margin-top: 6rem;
   }
 }
 
-.verification-form__block-label {
+.verification-general-form__block-label {
   margin-bottom: -2.5rem;
   font-size: 1.5rem;
   font-weight: bold;
 }
 
-.verification-form__photo-explanation {
+.verification-general-form__photo-explanation {
   font-size: 1.5rem;
 }
 </style>

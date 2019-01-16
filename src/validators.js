@@ -1,5 +1,7 @@
 import { base } from '@tokend/js-sdk'
 
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
 import * as validators from 'vuelidate/lib/validators'
 export { minLength } from 'vuelidate/lib/validators'
 
@@ -10,5 +12,6 @@ export const amountRange = (from, to) => value => Number(value) &&
 export const emailOrAccountId = value => {
   return validators.email(value) || base.Keypair.isValidPublicKey(value)
 }
+export const document = value => value instanceof DocumentContainer
 
 export * from 'vuelidate/lib/validators'
