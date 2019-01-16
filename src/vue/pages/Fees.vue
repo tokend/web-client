@@ -84,6 +84,7 @@ import { Sdk } from '@/sdk'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'fees',
@@ -128,7 +129,7 @@ export default {
         this.fees = response.data.fees
       } catch (error) {
         this.isFailed = true
-        console.error(error)
+        ErrorHandler.processNoFeedback(error)
       }
     },
   },

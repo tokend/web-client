@@ -1,7 +1,6 @@
 import { validationMixin } from 'vuelidate'
 
 import InputField from '../fields/InputField'
-import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'
@@ -20,9 +19,6 @@ export default {
     isFormValid () {
       this.$v.$touch()
       const isValid = !this.$v.$invalid
-      if (!isValid) {
-        Bus.error('validation.failed')
-      }
       return isValid
     },
     /**

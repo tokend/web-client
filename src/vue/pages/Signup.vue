@@ -110,7 +110,6 @@ export default {
           })
         }
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
