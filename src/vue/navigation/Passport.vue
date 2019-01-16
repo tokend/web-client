@@ -75,7 +75,8 @@ export default {
       [ACCOUNT_TYPES.notVerified]: 'passport.account-unverified',
       [ACCOUNT_TYPES.individual]: 'passport.account-general',
       [ACCOUNT_TYPES.syndicate]: 'passport.account-corporate'
-    }
+    },
+    destructClickOutsideHandler: () => {}
   }),
 
   computed: {
@@ -100,23 +101,25 @@ export default {
 
     openDropdown () {
       this.isDropdownOpen = true
-      handleClickOutside(
+      this.destructClickOutsideHandler = handleClickOutside(
         '.passport',
         this.closeDropdown
       )
     },
 
     closeDropdown () {
+      this.destructClickOutsideHandler()
       this.isDropdownOpen = false
     },
 
     logOut () {
+      this.closeDropdown()
       this.clearState()
       location.reload()
     },
 
     goSettings () {
-      this.isDropdownOpen = false
+      this.closeDropdown()
       this.$router.push(vueRoutes.settings)
     }
   }
