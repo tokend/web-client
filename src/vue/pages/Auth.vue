@@ -21,8 +21,8 @@ import Logo from '../assets/Logo'
 export default {
   name: 'auth',
   components: {
-    Logo
-  }
+    Logo,
+  },
 }
 </script>
 

@@ -34,10 +34,10 @@ import { Bus } from '@/js/helpers/event-bus'
 export default {
   name: 'login',
   components: {
-    LoginForm
+    LoginForm,
   },
   data: _ => ({
-    vueRoutes
+    vueRoutes,
   }),
   async created () {
     // Verifying email if user came here from email link
@@ -46,7 +46,7 @@ export default {
       await Sdk.api.wallets.verifyEmail(emailAction)
       Bus.success('auth-pages.email-verified')
     }
-  }
+  },
 }
 </script>
 

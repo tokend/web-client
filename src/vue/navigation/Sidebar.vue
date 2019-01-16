@@ -65,13 +65,13 @@ export default {
 
   components: {
     Logo,
-    AppFooter
+    AppFooter,
   },
 
   data: () => ({
     isOpened: false,
     config,
-    vueRoutes
+    vueRoutes,
   }),
 
   methods: {
@@ -80,8 +80,8 @@ export default {
     },
     closeSidebar () {
       this.isOpened = false
-    }
-  }
+    },
+  },
 }
 </script>
 

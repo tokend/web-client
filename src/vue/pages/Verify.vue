@@ -44,14 +44,14 @@ export default {
   props: {
     paramsBase64: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data: _ => ({
     walletId: '',
     email: '',
     from: '',
-    vueRoutes
+    vueRoutes,
   }),
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -75,8 +75,8 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
-    }
-  }
+    },
+  },
 }
 </script>
 

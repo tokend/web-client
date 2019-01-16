@@ -68,7 +68,7 @@ import {
   password,
   sameAs,
   email,
-  seed
+  seed,
 } from '@validators'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -83,8 +83,8 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
-      recoverySeed: ''
-    }
+      recoverySeed: '',
+    },
   }),
   validations: {
     form: {
@@ -93,10 +93,10 @@ export default {
       confirmPassword: {
         required,
         password,
-        sameAsPassword: sameAs(function () { return this.form.password })
+        sameAsPassword: sameAs(function () { return this.form.password }),
       },
-      recoverySeed: { required, seed }
-    }
+      recoverySeed: { required, seed },
+    },
   },
   methods: {
     async submit () {
@@ -117,8 +117,8 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -61,20 +61,20 @@ export default {
 
     // textarea proxies
     rows: { type: [String, Number], default: 4 },
-    cols: { type: [String, Number], default: undefined }
+    cols: { type: [String, Number], default: undefined },
   },
 
   data () {
     return {
       hasValue: false,
-      currentLength: '0'
+      currentLength: '0',
     }
   },
 
   computed: {
     isNoLabel () {
       return this.label === null || this.label === '' || this.label === undefined
-    }
+    },
   },
 
   methods: {
@@ -82,8 +82,8 @@ export default {
       event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
       this.$emit('input', event.target.value)
-    }
-  }
+    },
+  },
 }
 </script>
 

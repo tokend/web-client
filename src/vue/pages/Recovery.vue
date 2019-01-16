@@ -26,11 +26,11 @@ import { vueRoutes } from '@/vue-router/routes'
 export default {
   name: 'recovery',
   components: {
-    RecoveryForm
+    RecoveryForm,
   },
   data: _ => ({
-    vueRoutes
-  })
+    vueRoutes,
+  }),
 }
 </script>
 

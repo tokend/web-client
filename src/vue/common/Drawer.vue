@@ -36,7 +36,7 @@ import { KEY_CODES } from '@/js/const/key-codes.const'
  */
 export default {
   props: {
-    isShown: { type: Boolean, default: true }
+    isShown: { type: Boolean, default: true },
   },
   created () {
     document.addEventListener('keydown', this.onDocumentKeyDown)
@@ -54,8 +54,8 @@ export default {
     },
     closeSelf () {
       this.$emit('update:isShown', false)
-    }
-  }
+    },
+  },
 }
 </script>
 

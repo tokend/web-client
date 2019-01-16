@@ -16,7 +16,7 @@ describe('abbreviate filter', () => {
       { input: 'u a', expectedOutput: 'UA' },
       { input: 'u A', expectedOutput: 'UA' },
       { input: 'u a ', expectedOutput: 'UA' },
-      { input: ' u a ', expectedOutput: 'UA' }
+      { input: ' u a ', expectedOutput: 'UA' },
     ]
 
     for (const testCase of testCases) {

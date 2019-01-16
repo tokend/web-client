@@ -55,7 +55,7 @@ import SelectFieldMixin from './js/select-field.mixin'
 
 export default {
   name: 'select-field',
-  mixins: [SelectFieldMixin]
+  mixins: [SelectFieldMixin],
 }
 </script>
 

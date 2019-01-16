@@ -19,7 +19,7 @@ describe('formatNumber filter test', () => {
     expect(
       spy
         .withArgs('formats.number', {
-          value: '2000.50500'
+          value: '2000.50500',
         })
         .calledOnce
     ).to.equal(true)

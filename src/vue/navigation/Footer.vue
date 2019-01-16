@@ -27,14 +27,14 @@ export default {
   name: 'app-footer',
 
   data: () => ({
-    vueRoutes
+    vueRoutes,
   }),
 
   computed: {
     currentYear () {
       return new Date().getFullYear()
-    }
-  }
+    },
+  },
 }
 </script>
 

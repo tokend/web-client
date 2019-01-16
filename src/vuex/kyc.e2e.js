@@ -26,17 +26,17 @@ describe('kyc.module end-to-end test', () => {
         actions: {},
         getters: {
           accountId: _ => accountId,
-          accountKycBlobId: _ => approvedBlobId
+          accountKycBlobId: _ => approvedBlobId,
         },
         mutations: {},
         state: {},
-        modules: { kyc }
+        modules: { kyc },
       })
       mockHelper.useMockWallet({ accountId })
       mockHelper.mockEndpoint(`/blobs/${latestBlobId}`, {
         data: {
-          value: JSON.stringify(latestKycData)
-        }
+          value: JSON.stringify(latestKycData),
+        },
       })
       mockHelper.mockEndpoint(`/users/${accountId}/blobs/${latestBlobId}`, {
         data:
@@ -45,22 +45,22 @@ describe('kyc.module end-to-end test', () => {
             type: 'kyc_form',
             attributes:
               {
-                value: JSON.stringify(latestKycData)
-              }
-          }
+                value: JSON.stringify(latestKycData),
+              },
+          },
       })
       mockHelper.mockEndpoint(`/users/${accountId}/blobs/${approvedBlobId}`, {
         data: {
           id: approvedBlobId,
           type: 'kyc_form',
-          attributes: { value: JSON.stringify(approvedKycData) }
-        }
+          attributes: { value: JSON.stringify(approvedKycData) },
+        },
       })
       mockHelper.mockEndpoint(`/request/update_kyc?requestor=${accountId}&limit=1&order=desc`, {
         '_links': {
           'self': { 'href': '' },
           'next': { 'href': '' },
-          'prev': { 'href': '' }
+          'prev': { 'href': '' },
         },
         '_embedded': {
           'records': [
@@ -79,27 +79,27 @@ describe('kyc.module end-to-end test', () => {
                   'account_to_update_kyc': accountId,
                   'account_type_to_set': {
                     'int': 10,
-                    'string': 'verified'
+                    'string': 'verified',
                   },
                   'kyc_level': 0,
                   'kyc_data': {
-                    'blob_id': latestBlobId
+                    'blob_id': latestBlobId,
                   },
                   'all_tasks': 30,
                   'pending_tasks': 0,
                   'sequence_number': 0,
                   'external_details': [
-                    {}
-                  ]
-                }
+                    {},
+                  ],
+                },
               },
               'created_at': '2018-09-07T20:24:15Z',
               'updated_at': '2018-09-07T20:25:30Z',
               'request_state_i': kycStateI,
-              'request_state': kycState
-            }
-          ]
-        }
+              'request_state': kycState,
+            },
+          ],
+        },
       })
       await store.dispatch(vuexTypes.LOAD_KYC)
     })

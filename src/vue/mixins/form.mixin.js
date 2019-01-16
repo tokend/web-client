@@ -8,13 +8,13 @@ import safeGet from 'lodash/get'
 
 export default {
   components: {
-    InputField
+    InputField,
   },
   mixins: [validationMixin],
   data: _ => ({
     formMixin: {
-      isDisabled: false
-    }
+      isDisabled: false,
+    },
   }),
   methods: {
     isFormValid () {
@@ -57,7 +57,7 @@ export default {
       for (const rule of Object.keys(fieldDetails.$params)) {
         if (!fieldDetails[rule]) {
           return globalize(`validation.field-error`, {
-            context: rule
+            context: rule,
           })
         }
       }
@@ -74,6 +74,6 @@ export default {
     },
     enableForm () {
       this.formMixin.isDisabled = false
-    }
-  }
+    },
+  },
 }

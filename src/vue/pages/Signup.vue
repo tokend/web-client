@@ -67,18 +67,18 @@ export default {
   name: 'signup',
   components: {
     SignupForm,
-    KeyViewer
+    KeyViewer,
   },
   mixins: [FormMixin],
   data: _ => ({
     recoveryKeypair: null,
     password: null,
     email: null,
-    vueRoutes
+    vueRoutes,
   }),
   methods: {
     ...mapActions({
-      storeWallet: vuexTypes.STORE_WALLET
+      storeWallet: vuexTypes.STORE_WALLET,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -104,9 +104,9 @@ export default {
             params: {
               paramsBase64: btoa(JSON.stringify({
                 email: wallet.email,
-                walletId: wallet.id
-              }))
-            }
+                walletId: wallet.id,
+              })),
+            },
           })
         }
       } catch (e) {
@@ -114,8 +114,8 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
-    }
-  }
+    },
+  },
 }
 </script>
 

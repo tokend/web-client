@@ -1,5 +1,5 @@
 const featureFlags = {
-  fees: true
+  fees: true,
 }
 
 export default Object.assign(
@@ -19,8 +19,8 @@ export default Object.assign(
     DEFAULT_TRADE_PAIRS_RE: [
       // Descending priority
       /BTC.*\/.*ETH/,
-      /ETH.*\/.*BTC/
-    ]
+      /ETH.*\/.*BTC/,
+    ],
   },
   process.env,
   document.ENV
