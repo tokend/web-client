@@ -267,6 +267,7 @@ describe('IssuanceForm component unit test', () => {
         }
         const receiver = sampleIssuanceData.form.receiver
         const asset = sampleIssuanceData.form.asset
+
         let getAccountIdSpy
         let fetchBalancesSpy
 

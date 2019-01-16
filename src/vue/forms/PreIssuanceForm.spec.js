@@ -41,10 +41,6 @@ describe('PreIssuanceForm component unit test', () => {
   let transactionsResource
   let store
 
-  afterEach(() => {
-    sinon.restore()
-  })
-
   beforeEach(() => {
     mockHelper = new MockHelper()
     transactionsResource =
@@ -63,6 +59,10 @@ describe('PreIssuanceForm component unit test', () => {
       localVue,
       data: _ => Object.assign({}, sampleIssuanceData)
     })
+  })
+
+  afterEach(() => {
+    sinon.restore()
   })
 
   describe('watcher', () => {

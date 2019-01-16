@@ -8,7 +8,6 @@ import { OP_TYPES } from '@tokend/js-sdk'
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
 import { vuexTypes } from '@/vuex'
-import walletModule from '@/vuex/wallet.module'
 import accountModule from '@/vuex/account.module'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -41,12 +40,8 @@ describe('Issuance component unit test', () => {
     operationsResource = mockHelper.getHorizonResourcePrototype('operations')
 
     getters = {
-      ...walletModule.getters,
       ...accountModule.getters
     }
-    sinon.stub(getters, vuexTypes.wallet).returns(
-      mockHelper.getMockWallet()
-    )
     sinon.stub(getters, vuexTypes.account).returns({
       accountId: mockHelper.getMockWallet().accountId
     })
