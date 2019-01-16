@@ -96,7 +96,7 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar {
   position: relative;
-  background-color: $col-sidebar-background !important;
+  background-color: $col-sidebar-background;
   box-shadow: inset -1rem -1rem 2rem 0 rgba(0, 0, 0, 0.03);
   min-height: 100%;
 }
@@ -129,11 +129,11 @@ $content-item-right-padding: 2.4rem;
   width: 4rem;
   height: 4rem;
   margin-right: 0;
-  margin-left: .8rem !important;
+  margin-left: .8rem;
   border: none;
   outline: none;
   border-radius: 50%;
-  background-color: $col-button-flat-txt !important;
+  background-color: $col-button-flat-txt;
   transform: translateX($sidebar-width);
   opacity: 0;
   cursor: pointer;
@@ -161,7 +161,7 @@ $content-item-right-padding: 2.4rem;
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 1;
     width: $sidebar-width;
-    background-color: $col-sidebar-background-media-small !important;
+    background-color: $col-sidebar-background-media-small;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
