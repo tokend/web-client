@@ -394,11 +394,11 @@ $custom-breakpoint: 800px;
 }
 
 .navbar__user-action-btn {
-  color: rgba(0, 0, 0, 0.75) !important;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .navbar__user-card-ctn {
-  padding: 0 !important;
+  padding: 0;
 }
 
 .navbar__user-card-status--blocked {

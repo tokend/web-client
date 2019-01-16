@@ -6,14 +6,14 @@
 
     <div class="auth-page__content">
       <recovery-form />
-    </div>
 
-    <div class="auth-page__tips">
-      <div class="auth-page__tip">
-        {{ 'auth-pages.know-credentials-question' | globalize }}
-        <router-link class="auth-page__tip-link" :to="vueRoutes.login">
-          {{ 'auth-pages.know-credentials-answer' | globalize }}
-        </router-link>
+      <div class="auth-page__tips">
+        <div class="auth-page__tip">
+          {{ 'auth-pages.know-credentials-question' | globalize }}
+          <router-link class="auth-page__tip-link" :to="vueRoutes.login">
+            {{ 'auth-pages.know-credentials-answer' | globalize }}
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
