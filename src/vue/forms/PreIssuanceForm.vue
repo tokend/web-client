@@ -57,7 +57,7 @@
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
     <loader
-      :message-id="'issuance.loading-lbl'"
+      :message-id="'issuance.loading-msg'"
     />
   </div>
   <div v-else>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import AssetLoaderMixin from '@/vue/mixins/asset-loader.mixin'
+import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
@@ -90,7 +90,7 @@ export default {
   components: {
     Loader
   },
-  mixins: [AssetLoaderMixin, FormMixin],
+  mixins: [OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
     preIssuanceDocument: null,
     issuance: null,
@@ -100,7 +100,7 @@ export default {
   watch: {
     'preIssuanceDocument': async function (value) {
       if (value && value.file) {
-        await this.loadIssuance(value.file)
+        await this.extractPreIssuanceRequest(value.file)
       }
     }
   },
@@ -129,7 +129,7 @@ export default {
       }
       this.enableForm()
     },
-    async loadIssuance (file) {
+    async extractPreIssuanceRequest (file) {
       try {
         const extracted = await FileUtil.getText(file)
         this.parsePreIssuance(JSON.parse(extracted).issuances[0])
@@ -138,12 +138,12 @@ export default {
         Bus.error('file-field.file-corrupted-err')
       }
     },
-    parsePreIssuance (issuance) {
+    parsePreIssuance (preIssuance) {
       const _xdr = base.xdr.PreIssuanceRequest
-        .fromXDR(issuance.preEmission, 'hex')
+        .fromXDR(preIssuance.preEmission, 'hex')
       const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
       result.xdr = _xdr
-      result.isUsed = issuance.used
+      result.isUsed = preIssuance.used
 
       if (!this.isAssetDefined(result.asset)) {
         Bus.error('issuance.pre-issuance-not-allowed-err')
@@ -178,12 +178,15 @@ export default {
   width: 18rem;
 }
 
+.pre-issuance-form button + button {
+  margin-left: auto;
+}
+
 .pre-issuance-form__cancel-btn {
   @include button();
 
   padding-left: .1rem;
   padding-right: .1rem;
-  margin-left: auto !important;
   margin-bottom: 2rem;
   font-weight: normal;
 }

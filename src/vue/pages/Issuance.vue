@@ -79,7 +79,7 @@
     </div>
     <div v-else>
       <loader
-        :message-id="'issuance.loading-lbl'"
+        :message-id="'issuance.loading-msg'"
       />
     </div>
     <div class="issuance-history__collection-loader">

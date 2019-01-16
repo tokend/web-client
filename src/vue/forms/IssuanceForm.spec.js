@@ -1,202 +1,330 @@
-/* eslint-disable */
-// import IssuanceForm from './IssuanceForm'
+import IssuanceForm from './IssuanceForm'
+import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
 
-// import Vue from 'vue'
-// import Vuex from 'vuex'
-// import Vuelidate from 'vuelidate'
+import Vue from 'vue'
+import Vuex from 'vuex'
+import Vuelidate from 'vuelidate'
 
-// import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import { base } from '@tokend/js-sdk'
 
-// import { MockHelper, MockWrapper } from '@/test'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
-// import { vuexTypes } from '@/vuex'
-// import accountModule from '@/vuex/account.module'
+import { MockHelper, MockWrapper } from '@/test'
 
-// // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
-// // Vue 2.6 so everything get fixed
-// Vue.config.silent = true
+import { Bus } from '@/js/helpers/event-bus'
 
-// const localVue = createLocalVue()
-// localVue.use(Vuelidate)
-// localVue.use(Vuex)
+import { vuexTypes } from '@/vuex'
+import accountModule from '@/vuex/account.module'
 
-// describe('IssuanceForm component unit test', () => {
-//   const sampleIssuanceData = {
-//     form: {
-//       asset: 'BTC',
-//       amount: 10,
-//       receiver: 'foo@bar.com',
-//       reference: 'ref'
-//     },
-//     ownedAssets: [{
-//       code: 'BTC',
-//       details: {
-//         name: 'Bitcoin'
-//       },
-//       availableForIssuance: 100
-//     }, {
-//       code: 'ETH',
-//       details: {
-//         name: 'Ethereum'
-//       },
-//       availableForIssuance: 200
-//     }],
-//     isLoaded: true
-//   }
+// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
+// Vue 2.6 so everything get fixed
+Vue.config.silent = true
 
-//   afterEach(() => {
-//     sinon.restore()
-//   })
+const localVue = createLocalVue()
+localVue.use(Vuelidate)
+localVue.use(Vuex)
 
-//   describe('validation rules assigned correctly', () => {
-//     let wrapper
+describe('IssuanceForm component unit test', () => {
+  const sampleIssuanceData = {
+    form: {
+      asset: 'BTC',
+      amount: 10,
+      receiver: 'foo@bar.com',
+      reference: 'ref'
+    },
+    ownedAssets: [{
+      code: 'BTC',
+      details: {
+        name: 'Bitcoin'
+      },
+      availableForIssuance: 100
+    }, {
+      code: 'ETH',
+      details: {
+        name: 'Ethereum'
+      },
+      availableForIssuance: 200
+    }],
+    isLoaded: true
+  }
 
-//     beforeEach(() => {
-//       sinon.stub(IssuanceForm, 'created').resolves()
-//       wrapper = mount(IssuanceForm, {
-//         localVue,
-//         data: _ => Object.assign({}, sampleIssuanceData)
-//       })
-//     })
+  afterEach(() => {
+    sinon.restore()
+  })
 
-//     const expectedResults = {
-//       asset: ['required'],
-//       amount: ['required', 'amountRange'],
-//       receiver: ['required', 'emailOrAccountId'],
-//       reference: ['required']
-//     }
+  describe('validation rules assigned correctly', () => {
+    let wrapper
 
-//     for (const [model, rules] of Object.entries(expectedResults)) {
-//       it(`${model} model is validating by proper set of rules`, () => {
-//         expect(Object.keys(wrapper.vm.$v.form[model].$params))
-//           .to.deep.equal(rules)
-//       })
-//     }
+    beforeEach(() => {
+      sinon.stub(IssuanceForm, 'created').resolves()
+      wrapper = mount(IssuanceForm, {
+        localVue,
+        data: _ => Object.assign({}, sampleIssuanceData),
+        sync: false
+      })
+    })
 
-//     const fieldBindings = {
-//       '#issuance-asset': 'asset',
-//       '#issuance-amount': 'amount',
-//       '#issuance-receiver': 'receiver',
-//       '#issuance-reference': 'reference'
-//     }
+    const expectedResults = {
+      asset: ['required'],
+      amount: ['required', 'amountRange'],
+      receiver: ['required', 'emailOrAccountId'],
+      reference: ['required']
+    }
 
-//     for (const [selector, model] of Object.entries(fieldBindings)) {
-//       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-//         const spy = sinon.stub(wrapper.vm, 'touchField')
+    for (const [model, rules] of Object.entries(expectedResults)) {
+      it(`${model} model is validating by proper set of rules`, () => {
+        expect(Object.keys(wrapper.vm.$v.form[model].$params))
+          .to.deep.equal(rules)
+      })
+    }
 
-//         wrapper.find(selector).vm.$emit('blur')
+    const fieldBindings = {
+      '#issuance-asset': 'asset',
+      '#issuance-amount': 'amount',
+      '#issuance-receiver': 'receiver',
+      '#issuance-reference': 'reference'
+    }
 
-//         expect(spy.calledOnce).to.be.true
-//       })
-//     }
-//   })
+    for (const [selector, model] of Object.entries(fieldBindings)) {
+      it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
-//   describe('component', () => {
-//     const sampleBalanceData = {
-//       asset: 'BTC',
-//       balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
-//     }
+        wrapper.find(selector).vm.$emit('blur')
 
-//     let wrapper
-//     let mockHelper
+        expect(spy.calledOnce).to.be.true
+      })
+    }
+  })
 
-//     let accountResource
-//     let usersResource
-//     let transactionsResource
+  describe('component', () => {
+    let wrapper
+    let mockHelper
 
-//     let store
+    let accountResource
+    let publicResource
+    let transactionsResource
 
-//     beforeEach(() => {
-//       mockHelper = new MockHelper()
+    let store
 
-//       accountResource = mockHelper.getHorizonResourcePrototype('account')
-//       usersResource = mockHelper.getApiResourcePrototype('users')
-//       transactionsResource =
-//         mockHelper.getHorizonResourcePrototype('transactions')
+    beforeEach(() => {
+      mockHelper = new MockHelper()
 
-//       const getters = accountModule.getters
-//       sinon.stub(getters, vuexTypes.account)
-//         .returns({ accountId: mockHelper.getMockWallet().accountId })
-//       store = new Vuex.Store({
-//         getters
-//       })
+      accountResource = mockHelper.getHorizonResourcePrototype('account')
+      publicResource = mockHelper.getHorizonResourcePrototype('public')
+      transactionsResource =
+        mockHelper.getHorizonResourcePrototype('transactions')
 
-//       sinon.stub(IssuanceForm, 'created').resolves()
-//       wrapper = shallowMount(IssuanceForm, {
-//         store,
-//         localVue,
-//         data: _ => Object.assign({}, sampleIssuanceData)
-//       })
-//       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
-//     })
+      const getters = accountModule.getters
+      sinon.stub(getters, vuexTypes.account)
+        .returns({ accountId: mockHelper.getMockWallet().accountId })
+      store = new Vuex.Store({
+        getters
+      })
 
-//     describe('property', () => {
-//       it('assetListValues returns formatted owned assets for select field', () => {
-//         wrapper.setData({
-//           ownedAssets: sampleIssuanceData.ownedAssets
-//         })
-//         expect(wrapper.vm.assetListValues)
-//           .to.deep.equal([{
-//             value: 'BTC', label: 'Bitcoin (BTC)'
-//           }, {
-//             value: 'ETH', label: 'Ethereum (ETH)'
-//           }])
-//       })
+      sinon.stub(IssuanceForm, 'created').resolves()
+      wrapper = shallowMount(IssuanceForm, {
+        store,
+        mixins: [OwnedAssetsLoaderMixin],
+        localVue,
+        data: _ => Object.assign({}, sampleIssuanceData),
+        sync: false
+      })
+      sinon.stub(wrapper.vm, 'isFormValid').returns(true)
+    })
 
-//       it('availableAmount returns available assets for issuance', () => {
-//         wrapper.setData(sampleIssuanceData)
-//         expect(wrapper.vm.availableAmount)
-//           .to.deep.equal({
-//             value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
-//             currency: sampleIssuanceData.ownedAssets[0].code
-//           })
-//       })
-//     })
+    describe('computed property', () => {
+      describe('assetListValues', () => {
+        it('returns formatted owned assets for select field', () => {
+          expect(wrapper.vm.assetListValues)
+            .to.deep.equal([{
+              value: 'BTC', label: 'Bitcoin (BTC)'
+            }, {
+              value: 'ETH', label: 'Ethereum (ETH)'
+            }])
+        })
+      })
 
-//     describe('method', () => {
-//       it('getAccountIdByEmail() loads receiver account info with the correct params', async () => {
-//         const sampleReceiverData = {
-//           data: [{
-//             id: mockHelper.getMockWallet().accountId,
-//             attributes: {
-//               email: 'foo@bar.com'
-//             }
-//           }]
-//         }
-//         const spy = sinon.stub(usersResource, 'getPage')
-//           .resolves(MockWrapper.makeApiResponse(sampleReceiverData))
+      describe('availableAmount', () => {
+        it('returns available assets for issuance for the form asset', () => {
+          expect(wrapper.vm.availableAmount)
+            .to.deep.equal({
+              value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
+              currency: sampleIssuanceData.ownedAssets[0].code
+            })
+        })
 
-//         await wrapper.vm.getAccountIdByEmail(sampleIssuanceData.form.receiver)
+        it('returns empty value if the form asset is not set', () => {
+          wrapper.setData({ form: { asset: '' } })
 
-//         expect(spy
-//           .withArgs({ email: sampleIssuanceData.form.receiver })
-//           .called
-//         ).to.be.true
-//       })
+          expect(wrapper.vm.availableAmount).to.deep.equal({ value: 0 })
+        })
+      })
+    })
 
-//       it('getReceiverBalance() loads receiver balances info with the correct params', async () => {
-//         const spy = sinon.stub(accountResource, 'getBalances')
-//           .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
+    describe('created hook', () => {
+      let loadAssetsSpy
 
-//         await wrapper.vm.getReceiverBalance(
-//           mockHelper.getMockWallet().accountId, sampleIssuanceData.form.asset
-//         )
+      beforeEach(() => {
+        IssuanceForm.created.restore()
+        loadAssetsSpy = sinon.stub(OwnedAssetsLoaderMixin.methods,
+          'loadOwnedAssets'
+        ).resolves()
+      })
 
-//         expect(spy
-//           .withArgs(mockHelper.getMockWallet().accountId)
-//           .calledOnce
-//         ).to.be.true
-//       })
+      it('loads user owned assets', async () => {
+        await shallowMount(IssuanceForm, {
+          mixins: [OwnedAssetsLoaderMixin],
+          localVue
+        })
 
-//       it('submit() calls horizon.submitOperations()', async () => {
-//         sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(sampleBalanceData)
-//         const spy = sinon.stub(transactionsResource,
-//           'submitOperations').resolves()
+        expect(loadAssetsSpy.calledOnce).to.be.true
+      })
 
-//         await wrapper.vm.submit()
+      it('sets isLoaded property to true', async () => {
+        wrapper = await shallowMount(IssuanceForm, {
+          mixins: [OwnedAssetsLoaderMixin],
+          localVue
+        })
 
-//         expect(spy.calledOnce).to.be.true
-//       })
-//     })
-//   })
-// })
+        expect(wrapper.vm.isLoaded).to.be.true
+      })
+
+      it('sets form asset property if owned assets are present', async () => {
+        wrapper = await shallowMount(IssuanceForm, {
+          mixins: [OwnedAssetsLoaderMixin],
+          localVue,
+          data: _ => ({ ownedAssets: sampleIssuanceData.ownedAssets })
+        })
+
+        expect(wrapper.vm.form.asset)
+          .to.equal(sampleIssuanceData.ownedAssets[0].code)
+      })
+    })
+
+    describe('method', () => {
+      describe('submit', () => {
+        let getBalanceSpy
+        let operationBuilderSpy
+        let submitTransactionsSpy
+        let loadAssetsSpy
+
+        beforeEach(() => {
+          getBalanceSpy = sinon.stub(wrapper.vm, 'getReceiverBalance')
+            .resolves({})
+          operationBuilderSpy = sinon.stub(base.CreateIssuanceRequestBuilder,
+            'createIssuanceRequest'
+          ).returns({})
+          submitTransactionsSpy = sinon.stub(transactionsResource,
+            'submitOperations'
+          ).resolves()
+          loadAssetsSpy = sinon.stub(wrapper.vm, 'loadOwnedAssets').resolves()
+        })
+
+        it('loads receiver balance', async () => {
+          await wrapper.vm.submit()
+
+          expect(getBalanceSpy
+            .withArgs(wrapper.vm.form.receiver, wrapper.vm.form.asset)
+            .calledOnce
+          ).to.be.true
+        })
+
+        it('creates pre-issuance operation if the receiver balance is provided', async () => {
+          await wrapper.vm.submit()
+
+          expect(operationBuilderSpy.calledOnce).to.be.true
+        })
+
+        it('submits issuance operation if the receiver balance is provided', async () => {
+          await wrapper.vm.submit()
+
+          expect(submitTransactionsSpy.calledOnce).to.be.true
+        })
+
+        it('loads user owned assets after successful submitting', async () => {
+          sinon.stub(Bus, 'success')
+
+          await wrapper.vm.submit()
+
+          expect(loadAssetsSpy.calledOnce).to.be.true
+        })
+
+        it('shows the error if the receiver balance is not provided', async () => {
+          wrapper.vm.getReceiverBalance.restore()
+          sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(null)
+          const spy = sinon.stub(Bus, 'error')
+
+          await wrapper.vm.submit()
+
+          expect(spy.calledOnce).to.be.true
+        })
+      })
+
+      describe('getReceiverBalance', () => {
+        const sampleBalanceData = {
+          asset: 'BTC',
+          balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
+        }
+        const receiver = sampleIssuanceData.form.receiver
+        const asset = sampleIssuanceData.form.asset
+
+        let getAccountIdSpy
+        let fetchBalancesSpy
+
+        beforeEach(() => {
+          getAccountIdSpy = sinon.stub(wrapper.vm, 'getReceiverAccountId')
+            .resolves(mockHelper.getMockWallet().accountId)
+          fetchBalancesSpy = sinon.stub(accountResource, 'getBalances')
+            .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
+        })
+
+        it('loads receiver account ID', async () => {
+          await wrapper.vm.getReceiverBalance(receiver, asset)
+
+          expect(getAccountIdSpy
+            .withArgs(receiver)
+            .calledOnce
+          ).to.be.true
+        })
+
+        it('fetches receiver balances', async () => {
+          await wrapper.vm.getReceiverBalance(receiver, asset)
+
+          expect(fetchBalancesSpy
+            .withArgs(mockHelper.getMockWallet().accountId)
+            .calledOnce
+          ).to.be.true
+        })
+
+        it('returns a balance for provided asset', async () => {
+          const result = await wrapper.vm.getReceiverBalance(receiver, asset)
+
+          expect(result).to.deep.equal(sampleBalanceData)
+        })
+      })
+
+      describe('getReceiverAccountId', () => {
+        it('loads account ID by email if receiver is a valid email', async () => {
+          const receiver = 'foo@bar.com'
+          const spy = sinon.stub(publicResource, 'getAccountIdByEmail')
+            .resolves({ data: {} })
+
+          await wrapper.vm.getReceiverAccountId(receiver)
+
+          expect(spy
+            .withArgs(receiver)
+            .calledOnce
+          ).to.be.true
+        })
+
+        it('returns receiver if it is not a valid email', async () => {
+          const receiver = 'receiver'
+
+          const result = await wrapper.vm.getReceiverAccountId(receiver)
+
+          expect(result).to.equal(receiver)
+        })
+      })
+    })
+  })
+})

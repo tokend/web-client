@@ -1,4 +1,4 @@
-import AssetLoaderMixin from './asset-loader.mixin'
+import OwnedAssetsLoaderMixin from './owned-assets-loader.mixin'
 
 import Vuex from 'vuex'
 
@@ -50,24 +50,29 @@ describe('asset-loader.mixin unit test', () => {
       })
 
       wrapper = mount(Component, {
-        mixins: [AssetLoaderMixin],
+        mixins: [OwnedAssetsLoaderMixin],
         store,
         localVue
       })
     })
 
-    it('loadOwnedAssets() calls the horizon.assets.getAll() with the correct params', async () => {
-      await wrapper.vm.loadOwnedAssets()
-      expect(assetsSpy
-        .withArgs({ owner: mockHelper.getMockWallet().accountId })
-        .calledOnce
-      ).to.be.true
-    })
+    describe('loadOwnedAssets', () => {
+      it('calls the horizon.assets.getAll() with the correct params', async () => {
+        await wrapper.vm.loadOwnedAssets()
 
-    it('loadOwnedAssets() changes user tokens data after loading', async () => {
-      wrapper.setData({ ownedAssets: null })
-      await wrapper.vm.loadOwnedAssets()
-      expect(wrapper.vm.ownedAssets).to.deep.equal(sampleAssetsData)
+        expect(assetsSpy
+          .withArgs({ owner: mockHelper.getMockWallet().accountId })
+          .calledOnce
+        ).to.be.true
+      })
+
+      it('changes owned assets data after loading', async () => {
+        wrapper.setData({ ownedAssets: null })
+
+        await wrapper.vm.loadOwnedAssets()
+
+        expect(wrapper.vm.ownedAssets).to.deep.equal(sampleAssetsData)
+      })
     })
   })
 })
