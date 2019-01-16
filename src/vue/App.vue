@@ -36,7 +36,7 @@ import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
 
 import {
-  mapGetters
+  mapGetters,
 } from 'vuex'
 import { Sdk } from '@/sdk'
 import { Wallet } from '@tokend/js-sdk'
@@ -51,19 +51,19 @@ export default {
     Navbar,
     Sidebar,
     StatusMessage,
-    WarningBanner
+    WarningBanner,
   },
 
   data: () => ({
     isNotSupportedBrowser: false,
-    isAppInitialized: false
+    isAppInitialized: false,
   }),
 
   computed: {
     ...mapGetters([
       vuexTypes.wallet,
-      vuexTypes.isLoggedIn
-    ])
+      vuexTypes.isLoggedIn,
+    ]),
   },
 
   async created () {
@@ -92,8 +92,8 @@ export default {
       const edge = window.navigator.userAgent.indexOf('Edge/')
 
       if (edge > 0) this.isNotSupportedBrowser = true
-    }
-  }
+    },
+  },
 }
 </script>
 

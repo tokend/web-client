@@ -6,7 +6,7 @@ const STATES = {
   Closed: 2,
   Cancelled: 4,
   Promotion: 8,
-  Voting: 16
+  Voting: 16,
 }
 
 export class SaleRecord {

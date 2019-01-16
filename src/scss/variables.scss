@@ -4,10 +4,11 @@ $sidebar-width: 27.5rem;
 $content-side-paddings: 4rem;
 $content-side-paddings-sm: 2rem;
 
-// z-indices
+// z-indexes
 $z-sidebar-burger: 10;
 $z-status-message: 10;
 $z-drawer: 10;
+$z-sidebar: 120;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
@@ -51,6 +52,7 @@ $col-msg-shadow: rgba(0, 0, 0, 0.25);
 
 // global colors
 $col-text: $_eastBay;
+$col-text-secondary: $_lightPurple;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinGray;
@@ -94,14 +96,9 @@ $col-sidebar-text: $col-primary-inactive;
 $col-sidebar-active-elem-text: $col-primary;
 $col-sidebar-active-elem-background: $_thinGray;
 
-// navbar
-$col-navbar-background: $col-app-content-background;
-$col-navbar-avatar-background: $_mediumGray;
-$col-navbar-avatar-color: $col-primary-txt;
-
-// instead-of-avatar colors:
-$col-avatar-instead-text: $col-text-on-dark-bg;
-$col-avatar-instead-bg: rgba($_eastBay, .15);
+// passport (signed in user details in bg)
+$col-passport-email-abbr-text: $col-text-on-dark-bg;
+$col-passport-email-abbr-bg: rgba($_eastBay, .15);
 
 // fields colors
 $col-text-field-hint: $col-primary;

@@ -8,7 +8,9 @@
     }"
   >
     <template v-if="label">
-      <div class="select-field__label">{{ label }}</div>
+      <div class="select-field__label">
+        {{ label }}
+      </div>
     </template>
     <button
       class="select-field__selected"
@@ -52,7 +54,7 @@ import SelectFieldMixin from './js/select-field.mixin'
 
 export default {
   name: 'select-field',
-  mixins: [SelectFieldMixin]
+  mixins: [SelectFieldMixin],
 }
 </script>
 
@@ -125,7 +127,7 @@ export default {
   margin: 0;
   display: inline-block;
   will-change: transform;
-  color: $col-field-icon !important;
+  color: $col-field-icon;
   transition: 0.2s ease-out;
   margin-top: -.2rem;
   width: 1.6rem;

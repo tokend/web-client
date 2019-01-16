@@ -2,7 +2,7 @@ import { base } from '@tokend/js-sdk'
 
 const featureFlags = {
   fees: true,
-  issuance: true
+  issuance: true,
 }
 
 export default Object.assign(
@@ -23,12 +23,12 @@ export default Object.assign(
     DEFAULT_TRADE_PAIRS_RE: [
       // Descending priority
       /BTC.*\/.*ETH/,
-      /ETH.*\/.*BTC/
+      /ETH.*\/.*BTC/,
     ],
     DEFAULT_CONVERSION_ASSET: 'USD',
     CONVERSION_PRECISION: 2,
     MIN_AMOUNT: String(1 / (base.Operation.ONE || 1000000)),
-    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT
+    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT,
   },
   process.env,
   document.ENV

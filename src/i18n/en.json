@@ -172,13 +172,13 @@
       "exchange-tokens": "Exchange tokens"
     },
 
-    "navbar": {
-      "my-account": "My account",
-      "settings": "Settings",
-      "signout": "Sign Out",
+    "passport": {
       "account-unverified": "Unverified account",
       "account-general": "General account",
-      "account-corporate": "Corporate account"
+      "account-corporate": "Corporate account",
+      "signed-in-as": "Signed in as",
+      "settings-btn": "Settings",
+      "log-out-btn": "Log out"
     },
 
     "sidebar": {
@@ -188,7 +188,7 @@
     },
 
     "footer": {
-      "copyright": "2018 © Distributed Lab.",
+      "copyright": "{{year}} © Distributed Lab.",
       "terms": "Terms",
       "download-apps": "Downloads"
     },

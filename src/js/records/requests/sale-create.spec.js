@@ -132,7 +132,7 @@ describe('SaleRequestRecord', () => {
     const quoteAssets = [
       { quote_asset: 'ETH', price: '1.000000' },
       { quote_asset: 'BTC', price: '1.000000' },
-      { quote_asset: 'DASH', price: '1.000000' }
+      { quote_asset: 'DASH', price: '1.000000' },
     ]
     const expectedResult = ['ETH', 'BTC', 'DASH']
     const rawJSON = setQuoteAssets(saleCreateJSON, quoteAssets)

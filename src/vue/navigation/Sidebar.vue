@@ -14,30 +14,30 @@
       <i class="mdi mdi-menu" />
     </button>
 
-    <div
-      class="sidebar__lists"
-      :class="{ 'sidebar__lists--closed': !isOpened }"
+    <aside
+      class="sidebar__aside"
+      :class="{ 'sidebar__aside--closed': !isOpened }"
     >
-      <section class="sidebar__logotype">
+      <section class="sidebar__logo-section">
         <router-link
           @click.native="closeSidebar"
           :to="vueRoutes.app"
         >
-          <logo class="sidebar__logotype-icon" />
+          <logo class="sidebar__logo" />
         </router-link>
       </section>
 
-      <section class="sidebar__list">
-        <ul>
+      <section class="sidebar__links-section">
+        <ul class="sidebar__links-group">
           <router-link
             v-ripple
-            class="sidebar__list-item"
+            class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="li"
             v-if="config.FEATURE_FLAGS.fees"
           >
-            <i class="sidebar__list-item-icon mdi mdi-flash" />
+            <i class="sidebar__link-icon mdi mdi-flash" />
             <span>
               {{ 'pages-names.fees' | globalize }}
             </span>
@@ -58,8 +58,10 @@
         </ul>
       </section>
 
-      <app-footer />
-    </div>
+      <section class="sidebar__footer-section">
+        <app-footer />
+      </section>
+    </aside>
   </div>
 </template>
 
@@ -76,13 +78,13 @@ export default {
 
   components: {
     Logo,
-    AppFooter
+    AppFooter,
   },
 
   data: () => ({
     isOpened: false,
     config,
-    vueRoutes
+    vueRoutes,
   }),
 
   methods: {
@@ -91,8 +93,8 @@ export default {
     },
     closeSidebar () {
       this.isOpened = false
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -100,34 +102,16 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+// we cannot wrap all the the contents into a wrapper because the links should
+// take the full width of the aside when recolored
+$content-item-left-padding: 4rem;
+$content-item-right-padding: 2.4rem;
+
 .sidebar {
   position: relative;
-  background-color: $col-sidebar-background !important;
+  background-color: $col-sidebar-background;
   box-shadow: inset -1rem -1rem 2rem 0 rgba(0, 0, 0, 0.03);
   min-height: 100%;
-}
-
-.sidebar__lists {
-  width: $sidebar-width;
-  min-height: 100%;
-  padding-bottom: 7rem;
-  z-index: 120;
-  list-style: none;
-
-  @include respond-to-custom($sidebar-hide-bp) {
-    opacity: 1;
-    width: $sidebar-width;
-    background-color: $col-sidebar-background-media-small !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  &.sidebar__lists--closed {
-    @include respond-to-custom($sidebar-hide-bp) {
-      opacity: 0;
-      width: 0;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  }
 }
 
 .sidebar__backdrop {
@@ -158,11 +142,11 @@ export default {
   width: 4rem;
   height: 4rem;
   margin-right: 0;
-  margin-left: .8rem !important;
+  margin-left: .8rem;
   border: none;
   outline: none;
   border-radius: 50%;
-  background-color: $col-button-flat-txt !important;
+  background-color: $col-button-flat-txt;
   transform: translateX($sidebar-width);
   opacity: 0;
   cursor: pointer;
@@ -179,10 +163,61 @@ export default {
   }
 }
 
-.sidebar__list-item {
+.sidebar__aside {
+  width: $sidebar-width;
+  min-height: 100%;
+  z-index: $z-sidebar;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    opacity: 1;
+    width: $sidebar-width;
+    background-color: $col-sidebar-background-media-small;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.sidebar__aside--closed {
+    @include respond-to-custom($sidebar-hide-bp) {
+      opacity: 0;
+      width: 0;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+}
+
+.sidebar__logo-section {
+  padding-top: 4rem;
+  padding-bottom: 5rem;
+  padding: 4rem 2.4rem 5rem 4rem;
+  padding: 4rem $content-item-right-padding 5rem $content-item-left-padding;
+
+}
+
+.sidebar__logo {
+  max-width: 9.5rem;
+  width: 100%;
+  height: 3.1rem;
+  display: block;
+}
+
+.sidebar__links-section {
+  flex: 1;
+}
+
+.sidebar__links-group-title {
+  padding: 0 $content-item-right-padding 0 $content-item-left-padding;
+  color: $col-sidebar-active-elem-text;
+  font-size: 1.6rem;
+  margin-bottom: .8rem;
+}
+
+.sidebar__link {
   display: flex;
   align-items: center;
   min-height: 4.8rem;
+  padding: 0 $content-item-right-padding 0 $content-item-left-padding;
   cursor: pointer;
   color: $col-sidebar-text;
 
@@ -192,25 +227,7 @@ export default {
   }
 }
 
-.sidebar__list-title,
-.sidebar__list-item,
-.sidebar__logotype {
-  padding: 0 2.4rem 0 4rem;
-}
-
-.sidebar__logotype {
-  padding-top: 4rem;
-  padding-bottom: 5rem;
-}
-
-.sidebar__logotype-icon {
-  max-width: 9.5rem;
-  width: 100%;
-  height: 3.1rem;
-  display: block;
-}
-
-.sidebar__list-item-icon {
+.sidebar__link-icon {
   margin-right: 1.6rem;
   color: $col-sidebar-text;
   font-size: 2.4rem;
@@ -220,13 +237,7 @@ export default {
   }
 }
 
-.sidebar__section--account {
-  margin-top: 5rem;
-}
-
-.sidebar__list-title {
-  color: $col-sidebar-active-elem-text;
-  font-size: 1.6rem;
-  margin-bottom: .8rem;
+.sidebar__footer-section {
+  padding-top: 2rem;
 }
 </style>

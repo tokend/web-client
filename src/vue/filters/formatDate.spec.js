@@ -19,7 +19,7 @@ describe('formatDate filter test', () => {
     expect(spy
       .withArgs(
         'formats.date', {
-          value: '2017-11-20T10:23:45Z'
+          value: '2017-11-20T10:23:45Z',
         })
       .calledOnce
     ).to.equal(true)

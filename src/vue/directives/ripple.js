@@ -62,5 +62,5 @@ export const ripple = {
         rippleContainer.parentNode.removeChild(rippleContainer)
       }, duration)
     }
-  }
+  },
 }

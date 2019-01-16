@@ -4,7 +4,7 @@ export const REQUEST_STATES = Object.freeze({
   approved: 3,
   rejected: 4,
   permanentlyRejected: 5,
-  waitForAutoApproval: 6
+  waitForAutoApproval: 6,
 })
 
 export const REQUEST_STATES_STR = Object.freeze({
@@ -13,5 +13,5 @@ export const REQUEST_STATES_STR = Object.freeze({
   approved: 'approved',
   rejected: 'rejected',
   permanentlyRejected: 'permanentlyRejected',
-  waitingForAutoReview: 'waitingForAutoReview'
+  waitingForAutoReview: 'waitingForAutoReview',
 })

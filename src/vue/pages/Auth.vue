@@ -4,7 +4,9 @@
       <h3 class="auth__title-small">
         {{ 'auth-pages.small-title' | globalize }}
       </h3>
-      <h1 class="auth__title-big">{{ 'auth-pages.big-title' | globalize }}</h1>
+      <h1 class="auth__title-big">
+        {{ 'auth-pages.big-title' | globalize }}
+      </h1>
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
@@ -19,8 +21,8 @@ import Logo from '../assets/Logo'
 export default {
   name: 'auth',
   components: {
-    Logo
-  }
+    Logo,
+  },
 }
 </script>
 
@@ -30,8 +32,7 @@ export default {
 
 .auth {
   display: flex;
-  min-height: 100vh;
-  width: 100vw;
+  flex: 1;
 }
 
 .auth__titles,

@@ -3,7 +3,7 @@ import { MathUtil } from '../../utils'
 
 const STATES = {
   canceled: 'canceled',
-  pending: 'pending'
+  pending: 'pending',
 }
 
 export class ManageOfferRecord extends OpRecord {

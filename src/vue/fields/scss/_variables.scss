@@ -68,6 +68,6 @@ $col-select-field-hover: rgba($col-primary, .1);
 
 @mixin readonly-material-border($color) {
   border-bottom: .1rem dashed $color;
-  background: none !important;
+  background: none;
 }
 

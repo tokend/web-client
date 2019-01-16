@@ -14,7 +14,7 @@ describe('AssetCreateRequestRecord', () => {
     rawJSON.details.asset_create.policies = policies
       .map(p => ({
         value: p,
-        name: 'SomePolicyNameWeDoNotInterestedIn'
+        name: 'SomePolicyNameWeDoNotInterestedIn',
       }))
 
     return rawJSON

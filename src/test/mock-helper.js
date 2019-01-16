@@ -54,7 +54,7 @@ export class MockHelper {
     mock.get(url, {
       status: 200,
       reason: 'OK',
-      body: JSON.stringify(response)
+      body: JSON.stringify(response),
     })
   }
 }
