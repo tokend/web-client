@@ -12,7 +12,6 @@
     <div class="auth-page__content">
       <template v-if="!recoveryKeypair">
         <signup-form
-          v-if="!recoveryKeypair"
           :submit-event="'submit'"
           @submit="handleChildFormSubmit"
         />
