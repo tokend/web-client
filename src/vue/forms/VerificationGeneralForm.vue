@@ -313,7 +313,7 @@ export default {
     }
 
     if (this.kycLatestData.first_name) {
-      const kycData = KycTemplateParser.toTemplate(
+      const kycData = KycTemplateParser.fromTemplateToForm(
         this.kycLatestData,
         ACCOUNT_TYPES.general
       )
@@ -338,7 +338,7 @@ export default {
 
       const { data } = await Sdk.api.blobs.create(
         BLOB_TYPES.kycGeneral,
-        JSON.stringify(KycTemplateParser.fromTemplate(
+        JSON.stringify(KycTemplateParser.fromFormToTemplate(
           this.form,
           ACCOUNT_TYPES.general
         )),

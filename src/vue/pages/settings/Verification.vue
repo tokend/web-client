@@ -13,10 +13,10 @@
       </p>
     </div>
     <div class="account-type">
-      <p class="verification__label">
+      <p class="account-type_label verification__label">
         {{ 'verification-page.account-type-lbl' | globalize }}
       </p>
-      <div class="account-type__wrapper">
+      <div class="account-type__block">
         <router-link
           :to="{ name: 'app.verification.general' }"
           class="account-type__item"
@@ -64,6 +64,7 @@
 <script>
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
@@ -72,6 +73,7 @@ export default {
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
+      kycLatestData: vuexTypes.kycLatestData,
       kycRejectReason: vuexTypes.kycRequestRejectReason
     }),
     kycRequestMessageId () {
@@ -85,6 +87,17 @@ export default {
         default:
           return ''
       }
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    if (this.kycState && to.name === vueRoutes.verification.name) {
+      if (this.kycLatestData.name) {
+        next(vueRoutes.verification.corporate)
+      } else if (this.kycLatestData.first_name) {
+        next(vueRoutes.verification.corporate)
+      }
+    } else {
+      next()
     }
   }
 }
@@ -125,7 +138,7 @@ export default {
   font-size: 1.3rem;
 }
 
-.account-type__wrapper {
+.account-type__block {
   margin-top: 1rem;
   display: flex;
 
@@ -143,8 +156,7 @@ export default {
   width: 25.4rem;
   height: 14.7rem;
   padding: 3.2rem;
-  // FIXME shadow color
-  box-shadow: 0 .6rem 1rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
   background-color: $col-block-bg;
   text-decoration: none;
 }

@@ -128,20 +128,17 @@ function inAppRouteGuard (to, from, next) {
     : next(vueRoutes.login)
 }
 
-// doesn't allow to visit verification pages if account is verified or pending
+// doesn't allow to visit verification pages if account is verified
+// or requested for verification
 function verificationGuard (to, from, next) {
   const kycLatestData = store.getters[vuexTypes.kycLatestData]
 
-  if (kycLatestData) {
-    if (kycLatestData.first_name) {
-      if (to.name === vueRoutes.verification.general.name) next()
-      else next(vueRoutes.verification.general)
-    } else if (kycLatestData.company) {
-      if (to.name === vueRoutes.verification.corporate.name) next()
-      else next(vueRoutes.verification.corporate)
-    } else {
-      next()
-    }
+  if (kycLatestData.first_name) {
+    if (to.name === vueRoutes.verification.general.name) next()
+    else next(vueRoutes.verification.general)
+  } else if (kycLatestData.name) {
+    if (to.name === vueRoutes.verification.corporate.name) next()
+    else next(vueRoutes.verification.corporate)
   } else {
     next()
   }

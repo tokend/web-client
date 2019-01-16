@@ -148,6 +148,7 @@ export default {
       headquarters: { required },
       industry: { required },
       foundDate: { required },
+      // TODO
       teamSize: { required },
       website: { required, url }
     }
@@ -167,7 +168,7 @@ export default {
       console.error(error)
     }
     if (this.kycLatestData.name) {
-      this.form = KycTemplateParser.toTemplate(
+      this.form = KycTemplateParser.fromTemplateToForm(
         this.kycLatestData,
         ACCOUNT_TYPES.syndicate
       )
@@ -189,7 +190,7 @@ export default {
 
       const { data } = await Sdk.api.blobs.create(
         BLOB_TYPES.kycSyndicate,
-        JSON.stringify(KycTemplateParser.fromTemplate(
+        JSON.stringify(KycTemplateParser.fromFormToTemplate(
           this.form,
           ACCOUNT_TYPES.syndicate
         )),
