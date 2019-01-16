@@ -129,7 +129,7 @@ export default {
         this.fees = response.data.fees
       } catch (error) {
         this.isFailed = true
-        ErrorHandler.processNoFeedback(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
     },
   },
