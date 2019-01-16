@@ -185,7 +185,7 @@
     },
 
     "footer": {
-      "copyright": "2019 © Distributed Lab.",
+      "copyright": "{{year}} © Distributed Lab.",
       "terms": "Terms",
       "download-apps": "Downloads"
     },
