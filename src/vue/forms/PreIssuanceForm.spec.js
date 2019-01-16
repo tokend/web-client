@@ -125,7 +125,7 @@ describe('PreIssuanceForm component unit test', () => {
         expect(operationBuilderSpy.calledOnce).to.be.true
       })
 
-      it('calls horizon.submitOperations()', async () => {
+      it('submits pre-issuance operation', async () => {
         await wrapper.vm.submit()
 
         expect(submitTransactionsSpy.calledOnce).to.be.true

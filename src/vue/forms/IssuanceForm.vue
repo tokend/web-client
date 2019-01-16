@@ -213,6 +213,7 @@ export default {
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           Bus.success('issuance.tokens-issued-msg')
+          await this.loadOwnedAssets()
         } else {
           Bus.error('issuance.balance-required-err')
         }
@@ -220,7 +221,6 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
       }
-      this.loadOwnedAssets()
       this.enableForm()
     },
     async getReceiverBalance (receiver, asset) {
