@@ -18,8 +18,8 @@
 export default {
   props: {
     hint: { type: String, default: 'Hint me!' },
-    decorated: { type: Boolean, default: true }
-  }
+    decorated: { type: Boolean, default: true },
+  },
 }
 </script>
 

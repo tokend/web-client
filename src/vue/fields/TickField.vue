@@ -35,7 +35,7 @@ export default {
     value: {
       type: [String, Number, Array, Boolean],
       required: true,
-      default: '' || 0
+      default: '' || 0,
     },
     // proxies
     name: { type: String, default: undefined },
@@ -45,7 +45,7 @@ export default {
     /* eslint-enable */
     title: { type: [String, Number], default: undefined },
     required: { type: Boolean, default: false },
-    autofocus: { type: Boolean, default: false }
+    autofocus: { type: Boolean, default: false },
   },
 
   data () {
@@ -80,7 +80,7 @@ export default {
           break
       }
       return result
-    }
+    },
   },
 
   created () {
@@ -129,8 +129,8 @@ export default {
           break
       }
       return result
-    }
-  }
+    },
+  },
 }
 </script>
 

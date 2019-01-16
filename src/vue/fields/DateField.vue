@@ -43,7 +43,7 @@ export default {
   name: 'date-field-flatpickr',
 
   components: {
-    FlatPickr
+    FlatPickr,
   },
 
   props: {
@@ -52,13 +52,13 @@ export default {
     disableBefore: { type: String, default: '' },
     disableAfter: { type: String, default: '' },
     placeholder: { type: String, default: 'yyyy-dd-m at HH:MM' },
-    label: { type: String, default: '' }
+    label: { type: String, default: '' },
   },
 
   data () {
     return {
       flatpickrDate: '',
-      isCalendarOpen: false
+      isCalendarOpen: false,
     }
   },
 
@@ -79,18 +79,18 @@ export default {
             if (!this.disableAfter) return false
             const stamp = moment(this.disableAfter)
             return moment(date).isAfter(stamp)
-          }
+          },
         ],
         enableTime: this.enableTime,
-        time_24hr: true
+        time_24hr: true,
       }
-    }
+    },
   },
 
   watch: {
     flatpickrDate () {
       this.flatpickrDate = this.value
-    }
+    },
   },
 
   created () {
@@ -113,8 +113,8 @@ export default {
     onBlur (event) {
       this.flatpickrDate = event
       this.$emit('getNewValue', this.flatpickrDate)
-    }
-  }
+    },
+  },
 }
 
 </script>

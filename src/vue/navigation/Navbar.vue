@@ -22,7 +22,7 @@ import Passport from './Passport'
 
 export default {
   name: 'navbar',
-  components: { Passport }
+  components: { Passport },
 }
 </script>
 

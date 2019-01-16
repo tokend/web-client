@@ -10,7 +10,7 @@ describe('vuex types unit tests', () => {
     return Object.keys({
       ...module.actions,
       ...module.mutations,
-      ...module.getters
+      ...module.getters,
     })
   }
 
@@ -38,7 +38,7 @@ describe('vuex types unit tests', () => {
       ...getModuleKeys(account),
       ...getModuleKeys(kyc),
       ...getModuleKeys(factors),
-      ...getModuleKeys(wallet)
+      ...getModuleKeys(wallet),
     ]
 
     for (const key of Object.keys(vuexTypes)) {

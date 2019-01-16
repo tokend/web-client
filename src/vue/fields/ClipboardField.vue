@@ -26,13 +26,13 @@ export default {
   props: {
     value: { type: String, default: '' },
     label: { type: String, default: '' },
-    id: { type: String, required: true }
+    id: { type: String, required: true },
   },
   mounted () {
     const btn = document.querySelector('#clipboard-btn')
     if (!btn) return
     this.clipboard = new Clipboard(btn)
-  }
+  },
 }
 </script>
 

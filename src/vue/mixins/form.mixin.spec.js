@@ -5,7 +5,7 @@ import { required } from '@validators'
 
 import {
   mount,
-  createLocalVue
+  createLocalVue,
 } from '@vue/test-utils'
 
 const localVue = createLocalVue()
@@ -17,15 +17,15 @@ const Component = {
   data: _ => ({
     form: {
       firstName: '',
-      lastName: ''
-    }
+      lastName: '',
+    },
   }),
   validations: {
     form: {
       firstName: { required },
-      lastName: { required }
-    }
-  }
+      lastName: { required },
+    },
+  },
 }
 
 describe('form.mixin unit test', () => {
@@ -34,7 +34,7 @@ describe('form.mixin unit test', () => {
   beforeEach(() => {
     wrapper = mount(Component, {
       mixins: [FormMixin],
-      localVue
+      localVue,
     })
   })
 
@@ -52,8 +52,8 @@ describe('form.mixin unit test', () => {
     wrapper.setData({
       form: {
         firstName: 'John',
-        lastName: 'Doe'
-      }
+        lastName: 'Doe',
+      },
     })
 
     expect(wrapper.vm.isFormValid()).to.be.true

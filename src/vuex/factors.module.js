@@ -4,7 +4,7 @@ import { vuexTypes } from './types'
 const FACTOR_TYPES = Object.freeze({
   totp: 'totp',
   password: 'password',
-  email: 'email'
+  email: 'email',
 })
 
 // Factors with lower priority will not trigger 2fa flow, so we can ignore
@@ -18,20 +18,20 @@ const FACTOR_TYPES = Object.freeze({
 const ENABLED_FACTOR_PRIORITY = 1
 
 const state = {
-  factors: []
+  factors: [],
 }
 
 export const mutations = {
   [vuexTypes.SET_FACTORS] (state, factors) {
     state.factors = factors
-  }
+  },
 }
 
 export const actions = {
   async [vuexTypes.LOAD_FACTORS] ({ commit }) {
     const response = await Sdk.api.factors.getAll()
     commit(vuexTypes.SET_FACTORS, response.data)
-  }
+  },
 }
 
 export const getters = {
@@ -50,12 +50,12 @@ export const getters = {
       factor => factor.priority === ENABLED_FACTOR_PRIORITY
     ),
   [vuexTypes.isTotpEnabled]: (_, getters) =>
-    !!getters[vuexTypes.factorsTotpEnabled].length
+    !!getters[vuexTypes.factorsTotpEnabled].length,
 }
 
 export default {
   actions,
   getters,
   mutations,
-  state
+  state,
 }

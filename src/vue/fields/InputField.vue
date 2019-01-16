@@ -38,7 +38,7 @@ export default {
     value: { type: [String, Number], default: undefined },
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
-    whiteAutofill: { type: Boolean, default: false }
+    whiteAutofill: { type: Boolean, default: false },
   },
 
   computed: {
@@ -47,15 +47,15 @@ export default {
         ...this.$listeners,
         input: event => {
           this.$emit('input', event.target.value)
-        }
+        },
       }
-    }
+    },
   },
 
   methods: {
     onInput (event) {
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -8,5 +8,5 @@ export const KEY_CODES = Object.freeze({
   tab: 9,
   alt: 18,
   space: 32,
-  escape: 27
+  escape: 27,
 })

@@ -74,21 +74,21 @@ export default {
     accountTypeTranslationIds: {
       [ACCOUNT_TYPES.notVerified]: 'passport.account-unverified',
       [ACCOUNT_TYPES.individual]: 'passport.account-general',
-      [ACCOUNT_TYPES.syndicate]: 'passport.account-corporate'
+      [ACCOUNT_TYPES.syndicate]: 'passport.account-corporate',
     },
-    destructClickOutsideHandler: () => {}
+    destructClickOutsideHandler: () => {},
   }),
 
   computed: {
     ...mapGetters({
       email: vuexTypes.walletEmail,
-      typeI: vuexTypes.accountTypeI
-    })
+      typeI: vuexTypes.accountTypeI,
+    }),
   },
 
   methods: {
     ...mapMutations({
-      clearState: vuexTypes.CLEAR_STATE
+      clearState: vuexTypes.CLEAR_STATE,
     }),
 
     toggleDropdown () {
@@ -121,8 +121,8 @@ export default {
     goSettings () {
       this.closeDropdown()
       this.$router.push(vueRoutes.settings)
-    }
-  }
+    },
+  },
 }
 </script>
 

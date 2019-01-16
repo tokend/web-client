@@ -26,10 +26,10 @@ export class TestHelper {
         data: {
           errors: [{
             title: 'Error',
-            detail: 'Mocked error'
-          }]
-        }
-      }
+            detail: 'Mocked error',
+          }],
+        },
+      },
     })
   }
 

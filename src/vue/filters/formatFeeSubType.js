@@ -4,7 +4,7 @@ export function formatFeeSubType (value) {
   return i18next.t('formats.fee_subtype', {
     value,
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   })
 }
