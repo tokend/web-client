@@ -127,7 +127,7 @@ export default {
 .select-field__selected-icon {
   margin: 0;
   will-change: transform;
-  color: $col-field-icon !important;
+  color: $col-field-icon;
   transition: 0.2s ease-out;
   margin-top: -.2rem;
   width: 2rem;

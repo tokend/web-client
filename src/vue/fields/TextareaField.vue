@@ -111,7 +111,7 @@ export default {
   .text-field__input {
     caret-color: $field-color-text;
     padding: 1.6rem 1.6rem 3.6rem;
-    background-color: $textarea-background-color !important;
+    background-color: $textarea-background-color;
     border: .2rem solid rgba($field-color-unfocused, 0.5);
     width: 100%;
     resize: none;
