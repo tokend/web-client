@@ -1,5 +1,6 @@
 import { errors } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
+import log from 'loglevel'
 
 export class ErrorHandler {
   static process (error) {
@@ -43,6 +44,7 @@ export class ErrorHandler {
         translationId = 'errors.default'
     }
 
+    log.error(error)
     Bus.error(translationId)
   }
 }

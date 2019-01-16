@@ -21,6 +21,13 @@ export default Object.assign(
       /BTC.*\/.*ETH/,
       /ETH.*\/.*BTC/,
     ],
+
+    /**
+     * Sets the logging level, for more options visit
+     * https://www.npmjs.com/package/loglevel#documentation
+     *
+     */
+    LOG_LEVEL: 'trace',
   },
   process.env,
   document.ENV
