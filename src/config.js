@@ -2,8 +2,8 @@ import { base } from '@tokend/js-sdk'
 
 const featureFlags = {
   fees: true,
-  settings: true,
   issuance: true,
+  settings: true,
 }
 
 export default Object.assign(
