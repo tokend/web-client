@@ -8,7 +8,8 @@
           </span>
         </td>
         <td>
-          {{ `operation-names.${operation.typeI}` | globalize }}
+          <!-- eslint-disable-next-line max-len -->
+          {{ `operation-names.${LOCALIZED_OPERATION_TYPE_KEY[operation.typeI]}` | globalize }}
         </td>
         <td>
           <span
@@ -70,6 +71,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { RecordWrapper } from '@/js/records'
 import { OP_TYPES } from '@tokend/js-sdk'
+import { LOCALIZED_OPERATION_TYPE_KEY } from '@/js/const/localizedKeyOperationType'
 
 export default {
   name: '',
@@ -84,6 +86,7 @@ export default {
   },
   data: _ => ({
     OP_TYPES,
+    LOCALIZED_OPERATION_TYPE_KEY,
     operation: {},
     isDetailsOpened: false
   }),

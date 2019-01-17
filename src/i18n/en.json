@@ -86,11 +86,10 @@
     },
 
     "operation-names": {
-      "3": "Tokens received",
-      "7": "Withdrawal",
-      "23": "Transfer",
-      "1": "Transfer",
-      "16": "Offer",
+      "issuance": "Tokens received",
+      "withdrawal": "Withdrawal",
+      "transfer": "Transfer",
+      "offer": "Offer",
       "20": "Offer"
     },
 
@@ -247,7 +246,7 @@
       "no-transaction-history": "No transaction history",
       "here-will-be-the-list": "Here will be the list of your transactions",
       "something-went-wrong": "Something went wrong",
-      "can-not-load-assets": "Can not load assets"
+      "canNotLoadAssets": "Can not load assets"
     }
   }
 }
