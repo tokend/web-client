@@ -5,7 +5,7 @@ export const vueRoutes = Object.freeze({
   login: { name: 'login' },
   verify: { name: 'verify' },
   fees: { name: 'app.fees' },
-  transactions: { name: 'app.transactions' },
+  operations: { name: 'app.operations' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
 

@@ -3,7 +3,7 @@
     <template v-if="!isLoadFailed">
       <div class="op-history__navigation">
         <span class="op-history__navigation-text">
-          {{ 'tx-pages.show' | globalize }}:
+          {{ 'op-pages.show' | globalize }}:
         </span>
         <select-field-custom
           v-if="isLoaded"
@@ -15,14 +15,14 @@
         <template v-if="operations.length">
           <table class="op-history__table">
             <tr>
-              <td>{{ 'tx-pages.date' | globalize }}</td>
-              <td>{{ 'tx-pages.tx-type' | globalize }}</td>
-              <td>{{ 'tx-pages.amount' | globalize }}</td>
+              <td>{{ 'op-pages.date' | globalize }}</td>
+              <td>{{ 'op-pages.tx-type' | globalize }}</td>
+              <td>{{ 'op-pages.amount' | globalize }}</td>
               <td class="op-history__counterparty">
-                {{ 'tx-pages.counterparty' | globalize }}
+                {{ 'op-pages.counterparty' | globalize }}
               </td>
               <td class="op-history__status">
-                {{ 'tx-pages.status' | globalize }}
+                {{ 'op-pages.status' | globalize }}
               </td>
               <td class="op-history__td-btn" />
             </tr>
@@ -38,8 +38,8 @@
         <template v-else>
           <div class="op-history__no-transactions">
             <i class="op-history__no-tx-icon mdi mdi-trending-up" />
-            <h2>{{ 'tx-pages.no-transaction-history' | globalize }}</h2>
-            <p>{{ 'tx-pages.here-will-be-the-list' | globalize }}</p>
+            <h2>{{ 'op-pages.no-operation-history' | globalize }}</h2>
+            <p>{{ 'op-pages.here-will-be-the-list' | globalize }}</p>
           </div>
         </template>
         <collection-loader
@@ -52,8 +52,8 @@
     <template v-else>
       <div class="op-history__error">
         <i class="op-history__error-icon mdi mdi-comment-alert-outline" />
-        <h2>{{ 'tx-pages.something-went-wrong' | globalize }}</h2>
-        <p>{{ 'tx-pages.can-not-load-assets' | globalize }}</p>
+        <h2>{{ 'op-pages.something-went-wrong' | globalize }}</h2>
+        <p>{{ 'op-pages.can-not-load-assets' | globalize }}</p>
       </div>
     </template>
   </div>

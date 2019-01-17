@@ -2,37 +2,37 @@
   <div class="details">
     <table class="details__table">
       <detail
-        :label="'tx-pages.id'| globalize"
+        :label="'op-pages.id'| globalize"
         :value="operation.id"
       />
       <detail
-        :label="'tx-pages.date'| globalize"
+        :label="'op-pages.date'| globalize"
         :value="operation.date | formatCalendar"
       />
       <detail
-        :label="'tx-pages.fund-name'| globalize"
-        :value="'tx-pages.token-fund' | globalize({asset: operation.baseAsset})"
+        :label="'op-pages.fund-name'| globalize"
+        :value="'op-pages.token-fund' | globalize({asset: operation.baseAsset})"
       />
       <detail
-        :label="'tx-pages.base-asset'| globalize"
+        :label="'op-pages.base-asset'| globalize"
         :value="operation.baseAsset"
       />
       <detail
-        :label="'tx-pages.amount'| globalize"
+        :label="'op-pages.amount'| globalize"
         :value="{
           value: operation.amount,
           currency: operation.asset
         } | formatMoney"
       />
       <detail
-        :label="'tx-pages.fee-paid'| globalize"
+        :label="'op-pages.fee-paid'| globalize"
         :value="{
           value: operation.feePaid,
           currency: operation.asset
         } | formatMoney"
       />
       <detail
-        :label="'tx-pages.price'| globalize"
+        :label="'op-pages.price'| globalize"
         :value="{
           value: operation.price,
           currency: operation.quoteAsset
