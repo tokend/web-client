@@ -1,5 +1,8 @@
 <template>
-  <div class="date-field-flatpickr">
+  <div
+    class="date-field-flatpickr"
+    :class="{ 'date-field-flatpickr__input--disabled': $attrs.disabled }"
+  >
     <label
       class="date-field-flatpickr__label"
       :class="{
@@ -14,7 +17,6 @@
         v-bind="$attrs"
         v-on="$listeners"
         class="date-field-flatpickr__input"
-        :class="{ 'date-field-flatpickr__input--disabled': $attrs.disabled }"
         :config="config"
         v-model="flatpickrDate"
         :placeholder="placeholder || ' '"

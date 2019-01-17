@@ -120,9 +120,14 @@
       </div>
       <div class="app__form-row">
         <div class="app__form-field">
-          <input-field
-            white-autofill
+          <!--
+            :key is a hack to ensure that the component will be updated
+            after property change
+          -->
+          <select-field
+            :key="form.address.country"
             v-model="form.address.country"
+            :values="countries"
             @blur="touchField('form.address.country')"
             id="verification-general-country"
             :label="'verification-page.country-lbl' | globalize"
@@ -181,7 +186,7 @@
       <div class="app__form-row">
         <div class="app__form-field">
           <p class="verification-general-form__photo-explanation">
-            {{ 'verification-page.photo-explanation-lbl' | globalize }}
+            {{ 'verification-page.photo-explanation-msg' | globalize }}
           </p>
           <button
             v-ripple
@@ -267,6 +272,7 @@ export default {
     isCodeShown: false,
     accountType: ACCOUNT_TYPES.general,
     DOCUMENT_TYPES,
+    countries: [],
   }),
   validations: {
     form: {
@@ -294,6 +300,15 @@ export default {
     verificationCode () {
       return this.account.accountId.slice(1, 6)
     },
+  },
+  async created () {
+    try {
+      const { data } = await Sdk.horizon.public.getEnums()
+      this.countries = data.countries
+    } catch (e) {
+      console.error(e)
+      ErrorHandler.process(e)
+    }
   },
   methods: {
     async submit () {

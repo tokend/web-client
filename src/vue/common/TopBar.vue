@@ -58,6 +58,11 @@ export default {
 
     a {
       color: $col-top-bar-tab;
+      text-decoration: none;
+
+      & :nth-child(n) {
+        font-size: 1.7rem;
+      }
     }
 
     .router-link-active {

@@ -38,7 +38,6 @@ export default {
 
   created () {
     const value = this.values.find(v => this.getValue(v) === this.value)
-
     this.selectedValue = value
     this.currentValue = value
 
@@ -66,9 +65,10 @@ export default {
       this.isExpanded ? this.closeList() : this.openList()
     },
     openList () {
-      const index = this.getIndex(this.currentValue)
-
-      this.scrollList(index)
+      if (this.currentValue) {
+        const index = this.getIndex(this.currentValue)
+        this.scrollList(index)
+      }
       this.isExpanded = true
     },
     closeList () {
@@ -119,14 +119,13 @@ export default {
       this.scrollList(index)
     },
     getIndex (item) {
-      if (!_isObject(item)) {
+      if (_isObject(item)) {
         return this.values.findIndex(entry => entry.value === item.value)
       }
       return this.values.indexOf(item)
     },
     scrollList (index) {
       const list = this.$refs.list
-
       if (index !== -1) {
         list.scrollTop =
           list.childNodes[index].offsetTop - (list.offsetHeight / 2) + 18

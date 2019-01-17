@@ -139,7 +139,7 @@ export default {
 @import "~@scss/variables";
 
 .fees {
-  width: 100%;
+  max-width: 105rem;
 }
 
 .fees__assets {

@@ -13,6 +13,7 @@ import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const KYC_LEVEL_TO_SET = 0
+const DEFAULT_KYC_REQUEST_ID = '0'
 
 export default {
   mixins: [FormMixin],
@@ -31,10 +32,11 @@ export default {
       console.error(e)
       ErrorHandler.process(e)
     }
-    this.parseKycData()
-
-    if (this.kycState && this.kycState !== REQUEST_STATES_STR.rejected) {
-      this.disableForm()
+    if (this.kycState) {
+      this.parseKycData()
+      if (this.kycState !== REQUEST_STATES_STR.rejected) {
+        this.disableForm()
+      }
     }
   },
   methods: {
@@ -42,12 +44,10 @@ export default {
       loadKyc: vuexTypes.LOAD_KYC,
     }),
     parseKycData () {
-      if (this.kycState) {
-        this.form = KycTemplateParser.fromTemplateToForm(
-          this.kycLatestData,
-          this.accountType
-        )
-      }
+      this.form = KycTemplateParser.fromTemplateToForm(
+        this.kycLatestData,
+        this.accountType
+      )
     },
     async createKycData () {
       const { data } = await Sdk.api.blobs.create(
@@ -66,7 +66,7 @@ export default {
       return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
-          : '0',
+          : DEFAULT_KYC_REQUEST_ID,
         accountToUpdateKYC: this.account.accountId,
         accountTypeToSet: this.accountType,
         kycLevelToSet: KYC_LEVEL_TO_SET,

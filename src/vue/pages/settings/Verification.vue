@@ -79,11 +79,11 @@ export default {
     kycRequestMessageId () {
       switch (this.kycState) {
         case REQUEST_STATES_STR.pending:
-          return 'verification-page.pending-request-message'
+          return 'verification-page.pending-request-msg'
         case REQUEST_STATES_STR.approved:
-          return 'verification-page.approved-request-message'
+          return 'verification-page.approved-request-msg'
         case REQUEST_STATES_STR.rejected:
-          return 'verification-page.rejected-request-message'
+          return 'verification-page.rejected-request-msg'
         default:
           return ''
       }

@@ -162,6 +162,8 @@ export default {
 }
 
 .file-input--disabled {
+  filter: grayscale(100%);
+
   input[type='file'] {
     cursor: default;
   }

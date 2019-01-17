@@ -102,9 +102,17 @@ export default {
   color: $field-color-unfocused;
   @include text-font-sizes;
 }
-.select-field--disabled > .select-field__selected {
-  cursor: default;
-  @include readonly-material-border($field-color-focused);
+.select-field--disabled {
+  filter: grayscale(100%);
+
+  & > .select-field__selected {
+    cursor: default;
+    @include readonly-material-border($field-color-unfocused);
+
+    & > .select-field__selected-value {
+      color: $field-color-unfocused;
+    }
+  }
 }
 .select-field--focused > .select-field__label {
   color: $field-color-focused;
