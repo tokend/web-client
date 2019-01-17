@@ -28,7 +28,7 @@ describe('asset-loader.mixin unit test', () => {
 
     beforeEach(() => {
       const Component = {
-        template: `<div></div>`
+        template: `<div></div>`,
       }
 
       mockHelper = new MockHelper()
@@ -36,7 +36,7 @@ describe('asset-loader.mixin unit test', () => {
       sampleAssetsData = [{
         code: 'BTC',
         availableForIssuance: 100,
-        owner: mockHelper.getMockWallet().accountId
+        owner: mockHelper.getMockWallet().accountId,
       }]
       assetsSpy = sinon.stub(assetsResource, 'getAll').resolves(
         MockWrapper.makeHorizonResponse(sampleAssetsData)
@@ -46,13 +46,13 @@ describe('asset-loader.mixin unit test', () => {
       sinon.stub(getters, vuexTypes.account)
         .returns({ accountId: mockHelper.getMockWallet().accountId })
       store = new Vuex.Store({
-        getters
+        getters,
       })
 
       wrapper = mount(Component, {
         mixins: [OwnedAssetsLoaderMixin],
         store,
-        localVue
+        localVue,
       })
     })
 

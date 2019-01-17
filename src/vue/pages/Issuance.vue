@@ -119,25 +119,25 @@ export default {
     EmailGetter,
     CollectionLoader,
     IssuanceForm,
-    PreIssuanceForm
+    PreIssuanceForm,
   },
   data: _ => ({
     issuanceHistory: [],
     isLoaded: false,
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
-    ACCOUNT_TYPES
+    ACCOUNT_TYPES,
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.account
-    ])
+      vuexTypes.account,
+    ]),
   },
   methods: {
     async getHistory () {
       const response = await Sdk.horizon.operations.getPage({
         account_id: this[vuexTypes.account].accountId,
-        operation_type: OP_TYPES.createIssuanceRequest
+        operation_type: OP_TYPES.createIssuanceRequest,
       })
       return response
     },
@@ -152,8 +152,8 @@ export default {
         .concat(data.map(issuance => new IssuanceRecord(
           issuance, this[vuexTypes.account].accountId)
         ))
-    }
-  }
+    },
+  },
 }
 </script>
 

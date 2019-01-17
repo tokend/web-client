@@ -49,8 +49,8 @@ export default {
   name: 'match-details',
   components: { Detail },
   props: {
-    operation: { type: MatchRecord, required: true }
-  }
+    operation: { type: MatchRecord, required: true },
+  },
 }
 </script>
 

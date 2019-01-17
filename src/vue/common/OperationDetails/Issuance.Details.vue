@@ -50,8 +50,8 @@ export default {
   name: 'issuance-details',
   components: { Detail },
   props: {
-    operation: { type: IssuanceRecord, required: true }
-  }
+    operation: { type: IssuanceRecord, required: true },
+  },
 }
 </script>
 

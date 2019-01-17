@@ -57,8 +57,8 @@ export default {
   name: 'payment-details',
   components: { Detail },
   props: {
-    operation: { type: PaymentRecord, required: true }
-  }
+    operation: { type: PaymentRecord, required: true },
+  },
 }
 </script>
 

@@ -74,7 +74,7 @@ export default {
   components: {
     OperationRecord,
     SelectFieldCustom,
-    CollectionLoader
+    CollectionLoader,
   },
   data: _ => ({
     tokenCode: null,
@@ -82,12 +82,12 @@ export default {
     operations: [],
     isLoaded: false,
     isLoadFailed: false,
-    pageLoader: () => {}
+    pageLoader: () => {},
   }),
   computed: {
     ...mapGetters([
       vuexTypes.account,
-      vuexTypes.accountId
+      vuexTypes.accountId,
     ]),
     tokens () {
       return this.assets.map(item => {
@@ -98,14 +98,14 @@ export default {
       return this.account.balances
         .find(item => item.asset === this.tokenCode)
         .balanceId
-    }
+    },
   },
   watch: {
     tokenCode () {
       this.pageLoader = this.getPageLoader(this.accountId, {
-        asset: this.tokenCode
+        asset: this.tokenCode,
       })
-    }
+    },
   },
   async created () {
     this.loadAccountBalances()
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     getPageLoader (accountId, filter) {
       return function () {
@@ -141,10 +141,10 @@ export default {
       return RecordWrapper.operation(operationData, {
         accountId: this.accountId,
         asset: this.asset,
-        balanceId: this.balanceId
+        balanceId: this.balanceId,
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

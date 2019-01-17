@@ -68,20 +68,20 @@ export const router = new Router({
           path: '/fees',
           name: vueRoutes.fees.name,
           featureFlag: config.FEATURE_FLAGS.fees,
-          component: resolve => require(['@/vue/pages/Fees'], resolve)
+          component: resolve => require(['@/vue/pages/Fees'], resolve),
         },
         {
           path: '/operations',
           name: vueRoutes.operations.name,
           featureFlag: config.FEATURE_FLAGS.operations,
-          component: resolve => require(['@/vue/pages/Operations'], resolve)
+          component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
           path: '/issuance',
           name: vueRoutes.issuance.name,
           featureFlag: config.FEATURE_FLAGS.issuance,
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
-        }
+        },
       ].filter(route => route.featureFlag !== false),
     },
   ],

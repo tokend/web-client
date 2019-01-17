@@ -15,8 +15,7 @@
           <span
             :class="{
               'operation-record__negative-amount' : operation.isIncoming
-            }"
-          >
+            }">
             <!-- eslint-disable-next-line max-len -->
             {{ { value: operation.amount, currency: operation.asset } | formatMoney }}
           </span>
@@ -32,30 +31,37 @@
         <td class="operation-record__td-btn">
           <button
             class="operation-record__btn"
-            @click="isDetailsOpened = !isDetailsOpened">
+            @click="isDetailsOpened = !isDetailsOpened"
+          >
             <i
               v-if="isDetailsOpened"
-              class="mdi mdi-chevron-up" />
+              class="mdi mdi-chevron-up"
+            />
             <i
               v-else
-              class="mdi mdi-chevron-down" />
+              class="mdi mdi-chevron-down"
+            />
           </button>
         </td>
       </tr>
     </table>
     <template v-if="isDetailsOpened">
       <details-issuance
-        v-if="operation instanceof IssuanceRecord"
-        :operation="operation" />
+        v-if="isTypeOf(IssuanceRecord)"
+        :operation="operation"
+      />
       <match-details
-        v-if="operation instanceof MatchRecord"
-        :operation="operation" />
+        v-if="isTypeOf(MatchRecord)"
+        :operation="operation"
+      />
       <payment-details
-        v-if="operation instanceof PaymentRecord"
-        :operation="operation" />
+        v-if="isTypeOf(PaymentRecord)"
+        :operation="operation"
+      />
       <withdrawal-details
-        v-if="operation instanceof WithdrawRecord"
-        :operation="operation" />
+        v-if="isTypeOf(WithdrawRecord)"
+        :operation="operation"
+      />
     </template>
   </div>
 </template>
@@ -65,8 +71,6 @@ import DetailsIssuance from './OperationDetails/Issuance.Details'
 import PaymentDetails from './OperationDetails/Payment.Details'
 import MatchDetails from './OperationDetails/Match.Details'
 import WithdrawalDetails from './OperationDetails/Withdrawal.Details'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex/types'
 import { LOCALIZED_OPERATION_TYPE_KEY } from '@/js/const/localizedKeyOperationType'
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 import { MatchRecord } from '@/js/records/operations/match.record'
@@ -79,11 +83,11 @@ export default {
     DetailsIssuance,
     PaymentDetails,
     MatchDetails,
-    WithdrawalDetails
+    WithdrawalDetails,
   },
   props: {
     operation: { type: Object, required: true },
-    asset: { type: String, default: '' }
+    asset: { type: String, default: '' },
   },
   data: _ => ({
     LOCALIZED_OPERATION_TYPE_KEY,
@@ -91,117 +95,116 @@ export default {
     MatchRecord,
     PaymentRecord,
     WithdrawRecord,
-    isDetailsOpened: false
+    isDetailsOpened: false,
   }),
-  computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-      vuexTypes.balanceId
-    ])
+  methods: {
+    isTypeOf (constructor) {
+      return this.operation instanceof constructor
+    }
   }
 }
 </script>
 
 <style lang="scss">
-  @import '@/scss/variables';
+@import "@/scss/variables";
 
-  .operation-record {
-    margin: 0.6rem 0;
+.operation-record {
+  margin: 0.6rem 0;
+}
+
+.operation-record__table {
+  width: 100%;
+  table-layout: fixed;
+  td {
+    padding: 0.7rem 1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  .operation-record__table {
-    width: 100%;
-    table-layout: fixed;
-    td {
-      padding: 0.7rem 1.5rem;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .operation-record__td-btn {
-      text-align: right;
-      width: 6.7rem;
-    }
-
-    .operation-record__counterparty {
-      width: 30rem;
-    }
-
-    .operation-record__status {
-      padding-left: 2.7rem;
-      width: 13rem;
-    }
+  .operation-record__td-btn {
+    text-align: right;
+    width: 6.7rem;
   }
 
-  .operation-record__date {
-    font-weight: 600;
+  .operation-record__counterparty {
+    width: 30rem;
   }
 
-  .operation-record__negative-amount {
-    position: relative;
-    &:before {
-      content: '-';
-      position: absolute;
-      left: -0.6rem;
-    }
+  .operation-record__status {
+    padding-left: 2.7rem;
+    width: 13rem;
   }
+}
 
-  .operation-record__status--success {
-    position: relative;
-    &:before {
-      content: '';
-      position: absolute;
-      width: 0.6rem;
-      height: 0.6rem;
-      top: 0.8rem;
-      left: -1.1rem;
-      border-radius: 100%;
-      background-color: $col-success;
-    }
-  }
+.operation-record__date {
+  font-weight: 600;
+}
 
-  .operation-record__status--failed {
-    position: relative;
-    &:before {
-      content: '';
-      position: absolute;
-      width: 0.6rem;
-      height: 0.6rem;
-      top: 0.8rem;
-      left: -1.1rem;
-      border-radius: 100%;
-      background-color: $col-error;
-    }
+.operation-record__negative-amount {
+  position: relative;
+  &:before {
+    content: "-";
+    position: absolute;
+    left: -0.6rem;
   }
+}
 
-  .operation-record__status--pending {
-    position: relative;
-    &:before {
-      content: '';
-      position: absolute;
-      width: 0.6rem;
-      height: 0.6rem;
-      top: 0.8rem;
-      left: -1.1rem;
-      border-radius: 100%;
-      background-color: $col-warning;
-    }
+.operation-record__status--success {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    top: 0.8rem;
+    left: -1.1rem;
+    border-radius: 100%;
+    background-color: $col-success;
   }
+}
 
-  .operation-record__btn {
-    width: 3.7rem;
-    height: 3.7rem;
-    border-radius: 0.4rem;
-    background-color: $col-app-content-background;
-    outline: none;
-    border: 0;
-    box-shadow: none;
-    &:hover {
-      background-color:darken($col-app-content-background, 3%)
-    }
-    &:active {
-      background-color:darken($col-app-content-background, 10%)
-    }
+.operation-record__status--failed {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    top: 0.8rem;
+    left: -1.1rem;
+    border-radius: 100%;
+    background-color: $col-error;
   }
+}
+
+.operation-record__status--pending {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    top: 0.8rem;
+    left: -1.1rem;
+    border-radius: 100%;
+    background-color: $col-warning;
+  }
+}
+
+.operation-record__btn {
+  width: 3.7rem;
+  height: 3.7rem;
+  border-radius: 0.4rem;
+  background-color: $col-app-content-background;
+  outline: none;
+  border: 0;
+  box-shadow: none;
+  &:hover {
+    background-color: darken($col-app-content-background, 3%);
+  }
+  &:active {
+    background-color: darken($col-app-content-background, 10%);
+  }
+}
 </style>

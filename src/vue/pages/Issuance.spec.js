@@ -25,7 +25,7 @@ localVue.use(Vuex)
 describe('Issuance component unit test', () => {
   const sampleData = [{
     asset: 'BTC',
-    participants: []
+    participants: [],
   }]
 
   let mockHelper
@@ -40,18 +40,18 @@ describe('Issuance component unit test', () => {
     operationsResource = mockHelper.getHorizonResourcePrototype('operations')
 
     getters = {
-      ...accountModule.getters
+      ...accountModule.getters,
     }
     sinon.stub(getters, vuexTypes.account).returns({
-      accountId: mockHelper.getMockWallet().accountId
+      accountId: mockHelper.getMockWallet().accountId,
     })
     store = new Vuex.Store({
-      getters
+      getters,
     })
 
     wrapper = shallowMount(Issuance, {
       store,
-      localVue
+      localVue,
     })
   })
 
@@ -63,7 +63,7 @@ describe('Issuance component unit test', () => {
     describe('getHistory', () => {
       it('fetches issuance operations for provided account ID', async () => {
         const spy = sinon.stub(operationsResource, 'getPage').resolves({
-          data: [{}]
+          data: [{}],
         })
 
         await wrapper.vm.getHistory()
@@ -71,7 +71,7 @@ describe('Issuance component unit test', () => {
         expect(spy
           .withArgs({
             account_id: mockHelper.getMockWallet().accountId,
-            operation_type: OP_TYPES.createIssuanceRequest
+            operation_type: OP_TYPES.createIssuanceRequest,
           })
           .calledOnce
         ).to.be.true

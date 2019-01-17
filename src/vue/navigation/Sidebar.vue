@@ -37,14 +37,14 @@
             tag="li"
             v-if="config.FEATURE_FLAGS.operations"
           >
-            <i class="sidebar__list-item-icon mdi mdi-menu" />
+            <i class="sidebar__link-icon mdi mdi-menu" />
             <span>
               {{ 'pages-names.operations' | globalize }}
             </span>
           </router-link>
           <router-link
             v-ripple
-            class="sidebar__list-item"
+            class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="li"
@@ -57,13 +57,13 @@
           </router-link>
           <router-link
             v-ripple
-            class="sidebar__list-item"
+            class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.issuance"
             tag="li"
             v-if="config.FEATURE_FLAGS.issuance"
           >
-            <i class="sidebar__list-item-icon mdi mdi-label" />
+            <i class="sidebar__link-icon mdi mdi-label" />
             <span>
               {{ 'pages-names.issuance' | globalize }}
             </span>

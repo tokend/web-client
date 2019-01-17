@@ -26,14 +26,14 @@ localVue.use(Vuex)
 describe('PreIssuanceForm component unit test', () => {
   const sampleIssuanceData = {
     ownedAssets: [{
-      code: 'PLT'
+      code: 'PLT',
     }],
     issuance: {
       asset: 'PLT',
-      amount: 10
+      amount: 10,
     },
     preIssuanceDocument: {},
-    isLoaded: true
+    isLoaded: true,
   }
 
   let wrapper
@@ -50,14 +50,14 @@ describe('PreIssuanceForm component unit test', () => {
     sinon.stub(getters, vuexTypes.account)
       .returns({ accountId: mockHelper.getMockWallet().accountId })
     store = new Vuex.Store({
-      getters
+      getters,
     })
 
     sinon.stub(PreIssuanceForm, 'created').resolves()
     wrapper = shallowMount(PreIssuanceForm, {
       store,
       localVue,
-      data: _ => Object.assign({}, sampleIssuanceData)
+      data: _ => Object.assign({}, sampleIssuanceData),
     })
   })
 
@@ -89,7 +89,7 @@ describe('PreIssuanceForm component unit test', () => {
     it('loads user owned assets', async () => {
       await shallowMount(PreIssuanceForm, {
         mixins: [OwnedAssetsLoaderMixin],
-        localVue
+        localVue,
       })
 
       expect(loadAssetsSpy.calledOnce).to.be.true
@@ -98,7 +98,7 @@ describe('PreIssuanceForm component unit test', () => {
     it('sets isLoaded property to true', async () => {
       wrapper = await shallowMount(PreIssuanceForm, {
         mixins: [OwnedAssetsLoaderMixin],
-        localVue
+        localVue,
       })
 
       expect(wrapper.vm.isLoaded).to.be.true
@@ -175,7 +175,7 @@ describe('PreIssuanceForm component unit test', () => {
     describe('parsePreIssuance', () => {
       const preIssuance = {
         preEmission: '00000003504c54000000000005f5e10042c5f77f000000408e138ec30b5f7aaecfcb42436868c04430868ed4847184a583bff7473f1deac5c519980bd7210afe77df44eadce3c2deada7da57b38aded1379ad2051be88d030000001437743250577a7939527a324a4d3253466d416f7800000000',
-        used: false
+        used: false,
       }
 
       it('converts pre-issuance from xdr', () => {
@@ -189,7 +189,7 @@ describe('PreIssuanceForm component unit test', () => {
 
       it('sets converted pre-issuance to issuance property', () => {
         wrapper.setData({
-          issuance: null
+          issuance: null,
         })
 
         wrapper.vm.parsePreIssuance(preIssuance)

@@ -5,5 +5,5 @@ export const LOCALIZED_OPERATION_TYPE_KEY = Object.freeze({
   [OP_TYPES.createWithdrawalRequest]: 'withdrawal',
   [OP_TYPES.paymentV2]: 'transfer',
   [OP_TYPES.manageOffer]: 'oder-match',
-  [OP_TYPES.checkSaleState]: 'investment'
+  [OP_TYPES.checkSaleState]: 'investment',
 })

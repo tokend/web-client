@@ -60,8 +60,8 @@ export default {
   name: 'withdrawal-details',
   components: { Detail },
   props: {
-    operation: { type: WithdrawRecord, required: true }
-  }
+    operation: { type: WithdrawRecord, required: true },
+  },
 }
 </script>
 
