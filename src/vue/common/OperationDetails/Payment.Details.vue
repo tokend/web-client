@@ -52,11 +52,12 @@
 
 <script>
 import Detail from './Detail'
+import PaymentRecord from '@/js/records/operations/payment.record'
 export default {
   name: 'payment-details',
   components: { Detail },
   props: {
-    operation: { type: Object, required: true }
+    operation: { type: PaymentRecord, required: true }
   }
 }
 </script>

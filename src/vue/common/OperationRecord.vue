@@ -152,7 +152,7 @@ export default {
     &:before {
       content: '-';
       position: absolute;
-      left: -0.8rem;
+      left: -0.6rem;
     }
   }
 

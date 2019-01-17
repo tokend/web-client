@@ -45,11 +45,12 @@
 
 <script>
 import Detail from './Detail'
+import IssuanceRecord from '@/js/records/operations/issuance.record'
 export default {
   name: 'issuance-details',
   components: { Detail },
   props: {
-    operation: { type: Object, required: true }
+    operation: { type: IssuanceRecord, required: true }
   }
 }
 </script>

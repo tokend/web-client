@@ -44,11 +44,12 @@
 
 <script>
 import Detail from './Detail'
+import MatchRecord from '@/js/records/operations/match.record'
 export default {
   name: 'match-details',
   components: { Detail },
   props: {
-    operation: { type: Object, required: true }
+    operation: { type: MatchRecord, required: true }
   }
 }
 </script>

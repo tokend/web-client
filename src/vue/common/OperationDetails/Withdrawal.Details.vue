@@ -55,11 +55,12 @@
 
 <script>
 import Detail from './Detail'
+import WithdrawRecord from '@/js/records/operations/withdraw.record'
 export default {
   name: 'withdrawal-details',
   components: { Detail },
   props: {
-    operation: { type: Object, required: true }
+    operation: { type: WithdrawRecord, required: true }
   }
 }
 </script>
