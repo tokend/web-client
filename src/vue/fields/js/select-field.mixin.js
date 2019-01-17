@@ -5,27 +5,27 @@ export default {
   props: {
     value: {
       type: [String, Number, Boolean, Object, Array, Date],
-      default: ''
+      default: '',
     },
     values: {
       type: Array,
-      default: _ => []
+      default: _ => [],
     },
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data: _ => ({
     currentValue: null, // selected item in the list
     selectedValue: null, // active list element (for arrow navigation)
     isExpanded: false,
-    KEY_CODES
+    KEY_CODES,
   }),
 
   watch: {
@@ -33,12 +33,14 @@ export default {
       if (value) {
         document.addEventListener('click', this.onDocumentClick)
       }
-    }
+    },
   },
 
   created () {
-    this.selectedValue = this.value
-    this.currentValue = this.value
+    const value = this.values.find(v => this.getValue(v) === this.value)
+
+    this.selectedValue = value
+    this.currentValue = value
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
   },
@@ -139,6 +141,6 @@ export default {
       index === 0 ? index += valuesList.length - 1 : index -= 1
       this.selectedValue = valuesList[index]
       return index
-    }
-  }
+    },
+  },
 }

@@ -1,23 +1,25 @@
 <template>
   <div class="auth-page">
-    <h2 class="auth-page__title">{{ 'auth-pages.log-in' | globalize }}</h2>
+    <h2 class="auth-page__title">
+      {{ 'auth-pages.log-in' | globalize }}
+    </h2>
 
     <div class="auth-page__content">
       <login-form />
-    </div>
 
-    <div class="auth-page__tips">
-      <div class="auth-page__tip">
-        {{ 'auth-pages.no-account-question' | globalize }}
-        <router-link class="auth-page__tip-link" :to="vueRoutes.signup">
-          {{ 'auth-pages.no-account-answer' | globalize }}
-        </router-link>
-      </div>
-      <div class="auth-page__tip">
-        {{ 'auth-pages.forgot-pwd-question' | globalize }}
-        <router-link class="auth-page__tip-link" :to="vueRoutes.recovery">
-          {{ 'auth-pages.forgot-pwd-answer' | globalize }}
-        </router-link>
+      <div class="auth-page__tips">
+        <div class="auth-page__tip">
+          {{ 'auth-pages.no-account-question' | globalize }}
+          <router-link class="auth-page__tip-link" :to="vueRoutes.signup">
+            {{ 'auth-pages.no-account-answer' | globalize }}
+          </router-link>
+        </div>
+        <div class="auth-page__tip">
+          {{ 'auth-pages.forgot-pwd-question' | globalize }}
+          <router-link class="auth-page__tip-link" :to="vueRoutes.recovery">
+            {{ 'auth-pages.forgot-pwd-answer' | globalize }}
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -32,10 +34,10 @@ import { Bus } from '@/js/helpers/event-bus'
 export default {
   name: 'login',
   components: {
-    LoginForm
+    LoginForm,
   },
   data: _ => ({
-    vueRoutes
+    vueRoutes,
   }),
   async created () {
     // Verifying email if user came here from email link
@@ -44,7 +46,7 @@ export default {
       await Sdk.api.wallets.verifyEmail(emailAction)
       Bus.success('auth-pages.email-verified')
     }
-  }
+  },
 }
 </script>
 

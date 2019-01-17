@@ -8,7 +8,9 @@
     }"
   >
     <template v-if="label">
-      <div class="select-field__label">{{ label }}</div>
+      <div class="select-field__label">
+        {{ label }}
+      </div>
     </template>
     <button
       class="select-field__selected"
@@ -20,11 +22,10 @@
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
       <div>
-        <md-icon
-          class="select-field__selected-icon"
-          :class="{ 'select-field__selected-icon--active': isExpanded }">
-          keyboard_arrow_down
-        </md-icon>
+        <i
+          class="mdi mdi-chevron-down select-field__selected-icon"
+          :class="{ 'select-field__selected-icon--active': isExpanded }"
+        />
       </div>
     </button>
     <div
@@ -53,7 +54,7 @@ import SelectFieldMixin from './js/select-field.mixin'
 
 export default {
   name: 'select-field',
-  mixins: [SelectFieldMixin]
+  mixins: [SelectFieldMixin],
 }
 </script>
 
@@ -77,9 +78,9 @@ export default {
   color: $field-color-text;
   padding: $field-input-padding;
   @include material-border(
-      $field-color-focused,
-      $field-color-unfocused,
-      "&.select-field__selected--focused"
+    $field-color-focused,
+    $field-color-unfocused,
+    "&.select-field__selected--focused"
   );
   @include text-font-sizes;
 }
@@ -124,12 +125,13 @@ export default {
 
 .select-field__selected-icon {
   margin: 0;
+  display: inline-block;
   will-change: transform;
-  color: $col-field-icon !important;
+  color: $col-field-icon;
   transition: 0.2s ease-out;
   margin-top: -.2rem;
-  width: 2rem;
-  height: 2rem;
+  width: 1.6rem;
+  height: 1.6rem;
 
   &.select-field__selected-icon--active {
     transform: rotate(-180deg);
@@ -143,7 +145,7 @@ export default {
   margin-top: -1rem;
   position: absolute;
   left: 0;
-  min-width: 17rem;
+  width: 100%;
   top: calc(100% + .4rem);
   background-color: $col-dropdown-bg;
   box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);

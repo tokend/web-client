@@ -27,7 +27,7 @@ describe('formatMoney filter test', () => {
     const spy = sinon.spy(i18next, 't')
     formatMoney({
       value: '5012.200',
-      currency: 'USD'
+      currency: 'USD',
     })
 
     expect(
@@ -35,8 +35,8 @@ describe('formatMoney filter test', () => {
         .withArgs('formats.money', {
           value: {
             value: '5012.200',
-            currency: 'USD'
-          }
+            currency: 'USD',
+          },
         })
         .calledOnce
     ).to.equal(true)

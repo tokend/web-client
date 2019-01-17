@@ -19,7 +19,7 @@ describe('formatOrderNumber filter test', () => {
     expect(
       spy
         .withArgs('formats.order_number', {
-          value: '10'
+          value: '10',
         })
         .calledOnce
     ).to.equal(true)

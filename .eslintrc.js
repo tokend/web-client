@@ -39,7 +39,8 @@ module.exports = {
         'max': 1,
         'allowFirstLine': false
       }
-    }]
+    }],
+    'comma-dangle': [1, 'always-multiline']
   },
   env: {
     mocha: true

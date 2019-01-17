@@ -26,7 +26,7 @@ localVue.filter('formatPercent', formatPercent)
 describe('Fees component unit test', () => {
   const feesSampleData = {
     ali: [0],
-    btc: [0, 1]
+    btc: [0, 1],
   }
   let mockHelper
   let feesResource
@@ -44,13 +44,13 @@ describe('Fees component unit test', () => {
     )
 
     store = new Vuex.Store({
-      getters
+      getters,
     })
 
     sinon.stub(Fees, 'created').resolves()
     wrapper = shallowMount(Fees, {
       store,
-      localVue
+      localVue,
     })
   })
 
@@ -61,8 +61,8 @@ describe('Fees component unit test', () => {
   it('loadFees() calls the horizon.fees.getAll() with the correct params', async () => {
     const spy = sinon.stub(feesResource, 'getAll').resolves({
       data: {
-        fees: {}
-      }
+        fees: {},
+      },
     })
 
     await wrapper.vm.loadFees()
@@ -80,7 +80,7 @@ describe('Fees component unit test', () => {
 
     shallowMount(Fees, {
       store,
-      localVue
+      localVue,
     })
 
     expect(spy.calledOnce).to.be.true
@@ -100,8 +100,8 @@ describe('Fees component unit test', () => {
     wrapper.setData({
       fees: feesSampleData,
       filters: {
-        asset: 'BTC'
-      }
+        asset: 'BTC',
+      },
     })
 
     expect(wrapper.vm.assetFees).to.deep.equal(feesSampleData.btc)
@@ -109,7 +109,7 @@ describe('Fees component unit test', () => {
 
   it('assetCodes returns array of assets', () => {
     wrapper.setData({
-      fees: feesSampleData
+      fees: feesSampleData,
     })
 
     expect(wrapper.vm.assetCodes).to.deep.equal(['ALI', 'BTC'])

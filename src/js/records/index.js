@@ -1,7 +1,7 @@
 import { DateUtil } from '@/js/utils'
 import {
   OP_TYPES,
-  REQUEST_TYPES
+  REQUEST_TYPES,
 } from '@tokend/js-sdk'
 
 import { RequestRecord } from './request-record'
@@ -10,7 +10,7 @@ import { AssetUpdateRequestRecord } from './requests/asset-update.record'
 import { SaleRequestRecord } from './requests/sale-create.record'
 import { UpdateKycRequestRecord } from './requests/update-kyc.record'
 import {
-  UpdateSaleDetailsRequestRecord
+  UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
 
 import { OpRecord } from './op-record'
@@ -94,10 +94,10 @@ export class RecordUnwrapper {
             name: record.name,
             short_description: record.shortDescription,
             description: record.description,
-            logo: record.logo
+            logo: record.logo,
           },
           quoteAssets: record.quoteAssets.map(asset => ({ asset, price: '1' })),
-          saleType: record.saleType
+          saleType: record.saleType,
         }
       case AssetCreateRequestRecord:
         return {
@@ -112,14 +112,14 @@ export class RecordUnwrapper {
             logo: {
               key: record.logoKey,
               name: record.logoName,
-              type: record.logoType
+              type: record.logoType,
             },
             terms: {
               key: record.termsKey,
               name: record.termsName,
-              type: record.termsType
-            }
-          }
+              type: record.termsType,
+            },
+          },
         }
       default:
         throw new Error('No unwrapping logic for such type of record')

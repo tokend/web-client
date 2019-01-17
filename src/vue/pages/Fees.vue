@@ -66,12 +66,12 @@
   </div>
   <div v-else-if="!isFailed">
     <loader
-      :message-id="'fee-table.lbl-loading'"
+      :message-id="'fee-table.loading-msg'"
     />
   </div>
   <div v-else>
     <p>
-      {{ 'fee-table.lbl-loading-error' | globalize }}
+      {{ 'fee-table.loading-error-msg' | globalize }}
     </p>
   </div>
 </template>
@@ -89,18 +89,18 @@ export default {
   name: 'fees',
   components: {
     SelectFieldCustom,
-    Loader
+    Loader,
   },
   data: _ => ({
     fees: null,
     isFailed: false,
     filters: {
-      asset: ''
-    }
+      asset: '',
+    },
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.wallet
+      vuexTypes.wallet,
     ]),
     assetCodes () {
       return this.fees !== null
@@ -111,7 +111,7 @@ export default {
       return this.fees !== null
         ? this.fees[this.filters.asset.toLowerCase()]
         : []
-    }
+    },
   },
   async created () {
     await this.loadFees()
@@ -123,15 +123,15 @@ export default {
     async loadFees () {
       try {
         const response = await Sdk.horizon.fees.getAll({
-          account_id: this[vuexTypes.wallet].accountId
+          account_id: this[vuexTypes.wallet].accountId,
         })
         this.fees = response.data.fees
       } catch (error) {
         this.isFailed = true
         console.error(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -140,7 +140,6 @@ export default {
 
 .fees {
   width: 100%;
-  max-width: 105rem;
 }
 
 .fees__assets {

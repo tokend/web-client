@@ -18,14 +18,14 @@ export const rootModule = {
   mutations: {
     // These mutations are being subscribed by plugins
     [vuexTypes.POP_STATE] () {},
-    [vuexTypes.CLEAR_STATE] () {}
+    [vuexTypes.CLEAR_STATE] () {},
   },
   getters: {
     [vuexTypes.isLoggedIn]: (_, getters) => !_isEmpty(
       getters[vuexTypes.account]
-    )
+    ),
   },
-  state: {}
+  state: {},
 }
 
 const store = new Vuex.Store({
@@ -34,9 +34,9 @@ const store = new Vuex.Store({
     account,
     factors,
     wallet,
-    kyc
+    kyc,
   },
-  plugins: [sessionStoragePlugin]
+  plugins: [sessionStoragePlugin],
 })
 
 store.commit(vuexTypes.POP_STATE)

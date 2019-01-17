@@ -40,7 +40,7 @@ import SelectFieldMixin from './js/select-field.mixin'
 
 export default {
   name: 'select-field-custom',
-  mixins: [SelectFieldMixin]
+  mixins: [SelectFieldMixin],
 }
 </script>
 

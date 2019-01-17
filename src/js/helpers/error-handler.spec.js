@@ -21,7 +21,7 @@ describe('error-handler unit test', () => {
       VerificationRequiredError: 'errors.verification-required',
       NotFoundError: 'errors.not-found',
       ConflictError: 'errors.conflict',
-      UnauthorizedError: 'errors.unauthorized'
+      UnauthorizedError: 'errors.unauthorized',
     }
 
     for (const [error, translationId] of Object.entries(expectedTranslations)) {

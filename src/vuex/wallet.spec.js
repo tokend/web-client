@@ -27,7 +27,7 @@ describe('wallet.module', () => {
         email: mockWallet.email,
         secretSeed: mockWallet.secretSeed,
         id: mockWallet.id,
-        accountId: mockWallet.accountId
+        accountId: mockWallet.accountId,
       }
 
       mutations[vuexTypes.SET_WALLET](state, mockWallet)
@@ -46,7 +46,7 @@ describe('wallet.module', () => {
         state: {},
         getters: {},
         commit: sinon.stub(),
-        dispatch: sinon.stub()
+        dispatch: sinon.stub(),
       }
     })
 
@@ -67,8 +67,8 @@ describe('wallet.module', () => {
       const id = '0a0dc11el4lkf845d828c45dbd68d5d1196c3a182b08cd22f05c51fcf15w153c'
       const _getters = {
         wallet: {
-          id
-        }
+          id,
+        },
       }
 
       expect(getters[vuexTypes.walletId]({}, _getters))
@@ -80,8 +80,8 @@ describe('wallet.module', () => {
       const email = 'foo@bar.com'
       const _getters = {
         wallet: {
-          email
-        }
+          email,
+        },
       }
 
       expect(getters[vuexTypes.walletEmail]({}, _getters))
@@ -93,8 +93,8 @@ describe('wallet.module', () => {
       const secretSeed = 'SB5N5RG66UKMZWPY6WRHFCASAIUHGNA3TIG5TOLGROLN67XQDCLWFVPG'
       const _getters = {
         wallet: {
-          secretSeed
-        }
+          secretSeed,
+        },
       }
 
       expect(getters[vuexTypes.walletSeed]({}, _getters))
@@ -106,8 +106,8 @@ describe('wallet.module', () => {
       const keypair = base.Keypair.fromSecret('SBMS7EEEK3BSUWLSJL5OZY7VA5U6Y2PRSZO437RTVHFRGDZV6PGFMBYX')
       const _getters = {
         wallet: {
-          keypair
-        }
+          keypair,
+        },
       }
 
       expect(getters[vuexTypes.walletKeypair]({}, _getters))
@@ -121,8 +121,8 @@ describe('wallet.module', () => {
       const publicKey = 'GBYRGB5VPMGTT76PHRFJYVT4TV2UB5SXGWHCHQVT7MYLPMQ4FZY3EGVU' // manually calculated
       const _getters = {
         wallet: {
-          keypair
-        }
+          keypair,
+        },
       }
 
       expect(getters[vuexTypes.walletPublicKey]({}, _getters))

@@ -19,6 +19,7 @@ import { formatFeeType } from '@/vue/filters/formatFeeType'
 import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
+import { abbreviate } from '@/vue/filters/abbreviate'
 
 i18next.init(i18nOptions)
 
@@ -35,6 +36,7 @@ Vue.filter('formatFeeType', formatFeeType)
 Vue.filter('formatCalendar', formatCalendar)
 Vue.filter('formatFeeSubType', formatFeeSubType)
 Vue.filter('formatOrderNumber', formatOrderNumber)
+Vue.filter('abbreviate', abbreviate)
 
 /* eslint-disable no-new */
 new Vue({
@@ -42,5 +44,5 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })

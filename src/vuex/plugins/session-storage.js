@@ -1,7 +1,7 @@
 import { vuexTypes } from '@/vuex/types'
 
 const config = Object.freeze({
-  STORAGE_KEY: 'TokenDStore-v2'
+  STORAGE_KEY: 'TokenDStore-v2',
 })
 
 export const sessionStoragePlugin = store => {
@@ -23,7 +23,7 @@ export const sessionStoragePlugin = store => {
         store.replaceState({
           ...state,
           account: savedStore.account,
-          wallet: savedStore.wallet
+          wallet: savedStore.wallet,
         })
 
         break
@@ -31,7 +31,7 @@ export const sessionStoragePlugin = store => {
       default:
         sessionStorage.setItem(config.STORAGE_KEY, JSON.stringify({
           account: state.account,
-          wallet: state.wallet
+          wallet: state.wallet,
         }))
     }
   })
