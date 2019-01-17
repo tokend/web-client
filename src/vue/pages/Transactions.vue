@@ -1,29 +1,30 @@
 <template>
-  <div class="tx-history">
-    <template v-if="!isError">
-      <div class="tx-history__navigation">
-        <span class="tx-history__navigation-text">
+  <div class="op-history">
+    <template v-if="!isLoadFailed">
+      <div class="op-history__navigation">
+        <span class="op-history__navigation-text">
           {{ 'tx-pages.show' | globalize }}:
         </span>
         <select-field-custom
-          v-if="isLoad"
+          v-if="isLoaded"
           v-model="tokenCode"
-          :values="tokens" />
+          :values="tokens"
+        />
       </div>
-      <div class="tx-history__list" v-if="isLoad">
+      <div class="op-history__list" v-if="isLoaded">
         <template v-if="operations.length">
-          <table class="tx-history__table">
+          <table class="op-history__table">
             <tr>
               <td>{{ 'tx-pages.date' | globalize }}</td>
               <td>{{ 'tx-pages.tx-type' | globalize }}</td>
               <td>{{ 'tx-pages.amount' | globalize }}</td>
-              <td class="tx-history__counterparty">
+              <td class="op-history__counterparty">
                 {{ 'tx-pages.counterparty' | globalize }}
               </td>
-              <td class="tx-history__status">
+              <td class="op-history__status">
                 {{ 'tx-pages.status' | globalize }}
               </td>
-              <td class="tx-history__td-btn" />
+              <td class="op-history__td-btn" />
             </tr>
           </table>
           <template v-for="(operation, i) in operations">
@@ -33,8 +34,8 @@
           </template>
         </template>
         <template v-else>
-          <div class="tx-history__no-transactions">
-            <i class="tx-history__no-tx-icon mdi mdi-trending-up" />
+          <div class="op-history__no-transactions">
+            <i class="op-history__no-tx-icon mdi mdi-trending-up" />
             <h2>{{ 'tx-pages.no-transaction-history' | globalize }}</h2>
             <p>{{ 'tx-pages.here-will-be-the-list' | globalize }}</p>
           </div>
@@ -47,8 +48,8 @@
       </div>
     </template>
     <template v-else>
-      <div class="tx-history__error">
-        <i class="tx-history__error-icon mdi mdi-comment-alert-outline" />
+      <div class="op-history__error">
+        <i class="op-history__error-icon mdi mdi-comment-alert-outline" />
         <h2>{{ 'tx-pages.something-went-wrong' | globalize }}</h2>
         <p>{{ 'tx-pages.can-not-load-assets' | globalize }}</p>
       </div>
@@ -76,8 +77,8 @@ export default {
     tokenCode: null,
     assets: [],
     operations: [],
-    isLoad: false,
-    isError: false,
+    isLoaded: false,
+    isLoadFailed: false,
     pageLoader: () => {}
   }),
   computed: {
@@ -101,9 +102,9 @@ export default {
       const assetsResponse = await Sdk.horizon.assets.getAll()
       this.assets = assetsResponse.data
       this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
-      this.isLoad = true
+      this.isLoaded = true
     } catch (e) {
-      this.isError = true
+      this.isLoadFailed = true
       console.error(e)
       ErrorHandler.process(e)
     }
@@ -129,23 +130,23 @@ export default {
 <style lang="scss">
   @import '../../scss/variables';
 
-  .tx-history__navigation{
+  .op-history__navigation{
     display: flex;
     align-items: center;
     margin-bottom: 6.2rem;
   }
 
-  .tx-history__navigation-text{
+  .op-history__navigation-text{
     margin-right: 1.5rem;
   }
 
-  .tx-history__list {
+  .op-history__list {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .tx-history__table {
+  .op-history__table {
     width: 100%;
     table-layout: fixed;
     td {
@@ -155,21 +156,21 @@ export default {
       text-overflow: ellipsis;
     }
 
-    .tx-history__td-btn {
+    .op-history__td-btn {
       text-align: right;
       width: 6.7rem;
     }
 
-    .tx-history__counterparty {
+    .op-history__counterparty {
       width: 30rem;
     }
 
-    .tx-history__status{
+    .op-history__status{
       width: 13rem;
     }
   }
 
-  .tx-history__no-transactions {
+  .op-history__no-transactions {
     padding: 0 1.6rem 3.2rem;
     text-align: center;
 
@@ -178,12 +179,12 @@ export default {
     }
   }
 
-  .tx-history__no-tx-icon {
+  .op-history__no-tx-icon {
     margin-right: 1.6rem;
     font-size: 6.4rem;
   }
 
-  .tx-history__error {
+  .op-history__error {
     padding: 0 1.6rem 3.2rem;
     text-align: center;
     color: $col-error;
@@ -192,7 +193,7 @@ export default {
     }
   }
 
-  .tx-history__error-icon {
+  .op-history__error-icon {
     margin-right: 1.6rem;
     font-size: 6.4rem;
   }
