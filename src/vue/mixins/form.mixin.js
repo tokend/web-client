@@ -1,6 +1,9 @@
 import { validationMixin } from 'vuelidate'
 
 import InputField from '../fields/InputField'
+import SelectField from '../fields/SelectField'
+import FileField from '@/vue/fields/FileField'
+
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -9,6 +12,8 @@ import safeGet from 'lodash/get'
 export default {
   components: {
     InputField,
+    SelectField,
+    FileField,
   },
   mixins: [validationMixin],
   data: _ => ({
@@ -39,11 +44,13 @@ export default {
     *
     * @param {string} field - the string with the field name. Works also for
      *                nested fields, such as `form.email`.
+    * @param {Object} options - the interpolation options object for
+     *                translation.
     *
     * @returns {string} the human-readable error message if the
      *                  field is invalid, empty string - otherwise
     */
-    getFieldErrorMessage (field) {
+    getFieldErrorMessage (field, options) {
       if (!this.$v.$invalid) {
         return ''
       }
@@ -58,6 +65,7 @@ export default {
         if (!fieldDetails[rule]) {
           return globalize(`validation.field-error`, {
             context: rule,
+            ...options,
           })
         }
       }
