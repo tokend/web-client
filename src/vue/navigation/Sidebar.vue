@@ -137,6 +137,7 @@ $content-item-right-padding: 2.4rem;
   transform: translateX($sidebar-width);
   opacity: 0;
   cursor: pointer;
+  color: #fff;
   transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -157,6 +158,7 @@ $content-item-right-padding: 2.4rem;
   list-style: none;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 1;
