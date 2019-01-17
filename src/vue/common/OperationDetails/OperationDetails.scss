@@ -1,13 +1,13 @@
 @import '@/scss/variables';
 
 .details {
-  margin: 9px 15px 0 15px;
-  padding: 7px 0 7px 0;
-  border-top: 1px solid $col-button-flat-disabled-txt;
+  margin: 0.9rem 1.5rem 0 1.5rem;
+  padding: 0.7rem 0 0.7rem 0;
+  border-top: 0.1rem solid $col-button-flat-disabled-txt;
 }
 .details__table {
   td {
-    padding: 7px 15px 7px 0;
+    padding: 0.7rem 1.5rem 0.7rem 0;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

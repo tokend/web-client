@@ -114,14 +114,14 @@ export default {
   @import '@/scss/variables';
 
   .operation-record {
-    margin: 6px 0;
+    margin: 0.6rem 0;
   }
 
   .operation-record__table {
     width: 100%;
     table-layout: fixed;
     td {
-      padding: 7px 15px;
+      padding: 0.7rem 1.5rem;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -129,16 +129,16 @@ export default {
 
     .operation-record__td-btn {
       text-align: right;
-      width: 67px;
+      width: 6.7rem;
     }
 
     .operation-record__counterparty {
-      width: 300px;
+      width: 30rem;
     }
 
     .operation-record__status {
-      padding-left: 27px;
-      width: 130px;
+      padding-left: 2.7rem;
+      width: 13rem;
     }
   }
 
@@ -151,7 +151,7 @@ export default {
     &:before {
       content: '-';
       position: absolute;
-      left: -8px;
+      left: -0.8rem;
     }
   }
 
@@ -160,10 +160,10 @@ export default {
     &:before {
       content: '';
       position: absolute;
-      width: 6px;
-      height: 6px;
-      top: 8px;
-      left: -11px;
+      width: 0.6rem;
+      height: 0.6rem;
+      top: 0.8rem;
+      left: -1.1rem;
       border-radius: 100%;
       background-color: $col-success;
     }
@@ -174,10 +174,10 @@ export default {
     &:before {
       content: '';
       position: absolute;
-      width: 6px;
-      height: 6px;
-      top: 8px;
-      left: -11px;
+      width: 0.6rem;
+      height: 0.6rem;
+      top: 0.8rem;
+      left: -1.1rem;
       border-radius: 100%;
       background-color: $col-error;
     }
@@ -188,19 +188,19 @@ export default {
     &:before {
       content: '';
       position: absolute;
-      width: 6px;
-      height: 6px;
-      top: 8px;
-      left: -11px;
+      width: 0.6rem;
+      height: 0.6rem;
+      top: 0.8rem;
+      left: -1.1rem;
       border-radius: 100%;
       background-color: $col-warning;
     }
   }
 
   .operation-record__btn {
-    width: 37px;
-    height: 37px;
-    border-radius: 4px;
+    width: 3.7rem;
+    height: 3.7rem;
+    border-radius: 0.4rem;
     background-color: $col-app-content-background;
     outline: none;
     border: 0;

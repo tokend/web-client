@@ -132,11 +132,11 @@ export default {
   .tx-history__navigation{
     display: flex;
     align-items: center;
-    margin-bottom: 52px;
+    margin-bottom: 6.2rem;
   }
 
   .tx-history__navigation-text{
-    margin-right: 15px;
+    margin-right: 1.5rem;
   }
 
   .tx-history__list {
@@ -149,7 +149,7 @@ export default {
     width: 100%;
     table-layout: fixed;
     td {
-      padding: 7px 15px;
+      padding: 0.7rem 1.5rem;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -157,24 +157,24 @@ export default {
 
     .tx-history__td-btn {
       text-align: right;
-      width: 67px;
+      width: 6.7rem;
     }
 
     .tx-history__counterparty {
-      width: 300px;
+      width: 30rem;
     }
 
     .tx-history__status{
-      width: 130px;
+      width: 13rem;
     }
   }
 
   .tx-history__no-transactions {
-    padding: 0 16px 32px;
+    padding: 0 1.6rem 3.2rem;
     text-align: center;
 
     p {
-      margin-top: 10px;
+      margin-top: 1rem;
     }
   }
 
@@ -184,11 +184,11 @@ export default {
   }
 
   .tx-history__error {
-    padding: 0 16px 32px;
+    padding: 0 1.6rem 3.2rem;
     text-align: center;
     color: $col-error;
     p {
-      margin-top: 10px;
+      margin-top: 1rem;
     }
   }
 
