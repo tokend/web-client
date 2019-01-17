@@ -93,8 +93,9 @@ export default {
   },
   watch: {
     tokenCode () {
-      this.pageLoader = this.getPageLoader(this.accountId,
-        { asset: this.tokenCode })
+      this.pageLoader = this.getPageLoader(this.accountId, {
+        asset: this.tokenCode
+      })
     }
   },
   async created () {
@@ -128,7 +129,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../../scss/variables';
+  @import '~@scss/variables';
 
   .op-history__navigation{
     display: flex;
