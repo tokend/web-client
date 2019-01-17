@@ -59,11 +59,13 @@ export default {
 
 <style scoped lang="scss">
 @import "scss/variables";
+
 .select-field {
   width: 100%;
   flex: 1;
   position: relative;
 }
+
 .select-field__selected {
   display: flex;
   justify-content: space-between;
@@ -74,13 +76,16 @@ export default {
   caret-color: $field-color-focused;
   color: $field-color-text;
   padding: $field-input-padding;
+
   @include material-border(
     $field-color-focused,
     $field-color-unfocused,
     "&.select-field__selected--focused"
   );
+
   @include text-font-sizes;
 }
+
 .select-field__selected-value {
   min-width: 0;
   white-space: nowrap;
@@ -93,6 +98,7 @@ export default {
   font-weight: 500;
   cursor: pointer;
 }
+
 .select-field__label {
   position: absolute;
   left: 0;
@@ -100,13 +106,16 @@ export default {
   transition: all $field-transition-duration;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include text-font-sizes;
 }
+
 .select-field--disabled {
   filter: grayscale(100%);
 
   & > .select-field__selected {
     cursor: default;
+
     @include readonly-material-border($field-color-unfocused);
 
     & > .select-field__selected-value {
@@ -114,14 +123,19 @@ export default {
     }
   }
 }
+
 .select-field--focused > .select-field__label {
   color: $field-color-focused;
+
   @include label-font-sizes;
 }
+
 .select-field--label-minimized > .select-field__label {
   top: 0;
+
   @include label-font-sizes;
 }
+
 .select-field__selected-icon {
   margin: 0;
   display: inline-block;
@@ -136,6 +150,7 @@ export default {
     transform: rotate(-180deg);
   }
 }
+
 .select-field__list {
   opacity: 0;
   visibility: hidden;
@@ -153,11 +168,13 @@ export default {
   overflow-y: auto;
   padding: .8rem 0;
 }
+
 .select-field__list--active {
   visibility: visible;
   opacity: 1;
   margin-top: 0;
 }
+
 .select-field__list-item {
   padding: .8rem 1.6rem;
   font-size: 1.6rem;
@@ -169,11 +186,13 @@ export default {
   text-align: left;
   background-color: transparent;
   &:not(.select-field__list-item--selected):hover {
-    background-color: rgba(58, 65, 128, 0.05);
+    background-color: $col-select-field-hover-background;
   }
 }
+
 .select-field__list-item--selected {
-  background-color: rgba(58, 65, 128, 0.1);
+  background-color: $col-select-field-selected-background;
+
   @include text-font-sizes;
 }
 </style>
