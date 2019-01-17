@@ -89,8 +89,8 @@
       "issuance": "Tokens received",
       "withdrawal": "Withdrawal",
       "transfer": "Transfer",
-      "offer": "Offer",
-      "20": "Offer"
+      "oder-match": "Order match",
+      "investment": "Investment"
     },
 
     "auth-pages": {

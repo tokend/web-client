@@ -67,7 +67,6 @@ import MatchDetails from './OperationDetails/Match.Details'
 import WithdrawalDetails from './OperationDetails/Withdrawal.Details'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { OP_TYPES } from '@tokend/js-sdk'
 import { LOCALIZED_OPERATION_TYPE_KEY } from '@/js/const/localizedKeyOperationType'
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 import { MatchRecord } from '@/js/records/operations/match.record'
@@ -87,7 +86,6 @@ export default {
     asset: { type: String, default: '' }
   },
   data: _ => ({
-    OP_TYPES,
     LOCALIZED_OPERATION_TYPE_KEY,
     IssuanceRecord,
     MatchRecord,
