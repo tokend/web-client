@@ -213,7 +213,6 @@
         </div>
       </div>
     </div>
-
     <div class="app__form-actions">
       <button
         v-ripple
@@ -228,29 +227,21 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
-
-import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
+import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
-import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { required, document } from '@validators'
 
-const KYC_LEVEL_TO_SET = 0
-
 export default {
   name: 'verification-general-form',
-  mixins: [FormMixin],
+  mixins: [VerificationFormMixin],
   data: _ => ({
     form: {
       personal: {
@@ -265,7 +256,7 @@ export default {
         city: '',
         country: '',
         state: '',
-        postalCode: '0'
+        postalCode: ''
       },
       documents: {
         idDocument: null,
@@ -274,6 +265,7 @@ export default {
       }
     },
     isCodeShown: false,
+    accountType: ACCOUNT_TYPES.general,
     DOCUMENT_TYPES
   }),
   validations: {
@@ -299,40 +291,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      kycLatestData: vuexTypes.kycLatestData,
-      kycState: vuexTypes.kycState,
-      kycRequestId: vuexTypes.kycRequestId,
-      account: vuexTypes.account
-    }),
     verificationCode () {
       return this.account.accountId.slice(1, 6)
     }
   },
-  async created () {
-    try {
-      await this.loadKyc()
-    } catch (error) {
-      console.error(error)
-    }
-    this.parseKycData()
-
-    if (this.kycState !== REQUEST_STATES_STR.rejected) {
-      this.disableForm()
-    }
-  },
   methods: {
-    ...mapActions({
-      loadKyc: vuexTypes.LOAD_KYC
-    }),
-    parseKycData () {
-      if (this.kycState) {
-        this.form = KycTemplateParser.fromTemplateToForm(
-          this.kycLatestData,
-          ACCOUNT_TYPES.general
-        )
-      }
-    },
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
@@ -357,30 +320,6 @@ export default {
           document.setKey(documentKey)
         }
       }
-    },
-    async createKycData () {
-      const { data } = await Sdk.api.blobs.create(
-        BLOB_TYPES.kycGeneral,
-        JSON.stringify(KycTemplateParser.fromFormToTemplate(
-          this.form,
-          ACCOUNT_TYPES.general
-        )),
-        this.account.accountId
-      )
-      return {
-        blob_id: data.id
-      }
-    },
-    createKycOperation (kycData) {
-      return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-        requestID: this.kycState === REQUEST_STATES_STR.rejected
-          ? this.kycRequestId
-          : '0',
-        accountToUpdateKYC: this.account.accountId,
-        accountTypeToSet: ACCOUNT_TYPES.general,
-        kycLevelToSet: KYC_LEVEL_TO_SET,
-        kycData: kycData
-      })
     }
   }
 }

@@ -66,6 +66,8 @@
       "field-error_required": "Please fill out this field",
       "field-error_url": "This field should be a valid website URL",
       "field-error_document": "This field should contain a document",
+      "field-error_integer": "This field should be a valid integer",
+      "field-error_minValue": "This field should be less or equal {{value}}",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
@@ -288,10 +290,11 @@
 
     "file-field": {
       "title": "Drop files here or click to browse",
-      "selected-file": "Selected file:",
+      "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
-      "file-not-uploaded-err": "A file was not uploaded"
+      "file-not-uploaded-err": "A file was not uploaded",
+      "file-selected-msg": "Your file was selected"
     },
 
     "email-getter": {

@@ -134,11 +134,13 @@ function verificationGuard (to, from, next) {
   const kycLatestData = store.getters[vuexTypes.kycLatestData]
 
   if (kycLatestData.first_name) {
-    if (to.name === vueRoutes.verification.general.name) next()
-    else next(vueRoutes.verification.general)
+    to.name === vueRoutes.verification.general.name
+      ? next()
+      : next(vueRoutes.verification.general)
   } else if (kycLatestData.name) {
-    if (to.name === vueRoutes.verification.corporate.name) next()
-    else next(vueRoutes.verification.corporate)
+    to.name === vueRoutes.verification.corporate.name
+      ? next()
+      : next(vueRoutes.verification.corporate)
   } else {
     next()
   }

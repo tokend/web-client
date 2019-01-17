@@ -78,7 +78,9 @@
           @blur="touchField('form.teamSize')"
           id="verification-corporate-teamSize"
           :label="'verification-page.team-size-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.teamSize')"
+          :error-message="
+            getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
+          "
           :disabled="formMixin.isDisabled"
         />
       </div>
@@ -96,7 +98,6 @@
         />
       </div>
     </div>
-
     <div class="app__form-actions">
       <button
         v-ripple
@@ -111,27 +112,20 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
-
-import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
+import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES, base } from '@tokend/js-sdk'
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
-
-import { KycTemplateParser } from '@/js/helpers/kyc-template-parser'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { required, url } from '@validators'
+import { required, url, integer, minValue } from '@validators'
 
-const KYC_LEVEL_TO_SET = 0
+const MIN_TEAM_SIZE = 1
 
 export default {
   name: 'verification-corporate-form',
-  mixins: [FormMixin],
+  mixins: [VerificationFormMixin],
   data: _ => ({
     form: {
       name: '',
@@ -141,7 +135,9 @@ export default {
       foundDate: '',
       teamSize: '0',
       website: ''
-    }
+    },
+    accountType: ACCOUNT_TYPES.syndicate,
+    MIN_TEAM_SIZE
   }),
   validations: {
     form: {
@@ -150,44 +146,15 @@ export default {
       headquarters: { required },
       industry: { required },
       foundDate: { required },
-      // TODO
-      teamSize: { required },
+      teamSize: {
+        required,
+        integer,
+        minValue: minValue(MIN_TEAM_SIZE)
+      },
       website: { required, url }
     }
   },
-  computed: {
-    ...mapGetters({
-      kycLatestData: vuexTypes.kycLatestData,
-      kycState: vuexTypes.kycState,
-      kycRequestId: vuexTypes.kycRequestId,
-      account: vuexTypes.account
-    })
-  },
-  async created () {
-    try {
-      await this.loadKyc()
-    } catch (e) {
-      console.error(e)
-      ErrorHandler.process(e)
-    }
-    this.parseKycData()
-
-    if (this.kycState !== REQUEST_STATES_STR.rejected) {
-      this.disableForm()
-    }
-  },
   methods: {
-    ...mapActions({
-      loadKyc: vuexTypes.LOAD_KYC
-    }),
-    parseKycData () {
-      if (this.kycState) {
-        this.form = KycTemplateParser.fromTemplateToForm(
-          this.kycLatestData,
-          ACCOUNT_TYPES.syndicate
-        )
-      }
-    },
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
@@ -201,30 +168,6 @@ export default {
         ErrorHandler.process(e)
         this.enableForm()
       }
-    },
-    async createKycData () {
-      const { data } = await Sdk.api.blobs.create(
-        BLOB_TYPES.kycSyndicate,
-        JSON.stringify(KycTemplateParser.fromFormToTemplate(
-          this.form,
-          ACCOUNT_TYPES.syndicate
-        )),
-        this.account.accountId
-      )
-      return {
-        blob_id: data.id
-      }
-    },
-    createKycOperation (kycData) {
-      return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
-        requestID: this.kycState === REQUEST_STATES_STR.rejected
-          ? this.kycRequestId
-          : '0',
-        accountToUpdateKYC: this.account.accountId,
-        accountTypeToSet: ACCOUNT_TYPES.syndicate,
-        kycLevelToSet: KYC_LEVEL_TO_SET,
-        kycData: kycData
-      })
     }
   }
 }

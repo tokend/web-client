@@ -3,19 +3,26 @@
     <div class="file-field__label">
       {{ label }}
     </div>
-    <div class="file-input">
+    <div
+      class="file-input"
+      :class="{ 'file-input--disabled': $attrs.disabled }"
+    >
       <div
         class="file-input__file-preview"
-        v-if="document">
-        <span>
-          {{ 'file-field.selected-file' | globalize }}  {{ document.name }}
-        </span>
+        v-if="document"
+      >
+        {{ 'file-field.selected-file' | globalize({ name: document.name }) }}
       </div>
       <div class="file-input__input-inner">
         <div class="file-input__text">
-          <div class="file-input__title">
-            {{ 'file-field.title' | globalize }}
-          </div>
+          <p class="file-input__title">
+            <template v-if="$attrs.disabled">
+              {{ 'file-field.file-selected-msg' | globalize }}
+            </template>
+            <template v-else>
+              {{ 'file-field.title' | globalize }}
+            </template>
+          </p>
           <div class="file-input__note">{{ note }}</div>
         </div>
       </div>
@@ -147,8 +154,14 @@ export default {
     width: 100%;
   }
 
-  &:hover {
+  &:not(.file-input--disabled):hover {
     border-color: $field-color-text;
+  }
+}
+
+.file-input--disabled {
+  input[type='file'] {
+    cursor: default;
   }
 }
 

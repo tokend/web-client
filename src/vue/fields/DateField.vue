@@ -12,6 +12,7 @@
     <div class="date-field-flatpickr__field">
       <flat-pickr
         v-bind="$attrs"
+        v-on="$listeners"
         class="date-field-flatpickr__input"
         :class="{ 'date-field-flatpickr__input--disabled': $attrs.disabled }"
         :config="config"
