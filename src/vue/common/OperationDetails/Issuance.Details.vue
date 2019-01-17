@@ -62,5 +62,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './OperationDetails';
+  @import './operation-details';
 </style>
