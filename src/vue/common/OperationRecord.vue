@@ -14,10 +14,8 @@
           <span
             :class="{'operation-record__negative-amount'
               : accountId === operation.sender}">
-            {{
-              { value: operation.amount, currency: operation.asset } |
-                formatMoney
-            }}
+            <!-- eslint-disable-next-line max-len -->
+            {{ { value: operation.amount, currency: operation.asset } | formatMoney }}
           </span>
         </td>
         <td class="operation-record__counterparty">
@@ -31,9 +29,9 @@
         <td class="operation-record__td-btn">
           <button
             class="operation-record__btn"
-            @click="isOpenDetails = !isOpenDetails">
+            @click="isDetailsOpened = !isDetailsOpened">
             <i
-              v-if="isOpenDetails"
+              v-if="isDetailsOpened"
               class="mdi mdi-chevron-up" />
             <i
               v-else
@@ -42,7 +40,7 @@
         </td>
       </tr>
     </table>
-    <template v-if="isOpenDetails">
+    <template v-if="isDetailsOpened">
       <details-issuance
         v-if="OP_TYPES.createIssuanceRequest === operation.typeI"
         :operation="operation" />
@@ -87,7 +85,7 @@ export default {
   data: _ => ({
     OP_TYPES,
     operation: {},
-    isOpenDetails: false
+    isDetailsOpened: false
   }),
   computed: {
     ...mapGetters([
