@@ -13,8 +13,10 @@
         </td>
         <td>
           <span
-            :class="{'operation-record__negative-amount'
-              : accountId === operation.sender}">
+            :class="{
+              'operation-record__negative-amount' : operation.isIncoming
+            }"
+          >
             <!-- eslint-disable-next-line max-len -->
             {{ { value: operation.amount, currency: operation.asset } | formatMoney }}
           </span>
@@ -43,20 +45,16 @@
     </table>
     <template v-if="isDetailsOpened">
       <details-issuance
-        v-if="OP_TYPES.createIssuanceRequest === operation.typeI"
+        v-if="operation instanceof IssuanceRecord"
+        :operation="operation" />
+      <match-details
+        v-if="operation instanceof MatchRecord"
         :operation="operation" />
       <payment-details
-        v-if="OP_TYPES.paymentV2 === operation.typeI ||
-          OP_TYPES.payment === operation.typeI"
-        :operation="operation" />
-      <match-details
-        v-if="OP_TYPES.manageOffer === operation.typeI"
-        :operation="operation" />
-      <match-details
-        v-if="OP_TYPES.checkSaleState === operation.typeI"
+        v-if="operation instanceof PaymentRecord"
         :operation="operation" />
       <withdrawal-details
-        v-if="OP_TYPES.createWithdrawalRequest === operation.typeI"
+        v-if="operation instanceof WithdrawRecord"
         :operation="operation" />
     </template>
   </div>
@@ -69,9 +67,12 @@ import MatchDetails from './OperationDetails/Match.Details'
 import WithdrawalDetails from './OperationDetails/Withdrawal.Details'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { RecordWrapper } from '@/js/records'
 import { OP_TYPES } from '@tokend/js-sdk'
 import { LOCALIZED_OPERATION_TYPE_KEY } from '@/js/const/localizedKeyOperationType'
+import { IssuanceRecord } from '@/js/records/operations/issuance.record'
+import { MatchRecord } from '@/js/records/operations/match.record'
+import { PaymentRecord } from '@/js/records/operations/payment.record'
+import { WithdrawRecord } from '@/js/records/operations/withdraw.record'
 
 export default {
   name: '',
@@ -82,31 +83,23 @@ export default {
     WithdrawalDetails
   },
   props: {
-    operationData: { type: Object, required: true }
+    operation: { type: Object, required: true },
+    asset: { type: String, default: '' }
   },
   data: _ => ({
     OP_TYPES,
     LOCALIZED_OPERATION_TYPE_KEY,
-    operation: {},
+    IssuanceRecord,
+    MatchRecord,
+    PaymentRecord,
+    WithdrawRecord,
     isDetailsOpened: false
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.accountId
+      vuexTypes.accountId,
+      vuexTypes.balanceId
     ])
-  },
-  watch: {
-    operationData: {
-      immediate: true,
-      handler: 'parsOperation'
-    }
-  },
-  methods: {
-    parsOperation () {
-      this.operation = RecordWrapper.operation(this.operationData, {
-        accountId: this.accountId
-      })
-    }
   }
 }
 </script>

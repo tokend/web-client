@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'details',
+  name: 'detail',
   props: {
     label: { type: String, required: true },
     value: { type: [String, Number, Boolean, Date], required: true }

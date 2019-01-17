@@ -29,8 +29,10 @@
           </table>
           <template v-for="(operation, i) in operations">
             <operation-record
-              :operation-data="operation"
-              :key="`tx-row-${i}}-${tokenCode}`" />
+              :operation="getParsedOperation(operation)"
+              :asset="tokenCode"
+              :key="`tx-row-${i}}-${tokenCode}`"
+            />
           </template>
         </template>
         <template v-else>
@@ -62,9 +64,10 @@ import OperationRecord from '@/vue/common/OperationRecord'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { Sdk } from '@/sdk'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { RecordWrapper } from '@/js/records'
 
 export default {
   name: 'history-index',
@@ -83,12 +86,18 @@ export default {
   }),
   computed: {
     ...mapGetters([
+      vuexTypes.account,
       vuexTypes.accountId
     ]),
     tokens () {
       return this.assets.map(item => {
         return item.code
       })
+    },
+    balanceId () {
+      return this.account.balances
+        .find(item => item.asset === this.tokenCode)
+        .balanceId
     }
   },
   watch: {
@@ -99,6 +108,7 @@ export default {
     }
   },
   async created () {
+    this.loadAccountBalances()
     try {
       const assetsResponse = await Sdk.horizon.assets.getAll()
       this.assets = assetsResponse.data
@@ -111,6 +121,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
+    }),
     getPageLoader (accountId, filter) {
       return function () {
         return Sdk.horizon.account.getPayments(accountId, filter)
@@ -123,6 +136,13 @@ export default {
 
     setNextPageData (data) {
       this.operations = [...this.operations, ...data]
+    },
+    getParsedOperation (operationData) {
+      return RecordWrapper.operation(operationData, {
+        accountId: this.accountId,
+        asset: this.asset,
+        balanceId: this.balanceId
+      })
     }
   }
 }
