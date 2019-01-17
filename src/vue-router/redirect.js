@@ -1,7 +1,7 @@
 import { vueRoutes } from './routes'
 
 const REDIRECT_TYPES = {
-  email: 1
+  email: 1,
 }
 
 export const resolveRedirect = (to, from, next) => {

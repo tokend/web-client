@@ -31,7 +31,7 @@
  * </top-bar>
  */
 export default {
-  name: 'top-bar'
+  name: 'top-bar',
 }
 </script>
 

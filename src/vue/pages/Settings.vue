@@ -26,8 +26,8 @@ import TopBar from '@/vue/common/TopBar'
 export default {
   name: 'settings',
   components: {
-    TopBar
-  }
+    TopBar,
+  },
 }
 </script>
 

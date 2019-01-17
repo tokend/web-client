@@ -23,7 +23,9 @@
               {{ 'file-field.title' | globalize }}
             </template>
           </p>
-          <div class="file-input__note">{{ note }}</div>
+          <div class="file-input__note">
+            {{ note }}
+          </div>
         </div>
       </div>
       <input
@@ -62,20 +64,20 @@ export default {
     accept: { type: String, default: '*' },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
-    errorMessage: { type: String, default: undefined }
+    errorMessage: { type: String, default: undefined },
   },
   data: _ => ({
-    document: null
+    document: null,
   }),
   computed: {
     maxSizeBytes () {
       return this.maxSize * 1024 * 1024
-    }
+    },
   },
   watch: {
     'value': function (value) {
       this.document = value
-    }
+    },
   },
   created () {
     if (this.value) {
@@ -102,7 +104,7 @@ export default {
           mimeType: file.type,
           type: this.documentType,
           name: file.name,
-          file: file
+          file: file,
         })
         this.$emit('input', this.document)
       } else {
@@ -115,8 +117,8 @@ export default {
     },
     dropFile () {
       this.$el.querySelector('input').value = ''
-    }
-  }
+    },
+  },
 }
 </script>
 

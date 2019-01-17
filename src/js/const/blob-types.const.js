@@ -5,5 +5,5 @@ export const BLOB_TYPES = {
   navUpdate: 'nav_update',
   fundDocument: 'fund_document',
   kycSyndicate: 'alpha',
-  kycGeneral: 'kyc_form'
+  kycGeneral: 'kyc_form',
 }

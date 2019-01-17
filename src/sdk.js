@@ -5,7 +5,7 @@ let _sdkInstance = null
 export class Sdk {
   static async init (serverUrl) {
     _sdkInstance = await TokenD.create(serverUrl, {
-      allowHttp: true
+      allowHttp: true,
     })
     return _sdkInstance
   }

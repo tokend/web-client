@@ -25,8 +25,8 @@ describe('HintWrapper component test', () => {
     const wrapper = mount(HintWrapper, {
       propsData: {
         hint,
-        decorated: false
-      }
+        decorated: false,
+      },
     })
 
     expect(wrapper.classes()).to.not.include('hint-wrapper--decorated')

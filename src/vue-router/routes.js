@@ -11,11 +11,11 @@ export const vueRoutes = Object.freeze({
   verification: {
     name: 'app.verification',
     general: {
-      name: 'app.verification.general'
+      name: 'app.verification.general',
     },
     corporate: {
-      name: 'app.verification.corporate'
-    }
+      name: 'app.verification.corporate',
+    },
   },
   issuance: { name: 'app.issuance' },
 
@@ -37,5 +37,5 @@ export const vueRoutes = Object.freeze({
   requests: { name: 'app.requests' },
   sales: { name: 'app.sales' },
   mySales: { name: 'app.my-sales' },
-  preissuanceUpload: { name: 'app.preissuance-upload' }
+  preissuanceUpload: { name: 'app.preissuance-upload' },
 })

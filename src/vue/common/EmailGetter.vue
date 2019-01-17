@@ -23,21 +23,21 @@ export default {
   props: {
     accountId: {
       type: String,
-      default: ''
+      default: '',
     },
     balanceId: {
       type: String,
-      default: ''
+      default: '',
     },
     isTitled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data: _ => ({
     result: '',
     isLoaded: false,
-    isLoadingFailed: false
+    isLoadingFailed: false,
   }),
 
   async created () {
@@ -72,8 +72,8 @@ export default {
       } else {
         return ''
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

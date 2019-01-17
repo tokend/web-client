@@ -5,5 +5,5 @@ export const DOCUMENT_TYPES = Object.freeze({
   assetLogo: 'asset_logo',
   kycIdDocument: 'kyc_id_document',
   kycProofOfAddress: 'kyc_poa',
-  kycSelfie: 'kyc_selfie'
+  kycSelfie: 'kyc_selfie',
 })

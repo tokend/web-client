@@ -17,7 +17,7 @@ export class KycTemplateParser {
             city: form.address.city,
             country: form.address.country,
             state: form.address.state,
-            postal_code: form.address.postalCode
+            postal_code: form.address.postalCode,
           },
           documents: {
             [DOCUMENT_TYPES.kycIdDocument]:
@@ -25,8 +25,8 @@ export class KycTemplateParser {
             [DOCUMENT_TYPES.kycProofOfAddress]:
               form.documents.proofDocument.getDetailsForSave(),
             [DOCUMENT_TYPES.kycSelfie]:
-              form.documents.verificationPhoto.getDetailsForSave()
-          }
+              form.documents.verificationPhoto.getDetailsForSave(),
+          },
         }
       case ACCOUNT_TYPES.syndicate:
         return {
@@ -36,7 +36,7 @@ export class KycTemplateParser {
           industry: form.industry,
           found_date: form.foundDate,
           team_size: form.teamSize,
-          homepage: form.website
+          homepage: form.website,
         }
     }
   }
@@ -49,7 +49,7 @@ export class KycTemplateParser {
             firstName: template.first_name,
             lastName: template.last_name,
             birthDate: template.date_of_birth,
-            documentExpirationDate: template.id_expiration_date
+            documentExpirationDate: template.id_expiration_date,
           },
           address: {
             firstLine: template.address.line_1,
@@ -57,7 +57,7 @@ export class KycTemplateParser {
             city: template.address.city,
             country: template.address.country,
             state: template.address.state,
-            postalCode: template.address.postal_code
+            postalCode: template.address.postal_code,
           },
           documents: {
             idDocument: this.wrapDocument(
@@ -68,8 +68,8 @@ export class KycTemplateParser {
             ),
             verificationPhoto: this.wrapDocument(
               template.documents[DOCUMENT_TYPES.kycSelfie]
-            )
-          }
+            ),
+          },
         }
       case ACCOUNT_TYPES.syndicate:
         return {
@@ -79,7 +79,7 @@ export class KycTemplateParser {
           industry: template.industry,
           foundDate: template.found_date,
           teamSize: template.team_size,
-          website: template.homepage
+          website: template.homepage,
         }
     }
   }
@@ -88,7 +88,7 @@ export class KycTemplateParser {
     return new DocumentContainer({
       mimeType: document.mime_type,
       name: document.name,
-      key: document.key
+      key: document.key,
     })
   }
 }

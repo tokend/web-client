@@ -248,7 +248,7 @@ export default {
         firstName: '',
         lastName: '',
         birthDate: '',
-        documentExpirationDate: ''
+        documentExpirationDate: '',
       },
       address: {
         firstLine: '',
@@ -256,17 +256,17 @@ export default {
         city: '',
         country: '',
         state: '',
-        postalCode: ''
+        postalCode: '',
       },
       documents: {
         idDocument: null,
         proofDocument: null,
-        verificationPhoto: null
-      }
+        verificationPhoto: null,
+      },
     },
     isCodeShown: false,
     accountType: ACCOUNT_TYPES.general,
-    DOCUMENT_TYPES
+    DOCUMENT_TYPES,
   }),
   validations: {
     form: {
@@ -274,26 +274,26 @@ export default {
         firstName: { required },
         lastName: { required },
         birthDate: { required },
-        documentExpirationDate: { required }
+        documentExpirationDate: { required },
       },
       address: {
         firstLine: { required },
         city: { required },
         country: { required },
         state: { required },
-        postalCode: { required }
+        postalCode: { required },
       },
       documents: {
         idDocument: { document },
         proofDocument: { document },
-        verificationPhoto: { document }
-      }
-    }
+        verificationPhoto: { document },
+      },
+    },
   },
   computed: {
     verificationCode () {
       return this.account.accountId.slice(1, 6)
-    }
+    },
   },
   methods: {
     async submit () {
@@ -320,8 +320,8 @@ export default {
           document.setKey(documentKey)
         }
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

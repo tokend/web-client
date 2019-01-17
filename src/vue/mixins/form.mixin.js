@@ -15,13 +15,13 @@ export default {
     InputField,
     SelectField,
     DateField,
-    FileField
+    FileField,
   },
   mixins: [validationMixin],
   data: _ => ({
     formMixin: {
-      isDisabled: false
-    }
+      isDisabled: false,
+    },
   }),
   methods: {
     isFormValid () {
@@ -67,7 +67,7 @@ export default {
         if (!fieldDetails[rule]) {
           return globalize(`validation.field-error`, {
             context: rule,
-            ...options
+            ...options,
           })
         }
       }
@@ -84,6 +84,6 @@ export default {
     },
     enableForm () {
       this.formMixin.isDisabled = false
-    }
-  }
+    },
+  },
 }

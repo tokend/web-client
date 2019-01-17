@@ -16,7 +16,7 @@ import { Sdk } from '@/sdk'
 export const state = {
   request: {},
   approvedData: '{}', // JSON string
-  latestData: '{}' // JSON string
+  latestData: '{}', // JSON string
 }
 
 export const mutations = {
@@ -30,7 +30,7 @@ export const mutations = {
 
   [vuexTypes.SET_KYC_LATEST_DATA] (state, data) {
     state.latestData = data
-  }
+  },
 }
 
 export const actions = {
@@ -52,7 +52,7 @@ export const actions = {
     const response = await Sdk.horizon.request.getAllForUpdateKyc({
       requestor,
       limit,
-      order
+      order,
     })
 
     if (!response.data[0]) {
@@ -83,7 +83,7 @@ export const actions = {
       const approvedBlobResponse = await Sdk.api.blobs.get(approvedBlobId)
       commit(vuexTypes.SET_KYC_APPROVED_DATA, approvedBlobResponse.data.value)
     }
-  }
+  },
 }
 
 export const getters = {
@@ -92,12 +92,12 @@ export const getters = {
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
-  [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData)
+  [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData),
 }
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 }

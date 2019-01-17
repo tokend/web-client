@@ -30,22 +30,22 @@ describe('IssuanceForm component unit test', () => {
       asset: 'BTC',
       amount: 10,
       receiver: 'foo@bar.com',
-      reference: 'ref'
+      reference: 'ref',
     },
     ownedAssets: [{
       code: 'BTC',
       details: {
-        name: 'Bitcoin'
+        name: 'Bitcoin',
       },
-      availableForIssuance: 100
+      availableForIssuance: 100,
     }, {
       code: 'ETH',
       details: {
-        name: 'Ethereum'
+        name: 'Ethereum',
       },
-      availableForIssuance: 200
+      availableForIssuance: 200,
     }],
-    isLoaded: true
+    isLoaded: true,
   }
 
   afterEach(() => {
@@ -60,7 +60,7 @@ describe('IssuanceForm component unit test', () => {
       wrapper = mount(IssuanceForm, {
         localVue,
         data: _ => Object.assign({}, sampleIssuanceData),
-        sync: false
+        sync: false,
       })
     })
 
@@ -68,7 +68,7 @@ describe('IssuanceForm component unit test', () => {
       asset: ['required'],
       amount: ['required', 'amountRange'],
       receiver: ['required', 'emailOrAccountId'],
-      reference: ['required']
+      reference: ['required'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
@@ -82,7 +82,7 @@ describe('IssuanceForm component unit test', () => {
       '#issuance-asset': 'asset',
       '#issuance-amount': 'amount',
       '#issuance-receiver': 'receiver',
-      '#issuance-reference': 'reference'
+      '#issuance-reference': 'reference',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -118,7 +118,7 @@ describe('IssuanceForm component unit test', () => {
       sinon.stub(getters, vuexTypes.account)
         .returns({ accountId: mockHelper.getMockWallet().accountId })
       store = new Vuex.Store({
-        getters
+        getters,
       })
 
       sinon.stub(IssuanceForm, 'created').resolves()
@@ -127,7 +127,7 @@ describe('IssuanceForm component unit test', () => {
         mixins: [OwnedAssetsLoaderMixin],
         localVue,
         data: _ => Object.assign({}, sampleIssuanceData),
-        sync: false
+        sync: false,
       })
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
@@ -137,9 +137,9 @@ describe('IssuanceForm component unit test', () => {
         it('returns formatted owned assets for select field', () => {
           expect(wrapper.vm.assetListValues)
             .to.deep.equal([{
-              value: 'BTC', label: 'Bitcoin (BTC)'
+              value: 'BTC', label: 'Bitcoin (BTC)',
             }, {
-              value: 'ETH', label: 'Ethereum (ETH)'
+              value: 'ETH', label: 'Ethereum (ETH)',
             }])
         })
       })
@@ -149,7 +149,7 @@ describe('IssuanceForm component unit test', () => {
           expect(wrapper.vm.availableAmount)
             .to.deep.equal({
               value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
-              currency: sampleIssuanceData.ownedAssets[0].code
+              currency: sampleIssuanceData.ownedAssets[0].code,
             })
         })
 
@@ -174,7 +174,7 @@ describe('IssuanceForm component unit test', () => {
       it('loads user owned assets', async () => {
         await shallowMount(IssuanceForm, {
           mixins: [OwnedAssetsLoaderMixin],
-          localVue
+          localVue,
         })
 
         expect(loadAssetsSpy.calledOnce).to.be.true
@@ -183,7 +183,7 @@ describe('IssuanceForm component unit test', () => {
       it('sets isLoaded property to true', async () => {
         wrapper = await shallowMount(IssuanceForm, {
           mixins: [OwnedAssetsLoaderMixin],
-          localVue
+          localVue,
         })
 
         expect(wrapper.vm.isLoaded).to.be.true
@@ -193,7 +193,7 @@ describe('IssuanceForm component unit test', () => {
         wrapper = await shallowMount(IssuanceForm, {
           mixins: [OwnedAssetsLoaderMixin],
           localVue,
-          data: _ => ({ ownedAssets: sampleIssuanceData.ownedAssets })
+          data: _ => ({ ownedAssets: sampleIssuanceData.ownedAssets }),
         })
 
         expect(wrapper.vm.form.asset)
@@ -263,7 +263,7 @@ describe('IssuanceForm component unit test', () => {
       describe('getReceiverBalance', () => {
         const sampleBalanceData = {
           asset: 'BTC',
-          balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV'
+          balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV',
         }
         const receiver = sampleIssuanceData.form.receiver
         const asset = sampleIssuanceData.form.asset

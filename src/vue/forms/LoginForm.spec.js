@@ -41,7 +41,7 @@ describe('LoginForm component unit test', () => {
 
     const expectedResults = {
       email: ['required'],
-      password: ['required']
+      password: ['required'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
@@ -55,7 +55,7 @@ describe('LoginForm component unit test', () => {
 
     const fieldBindings = {
       '#login-email': 'email',
-      '#login-password': 'password'
+      '#login-password': 'password',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -85,7 +85,7 @@ describe('LoginForm component unit test', () => {
       mockHelper = new MockHelper()
       const actions = {
         ...walletModule.actions,
-        ...accountModule.actions
+        ...accountModule.actions,
       }
       const getters = walletModule.getters
 
@@ -95,21 +95,21 @@ describe('LoginForm component unit test', () => {
 
       const store = new Vuex.Store({
         actions,
-        getters
+        getters,
       })
 
       const router = new VueRouter({
         mode: 'history',
         routes: [{
           name: vueRoutes.app.name,
-          path: '/foo'
-        }]
+          path: '/foo',
+        }],
       })
 
       wrapper = shallowMount(LoginForm, {
         store,
         router,
-        localVue
+        localVue,
       })
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
@@ -121,7 +121,7 @@ describe('LoginForm component unit test', () => {
       sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
 
       wrapper.setData({
-        form: { email, password }
+        form: { email, password },
       })
 
       await wrapper.vm.submit()

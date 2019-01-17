@@ -74,7 +74,7 @@ export default {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycLatestData: vuexTypes.kycLatestData,
-      kycRejectReason: vuexTypes.kycRequestRejectReason
+      kycRejectReason: vuexTypes.kycRequestRejectReason,
     }),
     kycRequestMessageId () {
       switch (this.kycState) {
@@ -87,7 +87,7 @@ export default {
         default:
           return ''
       }
-    }
+    },
   },
   beforeRouteUpdate (to, from, next) {
     if (this.kycState && to.name === vueRoutes.verification.name) {
@@ -99,7 +99,7 @@ export default {
     } else {
       next()
     }
-  }
+  },
 }
 </script>
 

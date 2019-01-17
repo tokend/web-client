@@ -21,8 +21,8 @@ export default {
       kycLatestData: vuexTypes.kycLatestData,
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
-      account: vuexTypes.account
-    })
+      account: vuexTypes.account,
+    }),
   },
   async created () {
     try {
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadKyc: vuexTypes.LOAD_KYC
+      loadKyc: vuexTypes.LOAD_KYC,
     }),
     parseKycData () {
       if (this.kycState) {
@@ -59,7 +59,7 @@ export default {
         this.account.accountId
       )
       return {
-        blob_id: data.id
+        blob_id: data.id,
       }
     },
     createKycOperation (kycData) {
@@ -70,8 +70,8 @@ export default {
         accountToUpdateKYC: this.account.accountId,
         accountTypeToSet: this.accountType,
         kycLevelToSet: KYC_LEVEL_TO_SET,
-        kycData: kycData
+        kycData: kycData,
       })
-    }
-  }
+    },
+  },
 }

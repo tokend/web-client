@@ -20,7 +20,7 @@ export class DocumentUploader {
     const configResponse = await Sdk.api.documents.create(type, mimeType)
     const config = {
       ...configResponse.formData,
-      url: configResponse.url
+      url: configResponse.url,
     }
     await this._uploadFile(file, config, mimeType)
     return config.key

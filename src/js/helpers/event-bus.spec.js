@@ -3,7 +3,7 @@ import { Bus } from '@/js/helpers/event-bus'
 describe('event-bus unit test', () => {
   beforeEach(() => {
     const eventList = {
-      'my-event': 'my-event'
+      'my-event': 'my-event',
     }
 
     sinon.stub(Bus, 'eventList').get(_ => eventList)
@@ -63,7 +63,7 @@ describe('event-bus unit test', () => {
 
     expect(Bus._backlog).to.deep.equal([{
       name: 'my-event',
-      payload: 'some-payload'
+      payload: 'some-payload',
     }])
   })
 

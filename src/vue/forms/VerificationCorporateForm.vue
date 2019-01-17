@@ -134,10 +134,10 @@ export default {
       industry: '',
       foundDate: '',
       teamSize: '0',
-      website: ''
+      website: '',
     },
     accountType: ACCOUNT_TYPES.syndicate,
-    MIN_TEAM_SIZE
+    MIN_TEAM_SIZE,
   }),
   validations: {
     form: {
@@ -149,10 +149,10 @@ export default {
       teamSize: {
         required,
         integer,
-        minValue: minValue(MIN_TEAM_SIZE)
+        minValue: minValue(MIN_TEAM_SIZE),
       },
-      website: { required, url }
-    }
+      website: { required, url },
+    },
   },
   methods: {
     async submit () {
@@ -168,8 +168,8 @@ export default {
         ErrorHandler.process(e)
         this.enableForm()
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
