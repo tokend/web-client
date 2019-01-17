@@ -14,7 +14,7 @@
         <td>{{ operation.counterparty }}</td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.counterpartyEmail' | globalize }}</td>
+        <td>{{ 'tx-pages.counterparty-email' | globalize }}</td>
         <td>{{ operation.counterparty }} Email</td>
       </tr>
       <tr>
@@ -31,7 +31,7 @@
         </td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.destinationFees' | globalize }}</td>
+        <td>{{ 'tx-pages.destination-fees' | globalize }}</td>
         <td>
           {{
             {
@@ -42,7 +42,7 @@
         </td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.sourceFees' | globalize }}</td>
+        <td>{{ 'tx-pages.source-fees' | globalize }}</td>
         <td>
           {{
             {

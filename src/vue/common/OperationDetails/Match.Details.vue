@@ -10,13 +10,13 @@
         <td>{{ operation.date | formatCalendar }}</td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.fundName' | globalize }}</td>
+        <td>{{ 'tx-pages.fund-name' | globalize }}</td>
         <td>
-          {{ 'tx-pages.tokenFund' | globalize({asset: operation.baseAsset}) }}
+          {{ 'tx-pages.token-fund' | globalize({asset: operation.baseAsset}) }}
         </td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.baseAsset' | globalize }}</td>
+        <td>{{ 'tx-pages.base-asset' | globalize }}</td>
         <td>{{ operation.baseAsset }}</td>
       </tr>
       <tr>
@@ -29,7 +29,7 @@
         </td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.feePaid' | globalize }}</td>
+        <td>{{ 'tx-pages.fee-paid' | globalize }}</td>
         <td>
           {{
             { value: operation.feePaid, currency: operation.asset } |

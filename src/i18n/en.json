@@ -46,7 +46,7 @@
 
     "common": {
       "browser-not-supported": "It seems your browser is not supported. Some of the features may not work",
-      "more-btn": "More"
+      "button-text-more": "More"
     },
 
     "status-message": {
@@ -224,30 +224,30 @@
     "tx-pages": {
       "show": "Show",
       "amount": "Amount",
-      "fixedFee": "Fixed fee",
+      "fixed-fee": "Fixed fee",
       "percentFee": "Percent fee",
       "asset": "Asset",
       "date": "Date",
       "sender": "Sender",
       "counterparty": "Counterparty",
-      "counterpartyEmail": "Counterparty email",
+      "counterparty-email": "Counterparty email",
       "id": "Transaction ID",
-      "sourceFees": "Sender fees",
-      "destinationFees": "Recipient fees",
+      "source-fees": "Sender fees",
+      "destination-fees": "Recipient fees",
       "subject": "Subject",
-      "fundName": "Fund name",
-      "tokenFund": "{asset} token fund",
-      "baseAsset": "Base asset",
-      "feePaid": "Fee paid",
+      "fund-name": "Fund name",
+      "token-fund": "{asset} token fund",
+      "base-asset": "Base asset",
+      "fee-paid": "Fee paid",
       "price": "Price",
-      "destinationAsset": "Destination asset",
-      "destinationAmount": "Destination amount",
-      "txType": "Transaction type",
+      "destination-asset": "Destination asset",
+      "destination-amount": "Destination amount",
+      "tx-type": "Transaction type",
       "status": "Status",
-      "noTransactionHistory": "No transaction history",
-      "hereWillBeTheList": "Here will be the list of your transactions",
-      "somethingWentWrong": "Something went wrong",
-      "canNotLoadAssets": "Can not load assets"
+      "no-transaction-history": "No transaction history",
+      "here-will-be-the-list": "Here will be the list of your transactions",
+      "something-went-wrong": "Something went wrong",
+      "can-not-load-assets": "Can not load assets"
     }
   }
 }

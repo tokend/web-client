@@ -15,7 +15,7 @@
           <table class="tx-history__table">
             <tr>
               <td>{{ 'tx-pages.date' | globalize }}</td>
-              <td>{{ 'tx-pages.txType' | globalize }}</td>
+              <td>{{ 'tx-pages.tx-type' | globalize }}</td>
               <td>{{ 'tx-pages.amount' | globalize }}</td>
               <td class="tx-history__counterparty">
                 {{ 'tx-pages.counterparty' | globalize }}
@@ -35,8 +35,8 @@
         <template v-else>
           <div class="tx-history__no-transactions">
             <i class="tx-history__no-tx-icon mdi mdi-trending-up" />
-            <h2>{{ 'tx-pages.noTransactionHistory' | globalize }}</h2>
-            <p>{{ 'tx-pages.hereWillBeTheList' | globalize }}</p>
+            <h2>{{ 'tx-pages.no-transaction-history' | globalize }}</h2>
+            <p>{{ 'tx-pages.here-will-be-the-list' | globalize }}</p>
           </div>
         </template>
         <collection-loader
@@ -49,8 +49,8 @@
     <template v-else>
       <div class="tx-history__error">
         <i class="tx-history__error-icon mdi mdi-comment-alert-outline" />
-        <h2>{{ 'tx-pages.somethingWentWrong' | globalize }}</h2>
-        <p>{{ 'tx-pages.canNotLoadAssets' | globalize }}</p>
+        <h2>{{ 'tx-pages.something-went-wrong' | globalize }}</h2>
+        <p>{{ 'tx-pages.can-not-load-assets' | globalize }}</p>
       </div>
     </template>
   </div>

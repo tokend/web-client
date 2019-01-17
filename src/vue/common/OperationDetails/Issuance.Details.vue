@@ -14,7 +14,7 @@
         <td>{{ operation.counterparty }}</td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.counterpartyEmail' | globalize }}</td>
+        <td>{{ 'tx-pages.counterparty-email' | globalize }}</td>
         <td>{{ operation.counterparty }} Email</td>
       </tr>
       <tr>
@@ -31,7 +31,7 @@
         </td>
       </tr>
       <tr>
-        <td>{{ 'tx-pages.fixedFee' | globalize }}</td>
+        <td>{{ 'tx-pages.fixed-fee' | globalize }}</td>
         <td>
           {{
             { value: operation.fixedFee, currency: operation.feeAsset } |
