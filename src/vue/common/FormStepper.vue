@@ -62,12 +62,13 @@
  *   },
  * }
  *
- * Example of the function called when next button is clicked: 
+ * Example of the function called when next button is clicked:
  * function next (formPart) {
  *   if (this.isFormValid(formPart)) {
  *     this.currentStep++
  *   }
  * }
+ *
  */
 
 export default {
@@ -75,20 +76,20 @@ export default {
   props: {
     steps: {
       type: Object,
-      required: true
+      required: true,
     },
     currentStep: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     updateStep (step) {
       if (step.number < this.currentStep) {
         this.$emit('update:currentStep', step.number)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -101,7 +102,7 @@ export default {
   }
 
   .form-stepper__tab {
-    border-bottom: .2rem solid #c1bfd0;
+    border-bottom: .2rem solid $col-form-stepper-tab-border;
     padding: 1rem;
     cursor: pointer;
     min-width: 12rem;
@@ -111,14 +112,14 @@ export default {
 
     .form-stepper__tab-title {
       font-size: 1.2rem;
-      color: #3a4180;
+      color: $col-form-stepper-text;
       text-align: center;
     }
 
     .form-stepper__tab-icon {
       font-size: 1rem;
-      background-color: #3a4180;
-      color: white;
+      background-color: $col-form-stepper-icon-background;
+      color: $col-form-stepper-icon;
       width: 1.4rem;
       height: 1.4rem;
       border-radius: 50%;
@@ -128,15 +129,15 @@ export default {
 
     .form-stepper__tab-title {
       font-size: 1.2rem;
-      color: #3a4180;
+      color: $col-primary;
     }
   }
 
   .form-stepper__tab--active {
-    border-color: #7b6eff;
+    border-color: $col-form-stepper-tab-active;
 
     & .form-stepper__tab-title {
-      color: #7b6eff;
+      color: $col-form-stepper-tab-active;
       font-weight: bold;
     }
   }
