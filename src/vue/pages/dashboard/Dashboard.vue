@@ -125,8 +125,6 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-$custom-breakpoint: 800px;
-
 .dashboard {
   flex: 1;
 }
