@@ -29,12 +29,12 @@
           v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
           class="app__button-raised portfolio-widget__action"
           @click="$emit(EVENTS.showCreateIssuanceForm, true)">
-          Create issuance
+          {{ 'dashboard.create-issuance-lbl' | globalize }}
         </button>
         <button
           class="app__button-raised portfolio-widget__action"
           @click="$emit(EVENTS.showTransferForm, true)">
-          Send {{ currentAsset }}
+          {{ 'dashboard.send-asset-lbl' | globalize({ asset: currentAsset }) }}
         </button>
       </div>
     </div>

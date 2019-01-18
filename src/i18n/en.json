@@ -236,6 +236,8 @@
       "activity": "Activity",
       "date": "Date",
       "transaction-type": "Transaction type",
+      "create-issuance-lbl": "Create issuance",
+      "send-asset-lbl": "Send {{asset}}",
       "asset": "Asset",
       "amount": "Amount",
       "counterparty": "Counterparty",
