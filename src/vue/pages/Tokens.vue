@@ -50,6 +50,7 @@ export default {
   data: _ => ({
     ACCOUNT_TYPES,
     vueRoutes,
+    isTokensDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
