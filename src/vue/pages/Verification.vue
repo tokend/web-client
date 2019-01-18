@@ -5,11 +5,7 @@
       :class="`request-message--${kycState}`"
     >
       <p class="request-message__content">
-        {{
-          kycRequestMessageId | globalize({
-            reason: kycRejectReason
-          })
-        }}
+        {{ kycRequestMessage }}
       </p>
     </div>
     <p class="verification__subtitle">
@@ -47,13 +43,7 @@
         </div>
       </router-link>
     </div>
-    <div
-      v-if="$route.name !== 'app.verification'"
-      class="verification__form"
-    >
-      <p class="verification__subtitle verification__form-label">
-        {{ 'verification-page.account-information-lbl' | globalize }}
-      </p>
+    <div class="verification__form">
       <router-view />
     </div>
   </div>
@@ -66,6 +56,8 @@ import { mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+
+import { globalize } from '@/vue/filters/globalize'
 
 export default {
   name: 'verification',
@@ -88,6 +80,15 @@ export default {
           return 'verification-page.rejected-request-msg'
         default:
           return ''
+      }
+    },
+    kycRequestMessage () {
+      if (this.kycState === REQUEST_STATES_STR.rejected) {
+        return globalize(this.kycRequestMessageId, {
+          reason: this.kycRejectReason,
+        })
+      } else {
+        return globalize(this.kycRequestMessageId)
       }
     },
   },

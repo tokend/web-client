@@ -86,7 +86,7 @@ export const router = new Router({
               path: '/verification',
               name: vueRoutes.verification.name,
               beforeEnter: verificationGuard,
-              component: resolve => require(['@/vue/pages/settings/Verification'], resolve),
+              component: resolve => require(['@/vue/pages/Verification'], resolve),
               children: [
                 {
                   path: '/verification/general',

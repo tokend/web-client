@@ -139,7 +139,10 @@
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
       "account-type-general-description": "Deposit, widthdraw, buy, sell and transfer tokens",
-      "account-type-corporate-description": "Deposit, widthdraw, buy, sell, transfer and create tokens ",
+      "account-type-corporate-description": "Deposit, widthdraw, buy, sell, transfer and create tokens "
+    },
+
+    "verification-form": {
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",

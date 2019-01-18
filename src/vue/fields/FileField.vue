@@ -28,6 +28,13 @@
           </div>
         </div>
       </div>
+      <!--
+        title is set to empty string to avoid ambiguity concerning
+        the selected file. When we set document programmatically
+        (e.g. when dispaying files uploaded before), file input title
+        will be `No file chosen`, cause JavaScript doesn't allow to
+        select the file from the code.
+      -->
       <input
         v-bind="$attrs"
         type="file"

@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
@@ -59,7 +59,7 @@ export default {
       color: $col-top-bar-tab;
       text-decoration: none;
 
-      & :nth-child(n) {
+      span {
         font-size: 1.7rem;
       }
     }

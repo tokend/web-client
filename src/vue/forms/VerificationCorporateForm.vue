@@ -1,114 +1,119 @@
 <template>
-  <form
-    novalidate
-    class="app-form verification-corporate-form"
-    @submit.prevent="submit">
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.name"
-          @blur="touchField('form.name')"
-          id="verification-corporate-name"
-          :label="'verification-page.name-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.name')"
-          :disabled="formMixin.isDisabled"
-        />
+  <div class="verification-corporate-form">
+    <p class="verification-corporate-form__account-info-title">
+      {{ 'verification-form.account-information-lbl' | globalize }}
+    </p>
+    <form
+      novalidate
+      class="app-form"
+      @submit.prevent="submit">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.name"
+            @blur="touchField('form.name')"
+            id="verification-corporate-name"
+            :label="'verification-form.name-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.name')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.company"
-          @blur="touchField('form.company')"
-          id="verification-corporate-company"
-          :label="'verification-page.company-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.company')"
-          :disabled="formMixin.isDisabled"
-        />
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.company"
+            @blur="touchField('form.company')"
+            id="verification-corporate-company"
+            :label="'verification-form.company-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.company')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.headquarters"
-          @blur="touchField('form.headquarters')"
-          id="verification-corporate-headquarters"
-          :label="'verification-page.headquarters-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.headquarters')"
-          :disabled="formMixin.isDisabled"
-        />
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.headquarters"
+            @blur="touchField('form.headquarters')"
+            id="verification-corporate-headquarters"
+            :label="'verification-form.headquarters-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.headquarters')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.industry"
-          @blur="touchField('form.industry')"
-          id="verification-corporate-industry"
-          :label="'verification-page.industry-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.industry')"
-          :disabled="formMixin.isDisabled"
-        />
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.industry"
+            @blur="touchField('form.industry')"
+            id="verification-corporate-industry"
+            :label="'verification-form.industry-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.industry')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <date-field
-          v-model="form.foundDate"
-          :enable-time="false"
-          :disable-after="new Date().toString()"
-          @blur="touchField('form.foundDate')"
-          id="verification-corporate-found-date"
-          :label="'verification-page.found-date-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.foundDate')"
-          :disabled="formMixin.isDisabled"
-        />
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <date-field
+            v-model="form.foundDate"
+            :enable-time="false"
+            :disable-after="new Date().toString()"
+            @blur="touchField('form.foundDate')"
+            id="verification-corporate-found-date"
+            :label="'verification-form.found-date-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.foundDate')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          type="number"
-          v-model="form.teamSize"
-          @blur="touchField('form.teamSize')"
-          id="verification-corporate-teamSize"
-          :label="'verification-page.team-size-lbl' | globalize"
-          :error-message="
-            getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
-          "
-          :disabled="formMixin.isDisabled"
-        />
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            type="number"
+            v-model="form.teamSize"
+            @blur="touchField('form.teamSize')"
+            id="verification-corporate-teamSize"
+            :label="'verification-form.team-size-lbl' | globalize"
+            :error-message="
+              getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
+            "
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.website"
-          @blur="touchField('form.website')"
-          id="verification-corporate-website"
-          :label="'verification-page.website-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.website')"
-          :disabled="formMixin.isDisabled"
-        />
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.website"
+            @blur="touchField('form.website')"
+            id="verification-corporate-website"
+            :label="'verification-form.website-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.website')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
       </div>
-    </div>
-    <div class="app__form-actions">
-      <button
-        v-ripple
-        type="submit"
-        class="verification-corporate-form__submit-btn"
-        :disabled="formMixin.isDisabled"
-      >
-        {{ 'verification-page.submit-btn' | globalize }}
-      </button>
-    </div>
-  </form>
+      <div class="app__form-actions">
+        <button
+          v-ripple
+          type="submit"
+          class="verification-corporate-form__submit-btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'verification-form.submit-btn' | globalize }}
+        </button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -184,9 +189,18 @@ export default {
   width: 20rem;
 }
 
+.verification-corporate-form__account-info-title {
+  color: $col-primary;
+  font-size: 1.3rem;
+  margin-top: 4rem;
+}
+
 .verification-corporate-form {
-  background-color: $col-block-bg;
-  box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
-  padding: 2.4rem;
+  form {
+    margin-top: 1rem;
+    background-color: $col-block-bg;
+    box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
+    padding: 2.4rem;
+  }
 }
 </style>
