@@ -113,7 +113,6 @@ export default {
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.login)
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
