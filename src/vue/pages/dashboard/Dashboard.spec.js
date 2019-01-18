@@ -5,11 +5,10 @@ import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-// import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
 import { vuexTypes } from '@/vuex'
-import { ASSET_POLICIES } from '@/js/const/xdr.const'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 Vue.config.silent = true
 

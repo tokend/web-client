@@ -105,9 +105,7 @@ import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-// FIXME: move XDR-dependent object imports to sdk
-import { ACCOUNT_TYPES } from '@/js/const/xdr.const'
-import { errors, base } from '@tokend/js-sdk'
+import { errors, base, ACCOUNT_TYPES } from '@tokend/js-sdk'
 import { required, email, amount } from '@validators'
 import { globalize } from '@/vue/filters/globalize'
 

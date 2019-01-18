@@ -250,16 +250,15 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { base } from '@tokend/js-sdk'
-import config from '@/config'
-import { Sdk } from '@/sdk'
-import { Bus } from '@/js/helpers/event-bus'
-// FIXME: move XDR-dependent object imports to sdk
 import {
+  base,
   PAYMENT_FEE_SUBTYPES,
   ASSET_POLICIES,
   FEE_TYPES
-} from '@/js/const/xdr.const'
+} from '@tokend/js-sdk'
+import config from '@/config'
+import { Sdk } from '@/sdk'
+import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import { required, emailOrAccountId, amount } from '@validators'
 

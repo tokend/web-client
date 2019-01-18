@@ -8,13 +8,14 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
+import { vuexTypes } from '@/vuex'
 import {
+  errors,
+  base,
   FEE_TYPES,
   PAYMENT_FEE_SUBTYPES,
   ASSET_POLICIES
-} from '@/js/const/xdr.const'
-import { vuexTypes } from '@/vuex'
-import { errors, base } from '@tokend/js-sdk'
+} from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 

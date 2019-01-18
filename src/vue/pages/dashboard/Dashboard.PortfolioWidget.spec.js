@@ -9,7 +9,7 @@ import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
 import { vuexTypes } from '@/vuex'
 import { MockHelper } from '@/test'
-import { ASSET_POLICIES, ACCOUNT_TYPES } from '@/js/const/xdr.const'
+import { ASSET_POLICIES, ACCOUNT_TYPES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 

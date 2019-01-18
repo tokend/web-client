@@ -93,8 +93,7 @@
 import config from '@/config'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-// FIXME: move XDR-dependent object imports to sdk
-import { ASSET_POLICIES, ACCOUNT_TYPES } from '@/js/const/xdr.const'
+import { ASSET_POLICIES, ACCOUNT_TYPES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
