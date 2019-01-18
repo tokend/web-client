@@ -212,14 +212,12 @@ export default {
     },
 
     async loadBalanceIdByEmailAndCode (email, assetCode) {
-      // TODO: add sign
       const account = await this.loadAccountByEmail(email)
       if (!account) {
         Bus.error(globalize('create-issuance-form.user-does-not-found'))
         return false
       }
 
-      // TODO: add sign
       const balances = await this.loadBalancesByAccountIdAndAssetCode(
         account.id,
         assetCode

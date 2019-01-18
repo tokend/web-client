@@ -264,8 +264,7 @@ import { required, emailOrAccountId, amount } from '@validators'
 
 const VIEW_MODES = {
   submit: 'submit',
-  confirm: 'confirm',
-  success: 'success'
+  confirm: 'confirm'
 }
 
 export default {
@@ -300,8 +299,6 @@ export default {
     },
     isFeesLoaded: false,
     VIEW_MODES,
-    FEE_TYPES,
-    ASSET_POLICIES,
     config
   }),
   validations: {
