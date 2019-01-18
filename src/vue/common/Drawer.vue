@@ -105,6 +105,7 @@ export default {
   font-size: 2.6rem;
   color: $col-drawer-head-text;
   line-height: normal;
+  font-weight: 400;
 }
 
 .drawer__body {
