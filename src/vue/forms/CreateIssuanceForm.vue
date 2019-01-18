@@ -106,7 +106,7 @@ import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors, base, ACCOUNT_TYPES } from '@tokend/js-sdk'
-import { required, email, amount } from '@validators'
+import { required, email, amount, maxValueWrapper } from '@validators'
 import { globalize } from '@/vue/filters/globalize'
 
 const EVENTS = {
@@ -128,20 +128,20 @@ export default {
     accountOwnedTokens: [],
     accountOwnedTokensCodes: []
   }),
-  validations: {
-    form: {
-      assetCode: { required },
-      amount: {
-        required,
-        amount
-        // TODO: fix it
-        // maxValueWrapper: maxValueWrapper(() => {
-        //   console.log('this', this)
-        //   return +this.selectedTokenAvailableToIssuance
-        // })
-      },
-      receiver: { required, email },
-      reference: { required }
+  validations () {
+    return {
+      form: {
+        assetCode: { required },
+        amount: {
+          required,
+          amount,
+          maxValueWrapper: maxValueWrapper(() => {
+            return +this.selectedTokenAvailableToIssuance
+          })
+        },
+        receiver: { required, email },
+        reference: { required }
+      }
     }
   },
   computed: {

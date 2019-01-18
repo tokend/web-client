@@ -306,11 +306,6 @@ export default {
       amount: {
         required,
         amount
-        // TODO: fix it
-        // maxValueWrapper: maxValueWrapper(() => {
-        //   console.log('this', this)
-        //   return +this.selectedTokenAvailableToIssuance
-        // })
       },
       recipient: { required, emailOrAccountId },
       subject: { required }
