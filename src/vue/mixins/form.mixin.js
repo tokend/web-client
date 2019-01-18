@@ -27,9 +27,6 @@ export default {
     isFormValid () {
       this.$v.$touch()
       const isValid = !this.$v.$invalid
-      if (!isValid) {
-        Bus.error('validation.failed')
-      }
       return isValid
     },
     /**
