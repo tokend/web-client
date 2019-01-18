@@ -22,10 +22,6 @@
       <form
         novalidate
         @submit.prevent="submit">
-        <h2 class="app__page-heading">
-          {{ 'create-issuance-form.issuance-form' | globalize }}
-        </h2>
-
         <div class="app__form-row">
           <select-field
             id="issuance-asset"

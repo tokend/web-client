@@ -18,9 +18,6 @@
     <template
       v-else-if="view.mode === VIEW_MODES.submit ||
         view.mode === VIEW_MODES.confirm">
-      <h2 class="app__page-heading">
-        {{ 'transfer-form.form-heading' | globalize }}
-      </h2>
       <form
         @submit.prevent="processTransfer"
         id="transfer-form"
