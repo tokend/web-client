@@ -100,8 +100,8 @@ export default {
   methods: {
     isTypeOf (constructor) {
       return this.operation instanceof constructor
-    }
-  }
+    },
+  },
 }
 </script>
 

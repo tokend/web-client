@@ -10,7 +10,8 @@ $large: 1440px;
 $x-large: 1920px;
 
 @mixin button () {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   border: none;
   padding: .8rem 1.6rem;
   font-size: 1.4rem;

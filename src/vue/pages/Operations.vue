@@ -11,6 +11,16 @@
           :values="tokens"
         />
       </div>
+      <div slot="extra">
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isWithdrawalDrawerShown = true"
+        >
+          <i class="mdi mdi-download op-history__btn-icon" />
+          {{ 'op-pages.withdrawal' | globalize }}
+        </button>
+      </div>
     </top-bar>
     <template v-if="!isLoadFailed">
       <div class="op-history__list" v-if="isLoaded">
@@ -86,6 +96,7 @@ export default {
     operations: [],
     isLoaded: false,
     isLoadFailed: false,
+    isWithdrawalDrawerShown: false,
     pageLoader: () => {},
   }),
   computed: {
@@ -154,6 +165,7 @@ export default {
 
 <style lang="scss">
   @import '~@scss/variables';
+  @import "~@scss/mixins";
 
   .op-history__filters{
     display: flex;
@@ -162,6 +174,12 @@ export default {
 
   .op-history__filters-text{
     margin-right: 1.5rem;
+  }
+
+  .op-history__btn-icon {
+    display: flex;
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
   }
 
   .op-history__list {
