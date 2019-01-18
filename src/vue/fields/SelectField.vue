@@ -23,7 +23,7 @@
       </span>
       <div>
         <i
-          class="mdi mdi-menu-down select-field__selected-icon"
+          class="select-field__selected-icon mdi mdi-chevron-down"
           :class="{ 'select-field__selected-icon--active': isExpanded }"
         />
       </div>
@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "scss/variables";
 
 .select-field {
@@ -83,6 +83,25 @@ export default {
       "&.select-field__selected--focused"
   );
   @include text-font-sizes;
+
+  .asset-selector__select-field & {
+    border-bottom: 0;
+    background-size: 0;
+  }
+}
+
+.select-field__selected-icon {
+  will-change: transform;
+  color: $field-color-text;
+  font-size: 2.2rem;
+
+  &:before {
+    transition: transform .2s ease-out;
+  }
+
+  &.select-field__selected-icon--active:before {
+    transform: rotate(-180deg)
+  }
 }
 
 .select-field__selected-value {
@@ -96,6 +115,11 @@ export default {
   font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
+
+  .asset-selector__select-field & {
+    font-size: 1.8rem;
+    font-weight: 300;
+  }
 }
 
 .select-field__label {
@@ -121,20 +145,6 @@ export default {
 .select-field--label-minimized > .select-field__label {
   top: 0;
   @include label-font-sizes;
-}
-
-.select-field__selected-icon {
-  margin: 0;
-  will-change: transform;
-  color: $col-field-icon !important;
-  transition: 0.2s ease-out;
-  margin-top: -.2rem;
-  width: 2rem;
-  height: 2rem;
-
-  &.select-field__selected-icon--active {
-    transform: rotate(-180deg);
-  }
 }
 
 .select-field__list {
