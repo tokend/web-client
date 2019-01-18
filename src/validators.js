@@ -12,6 +12,6 @@ export const amountRange = (from, to) => value => Number(value) &&
 export const emailOrAccountId = value => {
   return validators.email(value) || base.Keypair.isValidPublicKey(value)
 }
-export const document = value => value instanceof DocumentContainer
+export const documentContainer = value => value instanceof DocumentContainer
 
 export * from 'vuelidate/lib/validators'

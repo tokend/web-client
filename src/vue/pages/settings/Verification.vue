@@ -12,48 +12,46 @@
         }}
       </p>
     </div>
-    <div class="account-type">
-      <p class="account-type_label verification__label">
-        {{ 'verification-page.account-type-lbl' | globalize }}
-      </p>
-      <div class="account-type__block">
-        <router-link
-          :to="{ name: 'app.verification.general' }"
-          class="account-type__item"
-        >
-          <p class="account-type__item-title">
-            {{ 'verification-page.account-type-general-title' | globalize }}
-          </p>
-          <p class="account-type__item-description">
-            {{ 'verification-page.account-type-general-description'
-              | globalize }}
-          </p>
-          <div class="account-type__selected-icon">
-            <i class="mdi mdi-check" />
-          </div>
-        </router-link>
-        <router-link
-          :to="{ name: 'app.verification.corporate' }"
-          class="account-type__item"
-        >
-          <p class="account-type__item-title">
-            {{ 'verification-page.account-type-corporate-title' | globalize }}
-          </p>
-          <p class="account-type__item-description">
-            {{ 'verification-page.account-type-corporate-description'
-              | globalize }}
-          </p>
-          <div class="account-type__selected-icon">
-            <i class="mdi mdi-check" />
-          </div>
-        </router-link>
-      </div>
+    <p class="verification__subtitle">
+      {{ 'verification-page.account-type-lbl' | globalize }}
+    </p>
+    <div class="account-type-selector">
+      <router-link
+        :to="vueRoutes.verification.general"
+        class="account-type-selector__item"
+      >
+        <p class="account-type-selector__item-title">
+          {{ 'verification-page.account-type-general-title' | globalize }}
+        </p>
+        <p class="account-type-selector__item-description">
+          {{ 'verification-page.account-type-general-description'
+            | globalize }}
+        </p>
+        <div class="account-type-selector__selected-icon">
+          <i class="mdi mdi-check" />
+        </div>
+      </router-link>
+      <router-link
+        :to="vueRoutes.verification.corporate"
+        class="account-type-selector__item"
+      >
+        <p class="account-type-selector__item-title">
+          {{ 'verification-page.account-type-corporate-title' | globalize }}
+        </p>
+        <p class="account-type-selector__item-description">
+          {{ 'verification-page.account-type-corporate-description'
+            | globalize }}
+        </p>
+        <div class="account-type-selector__selected-icon">
+          <i class="mdi mdi-check" />
+        </div>
+      </router-link>
     </div>
     <div
       v-if="$route.name !== 'app.verification'"
       class="verification__form"
     >
-      <p class="verification__label verification__form-label">
+      <p class="verification__subtitle verification__form-label">
         {{ 'verification-page.account-information-lbl' | globalize }}
       </p>
       <router-view />
@@ -64,12 +62,16 @@
 <script>
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+
 import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
 export default {
   name: 'verification',
+  data: _ => ({
+    vueRoutes,
+  }),
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
@@ -129,16 +131,13 @@ export default {
   color: $col-primary-txt;
 }
 
-.account-type {
+.verification__subtitle {
+  color: $col-primary;
+  font-size: 1.3rem;
   margin-top: 4rem;
 }
 
-.verification__label {
-  color: $col-primary;
-  font-size: 1.3rem;
-}
-
-.account-type__block {
+.account-type-selector {
   margin-top: 1rem;
   display: flex;
 
@@ -147,7 +146,7 @@ export default {
   }
 }
 
-.account-type__item {
+.account-type-selector__item {
   display: flex;
   position: relative;
   flex-direction: column;
@@ -164,24 +163,24 @@ export default {
 .router-link-exact-active {
   border: .2rem solid $col-primary-lighten;
 
-  .account-type__selected-icon {
+  .account-type-selector__selected-icon {
     visibility: visible;
   }
 }
 
-.account-type__item-title {
+.account-type-selector__item-title {
   color: $col-primary;
   font-size: 1.8rem;
 }
 
-.account-type__item-description {
+.account-type-selector__item-description {
   margin-top: .8rem;
   color: $col-secondary;
   font-size: 1.2rem;
   text-align: center;
 }
 
-.account-type__selected-icon {
+.account-type-selector__selected-icon {
   width: 2.4rem;
   height: 2.4rem;
   padding: .2rem;

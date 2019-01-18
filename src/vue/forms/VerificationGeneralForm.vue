@@ -242,7 +242,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
-import { required, document } from '@validators'
+import { required, documentContainer } from '@validators'
 
 export default {
   name: 'verification-general-form',
@@ -290,9 +290,9 @@ export default {
         postalCode: { required },
       },
       documents: {
-        idDocument: { document },
-        proofDocument: { document },
-        verificationPhoto: { document },
+        idDocument: { documentContainer },
+        proofDocument: { documentContainer },
+        verificationPhoto: { documentContainer },
       },
     },
   },
@@ -316,8 +316,8 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const kycData = await this.createKycData()
-        const operation = this.createKycOperation(kycData)
+        const kycBlob = await this.createKycBlob()
+        const operation = this.createKycOperation(kycBlob)
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {

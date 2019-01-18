@@ -5,7 +5,6 @@ import SelectField from '../fields/SelectField'
 import DateField from '../fields/DateField'
 import FileField from '@/vue/fields/FileField'
 
-import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'

@@ -54,7 +54,6 @@ export default {
 
   .top-bar__main {
     display: flex;
-    font-size: 1.7rem;
 
     a {
       color: $col-top-bar-tab;

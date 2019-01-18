@@ -17,7 +17,7 @@
         <div class="file-input__text">
           <p class="file-input__title">
             <template v-if="$attrs.disabled">
-              {{ 'file-field.file-selected-msg' | globalize }}
+              {{ 'file-field.disabled-msg' | globalize }}
             </template>
             <template v-else>
               {{ 'file-field.title' | globalize }}

@@ -17,6 +17,7 @@ export const vueRoutes = Object.freeze({
       name: 'app.verification.corporate',
     },
   },
+  security: { name: 'app.security' },
   issuance: { name: 'app.issuance' },
 
   // stubs:

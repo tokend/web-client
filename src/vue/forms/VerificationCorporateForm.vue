@@ -159,8 +159,8 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        const kycData = await this.createKycData()
-        const operation = this.createKycOperation(kycData)
+        const kycBlob = await this.createKycBlob()
+        const operation = this.createKycOperation(kycBlob)
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {

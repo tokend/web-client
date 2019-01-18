@@ -4,13 +4,13 @@
       <template slot="main">
         <router-link
           v-ripple
-          :to="{ name: 'app.verification' }"
+          :to="vueRoutes.verification"
         >
           <span>{{ verificationTabId | globalize }}</span>
         </router-link>
         <router-link
           v-ripple
-          :to="{ name: 'app.security' }"
+          :to="vueRoutes.security"
         >
           <span>{{ 'settings-page.security-tab' | globalize }}</span>
         </router-link>
@@ -23,6 +23,8 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 
+import { vueRoutes } from '@/vue-router/routes'
+
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
@@ -33,6 +35,9 @@ export default {
   components: {
     TopBar,
   },
+  data: _ => ({
+    vueRoutes,
+  }),
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
