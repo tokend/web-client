@@ -1,8 +1,8 @@
 <template>
   <div class="op-history">
-    <template v-if="!isLoadFailed">
-      <div class="op-history__navigation">
-        <span class="op-history__navigation-text">
+    <top-bar v-if="!isLoadFailed">
+      <div slot="main" class="op-history__filters">
+        <span class="op-history__filters-text">
           {{ 'op-pages.show' | globalize }}:
         </span>
         <select-field-custom
@@ -11,6 +11,8 @@
           :values="tokens"
         />
       </div>
+    </top-bar>
+    <template v-if="!isLoadFailed">
       <div class="op-history__list" v-if="isLoaded">
         <template v-if="operations.length">
           <table class="op-history__table">
@@ -63,6 +65,7 @@
 import OperationRecord from '@/vue/common/OperationRecord'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import TopBar from '@/vue/common/TopBar'
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -75,6 +78,7 @@ export default {
     OperationRecord,
     SelectFieldCustom,
     CollectionLoader,
+    TopBar,
   },
   data: _ => ({
     tokenCode: null,
@@ -151,13 +155,12 @@ export default {
 <style lang="scss">
   @import '~@scss/variables';
 
-  .op-history__navigation{
+  .op-history__filters{
     display: flex;
     align-items: center;
-    margin-bottom: 6.2rem;
   }
 
-  .op-history__navigation-text{
+  .op-history__filters-text{
     margin-right: 1.5rem;
   }
 
