@@ -8,6 +8,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vuexTypes } from '@/vuex'
 import {
   errors,
@@ -119,13 +120,13 @@ describe('TransferForm component', () => {
     })
 
     it('handle errors', async () => {
-      feesStub.throws(TestHelper.getError(errors.NotFoundError))
-      sinon.stub(Bus, 'error')
+      feesStub.rejects(TestHelper.getError(errors.NotFoundError))
+      sinon.stub(ErrorHandler, 'process')
 
       await wrapper.vm.loadPaymentFee(paymentDetails)
 
       expect(feesResource.get.calledOnce).to.be.true
-      expect(Bus.error.calledOnce).to.be.true
+      expect(ErrorHandler.process.calledOnce).to.be.true
     })
   })
 
@@ -243,6 +244,7 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'updateView')
       sinon.stub(wrapper.vm, 'disableForm')
       sinon.stub(wrapper.vm, 'enableForm')
+      sinon.stub(ErrorHandler, 'process')
     })
 
     it('do not try to process transfer if form is not valid', async () => {
@@ -263,11 +265,13 @@ describe('TransferForm component', () => {
       expect(wrapper.vm.getFees.called).to.be.false
       expect(wrapper.vm.updateView.called).to.be.false
       expect(wrapper.vm.enableForm.calledOnce).to.be.false
+      expect(ErrorHandler.process.calledOnce).to.be.false
     })
 
     it('try to process transfer if form is valid', async () => {
       stubFeesWithValidResult()
 
+      // make form valid to pass isFormValid()
       wrapper.vm.form = {
         tokenCode: 'BTC',
         amount: '10',
@@ -283,16 +287,24 @@ describe('TransferForm component', () => {
       expect(wrapper.vm.getFees.calledOnce).to.be.true
       expect(wrapper.vm.updateView.calledOnce).to.be.true
       expect(wrapper.vm.enableForm.calledOnce).to.be.true
+      expect(ErrorHandler.process.calledOnce).to.be.false
     })
 
     it('handle errors', async () => {
-      sinon.stub(wrapper.vm, 'getFees')
-        .throws(TestHelper.getError(errors.NotFoundError))
-      sinon.stub(Bus, 'error')
+      sinon.stub(wrapper.vm, 'getFees').rejects()
+
+      // make form valid to pass isFormValid()
+      wrapper.vm.form = {
+        tokenCode: 'BTC',
+        amount: '10',
+        recipient: mockHelper.getDefaultAccountId,
+        subject: 'some subject',
+        isPaidForRecipient: false,
+      }
 
       await wrapper.vm.processTransfer()
 
-      expect(Bus.error.calledOnce).to.be.true
+      expect(ErrorHandler.process.calledOnce).to.be.true
     })
   })
 
@@ -402,14 +414,14 @@ describe('TransferForm component', () => {
       sinon.stub(transactionsResource, 'submitOperations')
         .withArgs(true)
         .throws(TestHelper.getError(errors.NotFoundError))
-      sinon.stub(Bus, 'error')
+      sinon.stub(ErrorHandler, 'process')
 
       await wrapper.vm.submit()
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
       expect(transactionsResource.submitOperations.calledOnce).to.be.true
-      expect(Bus.error.calledOnce).to.be.true
+      expect(ErrorHandler.process.calledOnce).to.be.true
       expect(wrapper.vm.enableForm.calledOnce).to.be.true
     })
   })
