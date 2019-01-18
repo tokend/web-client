@@ -40,10 +40,10 @@ describe('Dashboard.AssetSelector component', () => {
         assetDetails: {
           policies: [
             { value: ASSET_POLICIES.transferable },
-            { value: ASSET_POLICIES.baseAsset }
+            { value: ASSET_POLICIES.baseAsset },
           ],
-          details: { logo: { key: 'some-key' } }
-        }
+          details: { logo: { key: 'some-key' } },
+        },
       },
       {
         asset: 'USD',
@@ -52,19 +52,19 @@ describe('Dashboard.AssetSelector component', () => {
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
-            { value: ASSET_POLICIES.statsQuoteAsset }
-          ]
-        }
+            { value: ASSET_POLICIES.statsQuoteAsset },
+          ],
+        },
       },
       {
         asset: 'ETH',
         balance: '0',
         assetDetails: {
           policies: [
-            { value: ASSET_POLICIES.baseAsset }
-          ]
-        }
-      }
+            { value: ASSET_POLICIES.baseAsset },
+          ],
+        },
+      },
     ]
     mockedTokens = [
       {
@@ -72,37 +72,37 @@ describe('Dashboard.AssetSelector component', () => {
         name: 'Dollar',
         policies: [
           {
-            value: ASSET_POLICIES.transferable
+            value: ASSET_POLICIES.transferable,
           },
           {
-            value: ASSET_POLICIES.baseAsset
+            value: ASSET_POLICIES.baseAsset,
           },
           {
-            value: ASSET_POLICIES.statsQuoteAsset
-          }
-        ]
+            value: ASSET_POLICIES.statsQuoteAsset,
+          },
+        ],
       },
       {
         code: 'BTC',
         name: 'Bitcoin',
         policies: [
           {
-            value: ASSET_POLICIES.transferable
+            value: ASSET_POLICIES.transferable,
           },
           {
-            value: ASSET_POLICIES.baseAsset
-          }
-        ]
+            value: ASSET_POLICIES.baseAsset,
+          },
+        ],
       },
       {
         code: 'ETH',
         name: 'Ethereum',
         policies: [
           {
-            value: ASSET_POLICIES.transferable
-          }
-        ]
-      }
+            value: ASSET_POLICIES.transferable,
+          },
+        ],
+      },
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
@@ -111,12 +111,12 @@ describe('Dashboard.AssetSelector component', () => {
 
     store = new Vuex.Store({
       getters: accountModule.getters,
-      actions: accountModule.actions
+      actions: accountModule.actions,
     })
 
     wrapper = shallowMount(AssetSelector, {
       store,
-      localVue
+      localVue,
     })
   })
 
@@ -133,7 +133,7 @@ describe('Dashboard.AssetSelector component', () => {
 
       shallowMount(AssetSelector, {
         store,
-        localVue
+        localVue,
       })
 
       expect(AssetSelector.methods.loadTokens.calledOnce).to.be.true

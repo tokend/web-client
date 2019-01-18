@@ -44,7 +44,7 @@
 <script>
 
 const EVENTS = {
-  input: 'input'
+  input: 'input',
 }
 
 export default {
@@ -66,18 +66,18 @@ export default {
 
     // textarea proxies
     rows: { type: [String, Number], default: 4 },
-    cols: { type: [String, Number], default: undefined }
+    cols: { type: [String, Number], default: undefined },
   },
 
   data: () => ({
     hasValue: false,
-    currentLength: '0'
+    currentLength: '0',
   }),
 
   computed: {
     isNoLabel () {
       return this.label === null || this.label === '' || this.label === undefined
-    }
+    },
   },
 
   methods: {
@@ -85,8 +85,8 @@ export default {
       event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
       this.$emit(EVENTS.input, event.target.value)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -114,7 +114,7 @@ export default {
   .text-field__input {
     caret-color: $field-color-text;
     padding: 1.6rem 1.6rem 3.6rem;
-    background-color: $textarea-background-color !important;
+    background-color: $textarea-background-color;
     border: .2rem solid rgba($field-color-unfocused, 0.5);
     width: 100%;
     resize: none;

@@ -2,14 +2,14 @@ import assetCreateRecordJSON from '@/test/mocks/asset-create'
 import { MockWrapper } from '../../test/index'
 import {
   RecordWrapper,
-  RecordUnwrapper
+  RecordUnwrapper,
 } from './index'
 
 import { AssetCreateRequestRecord } from './requests/asset-create.record'
 import { AssetUpdateRequestRecord } from './requests/asset-update.record'
 import { SaleRequestRecord } from './requests/sale-create.record'
 import {
-  UpdateSaleDetailsRequestRecord
+  UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
 import { UpdateKycRequestRecord } from './requests/update-kyc.record'
 
@@ -62,7 +62,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       rawJSON.details.asset_create.policies = policies
         .map(p => ({
           value: p,
-          name: 'SomePolicyNameWeDoNotInterestedIn'
+          name: 'SomePolicyNameWeDoNotInterestedIn',
         }))
 
       return rawJSON
@@ -290,12 +290,12 @@ describe('Record unwrapper opts() method should return proper data', () => {
     it('quoteAssets', () => {
       const quoteAssets = [
         { quote_asset: 'ETH', price: '1.000000' },
-        { quote_asset: 'DAI', price: '1.000000' }
+        { quote_asset: 'DAI', price: '1.000000' },
       ]
 
       const expectedResult = [
         { asset: 'ETH', price: '1' },
-        { asset: 'DAI', price: '1' }
+        { asset: 'DAI', price: '1' },
       ]
 
       const rawJSON = setQuoteAssets(saleCreateJSON, quoteAssets)

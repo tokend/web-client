@@ -51,8 +51,8 @@ export default {
   props: {
     sale: {
       type: SaleRecord,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>

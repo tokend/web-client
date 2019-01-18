@@ -4,6 +4,7 @@ import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
 import TextareaField from '@/vue/fields/TextareaField'
 import TickField from '@/vue/fields/TickField'
+import FileField from '@/vue/fields/FileField'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -14,13 +15,14 @@ export default {
     InputField,
     SelectField,
     TextareaField,
-    TickField
+    TickField,
+    FileField,
   },
   mixins: [validationMixin],
   data: _ => ({
     formMixin: {
-      isDisabled: false
-    }
+      isDisabled: false,
+    },
   }),
   methods: {
     isFormValid () {
@@ -45,11 +47,13 @@ export default {
     *
     * @param {string} field - the string with the field name. Works also for
      *                nested fields, such as `form.email`.
+    * @param {Object} options - the interpolation options object for
+     *                translation.
     *
     * @returns {string} the human-readable error message if the
      *                  field is invalid, empty string - otherwise
     */
-    getFieldErrorMessage (field) {
+    getFieldErrorMessage (field, options) {
       if (!this.$v.$invalid) {
         return ''
       }
@@ -63,7 +67,8 @@ export default {
       for (const rule of Object.keys(fieldDetails.$params)) {
         if (!fieldDetails[rule]) {
           return globalize(`validation.field-error`, {
-            context: rule
+            context: rule,
+            ...options,
           })
         }
       }
@@ -86,6 +91,6 @@ export default {
     },
     enableForm () {
       this.formMixin.isDisabled = false
-    }
-  }
+    },
+  },
 }

@@ -3,12 +3,12 @@
 module.exports = {
   root: true,
   extends: [
-    'distributed-lab/vue'
+    'distributed-lab/vue',
   ],
   parserOptions: {
     parser: 'babel-eslint',
     ecmaVersion: 2017,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   rules: {
     // 0 off, 1 warning, 2 error
@@ -19,10 +19,10 @@ module.exports = {
     // allow debugger during development
     'no-debugger': 1,
     'no-warning-comments': [1, {
-      'terms': ['hardcoded'], location: 'anywhere'
+      'terms': ['hardcoded'], location: 'anywhere',
     }],
     'no-console': [1, {
-      allow: ['warn', 'error']
+      allow: ['warn', 'error'],
     }],
     'no-tabs': 2,
     'max-len': [1, {
@@ -31,21 +31,22 @@ module.exports = {
       'ignoreUrls': true,
       'ignoreStrings': true,
       'ignoreTemplateLiterals': true,
-      'ignoreRegExpLiterals': true
+      'ignoreRegExpLiterals': true,
     }],
     'vue/max-attributes-per-line': [1, {
       'singleline': 2,
       'multiline': {
         'max': 1,
-        'allowFirstLine': false
-      }
-    }]
+        'allowFirstLine': false,
+      },
+    }],
+    'comma-dangle': [1, 'always-multiline'],
   },
   env: {
-    mocha: true
+    mocha: true,
   },
   globals: {
     sinon: true,
-    expect: true
-  }
+    expect: true,
+  },
 }

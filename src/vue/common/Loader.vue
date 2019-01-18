@@ -13,8 +13,8 @@
 export default {
   name: 'loader',
   props: {
-    messageId: { type: String, default: '' }
-  }
+    messageId: { type: String, default: '' },
+  },
 }
 </script>
 

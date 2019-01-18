@@ -54,7 +54,7 @@ import { KEY_CODES } from '@/js/const/key-codes.const'
 import _isObject from 'lodash/isObject'
 
 const EVENTS = {
-  input: 'input'
+  input: 'input',
 }
 
 export default {
@@ -62,27 +62,27 @@ export default {
   props: {
     value: {
       type: [String, Number, Boolean, Object, Array, Date],
-      default: ''
+      default: '',
     },
     values: {
       type: Array,
-      default: _ => []
+      default: _ => [],
     },
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data: () => ({
     currentValue: null, // selected item in the list
     selectedValue: null, // active list element (for arrow navigation)
     isExpanded: false,
-    KEY_CODES
+    KEY_CODES,
   }),
 
   watch: {
@@ -90,7 +90,7 @@ export default {
       if (value) {
         document.addEventListener('click', this.onDocumentClick)
       }
-    }
+    },
   },
 
   created () {
@@ -196,8 +196,8 @@ export default {
       index === 0 ? index += valuesList.length - 1 : index -= 1
       this.selectedValue = valuesList[index]
       return index
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -222,9 +222,9 @@ export default {
   color: $field-color-text;
   padding: $field-input-padding;
   @include material-border(
-      $field-color-focused,
-      $field-color-unfocused,
-      "&.select-field__selected--focused"
+    $field-color-focused,
+    $field-color-unfocused,
+    "&.select-field__selected--focused"
   );
   @include text-font-sizes;
 
@@ -300,7 +300,7 @@ export default {
   margin-top: -1rem;
   position: absolute;
   left: 0;
-  min-width: 17rem;
+  width: 100%;
   top: calc(100% + .4rem);
   background-color: $col-dropdown-bg;
   box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);

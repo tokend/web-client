@@ -28,9 +28,9 @@ describe('Dashboard component', () => {
       assetDetails: {
         policies: [
           { value: ASSET_POLICIES.transferable },
-          { value: ASSET_POLICIES.baseAsset }
-        ]
-      }
+          { value: ASSET_POLICIES.baseAsset },
+        ],
+      },
     },
     {
       asset: 'USD',
@@ -39,19 +39,19 @@ describe('Dashboard component', () => {
         policies: [
           { value: ASSET_POLICIES.transferable },
           { value: ASSET_POLICIES.baseAsset },
-          { value: ASSET_POLICIES.statsQuoteAsset }
-        ]
-      }
+          { value: ASSET_POLICIES.statsQuoteAsset },
+        ],
+      },
     },
     {
       asset: 'ETH',
       balance: '0',
       assetDetails: {
         policies: [
-          { value: ASSET_POLICIES.baseAsset }
-        ]
-      }
-    }
+          { value: ASSET_POLICIES.baseAsset },
+        ],
+      },
+    },
   ]
 
   function mountComponentWithSpecifiedAccountBalances (mockedAccountBalances) {
@@ -60,12 +60,12 @@ describe('Dashboard component', () => {
 
     store = new Vuex.Store({
       getters: accountModule.getters,
-      actions: accountModule.actions
+      actions: accountModule.actions,
     })
 
     wrapper = shallowMount(Dashboard, {
       store,
-      localVue
+      localVue,
     })
   }
 
@@ -133,10 +133,10 @@ describe('Dashboard component', () => {
             assetDetails: {
               policies: [
                 { value: ASSET_POLICIES.transferable },
-                { value: ASSET_POLICIES.baseAsset }
-              ]
-            }
-          }
+                { value: ASSET_POLICIES.baseAsset },
+              ],
+            },
+          },
         ]
         mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
 

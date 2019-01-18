@@ -27,28 +27,28 @@ export default {
   props: {
     messageId: {
       type: String,
-      default: 'form-confirmation.message-text-default'
+      default: 'form-confirmation.message-text-default',
     },
     okButtonTextId: {
       type: String,
-      default: 'form-confirmation.button-text-ok'
+      default: 'form-confirmation.button-text-ok',
     },
     cancelButtonTextId: {
       type: String,
-      default: 'form-confirmation.button-text-cancel'
+      default: 'form-confirmation.button-text-cancel',
     },
     isPending: {
       type: Boolean,
-      default: false
+      default: false,
     },
     okEvent: {
       type: String,
-      default: 'ok'
+      default: 'ok',
     },
     cancelEvent: {
       type: String,
-      default: 'cancel'
-    }
+      default: 'cancel',
+    },
   },
   methods: {
     emitOk () {
@@ -56,8 +56,8 @@ export default {
     },
     emitCancel () {
       this.$emit(this.cancelEvent)
-    }
-  }
+    },
+  },
 }
 </script>
 

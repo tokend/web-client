@@ -34,7 +34,7 @@ describe('SignupForm component test', () => {
     const expectedResults = {
       email: ['required', 'email'],
       password: ['required', 'password'],
-      confirmPassword: ['required', 'password', 'sameAsPassword']
+      confirmPassword: ['required', 'password', 'sameAsPassword'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
@@ -49,7 +49,7 @@ describe('SignupForm component test', () => {
     const fieldBindings = {
       '#signup-email': 'email',
       '#signup-password': 'password',
-      '#signup-confirm-password': 'confirmPassword'
+      '#signup-confirm-password': 'confirmPassword',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -78,15 +78,15 @@ describe('SignupForm component test', () => {
       wrapper = shallowMount(SignupForm, {
         localVue,
         propsData: {
-          submitEvent: 'submit-event'
+          submitEvent: 'submit-event',
         },
         data: _ => ({
           form: {
             email: 'alice@mail.com',
             password: 'qwe123',
-            confirmPassword: 'qwe123'
-          }
-        })
+            confirmPassword: 'qwe123',
+          },
+        }),
       })
     })
 
@@ -119,7 +119,7 @@ describe('SignupForm component test', () => {
       const form = {
         email: 'foo@bar.com',
         password: 'Nwr2mW21m',
-        confirmPassword: 'Nwr2mW21m'
+        confirmPassword: 'Nwr2mW21m',
       }
 
       wrapper.setData({ form })

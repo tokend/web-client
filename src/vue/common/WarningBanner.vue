@@ -9,8 +9,8 @@
 <script>
 export default {
   props: {
-    messageId: { type: String, required: true }
-  }
+    messageId: { type: String, required: true },
+  },
 }
 </script>
 

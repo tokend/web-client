@@ -74,30 +74,30 @@ import get from 'lodash/get'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
-  assetChange: 'asset-change'
+  assetChange: 'asset-change',
 }
 
 export default {
   name: 'dashboard-asset-selector',
   components: {
     SelectField,
-    NoDataMessage
+    NoDataMessage,
   },
   props: {
     currentAsset: {
       type: [String, Object],
-      default: config.DEFAULT_QUOTE_ASSET
-    }
+      default: config.DEFAULT_QUOTE_ASSET,
+    },
   },
   data: () => ({
     EVENTS,
     tokens: [],
     config,
-    ASSET_POLICIES
+    ASSET_POLICIES,
   }),
   computed: {
     ...mapGetters({
-      balances: vuexTypes.accountBalances
+      balances: vuexTypes.accountBalances,
     }),
     tokensList () {
       const balancesAssetCodes = this.balances.map(i => i.asset)
@@ -117,7 +117,7 @@ export default {
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
         ...baseAssets,
-        ...otherAssets
+        ...otherAssets,
       ].map(item => `${item.name || item.code} (${item.code})`)
     },
     currentAssetForSelect () {
@@ -142,7 +142,7 @@ export default {
         return `${config.FILE_STORAGE}/${logoKey}`
       }
       return defaultUrl
-    }
+    },
   },
   async created () {
     await this.loadTokens()
@@ -155,8 +155,8 @@ export default {
       } catch (error) {
         ErrorHandler.process(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

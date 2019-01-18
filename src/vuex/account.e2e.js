@@ -20,13 +20,13 @@ describe('account.module', () => {
   const thresholds = {
     low: 10,
     med: 50,
-    high: 25
+    high: 25,
   }
   const referrer = 'GDTWRMF2CA6UTGO62ONVTJWACFZVDWVBQ2NVQLAKHQX5AXAZUO4WBYVK'
   const referrals = [
     'GDUXVIFZFRXBLEY6DVTPYE5RAJLJP3RBX7BCWJ3B33P5VORNFH6SZOKF',
     'GBU5657PSZDX7Z7JQKMRQUUQPA5QYGWQ25TAZ7YLLFFJUERD3OLCOQ5S',
-    'GANOA26NIJF3J3C6PZNRYWL3LG5OFBF3AXS5WG2EPWQXG2QNYBT7KJ72'
+    'GANOA26NIJF3J3C6PZNRYWL3LG5OFBF3AXS5WG2EPWQXG2QNYBT7KJ72',
   ]
   const policiesTypeI = 3
   const policiesTypes = [1, 2]
@@ -34,26 +34,26 @@ describe('account.module', () => {
   const externalSystemAccounts = [{
     type: {
       name: 'Bitcoin',
-      value: 2
+      value: 2,
     },
     data: 'mutsYGuQyAKjyT4a7d1t2T2kDhjbxwFZju',
-    asset_code: 'BTC'
+    asset_code: 'BTC',
   },
   {
     type: {
       name: 'Litecoin',
-      value: 10
+      value: 10,
     },
     data: 'mgTbDyNGwJeewjdXmU9cRQe8WDauVqn4WK',
-    asset_code: 'LTC'
+    asset_code: 'LTC',
   },
   {
     type: {
       name: 'Ethereum',
-      value: 7
+      value: 7,
     },
     data: '0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E55e',
-    asset_code: 'ETH'
+    asset_code: 'ETH',
   }]
 
   beforeEach(async () => {
@@ -63,7 +63,7 @@ describe('account.module', () => {
       getters: {},
       mutations: {},
       state: {},
-      modules: { account }
+      modules: { account },
     })
 
     mockHelper.useMockWallet()
@@ -79,20 +79,20 @@ describe('account.module', () => {
       'thresholds': {
         'low_threshold': thresholds.low,
         'med_threshold': thresholds.med,
-        'high_threshold': thresholds.high
+        'high_threshold': thresholds.high,
       },
       'balances': [],
       'signers': [],
       'policies': {
         'account_policies_type_i': policiesTypeI,
-        'account_policies_types': policiesTypes
+        'account_policies_types': policiesTypes,
       },
       'account_kyc': {
         'KYCData': {
-          'blob_id': kycBlobId
+          'blob_id': kycBlobId,
         } },
       'external_system_accounts': externalSystemAccounts,
-      'referrals': referrals
+      'referrals': referrals,
     })
 
     await store.dispatch(vuexTypes.LOAD_ACCOUNT, id)
@@ -140,7 +140,7 @@ describe('account.module', () => {
       .equal({
         lowThreshold: thresholds.low,
         medThreshold: thresholds.med,
-        highThreshold: thresholds.high
+        highThreshold: thresholds.high,
       })
   })
 
@@ -176,7 +176,7 @@ describe('account.module', () => {
     const expectedDepositAddresses = {
       2: 'mutsYGuQyAKjyT4a7d1t2T2kDhjbxwFZju',
       10: 'mgTbDyNGwJeewjdXmU9cRQe8WDauVqn4WK',
-      7: '0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E55e'
+      7: '0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E55e',
     }
 
     expect(store.getters[vuexTypes.accountDepositAddresses])

@@ -33,5 +33,5 @@ export const tableScrollShadow = {
   unbind (el) {
     el.removeEventListener('scroll', scrollStyling)
     window.removeEventListener('resize', scrollStyling)
-  }
+  },
 }

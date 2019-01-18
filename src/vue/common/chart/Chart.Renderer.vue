@@ -50,20 +50,20 @@ export default {
     requiredTicks: { type: Array, default: () => [] },
     precision: { type: Number, default: 0 },
     hasValue: { type: Boolean, default: true },
-    isLoading: { type: Boolean, default: false }
+    isLoading: { type: Boolean, default: false },
   },
 
   data: () => ({
     defaultAsset: config.DEFAULT_QUOTE_ASSET,
     chartRenderingTime: 500,
-    dataCount: 360
+    dataCount: 360,
   }),
 
   computed: {
     normalizedData () {
       return this.data.map(item => ({
         time: moment(item.timestamp).toDate(),
-        value: parseFloat(parseFloat(item.value).toFixed(this.precision))
+        value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
     },
     barTicks () {
@@ -74,13 +74,13 @@ export default {
         case 'hour': return this.dataCount / 30
         default: return this.dataCount / 30
       }
-    }
+    },
   },
 
   watch: {
     data (data) {
       this.render()
-    }
+    },
   },
 
   mounted (...args) {
@@ -104,7 +104,7 @@ export default {
         width: parentElement.clientWidth,
         height: parentElement.clientHeight < 250
           ? 250
-          : parentElement.clientHeight
+          : parentElement.clientHeight,
       }
     },
 
@@ -129,7 +129,7 @@ export default {
     formatMoneyCustom (amount) {
       const curSym = ({ 'BTC': 'BTC' })[this.currency]
       const moneyFormats = {
-        'en': (curSym, amount) => `${curSym}${amount}`
+        'en': (curSym, amount) => `${curSym}${amount}`,
       }
       return moneyFormats['en'](curSym, amount.toFixed(this.precision))
     },
@@ -150,7 +150,7 @@ export default {
 
         return {
           time: new Date(defaultDate / itemLength),
-          value: max
+          value: max,
         }
       })
       const { max, min } = this.getMaxAndMin(data)
@@ -311,7 +311,7 @@ export default {
           max,
           max - ((max - min) * 0.3333),
           max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
-          min
+          min,
         ].concat(this.requiredTicks))
         .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
         .tickSizeInner(width)
@@ -475,8 +475,8 @@ export default {
       }
 
       tip.classed(`${className}__tip--hidden`, true)
-    }
-  }
+    },
+  },
 }
 </script>
 

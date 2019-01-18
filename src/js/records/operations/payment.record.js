@@ -55,7 +55,7 @@ export class PaymentRecord extends OpRecord {
         _get(this._record, 'sourceFeeData.fixedFee')),
       destination: MathUtil.add(
         _get(this._record, 'destinationFeeData.actualPaymentFee'),
-        _get(this._record, 'destinationFeeData.fixedFee'))
+        _get(this._record, 'destinationFeeData.fixedFee')),
     }
   }
 }

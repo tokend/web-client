@@ -34,12 +34,12 @@ describe('Dashboard.InfoWidget component', () => {
 
     store = new Vuex.Store({
       getters: accountModule.getters,
-      actions: accountModule.actions
+      actions: accountModule.actions,
     })
 
     wrapper = shallowMount(InfoWidget, {
       store,
-      localVue
+      localVue,
     })
   })
 

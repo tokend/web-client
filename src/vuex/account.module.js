@@ -5,7 +5,7 @@ import { Sdk } from '../sdk'
 
 export const state = {
   account: {},
-  balancesDetails: []
+  balancesDetails: [],
 }
 
 export const mutations = {
@@ -15,7 +15,7 @@ export const mutations = {
 
   [vuexTypes.SET_ACCOUNT_BALANCES_DETAILS] (state, balancesDetails) {
     state.balancesDetails = balancesDetails
-  }
+  },
 }
 
 export const actions = {
@@ -29,7 +29,7 @@ export const actions = {
     const response = await Sdk.horizon.account.getDetails(accountId)
 
     commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, response.data)
-  }
+  },
 }
 
 export const getters = {
@@ -58,12 +58,12 @@ export const getters = {
     state.account,
     'accountKyc.kycData.blobId'
   ),
-  [vuexTypes.accountBalances]: state => state.balancesDetails
+  [vuexTypes.accountBalances]: state => state.balancesDetails,
 }
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 }

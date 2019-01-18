@@ -1,44 +1,82 @@
 <template>
-  <span class="email-getter" v-if="isLoading">
-    {{ 'email-getter.loading' }}
-  </span>
-  <span class="email-getter" v-else>
-    {{ email || fallback || id }}
+  <span class="email-getter">
+    <template
+      v-if="isLoaded"
+      :title="isTitled && result"
+    >
+      {{ result }}
+    </template>
+    <template v-else-if="isLoadingFailed">
+      &mdash;
+    </template>
+    <template v-else>
+      {{ 'email-getter.loading-msg' | globalize }}
+    </template>
   </span>
 </template>
 
 <script>
 import { Sdk } from '@/sdk'
-import { ErrorHandler } from '@/js/helpers/error-handler'
+import config from '@/config'
 
 export default {
   props: {
-    id: { type: String, required: true },
-    fallback: { type: String, default: '' }
+    accountId: {
+      type: String,
+      default: '',
+    },
+    balanceId: {
+      type: String,
+      default: '',
+    },
+    isTitled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: _ => ({
-    email: null,
-    isLoading: false
+    result: '',
+    isLoaded: false,
+    isLoadingFailed: false,
   }),
-  created () {
-    this.getEmail()
-  },
-  methods: {
-    async getEmail () {
-      this.isLoading = true
-      try {
-        const user = (await Sdk.api.users.getPage({
-          address: this.id
-        })).data
-        this.email = user.length ? user[0].email : ''
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
-      this.isLoading = false
+
+  async created () {
+    if (this.accountId || this.balanceId) {
+      await this.loadResult()
+      this.isLoaded = true
+    } else {
+      this.isLoadingFailed = true
     }
-  }
+  },
+
+  methods: {
+    async loadResult () {
+      try {
+        const accountId = await this.getAccountId()
+        const { data } = await Sdk.api.users.get(accountId)
+        this.result = data.email
+      } catch (error) {
+        if (config.DEBUG) {
+          console.error(error)
+        }
+        this.result = this.accountId || this.balanceId
+      }
+    },
+
+    async getAccountId () {
+      if (this.accountId) {
+        return this.accountId
+      } else if (this.balanceId) {
+        const { data } = await Sdk.horizon.balances.getAccount(this.balanceId)
+        return data.accountId
+      } else {
+        return ''
+      }
+    },
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
 </style>

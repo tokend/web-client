@@ -56,24 +56,24 @@ export default {
   data: _ => ({
     form: {
       email: '',
-      password: ''
-    }
+      password: '',
+    },
   }),
   validations: {
     form: {
       email: { required },
-      password: { required }
-    }
+      password: { required },
+    },
   },
   computed: {
     ...mapGetters([
-      vuexTypes.wallet
-    ])
+      vuexTypes.wallet,
+    ]),
   },
   methods: {
     ...mapActions({
       loadWallet: vuexTypes.LOAD_WALLET,
-      loadAccount: vuexTypes.LOAD_ACCOUNT
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -94,9 +94,9 @@ export default {
             params: {
               paramsBase64: btoa(JSON.stringify({
                 walletId: e.meta.walletId,
-                email: this.form.email
-              }))
-            }
+                email: this.form.email,
+              })),
+            },
           })
           return
         }
@@ -115,8 +115,8 @@ export default {
         }
         throw e
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

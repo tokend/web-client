@@ -31,14 +31,14 @@ export default {
   name: 'key-viewer',
   components: {
     ClipboardField,
-    QrCode
+    QrCode,
   },
   props: {
     value: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
 

@@ -21,8 +21,8 @@ import Logo from '../assets/Logo'
 export default {
   name: 'auth',
   components: {
-    Logo
-  }
+    Logo,
+  },
 }
 </script>
 
@@ -32,8 +32,7 @@ export default {
 
 .auth {
   display: flex;
-  min-height: 100vh;
-  width: 100vw;
+  flex: 1;
 }
 
 .auth__titles,

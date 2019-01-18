@@ -48,14 +48,14 @@
 
 <script>
 const EVENTS = {
-  input: 'input'
+  input: 'input',
 }
 
 export default {
   name: 'chart-tabs',
   props: {
     value: { type: String, default: '' },
-    isPending: { type: Boolean, default: false }
+    isPending: { type: Boolean, default: false },
   },
 
   data: () => ({
@@ -66,9 +66,9 @@ export default {
       week: 'week',
       month: 'month',
       year: 'year',
-      all: 'all'
-    }
-  })
+      all: 'all',
+    },
+  }),
 }
 </script>
 

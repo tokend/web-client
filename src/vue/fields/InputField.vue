@@ -34,7 +34,7 @@
 <script>
 
 const EVENTS = {
-  input: 'input'
+  input: 'input',
 }
 
 export default {
@@ -43,7 +43,7 @@ export default {
     value: { type: [String, Number], default: undefined },
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
-    whiteAutofill: { type: Boolean, default: true }
+    whiteAutofill: { type: Boolean, default: true },
   },
 
   computed: {
@@ -52,14 +52,14 @@ export default {
         ...this.$listeners,
         input: event => {
           this.$emit(EVENTS.input, event.target.value)
-        }
+        },
       }
-    }
+    },
   },
 
   methods: {
-    onInput (event) {}
-  }
+    onInput (event) {},
+  },
 }
 </script>
 
@@ -89,7 +89,7 @@ export default {
   }
 
   &--autofill-white:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 5rem $col-block-bg !important;
+    -webkit-box-shadow: inset 0 0 0 5rem $col-block-bg;
   }
 }
 
@@ -192,7 +192,7 @@ export default {
 }
 
 .input-field--monospaced > .input-field__input {
-  font-family: 'SourceCodePro', Courier, monospace !important;
+  font-family: 'SourceCodePro', Courier, monospace;
   font-weight: 500;
 }
 

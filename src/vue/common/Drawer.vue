@@ -7,8 +7,8 @@
           <h2 class="drawer__heading">
             <slot name="heading" />
           </h2>
-          <button class="app__button-icon" @click="closeSelf">
-            <i class="mdi mdi-close" />
+          <button class="app__button-icon drawer__close-btn" @click="closeSelf">
+            <i class="mdi mdi-close drawer__close-icon" />
           </button>
         </div>
         <div class="drawer__body">
@@ -36,7 +36,7 @@ import { KEY_CODES } from '@/js/const/key-codes.const'
  */
 export default {
   props: {
-    isShown: { type: Boolean, default: true }
+    isShown: { type: Boolean, default: true },
   },
   created () {
     document.addEventListener('keydown', this.onDocumentKeyDown)
@@ -54,8 +54,8 @@ export default {
     },
     closeSelf () {
       this.$emit('update:isShown', false)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -79,6 +79,25 @@ export default {
   right: 0;
   z-index: -1;
   background-color: rgba(0, 0, 0, 0.1)
+}
+
+.drawer__close-btn {
+  padding: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawer__close-icon {
+  font-size: 2.4rem;
+  margin-top: -.2rem; // magic value to align icon in the center
+
+  &:before {
+    font-weight: 700;
+    vertical-align: middle;
+  }
 }
 
 .drawer__pane {

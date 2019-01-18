@@ -9,7 +9,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   data: _ => ({
-    vueRoutes
-  })
+    vueRoutes,
+  }),
 }
 </script>

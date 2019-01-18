@@ -12,8 +12,8 @@ export default {
   props: {
     iconName: { type: String, default: '' },
     msgTitle: { type: String, required: true },
-    msgMessage: { type: String, required: true }
-  }
+    msgMessage: { type: String, required: true },
+  },
 }
 </script>
 

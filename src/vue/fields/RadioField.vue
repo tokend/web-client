@@ -25,7 +25,7 @@
 <script>
 
 const EVENTS = {
-  input: 'input'
+  input: 'input',
 }
 
 export default {
@@ -35,20 +35,20 @@ export default {
     disabled: { type: Boolean, default: false },
     cbValue: { type: [Number, String], default: null },
     title: { type: [String, Number], default: undefined },
-    required: { type: Boolean, default: false }
+    required: { type: Boolean, default: false },
   },
 
   computed: {
     id () {
       return `radio-field-${this._uid}`
-    }
+    },
   },
 
   methods: {
     onChange (event) {
       this.$emit(EVENTS.input, event.target.value)
-    }
-  }
+    },
+  },
 }
 </script>
 

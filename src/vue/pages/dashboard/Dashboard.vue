@@ -44,9 +44,9 @@
     <drawer :is-shown.sync="showDrawer">
       <template v-if="createIssuanceFormIsShown">
         <template slot="heading">
-          {{ 'create-issuance-form.issuance-form' | globalize }}
+          {{ 'issuance.issuance-form-heading' | globalize }}
         </template>
-        <create-issuance @close-drawer="showDrawer = false" />
+        <issuance-form @cancel="showDrawer = false" />
       </template>
       <template v-if="transferFormIsShown">
         <template slot="heading">
@@ -60,7 +60,7 @@
 
 <script>
 import AssetSelector from './Dashboard.AssetSelector'
-import CreateIssuance from '@/vue/forms/CreateIssuanceForm'
+import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
 import InfoWidget from './Dashboard.InfoWidget'
 import Chart from '@/vue/common/chart/Chart'
@@ -75,12 +75,12 @@ export default {
   name: 'dashboard',
   components: {
     AssetSelector,
-    CreateIssuance,
+    IssuanceForm,
     Transfer,
     InfoWidget,
     Chart,
     Loader,
-    Drawer
+    Drawer,
   },
   data: () => ({
     currentAsset: null,
@@ -90,13 +90,13 @@ export default {
     showDrawer: false,
     scale: 'month',
     config,
-    ACCOUNT_TYPES
+    ACCOUNT_TYPES,
   }),
   computed: {
     ...mapGetters([
       vuexTypes.accountBalances,
-      vuexTypes.accountTypeI
-    ])
+      vuexTypes.accountTypeI,
+    ]),
   },
   watch: {
     accountBalances () {
@@ -113,7 +113,7 @@ export default {
     },
     transferFormIsShown (status) {
       this.showDrawer = status
-    }
+    },
   },
   async created () {
     this.isLoading = true
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setCurrentAsset (value) {
       const regExp = /\(([^)]+)\)/
@@ -134,8 +134,8 @@ export default {
         this.currentAsset =
           keys.find(a => a === 'ETH') || keys[0] || null
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

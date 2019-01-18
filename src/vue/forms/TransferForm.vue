@@ -251,7 +251,7 @@ import {
   base,
   PAYMENT_FEE_SUBTYPES,
   ASSET_POLICIES,
-  FEE_TYPES
+  FEE_TYPES,
 } from '@tokend/js-sdk'
 import config from '@/config'
 import { Sdk } from '@/sdk'
@@ -261,13 +261,13 @@ import { required, emailOrAccountId, amount } from '@validators'
 
 const VIEW_MODES = {
   submit: 'submit',
-  confirm: 'confirm'
+  confirm: 'confirm',
 }
 
 export default {
   name: 'transfers-form',
   components: {
-    FormConfirmation
+    FormConfirmation,
   },
   mixins: [FormMixin],
   data: () => ({
@@ -276,42 +276,42 @@ export default {
       amount: '',
       recipient: '',
       subject: '',
-      isPaidForRecipient: false
+      isPaidForRecipient: false,
     },
     view: {
       mode: VIEW_MODES.submit,
-      opts: {}
+      opts: {},
     },
     fees: {
       source: {
         fixed: '',
         percent: '',
-        feeAsset: ''
+        feeAsset: '',
       },
       destination: {
         fixed: '',
         percent: '',
-        feeAsset: ''
-      }
+        feeAsset: '',
+      },
     },
     isFeesLoaded: false,
     VIEW_MODES,
-    config
+    config,
   }),
   validations: {
     form: {
       amount: {
         required,
-        amount
+        amount,
       },
       recipient: { required, emailOrAccountId },
-      subject: { required }
-    }
+      subject: { required },
+    },
   },
   computed: {
     ...mapGetters([
       vuexTypes.accountBalances,
-      vuexTypes.accountId
+      vuexTypes.accountId,
     ]),
     userTransferableTokens () {
       return this.accountBalances.filter(i => {
@@ -329,7 +329,7 @@ export default {
       const amount = Number(this.form.amount)
       const balance = Number(get(this.balance, 'balance') || 0)
       return amount > balance
-    }
+    },
   },
   created () {
     this.setTokenCode()
@@ -338,7 +338,7 @@ export default {
   methods: {
     globalize,
     ...mapActions({
-      loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS
+      loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
       this.disableForm()
@@ -376,7 +376,7 @@ export default {
           sourcePercentFee: fees.source.percent,
           sourceFeeAsset: fees.source.feeAsset,
           subject: this.form.subject,
-          tokenCode: this.form.tokenCode
+          tokenCode: this.form.tokenCode,
         }
         this.updateView(VIEW_MODES.confirm, opts)
       } catch (error) {
@@ -387,7 +387,7 @@ export default {
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
         const response = await Sdk.api.users.getPage({
-          email: recipient
+          email: recipient,
         })
         return response.data[0].id
       } else {
@@ -400,18 +400,18 @@ export default {
           asset: this.form.tokenCode,
           amount: this.form.amount,
           account: this.accountId,
-          subtype: PAYMENT_FEE_SUBTYPES.outgoing
+          subtype: PAYMENT_FEE_SUBTYPES.outgoing,
         }),
         this.loadPaymentFee({
           asset: this.form.tokenCode,
           amount: this.form.amount,
           account: recipientAccountId,
-          subtype: PAYMENT_FEE_SUBTYPES.incoming
-        })
+          subtype: PAYMENT_FEE_SUBTYPES.incoming,
+        }),
       ])
       return {
         source: senderFees,
-        destination: recipientFees
+        destination: recipientFees,
       }
     },
     async loadPaymentFee ({ asset, amount, account, subtype }) {
@@ -434,17 +434,17 @@ export default {
           sourceFee: {
             maxPaymentFee: +this.view.opts.sourcePercentFee,
             fixedFee: +this.view.opts.sourceFixedFee,
-            feeAsset: this.view.opts.sourceFeeAsset
+            feeAsset: this.view.opts.sourceFeeAsset,
           },
           destinationFee: {
             maxPaymentFee: +this.view.opts.destinationPercentFee,
             fixedFee: +this.view.opts.destinationFixedFee,
-            feeAsset: this.view.opts.destinationFeeAsset
+            feeAsset: this.view.opts.destinationFeeAsset,
           },
-          sourcePaysForDest: this.view.opts.feeFromSource
+          sourcePaysForDest: this.view.opts.feeFromSource,
         },
         subject: this.view.opts.subject,
-        asset: this.form.tokenCode
+        asset: this.form.tokenCode,
       })
     },
     updateView (mode, opts = {}, clear = false) {
@@ -465,8 +465,8 @@ export default {
         this.$route.params.tokenCode ||
         this.tokenCodes[0] ||
         null
-    }
-  }
+    },
+  },
 }
 </script>
 

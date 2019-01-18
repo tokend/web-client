@@ -8,6 +8,7 @@ export const vueRoutes = Object.freeze({
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
   dashboard: { name: 'app.dashboard' },
+  issuance: { name: 'app.issuance' },
 
   // stubs:
   terms: { name: 'terms' },
@@ -28,5 +29,5 @@ export const vueRoutes = Object.freeze({
   requests: { name: 'app.requests' },
   sales: { name: 'app.sales' },
   mySales: { name: 'app.my-sales' },
-  preissuanceUpload: { name: 'app.preissuance-upload' }
+  preissuanceUpload: { name: 'app.preissuance-upload' },
 })

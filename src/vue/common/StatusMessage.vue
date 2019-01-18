@@ -27,7 +27,7 @@ const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
   error: 'error',
-  info: 'info'
+  info: 'info',
 })
 
 export default {
@@ -36,7 +36,7 @@ export default {
     messageId: '',
     messageType: '',
     isShown: false,
-    timeoutId: null
+    timeoutId: null,
   }),
   created () {
     Bus.on(Bus.eventList.success, message =>
@@ -61,8 +61,8 @@ export default {
       this.timeoutId = window.setTimeout(_ => {
         this.isShown = false
       }, CLOSE_TIMEOUT_MS)
-    }
-  }
+    },
+  },
 }
 </script>
 

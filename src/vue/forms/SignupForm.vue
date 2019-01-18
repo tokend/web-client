@@ -59,7 +59,7 @@ import {
   email,
   required,
   password,
-  sameAs
+  sameAs,
 } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -73,15 +73,15 @@ export default {
   props: {
     submitEvent: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data: _ => ({
     form: {
       email: '',
       password: '',
-      confirmPassword: ''
-    }
+      confirmPassword: '',
+    },
   }),
   validations: {
     form: {
@@ -90,9 +90,9 @@ export default {
       confirmPassword: {
         required,
         password,
-        sameAsPassword: sameAs(function () { return this.form.password })
-      }
-    }
+        sameAsPassword: sameAs(function () { return this.form.password }),
+      },
+    },
   },
   methods: {
     async submit () {
@@ -116,8 +116,8 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
-    }
-  }
+    },
+  },
 }
 </script>
 

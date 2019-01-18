@@ -10,39 +10,42 @@
     </h2>
 
     <div class="auth-page__content">
-      <signup-form
-        v-if="!recoveryKeypair"
-        :submit-event="'submit'"
-        @submit="handleChildFormSubmit"
-      />
+      <template v-if="!recoveryKeypair">
+        <signup-form
+          :submit-event="'submit'"
+          @submit="handleChildFormSubmit"
+        />
 
-      <div class="signup__seed-wrp" v-else>
-        <p class="signup__seed-explanations">
-          {{ 'auth-pages.save-recovery-seed-details' | globalize }}
-        </p>
-
-        <key-viewer :value="recoveryKeypair.secret()" />
-
-        <div class="signup__actions">
-          <button
-            v-ripple
-            @click="submit"
-            :disabled="formMixin.isDisabled"
-            class="auth-page__submit-btn"
-          >
-            {{ 'auth-pages.continue' | globalize }}
-          </button>
+        <div class="auth-page__tips">
+          <div class="auth-page__tip">
+            {{ 'auth-pages.have-an-account-question' | globalize }}
+            <router-link class="auth-page__tip-link" :to="vueRoutes.login">
+              {{ 'auth-pages.have-an-account-answer' | globalize }}
+            </router-link>
+          </div>
         </div>
-      </div>
-    </div>
+      </template>
 
-    <div class="auth-page__tips">
-      <div class="auth-page__tip">
-        {{ 'auth-pages.have-an-account-question' | globalize }}
-        <router-link class="auth-page__tip-link" :to="vueRoutes.login">
-          {{ 'auth-pages.have-an-account-answer' | globalize }}
-        </router-link>
-      </div>
+      <template v-else>
+        <div class="signup__seed-wrp">
+          <p class="signup__seed-explanations">
+            {{ 'auth-pages.save-recovery-seed-details' | globalize }}
+          </p>
+
+          <key-viewer :value="recoveryKeypair.secret()" />
+
+          <div class="signup__actions">
+            <button
+              v-ripple
+              @click="submit"
+              :disabled="formMixin.isDisabled"
+              class="auth-page__submit-btn"
+            >
+              {{ 'auth-pages.continue' | globalize }}
+            </button>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -64,18 +67,18 @@ export default {
   name: 'signup',
   components: {
     SignupForm,
-    KeyViewer
+    KeyViewer,
   },
   mixins: [FormMixin],
   data: _ => ({
     recoveryKeypair: null,
     password: null,
     email: null,
-    vueRoutes
+    vueRoutes,
   }),
   methods: {
     ...mapActions({
-      storeWallet: vuexTypes.STORE_WALLET
+      storeWallet: vuexTypes.STORE_WALLET,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -101,9 +104,9 @@ export default {
             params: {
               paramsBase64: btoa(JSON.stringify({
                 email: wallet.email,
-                walletId: wallet.id
-              }))
-            }
+                walletId: wallet.id,
+              })),
+            },
           })
         }
       } catch (e) {
@@ -111,8 +114,8 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
-    }
-  }
+    },
+  },
 }
 </script>
 

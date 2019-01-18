@@ -16,7 +16,7 @@ const mutations = {
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
   SET_KYC_APPROVED_DATA: 'SET_KYC_APPROVED_DATA',
-  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA'
+  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
 }
 
 const actions = {
@@ -35,7 +35,7 @@ const actions = {
   // kyc
   LOAD_KYC: 'LOAD_KYC',
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
-  LOAD_KYC_DATA: 'LOAD_KYC_DATA'
+  LOAD_KYC_DATA: 'LOAD_KYC_DATA',
 }
 
 const getters = {
@@ -78,11 +78,11 @@ const getters = {
   kycState: 'kycState',
   kycStateI: 'kycStateI',
   kycLatestData: 'kycLatestData',
-  kycApprovedData: 'kycApprovedData'
+  kycApprovedData: 'kycApprovedData',
 }
 
 export const vuexTypes = {
   ...mutations,
   ...actions,
-  ...getters
+  ...getters,
 }

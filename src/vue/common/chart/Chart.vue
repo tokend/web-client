@@ -31,12 +31,12 @@ export default {
   name: 'chart',
   components: {
     ChartRenderer,
-    ScaleTabs
+    ScaleTabs,
   },
   props: {
     baseAsset: { type: String, required: true },
     quoteAsset: { type: String, default: '' },
-    initialScale: { type: String, default: 'month' }
+    initialScale: { type: String, default: 'month' },
   },
   data: () => ({
     data: {},
@@ -45,8 +45,8 @@ export default {
     scale: 'month',
     common: {
       precision: config.DECIMAL_POINTS,
-      defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET
-    }
+      defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
+    },
   }),
   computed: {
     history () {
@@ -66,12 +66,12 @@ export default {
     },
     lockedAssets () {
       return { base: this.baseAsset, quote: this.quoteAsset }
-    }
+    },
   },
   watch: {
     async lockedAssets (value) {
       await this.loadPrices()
-    }
+    },
   },
   async created () {
     await this.loadPrices()
@@ -97,7 +97,7 @@ export default {
             week: this.generateRandomData(),
             hour: this.generateRandomData(),
             month: this.generateRandomData(),
-            year: this.generateRandomData()
+            year: this.generateRandomData(),
           }
         }
       }
@@ -105,8 +105,8 @@ export default {
     },
     generateRandomData () {
       return [{ value: '0', timestamp: new Date().toString() }]
-    }
-  }
+    },
+  },
 }
 </script>
 

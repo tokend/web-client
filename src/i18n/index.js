@@ -15,12 +15,12 @@ const FEE_TYPE_TRANSLATION_CODES = Object.freeze({
   [FEE_TYPES.investFee]: 'fee-types.invest',
   [FEE_TYPES.capitalDeploymentFee]: 'fee-types.capital-deployment',
   [FEE_TYPES.operationFee]: 'fee-types.operation',
-  [FEE_TYPES.payoutFee]: 'fee-types.payout'
+  [FEE_TYPES.payoutFee]: 'fee-types.payout',
 })
 
 const PAYMENT_FEE_SUBTYPE_TRANSLATION_CODES = Object.freeze({
   [PAYMENT_FEE_SUBTYPES.outgoing]: 'fee-types.outgoing',
-  [PAYMENT_FEE_SUBTYPES.incoming]: 'fee-types.incoming'
+  [PAYMENT_FEE_SUBTYPES.incoming]: 'fee-types.incoming',
 })
 
 const language = 'en'
@@ -40,9 +40,9 @@ export const i18nOptions = {
   resources: {
     en: {
       translation: {
-        ...i18n.translations
-      }
-    }
+        ...i18n.translations,
+      },
+    },
   },
   whitelist: ['en'],
   // set to true if you need en-US/en-UK lng's:
@@ -61,7 +61,7 @@ export const i18nOptions = {
             nextDay: i18n.config.date.formats.next_day,
             lastWeek: i18n.config.date.formats.last_week,
             nextWeek: i18n.config.date.formats.next_week,
-            sameElse: i18n.config.date.presets.datetime
+            sameElse: i18n.config.date.presets.datetime,
           })
         case 'money':
           const formats = i18n.config.number.formats.amounts
@@ -105,6 +105,6 @@ export const i18nOptions = {
           console.warn(`Unknown format: ${format}, skipping..`)
           return param
       }
-    }
-  }
+    },
+  },
 }

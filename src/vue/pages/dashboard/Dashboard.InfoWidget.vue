@@ -144,10 +144,10 @@ export default {
   name: 'info-widget',
   components: {
     NoDataMessage,
-    EmailGetter
+    EmailGetter,
   },
   props: {
-    currentAsset: { type: String, required: true }
+    currentAsset: { type: String, required: true },
   },
   data: () => ({
     transactionsToShow: 10,
@@ -155,17 +155,17 @@ export default {
     config,
     TX_STATES,
     index: -1,
-    transactions: []
+    transactions: [],
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.accountId
-    ])
+      vuexTypes.accountId,
+    ]),
   },
   watch: {
     currentAsset () {
       this.loadList()
-    }
+    },
   },
   created () {
     this.loadList()
@@ -176,7 +176,7 @@ export default {
         asset: this.currentAsset,
         account_id: this.accountId,
         limit: this.transactionsToShow,
-        order: this.transactionsOrder
+        order: this.transactionsOrder,
       })
 
       this.transactions = response.data.map(el => {
@@ -188,8 +188,8 @@ export default {
     },
     isSelected (i) {
       return this.index === i
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -21,7 +21,7 @@ button,
 textarea {
   background: $col-app-background;
   color: $col-primary;
-  font-family: 'Circular', 'Noto Sans', '-apple-system', 'BlinkMacSystemFont', sans-serif !important;
+  font-family: 'Circular', 'Noto Sans', '-apple-system', 'BlinkMacSystemFont', sans-serif;
   font-weight: 400;
   letter-spacing: 0.005rem;
 }
@@ -42,6 +42,7 @@ button {
   padding: 0;
   width: auto;
   overflow: visible;
+  cursor: pointer;
 
   background: transparent;
 
@@ -78,6 +79,9 @@ html {
   // https://www.igorkromin.net/index.php/2016/05/20/mobile-safari-scrolling-problem-with-an-input-field-inside-a-fixed-div/
   overflow: auto !important;
   -webkit-overflow-scrolling : touch !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 body {

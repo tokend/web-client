@@ -19,18 +19,18 @@ describe('formatFeeSubType filter test', () => {
       const spy = sinon.spy(i18next, 't')
       formatFeeSubType({
         type: FEE_TYPES.paymentFee,
-        subtype: subtype
+        subtype: subtype,
       })
       expect(
         spy
           .withArgs('formats.fee_subtype', {
             value: {
               type: FEE_TYPES.paymentFee,
-              subtype: subtype
+              subtype: subtype,
             },
             interpolation: {
-              escapeValue: false
-            }
+              escapeValue: false,
+            },
           })
           .calledOnce
       ).to.be.true

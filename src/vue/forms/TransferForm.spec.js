@@ -14,7 +14,7 @@ import {
   base,
   FEE_TYPES,
   PAYMENT_FEE_SUBTYPES,
-  ASSET_POLICIES
+  ASSET_POLICIES,
 } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
@@ -52,9 +52,9 @@ describe('TransferForm component', () => {
         assetDetails: {
           policies: [
             { value: ASSET_POLICIES.transferable },
-            { value: ASSET_POLICIES.baseAsset }
-          ]
-        }
+            { value: ASSET_POLICIES.baseAsset },
+          ],
+        },
       },
       {
         asset: 'USD',
@@ -63,19 +63,19 @@ describe('TransferForm component', () => {
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
-            { value: ASSET_POLICIES.statsQuoteAsset }
-          ]
-        }
+            { value: ASSET_POLICIES.statsQuoteAsset },
+          ],
+        },
       },
       {
         asset: 'ETH',
         balance: '0',
         assetDetails: {
           policies: [
-            { value: ASSET_POLICIES.baseAsset }
-          ]
-        }
-      }
+            { value: ASSET_POLICIES.baseAsset },
+          ],
+        },
+      },
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
@@ -84,11 +84,11 @@ describe('TransferForm component', () => {
 
     store = new Vuex.Store({
       getters: accountModule.getters,
-      actions: accountModule.actions
+      actions: accountModule.actions,
     })
     wrapper = shallowMount(TransferForm, {
       store,
-      localVue
+      localVue,
     })
   })
 
@@ -97,7 +97,7 @@ describe('TransferForm component', () => {
       asset: 'BTC',
       subtype: PAYMENT_FEE_SUBTYPES.outgoing,
       account: 'SOME_ACCOUNT_ID',
-      amount: 10
+      amount: 10,
     }
     let feesResource
     let feesStub
@@ -135,7 +135,7 @@ describe('TransferForm component', () => {
     beforeEach(() => {
       usersApiResource = mockHelper.getApiResourcePrototype('users')
       const expectedCounterpartyData = {
-        data: [{ id: mockHelper.getDefaultAccountId }]
+        data: [{ id: mockHelper.getDefaultAccountId }],
       }
       sinon.stub(usersApiResource, 'getPage').resolves(expectedCounterpartyData)
     })
@@ -204,13 +204,13 @@ describe('TransferForm component', () => {
         destination: {
           fixed: '0.000001',
           percent: '0.01',
-          feeAsset: 'BTC'
+          feeAsset: 'BTC',
         },
         source: {
           fixed: '0.000001',
           percent: '0.01',
-          feeAsset: 'BTC'
-        }
+          feeAsset: 'BTC',
+        },
       }
       sinon.stub(wrapper.vm, 'getFees').resolves(expectedFees)
     }
@@ -225,7 +225,7 @@ describe('TransferForm component', () => {
         convertedLocked: '0.000000',
         convertedToAsset: 'USD',
         locked: '0.000000',
-        requireReview: false
+        requireReview: false,
       }
       wrapper = shallowMount(TransferForm, {
         store,
@@ -233,8 +233,8 @@ describe('TransferForm component', () => {
         computed: {
           balance () {
             return mockedBalance
-          }
-        }
+          },
+        },
       })
 
       sinon.stub(wrapper.vm, 'getCounterparty')
@@ -253,7 +253,7 @@ describe('TransferForm component', () => {
         amount: '',
         recipient: '',
         subject: '',
-        isPaidForRecipient: false
+        isPaidForRecipient: false,
       }
 
       await wrapper.vm.processTransfer()
@@ -273,7 +273,7 @@ describe('TransferForm component', () => {
         amount: '10',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
-        isPaidForRecipient: false
+        isPaidForRecipient: false,
       }
 
       await wrapper.vm.processTransfer()
@@ -300,7 +300,7 @@ describe('TransferForm component', () => {
     it('userTransferableTokens()', () => {
       const expectUserTransferableTokens = [
         mockedAccountBalances[0],
-        mockedAccountBalances[1]
+        mockedAccountBalances[1],
       ]
       expect(wrapper.vm.userTransferableTokens)
         .to.deep.equal(expectUserTransferableTokens)
@@ -309,7 +309,7 @@ describe('TransferForm component', () => {
     it('tokenCodes()', () => {
       const expectUserTransferableTokens = [
         mockedAccountBalances[0],
-        mockedAccountBalances[1]
+        mockedAccountBalances[1],
       ]
       wrapper = shallowMount(TransferForm, {
         store,
@@ -317,8 +317,8 @@ describe('TransferForm component', () => {
         computed: {
           userTransferableTokens () {
             return expectUserTransferableTokens
-          }
-        }
+          },
+        },
       })
 
       expect(wrapper.vm.tokenCodes)
@@ -339,8 +339,8 @@ describe('TransferForm component', () => {
           computed: {
             balance () {
               return mockedAccountBalances[0]
-            }
-          }
+            },
+          },
         })
 
         wrapper.vm.form.amount = '2'
@@ -355,8 +355,8 @@ describe('TransferForm component', () => {
           computed: {
             balance () {
               return mockedAccountBalances[1]
-            }
-          }
+            },
+          },
         })
 
         wrapper.vm.form.amount = '1'

@@ -1,6 +1,6 @@
 const PAYMENT_STATES = {
   pending: 'processing',
-  rejected: 'failed'
+  rejected: 'failed',
 }
 
 export class OpRecord {

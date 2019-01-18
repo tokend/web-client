@@ -30,7 +30,7 @@ export class DateUtil {
       lastDay: '[Yesterday at] HH:mm',
       lastWeek: '[Last] dddd [at] HH:mm',
       nextWeek: '[Next] dddd [at] HH:mm',
-      sameElse: 'DD/MM/YYYY'
+      sameElse: 'DD/MM/YYYY',
     })
   }
 
