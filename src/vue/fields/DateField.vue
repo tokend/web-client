@@ -61,8 +61,7 @@ export default {
 
   data: () => ({
     flatpickrDate: '',
-    isCalendarOpen: false,
-    EVENTS
+    isCalendarOpen: false
   }),
 
   computed: {
@@ -111,11 +110,11 @@ export default {
     },
     onClose () {
       this.isCalendarOpen = false
-      this.$emit(this.EVENTS.getNewValue, this.flatpickrDate)
+      this.$emit(EVENTS.getNewValue, this.flatpickrDate)
     },
     onBlur (event) {
       this.flatpickrDate = event
-      this.$emit(this.EVENTS.getNewValue, this.flatpickrDate)
+      this.$emit(EVENTS.getNewValue, this.flatpickrDate)
     }
   }
 }

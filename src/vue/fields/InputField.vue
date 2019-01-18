@@ -46,16 +46,12 @@ export default {
     whiteAutofill: { type: Boolean, default: true }
   },
 
-  data: () => ({
-    EVENTS
-  }),
-
   computed: {
     listeners () {
       return {
         ...this.$listeners,
         input: event => {
-          this.$emit(this.EVENTS.input, event.target.value)
+          this.$emit(EVENTS.input, event.target.value)
         }
       }
     }

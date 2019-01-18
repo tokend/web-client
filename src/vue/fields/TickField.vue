@@ -53,10 +53,6 @@ export default {
     autofocus: { type: Boolean, default: false }
   },
 
-  data: () => ({
-    EVENTS
-  }),
-
   computed: {
     id () {
       return `tick-field-${this._uid}`
@@ -93,26 +89,26 @@ export default {
       const value = this.cbValue || isChecked
 
       if (typeof value === 'undefined') {
-        return this.$emit(this.EVENTS.input, isChecked)
+        return this.$emit(EVENTS.input, isChecked)
       }
 
       switch (this.typeof(model)) {
         case 'number':
           this.$emit(
-            this.EVENTS.input,
+            EVENTS.input,
             isChecked ? model + +value : model - value
           )
           break
 
         case 'array':
-          this.$emit(this.EVENTS.input, isChecked
+          this.$emit(EVENTS.input, isChecked
             ? model.concat(value)
             : model.filter((item) => item !== value)
           )
           break
 
         default:
-          this.$emit(this.EVENTS.input, isChecked)
+          this.$emit(EVENTS.input, isChecked)
           break
       }
     },

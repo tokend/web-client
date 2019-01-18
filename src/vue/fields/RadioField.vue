@@ -38,10 +38,6 @@ export default {
     required: { type: Boolean, default: false }
   },
 
-  data: () => ({
-    EVENTS
-  }),
-
   computed: {
     id () {
       return `radio-field-${this._uid}`
@@ -50,7 +46,7 @@ export default {
 
   methods: {
     onChange (event) {
-      this.$emit(this.EVENTS.input, event.target.value)
+      this.$emit(EVENTS.input, event.target.value)
     }
   }
 }

@@ -71,8 +71,7 @@ export default {
 
   data: () => ({
     hasValue: false,
-    currentLength: '0',
-    EVENTS
+    currentLength: '0'
   }),
 
   computed: {
@@ -85,7 +84,7 @@ export default {
     onInput (event) {
       event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
-      this.$emit(this.EVENTS.input, event.target.value)
+      this.$emit(EVENTS.input, event.target.value)
     }
   }
 }
