@@ -135,13 +135,13 @@ import { base } from '@tokend/js-sdk'
 import { required, amountRange, emailOrAccountId, email } from '@validators'
 
 const EVENTS = {
-  cancel: 'cancel'
+  cancel: 'cancel',
 }
 
 export default {
   name: 'issuance-form',
   components: {
-    Loader
+    Loader,
   },
   mixins: [OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
@@ -149,11 +149,11 @@ export default {
       asset: '',
       amount: '0',
       receiver: '',
-      reference: ''
+      reference: '',
     },
     isLoaded: false,
     EVENTS,
-    MIN_AMOUNT: config.MIN_AMOUNT
+    MIN_AMOUNT: config.MIN_AMOUNT,
   }),
   validations () {
     return {
@@ -161,11 +161,11 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value)
+          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
         },
         receiver: { required, emailOrAccountId },
-        reference: { required }
-      }
+        reference: { required },
+      },
     }
   },
   computed: {
@@ -173,7 +173,7 @@ export default {
       return this.ownedAssets
         .map(asset => ({
           value: asset.code,
-          label: `${asset.details.name} (${asset.code})`
+          label: `${asset.details.name} (${asset.code})`,
         }))
     },
     availableAmount () {
@@ -182,11 +182,11 @@ export default {
           .find(asset => asset.code === this.form.asset)
         return {
           value: asset.availableForIssuance,
-          currency: asset.code
+          currency: asset.code,
         }
       }
       return { value: 0 }
-    }
+    },
   },
   async created () {
     await this.loadOwnedAssets()
@@ -209,7 +209,7 @@ export default {
               amount: this.form.amount.toString(),
               receiver: receiverBalance.balanceId,
               reference: this.form.reference,
-              externalDetails: {}
+              externalDetails: {},
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           Bus.success('issuance.tokens-issued-msg')
@@ -236,8 +236,8 @@ export default {
         return data.accountId
       }
       return receiver
-    }
-  }
+    },
+  },
 }
 </script>
 

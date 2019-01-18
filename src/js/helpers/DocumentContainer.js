@@ -35,7 +35,7 @@ export class DocumentContainer {
     return {
       mime_type: this.mimeType,
       name: this.name,
-      key: this.key
+      key: this.key,
     }
   }
 
@@ -46,7 +46,7 @@ export class DocumentContainer {
     return {
       type: DOCUMENT_POLICIES[this.type],
       mimeType: this.mimeType,
-      file: this.file
+      file: this.file,
     }
   }
 

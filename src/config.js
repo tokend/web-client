@@ -3,6 +3,7 @@ import { base } from '@tokend/js-sdk'
 const featureFlags = {
   fees: true,
   issuance: true,
+  tokens: true,
 }
 
 export default Object.assign(

@@ -75,7 +75,26 @@ export const router = new Router({
           name: vueRoutes.issuance.name,
           featureFlag: config.FEATURE_FLAGS.issuance,
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
-        }
+        },
+        {
+          path: '/tokens',
+          name: vueRoutes.tokens.name,
+          featureFlag: config.FEATURE_FLAGS.tokens,
+          redirect: vueRoutes.tokensExplore,
+          component: resolve => require(['@/vue/pages/Tokens'], resolve),
+          children: [
+            {
+              path: '/tokens/explore',
+              name: vueRoutes.tokensExplore.name,
+              component: resolve => require(['@/vue/pages/TokensExplorer'], resolve),
+            },
+            {
+              path: '/tokens/balances',
+              name: vueRoutes.balances.name,
+              component: resolve => require(['@/vue/pages/Balances'], resolve),
+            },
+          ],
+        },
       ].filter(route => route.featureFlag !== false),
     },
   ],

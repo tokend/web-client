@@ -143,7 +143,7 @@
       "limits": "Limits",
       "withdraw": "Withdraw",
       "send": "Send",
-      "explore-tokens": "Explore tokens",
+      "tokens": "Tokens",
       "create-token": "Create token",
       "create-issuance": "Create issuance",
       "upload-pre-issuance": "Upload pre-issuance",
@@ -243,6 +243,12 @@
       "balance-required-err": "The receiver doesn't have this token balance",
       "wrong-receiver-err": "The account with such email or ID was not found",
       "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you"
+    },
+
+    "tokens-page": {
+      "explore-title": "Explore tokens",
+      "balances-title": "My balances",
+      "create-token-btn": "Create token"
     },
 
     "file-field": {
