@@ -1,4 +1,4 @@
-import PortfolioWidget from './Dashboard.PortfolioWidget'
+import AssetSelector from './Dashboard.AssetSelector'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -20,7 +20,7 @@ localVue.use(Vuelidate)
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
-describe('Dashboard.PortfolioWidget component', () => {
+describe('Dashboard.AssetSelector component', () => {
   let mockHelper
   let store
   let wrapper
@@ -114,7 +114,7 @@ describe('Dashboard.PortfolioWidget component', () => {
       actions: accountModule.actions
     })
 
-    wrapper = shallowMount(PortfolioWidget, {
+    wrapper = shallowMount(AssetSelector, {
       store,
       localVue
     })
@@ -129,14 +129,14 @@ describe('Dashboard.PortfolioWidget component', () => {
     })
 
     it('is called inside created hook', () => {
-      sinon.stub(PortfolioWidget.methods, 'loadTokens')
+      sinon.stub(AssetSelector.methods, 'loadTokens')
 
-      shallowMount(PortfolioWidget, {
+      shallowMount(AssetSelector, {
         store,
         localVue
       })
 
-      expect(PortfolioWidget.methods.loadTokens.calledOnce).to.be.true
+      expect(AssetSelector.methods.loadTokens.calledOnce).to.be.true
     })
 
     it('works correctly', async () => {

@@ -225,8 +225,7 @@
       "no-transaction-history": "No transaction history",
       "here-will-be-the-list": "Here will be the list of your transactions",
       "here-will-be-the-tokens": "Here will be the list of your assets",
-      "no-assets-in-your-wallet": "No assets in your wallet",
-      "locked": "Locked"
+      "no-assets-in-your-wallet": "No assets in your wallet"
     },
 
     "dashboard": {

@@ -1,79 +1,52 @@
 <template>
-  <div class="portfolio-widget">
+  <div class="asset-selector">
     <div
-      class="portfolio-widget__wrapper"
+      class="asset-selector__wrapper"
       v-if="currentAsset"
     >
-      <div class="portfolio-widget__select">
-        <div class="portfolio-widget__select-picture">
+      <div class="asset-selector__select">
+        <div class="asset-selector__select-picture">
           <img
-            class="portfolio-widget__asset"
+            class="asset-selector__asset"
             :src="imgUrl"
           >
         </div>
-        <div class="portfolio-widget__select-field">
+        <div>
           <!--
               :key is a hack to ensure that the component will be updated
               after computed calculated
             -->
-          <select-field-custom
+          <select-field
             :value="currentAssetForSelect"
             :values="tokensList"
             :key="currentAssetForSelect"
             @input="$emit(EVENTS.assetChange, $event)"
+            class="asset-selector__select-field"
           />
         </div>
       </div>
-      <div class="portfolio-widget__actions">
-        <button
-          v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
-          class="app__button-raised portfolio-widget__action"
-          @click="$emit(EVENTS.showCreateIssuanceForm, true)">
-          {{ 'dashboard.create-issuance-lbl' | globalize }}
-        </button>
-        <button
-          class="app__button-raised portfolio-widget__action"
-          @click="$emit(EVENTS.showTransferForm, true)">
-          {{ 'dashboard.send-asset-lbl' | globalize({ asset: currentAsset }) }}
-        </button>
-      </div>
     </div>
     <template v-if="currentAsset">
-      <div class="portfolio-widget__wrapper portfolio-widget__wrapper--values">
-        <div class="portfolio-widget__asset-available">
-          <div class="portfolio-widget__asset-value">
-            <span class="portfolio-widget__asset-value-main">
+      <div class="asset-selector__wrapper asset-selector__wrapper--values">
+        <div class="asset-selector__asset-available">
+          <div class="asset-selector__asset-value">
+            <span class="asset-selector__asset-value-main">
               {{
                 currentAssetBalanceDetails.balance | formatMoney({
                   currency: currentAsset
                 })
               }}
+              {{ currentAsset }}
             </span>
-            <span class="portfolio-widget__asset-value-secondary">
-              &asymp;
+          </div>
+          <div class="asset-selector__asset-subvalue">
+            <span class="asset-selector__asset-value-secondary">
               {{
                 currentAssetBalanceDetails.convertedBalance | formatMoney({
                   currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
                 })
               }}
-            </span>
-          </div>
-          <div class="portfolio-widget__asset-subvalue">
-            <span class="portfolio-widget__asset-value-secondary">
-              {{ 'tx-history.locked' | globalize }}
-              {{
-                currentAssetBalanceDetails.locked | formatMoney({
-                  currency: currentAsset
-                })
-              }}
-            </span>
-            <span class="portfolio-widget__asset-value-secondary">
-              &asymp;
-              {{
-                currentAssetBalanceDetails.convertedLocked | formatMoney({
-                  currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
-                })
-              }}
+              {{ config.DEFAULT_QUOTE_ASSET }}
             </span>
           </div>
         </div>
@@ -91,9 +64,9 @@
 
 <script>
 import config from '@/config'
-import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
+import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import { ASSET_POLICIES, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
@@ -101,15 +74,13 @@ import get from 'lodash/get'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
-  assetChange: 'asset-change',
-  showCreateIssuanceForm: 'show-create-issuance-form',
-  showTransferForm: 'show-transfer-form'
+  assetChange: 'asset-change'
 }
 
 export default {
-  name: 'portfolio-widget',
+  name: 'dashboard-asset-selector',
   components: {
-    SelectFieldCustom,
+    SelectField,
     NoDataMessage
   },
   props: {
@@ -122,13 +93,11 @@ export default {
     EVENTS,
     tokens: [],
     config,
-    ASSET_POLICIES,
-    ACCOUNT_TYPES
+    ASSET_POLICIES
   }),
   computed: {
     ...mapGetters({
-      balances: vuexTypes.accountBalances,
-      accountTypeI: vuexTypes.accountTypeI
+      balances: vuexTypes.accountBalances
     }),
     tokensList () {
       const balancesAssetCodes = this.balances.map(i => i.asset)
@@ -149,12 +118,12 @@ export default {
       return [
         ...baseAssets,
         ...otherAssets
-      ].map(item => `${item.name} (${item.code})`)
+      ].map(item => `${item.name || item.code} (${item.code})`)
     },
     currentAssetForSelect () {
       if (this.tokens.length) {
         const token = this.tokens.find(t => t.code === this.currentAsset)
-        return `${token.name} (${token.code})`
+        return `${token.name || token.code} (${token.code})`
       } else {
         return null
       }
@@ -191,7 +160,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@scss/variables.scss";
 @import "~@scss/mixins.scss";
 
@@ -199,7 +168,7 @@ $custom-breakpoint-small: 540px;
 $custom-breakpoint: 800px;
 $custom-breakpoint-medium: 870px;
 
-.portfolio-widget {
+.asset-selector {
   @include respond-to-custom($custom-breakpoint-medium) {
     display: flex;
     flex-direction: column;
@@ -207,7 +176,7 @@ $custom-breakpoint-medium: 870px;
   }
 }
 
-.portfolio-widget__wrapper {
+.asset-selector__wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -228,7 +197,7 @@ $custom-breakpoint-medium: 870px;
   }
 }
 
-.portfolio-widget__wrapper--values {
+.asset-selector__wrapper--values {
   align-items: flex-end;
 
   @include respond-to(medium) {
@@ -241,7 +210,7 @@ $custom-breakpoint-medium: 870px;
   }
 }
 
-.portfolio-widget__select {
+.asset-selector__select {
   display: flex;
   align-items: center;
   margin-right: 1.6rem;
@@ -259,7 +228,7 @@ $custom-breakpoint-medium: 870px;
   }
 }
 
-.portfolio-widget__select-picture {
+.asset-selector__select-picture {
   width: 5.5rem;
   height: 5.5rem;
   padding: .4rem;
@@ -284,28 +253,26 @@ $custom-breakpoint-medium: 870px;
   }
 }
 
-.portfolio-widget__asset-available {
+.asset-selector__asset-available {
   margin-top: 3.2rem;
 }
 
-.portfolio-widget__asset-value {
+.asset-selector__asset-value {
   font-size: 3rem;
   color: $col-details-value;
 }
 
-.portfolio-widget__asset-subvalue {
+.asset-selector__asset-subvalue {
   margin-top: .8rem;
   font-size: 1.6rem;
   color: $col-details-label;
 }
 
-.portfolio-widget__asset-value-secondary {
-  color: $col-details-label;
+.asset-selector__asset-value-main {
+  font-size: 3rem;
 }
 
-.portfolio-widget__action {
-  &:not(:first-child) {
-    margin-left: 1.6rem;
-  }
+.asset-selector__asset-value-secondary {
+  font-size: 1.6rem;
 }
 </style>

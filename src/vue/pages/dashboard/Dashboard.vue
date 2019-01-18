@@ -4,14 +4,27 @@
       <loader :message="'dashboard.data-loading' | globalize" />
     </template>
     <template v-else>
-      <portfolio-widget
-        class="dashboard__portfolio"
-        :current-asset="currentAsset"
-        @asset-change="setCurrentAsset"
-        @show-create-issuance-form="showCreateIssuanceForm"
-        @show-transfer-form="showTransferForm"
-        :scale="scale"
-      />
+      <div class="dashboard__asset-selector">
+        <asset-selector
+          class="dashboard__portfolio"
+          :current-asset="currentAsset"
+          @asset-change="setCurrentAsset"
+          :scale="scale"
+        />
+        <div class="dashboard__actions">
+          <button
+            v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
+            class="app__button-raised dashboard__action"
+            @click="createIssuanceFormIsShown = true">
+            {{ 'dashboard.create-issuance-lbl' | globalize }}
+          </button>
+          <button
+            class="app__button-raised dashboard__action"
+            @click="transferFormIsShown = true">
+            {{ 'dashboard.send-asset-lbl' | globalize({ asset: currentAsset }) }}
+          </button>
+        </div>
+      </div>
       <template v-if="currentAsset">
         <div class="dashboard__chart">
           <chart
@@ -28,9 +41,15 @@
     </template>
     <drawer :is-shown.sync="showDrawer">
       <template v-if="createIssuanceFormIsShown">
+        <template slot="heading">
+          {{ 'create-issuance-form.issuance-form' | globalize }}
+        </template>
         <create-issuance @close-drawer="showDrawer = false" />
       </template>
       <template v-if="transferFormIsShown">
+        <template slot="heading">
+          {{ 'transfer-form.form-heading' | globalize }}
+        </template>
         <transfer />
       </template>
     </drawer>
@@ -38,7 +57,7 @@
 </template>
 
 <script>
-import PortfolioWidget from './Dashboard.PortfolioWidget'
+import AssetSelector from './Dashboard.AssetSelector'
 import CreateIssuance from '@/vue/forms/CreateIssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
 import InfoWidget from './Dashboard.InfoWidget'
@@ -48,11 +67,12 @@ import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
 export default {
   name: 'dashboard',
   components: {
-    PortfolioWidget,
+    AssetSelector,
     CreateIssuance,
     Transfer,
     InfoWidget,
@@ -67,11 +87,13 @@ export default {
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'month',
-    config
+    config,
+    ACCOUNT_TYPES
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.accountBalances
+      vuexTypes.accountBalances,
+      vuexTypes.accountTypeI
     ])
   },
   watch: {
@@ -110,12 +132,6 @@ export default {
         this.currentAsset =
           keys.find(a => a === 'ETH') || keys[0] || null
       }
-    },
-    showCreateIssuanceForm (status) {
-      this.createIssuanceFormIsShown = status
-    },
-    showTransferForm (status) {
-      this.transferFormIsShown = status
     }
   }
 }
@@ -127,6 +143,21 @@ export default {
 
 .dashboard {
   flex: 1;
+}
+
+.dashboard__asset-selector {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard__actions {
+  margin-top: .8rem;
+}
+
+.dashboard__action {
+  &:not(:first-child) {
+    margin-left: .8rem;
+  }
 }
 
 .dashboard__chart {
