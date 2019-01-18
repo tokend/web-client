@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from '@/vue/App'
 import i18next from 'i18next'
 import Vuelidate from 'vuelidate'
+import log from 'loglevel'
+import config from './config'
 
 import { store } from '@/vuex'
 import { router } from '@/vue-router'
@@ -22,6 +24,8 @@ import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 import { abbreviate } from '@/vue/filters/abbreviate'
 
 i18next.init(i18nOptions)
+
+log.setDefaultLevel(config.LOG_LEVEL)
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)

@@ -4,7 +4,6 @@ import InputField from '../fields/InputField'
 import SelectField from '../fields/SelectField'
 import FileField from '@/vue/fields/FileField'
 
-import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'
@@ -33,7 +32,6 @@ export default {
     *                    the validation rules or false if it does not.
     */
     isFormValid (formPart) {
-      let isValid
       let form
       if (formPart) {
         form = safeGet(this.$v, formPart)
@@ -42,11 +40,7 @@ export default {
       }
 
       form.$touch()
-      isValid = !form.$invalid
-
-      if (!isValid) {
-        Bus.error('validation.failed')
-      }
+      const isValid = !form.$invalid
       return isValid
     },
     /**
