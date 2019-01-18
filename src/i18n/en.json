@@ -22,11 +22,11 @@
         "datetime": "MMMM D, YYYY [at] H:mm"
       },
       "formats": {
-        "same_day": "[today at] H:mm",
-        "last_day": "[yesterday at] H:mm",
-        "next_day": "[tomorrow at] H:mm",
-        "last_week": "[last] dddd [at] H:mm",
-        "next_week": "[next] dddd [at] H:mm"
+        "same_day": "[Today at] H:mm",
+        "last_day": "[Yesterday at] H:mm",
+        "next_day": "[Tomorrow at] H:mm",
+        "last_week": "[Last] dddd [at] H:mm",
+        "next_week": "[Next] dddd [at] H:mm"
       }
     }
   },
