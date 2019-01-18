@@ -21,7 +21,9 @@
           <button
             class="app__button-raised dashboard__action"
             @click="transferFormIsShown = true">
-            {{ 'dashboard.send-asset-lbl' | globalize({ asset: currentAsset }) }}
+            {{
+              'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
+            }}
           </button>
         </div>
       </div>
