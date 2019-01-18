@@ -1,15 +1,19 @@
 import throttle from 'lodash/throttle'
 
-const scrollStyling = (e) => {
+// this value is wrapper padding that prevents content shadowing
+const WRAPPER_PADDING = 5
+
+function scrollStyling (e) {
   const target = e.target ? e.target : e
   const parentNode = target.parentNode
-  const isScrollEnd =
-    target.scrollLeft >= target.scrollWidth - target.offsetWidth - 5
-  const isScrolled = target.scrollLeft > 5
-  isScrollEnd
+  const rightShadowIsNeeded = target.scrollLeft >=
+    target.scrollWidth - target.offsetWidth - WRAPPER_PADDING
+  const leftShadowIsNeeded = target.scrollLeft > WRAPPER_PADDING
+
+  rightShadowIsNeeded
     ? parentNode.classList.remove('app__table-right-shadow')
     : parentNode.classList.add('app__table-right-shadow')
-  isScrolled
+  leftShadowIsNeeded
     ? parentNode.classList.add('app__table-left-shadow')
     : parentNode.classList.remove('app__table-left-shadow')
 }
@@ -24,14 +28,7 @@ export const tableScrollShadow = {
     )
   },
   inserted (el) {
-    const rightShadowIsNeeded = el.scrollWidth !== el.offsetWidth
-    const leftShadowIsNeeded = el.scrollLeft > 5
-    if (rightShadowIsNeeded) {
-      el.parentNode.classList.add('app__table-right-shadow')
-    }
-    if (leftShadowIsNeeded) {
-      el.parentNode.classList.add('app__table-left-shadow')
-    }
+    scrollStyling(el)
   },
   unbind (el) {
     el.removeEventListener('scroll', scrollStyling)
