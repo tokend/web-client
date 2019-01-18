@@ -73,42 +73,6 @@ describe('Dashboard component', () => {
     sinon.restore()
   })
 
-  describe('showCreateIssuanceForm()', () => {
-    beforeEach(() => {
-      mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-    })
-
-    it('set createIssuanceFormIsShown status "true"', () => {
-      wrapper.vm.showCreateIssuanceForm(true)
-
-      expect(wrapper.vm.createIssuanceFormIsShown).to.be.true
-    })
-
-    it('set createIssuanceFormIsShown status "false"', () => {
-      wrapper.vm.showCreateIssuanceForm(false)
-
-      expect(wrapper.vm.createIssuanceFormIsShown).to.be.false
-    })
-  })
-
-  describe('showTransferForm()', () => {
-    beforeEach(() => {
-      mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-    })
-
-    it('set transferFormIsShown status "true"', () => {
-      wrapper.vm.showTransferForm(true)
-
-      expect(wrapper.vm.transferFormIsShown).to.be.true
-    })
-
-    it('set transferFormIsShown status "false"', () => {
-      wrapper.vm.showTransferForm(false)
-
-      expect(wrapper.vm.transferFormIsShown).to.be.false
-    })
-  })
-
   describe('setCurrentAsset()', () => {
     it('set currentAsset as passed value', () => {
       mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
