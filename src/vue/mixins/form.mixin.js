@@ -29,8 +29,8 @@ export default {
     * @param {string} formPart - the string with the form part name.
     *                 Works also for nested parts, such as `form.part1`.
     *
-    * @returns {boolean} True if the form meets the validation rules or
-    *                    false if it is not.
+    * @returns {boolean} True if the form (or its part) meets
+    *                    the validation rules or false if it does not.
     */
     isFormValid (formPart) {
       let isValid
@@ -50,15 +50,15 @@ export default {
       return isValid
     },
     /**
-    * errorMessage decides if the validation error is present for the field. To
-    * be invalid the vuelidate $touch method should be called on it. You have
-    * to call $touch on the level of your component, the good time to do this is
-    * `input`, `change` or `blur` events:
+    * getFieldErrorMessage decides if the validation error is present
+    * for the field. To be invalid the vuelidate $touch method should
+    * be called on it. You have to call $touch on the level of your component,
+    * the good time to do this is `input`, `change` or `blur` events:
     *
     *   <input-field
     *     v-model="form.email"
     *     @blur="$v.form.email.$touch()"
-    *     :error-message="errorMessage(`form.email`)"
+    *     :error-message="getFieldErrorMessage(`form.email`)"
     *  />
     *
     * @param {string} field - the string with the field name. Works also for
@@ -67,7 +67,7 @@ export default {
      *                translation.
     *
     * @returns {string} the human-readable error message if the
-     *                  field is invalid, empty string - otherwise
+     *                  field is invalid, empty string - otherwise.
     */
     getFieldErrorMessage (field, options) {
       if (!this.$v.$invalid) {
