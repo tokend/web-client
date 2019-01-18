@@ -63,8 +63,7 @@ import {
 } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { errors } from '@tokend/js-sdk'
-import { Bus } from '@/js/helpers/event-bus'
+import { errors } from '@/js/errors'
 import { Sdk } from '@/sdk'
 
 export default {
@@ -104,7 +103,7 @@ export default {
         await Sdk.api.wallets.getKdfParams(this.form.email)
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
-        Bus.error('auth-pages.error-user-exist')
+        throw new errors.UserExistsError()
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
           // If user not found - it's our case, so we will continue sign-up
@@ -112,7 +111,6 @@ export default {
           this.enableForm()
           return
         }
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()

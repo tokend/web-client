@@ -12,15 +12,15 @@ module.exports = function (config) {
     browsers: ['ChromeHeadless'],
     files: [
       'src/**/*.spec.js',
-      'src/**/*.e2e.js'
+      'src/**/*.e2e.js',
     ],
     preprocessors: {
       'src/**/*.spec.js': [ 'webpack' ],
-      'src/**/*.e2e.js': [ 'webpack' ]
+      'src/**/*.e2e.js': [ 'webpack' ],
     },
 
     webpack: webpackConfig,
-    frameworks: ['mocha', 'sinon', 'chai'],
-    reporters: ['progress']
+    frameworks: ['mocha', 'sinon', 'chai', 'sinon-chai'],
+    reporters: ['progress'],
   })
 }

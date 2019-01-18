@@ -100,7 +100,6 @@ export default {
           })
           return
         }
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
