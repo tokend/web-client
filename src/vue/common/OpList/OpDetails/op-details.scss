@@ -1,0 +1,16 @@
+@import '@/scss/variables';
+
+.op-details {
+  padding: 1.5rem 0 0;
+  border-top: 0.1rem solid $col-button-flat-disabled-txt;
+}
+
+.op-details__cell {
+  padding: 0.7rem 1.5rem 0.7rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  &:first-of-type {
+    color: $col-table-head-text;
+  }
+}

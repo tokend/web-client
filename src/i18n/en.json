@@ -226,31 +226,40 @@
 
     "op-pages": {
       "show": "Show",
-      "amount": "Amount",
-      "fixed-fee": "Fixed fee",
-      "percentFee": "Percent fee",
-      "asset": "Asset",
-      "date": "Date",
-      "sender": "Sender",
-      "counterparty": "Counterparty",
-      "counterparty-email": "Counterparty email",
-      "id": "Operation ID",
-      "source-fees": "Sender fees",
-      "destination-fees": "Recipient fees",
-      "subject": "Subject",
-      "fund-name": "Fund name",
-      "token-fund": "{asset} token fund",
-      "base-asset": "Base asset",
-      "fee-paid": "Fee paid",
-      "price": "Price",
-      "destination-asset": "Destination asset",
-      "destination-amount": "Destination amount",
-      "tx-type": "Operation type",
-      "status": "Status",
       "no-operation-history": "No operation history",
       "here-will-be-the-list": "Here will be the list of your operations",
-      "something-went-wrong": "Something went wrong",
-      "canNotLoadAssets": "Can not load assets"
+      "something-went-wrong": "Something went wrong"
+    },
+
+    "op-details": {
+      "fixed-fee-lbl": "Fixed fee",
+      "percent-fee-lbl": "Percent fee",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount",
+      "counterparty-email-lbl": "Counterparty email",
+      "id-lbl": "Operation ID",
+      "source-fees-lbl": "Sender fees",
+      "destination-fees-lbl": "Recipient fees",
+      "subject-lbl": "Subject",
+      "fund-name-lbl": "Fund name",
+      "token-fund-val": "{asset} token fund",
+      "base-asset-lbl": "Base asset",
+      "fee-paid-lbl": "Fee paid",
+      "price-lbl": "Price",
+      "destination-asset-lbl": "Destination asset",
+      "destination-amount-lbl": "Destination amount",
+      "date-lbl": "Date",
+      "counterparty-lbl": "Counterparty"
+    },
+
+    "op-list": {
+      "head": {
+        "date": "Date",
+        "tx-type": "Operation type",
+        "amount": "Amount",
+        "counterparty": "Counterparty",
+        "status": "Status"
+      }
     },
 
     "issuance": {
