@@ -15,7 +15,9 @@
       />
       <tr>
         <td>{{ 'op-pages.counterparty-email' | globalize }}</td>
-        <td>{{ operation.counterparty }} Email</td>
+        <td>
+          <email-getter :account-id="operation.counterparty" />
+        </td>
       </tr>
       <detail
         :label="'op-pages.destination-asset'| globalize"
@@ -56,9 +58,10 @@
 <script>
 import Detail from './Detail'
 import WithdrawRecord from '@/js/records/operations/withdraw.record'
+import EmailGetter from '@/vue/common/EmailGetter'
 export default {
   name: 'withdrawal-details',
-  components: { Detail },
+  components: { Detail, EmailGetter },
   props: {
     operation: { type: WithdrawRecord, required: true },
   },

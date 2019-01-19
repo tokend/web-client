@@ -12,7 +12,9 @@
       />
       <tr>
         <td>{{ 'op-pages.counterparty-email' | globalize }}</td>
-        <td>{{ operation.counterparty }} Email</td>
+        <td>
+          <email-getter :account-id="operation.counterparty" />
+        </td>
       </tr>
       <detail
         :label="'op-pages.asset'| globalize"
@@ -46,9 +48,10 @@
 <script>
 import Detail from './Detail'
 import IssuanceRecord from '@/js/records/operations/issuance.record'
+import EmailGetter from '@/vue/common/EmailGetter'
 export default {
   name: 'issuance-details',
-  components: { Detail },
+  components: { Detail, EmailGetter },
   props: {
     operation: { type: IssuanceRecord, required: true },
   },
