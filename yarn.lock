@@ -654,11 +654,6 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
-"@sinonjs/samsam@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@sinonjs/samsam/-/samsam-2.1.2.tgz#16947fce5f57258d01f1688fdc32723093c55d3f"
-  integrity sha512-ZwTHAlC9akprWDinwEPD4kOuwaYZlyMwVJIANsKNC3QVp0AHB04m7RnB4eqeWfgmxw8MGTzS9uMaw93Z3QcZbw==
-
 "@tokend/js-sdk@0.3.9":
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.9.tgz#c37e6e56dbd8c91bca8ce66e42d7f41f5b31905d"

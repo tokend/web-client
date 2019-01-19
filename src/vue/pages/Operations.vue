@@ -22,6 +22,12 @@
         </button>
       </div>
     </top-bar>
+    <drawer :is-shown.sync="isWithdrawalDrawerShown">
+      <template slot="heading">
+        {{ 'withdrawal-form.withdrawal' | globalize }}
+      </template>
+      <withdrawal-form />
+    </drawer>
     <template v-if="!isLoadFailed">
       <div class="op-history__list" v-if="isLoaded">
         <template v-if="operations.length">
@@ -76,6 +82,8 @@ import OperationRecord from '@/vue/common/OperationRecord'
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import TopBar from '@/vue/common/TopBar'
+import Drawer from '@/vue/common/Drawer'
+import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -89,6 +97,8 @@ export default {
     SelectFieldCustom,
     CollectionLoader,
     TopBar,
+    Drawer,
+    WithdrawalForm
   },
   data: _ => ({
     tokenCode: null,

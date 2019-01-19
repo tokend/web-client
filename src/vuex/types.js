@@ -43,6 +43,7 @@ const getters = {
 
   // account
   account: 'account',
+  balancesDetails: 'balancesDetails',
   accountId: 'accountId',
   accountIsBlocked: 'accountIsBlocked',
   accountBlockReasons: 'accountBlockReasons',

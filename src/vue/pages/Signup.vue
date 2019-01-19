@@ -5,7 +5,7 @@
         recoveryKeypair
           ? 'auth-pages.save-recovery-seed'
           : 'auth-pages.get-started'
-            | globalize
+          | globalize
       }}
     </h2>
 

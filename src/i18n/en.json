@@ -68,7 +68,8 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
-      "field-error_emailOrAccountId": "This field should be a valid email or account ID"
+      "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+      "field-error_address": "Make sure the address is correct"
     },
 
     "errors": {
@@ -291,6 +292,23 @@
 
     "email-getter": {
       "loading-msg": "Loading..."
+    },
+
+    "withdrawal-form": {
+      "withdrawal": "Withdrawal",
+      "asset": "Asset",
+      "how_much": "Minimal withdrawal is {{value}} {{asset}}.",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "amount": "Amount",
+      "network-fee-prefix": "Unknown",
+      "network-fee": "network fee",
+      "network-fee-hint": "Blockchain network will charge additional transaction fee independently.",
+      "fixed-fee": "fixed fee",
+      "percent-fee": "percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "no-assets-heading": "Ops!",
+      "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets"
     }
   }
 }

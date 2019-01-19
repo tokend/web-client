@@ -82,6 +82,7 @@ export default {
 }
 
 .drawer__close-icon {
+  display: flex;
   font-size: 2.4rem;
 
   &:before {
