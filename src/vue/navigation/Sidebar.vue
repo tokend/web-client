@@ -33,6 +33,19 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.trade"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.trade"
+          >
+            <i class="sidebar__link-icon mdi mdi-finance" />
+            <span>
+              {{ 'pages-names.trade' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="li"
             v-if="config.FEATURE_FLAGS.fees"
