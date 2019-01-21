@@ -18,7 +18,6 @@ import { IssuanceRecord } from './operations/issuance.record'
 import { WithdrawRecord } from './operations/withdraw.record'
 import { PaymentRecord } from './operations/payment.record'
 import { MatchRecord } from './operations/match.record'
-import { ManageOfferRecord } from './operations/manage-offer.record'
 
 export class RecordWrapper {
   static operation (record, details) {
@@ -30,12 +29,6 @@ export class RecordWrapper {
       case OP_TYPES.createWithdrawalRequest:
         return new WithdrawRecord(record, details)
       case OP_TYPES.manageOffer:
-        if (record.orderBookId && record.orderBookId !== '0') {
-          console.warn('This manage offer operation should be in ' +
-            'pending state. Please review the code because something seems ' +
-            'to suck')
-          return new ManageOfferRecord(record, details)
-        }
         return new MatchRecord(record, details)
       case OP_TYPES.checkSaleState:
         return new MatchRecord(record, details)
