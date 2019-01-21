@@ -273,9 +273,22 @@
     },
 
     "requests-page": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "token-creation-title": "Token creation",
       "fund-creation-title": "Fund creation",
-      "preissuance-upload-title": "Pre-issuance upload"
+      "preissuance-upload-title": "Pre-issuance upload",
+      "token-code-header": "Token code",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "token-request-details-title": "Token request details",
+      "request-approved-msg": "Approved",
+      "request-rejected-msg": "Rejected",
+      "request-pending-msg": "Pending",
+      "request-canceled-msg": "Canceled",
+      "request-permanently-rejected-msg": "Permanently rejected"
     },
 
     "file-field": {

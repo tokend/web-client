@@ -99,7 +99,15 @@ export const router = new Router({
           path: '/requests',
           name: vueRoutes.requests.name,
           featureFlag: config.FEATURE_FLAGS.requests,
+          redirect: vueRoutes.requests.tokenCreation,
           component: resolve => require(['@/vue/pages/Requests'], resolve),
+          children: [
+            {
+              path: '/requests/token-creation',
+              name: vueRoutes.requests.tokenCreation.name,
+              component: resolve => require(['@/vue/pages/TokenCreationRequests'], resolve),
+            },
+          ],
         },
       ].filter(route => route.featureFlag !== false),
     },
