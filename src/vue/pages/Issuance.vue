@@ -3,7 +3,6 @@
     <top-bar>
       <template slot="main">
         <router-link
-          v-ripple
           :to="{ name: 'app.issuance' }"
         >
           <span>{{ 'issuance.history-title' | globalize }}</span>

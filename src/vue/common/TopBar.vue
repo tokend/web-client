@@ -58,6 +58,7 @@ export default {
 
     a {
       color: $col-top-bar-tab;
+      text-decoration: none;
     }
 
     .router-link-exact-active {
