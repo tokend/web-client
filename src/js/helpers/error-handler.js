@@ -1,8 +1,20 @@
-import { errors } from '@tokend/js-sdk'
+import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
+import log from 'loglevel'
 
 export class ErrorHandler {
   static process (error) {
+    ErrorHandler.processWithoutFeedback(error)
+
+    const translationId = ErrorHandler._getTranslationId(error)
+    Bus.error(translationId)
+  }
+
+  static processWithoutFeedback (error) {
+    log.error(error)
+  }
+
+  static _getTranslationId (error) {
     let translationId
 
     switch (error.constructor) {
@@ -39,10 +51,13 @@ export class ErrorHandler {
       case errors.UnauthorizedError:
         translationId = 'errors.unauthorized'
         break
+      case errors.UserExistsError:
+        translationId = 'errors.user-exists'
+        break
       default:
         translationId = 'errors.default'
     }
 
-    Bus.error(translationId)
+    return translationId
   }
 }

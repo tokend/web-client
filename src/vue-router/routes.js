@@ -9,6 +9,7 @@ export const vueRoutes = Object.freeze({
   recovery: { name: 'recovery' },
   dashboard: { name: 'app.dashboard' },
   trade: { name: 'app.trade' },
+  issuance: { name: 'app.issuance' },
 
   // stubs:
   terms: { name: 'terms' },

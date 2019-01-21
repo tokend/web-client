@@ -61,7 +61,6 @@ export const router = new Router({
       path: '/',
       name: 'app',
       component: resolve => require(['@/vue/AppContent'], resolve),
-      featureFlag: config.FEATURE_FLAGS.fees,
       beforeEnter: inAppRouteGuard,
       redirect: vueRoutes.fees,
       children: [
@@ -80,6 +79,12 @@ export const router = new Router({
             pageNameTranslationId: 'pages-names.trade',
           },
           component: resolve => require(['@/vue/pages/trade/Trade'], resolve),
+        },
+        {
+          path: '/issuance',
+          name: vueRoutes.issuance.name,
+          featureFlag: config.FEATURE_FLAGS.issuance,
+          component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
       ].filter(route => route.featureFlag !== false),
     },
