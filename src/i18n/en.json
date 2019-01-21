@@ -283,12 +283,29 @@
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
-      "token-request-details-title": "Token request details",
       "request-approved-msg": "Approved",
       "request-rejected-msg": "Rejected",
       "request-pending-msg": "Pending",
       "request-canceled-msg": "Canceled",
       "request-permanently-rejected-msg": "Permanently rejected"
+    },
+
+    "token-request-details": {
+      "title": "Token request details",
+      "request-type-title": "Request type",
+      "max-issuance-amount-title": "Max issuance amount",
+      "initial-preissued-amount-title": "Initial preissued amount",
+      "terms-title": "Terms",
+      "no-terms-msg": "No terms",
+      "download-terms-btn": "Download terms",
+      "transferable-title": "Transferable",
+      "requires-kyc-title": "Requires KYC",
+      "present-msg": "Yes",
+      "absent-msg": "No",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL",
+      "asset-create-request-type": "Asset create",
+      "asset-update-request-type": "Asset update"
     },
 
     "file-field": {

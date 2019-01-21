@@ -3,8 +3,9 @@
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDetailsDrawerShown">
         <template slot="heading">
-          {{ 'requests-page.token-request-details-title' | globalize }}
+          {{ 'token-request-details.title' | globalize }}
         </template>
+        <token-request-details :request="selectedRequest" />
       </drawer>
       <table class="app__table token-creation-requests__table">
         <thead>
@@ -28,7 +29,7 @@
             v-for="(request, i) in requestsHistory"
             :key="i"
           >
-            <td>{{ request.details.code }}</td>
+            <td>{{ request.assetDetails.code }}</td>
             <td>{{ request.requestState }}</td>
             <td>{{ request.createdAt | formatCalendar }}</td>
             <td>{{ request.updatedAt | formatCalendar }}</td>
@@ -58,6 +59,7 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue//common/Drawer'
+import TokenRequestDetails from '@/vue/common/TokenRequestDetails'
 
 import { Sdk } from '@/sdk'
 
@@ -70,6 +72,7 @@ export default {
   components: {
     Loader,
     Drawer,
+    TokenRequestDetails,
   },
   data: _ => ({
     requestsHistory: [],
@@ -94,7 +97,7 @@ export default {
           requestor: this.account.accountId,
         })
         this.requestsHistory = data.map(request => {
-          request.details = request.details.assetCreate ||
+          request.assetDetails = request.details.assetCreate ||
             request.details.assetUpdate
           return request
         })

@@ -103,7 +103,7 @@ export default {
       }
     },
     getTokenLogoUrl (token) {
-      return config.FILE_STORAGE + token.details.logo.key
+      return `${config.FILE_STORAGE}/${token.details.logo.key}`
     },
     selectToken (token) {
       this.selectedToken = token
