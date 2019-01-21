@@ -248,7 +248,10 @@
     "tokens-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-token-btn": "Create token"
+      "create-token-btn": "Create token",
+      "balance-msg": "Balance {{value, money}}",
+      "no-balance-msg": "No balance",
+      "token-details-title": "Token details"
     },
 
     "file-field": {
