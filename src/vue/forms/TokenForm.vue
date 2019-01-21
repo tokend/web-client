@@ -63,6 +63,28 @@
         </div>
         <div class="app__form-row">
           <div class="app__form-field">
+            <tick-field
+              v-model="form.information.transferable"
+              id="token-transferable"
+              :disabled="formMixin.isDisabled"
+            >
+              {{ 'token-form.transferable-lbl' | globalize }}
+            </tick-field>
+          </div>
+        </div>
+        <div class="app__form-row token-form__kyc-required-row">
+          <div class="app__form-field">
+            <tick-field
+              v-model="form.information.kycRequired"
+              id="token-kyc-required"
+              :disabled="formMixin.isDisabled"
+            >
+              {{ 'token-form.kyc-required-lbl' | globalize }}
+            </tick-field>
+          </div>
+        </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
             <file-field
               v-model="form.information.icon"
               :note="'token-form.icon-note' | globalize"
@@ -81,7 +103,7 @@
         <div class="app__form-actions">
           <button
             v-ripple
-            class="token-form__submit-btn"
+            class="token-form__btn"
             :disabled="formMixin.isDisabled"
             @click.prevent="next('form.information')"
           >
@@ -111,7 +133,7 @@
           <button
             v-ripple
             type="submit"
-            class="token-form__submit-btn"
+            class="token-form__btn"
             :disabled="formMixin.isDisabled"
             @click.prevent="submit"
           >
@@ -177,8 +199,7 @@ export default {
           code: { required },
           maxIssuanceAmount: {
             required,
-            amountRange: amountRange(0,
-              10000),
+            amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
           },
           icon: { documentContainer },
         },
@@ -214,10 +235,16 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.token-form__submit-btn {
+.token-form__btn {
   @include button-raised();
 
   margin-bottom: 2rem;
-  width: 18rem;
+  width: 14.4rem;
+}
+
+.token-form {
+  .token-form__kyc-required-row {
+    margin-top: 2.1rem;
+  }
 }
 </style>

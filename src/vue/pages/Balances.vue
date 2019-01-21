@@ -33,7 +33,12 @@
           </p>
           <p class="token-card__balance">
             {{
-              'tokens-page.balance-msg'| globalize({ value: token.balance })
+              'tokens-page.balance-msg'| globalize({
+                value: {
+                  value: token.balance,
+                  currency: token.asset,
+                }
+              })
             }}
           </p>
         </div>

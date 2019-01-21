@@ -10,19 +10,22 @@
       :value="cbValue"
       :required="required"
       :autofocus="autofocus"
-      @change="onChange">
+      @change="onChange"
+    >
 
     <label
       class="tick-field__label"
       :for="id"
-      :title="title">
+      :title="title"
+    >
       <slot />
     </label>
 
     <span
       class="tick-field__tick"
       :for="id"
-      :title="title">
+      :title="title"
+    >
       <!-- css art -->
     </span>
   </div>
@@ -31,7 +34,6 @@
 <script>
 export default {
   props: {
-    // label: { type: String, default: 'Label' },
     value: {
       type: [String, Number, Array, Boolean],
       required: true,
@@ -47,13 +49,6 @@ export default {
     required: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
   },
-
-  data () {
-    return {
-      // data
-    }
-  },
-
   computed: {
     id () {
       return `tick-field-${this._uid}`
@@ -70,11 +65,9 @@ export default {
         case 'number':
           result = model & +value
           break
-
         case 'array':
           result = ~model.findIndex((item) => item === value)
           break
-
         default:
           result = model
           break
@@ -82,11 +75,6 @@ export default {
       return result
     },
   },
-
-  created () {
-    // created
-  },
-
   methods: {
     onChange (event) {
       const isChecked = event.target.checked
@@ -101,14 +89,12 @@ export default {
         case 'number':
           this.$emit('input', isChecked ? model + +value : model - value)
           break
-
         case 'array':
           this.$emit('input', isChecked
             ? model.concat(value)
             : model.filter((item) => item !== value)
           )
           break
-
         default:
           this.$emit('input', isChecked)
           break
@@ -123,7 +109,6 @@ export default {
           if (Array.isArray(value)) result = 'array'
           if (value === null) result = 'null'
           break
-
         default:
           result = type
           break
@@ -141,13 +126,14 @@ export default {
 .tick-field {
   position: relative;
   display: flex;
+  width: fit-content;
   z-index: 0; // HACK: fix cut of transforms on some browsers (chrome)
 }
 
 .tick-field__label {
-  @include text-font-sizes;
+  font-size: 1.4rem;
   color: $field-color-focused;
-  padding-left: 2.5rem;
+  padding-left: 2.8rem;
 }
 
 .tick-field__tick,
@@ -156,20 +142,20 @@ export default {
 }
 
 .tick-field__tick {
-  width: 1.6rem;
-  min-width: 1.6rem;
-  height: 1.6rem;
-  margin: 0.2rem 1.3rem 0 0;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  margin: -.3rem 1.3rem 0 0;
   z-index: 0;
-  border: solid 0.2rem;
-  border-radius: 0.3rem;
-  border-color: $field-color-unfocused;
+  border: solid .1rem;
+  border-radius: .2rem;
+  border-color: $col-tick-field-unfocused;
   position: absolute;
   left: 0;
   display: block;
   pointer-events: none;
-  outline: 0.25rem solid transparent;
-  outline-offset: -0.1rem;
+  outline: .25rem solid transparent;
+  outline-offset: -.1rem;
   transition: outline-color $field-transition-duration;
 
   &:after {
@@ -177,12 +163,12 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translateY(-0.1rem) rotate(45deg);
+    transform: translate(-50%, -50%) translateY(-.1rem) rotate(45deg);
     display: block;
     height: 1rem;
-    width: 0.6rem;
+    width: .6rem;
     border: solid white;
-    border-width: 0 0.2rem 0.2rem 0;
+    border-width: 0 .2rem .2rem 0;
 
     opacity: 0;
   }
