@@ -1,6 +1,8 @@
 @import '@/scss/variables';
 
 .op-details {
+  width: 100%;
+  overflow: auto;
   padding: 1.5rem 0 0;
   border-top: 0.1rem solid $col-button-flat-disabled-txt;
 }
@@ -13,4 +15,8 @@
   &:first-of-type {
     color: $col-table-head-text;
   }
+}
+
+.op-details__table {
+  width: 100%;
 }
