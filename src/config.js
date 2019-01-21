@@ -1,5 +1,7 @@
 const featureFlags = {
+  dashboard: true,
   fees: true,
+  trade: true,
 }
 
 export default Object.assign(

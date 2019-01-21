@@ -68,7 +68,18 @@ export const router = new Router({
         {
           path: '/fees',
           name: vueRoutes.fees.name,
+          meta: {
+            pageNameTranslationId: 'pages-names.fees',
+          },
           component: resolve => require(['@/vue/pages/Fees'], resolve),
+        },
+        {
+          path: '/trade',
+          name: vueRoutes.trade.name,
+          meta: {
+            pageNameTranslationId: 'pages-names.trade',
+          },
+          component: resolve => require(['@/vue/pages/trade/Trade'], resolve),
         },
       ].filter(route => route.featureFlag !== false),
     },
