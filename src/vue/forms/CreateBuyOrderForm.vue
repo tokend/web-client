@@ -5,7 +5,11 @@
         <div class="app__form-field">
           <input-field
             v-model.trim="form.price"
-            :label="`Price per ${assets.base}`"
+            :label="
+              'offer-creation-form.price-per-asset' | globalize({
+                asset: assets.base
+              })
+            "
             name="order-buy-price"
             :white-autofill="true"
             type="number"
@@ -13,7 +17,6 @@
             :error-message="getFieldErrorMessage('form.price')"
             @blur="touchField('form.price')"
           />
-          <!-- TODO: -->
         </div>
       </div>
 
@@ -21,7 +24,9 @@
         <div class="app__form-field">
           <input-field
             v-model.trim="form.amount"
-            :label="`Amount ${assets.base}`"
+            :label="'offer-creation-form.amount' | globalize({
+              asset: assets.base
+            })"
             name="order-buy-amount"
             :white-autofill="true"
             type="number"
@@ -29,7 +34,6 @@
             :error-message="getFieldErrorMessage('form.amount')"
             @blur="touchField('form.amount')"
           />
-          <!-- TODO: -->
         </div>
       </div>
 
@@ -38,7 +42,9 @@
           <!-- TODO: -->
           <!-- :value="i18n.c(form.quoteAmount)" -->
           <input-field
-            :label="`Total ${assets.quote}`"
+            :label="'offer-creation-form.total' | globalize({
+              asset: formatMoney(form.quoteAmount)
+            })"
             :value="form.quoteAmount"
             name="order-buy-total"
             :readonly="true"
@@ -52,8 +58,7 @@
           type="submit"
           class="app__form-submit-btn"
           :disabled="!+form.quoteAmount || formMixin.isDisabled">
-          Buy
-          <!-- TODO: -->
+          {{ 'offer-creation-form.submit-btn' | globalize }}
         </button>
       </div>
     </form>
@@ -63,6 +68,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
+import { formatMoney } from '@/vue/filters/formatMoney'
 
 // import { confirmAction } from 'L@/js/modals/confirmation_message'
 import { MathUtil } from '@/js/utils/math.util'
@@ -81,8 +87,6 @@ export default {
       amount: '',
       quoteAmount: '',
     },
-    allowToValidPrice: false,
-    allowToValidAmount: false,
     config,
   }),
   validations: {
@@ -99,25 +103,27 @@ export default {
   watch: {
     'form.price' (value) {
       this.getQuoteAmount()
-      this.allowToValidPrice = true
     },
     'form.amount' (value) {
       this.getQuoteAmount()
-      this.allowToValidAmount = true
     },
   },
   methods: {
+    formatMoney,
     getQuoteAmount () {
       this.form.quoteAmount =
         MathUtil.multiply(this.form.price, this.form.amount)
     },
     async submit () {
-      this.allowToValidPrice = true
-      this.allowToValidAmount = true
       if (!this.isFormValid()) return
       // if (!await confirmAction()) return
       this.disableForm()
-      await this.createOrder({
+      console.log('this.getCreateOfferOpts()', this.getCreateOfferOpts())
+      await this.createOrder(this.getCreateOfferOpts())
+      this.enableForm()
+    },
+    getCreateOfferOpts () {
+      return {
         pair: {
           base: this.assets.base,
           quote: this.assets.quote,
@@ -126,17 +132,7 @@ export default {
         quoteAmount: this.form.quoteAmount,
         price: this.form.price,
         isBuy: true,
-      })
-      this.enableForm()
-    },
-    resetForm () {
-      this.form.price = ''
-      this.form.amount = ''
-      setTimeout(() => this.changeAllow(), 0)
-    },
-    changeAllow () {
-      this.allowToValidPrice = false
-      this.allowToValidAmount = false
+      }
     },
   },
 }

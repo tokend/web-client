@@ -192,7 +192,7 @@
       "terms": "Terms",
       "download-apps": "Downloads"
     },
-    
+
     "fee-types": {
       "payment": "Payment",
       "offer": "Offer",
@@ -255,6 +255,14 @@
 
     "email-getter": {
       "loading-msg": "Loading..."
+    },
+
+    "offer-creation-form": {
+      "success": "Offer successfully created",
+      "price-per-asset": "Price per {{asset}}",
+      "amount": "Amount {{asset}}",
+      "total": "Total {{asset}}",
+      "submit-btn": "Buy"
     }
   }
 }

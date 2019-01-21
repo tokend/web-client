@@ -1,12 +1,13 @@
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-// import { dispatchAppEvent } from 'L@/js/events/helpers'
-
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { base } from '@tokend/js-sdk'
+import { base, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { Sdk } from '@/sdk'
+import { globalize } from '@/vue/filters/globalize'
 
-// const SECONDARY_MARKET_ORDER_BOOK_ID = 0
+const SECONDARY_MARKET_ORDER_BOOK_ID = '0'
+const OFFER_FEE_TYPE = 'offerFee'
 
 export default {
   computed: {
@@ -19,6 +20,9 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    getAssetDetails (assetCode) {
+      return this.accountBalances.find(i => i.asset === assetCode)
+    },
     /**
      * @param opts
      * @param {object} opts.pair - pair to create order for
@@ -32,7 +36,7 @@ export default {
      */
     async createOrder (opts) {
       try {
-        if (!this.accountBalances[opts.pair.base]) {
+        if (!this.getAssetDetails(opts.pair.base)) {
           await base.manageBalance({
             destination: this.accountId,
             asset: opts.pair.base,
@@ -41,7 +45,7 @@ export default {
           await this.loadBalances(this.accountId)
         }
 
-        if (!this.accountBalances[opts.pair.quote]) {
+        if (!this.getAssetDetails(opts.pair.quote)) {
           await base.manageBalance({
             destination: this.accountId,
             asset: opts.pair.quote,
@@ -50,22 +54,28 @@ export default {
           await this.loadBalances(this.accountId)
         }
 
-        // const fee =
-        // await feeService.loadOfferFeeByAmount(
-        //   opts.pair.quote, opts.quoteAmount
-        // )
+        const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value
+        const feeOpts = {
+          asset: opts.pair.quote,
+          amount: opts.quoteAmount,
+          subtype: PAYMENT_FEE_SUBTYPES.outgoing,
+          account: this.accountId,
+        }
+        const fee = (await Sdk.horizon.fees.get(feeType, feeOpts)).data
+        const operationOpts = {
+          amount: opts.baseAmount,
+          price: opts.price,
+          orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
+          isBuy: opts.isBuy,
+          baseBalance: this.getAssetDetails(opts.pair.base).balanceId,
+          quoteBalance: this.getAssetDetails(opts.pair.quote).balanceId,
+          fee: fee.percent,
+        }
+        const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
-        // await offersService.createOffer({
-        //   amount: opts.baseAmount,
-        //   price: opts.price,
-        //   orderBookId: SECONDARY_MARKET_ORDER_BOOK_ID,
-        //   isBuy: opts.isBuy,
-        //   baseBalance: this.accountBalances[opts.pair.base].balance_id,
-        //   quoteBalance: this.accountBalances[opts.pair.quote].balance_id,
-        //   fee: fee.percent
-        // })
-        // dispatchAppEvent(commonEvents.createdOrder)
-        Bus.success('Offer successfully created')
+        await Sdk.horizon.transactions.submitOperations(operation)
+
+        Bus.success(globalize('offer-creation-form.success'))
       } catch (error) {
         ErrorHandler.process(error)
       }
