@@ -68,6 +68,19 @@
               {{ 'pages-names.issuance' | globalize }}
             </span>
           </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.requests"
+            tag="li"
+            v-if="config.FEATURE_FLAGS.requests"
+          >
+            <i class="sidebar__link-icon mdi mdi-label" />
+            <span>
+              {{ 'pages-names.requests' | globalize }}
+            </span>
+          </router-link>
         </ul>
       </section>
 

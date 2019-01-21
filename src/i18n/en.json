@@ -272,6 +272,12 @@
       "token-request-created-msg": "Your token creation request was successfully submitted"
     },
 
+    "requests-page": {
+      "token-creation-title": "Token creation",
+      "fund-creation-title": "Fund creation",
+      "preissuance-upload-title": "Pre-issuance upload"
+    },
+
     "file-field": {
       "title": "Drop files here or click to browse",
       "selected-file": "Selected file: {{name}}",

@@ -95,6 +95,12 @@ export const router = new Router({
             },
           ],
         },
+        {
+          path: '/requests',
+          name: vueRoutes.requests.name,
+          featureFlag: config.FEATURE_FLAGS.requests,
+          component: resolve => require(['@/vue/pages/Requests'], resolve),
+        },
       ].filter(route => route.featureFlag !== false),
     },
   ],
