@@ -43,4 +43,17 @@ export default {
     padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2rem;
   }
 }
+
+.navbar__title {
+  color: $col-text-page-heading;
+  font-size: 4rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.navbar__sub-title {
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
 </style>
