@@ -96,7 +96,7 @@ export default {
       if (balance) {
         return {
           value: balance.balance,
-          currency: balance.asset
+          currency: balance.asset,
         }
       } else {
         return {}
