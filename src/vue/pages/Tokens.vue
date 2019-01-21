@@ -22,18 +22,26 @@
         <button
           v-ripple
           class="create-token-btn"
-          @click="isTokensDrawerShown = true"
+          @click="isTokenDrawerShown = true"
         >
           {{ 'tokens-page.create-token-btn' | globalize }}
         </button>
       </template>
     </top-bar>
+    <drawer :is-shown.sync="isTokenDrawerShown">
+      <template slot="heading">
+        {{ 'tokens-page.create-token-btn' | globalize }}
+      </template>
+      <token-form />
+    </drawer>
     <router-view />
   </div>
 </template>
 
 <script>
 import TopBar from '@/vue/common/TopBar'
+import Drawer from '@/vue/common/Drawer'
+import TokenForm from '@/vue/forms/TokenForm'
 
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
@@ -46,11 +54,13 @@ export default {
   name: 'tokens',
   components: {
     TopBar,
+    Drawer,
+    TokenForm,
   },
   data: _ => ({
     ACCOUNT_TYPES,
     vueRoutes,
-    isTokensDrawerShown: false,
+    isTokenDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
