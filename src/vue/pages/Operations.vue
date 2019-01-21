@@ -45,7 +45,7 @@
 <script>
 import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import OpList from '@/vue/common/OpList/OpList'
+import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'

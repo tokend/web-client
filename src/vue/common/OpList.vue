@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import OpListRow from './OpListRow'
+import OpListRow from './OpList/OpListRow'
 
 export default {
   name: 'op-list',
@@ -50,7 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@scss/variables";
-@import "op-list-variables";
+@import "OpList/op-list-variables";
 
 .op-list__table {
   width: 100%;
