@@ -96,7 +96,7 @@ export default {
       if (balance) {
         return {
           value: balance.balance,
-          currency: balance.asset,
+          currency: balance.asset
         }
       } else {
         return {}
@@ -129,16 +129,16 @@ export default {
   min-height: 19rem;
   cursor: pointer;
   border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 .5rem 1rem 0 $col-field-shadow;
   background-color: $col-token-card-background;
   margin: .75rem;
 
   @include respond-to($medium) {
-    flex: 0 1 calc(33% - 3rem);
+    flex: 0 1 calc(33% - 1.5rem);
   }
 
   @include respond-to($x-small) {
-    flex: 0 1 calc(100% - 3rem);
+    flex: 0 1 calc(100% - 1.5rem);
   }
 }
 

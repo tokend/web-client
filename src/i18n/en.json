@@ -268,7 +268,8 @@
       "transferable-lbl": "Transferable",
       "kyc-required-lbl": "Requires KYC",
       "terms-lbl": "Upload terms",
-      "terms-note": "JPG, PNG, PDF, max 5 mb."
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "token-request-created-msg": "Your token creation request was successfully submitted"
     },
 
     "file-field": {

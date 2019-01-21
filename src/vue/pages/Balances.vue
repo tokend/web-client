@@ -116,7 +116,7 @@ export default {
   min-height: 19rem;
   cursor: pointer;
   border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 .5rem 1rem 0 $col-field-shadow;
   background-color: $col-token-card-background;
   margin: .75rem;
 

@@ -64,9 +64,9 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <tick-field
-              v-model="form.information.transferable"
-              id="token-transferable"
+              v-model="form.information.policies"
               :disabled="formMixin.isDisabled"
+              :cb-value="ASSET_POLICIES.transferable"
             >
               {{ 'token-form.transferable-lbl' | globalize }}
             </tick-field>
@@ -75,9 +75,9 @@
         <div class="app__form-row token-form__kyc-required-row">
           <div class="app__form-field">
             <tick-field
-              v-model="form.information.kycRequired"
-              id="token-kyc-required"
+              v-model="form.information.policies"
               :disabled="formMixin.isDisabled"
+              :cb-value="ASSET_POLICIES.requiresKyc"
             >
               {{ 'token-form.kyc-required-lbl' | globalize }}
             </tick-field>
@@ -152,6 +152,13 @@ import FormStepper from '@/vue/common/FormStepper'
 import config from '@/config'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { DocumentUploader } from '@/js/helpers/document-uploader'
+
+import { Sdk } from '@/sdk'
+import { base, ASSET_POLICIES } from '@tokend/js-sdk'
+
 import { required, amountRange, documentContainer } from '@validators'
 
 const STEPS = {
@@ -178,8 +185,7 @@ export default {
         code: '',
         maxIssuanceAmount: '',
         icon: null,
-        transferable: false,
-        kycRequired: false,
+        policies: [],
       },
       terms: {
         terms: null,
@@ -190,6 +196,7 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DOCUMENT_TYPES,
+    ASSET_POLICIES,
   }),
   validations () {
     return {
@@ -225,8 +232,45 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
-      alert('Submitting here')
+      try {
+        await this.uploadDocuments()
+        const operation = this.createTokenCreationRequest()
+        await Sdk.horizon.transactions.submitOperations(operation)
+        Bus.success('token-form.token-request-created-msg')
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.process(e)
+      }
       this.enableForm()
+    },
+    createTokenCreationRequest () {
+      return base.ManageAssetBuilder.assetCreationRequest({
+        requestID: '0',
+        code: this.form.information.code,
+        preissuedAssetSigner: config.NULL_ASSET_SIGNER,
+        initialPreissuedAmount: this.form.information.maxIssuanceAmount,
+        maxIssuanceAmount: this.form.information.maxIssuanceAmount,
+        policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
+        details: {
+          name: this.form.information.name,
+          logo: this.form.information.icon.getDetailsForSave(),
+          terms: this.form.terms.terms.getDetailsForSave(),
+        },
+      })
+    },
+    async uploadDocuments () {
+      const documents = [
+        this.form.information.icon,
+        this.form.terms.terms,
+      ]
+      for (let document of documents) {
+        if (!document.key) {
+          const documentKey = await DocumentUploader.uploadDocument(
+            document.getDetailsForUpload()
+          )
+          document.setKey(documentKey)
+        }
+      }
     },
   },
 }
