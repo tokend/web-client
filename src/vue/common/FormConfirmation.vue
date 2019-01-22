@@ -15,7 +15,12 @@
           class="form-confirmation__ok-btn"
           @click.prevent="emitOk"
           :disabled="isPending">
-          {{ okButtonTextId | globalize }}
+          <template v-if="!isPending">
+            {{ okButtonTextId | globalize }}
+          </template>
+          <template v-else>
+            {{ 'form-confirmation.submit-processing' | globalize }}
+          </template>
         </button>
       </div>
     </div>
@@ -79,9 +84,9 @@ export default {
 }
 
 .form-confirmation__msg {
-  font-size: 1rem;
+  font-size: 1.6rem;
   line-height: 1.25;
-  padding-right: 1rem;
+  padding-right: 1.6rem;
 }
 
 .form-confirmation__btns {
