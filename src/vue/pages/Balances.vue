@@ -2,8 +2,9 @@
   <div class="tokens-explorer">
     <drawer :is-shown.sync="isDetailsDrawerShown">
       <template slot="heading">
-        {{ 'tokens-page.token-details-title' | globalize }}
+        {{ 'token-details.title' | globalize }}
       </template>
+      <token-details :token="selectedToken" />
     </drawer>
     <div class="token-cards">
       <a
@@ -49,6 +50,7 @@
 
 <script>
 import Drawer from '@/vue/common/Drawer'
+import TokenDetails from '@/vue/common/TokenDetails'
 
 import { Sdk } from '@/sdk'
 
@@ -63,6 +65,7 @@ export default {
   name: 'balances',
   components: {
     Drawer,
+    TokenDetails,
   },
   data: _ => ({
     tokens: [],

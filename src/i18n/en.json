@@ -286,8 +286,20 @@
       "request-approved-msg": "Approved",
       "request-rejected-msg": "Rejected",
       "request-pending-msg": "Pending",
-      "request-canceled-msg": "Canceled",
+      "request-cancelled-msg": "Cancelled",
       "request-permanently-rejected-msg": "Permanently rejected"
+    },
+
+    "token-details": {
+      "title": "Token details",
+      "balance-title": "Balance",
+      "maximum-title": "Maximum",
+      "issued-title": "Issued",
+      "available-title": "Available",
+      "terms-title": "Terms",
+      "download-terms-btn": "Download terms",
+      "no-terms-msg": "No terms",
+      "add-balance-btn": "Add to my balances"
     },
 
     "token-request-details": {

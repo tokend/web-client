@@ -147,7 +147,7 @@ export default {
   box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
 
   tr td:last-child {
-    text-align: right;
+    text-align: left;
   }
 }
 
