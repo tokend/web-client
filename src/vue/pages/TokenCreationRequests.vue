@@ -9,6 +9,7 @@
           <token-form
             v-if="isUpdating"
             :request="selectedRequest"
+            @update="loadHistory"
           />
         </template>
         <template v-else>

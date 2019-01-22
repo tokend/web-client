@@ -154,8 +154,11 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
@@ -174,6 +177,9 @@ const STEPS = {
 }
 
 const ASSET_CREATION_REQUEST_ID = '0'
+const EVENTS = {
+  update: 'update',
+}
 
 export default {
   name: 'token-form',
@@ -287,18 +293,19 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-
         let operation
-        if (this.request) {
+        if (this.request instanceof AssetUpdateRequestRecord) {
           operation =
             base.ManageAssetBuilder.assetUpdateRequest(this.tokenRequestOpts)
         } else {
           operation =
             base.ManageAssetBuilder.assetCreationRequest(this.tokenRequestOpts)
         }
-
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('token-form.token-request-created-msg')
+        if (this.request) {
+          this.$emit(EVENTS.update)
+        }
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)

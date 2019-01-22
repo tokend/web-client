@@ -16,12 +16,12 @@
     </div>
     <table class="app__table token-details__table">
       <tbody>
-        <tr v-if="token.balance">
+        <tr v-if="tokenBalance">
           <td>
             {{ 'token-details.balance-title' | globalize }}
           </td>
           <td>
-            {{ token.balance | formatMoney }}
+            {{ tokenBalance | formatMoney }}
           </td>
         </tr>
         <tr>
@@ -70,7 +70,8 @@
       <button
         v-ripple
         class="token-details__update-btn"
-        :disabled="token.balance"
+        :disabled="token.balance || isBalanceCreating"
+        @click="createBalance"
       >
         {{ 'token-details.add-balance-btn' | globalize }}
       </button>
@@ -83,6 +84,18 @@ import TokenLogo from '@/vue/common/TokenLogo'
 
 import config from '@/config'
 
+import { Sdk } from '@/sdk'
+
+import { base } from '@tokend/js-sdk'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
+
+import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+const INITIAL_BALANCE = '0'
+
 export default {
   name: 'token-details',
   components: {
@@ -91,9 +104,48 @@ export default {
   props: {
     token: { type: Object, required: true },
   },
+  data: _ => ({
+    isBalanceCreating: false,
+    isBalanceAdded: false,
+  }),
   computed: {
+    ...mapGetters({
+      account: vuexTypes.account,
+    }),
     tokenTermsUrl () {
       return `${config.FILE_STORAGE}/${this.token.details.terms.key}`
+    },
+    tokenBalance () {
+      if (this.token.balance) {
+        return this.token.balance
+      } else if (this.isBalanceAdded) {
+        return INITIAL_BALANCE
+      } else {
+        return ''
+      }
+    },
+  },
+  methods: {
+    ...mapActions({
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
+    async createBalance () {
+      this.isBalanceCreating = true
+      try {
+        const operation = base.Operation.manageBalance({
+          destination: this.account.accountId,
+          asset: this.token.code,
+          action: base.xdr.ManageBalanceAction.create(),
+        })
+        await Sdk.horizon.transactions.submitOperations(operation)
+        this.isBalanceAdded = true
+        await this.loadAccount()
+        Bus.success('token-details.balance-added-msg')
+      } catch (e) {
+        this.isBalanceCreating = false
+        console.error(e)
+        ErrorHandler.process(e)
+      }
     },
   },
 }

@@ -300,7 +300,8 @@
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
-      "add-balance-btn": "Add to my balances"
+      "add-balance-btn": "Add to my balances",
+      "balance-added-msg": "Added to your balances"
     },
 
     "token-request-details": {
