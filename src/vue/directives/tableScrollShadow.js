@@ -18,20 +18,24 @@ function scrollStyling (e) {
     : parentNode.classList.remove('app__table-left-shadow')
 }
 
-export const tableScrollShadow = {
-  bind (el) {
-    el.addEventListener('scroll', throttle(scrollStyling, 150), true)
-    window.addEventListener(
-      'resize',
-      throttle(scrollStyling.bind(null, el), 200),
-      true
-    )
-  },
-  inserted (el) {
-    scrollStyling(el)
-  },
-  unbind (el) {
-    el.removeEventListener('scroll', scrollStyling)
-    window.removeEventListener('resize', scrollStyling)
-  },
-}
+export const tableScrollShadow = (() => {
+  let scrollHandler = null
+  let resizeHandler = null
+
+  return {
+    bind (el) {
+      scrollHandler = throttle(scrollStyling, 150)
+      resizeHandler = throttle(scrollStyling.bind(null, el), 200)
+
+      el.addEventListener('scroll', scrollHandler)
+      window.addEventListener('resize', resizeHandler)
+    },
+    inserted (el) {
+      scrollStyling(el)
+    },
+    unbind (el) {
+      el.removeEventListener('scroll', scrollHandler)
+      window.removeEventListener('resize', resizeHandler)
+    },
+  }
+})()
