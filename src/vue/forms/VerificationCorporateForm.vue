@@ -108,19 +108,31 @@
           type="submit"
           class="verification-corporate-form__submit-btn"
           :disabled="formMixin.isDisabled"
+          @click.prevent="isConfirming = true"
         >
           {{ 'verification-form.submit-btn' | globalize }}
         </button>
       </div>
+      <form-confirmation
+        v-if="isConfirming"
+        @ok="submit"
+        @cancel="isConfirming = false"
+      />
     </form>
   </div>
 </template>
 
 <script>
+import FormConfirmation from '@/vue/common/FormConfirmation'
+
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
+import VerificationGuardMixin from '@/vue/mixins/verification-guard.mixin'
 
 import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -130,7 +142,10 @@ const MIN_TEAM_SIZE = 1
 
 export default {
   name: 'verification-corporate-form',
-  mixins: [VerificationFormMixin],
+  components: {
+    FormConfirmation,
+  },
+  mixins: [VerificationFormMixin, VerificationGuardMixin],
   data: _ => ({
     form: {
       name: '',
@@ -143,6 +158,7 @@ export default {
     },
     accountType: ACCOUNT_TYPES.syndicate,
     MIN_TEAM_SIZE,
+    isConfirming: false,
   }),
   validations: {
     form: {
@@ -159,12 +175,27 @@ export default {
       website: { required, url },
     },
   },
+  async created () {
+    try {
+      await this.loadKyc()
+    } catch (e) {
+      console.error(e)
+      ErrorHandler.process(e)
+    }
+    if (this.kycState) {
+      this.form = this.convertTemplateToForm(this.kycLatestData)
+      if (this.kycState !== REQUEST_STATES_STR.rejected) {
+        this.disableForm()
+      }
+    }
+  },
   methods: {
     async submit () {
+      this.isConfirming = false
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        const kycBlob = await this.createKycBlob()
+        const kycBlob = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
         const operation = this.createKycOperation(kycBlob)
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
@@ -172,6 +203,28 @@ export default {
         console.error(e)
         ErrorHandler.process(e)
         this.enableForm()
+      }
+    },
+    convertFormToTemplate () {
+      return {
+        name: this.form.name,
+        company: this.form.company,
+        headquarters: this.form.headquarters,
+        industry: this.form.industry,
+        found_date: this.form.foundDate,
+        team_size: this.form.teamSize,
+        homepage: this.form.website,
+      }
+    },
+    convertTemplateToForm (template) {
+      return {
+        name: template.name,
+        company: template.company,
+        headquarters: template.headquarters,
+        industry: template.industry,
+        foundDate: template.found_date,
+        teamSize: template.team_size,
+        website: template.homepage,
       }
     },
   },

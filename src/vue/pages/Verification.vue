@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import VerificationGuardMixin from '@/vue/mixins/verification-guard.mixin'
+
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
@@ -61,6 +63,7 @@ import { globalize } from '@/vue/filters/globalize'
 
 export default {
   name: 'verification',
+  mixins: [VerificationGuardMixin],
   data: _ => ({
     vueRoutes,
   }),
@@ -91,17 +94,6 @@ export default {
         return globalize(this.kycRequestMessageId)
       }
     },
-  },
-  beforeRouteUpdate (to, from, next) {
-    if (this.kycState && to.name === vueRoutes.verification.name) {
-      if (this.kycLatestData.name) {
-        next(vueRoutes.verification.corporate)
-      } else if (this.kycLatestData.first_name) {
-        next(vueRoutes.verification.corporate)
-      }
-    } else {
-      next()
-    }
   },
 }
 </script>

@@ -232,30 +232,45 @@
           type="submit"
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
+          @click.prevent="isConfirming = true"
         >
           {{ 'verification-form.submit-btn' | globalize }}
         </button>
       </div>
+      <form-confirmation
+        v-if="isConfirming"
+        @ok="submit"
+        @cancel="isConfirming = false"
+      />
     </form>
   </div>
 </template>
 
 <script>
+import FormConfirmation from '@/vue/common/FormConfirmation'
+
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
+import VerificationGuardMixin from '@/vue/mixins/verification-guard.mixin'
 
 import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { required, documentContainer } from '@validators'
 
 export default {
   name: 'verification-general-form',
-  mixins: [VerificationFormMixin],
+  components: {
+    FormConfirmation,
+  },
+  mixins: [VerificationFormMixin, VerificationGuardMixin],
   data: _ => ({
     form: {
       personal: {
@@ -282,6 +297,7 @@ export default {
     accountType: ACCOUNT_TYPES.general,
     DOCUMENT_TYPES,
     countries: [],
+    isConfirming: false,
   }),
   validations: {
     form: {
@@ -312,20 +328,28 @@ export default {
   },
   async created () {
     try {
+      await this.loadKyc()
       const { data } = await Sdk.horizon.public.getEnums()
       this.countries = data.countries
     } catch (e) {
       console.error(e)
       ErrorHandler.process(e)
     }
+    if (this.kycState) {
+      this.form = this.convertTemplateToForm(this.kycLatestData)
+      if (this.kycState !== REQUEST_STATES_STR.rejected) {
+        this.disableForm()
+      }
+    }
   },
   methods: {
     async submit () {
+      this.isConfirming = false
       if (!this.isFormValid()) return
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const kycBlob = await this.createKycBlob()
+        const kycBlob = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(kycBlob)
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
@@ -344,6 +368,66 @@ export default {
           document.setKey(documentKey)
         }
       }
+    },
+    convertFormToTemplate () {
+      return {
+        first_name: this.form.personal.firstName,
+        last_name: this.form.personal.lastName,
+        date_of_birth: this.form.personal.birthDate,
+        id_expiration_date: this.form.personal.documentExpirationDate,
+        address: {
+          line_1: this.form.address.firstLine,
+          line_2: this.form.address.secondLine,
+          city: this.form.address.city,
+          country: this.form.address.country,
+          state: this.form.address.state,
+          postal_code: this.form.address.postalCode,
+        },
+        documents: {
+          [DOCUMENT_TYPES.kycIdDocument]:
+            this.form.documents.idDocument.getDetailsForSave(),
+          [DOCUMENT_TYPES.kycProofOfAddress]:
+            this.form.documents.proofDocument.getDetailsForSave(),
+          [DOCUMENT_TYPES.kycSelfie]:
+            this.form.documents.verificationPhoto.getDetailsForSave(),
+        },
+      }
+    },
+    convertTemplateToForm (template) {
+      return {
+        personal: {
+          firstName: template.first_name,
+          lastName: template.last_name,
+          birthDate: template.date_of_birth,
+          documentExpirationDate: template.id_expiration_date,
+        },
+        address: {
+          firstLine: template.address.line_1,
+          secondLine: template.address.line_2,
+          city: template.address.city,
+          country: template.address.country,
+          state: template.address.state,
+          postalCode: template.address.postal_code,
+        },
+        documents: {
+          idDocument: this.wrapDocument(
+            template.documents[DOCUMENT_TYPES.kycIdDocument]
+          ),
+          proofDocument: this.wrapDocument(
+            template.documents[DOCUMENT_TYPES.kycProofOfAddress]
+          ),
+          verificationPhoto: this.wrapDocument(
+            template.documents[DOCUMENT_TYPES.kycSelfie]
+          ),
+        },
+      }
+    },
+    wrapDocument (document) {
+      return new DocumentContainer({
+        mimeType: document.mime_type,
+        name: document.name,
+        key: document.key,
+      })
     },
   },
 }

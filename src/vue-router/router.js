@@ -85,19 +85,16 @@ export const router = new Router({
             {
               path: '/verification',
               name: vueRoutes.verification.name,
-              beforeEnter: verificationGuard,
               component: resolve => require(['@/vue/pages/Verification'], resolve),
               children: [
                 {
                   path: '/verification/general',
                   name: vueRoutes.verification.general.name,
-                  beforeEnter: verificationGuard,
                   component: resolve => require(['@/vue/forms/VerificationGeneralForm'], resolve),
                 },
                 {
                   path: '/verification/corporate',
                   name: vueRoutes.verification.corporate.name,
-                  beforeEnter: verificationGuard,
                   component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve),
                 },
               ],
@@ -126,22 +123,4 @@ function inAppRouteGuard (to, from, next) {
   isLoggedIn
     ? next()
     : next(vueRoutes.login)
-}
-
-// doesn't allow to visit verification pages if account is verified
-// or requested for verification
-function verificationGuard (to, from, next) {
-  const kycLatestData = store.getters[vuexTypes.kycLatestData]
-
-  if (kycLatestData.first_name) {
-    to.name === vueRoutes.verification.general.name
-      ? next()
-      : next(vueRoutes.verification.general)
-  } else if (kycLatestData.name) {
-    to.name === vueRoutes.verification.corporate.name
-      ? next()
-      : next(vueRoutes.verification.corporate)
-  } else {
-    next()
-  }
 }
