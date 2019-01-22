@@ -6,14 +6,14 @@ const WRAPPER_PADDING = 5
 function scrollStyling (e) {
   const target = e.target ? e.target : e
   const parentNode = target.parentNode
-  const rightShadowIsNeeded = target.scrollLeft >=
+  const isRightShadowNeeded = target.scrollLeft >=
     target.scrollWidth - target.offsetWidth - WRAPPER_PADDING
-  const leftShadowIsNeeded = target.scrollLeft > WRAPPER_PADDING
+  const isLeftShadowNeeded = target.scrollLeft > WRAPPER_PADDING
 
-  rightShadowIsNeeded
+  isRightShadowNeeded
     ? parentNode.classList.remove('app__table-right-shadow')
     : parentNode.classList.add('app__table-right-shadow')
-  leftShadowIsNeeded
+  isLeftShadowNeeded
     ? parentNode.classList.add('app__table-left-shadow')
     : parentNode.classList.remove('app__table-left-shadow')
 }
