@@ -69,6 +69,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { RecordWrapper } from '@/js/records'
+import { MatchRecord } from '@/js/records/operations/match.record'
 
 export default {
   name: 'history-index',
@@ -143,7 +144,14 @@ export default {
           asset: this.asset,
           balanceId: this.balanceId,
         })
-      })
+      }).reduce((list, item) => {
+        if (item instanceof MatchRecord) {
+          item.effects.forEach(tx => { list.push(tx) })
+          return list
+        }
+        list.push(item)
+        return list
+      }, [])
     },
   },
 }

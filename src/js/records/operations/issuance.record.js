@@ -30,7 +30,8 @@ export class IssuanceRecord extends OpRecord {
   }
 
   get isIncoming () {
-    return this.accountId === this.counterparty
+    // issuance operation it always operation for adding asset
+    return true
   }
 
   get counterparty () {

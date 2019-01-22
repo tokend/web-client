@@ -46,7 +46,7 @@
 
     "common": {
       "browser-not-supported": "It seems your browser is not supported. Some of the features may not work",
-      "button-text-more": "More"
+      "more-btn": "More"
     },
 
     "status-message": {
