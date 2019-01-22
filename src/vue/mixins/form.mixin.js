@@ -1,7 +1,7 @@
 import { validationMixin } from 'vuelidate'
 
-import InputField from '../fields/InputField'
-import SelectField from '../fields/SelectField'
+import InputField from '@/vue/fields/InputField'
+import SelectField from '@/vue/fields/SelectField'
 import FileField from '@/vue/fields/FileField'
 
 import { globalize } from '@/vue/filters/globalize'
@@ -18,6 +18,7 @@ export default {
   data: _ => ({
     formMixin: {
       isDisabled: false,
+      showConfirmation: false,
     },
   }),
   methods: {
@@ -94,6 +95,9 @@ export default {
     },
     enableForm () {
       this.formMixin.isDisabled = false
+    },
+    cancelConfirmation () {
+      this.formMixin.showConfirmation = false
     },
   },
 }

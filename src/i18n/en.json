@@ -44,10 +44,6 @@
       "fee_subtype": "{{value, fee_subtype}}"
     },
 
-    "common": {
-      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work"
-    },
-
     "status-message": {
       "default-message_warning": "Something you are doing is not recommended",
       "default-message_success": "Action successful",
@@ -67,6 +63,7 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
+      "field-error_noMoreThanAvailableOnBalance": "No more than available on your balance: {{available}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID"
     },
 
@@ -88,7 +85,8 @@
     },
 
     "common": {
-      "button-text-more": "More"
+      "button-text-more": "More",
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work"
     },
 
     "auth-pages": {
@@ -134,7 +132,8 @@
     "form-confirmation": {
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
-      "button-text-cancel": "Cancel"
+      "button-text-cancel": "Cancel",
+      "submit-processing": "Processing..."
     },
 
     "pages-names": {
@@ -262,7 +261,18 @@
       "price-per-asset": "Price per {{asset}}",
       "amount": "Amount {{asset}}",
       "total": "Total {{asset}}",
-      "submit-btn": "Buy"
+      "submit-buy-btn": "Buy",
+      "submit-sell-btn": "Sell"
+    },
+
+    "trade": {
+      "exhange-view": "Exhange",
+      "my-orders-view": "My Orders",
+      "create-buy-order-button": "Create buy order",
+      "create-sell-order-button": "Create sell order",
+      "user-balances-label": "Balances",
+      "create-buy-order-form-title": "Create buy order",
+      "create-sell-order-form-title": "Create sell order"
     }
   }
 }
