@@ -286,7 +286,7 @@
       "request-approved-msg": "Approved",
       "request-rejected-msg": "Rejected",
       "request-pending-msg": "Pending",
-      "request-cancelled-msg": "Cancelled",
+      "request-canceled-msg": "Cancelled",
       "request-permanently-rejected-msg": "Permanently rejected"
     },
 
@@ -317,7 +317,13 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "asset-create-request-type": "Asset create",
-      "asset-update-request-type": "Asset update"
+      "asset-update-request-type": "Asset update",
+      "approved-request-msg": "Your request was approved",
+      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-request-msg": "Your request was cancelled",
+      "permanently-rejected-request-msg": "Your request was rejected permanently",
+      "request-canceled-msg": "Your request was successfully cancelled"
     },
 
     "file-field": {

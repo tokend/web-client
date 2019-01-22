@@ -120,20 +120,29 @@ export default {
       this.isDetailsDrawerShown = true
     },
     getRequestStateMessage (requestState) {
+      let requestStateMessageId
       switch (requestState) {
         case REQUEST_STATES_STR.pending:
-          return globalize('requests-page.request-pending-msg')
+          requestStateMessageId = 'request-pending-msg'
+          break
         case REQUEST_STATES_STR.approved:
-          return globalize('requests-page.request-approved-msg')
+          requestStateMessageId = 'request-approved-msg'
+          break
         case REQUEST_STATES_STR.rejected:
-          return globalize('requests-page.request-rejected-msg')
-        case REQUEST_STATES_STR.cancelled:
-          return globalize('requests-page.request-cancelled-msg')
+          requestStateMessageId = 'request-rejected-msg'
+          break
+        case REQUEST_STATES_STR.canceled:
+          requestStateMessageId = 'request-canceled-msg'
+          break
         case REQUEST_STATES_STR.permanentlyRejected:
-          return globalize('requests-page.request-permanently-rejected-msg')
+          requestStateMessageId = 'request-permanently-rejected-msg'
+          break
         default:
-          return ''
+          requestStateMessageId = ''
+          break
       }
+
+      return globalize(`requests-page.${requestStateMessageId}`)
     },
   },
 }
@@ -147,7 +156,8 @@ export default {
   box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
 
   tr td:last-child {
-    text-align: left;
+    width: 3rem;
+    text-align: right;
   }
 }
 
@@ -160,22 +170,17 @@ export default {
 .request-state {
   padding-left: 3rem;
   text-transform: capitalize;
+  position: relative;
 
-  &--approved,
-  &--pending,
-  &--rejected {
-    position: relative;
-
-    &:before {
-      content: "";
-      position: absolute;
-      width: 0.6rem;
-      height: 0.6rem;
-      top: 1.7rem;
-      transform: translateY(-50%);
-      left: 1.6rem;
-      border-radius: 100%;
-    }
+  &:before {
+    content: "";
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    top: 1.7rem;
+    transform: translateY(-50%);
+    left: 1.6rem;
+    border-radius: 100%;
   }
 
   &--approved:before {
@@ -187,7 +192,7 @@ export default {
   }
 
   &--rejected:before,
-  &--cancelled:before,
+  &--canceled:before,
   &--permanentlyRejected:before {
     background-color: $col-error;
   }

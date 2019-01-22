@@ -172,12 +172,17 @@ const STEPS = {
   },
 }
 
+const ASSET_CREATION_REQUEST_ID = '0'
+
 export default {
   name: 'token-form',
   components: {
     FormStepper,
   },
   mixins: [FormMixin],
+  props: {
+    token: { type: Object, default: null },
+  },
   data: _ => ({
     form: {
       information: {
@@ -216,6 +221,23 @@ export default {
       },
     }
   },
+  computed: {
+    tokenRequestOpts () {
+      return {
+        requestID: this.token.requestId || ASSET_CREATION_REQUEST_ID,
+        code: this.form.information.code,
+        preissuedAssetSigner: config.NULL_ASSET_SIGNER,
+        initialPreissuedAmount: this.form.information.maxIssuanceAmount,
+        maxIssuanceAmount: this.form.information.maxIssuanceAmount,
+        policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
+        details: {
+          name: this.form.information.name,
+          logo: this.form.information.icon.getDetailsForSave(),
+          terms: this.form.terms.terms.getDetailsForSave(),
+        },
+      }
+    },
+  },
   methods: {
     next (formStep) {
       if (this.isFormValid(formStep)) {
@@ -234,7 +256,16 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const operation = this.createTokenCreationRequest()
+
+        let operation
+        if (this.token) {
+          operation =
+            base.ManageAssetBuilder.assetUpdateRequest(this.tokenRequestOpts)
+        } else {
+          operation =
+            base.ManageAssetBuilder.assetCreationRequest(this.tokenRequestOpts)
+        }
+
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('token-form.token-request-created-msg')
       } catch (e) {
@@ -242,21 +273,6 @@ export default {
         ErrorHandler.process(e)
       }
       this.enableForm()
-    },
-    createTokenCreationRequest () {
-      return base.ManageAssetBuilder.assetCreationRequest({
-        requestID: '0',
-        code: this.form.information.code,
-        preissuedAssetSigner: config.NULL_ASSET_SIGNER,
-        initialPreissuedAmount: this.form.information.maxIssuanceAmount,
-        maxIssuanceAmount: this.form.information.maxIssuanceAmount,
-        policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
-        details: {
-          name: this.form.information.name,
-          logo: this.form.information.icon.getDetailsForSave(),
-          terms: this.form.terms.terms.getDetailsForSave(),
-        },
-      })
     },
     async uploadDocuments () {
       const documents = [
