@@ -1,10 +1,10 @@
 <template>
   <div class="token-request-details">
     <div class="asset-details">
-      <img
-        class="asset-details__logo"
-        :src="tokenLogoUrl"
-      >
+      <token-logo
+        :logo-key="request.logoKey"
+        :token-code="request.assetCode"
+      />
       <div class="asset-details__info">
         <p class="asset-details__code">
           {{ request.assetCode }}
@@ -110,6 +110,8 @@
 </template>
 
 <script>
+import TokenLogo from '@/vue/common/TokenLogo'
+
 import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
@@ -130,6 +132,9 @@ const EVENTS = {
 
 export default {
   name: 'token-request-details',
+  components: {
+    TokenLogo,
+  },
   props: {
     request: { type: Object, required: true },
   },
@@ -150,13 +155,6 @@ export default {
           return globalize('token-request-details.asset-update-request-type')
         default:
           return ''
-      }
-    },
-    tokenLogoUrl () {
-      if (this.request.logoKey) {
-        return this.request.logoUrl(config.FILE_STORAGE)
-      } else {
-        return '/static/favicon.ico'
       }
     },
     tokenTermsUrl () {

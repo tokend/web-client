@@ -1,10 +1,10 @@
 <template>
   <div class="token-details">
     <div class="asset-details">
-      <img
-        class="asset-details__logo"
-        :src="tokenLogoUrl"
-      >
+      <token-logo
+        :logo-key="token.details.logo.key"
+        :token-code="token.code"
+      />
       <div class="asset-details__info">
         <p class="asset-details__code">
           {{ token.code }}
@@ -79,22 +79,19 @@
 </template>
 
 <script>
+import TokenLogo from '@/vue/common/TokenLogo'
+
 import config from '@/config'
 
 export default {
   name: 'token-details',
+  components: {
+    TokenLogo,
+  },
   props: {
     token: { type: Object, required: true },
   },
   computed: {
-    tokenLogoUrl () {
-      const tokenLogoKey = this.token.details.logo.key
-      if (tokenLogoKey) {
-        return `${config.FILE_STORAGE}/${tokenLogoKey}`
-      } else {
-        return '/static/favicon.ico'
-      }
-    },
     tokenTermsUrl () {
       return `${config.FILE_STORAGE}/${this.token.details.terms.key}`
     },
