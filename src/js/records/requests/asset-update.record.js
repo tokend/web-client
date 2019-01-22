@@ -17,7 +17,6 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     this.initialPreissuedAmount = _get(
       this._record, 'details.assetUpdate.initialPreissuedAmount'
     )
-
     this.policies = this._policies()
     this.policy = this._policy()
 
@@ -55,9 +54,7 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   }
 
   _policy () {
-    return _get(this._record, 'details.assetUpdate.policies', [])
-      .map(p => p.value)
-      .reduce((s, p) => s | p, 0)
+    return this._policies().reduce((s, p) => s | p, 0)
   }
 
   get isBaseAsset () {

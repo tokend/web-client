@@ -12,6 +12,6 @@ export const REQUEST_STATES_STR = Object.freeze({
   canceled: 'canceled',
   approved: 'approved',
   rejected: 'rejected',
-  permanentlyRejected: 'permanentlyRejected',
+  permanentlyRejected: 'permanently_rejected',
   waitingForAutoReview: 'waitingForAutoReview',
 })

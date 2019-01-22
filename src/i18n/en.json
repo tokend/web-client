@@ -256,6 +256,7 @@
     },
 
     "token-form": {
+      "update-token-title": "Update token",
       "next-btn": "Next",
       "submit-btn": "Submit",
       "information-step": "Token information",
@@ -322,7 +323,7 @@
       "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
       "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
       "canceled-request-msg": "Your request was cancelled",
-      "permanently-rejected-request-msg": "Your request was rejected permanently",
+      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
       "request-canceled-msg": "Your request was successfully cancelled"
     },
 

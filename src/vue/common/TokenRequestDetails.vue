@@ -7,16 +7,16 @@
       >
       <div class="asset-details__info">
         <p class="asset-details__code">
-          {{ requestRecord.assetCode }}
+          {{ request.assetCode }}
         </p>
         <p class="asset-details__name">
-          {{ requestRecord.assetName }}
+          {{ request.assetName }}
         </p>
       </div>
     </div>
     <div
       class="request-message"
-      :class="`request-message--${request.requestState}`"
+      :class="`request-message--${request.state}`"
     >
       <p class="request-message__content">
         {{ requestMessage }}
@@ -37,7 +37,7 @@
             {{ 'token-request-details.max-issuance-amount-title' | globalize }}
           </td>
           <td>
-            {{ requestRecord.maxIssuanceAmount | formatMoney }}
+            {{ request.maxIssuanceAmount | formatMoney }}
           </td>
         </tr>
         <tr v-if="isAssetCreateType">
@@ -48,7 +48,7 @@
             }}
           </td>
           <td>
-            {{ requestRecord.initialPreissuedAmount | formatMoney }}
+            {{ request.initialPreissuedAmount | formatMoney }}
           </td>
         </tr>
         <tr>
@@ -57,7 +57,7 @@
           </td>
           <td>
             <a
-              v-if="requestRecord.termsKey"
+              v-if="request.termsKey"
               class="token-request-details__terms"
               :href="tokenTermsUrl">
               {{ 'token-request-details.download-terms-btn' | globalize }}
@@ -72,7 +72,7 @@
             {{ 'token-request-details.transferable-title' | globalize }}
           </td>
           <td>
-            {{ getPropertyPresentMessage(requestRecord.isTransferable) }}
+            {{ getPropertyPresentMessage(request.isTransferable) }}
           </td>
         </tr>
         <tr>
@@ -80,7 +80,7 @@
             {{ 'token-request-details.requires-kyc-title' | globalize }}
           </td>
           <td>
-            {{ getPropertyPresentMessage(requestRecord.isRequiresKyc) }}
+            {{ getPropertyPresentMessage(request.isRequiresKYC) }}
           </td>
         </tr>
       </tbody>
@@ -112,7 +112,7 @@
 <script>
 import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -121,7 +121,6 @@ import { Sdk } from '@/sdk'
 import config from '@/config'
 
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
-import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import { globalize } from '@/vue/filters/globalize'
 
@@ -135,17 +134,16 @@ export default {
     request: { type: Object, required: true },
   },
   data: _ => ({
-    isRequestCanceling: false,
-    requestRecord: null,
+    isCanceling: false,
     ASSET_POLICIES,
     EVENTS,
   }),
   computed: {
     isAssetCreateType () {
-      return this.requestRecord instanceof AssetCreateRequestRecord
+      return this.request instanceof AssetCreateRequestRecord
     },
     requestTypeMessage () {
-      switch (this.requestRecord.requestTypeI) {
+      switch (this.request.requestTypeI) {
         case REQUEST_TYPES.assetCreate:
           return globalize('token-request-details.asset-create-request-type')
         case REQUEST_TYPES.assetUpdate:
@@ -155,39 +153,37 @@ export default {
       }
     },
     tokenLogoUrl () {
-      if (this.requestRecord.logoKey) {
-        return this.requestRecord.logoUrl(config.FILE_STORAGE)
+      if (this.request.logoKey) {
+        return this.request.logoUrl(config.FILE_STORAGE)
       } else {
         return '/static/favicon.ico'
       }
     },
     tokenTermsUrl () {
-      return this.requestRecord.termsUrl(config.FILE_STORAGE)
+      return this.request.termsUrl(config.FILE_STORAGE)
     },
     canBeUpdated () {
-      return this.request.requestState === REQUEST_STATES_STR.pending ||
-        this.request.requestState === REQUEST_STATES_STR.rejected
+      return this.request.isPending || this.request.isRejected
     },
     canBeCanceled () {
-      return this.request.requestState === REQUEST_STATES_STR.pending ||
-        !this.isRequestCanceling
+      return this.request.isPending && !this.isCanceling
     },
     requestMessageId () {
       let requestMessageId
-      switch (this.request.requestState) {
-        case REQUEST_STATES_STR.pending:
+      switch (this.request.stateI) {
+        case REQUEST_STATES.pending:
           requestMessageId = 'token-request-details.pending-request-msg'
           break
-        case REQUEST_STATES_STR.approved:
+        case REQUEST_STATES.approved:
           requestMessageId = 'token-request-details.approved-request-msg'
           break
-        case REQUEST_STATES_STR.rejected:
+        case REQUEST_STATES.rejected:
           requestMessageId = 'token-request-details.rejected-request-msg'
           break
-        case REQUEST_STATES_STR.canceled:
+        case REQUEST_STATES.canceled:
           requestMessageId = 'token-request-details.canceled-request-msg'
           break
-        case REQUEST_STATES_STR.permanentlyRejected:
+        case REQUEST_STATES.permanentlyRejected:
           requestMessageId = 'token-request-details.permanently-rejected-request-msg'
           break
         default:
@@ -198,7 +194,7 @@ export default {
       return requestMessageId
     },
     requestMessage () {
-      if (this.request.requestState === REQUEST_STATES_STR.rejected) {
+      if (this.request.isRejected || this.request.isPermanentlyRejected) {
         return globalize(this.requestMessageId, {
           reason: this.request.rejectReason,
         })
@@ -206,13 +202,6 @@ export default {
         return globalize(this.requestMessageId)
       }
     },
-  },
-  created () {
-    if (this.request.details.assetCreate) {
-      this.requestRecord = new AssetCreateRequestRecord(this.request)
-    } else {
-      this.requestRecord = new AssetUpdateRequestRecord(this.request)
-    }
   },
   methods: {
     getPropertyPresentMessage (prop) {
@@ -223,14 +212,14 @@ export default {
       }
     },
     async cancelRequest () {
-      this.isRequestCanceling = true
+      this.isCanceling = true
       try {
         const operation = base.ManageAssetBuilder.cancelAssetRequest({
           requestID: this.request.id,
         })
         await Sdk.horizon.transactions.submitOperations(operation)
         this.request = Object.assign(this.request, {
-          requestState: REQUEST_STATES_STR.canceled,
+          stateI: REQUEST_STATES.canceled,
         })
         Bus.success('token-request-details.request-canceled-msg')
       } catch (e) {
@@ -266,7 +255,7 @@ export default {
 
   &--approved { @include apply-theme($col-request-approved) }
   &--pending { @include apply-theme($col-request-pending) }
-  &--rejected, &--canceled, &--permanentlyRejected {
+  &--rejected, &--canceled, &--permanently_rejected {
     @include apply-theme($col-request-rejected)
   }
 }
@@ -315,6 +304,7 @@ export default {
 
   &--disabled {
     filter: grayscale(100%);
+    cursor: default;
   }
 }
 

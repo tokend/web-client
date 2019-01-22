@@ -39,7 +39,7 @@
                 null,
                 STEPS.information
               )"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || isUpdateRequestType"
             />
           </div>
         </div>
@@ -57,7 +57,7 @@
                 { from: MIN_AMOUNT, to: MAX_AMOUNT },
                 STEPS.information
               )"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || isUpdateRequestType"
             />
           </div>
         </div>
@@ -155,9 +155,10 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { Sdk } from '@/sdk'
-import { base, ASSET_POLICIES } from '@tokend/js-sdk'
+import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 
 import { required, amountRange, documentContainer } from '@validators'
 
@@ -181,7 +182,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    token: { type: Object, default: null },
+    request: { type: Object, default: null },
   },
   data: _ => ({
     form: {
@@ -223,8 +224,11 @@ export default {
   },
   computed: {
     tokenRequestOpts () {
+      const requestId = this.request
+        ? this.request.id
+        : ASSET_CREATION_REQUEST_ID
       return {
-        requestID: this.token.requestId || ASSET_CREATION_REQUEST_ID,
+        requestID: requestId,
         code: this.form.information.code,
         preissuedAssetSigner: config.NULL_ASSET_SIGNER,
         initialPreissuedAmount: this.form.information.maxIssuanceAmount,
@@ -237,8 +241,35 @@ export default {
         },
       }
     },
+    isUpdateRequestType () {
+      return this.request &&
+        this.request.requestTypeI === REQUEST_TYPES.assetUpdate
+    },
+  },
+  created () {
+    if (this.request) {
+      this.setForm()
+    }
   },
   methods: {
+    setForm () {
+      this.form = {
+        information: {
+          name: this.request.assetName,
+          code: this.request.assetCode,
+          maxIssuanceAmount: this.request.maxIssuanceAmount,
+          icon: this.request.logo.key
+            ? new DocumentContainer(this.request.logo)
+            : null,
+          policies: this.request.policies,
+        },
+        terms: {
+          terms: this.request.terms.key
+            ? new DocumentContainer(this.request.terms)
+            : null,
+        },
+      }
+    },
     next (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
@@ -258,7 +289,7 @@ export default {
         await this.uploadDocuments()
 
         let operation
-        if (this.token) {
+        if (this.request) {
           operation =
             base.ManageAssetBuilder.assetUpdateRequest(this.tokenRequestOpts)
         } else {

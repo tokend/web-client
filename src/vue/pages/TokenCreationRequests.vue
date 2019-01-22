@@ -2,10 +2,24 @@
   <div class="token-creation-requests">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDetailsDrawerShown">
-        <template slot="heading">
-          {{ 'token-request-details.title' | globalize }}
+        <template v-if="isUpdating">
+          <template slot="heading">
+            {{ 'token-form.update-token-title' | globalize }}
+          </template>
+          <token-form
+            v-if="isUpdating"
+            :request="selectedRequest"
+          />
         </template>
-        <token-request-details :request="selectedRequest" />
+        <template v-else>
+          <template slot="heading">
+            {{ 'token-request-details.title' | globalize }}
+          </template>
+          <token-request-details
+            :request="selectedRequest"
+            @update="updateToken"
+          />
+        </template>
       </drawer>
       <table class="app__table token-creation-requests__table">
         <thead>
@@ -29,12 +43,12 @@
             v-for="(request, i) in requestsHistory"
             :key="i"
           >
-            <td>{{ request.assetDetails.code }}</td>
+            <td>{{ request.assetCode }}</td>
             <td
               class="request-state"
-              :class="`request-state--${request.requestState}`"
+              :class="`request-state--${request.state}`"
             >
-              {{ getRequestStateMessage(request.requestState) }}
+              {{ getRequestStateMessage(request.stateI) }}
             </td>
             <td>{{ request.createdAt | formatCalendar }}</td>
             <td>{{ request.updatedAt | formatCalendar }}</td>
@@ -65,15 +79,19 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import TokenRequestDetails from '@/vue/common/TokenRequestDetails'
+import TokenForm from '@/vue/forms/TokenForm'
 
 import { Sdk } from '@/sdk'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { REQUEST_STATES } from '@/js/const/request-states.const'
+import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
+import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import { globalize } from '@/vue/filters/globalize'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
@@ -82,6 +100,7 @@ export default {
     Loader,
     Drawer,
     TokenRequestDetails,
+    TokenForm,
   },
   data: _ => ({
     requestsHistory: [],
@@ -89,6 +108,7 @@ export default {
     isLoadingFailed: false,
     isDetailsDrawerShown: false,
     selectedRequest: null,
+    isUpdating: false,
   }),
   computed: {
     ...mapGetters({
@@ -106,35 +126,39 @@ export default {
           requestor: this.account.accountId,
         })
         this.requestsHistory = data.map(request => {
-          request.assetDetails = request.details.assetCreate ||
-            request.details.assetUpdate
-          return request
+          if (request.details.assetCreate) {
+            return new AssetCreateRequestRecord(request)
+          } else {
+            return new AssetUpdateRequestRecord(request)
+          }
         })
-      } catch (error) {
+      } catch (e) {
         this.isFailed = true
-        ErrorHandler.processWithoutFeedback(error)
+        console.error(e)
+        ErrorHandler.process(e)
       }
     },
     showRequestDetails (request) {
       this.selectedRequest = request
+      this.isUpdating = false
       this.isDetailsDrawerShown = true
     },
     getRequestStateMessage (requestState) {
       let requestStateMessageId
       switch (requestState) {
-        case REQUEST_STATES_STR.pending:
+        case REQUEST_STATES.pending:
           requestStateMessageId = 'request-pending-msg'
           break
-        case REQUEST_STATES_STR.approved:
+        case REQUEST_STATES.approved:
           requestStateMessageId = 'request-approved-msg'
           break
-        case REQUEST_STATES_STR.rejected:
+        case REQUEST_STATES.rejected:
           requestStateMessageId = 'request-rejected-msg'
           break
-        case REQUEST_STATES_STR.canceled:
+        case REQUEST_STATES.canceled:
           requestStateMessageId = 'request-canceled-msg'
           break
-        case REQUEST_STATES_STR.permanentlyRejected:
+        case REQUEST_STATES.permanentlyRejected:
           requestStateMessageId = 'request-permanently-rejected-msg'
           break
         default:
@@ -143,6 +167,21 @@ export default {
       }
 
       return globalize(`requests-page.${requestStateMessageId}`)
+    },
+    async updateToken () {
+      try {
+        if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
+          const { data } =
+            await Sdk.horizon.assets.get(this.selectedRequest.assetCode)
+          this.selectedRequest = Object.assign(this.selectedRequest, {
+            maxIssuanceAmount: data.maxIssuanceAmount,
+          })
+        }
+        this.isUpdating = true
+      } catch (e) {
+        console.error(e)
+        ErrorHandler.process(e)
+      }
     },
   },
 }
@@ -169,7 +208,6 @@ export default {
 
 .request-state {
   padding-left: 3rem;
-  text-transform: capitalize;
   position: relative;
 
   &:before {
@@ -193,7 +231,7 @@ export default {
 
   &--rejected:before,
   &--canceled:before,
-  &--permanentlyRejected:before {
+  &--permanently_rejected:before {
     background-color: $col-error;
   }
 }
