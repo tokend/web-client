@@ -30,7 +30,7 @@ export class IssuanceRecord extends OpRecord {
   }
 
   get isIncoming () {
-    // issuance operation it always operation for adding asset
+    // issuance operation it is always operation for adding asset
     return true
   }
 

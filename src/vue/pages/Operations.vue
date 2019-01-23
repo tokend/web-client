@@ -160,7 +160,6 @@ export default {
   table-layout: fixed;
   border-spacing: 0 0.6rem;
   border-color: transparent;
-  // border-collapse: collapse;
 
   .op-history__td-btn {
     text-align: right;
