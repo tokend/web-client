@@ -131,6 +131,11 @@ $col-top-bar-text: $_eastBay;
 $col-top-bar-tab: $_lightPurple;
 $col-top-bar-tab-active: $_cornflowerBlue;
 
+// no-data-message colors:
+$col-no-data-message-text: $col-primary;
+$col-no-data-message-description: $col-primary-inactive;
+$col-no-data-message-icon-color: rgba($col-primary, .4);
+
 // form stepper colors
 $col-form-stepper-text: $col-primary;
 $col-form-stepper-icon: $col-text-on-dark-bg;
