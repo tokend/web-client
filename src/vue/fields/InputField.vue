@@ -32,13 +32,18 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
     value: { type: [String, Number], default: undefined },
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
-    whiteAutofill: { type: Boolean, default: false },
+    whiteAutofill: { type: Boolean, default: true },
   },
 
   computed: {
@@ -46,15 +51,14 @@ export default {
       return {
         ...this.$listeners,
         input: event => {
-          this.$emit('input', event.target.value)
+          this.$emit(EVENTS.input, event.target.value)
         },
       }
     },
   },
 
   methods: {
-    onInput (event) {
-    },
+    onInput (event) {},
   },
 }
 </script>

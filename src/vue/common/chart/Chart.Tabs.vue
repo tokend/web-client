@@ -73,16 +73,13 @@ export default {
 <style lang="scss" scoped>
   @import "~@scss/variables";
   @import "~@scss/mixins";
-  .chart-tabs__prefix {
-    white-space: nowrap;
-    display: inline-block;
-    margin-right: 1rem;
-  }
+
   .chart-tabs__tab {
     @include button();
     @include button-flat();
     font-weight: 500;
   }
+
   .chart-tabs__tab--selected {
     font-weight: 700;
   }

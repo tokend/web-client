@@ -36,7 +36,7 @@
     </drawer>
     <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
-        {{ 'issuance.create-issuance-btn' | globalize }}
+        {{ 'issuance.issuance-form-heading' | globalize }}
       </template>
       <issuance-form @cancel="isIssuanceDrawerShown = false" />
     </drawer>
