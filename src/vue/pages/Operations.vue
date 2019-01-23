@@ -9,6 +9,7 @@
           v-if="isLoaded"
           v-model="tokenCode"
           :values="tokens"
+          class="asset-selector__select-field"
         />
       </div>
       <div
@@ -139,7 +140,7 @@ export default {
 @import "~@scss/variables";
 
 .op-history__navigation {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   margin-bottom: 6.2rem;
 }

@@ -51,7 +51,7 @@
             tag="a"
             v-if="config.FEATURE_FLAGS.operations"
           >
-            <i class="sidebar__link-icon mdi mdi-view-menu" />
+            <i class="sidebar__link-icon mdi mdi-menu" />
             <span>
               {{ 'pages-names.operations' | globalize }}
             </span>
