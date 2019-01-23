@@ -47,7 +47,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ccc;
-  color: #fff;
+  background: $col-token-logo-background;
+  color: $col-token-logo-text;
 }
 </style>

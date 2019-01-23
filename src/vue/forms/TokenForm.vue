@@ -86,17 +86,12 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <file-field
-              v-model="form.information.icon"
-              :note="'token-form.icon-note' | globalize"
+              v-model="form.information.logo"
+              :note="'token-form.logo-note' | globalize"
               accept=".jpg, .png"
               :document-type="DOCUMENT_TYPES.assetLogo"
-              :label="'token-form.icon-lbl' | globalize"
+              :label="'token-form.logo-lbl' | globalize"
               :disabled="formMixin.isDisabled"
-              :error-message="getErrorMessage(
-                'form.information.icon',
-                null,
-                STEPS.information
-              )"
             />
           </div>
         </div>
@@ -121,24 +116,25 @@
               :document-type="DOCUMENT_TYPES.assetTerms"
               :label="'token-form.terms-lbl' | globalize"
               :disabled="formMixin.isDisabled"
-              :error-message="getErrorMessage(
-                'form.terms.terms',
-                null,
-                STEPS.terms
-              )"
             />
           </div>
         </div>
         <div class="app__form-actions">
           <button
             v-ripple
+            v-if="!isConfirming"
             type="submit"
             class="token-form__btn"
             :disabled="formMixin.isDisabled"
-            @click.prevent="submit"
+            @click.prevent="isConfirming = true"
           >
             {{ 'token-form.submit-btn' | globalize }}
           </button>
+          <form-confirmation
+            v-if="isConfirming"
+            @ok="submit"
+            @cancel="isConfirming = false"
+          />
         </div>
       </template>
     </form-stepper>
@@ -146,10 +142,10 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
 import FormStepper from '@/vue/common/FormStepper'
+import FormConfirmation from '@/vue/common/FormConfirmation'
+import FormMixin from '@/vue/mixins/form.mixin'
 
-import config from '@/config'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -160,10 +156,11 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
+import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 
-import { required, amountRange, documentContainer } from '@validators'
+import { required, amountRange } from '@validators'
 
 const STEPS = {
   information: {
@@ -175,16 +172,21 @@ const STEPS = {
     titleId: 'token-form.terms-step',
   },
 }
-
 const ASSET_CREATION_REQUEST_ID = '0'
 const EVENTS = {
   update: 'update',
+}
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
 }
 
 export default {
   name: 'token-form',
   components: {
     FormStepper,
+    FormConfirmation,
   },
   mixins: [FormMixin],
   props: {
@@ -196,7 +198,7 @@ export default {
         name: '',
         code: '',
         maxIssuanceAmount: '',
-        icon: null,
+        logo: null,
         policies: [],
       },
       terms: {
@@ -204,6 +206,7 @@ export default {
       },
     },
     currentStep: 1,
+    isConfirming: false,
     STEPS,
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
@@ -220,10 +223,6 @@ export default {
             required,
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
           },
-          icon: { documentContainer },
-        },
-        terms: {
-          terms: { documentContainer },
         },
       },
     }
@@ -233,6 +232,9 @@ export default {
       const requestId = this.request
         ? this.request.id
         : ASSET_CREATION_REQUEST_ID
+      const logo = this.form.information.logo
+      const terms = this.form.terms.terms
+
       return {
         requestID: requestId,
         code: this.form.information.code,
@@ -242,8 +244,8 @@ export default {
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
         details: {
           name: this.form.information.name,
-          logo: this.form.information.icon.getDetailsForSave(),
-          terms: this.form.terms.terms.getDetailsForSave(),
+          logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
+          terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },
       }
     },
@@ -264,7 +266,7 @@ export default {
           name: this.request.assetName,
           code: this.request.assetCode,
           maxIssuanceAmount: this.request.maxIssuanceAmount,
-          icon: this.request.logo.key
+          logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)
             : null,
           policies: this.request.policies,
@@ -277,6 +279,7 @@ export default {
       }
     },
     next (formStep) {
+      this.isConfirming = false
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }
@@ -289,7 +292,9 @@ export default {
       }
     },
     async submit () {
+      this.isConfirming = false
       if (!this.isFormValid()) return
+
       this.disableForm()
       try {
         await this.uploadDocuments()
@@ -302,7 +307,7 @@ export default {
             base.ManageAssetBuilder.assetCreationRequest(this.tokenRequestOpts)
         }
         await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('token-form.token-request-created-msg')
+        Bus.success('token-form.token-request-submitted-msg')
         if (this.request) {
           this.$emit(EVENTS.update)
         }
@@ -314,11 +319,11 @@ export default {
     },
     async uploadDocuments () {
       const documents = [
-        this.form.information.icon,
+        this.form.information.logo,
         this.form.terms.terms,
       ]
       for (let document of documents) {
-        if (!document.key) {
+        if (document && !document.key) {
           const documentKey = await DocumentUploader.uploadDocument(
             document.getDetailsForUpload()
           )

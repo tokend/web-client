@@ -165,11 +165,11 @@ export default {
 
 .token-details__terms {
   font-size: 1.4rem;
-  color: #7b6eff;
+  color: $col-primary-lighten;
   text-decoration: none;
 
   &:visited {
-    color: #7b6eff;
+    color: $col-primary-lighten;
   }
 }
 

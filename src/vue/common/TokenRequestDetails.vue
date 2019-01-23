@@ -16,7 +16,7 @@
     </div>
     <div
       class="request-message"
-      :class="`request-message--${request.state}`"
+      :class="requestMessageClass"
     >
       <p class="request-message__content">
         {{ requestMessage }}
@@ -32,7 +32,7 @@
             {{ requestTypeMessage }}
           </td>
         </tr>
-        <tr v-if="isAssetCreateType">
+        <tr v-if="isAssetCreationType">
           <td>
             {{ 'token-request-details.max-issuance-amount-title' | globalize }}
           </td>
@@ -40,7 +40,7 @@
             {{ request.maxIssuanceAmount | formatMoney }}
           </td>
         </tr>
-        <tr v-if="isAssetCreateType">
+        <tr v-if="isAssetCreationType">
           <td>
             {{
               'token-request-details.initial-preissued-amount-title'
@@ -144,7 +144,7 @@ export default {
     EVENTS,
   }),
   computed: {
-    isAssetCreateType () {
+    isAssetCreationType () {
       return this.request instanceof AssetCreateRequestRecord
     },
     requestTypeMessage () {
@@ -165,6 +165,31 @@ export default {
     },
     canBeCanceled () {
       return this.request.isPending && !this.isCanceling
+    },
+    requestMessageClass () {
+      let requestStateClass
+      switch (this.request.stateI) {
+        case REQUEST_STATES.pending:
+          requestStateClass = 'request-message--pending'
+          break
+        case REQUEST_STATES.approved:
+          requestStateClass = 'request-message--approved'
+          break
+        case REQUEST_STATES.rejected:
+          requestStateClass = 'request-message--rejected'
+          break
+        case REQUEST_STATES.canceled:
+          requestStateClass = 'request-message--canceled'
+          break
+        case REQUEST_STATES.permanentlyRejected:
+          requestStateClass = 'request-message--permanently-rejected'
+          break
+        default:
+          requestStateClass = ''
+          break
+      }
+
+      return requestStateClass
     },
     requestMessageId () {
       let requestMessageId
@@ -253,7 +278,7 @@ export default {
 
   &--approved { @include apply-theme($col-request-approved) }
   &--pending { @include apply-theme($col-request-pending) }
-  &--rejected, &--canceled, &--permanently_rejected {
+  &--rejected, &--canceled, &--permanently-rejected {
     @include apply-theme($col-request-rejected)
   }
 }
@@ -268,11 +293,11 @@ export default {
 
 .token-request-details__terms {
   font-size: 1.4rem;
-  color: #7b6eff;
+  color: $col-primary-lighten;
   text-decoration: none;
 
   &:visited {
-    color: #7b6eff;
+    color: $col-primary-lighten;
   }
 }
 

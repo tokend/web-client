@@ -55,8 +55,6 @@ import TokenLogo from '@/vue/common/TokenLogo'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import config from '@/config'
-
 export default {
   name: 'tokens-list',
   components: {
@@ -88,9 +86,6 @@ export default {
       } else {
         return {}
       }
-    },
-    getTokenLogoUrl (token) {
-      return `${config.FILE_STORAGE}/${token.details.logo.key}`
     },
     selectToken (token) {
       this.selectedToken = Object.assign(token, {

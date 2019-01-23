@@ -47,7 +47,7 @@
             <td>{{ request.assetCode }}</td>
             <td
               class="request-state"
-              :class="`request-state--${request.state}`"
+              :class="getRequestStateClass(request.stateI)"
             >
               {{ getRequestStateMessage(request.stateI) }}
             </td>
@@ -169,6 +169,31 @@ export default {
 
       return globalize(`requests-page.${requestStateMessageId}`)
     },
+    getRequestStateClass (requestState) {
+      let requestStateClass
+      switch (requestState) {
+        case REQUEST_STATES.pending:
+          requestStateClass = 'request-state--pending'
+          break
+        case REQUEST_STATES.approved:
+          requestStateClass = 'request-state--approved'
+          break
+        case REQUEST_STATES.rejected:
+          requestStateClass = 'request-state--rejected'
+          break
+        case REQUEST_STATES.canceled:
+          requestStateClass = 'request-state--canceled'
+          break
+        case REQUEST_STATES.permanentlyRejected:
+          requestStateClass = 'request-state--permanently-rejected'
+          break
+        default:
+          requestStateClass = ''
+          break
+      }
+
+      return requestStateClass
+    },
     async updateToken () {
       try {
         if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
@@ -232,7 +257,7 @@ export default {
 
   &--rejected:before,
   &--canceled:before,
-  &--permanently_rejected:before {
+  &--permanently-rejected:before {
     background-color: $col-error;
   }
 }

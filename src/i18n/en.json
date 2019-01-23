@@ -264,13 +264,13 @@
       "name-lbl": "Token name",
       "code-lbl": "Token code",
       "max-issuance-amount-lbl": "Max issuance amount",
-      "icon-lbl": "Token icon",
-      "icon-note": "JPG or PNG, no less then 120x120 px",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less then 120x120 px",
       "transferable-lbl": "Transferable",
       "kyc-required-lbl": "Requires KYC",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "token-request-created-msg": "Your token creation request was successfully submitted"
+      "token-request-submitted-msg": "Your request was successfully submitted"
     },
 
     "requests-page": {
