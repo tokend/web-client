@@ -23,11 +23,11 @@
         "dmy": "DD MM YYYY"
       },
       "formats": {
-        "same_day": "[today at] H:mm",
-        "last_day": "[yesterday at] H:mm",
-        "next_day": "[tomorrow at] H:mm",
-        "last_week": "[last] dddd [at] H:mm",
-        "next_week": "[next] dddd [at] H:mm"
+        "same_day": "[Today at] H:mm",
+        "last_day": "[Yesterday at] H:mm",
+        "next_day": "[Tomorrow at] H:mm",
+        "last_week": "[Last] dddd [at] H:mm",
+        "next_week": "[Next] dddd [at] H:mm"
       }
     }
   },
@@ -47,7 +47,8 @@
     },
 
     "common": {
-      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work"
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work",
+      "more-btn": "More"
     },
 
     "status-message": {
@@ -91,8 +92,12 @@
       "user-exists": "User with such email already exists"
     },
 
-    "common": {
-      "button-text-more": "More"
+    "operation-names": {
+      "issuance": "Tokens received",
+      "withdrawal": "Withdrawal",
+      "transfer": "Transfer",
+      "order-match": "Order match",
+      "investment": "Investment"
     },
 
     "auth-pages": {
@@ -160,6 +165,7 @@
       "settings": "Settings",
       "help": "Help",
       "fees": "My fees",
+      "operations": "Operations",
       "issuance": "Issuance",
       "downloads": "TokenD downloads",
       "ios-install-guide": "iOS install guide",
@@ -222,13 +228,42 @@
       "loading-error-msg": "There was an error while loading."
     },
 
-    "tx-history": {
-      "transaction-history": "Transaction history",
-      "failed-to-load-tx": "Failed to load history",
-      "no-transaction-history": "No transaction history",
-      "here-will-be-the-list": "Here will be the list of your transactions",
-      "here-will-be-the-tokens": "Here will be the list of your assets",
-      "no-assets-in-your-wallet": "No assets in your wallet"
+    "op-pages": {
+      "show": "Show",
+      "no-operation-history": "No operation history",
+      "here-will-be-the-list": "Here will be the list of your operations",
+      "something-went-wrong": "Something went wrong"
+    },
+
+    "op-details": {
+      "fixed-fee-lbl": "Fixed fee",
+      "percent-fee-lbl": "Percent fee",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount",
+      "counterparty-email-lbl": "Counterparty email",
+      "id-lbl": "Operation ID",
+      "source-fees-lbl": "Sender fees",
+      "destination-fees-lbl": "Recipient fees",
+      "subject-lbl": "Subject",
+      "fund-name-lbl": "Fund name",
+      "token-fund-val": "{asset} token fund",
+      "base-asset-lbl": "Base asset",
+      "fee-paid-lbl": "Fee paid",
+      "price-lbl": "Price",
+      "destination-asset-lbl": "Destination asset",
+      "destination-amount-lbl": "Destination amount",
+      "date-lbl": "Date",
+      "counterparty-lbl": "Counterparty"
+    },
+
+    "op-list": {
+      "head": {
+        "date": "Date",
+        "tx-type": "Operation type",
+        "amount": "Amount",
+        "counterparty": "Counterparty",
+        "status": "Status"
+      }
     },
 
     "dashboard": {
@@ -245,11 +280,13 @@
       "counterparty": "Counterparty",
       "status": "Status",
       "no-transaction-history": "No transaction history",
+      "here-will-be-the-tokens": "Here will be the list of your assets",
+      "no-assets-in-your-wallet": "No assets in your wallet",
       "here-will-transactions-list": "Here will be the list of your transactions"
     },
 
     "email-getter": {
-      "loading": "Loading..."
+      "loading-msg": "Loading..."
     },
 
     "chart": {
@@ -266,12 +303,12 @@
       "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
       "form-heading": "Transfer form",
-      "asset": "Asset",
+      "asset-lbl": "Asset",
       "balance": "Balance is {{amount}} {{asset}}.",
-      "amount": "Amount",
+      "amount-lbl": "Amount",
       "insufficient-funds": "Insufficient funds",
-      "recipient-email-or-account-id": "Recipient email or account ID",
-      "add-note": "Add note (under {{length}} symbols)",
+      "recipient-lbl": "Recipient email or account ID",
+      "subject-lbl": "Add note (under {{length}} symbols)",
       "sender-fees": "Sender fees",
       "sender-fixed-fee": "sender’s fixed fee",
       "sender-percent-fee": "sender’s percent fee",
@@ -290,11 +327,6 @@
       "submit-btn": "Send",
       "payment-successful": "Payment successful",
       "recipient-not-found": "Recipient not found"
-    },
-
-    "record-names": {
-      "issuance": "Issuance request",
-      "transfer": "Transfer"
     },
 
     "issuance": {
