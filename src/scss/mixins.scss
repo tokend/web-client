@@ -11,6 +11,7 @@ $x-large: 1920px;
 
 @mixin button () {
   display: flex;
+  justify-content: center;
   align-items: center;
   border: none;
   padding: .8rem 1.6rem;

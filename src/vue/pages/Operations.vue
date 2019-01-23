@@ -26,7 +26,7 @@
       <template slot="heading">
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
-      <withdrawal-form />
+      <withdrawal-form @cancel="isWithdrawalDrawerShown = false" />
     </drawer>
     <template v-if="!isLoadFailed">
       <div class="op-history__list" v-if="isLoaded">

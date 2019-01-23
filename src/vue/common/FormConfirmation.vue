@@ -79,7 +79,7 @@ export default {
 }
 
 .form-confirmation__msg {
-  font-size: 1rem;
+  font-size: 1.6rem;
   line-height: 1.25;
   padding-right: 1rem;
 }

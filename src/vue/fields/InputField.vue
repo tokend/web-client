@@ -65,6 +65,7 @@ export default {
 .input-field {
   position: relative;
   width: 100%;
+  height: 6.3rem;
   flex: 1;
 }
 
