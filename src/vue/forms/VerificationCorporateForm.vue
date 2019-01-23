@@ -209,15 +209,15 @@ export default {
         homepage: this.form.website,
       }
     },
-    parseKycData (template) {
+    parseKycData (kycData) {
       return {
-        name: template.name,
-        company: template.company,
-        headquarters: template.headquarters,
-        industry: template.industry,
-        foundDate: template.found_date,
-        teamSize: template.team_size,
-        website: template.homepage,
+        name: kycData.name,
+        company: kycData.company,
+        headquarters: kycData.headquarters,
+        industry: kycData.industry,
+        foundDate: kycData.found_date,
+        teamSize: kycData.team_size,
+        website: kycData.homepage,
       }
     },
   },
