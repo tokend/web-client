@@ -2,7 +2,7 @@ import { OpRecord } from '../op-record'
 import _get from 'lodash/get'
 
 export class IssuanceRecord extends OpRecord {
-  constructor (record) {
+  constructor (record, accountId) {
     super(record)
 
     this.amount = record.amount
@@ -12,6 +12,8 @@ export class IssuanceRecord extends OpRecord {
     this.percentFee = record.feePercent
     this.id = record.id
     this.subject = record.reference
+    this.date = record.ledgerCloseTime
+    this.accountId = accountId
 
     this.externalDetails = record.externalDetails
 
@@ -25,6 +27,11 @@ export class IssuanceRecord extends OpRecord {
   }
 
   get counterparty () {
-    return _get(this._record.participants.find(p => !p.balanceId), 'accountId')
+    let participant = this._record.participants
+      .find(p => p.accountId !== this.accountId)
+    if (!participant) {
+      participant = this._record.participants.find(p => !p.balanceId)
+    }
+    return _get(participant, 'accountId')
   }
 }

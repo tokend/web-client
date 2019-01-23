@@ -4,6 +4,10 @@ $sidebar-width: 27.5rem;
 $content-side-paddings: 4rem;
 $content-side-paddings-sm: 2rem;
 
+// z-indexes
+$z-sidebar-burger: 10;
+$z-status-message: 10;
+$z-drawer: 10;
 $z-sidebar: 120;
 
 $_athensGray: #e9eaed;
@@ -19,6 +23,8 @@ $_green: #33A494;
 $_orangePeel: #f2a100;
 $_whiteSmoke: #f5f6f9;
 $_lightPurple: #837fa1;
+$_ghostWhite: #c4c8cb;
+$_thinPurple: #c1bfd0;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -99,6 +105,9 @@ $col-passport-email-abbr-bg: rgba($_eastBay, .15);
 // fields colors
 $col-text-field-hint: $col-primary;
 $col-text-field-hint-inactive: $col-primary-inactive;
+$col-file-field-background: $_whiteSmoke;
+$col-file-field-border: $_ghostWhite;
+$col-field-text-secondary: $_lightPurple;
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
@@ -122,5 +131,12 @@ $col-top-bar-background: $_white;
 $col-top-bar-text: $_eastBay;
 $col-top-bar-tab: $_lightPurple;
 $col-top-bar-tab-active: $_cornflowerBlue;
+
+// form stepper colors
+$col-form-stepper-text: $col-primary;
+$col-form-stepper-icon: $col-text-on-dark-bg;
+$col-form-stepper-icon-background: $col-primary;
+$col-form-stepper-tab-active: $col-primary-lighten;
+$col-form-stepper-tab-border: $_thinPurple;
 
 // TODO: paste here variables that are ready to use during the refactor process

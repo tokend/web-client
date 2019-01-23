@@ -1,9 +1,13 @@
+import { base } from '@tokend/js-sdk'
+
 const featureFlags = {
   fees: true,
+  issuance: true,
 }
 
 export default Object.assign(
   {
+    DEBUG: true,
     HORIZON_SERVER: process.env.HORIZON_SERVER,
     FILE_STORAGE: '',
     NETWORK_PASSPHRASE: '',
@@ -21,6 +25,16 @@ export default Object.assign(
       /BTC.*\/.*ETH/,
       /ETH.*\/.*BTC/,
     ],
+    /**
+     * Sets the logging level, for more options visit
+     * https://www.npmjs.com/package/loglevel#documentation
+     *
+     */
+    LOG_LEVEL: 'trace',
+    DEFAULT_CONVERSION_ASSET: 'USD',
+    CONVERSION_PRECISION: 2,
+    MIN_AMOUNT: String(1 / (base.Operation.ONE || 1000000)),
+    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT,
   },
   process.env,
   document.ENV

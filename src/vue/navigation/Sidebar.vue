@@ -42,6 +42,20 @@
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.issuance"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.issuance"
+          >
+            <i class="sidebar__link-icon mdi mdi-label" />
+            <span>
+              {{ 'pages-names.issuance' | globalize }}
+            </span>
+          </router-link>
         </nav>
       </section>
 
@@ -125,7 +139,7 @@ $content-item-right-padding: 2.4rem;
   position: absolute;
   left: .5rem;
   top: 4.1rem;
-  z-index: 110;
+  z-index: $z-sidebar-burger;
   width: 4rem;
   height: 4rem;
   margin-right: 0;
