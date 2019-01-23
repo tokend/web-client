@@ -11,6 +11,8 @@ export class MockHelper {
     sdkInstance = Sdk.getInstance()
     mock.setup()
     mock.reset()
+    this.defaultAccountId = 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J'
+    this.defaultBalanceId = 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ'
   }
 
   mockHorizonMethod (resource, method, mock) {
@@ -38,7 +40,7 @@ export class MockHelper {
     return new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      accountId || 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J',
+      accountId || this.defaultAccountId,
       walletId || '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
     )
   }
@@ -56,5 +58,13 @@ export class MockHelper {
       reason: 'OK',
       body: JSON.stringify(response),
     })
+  }
+
+  get getDefaultAccountId () {
+    return this.defaultAccountId
+  }
+
+  get getDefaultBalanceId () {
+    return this.defaultBalanceId
   }
 }

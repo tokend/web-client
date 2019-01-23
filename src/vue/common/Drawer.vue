@@ -7,7 +7,7 @@
           <h2 class="drawer__heading">
             <slot name="heading" />
           </h2>
-          <button class="app__button-icon" @click="closeSelf">
+          <button class="app__button-icon drawer__close-btn" @click="closeSelf">
             <i class="mdi mdi-close drawer__close-icon" />
           </button>
         </div>
@@ -81,8 +81,18 @@ export default {
   background-color: rgba(0, 0, 0, 0.1)
 }
 
+.drawer__close-btn {
+  padding: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .drawer__close-icon {
   font-size: 2.4rem;
+  margin-top: -.2rem; // magic value to align icon in the center
 
   &:before {
     font-weight: 700;
@@ -114,6 +124,7 @@ export default {
   font-size: 2.6rem;
   color: $col-drawer-head-text;
   line-height: normal;
+  font-weight: 400;
 }
 
 .drawer__body {

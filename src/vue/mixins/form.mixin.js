@@ -3,6 +3,8 @@ import { validationMixin } from 'vuelidate'
 import InputField from '../fields/InputField'
 import SelectField from '../fields/SelectField'
 import DateField from '../fields/DateField'
+import TextareaField from '@/vue/fields/TextareaField'
+import TickField from '@/vue/fields/TickField'
 import FileField from '@/vue/fields/FileField'
 
 import { globalize } from '@/vue/filters/globalize'
@@ -14,6 +16,8 @@ export default {
     InputField,
     SelectField,
     DateField,
+    TextareaField,
+    TickField,
     FileField,
   },
   mixins: [validationMixin],
@@ -84,6 +88,12 @@ export default {
           })
         }
       }
+    },
+    clearFields () {
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = ''
+      })
+      this.$v.$reset()
     },
     touchField (fieldName) {
       const field = safeGet(this.$v, fieldName)

@@ -5,10 +5,11 @@
         :key is a hack to ensure that the component will be updated
         after computed calculated
       -->
-      <select-field-custom
+      <select-field
         v-model="filters.asset"
         :values="assetCodes"
         :key="filters.asset"
+        class="fees__assets-select"
       />
     </div>
     <div class="fees__table">
@@ -77,7 +78,7 @@
 </template>
 
 <script>
-import SelectFieldCustom from '../fields/SelectFieldCustom'
+import SelectField from '../fields/SelectField'
 import Loader from '../common/Loader'
 
 import { Sdk } from '@/sdk'
@@ -89,7 +90,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'fees',
   components: {
-    SelectFieldCustom,
+    SelectField,
     Loader,
   },
   data: _ => ({
@@ -145,6 +146,11 @@ export default {
 
 .fees__assets {
   margin-bottom: 2.1rem;
+}
+
+.fees__assets-select {
+  display: inline-block;
+  width: auto;
 }
 
 .fees__table {

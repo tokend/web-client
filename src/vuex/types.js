@@ -53,7 +53,7 @@ const getters = {
   accountReferrals: 'accountReferrals',
   accountPoliciesTypeI: 'accountPoliciesTypeI',
   accountPoliciesTypes: 'accountPoliciesTypes',
-  // accountBalances: 'accountBalances', FIXME: tmp-hidden
+  accountBalances: 'accountBalances',
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycBlobId: 'accountKycBlobId',
 

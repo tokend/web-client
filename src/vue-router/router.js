@@ -7,8 +7,8 @@ import {
 } from '@/vuex'
 import config from '@/config'
 
-import { resolveRedirect } from './redirect'
-import { vueRoutes } from './routes'
+import { resolveRedirect } from '@/vue-router/redirect'
+import { vueRoutes } from '@/vue-router/routes'
 
 Vue.use(Router)
 
@@ -62,11 +62,18 @@ export const router = new Router({
       name: 'app',
       component: resolve => require(['@/vue/AppContent'], resolve),
       beforeEnter: inAppRouteGuard,
-      redirect: vueRoutes.fees,
+      redirect: vueRoutes.dashboard,
       children: [
+        {
+          path: '/dashboard',
+          name: vueRoutes.dashboard.name,
+          meta: { pageNameTranslationId: 'pages-names.dashboard' },
+          component: resolve => require(['@/vue/pages/dashboard/Dashboard'], resolve),
+        },
         {
           path: '/fees',
           name: vueRoutes.fees.name,
+          meta: { pageNameTranslationId: 'pages-names.fees' },
           featureFlag: config.FEATURE_FLAGS.fees,
           component: resolve => require(['@/vue/pages/Fees'], resolve),
         },
@@ -74,6 +81,7 @@ export const router = new Router({
           path: '/issuance',
           name: vueRoutes.issuance.name,
           featureFlag: config.FEATURE_FLAGS.issuance,
+          meta: { pageNameTranslationId: 'pages-names.issuance' },
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
         {
