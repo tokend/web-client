@@ -22,7 +22,7 @@
 
       <op-list-row
         v-for="(operation, i) in list"
-        :key="`tx-row-${i}}`"
+        :key="`op-row-${i}}`"
         :operation="operation"
       />
     </table>

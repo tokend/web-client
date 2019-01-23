@@ -72,21 +72,16 @@ export default {
   flex: 1;
 }
 
-.form-confirmation__msg,
-.form-confirmation__btns {
-  width: 49.999999%;
-  flex: 0.5;
-}
-
 .form-confirmation__msg {
   font-size: 1.6rem;
   line-height: 1.25;
-  padding-right: 1rem;
+  padding-right: 1.6rem;
 }
 
 .form-confirmation__btns {
   display: flex;
   max-width: 25rem;
+  margin-left: auto;
 }
 
 .form-confirmation__ok-btn,

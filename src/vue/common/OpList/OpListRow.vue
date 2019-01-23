@@ -71,7 +71,7 @@ export default {
         [OP_TYPES.createIssuanceRequest]: 'operation-names.issuance',
         [OP_TYPES.createWithdrawalRequest]: 'operation-names.withdrawal',
         [OP_TYPES.paymentV2]: 'operation-names.transfer',
-        [OP_TYPES.manageOffer]: 'operation-names.oder-match',
+        [OP_TYPES.manageOffer]: 'operation-names.order-match',
         [OP_TYPES.checkSaleState]: 'operation-names.investment',
       }[operation.typeI]
     },

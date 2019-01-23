@@ -28,10 +28,6 @@ export class MatchRecord extends OpRecord {
     this.effects = this._getEffects()
   }
 
-  get isIncoming () {
-    return false
-  }
-
   _getParticipant () {
     return this.participants
       .find(participant => participant.accountId === this.accountId &&

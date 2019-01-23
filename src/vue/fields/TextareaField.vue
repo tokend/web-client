@@ -42,6 +42,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -64,12 +69,10 @@ export default {
     cols: { type: [String, Number], default: undefined },
   },
 
-  data () {
-    return {
-      hasValue: false,
-      currentLength: '0',
-    }
-  },
+  data: () => ({
+    hasValue: false,
+    currentLength: '0',
+  }),
 
   computed: {
     isNoLabel () {
@@ -81,7 +84,7 @@ export default {
     onInput (event) {
       event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
-      this.$emit('input', event.target.value)
+      this.$emit(EVENTS.input, event.target.value)
     },
   },
 }
@@ -98,13 +101,13 @@ export default {
     left: 1.6rem;
     color: $field-color-unfocused;
     transition: .2s ease-out;
-    font-size: 1rem;
+    font-size: 1.6rem;
 
     .text-field__input:focus + &,
     .text-field__input.text-field__input--dirty + & {
       color: $field-color-text;
       top: .6rem;
-      font-size: .75rem;
+      font-size: 1.2rem;
     }
   }
 
@@ -117,7 +120,7 @@ export default {
     resize: none;
     display: block;
     border-radius: .4rem;
-    font-size: 1rem;
+    font-size: 1.6rem;
     transition: all 0s, border-color .2s ease-out;
 
     &:focus,

@@ -28,13 +28,27 @@
       </section>
 
       <section class="sidebar__links-section">
-        <ul class="sidebar__links-group">
+        <nav class="sidebar__links-group">
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.dashboard"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.dashboard"
+          >
+            <i class="sidebar__link-icon mdi mdi-view-dashboard" />
+            <span>
+              {{ 'pages-names.dashboard' | globalize }}
+            </span>
+          </router-link>
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.operations"
-            tag="li"
+            tag="a"
             v-if="config.FEATURE_FLAGS.operations"
           >
             <i class="sidebar__link-icon mdi mdi-menu" />
@@ -42,12 +56,13 @@
               {{ 'pages-names.operations' | globalize }}
             </span>
           </router-link>
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
-            tag="li"
+            tag="a"
             v-if="config.FEATURE_FLAGS.fees"
           >
             <i class="sidebar__link-icon mdi mdi-flash" />
@@ -55,12 +70,13 @@
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.issuance"
-            tag="li"
+            tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
           >
             <i class="sidebar__link-icon mdi mdi-label" />
@@ -68,7 +84,7 @@
               {{ 'pages-names.issuance' | globalize }}
             </span>
           </router-link>
-        </ul>
+        </nav>
       </section>
 
       <section class="sidebar__footer-section">
@@ -163,6 +179,7 @@ $content-item-right-padding: 2.4rem;
   transform: translateX($sidebar-width);
   opacity: 0;
   cursor: pointer;
+  color: $col-sidebar-burger-icon-color;
   transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -183,6 +200,8 @@ $content-item-right-padding: 2.4rem;
   list-style: none;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  visibility: visible;
 
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 1;
@@ -196,6 +215,7 @@ $content-item-right-padding: 2.4rem;
       opacity: 0;
       width: 0;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      visibility: hidden;
     }
   }
 }
@@ -233,6 +253,7 @@ $content-item-right-padding: 2.4rem;
   padding: 0 $content-item-right-padding 0 $content-item-left-padding;
   cursor: pointer;
   color: $col-sidebar-text;
+  text-decoration: none;
 
   &.router-link-active {
     background-color: $col-sidebar-active-elem-background;

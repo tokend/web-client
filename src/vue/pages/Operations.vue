@@ -5,10 +5,11 @@
         <span class="op-history__filters-text">
           {{ 'op-pages.show' | globalize }}:
         </span>
-        <select-field-custom
+        <select-field
           v-if="isLoaded"
           v-model="tokenCode"
           :values="tokens"
+          class="asset-selector__select-field"
         />
       </div>
       <div slot="extra">
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
+import SelectField from '@/vue/fields/SelectField'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -74,7 +75,7 @@ import { MatchRecord } from '@/js/records/operations/match.record'
 export default {
   name: 'history-index',
   components: {
-    SelectFieldCustom,
+    SelectField,
     CollectionLoader,
     TopBar,
     Drawer,
@@ -162,7 +163,7 @@ export default {
   @import "~@scss/mixins";
 
   .op-history__filters{
-    display: flex;
+    display: inline-flex;
     align-items: center;
   }
 
@@ -187,7 +188,6 @@ export default {
   table-layout: fixed;
   border-spacing: 0 0.6rem;
   border-color: transparent;
-  // border-collapse: collapse;
 
   .op-history__td-btn {
     text-align: right;

@@ -29,6 +29,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     // label: { type: String, default: 'Label' },
@@ -46,12 +51,6 @@ export default {
     title: { type: [String, Number], default: undefined },
     required: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
-  },
-
-  data () {
-    return {
-      // data
-    }
   },
 
   computed: {
@@ -83,10 +82,6 @@ export default {
     },
   },
 
-  created () {
-    // created
-  },
-
   methods: {
     onChange (event) {
       const isChecked = event.target.checked
@@ -94,23 +89,26 @@ export default {
       const value = this.cbValue || isChecked
 
       if (typeof value === 'undefined') {
-        return this.$emit('input', isChecked)
+        return this.$emit(EVENTS.input, isChecked)
       }
 
       switch (this.typeof(model)) {
         case 'number':
-          this.$emit('input', isChecked ? model + +value : model - value)
+          this.$emit(
+            EVENTS.input,
+            isChecked ? model + +value : model - value
+          )
           break
 
         case 'array':
-          this.$emit('input', isChecked
+          this.$emit(EVENTS.input, isChecked
             ? model.concat(value)
             : model.filter((item) => item !== value)
           )
           break
 
         default:
-          this.$emit('input', isChecked)
+          this.$emit(EVENTS.input, isChecked)
           break
       }
     },

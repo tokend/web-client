@@ -144,7 +144,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { ASSET_POLICY, FEE_TYPE } from '@/js/const/xdr.const'
+import { ASSET_POLICIES, FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -238,7 +238,7 @@ export default {
       this.assets = assets.filter(item => {
         return item.policies
           .map(policy => policy.value)
-          .indexOf(ASSET_POLICY.withdrawable) !== -1
+          .indexOf(ASSET_POLICIES.withdrawable) !== -1
       })
       this.form.tokenCode = this.tokenCodes[0] || null
       this.isDataLoaded = true
@@ -279,7 +279,7 @@ export default {
     },
     async getFees () {
       try {
-        const fees = await Sdk.horizon.fees.get(FEE_TYPE.withdrawalFee, {
+        const fees = await Sdk.horizon.fees.get(FEE_TYPES.withdrawalFee, {
           account: this.accountId,
           asset: this.form.tokenCode,
           amount: this.form.amount,

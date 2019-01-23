@@ -74,7 +74,6 @@ export default {
         this.isCollectionFetched =
           response.data.length < this.pageLimit
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
     },
