@@ -8,6 +8,7 @@
           id="recovery-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -20,6 +21,7 @@
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -32,6 +34,7 @@
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -44,6 +47,7 @@
           type="password"
           :error-message="getFieldErrorMessage('form.recoverySeed')"
           :label="'auth-pages.recovery-seed' | globalize"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -113,7 +117,6 @@ export default {
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.login)
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()

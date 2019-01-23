@@ -23,7 +23,7 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('PreIssuanceForm component unit test', () => {
+describe('PreIssuanceForm component', () => {
   const sampleIssuanceData = {
     ownedAssets: [{
       code: 'PLT',

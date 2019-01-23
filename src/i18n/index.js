@@ -52,6 +52,8 @@ export const i18nOptions = {
       switch (format.toLowerCase()) {
         case 'date':
           return moment(param).format(i18n.config.date.presets.datetime)
+        case 'dmy':
+          return moment(param).format(i18n.config.date.presets.dmy)
         case 'calendar':
           return moment(param).calendar(null, {
             sameDay: i18n.config.date.formats.same_day,

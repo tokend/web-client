@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import LoginForm from '../forms/LoginForm'
+import LoginForm from '@/vue/forms/LoginForm'
 import { vueRoutes } from '@/vue-router/routes'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'

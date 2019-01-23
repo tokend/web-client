@@ -23,6 +23,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     name: { type: String, default: undefined },
@@ -41,7 +46,7 @@ export default {
 
   methods: {
     onChange (event) {
-      this.$emit('input', event.target.value)
+      this.$emit(EVENTS.input, event.target.value)
     },
   },
 }

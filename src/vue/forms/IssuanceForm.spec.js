@@ -5,7 +5,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
-import { base } from '@tokend/js-sdk'
+import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
@@ -24,7 +24,7 @@ const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
 
-describe('IssuanceForm component unit test', () => {
+describe('IssuanceForm component', () => {
   const sampleIssuanceData = {
     form: {
       asset: 'BTC',
@@ -57,10 +57,17 @@ describe('IssuanceForm component unit test', () => {
 
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
+      const getters = accountModule.getters
+      sinon.stub(getters, vuexTypes.accountTypeI)
+        .returns(ACCOUNT_TYPES.syndicate)
+      const store = new Vuex.Store({
+        getters,
+      })
       wrapper = mount(IssuanceForm, {
         localVue,
-        data: _ => Object.assign({}, sampleIssuanceData),
+        data: () => Object.assign({}, sampleIssuanceData),
         sync: false,
+        store,
       })
     })
 
@@ -115,8 +122,8 @@ describe('IssuanceForm component unit test', () => {
         mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.account)
-        .returns({ accountId: mockHelper.getMockWallet().accountId })
+      sinon.stub(getters, vuexTypes.accountTypeI)
+        .returns(ACCOUNT_TYPES.syndicate)
       store = new Vuex.Store({
         getters,
       })
@@ -126,7 +133,7 @@ describe('IssuanceForm component unit test', () => {
         store,
         mixins: [OwnedAssetsLoaderMixin],
         localVue,
-        data: _ => Object.assign({}, sampleIssuanceData),
+        data: () => Object.assign({}, sampleIssuanceData),
         sync: false,
       })
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
@@ -175,6 +182,7 @@ describe('IssuanceForm component unit test', () => {
         await shallowMount(IssuanceForm, {
           mixins: [OwnedAssetsLoaderMixin],
           localVue,
+          store,
         })
 
         expect(loadAssetsSpy.calledOnce).to.be.true
@@ -184,6 +192,7 @@ describe('IssuanceForm component unit test', () => {
         wrapper = await shallowMount(IssuanceForm, {
           mixins: [OwnedAssetsLoaderMixin],
           localVue,
+          store,
         })
 
         expect(wrapper.vm.isLoaded).to.be.true
@@ -193,7 +202,8 @@ describe('IssuanceForm component unit test', () => {
         wrapper = await shallowMount(IssuanceForm, {
           mixins: [OwnedAssetsLoaderMixin],
           localVue,
-          data: _ => ({ ownedAssets: sampleIssuanceData.ownedAssets }),
+          store,
+          data: () => ({ ownedAssets: sampleIssuanceData.ownedAssets }),
         })
 
         expect(wrapper.vm.form.asset)
