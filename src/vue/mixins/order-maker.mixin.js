@@ -5,8 +5,8 @@ import { vuexTypes } from '@/vuex'
 import { base, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import { globalize } from '@/vue/filters/globalize'
+import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
-const SECONDARY_MARKET_ORDER_BOOK_ID = '0'
 const OFFER_FEE_TYPE = 'offerFee'
 
 export default {
