@@ -88,7 +88,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import FormConfirmation from '@/vue/common/FormConfirmation'
-// import { ErrorHandler } from '@/js/helpers/error-handler'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
 import { required, maxValue } from '@validators'
@@ -96,9 +96,9 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { formatNumber } from '@/vue/filters/formatNumber'
 
-// const EVENTS = {
-//   closeDrawer: 'close-drawer'
-// }
+const EVENTS = {
+  closeDrawer: 'close-drawer',
+}
 
 export default {
   name: 'trade-orders-buy',
@@ -157,13 +157,13 @@ export default {
     },
     async submit () {
       this.disableForm()
-      // try {
-      //   await this.createOrder(this.getCreateOfferOpts())
-      // } catch (error) {
-      //   ErrorHandler.process(error)
-      // }
-      // this.enableForm()
-      // this.$emit(EVENTS.closeDrawer)
+      try {
+        await this.createOrder(this.getCreateOfferOpts())
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.enableForm()
+      this.$emit(EVENTS.closeDrawer)
     },
     tryToSubmit () {
       if (!this.isFormValid()) return
