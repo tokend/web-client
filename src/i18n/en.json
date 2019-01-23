@@ -256,6 +256,14 @@
       "loading-msg": "Loading..."
     },
 
+    "chart": {
+      "year": "Year",
+      "month": "Month",
+      "day": "Day",
+      "hour": "Hour",
+      "fetching-the-price-history": "Fetching the price history...",
+      "no-price-history-of-selected-token": "No price history of selected token yet"
+    },
     "offer-creation-form": {
       "success": "Offer successfully created",
       "price-per-asset": "Price per {{asset}}",
