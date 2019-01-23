@@ -1,29 +1,32 @@
 <template>
   <div class="verification">
-    <template v-if="kycState === REQUEST_STATES_STR.approved">
-      <div class="kyc-request-state kyc-request-state--approved">
-        <p class="kyc-request-state__content">
-          {{ 'verification-page.approved-request-msg' | globalize }}
-        </p>
-      </div>
-    </template>
-    <template v-else-if="kycState === REQUEST_STATES_STR.pending">
-      <div class="kyc-request-state kyc-request-state--pending">
-        <p class="kyc-request-state__content">
-          {{ 'verification-page.pending-request-msg' | globalize }}
-        </p>
-      </div>
-    </template>
-    <template v-else-if="kycState === REQUEST_STATES_STR.rejected">
-      <div class="kyc-request-state kyc-request-state--rejected">
-        <p class="kyc-request-state__content">
-          {{
-            'verification-page.rejected-request-msg'
-              | globalize({ reason: kycRejectReason })
-          }}
-        </p>
-      </div>
-    </template>
+    <div
+      v-if="kycState === REQUEST_STATES_STR.approved"
+      class="kyc-request-state kyc-request-state--approved"
+    >
+      <p class="kyc-request-state__content">
+        {{ 'verification-page.approved-request-msg' | globalize }}
+      </p>
+    </div>
+    <div
+      v-else-if="kycState === REQUEST_STATES_STR.pending"
+      class="kyc-request-state kyc-request-state--pending"
+    >
+      <p class="kyc-request-state__content">
+        {{ 'verification-page.pending-request-msg' | globalize }}
+      </p>
+    </div>
+    <div
+      v-else-if="kycState === REQUEST_STATES_STR.rejected"
+      class="kyc-request-state kyc-request-state--rejected"
+    >
+      <p class="kyc-request-state__content">
+        {{
+          'verification-page.rejected-request-msg'
+            | globalize({ reason: kycRejectReason })
+        }}
+      </p>
+    </div>
     <p class="verification__subtitle">
       {{ 'verification-page.account-type-lbl' | globalize }}
     </p>
