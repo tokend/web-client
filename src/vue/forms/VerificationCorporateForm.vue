@@ -127,7 +127,6 @@
 import FormConfirmation from '@/vue/common/FormConfirmation'
 
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
-import VerificationGuardMixin from '@/vue/mixins/verification-guard.mixin'
 
 import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
@@ -146,7 +145,7 @@ export default {
   components: {
     FormConfirmation,
   },
-  mixins: [VerificationFormMixin, VerificationGuardMixin],
+  mixins: [VerificationFormMixin],
   data: _ => ({
     form: {
       name: '',

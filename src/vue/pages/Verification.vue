@@ -50,20 +50,37 @@
 </template>
 
 <script>
-import VerificationGuardMixin from '@/vue/mixins/verification-guard.mixin'
-
-import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import { store, vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
 import { globalize } from '@/vue/filters/globalize'
 
+function verificationGuard (to, from, next) {
+  const kycAccountType = store.getters[vuexTypes.kycAccountTypeToSet]
+  switch (kycAccountType) {
+    case ACCOUNT_TYPES.syndicate:
+      to.name === vueRoutes.verification.corporate.name
+        ? next()
+        : next(vueRoutes.verification.corporate)
+      break
+    case ACCOUNT_TYPES.general:
+      to.name === vueRoutes.verification.general.name
+        ? next()
+        : next(vueRoutes.verification.general)
+      break
+    default:
+      next()
+      break
+  }
+}
+
 export default {
   name: 'verification',
-  mixins: [VerificationGuardMixin],
   data: _ => ({
     vueRoutes,
   }),
@@ -94,6 +111,12 @@ export default {
         return globalize(this.kycRequestMessageId)
       }
     },
+  },
+  beforeRouteEnter (to, from, next) {
+    verificationGuard(to, from, next)
+  },
+  beforeRouteUpdate (to, from, next) {
+    verificationGuard(to, from, next)
   },
 }
 </script>
