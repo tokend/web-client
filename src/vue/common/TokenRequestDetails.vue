@@ -15,11 +15,49 @@
       </div>
     </div>
     <div
-      class="request-message"
-      :class="requestMessageClass"
+      v-if="request.stateI === REQUEST_STATES.approved"
+      class="request-state request-state--approved"
     >
-      <p class="request-message__content">
-        {{ requestMessage }}
+      <p class="request-state__content">
+        {{ 'token-request-details.approved-request-msg' | globalize }}
+      </p>
+    </div>
+    <div
+      v-else-if="request.stateI === REQUEST_STATES.pending"
+      class="request-state request-state--pending"
+    >
+      <p class="request-state__content">
+        {{ 'token-request-details.pending-request-msg' | globalize }}
+      </p>
+    </div>
+    <div
+      v-else-if="request.stateI === REQUEST_STATES.rejected"
+      class="request-state request-state--rejected"
+    >
+      <p class="request-state__content">
+        {{
+          'token-request-details.rejected-request-msg'
+            | globalize({ reason: request.rejectReason })
+        }}
+      </p>
+    </div>
+    <div
+      v-else-if="request.stateI === REQUEST_STATES.canceled"
+      class="request-state request-state--canceled"
+    >
+      <p class="request-state__content">
+        {{ 'token-request-details.canceled-request-msg' | globalize() }}
+      </p>
+    </div>
+    <div
+      v-else-if="request.stateI === REQUEST_STATES.permanentlyRejected"
+      class="request-state request-state--permanently-rejected"
+    >
+      <p class="request-state__content">
+        {{
+          'token-request-details.permanently-rejected-request-msg'
+            | globalize({ reason: request.rejectReason })
+        }}
       </p>
     </div>
     <table class="app__table token-request-details__table">
@@ -142,6 +180,7 @@ export default {
     isCanceling: false,
     ASSET_POLICIES,
     EVENTS,
+    REQUEST_STATES,
   }),
   computed: {
     isAssetCreationType () {
@@ -165,65 +204,6 @@ export default {
     },
     canBeCanceled () {
       return this.request.isPending && !this.isCanceling
-    },
-    requestMessageClass () {
-      let requestStateClass
-      switch (this.request.stateI) {
-        case REQUEST_STATES.pending:
-          requestStateClass = 'request-message--pending'
-          break
-        case REQUEST_STATES.approved:
-          requestStateClass = 'request-message--approved'
-          break
-        case REQUEST_STATES.rejected:
-          requestStateClass = 'request-message--rejected'
-          break
-        case REQUEST_STATES.canceled:
-          requestStateClass = 'request-message--canceled'
-          break
-        case REQUEST_STATES.permanentlyRejected:
-          requestStateClass = 'request-message--permanently-rejected'
-          break
-        default:
-          requestStateClass = ''
-          break
-      }
-
-      return requestStateClass
-    },
-    requestMessageId () {
-      let requestMessageId
-      switch (this.request.stateI) {
-        case REQUEST_STATES.pending:
-          requestMessageId = 'token-request-details.pending-request-msg'
-          break
-        case REQUEST_STATES.approved:
-          requestMessageId = 'token-request-details.approved-request-msg'
-          break
-        case REQUEST_STATES.rejected:
-          requestMessageId = 'token-request-details.rejected-request-msg'
-          break
-        case REQUEST_STATES.canceled:
-          requestMessageId = 'token-request-details.canceled-request-msg'
-          break
-        case REQUEST_STATES.permanentlyRejected:
-          requestMessageId = 'token-request-details.permanently-rejected-request-msg'
-          break
-        default:
-          requestMessageId = ''
-          break
-      }
-
-      return requestMessageId
-    },
-    requestMessage () {
-      if (this.request.isRejected || this.request.isPermanentlyRejected) {
-        return globalize(this.requestMessageId, {
-          reason: this.request.rejectReason,
-        })
-      } else {
-        return globalize(this.requestMessageId)
-      }
     },
   },
   methods: {
@@ -258,13 +238,13 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.request-message {
+.request-state {
   min-height: 6.4rem;
   width: 100%;
   margin-top: 2rem;
   display: none;
 
-  .request-message__content {
+  .request-state__content {
     padding: 2.4rem;
     font-size: 1.3rem;
     font-weight: normal;

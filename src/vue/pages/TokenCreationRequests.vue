@@ -46,10 +46,36 @@
           >
             <td>{{ request.assetCode }}</td>
             <td
-              class="request-state"
-              :class="getRequestStateClass(request.stateI)"
+              v-if="request.stateI === REQUEST_STATES.approved"
+              class="request-state request-state--approved"
             >
-              {{ getRequestStateMessage(request.stateI) }}
+              {{ 'requests-page.request-approved-msg' | globalize }}
+            </td>
+            <td
+              v-if="request.stateI === REQUEST_STATES.pending"
+              class="request-state request-state--pending"
+            >
+              {{ 'requests-page.request-pending-msg' | globalize }}
+            </td>
+            <td
+              v-if="request.stateI === REQUEST_STATES.rejected"
+              class="request-state request-state--rejected"
+            >
+              {{ 'requests-page.request-rejected-msg' | globalize }}
+            </td>
+            <td
+              v-if="request.stateI === REQUEST_STATES.canceled"
+              class="request-state request-state--canceled"
+            >
+              {{ 'requests-page.request-canceled-msg' | globalize }}
+            </td>
+            <td
+              v-if="request.stateI === REQUEST_STATES.permanentlyRejected"
+              class="request-state request-state--permanently-rejected"
+            >
+              {{
+                'requests-page.request-permanently-rejected-msg' | globalize
+              }}
             </td>
             <td>{{ request.createdAt | formatCalendar }}</td>
             <td>{{ request.updatedAt | formatCalendar }}</td>
@@ -88,8 +114,6 @@ import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
-import { globalize } from '@/vue/filters/globalize'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -110,6 +134,7 @@ export default {
     isDetailsDrawerShown: false,
     selectedRequest: null,
     isUpdating: false,
+    REQUEST_STATES,
   }),
   computed: {
     ...mapGetters({
@@ -143,56 +168,6 @@ export default {
       this.selectedRequest = request
       this.isUpdating = false
       this.isDetailsDrawerShown = true
-    },
-    getRequestStateMessage (requestState) {
-      let requestStateMessageId
-      switch (requestState) {
-        case REQUEST_STATES.pending:
-          requestStateMessageId = 'request-pending-msg'
-          break
-        case REQUEST_STATES.approved:
-          requestStateMessageId = 'request-approved-msg'
-          break
-        case REQUEST_STATES.rejected:
-          requestStateMessageId = 'request-rejected-msg'
-          break
-        case REQUEST_STATES.canceled:
-          requestStateMessageId = 'request-canceled-msg'
-          break
-        case REQUEST_STATES.permanentlyRejected:
-          requestStateMessageId = 'request-permanently-rejected-msg'
-          break
-        default:
-          requestStateMessageId = ''
-          break
-      }
-
-      return globalize(`requests-page.${requestStateMessageId}`)
-    },
-    getRequestStateClass (requestState) {
-      let requestStateClass
-      switch (requestState) {
-        case REQUEST_STATES.pending:
-          requestStateClass = 'request-state--pending'
-          break
-        case REQUEST_STATES.approved:
-          requestStateClass = 'request-state--approved'
-          break
-        case REQUEST_STATES.rejected:
-          requestStateClass = 'request-state--rejected'
-          break
-        case REQUEST_STATES.canceled:
-          requestStateClass = 'request-state--canceled'
-          break
-        case REQUEST_STATES.permanentlyRejected:
-          requestStateClass = 'request-state--permanently-rejected'
-          break
-        default:
-          requestStateClass = ''
-          break
-      }
-
-      return requestStateClass
     },
     async updateToken () {
       try {
