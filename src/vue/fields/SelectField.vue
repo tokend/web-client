@@ -207,6 +207,7 @@ export default {
 .select-field {
   width: 100%;
   flex: 1;
+  height: 5.3rem;
   position: relative;
 }
 
@@ -302,7 +303,7 @@ export default {
   left: 0;
   width: 100%;
   min-width: 16rem;
-  top: calc(100% + .4rem);
+  top: 100%;
   background-color: $col-dropdown-bg;
   box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);
   border-radius: .3rem;
