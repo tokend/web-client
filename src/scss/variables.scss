@@ -131,6 +131,23 @@ $col-top-bar-text: $_eastBay;
 $col-top-bar-tab: $_lightPurple;
 $col-top-bar-tab-active: $_cornflowerBlue;
 
+// chart colors:
+$col-chart-line: $col-primary-lighten;
+$col-chart-fill: $_white;
+$col-chart-ticks: $col-primary-inactive;
+$col-chart-text: $col-primary-inactive;
+$col-chart-tip-circle-border: $_white;
+$col-chart-tip-circle: $col-primary;
+$col-chart-tip-line-inactive: $col-primary;
+$col-chart-tip-line-active: $col-primary-lighten;
+$col-chart-tip-text-box: $_white;
+$col-chart-tip-text-price: $col-primary;
+$col-chart-tip-date-dd: $col-primary;
+$col-chart-tip-date-mm: rgba($col-primary, .6);
+$col-chart-message-wrapper: rgba($col-app-content-background, .25);
+$col-chart-message-background: $_white;
+$col-chart-message-text: $col-primary;
+
 // no-data-message colors:
 $col-no-data-message-text: $col-primary;
 $col-no-data-message-description: $col-primary-inactive;
