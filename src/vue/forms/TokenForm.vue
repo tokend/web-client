@@ -120,9 +120,14 @@
           </div>
         </div>
         <div class="app__form-actions">
+          <form-confirmation
+            v-if="isConfirming"
+            @ok="submit"
+            @cancel="isConfirming = false"
+          />
           <button
             v-ripple
-            v-if="!isConfirming"
+            v-else
             type="submit"
             class="token-form__btn"
             :disabled="formMixin.isDisabled"
@@ -130,11 +135,6 @@
           >
             {{ 'token-form.submit-btn' | globalize }}
           </button>
-          <form-confirmation
-            v-if="isConfirming"
-            @ok="submit"
-            @cancel="isConfirming = false"
-          />
         </div>
       </template>
     </form-stepper>
