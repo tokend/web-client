@@ -101,7 +101,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'trade-orders-buy',
+  name: 'create-trade-order-form',
   components: { FormConfirmation },
   mixins: [FormMixin, OrderMakerMixin],
   props: {

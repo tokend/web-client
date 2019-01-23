@@ -264,6 +264,41 @@
       "fetching-the-price-history": "Fetching the price history...",
       "no-price-history-of-selected-token": "No price history of selected token yet"
     },
+
+    "trade-history": {
+      "title": "Trade history",
+      "table-amount-lbl": "Amount ({{asset}})",
+      "table-price-lbl": "Price ({{asset}})",
+      "table-total-lbl": "Total ({{asset}})",
+      "table-time-lbl": "Time",
+      "loading-msg": "Loading...",
+      "no-data-title": "No trade history",
+      "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
+    },
+
+    "trade-orders": {
+      "title": "Open orders",
+      "subtitle-ask": "Ask",
+      "subtitle-bid": "Bid",
+      "submit-bid-order-title": "Submit bid order",
+      "submit-ask-order-title": "Submit ask order",
+      "table-want-lbl": "Want ({{asset}})",
+      "table-order-lbl": "Order ({{asset}})",
+      "table-price-lbl": "Price ({{asset}})",
+      "loading-msg": "Loading...",
+      "no-data-title": "No orders",
+      "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
+      "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
+    },
+
+    "submit-trade-orders-form": {
+      "want-label": "Want ({{asset}})",
+      "order-label": "Order ({{asset}})",
+      "price-label": "Price ({{asset}})",
+      "submit-buy-btn": "Buy",
+      "submit-sell-btn": "Sell"
+    },
+
     "offer-creation-form": {
       "success": "Offer successfully created",
       "price-per-asset": "Price per {{asset}}",
@@ -280,7 +315,8 @@
       "create-sell-order-button": "Create sell order",
       "user-balances-label": "Balances",
       "create-buy-order-form-title": "Create buy order",
-      "create-sell-order-form-title": "Create sell order"
+      "create-sell-order-form-title": "Create sell order",
+      "orders-section-title": "Open orders"
     }
   }
 }

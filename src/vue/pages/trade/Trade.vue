@@ -17,14 +17,14 @@
         <button
           v-ripple
           class="app__button-raised"
-          @click="createBuyOrderIsShown = true"
+          @click="isCreateBuyOrderDrawerShown = true"
         >
           {{ 'trade.create-buy-order-button' | globalize }}
         </button>
         <button
           v-ripple
           class="app__button-raised"
-          @click="createSellOrderIsShown = true"
+          @click="isCreateSellOrderDrawerShown = true"
         >
           {{ 'trade.create-sell-order-button' | globalize }}
         </button>
@@ -63,22 +63,56 @@
         :quote-asset="config.DEFAULT_QUOTE_ASSET"
       />
     </div>
+
+    <trade-history
+      v-if="assets.base"
+      class="trade__history"
+      :assets="assets"
+      :trade-history="tradeHistory"
+      :is-loading="isTradeHistoryLoading"
+    />
+
+    <div class="trade__orders">
+      <h2 class="trade__orders-title">
+        {{ 'trade.orders-section-title' | globalize }}
+      </h2>
+      <div class="trade__orders-wrapper">
+        <trade-orders
+          class="trade__orders-list"
+          :assets="assets"
+          :is-buy="true"
+          :is-loading="isBuyOrdersLoading"
+          :orders-list="buyOrdersList"
+        />
+
+        <trade-orders
+          class="trade__orders-list"
+          :assets="assets"
+          :is-buy="false"
+          :is-loading="isSellOrdersLoading"
+          :orders-list="sellOrdersList"
+          @reload-trades="reloadTradesData"
+        />
+      </div>
+    </div>
+
+    <drawer :is-shown.sync="isCreateBuyOrderDrawerShown">
       <template slot="heading">
         {{ 'trade.create-buy-order-form-title' | globalize }}
       </template>
       <create-trade-order-form
         :assets="assets"
-        @close-drawer="createBuyOrderIsShown = false; loadBalances()"
+        @close-drawer="closeBuyOrderDrawer"
       />
     </drawer>
-    <drawer :is-shown.sync="createSellOrderIsShown">
+    <drawer :is-shown.sync="isCreateSellOrderDrawerShown">
       <template slot="heading">
         {{ 'trade.create-sell-order-form-title' | globalize }}
       </template>
       <create-trade-order-form
         :assets="assets"
         :is-buy="false"
-        @close-drawer="createSellOrderIsShown = false; loadBalances()"
+        @close-drawer="closeSellOrderDrawer"
       />
     </drawer>
   </div>
@@ -89,10 +123,15 @@ import CreateTradeOrderForm from '@/vue/forms/CreateTradeOrderForm'
 import SelectField from '@/vue/fields/SelectField'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
+import Chart from '@/vue/common/chart/Chart'
+import TradeHistory from '@/vue/pages/trade/Trade.History'
+import TradeOrders from '@/vue/pages/trade/Trade.Orders'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
+import { Sdk } from '@/sdk'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Sdk } from '@/sdk'
+import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
 export default {
   name: 'trade',
@@ -102,10 +141,12 @@ export default {
     Drawer,
     TopBar,
     Chart,
+    TradeHistory,
+    TradeOrders,
   },
   data: () => ({
-    createBuyOrderIsShown: false,
-    createSellOrderIsShown: false,
+    isCreateBuyOrderDrawerShown: false,
+    isCreateSellOrderDrawerShown: false,
     assets: {
       base: '',
       quote: '',
@@ -114,9 +155,15 @@ export default {
       baseBalance: '',
       quoteBalance: '',
     },
+    tradeHistory: [],
     selectedPair: '',
     tradeablePairs: [],
     formattedPairs: [],
+    buyOrdersList: [],
+    sellOrdersList: [],
+    isTradeHistoryLoading: false,
+    isBuyOrdersLoading: false,
+    isSellOrdersLoading: false,
     config,
   }),
   computed: {
@@ -137,6 +184,13 @@ export default {
       this.balances.baseBalance = baseBalance.balance
       this.balances.quoteBalance = quoteBalance.balance
     },
+    assets: {
+      deep: true,
+      handler: function () {
+        this.loadTradeOrders()
+        this.loadTradeHistory()
+      },
+    },
   },
   created () {
     this.loadBalances()
@@ -146,17 +200,78 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    async loadTradableAssets () {
-      const response = await Sdk.horizon.assetPairs.getAll()
-      this.tradeablePairs = response.data
-      this.createFormattedPairs()
+    reloadTradesData () {
+      this.loadTradeOrders()
     },
-    createFormattedPairs () {
-      const formattedPairs = this.tradeablePairs.map(item => {
+    async loadTradableAssets () {
+      try {
+        const response = await Sdk.horizon.assetPairs.getAll()
+        this.tradeablePairs = response.data
+        this.createFormattedPairs(response.data)
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+    },
+    async loadTradeHistory () {
+      this.isTradeHistoryLoading = true
+      try {
+        const response = await Sdk.horizon.trades.getPage({
+          base_asset: this.assets.base,
+          quote_asset: this.assets.quote,
+          order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
+        })
+        this.tradeHistory = response.data
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.isTradeHistoryLoading = false
+    },
+    createFormattedPairs (pairs) {
+      const formattedPairs = pairs.map(item => {
         return `${item.base}/${item.quote}`
       })
       this.formattedPairs = formattedPairs
       if (formattedPairs.length) this.selectedPair = formattedPairs[0]
+    },
+    async loadTradeOrders () {
+      await this.loadTradeBuyOrders()
+      await this.loadTradeSellOrders()
+    },
+    async loadTradeBuyOrders () {
+      this.isBuyOrdersLoading = true
+      try {
+        const response = await Sdk.horizon.orderBook.getAll({
+          base_asset: this.assets.base,
+          quote_asset: this.assets.quote,
+          is_buy: true,
+        })
+        this.buyOrdersList = response.data
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.isBuyOrdersLoading = false
+    },
+    async loadTradeSellOrders () {
+      this.isSellOrdersLoading = true
+      try {
+        const response = await Sdk.horizon.orderBook.getAll({
+          base_asset: this.assets.base,
+          quote_asset: this.assets.quote,
+          is_buy: false,
+        })
+        this.sellOrdersList = response.data
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.isSellOrdersLoading = false
+    },
+    closeBuyOrderDrawer () {
+      this.isCreateBuyOrderDrawerShown = false
+      this.loadBalances()
+    },
+    closeSellOrderDrawer () {
+      this.isCreateSellOrderDrawerShown = false
+      this.loadBalances()
     },
   },
 }
@@ -187,5 +302,29 @@ export default {
 
 .trade__chart {
   margin-top: -2.4rem;
+}
+
+.trade__orders {
+  margin-top: 4.8rem;
+}
+
+.trade__orders-title {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 1.6rem;
+}
+
+.trade__orders-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.trade__orders-list {
+  flex: 49%;
+
+  &:not(:last-child) {
+    margin-right: 1.6rem;
+  }
 }
 </style>
