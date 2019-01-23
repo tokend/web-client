@@ -62,7 +62,7 @@
   </div>
   <div v-else>
     <p>
-      {{ 'issuance.no-owned-tokens-lbl' | globalize }}
+      {{ 'issuance.no-owned-tokens-msg' | globalize }}
     </p>
   </div>
 </template>

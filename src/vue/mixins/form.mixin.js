@@ -4,6 +4,7 @@ import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
 import FileField from '@/vue/fields/FileField'
 import TickField from '@/vue/fields/TickField'
+import TextareaField from '@/vue/fields/TextareaField'
 
 import { globalize } from '@/vue/filters/globalize'
 
@@ -13,8 +14,9 @@ export default {
   components: {
     InputField,
     SelectField,
-    FileField,
+    TextareaField,
     TickField,
+    FileField,
   },
   mixins: [validationMixin],
   data: _ => ({
@@ -84,6 +86,12 @@ export default {
           })
         }
       }
+    },
+    clearFields () {
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = ''
+      })
+      this.$v.$reset()
     },
     touchField (fieldName) {
       const field = safeGet(this.$v, fieldName)
