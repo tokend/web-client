@@ -8,6 +8,7 @@
           id="login-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -19,6 +20,7 @@
           id="login-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
+          :white-autofill="false"
           :label="'auth-pages.password' | globalize"
         />
       </div>

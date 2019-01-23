@@ -30,6 +30,7 @@ $x-large: 1920px;
   padding: .8rem;
   border-radius: 50%;
   transition: .3s ease-out;
+  min-width: 3.6rem;
 
   &:hover {
     background-color: $col-button-flat-hover;

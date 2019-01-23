@@ -16,7 +16,9 @@
           <div class="file-input__title">
             {{ 'file-field.title' | globalize }}
           </div>
-          <div class="file-input__note">{{ note }}</div>
+          <div class="file-input__note">
+            {{ note }}
+          </div>
         </div>
       </div>
       <input
@@ -46,15 +48,15 @@ export default {
     documentType: { type: String, default: 'default' },
     accept: { type: String, default: '*' },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
-    note: { type: String, default: 'All files' }
+    note: { type: String, default: 'All files' },
   },
   data: _ => ({
-    fileName: ''
+    fileName: '',
   }),
   computed: {
     maxSizeBytes () {
       return this.maxSize * 1024 * 1024
-    }
+    },
   },
   methods: {
     onChange (event) {
@@ -76,7 +78,7 @@ export default {
           mimeType: file.type,
           type: this.documentType,
           name: file.name,
-          file: file
+          file: file,
         }))
       } else {
         Bus.error('file-field.max-size-exceeded-err')
@@ -88,8 +90,8 @@ export default {
     },
     dropFile () {
       this.$el.querySelector('input').value = ''
-    }
-  }
+    },
+  },
 }
 </script>
 

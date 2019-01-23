@@ -16,14 +16,14 @@
       class="select-field__selected"
       :class="{'select-field__selected--focused': isExpanded}"
       :disabled="disabled"
-      @click.prevent="toggleListVisibility()"
+      @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
       <div>
         <i
-          class="mdi mdi-chevron-down select-field__selected-icon"
+          class="select-field__selected-icon mdi mdi-chevron-down"
           :class="{ 'select-field__selected-icon--active': isExpanded }"
         />
       </div>
@@ -50,15 +50,158 @@
 </template>
 
 <script>
-import SelectFieldMixin from './js/select-field.mixin'
+import { KEY_CODES } from '@/js/const/key-codes.const'
+import _isObject from 'lodash/isObject'
+
+const EVENTS = {
+  input: 'input',
+}
 
 export default {
   name: 'select-field',
-  mixins: [SelectFieldMixin],
+  props: {
+    value: {
+      type: [String, Number, Boolean, Object, Array, Date],
+      default: '',
+    },
+    values: {
+      type: Array,
+      default: _ => [],
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data: () => ({
+    currentValue: null, // selected item in the list
+    selectedValue: null, // active list element (for arrow navigation)
+    isExpanded: false,
+    KEY_CODES,
+  }),
+
+  watch: {
+    isExpanded (value) {
+      if (value) {
+        document.addEventListener('click', this.onDocumentClick)
+      }
+    },
+  },
+
+  created () {
+    this.selectedValue = this.value
+    this.currentValue = this.value
+
+    document.addEventListener('keydown', this.onDocumentKeyDown)
+  },
+
+  destroyed () {
+    document.removeEventListener('keydown', this.onDocumentKeyDown)
+  },
+
+  methods: {
+    getLabel (item) {
+      return _isObject(item) ? item.label : item
+    },
+    getValue (item) {
+      return _isObject(item) ? item.value : item
+    },
+    selectItem (item) {
+      this.selectedValue = item
+      this.currentValue = item
+      this.$emit(EVENTS.input, this.getValue(item))
+      this.toggleListVisibility()
+    },
+    toggleListVisibility () {
+      this.isExpanded ? this.closeList() : this.openList()
+    },
+    openList () {
+      const index = this.getIndex(this.currentValue)
+
+      this.scrollList(index)
+      this.isExpanded = true
+    },
+    closeList () {
+      // set active element as selected:
+      this.selectedValue = this.currentValue
+      this.isExpanded = false
+    },
+    onDocumentClick (event) {
+      if (!event.target.closest('.select__list')) {
+        this.closeList()
+        document.removeEventListener('click', this.onDocumentClick)
+      }
+    },
+    onDocumentKeyDown (event) {
+      if (!this.isExpanded) {
+        return
+      }
+
+      let index = this.getIndex(this.selectedValue)
+
+      switch (event.which) {
+        case KEY_CODES.enter:
+          this.selectItem(this.values[index])
+          break
+        case KEY_CODES.up:
+          index = this.selectPrevItem(index, this.values)
+          break
+        case KEY_CODES.right:
+          this.selectItem(this.values[index])
+          break
+        case KEY_CODES.down:
+          index = this.selectNextItem(index, this.values)
+          break
+        case KEY_CODES.escape:
+          this.toggleListVisibility()
+          break
+        case KEY_CODES.tab:
+          if (event.shiftKey) {
+            index = this.selectPrevItem(index, this.values)
+          } else {
+            index = this.selectNextItem(index, this.values)
+          }
+          break
+        default:
+          return
+      }
+
+      this.scrollList(index)
+    },
+    getIndex (item) {
+      if (!_isObject(item)) {
+        return this.values.findIndex(entry => entry.value === item.value)
+      }
+      return this.values.indexOf(item)
+    },
+    scrollList (index) {
+      const list = this.$refs.list
+
+      if (index !== -1) {
+        list.scrollTop =
+          list.childNodes[index].offsetTop - (list.offsetHeight / 2) + 18
+      }
+    },
+    selectNextItem (index, valuesList) {
+      index === valuesList.length - 1 ? index = 0 : index += 1
+      this.selectedValue = valuesList[index]
+      return index
+    },
+    selectPrevItem (index, valuesList) {
+      index === 0 ? index += valuesList.length - 1 : index -= 1
+      this.selectedValue = valuesList[index]
+      return index
+    },
+  },
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "scss/variables";
 
 .select-field {
@@ -70,6 +213,7 @@ export default {
 .select-field__selected {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
   width: 100%;
   background: none;
@@ -83,6 +227,26 @@ export default {
     "&.select-field__selected--focused"
   );
   @include text-font-sizes;
+
+  .asset-selector__select-field &,
+  .fees__assets-select & {
+    border-bottom: 0;
+    background-size: 0;
+  }
+}
+
+.select-field__selected-icon {
+  will-change: transform;
+  color: $field-color-text;
+  font-size: 2.2rem;
+
+  &:before {
+    transition: transform .2s ease-out;
+  }
+
+  &.select-field__selected-icon--active:before {
+    transform: rotate(-180deg)
+  }
 }
 
 .select-field__selected-value {
@@ -96,6 +260,12 @@ export default {
   font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
+
+  .asset-selector__select-field &,
+  .fees__assets-select & {
+    font-size: 1.8rem;
+    font-weight: 300;
+  }
 }
 
 .select-field__label {
@@ -121,21 +291,6 @@ export default {
 .select-field--label-minimized > .select-field__label {
   top: 0;
   @include label-font-sizes;
-}
-
-.select-field__selected-icon {
-  margin: 0;
-  display: inline-block;
-  will-change: transform;
-  color: $col-field-icon;
-  transition: 0.2s ease-out;
-  margin-top: -.2rem;
-  width: 1.6rem;
-  height: 1.6rem;
-
-  &.select-field__selected-icon--active {
-    transform: rotate(-180deg);
-  }
 }
 
 .select-field__list {

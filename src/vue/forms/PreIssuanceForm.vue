@@ -62,7 +62,7 @@
   </div>
   <div v-else>
     <p>
-      {{ 'issuance.no-owned-tokens-lbl' | globalize }}
+      {{ 'issuance.no-owned-tokens-msg' | globalize }}
     </p>
   </div>
 </template>
@@ -82,27 +82,27 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { FileUtil } from '@/js/utils/file.util'
 
 const EVENTS = {
-  cancel: 'cancel'
+  cancel: 'cancel',
 }
 
 export default {
   name: 'pre-issuance-form',
   components: {
-    Loader
+    Loader,
   },
   mixins: [OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
     preIssuanceDocument: null,
     issuance: null,
     isLoaded: false,
-    EVENTS
+    EVENTS,
   }),
   watch: {
     'preIssuanceDocument': async function (value) {
       if (value && value.file) {
         await this.extractPreIssuanceRequest(value.file)
       }
-    }
+    },
   },
   async created () {
     await this.loadOwnedAssets()
@@ -118,7 +118,7 @@ export default {
       try {
         const operation = base.PreIssuanceRequestOpBuilder
           .createPreIssuanceRequestOp({
-            request: this.issuance.xdr
+            request: this.issuance.xdr,
           })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('issuance.pre-issuance-uploaded-msg')
@@ -163,8 +163,8 @@ export default {
     reset () {
       this.issuance = null
       this.preIssuanceDocument = null
-    }
-  }
+    },
+  },
 }
 </script>
 

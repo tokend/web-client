@@ -28,7 +28,7 @@ describe('EmailGetter component unit test', () => {
 
     sinon.stub(EmailGetter, 'created').resolves()
     wrapper = shallowMount(EmailGetter, {
-      localVue
+      localVue,
     })
   })
 
@@ -47,8 +47,8 @@ describe('EmailGetter component unit test', () => {
       await shallowMount(EmailGetter, {
         localVue,
         propsData: {
-          accountId: ACCOUNT_ID
-        }
+          accountId: ACCOUNT_ID,
+        },
       })
 
       expect(spy.calledOnce).to.be.true
@@ -60,8 +60,8 @@ describe('EmailGetter component unit test', () => {
       await shallowMount(EmailGetter, {
         localVue,
         propsData: {
-          balanceId: BALANCE_ID
-        }
+          balanceId: BALANCE_ID,
+        },
       })
 
       expect(spy.calledOnce).to.be.true
@@ -69,7 +69,7 @@ describe('EmailGetter component unit test', () => {
 
     it('set isLoadingFailed property to true if neither account ID nor balance ID are provided', async () => {
       wrapper = await shallowMount(EmailGetter, {
-        localVue
+        localVue,
       })
 
       expect(wrapper.vm.isLoadingFailed).to.be.true
@@ -93,8 +93,8 @@ describe('EmailGetter component unit test', () => {
       it('sets the result property to fetched user email', async () => {
         const userResponse = {
           data: {
-            email: 'foo@bar.com'
-          }
+            email: 'foo@bar.com',
+          },
         }
         sinon.stub(wrapper.vm, 'getAccountId').resolves()
         sinon.stub(usersResource, 'get').resolves(userResponse)
@@ -106,7 +106,7 @@ describe('EmailGetter component unit test', () => {
 
       it('sets the result property to account ID (if it is provided) if an error was thrown', async () => {
         wrapper.setProps({
-          accountId: ACCOUNT_ID
+          accountId: ACCOUNT_ID,
         })
         sinon.stub(wrapper.vm, 'getAccountId').throws()
         sinon.stub(console, 'error')
@@ -118,7 +118,7 @@ describe('EmailGetter component unit test', () => {
 
       it('sets the result property to balance ID (if account ID is not provided) if an error was thrown', async () => {
         wrapper.setProps({
-          balanceId: BALANCE_ID
+          balanceId: BALANCE_ID,
         })
         sinon.stub(wrapper.vm, 'getAccountId').throws()
         sinon.stub(console, 'error')
@@ -132,7 +132,7 @@ describe('EmailGetter component unit test', () => {
     describe('getAccountId', () => {
       it('returns account ID if it is provided', async () => {
         wrapper.setProps({
-          accountId: ACCOUNT_ID
+          accountId: ACCOUNT_ID,
         })
 
         const response = await wrapper.vm.getAccountId()
@@ -142,7 +142,7 @@ describe('EmailGetter component unit test', () => {
 
       it('fetches account by balance ID (if it is provided, but account ID is not)', async () => {
         wrapper.setProps({
-          balanceId: BALANCE_ID
+          balanceId: BALANCE_ID,
         })
         const spy = sinon.stub(balancesResource, 'getAccount')
           .resolves({ data: {} })
@@ -157,7 +157,7 @@ describe('EmailGetter component unit test', () => {
 
       it('returns account ID fetched by balance ID (if it is provided, but account ID is not)', async () => {
         wrapper.setProps({
-          balanceId: BALANCE_ID
+          balanceId: BALANCE_ID,
         })
         sinon.stub(balancesResource, 'getAccount')
           .resolves({ data: { accountId: ACCOUNT_ID } })

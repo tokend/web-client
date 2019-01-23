@@ -6,24 +6,24 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: _ => ({
-    ownedAssets: []
+    ownedAssets: [],
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.account
-    ])
+      vuexTypes.account,
+    ]),
   },
   methods: {
     async loadOwnedAssets () {
       try {
         const { data } = await Sdk.horizon.assets.getAll({
-          owner: this.account.accountId
+          owner: this.account.accountId,
         })
         this.ownedAssets = data
       } catch (e) {
         console.error(e)
         ErrorHandler.process(e)
       }
-    }
-  }
+    },
+  },
 }

@@ -32,7 +32,7 @@
  * Main form content should be inserted inside form-stepper tag as a slot.
  *
  * Example of the form using form stepper:
- * 
+ *
  * <form>
  *   <form-stepper
  *     :steps="steps"
@@ -52,7 +52,7 @@
  * </form>
  *
  * Example of the steps prop structure:
- * 
+ *
  * const steps: {
  *   yourStep1: {
  *     number: 1,
@@ -65,7 +65,7 @@
  * }
  *
  * Example of the function called when next button is clicked:
- * 
+ *
  * function next (formPart) {
  *   if (this.isFormValid(formPart)) {
  *     this.currentStep++

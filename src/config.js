@@ -1,6 +1,7 @@
 import { base } from '@tokend/js-sdk'
 
 const featureFlags = {
+  dashboard: true,
   fees: true,
   issuance: true,
 }
