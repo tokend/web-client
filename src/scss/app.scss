@@ -326,8 +326,13 @@ h4 {
         background-color: $col-table-alt-row-background;;
       }
 
-      &:hover {
+      &:not([disabled]):hover {
         background-color: $col-table-row-selected;
+      }
+
+      &[disabled] {
+        cursor: default;
+        background-color: #e0e0e0;
       }
 
       td {
@@ -344,6 +349,10 @@ h4 {
 
   &.app__table--clickable-rows tbody tr {
     cursor: pointer;
+
+    &[disabled] {
+      cursor: default;
+    }
   }
 }
 
