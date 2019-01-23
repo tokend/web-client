@@ -56,7 +56,13 @@
       </div>
     </div>
 
-    <drawer :is-shown.sync="createBuyOrderIsShown">
+    <div class="trade__chart" v-if="assets.base">
+      <chart
+        v-if="assets.base !== config.DEFAULT_QUOTE_ASSET"
+        :base-asset="assets.base"
+        :quote-asset="config.DEFAULT_QUOTE_ASSET"
+      />
+    </div>
       <template slot="heading">
         {{ 'trade.create-buy-order-form-title' | globalize }}
       </template>
@@ -83,6 +89,7 @@ import CreateTradeOrderForm from '@/vue/forms/CreateTradeOrderForm'
 import SelectField from '@/vue/fields/SelectField'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
+import config from '@/config'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
@@ -94,6 +101,7 @@ export default {
     SelectField,
     Drawer,
     TopBar,
+    Chart,
   },
   data: () => ({
     createBuyOrderIsShown: false,
@@ -109,6 +117,7 @@ export default {
     selectedPair: '',
     tradeablePairs: [],
     formattedPairs: [],
+    config,
   }),
   computed: {
     ...mapGetters([
@@ -174,5 +183,9 @@ export default {
 .trade__asset-selector-balances-label {
   font-size: 1.6rem;
   color: $col-text-secondary;
+}
+
+.trade__chart {
+  margin-top: -2.4rem;
 }
 </style>
