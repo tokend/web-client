@@ -103,8 +103,14 @@
         </div>
       </div>
       <div class="app__form-actions">
+        <form-confirmation
+          v-if="isConfirming"
+          @ok="submit"
+          @cancel="isConfirming = false"
+        />
         <button
           v-ripple
+          v-else
           type="submit"
           class="verification-corporate-form__submit-btn"
           :disabled="formMixin.isDisabled"
@@ -113,11 +119,6 @@
           {{ 'verification-form.submit-btn' | globalize }}
         </button>
       </div>
-      <form-confirmation
-        v-if="isConfirming"
-        @ok="submit"
-        @cancel="isConfirming = false"
-      />
     </form>
   </div>
 </template>
