@@ -28,11 +28,9 @@ export default {
     async createKycBlob (blobType) {
       const { data } = await Sdk.api.blobs.create(
         blobType,
-        JSON.stringify(this.convertFormToTemplate())
+        JSON.stringify(this.createKycData())
       )
-      return {
-        blob_id: data.id,
-      }
+      return data.id
     },
     createKycOperation (kycData) {
       return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({

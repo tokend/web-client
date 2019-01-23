@@ -6,7 +6,7 @@
     <form
       novalidate
       class="app-form"
-      @submit.prevent="submit"
+      @submit.prevent="isFormValid() && showFormConfirmation()"
     >
       <div class="verification-general-form__block">
         <p class="verification-general-form__block-label">
@@ -228,9 +228,9 @@
       </div>
       <div class="app__form-actions">
         <form-confirmation
-          v-if="isConfirming"
-          @ok="submit"
-          @cancel="isConfirming = false"
+          v-if="formMixin.isFormConfirmationShown"
+          @ok="hideFormConfirmation() || submit()"
+          @cancel="hideFormConfirmation"
         />
         <button
           v-ripple
@@ -238,7 +238,6 @@
           type="submit"
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
-          @click.prevent="isConfirming = true"
         >
           {{ 'verification-form.submit-btn' | globalize }}
         </button>
@@ -248,8 +247,6 @@
 </template>
 
 <script>
-import FormConfirmation from '@/vue/common/FormConfirmation'
-
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 import { Sdk } from '@/sdk'
@@ -267,9 +264,6 @@ import { required, documentContainer } from '@validators'
 
 export default {
   name: 'verification-general-form',
-  components: {
-    FormConfirmation,
-  },
   mixins: [VerificationFormMixin],
   data: _ => ({
     form: {
@@ -297,7 +291,6 @@ export default {
     accountType: ACCOUNT_TYPES.general,
     DOCUMENT_TYPES,
     countries: [],
-    isConfirming: false,
   }),
   validations: {
     form: {
@@ -336,7 +329,7 @@ export default {
       ErrorHandler.process(e)
     }
     if (this.kycState) {
-      this.form = this.convertTemplateToForm(this.kycLatestData)
+      this.form = this.parseKycData(this.kycLatestData)
       if (this.kycState !== REQUEST_STATES_STR.rejected) {
         this.disableForm()
       }
@@ -344,13 +337,12 @@ export default {
   },
   methods: {
     async submit () {
-      this.isConfirming = false
       if (!this.isFormValid()) return
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const kycBlob = await this.createKycBlob(BLOB_TYPES.kycGeneral)
-        const operation = this.createKycOperation(kycBlob)
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
+        const operation = this.createKycOperation({ blob_id: kycBlobId })
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {
@@ -369,7 +361,7 @@ export default {
         }
       }
     },
-    convertFormToTemplate () {
+    createKycData () {
       return {
         first_name: this.form.personal.firstName,
         last_name: this.form.personal.lastName,
@@ -393,31 +385,31 @@ export default {
         },
       }
     },
-    convertTemplateToForm (template) {
+    parseKycData (kycData) {
       return {
         personal: {
-          firstName: template.first_name,
-          lastName: template.last_name,
-          birthDate: template.date_of_birth,
-          documentExpirationDate: template.id_expiration_date,
+          firstName: kycData.first_name,
+          lastName: kycData.last_name,
+          birthDate: kycData.date_of_birth,
+          documentExpirationDate: kycData.id_expiration_date,
         },
         address: {
-          firstLine: template.address.line_1,
-          secondLine: template.address.line_2,
-          city: template.address.city,
-          country: template.address.country,
-          state: template.address.state,
-          postalCode: template.address.postal_code,
+          firstLine: kycData.address.line_1,
+          secondLine: kycData.address.line_2,
+          city: kycData.address.city,
+          country: kycData.address.country,
+          state: kycData.address.state,
+          postalCode: kycData.address.postal_code,
         },
         documents: {
           idDocument: this.wrapDocument(
-            template.documents[DOCUMENT_TYPES.kycIdDocument]
+            kycData.documents[DOCUMENT_TYPES.kycIdDocument]
           ),
           proofDocument: this.wrapDocument(
-            template.documents[DOCUMENT_TYPES.kycProofOfAddress]
+            kycData.documents[DOCUMENT_TYPES.kycProofOfAddress]
           ),
           verificationPhoto: this.wrapDocument(
-            template.documents[DOCUMENT_TYPES.kycSelfie]
+            kycData.documents[DOCUMENT_TYPES.kycSelfie]
           ),
         },
       }
@@ -440,8 +432,8 @@ export default {
   @include button-raised();
 
   margin-right: auto;
-  margin-bottom: 2rem;
-  width: 20rem;
+  width: 100%;
+  max-width: 20rem;
 }
 
 .verification-general-form__verification-code-btn {
@@ -459,8 +451,9 @@ export default {
   form {
     margin-top: 1rem;
     background-color: $col-block-bg;
-    box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
     padding: 2.4rem;
+
+    @include box-shadow();
 
     & > .verification-general-form__block:not(:first-child) {
       margin-top: 6rem;
@@ -469,7 +462,6 @@ export default {
 }
 
 .verification-general-form__block-label {
-  margin-bottom: -2.5rem;
   font-size: 1.5rem;
   font-weight: bold;
 }

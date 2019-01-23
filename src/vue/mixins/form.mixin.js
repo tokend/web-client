@@ -6,6 +6,7 @@ import DateField from '../fields/DateField'
 import TextareaField from '@/vue/fields/TextareaField'
 import TickField from '@/vue/fields/TickField'
 import FileField from '@/vue/fields/FileField'
+import FormConfirmation from '@/vue/common/FormConfirmation'
 
 import { globalize } from '@/vue/filters/globalize'
 
@@ -19,11 +20,13 @@ export default {
     TextareaField,
     TickField,
     FileField,
+    FormConfirmation,
   },
   mixins: [validationMixin],
   data: _ => ({
     formMixin: {
       isDisabled: false,
+      isFormConfirmationShown: false,
     },
   }),
   methods: {
@@ -106,6 +109,12 @@ export default {
     },
     enableForm () {
       this.formMixin.isDisabled = false
+    },
+    showFormConfirmation () {
+      this.formMixin.isFormConfirmationShown = true
+    },
+    hideFormConfirmation () {
+      this.formMixin.isFormConfirmationShown = false
     },
   },
 }

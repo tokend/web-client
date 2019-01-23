@@ -6,7 +6,8 @@
     <form
       novalidate
       class="app-form"
-      @submit.prevent="submit">
+      @submit.prevent="isFormValid() && showFormConfirmation()"
+    >
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -104,9 +105,9 @@
       </div>
       <div class="app__form-actions">
         <form-confirmation
-          v-if="isConfirming"
-          @ok="submit"
-          @cancel="isConfirming = false"
+          v-if="formMixin.isFormConfirmationShown"
+          @ok="hideFormConfirmation() || submit()"
+          @cancel="hideFormConfirmation"
         />
         <button
           v-ripple
@@ -114,7 +115,6 @@
           type="submit"
           class="verification-corporate-form__submit-btn"
           :disabled="formMixin.isDisabled"
-          @click.prevent="isConfirming = true"
         >
           {{ 'verification-form.submit-btn' | globalize }}
         </button>
@@ -124,8 +124,6 @@
 </template>
 
 <script>
-import FormConfirmation from '@/vue/common/FormConfirmation'
-
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 import { Sdk } from '@/sdk'
@@ -142,9 +140,6 @@ const MIN_TEAM_SIZE = 1
 
 export default {
   name: 'verification-corporate-form',
-  components: {
-    FormConfirmation,
-  },
   mixins: [VerificationFormMixin],
   data: _ => ({
     form: {
@@ -158,7 +153,6 @@ export default {
     },
     accountType: ACCOUNT_TYPES.syndicate,
     MIN_TEAM_SIZE,
-    isConfirming: false,
   }),
   validations: {
     form: {
@@ -183,7 +177,7 @@ export default {
       ErrorHandler.process(e)
     }
     if (this.kycState) {
-      this.form = this.convertTemplateToForm(this.kycLatestData)
+      this.form = this.parseKycData(this.kycLatestData)
       if (this.kycState !== REQUEST_STATES_STR.rejected) {
         this.disableForm()
       }
@@ -191,12 +185,11 @@ export default {
   },
   methods: {
     async submit () {
-      this.isConfirming = false
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        const kycBlob = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
-        const operation = this.createKycOperation(kycBlob)
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
+        const operation = this.createKycOperation({ blob_id: kycBlobId })
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {
@@ -205,7 +198,7 @@ export default {
         this.enableForm()
       }
     },
-    convertFormToTemplate () {
+    createKycData () {
       return {
         name: this.form.name,
         company: this.form.company,
@@ -216,7 +209,7 @@ export default {
         homepage: this.form.website,
       }
     },
-    convertTemplateToForm (template) {
+    parseKycData (template) {
       return {
         name: template.name,
         company: template.company,
@@ -238,8 +231,8 @@ export default {
   @include button-raised();
 
   margin-right: auto;
-  margin-bottom: 2rem;
-  width: 20rem;
+  width: 100%;
+  max-width: 20rem;
 }
 
 .verification-corporate-form__account-info-title {
@@ -252,8 +245,9 @@ export default {
   form {
     margin-top: 1rem;
     background-color: $col-block-bg;
-    box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
     padding: 2.4rem;
+
+    @include box-shadow();
   }
 }
 </style>

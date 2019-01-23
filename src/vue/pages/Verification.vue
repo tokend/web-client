@@ -1,13 +1,34 @@
 <template>
   <div class="verification">
-    <div
-      class="request-message"
-      :class="`request-message--${kycState}`"
-    >
-      <p class="request-message__content">
-        {{ kycRequestMessage }}
-      </p>
-    </div>
+    <template>
+      <div
+        v-if="kycState === REQUEST_STATES_STR.approved"
+        class="kyc-request-state kyc-request-state--approved"
+      >
+        <p class="kyc-request-state__content">
+          {{ 'verification-page.approved-request-msg' | globalize }}
+        </p>
+      </div>
+      <div
+        v-else-if="kycState === REQUEST_STATES_STR.pending"
+        class="kyc-request-state kyc-request-state--pending"
+      >
+        <p class="kyc-request-state__content">
+          {{ 'verification-page.pending-request-msg' | globalize }}
+        </p>
+      </div>
+      <div
+        v-else-if="kycState === REQUEST_STATES_STR.rejected"
+        class="kyc-request-state kyc-request-state--rejected"
+      >
+        <p class="kyc-request-state__content">
+          {{
+            'verification-page.rejected-request-msg'
+              | globalize({ reason: kycRejectReason })
+          }}
+        </p>
+      </div>
+    </template>
     <p class="verification__subtitle">
       {{ 'verification-page.account-type-lbl' | globalize }}
     </p>
@@ -58,8 +79,14 @@ import { vueRoutes } from '@/vue-router/routes'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
-import { globalize } from '@/vue/filters/globalize'
-
+// The guard doesn't allow the user to visit a verification page
+// if he/she has already sent the verification request. It redirects
+// him/her to the verification page for the account type specified
+// in the latest KYC data the user sent.
+//
+// Placed in the component hooks because Vue router doesn't call
+// the guard when routing from the child's path to the parent's one.
+// Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
 function verificationGuard (to, from, next) {
   const kycAccountType = store.getters[vuexTypes.kycAccountTypeToSet]
   switch (kycAccountType) {
@@ -83,34 +110,13 @@ export default {
   name: 'verification',
   data: _ => ({
     vueRoutes,
+    REQUEST_STATES_STR,
   }),
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
-      kycLatestData: vuexTypes.kycLatestData,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
     }),
-    kycRequestMessageId () {
-      switch (this.kycState) {
-        case REQUEST_STATES_STR.pending:
-          return 'verification-page.pending-request-msg'
-        case REQUEST_STATES_STR.approved:
-          return 'verification-page.approved-request-msg'
-        case REQUEST_STATES_STR.rejected:
-          return 'verification-page.rejected-request-msg'
-        default:
-          return ''
-      }
-    },
-    kycRequestMessage () {
-      if (this.kycState === REQUEST_STATES_STR.rejected) {
-        return globalize(this.kycRequestMessageId, {
-          reason: this.kycRejectReason,
-        })
-      } else {
-        return globalize(this.kycRequestMessageId)
-      }
-    },
   },
   beforeRouteEnter (to, from, next) {
     verificationGuard(to, from, next)
@@ -125,7 +131,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.request-message {
+.kyc-request-state {
   min-height: 6.4rem;
   width: 100%;
   display: none;
@@ -140,7 +146,7 @@ export default {
   &--rejected { @include apply-theme($col-request-rejected) }
 }
 
-.request-message__content {
+.kyc-request-state__content {
   padding: 2.4rem;
   font-size: 1.3rem;
   font-weight: normal;
