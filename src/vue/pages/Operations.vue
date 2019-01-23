@@ -5,7 +5,7 @@
         <span class="op-history__navigation-text">
           {{ 'op-pages.show' | globalize }}:
         </span>
-        <select-field-custom
+        <select-field
           v-if="isLoaded"
           v-model="tokenCode"
           :values="tokens"
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import SelectFieldCustom from '@/vue/fields/SelectFieldCustom'
+import SelectField from '@/vue/fields/SelectField'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
@@ -56,7 +56,7 @@ import { MatchRecord } from '@/js/records/operations/match.record'
 export default {
   name: 'history-index',
   components: {
-    SelectFieldCustom,
+    SelectField,
     CollectionLoader,
     OpList,
   },
