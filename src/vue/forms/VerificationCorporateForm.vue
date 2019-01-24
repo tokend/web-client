@@ -188,9 +188,8 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        const operation = this.createKycOperation({
-          blob_id: await this.createKycBlob(BLOB_TYPES.kycSyndicate),
-        })
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
+        const operation = this.createKycOperation(kycBlobId)
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {
