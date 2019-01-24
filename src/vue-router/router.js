@@ -126,6 +126,31 @@ export const router = new Router({
             },
           ],
         },
+        {
+          path: '/settings',
+          name: vueRoutes.settings.name,
+          redirect: vueRoutes.verification,
+          component: resolve => require(['@/vue/pages/Settings'], resolve),
+          children: [
+            {
+              path: '/verification',
+              name: vueRoutes.verification.name,
+              component: resolve => require(['@/vue/pages/Verification'], resolve),
+              children: [
+                {
+                  path: '/verification/general',
+                  name: vueRoutes.verification.general.name,
+                  component: resolve => require(['@/vue/forms/VerificationGeneralForm'], resolve),
+                },
+                {
+                  path: '/verification/corporate',
+                  name: vueRoutes.verification.corporate.name,
+                  component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve),
+                },
+              ],
+            },
+          ],
+        },
       ].filter(route => route.featureFlag !== false),
     },
   ],

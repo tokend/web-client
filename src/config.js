@@ -7,6 +7,7 @@ const featureFlags = {
   issuance: true,
   tokens: true,
   requests: true,
+  settings: true,
 }
 
 export default Object.assign(

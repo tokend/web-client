@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
@@ -54,13 +54,17 @@ export default {
 
   .top-bar__main {
     display: flex;
-    font-size: 1.7rem;
 
     a {
       color: $col-top-bar-tab;
+      text-decoration: none;
+
+      span {
+        font-size: 1.7rem;
+      }
     }
 
-    .router-link-exact-active {
+    .router-link-active {
       font-weight: bold;
       color: $col-top-bar-tab-active;
     }

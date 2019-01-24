@@ -19,6 +19,7 @@ import {
 } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -50,32 +51,32 @@ describe('TransferForm component', () => {
       {
         asset: 'BTC',
         balance: '1',
-        assetDetails: {
+        assetDetails: new AssetRecord({
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
           ],
-        },
+        }),
       },
       {
         asset: 'USD',
         balance: '3',
-        assetDetails: {
+        assetDetails: new AssetRecord({
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
             { value: ASSET_POLICIES.statsQuoteAsset },
           ],
-        },
+        }),
       },
       {
         asset: 'ETH',
         balance: '0',
-        assetDetails: {
+        assetDetails: new AssetRecord({
           policies: [
             { value: ASSET_POLICIES.baseAsset },
           ],
-        },
+        }),
       },
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)

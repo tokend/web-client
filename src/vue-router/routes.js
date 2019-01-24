@@ -8,6 +8,17 @@ export const vueRoutes = Object.freeze({
   operations: { name: 'app.operations' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
+  settings: { name: 'app.settings' },
+  verification: {
+    name: 'app.verification',
+    general: {
+      name: 'app.verification.general',
+    },
+    corporate: {
+      name: 'app.verification.corporate',
+    },
+  },
+  security: { name: 'app.security' },
   dashboard: { name: 'app.dashboard' },
   issuance: { name: 'app.issuance' },
   tokens: { name: 'app.tokens' },
@@ -29,8 +40,6 @@ export const vueRoutes = Object.freeze({
   withdrawal: { name: 'app.withdrawal' },
   history: { name: 'app.history' },
   trade: { name: 'app.trade' },
-  settings: { name: 'app.settings' },
-  verification: { name: 'app.verification' },
   issuanceCreation: { name: 'app.issuanceCreation' },
   sales: { name: 'app.sales' },
   mySales: { name: 'app.my-sales' },
