@@ -32,7 +32,7 @@ export default {
       )
       return data.id
     },
-    createKycOperation (kycData) {
+    createKycOperation (kycBlobId) {
       return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
@@ -40,7 +40,9 @@ export default {
         accountToUpdateKYC: this.account.accountId,
         accountTypeToSet: this.accountType,
         kycLevelToSet: KYC_LEVEL_TO_SET,
-        kycData: kycData,
+        kycData: {
+          blob_id: kycBlobId,
+        },
       })
     },
   },
