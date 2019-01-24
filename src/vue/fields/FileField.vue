@@ -56,6 +56,7 @@
 <script>
 import { FileUtil, FileNotPresentInEventError } from '@/js/utils/file.util'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
