@@ -2,7 +2,7 @@
   <form
     novalidate
     class="app__form token-form"
-    @submit.prevent="submit"
+    @submit.prevent="isFormValid() && showFormConfirmation()"
   >
     <form-stepper
       :steps="STEPS"
@@ -121,9 +121,9 @@
         </div>
         <div class="app__form-actions">
           <form-confirmation
-            v-if="isConfirming"
-            @ok="submit"
-            @cancel="isConfirming = false"
+            v-if="formMixin.isFormConfirmationShown"
+            @ok="hideFormConfirmation() || submit()"
+            @cancel="hideFormConfirmation"
           />
           <button
             v-ripple
@@ -131,7 +131,6 @@
             type="submit"
             class="token-form__btn"
             :disabled="formMixin.isDisabled"
-            @click.prevent="isConfirming = true"
           >
             {{ 'token-form.submit-btn' | globalize }}
           </button>
@@ -143,7 +142,6 @@
 
 <script>
 import FormStepper from '@/vue/common/FormStepper'
-import FormConfirmation from '@/vue/common/FormConfirmation'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -186,7 +184,6 @@ export default {
   name: 'token-form',
   components: {
     FormStepper,
-    FormConfirmation,
   },
   mixins: [FormMixin],
   props: {
@@ -206,7 +203,6 @@ export default {
       },
     },
     currentStep: 1,
-    isConfirming: false,
     STEPS,
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
@@ -279,7 +275,7 @@ export default {
       }
     },
     next (formStep) {
-      this.isConfirming = false
+      this.hideFormConfirmation()
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }
@@ -292,7 +288,6 @@ export default {
       }
     },
     async submit () {
-      this.isConfirming = false
       if (!this.isFormValid()) return
 
       this.disableForm()
