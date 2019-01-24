@@ -1,8 +1,9 @@
 <template>
-  <div class="withdrawal" v-if="isDataLoaded">
+  <div class="withdrawal" v-if="isLoaded">
     <template v-if="tokenCodes.length">
       <form
-        @submit.prevent="isConfirmationShown = true"
+        @submit.prevent="confirmingWithdrawal"
+        id="withdrawal-form"
       >
         <div class="app__form-row withdraw__form-row">
           <div class="app__form-field">
@@ -32,14 +33,14 @@
             v-model.trim="form.amount"
             type="number"
             @blur="touchField('form.amount')"
-            :label="
-              'withdrawal-form.amount' | globalize({asset: form.tokenCode})
-            "
+            :label="'withdrawal-form.amount' | globalize({
+              asset: form.tokenCode
+            })"
             :disabled="formMixin.isDisabled"
-            :error-message="getFieldErrorMessage(
-              'form.amount',
-              { from:MIN_AMOUNT, to:balanceInfo.balance }
-            )"
+            :error-message="getFieldErrorMessage('form.amount', {
+              from:MIN_AMOUNT,
+              to:balanceInfo.balance
+            })"
           />
         </div>
 
@@ -50,8 +51,9 @@
             v-model.trim="form.address"
             @blur="touchField('form.address')"
             :error-message="getFieldErrorMessage('form.address')"
-            :label="'withdrawal-form.destination-address' |
-              globalize({ asset: form.tokenCode })"
+            :label="'withdrawal-form.destination-address' | globalize({
+              asset: form.tokenCode
+            })"
             :monospaced="true"
             :disabled="formMixin.isDisabled"
           />
@@ -102,6 +104,7 @@
             type="submit"
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
+            form="withdrawal-form"
           >
             {{ 'withdrawal-form.withdrawal' | globalize }}
           </button>
@@ -161,12 +164,12 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      isDataLoaded: false,
+      isLoaded: false,
       isConfirmationShown: false,
       form: {
         tokenCode: null,
         amount: '',
-        adress: '',
+        address: '',
       },
       assets: [],
       MIN_AMOUNT: config.MIN_AMOUNT,
@@ -215,26 +218,21 @@ export default {
       this.tryGetFees()
     },
     isConfirmationShown (value) {
-      if (value) {
-        if (!this.isFormValid()) return
-        this.disableForm()
-      } else {
-        this.enableForm()
-      }
+      if (!value) this.enableForm()
     },
   },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.filter(item => {
-        return item.policies
-          .map(policy => policy.value)
-          .indexOf(ASSET_POLICIES.withdrawable) !== -1
+        return item.policies.filter(policy => {
+          return policy.value === ASSET_POLICIES.withdrawable ||
+            policy.value === ASSET_POLICIES.withdrawableV2
+        }).length
       })
       this.form.tokenCode = this.tokenCodes[0] || null
-      this.isDataLoaded = true
+      this.isLoaded = true
     } catch (e) {
-      console.error(e)
       ErrorHandler.process(e)
     }
   },
@@ -256,7 +254,6 @@ export default {
         Bus.success('withdrawal-form.withdraw-success')
         this.$emit(EVENTS.cancel)
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
@@ -274,7 +271,6 @@ export default {
       } catch (e) {
         this.isFeesLoadFailed = true
         ErrorHandler.process(e)
-        console.error(e)
       }
       this.isFeesLoadPending = false
     },
@@ -289,7 +285,7 @@ export default {
       return {
         balance: this.balanceInfo.balanceId,
         amount: this.form.amount,
-        externalDetails: { address: this.form.adress },
+        externalDetails: { address: this.form.address },
         destAsset: this.form.tokenCode,
         expectedDestAssetAmount: this.form.amount,
         fee: {
@@ -297,6 +293,11 @@ export default {
           percent: this.percentFee,
         },
       }
+    },
+    confirmingWithdrawal () {
+      if (!this.isFormValid()) return
+      this.isConfirmationShown = true
+      this.disableForm()
     },
   },
 }
