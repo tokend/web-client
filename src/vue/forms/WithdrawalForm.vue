@@ -160,7 +160,6 @@ export default {
     Loader,
   },
   mixins: [FormMixin],
-  props: {},
   data () {
     return {
       isDataLoaded: false,
@@ -239,8 +238,6 @@ export default {
       console.error(e)
       ErrorHandler.process(e)
     }
-  },
-  destroyed () {
   },
   methods: {
     ...mapActions({
