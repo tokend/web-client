@@ -55,8 +55,8 @@
     <template v-if="!currentAsset">
       <no-data-message
         icon-name="toll"
-        :msg-title="'tx-history.no-assets-in-your-wallet' | globalize"
-        :msg-message="'tx-history.here-will-be-the-tokens' | globalize"
+        :msg-title="'dashboard.no-assets-in-your-wallet' | globalize"
+        :msg-message="'dashboard.here-will-be-the-tokens' | globalize"
       />
     </template>
   </div>

@@ -325,6 +325,7 @@ export default {
   position: absolute;
   left: 0;
   width: 100%;
+  min-width: 16rem;
   top: calc(100% + .4rem);
   background-color: $col-dropdown-bg;
   border-radius: .3rem;

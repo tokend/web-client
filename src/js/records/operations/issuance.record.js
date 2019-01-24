@@ -1,21 +1,26 @@
 import { OpRecord } from '../op-record'
 import _get from 'lodash/get'
-import { globalize } from '@/vue/filters/globalize'
 
 export class IssuanceRecord extends OpRecord {
-  constructor (record, accountId) {
+  constructor (record, detailsOrAccountId) {
     super(record)
-
+    this.id = record.id
     this.amount = record.amount
     this.asset = record.asset
     this.feeAsset = record.asset
     this.fixedFee = record.feeFixed
     this.percentFee = record.feePercent
-    this.name = globalize('record-names.issuance')
-    this.id = record.id
     this.subject = record.reference
     this.date = record.ledgerCloseTime
-    this.accountId = accountId
+
+    // TODO: fix (merge conflict quick fix)
+    if (typeof detailsOrAccountId === 'string') {
+      this.accountId = detailsOrAccountId
+    } else if (typeof detailsOrAccountId === 'object') {
+      this.accountId = detailsOrAccountId.accountId
+    } else {
+      this.accountId = ''
+    }
 
     this.externalDetails = record.externalDetails
 
@@ -25,6 +30,7 @@ export class IssuanceRecord extends OpRecord {
   }
 
   get isIncoming () {
+    // issuance operation it is always operation for adding asset
     return true
   }
 

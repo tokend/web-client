@@ -34,7 +34,7 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.dashboard"
-            tag="li"
+            tag="a"
             v-if="config.FEATURE_FLAGS.dashboard"
           >
             <i class="sidebar__link-icon mdi mdi-view-dashboard" />
@@ -42,6 +42,21 @@
               {{ 'pages-names.dashboard' | globalize }}
             </span>
           </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.operations"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.operations"
+          >
+            <i class="sidebar__link-icon mdi mdi-menu" />
+            <span>
+              {{ 'pages-names.operations' | globalize }}
+            </span>
+          </router-link>
+
           <router-link
             v-ripple
             class="sidebar__link"

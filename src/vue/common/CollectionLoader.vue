@@ -4,7 +4,7 @@
       v-if="!isCollectionFetched"
       class="collection-loader__more-button"
       @click="loadNextPage">
-      {{ 'common.button-text-more' | globalize }}
+      {{ 'common.more-btn' | globalize }}
     </button>
   </div>
 </template>
