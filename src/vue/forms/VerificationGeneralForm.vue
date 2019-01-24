@@ -341,8 +341,9 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
-        const operation = this.createKycOperation({ blob_id: kycBlobId })
+        const operation = this.createKycOperation({
+          blob_id: await this.createKycBlob(BLOB_TYPES.kycGeneral),
+        })
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {

@@ -175,9 +175,10 @@ export default {
   width: 25.4rem;
   height: 14.7rem;
   padding: 3.2rem;
-  box-shadow: 0 .6rem 1rem 0 $col-block-shadow;
   background-color: $col-block-bg;
   text-decoration: none;
+
+  @include box-shadow();
 }
 
 .router-link-exact-active {
