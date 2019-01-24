@@ -7,10 +7,6 @@
 <script>
 import TokensList from '@/vue/common/TokensList'
 
-import { Sdk } from '@/sdk'
-
-import { ErrorHandler } from '@/js/helpers/error-handler'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -24,24 +20,11 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountBalances: vuexTypes.accountBalances,
     }),
   },
-  async created () {
-    await this.loadTokens()
-  },
-  methods: {
-    async loadTokens () {
-      try {
-        const { data } = await Sdk.horizon.assets.getAll()
-        this.tokens = this.account.balances.map(balance => {
-          return data.find(token => token.code === balance.asset)
-        })
-      } catch (e) {
-        console.error(e)
-        ErrorHandler.process(e)
-      }
-    },
+  created () {
+    this.tokens = this.accountBalances.map(balance => balance.assetDetails)
   },
 }
 </script>

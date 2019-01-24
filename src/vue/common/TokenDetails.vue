@@ -2,7 +2,7 @@
   <div class="token-details">
     <div class="asset-details">
       <token-logo
-        :logo-key="token.details.logo.key"
+        :logo-key="token.logoKey"
         :token-code="token.code"
       />
       <div class="asset-details__info">
@@ -10,7 +10,7 @@
           {{ token.code }}
         </p>
         <p class="asset-details__name">
-          {{ token.details.name }}
+          {{ token.name }}
         </p>
       </div>
     </div>
@@ -54,7 +54,7 @@
           </td>
           <td>
             <a
-              v-if="token.details.terms.key"
+              v-if="token.termsKey"
               class="token-details__terms"
               :href="tokenTermsUrl">
               {{ 'token-details.download-terms-btn' | globalize }}
@@ -113,7 +113,7 @@ export default {
       account: vuexTypes.account,
     }),
     tokenTermsUrl () {
-      return `${config.FILE_STORAGE}/${this.token.details.terms.key}`
+      return this.token.termsUrl(config.FILE_STORAGE)
     },
     tokenBalance () {
       if (this.token.balance) {
@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
       this.isBalanceCreating = true
@@ -139,7 +139,7 @@ export default {
         })
         await Sdk.horizon.transactions.submitOperations(operation)
         this.isBalanceAdded = true
-        await this.loadAccount()
+        await this.loadBalances()
         Bus.success('token-details.balance-added-msg')
       } catch (e) {
         this.isBalanceCreating = false

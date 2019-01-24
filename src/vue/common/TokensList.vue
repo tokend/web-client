@@ -16,7 +16,7 @@
         <div class="token-card__header">
           <token-logo
             class="token-card__logo"
-            :logo-key="token.details.logo.key"
+            :logo-key="token.logoKey"
             :token-code="token.code"
           />
         </div>
@@ -25,7 +25,7 @@
             {{ token.code }}
           </p>
           <p class="token-card__name">
-            {{ token.details.name }}
+            {{ token.name }}
           </p>
           <p
             v-if="getBalance(token).value"
@@ -71,12 +71,12 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountBalances: vuexTypes.accountBalances,
     }),
   },
   methods: {
     getBalance (token) {
-      const balance = this.account.balances
+      const balance = this.accountBalances
         .find(balance => balance.asset === token.code)
       if (balance) {
         return {
