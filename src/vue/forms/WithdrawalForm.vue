@@ -48,7 +48,6 @@
             white-autofill
             class="app__form-field"
             v-model.trim="form.address"
-            name="wallet-address"
             @blur="touchField('form.address')"
             :error-message="getFieldErrorMessage('form.address')"
             :label="'withdrawal-form.destination-address' |
@@ -167,7 +166,7 @@ export default {
       form: {
         tokenCode: null,
         amount: '',
-        wallet: '',
+        adress: '',
       },
       assets: [],
       MIN_AMOUNT: config.MIN_AMOUNT,
@@ -186,7 +185,7 @@ export default {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.balanceInfo.balance),
         },
-        wallet: { required, address },
+        address: { required, address },
       },
     }
   },
@@ -290,7 +289,7 @@ export default {
       return {
         balance: this.balanceInfo.balanceId,
         amount: this.form.amount,
-        externalDetails: { address: this.form.wallet },
+        externalDetails: { address: this.form.adress },
         destAsset: this.form.tokenCode,
         expectedDestAssetAmount: this.form.amount,
         fee: {
