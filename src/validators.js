@@ -1,5 +1,7 @@
 import { base } from '@tokend/js-sdk'
 
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
 import * as validators from 'vuelidate/lib/validators'
 
 export const password = value => validators.minLength(6)(value)
@@ -11,6 +13,7 @@ export const maxValueWrapper = value => {
 export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
+export const documentContainer = value => value instanceof DocumentContainer
 export const amountRange = (from, to) => value => Number(value) &&
   Number(value) >= from && Number(value) <= to
 
