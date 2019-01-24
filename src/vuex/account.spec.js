@@ -4,6 +4,7 @@ import { vuexTypes } from './types'
 
 import accountJSON from '../test/mocks/account'
 import balancesDetailsJSON from '../test/mocks/account-balances-details'
+import { AssetRecord } from '../js/records/entities/asset.record'
 
 describe('account.module', () => {
   afterEach(() => {
@@ -77,6 +78,10 @@ describe('account.module', () => {
         )
         const type = vuexTypes.SET_ACCOUNT_BALANCES_DETAILS
         const payload = MockWrapper.makeHorizonData(balancesDetailsJSON)
+          .map(balance => {
+            balance.assetDetails = new AssetRecord(balance.assetDetails)
+            return balance
+          })
         const expectedMutations = {
           [type]: payload,
         }

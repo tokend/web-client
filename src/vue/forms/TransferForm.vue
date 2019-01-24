@@ -313,9 +313,7 @@ export default {
       vuexTypes.accountId,
     ]),
     userTransferableTokens () {
-      return this.accountBalances.filter(i => {
-        return i.assetDetails.isTransferable
-      })
+      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
     },
     tokenCodes () {
       return this.userTransferableTokens.map(token => token.asset)

@@ -28,8 +28,8 @@ export class AssetRecord {
     this.termsName = _get(record, 'details.terms.name')
     this.termsType = _get(record, 'details.terms.type')
 
-    this.policy = record.policy
     this.policies = this._policies()
+    this.policy = this._policy()
   }
 
   logoUrl (storageUrl) {
@@ -43,6 +43,10 @@ export class AssetRecord {
   _policies () {
     const policies = this._record.policies || []
     return policies.map(policy => policy.value)
+  }
+
+  _policy () {
+    return this._policies().reduce((s, p) => s | p, 0)
   }
 
   get isBaseAsset () {
