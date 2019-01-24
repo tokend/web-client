@@ -172,7 +172,8 @@
     },
 
     "pages-subnames": {
-      "exchange-tokens": "Exchange tokens"
+      "exchange-tokens": "Exchange tokens",
+      "user-orders": "Orders owned by you"
     },
 
     "passport": {
@@ -377,7 +378,7 @@
     },
 
     "trade": {
-      "exhange-view": "Exhange",
+      "exchange-view": "Exchange",
       "my-orders-view": "My Orders",
       "create-buy-order-button": "Create buy order",
       "create-sell-order-button": "Create sell order",
