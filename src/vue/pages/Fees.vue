@@ -9,6 +9,7 @@
         v-model="filters.asset"
         :values="assetCodes"
         :key="filters.asset"
+        :form-free="true"
         class="fees__assets-select"
       />
     </div>
