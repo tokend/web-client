@@ -59,10 +59,10 @@
 </template>
 
 <script>
-import AssetSelector from './Dashboard.AssetSelector'
+import AssetSelector from '@/vue/pages/Dashboard/Dashboard.AssetSelector'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
-import InfoWidget from './Dashboard.InfoWidget'
+import InfoWidget from '@/vue/pages/Dashboard/Dashboard.InfoWidget'
 import Chart from '@/vue/common/chart/Chart'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
