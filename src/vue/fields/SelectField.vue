@@ -228,12 +228,6 @@ export default {
     "&.select-field__selected--focused"
   );
   @include text-font-sizes;
-
-  .asset-selector__select-field &,
-  .fees__assets-select & {
-    border-bottom: 0;
-    background-size: 0;
-  }
 }
 
 .select-field__selected-icon {
@@ -261,12 +255,6 @@ export default {
   font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
-
-  .asset-selector__select-field &,
-  .fees__assets-select & {
-    font-size: 1.8rem;
-    font-weight: 300;
-  }
 }
 
 .select-field__label {

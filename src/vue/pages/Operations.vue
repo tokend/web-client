@@ -9,7 +9,7 @@
           v-if="isLoaded"
           v-model="tokenCode"
           :values="tokens"
-          class="asset-selector__select-field"
+          class="app__no-border-select"
         />
       </div>
       <div slot="extra">
