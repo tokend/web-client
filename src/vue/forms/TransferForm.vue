@@ -250,7 +250,6 @@ import { vuexTypes } from '@/vuex'
 import {
   base,
   PAYMENT_FEE_SUBTYPES,
-  ASSET_POLICIES,
   FEE_TYPES,
 } from '@tokend/js-sdk'
 import config from '@/config'
@@ -315,8 +314,7 @@ export default {
     ]),
     userTransferableTokens () {
       return this.accountBalances.filter(i => {
-        const policies = i.assetDetails.policies.map(i => i.value)
-        return policies.includes(ASSET_POLICIES.transferable)
+        return i.assetDetails.isTransferable
       })
     },
     tokenCodes () {
