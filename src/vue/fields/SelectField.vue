@@ -4,7 +4,8 @@
     :class="{
       'select-field--disabled': disabled,
       'select-field--focused': isExpanded,
-      'select-field--label-minimized': selectedValue
+      'select-field--label-minimized': selectedValue,
+      'select-field--form-free': formFree
     }"
   >
     <template v-if="label">
@@ -74,6 +75,11 @@ export default {
     },
     disabled: {
       type: Boolean,
+      default: false,
+    },
+    formFree: {
+      type: Boolean,
+      required: false,
       default: false,
     },
   },
@@ -228,9 +234,7 @@ export default {
   );
   @include text-font-sizes;
 
-  .asset-selector__select-field &,
-  .fees__assets-select &,
-  .trade__asset-selector-field & {
+  .select-field--form-free & {
     border-bottom: 0;
     background-size: 0;
   }
@@ -262,9 +266,7 @@ export default {
   font-weight: 500;
   cursor: pointer;
 
-  .asset-selector__select-field &,
-  .fees__assets-select &,
-  .trade__asset-selector-field & {
+  .select-field--form-free & {
     font-size: 1.8rem;
     font-weight: 300;
   }
