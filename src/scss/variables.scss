@@ -31,6 +31,7 @@ $_whiteSmoke: #f5f6f9;
 $_lightPurple: #837fa1;
 $_ghostWhite: #c4c8cb;
 $_thinPurple: #c1bfd0;
+$_alto: #e0e0e0;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -127,7 +128,9 @@ $col-table-alt-row-background: $_whiteSmoke;
 $col-table-cell-text: $col-primary;
 $col-table-head-text: $_lightPurple;
 $col-table-row-selected: darken($_whiteSmoke, 10%);
+$col-table-row-disabled: $_alto;
 $col-table-shadow: rgba(0, 0, 0, 0.1);
+$col-table-scroll-side-shadow: rgba(0, 0, 0, 0.2);
 
 // loader colors:
 $col-loader-text: $col-primary;

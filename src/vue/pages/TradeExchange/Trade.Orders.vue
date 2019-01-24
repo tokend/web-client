@@ -1,6 +1,6 @@
 <template>
   <div class="trade-orders">
-    <h3 class="trade-orders__table-title">
+    <h3 class="app__table-title">
       <template v-if="isBuy">
         {{ 'trade-orders.subtitle-ask' | globalize }}
       </template>
@@ -9,7 +9,11 @@
       </template>
     </h3>
     <template v-if="ordersList.length">
-      <table class="app__table app__table--clickable-rows">
+      <table
+        class="app__table
+              app__table--with-shadow
+              app__table--clickable-rows"
+      >
         <thead>
           <tr>
             <th>
@@ -29,7 +33,7 @@
         <tbody>
           <tr
             v-for="(order, o) in ordersList"
-            :key="`orders-list-row-${o}`"
+            :key="`trade-orders-row-${o}`"
             @click="selectOrder(order)"
             :disabled="order.ownerId === accountId">
             <td>{{ order.baseAmount }}</td>
@@ -139,13 +143,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
-
-.trade-orders__table-title {
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin-bottom: .8rem;
-}
 
 </style>

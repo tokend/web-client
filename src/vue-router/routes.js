@@ -8,7 +8,15 @@ export const vueRoutes = Object.freeze({
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
   dashboard: { name: 'app.dashboard' },
-  trade: { name: 'app.trade' },
+  trade: {
+    name: 'app.trade',
+    exchange: {
+      name: 'app.exchange',
+    },
+    userOrders: {
+      name: 'app.user-orders',
+    },
+  },
   issuance: { name: 'app.issuance' },
 
   // stubs:

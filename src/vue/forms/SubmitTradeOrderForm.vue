@@ -114,6 +114,7 @@ export default {
           isBuy: !this.order.isBuy,
         })
       } catch (error) {
+        // TODO: handle operation type
         ErrorHandler.process(error)
       }
       this.$emit(EVENTS.closeDrawer)

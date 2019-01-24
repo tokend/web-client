@@ -345,6 +345,20 @@
       "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
     },
 
+    "trade-user-orders": {
+      "title": "Your open {{base}}/{{quote}} orders",
+      "table-id-lbl": "Order ID",
+      "table-date-lbl": "Date",
+      "table-order-lbl": "Order",
+      "table-base-amount-lbl": "Base asset amount",
+      "table-price-lbl": "Price in quote asset",
+      "loading-msg": "Loading...",
+      "no-data-title": "No open orders",
+      "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
+      "buy-lbl": "Buy",
+      "sell-lbl": "Sell"
+    },
+
     "trade-orders": {
       "title": "Open orders",
       "subtitle-ask": "Ask",

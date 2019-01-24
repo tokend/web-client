@@ -1,10 +1,10 @@
 <template>
   <div class="trade-history">
-    <h2 class="trade-history__table-title">
+    <h2 class="app__table-title">
       {{ 'trade-history.title' | globalize }}
     </h2>
     <template v-if="tradeHistory.length">
-      <table class="app__table">
+      <table class="app__table app__table--with-shadow">
         <thead>
           <tr>
             <th>
@@ -28,8 +28,7 @@
           <tr v-for="(item, i) in tradeHistory" :key="`trade-history-row-${i}`">
             <td>{{ item.baseAmount }}</td>
             <td>{{ item.price }}</td>
-            <!-- FIXME: -->
-            <td>–</td>
+            <td>{{ item.quoteAmount }}</td>
             <td>{{ item.createdAt | formatDate }}</td>
           </tr>
         </tbody>
@@ -39,7 +38,6 @@
       <loader :message-id="'trade-history.loading-msg'" />
     </template>
     <template v-else>
-      <!-- TODO: look at this and think about how make it better -->
       <no-data-message
         :title-id="'trade-history.no-data-title'"
         :message-id="'trade-history.no-data-message'"
@@ -72,13 +70,4 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
-
-.trade-history__table-title {
-  font-size: 2rem;
-  font-weight: 400;
-  margin-bottom: 1.6rem;
-}
-
 </style>

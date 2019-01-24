@@ -357,6 +357,16 @@ h4 {
   }
 }
 
+.app__table--with-shadow {
+  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
+}
+
+.app__table-title {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 1.6rem;
+}
+
 .app__table-left-shadow {
   position: relative;
 
@@ -367,7 +377,7 @@ h4 {
     bottom: -1rem;
     left: 0;
     width: 0.8rem;
-    box-shadow: inset .5rem -.6rem .6rem 0 rgba(0, 0, 0, .2);
+    box-shadow: inset .5rem -.6rem .6rem 0 $col-table-scroll-side-shadow;
   }
 }
 
@@ -381,6 +391,6 @@ h4 {
     bottom: -1rem;
     right: 0;
     width: .8rem;
-    box-shadow: inset -.5rem -.6rem .6rem 0 rgba(0, 0, 0, .2);
+    box-shadow: inset -.5rem -.6rem .6rem 0 $col-table-scroll-side-shadow;
   }
 }
