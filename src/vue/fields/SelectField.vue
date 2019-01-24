@@ -301,6 +301,7 @@ export default {
   position: absolute;
   left: 0;
   width: 100%;
+  min-width: 16rem;
   top: calc(100% + .4rem);
   background-color: $col-dropdown-bg;
   box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);

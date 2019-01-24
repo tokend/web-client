@@ -72,6 +72,10 @@ export class MatchEffect {
     this.name = this._getName()
   }
 
+  get isIncoming () {
+    return this.direction === DIRECTIONS_VERBOSE.out
+  }
+
   _getQuoteAmount () {
     return this._effect.matches.reduce(
       (sum, match) => match.quoteAmount + sum, 0
