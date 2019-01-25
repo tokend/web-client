@@ -34,7 +34,7 @@ export default {
   width: 100%;
   min-height: 12rem;
   background-color: $col-app-content-background;
-  padding: 0 $content-side-paddings;
+  padding: 0 $content-padding-right 0 $content-padding-left;
   display: flex;
   align-items: center;
   justify-content: space-between;

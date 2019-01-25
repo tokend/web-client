@@ -47,10 +47,10 @@ export default {
   color: $col-top-bar-text;
   margin:
     0
-    -1 * $content-side-paddings
+    -1 * $content-padding-right
     4rem
-    -1 * $content-side-paddings;
-  padding: 1.4rem $content-side-paddings;
+    -1 * $content-padding-left;
+  padding: 1.4rem $content-padding-right 1.4rem $content-padding-left;
 
   .top-bar__main {
     display: flex;
