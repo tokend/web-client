@@ -139,7 +139,7 @@ export default {
 
   @include respond-to-custom($sidebar-hide-bp) {
     width: 100vw;
-    padding: 0 $content-side-paddings-sm;
+    padding: 0 $content-side-paddings-sm 3rem;
   }
 }
 </style>
