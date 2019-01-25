@@ -9,39 +9,41 @@
       </template>
     </h3>
     <template v-if="ordersList.length">
-      <table
+      <div
         class="app__table
               app__table--with-shadow
               app__table--clickable-rows"
       >
-        <thead>
-          <tr>
-            <th>
-              <!-- eslint-disable-next-line -->
-              {{ 'trade-orders.table-want-lbl' | globalize({ asset: assets.base }) }}
-            </th>
-            <th>
-              <!-- eslint-disable-next-line -->
-              {{ 'trade-orders.table-order-lbl' | globalize({ asset: assets.quote }) }}
-            </th>
-            <th>
-              <!-- eslint-disable-next-line -->
-              {{ 'trade-orders.table-price-lbl' | globalize({ asset: assets.quote }) }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(order, o) in ordersList"
-            :key="`trade-orders-row-${o}`"
-            @click="selectOrder(order)"
-            :disabled="order.ownerId === accountId">
-            <td>{{ order.baseAmount }}</td>
-            <td>{{ order.quoteAmount }}</td>
-            <td>{{ order.price }}</td>
-          </tr>
-        </tbody>
-      </table>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <!-- eslint-disable-next-line -->
+                {{ 'trade-orders.table-want-lbl' | globalize({ asset: assets.base }) }}
+              </th>
+              <th>
+                <!-- eslint-disable-next-line -->
+                {{ 'trade-orders.table-order-lbl' | globalize({ asset: assets.quote }) }}
+              </th>
+              <th>
+                <!-- eslint-disable-next-line -->
+                {{ 'trade-orders.table-price-lbl' | globalize({ asset: assets.quote }) }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(order, o) in ordersList"
+              :key="`trade-orders-row-${o}`"
+              @click="selectOrder(order)"
+              :disabled="order.ownerId === accountId">
+              <td>{{ order.baseAmount }}</td>
+              <td>{{ order.quoteAmount }}</td>
+              <td>{{ order.price }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </template>
     <template v-else-if="isLoading">
       <loader :message-id="'trade-orders.loading-msg'" />

@@ -41,8 +41,8 @@
       <issuance-form @cancel="isIssuanceDrawerShown = false" />
     </drawer>
     <div class="issuance" v-if="isLoaded">
-      <div class="issuance-history__table">
-        <table class="app__table">
+      <div class="app__table app__table--with-shadow issuance-history__table">
+        <table>
           <thead>
             <tr>
               <th>
@@ -161,8 +161,6 @@ export default {
 @import "~@scss/mixins";
 
 .issuance-history__table {
-  overflow-x: auto;
-  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
   max-width: 105rem;
 }
 

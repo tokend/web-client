@@ -9,45 +9,47 @@
       }}
     </h2>
     <template v-if="ordersHistory.length">
-      <table class="app__table app__table--with-shadow">
-        <thead>
-          <tr>
-            <th>
-              {{ 'trade-user-orders.table-id-lbl' | globalize }}
-            </th>
-            <th>
-              {{ 'trade-user-orders.table-date-lbl' | globalize }}
-            </th>
-            <th>
-              {{ 'trade-user-orders.table-order-lbl' | globalize }}
-            </th>
-            <th>
-              {{ 'trade-user-orders.table-base-amount-lbl' | globalize }}
-            </th>
-            <th>
-              {{ 'trade-user-orders.table-price-lbl' | globalize }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(item, i) in ordersHistory"
-            :key="`trade-user-orders-row-${i}`">
-            <td>{{ item.offerId }}</td>
-            <td>{{ item.createdAt | formatDate }}</td>
-            <td>
-              <template v-if="item.isBuy">
-                {{ 'trade-user-orders.buy-lbl' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'trade-user-orders.sell-lbl' | globalize }}
-              </template>
-            </td>
-            <td>{{ item.baseAmount | formatMoney }}</td>
-            <td>{{ item.price | formatMoney }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="app__table app__table--with-shadow">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                {{ 'trade-user-orders.table-id-lbl' | globalize }}
+              </th>
+              <th>
+                {{ 'trade-user-orders.table-date-lbl' | globalize }}
+              </th>
+              <th>
+                {{ 'trade-user-orders.table-order-lbl' | globalize }}
+              </th>
+              <th>
+                {{ 'trade-user-orders.table-base-amount-lbl' | globalize }}
+              </th>
+              <th>
+                {{ 'trade-user-orders.table-price-lbl' | globalize }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(item, i) in ordersHistory"
+              :key="`trade-user-orders-row-${i}`">
+              <td>{{ item.offerId }}</td>
+              <td>{{ item.createdAt | formatDate }}</td>
+              <td>
+                <template v-if="item.isBuy">
+                  {{ 'trade-user-orders.buy-lbl' | globalize }}
+                </template>
+                <template v-else>
+                  {{ 'trade-user-orders.sell-lbl' | globalize }}
+                </template>
+              </td>
+              <td>{{ item.baseAmount | formatMoney }}</td>
+              <td>{{ item.price | formatMoney }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </template>
     <template v-else-if="isLoading">
       <loader :message-id="'trade-user-orders.loading-msg'" />

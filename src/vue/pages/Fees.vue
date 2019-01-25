@@ -13,8 +13,8 @@
         class="fees__assets-select"
       />
     </div>
-    <div class="fees__table">
-      <table class="app__table">
+    <div class="app__table app__table--with-shadow">
+      <table>
         <thead>
           <tr>
             <th>
@@ -152,10 +152,5 @@ export default {
 .fees__assets-select {
   display: inline-block;
   width: auto;
-}
-
-.fees__table {
-  overflow-x: auto;
-  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
 }
 </style>

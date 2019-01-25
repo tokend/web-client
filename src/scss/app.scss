@@ -299,51 +299,55 @@ h4 {
 }
 
 .app__table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: $col-table-background;
+  overflow-x: auto;
 
-  thead {
-    th {
-      font-size: 1.2rem;
-      text-align: left;
-      padding:
-        1.6rem
-        1.6rem
-        1.1rem
-        1.6rem;
-      overflow: hidden;
-      max-width: 12rem;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: $col-table-head-text;
-      font-weight: normal;
-    }
-  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: $col-table-background;
 
-  tbody {
-    tr {
-      &:nth-child(odd) {
-        background-color: $col-table-alt-row-background;;
-      }
-
-      &:not([disabled]):hover {
-        background-color: $col-table-row-selected;
-      }
-
-      &[disabled] {
-        cursor: default;
-        background-color: #e0e0e0;
-      }
-
-      td {
-        font-size: 1.4rem;
-        text-overflow: ellipsis;
+    thead {
+      th {
+        font-size: 1.2rem;
+        text-align: left;
+        padding:
+          1.6rem
+          1.6rem
+          1.1rem
+          1.6rem;
         overflow: hidden;
         max-width: 12rem;
+        text-overflow: ellipsis;
         white-space: nowrap;
-        color: $col-table-cell-text;
-        padding: 1rem 1.6rem;
+        color: $col-table-head-text;
+        font-weight: normal;
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(odd) {
+          background-color: $col-table-alt-row-background;;
+        }
+
+        &:not([disabled]):hover {
+          background-color: $col-table-row-selected;
+        }
+
+        &[disabled] {
+          cursor: default;
+          background-color: #e0e0e0;
+        }
+
+        td {
+          font-size: 1.4rem;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          max-width: 12rem;
+          white-space: nowrap;
+          color: $col-table-cell-text;
+          padding: 1rem 1.6rem;
+        }
       }
     }
   }
