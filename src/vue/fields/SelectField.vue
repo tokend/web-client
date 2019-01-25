@@ -94,8 +94,13 @@ export default {
   },
 
   created () {
-    this.selectedValue = this.value
-    this.currentValue = this.value
+    if (_isObject(this.values[0])) {
+      this.selectedValue = this.values.find(v => v.value === this.value)
+      this.currentValue = this.values.find(v => v.value === this.value)
+    } else {
+      this.selectedValue = this.value
+      this.currentValue = this.value
+    }
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
   },
