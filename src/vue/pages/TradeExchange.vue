@@ -9,13 +9,22 @@
         />
       </div>
 
-      <trade-history
-        v-if="assets.base"
-        class="trade-exchange__history"
-        :assets="assets"
-        :trade-history="tradeHistory"
-        :is-loading="isTradeHistoryLoading"
-      />
+      <div class="trade-exchange__history">
+        <trade-history
+          v-if="assets.base"
+          :assets="assets"
+          :trade-history="tradeHistory"
+          :is-loading="isTradeHistoryLoading"
+        />
+        <div class="trade-exchange__history-collection-loader">
+          <collection-loader
+            :first-page-loader="loadTradeHistory"
+            :page-limit="recordsToShow"
+            @first-page-load="setTradeHistory"
+            @next-page-load="extendTradeHistory"
+          />
+        </div>
+      </div>
 
       <div class="trade-exchange__orders">
         <h2 class="app__table-title">
@@ -53,6 +62,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
+import CollectionLoader from '@/vue/common/CollectionLoader'
 
 export default {
   name: 'trade-exchange',
@@ -60,6 +70,7 @@ export default {
     Chart,
     TradeHistory,
     TradeOrders,
+    CollectionLoader,
   },
   props: {
     // prop from parent router-view component
@@ -76,6 +87,8 @@ export default {
     isTradeHistoryLoading: false,
     isBuyOrdersLoading: false,
     isSellOrdersLoading: false,
+    recordsOrder: 'desc',
+    recordsToShow: 3,
     config,
   }),
   watch: {
@@ -108,19 +121,27 @@ export default {
   methods: {
     async loadTradeHistory () {
       this.isTradeHistoryLoading = true
-      if (this.assets.base) {
-        try {
-          const response = await Sdk.horizon.trades.getPage({
-            base_asset: this.assets.base,
-            quote_asset: this.assets.quote,
-            order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
-          })
-          this.tradeHistory = response.data
-        } catch (error) {
-          ErrorHandler.process(error)
-        }
+      let response = {}
+      try {
+        response = await Sdk.horizon.trades.getPage({
+          base_asset: this.assets.base,
+          quote_asset: this.assets.quote,
+          order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
+          order: this.recordsOrder,
+          limit: this.recordsToShow,
+        })
+      } catch (error) {
+        ErrorHandler.process(error)
       }
       this.isTradeHistoryLoading = false
+      return response
+    },
+    setTradeHistory (data) {
+      this.tradeHistory = data
+      this.isTradeHistoryLoading = true
+    },
+    extendTradeHistory (data) {
+      this.tradeHistory = this.tradeHistory.concat(data)
     },
     async loadTradeOrders () {
       await this.loadTradeBuyOrders()
@@ -225,5 +246,10 @@ $custom-breakpoint: 985px;
       margin-bottom: 1.6rem;
     }
   }
+}
+.trade-exchange__history-collection-loader {
+  margin-top: 1.6rem;
+  display: flex;
+  justify-content: center;
 }
 </style>

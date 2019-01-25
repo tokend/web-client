@@ -153,7 +153,7 @@ export default {
     formatMoney,
     getQuoteAmount () {
       this.form.quoteAmount =
-        MathUtil.multiply(this.form.price, this.form.amount)
+        formatMoney(MathUtil.multiply(this.form.price, this.form.amount))
     },
     async submit () {
       this.disableForm()

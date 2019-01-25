@@ -10,19 +10,20 @@ export class ManageOfferRecord extends OpRecord {
   constructor (record, details) {
     super(record)
 
-    this.asset = details.asset
     this.balanceId = details.balanceId
     this.accountId = details.accountId
-    this.participants = record.participants
+    this.baseAsset = details.baseAsset
+    this.quoteAsset = details.quoteAsset
 
+    this.participants = record.participants
     this.isBuy = record.isBuy
-    this.amount = MathUtil.add(record.amount, record.price)
+    this.baseAmount = record.amount
+    this.amount = MathUtil.multiply(record.amount, record.price)
     this.price = record.price
     this.fee = record.fee
     this.offerI = record.offerI
     this.orderBookId = record.orderBookId
     this.isDeleted = record.isDeleted
-    this.baseAsset = record.baseAsset
     this.counterparty = this.baseAsset
   }
 

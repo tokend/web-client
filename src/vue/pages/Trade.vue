@@ -185,6 +185,9 @@ export default {
       const queryBase = this.$route.query.base
       const queryQuote = this.$route.query.quote
 
+      // if the user comes on Trade page from another place with some base and
+      // quote query params inside URL, we check that they're correct
+      // (exists in system) and set the appropriate
       if (this.isQueryParamsValid(pairs)) {
         const pair = pairs.find((i) => {
           return i.base === queryBase &&
