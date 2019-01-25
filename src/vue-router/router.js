@@ -81,6 +81,7 @@ export const router = new Router({
           path: '/operations',
           name: vueRoutes.operations.name,
           featureFlag: config.FEATURE_FLAGS.operations,
+          meta: { pageNameTranslationId: 'pages-names.operations' },
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {

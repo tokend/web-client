@@ -1,17 +1,21 @@
 <template>
   <div class="op-history">
     <template v-if="!isLoadFailed">
-      <div class="op-history__navigation">
-        <span class="op-history__navigation-text">
-          {{ 'op-pages.show' | globalize }}:
-        </span>
-        <select-field
-          v-if="isLoaded"
-          v-model="tokenCode"
-          :values="tokens"
-          class="asset-selector__select-field"
-        />
-      </div>
+      <top-bar>
+        <template slot="main">
+          <div class="op-history__navigation">
+            <span class="op-history__navigation-text">
+              {{ 'op-pages.show' | globalize }}:
+            </span>
+            <select-field
+              v-if="isLoaded"
+              v-model="tokenCode"
+              :values="tokens"
+              class="asset-selector__select-field"
+            />
+          </div>
+        </template>
+      </top-bar>
       <div
         class="op-history__table-wrp"
         v-if="isLoaded"
@@ -45,6 +49,7 @@
 
 <script>
 import SelectField from '@/vue/fields/SelectField'
+import TopBar from '@/vue/common/TopBar'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
@@ -60,6 +65,7 @@ export default {
     SelectField,
     CollectionLoader,
     OpList,
+    TopBar,
   },
   data: _ => ({
     tokenCode: null,
@@ -140,19 +146,24 @@ export default {
 @import "~@scss/variables";
 
 .op-history__navigation {
-  display: inline-flex;
+  display: flex;
+  flex-flow: row;
   align-items: center;
-  margin-bottom: 6.2rem;
-}
 
-.op-history__navigation-text {
-  margin-right: 1.5rem;
+  .op-history__navigation-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: $col-secondary;
+    margin-right: 1rem;
+  }
 }
 
 .op-history__table-wrp {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .op-history__table {
@@ -163,15 +174,15 @@ export default {
 
   .op-history__td-btn {
     text-align: right;
-    width: 6.7rem;
+    min-width: 6.7rem;
   }
 
   .op-history__counterparty {
-    width: 30rem;
+    min-width: 30rem;
   }
 
   .op-history__status {
-    width: 13rem;
+    min-width: 13rem;
   }
 }
 

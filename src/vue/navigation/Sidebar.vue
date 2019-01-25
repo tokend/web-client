@@ -79,7 +79,7 @@
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
           >
-            <i class="sidebar__link-icon mdi mdi-label" />
+            <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
               {{ 'pages-names.issuance' | globalize }}
             </span>
@@ -186,6 +186,12 @@ $content-item-right-padding: 2.4rem;
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 1;
     transform: translateX(0);
+  }
+
+  i {
+    display: flex;
+    justify-content: center;
+    font-size: 2.4rem;
   }
 
   &.sidebar__burger-btn--sidebar-active {

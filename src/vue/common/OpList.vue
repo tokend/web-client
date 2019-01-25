@@ -57,6 +57,7 @@ export default {
   table-layout: fixed;
   border-spacing: 0 0.6rem;
   border-color: transparent;
+  overflow-x: auto;
 }
 
 .op-list__head-cell {
@@ -68,6 +69,7 @@ export default {
   font-size: 1.4rem;
   color: $col-text-secondary;
   font-weight: normal;
+  width: $op-list-col-width;
 
   &--counterparty {
     width: $op-list-counterparty-col-width;

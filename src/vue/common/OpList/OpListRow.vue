@@ -119,10 +119,6 @@ $op-list-toggle-btn-col-width: 6.7rem;
     }
   }
 
-  &--counterparty {
-    width: $op-list-counterparty-col-width;
-  }
-
   &--status-success,
   &--status-pending,
   &--status-failed {

@@ -243,6 +243,7 @@ export default {
   .fees__assets-select & {
     border-bottom: 0;
     background-size: 0;
+    padding: 0;
   }
 }
 

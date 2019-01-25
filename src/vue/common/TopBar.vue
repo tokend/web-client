@@ -92,6 +92,7 @@ export default {
       4rem
       -1 * $content-side-paddings-sm;
     flex-direction: column;
+    justify-content: center;
     align-items: start;
 
     .top-bar__extra {

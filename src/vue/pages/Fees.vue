@@ -1,17 +1,19 @@
 <template>
   <div class="fees" v-if="fees">
-    <div class="fees__assets">
-      <!--
-        :key is a hack to ensure that the component will be updated
-        after computed calculated
-      -->
-      <select-field
-        v-model="filters.asset"
-        :values="assetCodes"
-        :key="filters.asset"
-        class="fees__assets-select"
-      />
-    </div>
+    <top-bar>
+      <template slot="main">
+        <!--
+          :key is a hack to ensure that the component will be updated
+          after computed calculated
+        -->
+        <select-field
+          v-model="filters.asset"
+          :values="assetCodes"
+          :key="filters.asset"
+          class="fees__assets-select"
+        />
+      </template>
+    </top-bar>
     <div class="fees__table">
       <table class="app__table">
         <thead>
@@ -78,8 +80,9 @@
 </template>
 
 <script>
-import SelectField from '../fields/SelectField'
-import Loader from '../common/Loader'
+import SelectField from '@/vue/fields/SelectField'
+import TopBar from '@/vue/common/TopBar'
+import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
 
@@ -92,6 +95,7 @@ export default {
   components: {
     SelectField,
     Loader,
+    TopBar,
   },
   data: _ => ({
     fees: null,
@@ -138,23 +142,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-
-.fees {
-  width: 100%;
-}
-
-.fees__assets {
-  margin-bottom: 2.1rem;
-}
-
-.fees__assets-select {
-  display: inline-block;
-  width: auto;
-}
+@import "~@scss/mixins";
 
 .fees__table {
   overflow-x: auto;
-  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
+  @include box-shadow();
 }
 </style>
