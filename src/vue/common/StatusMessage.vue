@@ -68,6 +68,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@scss/variables";
+@import "~@scss/mixins";
 
 .status-message {
   box-shadow:
@@ -83,6 +84,13 @@ export default {
   right: 4rem;
   top: 4rem;
   z-index: $z-status-message;
+  max-width: 42rem;
+
+  @include respond-to-custom($status-message-reposition-bp) {
+    right: $content-side-paddings-sm;
+    left: $content-side-paddings-sm;
+    padding: 2rem;
+  }
 
   @mixin apply-theme ($col-msg-background, $col-msg-text) {
     background: $col-msg-background;

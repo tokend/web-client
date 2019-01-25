@@ -78,6 +78,10 @@ export default {
     NoDataMessage,
     Loader,
   },
+  props: {
+    // prop from parent router-view component
+    componentConfig: { type: Object, required: true },
+  },
   data: () => ({
     assets: {
       base: '',
@@ -92,16 +96,14 @@ export default {
     ]),
   },
   watch: {
-    '$route.query': {
+    'componentConfig.assets': {
       deep: true,
-      handler: function () {
-        this.setSelectedAssets()
-      },
-    },
-    assets: {
-      deep: true,
-      handler: function () {
-        this.loadOrdersHistory()
+      handler: function (assets) {
+        this.assets.base = assets.base
+        this.assets.quote = assets.quote
+        if (assets.base && assets.quote) {
+          this.loadOrdersHistory()
+        }
       },
     },
   },

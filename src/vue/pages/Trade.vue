@@ -95,6 +95,8 @@ import CreateTradeOrderForm from '@/vue/forms/CreateTradeOrderForm'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
+import { Bus } from '@/js/helpers/event-bus'
+import { globalize } from '@/vue/filters/globalize'
 
 export default {
   name: 'trade',
@@ -121,6 +123,10 @@ export default {
     vueRoutes,
     childRoutesConfig: {
       isNeededToReloadData: false,
+      assets: {
+        base: '',
+        quote: '',
+      },
     },
   }),
   computed: {
@@ -134,6 +140,9 @@ export default {
       const quoteAsset = value.split('/')[1]
       this.assets.base = baseAsset
       this.assets.quote = quoteAsset
+      // pass assets to child router-view components
+      this.childRoutesConfig.assets.base = baseAsset
+      this.childRoutesConfig.assets.quote = quoteAsset
 
       const accountBalances = this.accountBalances
       const baseBalance = accountBalances.find(i => i.asset === baseAsset)
@@ -173,14 +182,24 @@ export default {
       })
     },
     setDefaultSelectedPair (pairs) {
+      const queryBase = this.$route.query.base
+      const queryQuote = this.$route.query.quote
+
       if (this.isQueryParamsValid(pairs)) {
         const pair = pairs.find((i) => {
-          return i.base === this.$route.query.base &&
-                  i.quote === this.$route.query.quote
+          return i.base === queryBase &&
+                  i.quote === queryQuote
         })
         this.selectedPair = `${pair.base}/${pair.quote}`
       } else {
         this.selectedPair = this.formattedPairs[0]
+        if (queryBase && queryQuote) {
+          Bus.error(globalize('trade.error-invalid-base-quote-query-in-link', {
+            invalidBase: queryBase,
+            invalidQuote: queryQuote,
+            defaultPair: this.formattedPairs[0],
+          }))
+        }
       }
     },
     isQueryParamsValid (pairs) {

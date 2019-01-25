@@ -79,15 +79,6 @@ export default {
     config,
   }),
   watch: {
-    assets: {
-      deep: true,
-      handler: function (assets) {
-        if (assets.base && assets.quote) {
-          this.loadTradeOrders()
-          this.loadTradeHistory()
-        }
-      },
-    },
     async 'componentConfig.isNeededToReloadData' (status) {
       if (status) {
         await this.loadTradeOrders()
@@ -96,15 +87,23 @@ export default {
         this.componentConfig.isNeededToReloadData = false
       }
     },
-    '$route.query': {
+    'componentConfig.assets': {
       deep: true,
-      handler: function () {
-        this.setSelectedAssets()
+      handler: function (assets) {
+        this.setCurrentAssets(assets)
+        if (assets.base && assets.quote) {
+          this.loadTradeOrders()
+          this.loadTradeHistory()
+        }
       },
     },
   },
   created () {
-    this.setSelectedAssets()
+    this.setCurrentAssets(this.componentConfig.assets)
+    if (this.componentConfig.assets.base) {
+      this.loadTradeOrders()
+      this.loadTradeHistory()
+    }
   },
   methods: {
     async loadTradeHistory () {
@@ -155,28 +154,9 @@ export default {
       }
       this.isSellOrdersLoading = false
     },
-    async loadTradeablePairs () {
-      try {
-        const response = await Sdk.horizon.assetPairs.getAll()
-        const baseAsset = response.data[0].base
-        const quoteAsset = response.data[0].quote
-
-        this.assets.base = baseAsset
-        this.assets.quote = quoteAsset
-        this.$router.replace({
-          name: this.$route.name,
-          query: {
-            base: baseAsset,
-            quote: quoteAsset,
-          },
-        })
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
-    },
-    setSelectedAssets () {
-      this.assets.base = this.$route.query.base
-      this.assets.quote = this.$route.query.quote
+    setCurrentAssets (assets) {
+      this.assets.base = assets.base
+      this.assets.quote = assets.quote
     },
   },
 }
