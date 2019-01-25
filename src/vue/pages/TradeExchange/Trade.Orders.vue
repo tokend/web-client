@@ -37,9 +37,9 @@
               :key="`trade-orders-row-${o}`"
               @click="selectOrder(order)"
               :disabled="order.ownerId === accountId">
-              <td>{{ order.baseAmount }}</td>
-              <td>{{ order.quoteAmount }}</td>
-              <td>{{ order.price }}</td>
+              <td>{{ order.baseAmount | formatMoney }}</td>
+              <td>{{ order.quoteAmount | formatMoney }}</td>
+              <td>{{ order.price | formatMoney }}</td>
             </tr>
           </tbody>
         </table>

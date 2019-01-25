@@ -166,6 +166,8 @@ export default {
 @import "~@scss/mixins";
 @import "~@scss/variables";
 
+$custom-breakpoint: 985px;
+
 .trade-exchange__asset-selector-field {
   display: inline-block;
   width: auto;
@@ -187,6 +189,10 @@ export default {
 
 .trade-exchange__chart {
   margin-top: -2.4rem;
+
+  @include respond-to($custom-breakpoint) {
+    margin-top: 0;
+  }
 }
 
 .trade-exchange__orders {
@@ -197,13 +203,27 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  @include respond-to($custom-breakpoint) {
+    flex-direction: column;
+  }
 }
 
 .trade-exchange__orders-list {
-  flex: 49%;
+  max-width: 49.5%;
+
+  @include respond-to($custom-breakpoint) {
+    max-width: 100%;
+    width: 100%;
+  }
 
   &:not(:last-child) {
     margin-right: 1.6rem;
+
+    @include respond-to($custom-breakpoint) {
+      margin-right: 0;
+      margin-bottom: 1.6rem;
+    }
   }
 }
 </style>

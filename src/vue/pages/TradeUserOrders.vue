@@ -35,7 +35,7 @@
               v-for="(item, i) in ordersHistory"
               :key="`trade-user-orders-row-${i}`">
               <td>{{ item.offerId }}</td>
-              <td>{{ item.createdAt | formatDate }}</td>
+              <td>{{ item.createdAt | formatCalendar }}</td>
               <td>
                 <template v-if="item.isBuy">
                   {{ 'trade-user-orders.buy-lbl' | globalize }}

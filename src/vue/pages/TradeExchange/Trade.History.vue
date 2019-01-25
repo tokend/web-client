@@ -29,10 +29,10 @@
             <tr
               v-for="(item, i) in tradeHistory"
               :key="`trade-history-row-${i}`">
-              <td>{{ item.baseAmount }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ item.quoteAmount }}</td>
-              <td>{{ item.createdAt | formatDate }}</td>
+              <td>{{ item.baseAmount | formatMoney }}</td>
+              <td>{{ item.price | formatMoney }}</td>
+              <td>{{ item.quoteAmount | formatMoney }}</td>
+              <td>{{ item.createdAt | formatCalendar }}</td>
             </tr>
           </tbody>
         </table>

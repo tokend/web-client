@@ -229,6 +229,8 @@ export default {
 @import "~@scss/mixins";
 @import "~@scss/variables";
 
+$custom-breakpoint: 450px;
+
 .trade-asset-selector__field {
   display: inline-block;
   width: auto;
@@ -241,10 +243,18 @@ export default {
 .trade-asset-selector__balances-value {
   font-size: 2.8rem;
   font-weight: 400;
+
+  @include respond-to-custom ($custom-breakpoint) {
+    font-size: 2.2rem;
+  }
 }
 
 .trade-asset-selector__balances-label {
   font-size: 1.6rem;
   color: $col-text-secondary;
+
+  @include respond-to-custom ($custom-breakpoint) {
+    font-size: 1.4rem;
+  }
 }
 </style>
