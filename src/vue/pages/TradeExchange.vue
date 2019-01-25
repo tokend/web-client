@@ -28,6 +28,7 @@
             :is-buy="true"
             :is-loading="isBuyOrdersLoading"
             :orders-list="buyOrdersList"
+            @reload-trades="componentConfig.isNeededToReloadData = true"
           />
 
           <trade-orders
@@ -36,7 +37,7 @@
             :is-buy="false"
             :is-loading="isSellOrdersLoading"
             :orders-list="sellOrdersList"
-            @reload-trades="loadTradeOrders"
+            @reload-trades="componentConfig.isNeededToReloadData = true"
           />
         </div>
       </div>
@@ -60,6 +61,10 @@ export default {
     TradeHistory,
     TradeOrders,
   },
+  props: {
+    // prop from parent router-view component
+    componentConfig: { type: Object, required: true },
+  },
   data: () => ({
     assets: {
       base: '',
@@ -82,6 +87,14 @@ export default {
           this.loadTradeHistory()
         }
       },
+    },
+    async 'componentConfig.isNeededToReloadData' (status) {
+      if (status) {
+        await this.loadTradeOrders()
+        await this.loadTradeHistory()
+        // says to Trade component that current loaded data is actual
+        this.componentConfig.isNeededToReloadData = false
+      }
     },
     '$route.query': {
       deep: true,

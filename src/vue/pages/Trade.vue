@@ -61,7 +61,7 @@
       </p>
     </div>
 
-    <router-view />
+    <router-view :component-config="childRoutesConfig" />
 
     <drawer :is-shown.sync="isCreateBuyOrderDrawerShown">
       <template slot="heading">
@@ -119,6 +119,9 @@ export default {
     isCreateBuyOrderDrawerShown: false,
     isCreateSellOrderDrawerShown: false,
     vueRoutes,
+    childRoutesConfig: {
+      isNeededToReloadData: false,
+    },
   }),
   computed: {
     ...mapGetters([
@@ -193,9 +196,11 @@ export default {
     },
     closeBuyOrderDrawer () {
       this.isCreateBuyOrderDrawerShown = false
+      this.childRoutesConfig.isNeededToReloadData = true
     },
     closeSellOrderDrawer () {
       this.isCreateSellOrderDrawerShown = false
+      this.childRoutesConfig.isNeededToReloadData = true
     },
   },
 }
