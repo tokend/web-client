@@ -67,20 +67,32 @@ export const router = new Router({
         {
           path: '/dashboard',
           name: vueRoutes.dashboard.name,
-          meta: { pageNameTranslationId: 'pages-names.dashboard' },
+          meta: {
+            pageNameTranslationId: 'pages-names.dashboard',
+            // necessary for correct disabling sidebar links
+            rootPageRouteName: vueRoutes.dashboard.name,
+          },
           component: resolve => require(['@/vue/pages/Dashboard'], resolve),
         },
         {
           path: '/fees',
           name: vueRoutes.fees.name,
-          meta: { pageNameTranslationId: 'pages-names.fees' },
+          meta: {
+            pageNameTranslationId: 'pages-names.fees',
+            // necessary for correct disabling sidebar links
+            rootPageRouteName: vueRoutes.fees.name,
+          },
           featureFlag: config.FEATURE_FLAGS.fees,
           component: resolve => require(['@/vue/pages/Fees'], resolve),
         },
         {
           path: '/trade',
           name: vueRoutes.trade.name,
-          meta: { pageNameTranslationId: 'pages-names.trade' },
+          meta: {
+            pageNameTranslationId: 'pages-names.trade',
+            // necessary for correct disabling sidebar links
+            rootPageRouteName: vueRoutes.trade.name,
+          },
           component: resolve => require(['@/vue/pages/Trade'], resolve),
           redirect: vueRoutes.trade.exchange,
           children: [
@@ -90,6 +102,8 @@ export const router = new Router({
               meta: {
                 pageNameTranslationId: 'pages-names.trade',
                 pageSubnameTranslationId: 'pages-subnames.exchange-tokens',
+                // necessary for correct disabling sidebar links
+                rootPageRouteName: vueRoutes.trade.name,
               },
               component: resolve => require(['@/vue/pages/TradeExchange'], resolve),
             },
@@ -99,6 +113,8 @@ export const router = new Router({
               meta: {
                 pageNameTranslationId: 'pages-names.trade',
                 pageSubnameTranslationId: 'pages-subnames.user-orders',
+                // necessary for correct disabling sidebar links
+                rootPageRouteName: vueRoutes.trade.name,
               },
               component: resolve => require(['@/vue/pages/TradeUserOrders'], resolve),
             },
@@ -108,7 +124,11 @@ export const router = new Router({
           path: '/issuance',
           name: vueRoutes.issuance.name,
           featureFlag: config.FEATURE_FLAGS.issuance,
-          meta: { pageNameTranslationId: 'pages-names.issuance' },
+          meta: {
+            pageNameTranslationId: 'pages-names.issuance',
+            // necessary for correct disabling sidebar links
+            rootPageRouteName: vueRoutes.issuance.name,
+          },
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
       ].filter(route => route.featureFlag !== false),

@@ -29,12 +29,14 @@
 
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
+          <!-- :event – to prevent navigation on the same route -->
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.dashboard"
-            tag="li"
+            :event="isSidebarLinkDisabled(vueRoutes.dashboard) ? '' : 'click'"
+            tag="a"
             v-if="config.FEATURE_FLAGS.dashboard"
           >
             <i class="sidebar__link-icon mdi mdi-view-dashboard" />
@@ -42,12 +44,14 @@
               {{ 'pages-names.dashboard' | globalize }}
             </span>
           </router-link>
+          <!-- :event – to prevent navigation on the same route -->
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.trade"
-            tag="li"
+            :event="isSidebarLinkDisabled(vueRoutes.trade) ? '' : 'click'"
+            tag="a"
             v-if="config.FEATURE_FLAGS.trade"
           >
             <i class="sidebar__link-icon mdi mdi-finance" />
@@ -55,11 +59,13 @@
               {{ 'pages-names.trade' | globalize }}
             </span>
           </router-link>
+          <!-- :event – to prevent navigation on the same route -->
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
+            :event="isSidebarLinkDisabled(vueRoutes.fees) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.fees"
           >
@@ -68,12 +74,13 @@
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
-
+          <!-- :event – to prevent navigation on the same route -->
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.issuance"
+            :event="isSidebarLinkDisabled(vueRoutes.issuance) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
           >
@@ -114,12 +121,20 @@ export default {
     vueRoutes,
   }),
 
+  computed: {
+    currentRouteName () {
+      return this.$route.meta.rootPageRouteName
+    },
+  },
   methods: {
     openSidebar () {
       this.isOpened = true
     },
     closeSidebar () {
       this.isOpened = false
+    },
+    isSidebarLinkDisabled (route) {
+      return this.currentRouteName === route.name
     },
   },
 }
