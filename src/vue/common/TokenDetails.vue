@@ -1,15 +1,15 @@
 <template>
   <div class="token-details">
-    <div class="asset-details">
+    <div class="token-details__header">
       <token-logo
         :logo-key="token.logoKey"
         :token-code="token.code"
       />
-      <div class="asset-details__info">
-        <p class="asset-details__code">
+      <div class="token-details__info">
+        <p class="token-details__code">
           {{ token.code }}
         </p>
-        <p class="asset-details__name">
+        <p class="token-details__name">
           {{ token.name }}
         </p>
       </div>
@@ -56,7 +56,8 @@
             <a
               v-if="token.termsKey"
               class="token-details__terms"
-              :href="tokenTermsUrl">
+              :href="tokenTermsUrl"
+            >
               {{ 'token-details.download-terms-btn' | globalize }}
             </a>
             <p v-else>
@@ -94,8 +95,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-const INITIAL_BALANCE = '0'
-
 export default {
   name: 'token-details',
   components: {
@@ -106,20 +105,20 @@ export default {
   },
   data: _ => ({
     isBalanceCreating: false,
-    isBalanceAdded: false,
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      accountBalances: vuexTypes.accountBalances,
     }),
     tokenTermsUrl () {
       return this.token.termsUrl(config.FILE_STORAGE)
     },
     tokenBalance () {
-      if (this.token.balance) {
-        return this.token.balance
-      } else if (this.isBalanceAdded) {
-        return INITIAL_BALANCE
+      const balanceInfo = this.accountBalances
+        .find(balance => balance.asset === this.token.code)
+      if (balanceInfo) {
+        return balanceInfo.balance
       } else {
         return ''
       }
@@ -135,15 +134,13 @@ export default {
         const operation = base.Operation.manageBalance({
           destination: this.account.accountId,
           asset: this.token.code,
-          action: base.xdr.ManageBalanceAction.create(),
+          action: base.xdr.ManageBalanceAction.createUnique(),
         })
         await Sdk.horizon.transactions.submitOperations(operation)
-        this.isBalanceAdded = true
         await this.loadBalances()
         Bus.success('token-details.balance-added-msg')
       } catch (e) {
         this.isBalanceCreating = false
-        console.error(e)
         ErrorHandler.process(e)
       }
     },
@@ -198,26 +195,26 @@ export default {
   font-weight: normal;
 }
 
-.asset-details {
+.token-details__header {
   display: flex;
   align-items: center;
 
-  .asset-details__logo {
+  .token-details__logo {
     width: 5rem;
     height: 5rem;
     border-radius: 50%
   }
 
-  .asset-details__info {
+  .token-details__info {
     margin-left: 1.8rem;
 
-    .asset-details__code {
+    .token-details__code {
       font-size: 1.8rem;
       font-weight: bold;
       color: $col-primary;
     }
 
-    .asset-details__name {
+    .token-details__name {
       margin-top: .1rem;
       font-size: 1.4rem;
       line-height: 1.29;

@@ -31,9 +31,8 @@
             v-if="getBalance(token).value"
             class="token-card__balance"
           >
-            {{
-              'tokens-page.balance-msg'| globalize({ value: getBalance(token) })
-            }}
+            <!-- eslint-disable-next-line max-len -->
+            {{ 'tokens-page.balance-details'| globalize({ value: getBalance(token) }) }}
           </p>
           <p
             v-else
@@ -88,9 +87,7 @@ export default {
       }
     },
     selectToken (token) {
-      this.selectedToken = Object.assign(token, {
-        balance: this.getBalance(token).value,
-      })
+      this.selectedToken = token
       this.isDetailsDrawerShown = true
     },
   },

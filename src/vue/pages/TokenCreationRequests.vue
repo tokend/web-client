@@ -7,7 +7,6 @@
             {{ 'token-form.update-token-title' | globalize }}
           </template>
           <token-form
-            v-if="isUpdating"
             :request="selectedRequest"
             @update="loadHistory"
           />
@@ -160,7 +159,6 @@ export default {
         })
       } catch (e) {
         this.isFailed = true
-        console.error(e)
         ErrorHandler.process(e)
       }
     },
@@ -180,7 +178,6 @@ export default {
         }
         this.isUpdating = true
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
     },

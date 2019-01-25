@@ -35,10 +35,8 @@
       class="request-state request-state--rejected"
     >
       <p class="request-state__content">
-        {{
-          'token-request-details.rejected-request-msg'
-            | globalize({ reason: request.rejectReason })
-        }}
+        <!-- eslint-disable-next-line max-len -->
+        {{ 'token-request-details.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
     <div
@@ -54,10 +52,8 @@
       class="request-state request-state--permanently-rejected"
     >
       <p class="request-state__content">
-        {{
-          'token-request-details.permanently-rejected-request-msg'
-            | globalize({ reason: request.rejectReason })
-        }}
+        <!-- eslint-disable-next-line max-len -->
+        {{ 'token-request-details.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
     <table class="app__table token-request-details__table">
@@ -67,7 +63,14 @@
             {{ 'token-request-details.request-type-title' | globalize }}
           </td>
           <td>
-            {{ requestTypeMessage }}
+            <template v-if="isAssetCreationType">
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'token-request-details.asset-create-request-type' | globalize }}
+            </template>
+            <template v-else>
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'token-request-details.asset-update-request-type' | globalize }}
+            </template>
           </td>
         </tr>
         <tr v-if="isAssetCreationType">
@@ -80,10 +83,8 @@
         </tr>
         <tr v-if="isAssetCreationType">
           <td>
-            {{
-              'token-request-details.initial-preissued-amount-title'
-                | globalize
-            }}
+            <!-- eslint-disable-next-line max-len -->
+            {{ 'token-request-details.initial-preissued-amount-title' | globalize }}
           </td>
           <td>
             {{ request.initialPreissuedAmount | formatMoney }}
@@ -97,7 +98,8 @@
             <a
               v-if="request.termsKey"
               class="token-request-details__terms"
-              :href="tokenTermsUrl">
+              :href="tokenTermsUrl"
+            >
               {{ 'token-request-details.download-terms-btn' | globalize }}
             </a>
             <p v-else>
@@ -110,7 +112,12 @@
             {{ 'token-request-details.transferable-title' | globalize }}
           </td>
           <td>
-            {{ getPropertyPresentMessage(request.isTransferable) }}
+            <template v-if="request.isTransferable">
+              {{ 'token-request-details.present-msg' | globalize }}
+            </template>
+            <template v-else>
+              {{ 'token-request-details.absent-msg' | globalize }}
+            </template>
           </td>
         </tr>
         <tr>
@@ -118,7 +125,12 @@
             {{ 'token-request-details.requires-kyc-title' | globalize }}
           </td>
           <td>
-            {{ getPropertyPresentMessage(request.isRequiresKYC) }}
+            <template v-if="request.isRequiresKYC">
+              {{ 'token-request-details.present-msg' | globalize }}
+            </template>
+            <template v-else>
+              {{ 'token-request-details.absent-msg' | globalize }}
+            </template>
           </td>
         </tr>
       </tbody>
@@ -162,8 +174,6 @@ import config from '@/config'
 
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 
-import { globalize } from '@/vue/filters/globalize'
-
 const EVENTS = {
   update: 'update',
 }
@@ -177,24 +187,15 @@ export default {
     request: { type: Object, required: true },
   },
   data: _ => ({
-    isCanceling: false,
+    isCanceled: false,
     ASSET_POLICIES,
     EVENTS,
     REQUEST_STATES,
+    REQUEST_TYPES,
   }),
   computed: {
     isAssetCreationType () {
       return this.request instanceof AssetCreateRequestRecord
-    },
-    requestTypeMessage () {
-      switch (this.request.requestTypeI) {
-        case REQUEST_TYPES.assetCreate:
-          return globalize('token-request-details.asset-create-request-type')
-        case REQUEST_TYPES.assetUpdate:
-          return globalize('token-request-details.asset-update-request-type')
-        default:
-          return ''
-      }
     },
     tokenTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
@@ -203,19 +204,12 @@ export default {
       return this.request.isPending || this.request.isRejected
     },
     canBeCanceled () {
-      return this.request.isPending && !this.isCanceling
+      return this.request.isPending && !this.isCanceled
     },
   },
   methods: {
-    getPropertyPresentMessage (prop) {
-      if (prop) {
-        return globalize('token-request-details.present-msg')
-      } else {
-        return globalize('token-request-details.absent-msg')
-      }
-    },
     async cancelRequest () {
-      this.isCanceling = true
+      this.isCanceled = true
       try {
         const operation = base.ManageAssetBuilder.cancelAssetRequest({
           requestID: this.request.id,
@@ -226,7 +220,7 @@ export default {
         })
         Bus.success('token-request-details.request-canceled-msg')
       } catch (e) {
-        console.error(e)
+        this.isCanceled = false
         ErrorHandler.process(e)
       }
     },

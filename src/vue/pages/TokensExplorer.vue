@@ -29,7 +29,6 @@ export default {
         const { data } = await Sdk.horizon.assets.getAll()
         this.tokens = data.map(asset => new AssetRecord(asset))
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
     },

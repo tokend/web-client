@@ -337,10 +337,6 @@
       "here-will-transactions-list": "Here will be the list of your transactions"
     },
 
-    "email-getter": {
-      "loading-msg": "Loading..."
-    },
-
     "chart": {
       "year": "Year",
       "month": "Month",
@@ -414,7 +410,7 @@
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
       "create-token-btn": "Create token",
-      "balance-msg": "Balance: {{value, money}}",
+      "balance-details": "Balance: {{value, money}}",
       "no-balance-msg": "No balance",
       "token-details-title": "Token details"
     },

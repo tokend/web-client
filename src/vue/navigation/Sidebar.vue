@@ -76,10 +76,10 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.tokens"
-            tag="li"
+            tag="a"
             v-if="config.FEATURE_FLAGS.tokens"
           >
-            <i class="sidebar__link-icon mdi mdi-label" />
+            <i class="sidebar__link-icon mdi mdi-coins" />
             <span>
               {{ 'pages-names.tokens' | globalize }}
             </span>
@@ -92,7 +92,7 @@
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
           >
-            <i class="sidebar__link-icon mdi mdi-label" />
+            <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
               {{ 'pages-names.issuance' | globalize }}
             </span>
@@ -102,10 +102,10 @@
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.requests"
-            tag="li"
+            tag="a"
             v-if="config.FEATURE_FLAGS.requests"
           >
-            <i class="sidebar__link-icon mdi mdi-label" />
+            <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
               {{ 'pages-names.requests' | globalize }}
             </span>

@@ -1,143 +1,137 @@
 <template>
-  <form
-    novalidate
-    class="app__form token-form"
-    @submit.prevent="isFormValid() && showFormConfirmation()"
+  <form-stepper
+    :steps="STEPS"
+    :current-step.sync="currentStep"
   >
-    <form-stepper
-      :steps="STEPS"
-      :current-step.sync="currentStep"
+    <form
+      novalidate
+      v-if="currentStep === STEPS.information.number"
+      class="app__form token-form"
+      @submit.prevent="next('form.information')"
     >
-      <template v-if="currentStep === STEPS.information.number">
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.information.name"
-              @blur="touchField('form.information.name')"
-              id="token-name"
-              :label="'token-form.name-lbl' | globalize"
-              :error-message="getErrorMessage(
-                'form.information.name',
-                null,
-                STEPS.information
-              )"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.information.code"
-              @blur="touchField('form.information.code')"
-              id="token-code"
-              :label="'token-form.code-lbl' | globalize"
-              :error-message="getErrorMessage(
-                'form.information.code',
-                null,
-                STEPS.information
-              )"
-              :disabled="formMixin.isDisabled || isUpdateRequestType"
-            />
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              type="number"
-              v-model="form.information.maxIssuanceAmount"
-              @blur="touchField('form.information.maxIssuanceAmount')"
-              id="token-max-issuance-amount"
-              :label="'token-form.max-issuance-amount-lbl' | globalize"
-              :error-message="getErrorMessage(
-                'form.information.maxIssuanceAmount',
-                { from: MIN_AMOUNT, to: MAX_AMOUNT },
-                STEPS.information
-              )"
-              :disabled="formMixin.isDisabled || isUpdateRequestType"
-            />
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <tick-field
-              v-model="form.information.policies"
-              :disabled="formMixin.isDisabled"
-              :cb-value="ASSET_POLICIES.transferable"
-            >
-              {{ 'token-form.transferable-lbl' | globalize }}
-            </tick-field>
-          </div>
-        </div>
-        <div class="app__form-row token-form__kyc-required-row">
-          <div class="app__form-field">
-            <tick-field
-              v-model="form.information.policies"
-              :disabled="formMixin.isDisabled"
-              :cb-value="ASSET_POLICIES.requiresKyc"
-            >
-              {{ 'token-form.kyc-required-lbl' | globalize }}
-            </tick-field>
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <file-field
-              v-model="form.information.logo"
-              :note="'token-form.logo-note' | globalize"
-              accept=".jpg, .png"
-              :document-type="DOCUMENT_TYPES.assetLogo"
-              :label="'token-form.logo-lbl' | globalize"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-actions">
-          <button
-            v-ripple
-            class="token-form__btn"
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.information.name"
+            @blur="touchField('form.information.name')"
+            id="token-name"
+            :label="'token-form.name-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.information.name')"
             :disabled="formMixin.isDisabled"
-            @click.prevent="next('form.information')"
-          >
-            {{ 'token-form.next-btn' | globalize }}
-          </button>
-        </div>
-      </template>
-      <template v-if="currentStep === STEPS.terms.number">
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <file-field
-              v-model="form.terms.terms"
-              :note="'token-form.terms-note' | globalize"
-              accept=".jpg, .png, .pdf"
-              :document-type="DOCUMENT_TYPES.assetTerms"
-              :label="'token-form.terms-lbl' | globalize"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-actions">
-          <form-confirmation
-            v-if="formMixin.isFormConfirmationShown"
-            @ok="hideFormConfirmation() || submit()"
-            @cancel="hideFormConfirmation"
           />
-          <button
-            v-ripple
-            v-else
-            type="submit"
-            class="token-form__btn"
-            :disabled="formMixin.isDisabled"
-          >
-            {{ 'token-form.submit-btn' | globalize }}
-          </button>
         </div>
-      </template>
-    </form-stepper>
-  </form>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.information.code"
+            @blur="touchField('form.information.code')"
+            id="token-code"
+            :label="'token-form.code-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.information.code')"
+            :disabled="formMixin.isDisabled || isTokenUpdating"
+          />
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            type="number"
+            v-model="form.information.maxIssuanceAmount"
+            @blur="touchField('form.information.maxIssuanceAmount')"
+            id="token-max-issuance-amount"
+            :label="'token-form.max-issuance-amount-lbl' | globalize"
+            :error-message="getFieldErrorMessage(
+              'form.information.maxIssuanceAmount',
+              { from: MIN_AMOUNT, to: MAX_AMOUNT }
+            )"
+            :disabled="formMixin.isDisabled || isTokenUpdating"
+          />
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.transferable"
+          >
+            {{ 'token-form.transferable-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <div class="app__form-row token-form__kyc-required-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.requiresKyc"
+          >
+            {{ 'token-form.kyc-required-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <file-field
+            v-model="form.information.logo"
+            :note="'token-form.logo-note' | globalize"
+            accept=".jpg, .png"
+            :document-type="DOCUMENT_TYPES.assetLogo"
+            :label="'token-form.logo-lbl' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+      <div class="app__form-actions">
+        <button
+          v-ripple
+          type="submit"
+          class="token-form__btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'token-form.next-btn' | globalize }}
+        </button>
+      </div>
+    </form>
+    <form
+      v-if="currentStep === STEPS.terms.number"
+      class="app__form token-form"
+      @submit.prevent="isFormValid() && showFormConfirmation()"
+    >
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <file-field
+            v-model="form.terms.terms"
+            :note="'token-form.terms-note' | globalize"
+            accept=".jpg, .png, .pdf"
+            :document-type="DOCUMENT_TYPES.assetTerms"
+            :label="'token-form.terms-lbl' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+      <div class="app__form-actions">
+        <form-confirmation
+          v-if="formMixin.isFormConfirmationShown"
+          @ok="hideFormConfirmation() || submit()"
+          @cancel="hideFormConfirmation"
+        />
+        <button
+          v-ripple
+          v-else
+          type="submit"
+          class="token-form__btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'token-form.submit-btn' | globalize }}
+        </button>
+      </div>
+    </form>
+  </form-stepper>
 </template>
 
 <script>
@@ -245,18 +239,13 @@ export default {
         },
       }
     },
-    isUpdateRequestType () {
+    isTokenUpdating () {
       return this.request &&
         this.request.requestTypeI === REQUEST_TYPES.assetUpdate
     },
   },
   created () {
     if (this.request) {
-      this.setForm()
-    }
-  },
-  methods: {
-    setForm () {
       this.form = {
         information: {
           name: this.request.assetName,
@@ -273,23 +262,17 @@ export default {
             : null,
         },
       }
-    },
+    }
+  },
+  methods: {
     next (formStep) {
       this.hideFormConfirmation()
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }
     },
-    getErrorMessage (field, opts, step) {
-      if (this.currentStep === step.number) {
-        return this.getFieldErrorMessage(field, opts)
-      } else {
-        return ''
-      }
-    },
     async submit () {
       if (!this.isFormValid()) return
-
       this.disableForm()
       try {
         await this.uploadDocuments()
@@ -307,7 +290,6 @@ export default {
           this.$emit(EVENTS.update)
         }
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
