@@ -227,7 +227,7 @@
 
         <form-confirmation
           v-if="view.mode === VIEW_MODES.confirm"
-          :is-pending="formMixin.isDisabled"
+          :is-pending="formMixin.isConfirmationDisabled"
           :message="'transfer-form.recheck-form' | globalize"
           :ok-button="'transfer-form.submit-btn' | globalize"
           @cancel="updateView(VIEW_MODES.submit)"

@@ -12,6 +12,8 @@ import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'
 
+const CONFIRMATION_DISABLED_TIME = 1000
+
 export default {
   components: {
     InputField,
@@ -26,7 +28,8 @@ export default {
   data: _ => ({
     formMixin: {
       isDisabled: false,
-      isFormConfirmationShown: false,
+      isConfirmationShown: false,
+      isConfirmationDisabled: false,
     },
   }),
   methods: {
@@ -111,10 +114,15 @@ export default {
       this.formMixin.isDisabled = false
     },
     showFormConfirmation () {
-      this.formMixin.isFormConfirmationShown = true
+      this.formMixin.isConfirmationShown = true
+      this.formMixin.isConfirmationDisabled = true
+
+      setTimeout(() => {
+        this.formMixin.isConfirmationDisabled = false
+      }, CONFIRMATION_DISABLED_TIME)
     },
     hideFormConfirmation () {
-      this.formMixin.isFormConfirmationShown = false
+      this.formMixin.isConfirmationShown = false
     },
   },
 }

@@ -42,40 +42,49 @@
       <issuance-form @cancel="isIssuanceDrawerShown = false" />
     </drawer>
     <div class="issuance" v-if="isLoaded">
-      <div class="issuance-history__table">
-        <table class="app__table">
-          <thead>
-            <tr>
-              <th>
-                {{ 'issuance.counterparty-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.amount-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.asset-code-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.date-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.reference-lbl' | globalize }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="issuance in issuanceHistory" :key="issuance.id">
-              <td>
-                <email-getter :account-id="issuance.counterparty" />
-              </td>
-              <td>{{ issuance.amount | formatMoney }}</td>
-              <td>{{ issuance.asset }}</td>
-              <td>{{ issuance.date | formatCalendar }}</td>
-              <td>{{ issuance.subject }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <template v-if="issuanceHistory.length">
+        <div class="issuance-history__table">
+          <table class="app__table">
+            <thead>
+              <tr>
+                <th>
+                  {{ 'issuance.counterparty-lbl' | globalize }}
+                </th>
+                <th>
+                  {{ 'issuance.amount-lbl' | globalize }}
+                </th>
+                <th>
+                  {{ 'issuance.asset-code-lbl' | globalize }}
+                </th>
+                <th>
+                  {{ 'issuance.date-lbl' | globalize }}
+                </th>
+                <th>
+                  {{ 'issuance.reference-lbl' | globalize }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="issuance in issuanceHistory" :key="issuance.id">
+                <td>
+                  <email-getter :account-id="issuance.counterparty" />
+                </td>
+                <td>{{ issuance.amount | formatMoney }}</td>
+                <td>{{ issuance.asset }}</td>
+                <td>{{ issuance.date | formatCalendar }}</td>
+                <td>{{ issuance.subject }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+      <template v-else>
+        <no-data-message
+          icon-name="trending-up"
+          :msg-title="'issuance.no-issuance-history-title' | globalize"
+          :msg-message="'issuance.no-issuance-history-msg' | globalize"
+        />
+      </template>
     </div>
     <div v-else>
       <loader
@@ -98,6 +107,7 @@ import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import EmailGetter from '@/vue/common/EmailGetter'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
@@ -116,6 +126,7 @@ export default {
     Loader,
     Drawer,
     TopBar,
+    NoDataMessage,
     EmailGetter,
     CollectionLoader,
     IssuanceForm,

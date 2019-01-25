@@ -24,11 +24,11 @@
           <op-list :list="operations" />
         </template>
         <template v-else>
-          <div class="op-history__no-transactions">
-            <i class="op-history__no-tx-icon mdi mdi-trending-up" />
-            <h2>{{ 'op-pages.no-operation-history' | globalize }}</h2>
-            <p>{{ 'op-pages.here-will-be-the-list' | globalize }}</p>
-          </div>
+          <no-data-message
+            icon-name="trending-up"
+            :msg-title="'op-pages.no-operation-history' | globalize"
+            :msg-message="'op-pages.here-will-be-the-list' | globalize"
+          />
         </template>
         <collection-loader
           :first-page-loader="pageLoader"
@@ -50,6 +50,7 @@
 <script>
 import SelectField from '@/vue/fields/SelectField'
 import TopBar from '@/vue/common/TopBar'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
@@ -66,6 +67,7 @@ export default {
     CollectionLoader,
     OpList,
     TopBar,
+    NoDataMessage,
   },
   data: _ => ({
     tokenCode: null,
@@ -195,20 +197,6 @@ export default {
   font-size: 1.4rem;
   color: $col-text-secondary;
   font-weight: normal;
-}
-
-.op-history__no-transactions {
-  padding: 0 1.6rem 3.2rem;
-  text-align: center;
-
-  p {
-    margin-top: 1rem;
-  }
-}
-
-.op-history__no-tx-icon {
-  margin-right: 1.6rem;
-  font-size: 6.4rem;
 }
 
 .op-history__error {

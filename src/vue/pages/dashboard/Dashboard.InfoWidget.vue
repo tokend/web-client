@@ -5,7 +5,7 @@
     </template>
     <template v-else>
       <no-data-message
-        icon-name="trending_up"
+        icon-name="trending-up"
         :msg-title="'dashboard.no-transaction-history' | globalize"
         :msg-message="'dashboard.here-will-transactions-list' | globalize"
       />

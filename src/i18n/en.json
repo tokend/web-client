@@ -76,7 +76,8 @@
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
       "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
-      "field-error_emailOrAccountId": "This field should be a valid email or account ID"
+      "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+      "field-error_maxLength": "This field must contain maximum {{length}} symbols"
     },
 
     "errors": {
@@ -102,6 +103,12 @@
       "transfer": "Transfer",
       "order-match": "Order match",
       "investment": "Investment"
+    },
+
+    "operation-states": {
+      "success": "Completed",
+      "pending": "Pending",
+      "failed": "Failed"
     },
 
     "auth-pages": {
@@ -277,7 +284,9 @@
       "upper-bound": "Upper bound",
       "subtype": "Subtype",
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
+      "loading-error-msg": "There was an error while loading.",
+      "no-fees-title": "No fees",
+      "no-fees-msg": "Here will be the list of your fees"
     },
 
     "op-pages": {
@@ -379,6 +388,8 @@
 
     "issuance": {
       "loading-msg": "Loading",
+      "no-issuance-history-title": "No issuance history",
+      "no-issuance-history-msg": "Here will be the list of your issuances",
       "create-issuance-btn": "Create issuance",
       "upload-pre-issuance-btn": "Upload pre-issuance",
       "counterparty-lbl": "Counterparty",

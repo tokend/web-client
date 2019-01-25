@@ -354,6 +354,7 @@ export default {
   width: 100%;
   text-align: left;
   background-color: transparent;
+
   &:not(.select-field__list-item--selected):hover {
     background-color: $col-select-field-hover-background;
   }

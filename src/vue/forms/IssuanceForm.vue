@@ -11,7 +11,7 @@
       <form
         novalidate
         class="app__form"
-        @submit.prevent="submit"
+        @submit.prevent="isFormValid() && showFormConfirmation()"
       >
         <div class="app__form-row">
           <div class="app__form-field">
@@ -84,29 +84,30 @@
               v-model="form.reference"
               @blur="touchField('form.reference')"
               id="issuance-reference"
-              :error-message="getFieldErrorMessage('form.reference')"
+              :error-message="getFieldErrorMessage(
+                'form.reference',
+                { length: REFERENCE_MAX_LENGTH }
+              )"
               :label="'issuance.reference-lbl' | globalize"
               :disabled="formMixin.isDisabled"
             />
           </div>
         </div>
         <div class="app__form-actions">
+          <form-confirmation
+            v-if="formMixin.isConfirmationShown"
+            :is-pending="formMixin.isConfirmationDisabled"
+            @ok="hideFormConfirmation() || submit()"
+            @cancel="hideFormConfirmation"
+          />
           <button
+            v-else
             v-ripple
             type="submit"
             class="issuance-form__submit-btn"
             :disabled="formMixin.isDisabled"
           >
             {{ 'issuance.issue-btn' | globalize }}
-          </button>
-          <button
-            v-ripple
-            type="button"
-            class="issuance-form__cancel-btn"
-            :disabled="formMixin.isDisabled"
-            @click.prevent="$emit(EVENTS.cancel)"
-          >
-            {{ 'issuance.cancel-btn' | globalize }}
           </button>
         </div>
       </form>
@@ -138,13 +139,11 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
 
-import { required, amountRange, emailOrAccountId, email } from '@validators'
+import { required, amountRange, emailOrAccountId, email, maxLength } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-const EVENTS = {
-  cancel: 'cancel',
-}
+const REFERENCE_MAX_LENGTH = 255
 
 export default {
   name: 'issuance-form',
@@ -160,9 +159,9 @@ export default {
       reference: '',
     },
     isLoaded: false,
-    EVENTS,
     ACCOUNT_TYPES,
     MIN_AMOUNT: config.MIN_AMOUNT,
+    REFERENCE_MAX_LENGTH,
   }),
   validations () {
     return {
@@ -173,7 +172,10 @@ export default {
           amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
         },
         receiver: { required, emailOrAccountId },
-        reference: { required },
+        reference: {
+          required,
+          maxLength: maxLength(REFERENCE_MAX_LENGTH),
+        },
       },
     }
   },

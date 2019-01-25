@@ -25,7 +25,7 @@
         class="op-list-row__cell"
         :class="`op-list-row__cell--status-${operation.state}`"
       >
-        {{ operation.state }}
+        {{ operation.state | getOpStateTranslationId | globalize }}
       </td>
 
       <td class="op-list-row__cell op-list-row__cell--toggle">
@@ -34,8 +34,8 @@
           @click="isDetailsOpen = !isDetailsOpen"
         >
           <i
-            class="mdi mdi-chevron-up"
-            :class="{'mdi-rotate-180': !isDetailsOpen}"
+            class="mdi mdi-chevron-down op-list-row__details-icon"
+            :class="{ 'op-list-row__details-icon--active': isDetailsOpen }"
           />
         </button>
       </td>
@@ -56,6 +56,7 @@
 
 <script>
 import { OP_TYPES } from '@tokend/js-sdk'
+import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import OpListItemDetails from './OpListItemDetails'
 
 export default {
@@ -74,6 +75,13 @@ export default {
         [OP_TYPES.manageOffer]: 'operation-names.order-match',
         [OP_TYPES.checkSaleState]: 'operation-names.investment',
       }[operation.typeI]
+    },
+    getOpStateTranslationId (state) {
+      return {
+        [TX_STATES.success]: 'operation-states.success',
+        [TX_STATES.pending]: 'operation-states.pending',
+        [TX_STATES.failed]: 'operation-states.failed',
+      }[state]
     },
   },
 
@@ -170,6 +178,19 @@ $op-list-toggle-btn-col-width: 6.7rem;
 
   &:active {
     background-color: darken($col-app-content-background, 10%);
+  }
+}
+
+.op-list-row__details-icon {
+  will-change: transform;
+  font-size: 1.6rem;
+
+  &:before {
+    transition: transform .2s ease-out;
+  }
+
+  &--active:before {
+    transform: rotate(-180deg)
   }
 }
 

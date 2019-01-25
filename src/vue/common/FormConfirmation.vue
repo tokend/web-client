@@ -7,11 +7,13 @@
       <div class="form-confirmation__btns">
         <button
           class="form-confirmation__cancel-btn"
+          type="button"
           @click.prevent="emitCancel"
           :disabled="isPending">
           {{ cancelButtonTextId | globalize }}
         </button>
         <button
+          type="submit"
           class="form-confirmation__ok-btn"
           @click.prevent="emitOk"
           :disabled="isPending">
