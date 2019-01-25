@@ -130,7 +130,7 @@ export default {
         {
           accountId: this.accountId,
           baseAsset: this.assets.base,
-          quoteAsset: this.assets.quote
+          quoteAsset: this.assets.quote,
         }
       ))
       this.isTradeHistoryLoading = false
@@ -142,7 +142,7 @@ export default {
           {
             accountId: this.accountId,
             baseAsset: this.assets.base,
-            quoteAsset: this.assets.quote
+            quoteAsset: this.assets.quote,
           }
         )))
     },
