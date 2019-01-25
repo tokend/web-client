@@ -32,15 +32,24 @@ export default {
 
 .navbar {
   width: 100%;
-  min-height: 12rem;
   background-color: $col-app-content-background;
-  padding: 0 $content-padding-right 0 $content-padding-left;
+  padding: 3.3rem $content-padding-right 2.1rem $content-padding-left;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @include respond-to-custom($sidebar-hide-bp) {
-    padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2rem;
+    padding: 3.3rem $content-side-paddings-sm
+      2.1rem $content-side-paddings-sm + 5.2rem;
+  }
+
+  .navbar__title {
+    font-size: 4rem;
+    font-weight: normal;
+
+    @include respond-to-custom($sidebar-hide-bp) {
+      font-size: 3rem;
+    }
   }
 }
 </style>

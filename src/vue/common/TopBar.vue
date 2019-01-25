@@ -96,15 +96,13 @@ export default {
     align-items: start;
 
     .top-bar__extra {
-      margin-top: 1rem;
       margin-left: -1.2rem;
       padding-left: 0;
       flex-wrap: wrap;
 
       & > * {
+        margin-top: 1.4rem;
         margin-left: 1.2rem;
-        margin-top: 0.7rem;
-        margin-bottom: 0.7rem;
       }
     }
   }

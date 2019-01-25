@@ -139,10 +139,6 @@ $dropdown-item-side-padding: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
-  @include respond-to-custom($sidebar-hide-bp) {
-    padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2rem;
-  }
 }
 
 .passport__email-abbr-btn {

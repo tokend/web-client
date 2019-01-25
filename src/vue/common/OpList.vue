@@ -52,6 +52,10 @@ export default {
 @import "~@scss/variables";
 @import "OpList/op-list-variables";
 
+.op-list {
+  width: 100%;
+}
+
 .op-list__table {
   width: 100%;
   table-layout: fixed;

@@ -171,5 +171,6 @@ export default {
 .dashboard__activity {
   width: 100%;
   margin-top: 2.4rem;
+  overflow-x: auto;
 }
 </style>
