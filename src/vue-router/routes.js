@@ -2,7 +2,7 @@ export const vueRoutes = Object.freeze({
   // existing routes:
   app: { name: 'app' },
   auth: { name: 'auth' },
-  login: { name: 'login' },
+  signin: { name: 'signin' },
   verify: { name: 'verify' },
   fees: { name: 'app.fees' },
   operations: { name: 'app.operations' },

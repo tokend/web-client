@@ -111,7 +111,7 @@
       "password": "Password",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
-      "log-in": "Log In",
+      "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "almost-done": "Almost done",
       "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
@@ -119,7 +119,7 @@
       "email-verified": "Email successfully verified",
       "get-started": "Get started",
       "recover-account": "Recover your account",
-      "recovered": "Account recovered. You can now use the new credentials to log in",
+      "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
       "save-recovery-seed": "Save this seed to your offline device",
@@ -240,7 +240,7 @@
       "account-corporate": "Corporate account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "log-out-btn": "Log out"
+      "sign-out-btn": "Sign out"
     },
 
     "sidebar": {
@@ -337,10 +337,6 @@
       "here-will-transactions-list": "Here will be the list of your transactions"
     },
 
-    "email-getter": {
-      "loading-msg": "Loading..."
-    },
-
     "chart": {
       "year": "Year",
       "month": "Month",
@@ -369,7 +365,7 @@
       "source-no-fees": "Sender won’t pay any fees for this transaction.",
       "recipient-fees": "Recipient fees",
       "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
-      "total": "total",
+      "total": "Total",
       "total-sender-fee": "Total sender fee",
       "total-receiver-fee": "Total receiver fee",
       "total-amount": "Total amount",

@@ -5,7 +5,7 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="login-email"
+          id="signin-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
@@ -17,7 +17,7 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="login-password"
+          id="signin-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
@@ -32,7 +32,7 @@
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.log-in' | globalize }}
+        {{ 'auth-pages.sign-in' | globalize }}
       </button>
     </div>
   </form>
@@ -51,7 +51,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 
 export default {
-  name: 'login-form',
+  name: 'signin-form',
   mixins: [FormMixin],
   data: _ => ({
     form: {

@@ -19,7 +19,7 @@
         <div class="auth-page__tips">
           <div class="auth-page__tip">
             {{ 'auth-pages.have-an-account-question' | globalize }}
-            <router-link class="auth-page__tip-link" :to="vueRoutes.login">
+            <router-link class="auth-page__tip-link" :to="vueRoutes.signin">
               {{ 'auth-pages.have-an-account-answer' | globalize }}
             </router-link>
           </div>

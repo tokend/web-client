@@ -81,7 +81,7 @@ describe('RecoveryForm component test', () => {
       const router = new VueRouter({
         mode: 'history',
         routes: [{
-          name: vueRoutes.login.name,
+          name: vueRoutes.signin.name,
           path: '/foo',
         }],
       })

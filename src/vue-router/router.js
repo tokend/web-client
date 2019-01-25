@@ -27,13 +27,13 @@ export const router = new Router({
     {
       path: '/auth',
       name: vueRoutes.auth.name,
-      redirect: vueRoutes.login,
+      redirect: vueRoutes.signin,
       component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
-          path: '/log-in',
-          name: vueRoutes.login.name,
-          component: resolve => require(['@/vue/pages/Login'], resolve),
+          path: '/sign-in',
+          name: vueRoutes.signin.name,
+          component: resolve => require(['@/vue/pages/Signin'], resolve),
           beforeEnter: authPageGuard,
         },
         {
@@ -122,20 +122,20 @@ export const router = new Router({
   scrollBehavior: _ => ({ x: 0, y: 0 }),
 })
 
-// doesn't allow to visit auth page if user is already logged in
+// doesn't allow to visit auth page if user is already signed in
 function authPageGuard (to, from, next) {
-  const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+  const isSignedIn = store.getters[vuexTypes.isSignedIn]
 
-  isLoggedIn
+  isSignedIn
     ? next(vueRoutes.app)
     : next()
 }
 
-// doesn't allow to visit in-app page if user is not already logged in
+// doesn't allow to visit in-app page if user is not already signed in
 function inAppRouteGuard (to, from, next) {
-  const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+  const isSignedIn = store.getters[vuexTypes.isSignedIn]
 
-  isLoggedIn
+  isSignedIn
     ? next()
-    : next(vueRoutes.login)
+    : next(vueRoutes.signin)
 }

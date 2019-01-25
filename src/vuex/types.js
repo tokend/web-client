@@ -39,7 +39,7 @@ const actions = {
 
 const getters = {
   // root
-  isLoggedIn: 'isLoggedIn',
+  isSignedIn: 'isSignedIn',
 
   // account
   account: 'account',

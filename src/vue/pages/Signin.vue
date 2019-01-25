@@ -1,11 +1,11 @@
 <template>
   <div class="auth-page">
     <h2 class="auth-page__title">
-      {{ 'auth-pages.log-in' | globalize }}
+      {{ 'auth-pages.sign-in' | globalize }}
     </h2>
 
     <div class="auth-page__content">
-      <login-form />
+      <signin-form />
 
       <div class="auth-page__tips">
         <div class="auth-page__tip">
@@ -26,15 +26,15 @@
 </template>
 
 <script>
-import LoginForm from '@/vue/forms/LoginForm'
+import SigninForm from '@/vue/forms/SigninForm'
 import { vueRoutes } from '@/vue-router/routes'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 
 export default {
-  name: 'login',
+  name: 'signin',
   components: {
-    LoginForm,
+    SigninForm,
   },
   data: _ => ({
     vueRoutes,

@@ -11,7 +11,7 @@
 
       <td
         class="op-list-row__cell"
-        :class="{ 'op-list-row__cell--dangle-minus': operation.isIncoming }"
+        :class="{ 'op-list-row__cell--dangle-minus': !operation.isIncoming }"
       >
         <!-- eslint-disable-next-line max-len -->
         {{ { value: operation.amount, currency: operation.asset } | formatMoney }}

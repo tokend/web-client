@@ -29,7 +29,7 @@
               :values="tokenCodes"
               v-model="form.tokenCode"
               :label="'transfer-form.asset-lbl' | globalize"
-              :readonly="view.mode === VIEW_MODES.confirm" />
+              :disabled="view.mode === VIEW_MODES.confirm" />
             <div class="app__form-field-description">
               <p v-if="form.tokenCode">
                 {{

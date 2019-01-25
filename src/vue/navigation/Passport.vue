@@ -50,9 +50,9 @@
 
         <button
           class="app__button-flat"
-          @click="logOut"
+          @click="signOut"
         >
-          {{ 'passport.log-out-btn' | globalize }}
+          {{ 'passport.sign-out-btn' | globalize }}
         </button>
       </div>
     </transition>
@@ -73,7 +73,7 @@ export default {
     isDropdownOpen: false,
     accountTypeTranslationIds: {
       [ACCOUNT_TYPES.notVerified]: 'passport.account-unverified',
-      [ACCOUNT_TYPES.individual]: 'passport.account-general',
+      [ACCOUNT_TYPES.general]: 'passport.account-general',
       [ACCOUNT_TYPES.syndicate]: 'passport.account-corporate',
     },
     destructClickOutsideHandler: () => {},
@@ -112,7 +112,7 @@ export default {
       this.isDropdownOpen = false
     },
 
-    logOut () {
+    signOut () {
       this.closeDropdown()
       this.clearState()
       location.reload()
@@ -242,5 +242,15 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__dropdown-signed-in-email {
   font-weight: bold;
+}
+
+.passport__dropdown-status-icon {
+  &:before {
+    transition: .2s ease-out;
+  }
+
+  &--dropdown-opened:before {
+    transform: rotate(-180deg)
+  }
 }
 </style>
