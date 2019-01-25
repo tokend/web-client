@@ -49,6 +49,10 @@ export default {
   font-size: 4rem;
   line-height: 1.5;
   font-weight: 400;
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    font-size: 3.2rem;
+  }
 }
 
 .navbar__sub-title {
