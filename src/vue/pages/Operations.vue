@@ -9,7 +9,7 @@
           v-if="isLoaded"
           v-model="tokenCode"
           :values="tokens"
-          class="app__no-border-select"
+          class="app__select--no-border"
         />
       </div>
       <div slot="extra">
