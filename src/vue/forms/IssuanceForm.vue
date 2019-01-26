@@ -118,9 +118,7 @@
       </p>
     </div>
     <div v-else>
-      <loader
-        :message-id="'issuance.loading-msg'"
-      />
+      <loader :message-id="'issuance.loading-msg'" />
     </div>
   </div>
 </template>

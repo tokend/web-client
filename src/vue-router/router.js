@@ -33,6 +33,7 @@ export const router = new Router({
         {
           path: '/sign-in',
           name: vueRoutes.signin.name,
+          meta: { signinRoute: true },
           component: resolve => require(['@/vue/pages/Signin'], resolve),
           beforeEnter: authPageGuard,
         },

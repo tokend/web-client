@@ -1,6 +1,6 @@
 <template>
   <div class="op-history">
-    <template v-if="!isLoadFailed">
+    <template v-if="isAssetsLoaded">
       <top-bar>
         <template slot="main">
           <div class="op-history__navigation">
@@ -8,7 +8,6 @@
               {{ 'op-pages.show' | globalize }}:
             </span>
             <select-field
-              v-if="isLoaded"
               v-model="tokenCode"
               :values="tokens"
               class="asset-selector__select-field"
@@ -18,7 +17,7 @@
       </top-bar>
       <div
         class="op-history__table-wrp"
-        v-if="isLoaded"
+        v-if="isOperationsLoaded"
       >
         <template v-if="operations.length">
           <op-list :list="operations" />
@@ -30,19 +29,26 @@
             :msg-message="'op-pages.here-will-be-the-list' | globalize"
           />
         </template>
-        <collection-loader
-          :first-page-loader="pageLoader"
-          @first-page-load="setFirstPageData"
-          @next-page-load="setNextPageData"
-        />
       </div>
+      <div v-else>
+        <loader :message-id="'op-pages.loading-msg'" />
+      </div>
+      <collection-loader
+        v-show="isOperationsLoaded && operations.length"
+        :first-page-loader="pageLoader"
+        @first-page-load="setFirstPageData"
+        @next-page-load="setNextPageData"
+      />
     </template>
-    <template v-else>
+    <template v-else-if="isLoadFailed">
       <div class="op-history__error">
         <i class="op-history__error-icon mdi mdi-comment-alert-outline" />
         <h2>{{ 'op-pages.something-went-wrong' | globalize }}</h2>
         <p>{{ 'op-pages.can-not-load-assets' | globalize }}</p>
       </div>
+    </template>
+    <template v-else>
+      <loader :message-id="'op-pages.loading-msg'" />
     </template>
   </div>
 </template>
@@ -50,6 +56,7 @@
 <script>
 import SelectField from '@/vue/fields/SelectField'
 import TopBar from '@/vue/common/TopBar'
+import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import OpList from '@/vue/common/OpList'
@@ -67,13 +74,15 @@ export default {
     CollectionLoader,
     OpList,
     TopBar,
+    Loader,
     NoDataMessage,
   },
   data: _ => ({
     tokenCode: null,
     assets: [],
     operations: [],
-    isLoaded: false,
+    isAssetsLoaded: false,
+    isOperationsLoaded: false,
     isLoadFailed: false,
     pageLoader: () => { },
   }),
@@ -93,6 +102,7 @@ export default {
   },
   watch: {
     tokenCode () {
+      this.isOperationsLoaded = false
       this.pageLoader = this.getPageLoader(this.accountId, {
         asset: this.tokenCode,
       })
@@ -103,7 +113,7 @@ export default {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
       this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
-      this.isLoaded = true
+      this.isAssetsLoaded = true
     } catch (e) {
       this.isLoadFailed = true
       ErrorHandler.process(e)
@@ -117,6 +127,7 @@ export default {
     },
 
     setFirstPageData (data) {
+      this.isOperationsLoaded = true
       this.operations = this.parseOperations(data)
     },
 

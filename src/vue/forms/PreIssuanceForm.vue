@@ -57,14 +57,12 @@
     </form>
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
-    <loader
-      :message-id="'issuance.loading-msg'"
-    />
-  </div>
-  <div v-else>
     <p>
       {{ 'issuance.no-owned-tokens-msg' | globalize }}
     </p>
+  </div>
+  <div v-else>
+    <loader :message-id="'issuance.loading-msg'" />
   </div>
 </template>
 

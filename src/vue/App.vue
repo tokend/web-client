@@ -5,7 +5,7 @@
       :message-id="'common.browser-not-supported'"
     />
 
-    <template v-if="isSignedIn">
+    <template v-if="isSignedIn && !$route.meta.signinRoute">
       <div class="app__container">
         <sidebar />
 

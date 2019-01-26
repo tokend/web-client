@@ -91,7 +91,10 @@
         :message-id="'issuance.loading-msg'"
       />
     </div>
-    <div class="issuance-history__collection-loader">
+    <div
+      v-show="isLoaded"
+      class="issuance-history__collection-loader"
+    >
       <collection-loader
         :first-page-loader="getHistory"
         @first-page-load="setHistory"
@@ -174,8 +177,7 @@ export default {
 
 .issuance-history__table {
   overflow-x: auto;
-  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
-  max-width: 105rem;
+  @include box-shadow();
 }
 
 .issuance-btn {

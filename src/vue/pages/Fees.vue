@@ -19,7 +19,7 @@
         <table class="app__table">
           <thead>
             <tr>
-              <th>
+              <th :title="'fee-table.fee-type' | globalize">
                 {{ 'fee-table.fee-type' | globalize }}
               </th>
               <th>
@@ -77,9 +77,7 @@
     </template>
   </div>
   <div v-else-if="!isLoadingFailed">
-    <loader
-      :message-id="'fee-table.loading-msg'"
-    />
+    <loader :message-id="'fee-table.loading-msg'" />
   </div>
   <div v-else>
     <p>

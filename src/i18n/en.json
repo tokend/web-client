@@ -113,7 +113,7 @@
 
     "auth-pages": {
       "small-title": "Create, distribute and trade",
-      "big-title": "Start tokenizing your assets in minutes",
+      "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
       "recovery-seed": "Recovery seed",
@@ -293,7 +293,9 @@
       "show": "Show",
       "no-operation-history": "No operation history",
       "here-will-be-the-list": "Here will be the list of your operations",
-      "something-went-wrong": "Something went wrong"
+      "something-went-wrong": "Something went wrong",
+      "can-not-load-assets": "There was an error while loading assets",
+      "loading-msg": "Loading"
     },
 
     "op-details": {
