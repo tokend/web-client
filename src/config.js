@@ -5,7 +5,7 @@ const featureFlags = {
   fees: true,
   operations: true,
   issuance: true,
-  tokens: true,
+  assets: true,
   requests: true,
   settings: true,
 }

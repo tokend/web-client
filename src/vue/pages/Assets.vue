@@ -4,15 +4,15 @@
       <template slot="main">
         <router-link
           v-ripple
-          :to="vueRoutes.tokensExplore"
+          :to="vueRoutes.assetsExplore"
         >
-          <span>{{ 'tokens-page.explore-title' | globalize }}</span>
+          <span>{{ 'assets-page.explore-title' | globalize }}</span>
         </router-link>
         <router-link
           v-ripple
           :to="vueRoutes.balances"
         >
-          <span>{{ 'tokens-page.balances-title' | globalize }}</span>
+          <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
       </template>
       <template
@@ -21,18 +21,18 @@
       >
         <button
           v-ripple
-          class="create-token-btn"
-          @click="isTokenDrawerShown = true"
+          class="create-asset-btn"
+          @click="isAssetDrawerShown = true"
         >
-          {{ 'tokens-page.create-token-btn' | globalize }}
+          {{ 'assets-page.create-token-btn' | globalize }}
         </button>
       </template>
     </top-bar>
-    <drawer :is-shown.sync="isTokenDrawerShown">
+    <drawer :is-shown.sync="isAssetDrawerShown">
       <template slot="heading">
-        {{ 'tokens-page.create-token-btn' | globalize }}
+        {{ 'assets-page.create-token-btn' | globalize }}
       </template>
-      <token-form />
+      <asset-form />
     </drawer>
     <router-view />
   </div>
@@ -41,7 +41,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import TokenForm from '@/vue/forms/TokenForm'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
@@ -51,16 +51,16 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
-  name: 'tokens',
+  name: 'assets',
   components: {
     TopBar,
     Drawer,
-    TokenForm,
+    AssetForm,
   },
   data: _ => ({
     ACCOUNT_TYPES,
     vueRoutes,
-    isTokenDrawerShown: false,
+    isAssetDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
@@ -74,7 +74,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.create-token-btn {
+.create-asset-btn {
   @include button-raised;
 }
 </style>

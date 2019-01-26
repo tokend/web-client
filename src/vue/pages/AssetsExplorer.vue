@@ -1,11 +1,11 @@
 <template>
-  <div class="tokens-explorer">
-    <tokens-list :tokens="tokens" />
+  <div class="assets-explorer">
+    <assets-list :assets="assets" />
   </div>
 </template>
 
 <script>
-import TokensList from '@/vue/common/TokensList'
+import AssetsList from '@/vue/common/AssetsList'
 
 import { Sdk } from '@/sdk'
 
@@ -13,21 +13,21 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
-  name: 'tokens-explorer',
+  name: 'assets-explorer',
   components: {
-    TokensList,
+    AssetsList,
   },
   data: _ => ({
-    tokens: [],
+    assets: [],
   }),
   async created () {
-    await this.loadTokens()
+    await this.loadAssets()
   },
   methods: {
-    async loadTokens () {
+    async loadAssets () {
       try {
         const { data } = await Sdk.horizon.assets.getAll()
-        this.tokens = data.map(asset => new AssetRecord(asset))
+        this.assets = data.map(asset => new AssetRecord(asset))
       } catch (e) {
         ErrorHandler.process(e)
       }

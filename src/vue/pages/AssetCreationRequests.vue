@@ -1,28 +1,28 @@
 <template>
-  <div class="token-creation-requests">
+  <div class="asset-creation-requests">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDetailsDrawerShown">
         <template v-if="isUpdating">
           <template slot="heading">
-            {{ 'token-form.update-token-title' | globalize }}
+            {{ 'asset-form.update-token-title' | globalize }}
           </template>
-          <token-form
+          <asset-form
             :request="selectedRequest"
             @update="loadHistory"
           />
         </template>
         <template v-else>
           <template slot="heading">
-            {{ 'token-request-details.title' | globalize }}
+            {{ 'asset-request-details.title' | globalize }}
           </template>
-          <token-request-details
+          <asset-request-details
             :request="selectedRequest"
             @update="updateRequest"
             @cancel="cancelRequest"
           />
         </template>
       </drawer>
-      <table class="app__table token-creation-requests__table">
+      <table class="app__table asset-creation-requests__table">
         <thead>
           <tr>
             <th>
@@ -105,8 +105,8 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
-import TokenRequestDetails from '@/vue/common/TokenRequestDetails'
-import TokenForm from '@/vue/forms/TokenForm'
+import AssetRequestDetails from '@/vue/common/AssetRequestDetails'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
@@ -122,12 +122,12 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'token-creation-requests',
+  name: 'asset-creation-requests',
   components: {
     Loader,
     Drawer,
-    TokenRequestDetails,
-    TokenForm,
+    AssetRequestDetails,
+    AssetForm,
   },
   data: _ => ({
     requestsHistory: [],
@@ -193,7 +193,7 @@ export default {
         this.selectedRequest = Object.assign(this.selectedRequest, {
           stateI: REQUEST_STATES.canceled,
         })
-        Bus.success('token-request-details.request-canceled-msg')
+        Bus.success('asset-request-details.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -205,7 +205,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.token-creation-requests__table {
+.asset-creation-requests__table {
   overflow-x: auto;
   box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
 

@@ -1,9 +1,9 @@
 <template>
-  <div class="token-request-details">
+  <div class="asset-request-details">
     <div class="asset-details">
-      <token-logo
+      <asset-logo
         :logo-key="request.logoKey"
-        :token-code="request.assetCode"
+        :asset-code="request.assetCode"
       />
       <div class="asset-details__info">
         <p class="asset-details__code">
@@ -19,7 +19,7 @@
       class="request-state request-state--approved"
     >
       <p class="request-state__content">
-        {{ 'token-request-details.approved-request-msg' | globalize }}
+        {{ 'asset-request-details.approved-request-msg' | globalize }}
       </p>
     </div>
     <div
@@ -27,7 +27,7 @@
       class="request-state request-state--pending"
     >
       <p class="request-state__content">
-        {{ 'token-request-details.pending-request-msg' | globalize }}
+        {{ 'asset-request-details.pending-request-msg' | globalize }}
       </p>
     </div>
     <div
@@ -36,7 +36,7 @@
     >
       <p class="request-state__content">
         <!-- eslint-disable-next-line max-len -->
-        {{ 'token-request-details.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+        {{ 'asset-request-details.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
     <div
@@ -44,7 +44,7 @@
       class="request-state request-state--canceled"
     >
       <p class="request-state__content">
-        {{ 'token-request-details.canceled-request-msg' | globalize() }}
+        {{ 'asset-request-details.canceled-request-msg' | globalize() }}
       </p>
     </div>
     <div
@@ -53,29 +53,29 @@
     >
       <p class="request-state__content">
         <!-- eslint-disable-next-line max-len -->
-        {{ 'token-request-details.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+        {{ 'asset-request-details.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
-    <table class="app__table token-request-details__table">
+    <table class="app__table asset-request-details__table">
       <tbody>
         <tr>
           <td>
-            {{ 'token-request-details.request-type-title' | globalize }}
+            {{ 'asset-request-details.request-type-title' | globalize }}
           </td>
           <td>
             <template v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
               <!-- eslint-disable-next-line max-len -->
-              {{ 'token-request-details.asset-create-request-type' | globalize }}
+              {{ 'asset-request-details.asset-create-request-type' | globalize }}
             </template>
             <template v-else>
               <!-- eslint-disable-next-line max-len -->
-              {{ 'token-request-details.asset-update-request-type' | globalize }}
+              {{ 'asset-request-details.asset-update-request-type' | globalize }}
             </template>
           </td>
         </tr>
         <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
           <td>
-            {{ 'token-request-details.max-issuance-amount-title' | globalize }}
+            {{ 'asset-request-details.max-issuance-amount-title' | globalize }}
           </td>
           <td>
             {{ request.maxIssuanceAmount | formatMoney }}
@@ -84,7 +84,7 @@
         <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
           <td>
             <!-- eslint-disable-next-line max-len -->
-            {{ 'token-request-details.initial-preissued-amount-title' | globalize }}
+            {{ 'asset-request-details.initial-preissued-amount-title' | globalize }}
           </td>
           <td>
             {{ request.initialPreissuedAmount | formatMoney }}
@@ -92,75 +92,75 @@
         </tr>
         <tr>
           <td>
-            {{ 'token-request-details.terms-title' | globalize }}
+            {{ 'asset-request-details.terms-title' | globalize }}
           </td>
           <td>
             <a
               v-if="request.termsKey"
-              class="token-request-details__terms"
-              :href="tokenTermsUrl"
+              class="asset-request-details__terms"
+              :href="assetTermsUrl"
             >
-              {{ 'token-request-details.download-terms-btn' | globalize }}
+              {{ 'asset-request-details.download-terms-btn' | globalize }}
             </a>
             <p v-else>
-              {{ 'token-request-details.no-terms-msg' | globalize }}
+              {{ 'asset-request-details.no-terms-msg' | globalize }}
             </p>
           </td>
         </tr>
         <tr>
           <td>
-            {{ 'token-request-details.transferable-title' | globalize }}
+            {{ 'asset-request-details.transferable-title' | globalize }}
           </td>
           <td>
             <template v-if="request.isTransferable">
-              {{ 'token-request-details.present-msg' | globalize }}
+              {{ 'asset-request-details.present-msg' | globalize }}
             </template>
             <template v-else>
-              {{ 'token-request-details.absent-msg' | globalize }}
+              {{ 'asset-request-details.absent-msg' | globalize }}
             </template>
           </td>
         </tr>
         <tr>
           <td>
-            {{ 'token-request-details.requires-kyc-title' | globalize }}
+            {{ 'asset-request-details.requires-kyc-title' | globalize }}
           </td>
           <td>
             <template v-if="request.isRequiresKYC">
-              {{ 'token-request-details.present-msg' | globalize }}
+              {{ 'asset-request-details.present-msg' | globalize }}
             </template>
             <template v-else>
-              {{ 'token-request-details.absent-msg' | globalize }}
+              {{ 'asset-request-details.absent-msg' | globalize }}
             </template>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="token-request-details__buttons">
+    <div class="asset-request-details__buttons">
       <button
         v-ripple
-        class="token-request-details__update-btn"
+        class="asset-request-details__update-btn"
         :disabled="!canBeUpdated"
         @click="$emit(EVENTS.update)"
       >
-        {{ 'token-request-details.update-btn' | globalize }}
+        {{ 'asset-request-details.update-btn' | globalize }}
       </button>
       <button
         v-ripple
-        class="token-request-details__cancel-btn"
+        class="asset-request-details__cancel-btn"
         :class="{
-          'token-request-details__cancel-btn--disabled': !canBeCanceled
+          'asset-request-details__cancel-btn--disabled': !canBeCanceled
         }"
         :disabled="!canBeCanceled"
         @click="$emit(EVENTS.cancel)"
       >
-        {{ 'token-request-details.cancel-btn' | globalize }}
+        {{ 'asset-request-details.cancel-btn' | globalize }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import TokenLogo from '@/vue/common/TokenLogo'
+import AssetLogo from '@/vue/common/AssetLogo'
 
 import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 
@@ -177,9 +177,9 @@ const EVENTS = {
 }
 
 export default {
-  name: 'token-request-details',
+  name: 'asset-request-details',
   components: {
-    TokenLogo,
+    AssetLogo,
   },
   props: {
     request: {
@@ -194,7 +194,7 @@ export default {
     REQUEST_TYPES,
   }),
   computed: {
-    tokenTermsUrl () {
+    assetTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
     canBeUpdated () {
@@ -236,7 +236,7 @@ export default {
   }
 }
 
-.token-request-details__table {
+.asset-request-details__table {
   margin-top: 2rem;
 
   tr td:last-child {
@@ -244,7 +244,7 @@ export default {
   }
 }
 
-.token-request-details__terms {
+.asset-request-details__terms {
   font-size: 1.4rem;
   color: $col-primary-lighten;
   text-decoration: none;
@@ -254,7 +254,7 @@ export default {
   }
 }
 
-.token-request-details__buttons {
+.asset-request-details__buttons {
   margin-top: 4.9rem;
   display: flex;
 
@@ -263,14 +263,14 @@ export default {
   }
 }
 
-.token-request-details__update-btn {
+.asset-request-details__update-btn {
   @include button-raised();
 
   margin-bottom: 2rem;
   width: 18rem;
 }
 
-.token-request-details__cancel-btn {
+.asset-request-details__cancel-btn {
   @include button();
 
   padding-left: .1rem;

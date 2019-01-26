@@ -1,87 +1,87 @@
 <template>
-  <div class="token-details">
-    <div class="token-details__header">
-      <token-logo
-        :logo-key="token.logoKey"
-        :token-code="token.code"
+  <div class="asset-details">
+    <div class="asset-details__header">
+      <asset-logo
+        :logo-key="asset.logoKey"
+        :asset-code="asset.code"
       />
-      <div class="token-details__info">
-        <p class="token-details__code">
-          {{ token.code }}
+      <div class="asset-details__info">
+        <p class="asset-details__code">
+          {{ asset.code }}
         </p>
-        <p class="token-details__name">
-          {{ token.name }}
+        <p class="asset-details__name">
+          {{ asset.name }}
         </p>
       </div>
     </div>
-    <table class="app__table token-details__table">
+    <table class="app__table asset-details__table">
       <tbody>
-        <tr v-if="token.getBalance(balances).value">
+        <tr v-if="asset.getBalance(balances).value">
           <td>
-            {{ 'token-details.balance-title' | globalize }}
+            {{ 'asset-details.balance-title' | globalize }}
           </td>
           <td>
-            {{ token.getBalance(balances) | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'token-details.maximum-title' | globalize }}
-          </td>
-          <td>
-            {{ token.maxIssuanceAmount | formatMoney }}
+            {{ asset.getBalance(balances) | formatMoney }}
           </td>
         </tr>
         <tr>
           <td>
-            {{ 'token-details.issued-title' | globalize }}
+            {{ 'asset-details.maximum-title' | globalize }}
           </td>
           <td>
-            {{ token.issued | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'token-details.available-title' | globalize }}
-          </td>
-          <td>
-            {{ token.availableForIssuance | formatMoney }}
+            {{ asset.maxIssuanceAmount | formatMoney }}
           </td>
         </tr>
         <tr>
           <td>
-            {{ 'token-details.terms-title' | globalize }}
+            {{ 'asset-details.issued-title' | globalize }}
+          </td>
+          <td>
+            {{ asset.issued | formatMoney }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{ 'asset-details.available-title' | globalize }}
+          </td>
+          <td>
+            {{ asset.availableForIssuance | formatMoney }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {{ 'asset-details.terms-title' | globalize }}
           </td>
           <td>
             <a
-              v-if="token.termsKey"
-              class="token-details__terms"
-              :href="tokenTermsUrl"
+              v-if="asset.termsKey"
+              class="asset-details__terms"
+              :href="assetTermsUrl"
             >
-              {{ 'token-details.download-terms-btn' | globalize }}
+              {{ 'asset-details.download-terms-btn' | globalize }}
             </a>
             <p v-else>
-              {{ 'token-details.no-terms-msg' | globalize }}
+              {{ 'asset-details.no-terms-msg' | globalize }}
             </p>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="token-details__buttons">
+    <div class="asset-details__buttons">
       <button
         v-ripple
-        class="token-details__update-btn"
-        :disabled="token.getBalance(balances).value || isBalanceCreating"
+        class="asset-details__update-btn"
+        :disabled="asset.getBalance(balances).value || isBalanceCreating"
         @click="createBalance"
       >
-        {{ 'token-details.add-balance-btn' | globalize }}
+        {{ 'asset-details.add-balance-btn' | globalize }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import TokenLogo from '@/vue/common/TokenLogo'
+import AssetLogo from '@/vue/common/AssetLogo'
 
 import config from '@/config'
 
@@ -96,12 +96,12 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
-  name: 'token-details',
+  name: 'asset-details',
   components: {
-    TokenLogo,
+    AssetLogo,
   },
   props: {
-    token: { type: Object, required: true },
+    asset: { type: Object, required: true },
   },
   data: _ => ({
     isBalanceCreating: false,
@@ -111,8 +111,8 @@ export default {
       account: vuexTypes.account,
       balances: vuexTypes.accountBalances,
     }),
-    tokenTermsUrl () {
-      return this.token.termsUrl(config.FILE_STORAGE)
+    assetTermsUrl () {
+      return this.asset.termsUrl(config.FILE_STORAGE)
     },
   },
   methods: {
@@ -124,12 +124,12 @@ export default {
       try {
         const operation = base.Operation.manageBalance({
           destination: this.account.accountId,
-          asset: this.token.code,
+          asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadBalances()
-        Bus.success('token-details.balance-added-msg')
+        Bus.success('asset-details.balance-added-msg')
       } catch (e) {
         this.isBalanceCreating = false
         ErrorHandler.process(e)
@@ -143,7 +143,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.token-details__table {
+.asset-details__table {
   margin-top: 4rem;
 
   tr td:last-child {
@@ -151,7 +151,7 @@ export default {
   }
 }
 
-.token-details__terms {
+.asset-details__terms {
   font-size: 1.4rem;
   color: $col-primary-lighten;
   text-decoration: none;
@@ -161,7 +161,7 @@ export default {
   }
 }
 
-.token-details__buttons {
+.asset-details__buttons {
   margin-top: 4.9rem;
   display: flex;
 
@@ -170,14 +170,14 @@ export default {
   }
 }
 
-.token-details__update-btn {
+.asset-details__update-btn {
   @include button-raised();
 
   margin-bottom: 2rem;
   width: 18rem;
 }
 
-.token-details__cancel-btn {
+.asset-details__cancel-btn {
   @include button();
 
   padding-left: .1rem;
@@ -186,26 +186,26 @@ export default {
   font-weight: normal;
 }
 
-.token-details__header {
+.asset-details__header {
   display: flex;
   align-items: center;
 
-  .token-details__logo {
+  .asset-details__logo {
     width: 5rem;
     height: 5rem;
     border-radius: 50%
   }
 
-  .token-details__info {
+  .asset-details__info {
     margin-left: 1.8rem;
 
-    .token-details__code {
+    .asset-details__code {
       font-size: 1.8rem;
       font-weight: bold;
       color: $col-primary;
     }
 
-    .token-details__name {
+    .asset-details__name {
       margin-top: .1rem;
       font-size: 1.4rem;
       line-height: 1.29;

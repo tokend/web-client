@@ -190,19 +190,19 @@ $col-form-stepper-icon-background: $col-primary;
 $col-form-stepper-tab-active: $col-primary-lighten;
 $col-form-stepper-tab-border: $_thinPurple;
 
-// token card colors
-$col-token-card-background: $_white;
-$col-token-card-header-background: $col-primary;
-$col-token-card-text-primary: $col-text;
-$col-token-card-text-secondary: $col-text-secondary;
+// asset card colors
+$col-asset-card-background: $_white;
+$col-asset-card-header-background: $col-primary;
+$col-asset-card-text-primary: $col-text;
+$col-asset-card-text-secondary: $col-text-secondary;
 
 // request colors
 $col-request-approved: $_cyan;
 $col-request-pending: $_orangePeel;
 $col-request-rejected: $_lightRed;
 
-// token logo
-$col-token-logo-background: $_mediumGray;
-$col-token-logo-text: $_white;
+// asset logo
+$col-asset-logo-background: $_mediumGray;
+$col-asset-logo-text: $_white;
 
 // TODO: paste here variables that are ready to use during the refactor process

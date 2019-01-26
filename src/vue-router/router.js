@@ -92,16 +92,16 @@ export const router = new Router({
         },
         {
           path: '/tokens',
-          name: vueRoutes.tokens.name,
-          featureFlag: config.FEATURE_FLAGS.tokens,
-          redirect: vueRoutes.tokensExplore,
-          component: resolve => require(['@/vue/pages/Tokens'], resolve),
+          name: vueRoutes.assets.name,
+          featureFlag: config.FEATURE_FLAGS.assets,
+          redirect: vueRoutes.assetsExplore,
+          component: resolve => require(['@/vue/pages/Assets'], resolve),
           children: [
             {
               path: '/tokens/explore',
-              name: vueRoutes.tokensExplore.name,
+              name: vueRoutes.assetsExplore.name,
               meta: { pageNameTranslationId: 'pages-names.tokens' },
-              component: resolve => require(['@/vue/pages/TokensExplorer'], resolve),
+              component: resolve => require(['@/vue/pages/AssetsExplorer'], resolve),
             },
             {
               path: '/tokens/balances',
@@ -115,14 +115,14 @@ export const router = new Router({
           path: '/requests',
           name: vueRoutes.requests.name,
           featureFlag: config.FEATURE_FLAGS.requests,
-          redirect: vueRoutes.requests.tokenCreation,
+          redirect: vueRoutes.requests.assetCreation,
           component: resolve => require(['@/vue/pages/Requests'], resolve),
           children: [
             {
               path: '/requests/token-creation',
-              name: vueRoutes.requests.tokenCreation.name,
+              name: vueRoutes.requests.assetCreation.name,
               meta: { pageNameTranslationId: 'pages-names.requests' },
-              component: resolve => require(['@/vue/pages/TokenCreationRequests'], resolve),
+              component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
             },
           ],
         },

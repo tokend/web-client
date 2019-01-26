@@ -75,9 +75,9 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.tokens"
+            :to="vueRoutes.assets"
             tag="a"
-            v-if="config.FEATURE_FLAGS.tokens"
+            v-if="config.FEATURE_FLAGS.assets"
           >
             <i class="sidebar__link-icon mdi mdi-coins" />
             <span>

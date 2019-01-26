@@ -6,7 +6,7 @@
     <form
       novalidate
       v-if="currentStep === STEPS.information.number"
-      class="app__form token-form"
+      class="app__form asset-form"
       @submit.prevent="next('form.information')"
     >
       <div class="app__form-row">
@@ -15,8 +15,8 @@
             white-autofill
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
-            id="token-name"
-            :label="'token-form.name-lbl' | globalize"
+            id="asset-name"
+            :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.information.name')"
             :disabled="formMixin.isDisabled"
           />
@@ -28,8 +28,8 @@
             white-autofill
             v-model="form.information.code"
             @blur="touchField('form.information.code')"
-            id="token-code"
-            :label="'token-form.code-lbl' | globalize"
+            id="asset-code"
+            :label="'asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.information.code')"
             :disabled="formMixin.isDisabled || isUpdateMode"
           />
@@ -42,8 +42,8 @@
             type="number"
             v-model="form.information.maxIssuanceAmount"
             @blur="touchField('form.information.maxIssuanceAmount')"
-            id="token-max-issuance-amount"
-            :label="'token-form.max-issuance-amount-lbl' | globalize"
+            id="asset-max-issuance-amount"
+            :label="'asset-form.max-issuance-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.maxIssuanceAmount',
               { from: MIN_AMOUNT, to: MAX_AMOUNT }
@@ -59,18 +59,18 @@
             :disabled="formMixin.isDisabled"
             :cb-value="ASSET_POLICIES.transferable"
           >
-            {{ 'token-form.transferable-lbl' | globalize }}
+            {{ 'asset-form.transferable-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
-      <div class="app__form-row token-form__kyc-required-row">
+      <div class="app__form-row asset-form__kyc-required-row">
         <div class="app__form-field">
           <tick-field
             v-model="form.information.policies"
             :disabled="formMixin.isDisabled"
             :cb-value="ASSET_POLICIES.requiresKyc"
           >
-            {{ 'token-form.kyc-required-lbl' | globalize }}
+            {{ 'asset-form.kyc-required-lbl' | globalize }}
           </tick-field>
         </div>
       </div>
@@ -78,10 +78,10 @@
         <div class="app__form-field">
           <file-field
             v-model="form.information.logo"
-            :note="'token-form.logo-note' | globalize"
+            :note="'asset-form.logo-note' | globalize"
             accept=".jpg, .png"
             :document-type="DOCUMENT_TYPES.assetLogo"
-            :label="'token-form.logo-lbl' | globalize"
+            :label="'asset-form.logo-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -90,26 +90,26 @@
         <button
           v-ripple
           type="submit"
-          class="token-form__btn"
+          class="asset-form__btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'token-form.next-btn' | globalize }}
+          {{ 'asset-form.next-btn' | globalize }}
         </button>
       </div>
     </form>
     <form
       v-if="currentStep === STEPS.terms.number"
-      class="app__form token-form"
+      class="app__form asset-form"
       @submit.prevent="isFormValid() && showFormConfirmation()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
             v-model="form.terms.terms"
-            :note="'token-form.terms-note' | globalize"
+            :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
-            :label="'token-form.terms-lbl' | globalize"
+            :label="'asset-form.terms-lbl' | globalize"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -124,10 +124,10 @@
           v-ripple
           v-else
           type="submit"
-          class="token-form__btn"
+          class="asset-form__btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'token-form.submit-btn' | globalize }}
+          {{ 'asset-form.submit-btn' | globalize }}
         </button>
       </div>
     </form>
@@ -157,11 +157,11 @@ import { required, amountRange } from '@validators'
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'token-form.information-step',
+    titleId: 'asset-form.information-step',
   },
   terms: {
     number: 2,
-    titleId: 'token-form.terms-step',
+    titleId: 'asset-form.terms-step',
   },
 }
 const ASSET_CREATION_REQUEST_ID = '0'
@@ -175,13 +175,13 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  name: 'token-form',
+  name: 'asset-form',
   components: {
     FormStepper,
   },
   mixins: [FormMixin],
   props: {
-    request: { type: Object, default: _ => {} },
+    request: { type: Object, default: _ => ({}) },
   },
   data: _ => ({
     form: {
@@ -218,7 +218,7 @@ export default {
     }
   },
   computed: {
-    tokenRequestOpts () {
+    assetRequestOpts () {
       const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
       const terms = this.form.terms.terms
@@ -279,13 +279,13 @@ export default {
         let operation
         if (this.isUpdateMode) {
           operation =
-            base.ManageAssetBuilder.assetUpdateRequest(this.tokenRequestOpts)
+            base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
         } else {
           operation =
-            base.ManageAssetBuilder.assetCreationRequest(this.tokenRequestOpts)
+            base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         }
         await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('token-form.token-request-submitted-msg')
+        Bus.success('asset-form.token-request-submitted-msg')
         if (this.request.id) {
           this.$emit(EVENTS.submit)
         }
@@ -315,15 +315,15 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.token-form__btn {
+.asset-form__btn {
   @include button-raised();
 
   margin-bottom: 2rem;
   width: 14.4rem;
 }
 
-.token-form {
-  .token-form__kyc-required-row {
+.asset-form {
+  .asset-form__kyc-required-row {
     margin-top: 2.1rem;
   }
 }

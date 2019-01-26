@@ -1,14 +1,14 @@
 <template>
   <img
     v-if="logoKey"
-    class="token-logo token-logo__image"
-    :src="tokenLogoUrl"
+    class="asset-logo asset-logo__image"
+    :src="assetLogoUrl"
   >
   <p
     v-else
-    class="token-logo token-logo__code-abbr"
+    class="asset-logo asset-logo__code-abbr"
   >
-    {{ tokenCode | abbreviate }}
+    {{ assetCode | abbreviate }}
   </p>
 </template>
 
@@ -16,13 +16,13 @@
 import config from '@/config'
 
 export default {
-  name: 'token-logo',
+  name: 'asset-logo',
   props: {
     logoKey: { type: String, default: '' },
-    tokenCode: { type: String, required: true },
+    assetCode: { type: String, required: true },
   },
   computed: {
-    tokenLogoUrl () {
+    assetLogoUrl () {
       return `${config.FILE_STORAGE}/${this.logoKey}`
     },
   },
@@ -32,22 +32,22 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.token-logo {
+.asset-logo {
   width: 5.3rem;
   height: 5.3rem;
   border-radius: 50%;
 }
 
-.token-logo__image {
+.asset-logo__image {
   display: block;
 }
 
-.token-logo__code-abbr {
+.asset-logo__code-abbr {
   font-size: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $col-token-logo-background;
-  color: $col-token-logo-text;
+  background: $col-asset-logo-background;
+  color: $col-asset-logo-text;
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
   <div class="balances">
-    <tokens-list :tokens="tokens" />
+    <assets-list :assets="assets" />
   </div>
 </template>
 
 <script>
-import TokensList from '@/vue/common/TokensList'
+import AssetsList from '@/vue/common/AssetsList'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -13,10 +13,10 @@ import { vuexTypes } from '@/vuex'
 export default {
   name: 'balances',
   components: {
-    TokensList,
+    AssetsList,
   },
   data: _ => ({
-    tokens: [],
+    assets: [],
   }),
   computed: {
     ...mapGetters({
@@ -24,7 +24,7 @@ export default {
     }),
   },
   created () {
-    this.tokens = this.accountBalances.map(balance => balance.assetDetails)
+    this.assets = this.accountBalances.map(balance => balance.assetDetails)
   },
 }
 </script>
