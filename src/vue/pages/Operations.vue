@@ -7,8 +7,8 @@
         </span>
         <select-field
           v-if="isLoaded"
-          v-model="tokenCode"
-          :values="tokens"
+          v-model="assetCode"
+          :values="assetCodes"
           class="app__select--no-border"
         />
       </div>
@@ -83,7 +83,7 @@ export default {
     OpList,
   },
   data: _ => ({
-    tokenCode: null,
+    assetCode: null,
     assets: [],
     operations: [],
     isLoaded: false,
@@ -96,19 +96,19 @@ export default {
       vuexTypes.account,
       vuexTypes.accountId,
     ]),
-    tokens () {
+    assetCodes () {
       return this.assets.map(item => item.code)
     },
     balanceId () {
       return this.account.balances
-        .find(item => item.asset === this.tokenCode)
+        .find(item => item.asset === this.assetCode)
         .balanceId
     },
   },
   watch: {
-    tokenCode () {
+    assetCode () {
       this.pageLoader = this.getPageLoader(this.accountId, {
-        asset: this.tokenCode,
+        asset: this.assetCode,
       })
     },
   },
@@ -116,7 +116,8 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
-      this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
+      this.assetCode = this.$route.params.assetCode ||
+        this.assetCodes[0] || null
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
