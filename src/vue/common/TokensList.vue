@@ -28,11 +28,11 @@
             {{ token.name }}
           </p>
           <p
-            v-if="getBalance(token).value"
+            v-if="token.getBalance(balances).value"
             class="token-card__balance"
           >
             <!-- eslint-disable-next-line max-len -->
-            {{ 'tokens-page.balance-details'| globalize({ value: getBalance(token) }) }}
+            {{ 'tokens-page.list-item-balance-line' | globalize({ value: token.getBalance(balances) }) }}
           </p>
           <p
             v-else
@@ -70,22 +70,10 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
+      balances: vuexTypes.accountBalances,
     }),
   },
   methods: {
-    getBalance (token) {
-      const balance = this.accountBalances
-        .find(balance => balance.asset === token.code)
-      if (balance) {
-        return {
-          value: balance.balance,
-          currency: balance.asset,
-        }
-      } else {
-        return {}
-      }
-    },
     selectToken (token) {
       this.selectedToken = token
       this.isDetailsDrawerShown = true

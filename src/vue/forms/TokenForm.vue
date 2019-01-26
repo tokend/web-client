@@ -31,7 +31,7 @@
             id="token-code"
             :label="'token-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.information.code')"
-            :disabled="formMixin.isDisabled || isTokenUpdating"
+            :disabled="formMixin.isDisabled || isUpdateMode"
           />
         </div>
       </div>
@@ -48,7 +48,7 @@
               'form.information.maxIssuanceAmount',
               { from: MIN_AMOUNT, to: MAX_AMOUNT }
             )"
-            :disabled="formMixin.isDisabled || isTokenUpdating"
+            :disabled="formMixin.isDisabled || isUpdateMode"
           />
         </div>
       </div>
@@ -150,7 +150,7 @@ import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.rec
 
 import config from '@/config'
 import { Sdk } from '@/sdk'
-import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
+import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { required, amountRange } from '@validators'
 
@@ -181,7 +181,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    request: { type: Object, default: null },
+    request: { type: Object, default: _ => {} },
   },
   data: _ => ({
     form: {
@@ -219,9 +219,7 @@ export default {
   },
   computed: {
     tokenRequestOpts () {
-      const requestId = this.request
-        ? this.request.id
-        : ASSET_CREATION_REQUEST_ID
+      const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
       const terms = this.form.terms.terms
 
@@ -239,32 +237,34 @@ export default {
         },
       }
     },
-    isTokenUpdating () {
-      return this.request &&
-        this.request.requestTypeI === REQUEST_TYPES.assetUpdate
+    isUpdateMode () {
+      return this.request instanceof AssetUpdateRequestRecord
     },
   },
   created () {
-    if (this.request) {
-      this.form = {
-        information: {
-          name: this.request.assetName,
-          code: this.request.assetCode,
-          maxIssuanceAmount: this.request.maxIssuanceAmount,
-          logo: this.request.logo.key
-            ? new DocumentContainer(this.request.logo)
-            : null,
-          policies: this.request.policies,
-        },
-        terms: {
-          terms: this.request.terms.key
-            ? new DocumentContainer(this.request.terms)
-            : null,
-        },
-      }
-    }
+    this.tryPopulateForm(this.request)
   },
   methods: {
+    tryPopulateForm (request) {
+      if (request.id) {
+        this.form = {
+          information: {
+            name: request.assetName,
+            code: request.assetCode,
+            maxIssuanceAmount: request.maxIssuanceAmount,
+            logo: request.logo.key
+              ? new DocumentContainer(request.logo)
+              : null,
+            policies: request.policies,
+          },
+          terms: {
+            terms: request.terms.key
+              ? new DocumentContainer(request.terms)
+              : null,
+          },
+        }
+      }
+    },
     next (formStep) {
       this.hideFormConfirmation()
       if (this.isFormValid(formStep)) {
@@ -277,7 +277,7 @@ export default {
       try {
         await this.uploadDocuments()
         let operation
-        if (this.request instanceof AssetUpdateRequestRecord) {
+        if (this.isUpdateMode) {
           operation =
             base.ManageAssetBuilder.assetUpdateRequest(this.tokenRequestOpts)
         } else {
@@ -286,8 +286,8 @@ export default {
         }
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('token-form.token-request-submitted-msg')
-        if (this.request) {
-          this.$emit(EVENTS.update)
+        if (this.request.id) {
+          this.$emit(EVENTS.submit)
         }
       } catch (e) {
         ErrorHandler.process(e)

@@ -17,7 +17,8 @@
           </template>
           <token-request-details
             :request="selectedRequest"
-            @update="updateToken"
+            @update="updateRequest"
+            @cancel="cancelRequest"
           />
         </template>
       </drawer>
@@ -108,6 +109,7 @@ import TokenRequestDetails from '@/vue/common/TokenRequestDetails'
 import TokenForm from '@/vue/forms/TokenForm'
 
 import { Sdk } from '@/sdk'
+import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
@@ -116,6 +118,7 @@ import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.rec
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
@@ -167,7 +170,7 @@ export default {
       this.isUpdating = false
       this.isDetailsDrawerShown = true
     },
-    async updateToken () {
+    async updateRequest () {
       try {
         if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
           const { data } =
@@ -177,6 +180,20 @@ export default {
           })
         }
         this.isUpdating = true
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+    },
+    async cancelRequest () {
+      try {
+        const operation = base.ManageAssetBuilder.cancelAssetRequest({
+          requestID: this.selectedRequest.id,
+        })
+        await Sdk.horizon.transactions.submitOperations(operation)
+        this.selectedRequest = Object.assign(this.selectedRequest, {
+          stateI: REQUEST_STATES.canceled,
+        })
+        Bus.success('token-request-details.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }

@@ -63,7 +63,7 @@
             {{ 'token-request-details.request-type-title' | globalize }}
           </td>
           <td>
-            <template v-if="isAssetCreationType">
+            <template v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
               <!-- eslint-disable-next-line max-len -->
               {{ 'token-request-details.asset-create-request-type' | globalize }}
             </template>
@@ -73,7 +73,7 @@
             </template>
           </td>
         </tr>
-        <tr v-if="isAssetCreationType">
+        <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
           <td>
             {{ 'token-request-details.max-issuance-amount-title' | globalize }}
           </td>
@@ -81,7 +81,7 @@
             {{ request.maxIssuanceAmount | formatMoney }}
           </td>
         </tr>
-        <tr v-if="isAssetCreationType">
+        <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
           <td>
             <!-- eslint-disable-next-line max-len -->
             {{ 'token-request-details.initial-preissued-amount-title' | globalize }}
@@ -151,7 +151,7 @@
           'token-request-details__cancel-btn--disabled': !canBeCanceled
         }"
         :disabled="!canBeCanceled"
-        @click="cancelRequest"
+        @click="$emit(EVENTS.cancel)"
       >
         {{ 'token-request-details.cancel-btn' | globalize }}
       </button>
@@ -162,20 +162,18 @@
 <script>
 import TokenLogo from '@/vue/common/TokenLogo'
 
-import { base, ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
+import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
-import { Bus } from '@/js/helpers/event-bus'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-
-import { Sdk } from '@/sdk'
 import config from '@/config'
 
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
+import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 const EVENTS = {
   update: 'update',
+  cancel: 'cancel',
 }
 
 export default {
@@ -184,19 +182,18 @@ export default {
     TokenLogo,
   },
   props: {
-    request: { type: Object, required: true },
+    request: {
+      type: [AssetCreateRequestRecord, AssetUpdateRequestRecord],
+      required: true,
+    },
   },
   data: _ => ({
-    isCanceled: false,
     ASSET_POLICIES,
     EVENTS,
     REQUEST_STATES,
     REQUEST_TYPES,
   }),
   computed: {
-    isAssetCreationType () {
-      return this.request instanceof AssetCreateRequestRecord
-    },
     tokenTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
@@ -204,25 +201,7 @@ export default {
       return this.request.isPending || this.request.isRejected
     },
     canBeCanceled () {
-      return this.request.isPending && !this.isCanceled
-    },
-  },
-  methods: {
-    async cancelRequest () {
-      this.isCanceled = true
-      try {
-        const operation = base.ManageAssetBuilder.cancelAssetRequest({
-          requestID: this.request.id,
-        })
-        await Sdk.horizon.transactions.submitOperations(operation)
-        this.request = Object.assign(this.request, {
-          stateI: REQUEST_STATES.canceled,
-        })
-        Bus.success('token-request-details.request-canceled-msg')
-      } catch (e) {
-        this.isCanceled = false
-        ErrorHandler.process(e)
-      }
+      return this.request.isPending
     },
   },
 }

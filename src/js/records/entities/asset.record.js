@@ -2,7 +2,7 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 import _get from 'lodash/get'
 
 export class AssetRecord {
-  constructor (record = {}) {
+  constructor (record = {}, balances = []) {
     this._record = record
 
     this.code = record.code
@@ -38,6 +38,18 @@ export class AssetRecord {
 
   termsUrl (storageUrl) {
     return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
+  }
+
+  getBalance (balances) {
+    const balance = balances.find(balance => balance.asset === this.code)
+    if (balance) {
+      return {
+        value: balance.balance,
+        currency: balance.asset,
+      }
+    } else {
+      return {}
+    }
   }
 
   _policies () {

@@ -16,12 +16,12 @@
     </div>
     <table class="app__table token-details__table">
       <tbody>
-        <tr v-if="tokenBalance">
+        <tr v-if="token.getBalance(balances).value">
           <td>
             {{ 'token-details.balance-title' | globalize }}
           </td>
           <td>
-            {{ tokenBalance | formatMoney }}
+            {{ token.getBalance(balances) | formatMoney }}
           </td>
         </tr>
         <tr>
@@ -71,7 +71,7 @@
       <button
         v-ripple
         class="token-details__update-btn"
-        :disabled="token.balance || isBalanceCreating"
+        :disabled="token.getBalance(balances).value || isBalanceCreating"
         @click="createBalance"
       >
         {{ 'token-details.add-balance-btn' | globalize }}
@@ -109,19 +109,10 @@ export default {
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      accountBalances: vuexTypes.accountBalances,
+      balances: vuexTypes.accountBalances,
     }),
     tokenTermsUrl () {
       return this.token.termsUrl(config.FILE_STORAGE)
-    },
-    tokenBalance () {
-      const balanceInfo = this.accountBalances
-        .find(balance => balance.asset === this.token.code)
-      if (balanceInfo) {
-        return balanceInfo.balance
-      } else {
-        return ''
-      }
     },
   },
   methods: {

@@ -410,7 +410,7 @@
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
       "create-token-btn": "Create token",
-      "balance-details": "Balance: {{value, money}}",
+      "list-item-balance-line": "Balance: {{value, money}}",
       "no-balance-msg": "No balance",
       "token-details-title": "Token details"
     },
