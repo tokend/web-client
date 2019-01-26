@@ -265,19 +265,6 @@ export default {
   width: 18rem;
 }
 
-.issuance-form button + button {
-  margin-left: auto;
-}
-
-.issuance-form__cancel-btn {
-  @include button();
-
-  padding-left: .1rem;
-  padding-right: .1rem;
-  margin-bottom: 2rem;
-  font-weight: normal;
-}
-
 .issuance-form__amount-wrapper {
   display: flex;
 }

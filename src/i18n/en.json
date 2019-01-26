@@ -75,7 +75,7 @@
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
-      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
+      "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
     },

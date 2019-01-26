@@ -86,8 +86,8 @@ export default {
         if (!await this.isUserExist(accountId)) {
           await Sdk.api.users.create(accountId)
         }
-        await this.loadKyc()
         await this.loadAccount(accountId)
+        await this.loadKyc()
         this.$router.push({ name: 'app' })
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {

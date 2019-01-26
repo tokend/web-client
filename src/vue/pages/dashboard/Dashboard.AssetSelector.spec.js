@@ -213,10 +213,10 @@ describe('Dashboard.AssetSelector component', () => {
         expect(wrapper.vm.imgUrl).to.equal(`${config.FILE_STORAGE}/some-key`)
       })
 
-      it('returns default path to image when logoKey is not exists', () => {
+      it('returns empty string when logoKey is not exists', () => {
         wrapper.vm.currentAsset = 'USD'
 
-        expect(wrapper.vm.imgUrl).to.equal('/static/coin-picture.png')
+        expect(wrapper.vm.imgUrl).to.equal('')
       })
     })
 

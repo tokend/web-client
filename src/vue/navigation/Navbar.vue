@@ -46,6 +46,7 @@ export default {
   .navbar__title {
     font-size: 4rem;
     font-weight: normal;
+    min-width: 15rem;
 
     @include respond-to-custom($sidebar-hide-bp) {
       font-size: 3rem;

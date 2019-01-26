@@ -75,7 +75,7 @@ describe('IssuanceForm component', () => {
       asset: ['required'],
       amount: ['required', 'amountRange'],
       receiver: ['required', 'emailOrAccountId'],
-      reference: ['required'],
+      reference: ['required', 'maxLength'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
