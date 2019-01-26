@@ -2,10 +2,10 @@
   <div class="withdrawal" v-if="isLoaded">
     <template v-if="tokenCodes.length">
       <form
-        @submit.prevent="confirmingWithdrawal"
+        @submit.prevent="confirmWithdrawal"
         id="withdrawal-form"
       >
-        <div class="app__form-row withdraw__form-row">
+        <div class="app__form-row withdrawal__form-row">
           <div class="app__form-field">
             <select-field
               :values="tokenCodes"
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="app__form-row withdraw__form-row">
+        <div class="app__form-row withdrawal__form-row">
           <input-field
             white-autofill
             class="app__form-field"
@@ -44,7 +44,7 @@
           />
         </div>
 
-        <div class="app__form-row withdraw__form-row">
+        <div class="app__form-row withdrawal__form-row">
           <input-field
             white-autofill
             class="app__form-field"
@@ -59,10 +59,10 @@
           />
         </div>
 
-        <div class="app__form-row withdraw__form-row">
-          <table class="withdraw__fee-table">
+        <div class="app__form-row withdrawal__form-row">
+          <table class="withdrawal__fee-table">
             <tbody
-              class="withdraw__fee-tbody"
+              class="withdrawal__fee-tbody"
               :class="{ 'withdrawal__data_loading': isFeesLoadPending }">
               <tr>
                 <td>{{ 'withdrawal-form.network-fee-hint' | globalize }}</td>
@@ -83,7 +83,7 @@
                 </td>
               </tr>
             </tbody>
-            <tbody class="withdraw__total-fee-tbody">
+            <tbody class="withdrawal__total-fee-tbody">
               <tr>
                 <td>
                   {{ 'withdrawal-form.total-amount-account' | globalize }}
@@ -188,7 +188,7 @@ export default {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.balanceInfo.balance),
         },
-        address: { required, address },
+        address: { required, address: address(this.form.tokenCode) },
       },
     }
   },
@@ -294,7 +294,7 @@ export default {
         },
       }
     },
-    confirmingWithdrawal () {
+    confirmWithdrawal () {
       if (!this.isFormValid()) return
       this.isConfirmationShown = true
       this.disableForm()
@@ -306,7 +306,7 @@ export default {
 <style lang="scss" scoped>
   @import "@/scss/variables";
 
-  .withdraw__fees-container {
+  .withdrawal__fees-container {
     &.loading {
       opacity: 0.7;
     }
@@ -316,7 +316,7 @@ export default {
     }
   }
 
-  .withdraw__form-row {
+  .withdrawal__form-row {
     margin-bottom: 2.5rem;
   }
 
@@ -325,7 +325,7 @@ export default {
     opacity: 0.7;
   }
 
-  .withdraw__fee-table {
+  .withdrawal__fee-table {
     width: 100%;
     font-size: 1.2rem;
 
@@ -338,11 +338,11 @@ export default {
     }
   }
 
-  .withdraw__fee-tbody {
+  .withdrawal__fee-tbody {
     opacity: 0.7;
   }
 
-  .withdraw__total-fee-tbody {
+  .withdrawal__total-fee-tbody {
     font-weight: 600
   }
 

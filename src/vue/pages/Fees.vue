@@ -9,7 +9,7 @@
         v-model="filters.asset"
         :values="assetCodes"
         :key="filters.asset"
-        class="fees__assets-select app__no-border-select"
+        class="fees__assets-select app__select--no-border"
       />
     </div>
     <div class="fees__table">

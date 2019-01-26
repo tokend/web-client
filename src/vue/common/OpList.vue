@@ -17,7 +17,7 @@
         <th class="op-list__head-cell op-list__head-cell--status">
           {{ 'op-list.head.status' | globalize }}
         </th>
-        <th class="op-list__head-cell op-list__head-cell--toggle" />
+        <th class="op-list__head-cell op-list__head-cell--toggle-btn-width" />
       </tr>
 
       <op-list-row
