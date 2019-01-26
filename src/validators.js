@@ -12,7 +12,7 @@ export const amountRange = (from, to) => value => Number(value) &&
 export const emailOrAccountId = value => {
   return validators.email(value) || base.Keypair.isValidPublicKey(value)
 }
-export const address = value => validateAddress(value)
+export const address = (asset) => value => validateAddress(value, asset)
 export const maxValueWrapper = value => {
   return !validators.helpers.req(value()) || validators.maxValue(value())
 }

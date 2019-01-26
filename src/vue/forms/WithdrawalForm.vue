@@ -188,7 +188,7 @@ export default {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.balanceInfo.balance),
         },
-        address: { required, address },
+        address: { required, address: address(this.form.tokenCode) },
       },
     }
   },

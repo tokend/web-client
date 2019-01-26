@@ -1,9 +1,19 @@
 import WAValidator from 'wallet-address-validator'
 
-export function validateAddress (address) {
-  if (isETHAddress(address)) return true
-  if (isBTCAddress(address)) return true
-  return false
+const ASSETS = {
+  btc: 'BTC',
+  eth: 'ETH',
+}
+
+export function validateAddress (address, asset) {
+  switch (asset) {
+    case ASSETS.btc:
+      return isBTCAddress(address)
+    case ASSETS.eth:
+      return isETHAddress(address)
+    default:
+      return false
+  }
 }
 
 function isETHAddress (address) {
@@ -11,5 +21,5 @@ function isETHAddress (address) {
 }
 
 function isBTCAddress (address) {
-  return WAValidator.validate(address, 'BTC', 'both')
+  return WAValidator.validate(address, ASSETS.btc, 'both')
 }
