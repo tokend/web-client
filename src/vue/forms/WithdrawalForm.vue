@@ -2,7 +2,7 @@
   <div class="withdrawal" v-if="isLoaded">
     <template v-if="tokenCodes.length">
       <form
-        @submit.prevent="confirmingWithdrawal"
+        @submit.prevent="confirmWithdrawal"
         id="withdrawal-form"
       >
         <div class="app__form-row withdrawal__form-row">
@@ -294,7 +294,7 @@ export default {
         },
       }
     },
-    confirmingWithdrawal () {
+    confirmWithdrawal () {
       if (!this.isFormValid()) return
       this.isConfirmationShown = true
       this.disableForm()
