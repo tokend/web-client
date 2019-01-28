@@ -60,7 +60,7 @@ import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
-  name: 'trade-orders-buy',
+  name: 'deposit-form',
   components: {
     Loader,
     AddressViewer,
