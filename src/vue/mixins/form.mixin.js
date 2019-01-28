@@ -114,6 +114,7 @@ export default {
       this.formMixin.isDisabled = false
     },
     showConfirmation () {
+      this.disableForm()
       this.formMixin.isConfirmationShown = true
       this.formMixin.isConfirmationDisabled = true
 
@@ -122,6 +123,7 @@ export default {
       }, CONFIRMATION_DISABLED_TIME)
     },
     hideConfirmation () {
+      this.enableForm()
       this.formMixin.isConfirmationShown = false
     },
   },
