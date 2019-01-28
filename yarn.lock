@@ -655,9 +655,9 @@
     lodash.get "^4.4.2"
 
 "@tokend/js-sdk@0.3.13":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.12.tgz#0381489e5ee5393bdd5146be7991d86acf7bb3c5"
-  integrity sha512-aXnXSBxxv2kRlGtMKr8koQcpF1cNJQ3XhqfY2u7sz2ft6C4vAFoFET0t2771zX/W+UG8jRJNTBIbNhTAKbCa1A==
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.13.tgz#cabd5f13c9cb74f91f0be3cf6c7074041beff0e2"
+  integrity sha512-38lAUKLWZ1nvVUXKaT2sQ1oYF9sWkjP++MIwuVtO5sS9ft4c4RP2xUkDvUGjYdRr1gK73e6q9NUKij4c1npDaw==
   dependencies:
     axios "^0.16.0"
     base32.js "~0.1.0"

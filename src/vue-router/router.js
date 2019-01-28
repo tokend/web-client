@@ -33,6 +33,9 @@ export const router = new Router({
         {
           path: '/sign-in',
           name: vueRoutes.login.name,
+          // Used to define when App component should render
+          // main app content. If the current route is login route
+          // the content shouldn't be rendered.
           meta: { loginRoute: true },
           component: resolve => require(['@/vue/pages/Login'], resolve),
           beforeEnter: authPageGuard,
