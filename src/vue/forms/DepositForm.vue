@@ -7,9 +7,7 @@
             {{ 'deposit-form.how-to' | globalize }}
           </p>
         </div>
-        <form
-          @submit.prevent="isConfirmationShown = true"
-        >
+        <form>
           <div class="app__form-row deposit__form-row">
             <div class="app__form-field">
               <select-field

@@ -111,8 +111,8 @@ export default {
   }
 
   .address-viewer__address-info {
-    border: solid 1px $col-form-stepper-tab-border;
-    border-radius: 2px;
+    border: solid 0.1rem $col-form-stepper-tab-border;
+    border-radius: 0.2rem;
     margin: 0.5rem 0 1rem 0;
     padding: 1.5rem 1rem 1rem 1rem;
   }
