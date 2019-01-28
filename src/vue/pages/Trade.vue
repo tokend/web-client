@@ -96,6 +96,7 @@ import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
 import { Bus } from '@/js/helpers/event-bus'
+import { errors } from '@tokend/js-sdk'
 import { globalize } from '@/vue/filters/globalize'
 
 export default {
@@ -115,6 +116,7 @@ export default {
       baseBalance: '',
       quoteBalance: '',
     },
+    errors,
     selectedPair: '',
     tradeablePairs: [],
     formattedPairs: [],

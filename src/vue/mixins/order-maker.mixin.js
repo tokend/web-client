@@ -2,10 +2,11 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { base, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { base, errors, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import { globalize } from '@/vue/filters/globalize'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
+import { parseError } from '@/js/errors/error.parser'
 
 const OFFER_FEE_TYPE = 'offerFee'
 
@@ -80,7 +81,11 @@ export default {
 
         Bus.success(globalize('offer-creation-form.success'))
       } catch (error) {
-        ErrorHandler.process(error)
+        if (error instanceof errors.BadRequestError) {
+          Bus.error(parseError(error))
+        } else {
+          ErrorHandler.process(error)
+        }
       }
     },
   },

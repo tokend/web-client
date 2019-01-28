@@ -81,7 +81,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -102,12 +101,9 @@ export default {
     },
     async submit () {
       this.disableForm()
-      try {
-        await this.createOrder(this.getCreateOfferOpts())
-      } catch (error) {
-        // TODO: handle operation type
-        ErrorHandler.process(error)
-      }
+
+      await this.createOrder(this.getCreateOfferOpts())
+
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
     },

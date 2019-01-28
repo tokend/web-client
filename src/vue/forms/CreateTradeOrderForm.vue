@@ -87,9 +87,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
-import { formatMoney } from '@/vue/filters/formatMoney'
 import FormConfirmation from '@/vue/common/FormConfirmation'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
 import { required, maxValue } from '@validators'
@@ -148,18 +146,15 @@ export default {
   },
   methods: {
     formatNumber,
-    formatMoney,
     getQuoteAmount () {
       this.form.quoteAmount =
-        formatMoney(MathUtil.multiply(this.form.price, this.form.amount))
+        MathUtil.multiply(this.form.price, this.form.amount)
     },
     async submit () {
       this.disableForm()
-      try {
-        await this.createOrder(this.getCreateOfferOpts())
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
+
+      await this.createOrder(this.getCreateOfferOpts())
+
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
     },
