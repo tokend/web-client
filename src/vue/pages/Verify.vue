@@ -21,7 +21,7 @@
       <router-link
         v-ripple
         class="auth-page__cancel-btn"
-        :to="vueRoutes.signin"
+        :to="vueRoutes.login"
         tag="button"
       >
         {{ 'auth-pages.continue' | globalize }}
@@ -55,7 +55,7 @@ export default {
   }),
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      if (from.name === vueRoutes.signin.name) {
+      if (from.name === vueRoutes.login.name) {
         Sdk.api.wallets.resendEmail(vm.walletId)
       }
     })

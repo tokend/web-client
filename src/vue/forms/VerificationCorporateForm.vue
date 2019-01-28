@@ -6,7 +6,7 @@
     <form
       novalidate
       class="app-form"
-      @submit.prevent="isFormValid() && showFormConfirmation()"
+      @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
@@ -106,8 +106,8 @@
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isFormConfirmationShown"
-          @ok="hideFormConfirmation() || submit()"
-          @cancel="hideFormConfirmation"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
         />
         <button
           v-ripple

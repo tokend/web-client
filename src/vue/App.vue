@@ -5,7 +5,7 @@
       :message-id="'common.browser-not-supported'"
     />
 
-    <template v-if="isSignedIn && !$route.meta.signinRoute">
+    <template v-if="isLoggedIn && !$route.meta.loginRoute">
       <div class="app__container">
         <sidebar />
 
@@ -62,7 +62,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.wallet,
-      vuexTypes.isSignedIn,
+      vuexTypes.isLoggedIn,
     ]),
   },
 
@@ -77,7 +77,7 @@ export default {
   methods: {
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      if (this[vuexTypes.isSignedIn]) {
+      if (this[vuexTypes.isLoggedIn]) {
         Sdk
           .sdk
           .useWallet(new Wallet(

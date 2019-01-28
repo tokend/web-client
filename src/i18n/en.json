@@ -34,13 +34,13 @@
 
   "translations": {
     "formats": {
-      "date":  "{{value, date}}",
-      "dmy":  "{{value, dmy}}",
+      "date": "{{value, date}}",
+      "dmy": "{{value, dmy}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
-      "calendar":  "{{value, calendar}}",
-      "order_number":  "{{value, order_number}}",
+      "calendar": "{{value, calendar}}",
+      "order_number": "{{value, order_number}}",
       "percent": "{{value, percent}}",
       "fee_type": "{{value, fee_type}}",
       "fee_subtype": "{{value, fee_subtype}}"
@@ -60,7 +60,7 @@
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
       "close-lbl_info": "Got it"
-     },
+    },
 
     "validation": {
       "failed": "Please fill out all the fields before continuing",
@@ -82,17 +82,17 @@
 
     "errors": {
       "default": "Something bad happened. Please try again later",
-      "server":  "This service is temporary unavailable. Please try again later",
+      "server": "This service is temporary unavailable. Please try again later",
       "timeout": "Timeout exceeded. Please re-check your internet connection and try again",
       "network": "Network error. Please re-check your internet connection and try again",
-      "internal":  "This service is temporary unavailable. Please try again later",
+      "internal": "This service is temporary unavailable. Please try again later",
       "conflict": "Such item already exists",
       "not-found": "Such item not found",
       "forbidden": "Request forbidden",
       "bad-request": "The request you sent is invalid in some way",
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
-      "tfa-required":  "2FA required",
+      "tfa-required": "2FA required",
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists"
     },
@@ -429,7 +429,8 @@
     },
 
     "email-getter": {
-      "loading-msg": "Loading..."
+      "loading-msg": "Loading...",
+      "master-account": "Master"
     }
   }
 }

@@ -5,7 +5,7 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="signin-email"
+          id="login-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
@@ -17,7 +17,7 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="signin-password"
+          id="login-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
@@ -51,7 +51,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 
 export default {
-  name: 'signin-form',
+  name: 'login-form',
   mixins: [FormMixin],
   data: _ => ({
     form: {

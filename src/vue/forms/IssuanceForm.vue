@@ -11,7 +11,7 @@
       <form
         novalidate
         class="app__form"
-        @submit.prevent="isFormValid() && showFormConfirmation()"
+        @submit.prevent="isFormValid() && showConfirmation()"
       >
         <div class="app__form-row">
           <div class="app__form-field">
@@ -97,8 +97,8 @@
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
             :is-pending="formMixin.isConfirmationDisabled"
-            @ok="hideFormConfirmation() || submit()"
-            @cancel="hideFormConfirmation"
+            @ok="hideConfirmation() || submit()"
+            @cancel="hideConfirmation"
           />
           <button
             v-else

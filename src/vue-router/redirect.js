@@ -16,5 +16,5 @@ export const resolveRedirect = (to, from, next) => {
 }
 
 function handleEmailRedirect (encodedAction, next) {
-  next({ ...vueRoutes.signin, params: { encodedEmailAction: encodedAction } })
+  next({ ...vueRoutes.login, params: { encodedEmailAction: encodedAction } })
 }

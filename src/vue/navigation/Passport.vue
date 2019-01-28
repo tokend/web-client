@@ -50,7 +50,7 @@
 
         <button
           class="app__button-flat"
-          @click="signOut"
+          @click="logOut"
         >
           {{ 'passport.sign-out-btn' | globalize }}
         </button>
@@ -112,7 +112,7 @@ export default {
       this.isDropdownOpen = false
     },
 
-    signOut () {
+    logOut () {
       this.closeDropdown()
       this.clearState()
       location.reload()

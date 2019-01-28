@@ -1,4 +1,4 @@
-import SigninForm from './SigninForm'
+import LoginForm from './LoginForm'
 
 import Vuelidate from 'vuelidate'
 import VueRouter from 'vue-router'
@@ -28,7 +28,7 @@ localVue.use(VueRouter)
 localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
-describe('SigninForm component unit test', () => {
+describe('LoginForm component unit test', () => {
   afterEach(() => {
     sinon.restore()
   })
@@ -37,7 +37,7 @@ describe('SigninForm component unit test', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = mount(SigninForm, { localVue })
+      wrapper = mount(LoginForm, { localVue })
     })
 
     const expectedResults = {
@@ -55,8 +55,8 @@ describe('SigninForm component unit test', () => {
     }
 
     const fieldBindings = {
-      '#signin-email': 'email',
-      '#signin-password': 'password',
+      '#login-email': 'email',
+      '#login-password': 'password',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -109,7 +109,7 @@ describe('SigninForm component unit test', () => {
         }],
       })
 
-      wrapper = shallowMount(SigninForm, {
+      wrapper = shallowMount(LoginForm, {
         store,
         router,
         localVue,

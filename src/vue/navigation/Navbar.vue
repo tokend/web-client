@@ -7,7 +7,7 @@
         </h3>
       </template>
       <h2 class="navbar__title">
-        {{ $route.meta.pageNameTranslationId | globalize }}
+        {{ pageNameTranslationId | globalize }}
       </h2>
     </div>
 
@@ -23,6 +23,17 @@ import Passport from './Passport'
 export default {
   name: 'navbar',
   components: { Passport },
+  computed: {
+    pageNameTranslationId () {
+      const pageNamePath = this.$route.matched
+        .find(path => path.meta.pageNameTranslationId)
+      if (pageNamePath) {
+        return pageNamePath.meta.pageNameTranslationId
+      } else {
+        return ''
+      }
+    },
+  },
 }
 </script>
 

@@ -4,7 +4,7 @@
       v-if="isLoaded"
       :title="isTitled && result"
     >
-      {{ result }}
+      {{ result | globalize }}
     </template>
     <template v-else-if="isLoadingFailed">
       &mdash;
@@ -51,6 +51,10 @@ export default {
 
   methods: {
     async loadResult () {
+      if (this.accountId === Sdk.networkDetails.masterAccountId) {
+        this.result = 'email-getter.master-account'
+        return
+      }
       try {
         const accountId = await this.getAccountId()
         const { data } = await Sdk.api.users.get(accountId)
