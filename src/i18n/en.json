@@ -345,17 +345,6 @@
       "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
     },
 
-    "user-trade-history": {
-      "title": "Trade history",
-      "table-amount-lbl": "Amount ({{asset}})",
-      "table-price-lbl": "Price ({{asset}})",
-      "table-total-lbl": "Total ({{asset}})",
-      "table-time-lbl": "Time",
-      "loading-msg": "Loading...",
-      "no-data-title": "No trade history",
-      "no-data-message": "Here will be the list of your completed trades for {{base}}/{{quote}} pair"
-    },
-
     "trade-open-orders": {
       "title": "Your open {{base}}/{{quote}} orders",
       "table-id-lbl": "Order ID",
