@@ -1,5 +1,8 @@
 <template>
-  <div class="date-field-flatpickr">
+  <div
+    class="date-field-flatpickr"
+    :class="{ 'date-field-flatpickr__input--disabled': $attrs.disabled }"
+  >
     <label
       class="date-field-flatpickr__label"
       :class="{
@@ -11,14 +14,13 @@
 
     <div class="date-field-flatpickr__field">
       <flat-pickr
-        :id="id"
+        v-bind="$attrs"
+        v-on="$listeners"
         class="date-field-flatpickr__input"
-        :class="{ 'date-field-flatpickr__input--disabled': disabled }"
         :config="config"
-        :value="flatpickrDate"
+        v-model="flatpickrDate"
         :placeholder="placeholder || ' '"
-        :key="flatpickrDate + disabled"
-        :disabled="disabled"
+        :key="flatpickrDate + $attrs.disabled"
         @input.native="dateFieldUpdated"
         @on-close="onClose"
         @on-open="onOpen"
@@ -39,28 +41,31 @@
 import FlatPickr from 'vue-flatpickr-component'
 import moment from 'moment'
 
+const EVENTS = {
+  getNewValue: 'getNewValue',
+}
+
 export default {
   name: 'date-field-flatpickr',
 
   components: {
-    FlatPickr
+    FlatPickr,
   },
 
   props: {
-    disabled: { type: Boolean, default: false },
+    value: { type: String, default: '' },
     enableTime: { type: Boolean, default: true },
     disableBefore: { type: String, default: '' },
     disableAfter: { type: String, default: '' },
     placeholder: { type: String, default: 'yyyy-dd-m at HH:MM' },
-    label: { type: String, default: '' }
+    label: { type: String, default: '' },
+    errorMessage: { type: String, default: undefined },
   },
 
-  data () {
-    return {
-      flatpickrDate: '',
-      isCalendarOpen: false
-    }
-  },
+  data: _ => ({
+    flatpickrDate: '',
+    isCalendarOpen: false,
+  }),
 
   computed: {
     config () {
@@ -79,18 +84,18 @@ export default {
             if (!this.disableAfter) return false
             const stamp = moment(this.disableAfter)
             return moment(date).isAfter(stamp)
-          }
+          },
         ],
         enableTime: this.enableTime,
-        time_24hr: true
+        time_24hr: true,
       }
-    }
+    },
   },
 
   watch: {
-    flatpickrDate () {
+    'value': function () {
       this.flatpickrDate = this.value
-    }
+    },
   },
 
   created () {
@@ -100,7 +105,7 @@ export default {
   methods: {
     dateFieldUpdated (event) {
       if (event) {
-        this.$emit(event.target.value)
+        this.$emit('input', this.flatpickrDate)
       }
     },
     onOpen () {
@@ -108,13 +113,12 @@ export default {
     },
     onClose () {
       this.isCalendarOpen = false
-      this.$emit('getNewValue', this.flatpickrDate)
+      this.$emit(EVENTS.getNewValue, this.flatpickrDate)
     },
     onBlur (event) {
-      this.flatpickrDate = event
       this.$emit('getNewValue', this.flatpickrDate)
-    }
-  }
+    },
+  },
 }
 
 </script>

@@ -1,9 +1,9 @@
 @import '~@scss/variables.scss';
 @import '~@scss/mixins.scss';
 
-$margin-row-to-row: 4 * $point;
-$margin-row-to-row-small: 3 * $point;
-$field-to-field-gap: 2 * $point;
+$margin-row-to-row: 2.4rem;
+$margin-row-to-row-small: 3rem;
+$field-to-field-gap: 2rem;
 
 .app__form-row {
   display: flex;
@@ -50,11 +50,11 @@ $field-to-field-gap: 2 * $point;
   display: flex;
 
   &:not(:first-child) {
-    margin-top: 5 * $point;
+    margin-top: 5rem;
   }
 
   & > button + button {
-    margin-left: 1 * $point;
+    margin-left: 1rem;
   }
 
   &--right {
@@ -80,7 +80,7 @@ $field-to-field-gap: 2 * $point;
 
   @include respond-to(small) {
     &:not(:first-child) {
-      margin-top: 4 * $point;
+      margin-top: 4rem;
     }
 
     & > .app__form-field + .app__form-field {
@@ -93,8 +93,8 @@ $field-to-field-gap: 2 * $point;
 
 .app__form-submit-btn {
   @include button-raised();
-  min-width: 16 * $point;
-  height: 36px;
+  min-width: 16rem;
+  height: 3.6rem;
 }
 
 .app__form-subheading {

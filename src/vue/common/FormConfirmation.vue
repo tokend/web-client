@@ -27,28 +27,28 @@ export default {
   props: {
     messageId: {
       type: String,
-      default: 'form-confirmation.message-text-default'
+      default: 'form-confirmation.message-text-default',
     },
     okButtonTextId: {
       type: String,
-      default: 'form-confirmation.button-text-ok'
+      default: 'form-confirmation.button-text-ok',
     },
     cancelButtonTextId: {
       type: String,
-      default: 'form-confirmation.button-text-cancel'
+      default: 'form-confirmation.button-text-cancel',
     },
     isPending: {
       type: Boolean,
-      default: false
+      default: false,
     },
     okEvent: {
       type: String,
-      default: 'ok'
+      default: 'ok',
     },
     cancelEvent: {
       type: String,
-      default: 'cancel'
-    }
+      default: 'cancel',
+    },
   },
   methods: {
     emitOk () {
@@ -56,14 +56,14 @@ export default {
     },
     emitCancel () {
       this.$emit(this.cancelEvent)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss">
-@import "~L@scss/variables.scss";
-@import "~L@scss/mixins.scss";
+@import "~@scss/variables.scss";
+@import "~@scss/mixins.scss";
 
 .form-confirmation {
   display: flex;
@@ -72,21 +72,16 @@ export default {
   flex: 1;
 }
 
-.form-confirmation__msg,
-.form-confirmation__btns {
-  width: 49.999999%;
-  flex: 0.5;
-}
-
 .form-confirmation__msg {
-  font-size: 1rem;
+  font-size: 1.6rem;
   line-height: 1.25;
-  padding-right: 1 * $point;
+  padding-right: 1.6rem;
 }
 
 .form-confirmation__btns {
   display: flex;
-  max-width: 250px;
+  max-width: 25rem;
+  margin-left: auto;
 }
 
 .form-confirmation__ok-btn,

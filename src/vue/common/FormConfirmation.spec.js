@@ -19,17 +19,17 @@ describe('FormConfirmation component test', () => {
       'form-confirmation': {
         'message-text-custom': 'Please ensure everything is OK!',
         'button-text-ok-custom': 'I\'m okay, let\'s go!',
-        'button-text-cancel-custom': '!WOWO, wait please'
-      }
+        'button-text-cancel-custom': '!WOWO, wait please',
+      },
     })
 
     const wrapper = mount(FormConfirmation, {
       propsData: {
         messageId: 'form-confirmation.message-text-custom',
         okButtonTextId: 'form-confirmation.button-text-ok-custom',
-        cancelButtonTextId: 'form-confirmation.button-text-cancel-custom'
+        cancelButtonTextId: 'form-confirmation.button-text-cancel-custom',
       },
-      localVue
+      localVue,
     })
 
     const renderedMessage = wrapper
@@ -52,12 +52,12 @@ describe('FormConfirmation component test', () => {
       'form-confirmation': {
         'message-text-default': 'Please recheck the form before confirmation',
         'button-text-ok': 'Confirm',
-        'button-text-cancel': 'Cancel'
-      }
+        'button-text-cancel': 'Cancel',
+      },
     })
 
     const wrapper = mount(FormConfirmation, {
-      localVue
+      localVue,
     })
 
     const renderedMessage = wrapper
@@ -78,7 +78,7 @@ describe('FormConfirmation component test', () => {
   it('template disables the OK and cancel buttons if isPending is true', () => {
     const wrapper = mount(FormConfirmation, {
       propsData: { isPending: true },
-      localVue
+      localVue,
     })
     const okBtn = wrapper.find('.form-confirmation__ok-btn')
     const cancelBtn = wrapper.find('.form-confirmation__cancel-btn')
@@ -90,7 +90,7 @@ describe('FormConfirmation component test', () => {
   it('template enables the OK and cancel buttons if isPending is false', () => {
     const wrapper = mount(FormConfirmation, {
       propsData: { isPending: false },
-      localVue
+      localVue,
     })
     const okBtn = wrapper.find('.form-confirmation__ok-btn')
     const cancelBtn = wrapper.find('.form-confirmation__cancel-btn')
@@ -103,7 +103,7 @@ describe('FormConfirmation component test', () => {
     const okEvent = 'ok-event'
     const wrapper = mount(FormConfirmation, {
       propsData: { okEvent },
-      localVue
+      localVue,
     })
 
     wrapper
@@ -117,7 +117,7 @@ describe('FormConfirmation component test', () => {
     const cancelEvent = 'cancel-event'
     const wrapper = mount(FormConfirmation, {
       propsData: { cancelEvent },
-      localVue
+      localVue,
     })
 
     wrapper

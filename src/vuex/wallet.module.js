@@ -5,7 +5,7 @@ import { Wallet } from '@tokend/js-sdk'
 import isEmpty from 'lodash/isEmpty'
 
 export const state = {
-  wallet: {}
+  wallet: {},
 }
 
 export const mutations = {
@@ -24,9 +24,9 @@ export const mutations = {
       accountId: wallet.accountId,
       secretSeed: wallet.secretSeed,
       email: wallet.email,
-      id: wallet.id
+      id: wallet.id,
     }
-  }
+  },
 }
 
 export const actions = {
@@ -35,7 +35,7 @@ export const actions = {
   },
   [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
     commit(vuexTypes.SET_WALLET, wallet)
-  }
+  },
 }
 
 export const getters = {
@@ -54,12 +54,12 @@ export const getters = {
   [vuexTypes.walletPublicKey]: (state, getters) =>
     getters[vuexTypes.wallet].keypair
       ? getters[vuexTypes.wallet].keypair.accountId()
-      : ''
+      : '',
 }
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 }

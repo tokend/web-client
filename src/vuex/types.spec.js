@@ -1,21 +1,23 @@
-import {
-  vuexTypes,
-  account,
-  kyc,
-  factors,
-  wallet
-} from './index'
+import { vuexTypes, rootModule } from './index'
+
+import account from './account.module'
+import factors from './factors.module'
+import kyc from './kyc.module'
+import wallet from './wallet.module'
 
 describe('vuex types unit tests', () => {
   const getModuleKeys = (module) => {
     return Object.keys({
       ...module.actions,
       ...module.mutations,
-      ...module.getters
+      ...module.getters,
     })
   }
 
   it('every entity in modules should be mentioned in vuex-types', () => {
+    for (const key of getModuleKeys(rootModule)) {
+      expect(vuexTypes).to.have.property(key)
+    }
     for (const key of getModuleKeys(account)) {
       expect(vuexTypes).to.have.property(key)
     }
@@ -32,10 +34,11 @@ describe('vuex types unit tests', () => {
 
   it('every key described in vuex-types should be a real vuex-entity', () => {
     const moduleKeys = [
+      ...getModuleKeys(rootModule),
       ...getModuleKeys(account),
       ...getModuleKeys(kyc),
       ...getModuleKeys(factors),
-      ...getModuleKeys(wallet)
+      ...getModuleKeys(wallet),
     ]
 
     for (const key of Object.keys(vuexTypes)) {

@@ -5,7 +5,7 @@ import { required } from '@validators'
 
 import {
   mount,
-  createLocalVue
+  createLocalVue,
 } from '@vue/test-utils'
 
 const localVue = createLocalVue()
@@ -17,15 +17,15 @@ const Component = {
   data: _ => ({
     form: {
       firstName: '',
-      lastName: ''
-    }
+      lastName: '',
+    },
   }),
   validations: {
     form: {
       firstName: { required },
-      lastName: { required }
-    }
-  }
+      lastName: { required },
+    },
+  },
 }
 
 describe('form.mixin unit test', () => {
@@ -34,37 +34,37 @@ describe('form.mixin unit test', () => {
   beforeEach(() => {
     wrapper = mount(Component, {
       mixins: [FormMixin],
-      localVue
+      localVue,
     })
   })
 
   it('disable/enables methods correctly modify isDisabled ', () => {
-    wrapper.vm._disableForm()
-    expect(wrapper.vm._isDisabled).to.be.true
+    wrapper.vm.disableForm()
+    expect(wrapper.vm.formMixin.isDisabled).to.be.true
 
-    wrapper.vm._enableForm()
-    expect(wrapper.vm._isDisabled).to.be.false
+    wrapper.vm.enableForm()
+    expect(wrapper.vm.formMixin.isDisabled).to.be.false
   })
 
   it('isValid should define invalid form fields', () => {
-    expect(wrapper.vm._isFormValid()).to.be.false
+    expect(wrapper.vm.isFormValid()).to.be.false
 
     wrapper.setData({
       form: {
         firstName: 'John',
-        lastName: 'Doe'
-      }
+        lastName: 'Doe',
+      },
     })
 
-    expect(wrapper.vm._isFormValid()).to.be.true
+    expect(wrapper.vm.isFormValid()).to.be.true
   })
 
-  it('_touchField should modify dirty param for the validation model', () => {
-    wrapper.vm._touchField('form.firstName')
+  it('touchField should modify dirty param for the validation model', () => {
+    wrapper.vm.touchField('form.firstName')
     expect(wrapper.vm.$v.form.firstName.$dirty).to.be.true
     expect(wrapper.vm.$v.form.lastName.$dirty).to.be.false
 
-    wrapper.vm._touchField('form.lastName')
+    wrapper.vm.touchField('form.lastName')
     expect(wrapper.vm.$v.form.lastName.$dirty).to.be.true
   })
 })

@@ -4,10 +4,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="_touchField('form.email')"
+          @blur="touchField('form.email')"
           id="signup-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="_getErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email')"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -15,10 +16,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="_touchField('form.password')"
+          @blur="touchField('form.password')"
           id="signup-password"
           type="password"
-          :error-message="_getErrorMessage('form.password')"
+          :error-message="getFieldErrorMessage('form.password')"
+          :white-autofill="false"
           :label="'auth-pages.password' | globalize"
         />
       </div>
@@ -27,10 +29,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="_touchField('form.confirmPassword')"
+          @blur="touchField('form.confirmPassword')"
           id="signup-confirm-password"
           type="password"
-          :error-message="_getErrorMessage('form.confirmPassword')"
+          :error-message="getFieldErrorMessage('form.confirmPassword')"
+          :white-autofill="false"
           :label="'auth-pages.confirm-password' | globalize"
         />
       </div>
@@ -41,7 +44,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn"
-        :disabled="_isDisabled"
+        :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
       </button>
@@ -56,12 +59,11 @@ import {
   email,
   required,
   password,
-  sameAs
+  sameAs,
 } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { errors } from '@tokend/js-sdk'
-import { Bus } from '@/js/helpers/event-bus'
+import { errors } from '@/js/errors'
 import { Sdk } from '@/sdk'
 
 export default {
@@ -70,15 +72,15 @@ export default {
   props: {
     submitEvent: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data: _ => ({
     form: {
       email: '',
       password: '',
-      confirmPassword: ''
-    }
+      confirmPassword: '',
+    },
   }),
   validations: {
     form: {
@@ -87,34 +89,33 @@ export default {
       confirmPassword: {
         required,
         password,
-        sameAsPassword: sameAs(function () { return this.form.password })
-      }
-    }
+        sameAsPassword: sameAs(function () { return this.form.password }),
+      },
+    },
   },
   methods: {
     async submit () {
-      if (!this._isFormValid()) {
+      if (!this.isFormValid()) {
         return
       }
-      this._disableForm()
+      this.disableForm()
       try {
         await Sdk.api.wallets.getKdfParams(this.form.email)
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
-        Bus.error('auth-pages.error-user-exist')
+        throw new errors.UserExistsError()
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
           // If user not found - it's our case, so we will continue sign-up
           this.$emit(this.submitEvent, this.form)
-          this._enableForm()
+          this.enableForm()
           return
         }
-        console.error(e)
         ErrorHandler.process(e)
       }
-      this._enableForm()
-    }
-  }
+      this.enableForm()
+    },
+  },
 }
 </script>
 

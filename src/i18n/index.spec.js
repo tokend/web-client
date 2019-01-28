@@ -1,5 +1,6 @@
 import _cloneDeep from 'lodash/cloneDeep'
 import i18next from 'i18next'
+import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 
 const mockEn = {
   'config': {
@@ -9,29 +10,29 @@ const mockEn = {
           'usd': '$0,0.[00]',
           'eur': '0,0.[00]€',
           'gbp': '0,0.[00]£',
-          'default': '0,0.[000000]'
+          'default': '0,0.[000000]',
         },
         'default': '0,0.[000000]',
         'integer': '0,0',
         'percent': '0,0.[00]%',
-        'order_number': '0,0o'
-      }
+        'order_number': '0,0o',
+      },
     },
 
     'date': {
       'presets': {
         'time': 'H:mm',
         'date': 'MMMM D, YYYY',
-        'datetime': 'MMMM D, YYYY [at] H:mm'
+        'datetime': 'MMMM D, YYYY [at] H:mm',
       },
       'formats': {
         'same_day': '[today at] H:mm',
         'last_day': '[yesterday at] H:mm',
         'next_day': '[tomorrow at] H:mm',
         'last_week': '[last] dddd [at] H:mm',
-        'next_week': '[next] dddd [at] H:mm'
-      }
-    }
+        'next_week': '[next] dddd [at] H:mm',
+      },
+    },
   },
 
   'translations': {
@@ -42,14 +43,29 @@ const mockEn = {
     'withFormattedOrderNumber': 'You are in the {{place, order_number}} place',
     'withFormattedCalendar': 'The offer end date is {{when, calendar}}',
     'withFormattedDate': 'The offer end date is {{when, calendar}}',
-    'withFormattedInteger': 'John bought {{amount, integer}} apples'
-  }
+    'withFormattedInteger': 'John bought {{amount, integer}} apples',
+    'withFormattedFeeType': 'It\'s the {{type, fee_type}} fee type',
+    'withFormattedFeeSubtype': 'It\'s the {{value, fee_subtype}} fee subtype',
+    'fee-types': {
+      'payment': 'Payment',
+      'offer': 'Offer',
+      'withdrawal': 'Withdrawal',
+      'issuance': 'Issuance',
+      'invest': 'Invest',
+      'capital-deployment': 'Capital deployment',
+      'operation': 'Operation',
+      'payout': 'Payout',
+      'incoming-outgoing': 'Incoming & Outgoing',
+      'outgoing': 'Outgoing',
+      'incoming': 'Incoming',
+    },
+  },
 }
 
 /* eslint-disable-next-line import/no-webpack-loader-syntax */
 const webpackInjector = require('inject-loader!babel-loader!./index.js')
 const { i18nOptions } = webpackInjector({
-  './en': mockEn
+  './en': mockEn,
 })
 
 describe('the i18n is properly configured', () => {
@@ -66,7 +82,7 @@ describe('the i18n is properly configured', () => {
 
   it('interpolates properly', () => {
     const result = i18next.t('interpolated', {
-      stuff: 'awesome stuff'
+      stuff: 'awesome stuff',
     })
     expect(result).to.equal('The text with some awesome stuff')
   })
@@ -83,7 +99,7 @@ describe('the i18n is properly configured', () => {
         '1200.123123': '1,200.123123',
         '10500': '10,500',
         '21500.2300': '21,500.23',
-        '400000': '400,000'
+        '400000': '400,000',
       }
 
       for (const [given, expected] of Object.entries(numbers)) {
@@ -105,7 +121,7 @@ describe('the i18n is properly configured', () => {
         '1200.123123': '1,200.123123 ETH',
         '10500': '10,500 ETH',
         '21500.2300': '21,500.23 ETH',
-        '400000': '400,000 ETH'
+        '400000': '400,000 ETH',
       }
 
       for (const [given, expected] of Object.entries(amounts)) {
@@ -113,8 +129,8 @@ describe('the i18n is properly configured', () => {
           const result = i18next.t('withFormattedCurrency', {
             amount: {
               value: given,
-              currency: 'ETH'
-            }
+              currency: 'ETH',
+            },
           })
           expect(result).to.equal(`Your balance is ${expected}`)
         })
@@ -132,7 +148,7 @@ describe('the i18n is properly configured', () => {
         '1200.123123': '$1,200.12',
         '10500': '$10,500',
         '21500.2300': '$21,500.23',
-        '400000': '$400,000'
+        '400000': '$400,000',
       }
 
       for (const [given, expected] of Object.entries(amounts)) {
@@ -140,8 +156,8 @@ describe('the i18n is properly configured', () => {
           const result = i18next.t('withFormattedCurrency', {
             amount: {
               value: given,
-              currency: 'USD'
-            }
+              currency: 'USD',
+            },
           })
           expect(result).to.equal(`Your balance is ${expected}`)
         })
@@ -159,13 +175,13 @@ describe('the i18n is properly configured', () => {
         '1200.123123': '1,200.123123',
         '10500': '10,500',
         '21500.2300': '21,500.23',
-        '400000': '400,000'
+        '400000': '400,000',
       }
 
       for (const [given, expected] of Object.entries(amounts)) {
         it(`given = ${given}`, () => {
           const result = i18next.t('withFormattedCurrency', {
-            amount: given
+            amount: given,
           })
           expect(result).to.equal(`Your balance is ${expected}`)
         })
@@ -181,13 +197,13 @@ describe('the i18n is properly configured', () => {
         '10': '10th',
         '126': '126th',
         '1210': '1,210th',
-        '100500': '100,500th'
+        '100500': '100,500th',
       }
 
       for (const [given, expected] of Object.entries(numbers)) {
         it(`given = ${given}`, () => {
           const result = i18next.t('withFormattedOrderNumber', {
-            place: given
+            place: given,
           })
           expect(result).to.equal(`You are in the ${expected} place`)
         })
@@ -205,13 +221,13 @@ describe('the i18n is properly configured', () => {
         '1200.123123': '1,200',
         '10500': '10,500',
         '21500.2300': '21,500',
-        '400000': '400,000'
+        '400000': '400,000',
       }
 
       for (const [given, expected] of Object.entries(numbers)) {
         it(`given = ${given}`, () => {
           const result = i18next.t('withFormattedInteger', {
-            amount: given
+            amount: given,
           })
           expect(result).to.equal(`John bought ${expected} apples`)
         })
@@ -222,7 +238,7 @@ describe('the i18n is properly configured', () => {
   describe('formats calendars', () => {
     beforeEach(() => {
       sinon.useFakeTimers({
-        now: 1542968022000 // 23 Nov 2018
+        now: 1542968022000, // 23 Nov 2018
       })
     })
 
@@ -235,7 +251,7 @@ describe('the i18n is properly configured', () => {
       '2018-11-29T09:55:12Z': 'next Thursday at 9:55',
       '2018-11-24T11:11:40Z': 'tomorrow at 11:11',
       '2018-11-22T23:53:55Z': 'yesterday at 23:53',
-      '2018-11-17T12:22:10Z': 'last Saturday at 12:22'
+      '2018-11-17T12:22:10Z': 'last Saturday at 12:22',
     }
 
     for (const [given, expected] of Object.entries(dates)) {
@@ -249,7 +265,7 @@ describe('the i18n is properly configured', () => {
   describe('formats date', () => {
     beforeEach(() => {
       sinon.useFakeTimers({
-        now: 1542968022000 // 23 Nov 2018
+        now: 1542968022000, // 23 Nov 2018
       })
     })
 
@@ -262,13 +278,67 @@ describe('the i18n is properly configured', () => {
       '1990-10-29T21:44:02Z': 'October 29, 1990 at 21:44',
       '2010-09-14T20:40:40Z': 'September 14, 2010 at 20:40',
       '2022-01-20T12:55:22Z': 'January 20, 2022 at 12:55',
-      '2040-02-10T10:12:59Z': 'February 10, 2040 at 10:12'
+      '2040-02-10T10:12:59Z': 'February 10, 2040 at 10:12',
     }
 
     for (const [given, expected] of Object.entries(dates)) {
       it(expected, () => {
         const result = i18next.t('withFormattedDate', { when: given })
         expect(result).to.equal(`The offer end date is ${expected}`)
+      })
+    }
+  })
+
+  describe('formats fee type', () => {
+    const feeTypes = {
+      [FEE_TYPES.paymentFee]: 'Payment',
+      [FEE_TYPES.offerFee]: 'Offer',
+      [FEE_TYPES.withdrawalFee]: 'Withdrawal',
+      [FEE_TYPES.issuanceFee]: 'Issuance',
+      [FEE_TYPES.investFee]: 'Invest',
+      [FEE_TYPES.capitalDeploymentFee]: 'Capital deployment',
+      [FEE_TYPES.operationFee]: 'Operation',
+      [FEE_TYPES.payoutFee]: 'Payout',
+    }
+
+    for (const [given, expected] of Object.entries(feeTypes)) {
+      it(`given = ${given}`, () => {
+        const result = i18next.t('withFormattedFeeType', { type: given })
+        expect(result).to.equal(`It's the ${expected} fee type`)
+      })
+    }
+  })
+
+  describe('formats fee subtype', () => {
+    const paymentFeeSubtypes = {
+      [PAYMENT_FEE_SUBTYPES.outgoing]: 'Outgoing',
+      [PAYMENT_FEE_SUBTYPES.incoming]: 'Incoming',
+    }
+    const otherFeeSubtypes = {
+      '0': 'Incoming & Outgoing',
+      '1': 'Incoming & Outgoing',
+    }
+
+    for (const [given, expected] of Object.entries(paymentFeeSubtypes)) {
+      it(`given (payment fee) = ${given}`, () => {
+        const result = i18next.t('withFormattedFeeSubtype',
+          { value: { type: FEE_TYPES.paymentFee, subtype: given } })
+        expect(result).to.equal(`It's the ${expected} fee subtype`)
+      })
+    }
+
+    for (const [given, expected] of Object.entries(otherFeeSubtypes)) {
+      it(`given (offer fee) = ${given}`, () => {
+        const result = i18next.t('withFormattedFeeSubtype', {
+          value: {
+            type: FEE_TYPES.offerFee,
+            subtype: given,
+          },
+          interpolation: {
+            escapeValue: false,
+          },
+        })
+        expect(result).to.equal(`It's the ${expected} fee subtype`)
       })
     }
   })

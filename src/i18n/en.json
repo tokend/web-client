@@ -19,14 +19,15 @@
       "presets": {
         "time": "H:mm",
         "date": "MMMM D, YYYY",
-        "datetime": "MMMM D, YYYY [at] H:mm"
+        "datetime": "MMMM D, YYYY [at] H:mm",
+        "dmy": "DD MM YYYY"
       },
       "formats": {
-        "same_day": "[today at] H:mm",
-        "last_day": "[yesterday at] H:mm",
-        "next_day": "[tomorrow at] H:mm",
-        "last_week": "[last] dddd [at] H:mm",
-        "next_week": "[next] dddd [at] H:mm"
+        "same_day": "[Today at] H:mm",
+        "last_day": "[Yesterday at] H:mm",
+        "next_day": "[Tomorrow at] H:mm",
+        "last_week": "[Last] dddd [at] H:mm",
+        "next_week": "[Next] dddd [at] H:mm"
       }
     }
   },
@@ -34,11 +35,20 @@
   "translations": {
     "formats": {
       "date":  "{{value, date}}",
+      "dmy":  "{{value, dmy}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
       "calendar":  "{{value, calendar}}",
-      "order_number":  "{{value, order_number}}"
+      "order_number":  "{{value, order_number}}",
+      "percent": "{{value, percent}}",
+      "fee_type": "{{value, fee_type}}",
+      "fee_subtype": "{{value, fee_subtype}}"
+    },
+
+    "common": {
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work",
+      "more-btn": "More"
     },
 
     "status-message": {
@@ -50,15 +60,23 @@
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
       "close-lbl_info": "Got it"
-    },
+     },
 
     "validation": {
       "failed": "Please fill out all the fields before continuing",
       "field-error_email": "This field should be a valid email",
       "field-error_seed": "This field should be a valid secret seed",
       "field-error_required": "Please fill out this field",
+      "field-error_url": "This field should be a valid website URL",
+      "field-error_documentContainer": "This field should contain a document",
+      "field-error_integer": "This field should be a valid integer",
+      "field-error_minValue": "This field should be less or equal {{value}}",
       "field-error_password": "Password should contain minimum 6 symbols",
-      "field-error_sameAsPassword": "Passwords don't match"
+      "field-error_sameAsPassword": "Passwords don't match",
+      "field-error_amount": "Amount must be a number, greater than 0",
+      "field-error_maxValueWrapper": "Value must be less then 250",
+      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
+      "field-error_emailOrAccountId": "This field should be a valid email or account ID"
     },
 
     "errors": {
@@ -74,7 +92,16 @@
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
       "tfa-required":  "2FA required",
-      "verification-required": "Verification required"
+      "verification-required": "Verification required",
+      "user-exists": "User with such email already exists"
+    },
+
+    "operation-names": {
+      "issuance": "Tokens received",
+      "withdrawal": "Withdrawal",
+      "transfer": "Transfer",
+      "order-match": "Order match",
+      "investment": "Investment"
     },
 
     "auth-pages": {
@@ -104,8 +131,55 @@
       "know-credentials-question": "Know your credentials?",
       "know-credentials-answer": "Sign in now",
       "have-an-account-question": "Already have an account?",
-      "have-an-account-answer": "Sign in now",
-      "error-user-exist": "User with such email already exists"
+      "have-an-account-answer": "Sign in now"
+    },
+
+    "settings-page": {
+      "verification-tab": "Verification",
+      "security-tab": "Security",
+      "my-account-tab": "My account"
+    },
+
+    "verification-page": {
+      "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
+      "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
+      "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
+      "account-type-lbl": "Account type",
+      "account-type-general-title": "General",
+      "account-type-corporate-title": "Corporate",
+      "account-type-general-description": "Deposit, widthdraw, buy, sell and transfer tokens",
+      "account-type-corporate-description": "Deposit, widthdraw, buy, sell, transfer and create tokens "
+    },
+
+    "verification-form": {
+      "account-information-lbl": "Account information",
+      "submit-btn": "Submit",
+      "personal-details-lbl": "Personal details",
+      "address-details-lbl": "Address details",
+      "photo-verification-lbl": "Photo verification",
+      "first-name-lbl": "First name",
+      "last-name-lbl": "Last name",
+      "birth-date-lbl": "Date of birth",
+      "document-expiration-date-lbl": "ID document expiration date",
+      "id-document-lbl": "ID document",
+      "file-type-note": "image/pdf (Max 5mb)",
+      "address-first-line-lbl": "Line 1",
+      "address-second-line-lbl": "Line 2",
+      "city-lbl": "City",
+      "country-lbl": "Country",
+      "state-lbl": "State",
+      "postal-code-lbl": "Postal code",
+      "proof-document-lbl": "Proof of address",
+      "verification-code-btn": "Show the key",
+      "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
+      "photo-lbl": "Selfie with verification code",
+      "name-lbl": "Name",
+      "company-lbl": "Company",
+      "headquarters-lbl": "Headquarters",
+      "industry-lbl": "Industry",
+      "found-date-lbl": "Founded",
+      "team-size-lbl": "Team size",
+      "website-lbl": "Website"
     },
 
     "sale-state": {
@@ -122,6 +196,231 @@
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
       "button-text-cancel": "Cancel"
+    },
+
+    "pages-names": {
+      "dashboard": "Dashboard",
+      "deposit": "Deposit",
+      "limits": "Limits",
+      "withdraw": "Withdraw",
+      "send": "Send",
+      "explore-tokens": "Explore tokens",
+      "create-token": "Create token",
+      "create-issuance": "Create issuance",
+      "upload-pre-issuance": "Upload pre-issuance",
+      "explore-sales": "Explore sales",
+      "create-sale": "Create sale",
+      "requests": "Requests",
+      "history": "History",
+      "trade": "Trade",
+      "verification": "Verification",
+      "settings": "Settings",
+      "help": "Help",
+      "fees": "My fees",
+      "operations": "Operations",
+      "issuance": "Issuance",
+      "downloads": "TokenD downloads",
+      "ios-install-guide": "iOS install guide",
+      "terms": "Terms",
+      "mass-transfer": "Mass transfer",
+      "upload-document": "Upload document",
+      "view-document": "View document",
+      "explore-documents": "Explore documents",
+      "find-document": "Find document",
+      "update-token": "Update token"
+    },
+
+    "pages-subnames": {
+      "exchange-tokens": "Exchange tokens"
+    },
+
+    "passport": {
+      "account-unverified": "Unverified account",
+      "account-general": "General account",
+      "account-corporate": "Corporate account",
+      "signed-in-as": "Signed in as",
+      "settings-btn": "Settings",
+      "log-out-btn": "Log out"
+    },
+
+    "sidebar": {
+      "section-explore": "Explorations",
+      "section-corporate": "Corporate",
+      "section-account": "My account"
+    },
+
+    "footer": {
+      "copyright": "{{year}} © Distributed Lab.",
+      "terms": "Terms",
+      "download-apps": "Downloads"
+    },
+
+    "fee-types": {
+      "payment": "Payment",
+      "offer": "Offer",
+      "withdrawal": "Withdrawal",
+      "issuance": "Issuance",
+      "invest": "Invest",
+      "capital-deployment": "Capital deployment",
+      "operation": "Operation",
+      "payout": "Payout",
+      "incoming-outgoing": "Incoming & Outgoing",
+      "outgoing": "Outgoing",
+      "incoming": "Incoming"
+    },
+
+    "fee-table": {
+      "fee-type": "Fee type",
+      "fixed": "Fixed",
+      "percent": "Percent",
+      "lower-bound": "Lower bound",
+      "upper-bound": "Upper bound",
+      "subtype": "Subtype",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading."
+    },
+
+    "op-pages": {
+      "show": "Show",
+      "no-operation-history": "No operation history",
+      "here-will-be-the-list": "Here will be the list of your operations",
+      "something-went-wrong": "Something went wrong"
+    },
+
+    "op-details": {
+      "fixed-fee-lbl": "Fixed fee",
+      "percent-fee-lbl": "Percent fee",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount",
+      "counterparty-email-lbl": "Counterparty email",
+      "id-lbl": "Operation ID",
+      "source-fees-lbl": "Sender fees",
+      "destination-fees-lbl": "Recipient fees",
+      "subject-lbl": "Subject",
+      "fund-name-lbl": "Fund name",
+      "token-fund-val": "{asset} token fund",
+      "base-asset-lbl": "Base asset",
+      "fee-paid-lbl": "Fee paid",
+      "price-lbl": "Price",
+      "destination-asset-lbl": "Destination asset",
+      "destination-amount-lbl": "Destination amount",
+      "date-lbl": "Date",
+      "counterparty-lbl": "Counterparty"
+    },
+
+    "op-list": {
+      "head": {
+        "date": "Date",
+        "tx-type": "Operation type",
+        "amount": "Amount",
+        "counterparty": "Counterparty",
+        "status": "Status"
+      }
+    },
+
+    "dashboard": {
+      "data-loading": "Fetching dashboard data...",
+      "transaction-details": "Transaction details",
+      "close": "Close",
+      "activity": "Activity",
+      "date": "Date",
+      "transaction-type": "Transaction type",
+      "create-issuance-lbl": "Create issuance",
+      "send-asset-lbl": "Send {{asset}}",
+      "asset": "Asset",
+      "amount": "Amount",
+      "counterparty": "Counterparty",
+      "status": "Status",
+      "no-transaction-history": "No transaction history",
+      "here-will-be-the-tokens": "Here will be the list of your assets",
+      "no-assets-in-your-wallet": "No assets in your wallet",
+      "here-will-transactions-list": "Here will be the list of your transactions"
+    },
+
+    "email-getter": {
+      "loading-msg": "Loading..."
+    },
+
+    "chart": {
+      "year": "Year",
+      "month": "Month",
+      "day": "Day",
+      "hour": "Hour",
+      "fetching-the-price-history": "Fetching the price history...",
+      "no-price-history-of-selected-token": "No price history of selected token yet"
+    },
+
+    "transfer-form": {
+      "no-assets-heading": "No assets, no transfers",
+      "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets",
+      "form-heading": "Transfer form",
+      "asset-lbl": "Asset",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "amount-lbl": "Amount",
+      "insufficient-funds": "Insufficient funds",
+      "recipient-lbl": "Recipient email or account ID",
+      "subject-lbl": "Add note (under {{length}} symbols)",
+      "sender-fees": "Sender fees",
+      "sender-fixed-fee": "sender’s fixed fee",
+      "sender-percent-fee": "sender’s percent fee",
+      "recipient-fixed-fee": "recipient’s fixed fee",
+      "recipient-percent-fee": "recipient’s percent fee",
+      "source-no-fees": "Sender won’t pay any fees for this transaction.",
+      "recipient-fees": "Recipient fees",
+      "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
+      "total": "total",
+      "total-sender-fee": "Total sender fee",
+      "total-receiver-fee": "Total receiver fee",
+      "total-amount": "Total amount",
+      "pay-fees-for-recipient": "Pay fees for recipient",
+      "continue-btn": "Continue",
+      "recheck-form": "Please recheck the form before proceeding",
+      "submit-btn": "Send",
+      "payment-successful": "Payment successful",
+      "recipient-not-found": "Recipient not found"
+    },
+
+    "issuance": {
+      "loading-msg": "Loading",
+      "create-issuance-btn": "Create issuance",
+      "upload-pre-issuance-btn": "Upload pre-issuance",
+      "counterparty-lbl": "Counterparty",
+      "amount-lbl": "Amount",
+      "issuance-form-heading": "Create issuance",
+      "asset-code-lbl": "Asset code",
+      "date-lbl": "Date",
+      "reference-lbl": "Reference",
+      "history-title": "History",
+      "asset-lbl": "Asset",
+      "available-for-issuance-hint": "Available for issuance: {{value, money}}",
+      "receiver-lbl": "Email or account ID",
+      "issue-btn": "Issue",
+      "cancel-btn": "CANCEL",
+      "upload-btn": "Upload",
+      "not-available": "Issuance creation is available only for corporate users, complete verification to become one",
+      "pre-issuance-lbl": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
+      "file-type-note": "Pre-issuance asset file (.iss)",
+      "no-owned-tokens-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
+      "pre-issuance-details-title": "Pre-issuance info",
+      "tokens-issued-msg": "Your tokens were successfully issued",
+      "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
+      "balance-required-err": "The receiver doesn't have this token balance",
+      "wrong-receiver-err": "The account with such email or ID was not found",
+      "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you"
+    },
+
+    "file-field": {
+      "title": "Drop files here or click to browse",
+      "selected-file": "Selected file: {{name}}",
+      "file-corrupted-err": "Your file is corrupted",
+      "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
+      "file-not-uploaded-err": "A file was not uploaded",
+      "disabled-msg": "This field is disabled"
+    },
+
+    "email-getter": {
+      "loading-msg": "Loading..."
     }
   }
 }

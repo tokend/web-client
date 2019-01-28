@@ -1,80 +1,52 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in base.conf with an alias.
-
-import Vue from 'vue'
-import App from '../legacy/vue/root/App'
-import '../legacy/scss/app.scss'
 import './scss/app.scss'
 
-// vue default plugins
-import router from '../legacy/vue-router'
-import store from '../legacy/vuex'
-
-// vue http-client
-import VueResource from 'vue-resource'
-
-// vue-markdown-editor
-import VueSimpleMDE from 'vue-simplemde'
-
-// vue-material design plugin
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.min.css'
-
-// validator:
-import VeeValidate from 'vee-validate'
-import Vuelidate from 'vuelidate'
-
-import { extendValidator } from '../legacy/validator/validator'
-
-// directives
-import tableScrollShadow from '../legacy/directives/tableScrollShadow'
-import ripple from './vue/directives/ripple'
-
-// i18n
+import Vue from 'vue'
+import App from '@/vue/App'
 import i18next from 'i18next'
-import { i18nOptions } from '@/i18n'
+import Vuelidate from 'vuelidate'
+import VueResource from 'vue-resource'
+import log from 'loglevel'
+import config from './config'
 
-// filters
+import { store } from '@/vuex'
+import { router } from '@/vue-router'
+import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
+import { ripple } from '@/vue/directives/ripple'
+import { i18nOptions } from '@/i18n'
+import { globalize } from '@/vue/filters/globalize'
 import { formatDate } from '@/vue/filters/formatDate'
-import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
-import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatInteger } from '@/vue/filters/formatInteger'
-import { globalize } from '@/vue/filters/globalize'
-
-// legacy filters
-import { translate } from 'L@/vue/common/filters/translate'
-import { localizeFeeType } from '../legacy/vue/common/filters/localizeFeeType'
-import { localizeFeeSubType } from '../legacy/vue/common/filters/localizeFeeSubType'
+import { formatPercent } from '@/vue/filters/formatPercent'
+import { formatFeeType } from '@/vue/filters/formatFeeType'
+import { formatCalendar } from '@/vue/filters/formatCalendar'
+import { formatDateDMY } from '@/vue/filters/formatDateDMY'
+import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
+import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
+import { abbreviate } from '@/vue/filters/abbreviate'
 
 i18next.init(i18nOptions)
 
-Vue.directive('table-scroll-shadow', tableScrollShadow)
-Vue.directive('ripple', ripple)
+log.setDefaultLevel(config.LOG_LEVEL)
 
 Vue.config.productionTip = false
-Vue.use(VueResource)
-Vue.use(VeeValidate)
-Vue.use(VueMaterial)
-Vue.use(VueSimpleMDE)
 Vue.use(Vuelidate)
-
-VeeValidate.Validator = extendValidator(VeeValidate.Validator)
-
-/* Vue filters */
-Vue.filter('translate', translate)
+Vue.use(VueResource)
+Vue.directive('table-scroll-shadow', tableScrollShadow)
+Vue.directive('ripple', ripple)
 Vue.filter('globalize', globalize)
 Vue.filter('formatDate', formatDate)
+Vue.filter('formatDateDMY', formatDateDMY)
 Vue.filter('formatMoney', formatMoney)
 Vue.filter('formatNumber', formatNumber)
-Vue.filter('formatCalendar', formatCalendar)
-Vue.filter('formatOrderNumber', formatOrderNumber)
+Vue.filter('formatPercent', formatPercent)
 Vue.filter('formatInteger', formatInteger)
-Vue.filter('localizeFeeType', localizeFeeType)
-Vue.filter('localizeFeeSubType', localizeFeeSubType)
-Vue.filter('formatDate', formatDate)
-Vue.filter('formatMoney', formatMoney)
+Vue.filter('formatFeeType', formatFeeType)
+Vue.filter('formatCalendar', formatCalendar)
+Vue.filter('formatFeeSubType', formatFeeSubType)
+Vue.filter('formatOrderNumber', formatOrderNumber)
+Vue.filter('abbreviate', abbreviate)
 
 /* eslint-disable no-new */
 new Vue({
@@ -82,5 +54,5 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })

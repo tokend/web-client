@@ -1,4 +1,4 @@
-@import '../../../scss/variables';
+@import '~@scss/variables';
 
 $col-field-text: $col-primary;
 $col-field-text-unfocused: $col-primary-inactive;
@@ -10,19 +10,22 @@ $field-color-text: $col-field-text;
 $field-color-focused: $field-color-text;
 $field-color-unfocused: $col-field-text-unfocused;
 $field-color-error: $col-accent;
-$field-label-font-size: 1.2 * $point;
+$field-label-font-size: 1.2rem;
 $field-label-line-height: 1;
-$field-text-font-size: 1.6 * $point;
+$field-text-font-size: 1.6rem;
 $field-text-line-height: 1.25;
-$field-error-font-size: 1.2 * $point;
+$field-error-font-size: 1.2rem;
 $field-error-line-height: 1.25;
 $field-transition-duration: .2s;
-$field-error-margin-top: .4 * $point;
-$field-input-padding-top: 1.7 * $point;
-$field-input-padding-bottom: .6 * $point;
+$field-error-margin-top: .4rem;
+$field-input-padding-top: 1.7rem;
+$field-input-padding-bottom: .6rem;
 $field-input-padding: $field-input-padding-top 0 $field-input-padding-bottom 0;
 $field-placeholer-color: $col-field-text-unfocused;
 $textarea-background-color: #fafafa;
+$file-field-background-color: $col-file-field-background;
+$file-field-border-color: $col-file-field-border;
+$file-field-note-color: $col-field-text-secondary;
 $col-select-field-hover: rgba($col-primary, .1);
 
 @mixin input-paddings {
@@ -41,9 +44,9 @@ $col-select-field-hover: rgba($col-primary, .1);
 }
 
 @mixin material-border($color-focused, $color-unfocused, $focused-selector:'') {
-  border-bottom: .1 * $point solid $color-unfocused;
-  background: radial-gradient($color-focused, $color-focused) bottom -.1 * $point center no-repeat;
-  background-size: 0 .2 * $point;
+  border-bottom: .1rem solid $color-unfocused;
+  background: radial-gradient($color-focused, $color-focused) bottom -.1rem center no-repeat;
+  background-size: 0 .2rem;
   -webkit-transition-property: background-size, border-color;
   -moz-transition-property: background-size, border-color;
   -ms-transition-property: background-size, border-color;
@@ -54,17 +57,17 @@ $col-select-field-hover: rgba($col-primary, .1);
   @if $focused-selector != '' {
     #{$focused-selector},
     &:focus {
-      background-size: 100% .2 * $point;
+      background-size: 100% .2rem;
     }
   } @else {
     &:focus {
-      background-size: 100% .2 * $point;
+      background-size: 100% .2rem;
     }
   }
 }
 
 @mixin readonly-material-border($color) {
-  border-bottom: .1 * $point dashed $color;
-  background: none !important;
+  border-bottom: .1rem dashed $color;
+  background: none;
 }
 

@@ -1,7 +1,7 @@
 import { DateUtil } from '@/js/utils'
 import {
   OP_TYPES,
-  REQUEST_TYPES
+  REQUEST_TYPES,
 } from '@tokend/js-sdk'
 
 import { RequestRecord } from './request-record'
@@ -10,7 +10,7 @@ import { AssetUpdateRequestRecord } from './requests/asset-update.record'
 import { SaleRequestRecord } from './requests/sale-create.record'
 import { UpdateKycRequestRecord } from './requests/update-kyc.record'
 import {
-  UpdateSaleDetailsRequestRecord
+  UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
 
 import { OpRecord } from './op-record'
@@ -18,7 +18,6 @@ import { IssuanceRecord } from './operations/issuance.record'
 import { WithdrawRecord } from './operations/withdraw.record'
 import { PaymentRecord } from './operations/payment.record'
 import { MatchRecord } from './operations/match.record'
-import { ManageOfferRecord } from './operations/manage-offer.record'
 
 export class RecordWrapper {
   static operation (record, details) {
@@ -30,9 +29,6 @@ export class RecordWrapper {
       case OP_TYPES.createWithdrawalRequest:
         return new WithdrawRecord(record, details)
       case OP_TYPES.manageOffer:
-        if (record.orderBookId && record.orderBookId !== '0') {
-          return new ManageOfferRecord(record, details)
-        }
         return new MatchRecord(record, details)
       case OP_TYPES.checkSaleState:
         return new MatchRecord(record, details)
@@ -91,10 +87,10 @@ export class RecordUnwrapper {
             name: record.name,
             short_description: record.shortDescription,
             description: record.description,
-            logo: record.logo
+            logo: record.logo,
           },
           quoteAssets: record.quoteAssets.map(asset => ({ asset, price: '1' })),
-          saleType: record.saleType
+          saleType: record.saleType,
         }
       case AssetCreateRequestRecord:
         return {
@@ -109,14 +105,14 @@ export class RecordUnwrapper {
             logo: {
               key: record.logoKey,
               name: record.logoName,
-              type: record.logoType
+              type: record.logoType,
             },
             terms: {
               key: record.termsKey,
               name: record.termsName,
-              type: record.termsType
-            }
-          }
+              type: record.termsType,
+            },
+          },
         }
       default:
         throw new Error('No unwrapping logic for such type of record')

@@ -9,7 +9,7 @@ const ROUNDING_MODES = Object.freeze({
   ROUND_HALF_DOWN: 5,
   ROUND_HALF_EVEN: 6,
   ROUND_HALF_CEIL: 7,
-  ROUND_HALF_FLOOR: 8
+  ROUND_HALF_FLOOR: 8,
 })
 
 const ONE = 1000000
@@ -72,7 +72,7 @@ export class MathUtil {
     const one = new BigNumber(a)
     const two = new BigNumber(b)
 
-    const result = one.add(two)
+    const result = one.plus(two)
     return result
       .toFixed(DECIMAL_PLACES)
   }

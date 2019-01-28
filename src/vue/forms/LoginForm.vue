@@ -4,10 +4,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="_touchField('form.email')"
+          @blur="touchField('form.email')"
           id="login-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="_getErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email')"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -15,10 +16,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="_touchField('form.password')"
+          @blur="touchField('form.password')"
           id="login-password"
           type="password"
-          :error-message="_getErrorMessage('form.password')"
+          :error-message="getFieldErrorMessage('form.password')"
+          :white-autofill="false"
           :label="'auth-pages.password' | globalize"
         />
       </div>
@@ -28,7 +30,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn"
-        :disabled="_isDisabled"
+        :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.log-in' | globalize }}
       </button>
@@ -42,7 +44,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { required } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -54,35 +56,39 @@ export default {
   data: _ => ({
     form: {
       email: '',
-      password: ''
-    }
+      password: '',
+    },
   }),
   validations: {
     form: {
       email: { required },
-      password: { required }
-    }
+      password: { required },
+    },
   },
   computed: {
-    ...mapGetters('new-wallet', [
-      vuexTypes.wallet
-    ])
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
   methods: {
-    ...mapActions('new-wallet', {
-      loadWallet: vuexTypes.LOAD_WALLET
+    ...mapActions({
+      loadWallet: vuexTypes.LOAD_WALLET,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKyc: vuexTypes.LOAD_KYC,
     }),
     async submit () {
-      if (!this._isFormValid()) return
-      this._disableForm()
+      if (!this.isFormValid()) return
+      this.disableForm()
       try {
         await this.loadWallet(this.form)
-        const accountId = this.wallet.accountId
-        Sdk.sdk.useWallet(this.wallet)
+        const accountId = this[vuexTypes.wallet].accountId
+        Sdk.sdk.useWallet(this[vuexTypes.wallet])
         if (!await this.isUserExist(accountId)) {
           await Sdk.api.users.create(accountId)
         }
-        await this._doLegacyStuff()
+        await this.loadAccount(accountId)
+        await this.loadKyc()
+        this.$router.push({ name: 'app' })
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {
           this.$router.push({
@@ -90,16 +96,15 @@ export default {
             params: {
               paramsBase64: btoa(JSON.stringify({
                 walletId: e.meta.walletId,
-                email: this.form.email
-              }))
-            }
+                email: this.form.email,
+              })),
+            },
           })
           return
         }
-        console.error(e)
         ErrorHandler.process(e)
       }
-      this._enableForm()
+      this.enableForm()
     },
     async isUserExist (accountId) {
       try {
@@ -112,19 +117,7 @@ export default {
         throw e
       }
     },
-    // TODO: we support old vuex for the legacy components. Remove once
-    // the legacy will be completely removed
-    async _doLegacyStuff () {
-      await this.$store.dispatch('PROCESS_USER_WALLET', this.form)
-      await Promise.all([
-        await this.$store.dispatch('GET_ACCOUNT_DETAILS'),
-        await this.$store.dispatch('GET_USER_DETAILS'),
-        await this.$store.dispatch('GET_ACCOUNT_BALANCES')
-      ])
-      this.$store.dispatch('LOG_IN')
-      this.$router.push({ name: 'app' })
-    }
-  }
+  },
 }
 </script>
 

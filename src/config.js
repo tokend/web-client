@@ -1,27 +1,16 @@
+import { base } from '@tokend/js-sdk'
+
 const featureFlags = {
   dashboard: true,
-  deposit: true,
-  withdrawal: true,
-  transfers: true,
-  history: true,
-  trade: true,
-  verification: true,
-  tokenCreation: true,
-  issuanceCreation: true,
-  saleCreation: true,
-  preIssuanceUpload: true,
+  fees: true,
+  operations: true,
+  issuance: true,
   settings: true,
-  tfa: true,
-  tokens: true,
-  sales: true,
-  limits: true,
-  requests: true,
-  massTransfers: false,
-  feesExplorer: true
 }
 
 export default Object.assign(
   {
+    DEBUG: true,
     HORIZON_SERVER: process.env.HORIZON_SERVER,
     FILE_STORAGE: '',
     NETWORK_PASSPHRASE: '',
@@ -37,8 +26,18 @@ export default Object.assign(
     DEFAULT_TRADE_PAIRS_RE: [
       // Descending priority
       /BTC.*\/.*ETH/,
-      /ETH.*\/.*BTC/
-    ]
+      /ETH.*\/.*BTC/,
+    ],
+    /**
+     * Sets the logging level, for more options visit
+     * https://www.npmjs.com/package/loglevel#documentation
+     *
+     */
+    LOG_LEVEL: 'trace',
+    DEFAULT_CONVERSION_ASSET: 'USD',
+    CONVERSION_PRECISION: 2,
+    MIN_AMOUNT: String(1 / (base.Operation.ONE || 1000000)),
+    MAX_AMOUNT: base.Operation.MAX_INT64_AMOUNT,
   },
   process.env,
   document.ENV

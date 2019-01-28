@@ -25,20 +25,20 @@
  * renders the qr-code and copyable field for it
  */
 import QrCode from 'vue-qr'
-import ClipboardField from '../fields/ClipboardField'
+import ClipboardField from '@/vue/fields/ClipboardField'
 
 export default {
   name: 'key-viewer',
   components: {
     ClipboardField,
-    QrCode
+    QrCode,
   },
   props: {
     value: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
 
@@ -46,7 +46,7 @@ export default {
 @import '~@scss/variables';
 
 .key-viewer__qr-wrp {
-  margin-bottom: 3 * $point;
+  margin-bottom: 3rem;
   text-align: center;
 }
 </style>

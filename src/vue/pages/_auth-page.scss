@@ -2,35 +2,35 @@
 @import '~@scss/mixins';
 
 .auth-page__title {
-  font-size: 3.2 * $point;
+  font-size: 3.2rem;
   font-weight: 400;
-  margin-bottom: 2.4 * $point;
+  margin-bottom: 2.4rem;
   color: $col-text-page-heading;
 }
 
-.auth-page__content {
-  margin-bottom: 5.5 * $point;
+.auth-page__tips {
+  margin-top: 5.5rem;
 }
 
 .auth-page__explanations {
-  line-height: 2.6 * $point;
+  line-height: 2.6rem;
 }
 
 .auth-page__tip-link {
-  // TODO: remove !important once md will be completely out
-  color: $col-text-auth-tip-link !important;
+  color: $col-text-auth-tip-link;
   text-decoration: underline;
+  line-height: 1.5;
 }
 
 .auth-page__submit-btn {
   @include button-raised();
 
   margin-right: auto;
-  margin-bottom: 2 * $point;
-  width: 20 * $point;
+  margin-bottom: 2rem;
+  width: 20rem;
 
   &:not(:only-child):not(:last-child) {
-    margin-right: .75 * $point;
+    margin-right: .75rem;
   }
 }
 
@@ -38,6 +38,6 @@
   @include button();
 
   margin-right: auto;
-  margin-bottom: 2 * $point;
-  width: 15 * $point;
+  margin-bottom: 2rem;
+  width: 15rem;
 }

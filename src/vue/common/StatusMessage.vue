@@ -27,7 +27,7 @@ const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
   error: 'error',
-  info: 'info'
+  info: 'info',
 })
 
 export default {
@@ -36,7 +36,7 @@ export default {
     messageId: '',
     messageType: '',
     isShown: false,
-    timeoutId: null
+    timeoutId: null,
   }),
   created () {
     Bus.on(Bus.eventList.success, message =>
@@ -61,8 +61,8 @@ export default {
       this.timeoutId = window.setTimeout(_ => {
         this.isShown = false
       }, CLOSE_TIMEOUT_MS)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -71,17 +71,18 @@ export default {
 
 .status-message {
   box-shadow:
-    .6 * $point
-    .6 * $point
-    .6 * $point
-    -.4 * $point
+    .6rem
+    .6rem
+    .6rem
+    -.4rem
     $col-msg-shadow;
-  border-radius: .3 * $point;
-  font-size: 1.6 * $point;
-  padding: 2 * $point 4 * $point;
+  border-radius: .3rem;
+  font-size: 1.6rem;
+  padding: 2rem 4rem;
   position: fixed;
-  right: 4 * $point;
-  top: 4 * $point;
+  right: 4rem;
+  top: 4rem;
+  z-index: $z-status-message;
 
   @mixin apply-theme ($col-msg-background, $col-msg-text) {
     background: $col-msg-background;
@@ -91,7 +92,7 @@ export default {
       color: $col-msg-text;
     }
     .status-message__btn {
-      border: .1 * $point solid $col-msg-text;
+      border: .1rem solid $col-msg-text;
     }
   }
 
@@ -102,7 +103,7 @@ export default {
 }
 
 .status-message__content {
-  margin-bottom: 2.5 * $point;
+  margin-bottom: 2.5rem;
 }
 
 .status-message__btn-wrp {
@@ -111,9 +112,9 @@ export default {
 
 .status-message__btn {
   background: transparent;
-  border-radius: .5 * $point;
-  font-size: 1.4 * $point;
-  padding: .5 * $point 2 * $point;
+  border-radius: .5rem;
+  font-size: 1.4rem;
+  padding: .5rem 2rem;
   cursor: pointer;
   transition: .2s;
 

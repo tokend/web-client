@@ -16,7 +16,7 @@ import { Sdk } from '@/sdk'
 export const state = {
   request: {},
   approvedData: '{}', // JSON string
-  latestData: '{}' // JSON string
+  latestData: '{}', // JSON string
 }
 
 export const mutations = {
@@ -30,7 +30,7 @@ export const mutations = {
 
   [vuexTypes.SET_KYC_LATEST_DATA] (state, data) {
     state.latestData = data
-  }
+  },
 }
 
 export const actions = {
@@ -52,7 +52,7 @@ export const actions = {
     const response = await Sdk.horizon.request.getAllForUpdateKyc({
       requestor,
       limit,
-      order
+      order,
     })
 
     if (!response.data[0]) {
@@ -70,34 +70,35 @@ export const actions = {
     if (!latestBlobId) {
       return
     }
-
     const latestBlobResponse = await Sdk.api.blobs.get(latestBlobId)
     const latestData = latestBlobResponse.data.value
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
-
     // we know for sure that blob id is being stored in account can be
     // considered as approved
     const approvedBlobId = rootGetters[vuexTypes.accountKycBlobId]
 
     if (approvedBlobId === latestBlobId) {
       commit(vuexTypes.SET_KYC_APPROVED_DATA, latestData)
-    } else {
+    } else if (approvedBlobId) {
       const approvedBlobResponse = await Sdk.api.blobs.get(approvedBlobId)
       commit(vuexTypes.SET_KYC_APPROVED_DATA, approvedBlobResponse.data.value)
     }
-  }
+  },
 }
 
 export const getters = {
   [vuexTypes.kycState]: state => state.request.state,
   [vuexTypes.kycStateI]: state => state.request.stateI,
+  [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
+  [vuexTypes.kycAccountTypeToSet]: state => state.request.accountTypeToSet,
+  [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
-  [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData)
+  [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData),
 }
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 }

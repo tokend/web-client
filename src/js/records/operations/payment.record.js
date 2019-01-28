@@ -19,10 +19,8 @@ export class PaymentRecord extends OpRecord {
     }
 
     this.accountId = details.accountId
-
     this.amount = record.amount
     this.asset = record.asset
-
     this.sourcePaysForDest = record.sourcePaysForDest
     this.sourceFeeAsset = _get(
       record, 'sourceFeeData.actualPaymentFeeAssetCode'
@@ -41,7 +39,7 @@ export class PaymentRecord extends OpRecord {
   }
 
   get isIncoming () {
-    return this.sender === this.accountId
+    return this.sourceAccount === this.accountId
   }
 
   get counterparty () {
@@ -55,7 +53,7 @@ export class PaymentRecord extends OpRecord {
         _get(this._record, 'sourceFeeData.fixedFee')),
       destination: MathUtil.add(
         _get(this._record, 'destinationFeeData.actualPaymentFee'),
-        _get(this._record, 'destinationFeeData.fixedFee'))
+        _get(this._record, 'destinationFeeData.fixedFee')),
     }
   }
 }

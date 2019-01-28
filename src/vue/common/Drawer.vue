@@ -7,8 +7,8 @@
           <h2 class="drawer__heading">
             <slot name="heading" />
           </h2>
-          <button class="app__button-icon" @click="closeSelf">
-            <md-icon>close</md-icon>
+          <button class="app__button-icon drawer__close-btn" @click="closeSelf">
+            <i class="mdi mdi-close drawer__close-icon" />
           </button>
         </div>
         <div class="drawer__body">
@@ -36,7 +36,7 @@ import { KEY_CODES } from '@/js/const/key-codes.const'
  */
 export default {
   props: {
-    isShown: { type: Boolean, default: true }
+    isShown: { type: Boolean, default: true },
   },
   created () {
     document.addEventListener('keydown', this.onDocumentKeyDown)
@@ -54,8 +54,8 @@ export default {
     },
     closeSelf () {
       this.$emit('update:isShown', false)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -68,7 +68,7 @@ export default {
   min-height: 100vh;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: $z-drawer;
 }
 
 .drawer__backdrop {
@@ -81,20 +81,39 @@ export default {
   background-color: rgba(0, 0, 0, 0.1)
 }
 
+.drawer__close-btn {
+  padding: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawer__close-icon {
+  font-size: 2.4rem;
+  margin-top: -.2rem; // magic value to align icon in the center
+
+  &:before {
+    font-weight: 700;
+    vertical-align: middle;
+  }
+}
+
 .drawer__pane {
   position: absolute;
   top: 0;
   right: 0;
-  width: 52.8 * $point;
+  width: 52.8rem;
   max-width: 100%;
   min-height: 100%;
-  box-shadow: 0 1 * $point 2 * $point 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
 
 .drawer__head {
-  padding: 3 * $point;
+  padding: 3rem;
   background-color: $col-drawer-head-bg;
   display: flex;
   align-items: center;
@@ -102,13 +121,14 @@ export default {
 }
 
 .drawer__heading {
-  font-size: 2.6 * $point;
+  font-size: 2.6rem;
   color: $col-drawer-head-text;
   line-height: normal;
+  font-weight: 400;
 }
 
 .drawer__body {
-  padding: 3 * $point;
+  padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
 }

@@ -1,7 +1,7 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { factors } from './index'
+import factors from './factors.module'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -14,14 +14,14 @@ describe('factors.module end-to-end test', () => {
       data: [
         { type: 'email', id: 785, attributes: { priority: 1 } },
         { type: 'password', id: 652, attributes: { priority: 1 } },
-        { type: 'totp', id: 991, attributes: { priority: 1 } }
-      ]
+        { type: 'totp', id: 991, attributes: { priority: 1 } },
+      ],
     }
 
     const responseDefaultParsed = [
       { resourceType: 'email', id: 785, priority: 1 },
       { resourceType: 'password', id: 652, priority: 1 },
-      { resourceType: 'totp', id: 991, priority: 1 }
+      { resourceType: 'totp', id: 991, priority: 1 },
     ]
 
     const walletId = '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
@@ -35,7 +35,7 @@ describe('factors.module end-to-end test', () => {
         getters: {},
         mutations: {},
         state: {},
-        modules: { factors }
+        modules: { factors },
       })
       mockHelper.useMockWallet({ walletId })
     })
@@ -97,8 +97,8 @@ describe('factors.module end-to-end test', () => {
         data: [
           { type: 'email', id: 785, attributes: { priority: 1 } },
           { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 1 } }
-        ]
+          { type: 'totp', id: 991, attributes: { priority: 1 } },
+        ],
       })
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
@@ -106,7 +106,7 @@ describe('factors.module end-to-end test', () => {
         .to
         .deep
         .equal([
-          { resourceType: 'totp', id: 991, priority: 1 }
+          { resourceType: 'totp', id: 991, priority: 1 },
         ])
     })
 
@@ -114,8 +114,8 @@ describe('factors.module end-to-end test', () => {
       mockHelper.mockEndpoint(`/wallets/${walletId}/factors`, {
         data: [
           { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 0 } }
-        ]
+          { type: 'totp', id: 991, attributes: { priority: 0 } },
+        ],
       })
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -131,8 +131,8 @@ describe('factors.module end-to-end test', () => {
         data: [
           { type: 'email', id: 785, attributes: { priority: 1 } },
           { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 1 } }
-        ]
+          { type: 'totp', id: 991, attributes: { priority: 1 } },
+        ],
       })
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
@@ -146,8 +146,8 @@ describe('factors.module end-to-end test', () => {
       mockHelper.mockEndpoint(`/wallets/${walletId}/factors`, {
         data: [
           { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 0 } }
-        ]
+          { type: 'totp', id: 991, attributes: { priority: 0 } },
+        ],
       })
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)

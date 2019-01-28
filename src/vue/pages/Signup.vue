@@ -5,44 +5,47 @@
         recoveryKeypair
           ? 'auth-pages.save-recovery-seed'
           : 'auth-pages.get-started'
-            | globalize
+          | globalize
       }}
     </h2>
 
     <div class="auth-page__content">
-      <signup-form
-        v-if="!recoveryKeypair"
-        :submit-event="'submit'"
-        @submit="handleChildFormSubmit"
-      />
+      <template v-if="!recoveryKeypair">
+        <signup-form
+          :submit-event="'submit'"
+          @submit="handleChildFormSubmit"
+        />
 
-      <div class="signup__seed-wrp" v-else>
-        <p class="signup__seed-explanations">
-          {{ 'auth-pages.save-recovery-seed-details' | globalize }}
-        </p>
-
-        <key-viewer :value="recoveryKeypair.secret()" />
-
-        <div class="signup__actions">
-          <button
-            v-ripple
-            @click="submit"
-            :disabled="_isDisabled"
-            class="auth-page__submit-btn"
-          >
-            {{ 'auth-pages.continue' | globalize }}
-          </button>
+        <div class="auth-page__tips">
+          <div class="auth-page__tip">
+            {{ 'auth-pages.have-an-account-question' | globalize }}
+            <router-link class="auth-page__tip-link" :to="vueRoutes.login">
+              {{ 'auth-pages.have-an-account-answer' | globalize }}
+            </router-link>
+          </div>
         </div>
-      </div>
-    </div>
+      </template>
 
-    <div class="auth-page__tips">
-      <div class="auth-page__tip">
-        {{ 'auth-pages.have-an-account-question' | globalize }}
-        <router-link class="auth-page__tip-link" :to="vueRoutes.login">
-          {{ 'auth-pages.have-an-account-answer' | globalize }}
-        </router-link>
-      </div>
+      <template v-else>
+        <div class="signup__seed-wrp">
+          <p class="signup__seed-explanations">
+            {{ 'auth-pages.save-recovery-seed-details' | globalize }}
+          </p>
+
+          <key-viewer :value="recoveryKeypair.secret()" />
+
+          <div class="signup__actions">
+            <button
+              v-ripple
+              @click="submit"
+              :disabled="formMixin.isDisabled"
+              class="auth-page__submit-btn"
+            >
+              {{ 'auth-pages.continue' | globalize }}
+            </button>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -56,7 +59,7 @@ import KeyViewer from '../common/KeyViewer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -64,18 +67,18 @@ export default {
   name: 'signup',
   components: {
     SignupForm,
-    KeyViewer
+    KeyViewer,
   },
   mixins: [FormMixin],
   data: _ => ({
     recoveryKeypair: null,
     password: null,
     email: null,
-    vueRoutes
+    vueRoutes,
   }),
   methods: {
-    ...mapActions('new-wallet', {
-      storeWallet: vuexTypes.STORE_WALLET
+    ...mapActions({
+      storeWallet: vuexTypes.STORE_WALLET,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -85,7 +88,7 @@ export default {
         .random()
     },
     async submit () {
-      this._disableForm()
+      this.disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
           this.email,
@@ -95,44 +98,23 @@ export default {
         if (response.data.verified) {
           await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
-          await this._doLegacyStuff(wallet)
         } else {
           this.$router.push({
             ...vueRoutes.verify,
             params: {
               paramsBase64: btoa(JSON.stringify({
                 email: wallet.email,
-                walletId: wallet.id
-              }))
-            }
+                walletId: wallet.id,
+              })),
+            },
           })
         }
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
-      this._enableForm()
+      this.enableForm()
     },
-    // TODO: we support old vuex for the legacy components. Remove once
-    // the legacy will be completely removed
-    async _doLegacyStuff (wallet) {
-      await this.$store.dispatch('STORE_USER_DATA_FROM_WALLET', {
-        walletId: wallet.id,
-        email: wallet.email,
-        accountId: wallet.accountId,
-        publicKey: wallet.keypair.accountId(),
-        seed: wallet.secretSeed
-      })
-
-      await Promise.all([
-        await this.$store.dispatch('GET_ACCOUNT_DETAILS'),
-        await this.$store.dispatch('GET_USER_DETAILS'),
-        await this.$store.dispatch('GET_ACCOUNT_BALANCES')
-      ])
-      this.$store.dispatch('LOG_IN')
-      this.$router.push({ name: 'app' })
-    }
-  }
+  },
 }
 </script>
 
@@ -140,15 +122,15 @@ export default {
 @import './auth-page';
 
 .signup__seed-wrp {
-  max-width: 51 * $point;
+  max-width: 51rem;
 }
 
 .signup__seed-explanations {
-  margin-bottom: 2 * $point;
+  margin-bottom: 2rem;
 }
 
 .signup__actions {
-  margin-top: 2 * $point;
+  margin-top: 2rem;
   text-align: center;
 }
 

@@ -12,14 +12,14 @@ describe('factors.module', () => {
     let state
     beforeEach(() => {
       state = {
-        factors: []
+        factors: [],
       }
     })
 
     it('SET_FACTORS should properly modify state', () => {
       const factors = [
         { id: '1', resourceType: 'email' },
-        { id: '2', resourceType: 'totp' }
+        { id: '2', resourceType: 'totp' },
       ]
 
       mutations[vuexTypes.SET_FACTORS](state, factors)
@@ -38,7 +38,7 @@ describe('factors.module', () => {
         state: {},
         getters: {},
         commit: sinon.stub(),
-        dispatch: sinon.stub()
+        dispatch: sinon.stub(),
       }
     })
 
@@ -46,7 +46,7 @@ describe('factors.module', () => {
       mockHelper.mockApiMethod('factors', 'getAll', factorsJSON)
 
       const expectedMutations = {
-        [vuexTypes.SET_FACTORS]: MockWrapper.makeApiResponse(factorsJSON).data
+        [vuexTypes.SET_FACTORS]: MockWrapper.makeApiResponse(factorsJSON).data,
       }
 
       await actions[vuexTypes.LOAD_FACTORS](store)
@@ -73,11 +73,11 @@ describe('factors.module', () => {
       const state = {
         factors: [
           { 'resourceType': 'password', 'id': 652, 'priority': 1 },
-          { 'resourceType': 'totp', 'id': 991, 'priority': 1 }
-        ]
+          { 'resourceType': 'totp', 'id': 991, 'priority': 1 },
+        ],
       }
       const expectedResult = [
-        { 'resourceType': 'totp', 'id': 991, 'priority': 1 }
+        { 'resourceType': 'totp', 'id': 991, 'priority': 1 },
       ]
 
       expect(getters[vuexTypes.factorsTotp](state))
@@ -90,11 +90,11 @@ describe('factors.module', () => {
       const state = {
         factors: [
           { 'resourceType': 'password', 'id': 652, 'priority': 1 },
-          { 'resourceType': 'totp', 'id': 991, 'priority': 1 }
-        ]
+          { 'resourceType': 'totp', 'id': 991, 'priority': 1 },
+        ],
       }
       const expectedResult = [
-        { 'resourceType': 'password', 'id': 652, 'priority': 1 }
+        { 'resourceType': 'password', 'id': 652, 'priority': 1 },
       ]
 
       expect(getters[vuexTypes.factorsPassword](state))
@@ -108,11 +108,11 @@ describe('factors.module', () => {
         factors: [
           { 'resourceType': 'email', 'id': 785, 'priority': 1 },
           { 'resourceType': 'password', 'id': 652, 'priority': 1 },
-          { 'type': 'totp', 'id': 991, 'priority': 1 }
-        ]
+          { 'type': 'totp', 'id': 991, 'priority': 1 },
+        ],
       }
       const expectedResult = [
-        { 'resourceType': 'email', 'id': 785, 'priority': 1 }
+        { 'resourceType': 'email', 'id': 785, 'priority': 1 },
       ]
 
       expect(getters[vuexTypes.factorsEmail](state))
@@ -125,12 +125,12 @@ describe('factors.module', () => {
       const factorTotpEnabled = {
         'resourceType': 'totp',
         'id': 991,
-        'priority': 1
+        'priority': 1,
       }
       const factorTotpDisabled = {
         'resourceType': 'totp',
         'id': 991,
-        'priority': 0
+        'priority': 0,
       }
 
       let _getters = { factorsTotp: [factorTotpEnabled] }
@@ -151,15 +151,15 @@ describe('factors.module', () => {
 
       _getters = {
         factorsTotpEnabled: [
-          { 'resourceType': 'totp', 'id': 991, 'priority': 1 }
-        ]
+          { 'resourceType': 'totp', 'id': 991, 'priority': 1 },
+        ],
       }
       expect(getters[vuexTypes.isTotpEnabled]({}, _getters))
         .to
         .equal(true)
 
       _getters = {
-        factorsTotpEnabled: []
+        factorsTotpEnabled: [],
       }
       expect(getters[vuexTypes.isTotpEnabled]({}, _getters))
         .to

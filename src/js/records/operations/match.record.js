@@ -3,7 +3,7 @@ import _get from 'lodash/get'
 
 const DIRECTIONS_VERBOSE = {
   in: 'in',
-  out: 'out'
+  out: 'out',
 }
 
 export class MatchRecord extends OpRecord {
@@ -41,7 +41,7 @@ export class MatchRecord extends OpRecord {
         asset: this.asset,
         date: this.date,
         name: this.name,
-        feeAsset: this.asset
+        feeAsset: this.asset,
       })
     )
   }
@@ -70,6 +70,10 @@ export class MatchEffect {
     this.direction = this._getDirection()
 
     this.name = this._getName()
+  }
+
+  get isIncoming () {
+    return this.direction === DIRECTIONS_VERBOSE.out
   }
 
   _getQuoteAmount () {

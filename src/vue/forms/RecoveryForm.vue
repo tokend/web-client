@@ -4,10 +4,11 @@
       <div class="app__form-field">
         <input-field
           v-model="form.email"
-          @blur="_touchField('form.email')"
+          @blur="touchField('form.email')"
           id="recovery-email"
           :label="'auth-pages.email' | globalize"
-          :error-message="_getErrorMessage('form.email')"
+          :error-message="getFieldErrorMessage('form.email')"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -15,11 +16,12 @@
       <div class="app__form-field">
         <input-field
           v-model="form.password"
-          @blur="_touchField('form.password')"
+          @blur="touchField('form.password')"
           id="recovery-password"
           type="password"
-          :error-message="_getErrorMessage('form.password')"
+          :error-message="getFieldErrorMessage('form.password')"
           :label="'auth-pages.password' | globalize"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -27,11 +29,12 @@
       <div class="app__form-field">
         <input-field
           v-model="form.confirmPassword"
-          @blur="_touchField('form.confirmPassword')"
+          @blur="touchField('form.confirmPassword')"
           id="recovery-confirm-password"
           type="password"
-          :error-message="_getErrorMessage('form.confirmPassword')"
+          :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -39,11 +42,12 @@
       <div class="app__form-field">
         <input-field
           v-model="form.recoverySeed"
-          @blur="_touchField('form.recoverySeed')"
+          @blur="touchField('form.recoverySeed')"
           id="recovery-seed"
           type="password"
-          :error-message="_getErrorMessage('form.recoverySeed')"
+          :error-message="getFieldErrorMessage('form.recoverySeed')"
           :label="'auth-pages.recovery-seed' | globalize"
+          :white-autofill="false"
         />
       </div>
     </div>
@@ -53,7 +57,7 @@
         v-ripple
         type="submit"
         class="auth-form__submit-btn"
-        :disabled="_isDisabled"
+        :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
       </button>
@@ -68,12 +72,12 @@ import {
   password,
   sameAs,
   email,
-  seed
+  seed,
 } from '@validators'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   name: 'recovery-form',
@@ -83,8 +87,8 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
-      recoverySeed: ''
-    }
+      recoverySeed: '',
+    },
   }),
   validations: {
     form: {
@@ -93,17 +97,17 @@ export default {
       confirmPassword: {
         required,
         password,
-        sameAsPassword: sameAs(function () { return this.form.password })
+        sameAsPassword: sameAs(function () { return this.form.password }),
       },
-      recoverySeed: { required, seed }
-    }
+      recoverySeed: { required, seed },
+    },
   },
   methods: {
     async submit () {
-      if (!this._isFormValid()) {
+      if (!this.isFormValid()) {
         return
       }
-      this._disableForm()
+      this.disableForm()
       try {
         await Sdk.api.wallets.recovery(
           this.form.email,
@@ -113,12 +117,11 @@ export default {
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.login)
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
-      this._enableForm()
-    }
-  }
+      this.enableForm()
+    },
+  },
 }
 </script>
 

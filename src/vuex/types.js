@@ -1,4 +1,8 @@
 const mutations = {
+  // root
+  CLEAR_STATE: 'CLEAR_STATE',
+  POP_STATE: 'POP_STATE',
+
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
   SET_ACCOUNT_BALANCES_DETAILS: 'SET_ACCOUNT_BALANCES_DETAILS',
@@ -12,7 +16,7 @@ const mutations = {
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
   SET_KYC_APPROVED_DATA: 'SET_KYC_APPROVED_DATA',
-  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA'
+  SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
 }
 
 const actions = {
@@ -30,10 +34,13 @@ const actions = {
   // kyc
   LOAD_KYC: 'LOAD_KYC',
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
-  LOAD_KYC_DATA: 'LOAD_KYC_DATA'
+  LOAD_KYC_DATA: 'LOAD_KYC_DATA',
 }
 
 const getters = {
+  // root
+  isLoggedIn: 'isLoggedIn',
+
   // account
   account: 'account',
   accountId: 'accountId',
@@ -46,7 +53,7 @@ const getters = {
   accountReferrals: 'accountReferrals',
   accountPoliciesTypeI: 'accountPoliciesTypeI',
   accountPoliciesTypes: 'accountPoliciesTypes',
-  // accountBalances: 'accountBalances', FIXME: tmp-hidden
+  accountBalances: 'accountBalances',
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycBlobId: 'accountKycBlobId',
 
@@ -69,12 +76,15 @@ const getters = {
   // kyc
   kycState: 'kycState',
   kycStateI: 'kycStateI',
+  kycRequestId: 'kycRequestId',
+  kycRequestRejectReason: 'kycRequestRejectReason',
+  kycAccountTypeToSet: 'kycAccountTypeToSet',
   kycLatestData: 'kycLatestData',
-  kycApprovedData: 'kycApprovedData'
+  kycApprovedData: 'kycApprovedData',
 }
 
 export const vuexTypes = {
   ...mutations,
   ...actions,
-  ...getters
+  ...getters,
 }

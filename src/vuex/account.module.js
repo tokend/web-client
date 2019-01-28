@@ -2,10 +2,11 @@ import _get from 'lodash/get'
 import { AccountHelper } from './account.helper'
 import { vuexTypes } from './types'
 import { Sdk } from '../sdk'
+import { AssetRecord } from '../js/records/entities/asset.record'
 
 export const state = {
   account: {},
-  balancesDetails: []
+  balancesDetails: [],
 }
 
 export const mutations = {
@@ -15,7 +16,7 @@ export const mutations = {
 
   [vuexTypes.SET_ACCOUNT_BALANCES_DETAILS] (state, balancesDetails) {
     state.balancesDetails = balancesDetails
-  }
+  },
 }
 
 export const actions = {
@@ -27,9 +28,12 @@ export const actions = {
   async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
     const accountId = getters[vuexTypes.accountId]
     const response = await Sdk.horizon.account.getDetails(accountId)
-
-    commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, response.data)
-  }
+    const balances = response.data.map(balance => {
+      balance.assetDetails = new AssetRecord(balance.assetDetails)
+      return balance
+    })
+    commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
+  },
 }
 
 export const getters = {
@@ -57,12 +61,13 @@ export const getters = {
   [vuexTypes.accountKycBlobId]: state => _get(
     state.account,
     'accountKyc.kycData.blobId'
-  )
+  ),
+  [vuexTypes.accountBalances]: state => state.balancesDetails,
 }
 
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 }

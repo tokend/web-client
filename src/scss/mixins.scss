@@ -1,22 +1,22 @@
 @import 'variables';
 
 /* https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints */
-$x-small: 48 * $point;
-$small: 60 * $point;
-$tablet: 76.8 * $point;
-$medium: 102.4 * $point;
-$x-medium: 120 * $point;
-$large: 144 * $point;
-$x-large: 192 * $point;
+$x-small: 480px;
+$small: 600px;
+$tablet: 768px;
+$medium: 1024px;
+$x-medium: 1200px;
+$large: 1440px;
+$x-large: 1920px;
 
 @mixin button () {
   display: inline-block;
   border: none;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: .8rem 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
-  min-height: 36px;
+  min-height: 3.6rem;
   background-color: transparent;
 
   &:not([disabled]) {
@@ -27,9 +27,10 @@ $x-large: 192 * $point;
 @mixin button-icon () {
   @include button();
 
-  padding: 8px;
+  padding: .8rem;
   border-radius: 50%;
   transition: .3s ease-out;
+  min-width: 3.6rem;
 
   &:hover {
     background-color: $col-button-flat-hover;
@@ -39,9 +40,9 @@ $x-large: 192 * $point;
 @mixin button-raised () {
   @include button();
 
-  border-radius: 2px;
+  border-radius: .2rem;
   background-color: $col-button-raised;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .15);
+  box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, .15);
   color: $col-button-raised-txt;
 
   &[disabled] {
@@ -80,20 +81,20 @@ $x-large: 192 * $point;
 }
 
 @mixin box-shadow () {
-  box-shadow: 0 .4 * $point 1 * $point 0 rgba(0, 0, 0, .15)
+  box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, .15)
 }
 
 @mixin respond-to($media) {
   @if $media == xsmall {
-    @media only screen and (max-width: $x-small - .1 * $point) {
+    @media only screen and (max-width: $x-small - 1px) {
       @content;
     }
   } @else if $media == small {
-    @media only screen and (max-width: $small - .1 * $point) {
+    @media only screen and (max-width: $small - 1px) {
       @content;
     }
   } @else if $media == tablet {
-    @media only screen and (max-width: $tablet - .1 * $point) {
+    @media only screen and (max-width: $tablet - 1px) {
       @content;
     }
   } @else if $media == medium {
@@ -101,15 +102,15 @@ $x-large: 192 * $point;
       @content;
     }
   } @else if $media == xmedium {
-    @media only screen and (max-width: $x-medium - .1 * $point) {
+    @media only screen and (max-width: $x-medium - 1px) {
       @content;
     }
   } @else if $media == large {
-    @media only screen and (max-width: $large - .1 * $point) {
+    @media only screen and (max-width: $large - 1px) {
       @content;
     }
   } @else if $media == xlarge {
-    @media only screen and (max-width: $x-large - .1 * $point) {
+    @media only screen and (max-width: $x-large - 1px) {
       @content;
     }
   } @else {
@@ -121,6 +122,12 @@ $x-large: 192 * $point;
 
 @mixin respond-to-height($media) {
   @media only screen and (max-height: $media) {
+    @content;
+  }
+}
+
+@mixin respond-to-custom($media) {
+  @media only screen and (max-width: $media) {
     @content;
   }
 }

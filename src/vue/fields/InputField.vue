@@ -19,7 +19,9 @@
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
     >
 
-    <span class="input-field__label">{{ label }}</span>
+    <span class="input-field__label">
+      {{ label }}
+    </span>
 
     <transition name="input-field__err-transition">
       <p v-if="errorMessage" class="input-field__err-mes">
@@ -30,13 +32,18 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
     value: { type: [String, Number], default: undefined },
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
-    whiteAutofill: { type: Boolean, default: false }
+    whiteAutofill: { type: Boolean, default: true },
   },
 
   computed: {
@@ -44,16 +51,15 @@ export default {
       return {
         ...this.$listeners,
         input: event => {
-          this.$emit('input', event.target.value)
-        }
+          this.$emit(EVENTS.input, event.target.value)
+        },
       }
-    }
+    },
   },
 
   methods: {
-    onInput (event) {
-    }
-  }
+    onInput (event) {},
+  },
 }
 </script>
 
@@ -78,12 +84,12 @@ export default {
   @include text-font-sizes;
 
   &:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 50px $field-color-background
+    -webkit-box-shadow: inset 0 0 0 5rem $field-color-background
     // autofill hack
   }
 
   &--autofill-white:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 50px $col-block-bg !important;
+    -webkit-box-shadow: inset 0 0 0 5rem $col-block-bg;
   }
 }
 
@@ -186,7 +192,7 @@ export default {
 }
 
 .input-field--monospaced > .input-field__input {
-  font-family: 'SourceCodePro', Courier, monospace !important;
+  font-family: 'SourceCodePro', Courier, monospace;
   font-weight: 500;
 }
 

@@ -1,7 +1,7 @@
 const COLOR_DEFAULT = 'rgba(58, 65, 128, .2)'
 const DURATION_DEFAULT = 500
 
-export default {
+export const ripple = {
   bind (el, binding) {
     el.onmousedown = function (e) {
       const target = this
@@ -62,5 +62,5 @@ export default {
         rippleContainer.parentNode.removeChild(rippleContainer)
       }, duration)
     }
-  }
+  },
 }

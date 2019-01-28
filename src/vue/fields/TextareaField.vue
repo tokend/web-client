@@ -42,6 +42,11 @@
 </template>
 
 <script>
+
+const EVENTS = {
+  input: 'input',
+}
+
 export default {
   props: {
     label: { type: String, default: 'Label' },
@@ -61,29 +66,27 @@ export default {
 
     // textarea proxies
     rows: { type: [String, Number], default: 4 },
-    cols: { type: [String, Number], default: undefined }
+    cols: { type: [String, Number], default: undefined },
   },
 
-  data () {
-    return {
-      hasValue: false,
-      currentLength: '0'
-    }
-  },
+  data: () => ({
+    hasValue: false,
+    currentLength: '0',
+  }),
 
   computed: {
     isNoLabel () {
       return this.label === null || this.label === '' || this.label === undefined
-    }
+    },
   },
 
   methods: {
     onInput (event) {
       event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
-      this.$emit('input', event.target.value)
-    }
-  }
+      this.$emit(EVENTS.input, event.target.value)
+    },
+  },
 }
 </script>
 
@@ -94,36 +97,36 @@ export default {
     margin-bottom: .5rem;
     display: block;
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 1.6rem;
+    left: 1.6rem;
     color: $field-color-unfocused;
     transition: .2s ease-out;
-    font-size: 1rem;
+    font-size: 1.6rem;
 
     .text-field__input:focus + &,
     .text-field__input.text-field__input--dirty + & {
       color: $field-color-text;
-      top: 6px;
-      font-size: .75rem;
+      top: .6rem;
+      font-size: 1.2rem;
     }
   }
 
   .text-field__input {
     caret-color: $field-color-text;
-    padding: 16px 16px 36px;
-    background-color: $textarea-background-color !important;
-    border: 2px solid rgba($field-color-unfocused, 0.5);
+    padding: 1.6rem 1.6rem 3.6rem;
+    background-color: $textarea-background-color;
+    border: .2rem solid rgba($field-color-unfocused, 0.5);
     width: 100%;
     resize: none;
     display: block;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: .4rem;
+    font-size: 1.6rem;
     transition: all 0s, border-color .2s ease-out;
 
     &:focus,
     &.text-field__input--dirty {
-      padding-top: 26px;
-      padding-bottom: 26px;
+      padding-top: 2.6rem;
+      padding-bottom: 2.6rem;
       border-color: $field-color-focused;
     }
 
@@ -135,8 +138,8 @@ export default {
 
   .text-field__length {
     position: absolute;
-    bottom: 8px;
-    right: 16px;
+    bottom: .8rem;
+    right: 1.6rem;
     font-size: .75rem;
     color: $field-color-text;
   }

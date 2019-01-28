@@ -6,7 +6,7 @@ import { base } from '@tokend/js-sdk'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { wallet } from './index'
+import wallet from './wallet.module'
 
 Vue.use(Vuex)
 
@@ -31,7 +31,7 @@ describe('wallet.module end-to-end test', () => {
         getters: {},
         mutations: {},
         state: {},
-        modules: { wallet }
+        modules: { wallet },
       })
       mockHelper.mockEndpoint(`/kdf?email=${email}&is_recovery=false`, {
         data: {
@@ -43,9 +43,9 @@ describe('wallet.module end-to-end test', () => {
             n: 4096,
             r: 8,
             p: 1,
-            salt: 'Ux94WBwVfIEh6GQuc9CeAQ=='
-          }
-        }
+            salt: 'Ux94WBwVfIEh6GQuc9CeAQ==',
+          },
+        },
       })
       mockHelper.mockEndpoint(`/wallets/${walletId}`, {
         data: {
@@ -56,10 +56,10 @@ describe('wallet.module end-to-end test', () => {
             verified: true,
             account_id: accountId,
             keychain_data: encryptedKeychain,
-            last_sent_at: '2018-04-20T14:29:35.816633Z'
+            last_sent_at: '2018-04-20T14:29:35.816633Z',
           },
-          relationships: {}
-        }
+          relationships: {},
+        },
       })
       await store.dispatch(vuexTypes.LOAD_WALLET, { email, password })
     })

@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router/routes'
 
 const localVue = createLocalVue()
 
@@ -34,7 +35,7 @@ describe('RecoveryForm component test', () => {
       email: ['required', 'email'],
       password: ['required', 'password'],
       confirmPassword: ['required', 'password', 'sameAsPassword'],
-      recoverySeed: ['required', 'seed']
+      recoverySeed: ['required', 'seed'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {
@@ -50,12 +51,12 @@ describe('RecoveryForm component test', () => {
       '#recovery-email': 'email',
       '#recovery-password': 'password',
       '#recovery-confirm-password': 'confirmPassword',
-      '#recovery-seed': 'recoverySeed'
+      '#recovery-seed': 'recoverySeed',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        const spy = sinon.stub(wrapper.vm, '_touchField')
+        const spy = sinon.stub(wrapper.vm, 'touchField')
 
         wrapper
           .find(selector)
@@ -76,8 +77,18 @@ describe('RecoveryForm component test', () => {
 
     beforeEach(() => {
       mockHelper = new MockHelper()
+
+      const router = new VueRouter({
+        mode: 'history',
+        routes: [{
+          name: vueRoutes.login.name,
+          path: '/foo',
+        }],
+      })
+
       wrapper = shallowMount(RecoveryForm, {
-        localVue
+        localVue,
+        router,
       })
     })
 
@@ -89,7 +100,7 @@ describe('RecoveryForm component test', () => {
         email: 'alice@mail.com',
         password: 'qwe123',
         confirmPassword: 'qwe123',
-        recoverySeed: 'SDE44JILVL2YU5VXESXRT4ZZYN7U2DHOZTMMIOMVEVIGL5BATGCYZD7Q'
+        recoverySeed: 'SDE44JILVL2YU5VXESXRT4ZZYN7U2DHOZTMMIOMVEVIGL5BATGCYZD7Q',
       }
 
       wrapper.setData({ form })

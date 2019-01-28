@@ -14,7 +14,7 @@
         v-ripple
         @click="submit"
         class="auth-page__submit-btn"
-        :disabled="_isDisabled"
+        :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.request-new-email' | globalize }}
       </button>
@@ -32,7 +32,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import { vueRoutes } from '@/vue-router'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -44,14 +44,14 @@ export default {
   props: {
     paramsBase64: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data: _ => ({
     walletId: '',
     email: '',
     from: '',
-    vueRoutes
+    vueRoutes,
   }),
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -67,16 +67,16 @@ export default {
   },
   methods: {
     async submit () {
-      this._disableForm()
+      this.disableForm()
       try {
         await Sdk.api.wallets.resendEmail(this.walletId)
         Bus.success('auth-pages.email-requested')
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this._enableForm()
-    }
-  }
+      this.enableForm()
+    },
+  },
 }
 </script>
 
