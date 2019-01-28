@@ -40,7 +40,7 @@ export default {
           await base.manageBalance({
             destination: this.accountId,
             asset: opts.pair.base,
-            action: 0, // TODO: use xdr.value for it
+            action: base.xdr.ManageBalanceAction.create(),
           })
           await this.loadBalances(this.accountId)
         }
@@ -49,7 +49,7 @@ export default {
           await base.manageBalance({
             destination: this.accountId,
             asset: opts.pair.quote,
-            action: 0, // TODO: use xdr.value for it
+            action: base.xdr.ManageBalanceAction.create(),
           })
           await this.loadBalances(this.accountId)
         }
