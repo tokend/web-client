@@ -22,45 +22,43 @@
               <th :title="'fee-table.fee-type' | globalize">
                 {{ 'fee-table.fee-type' | globalize }}
               </th>
-              <th>
+              <th :title="'fee-table.subtype' | globalize">
                 {{ 'fee-table.subtype' | globalize }}
               </th>
-              <th>
+              <th :title="'fee-table.fixed' | globalize">
                 {{ 'fee-table.fixed' | globalize }}
               </th>
-              <th>
+              <th :title="'fee-table.percent' | globalize">
                 {{ 'fee-table.percent' | globalize }}
               </th>
-              <th>
+              <th :title="'fee-table.lower-bound' | globalize">
                 {{ 'fee-table.lower-bound' | globalize }}
               </th>
-              <th>
+              <th :title="'fee-table.upper-bound' | globalize">
                 {{ 'fee-table.upper-bound' | globalize }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(fee, i) in assetFees" :key="i">
-              <td>
+              <td :title="fee.feeType | formatFeeType">
                 {{ fee.feeType | formatFeeType }}
               </td>
-              <td>
-                {{
-                  { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType
-                }}
+              <!-- eslint-disable max-len -->
+              <td :title="{ type: fee.feeType, subtype: fee.subtype } | formatFeeSubType">
+                {{ { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType }}
               </td>
-              <td>
-                {{
-                  { value: fee.fixed, currency: fee.feeAsset } | formatMoney
-                }}
+              <td :title="{ value: fee.fixed, currency: fee.feeAsset } | formatMoney">
+                {{ { value: fee.fixed, currency: fee.feeAsset } | formatMoney }}
               </td>
-              <td>
+              <!-- eslint-enable max-len -->
+              <td :title="fee.percent | formatPercent">
                 {{ fee.percent | formatPercent }}
               </td>
-              <td>
+              <td :title="fee.lowerBound | formatMoney">
                 {{ fee.lowerBound | formatMoney }}
               </td>
-              <td>
+              <td :title="fee.upperBound | formatMoney">
                 {{ fee.upperBound | formatMoney }}
               </td>
             </tr>

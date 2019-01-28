@@ -47,19 +47,19 @@
           <table class="app__table">
             <thead>
               <tr>
-                <th>
+                <th :title="'issuance.counterparty-lbl' | globalize">
                   {{ 'issuance.counterparty-lbl' | globalize }}
                 </th>
-                <th>
+                <th :title="'issuance.amount-lbl' | globalize">
                   {{ 'issuance.amount-lbl' | globalize }}
                 </th>
-                <th>
+                <th :title="'issuance.asset-code-lbl' | globalize">
                   {{ 'issuance.asset-code-lbl' | globalize }}
                 </th>
-                <th>
+                <th :title="'issuance.date-lbl' | globalize">
                   {{ 'issuance.date-lbl' | globalize }}
                 </th>
-                <th>
+                <th :title="'issuance.reference-lbl' | globalize">
                   {{ 'issuance.reference-lbl' | globalize }}
                 </th>
               </tr>
@@ -69,10 +69,18 @@
                 <td>
                   <email-getter :account-id="issuance.counterparty" />
                 </td>
-                <td>{{ issuance.amount | formatMoney }}</td>
-                <td>{{ issuance.asset }}</td>
-                <td>{{ issuance.date | formatCalendar }}</td>
-                <td>{{ issuance.subject }}</td>
+                <td :title="issuance.amount | formatMoney">
+                  {{ issuance.amount | formatMoney }}
+                </td>
+                <td :title="issuance.asset">
+                  {{ issuance.asset }}
+                </td>
+                <td :title="issuance.date | formatCalendar">
+                  {{ issuance.date | formatCalendar }}
+                </td>
+                <td :title="issuance.subject">
+                  {{ issuance.subject }}
+                </td>
               </tr>
             </tbody>
           </table>

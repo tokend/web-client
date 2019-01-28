@@ -1,29 +1,39 @@
 <template>
   <tbody class="op-list-row">
     <tr class="op-list-row__brief">
-      <td class="op-list-row__cell op-list-row__cell--date">
+      <td
+        class="op-list-row__cell op-list-row__cell--date"
+        :title="operation.date | formatCalendar"
+      >
         {{ operation.date | formatCalendar }}
-      </td>
-
-      <td class="op-list-row__cell">
-        {{ operation | getOpTypeTranslationId | globalize }}
       </td>
 
       <td
         class="op-list-row__cell"
-        :class="{ 'op-list-row__cell--dangle-minus': !operation.isIncoming }"
+        :title="operation | getOpTypeTranslationId | globalize"
       >
-        <!-- eslint-disable-next-line max-len -->
-        {{ { value: operation.amount, currency: operation.asset } | formatMoney }}
+        {{ operation | getOpTypeTranslationId | globalize }}
       </td>
+      <!-- eslint-disable max-len -->
+      <td
+        class="op-list-row__cell"
+        :title="operationAmount | formatMoney"
+      >
+        {{ operationAmount | formatMoney }}
+      </td>
+      <!-- eslint-enable max-len -->
 
-      <td class="op-list-row__cell op-list-row__cell--counterparty">
+      <td
+        class="op-list-row__cell op-list-row__cell--counterparty"
+        :title="operation.counterparty"
+      >
         {{ operation.counterparty }}
       </td>
 
       <td
         class="op-list-row__cell"
         :class="`op-list-row__cell--status-${operation.state}`"
+        :title="operation.state | getOpStateTranslationId | globalize"
       >
         {{ operation.state | getOpStateTranslationId | globalize }}
       </td>
@@ -92,6 +102,22 @@ export default {
   data: () => ({
     isDetailsOpen: false,
   }),
+
+  computed: {
+    operationAmount () {
+      if (this.operation.isIncoming) {
+        return {
+          value: this.operation.amount,
+          currency: this.operation.asset,
+        }
+      } else {
+        return {
+          value: -this.operation.amount,
+          currency: this.operation.asset,
+        }
+      }
+    },
+  },
 }
 </script>
 
@@ -116,15 +142,6 @@ $op-list-toggle-btn-col-width: 6.7rem;
 
   &--date {
     font-weight: 600;
-  }
-
-  &--dangle-minus {
-    position: relative;
-    &:before {
-      content: "-";
-      position: absolute;
-      left: $op-list-cell-side-padding - 0.525rem;
-    }
   }
 
   &--status-success,

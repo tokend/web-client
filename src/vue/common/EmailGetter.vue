@@ -1,8 +1,10 @@
 <template>
-  <span class="email-getter">
+  <span
+    class="email-getter"
+    :title="result | globalize"
+  >
     <template
       v-if="isLoaded"
-      :title="isTitled && result"
     >
       {{ result | globalize }}
     </template>
@@ -28,10 +30,6 @@ export default {
     balanceId: {
       type: String,
       default: '',
-    },
-    isTitled: {
-      type: Boolean,
-      default: false,
     },
   },
   data: _ => ({
