@@ -373,7 +373,6 @@
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
       "asset": "Asset",
-      "how_much": "Minimal withdrawal is {{value}} {{asset}}.",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",
       "network-fee-hint": "Blockchain network will charge additional transaction fee independently.",
