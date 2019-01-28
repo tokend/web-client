@@ -103,22 +103,25 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await this.createOrder({
-          pair: {
-            base: this.order.baseAssetCode,
-            quote: this.order.quoteAssetCode,
-          },
-          baseAmount: this.order.baseAmount,
-          quoteAmount: this.order.quoteAmount,
-          price: this.order.price,
-          isBuy: !this.order.isBuy,
-        })
+        await this.createOrder(this.getCreateOfferOpts())
       } catch (error) {
         // TODO: handle operation type
         ErrorHandler.process(error)
       }
-      this.$emit(EVENTS.closeDrawer)
       this.enableForm()
+      this.$emit(EVENTS.closeDrawer)
+    },
+    getCreateOfferOpts () {
+      return {
+        pair: {
+          base: this.order.baseAssetCode,
+          quote: this.order.quoteAssetCode,
+        },
+        baseAmount: this.order.baseAmount,
+        quoteAmount: this.order.quoteAmount,
+        price: this.order.price,
+        isBuy: !this.order.isBuy,
+      }
     },
   },
 }
