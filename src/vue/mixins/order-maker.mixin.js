@@ -71,7 +71,7 @@ export default {
           quoteBalance: this.getAssetDetails(opts.pair.quote).balanceId,
           // For this operation, back-end creates a "calculated fee", that
           // calculates as amount * percent fee. We can ignore the fixed fee
-          // because of it's a back-end business
+          // because of this is a back-end business
           fee: fee.percent,
         }
         const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
