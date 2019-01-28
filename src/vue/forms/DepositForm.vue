@@ -24,8 +24,8 @@
             <address-viewer
               @data-loaded="enableForm()"
               :key="assetCode.value"
-              v-if="assetCode.value === selectedAsset.asset"
-              :asset="selectedAsset"
+              v-if="assetCode.value === selectedBalance.asset"
+              :balance="selectedBalance"
             />
           </template>
         </form>
@@ -89,7 +89,7 @@ export default {
         }
       })
     },
-    selectedAsset () {
+    selectedBalance () {
       return this.balances
         .find(item => item.asset === this.form.assetCode) || null
     },

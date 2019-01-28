@@ -11,7 +11,7 @@
     <template v-else>
       <template v-if="address">
         <p class="address-viewer__help">
-          {{ 'deposit-form.where-to' | globalize({ asset: asset.asset }) }}
+          {{ 'deposit-form.where-to' | globalize({ asset: balance.asset }) }}
         </p>
         <div class="app__form-row">
           <div class="address-viewer__address-info">
@@ -21,7 +21,8 @@
             <strong>
               {{ 'deposit-form.asset-only-prefix' | globalize }}
             </strong>
-            {{ 'deposit-form.asset-only' | globalize({ asset: asset.asset }) }}
+            <!-- eslint-disable-next-line max-len -->
+            {{ 'deposit-form.asset-only' | globalize({ asset: balance.asset }) }}
           </p>
         </div>
       </template>
@@ -52,7 +53,7 @@ export default {
     KeyViewer,
   },
   props: {
-    asset: { type: Object, required: true },
+    balance: { type: Object, required: true },
   },
   data () {
     return {
@@ -64,7 +65,7 @@ export default {
       vuexTypes.account,
     ]),
     address () {
-      const externalSystemType = this.asset
+      const externalSystemType = this.balance
         .assetDetails.details.externalSystemType
       const externalSystemAccount = this.account.externalSystemAccounts
         .find(item => +item.type.value === +externalSystemType) || {}
@@ -73,7 +74,7 @@ export default {
   },
   async created () {
     this.isPending = true
-    await this.tryBindAddress(this.asset)
+    await this.tryBindAddress(this.balance)
     this.isPending = false
     this.$emit(EVENTS.loaded)
   },
@@ -81,13 +82,13 @@ export default {
     ...mapActions({
       loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
-    async tryBindAddress (asset) {
-      if (!asset || !asset.assetDetails.details.externalSystemType) return
-      if (!asset) return
+    async tryBindAddress (balance) {
+      if (!balance.assetDetails.details.externalSystemType) return
       try {
         const operation = Sdk.base.BindExternalSystemAccountIdBuilder
           .createBindExternalSystemAccountIdOp({
-            externalSystemType: +asset.assetDetails.details.externalSystemType,
+            externalSystemType: +balance.assetDetails.details
+              .externalSystemType,
           })
         await Sdk.horizon.transactions
           .submitOperations(operation)
