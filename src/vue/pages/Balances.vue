@@ -24,7 +24,8 @@ export default {
     }),
   },
   created () {
-    this.assets = this.accountBalances.map(balance => balance.assetDetails)
+    this.assets = this.accountBalances
+      .map(balance => balance.assetDetails)
   },
 }
 </script>

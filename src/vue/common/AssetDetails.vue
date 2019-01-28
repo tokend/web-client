@@ -16,12 +16,12 @@
     </div>
     <table class="app__table asset-details__table">
       <tbody>
-        <tr v-if="asset.getBalance(balances).value">
+        <tr v-if="asset.balance.value">
           <td>
             {{ 'asset-details.balance-title' | globalize }}
           </td>
           <td>
-            {{ asset.getBalance(balances) | formatMoney }}
+            {{ asset.balance | formatMoney }}
           </td>
         </tr>
         <tr>
@@ -71,7 +71,7 @@
       <button
         v-ripple
         class="asset-details__update-btn"
-        :disabled="asset.getBalance(balances).value || isBalanceCreating"
+        :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
         {{ 'asset-details.add-balance-btn' | globalize }}
@@ -94,6 +94,10 @@ import { Bus } from '@/js/helpers/event-bus'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
+const EVENTS = {
+  balanceAdded: 'balance-added',
+}
 
 export default {
   name: 'asset-details',
@@ -129,6 +133,7 @@ export default {
         })
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadBalances()
+        this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')
       } catch (e) {
         this.isBalanceCreating = false

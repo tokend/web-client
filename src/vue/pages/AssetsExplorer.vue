@@ -10,7 +10,6 @@ import AssetsList from '@/vue/common/AssetsList'
 import { Sdk } from '@/sdk'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
   name: 'assets-explorer',
@@ -27,7 +26,7 @@ export default {
     async loadAssets () {
       try {
         const { data } = await Sdk.horizon.assets.getAll()
-        this.assets = data.map(asset => new AssetRecord(asset))
+        this.assets = data
       } catch (e) {
         ErrorHandler.process(e)
       }

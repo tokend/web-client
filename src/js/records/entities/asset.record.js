@@ -30,6 +30,8 @@ export class AssetRecord {
 
     this.policies = this._policies()
     this.policy = this._policy()
+
+    this.balance = this._getBalance(balances)
   }
 
   logoUrl (storageUrl) {
@@ -40,7 +42,7 @@ export class AssetRecord {
     return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
   }
 
-  getBalance (balances) {
+  _getBalance (balances) {
     const balance = balances.find(balance => balance.asset === this.code)
     if (balance) {
       return {

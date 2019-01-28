@@ -4,12 +4,15 @@
       <template slot="heading">
         {{ 'asset-details.title' | globalize }}
       </template>
-      <asset-details :asset="selectedAsset" />
+      <asset-details
+        :asset="selectedAsset"
+        @balance-added="updateSelectedAsset"
+      />
     </drawer>
     <div class="asset-cards">
       <a
         class="asset-card"
-        v-for="asset in assets"
+        v-for="asset in assetRecords"
         :key="asset.code"
         @click="selectAsset(asset)"
       >
@@ -28,11 +31,11 @@
             {{ asset.name }}
           </p>
           <p
-            v-if="asset.getBalance(balances).value"
+            v-if="asset.balance.value"
             class="asset-card__balance"
           >
             <!-- eslint-disable-next-line max-len -->
-            {{ 'assets-page.list-item-balance-line' | globalize({ value: asset.getBalance(balances) }) }}
+            {{ 'assets-page.list-item-balance-line' | globalize({ value: asset.balance }) }}
           </p>
           <p
             v-else
@@ -50,6 +53,8 @@
 import Drawer from '@/vue/common/Drawer'
 import AssetDetails from '@/vue/common/AssetDetails'
 import AssetLogo from '@/vue/common/AssetLogo'
+
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -70,13 +75,21 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      balances: vuexTypes.accountBalances,
+      accountBalances: vuexTypes.accountBalances,
     }),
+    assetRecords () {
+      return this.assets
+        .map(asset => new AssetRecord(asset, this.accountBalances))
+    },
   },
   methods: {
     selectAsset (asset) {
       this.selectedAsset = asset
       this.isDetailsDrawerShown = true
+    },
+    updateSelectedAsset () {
+      this.selectedAsset = this.assetRecords
+        .find(asset => asset.code === this.selectedAsset.code)
     },
   },
 }
