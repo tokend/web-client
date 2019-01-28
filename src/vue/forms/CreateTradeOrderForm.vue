@@ -137,9 +137,6 @@ export default {
       return this.accountBalances
         .find(i => i.asset === this.assets.base).balance || '0'
     },
-    lessThanMinimumAmount () {
-      return Number(this.form.amount) < config.MINIMAL_NUMBER_INPUT_STEP
-    },
   },
   watch: {
     'form.price' (value) {
