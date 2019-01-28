@@ -88,7 +88,7 @@ export default {
     isBuyOrdersLoading: false,
     isSellOrdersLoading: false,
     recordsOrder: 'desc',
-    recordsToShow: 3,
+    recordsToShow: 10,
     config,
   }),
   watch: {
