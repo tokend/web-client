@@ -30,6 +30,7 @@
           name="trade-order-amount"
           :white-autofill="true"
           type="number"
+          :max="baseAssetBalance"
           :disabled="formMixin.isDisabled"
           :step="config.MINIMAL_NUMBER_INPUT_STEP"
           :error-message="getFieldErrorMessage(

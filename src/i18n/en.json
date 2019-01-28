@@ -67,7 +67,7 @@
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
       "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
-      "field-error_noMoreThanAvailableOnBalance": "No more than available on your balance: {{available}}",
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID"
     },
 
