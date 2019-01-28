@@ -41,8 +41,12 @@ import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 
+const EVENTS = {
+  loaded: 'data-loaded',
+}
+
 export default {
-  name: 'trade-orders-buy',
+  name: 'address-viewer',
   components: {
     Loader,
     KeyViewer,
@@ -71,6 +75,7 @@ export default {
     this.isPending = true
     await this.tryBindAddress(this.asset)
     this.isPending = false
+    this.$emit(EVENTS.loaded)
   },
   methods: {
     ...mapActions({

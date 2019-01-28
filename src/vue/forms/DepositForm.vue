@@ -16,11 +16,13 @@
                 :values="assetCodes"
                 v-model="form.assetCode"
                 :label="'withdrawal-form.asset' | globalize"
+                :disabled="formMixin.isDisabled"
               />
             </div>
           </div>
           <template v-for="assetCode in assetCodes">
             <address-viewer
+              @data-loaded="enableForm()"
               :key="assetCode.value"
               v-if="assetCode.value === selectedAsset.asset"
               :asset="selectedAsset"
@@ -92,7 +94,11 @@ export default {
         .find(item => item.asset === this.form.assetCode) || null
     },
   },
-  watch: {},
+  watch: {
+    'form.assetCode' () {
+      this.disableForm()
+    },
+  },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.account
