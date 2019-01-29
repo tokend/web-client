@@ -7,14 +7,16 @@
       <div class="form-confirmation__btns">
         <button
           class="form-confirmation__cancel-btn"
+          type="button"
           @click.prevent="emitCancel"
-          :disabled="isPending">
+          :disabled="isPending || isDisabled">
           {{ cancelButtonTextId | globalize }}
         </button>
         <button
+          type="submit"
           class="form-confirmation__ok-btn"
           @click.prevent="emitOk"
-          :disabled="isPending">
+          :disabled="isPending || isDisabled">
           {{ okButtonTextId | globalize }}
         </button>
       </div>
@@ -23,6 +25,8 @@
 </template>
 
 <script>
+const CONFIRMATION_DISABLED_TIME = 1000
+
 export default {
   props: {
     messageId: {
@@ -49,6 +53,16 @@ export default {
       type: String,
       default: 'cancel',
     },
+  },
+  data: _ => ({
+    isDisabled: false,
+  }),
+  created () {
+    this.isDisabled = true
+
+    setTimeout(() => {
+      this.isDisabled = false
+    }, CONFIRMATION_DISABLED_TIME)
   },
   methods: {
     emitOk () {

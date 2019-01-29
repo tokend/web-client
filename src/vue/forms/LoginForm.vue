@@ -32,7 +32,7 @@
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.log-in' | globalize }}
+        {{ 'auth-pages.sign-in' | globalize }}
       </button>
     </div>
   </form>
@@ -103,8 +103,8 @@ export default {
           return
         }
         ErrorHandler.process(e)
+        this.enableForm()
       }
-      this.enableForm()
     },
     async isUserExist (accountId) {
       try {

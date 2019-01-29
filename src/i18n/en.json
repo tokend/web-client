@@ -34,13 +34,13 @@
 
   "translations": {
     "formats": {
-      "date":  "{{value, date}}",
-      "dmy":  "{{value, dmy}}",
+      "date": "{{value, date}}",
+      "dmy": "{{value, dmy}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
-      "calendar":  "{{value, calendar}}",
-      "order_number":  "{{value, order_number}}",
+      "calendar": "{{value, calendar}}",
+      "order_number": "{{value, order_number}}",
       "percent": "{{value, percent}}",
       "fee_type": "{{value, fee_type}}",
       "fee_subtype": "{{value, fee_subtype}}"
@@ -60,7 +60,7 @@
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
       "close-lbl_info": "Got it"
-     },
+    },
 
     "validation": {
       "failed": "Please fill out all the fields before continuing",
@@ -75,24 +75,25 @@
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
-      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
+      "field-error_address": "Make sure the address is correct",
+      "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
-      "field-error_address": "Make sure the address is correct"
+      "field-error_maxLength": "This field must contain maximum {{length}} symbols"
     },
 
     "errors": {
       "default": "Something bad happened. Please try again later",
-      "server":  "This service is temporary unavailable. Please try again later",
+      "server": "This service is temporary unavailable. Please try again later",
       "timeout": "Timeout exceeded. Please re-check your internet connection and try again",
       "network": "Network error. Please re-check your internet connection and try again",
-      "internal":  "This service is temporary unavailable. Please try again later",
+      "internal": "This service is temporary unavailable. Please try again later",
       "conflict": "Such item already exists",
       "not-found": "Such item not found",
       "forbidden": "Request forbidden",
       "bad-request": "The request you sent is invalid in some way",
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
-      "tfa-required":  "2FA required",
+      "tfa-required": "2FA required",
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists"
     },
@@ -105,14 +106,20 @@
       "investment": "Investment"
     },
 
+    "operation-states": {
+      "success": "Completed",
+      "pending": "Pending",
+      "failed": "Failed"
+    },
+
     "auth-pages": {
       "small-title": "Create, distribute and trade",
-      "big-title": "Start tokenizing your assets in minutes",
+      "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
-      "log-in": "Log In",
+      "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "almost-done": "Almost done",
       "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
@@ -120,7 +127,7 @@
       "email-verified": "Email successfully verified",
       "get-started": "Get started",
       "recover-account": "Recover your account",
-      "recovered": "Account recovered. You can now use the new credentials to log in",
+      "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
       "save-recovery-seed": "Save this seed to your offline device",
@@ -241,7 +248,7 @@
       "account-corporate": "Corporate account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "log-out-btn": "Log out"
+      "sign-out-btn": "Sign out"
     },
 
     "sidebar": {
@@ -278,7 +285,9 @@
       "upper-bound": "Upper bound",
       "subtype": "Subtype",
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
+      "loading-error-msg": "There was an error while loading.",
+      "no-fees-title": "No fees",
+      "no-fees-msg": "Here will be the list of your fees"
     },
 
     "op-pages": {
@@ -286,7 +295,8 @@
       "no-operation-history": "No operation history",
       "here-will-be-the-list": "Here will be the list of your operations",
       "something-went-wrong": "Something went wrong",
-      "can-not-load-assets": "Can not load assets",
+      "can-not-load-assets": "There was an error while loading assets",
+      "loading-msg": "Loading",
       "withdrawal": "Withdrawal"
     },
 
@@ -340,10 +350,6 @@
       "here-will-transactions-list": "Here will be the list of your transactions"
     },
 
-    "email-getter": {
-      "loading-msg": "Loading..."
-    },
-
     "chart": {
       "year": "Year",
       "month": "Month",
@@ -372,7 +378,7 @@
       "source-no-fees": "Sender won’t pay any fees for this transaction.",
       "recipient-fees": "Recipient fees",
       "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
-      "total": "total",
+      "total": "Total",
       "total-sender-fee": "Total sender fee",
       "total-receiver-fee": "Total receiver fee",
       "total-amount": "Total amount",
@@ -386,6 +392,8 @@
 
     "issuance": {
       "loading-msg": "Loading",
+      "no-issuance-history-title": "No issuance history",
+      "no-issuance-history-msg": "Here will be the list of your issuances",
       "create-issuance-btn": "Create issuance",
       "upload-pre-issuance-btn": "Upload pre-issuance",
       "counterparty-lbl": "Counterparty",
@@ -522,6 +530,11 @@
       "no-assets-heading": "Ops!",
       "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets"
+    },
+
+    "email-getter": {
+      "loading-msg": "Loading...",
+      "master-account": "Master"
     }
   }
 }
