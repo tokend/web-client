@@ -12,6 +12,7 @@ import { MockHelper } from '@/test'
 import { ASSET_POLICIES, ACCOUNT_TYPES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 Vue.config.silent = true
 
@@ -37,39 +38,41 @@ describe('Dashboard.AssetSelector component', () => {
       {
         asset: 'BTC',
         balance: '1',
-        assetDetails: {
+        assetDetails: new AssetRecord({
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
           ],
           details: { logo: { key: 'some-key' } },
-        },
+        }),
       },
       {
         asset: 'USD',
         balance: '3',
-        assetDetails: {
+        assetDetails: new AssetRecord({
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
             { value: ASSET_POLICIES.statsQuoteAsset },
           ],
-        },
+        }),
       },
       {
         asset: 'ETH',
         balance: '0',
-        assetDetails: {
+        assetDetails: new AssetRecord({
           policies: [
             { value: ASSET_POLICIES.baseAsset },
           ],
-        },
+        }),
       },
     ]
     mockedTokens = [
-      {
+      new AssetRecord({
         code: 'USD',
-        name: 'Dollar',
+        details: {
+          name: 'Dollar',
+        },
         policies: [
           {
             value: ASSET_POLICIES.transferable,
@@ -81,10 +84,12 @@ describe('Dashboard.AssetSelector component', () => {
             value: ASSET_POLICIES.statsQuoteAsset,
           },
         ],
-      },
-      {
+      }),
+      new AssetRecord({
         code: 'BTC',
-        name: 'Bitcoin',
+        details: {
+          name: 'Bitcoin',
+        },
         policies: [
           {
             value: ASSET_POLICIES.transferable,
@@ -93,16 +98,21 @@ describe('Dashboard.AssetSelector component', () => {
             value: ASSET_POLICIES.baseAsset,
           },
         ],
-      },
-      {
+      }),
+      new AssetRecord({
         code: 'ETH',
-        name: 'Ethereum',
+        details: {
+          name: 'Ethereum',
+        },
         policies: [
           {
             value: ASSET_POLICIES.transferable,
           },
+          {
+            value: ASSET_POLICIES.baseAsset,
+          },
         ],
-      },
+      }),
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)

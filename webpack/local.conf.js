@@ -14,6 +14,9 @@ module.exports = merge(baseWebpackConfig, {
     host: 'localhost',
     overlay: true,
     open: true,
+    watchOptions: {
+      poll: true
+    },
     stats: 'errors-only',
     historyApiFallback: true,
     progress: true

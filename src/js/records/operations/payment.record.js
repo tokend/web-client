@@ -21,6 +21,7 @@ export class PaymentRecord extends OpRecord {
     this.accountId = details.accountId
     this.amount = record.amount
     this.asset = record.asset
+    this.sourceAccount = record.sourceAccount
     this.sourcePaysForDest = record.sourcePaysForDest
     this.sourceFeeAsset = _get(
       record, 'sourceFeeData.actualPaymentFeeAssetCode'
@@ -39,7 +40,7 @@ export class PaymentRecord extends OpRecord {
   }
 
   get isIncoming () {
-    return this.sourceAccount === this.accountId
+    return this.sourceAccount !== this.accountId
   }
 
   get counterparty () {

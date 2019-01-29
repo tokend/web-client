@@ -1,16 +1,17 @@
 <template>
   <div class="withdrawal" v-if="isLoaded">
-    <template v-if="tokenCodes.length">
+    <template v-if="assetCodes.length">
       <form
-        @submit.prevent="confirmWithdrawal"
+        @submit.prevent="isFormValid() && showFormConfirmation()"
         id="withdrawal-form"
+        novalidate
       >
         <div class="app__form-row withdrawal__form-row">
           <div class="app__form-field">
             <select-field
-              :values="tokenCodes"
+              :values="assetCodes"
               :disabled="formMixin.isDisabled"
-              v-model="form.tokenCode"
+              v-model="form.assetCode"
               :label="'withdrawal-form.asset' | globalize"
             />
             <div class="withdrawal__form-field-description">
@@ -18,14 +19,13 @@
                 {{
                   'withdrawal-form.balance' | globalize({
                     amount: balanceInfo.balance,
-                    asset: form.tokenCode
+                    asset: form.assetCode
                   })
                 }}
               </p>
             </div>
           </div>
         </div>
-
         <div class="app__form-row withdrawal__form-row">
           <input-field
             white-autofill
@@ -34,7 +34,7 @@
             type="number"
             @blur="touchField('form.amount')"
             :label="'withdrawal-form.amount' | globalize({
-              asset: form.tokenCode
+              asset: form.assetCode
             })"
             :disabled="formMixin.isDisabled"
             :error-message="getFieldErrorMessage('form.amount', {
@@ -52,7 +52,7 @@
             @blur="touchField('form.address')"
             :error-message="getFieldErrorMessage('form.address')"
             :label="'withdrawal-form.destination-address' | globalize({
-              asset: form.tokenCode
+              asset: form.assetCode
             })"
             :monospaced="true"
             :disabled="formMixin.isDisabled"
@@ -72,14 +72,14 @@
                 <td>{{ 'withdrawal-form.fixed-fee' | globalize }}</td>
                 <td>
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: fixedFee, currency: form.tokenCode } | formatMoney }}
+                  {{ { value: fixedFee, currency: form.assetCode } | formatMoney }}
                 </td>
               </tr>
               <tr>
                 <td>{{ 'withdrawal-form.percent-fee' | globalize }}</td>
                 <td>
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: percentFee, currency: form.tokenCode } | formatMoney }}
+                  {{ { value: percentFee, currency: form.assetCode } | formatMoney }}
                 </td>
               </tr>
             </tbody>
@@ -90,7 +90,7 @@
                 </td>
                 <td>
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: (+percentFee + +fixedFee), currency: form.tokenCode } | formatMoney }}
+                  {{ { value: (+percentFee + +fixedFee), currency: form.assetCode } | formatMoney }}
                 </td>
               </tr>
             </tbody>
@@ -100,7 +100,7 @@
         <div class="app__form-actions withdrawal__action-margin">
           <button
             v-ripple
-            v-if="!isConfirmationShown"
+            v-if="!formMixin.isFormConfirmationShown"
             type="submit"
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
@@ -109,9 +109,9 @@
             {{ 'withdrawal-form.withdrawal' | globalize }}
           </button>
           <form-confirmation
-            v-if="isConfirmationShown"
-            @ok="submit"
-            @cancel="isConfirmationShown = false"
+            v-if="formMixin.isFormConfirmationShown"
+            @ok="hideFormConfirmation() || submit()"
+            @cancel="hideFormConfirmation()"
           />
         </div>
       </form>
@@ -141,7 +141,8 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { ASSET_POLICIES, FEE_TYPES } from '@tokend/js-sdk'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -165,9 +166,8 @@ export default {
   data () {
     return {
       isLoaded: false,
-      isConfirmationShown: false,
       form: {
-        tokenCode: null,
+        assetCode: null,
         amount: '',
         address: '',
       },
@@ -183,12 +183,12 @@ export default {
   validations () {
     return {
       form: {
-        tokenCode: { required },
+        assetCode: { required },
         amount: {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.balanceInfo.balance),
         },
-        address: { required, address: address(this.form.tokenCode) },
+        address: { required, address: address(this.form.assetCode) },
       },
     }
   },
@@ -197,12 +197,12 @@ export default {
       vuexTypes.account,
       vuexTypes.accountId,
     ]),
-    tokenCodes () {
+    assetCodes () {
       return this.assets.map(item => item.code)
     },
     balanceInfo () {
       return this.account.balances
-        .find(item => item.asset === this.form.tokenCode)
+        .find(item => item.asset === this.form.assetCode)
     },
   },
   watch: {
@@ -214,23 +214,24 @@ export default {
       }
       this.tryGetFees()
     },
-    'form.tokenCode' () {
+    'form.assetCode' () {
       this.tryGetFees()
-    },
-    isConfirmationShown (value) {
-      if (!value) this.enableForm()
     },
   },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
-      this.assets = assets.filter(item => {
-        return item.policies.filter(policy => {
-          return policy.value === ASSET_POLICIES.withdrawable ||
-            policy.value === ASSET_POLICIES.withdrawableV2
-        }).length
-      })
-      this.form.tokenCode = this.tokenCodes[0] || null
+      this.assets = assets
+        .map(item => new AssetRecord(item))
+        .filter(item => {
+          if (this.account.balances
+            .find(balance => balance.asset === item.code)) {
+            return item.isWithdrawable
+          } else {
+            return false
+          }
+        })
+      this.form.assetCode = this.assetCodes[0] || null
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.process(e)
@@ -262,7 +263,7 @@ export default {
       try {
         const fees = await Sdk.horizon.fees.get(FEE_TYPES.withdrawalFee, {
           account: this.accountId,
-          asset: this.form.tokenCode,
+          asset: this.form.assetCode,
           amount: this.form.amount,
         })
         this.fixedFee = fees.data.fixed
@@ -286,18 +287,13 @@ export default {
         balance: this.balanceInfo.balanceId,
         amount: this.form.amount,
         externalDetails: { address: this.form.address },
-        destAsset: this.form.tokenCode,
+        destAsset: this.form.assetCode,
         expectedDestAssetAmount: this.form.amount,
         fee: {
           fixed: this.fixedFee,
           percent: this.percentFee,
         },
       }
-    },
-    confirmWithdrawal () {
-      if (!this.isFormValid()) return
-      this.isConfirmationShown = true
-      this.disableForm()
     },
   },
 }

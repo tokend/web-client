@@ -3,31 +3,52 @@
     <div class="file-field__label">
       {{ label }}
     </div>
-    <div class="file-input">
+    <div
+      class="file-input"
+      :class="{ 'file-input--disabled': $attrs.disabled }"
+    >
       <div
         class="file-input__file-preview"
-        v-if="fileName">
-        <span>
-          {{ 'file-field.selected-file' | globalize }}  {{ fileName }}
-        </span>
+        v-if="document"
+      >
+        {{ 'file-field.selected-file' | globalize({ name: document.name }) }}
       </div>
       <div class="file-input__input-inner">
         <div class="file-input__text">
-          <div class="file-input__title">
-            {{ 'file-field.title' | globalize }}
-          </div>
+          <p class="file-input__title">
+            <template v-if="$attrs.disabled">
+              {{ 'file-field.disabled-msg' | globalize }}
+            </template>
+            <template v-else>
+              {{ 'file-field.title' | globalize }}
+            </template>
+          </p>
           <div class="file-input__note">
             {{ note }}
           </div>
         </div>
       </div>
+      <!--
+        title is set to empty string to avoid ambiguity concerning
+        the selected file. When we set document programmatically
+        (e.g. when dispaying files uploaded before), file input title
+        will be `No file chosen`, cause JavaScript doesn't allow to
+        select the file from the code.
+      -->
       <input
         v-bind="$attrs"
         type="file"
         class="file-field__file-input"
         :accept="accept"
+        title=""
         @change="onChange"
       >
+    </div>
+    <div
+      class="file-field__err-mes"
+      v-if="errorMessage"
+    >
+      {{ errorMessage }}
     </div>
   </div>
 </template>
@@ -44,42 +65,55 @@ const MAX_FILE_MEGABYTES = 5
 export default {
   name: 'file-field',
   props: {
+    value: { type: Object, default: null },
     label: { type: String, default: '' },
     documentType: { type: String, default: 'default' },
     accept: { type: String, default: '*' },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
+    errorMessage: { type: String, default: undefined },
   },
   data: _ => ({
-    fileName: '',
+    document: null,
   }),
   computed: {
     maxSizeBytes () {
       return this.maxSize * 1024 * 1024
     },
   },
+  watch: {
+    'value': function (value) {
+      this.document = value
+    },
+  },
+  created () {
+    if (this.value) {
+      this.document = this.value
+    }
+  },
   methods: {
     onChange (event) {
-      this.fileName = ''
       let file
       try {
         file = FileUtil.getFileFromEvent(event)
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
           Bus.error('file-field.file-not-uploaded-err')
+          this.document = null
+          this.$emit('input', this.document)
           return
         }
         console.error(e)
         ErrorHandler.process(e)
       }
       if (this.isValidFileSize(file)) {
-        this.fileName = file.name
-        this.$emit('input', new DocumentContainer({
+        this.document = new DocumentContainer({
           mimeType: file.type,
           type: this.documentType,
           name: file.name,
           file: file,
-        }))
+        })
+        this.$emit('input', this.document)
       } else {
         Bus.error('file-field.max-size-exceeded-err')
         this.dropFile()
@@ -129,8 +163,16 @@ export default {
     width: 100%;
   }
 
-  &:hover {
+  &:not(.file-input--disabled):hover {
     border-color: $field-color-text;
+  }
+}
+
+.file-input--disabled {
+  filter: grayscale(100%);
+
+  input[type='file'] {
+    cursor: default;
   }
 }
 
@@ -160,5 +202,12 @@ export default {
 
 .file-input__file-preview {
   margin-top: 1rem;
+}
+
+.file-field__err-mes {
+  color: $field-color-error;
+  margin-top: $field-error-margin-top;
+  font-size: $field-error-font-size;
+  line-height: $field-error-line-height;
 }
 </style>

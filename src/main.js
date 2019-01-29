@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from '@/vue/App'
 import i18next from 'i18next'
 import Vuelidate from 'vuelidate'
+import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
 
@@ -31,6 +32,7 @@ log.setDefaultLevel(config.LOG_LEVEL)
 
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
+Vue.use(VueResource)
 Vue.directive('table-scroll-shadow', tableScrollShadow)
 Vue.directive('ripple', ripple)
 Vue.filter('globalize', globalize)
