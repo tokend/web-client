@@ -372,14 +372,18 @@ h4 {
   }
 }
 
-.app__select--no-border {
-  // it is necessary to override the default style of select
-  button {
-    border-bottom: 0 !important;
-    background-size: 0 !important;
-  }
-  span{
-    font-size: 1.8rem !important;
-    font-weight: 300 !important;
+.app__select {
+
+  &--no-border {
+    // it is necessary to override the default style of select
+    button {
+      border-bottom: 0 !important;
+      background-size: 0 !important;
+    }
+
+    span {
+      font-size: 1.8rem !important;
+      font-weight: 300 !important;
+    }
   }
 }
