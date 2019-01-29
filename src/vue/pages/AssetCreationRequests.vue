@@ -1,95 +1,115 @@
 <template>
   <div class="asset-creation-requests">
     <template v-if="isLoaded">
-      <drawer :is-shown.sync="isDetailsDrawerShown">
-        <template v-if="isUpdating">
-          <template slot="heading">
-            {{ 'asset-form.update-token-title' | globalize }}
+      <template v-if="requestsHistory.length">
+        <drawer :is-shown.sync="isDetailsDrawerShown">
+          <template v-if="isUpdating">
+            <template slot="heading">
+              {{ 'asset-form.update-token-title' | globalize }}
+            </template>
+            <asset-form
+              :request="selectedRequest"
+              @update="loadHistory"
+            />
           </template>
-          <asset-form
-            :request="selectedRequest"
-            @update="loadHistory"
-          />
-        </template>
-        <template v-else>
-          <template slot="heading">
-            {{ 'asset-request-details.title' | globalize }}
+          <template v-else>
+            <template slot="heading">
+              {{ 'asset-request-details.title' | globalize }}
+            </template>
+            <asset-request-details
+              :request="selectedRequest"
+              @update="updateRequest"
+              @cancel="cancelRequest"
+            />
           </template>
-          <asset-request-details
-            :request="selectedRequest"
-            @update="updateRequest"
-            @cancel="cancelRequest"
-          />
-        </template>
-      </drawer>
-      <table class="app__table asset-creation-requests__table">
-        <thead>
-          <tr>
-            <th>
-              {{ 'requests-page.token-code-header' | globalize }}
-            </th>
-            <th>
-              {{ 'requests-page.request-state-header' | globalize }}
-            </th>
-            <th>
-              {{ 'requests-page.created-header' | globalize }}
-            </th>
-            <th>
-              {{ 'requests-page.last-updated-header' | globalize }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(request, i) in requestsHistory"
-            :key="i"
-          >
-            <td>{{ request.assetCode }}</td>
-            <td
-              v-if="request.stateI === REQUEST_STATES.approved"
-              class="request-state request-state--approved"
+        </drawer>
+        <table class="app__table asset-creation-requests__table">
+          <thead>
+            <tr>
+              <th :title="'requests-page.token-code-header' | globalize">
+                {{ 'requests-page.token-code-header' | globalize }}
+              </th>
+              <th :title="'requests-page.request-state-header' | globalize">
+                {{ 'requests-page.request-state-header' | globalize }}
+              </th>
+              <th :title="'requests-page.created-header' | globalize">
+                {{ 'requests-page.created-header' | globalize }}
+              </th>
+              <th :title="'requests-page.last-updated-header' | globalize">
+                {{ 'requests-page.last-updated-header' | globalize }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(request, index) in requestsHistory"
+              :key="index"
             >
-              {{ 'requests-page.request-approved-msg' | globalize }}
-            </td>
-            <td
-              v-if="request.stateI === REQUEST_STATES.pending"
-              class="request-state request-state--pending"
-            >
-              {{ 'requests-page.request-pending-msg' | globalize }}
-            </td>
-            <td
-              v-if="request.stateI === REQUEST_STATES.rejected"
-              class="request-state request-state--rejected"
-            >
-              {{ 'requests-page.request-rejected-msg' | globalize }}
-            </td>
-            <td
-              v-if="request.stateI === REQUEST_STATES.canceled"
-              class="request-state request-state--canceled"
-            >
-              {{ 'requests-page.request-canceled-msg' | globalize }}
-            </td>
-            <td
-              v-if="request.stateI === REQUEST_STATES.permanentlyRejected"
-              class="request-state request-state--permanently-rejected"
-            >
-              {{
-                'requests-page.request-permanently-rejected-msg' | globalize
-              }}
-            </td>
-            <td>{{ request.createdAt | formatCalendar }}</td>
-            <td>{{ request.updatedAt | formatCalendar }}</td>
-            <td>
-              <a
-                class="request-details-btn"
-                @click="showRequestDetails(request)"
+              <td :title="request.assetCode">
+                {{ request.assetCode }}
+              </td>
+              <td
+                v-if="request.stateI === REQUEST_STATES.approved"
+                class="request-state request-state--approved"
+                :title="'requests-page.request-approved-msg' | globalize"
               >
-                {{ 'requests-page.details-btn' | globalize }}
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                {{ 'requests-page.request-approved-msg' | globalize }}
+              </td>
+              <td
+                v-if="request.stateI === REQUEST_STATES.pending"
+                class="request-state request-state--pending"
+                :title="'requests-page.request-pending-msg' | globalize"
+              >
+                {{ 'requests-page.request-pending-msg' | globalize }}
+              </td>
+              <td
+                v-if="request.stateI === REQUEST_STATES.rejected"
+                class="request-state request-state--rejected"
+                :title="'requests-page.request-rejected-msg' | globalize"
+              >
+                {{ 'requests-page.request-rejected-msg' | globalize }}
+              </td>
+              <td
+                v-if="request.stateI === REQUEST_STATES.canceled"
+                class="request-state request-state--canceled"
+                :title="'requests-page.request-canceled-msg' | globalize"
+              >
+                {{ 'requests-page.request-canceled-msg' | globalize }}
+              </td>
+              <!-- eslint-disable max-len -->
+              <td
+                v-if="request.stateI === REQUEST_STATES.permanentlyRejected"
+                class="request-state request-state--permanently-rejected"
+                :title="'requests-page.request-permanently-rejected-msg' | globalize"
+              >
+                {{ 'requests-page.request-permanently-rejected-msg' | globalize }}
+              </td>
+              <!-- eslint-enable max-len -->
+              <td :title="request.createdAt | formatCalendar">
+                {{ request.createdAt | formatCalendar }}
+              </td>
+              <td :title="request.updatedAt | formatCalendar">
+                {{ request.updatedAt | formatCalendar }}
+              </td>
+              <td>
+                <a
+                  class="request-details-btn"
+                  @click="showRequestDetails(index)"
+                >
+                  {{ 'requests-page.details-btn' | globalize }}
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
+      <template v-else>
+        <no-data-message
+          icon-name="trending-up"
+          :msg-title="'requests-page.no-request-history-title' | globalize"
+          :msg-message="'requests-page.no-request-history-desc' | globalize"
+        />
+      </template>
     </template>
     <template v-else-if="!isLoadingFailed">
       <loader :message-id="'requests-page.loading-msg'" />
@@ -105,6 +125,7 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import AssetRequestDetails from '@/vue/common/AssetRequestDetails'
 import AssetForm from '@/vue/forms/AssetForm'
 
@@ -126,6 +147,7 @@ export default {
   components: {
     Loader,
     Drawer,
+    NoDataMessage,
     AssetRequestDetails,
     AssetForm,
   },
@@ -134,7 +156,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isDetailsDrawerShown: false,
-    selectedRequest: null,
+    selectedIndex: -1,
     isUpdating: false,
     REQUEST_STATES,
   }),
@@ -142,10 +164,12 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
     }),
+    selectedRequest () {
+      return this.requestsHistory[this.selectedIndex]
+    },
   },
   async created () {
     await this.loadHistory()
-    this.isLoaded = true
   },
   methods: {
     async loadHistory () {
@@ -153,20 +177,23 @@ export default {
         const { data } = await Sdk.horizon.request.getAllForAssets({
           requestor: this.account.accountId,
         })
-        this.requestsHistory = data.map(request => {
-          if (request.details.assetCreate) {
-            return new AssetCreateRequestRecord(request)
-          } else {
-            return new AssetUpdateRequestRecord(request)
-          }
-        })
+        this.requestsHistory =
+          data.map(request => this.createRequestRecord(request))
+        this.isLoaded = true
       } catch (e) {
-        this.isFailed = true
+        this.isLoadingFailed = true
         ErrorHandler.process(e)
       }
     },
-    showRequestDetails (request) {
-      this.selectedRequest = request
+    createRequestRecord (request) {
+      if (request.details.assetCreate) {
+        return new AssetCreateRequestRecord(request)
+      } else {
+        return new AssetUpdateRequestRecord(request)
+      }
+    },
+    showRequestDetails (index) {
+      this.selectedIndex = index
       this.isUpdating = false
       this.isDetailsDrawerShown = true
     },
@@ -175,9 +202,11 @@ export default {
         if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
           const { data } =
             await Sdk.horizon.assets.get(this.selectedRequest.assetCode)
-          this.selectedRequest = Object.assign(this.selectedRequest, {
-            maxIssuanceAmount: data.maxIssuanceAmount,
-          })
+          this.requestsHistory.splice(this.selectedIndex, 1,
+            Object.assign(this.selectedRequest, {
+              maxIssuanceAmount: data.maxIssuanceAmount,
+            })
+          )
         }
         this.isUpdating = true
       } catch (e) {
@@ -190,9 +219,12 @@ export default {
           requestID: this.selectedRequest.id,
         })
         await Sdk.horizon.transactions.submitOperations(operation)
-        this.selectedRequest = Object.assign(this.selectedRequest, {
-          stateI: REQUEST_STATES.canceled,
-        })
+
+        const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
+        this.requestsHistory.splice(this.selectedIndex, 1,
+          this.createRequestRecord(data)
+        )
+
         Bus.success('asset-request-details.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)

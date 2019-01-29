@@ -448,7 +448,9 @@
       "request-rejected-msg": "Rejected",
       "request-pending-msg": "Pending",
       "request-canceled-msg": "Cancelled",
-      "request-permanently-rejected-msg": "Permanently rejected"
+      "request-permanently-rejected-msg": "Permanently rejected",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your requests"
     },
 
     "asset-details": {
