@@ -1,14 +1,14 @@
 <template>
   <img
-    v-if="logoKey"
+    v-if="asset.logoKey"
     class="asset-logo asset-logo__image"
-    :src="assetLogoUrl"
+    :src="asset.logoUrl(config.FILE_STORAGE)"
   >
   <p
     v-else
     class="asset-logo asset-logo__code-abbr"
   >
-    {{ assetCode | abbreviate }}
+    {{ asset.code | abbreviate }}
   </p>
 </template>
 
@@ -18,14 +18,11 @@ import config from '@/config'
 export default {
   name: 'asset-logo',
   props: {
-    logoKey: { type: String, default: '' },
-    assetCode: { type: String, required: true },
+    asset: { type: Object, required: true },
   },
-  computed: {
-    assetLogoUrl () {
-      return `${config.FILE_STORAGE}/${this.logoKey}`
-    },
-  },
+  data: _ => ({
+    config,
+  }),
 }
 </script>
 

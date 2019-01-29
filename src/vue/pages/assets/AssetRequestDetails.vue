@@ -1,10 +1,7 @@
 <template>
   <div class="asset-request-details">
     <div class="asset-details">
-      <asset-logo
-        :logo-key="request.logoKey"
-        :asset-code="request.assetCode"
-      />
+      <asset-logo :asset="request" />
       <div class="asset-details__info">
         <p class="asset-details__code">
           {{ request.assetCode }}
@@ -15,7 +12,7 @@
       </div>
     </div>
     <div
-      v-if="request.stateI === REQUEST_STATES.approved"
+      v-if="request.isApproved"
       class="request-state request-state--approved"
     >
       <p class="request-state__content">
@@ -23,7 +20,7 @@
       </p>
     </div>
     <div
-      v-else-if="request.stateI === REQUEST_STATES.pending"
+      v-else-if="request.isPending"
       class="request-state request-state--pending"
     >
       <p class="request-state__content">
@@ -31,7 +28,7 @@
       </p>
     </div>
     <div
-      v-else-if="request.stateI === REQUEST_STATES.rejected"
+      v-else-if="request.isRejected"
       class="request-state request-state--rejected"
     >
       <p class="request-state__content">
@@ -40,7 +37,7 @@
       </p>
     </div>
     <div
-      v-else-if="request.stateI === REQUEST_STATES.canceled"
+      v-else-if="request.isCanceled"
       class="request-state request-state--canceled"
     >
       <p class="request-state__content">
@@ -48,7 +45,7 @@
       </p>
     </div>
     <div
-      v-else-if="request.stateI === REQUEST_STATES.permanentlyRejected"
+      v-else-if="request.isPermanentlyRejected"
       class="request-state request-state--permanently-rejected"
     >
       <p class="request-state__content">
@@ -160,7 +157,7 @@
 </template>
 
 <script>
-import AssetLogo from '@/vue/common/AssetLogo'
+import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 

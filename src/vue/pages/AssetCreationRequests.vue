@@ -49,28 +49,28 @@
                 {{ request.assetCode }}
               </td>
               <td
-                v-if="request.stateI === REQUEST_STATES.approved"
+                v-if="request.isApproved"
                 class="request-state request-state--approved"
                 :title="'requests-page.request-approved-msg' | globalize"
               >
                 {{ 'requests-page.request-approved-msg' | globalize }}
               </td>
               <td
-                v-if="request.stateI === REQUEST_STATES.pending"
+                v-if="request.isPending"
                 class="request-state request-state--pending"
                 :title="'requests-page.request-pending-msg' | globalize"
               >
                 {{ 'requests-page.request-pending-msg' | globalize }}
               </td>
               <td
-                v-if="request.stateI === REQUEST_STATES.rejected"
+                v-if="request.isRejected"
                 class="request-state request-state--rejected"
                 :title="'requests-page.request-rejected-msg' | globalize"
               >
                 {{ 'requests-page.request-rejected-msg' | globalize }}
               </td>
               <td
-                v-if="request.stateI === REQUEST_STATES.canceled"
+                v-if="request.isCanceled"
                 class="request-state request-state--canceled"
                 :title="'requests-page.request-canceled-msg' | globalize"
               >
@@ -78,7 +78,7 @@
               </td>
               <!-- eslint-disable max-len -->
               <td
-                v-if="request.stateI === REQUEST_STATES.permanentlyRejected"
+                v-if="request.isPermanentlyRejected"
                 class="request-state request-state--permanently-rejected"
                 :title="'requests-page.request-permanently-rejected-msg' | globalize"
               >
@@ -126,7 +126,7 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import AssetRequestDetails from '@/vue/common/AssetRequestDetails'
+import AssetRequestDetails from '@/vue/pages/assets/AssetRequestDetails'
 import AssetForm from '@/vue/forms/AssetForm'
 
 import { Sdk } from '@/sdk'

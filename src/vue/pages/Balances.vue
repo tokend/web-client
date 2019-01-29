@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AssetsList from '@/vue/common/AssetsList'
+import AssetsList from '@/vue/common/assets/AssetsList'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'

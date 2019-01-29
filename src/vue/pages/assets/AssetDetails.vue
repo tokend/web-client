@@ -1,10 +1,7 @@
 <template>
   <div class="asset-details">
     <div class="asset-details__header">
-      <asset-logo
-        :logo-key="asset.logoKey"
-        :asset-code="asset.code"
-      />
+      <asset-logo :asset="asset" />
       <div class="asset-details__info">
         <p class="asset-details__code">
           {{ asset.code }}
@@ -81,7 +78,7 @@
 </template>
 
 <script>
-import AssetLogo from '@/vue/common/AssetLogo'
+import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import config from '@/config'
 

@@ -19,8 +19,7 @@
         <div class="asset-card__header">
           <asset-logo
             class="asset-card__logo"
-            :logo-key="asset.logoKey"
-            :asset-code="asset.code"
+            :asset="asset"
           />
         </div>
         <div class="asset-card__info">
@@ -51,8 +50,8 @@
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import AssetDetails from '@/vue/common/AssetDetails'
-import AssetLogo from '@/vue/common/AssetLogo'
+import AssetDetails from '@/vue/pages/assets/AssetDetails'
+import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
