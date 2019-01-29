@@ -1,7 +1,7 @@
 <template>
-  <div class="address-viewer">
+  <div class="address-loader">
     <template v-if="isPending">
-      <div class="address-viewer__address-loader">
+      <div class="address-loader__address-loader">
         <loader />
         <p>
           {{ 'deposit-form.binding-address' | globalize }}
@@ -10,11 +10,11 @@
     </template>
     <template v-else>
       <template v-if="address">
-        <p class="address-viewer__help">
-          {{ 'deposit-form.where-to' | globalize({ asset: balance.asset }) }}
+        <p class="address-loader__help-message">
+          {{ 'deposit-form.where-to' | globalize({ asset: assetCode }) }}
         </p>
         <div class="app__form-row">
-          <div class="address-viewer__address-info">
+          <div class="address-loader__address-info">
             <key-viewer :value="address" />
           </div>
           <p>
@@ -22,7 +22,7 @@
               {{ 'deposit-form.asset-only-prefix' | globalize }}
             </strong>
             <!-- eslint-disable-next-line max-len -->
-            {{ 'deposit-form.asset-only' | globalize({ asset: balance.asset }) }}
+            {{ 'deposit-form.asset-only' | globalize({ asset: assetCode }) }}
           </p>
         </div>
       </template>
@@ -43,17 +43,18 @@ import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
-  loaded: 'data-loaded',
+  ready: 'ready',
 }
 
 export default {
-  name: 'address-viewer',
+  name: 'address-loader',
   components: {
     Loader,
     KeyViewer,
   },
   props: {
-    balance: { type: Object, required: true },
+    externalSystemType: { type: [String, Number], required: true },
+    assetCode: { type: String, required: true },
   },
   data () {
     return {
@@ -65,30 +66,26 @@ export default {
       vuexTypes.account,
     ]),
     address () {
-      const externalSystemType = this.balance
-        .assetDetails.details.externalSystemType
       const externalSystemAccount = this.account.externalSystemAccounts
-        .find(item => +item.type.value === +externalSystemType) || {}
+        .find(item => +item.type.value === +this.externalSystemType) || {}
       return externalSystemAccount.data
     },
   },
   async created () {
     this.isPending = true
-    await this.tryBindAddress(this.balance)
+    await this.tryBindAddress()
     this.isPending = false
-    this.$emit(EVENTS.loaded)
+    this.$emit(EVENTS.ready)
   },
   methods: {
     ...mapActions({
       loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
-    async tryBindAddress (balance) {
-      if (!balance.assetDetails.details.externalSystemType) return
+    async tryBindAddress () {
       try {
         const operation = Sdk.base.BindExternalSystemAccountIdBuilder
           .createBindExternalSystemAccountIdOp({
-            externalSystemType: +balance.assetDetails.details
-              .externalSystemType,
+            externalSystemType: +this.externalSystemType,
           })
         await Sdk.horizon.transactions
           .submitOperations(operation)
@@ -104,20 +101,20 @@ export default {
 <style lang="scss" scoped>
   @import "@/scss/variables";
 
-  .address-viewer__address-loader {
+  .address-loader__address-loader {
     width: 100%;
     display: flex;
     align-items: center;
   }
 
-  .address-viewer__address-info {
+  .address-loader__address-info {
     border: solid 0.1rem $col-form-stepper-tab-border;
     border-radius: 0.2rem;
     margin: 0.5rem 0 1rem 0;
     padding: 1.5rem 1rem 1rem 1rem;
   }
 
-  .address-viewer__help {
+  .address-loader__help-message {
     font-size: 1.2rem;
     opacity: 0.7;
   }

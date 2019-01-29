@@ -2,28 +2,30 @@
   <div class="deposit">
     <template v-if="isLoaded">
       <template v-if="form.assetCode">
-        <div class="app__form-row deposit__form-row">
-          <p class="deposit__help">
+        <div class="deposit__margin">
+          <p class="deposit__help-message">
             {{ 'deposit-form.how-to' | globalize }}
           </p>
         </div>
         <form>
-          <div class="app__form-row deposit__form-row">
+          <div class="app__form-row deposit__margin">
             <div class="app__form-field">
               <select-field
                 :values="assetCodes"
                 v-model="form.assetCode"
-                :label="'withdrawal-form.asset' | globalize"
+                :label="'deposit-form.asset' | globalize"
                 :disabled="formMixin.isDisabled"
               />
             </div>
           </div>
           <template v-for="assetCode in assetCodes">
-            <address-viewer
-              @data-loaded="enableForm()"
+            <address-loader
+              @ready="enableForm()"
               :key="assetCode.value"
               v-if="assetCode.value === selectedBalance.asset"
-              :balance="selectedBalance"
+              :asset-code="selectedBalance.asset"
+              :external-system-type="selectedBalance.assetDetails
+                .details.externalSystemType"
             />
           </template>
         </form>
@@ -49,7 +51,7 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
-import AddressViewer from './DepositForm/AddressViewer'
+import AddressLoader from './DepositForm/AddressLoader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
@@ -61,7 +63,7 @@ export default {
   name: 'deposit-form',
   components: {
     Loader,
-    AddressViewer,
+    AddressLoader,
   },
   mixins: [FormMixin],
   props: {
@@ -99,12 +101,12 @@ export default {
   },
   async created () {
     try {
-      const { data: assets } = await Sdk.horizon.account
+      const { data: balances } = await Sdk.horizon.account
         .getDetails(this.accountId)
-      this.balances = assets.filter(item => {
+      this.balances = balances.filter(item => {
         return !!item.assetDetails.details.externalSystemType
       })
-      this.form.assetCode = this.assetCodes[0].value || null
+      this.form.assetCode = this.balances[0] ? this.balances[0].asset : null
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.process(e)
@@ -117,7 +119,7 @@ export default {
 <style lang="scss" scoped>
   @import "@/scss/variables";
 
-  .deposit__help {
+  .deposit__help-message {
     font-size: 1.2rem;
     opacity: 0.7;
   }
@@ -126,7 +128,7 @@ export default {
     margin-top: 2.5rem;
   }
 
-  .deposit__form-row {
+  .deposit__margin {
     margin-bottom: 2.5rem;
   }
 </style>

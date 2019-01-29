@@ -389,6 +389,7 @@
 
     "deposit-form": {
       "deposit": "Deposit",
+      "asset": "Asset",
       "how-to": "To make a deposit send some tokens to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only-prefix": "Attention:",
       "asset-only": "The address below accepts {{asset}} only! All the other tokens will be irretrievably lost.",
