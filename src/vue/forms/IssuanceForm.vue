@@ -89,6 +89,7 @@
                 { length: REFERENCE_MAX_LENGTH }
               )"
               :label="'issuance.reference-lbl' | globalize"
+              :maxlength="REFERENCE_MAX_LENGTH"
               :disabled="formMixin.isDisabled"
             />
           </div>
@@ -96,7 +97,6 @@
         <div class="app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
-            :is-pending="formMixin.isConfirmationDisabled"
             @ok="hideConfirmation() || submit()"
             @cancel="hideConfirmation"
           />
@@ -114,7 +114,7 @@
     </div>
     <div v-else-if="isLoaded && !ownedAssets.length">
       <p>
-        {{ 'create-issuance-form.no-assets' | globalize }}
+        {{ 'issuance.no-owned-tokens-msg' | globalize }}
       </p>
     </div>
     <div v-else>

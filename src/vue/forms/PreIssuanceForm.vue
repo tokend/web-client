@@ -40,7 +40,6 @@
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
-          :is-pending="formMixin.isConfirmationDisabled"
           @ok="hideConfirmation() || submit()"
           @cancel="hideConfirmation"
         />

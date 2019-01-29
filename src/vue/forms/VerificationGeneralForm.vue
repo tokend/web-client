@@ -228,7 +228,7 @@
       </div>
       <div class="app__form-actions">
         <form-confirmation
-          v-if="formMixin.isFormConfirmationShown"
+          v-if="formMixin.isConfirmationShown"
           @ok="hideConfirmation() || submit()"
           @cancel="hideConfirmation"
         />
