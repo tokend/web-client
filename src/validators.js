@@ -1,6 +1,8 @@
 import WAValidator from 'wallet-address-validator'
 import { base } from '@tokend/js-sdk'
 
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
 import * as validators from 'vuelidate/lib/validators'
 
 const ASSETS = {
@@ -15,9 +17,6 @@ export const seed = value => base.Keypair.isValidSecretKey(value)
 export const amount = value => Number(value) && Number(value) > 0
 export const amountRange = (from, to) => value => Number(value) &&
   Number(value) >= +from && Number(value) <= +to
-export const emailOrAccountId = value => {
-  return validators.email(value) || base.Keypair.isValidPublicKey(value)
-}
 export const address = (asset) => value => {
   switch (asset) {
     case ASSETS.btc:
@@ -31,6 +30,10 @@ export const address = (asset) => value => {
 export const maxValueWrapper = value => {
   return !validators.helpers.req(value()) || validators.maxValue(value())
 }
+export const emailOrAccountId = value => {
+  return validateEmail(value) || base.Keypair.isValidPublicKey(value)
+}
+export const documentContainer = value => value instanceof DocumentContainer
 
 export * from 'vuelidate/lib/validators'
 

@@ -5,6 +5,9 @@ const featureFlags = {
   fees: true,
   operations: true,
   issuance: true,
+  assets: true,
+  requests: true,
+  settings: true,
 }
 
 export default Object.assign(

@@ -4,7 +4,8 @@
     :class="{
       'select-field--disabled': disabled,
       'select-field--focused': isExpanded,
-      'select-field--label-minimized': selectedValue
+      'select-field--label-minimized': selectedValue,
+      'select-field--error': errorMessage
     }"
   >
     <template v-if="label">
@@ -46,6 +47,9 @@
         {{ getLabel(item) }}
       </button>
     </div>
+    <p v-if="errorMessage" class="select-field__err-mes">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
@@ -75,6 +79,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    errorMessage: {
+      type: String,
+      default: undefined,
     },
   },
 
@@ -203,6 +211,7 @@ export default {
 
 <style lang="scss">
 @import "scss/variables";
+@import "@/scss/mixins";
 
 .select-field {
   width: 100%;
@@ -222,11 +231,13 @@ export default {
   caret-color: $field-color-focused;
   color: $field-color-text;
   padding: $field-input-padding;
+
   @include material-border(
     $field-color-focused,
     $field-color-unfocused,
     "&.select-field__selected--focused"
   );
+
   @include text-font-sizes;
 }
 
@@ -234,6 +245,7 @@ export default {
   will-change: transform;
   color: $field-color-text;
   font-size: 2.2rem;
+  line-height: 1.5rem;
 
   &:before {
     transition: transform .2s ease-out;
@@ -264,28 +276,40 @@ export default {
   transition: all $field-transition-duration;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include text-font-sizes;
 }
 
-.select-field--disabled > .select-field__selected {
-  cursor: default;
-  @include readonly-material-border($field-color-focused);
+.select-field--disabled {
+  filter: grayscale(100%);
+
+  & > .select-field__selected {
+    cursor: default;
+
+    @include readonly-material-border($field-color-unfocused);
+
+    & > .select-field__selected-value {
+      color: $field-color-unfocused;
+    }
+  }
 }
 
 .select-field--focused > .select-field__label {
   color: $field-color-focused;
+
   @include label-font-sizes;
 }
 
 .select-field--label-minimized > .select-field__label {
   top: 0;
+
   @include label-font-sizes;
 }
 
 .select-field__list {
   opacity: 0;
   visibility: hidden;
-  transition: 0.2s ease-out;
+  transition: .2s ease-out;
   margin-top: -1rem;
   position: absolute;
   left: 0;
@@ -293,12 +317,13 @@ export default {
   min-width: 16rem;
   top: 100%;
   background-color: $col-dropdown-bg;
-  box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);
   border-radius: .3rem;
   z-index: 5;
   max-height: 24.4rem;
   overflow-y: auto;
   padding: .8rem 0;
+
+  @include box-shadow;
 }
 
 .select-field__list--active {
@@ -310,21 +335,37 @@ export default {
 .select-field__list-item {
   padding: .8rem 1.6rem;
   font-size: 1.6rem;
-  transition: background-color 0.15s ease-out;
+  transition: background-color .15s ease-out;
   cursor: pointer;
   border: none;
   display: block;
   width: 100%;
   text-align: left;
   background-color: transparent;
-
   &:not(.select-field__list-item--selected):hover {
-    background-color: rgba(58, 65, 128, 0.05);
+    background-color: $col-select-field-hover-background;
   }
 }
 
 .select-field__list-item--selected {
-  background-color: rgba(58, 65, 128, 0.1);
+  background-color: $col-select-field-selected-background;
+
   @include text-font-sizes;
+}
+
+.select-field__err-mes {
+  color: $field-color-error;
+  margin-top: $field-error-margin-top;
+  font-size: $field-error-font-size;
+  line-height: $field-error-line-height;
+}
+
+.select-field--error > .select-field__selected {
+  @include material-border($field-color-error, $field-color-error);
+}
+
+.select-field--error > .select-field__label,
+.select-field--error .select-field__selected-icon {
+  color: $field-color-error;
 }
 </style>

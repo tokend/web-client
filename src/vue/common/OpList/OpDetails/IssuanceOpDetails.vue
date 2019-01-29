@@ -3,7 +3,7 @@
     <table class="op-details__table">
       <tr class="op-details__row">
         <td class="op-details__cell">
-          {{ 'op-details.id-lbl' | globalize }}
+          {{ 'op-pages.id-lbl' | globalize }}
         </td>
 
         <td class="op-details__cell">

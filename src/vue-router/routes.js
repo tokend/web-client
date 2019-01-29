@@ -8,9 +8,28 @@ export const vueRoutes = Object.freeze({
   operations: { name: 'app.operations' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
+  settings: { name: 'app.settings' },
+  verification: {
+    name: 'app.verification',
+    general: {
+      name: 'app.verification.general',
+    },
+    corporate: {
+      name: 'app.verification.corporate',
+    },
+  },
+  security: { name: 'app.security' },
   dashboard: { name: 'app.dashboard' },
   issuance: { name: 'app.issuance' },
-
+  assets: { name: 'app.assets' },
+  balances: { name: 'app.balances' },
+  assetsExplore: { name: 'app.assets-explore' },
+  requests: {
+    name: 'app.requests',
+    assetCreation: { name: 'app.asset-creation' },
+    fundCreation: { name: 'app.fund-creation' },
+    preissuanceUpload: { name: 'app.preissuance-upload' },
+  },
   // stubs:
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
@@ -19,16 +38,9 @@ export const vueRoutes = Object.freeze({
   transfers: { name: 'app.transfers' },
   massTransfers: { name: 'app.mass-transfers' },
   withdrawal: { name: 'app.withdrawal' },
-  tokens: { name: 'app.tokens' },
   history: { name: 'app.history' },
   trade: { name: 'app.trade' },
-  settings: { name: 'app.settings' },
-  verification: { name: 'app.verification' },
-  tokenCreation: { name: 'app.tokenCreation' },
-  saleCreation: { name: 'app.saleCreation' },
   issuanceCreation: { name: 'app.issuanceCreation' },
-  requests: { name: 'app.requests' },
   sales: { name: 'app.sales' },
   mySales: { name: 'app.my-sales' },
-  preissuanceUpload: { name: 'app.preissuance-upload' },
 })

@@ -7,7 +7,18 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     super(record)
 
     this.assetCode = _get(record, 'details.assetUpdate.code')
-    this.assetName = _get(this._record, 'details.assetCreate.details.name')
+    this.assetName = _get(this._record, 'details.assetUpdate.details.name')
+    this.preissuedAssetSigner = _get(
+      this._record, 'details.assetUpdate.preIssuedAssetSigner'
+    )
+    this.maxIssuanceAmount = _get(
+      this._record, 'details.assetUpdate.maxIssuanceAmount'
+    )
+    this.initialPreissuedAmount = _get(
+      this._record, 'details.assetUpdate.initialPreissuedAmount'
+    )
+    this.policies = this._policies()
+    this.policy = this._policy()
 
     this.details = _get(this._record, 'details.assetUpdate.details')
     this.terms = _get(this._record, 'details.assetUpdate.details.terms')
@@ -26,18 +37,15 @@ export class AssetUpdateRequestRecord extends RequestRecord {
       this._record, 'details.assetUpdate.details.externalSystemType'
     )
 
-    this.policies = (_get(record, 'details.assetUpdate.policies') || [])
-      .map(p => p.value)
-
     this.attachedDetails = details
   }
 
   logoUrl (storageUrl) {
-    return this.logoKey ? '' : `${storageUrl}/${this.logoKey}`
+    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }
 
   termsUrl (storageUrl) {
-    return this.termsKey ? '' : `${storageUrl}/${this.termsKey}`
+    return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
   }
 
   _policies () {
@@ -46,8 +54,7 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   }
 
   _policy () {
-    return _get(this._record, 'details.assetUpdate.policies', [])
-      .reduce((s, p) => s | p, 0)
+    return this._policies().reduce((s, p) => s | p, 0)
   }
 
   get isBaseAsset () {

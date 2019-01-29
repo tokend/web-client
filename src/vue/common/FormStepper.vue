@@ -28,28 +28,26 @@
 /**
  * FormStepper component represents a wrapper for multi-step form.
  *
- * To use it you should insert this component into your form.
- * Main form content should be inserted inside form-stepper tag as a slot.
+ * To use it you should insert your forms (steps) inside
+ * form-stepper tag as a slot.
  *
  * Example of the form using form stepper:
  *
- * <form>
- *   <form-stepper
- *     :steps="steps"
- *     :current-step.sync="currentStep"
- *   >
- *     <template v-if="currentStep === steps.yourStep1.number">
- *       <input />
- *       ...
- *       <button @click="next('form.yourStep1')" />
- *     </template>
+ * <form-stepper
+ *   :steps="steps"
+ *   :current-step.sync="currentStep"
+ * >
+ *   <form v-if="currentStep === steps.yourStep1.number">
+ *     <input />
  *     ...
- *     <template v-if="currentStep === steps.yourStepN.number">
- *       ...
- *       <button @click="submit" />
- *     </template>
- *   </form-stepper>
- * </form>
+ *     <button @click="next('form.yourStep1')" />
+ *   </form>
+ *   ...
+ *   <form v-if="currentStep === steps.yourStepN.number">
+ *     ...
+ *     <button @click="submit" />
+ *   </form>
+ * </form-stepper>
  *
  * Example of the steps prop structure:
  *
