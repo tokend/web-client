@@ -59,9 +59,7 @@ export class AssetCreateRequestRecord extends RequestRecord {
   }
 
   _policy () {
-    return _get(this._record, 'details.assetCreate.policies', [])
-      .map(p => p.value)
-      .reduce((s, p) => s | p, 0)
+    return this._policies().reduce((s, p) => s | p, 0)
   }
 
   get isBaseAsset () {

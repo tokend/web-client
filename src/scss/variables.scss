@@ -118,6 +118,7 @@ $col-field-background: $col-block-bg;
 $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
 $col-field-text-secondary: $_lightPurple;
+$col-field-shadow: rgba(0, 0, 0, 0.1);
 $col-select-field-selected-background: rgba($_eastBay, 0.1);
 $col-select-field-hover-background: rgba($_eastBay, 0.05);
 
@@ -188,5 +189,20 @@ $col-form-stepper-icon: $col-text-on-dark-bg;
 $col-form-stepper-icon-background: $col-primary;
 $col-form-stepper-tab-active: $col-primary-lighten;
 $col-form-stepper-tab-border: $_thinPurple;
+
+// asset card colors
+$col-asset-card-background: $_white;
+$col-asset-card-header-background: $col-primary;
+$col-asset-card-text-primary: $col-text;
+$col-asset-card-text-secondary: $col-text-secondary;
+
+// request colors
+$col-request-approved: $_cyan;
+$col-request-pending: $_orangePeel;
+$col-request-rejected: $_lightRed;
+
+// asset logo
+$col-asset-logo-background: $_mediumGray;
+$col-asset-logo-text: $_white;
 
 // TODO: paste here variables that are ready to use during the refactor process
