@@ -1,7 +1,10 @@
 <template>
   <div class="asset-request-details">
     <div class="asset-details">
-      <asset-logo :asset="request" />
+      <asset-logo
+        :asset-code="request.assetCode"
+        :logo-url="request.logoUrl(config.FILE_STORAGE)"
+      />
       <div class="asset-details__info">
         <p class="asset-details__code">
           {{ request.assetCode }}
@@ -185,6 +188,7 @@ export default {
     },
   },
   data: _ => ({
+    config,
     ASSET_POLICIES,
     EVENTS,
     REQUEST_STATES,

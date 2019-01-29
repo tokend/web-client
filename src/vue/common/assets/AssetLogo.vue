@@ -1,28 +1,24 @@
 <template>
   <img
-    v-if="asset.logoKey"
+    v-if="logoUrl"
     class="asset-logo asset-logo__image"
-    :src="asset.logoUrl(config.FILE_STORAGE)"
+    :src="logoUrl"
   >
   <p
     v-else
     class="asset-logo asset-logo__code-abbr"
   >
-    {{ asset.code | abbreviate }}
+    {{ assetCode | abbreviate }}
   </p>
 </template>
 
 <script>
-import config from '@/config'
-
 export default {
   name: 'asset-logo',
   props: {
-    asset: { type: Object, required: true },
+    logoUrl: { type: String, required: true },
+    assetCode: { type: String, required: true },
   },
-  data: _ => ({
-    config,
-  }),
 }
 </script>
 

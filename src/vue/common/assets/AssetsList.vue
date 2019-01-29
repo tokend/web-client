@@ -19,7 +19,8 @@
         <div class="asset-card__header">
           <asset-logo
             class="asset-card__logo"
-            :asset="asset"
+            :asset-code="asset.code"
+            :logo-url="asset.logoUrl(config.FILE_STORAGE)"
           />
         </div>
         <div class="asset-card__info">
@@ -58,6 +59,8 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import config from '@/config'
+
 export default {
   name: 'assets-list',
   components: {
@@ -71,6 +74,7 @@ export default {
   data: _ => ({
     isDetailsDrawerShown: false,
     selectedAsset: null,
+    config,
   }),
   computed: {
     ...mapGetters({

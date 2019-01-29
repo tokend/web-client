@@ -1,7 +1,10 @@
 <template>
   <div class="asset-details">
     <div class="asset-details__header">
-      <asset-logo :asset="asset" />
+      <asset-logo
+        :asset-code="asset.code"
+        :logo-url="asset.logoUrl(config.FILE_STORAGE)"
+      />
       <div class="asset-details__info">
         <p class="asset-details__code">
           {{ asset.code }}
@@ -106,6 +109,7 @@ export default {
   },
   data: _ => ({
     isBalanceCreating: false,
+    config,
   }),
   computed: {
     ...mapGetters({
