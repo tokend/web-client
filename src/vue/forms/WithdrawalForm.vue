@@ -2,8 +2,7 @@
   <div class="withdrawal" v-if="isLoaded">
     <template v-if="assetCodes.length">
       <form
-        @submit.prevent="isFormValid() && showFormConfirmation() ||
-          disableForm()"
+        @submit.prevent="isFormValid() && showFormConfirmation()"
         id="withdrawal-form"
         novalidate
       >
@@ -111,8 +110,8 @@
           </button>
           <form-confirmation
             v-if="formMixin.isFormConfirmationShown"
-            @ok="hideFormConfirmation() || enableForm() || submit()"
-            @cancel="hideFormConfirmation() || enableForm()"
+            @ok="hideFormConfirmation() || submit()"
+            @cancel="hideFormConfirmation()"
           />
         </div>
       </form>
