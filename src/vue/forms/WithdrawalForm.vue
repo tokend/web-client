@@ -2,8 +2,10 @@
   <div class="withdrawal" v-if="isLoaded">
     <template v-if="assetCodes.length">
       <form
-        @submit.prevent="confirmWithdrawal"
+        @submit.prevent="isFormValid() && showFormConfirmation() ||
+          disableForm()"
         id="withdrawal-form"
+        novalidate
       >
         <div class="app__form-row withdrawal__form-row">
           <div class="app__form-field">
@@ -25,7 +27,6 @@
             </div>
           </div>
         </div>
-
         <div class="app__form-row withdrawal__form-row">
           <input-field
             white-autofill
@@ -100,7 +101,7 @@
         <div class="app__form-actions withdrawal__action-margin">
           <button
             v-ripple
-            v-if="!isConfirmationShown"
+            v-if="!formMixin.isFormConfirmationShown"
             type="submit"
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
@@ -109,9 +110,9 @@
             {{ 'withdrawal-form.withdrawal' | globalize }}
           </button>
           <form-confirmation
-            v-if="isConfirmationShown"
-            @ok="submit"
-            @cancel="isConfirmationShown = false"
+            v-if="formMixin.isFormConfirmationShown"
+            @ok="hideFormConfirmation() || enableForm() || submit()"
+            @cancel="hideFormConfirmation() || enableForm()"
           />
         </div>
       </form>
@@ -141,7 +142,8 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { ASSET_POLICIES, FEE_TYPES } from '@tokend/js-sdk'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -165,7 +167,6 @@ export default {
   data () {
     return {
       isLoaded: false,
-      isConfirmationShown: false,
       form: {
         assetCode: null,
         amount: '',
@@ -217,24 +218,20 @@ export default {
     'form.assetCode' () {
       this.tryGetFees()
     },
-    isConfirmationShown (value) {
-      if (!value) this.enableForm()
-    },
   },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
-      this.assets = assets.filter(item => {
-        if (this.account.balances
-          .find(balance => balance.asset === item.code)) {
-          return item.policies.filter(policy => {
-            return policy.value === ASSET_POLICIES.withdrawable ||
-              policy.value === ASSET_POLICIES.withdrawableV2
-          }).length
-        } else {
-          return false
-        }
-      })
+      this.assets = assets
+        .map(item => new AssetRecord(item))
+        .filter(item => {
+          if (this.account.balances
+            .find(balance => balance.asset === item.code)) {
+            return item.isWithdrawable
+          } else {
+            return false
+          }
+        })
       this.form.assetCode = this.assetCodes[0] || null
       this.isLoaded = true
     } catch (e) {
@@ -298,11 +295,6 @@ export default {
           percent: this.percentFee,
         },
       }
-    },
-    confirmWithdrawal () {
-      if (!this.isFormValid()) return
-      this.isConfirmationShown = true
-      this.disableForm()
     },
   },
 }

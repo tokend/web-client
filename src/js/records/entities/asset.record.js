@@ -92,6 +92,7 @@ export class AssetRecord {
   }
 
   get isWithdrawable () {
-    return !!(this.policy & ASSET_POLICIES.withdrawable)
+    return !!(this.policy & ASSET_POLICIES.withdrawable) ||
+      !!(this.policy & ASSET_POLICIES.withdrawableV2)
   }
 }
