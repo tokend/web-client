@@ -85,6 +85,11 @@ export default {
   @import '~@scss/variables';
   @import '~@scss/mixins';
 
+  .collection-loader {
+    display: flex;
+    justify-content: center;
+  }
+
   .collection-loader__more-button {
     @include button-flat();
   }
