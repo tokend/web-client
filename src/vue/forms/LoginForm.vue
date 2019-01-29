@@ -103,8 +103,8 @@ export default {
           return
         }
         ErrorHandler.process(e)
+        this.enableForm()
       }
-      this.enableForm()
     },
     async isUserExist (accountId) {
       try {

@@ -28,15 +28,15 @@ export const router = new Router({
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
+      // Used to define when App component should render
+      // main app content. If the current route is auth route
+      // the content shouldn't be rendered.
+      meta: { authRoute: true },
       component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
           path: '/sign-in',
           name: vueRoutes.login.name,
-          // Used to define when App component should render
-          // main app content. If the current route is login route
-          // the content shouldn't be rendered.
-          meta: { loginRoute: true },
           component: resolve => require(['@/vue/pages/Login'], resolve),
           beforeEnter: authPageGuard,
         },

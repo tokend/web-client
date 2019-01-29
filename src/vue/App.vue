@@ -5,7 +5,7 @@
       :message-id="'common.browser-not-supported'"
     />
 
-    <template v-if="isLoggedIn && !$route.meta.loginRoute">
+    <template v-if="isLoggedIn && !isAuthRoute">
       <div class="app__container">
         <sidebar />
 
@@ -64,6 +64,9 @@ export default {
       vuexTypes.wallet,
       vuexTypes.isLoggedIn,
     ]),
+    isAuthRoute () {
+      return this.$route.matched.some(m => m.meta.authRoute)
+    },
   },
 
   async created () {

@@ -45,7 +45,7 @@
         >
           <i
             class="mdi mdi-chevron-down op-list-row__details-icon"
-            :class="{ 'op-list-row__details-icon--active': isDetailsOpen }"
+            :class="{ 'mdi-rotate-180': isDetailsOpen }"
           />
         </button>
       </td>
@@ -199,15 +199,10 @@ $op-list-toggle-btn-col-width: 6.7rem;
 }
 
 .op-list-row__details-icon {
-  will-change: transform;
   font-size: 1.6rem;
 
   &:before {
     transition: transform .2s ease-out;
-  }
-
-  &--active:before {
-    transform: rotate(-180deg)
   }
 }
 

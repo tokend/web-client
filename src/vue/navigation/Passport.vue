@@ -16,7 +16,7 @@
         <i
           class="passport__dropdown-status-icon mdi mdi-chevron-down"
           :class="{
-            'passport__dropdown-status-icon--dropdown-opened': isDropdownOpen
+            'mdi-rotate-180': isDropdownOpen
           }"
         />
       </button>
@@ -243,10 +243,6 @@ $dropdown-item-side-padding: 2.4rem;
 .passport__dropdown-status-icon {
   &:before {
     transition: .2s ease-out;
-  }
-
-  &--dropdown-opened:before {
-    transform: rotate(-180deg)
   }
 }
 </style>
