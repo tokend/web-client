@@ -25,7 +25,7 @@ export const address = (asset) => value => {
     case ASSETS.eth:
       return /^(0x)?[0-9a-f]{40}$/i.test(value)
     default:
-      return false
+      return true
   }
 }
 export const maxValueWrapper = value => {
