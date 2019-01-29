@@ -1,7 +1,6 @@
 import { OpRecord } from '../op-record'
 import { MathUtil } from '../../utils/math.util'
 import _get from 'lodash/get'
-import { globalize } from '@/vue/filters/globalize'
 
 export class PaymentRecord extends OpRecord {
   /**
@@ -22,7 +21,6 @@ export class PaymentRecord extends OpRecord {
     this.accountId = details.accountId
     this.amount = record.amount
     this.asset = record.asset
-    this.name = globalize('record-names.transfer')
     this.sourcePaysForDest = record.sourcePaysForDest
     this.sourceFeeAsset = _get(
       record, 'sourceFeeData.actualPaymentFeeAssetCode'

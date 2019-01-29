@@ -4,7 +4,9 @@ const featureFlags = {
   dashboard: true,
   fees: true,
   trade: true,
+  operations: true,
   issuance: true,
+  settings: true,
 }
 
 export default Object.assign(

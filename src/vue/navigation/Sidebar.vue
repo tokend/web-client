@@ -64,6 +64,21 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.operations"
+            :event="isSidebarLinkDisabled(vueRoutes.operations) ? '' : 'click'"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.operations"
+          >
+            <i class="sidebar__link-icon mdi mdi-menu" />
+            <span>
+              {{ 'pages-names.operations' | globalize }}
+            </span>
+          </router-link>
+          <!-- :event – to prevent navigation on the same route -->
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.fees"
             :event="isSidebarLinkDisabled(vueRoutes.fees) ? '' : 'click'"
             tag="a"

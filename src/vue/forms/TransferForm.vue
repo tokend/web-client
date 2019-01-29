@@ -28,7 +28,7 @@
             <select-field
               :values="tokenCodes"
               v-model="form.tokenCode"
-              :label="'transfer-form.asset' | globalize"
+              :label="'transfer-form.asset-lbl' | globalize"
               :readonly="view.mode === VIEW_MODES.confirm" />
             <div class="app__form-field-description">
               <p v-if="form.tokenCode">
@@ -51,7 +51,7 @@
               type="number"
               v-model.trim="form.amount"
               autocomplete="off"
-              :label="'transfer-form.amount' | globalize"
+              :label="'transfer-form.amount-lbl' | globalize"
               :readonly="view.mode === VIEW_MODES.confirm"
               @blur="touchField('form.amount')"
               :error-message="getFieldErrorMessage('form.amount') ||
@@ -67,7 +67,7 @@
             <input-field
               name="recipient"
               v-model.trim="form.recipient"
-              :label="'transfer-form.recipient-email-or-account-id' | globalize"
+              :label="'transfer-form.recipient-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.recipient')"
               @blur="touchField('form.recipient')"
               :readonly="view.mode === VIEW_MODES.confirm"
@@ -82,7 +82,7 @@
               name="description"
               v-model="form.subject"
               @blur="touchField('form.subject')"
-              :label="'transfer-form.add-note' | globalize({ length: 250 })"
+              :label="'transfer-form.subject-lbl' | globalize({ length: 250 })"
               :maxlength="250"
               :error-message="getFieldErrorMessage('form.subject')"
               :readonly="view.mode === VIEW_MODES.confirm"
@@ -250,7 +250,6 @@ import { vuexTypes } from '@/vuex'
 import {
   base,
   PAYMENT_FEE_SUBTYPES,
-  ASSET_POLICIES,
   FEE_TYPES,
 } from '@tokend/js-sdk'
 import config from '@/config'
@@ -314,10 +313,7 @@ export default {
       vuexTypes.accountId,
     ]),
     userTransferableTokens () {
-      return this.accountBalances.filter(i => {
-        const policies = i.assetDetails.policies.map(i => i.value)
-        return policies.includes(ASSET_POLICIES.transferable)
-      })
+      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
     },
     tokenCodes () {
       return this.userTransferableTokens.map(token => token.asset)
@@ -346,7 +342,7 @@ export default {
         await Sdk.horizon.transactions
           .submitOperations(this.buildPaymentOperation())
 
-        Bus.success(globalize('transfer-form.payment-successful'))
+        Bus.success('transfer-form.payment-successful')
 
         await this.loadCurrentBalances()
         this.rerenderForm()

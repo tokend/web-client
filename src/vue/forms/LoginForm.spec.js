@@ -13,6 +13,7 @@ import { globalize } from '@/vue/filters/globalize'
 
 import walletModule from '@/vuex/wallet.module'
 import accountModule from '@/vuex/account.module'
+import kycModule from '@/vuex/kyc.module'
 
 import { MockHelper } from '@/test'
 import { TestHelper } from '@/test/test-helper'
@@ -86,12 +87,14 @@ describe('LoginForm component unit test', () => {
       const actions = {
         ...walletModule.actions,
         ...accountModule.actions,
+        ...kycModule.actions,
       }
       const getters = walletModule.getters
 
       spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
       sinon.stub(getters, vuexTypes.wallet).returns(mockHelper.getMockWallet())
       sinon.stub(actions, vuexTypes.LOAD_ACCOUNT).resolves()
+      sinon.stub(actions, vuexTypes.LOAD_KYC).resolves()
 
       const store = new Vuex.Store({
         actions,

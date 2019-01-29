@@ -71,8 +71,8 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
-import get from 'lodash/get'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 const EVENTS = {
   assetChange: 'asset-change',
@@ -111,10 +111,10 @@ export default {
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
       const baseAssets = tokens
-        .filter(token => token.policies.includes(ASSET_POLICIES.baseAsset))
+        .filter(token => token.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       const otherAssets = tokens
-        .filter(token => !token.policies.includes(ASSET_POLICIES.baseAsset))
+        .filter(token => !token.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
         ...baseAssets,
@@ -135,14 +135,8 @@ export default {
     },
     imgUrl () {
       const defaultUrl = '/static/coin-picture.png'
-      const logoKey = get(
-        this.balances.find(i => i.asset === this.currentAsset),
-        'assetDetails.details.logo.key'
-      )
-      if (logoKey) {
-        return `${config.FILE_STORAGE}/${logoKey}`
-      }
-      return defaultUrl
+      const balance = this.balances.find(i => i.asset === this.currentAsset)
+      return balance.assetDetails.logoUrl(config.FILE_STORAGE) || defaultUrl
     },
   },
   async created () {
@@ -152,7 +146,7 @@ export default {
     async loadTokens () {
       try {
         const response = await Sdk.horizon.assets.getAll()
-        this.tokens = response.data
+        this.tokens = response.data.map(asset => new AssetRecord(asset))
       } catch (error) {
         ErrorHandler.process(error)
       }

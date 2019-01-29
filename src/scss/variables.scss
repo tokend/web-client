@@ -20,6 +20,7 @@ $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
 $_gray: #e2e3e3;
+$_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
 $_lightGray: #c6c6c6;
 $_mediumGray: #ccc;
@@ -36,6 +37,7 @@ $_alto: #e0e0e0;
 
 // base colors:
 $col-primary: $_eastBay;
+$col-secondary: $_lightPurple;
 $col-primary-lighten: $_cornflowerBlue;
 $col-primary-txt: $_white;
 $col-link: $col-primary-lighten;
@@ -92,6 +94,7 @@ $col-button-back-icon-hover: $col-primary-lighten;
 
 // block
 $col-block-bg: $_white;
+$col-block-shadow: rgba(0, 0, 0, 0.1);
 
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
@@ -117,6 +120,8 @@ $col-field-background: $col-block-bg;
 $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
 $col-field-text-secondary: $_lightPurple;
+$col-select-field-selected-background: rgba($_eastBay, 0.1);
+$col-select-field-hover-background: rgba($_eastBay, 0.05);
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
@@ -158,6 +163,11 @@ $col-top-bar-background: $_white;
 $col-top-bar-text: $_eastBay;
 $col-top-bar-tab: $_lightPurple;
 $col-top-bar-tab-active: $_cornflowerBlue;
+
+// request colors
+$col-request-approved: $_cyan;
+$col-request-pending: $_orangePeel;
+$col-request-rejected: $_lightRed;
 
 // chart colors:
 $col-chart-line: $col-primary-lighten;

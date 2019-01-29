@@ -1,10 +1,13 @@
 import { validationMixin } from 'vuelidate'
 
-import InputField from '@/vue/fields/InputField'
-import SelectField from '@/vue/fields/SelectField'
+import InputField from '../fields/InputField'
+import SelectField from '../fields/SelectField'
+import DateField from '../fields/DateField'
 import TextareaField from '@/vue/fields/TextareaField'
 import TickField from '@/vue/fields/TickField'
 import FileField from '@/vue/fields/FileField'
+import FormConfirmation from '@/vue/common/FormConfirmation'
+
 import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'
@@ -13,15 +16,17 @@ export default {
   components: {
     InputField,
     SelectField,
+    DateField,
     TextareaField,
     TickField,
     FileField,
+    FormConfirmation,
   },
   mixins: [validationMixin],
   data: _ => ({
     formMixin: {
       isDisabled: false,
-      showConfirmation: false,
+      isFormConfirmationShown: false,
     },
   }),
   methods: {
@@ -105,8 +110,11 @@ export default {
     enableForm () {
       this.formMixin.isDisabled = false
     },
-    cancelConfirmation () {
-      this.formMixin.showConfirmation = false
+    showFormConfirmation () {
+      this.formMixin.isFormConfirmationShown = true
+    },
+    hideFormConfirmation () {
+      this.formMixin.isFormConfirmationShown = false
     },
   },
 }
