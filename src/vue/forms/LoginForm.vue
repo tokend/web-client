@@ -75,7 +75,6 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadFactors: vuexTypes.LOAD_FACTORS,
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -89,7 +88,6 @@ export default {
         }
         await this.loadAccount(accountId)
         await this.loadKyc()
-        await this.loadFactors()
         this.$router.push({ name: 'app' })
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {
