@@ -150,15 +150,16 @@ export default {
   pointer-events: none;
   color: $field-color-unfocused;
   @include label-font-sizes;
+
+  .input-field__input:not(:focus):placeholder-shown ~ &,
+  .input-field__input:not(:focus):placeholder-shown:-webkit-autofill ~ & {
+    top: $field-input-padding-top;
+    @include text-font-sizes;
+  }
 }
 
 .input-field__input:focus ~ .input-field__label {
   color: $field-color-focused;
-}
-
-.input-field__input:not(:focus):placeholder-shown ~ .input-field__label {
-  top: $field-input-padding-top;
-  @include text-font-sizes;
 }
 
 .input-field__input:disabled {

@@ -1,10 +1,12 @@
 <template>
-  <span class="email-getter">
+  <span
+    class="email-getter"
+    :title="result | globalize"
+  >
     <template
       v-if="isLoaded"
-      :title="isTitled && result"
     >
-      {{ result }}
+      {{ result | globalize }}
     </template>
     <template v-else-if="isLoadingFailed">
       &mdash;
@@ -29,10 +31,6 @@ export default {
       type: String,
       default: '',
     },
-    isTitled: {
-      type: Boolean,
-      default: false,
-    },
   },
   data: _ => ({
     result: '',
@@ -51,6 +49,10 @@ export default {
 
   methods: {
     async loadResult () {
+      if (this.accountId === Sdk.networkDetails.masterAccountId) {
+        this.result = 'email-getter.master-account'
+        return
+      }
       try {
         const accountId = await this.getAccountId()
         const { data } = await Sdk.api.users.get(accountId)

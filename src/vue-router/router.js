@@ -28,10 +28,14 @@ export const router = new Router({
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
+      // Used to define when App component should render
+      // main app content. If the current route is auth route
+      // the content shouldn't be rendered.
+      meta: { authRoute: true },
       component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
-          path: '/log-in',
+          path: '/sign-in',
           name: vueRoutes.login.name,
           component: resolve => require(['@/vue/pages/Login'], resolve),
           beforeEnter: authPageGuard,
@@ -81,6 +85,7 @@ export const router = new Router({
           path: '/operations',
           name: vueRoutes.operations.name,
           featureFlag: config.FEATURE_FLAGS.operations,
+          meta: { pageNameTranslationId: 'pages-names.operations' },
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
@@ -129,6 +134,8 @@ export const router = new Router({
         {
           path: '/settings',
           name: vueRoutes.settings.name,
+          featureFlag: config.FEATURE_FLAGS.settings,
+          meta: { pageNameTranslationId: 'pages-names.settings' },
           redirect: vueRoutes.verification,
           component: resolve => require(['@/vue/pages/Settings'], resolve),
           children: [

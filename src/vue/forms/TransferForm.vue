@@ -29,7 +29,7 @@
               :values="tokenCodes"
               v-model="form.tokenCode"
               :label="'transfer-form.asset-lbl' | globalize"
-              :readonly="view.mode === VIEW_MODES.confirm" />
+              :disabled="view.mode === VIEW_MODES.confirm" />
             <div class="app__form-field-description">
               <p v-if="form.tokenCode">
                 {{
@@ -227,7 +227,6 @@
 
         <form-confirmation
           v-if="view.mode === VIEW_MODES.confirm"
-          :is-pending="formMixin.isDisabled"
           :message="'transfer-form.recheck-form' | globalize"
           :ok-button="'transfer-form.submit-btn' | globalize"
           @cancel="updateView(VIEW_MODES.submit)"

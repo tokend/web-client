@@ -2,6 +2,7 @@
   <form-stepper
     :steps="STEPS"
     :current-step.sync="currentStep"
+    :disabled="formMixin.isDisabled"
   >
     <form
       novalidate
@@ -17,7 +18,11 @@
             @blur="touchField('form.information.name')"
             id="asset-name"
             :label="'asset-form.name-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.information.name')"
+            :error-message="getFieldErrorMessage(
+              'form.information.name',
+              { length: NAME_MAX_LENGTH }
+            )"
+            :maxlength="NAME_MAX_LENGTH"
             :disabled="formMixin.isDisabled"
           />
         </div>
@@ -30,7 +35,11 @@
             @blur="touchField('form.information.code')"
             id="asset-code"
             :label="'asset-form.code-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.information.code')"
+            :error-message="getFieldErrorMessage(
+              'form.information.code',
+              { length: CODE_MAX_LENGTH }
+            )"
+            :maxlength="CODE_MAX_LENGTH"
             :disabled="formMixin.isDisabled || isUpdateMode"
           />
         </div>
@@ -100,7 +109,7 @@
     <form
       v-if="currentStep === STEPS.terms.number"
       class="app__form asset-form"
-      @submit.prevent="isFormValid() && showFormConfirmation()"
+      @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
@@ -116,9 +125,9 @@
       </div>
       <div class="app__form-actions">
         <form-confirmation
-          v-if="formMixin.isFormConfirmationShown"
-          @ok="hideFormConfirmation() || submit()"
-          @cancel="hideFormConfirmation"
+          v-if="formMixin.isConfirmationShown"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
         />
         <button
           v-ripple
@@ -152,7 +161,7 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { required, amountRange } from '@validators'
+import { required, amountRange, maxLength } from '@validators'
 
 const STEPS = {
   information: {
@@ -173,6 +182,8 @@ const EMPTY_DOCUMENT = {
   name: '',
   key: '',
 }
+const CODE_MAX_LENGTH = 16
+const NAME_MAX_LENGTH = 255
 
 export default {
   name: 'asset-form',
@@ -202,13 +213,21 @@ export default {
     MAX_AMOUNT: config.MAX_AMOUNT,
     DOCUMENT_TYPES,
     ASSET_POLICIES,
+    CODE_MAX_LENGTH,
+    NAME_MAX_LENGTH,
   }),
   validations () {
     return {
       form: {
         information: {
-          name: { required },
-          code: { required },
+          name: {
+            required,
+            maxLength: maxLength(NAME_MAX_LENGTH),
+          },
+          code: {
+            required,
+            maxLength: maxLength(CODE_MAX_LENGTH),
+          },
           maxIssuanceAmount: {
             required,
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
@@ -266,7 +285,6 @@ export default {
       }
     },
     next (formStep) {
-      this.hideFormConfirmation()
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }

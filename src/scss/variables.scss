@@ -4,9 +4,12 @@ $z-drawer: 10;
 $z-status-message: 11;
 
 $sidebar-hide-bp: 768px;
-
 $sidebar-width: 27.5rem;
-$content-side-paddings: 4rem;
+
+$content-padding-top: 3.7rem;
+$content-padding-bottom: 2.5rem;
+$content-padding-left: 5rem;
+$content-padding-right: 6.5rem;
 $content-side-paddings-sm: 2rem;
 
 // z-indexes
@@ -21,6 +24,7 @@ $_white: #ffffff;
 $_gray: #e2e3e3;
 $_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
+$_thinBlue: #f6f8fb;
 $_lightGray: #c6c6c6;
 $_mediumGray: #ccc;
 $_lightRed: #ef5350;
@@ -64,7 +68,7 @@ $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
-$col-app-content-background: $_thinGray;
+$col-app-content-background: $_thinBlue;
 
 // text colors:
 $col-heading: $col-text;

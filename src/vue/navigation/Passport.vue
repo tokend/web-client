@@ -16,7 +16,7 @@
         <i
           class="passport__dropdown-status-icon mdi mdi-chevron-down"
           :class="{
-            'passport__dropdown-status-icon--dropdown-opened': isDropdownOpen
+            'mdi-rotate-180': isDropdownOpen
           }"
         />
       </button>
@@ -52,7 +52,7 @@
           class="app__button-flat"
           @click="logOut"
         >
-          {{ 'passport.log-out-btn' | globalize }}
+          {{ 'passport.sign-out-btn' | globalize }}
         </button>
       </div>
     </transition>
@@ -73,7 +73,7 @@ export default {
     isDropdownOpen: false,
     accountTypeTranslationIds: {
       [ACCOUNT_TYPES.notVerified]: 'passport.account-unverified',
-      [ACCOUNT_TYPES.individual]: 'passport.account-general',
+      [ACCOUNT_TYPES.general]: 'passport.account-general',
       [ACCOUNT_TYPES.syndicate]: 'passport.account-corporate',
     },
     destructClickOutsideHandler: () => {},
@@ -139,10 +139,6 @@ $dropdown-item-side-padding: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
-  @include respond-to-custom($sidebar-hide-bp) {
-    padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2rem;
-  }
 }
 
 .passport__email-abbr-btn {
@@ -242,5 +238,11 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__dropdown-signed-in-email {
   font-weight: bold;
+}
+
+.passport__dropdown-status-icon {
+  &:before {
+    transition: .2s ease-out;
+  }
 }
 </style>

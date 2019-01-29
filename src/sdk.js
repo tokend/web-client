@@ -30,4 +30,8 @@ export class Sdk {
   static get api () {
     return _sdkInstance.api
   }
+
+  static get networkDetails () {
+    return _sdkInstance.networkDetails
+  }
 }

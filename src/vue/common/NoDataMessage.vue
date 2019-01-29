@@ -37,6 +37,7 @@ export default {
 
   i {
     color: $col-no-data-message-icon-color;
+    font-size: 6.4rem;
   }
 }
 </style>

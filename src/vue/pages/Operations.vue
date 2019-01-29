@@ -1,50 +1,63 @@
 <template>
   <div class="op-history">
-    <template v-if="!isLoadFailed">
-      <div class="op-history__navigation">
-        <span class="op-history__navigation-text">
-          {{ 'op-pages.show' | globalize }}:
-        </span>
-        <select-field
-          v-if="isLoaded"
-          v-model="tokenCode"
-          :values="tokens"
-          class="asset-selector__select-field"
-        />
-      </div>
+    <template v-if="isAssetsLoaded">
+      <top-bar>
+        <template slot="main">
+          <div class="op-history__navigation">
+            <span class="op-history__navigation-text">
+              {{ 'op-pages.show' | globalize }}:
+            </span>
+            <select-field
+              v-model="tokenCode"
+              :values="tokens"
+              class="asset-selector__select-field"
+            />
+          </div>
+        </template>
+      </top-bar>
       <div
         class="op-history__table-wrp"
-        v-if="isLoaded"
+        v-if="isOperationsLoaded"
       >
         <template v-if="operations.length">
           <op-list :list="operations" />
         </template>
         <template v-else>
-          <div class="op-history__no-transactions">
-            <i class="op-history__no-tx-icon mdi mdi-trending-up" />
-            <h2>{{ 'op-pages.no-operation-history' | globalize }}</h2>
-            <p>{{ 'op-pages.here-will-be-the-list' | globalize }}</p>
-          </div>
+          <no-data-message
+            icon-name="trending-up"
+            :msg-title="'op-pages.no-operation-history' | globalize"
+            :msg-message="'op-pages.here-will-be-the-list' | globalize"
+          />
         </template>
-        <collection-loader
-          :first-page-loader="pageLoader"
-          @first-page-load="setFirstPageData"
-          @next-page-load="setNextPageData"
-        />
       </div>
+      <div v-else>
+        <loader :message-id="'op-pages.loading-msg'" />
+      </div>
+      <collection-loader
+        v-show="isOperationsLoaded && operations.length"
+        :first-page-loader="pageLoader"
+        @first-page-load="setFirstPageData"
+        @next-page-load="setNextPageData"
+      />
     </template>
-    <template v-else>
+    <template v-else-if="isLoadFailed">
       <div class="op-history__error">
         <i class="op-history__error-icon mdi mdi-comment-alert-outline" />
         <h2>{{ 'op-pages.something-went-wrong' | globalize }}</h2>
         <p>{{ 'op-pages.can-not-load-assets' | globalize }}</p>
       </div>
     </template>
+    <template v-else>
+      <loader :message-id="'op-pages.loading-msg'" />
+    </template>
   </div>
 </template>
 
 <script>
 import SelectField from '@/vue/fields/SelectField'
+import TopBar from '@/vue/common/TopBar'
+import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
@@ -60,12 +73,16 @@ export default {
     SelectField,
     CollectionLoader,
     OpList,
+    TopBar,
+    Loader,
+    NoDataMessage,
   },
   data: _ => ({
     tokenCode: null,
     assets: [],
     operations: [],
-    isLoaded: false,
+    isAssetsLoaded: false,
+    isOperationsLoaded: false,
     isLoadFailed: false,
     pageLoader: () => { },
   }),
@@ -85,6 +102,7 @@ export default {
   },
   watch: {
     tokenCode () {
+      this.isOperationsLoaded = false
       this.pageLoader = this.getPageLoader(this.accountId, {
         asset: this.tokenCode,
       })
@@ -95,7 +113,7 @@ export default {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
       this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
-      this.isLoaded = true
+      this.isAssetsLoaded = true
     } catch (e) {
       this.isLoadFailed = true
       ErrorHandler.process(e)
@@ -109,6 +127,7 @@ export default {
     },
 
     setFirstPageData (data) {
+      this.isOperationsLoaded = true
       this.operations = this.parseOperations(data)
     },
 
@@ -140,19 +159,24 @@ export default {
 @import "~@scss/variables";
 
 .op-history__navigation {
-  display: inline-flex;
+  display: flex;
+  flex-flow: row;
   align-items: center;
-  margin-bottom: 6.2rem;
-}
 
-.op-history__navigation-text {
-  margin-right: 1.5rem;
+  .op-history__navigation-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: $col-secondary;
+    margin-right: 1rem;
+  }
 }
 
 .op-history__table-wrp {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .op-history__table {
@@ -163,15 +187,15 @@ export default {
 
   .op-history__td-btn {
     text-align: right;
-    width: 6.7rem;
+    min-width: 6.7rem;
   }
 
   .op-history__counterparty {
-    width: 30rem;
+    min-width: 30rem;
   }
 
   .op-history__status {
-    width: 13rem;
+    min-width: 13rem;
   }
 }
 
@@ -184,20 +208,6 @@ export default {
   font-size: 1.4rem;
   color: $col-text-secondary;
   font-weight: normal;
-}
-
-.op-history__no-transactions {
-  padding: 0 1.6rem 3.2rem;
-  text-align: center;
-
-  p {
-    margin-top: 1rem;
-  }
-}
-
-.op-history__no-tx-icon {
-  margin-right: 1.6rem;
-  font-size: 6.4rem;
 }
 
 .op-history__error {
