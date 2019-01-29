@@ -8,6 +8,12 @@
         >
           <span>{{ verificationTabId | globalize }}</span>
         </router-link>
+        <router-link
+          v-ripple
+          :to="vueRoutes.security"
+        >
+          <span>{{ 'settings-page.security-tab' | globalize }}</span>
+        </router-link>
       </template>
     </top-bar>
     <router-view />
