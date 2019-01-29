@@ -75,6 +75,19 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.assets"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.assets"
+          >
+            <i class="sidebar__link-icon mdi mdi-coins" />
+            <span>
+              {{ 'pages-names.tokens' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.issuance"
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
@@ -82,6 +95,19 @@
             <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
               {{ 'pages-names.issuance' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.requests"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.requests"
+          >
+            <i class="sidebar__link-icon mdi mdi-book-open-variant" />
+            <span>
+              {{ 'pages-names.requests' | globalize }}
             </span>
           </router-link>
         </nav>

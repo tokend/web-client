@@ -211,7 +211,7 @@
       "limits": "Limits",
       "withdraw": "Withdraw",
       "send": "Send",
-      "explore-tokens": "Explore tokens",
+      "tokens": "Tokens",
       "create-token": "Create token",
       "create-issuance": "Create issuance",
       "upload-pre-issuance": "Upload pre-issuance",
@@ -417,6 +417,90 @@
       "balance-required-err": "The receiver doesn't have this token balance",
       "wrong-receiver-err": "The account with such email or ID was not found",
       "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you"
+    },
+
+    "assets-page": {
+      "explore-title": "Explore tokens",
+      "balances-title": "My balances",
+      "create-token-btn": "Create token",
+      "list-item-balance-line": "Balance: {{value, money}}",
+      "no-balance-msg": "No balance",
+      "token-details-title": "Token details"
+    },
+
+    "asset-form": {
+      "update-token-title": "Update token",
+      "next-btn": "Next",
+      "submit-btn": "Submit",
+      "information-step": "Token information",
+      "terms-step": "Terms",
+      "name-lbl": "Token name",
+      "code-lbl": "Token code",
+      "max-issuance-amount-lbl": "Max issuance amount",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less then 120x120 px",
+      "transferable-lbl": "Transferable",
+      "kyc-required-lbl": "Requires KYC",
+      "terms-lbl": "Upload terms",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "token-request-submitted-msg": "Your request was successfully submitted"
+    },
+
+    "requests-page": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "token-creation-title": "Token creation",
+      "fund-creation-title": "Fund creation",
+      "preissuance-upload-title": "Pre-issuance upload",
+      "token-code-header": "Token code",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "request-approved-msg": "Approved",
+      "request-rejected-msg": "Rejected",
+      "request-pending-msg": "Pending",
+      "request-canceled-msg": "Cancelled",
+      "request-permanently-rejected-msg": "Permanently rejected",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your requests"
+    },
+
+    "asset-details": {
+      "title": "Token details",
+      "balance-title": "Balance",
+      "maximum-title": "Maximum",
+      "issued-title": "Issued",
+      "available-title": "Available",
+      "terms-title": "Terms",
+      "download-terms-btn": "Download terms",
+      "no-terms-msg": "No terms",
+      "add-balance-btn": "Add to my balances",
+      "balance-added-msg": "Added to your balances"
+    },
+
+    "asset-request-details": {
+      "title": "Token request details",
+      "request-type-title": "Request type",
+      "max-issuance-amount-title": "Max issuance amount",
+      "initial-preissued-amount-title": "Initial preissued amount",
+      "terms-title": "Terms",
+      "no-terms-msg": "No terms",
+      "download-terms-btn": "Download terms",
+      "transferable-title": "Transferable",
+      "requires-kyc-title": "Requires KYC",
+      "present-msg": "Yes",
+      "absent-msg": "No",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL",
+      "asset-create-request-type": "Asset create",
+      "asset-update-request-type": "Asset update",
+      "approved-request-msg": "Your request was approved",
+      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-request-msg": "Your request was cancelled",
+      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
+      "request-canceled-msg": "Your request was successfully cancelled"
     },
 
     "file-field": {

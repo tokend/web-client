@@ -96,6 +96,42 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
         {
+          path: '/tokens',
+          name: vueRoutes.assets.name,
+          featureFlag: config.FEATURE_FLAGS.assets,
+          redirect: vueRoutes.assetsExplore,
+          component: resolve => require(['@/vue/pages/Assets'], resolve),
+          children: [
+            {
+              path: '/tokens/explore',
+              name: vueRoutes.assetsExplore.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              component: resolve => require(['@/vue/pages/AssetsExplorer'], resolve),
+            },
+            {
+              path: '/tokens/balances',
+              name: vueRoutes.balances.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              component: resolve => require(['@/vue/pages/Balances'], resolve),
+            },
+          ],
+        },
+        {
+          path: '/requests',
+          name: vueRoutes.requests.name,
+          featureFlag: config.FEATURE_FLAGS.requests,
+          redirect: vueRoutes.requests.assetCreation,
+          component: resolve => require(['@/vue/pages/Requests'], resolve),
+          children: [
+            {
+              path: '/requests/token-creation',
+              name: vueRoutes.requests.assetCreation.name,
+              meta: { pageNameTranslationId: 'pages-names.requests' },
+              component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
+            },
+          ],
+        },
+        {
           path: '/settings',
           name: vueRoutes.settings.name,
           featureFlag: config.FEATURE_FLAGS.settings,

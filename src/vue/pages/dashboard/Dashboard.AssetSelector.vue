@@ -252,8 +252,8 @@ $custom-breakpoint-medium: 870px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $col-token-logo-background;
-    color: $col-token-logo-text;
+    background: $col-asset-logo-background;
+    color: $col-asset-logo-text;
   }
 }
 

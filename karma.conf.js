@@ -9,7 +9,13 @@ module.exports = function (config) {
   config.set({
     autoWatch: false,
     singleRun: true,
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     files: [
       'src/**/*.spec.js',
       'src/**/*.e2e.js',
