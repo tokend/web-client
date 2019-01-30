@@ -22,10 +22,9 @@
             <address-loader
               @ready="enableForm()"
               :key="assetCode.value"
-              v-if="assetCode.value === selectedBalance.asset"
-              :asset-code="selectedBalance.asset"
-              :external-system-type="selectedBalance.assetDetails
-                .details.externalSystemType"
+              v-if="assetCode.value === selectedBalance.code"
+              :asset-code="selectedBalance.code"
+              :external-system-type="selectedBalance.externalSystemType"
             />
           </template>
         </form>
@@ -55,6 +54,7 @@ import AddressLoader from './DepositForm/AddressLoader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
+import { AssetRecord } from '@/js/records/entities/asset.record'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -84,14 +84,14 @@ export default {
     assetCodes () {
       return this.balances.map(item => {
         return {
-          label: `${item.assetDetails.details.name} (${item.asset})`,
-          value: item.asset,
+          label: `${item.name} (${item.code})`,
+          value: item.code,
         }
       })
     },
     selectedBalance () {
       return this.balances
-        .find(item => item.asset === this.form.assetCode) || null
+        .find(item => item.code === this.form.assetCode) || null
     },
   },
   watch: {
@@ -103,10 +103,12 @@ export default {
     try {
       const { data: balances } = await Sdk.horizon.account
         .getDetails(this.accountId)
-      this.balances = balances.filter(item => {
-        return !!item.assetDetails.details.externalSystemType
-      })
-      this.form.assetCode = this.balances[0] ? this.balances[0].asset : null
+      this.balances = balances
+        .map(item => new AssetRecord(item.assetDetails))
+        .filter(item => {
+          return item.isDepositable
+        })
+      this.form.assetCode = this.balances[0] ? this.balances[0].code : null
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.process(e)
