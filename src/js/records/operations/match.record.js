@@ -73,7 +73,7 @@ export class MatchEffect {
   }
 
   get isIncoming () {
-    return this.direction === DIRECTIONS_VERBOSE.out
+    return this.direction === DIRECTIONS_VERBOSE.in
   }
 
   _getQuoteAmount () {

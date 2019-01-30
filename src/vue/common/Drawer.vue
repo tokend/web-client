@@ -91,6 +91,7 @@ export default {
 }
 
 .drawer__close-icon {
+  display: flex;
   font-size: 2.4rem;
   margin-top: -.2rem; // magic value to align icon in the center
 

@@ -75,6 +75,7 @@
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
+      "field-error_address": "Make sure the address is correct",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
@@ -295,7 +296,8 @@
       "here-will-be-the-list": "Here will be the list of your operations",
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
-      "loading-msg": "Loading"
+      "loading-msg": "Loading",
+      "withdrawal": "Withdrawal"
     },
 
     "op-details": {
@@ -510,6 +512,24 @@
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
       "file-not-uploaded-err": "A file was not uploaded",
       "disabled-msg": "This field is disabled"
+    },
+
+    "withdrawal-form": {
+      "withdrawal": "Withdrawal",
+      "asset": "Asset",
+      "how_much": "Minimal withdrawal is {{value}} {{asset}}.",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "amount": "Amount ({{asset}})",
+      "network-fee-hint": "Blockchain network will charge additional transaction fee independently.",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "total-amount-account": "Total amount to account",
+      "withdraw-success": "Withdrawal request successfully created",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "no-assets-heading": "Ops!",
+      "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets"
     },
 
     "email-getter": {

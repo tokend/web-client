@@ -182,6 +182,7 @@ const EMPTY_DOCUMENT = {
   name: '',
   key: '',
 }
+
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
