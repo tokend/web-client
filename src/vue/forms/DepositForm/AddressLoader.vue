@@ -1,12 +1,7 @@
 <template>
   <div class="address-loader">
     <template v-if="isPending">
-      <div class="address-loader__loader">
-        <loader />
-        <p>
-          {{ 'deposit-form.binding-address' | globalize }}
-        </p>
-      </div>
+      <load-spinner :message-id="'deposit-form.binding-address'" />
     </template>
     <template v-else>
       <template v-if="address">
@@ -34,7 +29,7 @@
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
+import LoadSpinner from '@/vue/common/Loader'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -48,7 +43,7 @@ const EVENTS = {
 export default {
   name: 'address-loader',
   components: {
-    Loader,
+    LoadSpinner,
     KeyViewer,
   },
   props: {
@@ -99,12 +94,6 @@ export default {
 
 <style lang="scss" scoped>
   @import "@/scss/variables";
-
-  .address-loader__loader {
-    width: 100%;
-    display: flex;
-    align-items: center;
-  }
 
   .address-loader__key-viewer-wrp {
     border: solid 0.1rem $col-form-stepper-tab-border;
