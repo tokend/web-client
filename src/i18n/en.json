@@ -529,7 +529,8 @@
       "failed-load-fees": "Failed to load fees. Try again later",
       "no-assets-heading": "Ops!",
       "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
-      "discover-assets-btn": "Discover assets"
+      "discover-assets-btn": "Discover assets",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
     "deposit-form": {
@@ -543,7 +544,8 @@
       "no-address": "No available addresses to deposit yet. Please try again later.",
       "no-assets-heading": "Ops!",
       "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the token list.",
-      "discover-assets-btn": "Discover assets"
+      "discover-assets-btn": "Discover assets",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
     "email-getter": {

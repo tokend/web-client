@@ -1,6 +1,6 @@
 <template>
   <div class="deposit">
-    <template v-if="isLoaded">
+    <template v-if="isLoaded && !isError">
       <template v-if="form.assetCode">
         <div class="deposit__margin">
           <p class="deposit__help-message">
@@ -44,7 +44,10 @@
         </router-link>
       </template>
     </template>
-    <loader v-else />
+    <loader v-if="!isLoaded" />
+    <div v-if="isError">
+      {{ 'deposit-form.can-not-load-assets' | globalize }}
+    </div>
   </div>
 </template>
 
@@ -71,6 +74,7 @@ export default {
   data () {
     return {
       isLoaded: false,
+      isError: false,
       assets: [],
       form: {
         assetCode: null,
@@ -111,8 +115,9 @@ export default {
       this.form.assetCode = this.assets[0] ? this.assets[0].code : null
       this.isLoaded = true
     } catch (e) {
-      ErrorHandler.process(e)
+      ErrorHandler.processWithoutFeedback(e)
       this.isLoaded = true
+      this.isError = true
     }
   },
 }

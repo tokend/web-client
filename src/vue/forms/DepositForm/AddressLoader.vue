@@ -32,6 +32,7 @@
 import LoadSpinner from '@/vue/common/Loader'
 import KeyViewer from '@/vue/common/KeyViewer'
 
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -85,7 +86,7 @@ export default {
           .submitOperations(operation)
         await this.loadAccount()
       } catch (e) {
-        console.error(e)
+        ErrorHandler.processWithoutFeedback(e)
       }
     },
   },
