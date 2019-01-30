@@ -29,13 +29,11 @@
 
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
-          <!-- :event – to prevent navigation on the same route -->
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.dashboard"
-            :event="isSidebarLinkDisabled(vueRoutes.dashboard) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.dashboard"
           >
@@ -44,13 +42,12 @@
               {{ 'pages-names.dashboard' | globalize }}
             </span>
           </router-link>
-          <!-- :event – to prevent navigation on the same route -->
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.trade"
-            :event="isSidebarLinkDisabled(vueRoutes.trade) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.trade"
           >
@@ -59,13 +56,12 @@
               {{ 'pages-names.trade' | globalize }}
             </span>
           </router-link>
-          <!-- :event – to prevent navigation on the same route -->
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.operations"
-            :event="isSidebarLinkDisabled(vueRoutes.operations) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.operations"
           >
@@ -74,13 +70,12 @@
               {{ 'pages-names.operations' | globalize }}
             </span>
           </router-link>
-          <!-- :event – to prevent navigation on the same route -->
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
-            :event="isSidebarLinkDisabled(vueRoutes.fees) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.fees"
           >
@@ -89,13 +84,12 @@
               {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
-          <!-- :event – to prevent navigation on the same route -->
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.issuance"
-            :event="isSidebarLinkDisabled(vueRoutes.issuance) ? '' : 'click'"
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
           >
@@ -136,20 +130,12 @@ export default {
     vueRoutes,
   }),
 
-  computed: {
-    currentRouteName () {
-      return this.$route.meta.rootPageRouteName
-    },
-  },
   methods: {
     openSidebar () {
       this.isOpened = true
     },
     closeSidebar () {
       this.isOpened = false
-    },
-    isSidebarLinkDisabled (route) {
-      return this.currentRouteName === route.name
     },
   },
 }
@@ -286,6 +272,7 @@ $content-item-right-padding: 2.4rem;
   &.router-link-active {
     background-color: $col-sidebar-active-elem-background;
     color: $col-sidebar-active-elem-text;
+    pointer-events: none;
   }
 }
 
