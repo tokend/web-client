@@ -40,7 +40,6 @@ import KeyViewer from '@/vue/common/KeyViewer'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
-import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
   ready: 'ready',
@@ -91,7 +90,7 @@ export default {
           .submitOperations(operation)
         await this.loadAccount()
       } catch (e) {
-        Bus.error('deposit-form.no-address')
+        console.error(e)
       }
     },
   },
