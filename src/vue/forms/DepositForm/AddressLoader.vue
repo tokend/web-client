@@ -1,7 +1,7 @@
 <template>
   <div class="address-loader">
     <template v-if="isPending">
-      <div class="address-loader__address-loader">
+      <div class="address-loader__loader">
         <loader />
         <p>
           {{ 'deposit-form.binding-address' | globalize }}
@@ -14,7 +14,7 @@
           {{ 'deposit-form.where-to' | globalize({ asset: assetCode }) }}
         </p>
         <div class="app__form-row">
-          <div class="address-loader__address-info">
+          <div class="address-loader__key-viewer-wrp">
             <key-viewer :value="address" />
           </div>
           <p>
@@ -100,13 +100,13 @@ export default {
 <style lang="scss" scoped>
   @import "@/scss/variables";
 
-  .address-loader__address-loader {
+  .address-loader__loader {
     width: 100%;
     display: flex;
     align-items: center;
   }
 
-  .address-loader__address-info {
+  .address-loader__key-viewer-wrp {
     border: solid 0.1rem $col-form-stepper-tab-border;
     border-radius: 0.2rem;
     margin: 0.5rem 0 1rem 0;

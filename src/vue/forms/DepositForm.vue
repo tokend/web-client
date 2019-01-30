@@ -22,9 +22,9 @@
             <address-loader
               @ready="enableForm()"
               :key="assetCode.value"
-              v-if="assetCode.value === selectedBalance.code"
-              :asset-code="selectedBalance.code"
-              :external-system-type="selectedBalance.externalSystemType"
+              v-if="assetCode.value === selectedAsset.code"
+              :asset-code="selectedAsset.code"
+              :external-system-type="selectedAsset.externalSystemType"
             />
           </template>
         </form>
@@ -39,7 +39,7 @@
         <router-link
           to="/tokens"
           tag="button"
-          class="app__button-raised deposit__action-margin">
+          class="app__button-raised deposit__action">
           {{ 'deposit-form.discover-assets-btn' | globalize }}
         </router-link>
       </template>
@@ -71,7 +71,7 @@ export default {
   data () {
     return {
       isLoaded: false,
-      balances: [],
+      assets: [],
       form: {
         assetCode: null,
       },
@@ -82,15 +82,15 @@ export default {
       vuexTypes.accountId,
     ]),
     assetCodes () {
-      return this.balances.map(item => {
+      return this.assets.map(item => {
         return {
           label: `${item.name} (${item.code})`,
           value: item.code,
         }
       })
     },
-    selectedBalance () {
-      return this.balances
+    selectedAsset () {
+      return this.assets
         .find(item => item.code === this.form.assetCode) || null
     },
   },
@@ -101,14 +101,14 @@ export default {
   },
   async created () {
     try {
-      const { data: balances } = await Sdk.horizon.account
+      const { data: assets } = await Sdk.horizon.account
         .getDetails(this.accountId)
-      this.balances = balances
+      this.assets = assets
         .map(item => new AssetRecord(item.assetDetails))
         .filter(item => {
           return item.isDepositable
         })
-      this.form.assetCode = this.balances[0] ? this.balances[0].code : null
+      this.form.assetCode = this.assets[0] ? this.assets[0].code : null
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.process(e)
@@ -126,8 +126,8 @@ export default {
     opacity: 0.7;
   }
 
-  .deposit__action-margin {
-    margin-top: 2.5rem;
+  .deposit__action {
+      margin-top: 2.5rem;
   }
 
   .deposit__margin {

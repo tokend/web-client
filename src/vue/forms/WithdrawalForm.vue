@@ -97,7 +97,7 @@
           </table>
         </div>
 
-        <div class="app__form-actions withdrawal__action-margin">
+        <div class="app__form-actions withdrawal__action">
           <button
             v-ripple
             v-if="!formMixin.isFormConfirmationShown"
@@ -126,7 +126,7 @@
       <router-link
         to="/tokens"
         tag="button"
-        class="app__button-raised withdrawal__action-margin">
+        class="app__button-raised withdrawal__action">
         {{ 'withdrawal-form.discover-assets-btn' | globalize }}
       </router-link>
     </template>
@@ -342,7 +342,7 @@ export default {
     font-weight: 600
   }
 
-  .withdrawal__action-margin {
+  .withdrawal__action {
     margin-top: 2.5rem;
   }
   .withdrawal__data_loading {
