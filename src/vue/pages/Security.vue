@@ -4,9 +4,7 @@
       <p class="security__row-title">
         Enable 2FA
       </p>
-      <a class="security__row-action">
-        Switcher
-      </a>
+      <switch-field :is-enabled.sync="isTfaEnabled" />
     </div>
     <hr class="security__line">
     <div class="security__row">
@@ -39,11 +37,19 @@
 </template>
 
 <script>
+import SwitchField from '@/vue/fields/SwitchField'
+
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'security',
+  components: {
+    SwitchField,
+  },
+  data: _ => ({
+    isTfaEnabled: false,
+  }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,

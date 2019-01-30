@@ -30,6 +30,7 @@ $_mediumGray: #ccc;
 $_lightRed: #ef5350;
 $_cornflowerBlue: #7b6eff;
 $_green: #33A494;
+$_lightGreen: #51ca90;
 $_orange: #ef6c00;
 $_orangePeel: #f2a100;
 $_whiteSmoke: #f5f6f9;
@@ -126,6 +127,9 @@ $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
 $col-select-field-selected-background: rgba($_eastBay, 0.1);
 $col-select-field-hover-background: rgba($_eastBay, 0.05);
+$col-switch-field-background: $_whiteSmoke;
+$col-switch-field-disabled: $_mediumGray;
+$col-switch-field-enabled: $_lightGreen;
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
