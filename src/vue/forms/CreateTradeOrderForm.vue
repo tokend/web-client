@@ -48,7 +48,7 @@
           :label="'offer-creation-form.total' | globalize({
             asset: assetPair.quote
           })"
-          :value="+form.quoteAmount ? form.quoteAmount : ''"
+          :value="+formQuoteAmount ? formQuoteAmount : ''"
           name="trade-order-total"
           :readonly="true"
         />
@@ -71,7 +71,7 @@
           type="button"
           @click="tryToSubmit"
           class="app__form-submit-btn"
-          :disabled="!+form.quoteAmount || formMixin.isDisabled">
+          :disabled="!+formQuoteAmount || formMixin.isDisabled">
           <template v-if="isBuy">
             {{ 'offer-creation-form.submit-buy-btn' | globalize }}
           </template>
@@ -111,7 +111,6 @@ export default {
     form: {
       price: '',
       amount: '',
-      quoteAmount: '',
     },
     config,
     showConfirmation: false,
@@ -136,20 +135,12 @@ export default {
       return this.accountBalances
         .find(i => i.asset === this.assetPair.base).balance || '0'
   },
-  watch: {
-    'form.price' (value) {
-      this.getQuoteAmount()
+    formQuoteAmount () {
+      return MathUtil.multiply(this.form.price, this.form.amount)
     },
-    'form.amount' (value) {
-      this.getQuoteAmount()
     },
-  },
   methods: {
     formatNumber,
-    getQuoteAmount () {
-      this.form.quoteAmount =
-        MathUtil.multiply(this.form.price, this.form.amount)
-    },
     async submit () {
       this.disableForm()
 
@@ -169,7 +160,7 @@ export default {
           quote: this.assetPair.quote,
         },
         baseAmount: this.form.amount,
-        quoteAmount: this.form.quoteAmount,
+        quoteAmount: this.formQuoteAmount,
         price: this.form.price,
         isBuy: this.isBuy,
       }
