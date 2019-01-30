@@ -10,15 +10,15 @@
             <tr>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-history.table-amount-lbl' | globalize({ asset: assets.base }) }}
+                {{ 'trade-history.table-amount-lbl' | globalize({ asset: assetPair.base }) }}
               </th>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-history.table-price-lbl' | globalize({ asset: assets.quote }) }}
+                {{ 'trade-history.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
               </th>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-history.table-total-lbl' | globalize({ asset: assets.quote }) }}
+                {{ 'trade-history.table-total-lbl' | globalize({ asset: assetPair.quote }) }}
               </th>
               <th>
                 {{ 'trade-history.table-time-lbl' | globalize }}
@@ -45,7 +45,7 @@
       <no-data-message
         :title-id="'trade-history.no-data-title'"
         :message-id="'trade-history.no-data-message'"
-        :message-id-args="{ base: assets.base, quote: assets.quote }"
+        :message-id-args="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
   </div>
@@ -62,7 +62,7 @@ export default {
     Loader,
   },
   props: {
-    assets: {
+    assetPair: {
       type: Object,
       required: true,
       default: () => ({ base: '', quote: '' }),

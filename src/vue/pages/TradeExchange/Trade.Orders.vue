@@ -19,15 +19,15 @@
             <tr>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-orders.table-want-lbl' | globalize({ asset: assets.base }) }}
+                {{ 'trade-orders.table-want-lbl' | globalize({ asset: assetPair.base }) }}
               </th>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-orders.table-order-lbl' | globalize({ asset: assets.quote }) }}
+                {{ 'trade-orders.table-order-lbl' | globalize({ asset: assetPair.quote }) }}
               </th>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-orders.table-price-lbl' | globalize({ asset: assets.quote }) }}
+                {{ 'trade-orders.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
               </th>
             </tr>
           </thead>
@@ -67,7 +67,7 @@
       </template>
       <submit-trade-order-form
         :is-buy="isBuy"
-        :assets="assets"
+        :asset-pair="assetPair"
         :order="selectedOrder"
         @close-drawer="closeDrawer"
       />
@@ -98,7 +98,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    assets: {
+    assetPair: {
       type: Object,
       required: true,
       default: () => ({ base: '', quote: '' }),
@@ -123,8 +123,8 @@ export default {
       return {
         messageId: messageId,
         messageIdArgs: {
-          base: this.assets.base,
-          quote: this.assets.quote,
+          base: this.assetPair.base,
+          quote: this.assetPair.quote,
         },
       }
     },

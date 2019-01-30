@@ -1,18 +1,17 @@
 <template>
   <div class="trade-exchange">
-    <div v-if="assets.base">
-      <div class="trade-exchange__chart" v-if="assets.base">
+    <div v-if="assetPair.base">
+      <div class="trade-exchange__chart">
         <chart
-          v-if="assets.base !== config.DEFAULT_QUOTE_ASSET"
-          :base-asset="assets.base"
+          v-if="assetPair.base !== config.DEFAULT_QUOTE_ASSET"
+          :base-asset="assetPair.base"
           :quote-asset="config.DEFAULT_QUOTE_ASSET"
         />
       </div>
 
       <div class="trade-exchange__history">
         <trade-history
-          v-if="assets.base"
-          :assets="assets"
+          :asset-pair="assetPair"
           :trade-history="tradeHistory"
           :is-loading="isTradeHistoryLoading"
         />
@@ -30,10 +29,10 @@
         <h2 class="app__table-title">
           {{ 'trade.orders-section-title' | globalize }}
         </h2>
-        <div v-if="assets.base" class="trade-exchange__orders-wrapper">
+        <div class="trade-exchange__orders-wrapper">
           <trade-orders
             class="trade-exchange__orders-list"
-            :assets="assets"
+            :asset-pair="assetPair"
             :is-buy="true"
             :is-loading="isBuyOrdersLoading"
             :orders-list="buyOrdersList"
@@ -42,7 +41,7 @@
 
           <trade-orders
             class="trade-exchange__orders-list"
-            :assets="assets"
+            :asset-pair="assetPair"
             :is-buy="false"
             :is-loading="isSellOrdersLoading"
             :orders-list="sellOrdersList"
@@ -77,7 +76,7 @@ export default {
     componentConfig: { type: Object, required: true },
   },
   data: () => ({
-    assets: {
+    assetPair: {
       base: '',
       quote: '',
     },
@@ -100,11 +99,11 @@ export default {
         this.componentConfig.isNeededToReloadData = false
       }
     },
-    'componentConfig.assets': {
+    'componentConfig.assetPair': {
       deep: true,
-      handler: function (assets) {
-        this.setCurrentAssets(assets)
-        if (assets.base && assets.quote) {
+      handler: function (assetPair) {
+        this.setCurrentAssets(assetPair)
+        if (assetPair.base && assetPair.quote) {
           this.loadTradeOrders()
           this.loadTradeHistory()
         }
@@ -112,8 +111,8 @@ export default {
     },
   },
   created () {
-    this.setCurrentAssets(this.componentConfig.assets)
-    if (this.componentConfig.assets.base) {
+    this.setCurrentAssets(this.componentConfig.assetPair)
+    if (this.componentConfig.assetPair.base) {
       this.loadTradeOrders()
       this.loadTradeHistory()
     }
@@ -124,8 +123,8 @@ export default {
       let response = {}
       try {
         response = await Sdk.horizon.trades.getPage({
-          base_asset: this.assets.base,
-          quote_asset: this.assets.quote,
+          base_asset: this.assetPair.base,
+          quote_asset: this.assetPair.quote,
           order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
           order: this.recordsOrder,
           limit: this.recordsToShow,
@@ -151,8 +150,8 @@ export default {
       this.isBuyOrdersLoading = true
       try {
         const response = await Sdk.horizon.orderBook.getAll({
-          base_asset: this.assets.base,
-          quote_asset: this.assets.quote,
+          base_asset: this.assetPair.base,
+          quote_asset: this.assetPair.quote,
           is_buy: true,
         })
         this.buyOrdersList = response.data
@@ -165,8 +164,8 @@ export default {
       this.isSellOrdersLoading = true
       try {
         const response = await Sdk.horizon.orderBook.getAll({
-          base_asset: this.assets.base,
-          quote_asset: this.assets.quote,
+          base_asset: this.assetPair.base,
+          quote_asset: this.assetPair.quote,
           is_buy: false,
         })
         this.sellOrdersList = response.data
@@ -175,9 +174,9 @@ export default {
       }
       this.isSellOrdersLoading = false
     },
-    setCurrentAssets (assets) {
-      this.assets.base = assets.base
-      this.assets.quote = assets.quote
+    setCurrentAssets (assetPair) {
+      this.assetPair.base = assetPair.base
+      this.assetPair.quote = assetPair.quote
     },
   },
 }

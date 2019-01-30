@@ -6,7 +6,7 @@
           v-model="order.price"
           :label="
             'submit-trade-orders-form.price-label' | globalize({
-              asset: assets.quote
+              asset: assetPair.quote
             })
           "
           name="submit-trade-orders-order-price"
@@ -22,7 +22,7 @@
           v-model.trim="order.baseAmount"
           :label="
             'submit-trade-orders-form.want-label' | globalize({
-              asset: assets.base
+              asset: assetPair.base
             })
           "
           name="submit-trade-orders-order-base-amount"
@@ -38,7 +38,7 @@
           v-model.trim="order.quoteAmount"
           :label="
             'submit-trade-orders-form.order-label' | globalize({
-              asset: assets.quote
+              asset: assetPair.quote
             })
           "
           name="submit-trade-orders-order-quote-amount"
@@ -91,7 +91,7 @@ export default {
   components: { FormConfirmation },
   mixins: [FormMixin, OrderMakerMixin],
   props: {
-    assets: { type: Object, require: true, default: () => ({}) },
+    assetPair: { type: Object, require: true, default: () => ({}) },
     isBuy: { type: Boolean, require: false, default: true },
     order: { type: Object, require: true, default: () => ({}) },
   },

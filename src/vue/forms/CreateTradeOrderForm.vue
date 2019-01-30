@@ -6,7 +6,7 @@
           v-model.trim="form.price"
           :label="
             'offer-creation-form.price-per-asset' | globalize({
-              asset: assets.base
+              asset: assetPair.base
             })
           "
           name="trade-order-price"
@@ -25,7 +25,7 @@
         <input-field
           v-model.trim="form.amount"
           :label="'offer-creation-form.amount' | globalize({
-            asset: assets.base
+            asset: assetPair.base
           })"
           name="trade-order-amount"
           :white-autofill="true"
@@ -46,7 +46,7 @@
       <div class="app__form-field">
         <input-field
           :label="'offer-creation-form.total' | globalize({
-            asset: assets.quote
+            asset: assetPair.quote
           })"
           :value="+form.quoteAmount ? form.quoteAmount : ''"
           name="trade-order-total"
@@ -104,7 +104,7 @@ export default {
   components: { FormConfirmation },
   mixins: [FormMixin, OrderMakerMixin],
   props: {
-    assets: { type: Object, require: true, default: () => {} },
+    assetPair: { type: Object, require: true, default: () => {} },
     isBuy: { type: Boolean, require: false, default: true },
   },
   data: () => ({
@@ -134,8 +134,7 @@ export default {
     ]),
     baseAssetBalance () {
       return this.accountBalances
-        .find(i => i.asset === this.assets.base).balance || '0'
-    },
+        .find(i => i.asset === this.assetPair.base).balance || '0'
   },
   watch: {
     'form.price' (value) {
@@ -166,8 +165,8 @@ export default {
     getCreateOfferOpts () {
       return {
         pair: {
-          base: this.assets.base,
-          quote: this.assets.quote,
+          base: this.assetPair.base,
+          quote: this.assetPair.quote,
         },
         baseAmount: this.form.amount,
         quoteAmount: this.form.quoteAmount,

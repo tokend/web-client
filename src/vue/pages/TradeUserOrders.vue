@@ -1,7 +1,7 @@
 <template>
   <div class="trade-user-orders">
     <trade-open-orders
-      :assets="assets"
+      :asset-pair="assetPair"
       :is-loading="isOpenOrdersLoading"
       :open-orders="openOrders"
     />
@@ -26,7 +26,7 @@ export default {
     componentConfig: { type: Object, required: true },
   },
   data: () => ({
-    assets: {
+    assetPair: {
       base: '',
       quote: '',
     },
@@ -39,11 +39,11 @@ export default {
     ]),
   },
   watch: {
-    'componentConfig.assets': {
+    'componentConfig.assetPair': {
       deep: true,
-      handler: async function (assets) {
-        this.setSelectedAssets(assets)
-        if (assets.base && assets.quote) {
+      handler: async function (assetPair) {
+        this.setSelectedAssets(assetPair)
+        if (assetPair.base && assetPair.quote) {
           await this.loadOrdersHistory()
         }
       },
@@ -55,8 +55,8 @@ export default {
   },
   methods: {
     setSelectedAssets ({ base, quote }) {
-      this.assets.base = base
-      this.assets.quote = quote
+      this.assetPair.base = base
+      this.assetPair.quote = quote
     },
     async loadOrdersHistory () {
       this.isOpenOrdersLoading = true
@@ -64,8 +64,8 @@ export default {
         const response = await Sdk.horizon.account.getOffers(
           this.accountId,
           {
-            base_asset: this.assets.base,
-            quote_asset: this.assets.quote,
+            base_asset: this.assetPair.base,
+            quote_asset: this.assetPair.quote,
             is_buy: '', // buy and sell
             order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
           },

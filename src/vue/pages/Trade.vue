@@ -5,7 +5,7 @@
         <router-link
           :to="{
             name: vueRoutes.trade.exchange.name,
-            query: { base: assets.base, quote: assets.quote }
+            query: { base: assetPair.base, quote: assetPair.quote }
           }"
         >
           {{ 'trade.exchange-view' | globalize }}
@@ -13,7 +13,7 @@
         <router-link
           :to="{
             name: vueRoutes.trade.userOrders.name,
-            query: { base: assets.base, quote: assets.quote }
+            query: { base: assetPair.base, quote: assetPair.quote }
           }"
         >
           {{ 'trade.my-orders-view' | globalize }}
@@ -49,11 +49,13 @@
     <div class="trade-asset-selector__balances">
       <p class="trade-asset-selector__balances-value">
         {{
-          { value: balances.baseBalance, currency: assets.base } | formatMoney
+          // eslint-disable-next-line
+          { value: balances.baseBalance, currency: assetPair.base } | formatMoney
         }}
         /
         {{
-          {value: balances.quoteBalance, currency: assets.quote} | formatMoney
+          // eslint-disable-next-line
+          { value: balances.quoteBalance, currency: assetPair.quote } | formatMoney
         }}
       </p>
       <p class="trade-asset-selector__balances-label">
@@ -68,7 +70,7 @@
         {{ 'trade.create-buy-order-form-title' | globalize }}
       </template>
       <create-trade-order-form
-        :assets="assets"
+        :asset-pair="assetPair"
         @close-drawer="closeBuyOrderDrawer"
       />
     </drawer>
@@ -77,7 +79,7 @@
         {{ 'trade.create-sell-order-form-title' | globalize }}
       </template>
       <create-trade-order-form
-        :assets="assets"
+        :asset-pair="assetPair"
         :is-buy="false"
         @close-drawer="closeSellOrderDrawer"
       />
@@ -108,7 +110,7 @@ export default {
     TopBar,
   },
   data: () => ({
-    assets: {
+    assetPair: {
       base: '',
       quote: '',
     },
@@ -125,7 +127,7 @@ export default {
     vueRoutes,
     childRoutesConfig: {
       isNeededToReloadData: false,
-      assets: {
+      assetPair: {
         base: '',
         quote: '',
       },
@@ -140,11 +142,11 @@ export default {
     selectedPair (value) {
       const baseAsset = value.split('/')[0]
       const quoteAsset = value.split('/')[1]
-      this.assets.base = baseAsset
-      this.assets.quote = quoteAsset
-      // pass assets to child router-view components
-      this.childRoutesConfig.assets.base = baseAsset
-      this.childRoutesConfig.assets.quote = quoteAsset
+      this.assetPair.base = baseAsset
+      this.assetPair.quote = quoteAsset
+      // pass assetPair to child router-view components
+      this.childRoutesConfig.assetPair.base = baseAsset
+      this.childRoutesConfig.assetPair.quote = quoteAsset
 
       const accountBalances = this.accountBalances
       const baseBalance = accountBalances.find(i => i.asset === baseAsset)

@@ -3,8 +3,8 @@
     <h2 class="app__table-title">
       {{
         'trade-open-orders.title' | globalize({
-          base: assets.base,
-          quote: assets.quote
+          base: assetPair.base,
+          quote: assetPair.quote
         })
       }}
     </h2>
@@ -58,7 +58,7 @@
       <no-data-message
         :title-id="'trade-open-orders.no-data-title'"
         :message-id="'trade-open-orders.no-data-message'"
-        :message-id-args="{ base: assets.base, quote: assets.quote }"
+        :message-id-args="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
   </div>
@@ -77,7 +77,7 @@ export default {
   props: {
     openOrders: { type: Array, required: true, default: () => [] },
     isLoading: { type: Boolean, required: true, default: false },
-    assets: {
+    assetPair: {
       type: Object,
       required: true,
       default: () => ({ base: '', quote: '' }),
