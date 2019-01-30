@@ -214,6 +214,12 @@ $content-item-right-padding: 2.4rem;
     transform: translateX(0);
   }
 
+  i {
+    display: flex;
+    justify-content: center;
+    font-size: 2.4rem;
+  }
+
   &.sidebar__burger-btn--sidebar-active {
     transform: translateX($sidebar-width);
   }

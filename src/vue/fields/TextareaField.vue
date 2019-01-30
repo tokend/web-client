@@ -3,12 +3,12 @@
     class="text-field"
     :class="{
       'text-field--error': errorMessage,
-      'text-field--disabled': disabled
+      'text-field--disabled': disabled,
+      'text-field--dirty': hasValue
     }
     ">
     <textarea
       class="text-field__input"
-      :class="{ 'text-field__input--dirty': hasValue }"
       :placeholder="placeholder || ' '"
       :value="value"
       :disabled="disabled"
@@ -91,61 +91,64 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "scss/variables";
+@import "scss/variables";
 
-  .text-field__label {
-    margin-bottom: .5rem;
-    display: block;
-    position: absolute;
-    top: 1.6rem;
-    left: 1.6rem;
-    color: $field-color-unfocused;
-    transition: .2s ease-out;
-    font-size: 1.6rem;
+.text-field {
+  width: 100%;
+  position: relative;
+  padding: 2.6rem 1.6rem;
+  caret-color: $field-color-text;
+  background-color: $textarea-background-color;
+  border: .2rem solid rgba($field-color-unfocused, 0.5);
+  border-radius: .4rem;
+  transition: all 0s, border-color .2s ease-out;
+  overflow: hidden;
 
-    .text-field__input:focus + &,
-    .text-field__input.text-field__input--dirty + & {
-      color: $field-color-text;
-      top: .6rem;
-      font-size: 1.2rem;
-    }
+  &:hover, &--dirty {
+    border-color: $field-color-focused;
   }
+}
 
-  .text-field__input {
-    caret-color: $field-color-text;
-    padding: 1.6rem 1.6rem 3.6rem;
-    background-color: $textarea-background-color;
-    border: .2rem solid rgba($field-color-unfocused, 0.5);
-    width: 100%;
-    resize: none;
-    display: block;
-    border-radius: .4rem;
-    font-size: 1.6rem;
-    transition: all 0s, border-color .2s ease-out;
+.text-field__label {
+  cursor: default;
+  margin-bottom: .5rem;
+  display: block;
+  position: absolute;
+  top: 1.6rem;
+  left: 1.6rem;
+  color: $field-color-unfocused;
+  transition: .2s ease-out;
+  font-size: 1.6rem;
 
-    &:focus,
-    &.text-field__input--dirty {
-      padding-top: 2.6rem;
-      padding-bottom: 2.6rem;
-      border-color: $field-color-focused;
-    }
-
-    &:disabled {
-      background-color: transparent;
-      cursor: default;
-    }
-  }
-
-  .text-field__length {
-    position: absolute;
-    bottom: .8rem;
-    right: 1.6rem;
-    font-size: .75rem;
+  .text-field__input:focus ~ &,
+  .text-field--dirty & {
     color: $field-color-text;
+    top: .8rem;
+    font-size: 1.2rem;
   }
+}
 
-  .text-field {
-    width: 100%;
-    position: relative;
+.text-field__input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  display: block;
+  font-size: 1.6rem;
+  overflow-y: auto;
+
+  &:disabled {
+    cursor: default;
   }
+}
+
+.text-field__length {
+  position: absolute;
+  bottom: .8rem;
+  right: 1.6rem;
+  font-size: 1.2rem;
+  color: $field-color-text;
+}
+
 </style>

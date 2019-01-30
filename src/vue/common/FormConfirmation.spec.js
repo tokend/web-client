@@ -12,6 +12,7 @@ localVue.filter('globalize', globalize)
 describe('FormConfirmation component test', () => {
   afterEach(() => {
     TestHelper.resetTranslations()
+    sinon.restore()
   })
 
   it('template properly renders the data provided through props', () => {
@@ -88,6 +89,7 @@ describe('FormConfirmation component test', () => {
   })
 
   it('template enables the OK and cancel buttons if isPending is false', () => {
+    sinon.stub(FormConfirmation, 'created')
     const wrapper = mount(FormConfirmation, {
       propsData: { isPending: false },
       localVue,
@@ -100,6 +102,7 @@ describe('FormConfirmation component test', () => {
   })
 
   it('component emits the passed okEvent when clicking the OK button', () => {
+    sinon.stub(FormConfirmation, 'created')
     const okEvent = 'ok-event'
     const wrapper = mount(FormConfirmation, {
       propsData: { okEvent },
@@ -114,6 +117,7 @@ describe('FormConfirmation component test', () => {
   })
 
   it('component emits the passed cancelEvent when clicking the cancel button', () => {
+    sinon.stub(FormConfirmation, 'created')
     const cancelEvent = 'cancel-event'
     const wrapper = mount(FormConfirmation, {
       propsData: { cancelEvent },

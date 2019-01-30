@@ -42,47 +42,67 @@
       <issuance-form @cancel="isIssuanceDrawerShown = false" />
     </drawer>
     <div class="issuance" v-if="isLoaded">
-      <div class="issuance-history__table">
-        <table class="app__table">
-          <thead>
-            <tr>
-              <th>
-                {{ 'issuance.counterparty-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.amount-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.asset-code-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.date-lbl' | globalize }}
-              </th>
-              <th>
-                {{ 'issuance.reference-lbl' | globalize }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="issuance in issuanceHistory" :key="issuance.id">
-              <td>
-                <email-getter :account-id="issuance.counterparty" />
-              </td>
-              <td>{{ issuance.amount | formatMoney }}</td>
-              <td>{{ issuance.asset }}</td>
-              <td>{{ issuance.date | formatCalendar }}</td>
-              <td>{{ issuance.subject }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <template v-if="issuanceHistory.length">
+        <div class="issuance-history__table">
+          <table class="app__table">
+            <thead>
+              <tr>
+                <th :title="'issuance.counterparty-lbl' | globalize">
+                  {{ 'issuance.counterparty-lbl' | globalize }}
+                </th>
+                <th :title="'issuance.amount-lbl' | globalize">
+                  {{ 'issuance.amount-lbl' | globalize }}
+                </th>
+                <th :title="'issuance.asset-code-lbl' | globalize">
+                  {{ 'issuance.asset-code-lbl' | globalize }}
+                </th>
+                <th :title="'issuance.date-lbl' | globalize">
+                  {{ 'issuance.date-lbl' | globalize }}
+                </th>
+                <th :title="'issuance.reference-lbl' | globalize">
+                  {{ 'issuance.reference-lbl' | globalize }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="issuance in issuanceHistory" :key="issuance.id">
+                <td>
+                  <email-getter :account-id="issuance.counterparty" />
+                </td>
+                <td :title="issuance.amount | formatMoney">
+                  {{ issuance.amount | formatMoney }}
+                </td>
+                <td :title="issuance.asset">
+                  {{ issuance.asset }}
+                </td>
+                <td :title="issuance.date | formatCalendar">
+                  {{ issuance.date | formatCalendar }}
+                </td>
+                <td :title="issuance.subject">
+                  {{ issuance.subject }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+      <template v-else>
+        <no-data-message
+          icon-name="trending-up"
+          :msg-title="'issuance.no-issuance-history-title' | globalize"
+          :msg-message="'issuance.no-issuance-history-msg' | globalize"
+        />
+      </template>
     </div>
     <div v-else>
       <loader
         :message-id="'issuance.loading-msg'"
       />
     </div>
-    <div class="issuance-history__collection-loader">
+    <div
+      v-show="isLoaded"
+      class="issuance-history__collection-loader"
+    >
       <collection-loader
         :first-page-loader="getHistory"
         @first-page-load="setHistory"
@@ -98,6 +118,7 @@ import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import EmailGetter from '@/vue/common/EmailGetter'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
@@ -116,6 +137,7 @@ export default {
     Loader,
     Drawer,
     TopBar,
+    NoDataMessage,
     EmailGetter,
     CollectionLoader,
     IssuanceForm,
@@ -163,8 +185,7 @@ export default {
 
 .issuance-history__table {
   overflow-x: auto;
-  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
-  width: 100%;
+  @include box-shadow();
 }
 
 .issuance-btn {

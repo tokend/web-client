@@ -47,10 +47,10 @@ export default {
   color: $col-top-bar-text;
   margin:
     0
-    -1 * $content-side-paddings
+    -1 * $content-padding-right
     4rem
-    -1 * $content-side-paddings;
-  padding: 1.4rem $content-side-paddings;
+    -1 * $content-padding-left;
+  padding: 1.4rem $content-padding-right 1.4rem $content-padding-left;
 
   .top-bar__main {
     display: flex;
@@ -92,18 +92,17 @@ export default {
       4rem
       -1 * $content-side-paddings-sm;
     flex-direction: column;
+    justify-content: center;
     align-items: start;
 
     .top-bar__extra {
-      margin-top: 1rem;
       margin-left: -1.2rem;
       padding-left: 0;
       flex-wrap: wrap;
 
       & > * {
+        margin-top: 1.4rem;
         margin-left: 1.2rem;
-        margin-top: 0.7rem;
-        margin-bottom: 0.7rem;
       }
     }
   }

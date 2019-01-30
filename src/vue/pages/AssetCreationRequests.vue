@@ -236,10 +236,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@scss/variables";
+@import "~@scss/mixins";
 
 .asset-creation-requests__table {
   overflow-x: auto;
-  box-shadow: 0 0.6rem 1rem 0 $col-table-shadow;
+  @include box-shadow();
 
   tr td:last-child {
     width: 3rem;

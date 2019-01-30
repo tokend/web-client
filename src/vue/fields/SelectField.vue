@@ -14,6 +14,7 @@
       </div>
     </template>
     <button
+      type="button"
       class="select-field__selected"
       :class="{'select-field__selected--focused': isExpanded}"
       :disabled="disabled"
@@ -37,6 +38,7 @@
       <button
         v-for="(item, i) in values"
         :key="i"
+        type="button"
         class="select-field__list-item"
         :class="{
           'select-field__list-item--selected':
@@ -102,13 +104,11 @@ export default {
   },
 
   created () {
-    if (_isObject(this.values[0])) {
-      this.selectedValue = this.values.find(v => v.value === this.value)
-      this.currentValue = this.values.find(v => v.value === this.value)
-    } else {
-      this.selectedValue = this.value
-      this.currentValue = this.value
-    }
+    const value = this.values.every(v => _isObject(v))
+      ? this.values.find(v => v.value === this.value)
+      : this.value
+    this.selectedValue = value
+    this.currentValue = value
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
   },
@@ -183,11 +183,10 @@ export default {
         default:
           return
       }
-
       this.scrollList(index)
     },
     getIndex (item) {
-      if (!_isObject(item)) {
+      if (_isObject(item)) {
         return this.values.findIndex(entry => entry.value === item.value)
       }
       return this.values.indexOf(item)
