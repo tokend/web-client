@@ -11,7 +11,7 @@
             v-model="filters.asset"
             :values="assetCodes"
             :key="filters.asset"
-            class="fees__assets-select"
+            class="fees__assets-select app__select app__select--no-border"
           />
         </template>
       </top-bar>

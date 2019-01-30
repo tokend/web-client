@@ -69,6 +69,7 @@ export default {
 .input-field {
   position: relative;
   width: 100%;
+  height: 6.3rem;
   flex: 1;
 }
 
@@ -77,6 +78,7 @@ export default {
   width: 100%;
   background: none;
   border: none;
+  height: 4.9rem;
   caret-color: $field-color-focused;
   color: $field-color-text;
   padding: $field-input-padding;

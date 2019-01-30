@@ -39,7 +39,7 @@ export class PaymentRecord extends OpRecord {
   }
 
   get isIncoming () {
-    return this.sourceAccount === this.accountId
+    return this.sourceAccount !== this.accountId
   }
 
   get counterparty () {

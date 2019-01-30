@@ -1,64 +1,69 @@
 <template>
   <div class="op-history">
-    <template v-if="isAssetsLoaded">
-      <top-bar>
-        <template slot="main">
-          <div class="op-history__navigation">
-            <span class="op-history__navigation-text">
-              {{ 'op-pages.show' | globalize }}:
-            </span>
-            <select-field
-              v-model="tokenCode"
-              :values="tokens"
-              class="asset-selector__select-field"
-            />
-          </div>
-        </template>
-      </top-bar>
-      <div
-        class="op-history__table-wrp"
-        v-if="isOperationsLoaded"
-      >
+    <top-bar v-if="!isLoadFailed">
+      <div slot="main" class="op-history__filters">
+        <span class="op-history__filters-text">
+          {{ 'op-pages.show' | globalize }}:
+        </span>
+        <select-field
+          v-if="isLoaded"
+          v-model="assetCode"
+          :values="assetCodes"
+          class="app__select app__select--no-border"
+        />
+      </div>
+      <div slot="extra">
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isWithdrawalDrawerShown = true"
+        >
+          <i class="mdi mdi-download op-history__btn-icon" />
+          {{ 'op-pages.withdrawal' | globalize }}
+        </button>
+      </div>
+    </top-bar>
+    <drawer :is-shown.sync="isWithdrawalDrawerShown">
+      <template slot="heading">
+        {{ 'withdrawal-form.withdrawal' | globalize }}
+      </template>
+      <withdrawal-form @cancel="isWithdrawalDrawerShown = false" />
+    </drawer>
+    <template v-if="!isLoadFailed">
+      <div class="op-history__list" v-if="isLoaded">
         <template v-if="operations.length">
           <op-list :list="operations" />
         </template>
         <template v-else>
-          <no-data-message
-            icon-name="trending-up"
-            :msg-title="'op-pages.no-operation-history' | globalize"
-            :msg-message="'op-pages.here-will-be-the-list' | globalize"
-          />
+          <div class="op-history__no-transactions">
+            <i class="op-history__no-tx-icon mdi mdi-trending-up" />
+            <h2>{{ 'op-pages.no-operation-history' | globalize }}</h2>
+            <p>{{ 'op-pages.here-will-be-the-list' | globalize }}</p>
+          </div>
         </template>
+        <collection-loader
+          :first-page-loader="pageLoader"
+          @first-page-load="setFirstPageData"
+          @next-page-load="setNextPageData"
+        />
       </div>
-      <div v-else>
-        <loader :message-id="'op-pages.loading-msg'" />
-      </div>
-      <collection-loader
-        v-show="isOperationsLoaded && operations.length"
-        :first-page-loader="pageLoader"
-        @first-page-load="setFirstPageData"
-        @next-page-load="setNextPageData"
-      />
     </template>
-    <template v-else-if="isLoadFailed">
+    <template v-else>
       <div class="op-history__error">
         <i class="op-history__error-icon mdi mdi-comment-alert-outline" />
         <h2>{{ 'op-pages.something-went-wrong' | globalize }}</h2>
         <p>{{ 'op-pages.can-not-load-assets' | globalize }}</p>
       </div>
     </template>
-    <template v-else>
-      <loader :message-id="'op-pages.loading-msg'" />
-    </template>
   </div>
 </template>
 
 <script>
 import SelectField from '@/vue/fields/SelectField'
-import TopBar from '@/vue/common/TopBar'
-import Loader from '@/vue/common/Loader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import TopBar from '@/vue/common/TopBar'
+import Drawer from '@/vue/common/Drawer'
+import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -72,39 +77,38 @@ export default {
   components: {
     SelectField,
     CollectionLoader,
-    OpList,
     TopBar,
-    Loader,
-    NoDataMessage,
+    Drawer,
+    WithdrawalForm,
+    OpList,
   },
   data: _ => ({
-    tokenCode: null,
+    assetCode: null,
     assets: [],
     operations: [],
-    isAssetsLoaded: false,
-    isOperationsLoaded: false,
+    isLoaded: false,
     isLoadFailed: false,
-    pageLoader: () => { },
+    isWithdrawalDrawerShown: false,
+    pageLoader: () => {},
   }),
   computed: {
     ...mapGetters([
       vuexTypes.account,
       vuexTypes.accountId,
     ]),
-    tokens () {
+    assetCodes () {
       return this.assets.map(item => item.code)
     },
     balanceId () {
       return this.account.balances
-        .find(item => item.asset === this.tokenCode)
+        .find(item => item.asset === this.assetCode)
         .balanceId
     },
   },
   watch: {
-    tokenCode () {
-      this.isOperationsLoaded = false
+    assetCode () {
       this.pageLoader = this.getPageLoader(this.accountId, {
-        asset: this.tokenCode,
+        asset: this.assetCode,
       })
     },
   },
@@ -112,8 +116,9 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
-      this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
-      this.isAssetsLoaded = true
+      this.assetCode = this.$route.params.assetCode ||
+        this.assetCodes[0] || null
+      this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
       ErrorHandler.process(e)
@@ -127,7 +132,6 @@ export default {
     },
 
     setFirstPageData (data) {
-      this.isOperationsLoaded = true
       this.operations = this.parseOperations(data)
     },
 
@@ -155,29 +159,31 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "~@scss/variables";
+<style lang="scss">
+  @import '~@scss/variables';
+  @import "~@scss/mixins";
 
-.op-history__navigation {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-
-  .op-history__navigation-text {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: $col-secondary;
-    margin-right: 1rem;
+  .op-history__filters{
+    display: inline-flex;
+    align-items: center;
   }
-}
 
-.op-history__table-wrp {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  overflow-x: auto;
-}
+  .op-history__filters-text{
+    margin-right: 1.5rem;
+  }
+
+  .op-history__btn-icon {
+    display: flex;
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+  }
+
+  .op-history__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+  }
 
 .op-history__table {
   width: 100%;
@@ -187,15 +193,15 @@ export default {
 
   .op-history__td-btn {
     text-align: right;
-    min-width: 6.7rem;
+    width: 6.7rem;
   }
 
   .op-history__counterparty {
-    min-width: 30rem;
+    width: 30rem;
   }
 
   .op-history__status {
-    min-width: 13rem;
+    width: 13rem;
   }
 }
 
@@ -208,6 +214,20 @@ export default {
   font-size: 1.4rem;
   color: $col-text-secondary;
   font-weight: normal;
+}
+
+.op-history__no-transactions {
+  padding: 0 1.6rem 3.2rem;
+  text-align: center;
+
+  p {
+    margin-top: 1rem;
+  }
+}
+
+.op-history__no-tx-icon {
+  margin-right: 1.6rem;
+  font-size: 6.4rem;
 }
 
 .op-history__error {

@@ -28,7 +28,7 @@
             :values="tokensList"
             :key="currentAssetForSelect"
             @input="$emit(EVENTS.assetChange, $event)"
-            class="asset-selector__select-field"
+            class="app__select app__select--no-border"
           />
         </div>
       </div>

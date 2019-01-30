@@ -220,6 +220,7 @@ export default {
 .select-field {
   width: 100%;
   flex: 1;
+  height: 5.3rem;
   position: relative;
 }
 
@@ -242,13 +243,6 @@ export default {
   );
 
   @include text-font-sizes;
-
-  .asset-selector__select-field &,
-  .fees__assets-select & {
-    border-bottom: 0;
-    background-size: 0;
-    padding: 0;
-  }
 }
 
 .select-field__selected-icon {
@@ -277,12 +271,6 @@ export default {
   font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
-
-  .asset-selector__select-field &,
-  .fees__assets-select & {
-    font-size: 1.8rem;
-    font-weight: 300;
-  }
 }
 
 .select-field__label {
@@ -331,7 +319,7 @@ export default {
   left: 0;
   width: 100%;
   min-width: 16rem;
-  top: calc(100% + .4rem);
+  top: 100%;
   background-color: $col-dropdown-bg;
   border-radius: .3rem;
   z-index: 5;
@@ -358,7 +346,6 @@ export default {
   width: 100%;
   text-align: left;
   background-color: transparent;
-
   &:not(.select-field__list-item--selected):hover {
     background-color: $col-select-field-hover-background;
   }
