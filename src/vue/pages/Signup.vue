@@ -32,7 +32,10 @@
             {{ 'auth-pages.save-recovery-seed-details' | globalize }}
           </p>
 
-          <key-viewer :value="recoveryKeypair.secret()" />
+          <key-viewer
+            :value="recoveryKeypair.secret()"
+            :label="'auth-pages.recovery-seed' | globalize"
+          />
 
           <div class="signup__actions">
             <button

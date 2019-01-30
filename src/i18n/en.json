@@ -154,7 +154,9 @@
       "account-id-title": "Account ID",
       "view-account-id-btn": "View Account ID",
       "secret-seed-title": "Secret seed",
-      "view-secret-seed-btn": "View secret seed"
+      "view-secret-seed-btn": "View secret seed",
+      "account-address-label": "Account address",
+      "secret-seed-desc": "Secret seed is private information that proves you own your account."
     },
 
     "verification-page": {

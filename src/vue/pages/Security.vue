@@ -15,11 +15,24 @@
         <template slot="heading">
           {{ 'security-page.account-id-title' | globalize }}
         </template>
+        <key-viewer
+          :value="wallet.accountId"
+          :label="'security-page.account-address-label' | globalize"
+        />
       </template>
       <template v-else-if="viewMode === VIEW_MODES.viewSecretSeed">
         <template slot="heading">
           {{ 'security-page.secret-seed-title' | globalize }}
         </template>
+        <div class="secret-seed">
+          <p class="secret-seed__description">
+            {{ 'security-page.secret-seed-desc' | globalize }}
+          </p>
+          <clipboard-field
+            :value="wallet.secretSeed"
+            :label="'security-page.secret-seed-title' | globalize"
+          />
+        </div>
       </template>
     </drawer>
     <div class="security__row">
@@ -71,7 +84,9 @@
 
 <script>
 import SwitchField from '@/vue/fields/SwitchField'
+import ClipboardField from '@/vue/fields/ClipboardField'
 import Drawer from '@/vue/common/Drawer'
+import KeyViewer from '@/vue/common/KeyViewer'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -89,6 +104,8 @@ export default {
   components: {
     SwitchField,
     Drawer,
+    KeyViewer,
+    ClipboardField,
   },
   data: _ => ({
     isTfaEnabled: false,
@@ -98,7 +115,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      wallet: vuexTypes.wallet,
     }),
   },
   methods: {
@@ -141,5 +158,12 @@ export default {
     margin: 0 2.4rem;
     border: $col-block-line solid .05rem;
   }
+}
+
+.secret-seed__description {
+  font-size: 1.2rem;
+  line-height: 1.25;
+  color: $col-secondary;
+  margin-bottom: 3rem;
 }
 </style>
