@@ -55,9 +55,8 @@
       </div>
     </div>
 
-    <template v-if="formMixin.showConfirmation">
+    <template v-if="formMixin.isFormConfirmationShown">
       <form-confirmation
-        v-if="formMixin.showConfirmation"
         @cancel="cancelConfirmation"
         @ok="submit"
         :is-pending="formMixin.isDisabled"
@@ -134,11 +133,11 @@ export default {
     baseAssetBalance () {
       return this.accountBalances
         .find(i => i.asset === this.assetPair.base).balance || '0'
-  },
+    },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
     },
-    },
+  },
   methods: {
     formatNumber,
     async submit () {
@@ -148,10 +147,14 @@ export default {
 
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
+      this.hideFormConfirmation()
     },
     tryToSubmit () {
       if (!this.isFormValid()) return
-      this.formMixin.showConfirmation = true
+      this.showFormConfirmation()
+    },
+    cancelConfirmation () {
+      this.hideFormConfirmation()
     },
     getCreateOfferOpts () {
       return {

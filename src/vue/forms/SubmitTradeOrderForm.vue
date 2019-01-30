@@ -48,9 +48,8 @@
       </div>
     </div>
 
-    <template v-if="formMixin.showConfirmation">
+    <template v-if="formMixin.isFormConfirmationShown">
       <form-confirmation
-        v-if="formMixin.showConfirmation"
         @cancel="cancelConfirmation"
         @ok="submit"
         :is-pending="formMixin.isDisabled"
@@ -97,7 +96,7 @@ export default {
   },
   methods: {
     tryToSubmit () {
-      this.formMixin.showConfirmation = true
+      this.showFormConfirmation()
     },
     async submit () {
       this.disableForm()
@@ -106,6 +105,10 @@ export default {
 
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
+      this.hideFormConfirmation()
+    },
+    cancelConfirmation () {
+      this.hideFormConfirmation()
     },
     getCreateOfferOpts () {
       return {
