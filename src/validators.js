@@ -14,6 +14,9 @@ export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
 export const documentContainer = value => value instanceof DocumentContainer
+export const noMoreThanAvailableOnBalance = balance => value => {
+  return +balance > +value
+}
 export const amountRange = (from, to) => value => Number(value) &&
   Number(value) >= from && Number(value) <= to
 

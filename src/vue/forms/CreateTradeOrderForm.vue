@@ -90,7 +90,7 @@ import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
-import { required, maxValue } from '@validators'
+import { required, noMoreThanAvailableOnBalance } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { formatNumber } from '@/vue/filters/formatNumber'
@@ -122,7 +122,8 @@ export default {
         price: { required },
         amount: {
           required,
-          noMoreThanAvailableOnBalance: maxValue(this.baseAssetBalance),
+          // eslint-disable-next-line
+          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(this.baseAssetBalance),
         },
       },
     }
