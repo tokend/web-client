@@ -10,7 +10,7 @@
       </div>
 
       <div class="trade-exchange__history">
-        <trade-history
+        <trade-history-renderer
           :asset-pair="assetPair"
           :trade-history="tradeHistory"
           :is-loading="isTradeHistoryLoading"
@@ -30,7 +30,7 @@
           {{ 'trade.orders-section-title' | globalize }}
         </h2>
         <div class="trade-exchange__orders-wrapper">
-          <trade-orders
+          <trade-orders-renderer
             class="trade-exchange__orders-list"
             :asset-pair="assetPair"
             :is-buy="true"
@@ -39,7 +39,7 @@
             @reload-trades="componentConfig.isNeededToReloadData = true"
           />
 
-          <trade-orders
+          <trade-orders-renderer
             class="trade-exchange__orders-list"
             :asset-pair="assetPair"
             :is-buy="false"
@@ -55,8 +55,8 @@
 
 <script>
 import Chart from '@/vue/common/chart/Chart'
-import TradeHistory from '@/vue/pages/TradeExchange/Trade.History'
-import TradeOrders from '@/vue/pages/TradeExchange/Trade.Orders'
+import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRenderer'
+import TradeOrdersRenderer from '@/vue/pages/TradeExchange/Trade.OrdersRenderer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
@@ -67,8 +67,8 @@ export default {
   name: 'trade-exchange',
   components: {
     Chart,
-    TradeHistory,
-    TradeOrders,
+    TradeHistoryRenderer,
+    TradeOrdersRenderer,
     CollectionLoader,
   },
   props: {

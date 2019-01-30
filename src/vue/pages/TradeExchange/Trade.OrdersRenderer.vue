@@ -89,7 +89,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'trade-orders',
+  name: 'trade-orders-renderer',
   components: {
     NoDataMessage,
     Loader,

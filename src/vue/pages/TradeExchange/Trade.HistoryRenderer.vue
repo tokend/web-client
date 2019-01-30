@@ -56,7 +56,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 
 export default {
-  name: 'trade-history',
+  name: 'trade-history-renderer',
   components: {
     NoDataMessage,
     Loader,
