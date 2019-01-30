@@ -160,6 +160,15 @@
       "secret-seed-desc": "Secret seed is private information that proves you own your account."
     },
 
+    "change-password-form": {
+      "current-password-lbl": "Current password",
+      "new-password-lbl": "New password",
+      "confirm-password-lbl": "Confirm new password",
+      "change-password-btn": "Change password",
+      "wrong-password-err": "Your current password is wrong",
+      "password-changed-msg": "Your password was successfully changed"
+    },
+
     "verification-page": {
       "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
       "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",

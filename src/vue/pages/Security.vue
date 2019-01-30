@@ -10,6 +10,7 @@
         <template slot="heading">
           {{ 'security-page.change-password-btn' | globalize }}
         </template>
+        <change-password-form />
       </template>
       <template v-else-if="viewMode === VIEW_MODES.viewAccountId">
         <template slot="heading">
@@ -40,7 +41,7 @@
         {{ 'security-page.enable-tfa-title' | globalize }}
       </p>
       <div @click="showDrawer(VIEW_MODES.enableTfa)">
-        <switch-field :is-enabled="isTfaEnabled" />
+        <switch-field :is-enabled="isTotpEnabled" />
       </div>
     </div>
     <hr class="security__line">
@@ -85,8 +86,11 @@
 <script>
 import SwitchField from '@/vue/fields/SwitchField'
 import ClipboardField from '@/vue/fields/ClipboardField'
+
 import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
+
+import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -106,9 +110,9 @@ export default {
     Drawer,
     KeyViewer,
     ClipboardField,
+    ChangePasswordForm,
   },
   data: _ => ({
-    isTfaEnabled: false,
     isDrawerShown: false,
     viewMode: VIEW_MODES.default,
     VIEW_MODES,
@@ -116,6 +120,7 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
   },
   methods: {
