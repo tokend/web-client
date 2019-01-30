@@ -15,21 +15,14 @@ import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'trade-user-orders',
   components: {
     TradeOpenOrders,
   },
-  props: {
-    // prop from parent router-view component
-    componentConfig: { type: Object, required: true },
-  },
   data: () => ({
-    assetPair: {
-      base: '',
-      quote: '',
-    },
     openOrders: [],
     isOpenOrdersLoading: false,
   }),
@@ -37,9 +30,15 @@ export default {
     ...mapGetters([
       vuexTypes.accountId,
     ]),
+    assetPair () {
+      return {
+        base: this.$route.query.base,
+        quote: this.$route.query.quote,
+      }
+    },
   },
   watch: {
-    'componentConfig.assetPair': {
+    'assetPair': {
       deep: true,
       handler: async function (assetPair) {
         this.setSelectedAssets(assetPair)
@@ -50,8 +49,11 @@ export default {
     },
   },
   async created () {
-    this.setSelectedAssets(this.$route.query)
-    await this.loadOrdersHistory()
+    this.setSelectedAssets(this.assetPair)
+    if (this.assetPair.base) {
+      await this.loadOrdersHistory()
+    }
+    Bus.on(Bus.eventList.reloadTradeData, this.loadOrdersHistory)
   },
   methods: {
     setSelectedAssets ({ base, quote }) {

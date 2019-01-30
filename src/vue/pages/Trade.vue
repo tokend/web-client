@@ -63,7 +63,7 @@
       </p>
     </div>
 
-    <router-view :component-config="childRoutesConfig" />
+    <router-view />
 
     <drawer :is-shown.sync="isCreateBuyOrderDrawerShown">
       <template slot="heading">
@@ -125,13 +125,6 @@ export default {
     isCreateBuyOrderDrawerShown: false,
     isCreateSellOrderDrawerShown: false,
     vueRoutes,
-    childRoutesConfig: {
-      isNeededToReloadData: false,
-      assetPair: {
-        base: '',
-        quote: '',
-      },
-    },
   }),
   computed: {
     ...mapGetters([
@@ -144,9 +137,6 @@ export default {
       const quoteAsset = value.split('/')[1]
       this.assetPair.base = baseAsset
       this.assetPair.quote = quoteAsset
-      // pass assetPair to child router-view components
-      this.childRoutesConfig.assetPair.base = baseAsset
-      this.childRoutesConfig.assetPair.quote = quoteAsset
 
       const accountBalances = this.accountBalances
       const baseBalance = accountBalances.find(i => i.asset === baseAsset)
@@ -222,11 +212,11 @@ export default {
     },
     closeBuyOrderDrawer () {
       this.isCreateBuyOrderDrawerShown = false
-      this.childRoutesConfig.isNeededToReloadData = true
+      Bus.emit(Bus.eventList.reloadTradeData)
     },
     closeSellOrderDrawer () {
       this.isCreateSellOrderDrawerShown = false
-      this.childRoutesConfig.isNeededToReloadData = true
+      Bus.emit(Bus.eventList.reloadTradeData)
     },
   },
 }

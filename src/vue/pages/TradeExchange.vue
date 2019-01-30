@@ -17,6 +17,7 @@
         />
         <div class="trade-exchange__history-collection-loader">
           <collection-loader
+            :key="`collection-loader-${assetPair.base}-${assetPair.quote}`"
             :first-page-loader="loadTradeHistory"
             :page-limit="recordsToShow"
             @first-page-load="setTradeHistory"
@@ -36,7 +37,7 @@
             :is-buy="true"
             :is-loading="isBuyOrdersLoading"
             :orders-list="buyOrdersList"
-            @reload-trades="componentConfig.isNeededToReloadData = true"
+            @reload-trades="loadData"
           />
 
           <trade-orders-renderer
@@ -45,7 +46,7 @@
             :is-buy="false"
             :is-loading="isSellOrdersLoading"
             :orders-list="sellOrdersList"
-            @reload-trades="componentConfig.isNeededToReloadData = true"
+            @reload-trades="loadData"
           />
         </div>
       </div>
@@ -62,6 +63,7 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'trade-exchange',
@@ -71,15 +73,7 @@ export default {
     TradeOrdersRenderer,
     CollectionLoader,
   },
-  props: {
-    // prop from parent router-view component
-    componentConfig: { type: Object, required: true },
-  },
   data: () => ({
-    assetPair: {
-      base: '',
-      quote: '',
-    },
     tradeHistory: [],
     buyOrdersList: [],
     sellOrdersList: [],
@@ -87,37 +81,44 @@ export default {
     isBuyOrdersLoading: false,
     isSellOrdersLoading: false,
     recordsOrder: 'desc',
-    recordsToShow: 10,
+    recordsToShow: 2,
     config,
   }),
-  watch: {
-    async 'componentConfig.isNeededToReloadData' (status) {
-      if (status) {
-        await this.loadTradeOrders()
-        await this.loadTradeHistory()
-        // says to Trade component that current loaded data is actual
-        this.componentConfig.isNeededToReloadData = false
+  computed: {
+    assetPair () {
+      return {
+        base: this.$route.query.base,
+        quote: this.$route.query.quote,
       }
     },
-    'componentConfig.assetPair': {
+  },
+  watch: {
+    assetPair: {
       deep: true,
       handler: function (assetPair) {
         this.setCurrentAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
-          this.loadTradeOrders()
-          this.loadTradeHistory()
+          this.loadData()
         }
       },
     },
   },
-  created () {
-    this.setCurrentAssets(this.componentConfig.assetPair)
-    if (this.componentConfig.assetPair.base) {
-      this.loadTradeOrders()
-      this.loadTradeHistory()
+  async created () {
+    this.setCurrentAssets(this.assetPair)
+    if (this.assetPair.base) {
+      await this.loadData()
     }
+    Bus.on(Bus.eventList.reloadTradeData, this.loadData)
   },
   methods: {
+    async loadData () {
+      await this.loadTradeOrders()
+      await this.loadTradeHistory()
+    },
+    async loadTradeOrders () {
+      await this.loadTradeBuyOrders()
+      await this.loadTradeSellOrders()
+    },
     async loadTradeHistory () {
       this.isTradeHistoryLoading = true
       let response = {}
@@ -141,10 +142,6 @@ export default {
     },
     extendTradeHistory (data) {
       this.tradeHistory = this.tradeHistory.concat(data)
-    },
-    async loadTradeOrders () {
-      await this.loadTradeBuyOrders()
-      await this.loadTradeSellOrders()
     },
     async loadTradeBuyOrders () {
       this.isBuyOrdersLoading = true
