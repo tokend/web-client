@@ -1,6 +1,6 @@
 <template>
   <div class="withdrawal">
-    <template v-if="isLoaded && !isError">
+    <template v-if="isLoaded && !isFailed">
       <template v-if="assetCodes.length">
         <form
           @submit.prevent="isFormValid() && showFormConfirmation()"
@@ -133,9 +133,9 @@
       </template>
     </template>
     <loader v-if="!isLoaded" />
-    <div v-if="isError">
+    <template v-if="isFailed">
       {{ 'withdrawal-form.can-not-load-assets' | globalize }}
-    </div>
+    </template>
   </div>
 </template>
 
@@ -171,7 +171,7 @@ export default {
   data () {
     return {
       isLoaded: false,
-      isError: false,
+      isFailed: false,
       form: {
         assetCode: null,
         amount: '',
@@ -241,7 +241,7 @@ export default {
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
-      this.isError = true
+      this.isFailed = true
       this.isLoaded = true
     }
   },
