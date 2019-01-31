@@ -2,7 +2,7 @@
   <div class="withdrawal" v-if="isLoaded">
     <template v-if="assetCodes.length">
       <form
-        @submit.prevent="isFormValid() && showFormConfirmation()"
+        @submit.prevent="isFormValid() && showConfirmation()"
         id="withdrawal-form"
         novalidate
       >
@@ -100,7 +100,7 @@
         <div class="app__form-actions withdrawal__action-margin">
           <button
             v-ripple
-            v-if="!formMixin.isFormConfirmationShown"
+            v-if="!formMixin.isConfirmationShown"
             type="submit"
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
@@ -109,9 +109,9 @@
             {{ 'withdrawal-form.withdrawal' | globalize }}
           </button>
           <form-confirmation
-            v-if="formMixin.isFormConfirmationShown"
-            @ok="hideFormConfirmation() || submit()"
-            @cancel="hideFormConfirmation()"
+            v-if="formMixin.isConfirmationShown"
+            @ok="hideConfirmation() || submit()"
+            @cancel="hideConfirmation()"
           />
         </div>
       </form>
