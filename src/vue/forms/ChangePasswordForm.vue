@@ -1,6 +1,6 @@
 <template>
   <form
-    class="app-form auth-form"
+    class="app-form change-password-form"
     @submit.prevent="isFormValid() && showConfirmation()"
   >
     <div class="app__form-row">
@@ -34,7 +34,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          id="cahge-password-confirm"
+          id="change-password-confirm"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'change-password-form.confirm-password-lbl' | globalize"

@@ -19,6 +19,15 @@
 </template>
 
 <script>
+/**
+ * Switch field component represents switch for boolean values.
+ *
+ * To use it pass your boolean data field as a prop and sync it.
+ *
+ * <switch-field :is-enabled.sync="isSwitchEnabled" />
+ *
+ * As long as `isSwitchEnabled` is `true`, the switch will be enabled.
+ */
 export default {
   name: 'switch-field',
   props: {
@@ -54,7 +63,7 @@ export default {
     right: 0;
     bottom: 0;
     background-color: $col-switch-field-background;
-    border: solid .1rem #c1bfd0;
+    border: solid .1rem $col-switch-field-border;
     border-radius: 3.4rem;
 
     &:before {

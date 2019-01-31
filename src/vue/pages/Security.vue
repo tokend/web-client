@@ -1,5 +1,5 @@
 <template>
-  <div class="security">
+  <div class="security-page">
     <drawer :is-shown.sync="isDrawerShown">
       <template v-if="viewMode === VIEW_MODES.enableTfa">
         <template slot="heading">
@@ -36,45 +36,45 @@
         </div>
       </template>
     </drawer>
-    <div class="security__row">
-      <p class="security__row-title">
+    <div class="security-page__row">
+      <p class="security-page__row-title">
         {{ 'security-page.enable-tfa-title' | globalize }}
       </p>
       <div @click="showDrawer(VIEW_MODES.enableTfa)">
         <switch-field :is-enabled="isTotpEnabled" />
       </div>
     </div>
-    <hr class="security__line">
-    <div class="security__row">
-      <p class="security__row-title">
+    <hr>
+    <div class="security-page__row">
+      <p class="security-page__row-title">
         {{ 'security-page.password-title' | globalize }}
       </p>
       <a
-        class="security__row-action"
+        class="security-page__row-action"
         @click="showDrawer(VIEW_MODES.changePassword)"
       >
         {{ 'security-page.change-password-btn' | globalize }}
       </a>
     </div>
-    <hr class="security__line">
-    <div class="security__row">
-      <p class="security__row-title">
+    <hr>
+    <div class="security-page__row">
+      <p class="security-page__row-title">
         {{ 'security-page.account-id-title' | globalize }}
       </p>
       <a
-        class="security__row-action"
+        class="security-page__row-action"
         @click="showDrawer(VIEW_MODES.viewAccountId)"
       >
         {{ 'security-page.view-account-id-btn' | globalize }}
       </a>
     </div>
-    <hr class="security__line">
-    <div class="security__row">
-      <p class="security__row-title">
+    <hr>
+    <div class="security-page__row">
+      <p class="security-page__row-title">
         {{ 'security-page.secret-seed-title' | globalize }}
       </p>
       <a
-        class="security__row-action"
+        class="security-page__row-action"
         @click="showDrawer(VIEW_MODES.viewSecretSeed)"
       >
         {{ 'security-page.view-secret-seed-btn' | globalize }}
@@ -136,30 +136,30 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.security {
+.security-page {
   background: $col-block-bg;
   @include box-shadow();
 
-  .security__row {
+  .security-page__row {
     padding: 2.4rem;
     height: 7.4rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .security__row-title {
+    .security-page__row-title {
       font-size: 1.8rem;
       color: $col-primary;
     }
 
-    .security__row-action {
+    .security-page__row-action {
       font-size: 1.3rem;
       cursor: pointer;
       color: $col-primary-lighten;
     }
   }
 
-  .security__line {
+  hr {
     margin: 0 2.4rem;
     border: $col-block-line solid .05rem;
   }
