@@ -6,6 +6,7 @@ const featureFlags = {
   operations: true,
   issuance: true,
   settings: true,
+  limits: true,
 }
 
 export default Object.assign(

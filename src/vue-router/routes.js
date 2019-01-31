@@ -21,12 +21,12 @@ export const vueRoutes = Object.freeze({
   security: { name: 'app.security' },
   dashboard: { name: 'app.dashboard' },
   issuance: { name: 'app.issuance' },
+  limits: { name: 'app.limits' },
 
   // stubs:
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
   deposit: { name: 'app.deposit' },
-  limits: { name: 'app.limits' },
   transfers: { name: 'app.transfers' },
   massTransfers: { name: 'app.mass-transfers' },
   withdrawal: { name: 'app.withdrawal' },

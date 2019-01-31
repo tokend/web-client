@@ -231,7 +231,37 @@
     },
 
     "pages-subnames": {
-      "exchange-tokens": "Exchange tokens"
+      "exchange-tokens": "Exchange tokens",
+      "explore-limits": "Explore limits"
+    },
+
+    "limits": {
+      "explore-limits": "Explore limits",
+      "change-limits-form-heading": "Change limits",
+      "change-limits-bth": "Change limits",
+      "table-tx-type-lbl": "Transaction type",
+      "table-daily-limit-lbl": "Daily limit (left/total)",
+      "table-weekly-limit-lbl": "Weekly limit (left/total)",
+      "table-monthly-limit-lbl": "Monthly limit (left/total)",
+      "table-annual-limit-lbl": "Annual limit (left/total)",
+      "not-set-lbl": "Not set",
+      "op-type-deposit": "Deposit",
+      "op-type-withdraw": "Withdraw",
+      "op-type-payment-out": "Payment"
+    },
+    "change-limits-form": {
+      "operation-type": "Operation type limit",
+      "to-lbl": "To",
+      "limit-lbl": "Limit",
+      "daily-limit-lbl": "Daily Limit",
+      "weekly-limit-lbl": "Weekly Limit",
+      "monthly-limit-lbl": "Monthly Limit",
+      "annual-limit-lbl": "Annual Limit",
+      "note-lbl": "Note (optional)",
+      "add-limit-btn": "Add limit",
+      "change-limit-btn": "Change limit",
+      "send-request-btn": "Send request",
+      "cancel-btn": "Cancel"
     },
 
     "passport": {

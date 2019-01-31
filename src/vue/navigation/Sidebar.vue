@@ -75,6 +75,20 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.limits"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.limits"
+          >
+            <i class="sidebar__link-icon mdi mdi-poll-box" />
+            <span>
+              {{ 'pages-names.limits' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.issuance"
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
