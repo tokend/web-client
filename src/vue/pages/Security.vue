@@ -3,8 +3,14 @@
     <drawer :is-shown.sync="isDrawerShown">
       <template v-if="viewMode === VIEW_MODES.enableTfa">
         <template slot="heading">
-          {{ 'security-page.enable-tfa-title' | globalize }}
+          <template v-if="isTotpEnabled">
+            {{ 'security-page.disable-tfa-title' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.enable-tfa-title' | globalize }}
+          </template>
         </template>
+        <tfa-form @update="updateTfa" />
       </template>
       <template v-else-if="viewMode === VIEW_MODES.changePassword">
         <template slot="heading">
@@ -91,9 +97,12 @@ import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
+import TfaForm from '@/vue/forms/TfaForm'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
@@ -111,6 +120,7 @@ export default {
     KeyViewer,
     ClipboardField,
     ChangePasswordForm,
+    TfaForm,
   },
   data: _ => ({
     isDrawerShown: false,
@@ -123,10 +133,28 @@ export default {
       isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
   },
+  async created () {
+    try {
+      await this.loadFactors()
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
+    }
+  },
   methods: {
+    ...mapActions({
+      loadFactors: vuexTypes.LOAD_FACTORS,
+    }),
     showDrawer (viewMode) {
       this.viewMode = viewMode
       this.isDrawerShown = true
+    },
+    async updateTfa () {
+      this.isDrawerShown = false
+      try {
+        await this.loadFactors()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }

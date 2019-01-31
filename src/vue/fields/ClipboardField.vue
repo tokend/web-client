@@ -8,6 +8,7 @@
         {{ value }}
       </span>
       <button
+        type="button"
         class="clipboard-field__button"
         :id="`clipboard-btn-${value}`"
         :data-clipboard-target="`#clipboard-target-${value}`"
@@ -51,7 +52,7 @@ export default {
   display: flex;
   justify-content: space-between;
   position: relative;
-  max-width: 100%;
+  width: 100%;
 }
 
 .clipboard-field__value {
@@ -82,6 +83,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .clipboard-field__copy-icon {
   font-size: 2.4rem;
   padding-top: .4rem;

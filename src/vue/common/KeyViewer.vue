@@ -9,7 +9,10 @@
         :color-dark="'#262626'"
       />
     </div>
-    <div class="key-viewer__clipboard-wrp">
+    <div
+      v-if="isClipboardShown"
+      class="key-viewer__clipboard-wrp"
+    >
       <clipboard-field
         :value="value"
         :label="label"
@@ -40,6 +43,10 @@ export default {
     label: {
       type: String,
       default: '',
+    },
+    isClipboardShown: {
+      type: Boolean,
+      default: true,
     },
   },
 }
