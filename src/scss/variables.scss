@@ -196,7 +196,7 @@ $col-form-stepper-tab-border: $_thinPurple;
 
 // asset card colors
 $col-asset-card-background: $_white;
-$col-asset-card-header-background: $col-primary;
+$col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
 
@@ -206,7 +206,7 @@ $col-request-pending: $_orangePeel;
 $col-request-rejected: $_lightRed;
 
 // asset logo
-$col-asset-logo-background: $_mediumGray;
-$col-asset-logo-text: $_white;
+$col-asset-logo-background: $_white;
+$col-asset-logo-text: $col-primary;
 
 // TODO: paste here variables that are ready to use during the refactor process
