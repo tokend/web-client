@@ -43,6 +43,7 @@ export default {
   display: flex;
   align-items: center;
   min-height: 6.5rem;
+  max-height: 6.5rem;
   background-color: $col-top-bar-background;
   color: $col-top-bar-text;
   margin:
