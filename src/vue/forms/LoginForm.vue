@@ -81,8 +81,8 @@ export default {
       email: { required },
       password: { required },
       tfaCode: {
-        required: requiredIf(function () { return this.tfaError })
-      }
+        required: requiredIf(function () { return this.tfaError }),
+      },
     },
   },
   computed: {
@@ -101,12 +101,15 @@ export default {
       this.disableForm()
       try {
         if (this.tfaError) {
-          await Sdk.api.factors.verifyTotpFactorAndRetry(
+          await Sdk.api.factors.verifyTotpFactor(
             this.tfaError,
             this.form.tfaCode
           )
         }
-        await this.loadWallet(this.form)
+        await this.loadWallet({
+          email: this.form.email,
+          password: this.form.password,
+        })
         const accountId = this[vuexTypes.wallet].accountId
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         if (!await this.isUserExist(accountId)) {

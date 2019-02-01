@@ -178,20 +178,22 @@ export default {
     },
     async useNewWallet () {
       let newWallet
-      while (!newWallet) {
-        try {
+      try {
+        newWallet = await Sdk.api.wallets.get(
+          this.wallet.email,
+          this.form.newPassword
+        )
+      } catch (e) {
+        if (e instanceof errors.TFARequiredError) {
+          await Sdk.api.factors.verifyTotpFactor(e,
+            this.form.tfaCode
+          )
           newWallet = await Sdk.api.wallets.get(
             this.wallet.email,
             this.form.newPassword
           )
-        } catch (e) {
-          if (e instanceof errors.TFARequiredError) {
-            await Sdk.api.factors.verifyTotpFactorAndRetry(e,
-              this.form.tfaCode
-            )
-          } else {
-            throw e
-          }
+        } else {
+          throw e
         }
       }
       Sdk.sdk.useWallet(newWallet)

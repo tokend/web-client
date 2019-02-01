@@ -157,7 +157,7 @@ export default {
               )
             this.form.factor = data
           } catch (e) {
-            Bus.error('tfa-form.wrong-password-err')
+            ErrorHandler.process(error)
           }
         } else {
           ErrorHandler.process(error)
@@ -166,9 +166,8 @@ export default {
     },
     async deleteTotpFactor () {
       try {
-        const totpFactor = this.totpFactors[0]
-        if (totpFactor) {
-          await Sdk.api.factors.delete(totpFactor.id)
+        if (this.totpFactors[0]) {
+          await Sdk.api.factors.delete(this.totpFactors[0].id)
         }
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
@@ -179,7 +178,7 @@ export default {
             Bus.success('tfa-form.tfa-disabled-msg')
             this.$emit(EVENTS.update)
           } catch (e) {
-            Bus.error('tfa-form.wrong-password-err')
+            ErrorHandler.process(error)
           }
         } else {
           ErrorHandler.process(error)
@@ -198,7 +197,7 @@ export default {
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Sdk.api.factors.verifyTotpFactorAndRetry(error,
+            await Sdk.api.factors.verifyTotpFactor(error,
               this.form.code
             )
             await Sdk.api.factors.changePriority(this.form.factor.id,
@@ -207,7 +206,7 @@ export default {
             this.$emit(EVENTS.update)
             Bus.success('tfa-form.tfa-enabled-msg')
           } catch (e) {
-            Bus.error('tfa-form.wrong-code-err')
+            ErrorHandler.process(error)
           }
         } else {
           ErrorHandler.process(error)

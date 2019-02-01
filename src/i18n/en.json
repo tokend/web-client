@@ -177,7 +177,7 @@
       "qr-desc": "Scan the QR with your 2FA app",
       "code-lbl": "2FA code",
       "secret-code-desc": "Or manually set the secret code",
-      "tfa-code-desc": "Enter your 2FA code to continue",
+      "tfa-code-desc": "And enter your 2FA code to continue",
       "wrong-password-err": "Wrong password",
       "wrong-code-err": "Wrong code",
       "tfa-enabled-msg": "2FA is enabled",

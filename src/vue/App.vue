@@ -39,7 +39,6 @@ import {
   mapGetters,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { Wallet } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -81,14 +80,7 @@ export default {
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
       if (this[vuexTypes.isLoggedIn]) {
-        Sdk
-          .sdk
-          .useWallet(new Wallet(
-            '',
-            this[vuexTypes.wallet].secretSeed,
-            this[vuexTypes.wallet].accountId,
-            this[vuexTypes.wallet].id
-          ))
+        Sdk.sdk.useWallet(this[vuexTypes.wallet])
       }
     },
     detectIE () {
