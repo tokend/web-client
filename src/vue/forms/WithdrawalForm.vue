@@ -251,6 +251,7 @@ export default {
     }),
     async submit () {
       if (!this.isFormValid()) return
+      this.disableForm()
       try {
         if (this.isFeesLoadFailed) {
           Bus.error('withdrawal-form.failed-load-fees')
