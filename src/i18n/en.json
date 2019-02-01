@@ -237,22 +237,15 @@
 
     "limits": {
       "explore-limits": "Explore limits",
-      "change-limits-form-heading": "Change limits",
-      "change-limits-bth": "Change limits",
-      "table-tx-type-lbl": "Transaction type",
-      "table-daily-limit-lbl": "Daily limit (left/total)",
-      "table-weekly-limit-lbl": "Weekly limit (left/total)",
-      "table-monthly-limit-lbl": "Monthly limit (left/total)",
-      "table-annual-limit-lbl": "Annual limit (left/total)",
-      "not-set-lbl": "Not set",
-      "op-type-deposit": "Deposit",
-      "op-type-withdraw": "Withdraw",
-      "op-type-payment-out": "Payment"
+      "limits-form-heading": "Change limits",
+      "change-limits-bth": "Change limits"
     },
-    "change-limits-form": {
+
+    "limits-form": {
       "operation-type": "Operation type limit",
       "to-lbl": "To",
       "limit-lbl": "Limit",
+      "not-set-lbl": "Not set",
       "daily-limit-lbl": "Daily Limit",
       "weekly-limit-lbl": "Weekly Limit",
       "monthly-limit-lbl": "Monthly Limit",
@@ -261,7 +254,23 @@
       "add-limit-btn": "Add limit",
       "change-limit-btn": "Change limit",
       "send-request-btn": "Send request",
-      "cancel-btn": "Cancel"
+      "op-type-deposit": "Deposit",
+      "op-type-withdraw": "Withdraw",
+      "op-type-payment-out": "Outgoing payment",
+      "request-new-limits": "Request new limits",
+      "request-successfully-created": "Request successfully created"
+    },
+
+    "limits-table-renderer": {
+      "op-type-deposit": "Deposit",
+      "op-type-withdraw": "Withdraw",
+      "op-type-payment-out": "Payment",
+      "table-tx-type-lbl": "Transaction type",
+      "table-daily-limit-lbl": "Daily limit (left/total)",
+      "table-weekly-limit-lbl": "Weekly limit (left/total)",
+      "table-monthly-limit-lbl": "Monthly limit (left/total)",
+      "table-annual-limit-lbl": "Annual limit (left/total)",
+      "not-set-lbl": "Not set"
     },
 
     "passport": {

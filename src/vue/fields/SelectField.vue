@@ -122,7 +122,7 @@ export default {
     selectItem (item) {
       this.selectedValue = item
       this.currentValue = item
-      this.$emit(EVENTS.input, this.getValue(item))
+      this.$emit(EVENTS.input, item)
       this.toggleListVisibility()
     },
     toggleListVisibility () {

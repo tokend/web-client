@@ -25,5 +25,7 @@ export class LimitsRecord {
       _get(record, 'statistics.statsOpType') ||
       details.statsOpType ||
       null
+
+    this.id = _get(record, 'limit.id') || '0'
   }
 }

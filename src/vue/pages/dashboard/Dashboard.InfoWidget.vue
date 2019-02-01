@@ -123,8 +123,8 @@
     <template v-else>
       <no-data-message
         icon-name="trending_up"
-        :msg-title="'dashboard.no-transaction-history' | globalize"
-        :msg-message="'dashboard.here-will-transactions-list' | globalize"
+        :title-id="'dashboard.no-transaction-history'"
+        :message-id="'dashboard.here-will-transactions-list'"
       />
     </template>
   </div>
