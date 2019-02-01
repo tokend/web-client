@@ -1,137 +1,142 @@
 <template>
-  <div class="withdrawal" v-if="isLoaded">
-    <template v-if="assetCodes.length">
-      <form
-        @submit.prevent="isFormValid() && showFormConfirmation()"
-        id="withdrawal-form"
-        novalidate
-      >
-        <div class="app__form-row withdrawal__form-row">
-          <div class="app__form-field">
-            <select-field
-              :values="assetCodes"
-              :disabled="formMixin.isDisabled"
-              v-model="form.assetCode"
-              :label="'withdrawal-form.asset' | globalize"
-            />
-            <div class="withdrawal__form-field-description">
-              <p>
-                {{
-                  'withdrawal-form.balance' | globalize({
-                    amount: balanceInfo.balance,
-                    asset: form.assetCode
-                  })
-                }}
-              </p>
+  <div class="withdrawal">
+    <template v-if="isLoaded && !isFailed">
+      <template v-if="assetCodes.length">
+        <form
+          @submit.prevent="isFormValid() && showFormConfirmation()"
+          id="withdrawal-form"
+          novalidate
+        >
+          <div class="app__form-row withdrawal__form-row">
+            <div class="app__form-field">
+              <select-field
+                :values="assetCodes"
+                :disabled="formMixin.isDisabled"
+                v-model="form.assetCode"
+                :label="'withdrawal-form.asset' | globalize"
+              />
+              <div class="withdrawal__form-field-description">
+                <p>
+                  {{
+                    'withdrawal-form.balance' | globalize({
+                      amount: balanceInfo.balance,
+                      asset: form.assetCode
+                    })
+                  }}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="app__form-row withdrawal__form-row">
-          <input-field
-            white-autofill
-            class="app__form-field"
-            v-model.trim="form.amount"
-            type="number"
-            @blur="touchField('form.amount')"
-            :label="'withdrawal-form.amount' | globalize({
-              asset: form.assetCode
-            })"
-            :disabled="formMixin.isDisabled"
-            :error-message="getFieldErrorMessage('form.amount', {
-              from:MIN_AMOUNT,
-              to:balanceInfo.balance
-            })"
-          />
-        </div>
+          <div class="app__form-row withdrawal__form-row">
+            <input-field
+              white-autofill
+              class="app__form-field"
+              v-model.trim="form.amount"
+              type="number"
+              @blur="touchField('form.amount')"
+              :label="'withdrawal-form.amount' | globalize({
+                asset: form.assetCode
+              })"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage('form.amount', {
+                from:MIN_AMOUNT,
+                to:balanceInfo.balance
+              })"
+            />
+          </div>
 
-        <div class="app__form-row withdrawal__form-row">
-          <input-field
-            white-autofill
-            class="app__form-field"
-            v-model.trim="form.address"
-            @blur="touchField('form.address')"
-            :error-message="getFieldErrorMessage('form.address')"
-            :label="'withdrawal-form.destination-address' | globalize({
-              asset: form.assetCode
-            })"
-            :monospaced="true"
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
+          <div class="app__form-row withdrawal__form-row">
+            <input-field
+              white-autofill
+              class="app__form-field"
+              v-model.trim="form.address"
+              @blur="touchField('form.address')"
+              :error-message="getFieldErrorMessage('form.address')"
+              :label="'withdrawal-form.destination-address' | globalize({
+                asset: form.assetCode
+              })"
+              :monospaced="true"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
 
-        <div class="app__form-row withdrawal__form-row">
-          <table class="withdrawal__fee-table">
-            <tbody
-              class="withdrawal__fee-tbody"
-              :class="{ 'withdrawal__data_loading': isFeesLoadPending }">
-              <tr>
-                <td>{{ 'withdrawal-form.network-fee-hint' | globalize }}</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>{{ 'withdrawal-form.fixed-fee' | globalize }}</td>
-                <td>
-                  <!-- eslint-disable-next-line max-len -->
-                  {{ { value: fixedFee, currency: form.assetCode } | formatMoney }}
-                </td>
-              </tr>
-              <tr>
-                <td>{{ 'withdrawal-form.percent-fee' | globalize }}</td>
-                <td>
-                  <!-- eslint-disable-next-line max-len -->
-                  {{ { value: percentFee, currency: form.assetCode } | formatMoney }}
-                </td>
-              </tr>
-            </tbody>
-            <tbody class="withdrawal__total-fee-tbody">
-              <tr>
-                <td>
-                  {{ 'withdrawal-form.total-amount-account' | globalize }}
-                </td>
-                <td>
-                  <!-- eslint-disable-next-line max-len -->
-                  {{ { value: (+percentFee + +fixedFee), currency: form.assetCode } | formatMoney }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="app__form-row withdrawal__form-row">
+            <table class="withdrawal__fee-table">
+              <tbody
+                class="withdrawal__fee-tbody"
+                :class="{ 'withdrawal__data_loading': isFeesLoadPending }">
+                <tr>
+                  <td>{{ 'withdrawal-form.network-fee-hint' | globalize }}</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td>{{ 'withdrawal-form.fixed-fee' | globalize }}</td>
+                  <td>
+                    <!-- eslint-disable-next-line max-len -->
+                    {{ { value: fixedFee, currency: form.assetCode } | formatMoney }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ 'withdrawal-form.percent-fee' | globalize }}</td>
+                  <td>
+                    <!-- eslint-disable-next-line max-len -->
+                    {{ { value: percentFee, currency: form.assetCode } | formatMoney }}
+                  </td>
+                </tr>
+              </tbody>
+              <tbody class="withdrawal__total-fee-tbody">
+                <tr>
+                  <td>
+                    {{ 'withdrawal-form.total-amount-account' | globalize }}
+                  </td>
+                  <td>
+                    <!-- eslint-disable-next-line max-len -->
+                    {{ { value: (+percentFee + +fixedFee), currency: form.assetCode } | formatMoney }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div class="app__form-actions withdrawal__action-margin">
-          <button
-            v-ripple
-            v-if="!formMixin.isFormConfirmationShown"
-            type="submit"
-            class="app__button-raised"
-            :disabled="formMixin.isDisabled"
-            form="withdrawal-form"
-          >
-            {{ 'withdrawal-form.withdrawal' | globalize }}
-          </button>
-          <form-confirmation
-            v-if="formMixin.isFormConfirmationShown"
-            @ok="hideFormConfirmation() || submit()"
-            @cancel="hideFormConfirmation()"
-          />
-        </div>
-      </form>
+          <div class="app__form-actions withdrawal__action">
+            <button
+              v-ripple
+              v-if="!formMixin.isFormConfirmationShown"
+              type="submit"
+              class="app__button-raised"
+              :disabled="formMixin.isDisabled"
+              form="withdrawal-form"
+            >
+              {{ 'withdrawal-form.withdrawal' | globalize }}
+            </button>
+            <form-confirmation
+              v-if="formMixin.isFormConfirmationShown"
+              @ok="hideFormConfirmation() || submit()"
+              @cancel="hideFormConfirmation()"
+            />
+          </div>
+        </form>
+      </template>
+      <template v-else>
+        <h2 class="app__page-heading">
+          {{ 'withdrawal-form.no-assets-heading' | globalize }}
+        </h2>
+        <p class="app__page-explanations app__page-explanations--secondary">
+          {{ 'withdrawal-form.no-assets' | globalize }}
+        </p>
+        <router-link
+          to="/tokens"
+          tag="button"
+          class="app__button-raised withdrawal__action">
+          {{ 'withdrawal-form.discover-assets-btn' | globalize }}
+        </router-link>
+      </template>
     </template>
-    <template v-else>
-      <h2 class="app__page-heading">
-        {{ 'withdrawal-form.no-assets-heading' | globalize }}
-      </h2>
-      <p class="app__page-explanations app__page-explanations--secondary">
-        {{ 'withdrawal-form.no-assets' | globalize }}
-      </p>
-      <router-link
-        to="/tokens"
-        tag="button"
-        class="app__button-raised withdrawal__action-margin">
-        {{ 'withdrawal-form.discover-assets-btn' | globalize }}
-      </router-link>
+    <loader v-if="!isLoaded" />
+    <template v-if="isFailed">
+      {{ 'withdrawal-form.can-not-load-assets' | globalize }}
     </template>
   </div>
-  <loader v-else />
 </template>
 
 <script>
@@ -166,6 +171,7 @@ export default {
   data () {
     return {
       isLoaded: false,
+      isFailed: false,
       form: {
         assetCode: null,
         amount: '',
@@ -234,7 +240,9 @@ export default {
       this.form.assetCode = this.assetCodes[0] || null
       this.isLoaded = true
     } catch (e) {
-      ErrorHandler.process(e)
+      ErrorHandler.processWithoutFeedback(e)
+      this.isFailed = true
+      this.isLoaded = true
     }
   },
   methods: {
@@ -271,7 +279,7 @@ export default {
         this.isFeesLoadFailed = false
       } catch (e) {
         this.isFeesLoadFailed = true
-        ErrorHandler.process(e)
+        ErrorHandler.processWithoutFeedback(e)
       }
       this.isFeesLoadPending = false
     },
@@ -342,7 +350,7 @@ export default {
     font-weight: 600
   }
 
-  .withdrawal__action-margin {
+  .withdrawal__action {
     margin-top: 2.5rem;
   }
   .withdrawal__data_loading {

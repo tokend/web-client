@@ -13,7 +13,7 @@
       <clipboard-field
         :id="value"
         :value="value"
-        :label="'auth-pages.recovery-seed' | globalize"
+        :monospaced="true"
       />
     </div>
   </div>
@@ -46,7 +46,6 @@ export default {
 @import '~@scss/variables';
 
 .key-viewer__qr-wrp {
-  margin-bottom: 3rem;
   text-align: center;
 }
 </style>
