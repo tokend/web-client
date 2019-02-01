@@ -77,6 +77,7 @@ export default {
   border-spacing: 0 0.6rem;
   border-color: transparent;
   overflow-x: auto;
+  padding: 0.4rem 0.4rem;
 }
 
 .op-list__head-cell {
