@@ -34,6 +34,7 @@
       <router-link
         :to="vueRoutes.verification.general"
         class="account-type-selector__item"
+        :disabled="kycAccountType && kycAccountType !== ACCOUNT_TYPES.general"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
@@ -49,6 +50,7 @@
       <router-link
         :to="vueRoutes.verification.corporate"
         class="account-type-selector__item"
+        :disabled="kycAccountType && kycAccountType !== ACCOUNT_TYPES.syndicate"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -109,11 +111,13 @@ export default {
   data: _ => ({
     vueRoutes,
     REQUEST_STATES_STR,
+    ACCOUNT_TYPES,
   }),
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
+      kycAccountType: vuexTypes.kycAccountTypeToSet,
     }),
   },
   beforeRouteEnter (to, from, next) {
@@ -179,6 +183,13 @@ export default {
   text-decoration: none;
 
   @include box-shadow();
+
+  &[disabled] {
+    opacity: 0.7;
+    cursor: default;
+    box-shadow: none;
+    filter: grayscale(100%);
+  }
 }
 
 .router-link-exact-active {
