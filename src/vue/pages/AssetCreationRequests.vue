@@ -18,7 +18,7 @@
             </template>
             <asset-request-details
               :request="selectedRequest"
-              @update="updateRequest"
+              @update="isUpdating = true"
               @cancel="cancelRequest"
             />
           </template>
@@ -196,22 +196,6 @@ export default {
       this.selectedIndex = index
       this.isUpdating = false
       this.isDetailsDrawerShown = true
-    },
-    async updateRequest () {
-      try {
-        if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
-          const { data } =
-            await Sdk.horizon.assets.get(this.selectedRequest.assetCode)
-          this.requestsHistory.splice(this.selectedIndex, 1,
-            Object.assign(this.selectedRequest, {
-              maxIssuanceAmount: data.maxIssuanceAmount,
-            })
-          )
-        }
-        this.isUpdating = true
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
     },
     async cancelRequest () {
       try {

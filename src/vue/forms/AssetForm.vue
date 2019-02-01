@@ -1,5 +1,6 @@
 <template>
   <form-stepper
+    v-if="isLoaded"
     :steps="STEPS"
     :current-step.sync="currentStep"
     :disabled="formMixin.isDisabled"
@@ -141,10 +142,15 @@
       </div>
     </form>
   </form-stepper>
+  <loader
+    v-else
+    :message-id="'asset-form.loading-msg'"
+  />
 </template>
 
 <script>
 import FormStepper from '@/vue/common/FormStepper'
+import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -190,6 +196,7 @@ export default {
   name: 'asset-form',
   components: {
     FormStepper,
+    Loader,
   },
   mixins: [FormMixin],
   props: {
@@ -208,6 +215,7 @@ export default {
         terms: null,
       },
     },
+    isLoaded: false,
     currentStep: 1,
     STEPS,
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -261,27 +269,33 @@ export default {
       return this.request instanceof AssetUpdateRequestRecord
     },
   },
-  created () {
-    this.tryPopulateForm(this.request)
+  async created () {
+    await this.tryPopulateForm(this.request)
+    this.isLoaded = true
   },
   methods: {
-    tryPopulateForm (request) {
+    async tryPopulateForm (request) {
       if (request.id) {
-        this.form = {
-          information: {
-            name: request.assetName,
-            code: request.assetCode,
-            maxIssuanceAmount: request.maxIssuanceAmount,
-            logo: request.logo.key
-              ? new DocumentContainer(request.logo)
-              : null,
-            policies: request.policies,
-          },
-          terms: {
-            terms: request.terms.key
-              ? new DocumentContainer(request.terms)
-              : null,
-          },
+        try {
+          const { data } = await Sdk.horizon.assets.get(request.assetCode)
+          this.form = {
+            information: {
+              name: request.assetName,
+              code: request.assetCode,
+              maxIssuanceAmount: data.maxIssuanceAmount,
+              logo: request.logo.key
+                ? new DocumentContainer(request.logo)
+                : null,
+              policies: request.policies,
+            },
+            terms: {
+              terms: request.terms.key
+                ? new DocumentContainer(request.terms)
+                : null,
+            },
+          }
+        } catch (e) {
+          ErrorHandler.processWithoutFeedback(e)
         }
       }
     },
@@ -306,7 +320,7 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.token-request-submitted-msg')
         if (this.request.id) {
-          this.$emit(EVENTS.submit)
+          this.$emit(EVENTS.update)
         }
       } catch (e) {
         ErrorHandler.process(e)

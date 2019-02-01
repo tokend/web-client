@@ -2,11 +2,22 @@
   <div class="assets-list">
     <drawer :is-shown.sync="isDetailsDrawerShown">
       <template slot="heading">
-        {{ 'asset-details.title' | globalize }}
+        <template v-if="isUpdating">
+          {{ 'asset-form.update-token-title' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'asset-details.title' | globalize }}
+        </template>
       </template>
+      <asset-form
+        v-if="isUpdating"
+        :request="assetUpdateRecord"
+      />
       <asset-details
+        v-else
         :asset="selectedAsset"
-        @balance-added="updateSelectedAsset"
+        @balance-added="refreshSelectedAsset"
+        @update="updateAsset"
       />
     </drawer>
     <div class="asset-cards">
@@ -53,8 +64,16 @@
 import Drawer from '@/vue/common/Drawer'
 import AssetDetails from '@/vue/pages/assets/AssetDetails'
 import AssetLogo from '@/vue/common/assets/AssetLogo'
+import AssetForm from '@/vue/forms/AssetForm'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
+
+import { REQUEST_STATES } from '@/js/const/request-states.const'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { Sdk } from '@/sdk'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -67,18 +86,22 @@ export default {
     Drawer,
     AssetDetails,
     AssetLogo,
+    AssetForm,
   },
   props: {
     assets: { type: Array, default: _ => [] },
   },
   data: _ => ({
     isDetailsDrawerShown: false,
+    isUpdating: false,
     selectedAsset: null,
+    assetUpdateRecord: null,
     config,
   }),
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
+      account: vuexTypes.account,
     }),
     assetRecords () {
       return this.assets
@@ -88,12 +111,41 @@ export default {
   methods: {
     selectAsset (asset) {
       this.selectedAsset = asset
+      this.isUpdating = false
       this.isDetailsDrawerShown = true
     },
-    updateSelectedAsset () {
+    refreshSelectedAsset () {
       this.selectedAsset = this.assetRecords
         .find(asset => asset.code === this.selectedAsset.code)
     },
+    async updateAsset () {
+      try {
+        const assetUpdateRequest = await this.fetchAssetUpdateRequest()
+        if (assetUpdateRequest) {
+          this.assetUpdateRecord =
+            new AssetUpdateRequestRecord(assetUpdateRequest)
+        } else {
+          this.assetUpdateRecord = new AssetUpdateRequestRecord({
+            details: {
+              assetUpdate: this.selectedAsset,
+            },
+          })
+        }
+        this.isUpdating = true
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+    },
+    async fetchAssetUpdateRequest () {
+      const { data } = await Sdk.horizon.request.getAllForAssets({
+        requestor: this.account.accountId,
+        state: REQUEST_STATES.pending,
+      })
+      return data.find(request => {
+        return request.details.assetUpdate &&
+          request.details.assetUpdate.code === this.selectedAsset.code
+      })
+    }
   },
 }
 </script>

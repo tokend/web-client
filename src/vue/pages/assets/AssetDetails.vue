@@ -76,6 +76,14 @@
       >
         {{ 'asset-details.add-balance-btn' | globalize }}
       </button>
+      <button
+        v-if="asset.owner === account.accountId"
+        v-ripple
+        class="asset-details__update-btn"
+        @click="$emit(EVENTS.update)"
+      >
+        {{ 'asset-details.update-btn' | globalize }}
+      </button>
     </div>
   </div>
 </template>
@@ -97,6 +105,7 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
+  update: 'update',
 }
 
 export default {
@@ -110,6 +119,7 @@ export default {
   data: _ => ({
     isBalanceCreating: false,
     config,
+    EVENTS,
   }),
   computed: {
     ...mapGetters({
