@@ -23,12 +23,10 @@
       <span class="select-field__selected-value">
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
-      <div>
-        <i
-          class="select-field__selected-icon mdi mdi-chevron-down"
-          :class="{ 'select-field__selected-icon--active': isExpanded }"
-        />
-      </div>
+      <i
+        class="select-field__selected-icon mdi mdi-chevron-down"
+        :class="{ 'select-field__selected-icon--active': isExpanded }"
+      />
     </button>
     <div
       class="select-field__list"
