@@ -16,6 +16,7 @@
       <clipboard-field
         :value="value"
         :label="label"
+        :monospaced="true"
       />
     </div>
   </div>
@@ -56,7 +57,6 @@ export default {
 @import '~@scss/variables';
 
 .key-viewer__qr-wrp {
-  margin-bottom: 3rem;
   text-align: center;
 }
 </style>

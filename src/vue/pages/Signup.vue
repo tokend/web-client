@@ -99,6 +99,7 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
+          Sdk.sdk.useWallet(wallet)
           await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
         } else {

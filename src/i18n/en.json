@@ -337,7 +337,8 @@
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
       "loading-msg": "Loading",
-      "withdrawal": "Withdrawal"
+      "withdrawal": "Withdrawal",
+      "deposit": "Deposit"
     },
 
     "op-details": {
@@ -557,7 +558,6 @@
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
       "asset": "Asset",
-      "how_much": "Minimal withdrawal is {{value}} {{asset}}.",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",
       "network-fee-hint": "Blockchain network will charge additional transaction fee independently.",
@@ -569,7 +569,23 @@
       "failed-load-fees": "Failed to load fees. Try again later",
       "no-assets-heading": "Ops!",
       "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
-      "discover-assets-btn": "Discover assets"
+      "discover-assets-btn": "Discover assets",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+    },
+
+    "deposit-form": {
+      "deposit": "Deposit",
+      "asset": "Asset",
+      "how-to": "To make a deposit send some tokens to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
+      "asset-only-prefix": "Attention:",
+      "asset-only": "The address below accepts {{asset}} only! All the other tokens will be irretrievably lost.",
+      "where-to": "{{asset}} address to deposit",
+      "binding-address": "Please wait while we are trying to bind the address for you...",
+      "no-address": "No available addresses to deposit yet. Please try again later.",
+      "no-assets-heading": "Ops!",
+      "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
     "email-getter": {
