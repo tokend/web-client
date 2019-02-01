@@ -50,6 +50,7 @@ $x-large: 1920px;
   &[disabled] {
     box-shadow: none;
     opacity: .5;
+    cursor: default;
   }
 }
 
