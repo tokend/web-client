@@ -201,6 +201,9 @@ export default {
             await Sdk.api.factors.verifyTotpFactorAndRetry(error,
               this.form.code
             )
+            await Sdk.api.factors.changePriority(this.form.factor.id,
+              ENABLED_FACTOR_PRIORITY
+            )
             this.$emit(EVENTS.update)
             Bus.success('tfa-form.tfa-enabled-msg')
           } catch (e) {

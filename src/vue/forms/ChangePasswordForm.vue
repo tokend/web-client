@@ -42,6 +42,21 @@
         />
       </div>
     </div>
+    <div
+      v-if="isTotpEnabled"
+      class="app__form-row"
+    >
+      <div class="app__form-field">
+        <input-field
+          v-model="form.tfaCode"
+          @blur="touchField('form.tfaCode')"
+          id="change-password-tfa-code"
+          :error-message="getFieldErrorMessage('form.tfaCode')"
+          :label="'change-password-form.tfa-code-lbl' | globalize"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
 
     <div class="app__form-actions">
       <form-confirmation
@@ -65,7 +80,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, password, sameAs } from '@validators'
+import { required, requiredIf, password, sameAs } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -84,6 +99,7 @@ export default {
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
+      tfaCode: '',
     },
   }),
   validations: {
@@ -95,11 +111,15 @@ export default {
         password,
         sameAsPassword: sameAs(function () { return this.form.newPassword }),
       },
+      tfaCode: {
+        required: requiredIf(function () { return this.isTotpEnabled }),
+      },
     },
   },
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
   },
   methods: {
@@ -111,40 +131,45 @@ export default {
         return
       }
       this.disableForm()
-      if (await this.isPasswordCorrect()) {
-        try {
-          await Sdk.api.wallets.changePassword(this.form.newPassword)
-        } catch (e) {
-          if (e instanceof errors.TFARequiredError) {
-            await this.retryPasswordChange(e)
-          } else {
-            ErrorHandler.process(e)
-          }
-        }
-      } else {
-        Bus.error('change-password-form.wrong-password-err')
-      }
-      this.enableForm()
-    },
-    async isPasswordCorrect () {
       try {
-        const wallet = await Sdk.api.wallets.get(this.wallet.email,
-          this.form.currentPassword
-        )
-        return wallet.id === this.wallet.id
+        await Sdk.api.wallets.changePassword(this.form.newPassword)
       } catch (e) {
-        if (e instanceof errors.NotFoundError) {
-          return false
+        if (e instanceof errors.TFARequiredError) {
+          await this.retryPasswordChange(e)
         } else {
           ErrorHandler.process(e)
         }
       }
+      this.enableForm()
     },
     async retryPasswordChange (tfaError) {
       try {
         await Sdk.api.factors.verifyPasswordFactorAndRetry(tfaError,
           this.form.currentPassword
         )
+      } catch (e) {
+        if (e instanceof errors.TFARequiredError) {
+          try {
+            await Sdk.api.factors.verifyTotpFactorAndRetry(e,
+              this.form.tfaCode
+            )
+            await e.retryRequest()
+          } catch (e) {
+            if (e instanceof errors.TFARequiredError) {
+              await Sdk.api.factors.verifyPasswordFactorAndRetry(e,
+                this.form.currentPassword
+              )
+            } else {
+              ErrorHandler.process(e)
+              return
+            }
+          }
+        } else {
+          ErrorHandler.process(e)
+          return
+        }
+      }
+      try {
         await this.useNewWallet()
         Bus.success('change-password-form.password-changed-msg')
       } catch (e) {
@@ -152,10 +177,23 @@ export default {
       }
     },
     async useNewWallet () {
-      const newWallet = await Sdk.api.wallets.get(
-        this.wallet.email,
-        this.form.newPassword
-      )
+      let newWallet
+      while (!newWallet) {
+        try {
+          newWallet = await Sdk.api.wallets.get(
+            this.wallet.email,
+            this.form.newPassword
+          )
+        } catch (e) {
+          if (e instanceof errors.TFARequiredError) {
+            await Sdk.api.factors.verifyTotpFactorAndRetry(e,
+              this.form.tfaCode
+            )
+          } else {
+            throw e
+          }
+        }
+      }
       Sdk.sdk.useWallet(newWallet)
       this.storeWallet(newWallet)
     },

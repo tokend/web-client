@@ -25,6 +25,21 @@
         />
       </div>
     </div>
+    <div
+      v-if="tfaError"
+      class="app__form-row"
+    >
+      <div class="app__form-field">
+        <input-field
+          v-model="form.tfaCode"
+          @blur="touchField('form.tfaCode')"
+          id="login-tfa-code"
+          :error-message="getFieldErrorMessage('form.tfaCode')"
+          :white-autofill="false"
+          :label="'auth-pages.tfa-code' | globalize"
+        />
+      </div>
+    </div>
     <div class="app__form-actions">
       <button
         v-ripple
@@ -41,7 +56,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required } from '@validators'
+import { required, requiredIf } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -57,12 +72,17 @@ export default {
     form: {
       email: '',
       password: '',
+      tfaCode: '',
     },
+    tfaError: null,
   }),
   validations: {
     form: {
       email: { required },
       password: { required },
+      tfaCode: {
+        required: requiredIf(function () { return this.tfaError })
+      }
     },
   },
   computed: {
@@ -80,6 +100,12 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
+        if (this.tfaError) {
+          await Sdk.api.factors.verifyTotpFactorAndRetry(
+            this.tfaError,
+            this.form.tfaCode
+          )
+        }
         await this.loadWallet(this.form)
         const accountId = this[vuexTypes.wallet].accountId
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
@@ -100,11 +126,13 @@ export default {
               })),
             },
           })
-          return
+        } else if (e instanceof errors.TFARequiredError) {
+          this.tfaError = e
+        } else {
+          ErrorHandler.process(e)
         }
-        ErrorHandler.process(e)
-        this.enableForm()
       }
+      this.enableForm()
     },
     async isUserExist (accountId) {
       try {

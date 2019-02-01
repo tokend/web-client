@@ -117,6 +117,7 @@
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
+      "tfa-code": "2FA code",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
@@ -165,6 +166,7 @@
       "current-password-lbl": "Current password",
       "new-password-lbl": "New password",
       "confirm-password-lbl": "Confirm new password",
+      "tfa-code-lbl": "2FA code",
       "change-password-btn": "Change password",
       "wrong-password-err": "Your current password is wrong",
       "password-changed-msg": "Your password was successfully changed"
