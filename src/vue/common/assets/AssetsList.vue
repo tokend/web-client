@@ -145,7 +145,7 @@ export default {
         return request.details.assetUpdate &&
           request.details.assetUpdate.code === this.selectedAsset.code
       })
-    }
+    },
   },
 }
 </script>

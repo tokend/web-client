@@ -436,7 +436,7 @@
       "next-btn": "Next",
       "submit-btn": "Submit",
       "information-step": "Token information",
-      "terms-step": "Terms",
+      "advanced-step": "Advanced",
       "name-lbl": "Token name",
       "code-lbl": "Token code",
       "max-issuance-amount-lbl": "Max issuance amount",
@@ -444,6 +444,9 @@
       "logo-note": "JPG or PNG, no less then 120x120 px",
       "transferable-lbl": "Transferable",
       "kyc-required-lbl": "Requires KYC",
+      "additional-issuance-check": "I do not want to make additional issuance later",
+      "preissued-asset-signer-lbl": "Preissued asset signer",
+      "initial-preissued-amount-lbl": "Initial preissued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "token-request-submitted-msg": "Your request was successfully submitted"

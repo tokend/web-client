@@ -108,14 +108,58 @@
       </div>
     </form>
     <form
-      v-if="currentStep === STEPS.terms.number"
+      v-if="currentStep === STEPS.advanced.number"
       class="app__form asset-form"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
+      <div class="app__form-row asset-form__kyc-required-row">
+        <div class="app__form-field">
+          <tick-field
+            v-model="form.advanced.isPreissuanceDisabled"
+            :disabled="formMixin.isDisabled || isUpdateMode"
+          >
+            {{ 'asset-form.additional-issuance-check' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+      <template v-if="!form.advanced.isPreissuanceDisabled">
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.advanced.preissuedAssetSigner"
+              @blur="touchField('form.advanced.preissuedAssetSigner')"
+              id="asset-preissued-asset-signer"
+              :label="'asset-form.preissued-asset-signer-lbl' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.advanced.preissuedAssetSigner',
+              )"
+              :disabled="formMixin.isDisabled || isUpdateMode"
+            />
+          </div>
+        </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              type="number"
+              v-model="form.advanced.initialPreissuedAmount"
+              @blur="touchField('form.advanced.initialPreissuedAmount')"
+              id="asset-initial-preissued-amount"
+              :label="'asset-form.initial-preissued-amount-lbl' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.advanced.initialPreissuedAmount',
+                { from: MIN_AMOUNT, to: form.information.maxIssuanceAmount }
+              )"
+              :disabled="formMixin.isDisabled || isUpdateMode"
+            />
+          </div>
+        </div>
+      </template>
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
-            v-model="form.terms.terms"
+            v-model="form.advanced.terms"
             :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
@@ -161,22 +205,26 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
+import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { required, amountRange, maxLength } from '@validators'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+import { required, requiredUnless, amountRange, maxLength } from '@validators'
 
 const STEPS = {
   information: {
     number: 1,
     titleId: 'asset-form.information-step',
   },
-  terms: {
+  advanced: {
     number: 2,
-    titleId: 'asset-form.terms-step',
+    titleId: 'asset-form.advanced-step',
   },
 }
 const ASSET_CREATION_REQUEST_ID = '0'
@@ -211,7 +259,10 @@ export default {
         logo: null,
         policies: [],
       },
-      terms: {
+      advanced: {
+        isPreissuanceDisabled: false,
+        preissuedAssetSigner: '',
+        initialPreissuedAmount: '',
         terms: null,
       },
     },
@@ -242,20 +293,46 @@ export default {
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
           },
         },
+        advanced: {
+          preissuedAssetSigner: {
+            required: requiredUnless(function () {
+              return this.form.advanced.isPreissuanceDisabled
+            }),
+          },
+          initialPreissuedAmount: {
+            required: requiredUnless(function () {
+              return this.form.advanced.isPreissuanceDisabled
+            }),
+            amountRange: amountRange(
+              this.MIN_AMOUNT,
+              this.form.information.maxIssuanceAmount
+            ),
+          },
+        },
       },
     }
   },
   computed: {
+    ...mapGetters({
+      account: vuexTypes.account,
+    }),
     assetRequestOpts () {
       const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
-      const terms = this.form.terms.terms
+      const terms = this.form.advanced.terms
+
+      const preissuedAssetSigner = this.form.advanced.isPreissuanceDisabled
+        ? config.NULL_ASSET_SIGNER
+        : this.form.advanced.preissuedAssetSigner
+      const initialPreissuedAmount = this.form.advanced.isPreissuanceDisabled
+        ? this.form.information.maxIssuanceAmount
+        : this.form.advanced.initialPreissuedAmount
 
       return {
         requestID: requestId,
         code: this.form.information.code,
-        preissuedAssetSigner: config.NULL_ASSET_SIGNER,
-        initialPreissuedAmount: this.form.information.maxIssuanceAmount,
+        preissuedAssetSigner: preissuedAssetSigner,
+        initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
         details: {
@@ -277,18 +354,32 @@ export default {
     async tryPopulateForm (request) {
       if (request.id) {
         try {
-          const { data } = await Sdk.horizon.assets.get(request.assetCode)
+          const assetCreationRequest =
+            await this.fetchAssetCreationRequest(request.assetCode)
+          const assetRecord = new AssetCreateRequestRecord(
+            assetCreationRequest
+          )
+          const isPreissuanceDisabled =
+            assetRecord.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+
           this.form = {
             information: {
               name: request.assetName,
               code: request.assetCode,
-              maxIssuanceAmount: data.maxIssuanceAmount,
+              maxIssuanceAmount: assetRecord.maxIssuanceAmount,
               logo: request.logo.key
                 ? new DocumentContainer(request.logo)
                 : null,
               policies: request.policies,
             },
-            terms: {
+            advanced: {
+              isPreissuanceDisabled: isPreissuanceDisabled,
+              preissuedAssetSigner: isPreissuanceDisabled
+                ? ''
+                : assetRecord.preissuedAssetSigner,
+              initialPreissuedAmount: isPreissuanceDisabled
+                ? ''
+                : assetRecord.initialPreissuedAmount,
               terms: request.terms.key
                 ? new DocumentContainer(request.terms)
                 : null,
@@ -298,6 +389,15 @@ export default {
           ErrorHandler.processWithoutFeedback(e)
         }
       }
+    },
+    async fetchAssetCreationRequest (assetCode) {
+      const { data } = await Sdk.horizon.request.getAllForAssets({
+        requestor: this.account.accountId,
+      })
+      return data.find(request => {
+        return request.details.assetCreate &&
+          request.details.assetCreate.code === assetCode
+      })
     },
     next (formStep) {
       if (this.isFormValid(formStep)) {
@@ -330,7 +430,7 @@ export default {
     async uploadDocuments () {
       const documents = [
         this.form.information.logo,
-        this.form.terms.terms,
+        this.form.advanced.terms,
       ]
       for (let document of documents) {
         if (document && !document.key) {
