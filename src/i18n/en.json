@@ -524,7 +524,7 @@
       "fixed-fee": "Fixed fee",
       "percent-fee": "Percent fee",
       "destination-address": "Destination {{asset}} address",
-      "total-amount-account": "Total amount to account",
+      "total-amount-account": "Total fee",
       "withdraw-success": "Withdrawal request successfully created",
       "failed-load-fees": "Failed to load fees. Try again later",
       "no-assets-heading": "Ops!",
