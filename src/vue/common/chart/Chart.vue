@@ -89,7 +89,7 @@ export default {
           : await Sdk.horizon.charts.get(this.lockedAssets.base)
         this.data = response.data
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
         if (error instanceof errors.NotFoundError) {
           this.isActualData = false
           this.data = {
