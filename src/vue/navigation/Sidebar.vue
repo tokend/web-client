@@ -111,6 +111,24 @@
             </span>
           </router-link>
         </nav>
+        <nav class="sidebar__links-group">
+          <p class="sidebar__list-title">
+            My account
+          </p>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.verification"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.settings"
+          >
+            <i class="sidebar__link-icon mdi mdi-account-settings" />
+            <span>
+              {{ 'pages-names.settings' | globalize }}
+            </span>
+          </router-link>
+        </nav>
       </section>
 
       <section class="sidebar__footer-section">
@@ -305,5 +323,12 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__footer-section {
   padding-top: 2rem;
+}
+
+.sidebar__list-title {
+  padding: 4rem 2.4rem 0 4.4rem;
+  opacity: 0.7;
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
 }
 </style>
