@@ -12,7 +12,7 @@
           class="app__select app__select--no-border"
         />
       </div>
-      <div slot="extra">
+      <div class="op-history__actions" slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -21,6 +21,14 @@
           <i class="mdi mdi-download op-history__btn-icon" />
           {{ 'op-pages.withdrawal' | globalize }}
         </button>
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isDepositDrawerShown = true"
+        >
+          <i class="mdi mdi-upload op-history__btn-icon" />
+          {{ 'op-pages.deposit' | globalize }}
+        </button>
       </div>
     </top-bar>
     <drawer :is-shown.sync="isWithdrawalDrawerShown">
@@ -28,6 +36,12 @@
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
       <withdrawal-form @cancel="isWithdrawalDrawerShown = false" />
+    </drawer>
+    <drawer :is-shown.sync="isDepositDrawerShown">
+      <template slot="heading">
+        {{ 'deposit-form.deposit' | globalize }}
+      </template>
+      <deposit-form @cancel="isDepositDrawerShown = false" />
     </drawer>
     <template v-if="!isLoadFailed">
       <div class="op-history__list" v-if="isLoaded">
@@ -64,6 +78,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
+import DepositForm from '@/vue/forms/DepositForm'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -80,6 +95,7 @@ export default {
     TopBar,
     Drawer,
     WithdrawalForm,
+    DepositForm,
     OpList,
   },
   data: _ => ({
@@ -89,6 +105,7 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isWithdrawalDrawerShown: false,
+    isDepositDrawerShown: false,
     pageLoader: () => {},
   }),
   computed: {
@@ -163,13 +180,25 @@ export default {
   @import '~@scss/variables';
   @import "~@scss/mixins";
 
-  .op-history__filters{
+  .op-history__filters {
     display: inline-flex;
     align-items: center;
   }
 
   .op-history__filters-text{
     margin-right: 1.5rem;
+  }
+
+  .op-history__actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      margin-right: 1.2rem;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   .op-history__btn-icon {
