@@ -21,7 +21,6 @@
 
 <script>
 import Clipboard from 'clipboard'
-
 export default {
   name: 'clipboard-field',
   props: {
@@ -42,8 +41,8 @@ export default {
 @import '~@scss/mixins';
 
 .clipboard-field {
+  border-bottom: .1rem solid $col-primary;
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100%;
 }
@@ -60,7 +59,18 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   color: $field-color-text;
+  padding: $field-input-padding;
   @include text-font-sizes;
+}
+
+.clipboard-field__label {
+  font-size: .8rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  color: $field-color-unfocused;
+  @include label-font-sizes;
 }
 
 .clipboard-field__button {
