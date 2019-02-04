@@ -29,6 +29,17 @@
           <i class="mdi mdi-upload op-history__btn-icon" />
           {{ 'op-pages.deposit' | globalize }}
         </button>
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isTransferDrawerShown = true"
+        >
+          <i
+            class="mdi mdi-send op-history__btn-icon
+            op-history__btn-icon--rotate"
+          />
+          {{ 'op-pages.send' | globalize }}
+        </button>
       </div>
     </top-bar>
     <drawer :is-shown.sync="isWithdrawalDrawerShown">
@@ -42,6 +53,12 @@
         {{ 'deposit-form.deposit' | globalize }}
       </template>
       <deposit-form @cancel="isDepositDrawerShown = false" />
+    </drawer>
+    <drawer :is-shown.sync="isTransferDrawerShown">
+      <template slot="heading">
+        {{ 'transfer-form.form-heading' | globalize }}
+      </template>
+      <transfer-form @cancel="isTransferDrawerShown = false" />
     </drawer>
     <template v-if="!isLoadFailed">
       <div class="op-history__list" v-if="isLoaded">
@@ -79,6 +96,7 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
+import TransferForm from '@/vue/forms/TransferForm'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -96,6 +114,7 @@ export default {
     Drawer,
     WithdrawalForm,
     DepositForm,
+    TransferForm,
     OpList,
   },
   data: _ => ({
@@ -106,6 +125,7 @@ export default {
     isLoadFailed: false,
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
+    isTransferDrawerShown: false,
     pageLoader: () => {},
   }),
   computed: {
@@ -205,6 +225,10 @@ export default {
     display: flex;
     font-size: 1.8rem;
     margin-right: 0.5rem;
+
+    &--rotate {
+      transform: rotate(-45deg)
+    }
   }
 
   .op-history__list {

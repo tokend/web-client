@@ -298,7 +298,8 @@
       "can-not-load-assets": "There was an error while loading assets",
       "loading-msg": "Loading",
       "withdrawal": "Withdrawal",
-      "deposit": "Deposit"
+      "deposit": "Deposit",
+      "send": "Send"
     },
 
     "op-details": {
@@ -364,7 +365,7 @@
       "no-assets-heading": "No assets, no transfers",
       "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
-      "form-heading": "Transfer form",
+      "form-heading": "Send",
       "asset-lbl": "Asset",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount-lbl": "Amount",
