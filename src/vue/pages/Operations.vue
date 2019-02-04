@@ -202,7 +202,6 @@ export default {
 
   .op-history__filters {
     display: inline-flex;
-    align-items: center;
   }
 
   .op-history__filters-text{

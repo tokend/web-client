@@ -112,8 +112,8 @@
           </router-link>
         </nav>
         <nav class="sidebar__links-group">
-          <p class="sidebar__list-title">
-            My account
+          <p class="sidebar__links-group-title">
+            {{ 'sidebar.section-account' | globalize }}
           </p>
           <router-link
             v-ripple
@@ -289,11 +289,18 @@ $content-item-right-padding: 2.4rem;
   flex: 1;
 }
 
+.sidebar__links-group {
+  margin-bottom: 4rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .sidebar__links-group-title {
-  padding: 0 $content-item-right-padding 0 $content-item-left-padding;
-  color: $col-sidebar-active-elem-text;
-  font-size: 1.6rem;
-  margin-bottom: .8rem;
+  padding: 0 2.4rem 0 4.4rem;
+  opacity: 0.7;
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
 }
 
 .sidebar__link {
@@ -323,12 +330,5 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__footer-section {
   padding-top: 2rem;
-}
-
-.sidebar__list-title {
-  padding: 4rem 2.4rem 0 4.4rem;
-  opacity: 0.7;
-  font-size: 1.4rem;
-  margin-bottom: 0.2rem;
 }
 </style>
