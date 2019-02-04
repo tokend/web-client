@@ -381,10 +381,8 @@ export default {
     },
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
-        const response = await Sdk.api.users.getPage({
-          email: recipient,
-        })
-        return response.data[0].id
+        const response = await Sdk.horizon.public.getAccountIdByEmail(recipient)
+        return response.data.accountId
       } else {
         return recipient
       }
