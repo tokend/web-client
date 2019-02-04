@@ -336,6 +336,7 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
+      this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
         await Sdk.horizon.transactions
