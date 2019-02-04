@@ -18,6 +18,40 @@
         <p class="downloads__section-text">
           To access your assets everywhere, get the TokenD app on your mobile device.
         </p>
+        <div class="downloads__phones-wrapper">
+          <div class="downloads__phones">
+            <div class="downloads__android">
+              <img
+                class="downloads__phone-img"
+                src="@static/android_cropped.png"
+              >
+              <a
+                href="https://play.google.com/store/apps/details?id=org.tokend.template"
+                target="_blank"
+                rel="noopener"  
+              >
+                <img
+                  class="downloads__store-img"
+                  src="@static/google_play_cropped.png"
+                >
+              </a>
+            </div>
+            <div class="downloads__ios">
+              <img
+                class="downloads__phone-img"
+                src="@static/iphone.png"
+              >
+              <img
+                class="downloads__store-img"
+                src="@static/app_store_cropped.png"
+              >
+            </div>
+          </div>
+          <img
+            class="downloads__phones-overlay"
+            src="@static/phones_overlay.png"
+          >
+        </div>
         <hr>
       </section>
       <section class="downloads__section">
@@ -28,7 +62,9 @@
           Scan this QR code with your application to provide correct configuration for TokenD environment
         </p>
         <qr-code
-          text="qrConfigText"
+          class="downloads__config-qr"
+          :text="qrConfigText"
+          :size="250"
         />
       </section>
     </div>
@@ -38,7 +74,7 @@
 <script>
 import QrCode from 'vue-qr'
 
-import config from '../../config'
+import config from '@/config'
 
 export default {
   name: 'downloads',
@@ -47,15 +83,15 @@ export default {
   },
   computed: {
     qrConfigText () {
-      const hostname = window.location.hostname
+      const mainPageUrl = window.location.origin
 
       return JSON.stringify({
         api: config.HORIZON_SERVER,
         storage: config.FILE_STORAGE,
-        kyc: `${hostname}/verification`,
-        terms: `${hostname}/terms`
+        kyc: `${mainPageUrl}/verification`,
+        terms: `${mainPageUrl}/terms`,
       })
-    }
+    },
   },
 }
 </script>
@@ -97,20 +133,117 @@ export default {
   margin-top: 3.5rem;
   border-radius: .2rem;
   background-color: $col-downloads-block-bg;
-  padding: 5.3rem 10.1rem;
+  padding: 4.1rem 10rem;
 
   @include box-shadow();
+
+  @include respond-to($tablet) {
+    padding: 2rem;
+  }
 }
 
 .downloads__section {
+  margin-top: 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+
+  &:not(:first-child) {
+    margin-top: 4.7rem;
+  }
+
+  hr {
+    width: 100%;
+    margin-top: 4.8rem;
+    border: $col-downloads-line solid .05rem;
+  }
 }
 
 .downloads__section-header {
   font-size: 2.9rem;
   font-weight: normal;
   color: #3a4180;
+}
+
+.downloads__section-text {
+  font-size: 1.4rem;
+  padding-top: .8rem;
+  color: #837fa1;
+}
+
+.downloads__phones-wrapper {
+  position: relative;
+  width: 100%;
+  height: 41.5rem;
+  margin-top: 3.9rem;
+
+  @include respond-to(small) {
+    height: 100%;
+  }
+}
+
+.downloads__phones-overlay {
+  margin: 8.3rem auto 0;
+  display: block;
+  max-width: 52.7rem;
+
+  @include respond-to(small) {
+    display: none;
+  }
+}
+
+.downloads__phones {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  width: 35rem;
+  transform: translateX(-50%);
+
+  @include respond-to(small) {
+    width: 100%;
+    position: relative;
+    display: block;
+    left: 0;
+    transform: none;
+  }
+}
+
+.downloads__phone-img {
+  width: 16rem;
+
+  @include respond-to(small) {
+    width: 100%;
+  }
+}
+
+.downloads__android, .downloads_ios {
+  width: 16rem;
+
+  @include respond-to(small) {
+    width: 100%;
+  }
+}
+
+.downloads__ios {
+  margin-left: 2.9rem;
+
+  @include respond-to(small) {
+    margin-left: 0;
+    margin-top: 4rem;
+  }
+}
+
+.downloads__store-img {
+  margin-top: 3.9rem;
+  max-width: 16rem;
+
+  @include respond-to(small) {
+    max-width: 100%;
+  }
+}
+
+.downloads__config-qr {
+  margin-top: 4rem;
 }
 </style>
