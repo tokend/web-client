@@ -1,14 +1,13 @@
 <template>
-  <!-- eslint-disable -->
   <div class="terms">
     <button
       class="terms__link"
       @click="$router.go(-1)"
     >
-      Go back
+      {{ 'terms-page.go-back-btn' | globalize }}
     </button>
     <h2 class="terms__title">
-      Terms & conditions
+      {{ 'terms-page.title' | globalize }}
     </h2>
     <div class="terms__content">
       <vue-markdown
