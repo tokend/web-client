@@ -519,7 +519,16 @@
       "create-fund": "Create fund"
     },
     "create-fund-form": {
-      "create-fund-header": "Create fund"
+      "create-fund-header": "Create fund",
+      "provide-fund-information": "Provide fund information",
+      "add-short-blurb": "Add a short blurb",
+      "full-description": "Full description",
+      "sale-name": "Fund name",
+      "base-asset": "Base asset",
+      "start-time": "Start time",
+      "close-time": "Close time",
+      "soft-cap": "Soft cap",
+      "hard-cap": "Hard cap"
     },
 
     "withdrawal-form": {
