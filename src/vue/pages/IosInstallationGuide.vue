@@ -1,24 +1,23 @@
 <template>
-  <!-- eslint-disable -->
   <div class="ios-installation-guide">
     <button
       class="ios-installation-guide__link"
       @click="$router.go(-1)"
     >
-      Go back
+      {{ 'ios-installation-guide.go-back-btn' | globalize }}
     </button>
     <h2 class="ios-installation-guide__title">
-      iOS installation guide
+      {{ 'ios-installation-guide.title' | globalize }}
     </h2>
     <div class="ios-installation-guide__content">
       <h3 class="ios-installation-guide__header">
-        How to install TokenDwallet app on iOS
+        {{ 'ios-installation-guide.how-to-install-header' | globalize }}
       </h3>
       <p class="ios-installation-guide__description">
-        Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.
+        {{ 'ios-installation-guide.apple-policy-desc' | globalize }}
       </p>
       <p class="ios-installation-guide__steps-header">
-        In order to install TokenD iOS wallet app follow the next steps:
+        {{ 'ios-installation-guide.steps-desc' | globalize }}
       </p>
 
       <div class="ios-installation-guide__steps">
@@ -27,7 +26,7 @@
             1
           </p>
           <p class="ios-installation-guide__step-description">
-            Download the application with your device.
+            {{ 'ios-installation-guide.download-step' | globalize }}
           </p>
         </div>
         <div class="ios-installation-guide__step">
@@ -35,87 +34,88 @@
             2
           </p>
           <p class="ios-installation-guide__step-description">
-            Close browser and wait until the app is downloaded and installed.
+            {{ 'ios-installation-guide.install-step' | globalize }}
           </p>
         </div>
+
         <div class="ios-installation-guide__step">
           <p class="ios-installation-guide__step-number">
             3
           </p>
-         <div class="ios-installation-guide__">
+          <div>
             <p class="ios-installation-guide__step-description">
-              On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.
+              {{ 'ios-installation-guide.first-launch-step' | globalize }}
             </p>
-
             <div class="ios-installation-guide__img-steps">
               <div class="ios-installation-guide__img-step">
+                <!-- eslint-disable max-len -->
                 <img
-                  src="@static/images/ios-install-guide/ios-install-guide__1.png" 
+                  src="@static/images/ios-install-guide/ios-install-guide__1.png"
                   class="ios-installation-guide__img"
                 >
                 <p class="ios-installation-guide__img-step-desc">
-                  Open “System Preferences”
+                  {{ 'ios-installation-guide.system-preferences-substep' | globalize }}
                 </p>
               </div>
               <div class="ios-installation-guide__img-step">
                 <img
-                  src="@static/images/ios-install-guide/ios-install-guide__2.png" 
+                  src="@static/images/ios-install-guide/ios-install-guide__2.png"
                   class="ios-installation-guide__img"
                 >
                 <p class="ios-installation-guide__img-step-desc">
-                  Open “General”
+                  {{ 'ios-installation-guide.general-preferences-substep' | globalize }}
                 </p>
               </div>
               <div class="ios-installation-guide__img-step">
                 <img
-                  src="@static/images/ios-install-guide/ios-install-guide__3.png" 
+                  src="@static/images/ios-install-guide/ios-install-guide__3.png"
                   class="ios-installation-guide__img"
                 >
                 <p class="ios-installation-guide__img-step-desc">
-                  Scrool to “Profiles & Device Management”
+                  {{ 'ios-installation-guide.device-management-substep' | globalize }}
                 </p>
               </div>
               <div class="ios-installation-guide__img-step">
                 <img
-                  src="@static/images/ios-install-guide/ios-install-guide__4.png" 
+                  src="@static/images/ios-install-guide/ios-install-guide__4.png"
                   class="ios-installation-guide__img"
                 >
                 <p class="ios-installation-guide__img-step-desc">
-                  Tab “DISTRIBUTED LAB LP”
+                  {{ 'ios-installation-guide.distributed-lab-lp-substep' | globalize }}
                 </p>
               </div>
               <div class="ios-installation-guide__img-step">
                 <img
-                  src="@static/images/ios-install-guide/ios-install-guide__5.png" 
+                  src="@static/images/ios-install-guide/ios-install-guide__5.png"
                   class="ios-installation-guide__img"
                 >
                 <p class="ios-installation-guide__img-step-desc">
-                  Tab “Trust DISTRIBUTED LAB LP”
+                  {{ 'ios-installation-guide.trust-substep' | globalize }}
                 </p>
               </div>
               <div class="ios-installation-guide__img-step">
                 <img
-                  src="@static/images/ios-install-guide/ios-install-guide__6.png" 
+                  src="@static/images/ios-install-guide/ios-install-guide__6.png"
                   class="ios-installation-guide__img"
                 >
+                <!-- eslint-enable max-len -->
                 <p class="ios-installation-guide__img-step-desc">
-                  Confirm
+                  {{ 'ios-installation-guide.confirm-substep' | globalize }}
                 </p>
               </div>
             </div>
-         </div>
-
+          </div>
         </div>
+
         <div class="ios-installation-guide__step">
           <p class="ios-installation-guide__step-number">
             4
           </p>
           <p class="ios-installation-guide__step-description">
-            Use the app.
+            {{ 'ios-installation-guide.use-app-step' | globalize }}
           </p>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -156,13 +156,13 @@ export default {
 .ios-installation-guide__title {
   font-size: 4rem;
   font-weight: normal;
-  color: $col-downloads-title;
+  color: $col-ios-guide-title;
 }
 
 .ios-installation-guide__content {
   margin-top: 3.5rem;
   border-radius: .2rem;
-  background-color: $col-downloads-block-bg;
+  background-color: $col-ios-guide-block-bg;
   padding: 2.7rem 2.4rem 4.4rem;
 
   @include box-shadow();
@@ -175,19 +175,19 @@ export default {
 .ios-installation-guide__header {
   font-size: 2rem;
   font-weight: bold;
-  color: #3a4180;
+  color: $col-ios-guide-header;
 }
 
 .ios-installation-guide__description {
   font-size: 1.4rem;
-  color: #837fa1;
+  color: $col-ios-guide-text;
   margin-top: 1.7rem;
 }
 
 .ios-installation-guide__steps-header {
   margin-top: 5rem;
   font-size: 1.4rem;
-  color: #3a4180;
+  color: $col-ios-guide-step-text;
 }
 
 .ios-installation-guide__step {
@@ -196,14 +196,14 @@ export default {
 }
 
 .ios-installation-guide__step-number {
-  background-color: #3a4180;
+  background-color: $col-ios-guide-step-number-bg;
   font-size: 1rem;
   min-width: 2.3rem;
   height: 2.3rem;
   font-weight: bold;
   text-align: center;
   padding-top: .5rem;
-  color: #ffffff;
+  color: $col-ios-guide-step-number-text;
   border-radius: 50%;
 }
 
@@ -246,6 +246,6 @@ export default {
   margin-top: .35rem;
   margin-bottom: 2rem;
   font-size: 1.2rem;
-  color: #837fa1;
+  color: $col-ios-guide-substep-text;
 }
 </style>

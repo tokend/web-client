@@ -222,4 +222,14 @@ $col-downloads-block-bg: $col-block-bg;
 $col-downloads-header: $col-primary;
 $col-downloads-text: $col-secondary;
 $col-downloads-line: $_athensGray;
+
+// iOS guide colors
+$col-ios-guide-title: $col-primary;
+$col-ios-guide-block-bg: $col-block-bg;
+$col-ios-guide-header: $col-primary;
+$col-ios-guide-text: $col-secondary;
+$col-ios-guide-step-number-bg: $col-primary;
+$col-ios-guide-step-number-text: $_white;
+$col-ios-guide-step-text: $col-primary;
+$col-ios-guide-substep-text: $col-secondary;
 // TODO: paste here variables that are ready to use during the refactor process

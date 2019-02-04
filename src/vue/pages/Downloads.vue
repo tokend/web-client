@@ -1,23 +1,23 @@
 <template>
-  <!-- eslint-disable -->
   <div class="downloads">
     <button
       class="downloads__link"
       @click="$router.go(-1)"
     >
-      Go back
+      {{ 'downloads-page.go-back-btn' | globalize }}
     </button>
     <h2 class="downloads__title">
-      Downloads
+      {{ 'downloads-page.title' | globalize }}
     </h2>
     <div class="downloads__content">
       <section class="downloads__section">
         <h3 class="downloads__section-header">
-          All your tokens right on your phone
+          {{ 'downloads-page.mobile-apps-header' | globalize }}
         </h3>
         <p class="downloads__section-text">
-          To access your assets everywhere, get the TokenD app on your mobile device.
+          {{ 'downloads-page.mobile-apps-desc' | globalize }}
         </p>
+
         <div class="downloads__phones-wrapper">
           <div class="downloads__phones">
             <div class="downloads__android">
@@ -28,7 +28,7 @@
               <a
                 href="https://play.google.com/store/apps/details?id=org.tokend.template"
                 target="_blank"
-                rel="noopener"  
+                rel="noopener"
               >
                 <img
                   class="downloads__store-img"
@@ -54,14 +54,15 @@
             src="@static/phones_overlay.png"
           >
         </div>
+
         <hr>
       </section>
       <section class="downloads__section">
         <h3 class="downloads__section-header">
-          One important step
+          {{ 'downloads-page.config-header' | globalize }}
         </h3>
         <p class="downloads__section-text">
-          Scan this QR code with your application to provide correct configuration for TokenD environment
+          {{ 'downloads-page.config-desc' | globalize }}
         </p>
         <qr-code
           class="downloads__config-qr"
@@ -125,6 +126,7 @@ export default {
 
 .downloads__link {
   @include button();
+
   padding: 0;
   font-weight: normal;
   font-size: 1.3rem;
@@ -143,7 +145,6 @@ export default {
   padding: 4.1rem 10rem;
 
   @include box-shadow();
-
   @include respond-to($tablet) {
     padding: 2rem;
   }
@@ -170,13 +171,13 @@ export default {
 .downloads__section-header {
   font-size: 2.9rem;
   font-weight: normal;
-  color: #3a4180;
+  color: $col-downloads-header;
 }
 
 .downloads__section-text {
   font-size: 1.4rem;
   padding-top: .8rem;
-  color: #837fa1;
+  color: $col-downloads-text;
 }
 
 .downloads__phones-wrapper {
