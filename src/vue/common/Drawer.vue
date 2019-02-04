@@ -108,6 +108,7 @@ export default {
   width: 52.8rem;
   max-width: 100%;
   min-height: 100%;
+  height: 100%;
   box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -132,6 +133,7 @@ export default {
   padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
+  overflow-y: auto;
 }
 
 .drawer-transition-enter-active {
