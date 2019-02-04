@@ -41,10 +41,12 @@
                 class="downloads__phone-img"
                 src="@static/iphone.png"
               >
-              <img
-                class="downloads__store-img"
-                src="@static/app_store_cropped.png"
-              >
+              <router-link :to="vueRoutes.iosInstallationGuide">
+                <img
+                  class="downloads__store-img"
+                  src="@static/app_store_cropped.png"
+                >
+              </router-link>
             </div>
           </div>
           <img
@@ -76,11 +78,16 @@ import QrCode from 'vue-qr'
 
 import config from '@/config'
 
+import { vueRoutes } from '@/vue-router/routes'
+
 export default {
   name: 'downloads',
   components: {
     QrCode,
   },
+  data: _ => ({
+    vueRoutes,
+  }),
   computed: {
     qrConfigText () {
       const mainPageUrl = window.location.origin
@@ -239,7 +246,8 @@ export default {
   max-width: 16rem;
 
   @include respond-to(small) {
-    max-width: 100%;
+    max-width: 24rem;
+    width: 100%;
   }
 }
 

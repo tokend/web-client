@@ -35,6 +35,11 @@ export const router = new Router({
       component: resolve => require(['@/vue/pages/Downloads'], resolve),
     },
     {
+      path: '/ios-installation-guide',
+      name: vueRoutes.iosInstallationGuide.name,
+      component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
+    },
+    {
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
