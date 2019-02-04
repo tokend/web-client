@@ -30,6 +30,11 @@ export const router = new Router({
       component: resolve => require(['@/vue/pages/Terms'], resolve),
     },
     {
+      path: '/downloads',
+      name: vueRoutes.downloads.name,
+      component: resolve => require(['@/vue/pages/Downloads'], resolve),
+    },
+    {
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
