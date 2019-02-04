@@ -297,7 +297,7 @@ $content-item-right-padding: 2.4rem;
 }
 
 .sidebar__links-group-title {
-  padding: 0 2.4rem 0 4.4rem;
+  padding: 0 $content-item-right-padding 0 $content-item-left-padding;
   opacity: 0.7;
   font-size: 1.4rem;
   margin-bottom: 0.2rem;
