@@ -24,9 +24,6 @@
         :key is a hack to ensure that the component will be updated
         after computed calculated
       -->
-      <!--
-        TODO: check that form-free is actual prop name wait for merge trade page
-      -->
       <select-field
         v-model="selectedAsset"
         :values="accountBalancesAssetsCodes"
@@ -36,14 +33,28 @@
       />
     </div>
 
-    <limits-table-renderer :limits="selectedLimitsList" />
+    <limits-table-renderer
+      :is-loading="isLimitsLoading"
+      :limits="selectedLimitsList"
+    />
+
+    <div class="limits__requests">
+      <h3 class="limits__requests-title">
+        Requests
+      </h3>
+
+      <limits-requests-list-renderer
+        :is-loading="isLimitsLoading"
+        :requests="limitsRequests"
+      />
+    </div>
 
     <drawer :is-shown.sync="isLimitsDrawerShown">
       <template slot="heading">
         {{ 'limits.limits-form-heading' | globalize }}
       </template>
       <limits-form
-        @finished="isLimitsDrawerShown = false"
+        @finished="hideLimitsDrawer"
         :limits="selectedLimitsList"
       />
     </drawer>
@@ -56,6 +67,7 @@ import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import LimitsForm from '@/vue/forms/LimitsForm'
 import LimitsTableRenderer from '@/vue/pages/Limits/Limits.TableRenderer'
+import LimitsRequestsListRenderer from '@/vue/pages/Limits/Limits.RequestsListRenderer'
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -63,6 +75,8 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ACCOUNT_TYPES, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { LimitsRecord } from '@/js/records/entities/limits.record'
+import { LimitsUpdateRequestRecord } from '@/js/records/requests/limits-update.record'
+import config from '@/config'
 
 export default {
   name: 'limits',
@@ -72,6 +86,7 @@ export default {
     TopBar,
     LimitsForm,
     LimitsTableRenderer,
+    LimitsRequestsListRenderer,
   },
   data: () => ({
     selectedAsset: '',
@@ -81,7 +96,13 @@ export default {
     accountLimits: [],
     selectedLimits: [],
     formattedAccountLimits: {},
-    isAccountLimitsLoading: false,
+    isLimitsLoading: false,
+    isLimitsRequestsLoading: false,
+    limitsRequests: [],
+    limitsRequestsQueries: {
+      limit: config.REQUESTS_PER_PAGE,
+      order: 'desc',
+    },
   }),
   computed: {
     ...mapGetters([
@@ -93,13 +114,14 @@ export default {
       return this.accountBalances.map(i => i.asset)
     },
     selectedLimitsList () {
-      return this.formattedAccountLimits[this.selectedAsset]
+      return this.formattedAccountLimits[this.selectedAsset] || {}
     },
   },
   async created () {
     if (!this.accountBalances.length) await this.loadCurrentBalances()
     if (this.accountBalancesAssetsCodes.length) this.setDefaultAssetCode()
-    await this.loadAccountLimits()
+    this.loadLimits()
+    this.loadLimitsRequests()
   },
   methods: {
     ...mapActions({
@@ -108,8 +130,8 @@ export default {
     setDefaultAssetCode () {
       this.selectedAsset = this.accountBalancesAssetsCodes[0]
     },
-    async loadAccountLimits () {
-      this.isAccountLimitsLoading = true
+    async loadLimits () {
+      this.isLimitsLoading = true
       try {
         const response = await Sdk.horizon.account.getLimits(this.accountId)
 
@@ -117,11 +139,29 @@ export default {
       } catch (error) {
         ErrorHandler.process(error)
       }
-      this.isAccountLimitsLoading = false
+      this.isLimitsLoading = false
+    },
+    async loadLimitsRequests () {
+      this.isLimitsRequestsLoading = true
+      try {
+        const response = await Sdk.horizon.request
+          .getAllForLimitsUpdates({
+            ...this.limitsRequestsQueries,
+            requestor: this.accountId,
+          })
+
+        this.limitsRequests = response.data.map(item => {
+          return new LimitsUpdateRequestRecord(item)
+        })
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.isLimitsRequestsLoading = false
     },
     formatLimits ({ limits }) {
       const formattedLimits = {}
       this.accountBalancesAssetsCodes.forEach(assetCode => {
+        if (!limits) limits = []
         formattedLimits[assetCode] = limits
           .filter(item => item.limit.assetCode === assetCode)
           .reduce((acc, item) => {
@@ -157,12 +197,17 @@ export default {
       })
       this.formattedAccountLimits = formattedLimits
     },
+    hideLimitsDrawer () {
+      this.isLimitsDrawerShown = false
+      this.loadLimitsRequests()
+    },
   },
 }
 </script>
 
 <style lang="scss">
 @import "~@scss/variables";
+@import "~@scss/mixins";
 
 .limits {
   width: 100%;
@@ -175,6 +220,16 @@ export default {
 .limits__assets-select {
   display: inline-block;
   width: auto;
+}
+
+.limits__requests-title {
+  color: $col-text-page-heading;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 3.2rem;
+  margin-bottom: 1.6rem;
+
+  @include respond-to(medium) { margin-top: 2.4rem }
 }
 
 </style>

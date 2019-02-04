@@ -1,5 +1,5 @@
 <template>
-  <div class="limits-table-renderer__table app__table">
+  <div v-if="!isLoading" class="limits-table-renderer__table app__table">
     <table class="app__table">
       <thead>
         <tr>
@@ -21,9 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(item, i) in limits"
-          :key="`limits-table-row-${i}-${selectedAsset}`">
+        <tr v-for="(item, i) in limits" :key="`limits-table-row-${i}`">
           <td>
             {{ OPERATION_TYPES_TRANSLATION_ID[item.statsOpType] | globalize }}
           </td>
@@ -83,10 +81,12 @@
       </tbody>
     </table>
   </div>
+  <loader v-else :message-id="'limits-table-renderer.data-loading'" />
 </template>
 
 <script>
 import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
+import Loader from '@/vue/common/Loader'
 
 const OPERATION_TYPES_TRANSLATION_ID = {
   [STATS_OPERATION_TYPES.deposit]: 'limits-table-renderer.op-type-deposit',
@@ -96,8 +96,10 @@ const OPERATION_TYPES_TRANSLATION_ID = {
 }
 
 export default {
+  components: { Loader },
   props: {
-    limits: { type: Array, required: true, default: () => [] },
+    limits: { type: Object, required: true, default: () => [] },
+    isLoading: { type: Boolean, required: true, default: false },
   },
   data: () => ({
     OPERATION_TYPES_TRANSLATION_ID,

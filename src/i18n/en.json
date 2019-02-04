@@ -270,7 +270,8 @@
       "table-weekly-limit-lbl": "Weekly limit (left/total)",
       "table-monthly-limit-lbl": "Monthly limit (left/total)",
       "table-annual-limit-lbl": "Annual limit (left/total)",
-      "not-set-lbl": "Not set"
+      "not-set-lbl": "Not set",
+      "data-loading": "Fetching limits data..."
     },
 
     "passport": {
