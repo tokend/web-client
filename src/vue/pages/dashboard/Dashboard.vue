@@ -4,9 +4,9 @@
       <loader :message="'dashboard.data-loading' | globalize" />
     </template>
     <template v-else>
-      <div class="dashboard__asset-selector">
+      <div class="dashboard__toolbar">
         <asset-selector
-          class="dashboard__portfolio"
+          class="dashboard__asset-selector"
           :current-asset="currentAsset"
           @asset-change="setCurrentAsset"
           :scale="scale"
@@ -149,13 +149,15 @@ export default {
   flex: 1;
 }
 
-.dashboard__asset-selector {
+.dashboard__toolbar {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .dashboard__actions {
   margin-top: .8rem;
+  display: flex;
 }
 
 .dashboard__action {

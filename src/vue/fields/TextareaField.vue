@@ -96,7 +96,9 @@ export default {
 .text-field {
   width: 100%;
   position: relative;
-  padding: 2.6rem 1.6rem;
+  // we leave padding-bottom here to  keep out plugins that draw something on
+  // the fields from our digit counter on the bottom
+  padding-bottom: 2.6rem;
   caret-color: $field-color-text;
   background-color: $textarea-background-color;
   border: .2rem solid rgba($field-color-unfocused, 0.5);
@@ -119,6 +121,7 @@ export default {
   color: $field-color-unfocused;
   transition: .2s ease-out;
   font-size: 1.6rem;
+  pointer-events: none;
 
   .text-field__input:focus ~ &,
   .text-field--dirty & {
@@ -137,6 +140,7 @@ export default {
   display: block;
   font-size: 1.6rem;
   overflow-y: auto;
+  padding: 2.6rem 1.6rem 0;
 
   &:disabled {
     cursor: default;
