@@ -67,7 +67,8 @@
                 :class="{ 'withdrawal__data_loading': isFeesLoadPending }">
                 <tr>
                   <td>{{ 'withdrawal-form.network-fee-hint' | globalize }}</td>
-                  <td>-</td>
+                  <!-- eslint-disable-next-line max-len -->
+                  <td>{{ 'withdrawal-form.network-fee-unknown' | globalize }}</td>
                 </tr>
                 <tr>
                   <td>{{ 'withdrawal-form.fixed-fee' | globalize }}</td>
