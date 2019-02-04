@@ -25,9 +25,13 @@
           <p class="ios-installation-guide__step-number">
             1
           </p>
-          <p class="ios-installation-guide__step-description">
-            {{ 'ios-installation-guide.download-step' | globalize }}
-          </p>
+          <vue-markdown
+            class="ios-installation-guide__step-description"
+            :source="'ios-installation-guide.download-step' | globalize"
+            :prerender="replaceHtmlBreaks"
+            :html="false"
+            :anchor-attributes="anchorAttributes"
+          />
         </div>
         <div class="ios-installation-guide__step">
           <p class="ios-installation-guide__step-number">
@@ -121,12 +125,17 @@
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
+
 export default {
   name: 'ios-installation-guide',
+  components: {
+    VueMarkdown,
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
@@ -210,6 +219,10 @@ export default {
 .ios-installation-guide__step-description {
   margin-left: 1.6rem;
   padding-top: .4rem;
+
+  a {
+    color: $col-ios-guide-link;
+  }
 }
 
 .ios-installation-guide__img-steps {
