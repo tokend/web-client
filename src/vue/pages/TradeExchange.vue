@@ -81,7 +81,7 @@ export default {
     isBuyOrdersLoading: false,
     isSellOrdersLoading: false,
     recordsOrder: 'desc',
-    recordsToShow: 2,
+    recordsToShow: config.TRANSACTIONS_PER_PAGE,
     config,
   }),
   computed: {
