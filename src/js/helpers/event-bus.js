@@ -56,7 +56,6 @@ export class EventBus extends Vue {
       warning: 'warning',
       error: 'error',
       info: 'info',
-      reloadTradeData: 'reload-trade-data',
     }
   }
 
