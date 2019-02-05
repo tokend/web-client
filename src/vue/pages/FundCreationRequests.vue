@@ -200,7 +200,7 @@ export default {
       account: vuexTypes.account,
     }),
     selectedRequest () {
-      return this.requestsHistory[this.selectedIndex]
+      return this.filteredRequests[this.selectedIndex]
     },
     fundAssetCodes () {
       return this.requestsHistory
