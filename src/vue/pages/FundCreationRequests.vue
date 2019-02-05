@@ -2,6 +2,29 @@
   <div class="fund-creation-requests">
     <template v-if="isLoaded">
       <template v-if="requestsHistory.length">
+        <drawer :is-shown.sync="isDetailsDrawerShown">
+          <template v-if="isUpdateMode">
+            <template slot="heading">
+              {{ 'fund-form.update-fund-title' | globalize }}
+            </template>
+            <create-fund-form
+              :fund="selectedRequest"
+              @update="loadHistory"
+            />
+          </template>
+
+          <template v-else>
+            <template slot="heading">
+              {{ 'fund-request-details.title' | globalize }}
+            </template>
+            <fund-details
+              :request="selectedRequest"
+              @update="isUpdateMode = true"
+              @cancel="cancelRequest"
+            />
+          </template>
+        </drawer>
+
         <!--
           :key is a hack to ensure that the component will be updated
           after computed calculated
@@ -131,10 +154,15 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
+import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
 
+import FundDetails from '@/vue/common/funds/FundDetails'
+import CreateFundForm from '@/vue/forms/CreateFundForm'
+
 import { Sdk } from '@/sdk'
+import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { RecordWrapper } from '@/js/records'
@@ -142,14 +170,18 @@ import { RecordWrapper } from '@/js/records'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'fund-creation-requests',
   components: {
     Loader,
+    Drawer,
     NoDataMessage,
     SelectField,
+    FundDetails,
+    CreateFundForm,
   },
   data: _ => ({
     requestsHistory: [],
@@ -204,6 +236,23 @@ export default {
       this.selectedIndex = index
       this.isUpdateMode = false
       this.isDetailsDrawerShown = true
+    },
+    async cancelRequest () {
+      try {
+        const operation = base.ManageAssetBuilder.cancelAssetRequest({
+          requestID: this.selectedRequest.id,
+        })
+        await Sdk.horizon.transactions.submitOperations(operation)
+
+        const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
+        this.requestsHistory.splice(this.selectedIndex, 1,
+          RecordWrapper.request(data)
+        )
+
+        Bus.success('fund-request-details.request-canceled-msg')
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
     },
   },
 }
