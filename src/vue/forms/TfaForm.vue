@@ -137,10 +137,10 @@ export default {
       loadFactors: vuexTypes.LOAD_FACTORS,
     }),
     async toggleFactor () {
-      if (this.$v.form.password.$invalid) {
-        this.$v.form.password.$touch()
+      if (!this.isFormValid('form.password')) {
         return
       }
+
       this.disableForm()
       if (this.isTotpEnabled) {
         await this.deleteTotpFactor()
