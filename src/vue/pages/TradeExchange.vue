@@ -26,26 +26,26 @@
         </div>
       </div>
 
-      <div class="trade-exchange__orders">
+      <div class="trade-exchange__offers">
         <h2 class="app__table-title">
-          {{ 'trade.orders-section-title' | globalize }}
+          {{ 'trade.offers-section-title' | globalize }}
         </h2>
-        <div class="trade-exchange__orders-wrapper">
-          <trade-orders-renderer
-            class="trade-exchange__orders-list"
+        <div class="trade-exchange__offers-wrapper">
+          <trade-offers-renderer
+            class="trade-exchange__offers-list"
             :asset-pair="assetPair"
             :is-buy="true"
-            :is-loading="isBuyOrdersLoading"
-            :orders-list="buyOrdersList"
+            :is-loading="isBuyOffersLoading"
+            :offers-list="buyOffersList"
             @reload-trades="loadData"
           />
 
-          <trade-orders-renderer
-            class="trade-exchange__orders-list"
+          <trade-offers-renderer
+            class="trade-exchange__offers-list"
             :asset-pair="assetPair"
             :is-buy="false"
-            :is-loading="isSellOrdersLoading"
-            :orders-list="sellOrdersList"
+            :is-loading="isSellOffersLoading"
+            :offers-list="sellOffersList"
             @reload-trades="loadData"
           />
         </div>
@@ -57,7 +57,7 @@
 <script>
 import Chart from '@/vue/common/chart/Chart'
 import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRenderer'
-import TradeOrdersRenderer from '@/vue/pages/TradeExchange/Trade.OrdersRenderer'
+import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
@@ -70,16 +70,16 @@ export default {
   components: {
     Chart,
     TradeHistoryRenderer,
-    TradeOrdersRenderer,
+    TradeOffersRenderer,
     CollectionLoader,
   },
   data: () => ({
     tradeHistory: [],
-    buyOrdersList: [],
-    sellOrdersList: [],
+    buyOffersList: [],
+    sellOffersList: [],
     isTradeHistoryLoading: false,
-    isBuyOrdersLoading: false,
-    isSellOrdersLoading: false,
+    isBuyOffersLoading: false,
+    isSellOffersLoading: false,
     recordsOrder: 'desc',
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
     config,
@@ -112,12 +112,12 @@ export default {
   },
   methods: {
     async loadData () {
-      await this.loadTradeOrders()
+      await this.loadTradeOffers()
       await this.loadTradeHistory()
     },
-    async loadTradeOrders () {
-      await this.loadTradeBuyOrders()
-      await this.loadTradeSellOrders()
+    async loadTradeOffers () {
+      await this.loadTradeBuyOffers()
+      await this.loadTradeSellOffers()
     },
     async loadTradeHistory () {
       this.isTradeHistoryLoading = true
@@ -143,33 +143,33 @@ export default {
     extendTradeHistory (data) {
       this.tradeHistory = this.tradeHistory.concat(data)
     },
-    async loadTradeBuyOrders () {
-      this.isBuyOrdersLoading = true
+    async loadTradeBuyOffers () {
+      this.isBuyOffersLoading = true
       try {
         const response = await Sdk.horizon.orderBook.getAll({
           base_asset: this.assetPair.base,
           quote_asset: this.assetPair.quote,
           is_buy: true,
         })
-        this.buyOrdersList = response.data
+        this.buyOffersList = response.data
       } catch (error) {
         ErrorHandler.process(error)
       }
-      this.isBuyOrdersLoading = false
+      this.isBuyOffersLoading = false
     },
-    async loadTradeSellOrders () {
-      this.isSellOrdersLoading = true
+    async loadTradeSellOffers () {
+      this.isSellOffersLoading = true
       try {
         const response = await Sdk.horizon.orderBook.getAll({
           base_asset: this.assetPair.base,
           quote_asset: this.assetPair.quote,
           is_buy: false,
         })
-        this.sellOrdersList = response.data
+        this.sellOffersList = response.data
       } catch (error) {
         ErrorHandler.process(error)
       }
-      this.isSellOrdersLoading = false
+      this.isSellOffersLoading = false
     },
     setCurrentAssets (assetPair) {
       this.assetPair.base = assetPair.base
@@ -212,11 +212,11 @@ $custom-breakpoint: 985px;
   }
 }
 
-.trade-exchange__orders {
+.trade-exchange__offers {
   margin-top: 4.8rem;
 }
 
-.trade-exchange__orders-wrapper {
+.trade-exchange__offers-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -226,7 +226,7 @@ $custom-breakpoint: 985px;
   }
 }
 
-.trade-exchange__orders-list {
+.trade-exchange__offers-list {
   max-width: 49.5%;
 
   @include respond-to($custom-breakpoint) {

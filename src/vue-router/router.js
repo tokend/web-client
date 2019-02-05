@@ -99,12 +99,12 @@ export const router = new Router({
             },
             {
               path: '/trade/my-orders',
-              name: vueRoutes.trade.userOrders.name,
+              name: vueRoutes.trade.userOffers.name,
               meta: {
                 pageNameTranslationId: 'pages-names.trade',
                 pageSubnameTranslationId: 'pages-subnames.user-orders',
               },
-              component: resolve => require(['@/vue/pages/TradeUserOrders'], resolve),
+              component: resolve => require(['@/vue/pages/TradeUserOffers'], resolve),
             },
           ],
         },

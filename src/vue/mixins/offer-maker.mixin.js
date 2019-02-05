@@ -26,7 +26,7 @@ export default {
     },
     /**
      * @param opts
-     * @param {object} opts.pair - pair to create order for
+     * @param {object} opts.pair - pair to create offer for
      * @param {object} opts.pair.base
      * @param {object} opts.pair.quote
      * @param {object} opts.baseAmount
@@ -35,7 +35,7 @@ export default {
      * @param {object} opts.isBuy
      * @returns {Promise<void>}
      */
-    async createOrder (opts) {
+    async createOffer (opts) {
       try {
         if (!this.getAssetDetails(opts.pair.base)) {
           await base.manageBalance({

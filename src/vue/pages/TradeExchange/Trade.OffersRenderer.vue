@@ -1,14 +1,14 @@
 <template>
-  <div class="trade-orders">
+  <div class="trade-offers">
     <h3 class="app__table-title">
       <template v-if="isBuy">
-        {{ 'trade-orders.subtitle-ask' | globalize }}
+        {{ 'trade-offers.subtitle-ask' | globalize }}
       </template>
       <template v-else>
-        {{ 'trade-orders.subtitle-bid' | globalize }}
+        {{ 'trade-offers.subtitle-bid' | globalize }}
       </template>
     </h3>
-    <template v-if="ordersList.length">
+    <template v-if="offersList.length">
       <div
         class="app__table
               app__table--with-shadow
@@ -19,56 +19,56 @@
             <tr>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-orders.table-want-lbl' | globalize({ asset: assetPair.base }) }}
+                {{ 'trade-offers.table-want-lbl' | globalize({ asset: assetPair.base }) }}
               </th>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-orders.table-order-lbl' | globalize({ asset: assetPair.quote }) }}
+                {{ 'trade-offers.table-offer-lbl' | globalize({ asset: assetPair.quote }) }}
               </th>
               <th>
                 <!-- eslint-disable-next-line -->
-                {{ 'trade-orders.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
+                {{ 'trade-offers.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="(order, o) in ordersList"
-              :key="`trade-orders-row-${o}`"
-              @click="selectOrder(order)"
-              :disabled="order.ownerId === accountId">
-              <td>{{ order.baseAmount | formatMoney }}</td>
-              <td>{{ order.quoteAmount | formatMoney }}</td>
-              <td>{{ order.price | formatMoney }}</td>
+              v-for="(offer, o) in offersList"
+              :key="`trade-offers-row-${o}`"
+              @click="selectOffer(offer)"
+              :disabled="offer.ownerId === accountId">
+              <td>{{ offer.baseAmount | formatMoney }}</td>
+              <td>{{ offer.quoteAmount | formatMoney }}</td>
+              <td>{{ offer.price | formatMoney }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </template>
     <template v-else-if="isLoading">
-      <loader :message-id="'trade-orders.loading-msg'" />
+      <loader :message-id="'trade-offers.loading-msg'" />
     </template>
     <template v-else>
       <no-data-message
-        :title-id="'trade-orders.no-data-title'"
+        :title-id="'trade-offers.no-data-title'"
         :message-id="noDataMessage.messageId"
         :message-id-args="noDataMessage.messageIdArgs"
       />
     </template>
 
-    <drawer :is-shown.sync="isSubmitOrderDrawerShown">
+    <drawer :is-shown.sync="isSubmitOfferDrawerShown">
       <template slot="heading">
         <template v-if="isBuy">
-          {{ 'trade-orders.submit-ask-order-title' | globalize }}
+          {{ 'trade-offers.submit-ask-offer-title' | globalize }}
         </template>
         <template v-else>
-          {{ 'trade-orders.submit-bid-order-title' | globalize }}
+          {{ 'trade-offers.submit-bid-offer-title' | globalize }}
         </template>
       </template>
-      <submit-trade-order-form
+      <submit-trade-offer-form
         :is-buy="isBuy"
         :asset-pair="assetPair"
-        :order="selectedOrder"
+        :offer="selectedOffer"
         @close-drawer="closeDrawer"
       />
     </drawer>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import SubmitTradeOrderForm from '@/vue/forms/SubmitTradeOrderForm'
+import SubmitTradeOfferForm from '@/vue/forms/SubmitTradeOfferForm'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -89,12 +89,12 @@ const EVENTS = {
 }
 
 export default {
-  name: 'trade-orders-renderer',
+  name: 'trade-offers-renderer',
   components: {
     NoDataMessage,
     Loader,
     Drawer,
-    SubmitTradeOrderForm,
+    SubmitTradeOfferForm,
   },
   mixins: [FormMixin],
   props: {
@@ -105,11 +105,11 @@ export default {
     },
     isLoading: { type: Boolean, required: true },
     isBuy: { type: Boolean, required: true },
-    ordersList: { type: Array, required: true },
+    offersList: { type: Array, required: true },
   },
   data: () => ({
-    isSubmitOrderDrawerShown: false,
-    selectedOrder: {},
+    isSubmitOfferDrawerShown: false,
+    selectedOffer: {},
   }),
   computed: {
     ...mapGetters([
@@ -117,8 +117,8 @@ export default {
     ]),
     noDataMessage () {
       const messageId = this.isBuy
-        ? 'trade-orders.no-data-for-asks-message'
-        : 'trade-orders.no-data-for-bids-message'
+        ? 'trade-offers.no-data-for-asks-message'
+        : 'trade-offers.no-data-for-bids-message'
 
       return {
         messageId: messageId,
@@ -130,14 +130,14 @@ export default {
     },
   },
   methods: {
-    selectOrder (order) {
-      if (order.ownerId !== this.accountId) {
-        this.isSubmitOrderDrawerShown = true
-        this.selectedOrder = order
+    selectOffer (offer) {
+      if (offer.ownerId !== this.accountId) {
+        this.isSubmitOfferDrawerShown = true
+        this.selectedOffer = offer
       }
     },
     closeDrawer () {
-      this.isSubmitOrderDrawerShown = false
+      this.isSubmitOfferDrawerShown = false
       this.$emit(EVENTS.reloadTrades)
     },
   },

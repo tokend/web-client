@@ -1,63 +1,63 @@
 <template>
-  <div class="trade-open-orders">
+  <div class="trade-open-offers">
     <h2 class="app__table-title">
       {{
-        'trade-open-orders.title' | globalize({
+        'trade-open-offers.title' | globalize({
           base: assetPair.base,
           quote: assetPair.quote
         })
       }}
     </h2>
-    <template v-if="openOrders.length">
+    <template v-if="openOffers.length">
       <div class="app__table app__table--with-shadow">
         <table>
           <thead>
             <tr>
               <th>
-                {{ 'trade-open-orders.table-id-lbl' | globalize }}
+                {{ 'trade-open-offers.table-id-lbl' | globalize }}
               </th>
               <th>
-                {{ 'trade-open-orders.table-date-lbl' | globalize }}
+                {{ 'trade-open-offers.table-date-lbl' | globalize }}
               </th>
               <th>
-                {{ 'trade-open-orders.table-order-lbl' | globalize }}
+                {{ 'trade-open-offers.table-offer-lbl' | globalize }}
               </th>
               <th>
-                {{ 'trade-open-orders.table-base-amount-lbl' | globalize }}
+                {{ 'trade-open-offers.table-base-amount-lbl' | globalize }}
               </th>
               <th>
-                {{ 'trade-open-orders.table-price-lbl' | globalize }}
+                {{ 'trade-open-offers.table-price-lbl' | globalize }}
               </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="(item, i) in openOrders"
-              :key="`trade-open-orders-row-${i}`">
-              <td>{{ item.offerId }}</td>
-              <td>{{ item.createdAt | formatCalendar }}</td>
+              v-for="(offer, i) in openOffers"
+              :key="`trade-open-offers-row-${i}`">
+              <td>{{ offer.offerId }}</td>
+              <td>{{ offer.createdAt | formatCalendar }}</td>
               <td>
-                <template v-if="item.isBuy">
-                  {{ 'trade-open-orders.buy-lbl' | globalize }}
+                <template v-if="offer.isBuy">
+                  {{ 'trade-open-offers.buy-lbl' | globalize }}
                 </template>
                 <template v-else>
-                  {{ 'trade-open-orders.sell-lbl' | globalize }}
+                  {{ 'trade-open-offers.sell-lbl' | globalize }}
                 </template>
               </td>
-              <td>{{ item.baseAmount | formatMoney }}</td>
-              <td>{{ item.price | formatMoney }}</td>
+              <td>{{ offer.baseAmount | formatMoney }}</td>
+              <td>{{ offer.price | formatMoney }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </template>
     <template v-else-if="isLoading">
-      <loader :message-id="'trade-open-orders.loading-msg'" />
+      <loader :message-id="'trade-open-offers.loading-msg'" />
     </template>
     <template v-else>
       <no-data-message
-        :title-id="'trade-open-orders.no-data-title'"
-        :message-id="'trade-open-orders.no-data-message'"
+        :title-id="'trade-open-offers.no-data-title'"
+        :message-id="'trade-open-offers.no-data-message'"
         :message-id-args="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
@@ -69,13 +69,13 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 
 export default {
-  name: 'trade-open-orders',
+  name: 'trade-open-offers',
   components: {
     NoDataMessage,
     Loader,
   },
   props: {
-    openOrders: { type: Array, required: true, default: () => [] },
+    openOffers: { type: Array, required: true, default: () => [] },
     isLoading: { type: Boolean, required: true, default: false },
     assetPair: {
       type: Object,

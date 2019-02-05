@@ -25,8 +25,8 @@ export const vueRoutes = Object.freeze({
     exchange: {
       name: 'app.exchange',
     },
-    userOrders: {
-      name: 'app.user-orders',
+    userOffers: {
+      name: 'app.user-offers',
     },
   },
   issuance: { name: 'app.issuance' },

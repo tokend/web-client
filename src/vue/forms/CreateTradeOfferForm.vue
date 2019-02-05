@@ -9,7 +9,7 @@
               asset: assetPair.base
             })
           "
-          name="trade-order-price"
+          name="trade-offer-price"
           :white-autofill="true"
           type="number"
           :disabled="formMixin.isDisabled"
@@ -27,7 +27,7 @@
           :label="'offer-creation-form.amount' | globalize({
             asset: assetPair.base
           })"
-          name="trade-order-amount"
+          name="trade-offer-amount"
           :white-autofill="true"
           type="number"
           :max="baseAssetBalance"
@@ -49,7 +49,7 @@
             asset: assetPair.quote
           })"
           :value="+formQuoteAmount ? formQuoteAmount : ''"
-          name="trade-order-total"
+          name="trade-offer-total"
           :readonly="true"
         />
       </div>
@@ -85,7 +85,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
+import OfferMakerMixin from '@/vue/mixins/offer-maker.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
@@ -99,9 +99,9 @@ const EVENTS = {
 }
 
 export default {
-  name: 'create-trade-order-form',
+  name: 'create-trade-offer-form',
   components: { FormConfirmation },
-  mixins: [FormMixin, OrderMakerMixin],
+  mixins: [FormMixin, OfferMakerMixin],
   props: {
     assetPair: { type: Object, require: true, default: () => {} },
     isBuy: { type: Boolean, require: false, default: true },
@@ -112,7 +112,6 @@ export default {
       amount: '',
     },
     config,
-    showConfirmation: false,
   }),
   validations () {
     return {
@@ -132,7 +131,7 @@ export default {
     ]),
     baseAssetBalance () {
       return this.accountBalances
-        .find(i => i.asset === this.assetPair.base).balance || '0'
+        .find(i => i.asset === this.assetPair.base).balance
     },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
@@ -143,7 +142,7 @@ export default {
     async submit () {
       this.disableForm()
 
-      await this.createOrder(this.getCreateOfferOpts())
+      await this.createOffer(this.getCreateOfferOpts())
 
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)

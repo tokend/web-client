@@ -3,13 +3,13 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model="order.price"
+          v-model="offer.price"
           :label="
-            'submit-trade-orders-form.price-label' | globalize({
+            'submit-trade-offers-form.price-label' | globalize({
               asset: assetPair.quote
             })
           "
-          name="submit-trade-orders-order-price"
+          name="submit-trade-offers-offer-price"
           :white-autofill="true"
           readonly
         />
@@ -19,13 +19,13 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="order.baseAmount"
+          v-model.trim="offer.baseAmount"
           :label="
-            'submit-trade-orders-form.want-label' | globalize({
+            'submit-trade-offers-form.want-label' | globalize({
               asset: assetPair.base
             })
           "
-          name="submit-trade-orders-order-base-amount"
+          name="submit-trade-offers-offer-base-amount"
           :white-autofill="true"
           readonly
         />
@@ -35,13 +35,13 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="order.quoteAmount"
+          v-model.trim="offer.quoteAmount"
           :label="
-            'submit-trade-orders-form.order-label' | globalize({
+            'submit-trade-offers-form.offer-label' | globalize({
               asset: assetPair.quote
             })
           "
-          name="submit-trade-orders-order-quote-amount"
+          name="submit-trade-offers-offer-quote-amount"
           :white-autofill="true"
           readonly
         />
@@ -65,10 +65,10 @@
           class="app__form-submit-btn"
           :disabled="formMixin.isDisabled">
           <template v-if="isBuy">
-            {{ 'submit-trade-orders-form.submit-sell-btn' | globalize }}
+            {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
           </template>
           <template v-else>
-            {{ 'submit-trade-orders-form.submit-buy-btn' | globalize }}
+            {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
           </template>
         </button>
       </div>
@@ -78,7 +78,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import OrderMakerMixin from '@/vue/mixins/order-maker.mixin'
+import OfferMakerMixin from '@/vue/mixins/offer-maker.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 
 const EVENTS = {
@@ -86,13 +86,13 @@ const EVENTS = {
 }
 
 export default {
-  name: 'submit-trade-order-form',
+  name: 'submit-trade-offer-form',
   components: { FormConfirmation },
-  mixins: [FormMixin, OrderMakerMixin],
+  mixins: [FormMixin, OfferMakerMixin],
   props: {
     assetPair: { type: Object, require: true, default: () => ({}) },
     isBuy: { type: Boolean, require: false, default: true },
-    order: { type: Object, require: true, default: () => ({}) },
+    offer: { type: Object, require: true, default: () => ({}) },
   },
   methods: {
     tryToSubmit () {
@@ -101,7 +101,7 @@ export default {
     async submit () {
       this.disableForm()
 
-      await this.createOrder(this.getCreateOfferOpts())
+      await this.createOffer(this.getCreateOfferOpts())
 
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
@@ -113,13 +113,13 @@ export default {
     getCreateOfferOpts () {
       return {
         pair: {
-          base: this.order.baseAssetCode,
-          quote: this.order.quoteAssetCode,
+          base: this.offer.baseAssetCode,
+          quote: this.offer.quoteAssetCode,
         },
-        baseAmount: this.order.baseAmount,
-        quoteAmount: this.order.quoteAmount,
-        price: this.order.price,
-        isBuy: !this.order.isBuy,
+        baseAmount: this.offer.baseAmount,
+        quoteAmount: this.offer.quoteAmount,
+        price: this.offer.price,
+        isBuy: !this.offer.isBuy,
       }
     },
   },

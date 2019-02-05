@@ -12,27 +12,27 @@
         </router-link>
         <router-link
           :to="{
-            name: vueRoutes.trade.userOrders.name,
+            name: vueRoutes.trade.userOffers.name,
             query: { base: assetPair.base, quote: assetPair.quote }
           }"
         >
-          {{ 'trade.my-orders-view' | globalize }}
+          {{ 'trade.my-offers-view' | globalize }}
         </router-link>
       </template>
       <template slot="extra">
         <button
           v-ripple
           class="app__button-raised"
-          @click="isCreateBuyOrderDrawerShown = true"
+          @click="isCreateBuyOfferDrawerShown = true"
         >
-          {{ 'trade.create-buy-order-button' | globalize }}
+          {{ 'trade.create-buy-offer-button' | globalize }}
         </button>
         <button
           v-ripple
           class="app__button-raised"
-          @click="isCreateSellOrderDrawerShown = true"
+          @click="isCreateSellOfferDrawerShown = true"
         >
-          {{ 'trade.create-sell-order-button' | globalize }}
+          {{ 'trade.create-sell-offer-button' | globalize }}
         </button>
       </template>
     </top-bar>
@@ -65,23 +65,23 @@
 
     <router-view />
 
-    <drawer :is-shown.sync="isCreateBuyOrderDrawerShown">
+    <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
       <template slot="heading">
-        {{ 'trade.create-buy-order-form-title' | globalize }}
+        {{ 'trade.create-buy-offer-form-title' | globalize }}
       </template>
-      <create-trade-order-form
+      <create-trade-offer-form
         :asset-pair="assetPair"
-        @close-drawer="closeBuyOrderDrawer"
+        @close-drawer="closeBuyOfferDrawer"
       />
     </drawer>
-    <drawer :is-shown.sync="isCreateSellOrderDrawerShown">
+    <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
       <template slot="heading">
-        {{ 'trade.create-sell-order-form-title' | globalize }}
+        {{ 'trade.create-sell-offer-form-title' | globalize }}
       </template>
-      <create-trade-order-form
+      <create-trade-offer-form
         :asset-pair="assetPair"
         :is-buy="false"
-        @close-drawer="closeSellOrderDrawer"
+        @close-drawer="closeSellOfferDrawer"
       />
     </drawer>
   </div>
@@ -93,7 +93,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import CreateTradeOrderForm from '@/vue/forms/CreateTradeOrderForm'
+import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
@@ -105,7 +105,7 @@ export default {
   name: 'trade',
   components: {
     SelectField,
-    CreateTradeOrderForm,
+    CreateTradeOfferForm,
     Drawer,
     TopBar,
   },
@@ -122,8 +122,8 @@ export default {
     selectedPair: '',
     tradeablePairs: [],
     formattedPairs: [],
-    isCreateBuyOrderDrawerShown: false,
-    isCreateSellOrderDrawerShown: false,
+    isCreateBuyOfferDrawerShown: false,
+    isCreateSellOfferDrawerShown: false,
     vueRoutes,
   }),
   computed: {
@@ -210,12 +210,12 @@ export default {
       }
       return false
     },
-    closeBuyOrderDrawer () {
-      this.isCreateBuyOrderDrawerShown = false
+    closeBuyOfferDrawer () {
+      this.isCreateBuyOfferDrawerShown = false
       Bus.emit(Bus.eventList.reloadTradeData)
     },
-    closeSellOrderDrawer () {
-      this.isCreateSellOrderDrawerShown = false
+    closeSellOfferDrawer () {
+      this.isCreateSellOfferDrawerShown = false
       Bus.emit(Bus.eventList.reloadTradeData)
     },
   },

@@ -1,15 +1,15 @@
 <template>
-  <div class="trade-user-orders">
-    <trade-open-orders
+  <div class="trade-user-offers">
+    <trade-open-offers
       :asset-pair="assetPair"
-      :is-loading="isOpenOrdersLoading"
-      :open-orders="openOrders"
+      :is-loading="isopenOffersLoading"
+      :open-offers="openOffers"
     />
   </div>
 </template>
 
 <script>
-import TradeOpenOrders from '@/vue/pages/TradeUserOrders/Trade.OpenOrders'
+import TradeOpenOffers from '@/vue/pages/TradeUserOffers/Trade.OpenOffers'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { Sdk } from '@/sdk'
@@ -18,13 +18,13 @@ import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 
 export default {
-  name: 'trade-user-orders',
+  name: 'trade-user-offers',
   components: {
-    TradeOpenOrders,
+    TradeOpenOffers,
   },
   data: () => ({
-    openOrders: [],
-    isOpenOrdersLoading: false,
+    openOffers: [],
+    isopenOffersLoading: false,
   }),
   computed: {
     ...mapGetters([
@@ -43,7 +43,7 @@ export default {
       handler: async function (assetPair) {
         this.setSelectedAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
-          await this.loadOrdersHistory()
+          await this.loadOffersHistory()
         }
       },
     },
@@ -51,17 +51,17 @@ export default {
   async created () {
     this.setSelectedAssets(this.assetPair)
     if (this.assetPair.base) {
-      await this.loadOrdersHistory()
+      await this.loadOffersHistory()
     }
-    Bus.on(Bus.eventList.reloadTradeData, this.loadOrdersHistory)
+    Bus.on(Bus.eventList.reloadTradeData, this.loadOffersHistory)
   },
   methods: {
     setSelectedAssets ({ base, quote }) {
       this.assetPair.base = base
       this.assetPair.quote = quote
     },
-    async loadOrdersHistory () {
-      this.isOpenOrdersLoading = true
+    async loadOffersHistory () {
+      this.isopenOffersLoading = true
       try {
         const response = await Sdk.horizon.account.getOffers(
           this.accountId,
@@ -72,11 +72,11 @@ export default {
             order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
           },
         )
-        this.openOrders = response.data
+        this.openOffers = response.data
       } catch (error) {
         ErrorHandler.process(error)
       }
-      this.isOpenOrdersLoading = false
+      this.isopenOffersLoading = false
     },
   },
 }
@@ -86,7 +86,7 @@ export default {
 @import "~@scss/mixins";
 @import "~@scss/variables";
 
-.trade-user-orders {
+.trade-user-offers {
   margin-top: 4rem;
 }
 

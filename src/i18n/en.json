@@ -530,11 +530,11 @@
       "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
     },
 
-    "trade-open-orders": {
+    "trade-open-offers": {
       "title": "Your open {{base}}/{{quote}} orders",
       "table-id-lbl": "Order ID",
       "table-date-lbl": "Date",
-      "table-order-lbl": "Order",
+      "table-offer-lbl": "Order",
       "table-base-amount-lbl": "Base asset amount",
       "table-price-lbl": "Price in quote asset",
       "loading-msg": "Loading...",
@@ -544,14 +544,14 @@
       "sell-lbl": "Sell"
     },
 
-    "trade-orders": {
+    "trade-offers": {
       "title": "Open orders",
       "subtitle-ask": "Ask",
       "subtitle-bid": "Bid",
-      "submit-bid-order-title": "Submit bid order",
-      "submit-ask-order-title": "Submit ask order",
+      "submit-bid-offer-title": "Submit bid order",
+      "submit-ask-offer-title": "Submit ask order",
       "table-want-lbl": "Want ({{asset}})",
-      "table-order-lbl": "Order ({{asset}})",
+      "table-offer-lbl": "Order ({{asset}})",
       "table-price-lbl": "Price ({{asset}})",
       "loading-msg": "Loading...",
       "no-data-title": "No orders",
@@ -559,9 +559,9 @@
       "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
     },
 
-    "submit-trade-orders-form": {
+    "submit-trade-offers-form": {
       "want-label": "Want ({{asset}})",
-      "order-label": "Order ({{asset}})",
+      "offer-label": "Order ({{asset}})",
       "price-label": "Price ({{asset}})",
       "submit-buy-btn": "Buy",
       "submit-sell-btn": "Sell"
@@ -578,13 +578,13 @@
 
     "trade": {
       "exchange-view": "Exchange",
-      "my-orders-view": "My Orders",
-      "create-buy-order-button": "Create buy order",
-      "create-sell-order-button": "Create sell order",
+      "my-offers-view": "My Orders",
+      "create-buy-offer-button": "Create buy order",
+      "create-sell-offer-button": "Create sell order",
       "user-balances-label": "Balances",
-      "create-buy-order-form-title": "Create buy order",
-      "create-sell-order-form-title": "Create sell order",
-      "orders-section-title": "Open orders",
+      "create-buy-offer-form-title": "Create buy order",
+      "create-sell-offer-form-title": "Create sell order",
+      "offers-section-title": "Open orders",
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
     },
 
