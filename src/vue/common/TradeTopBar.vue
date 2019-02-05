@@ -211,15 +211,15 @@ export default {
       }
       return false
     },
-    async closeBuyOfferDrawer () {
+    closeBuyOfferDrawer () {
       this.isCreateBuyOfferDrawerShown = false
       this.$emit(EVENTS.reloadTradeData)
-      await this.loadBalances()
+      this.loadBalances()
     },
-    async closeSellOfferDrawer () {
+    closeSellOfferDrawer () {
       this.isCreateSellOfferDrawerShown = false
       this.$emit(EVENTS.reloadTradeData)
-      await this.loadBalances()
+      this.loadBalances()
     },
   },
 }
