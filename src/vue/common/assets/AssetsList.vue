@@ -2,7 +2,7 @@
   <div class="assets-list">
     <drawer :is-shown.sync="isDetailsDrawerShown">
       <template slot="heading">
-        <template v-if="isUpdating">
+        <template v-if="isUpdateMode">
           {{ 'asset-form.update-token-title' | globalize }}
         </template>
         <template v-else>
@@ -10,7 +10,7 @@
         </template>
       </template>
       <asset-form
-        v-if="isUpdating"
+        v-if="isUpdateMode"
         :request="assetUpdateRecord"
       />
       <asset-details
@@ -93,7 +93,7 @@ export default {
   },
   data: _ => ({
     isDetailsDrawerShown: false,
-    isUpdating: false,
+    isUpdateMode: false,
     selectedAsset: null,
     assetUpdateRecord: null,
     config,
@@ -111,7 +111,7 @@ export default {
   methods: {
     selectAsset (asset) {
       this.selectedAsset = asset
-      this.isUpdating = false
+      this.isUpdateMode = false
       this.isDetailsDrawerShown = true
     },
     refreshSelectedAsset () {
@@ -125,13 +125,10 @@ export default {
           this.assetUpdateRecord =
             new AssetUpdateRequestRecord(assetUpdateRequest)
         } else {
-          this.assetUpdateRecord = new AssetUpdateRequestRecord({
-            details: {
-              assetUpdate: this.selectedAsset,
-            },
-          })
+          this.assetUpdateRecord =
+            AssetUpdateRequestRecord.fromAsset(this.selectedAsset)
         }
-        this.isUpdating = true
+        this.isUpdateMode = true
       } catch (e) {
         ErrorHandler.process(e)
       }

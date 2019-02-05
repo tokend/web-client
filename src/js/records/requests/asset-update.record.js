@@ -40,6 +40,14 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     this.attachedDetails = details
   }
 
+  static fromAsset (asset) {
+    return new this({
+      details: {
+        assetUpdate: asset,
+      },
+    })
+  }
+
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }

@@ -28,6 +28,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -45,6 +46,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -62,6 +64,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
@@ -73,6 +76,7 @@
           </tick-field>
         </div>
       </div>
+
       <div class="app__form-row asset-form__kyc-required-row">
         <div class="app__form-field">
           <tick-field
@@ -84,6 +88,7 @@
           </tick-field>
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
@@ -96,6 +101,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-actions">
         <button
           v-ripple
@@ -107,12 +113,13 @@
         </button>
       </div>
     </form>
+
     <form
       v-if="currentStep === STEPS.advanced.number"
       class="app__form asset-form"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
-      <div class="app__form-row asset-form__kyc-required-row">
+      <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
             v-model="form.advanced.isPreissuanceDisabled"
@@ -122,6 +129,7 @@
           </tick-field>
         </div>
       </div>
+
       <template v-if="!form.advanced.isPreissuanceDisabled">
         <div class="app__form-row">
           <div class="app__form-field">
@@ -138,6 +146,7 @@
             />
           </div>
         </div>
+
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
@@ -156,6 +165,7 @@
           </div>
         </div>
       </template>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
@@ -168,6 +178,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
@@ -186,6 +197,7 @@
       </div>
     </form>
   </form-stepper>
+
   <loader
     v-else
     :message-id="'asset-form.loading-msg'"
@@ -409,6 +421,7 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
+
         let operation
         if (this.isUpdateMode) {
           operation =
@@ -417,8 +430,10 @@ export default {
           operation =
             base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         }
+
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.token-request-submitted-msg')
+
         if (this.request.id) {
           this.$emit(EVENTS.update)
         }
@@ -432,6 +447,7 @@ export default {
         this.form.information.logo,
         this.form.advanced.terms,
       ]
+
       for (let document of documents) {
         if (document && !document.key) {
           const documentKey = await DocumentUploader.uploadDocument(
