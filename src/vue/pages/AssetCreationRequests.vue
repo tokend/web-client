@@ -238,8 +238,11 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.asset-creation-requests__table {
+.asset-creation-requests {
   overflow-x: auto;
+}
+
+.asset-creation-requests__table {
   @include box-shadow();
 
   tr td:last-child {

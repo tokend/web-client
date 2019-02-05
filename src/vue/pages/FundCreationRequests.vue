@@ -2,6 +2,17 @@
   <div class="fund-creation-requests">
     <template v-if="isLoaded">
       <template v-if="requestsHistory.length">
+        <!--
+          :key is a hack to ensure that the component will be updated
+          after computed calculated
+        -->
+        <select-field
+          v-model="filters.baseAsset"
+          :values="fundAssetCodes"
+          :key="filters.baseAsset"
+          class="fund-creation-requests__asset-list app__select--no-border"
+        />
+
         <table class="app__table fund-creation-requests__table">
           <thead>
             <tr>
@@ -25,7 +36,7 @@
 
           <tbody>
             <tr
-              v-for="(request, index) in requestsHistory"
+              v-for="(request, index) in filteredRequests"
               :key="index"
             >
               <td :title="request.name">
@@ -121,6 +132,7 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import SelectField from '@/vue/fields/SelectField'
 
 import { Sdk } from '@/sdk'
 
@@ -137,6 +149,7 @@ export default {
   components: {
     Loader,
     NoDataMessage,
+    SelectField,
   },
   data: _ => ({
     requestsHistory: [],
@@ -146,6 +159,9 @@ export default {
     selectedIndex: -1,
     isUpdateMode: false,
     REQUEST_STATES,
+    filters: {
+      baseAsset: '',
+    },
   }),
   computed: {
     ...mapGetters({
@@ -154,9 +170,21 @@ export default {
     selectedRequest () {
       return this.requestsHistory[this.selectedIndex]
     },
+    fundAssetCodes () {
+      return this.requestsHistory
+        .map(request => request.baseAsset)
+        .filter((asset, i, self) => self.indexOf(asset) === i)
+    },
+    filteredRequests () {
+      return this.requestsHistory
+        .filter(request => request.baseAsset === this.filters.baseAsset)
+    },
   },
   async created () {
     await this.loadHistory()
+    if (this.requestsHistory.length) {
+      this.filters.baseAsset = this.fundAssetCodes[0]
+    }
   },
   methods: {
     async loadHistory () {
@@ -185,8 +213,16 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+.fund-creation-requests {
+    overflow-x: auto;
+}
+
+.fund-creation-requests__asset-list {
+  width: fit-content;
+}
+
 .fund-creation-requests__table {
-  overflow-x: auto;
+  margin-top: 2.1rem;
   @include box-shadow();
 
   tr td:last-child {
