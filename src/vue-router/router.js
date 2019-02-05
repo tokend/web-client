@@ -89,6 +89,12 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
+          path: '/funds',
+          name: vueRoutes.funds.name,
+          featureFlag: config.FEATURE_FLAGS.funds,
+          component: resolve => require(['@/vue/pages/Funds'], resolve),
+        },
+        {
           path: '/issuance',
           name: vueRoutes.issuance.name,
           featureFlag: config.FEATURE_FLAGS.issuance,

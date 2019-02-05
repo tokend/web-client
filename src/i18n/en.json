@@ -75,7 +75,6 @@
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
-      "field-error_address": "Make sure the address is correct",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
@@ -235,7 +234,8 @@
       "view-document": "View document",
       "explore-documents": "Explore documents",
       "find-document": "Find document",
-      "update-token": "Update token"
+      "update-token": "Update token",
+      "funds": "Funds"
     },
 
     "pages-subnames": {
@@ -515,6 +515,22 @@
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
       "file-not-uploaded-err": "A file was not uploaded",
       "disabled-msg": "This field is disabled"
+    },
+
+    "funds": {
+      "create-fund": "Create fund"
+    },
+    "create-fund-form": {
+      "create-fund-header": "Create fund",
+      "provide-fund-information": "Provide fund information",
+      "add-short-blurb": "Add a short blurb",
+      "full-description": "Full description",
+      "sale-name": "Fund name",
+      "base-asset": "Base asset",
+      "start-time": "Start time",
+      "close-time": "Close time",
+      "soft-cap": "Soft cap",
+      "hard-cap": "Hard cap"
     },
 
     "withdrawal-form": {
