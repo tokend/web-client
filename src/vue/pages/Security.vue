@@ -12,12 +12,14 @@
         </template>
         <tfa-form @update="updateTfa" />
       </template>
+
       <template v-else-if="viewMode === VIEW_MODES.changePassword">
         <template slot="heading">
           {{ 'security-page.change-password-btn' | globalize }}
         </template>
         <change-password-form />
       </template>
+
       <template v-else-if="viewMode === VIEW_MODES.viewAccountId">
         <template slot="heading">
           {{ 'security-page.account-id-title' | globalize }}
@@ -27,6 +29,7 @@
           :label="'security-page.account-address-label' | globalize"
         />
       </template>
+
       <template v-else-if="viewMode === VIEW_MODES.viewSecretSeed">
         <template slot="heading">
           {{ 'security-page.secret-seed-title' | globalize }}
@@ -42,15 +45,17 @@
         </div>
       </template>
     </drawer>
+
     <div class="security-page__row">
       <p class="security-page__row-title">
         {{ 'security-page.enable-tfa-title' | globalize }}
       </p>
-      <div @click="showDrawer(VIEW_MODES.enableTfa)">
-        <switch-field :is-enabled="isTotpEnabled" />
-      </div>
+      <button @click="showDrawer(VIEW_MODES.enableTfa)">
+        <switch-field :value="isTotpEnabled" />
+      </button>
     </div>
     <hr>
+
     <div class="security-page__row">
       <p class="security-page__row-title">
         {{ 'security-page.password-title' | globalize }}
@@ -63,6 +68,7 @@
       </a>
     </div>
     <hr>
+
     <div class="security-page__row">
       <p class="security-page__row-title">
         {{ 'security-page.account-id-title' | globalize }}
@@ -75,6 +81,7 @@
       </a>
     </div>
     <hr>
+
     <div class="security-page__row">
       <p class="security-page__row-title">
         {{ 'security-page.secret-seed-title' | globalize }}
@@ -177,13 +184,13 @@ export default {
 
     .security-page__row-title {
       font-size: 1.8rem;
-      color: $col-primary;
+      color: $col-text;
     }
 
     .security-page__row-action {
       font-size: 1.3rem;
       cursor: pointer;
-      color: $col-primary-lighten;
+      color: $col-link;
     }
   }
 
@@ -196,7 +203,7 @@ export default {
 .secret-seed__description {
   font-size: 1.2rem;
   line-height: 1.25;
-  color: $col-secondary;
+  color: $col-text-secondary;
   margin-bottom: 3rem;
 }
 </style>

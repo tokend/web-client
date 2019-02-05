@@ -3,7 +3,7 @@
     class="app-form tfa-form"
     @submit.prevent="isFormValid() && enableTfa()"
   >
-    <template v-if="!form.factor">
+    <template v-if="!factor.seed">
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -17,6 +17,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-actions">
         <button
           v-ripple
@@ -34,19 +35,20 @@
         </button>
       </div>
     </template>
+
     <template v-else>
       <p class="tfa-form__hint">
         {{ 'tfa-form.qr-desc' | globalize }}
       </p>
       <key-viewer
-        :value="form.factor.seed"
+        :value="factor.seed"
         :is-clipboard-shown="false"
       />
       <p class="tfa-form__hint">
         {{ 'tfa-form.secret-code-desc' | globalize }}
       </p>
       <clipboard-field
-        :value="form.factor.secret"
+        :value="factor.secret"
         :label="'tfa-form.secret-lbl' | globalize"
       />
       <p class="tfa-form__hint tfa-form__code-hint">
@@ -105,9 +107,9 @@ export default {
   },
   mixins: [FormMixin],
   data: _ => ({
+    factor: {},
     form: {
       password: '',
-      factor: null,
       code: '',
     },
   }),
@@ -135,7 +137,10 @@ export default {
       loadFactors: vuexTypes.LOAD_FACTORS,
     }),
     async toggleFactor () {
-      if (this.$v.form.password.$invalid) return
+      if (this.$v.form.password.$invalid) {
+        this.$v.form.password.$touch()
+        return
+      }
       this.disableForm()
       if (this.isTotpEnabled) {
         await this.deleteTotpFactor()
@@ -155,9 +160,9 @@ export default {
               await Sdk.api.factors.verifyPasswordFactorAndRetry(error,
                 this.form.password
               )
-            this.form.factor = data
+            this.factor = data
           } catch (e) {
-            ErrorHandler.process(error)
+            ErrorHandler.process(e)
           }
         } else {
           ErrorHandler.process(error)
@@ -191,7 +196,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.factors.changePriority(this.form.factor.id,
+        await Sdk.api.factors.changePriority(this.factor.id,
           ENABLED_FACTOR_PRIORITY
         )
       } catch (error) {
@@ -200,7 +205,7 @@ export default {
             await Sdk.api.factors.verifyTotpFactor(error,
               this.form.code
             )
-            await Sdk.api.factors.changePriority(this.form.factor.id,
+            await Sdk.api.factors.changePriority(this.factor.id,
               ENABLED_FACTOR_PRIORITY
             )
             this.$emit(EVENTS.update)

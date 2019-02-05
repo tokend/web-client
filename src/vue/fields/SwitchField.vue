@@ -1,14 +1,10 @@
 <template>
   <div class="switch-field">
     <button
-      class="switch-field__switch"
+      class="switch-field__toggle"
+      :class="{ 'switch-field__toggle--enabled': value }"
       @click="toggle"
-    >
-      <span
-        class="switch-field__switch-slider"
-        :class="{ 'switch-field__switch-slider--enabled': isEnabled }"
-      />
-    </button>
+    />
     <span
       v-if="label"
       class="switch-field__label"
@@ -22,21 +18,21 @@
 /**
  * Switch field component represents switch for boolean values.
  *
- * To use it pass your boolean data field as a prop and sync it.
+ * To use it pass your boolean data field as a model.
  *
- * <switch-field :is-enabled.sync="isSwitchEnabled" />
+ * <switch-field v-model="isSwitchEnabled" />
  *
  * As long as `isSwitchEnabled` is `true`, the switch will be enabled.
  */
 export default {
   name: 'switch-field',
   props: {
-    isEnabled: { type: Boolean, default: false },
+    value: { type: Boolean, default: false },
     label: { type: String, default: '' },
   },
   methods: {
     toggle () {
-      this.$emit('update:isEnabled', !this.isEnabled)
+      this.$emit('input', !this.value)
     },
   },
 }
@@ -50,46 +46,38 @@ export default {
   align-items: center;
 }
 
-.switch-field__switch {
+.switch-field__toggle {
   position: relative;
   display: inline-block;
   width: 5.3rem;
   height: 2.8rem;
+  background-color: $col-switch-field-background;
+  border: solid .1rem $col-switch-field-border;
+  border-radius: 3.4rem;
 
-  &-slider {
+  &:before {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: $col-switch-field-background;
-    border: solid .1rem $col-switch-field-border;
-    border-radius: 3.4rem;
+    content: "";
+    height: 2.2rem;
+    width: 2.2rem;
+    left: .1rem;
+    bottom: .1rem;
+    background-color: $col-switch-field-disabled;
+    border: solid .1rem $col-switch-field-disabled-border;
+    transition: .4s;
+    border-radius: 50%;
+  }
 
-    &:before {
-      position: absolute;
-      content: "";
-      height: 2.2rem;
-      width: 2.2rem;
-      left: .1rem;
-      bottom: .1rem;
-      background-color: $col-switch-field-disabled;
-      border: solid .1rem darken($col-switch-field-disabled, 10%);
-      transition: .4s;
-      border-radius: 50%;
-    }
-
-    &--enabled:before {
-      background-color: $col-switch-field-enabled;
-      border: solid .1rem darken($col-switch-field-enabled, 10%);
-      transform: translateX(2.5rem);
-    }
+  &--enabled:before {
+    background-color: $col-switch-field-enabled;
+    border: solid .1rem $col-switch-field-enabled-border;
+    transform: translateX(2.5rem);
   }
 }
 
 .switch-field__label {
   margin-left: 1rem;
   font-size: 1.6rem;
-  color: $col-primary;
+  color: $col-text;
 }
 </style>

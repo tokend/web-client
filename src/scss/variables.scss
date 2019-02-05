@@ -67,6 +67,7 @@ $col-msg-shadow: rgba(0, 0, 0, 0.25);
 // global colors
 $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
+$col-link: $_cornflowerBlue;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinBlue;
@@ -131,6 +132,8 @@ $col-switch-field-background: $_whiteSmoke;
 $col-switch-field-border: $_thinPurple;
 $col-switch-field-disabled: $_mediumGray;
 $col-switch-field-enabled: $_lightGreen;
+$col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
+$col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
