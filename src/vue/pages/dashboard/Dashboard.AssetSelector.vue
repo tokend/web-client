@@ -230,6 +230,7 @@ $custom-breakpoint-medium: 870px;
 
 .asset-selector__select-picture {
   margin-right: 1.6rem;
+  display: flex;
 
   & > * {
     width: 5.5rem;

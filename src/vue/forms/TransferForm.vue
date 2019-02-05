@@ -29,9 +29,10 @@
               :values="tokenCodes"
               v-model="form.tokenCode"
               :label="'transfer-form.asset-lbl' | globalize"
-              :disabled="view.mode === VIEW_MODES.confirm" />
-            <div class="app__form-field-description">
-              <p v-if="form.tokenCode">
+              :disabled="view.mode === VIEW_MODES.confirm"
+            />
+            <template v-if="form.tokenCode">
+              <p class="app__form-field-description">
                 {{
                   'transfer-form.balance' | globalize({
                     amount: balance.balance,
@@ -39,7 +40,7 @@
                   })
                 }}
               </p>
-            </div>
+            </template>
           </div>
         </div>
 
@@ -336,6 +337,7 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
+      this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
         await Sdk.horizon.transactions

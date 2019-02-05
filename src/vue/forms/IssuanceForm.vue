@@ -55,7 +55,7 @@
             </div>
             <p
               v-if="availableAmount.value"
-              class="issuance-form__available-amount-hint"
+              class="app__form-field-description"
             >
               {{
                 'issuance.available-for-issuance-hint'
@@ -271,11 +271,5 @@ export default {
   margin-left: 1rem;
   padding-top: 1.8rem;
   font-size: 1.8rem;
-}
-
-.issuance-form__available-amount-hint {
-  color: $col-field-text-secondary;
-  font-size: 1.2rem;
-  margin-top: .6rem;
 }
 </style>

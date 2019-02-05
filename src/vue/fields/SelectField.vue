@@ -16,19 +16,20 @@
     <button
       type="button"
       class="select-field__selected"
-      :class="{'select-field__selected--focused': isExpanded}"
+      :class="{
+        'select-field__selected--focused': isExpanded,
+        'select-field__selected--padding' : label
+      }"
       :disabled="disabled"
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
-      <div>
-        <i
-          class="select-field__selected-icon mdi mdi-chevron-down"
-          :class="{ 'select-field__selected-icon--active': isExpanded }"
-        />
-      </div>
+      <i
+        class="select-field__selected-icon mdi mdi-chevron-down"
+        :class="{ 'select-field__selected-icon--active': isExpanded }"
+      />
     </button>
     <div
       class="select-field__list"
@@ -220,7 +221,6 @@ export default {
 .select-field {
   width: 100%;
   flex: 1;
-  height: 5.3rem;
   position: relative;
 }
 
@@ -234,7 +234,6 @@ export default {
   border: none;
   caret-color: $field-color-focused;
   color: $field-color-text;
-  padding: $field-input-padding;
 
   @include material-border(
     $field-color-focused,
@@ -242,6 +241,9 @@ export default {
     "&.select-field__selected--focused"
   );
 
+  &.select-field__selected--padding{
+    padding: $field-input-padding;
+  }
   @include text-font-sizes;
 }
 
