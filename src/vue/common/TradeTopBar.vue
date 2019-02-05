@@ -50,12 +50,12 @@
       <p class="trade-asset-selector__balances-value">
         {{
           // eslint-disable-next-line
-          { value: balances.baseBalance, currency: assetPair.base } | formatMoney
+          { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
         }}
         /
         {{
           // eslint-disable-next-line
-          { value: balances.quoteBalance, currency: assetPair.quote } | formatMoney
+          { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
         }}
       </p>
       <p class="trade-asset-selector__balances-label">
@@ -116,10 +116,6 @@ export default {
       base: '',
       quote: '',
     },
-    balances: {
-      baseBalance: '',
-      quoteBalance: '',
-    },
     errors,
     selectedPair: '',
     tradeablePairs: [],
@@ -132,6 +128,14 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
     ]),
+    assetPairBalances () {
+      return {
+        base: (this.accountBalances
+          .find(i => i.asset === this.assetPair.base) || {}).balance,
+        quote: (this.accountBalances
+          .find(i => i.asset === this.assetPair.quote) || {}).balance,
+      }
+    },
   },
   watch: {
     selectedPair (value) {
@@ -139,12 +143,6 @@ export default {
       const quoteAsset = value.split('/')[1]
       this.assetPair.base = baseAsset
       this.assetPair.quote = quoteAsset
-
-      const accountBalances = this.accountBalances
-      const baseBalance = accountBalances.find(i => i.asset === baseAsset)
-      const quoteBalance = accountBalances.find(i => i.asset === quoteAsset)
-      this.balances.baseBalance = baseBalance.balance
-      this.balances.quoteBalance = quoteBalance.balance
 
       this.$router.replace({
         name: this.$route.name,
@@ -213,13 +211,15 @@ export default {
       }
       return false
     },
-    closeBuyOfferDrawer () {
+    async closeBuyOfferDrawer () {
       this.isCreateBuyOfferDrawerShown = false
       this.$emit(EVENTS.reloadTradeData)
+      await this.loadBalances()
     },
-    closeSellOfferDrawer () {
+    async closeSellOfferDrawer () {
       this.isCreateSellOfferDrawerShown = false
       this.$emit(EVENTS.reloadTradeData)
+      await this.loadBalances()
     },
   },
 }
