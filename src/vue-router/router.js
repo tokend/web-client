@@ -75,10 +75,7 @@ export const router = new Router({
     {
       path: '/',
       name: 'app',
-      // Used to define when App component should render
-      // main app content. If the current route is app route
-      // the content should be rendered.
-      meta: { appRoute: true },
+      meta: { isNavigationRendered: true },
       component: resolve => require(['@/vue/AppContent'], resolve),
       beforeEnter: inAppRouteGuard,
       redirect: vueRoutes.dashboard,

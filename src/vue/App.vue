@@ -5,7 +5,7 @@
       :message-id="'common.browser-not-supported'"
     />
 
-    <template v-if="isLoggedIn && isAppRoute">
+    <template v-if="isLoggedIn && isNavigationRendered">
       <div class="app__container">
         <sidebar />
 
@@ -64,8 +64,8 @@ export default {
       vuexTypes.wallet,
       vuexTypes.isLoggedIn,
     ]),
-    isAppRoute () {
-      return this.$route.matched.some(m => m.meta.appRoute)
+    isNavigationRendered () {
+      return this.$route.matched.some(m => m.meta.isNavigationRendered)
     },
   },
 
