@@ -1,31 +1,41 @@
 <template>
   <tbody class="op-list-row">
     <tr class="op-list-row__brief">
-      <td class="op-list-row__cell op-list-row__cell--date">
+      <td
+        class="op-list-row__cell op-list-row__cell--date"
+        :title="operation.date | formatCalendar"
+      >
         {{ operation.date | formatCalendar }}
-      </td>
-
-      <td class="op-list-row__cell">
-        {{ operation | getOpTypeTranslationId | globalize }}
       </td>
 
       <td
         class="op-list-row__cell"
-        :class="{ 'op-list-row__cell--dangle-minus': operation.isIncoming }"
+        :title="operation | getOpTypeTranslationId | globalize"
       >
-        <!-- eslint-disable-next-line max-len -->
-        {{ { value: operation.amount, currency: operation.asset } | formatMoney }}
+        {{ operation | getOpTypeTranslationId | globalize }}
       </td>
+      <!-- eslint-disable max-len -->
+      <td
+        class="op-list-row__cell"
+        :title="operationAmount | formatMoney"
+      >
+        {{ operationAmount | formatMoney }}
+      </td>
+      <!-- eslint-enable max-len -->
 
-      <td class="op-list-row__cell op-list-row__cell--counterparty">
+      <td
+        class="op-list-row__cell op-list-row__cell--counterparty"
+        :title="operation.counterparty"
+      >
         {{ operation.counterparty }}
       </td>
 
       <td
         class="op-list-row__cell"
         :class="`op-list-row__cell--status-${operation.state}`"
+        :title="operation.state | getOpStateTranslationId | globalize"
       >
-        {{ operation.state }}
+        {{ operation.state | getOpStateTranslationId | globalize }}
       </td>
 
       <td class="op-list-row__cell op-list-row__cell--toggle">
@@ -34,8 +44,8 @@
           @click="isDetailsOpen = !isDetailsOpen"
         >
           <i
-            class="mdi mdi-chevron-up"
-            :class="{'mdi-rotate-180': !isDetailsOpen}"
+            class="mdi mdi-chevron-down op-list-row__details-icon"
+            :class="{ 'mdi-rotate-180': isDetailsOpen }"
           />
         </button>
       </td>
@@ -56,6 +66,7 @@
 
 <script>
 import { OP_TYPES } from '@tokend/js-sdk'
+import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import OpListItemDetails from './OpListItemDetails'
 
 export default {
@@ -75,6 +86,13 @@ export default {
         [OP_TYPES.checkSaleState]: 'operation-names.investment',
       }[operation.typeI]
     },
+    getOpStateTranslationId (state) {
+      return {
+        [TX_STATES.success]: 'operation-states.success',
+        [TX_STATES.pending]: 'operation-states.pending',
+        [TX_STATES.failed]: 'operation-states.failed',
+      }[state]
+    },
   },
 
   props: {
@@ -84,6 +102,22 @@ export default {
   data: () => ({
     isDetailsOpen: false,
   }),
+
+  computed: {
+    operationAmount () {
+      if (this.operation.isIncoming) {
+        return {
+          value: this.operation.amount,
+          currency: this.operation.asset,
+        }
+      } else {
+        return {
+          value: -this.operation.amount,
+          currency: this.operation.asset,
+        }
+      }
+    },
+  },
 }
 </script>
 
@@ -108,19 +142,6 @@ $op-list-toggle-btn-col-width: 6.7rem;
 
   &--date {
     font-weight: 600;
-  }
-
-  &--dangle-minus {
-    position: relative;
-    &:before {
-      content: "-";
-      position: absolute;
-      left: $op-list-cell-side-padding - 0.525rem;
-    }
-  }
-
-  &--counterparty {
-    width: $op-list-counterparty-col-width;
   }
 
   &--status-success,
@@ -174,6 +195,14 @@ $op-list-toggle-btn-col-width: 6.7rem;
 
   &:active {
     background-color: darken($col-app-content-background, 10%);
+  }
+}
+
+.op-list-row__details-icon {
+  font-size: 1.6rem;
+
+  &:before {
+    transition: transform .2s ease-out;
   }
 }
 

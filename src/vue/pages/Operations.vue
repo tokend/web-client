@@ -1,21 +1,67 @@
 <template>
   <div class="op-history">
-    <template v-if="!isLoadFailed">
-      <div class="op-history__navigation">
-        <span class="op-history__navigation-text">
+    <top-bar v-if="!isLoadFailed">
+      <div slot="main" class="op-history__filters">
+        <span class="op-history__filters-text">
           {{ 'op-pages.show' | globalize }}:
         </span>
         <select-field
           v-if="isLoaded"
-          v-model="tokenCode"
-          :values="tokens"
-          class="asset-selector__select-field"
+          v-model="assetCode"
+          :values="assetCodes"
+          class="app__select app__select--no-border"
         />
       </div>
-      <div
-        class="op-history__table-wrp"
-        v-if="isLoaded"
-      >
+      <div class="op-history__actions" slot="extra">
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isWithdrawalDrawerShown = true"
+        >
+          <i class="mdi mdi-download op-history__btn-icon" />
+          {{ 'op-pages.withdrawal' | globalize }}
+        </button>
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isDepositDrawerShown = true"
+        >
+          <i class="mdi mdi-upload op-history__btn-icon" />
+          {{ 'op-pages.deposit' | globalize }}
+        </button>
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isTransferDrawerShown = true"
+        >
+          <i
+            class="mdi mdi-send op-history__btn-icon
+            op-history__btn-icon--rotate"
+          />
+          {{ 'op-pages.send' | globalize }}
+        </button>
+      </div>
+    </top-bar>
+    <drawer :is-shown.sync="isWithdrawalDrawerShown">
+      <template slot="heading">
+        {{ 'withdrawal-form.withdrawal' | globalize }}
+      </template>
+      <withdrawal-form @cancel="isWithdrawalDrawerShown = false" />
+    </drawer>
+    <drawer :is-shown.sync="isDepositDrawerShown">
+      <template slot="heading">
+        {{ 'deposit-form.deposit' | globalize }}
+      </template>
+      <deposit-form @cancel="isDepositDrawerShown = false" />
+    </drawer>
+    <drawer :is-shown.sync="isTransferDrawerShown">
+      <template slot="heading">
+        {{ 'transfer-form.form-heading' | globalize }}
+      </template>
+      <transfer-form @cancel="isTransferDrawerShown = false" />
+    </drawer>
+    <template v-if="!isLoadFailed">
+      <div class="op-history__list" v-if="isLoaded">
         <template v-if="operations.length">
           <op-list :list="operations" />
         </template>
@@ -46,6 +92,11 @@
 <script>
 import SelectField from '@/vue/fields/SelectField'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import TopBar from '@/vue/common/TopBar'
+import Drawer from '@/vue/common/Drawer'
+import WithdrawalForm from '@/vue/forms/WithdrawalForm'
+import DepositForm from '@/vue/forms/DepositForm'
+import TransferForm from '@/vue/forms/TransferForm'
 import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -59,34 +110,42 @@ export default {
   components: {
     SelectField,
     CollectionLoader,
+    TopBar,
+    Drawer,
+    WithdrawalForm,
+    DepositForm,
+    TransferForm,
     OpList,
   },
   data: _ => ({
-    tokenCode: null,
+    assetCode: null,
     assets: [],
     operations: [],
     isLoaded: false,
     isLoadFailed: false,
-    pageLoader: () => { },
+    isWithdrawalDrawerShown: false,
+    isDepositDrawerShown: false,
+    isTransferDrawerShown: false,
+    pageLoader: () => {},
   }),
   computed: {
     ...mapGetters([
       vuexTypes.account,
       vuexTypes.accountId,
     ]),
-    tokens () {
+    assetCodes () {
       return this.assets.map(item => item.code)
     },
     balanceId () {
       return this.account.balances
-        .find(item => item.asset === this.tokenCode)
+        .find(item => item.asset === this.assetCode)
         .balanceId
     },
   },
   watch: {
-    tokenCode () {
+    assetCode () {
       this.pageLoader = this.getPageLoader(this.accountId, {
-        asset: this.tokenCode,
+        asset: this.assetCode,
       })
     },
   },
@@ -94,7 +153,8 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
-      this.tokenCode = this.$route.params.tokenCode || this.tokens[0] || null
+      this.assetCode = this.$route.params.assetCode ||
+        this.assetCodes[0] || null
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
@@ -136,24 +196,47 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "~@scss/variables";
+<style lang="scss">
+  @import '~@scss/variables';
+  @import "~@scss/mixins";
 
-.op-history__navigation {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 6.2rem;
-}
+  .op-history__filters {
+    display: inline-flex;
+    align-items: center;
+  }
 
-.op-history__navigation-text {
-  margin-right: 1.5rem;
-}
+  .op-history__filters-text{
+    margin-right: 1.5rem;
+  }
 
-.op-history__table-wrp {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .op-history__actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      margin-right: 1.2rem;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .op-history__btn-icon {
+    display: flex;
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+
+    &--rotate {
+      transform: rotate(-45deg)
+    }
+  }
+
+  .op-history__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+  }
 
 .op-history__table {
   width: 100%;

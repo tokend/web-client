@@ -28,10 +28,14 @@ export const router = new Router({
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
+      // Used to define when App component should render
+      // main app content. If the current route is auth route
+      // the content shouldn't be rendered.
+      meta: { authRoute: true },
       component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
-          path: '/log-in',
+          path: '/sign-in',
           name: vueRoutes.login.name,
           component: resolve => require(['@/vue/pages/Login'], resolve),
           beforeEnter: authPageGuard,
@@ -119,8 +123,46 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
         {
+          path: '/tokens',
+          name: vueRoutes.assets.name,
+          featureFlag: config.FEATURE_FLAGS.assets,
+          redirect: vueRoutes.assetsExplore,
+          component: resolve => require(['@/vue/pages/Assets'], resolve),
+          children: [
+            {
+              path: '/tokens/explore',
+              name: vueRoutes.assetsExplore.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              component: resolve => require(['@/vue/pages/AssetsExplorer'], resolve),
+            },
+            {
+              path: '/tokens/balances',
+              name: vueRoutes.balances.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              component: resolve => require(['@/vue/pages/Balances'], resolve),
+            },
+          ],
+        },
+        {
+          path: '/requests',
+          name: vueRoutes.requests.name,
+          featureFlag: config.FEATURE_FLAGS.requests,
+          redirect: vueRoutes.requests.assetCreation,
+          component: resolve => require(['@/vue/pages/Requests'], resolve),
+          children: [
+            {
+              path: '/requests/token-creation',
+              name: vueRoutes.requests.assetCreation.name,
+              meta: { pageNameTranslationId: 'pages-names.requests' },
+              component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
+            },
+          ],
+        },
+        {
           path: '/settings',
           name: vueRoutes.settings.name,
+          featureFlag: config.FEATURE_FLAGS.settings,
+          meta: { pageNameTranslationId: 'pages-names.settings' },
           redirect: vueRoutes.verification,
           component: resolve => require(['@/vue/pages/Settings'], resolve),
           children: [

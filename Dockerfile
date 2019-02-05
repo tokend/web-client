@@ -7,7 +7,7 @@ RUN true \
  && yarn build \
  && true
 
-FROM nginx:alpine
+FROM nginx:latest
 RUN echo  '\n\
     server {\n\
         listen 80 default_server;\n\

@@ -33,8 +33,8 @@ export class RequestRecord {
   get isApproved () {
     return this.stateI === REQUEST_STATES.approved
   }
-  get isCancelled () {
-    return this.stateI === REQUEST_STATES.cancelled
+  get isCanceled () {
+    return this.stateI === REQUEST_STATES.canceled
   }
   get isRejected () {
     return this.stateI === REQUEST_STATES.rejected

@@ -15,20 +15,22 @@
       </div>
     </template>
     <button
+      type="button"
       class="select-field__selected"
-      :class="{'select-field__selected--focused': isExpanded}"
+      :class="{
+        'select-field__selected--focused': isExpanded,
+        'select-field__selected--padding' : label
+      }"
       :disabled="disabled"
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
         {{ getLabel(currentValue) || '&nbsp;' }}
       </span>
-      <div>
-        <i
-          class="select-field__selected-icon mdi mdi-chevron-down"
-          :class="{ 'select-field__selected-icon--active': isExpanded }"
-        />
-      </div>
+      <i
+        class="select-field__selected-icon mdi mdi-chevron-down"
+        :class="{ 'select-field__selected-icon--active': isExpanded }"
+      />
     </button>
     <div
       class="select-field__list"
@@ -38,6 +40,7 @@
       <button
         v-for="(item, i) in values"
         :key="i"
+        type="button"
         class="select-field__list-item"
         :class="{
           'select-field__list-item--selected':
@@ -108,8 +111,11 @@ export default {
   },
 
   created () {
-    this.selectedValue = this.value
-    this.currentValue = this.value
+    const value = this.values.every(v => _isObject(v))
+      ? this.values.find(v => v.value === this.value)
+      : this.value
+    this.selectedValue = value
+    this.currentValue = value
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
   },
@@ -184,11 +190,10 @@ export default {
         default:
           return
       }
-
       this.scrollList(index)
     },
     getIndex (item) {
-      if (!_isObject(item)) {
+      if (_isObject(item)) {
         return this.values.findIndex(entry => entry.value === item.value)
       }
       return this.values.indexOf(item)
@@ -235,7 +240,6 @@ export default {
   border: none;
   caret-color: $field-color-focused;
   color: $field-color-text;
-  padding: $field-input-padding;
 
   @include material-border(
     $field-color-focused,
@@ -248,6 +252,10 @@ export default {
   .select-field--form-free & {
     border-bottom: 0;
     background-size: 0;
+  }
+
+  &.select-field__selected--padding{
+    padding: $field-input-padding;
   }
 }
 
@@ -330,7 +338,7 @@ export default {
   left: 0;
   width: 100%;
   min-width: 16rem;
-  top: calc(100% + .4rem);
+  top: 100%;
   background-color: $col-dropdown-bg;
   border-radius: .3rem;
   z-index: 5;

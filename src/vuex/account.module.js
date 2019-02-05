@@ -38,6 +38,7 @@ export const actions = {
 
 export const getters = {
   [vuexTypes.account]: state => state.account,
+  [vuexTypes.balancesDetails]: state => state.balancesDetails,
   [vuexTypes.accountId]: state => state.account.id,
   [vuexTypes.accountIsBlocked]: state => state.account.isBlocked,
   [vuexTypes.accountBlockReasons]: state => state.account.blockReasons,

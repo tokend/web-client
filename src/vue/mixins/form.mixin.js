@@ -26,7 +26,7 @@ export default {
   data: _ => ({
     formMixin: {
       isDisabled: false,
-      isFormConfirmationShown: false,
+      isConfirmationShown: false,
     },
   }),
   methods: {
@@ -110,11 +110,13 @@ export default {
     enableForm () {
       this.formMixin.isDisabled = false
     },
-    showFormConfirmation () {
-      this.formMixin.isFormConfirmationShown = true
+    showConfirmation () {
+      this.disableForm()
+      this.formMixin.isConfirmationShown = true
     },
-    hideFormConfirmation () {
-      this.formMixin.isFormConfirmationShown = false
+    hideConfirmation () {
+      this.enableForm()
+      this.formMixin.isConfirmationShown = false
     },
   },
 }

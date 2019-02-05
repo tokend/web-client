@@ -1,5 +1,8 @@
 <template>
-  <div class="form-stepper">
+  <div
+    class="form-stepper"
+    :class="{ 'form-stepper--disabled': $attrs.disabled }"
+  >
     <div class="form-stepper__tabs">
       <a
         v-for="step in steps"
@@ -28,28 +31,26 @@
 /**
  * FormStepper component represents a wrapper for multi-step form.
  *
- * To use it you should insert this component into your form.
- * Main form content should be inserted inside form-stepper tag as a slot.
+ * To use it you should insert your forms (steps) inside
+ * form-stepper tag as a slot.
  *
  * Example of the form using form stepper:
  *
- * <form>
- *   <form-stepper
- *     :steps="steps"
- *     :current-step.sync="currentStep"
- *   >
- *     <template v-if="currentStep === steps.yourStep1.number">
- *       <input />
- *       ...
- *       <button @click="next('form.yourStep1')" />
- *     </template>
+ * <form-stepper
+ *   :steps="steps"
+ *   :current-step.sync="currentStep"
+ * >
+ *   <form v-if="currentStep === steps.yourStep1.number">
+ *     <input />
  *     ...
- *     <template v-if="currentStep === steps.yourStepN.number">
- *       ...
- *       <button @click="submit" />
- *     </template>
- *   </form-stepper>
- * </form>
+ *     <button @click="next('form.yourStep1')" />
+ *   </form>
+ *   ...
+ *   <form v-if="currentStep === steps.yourStepN.number">
+ *     ...
+ *     <button @click="submit" />
+ *   </form>
+ * </form-stepper>
  *
  * Example of the steps prop structure:
  *
@@ -87,7 +88,7 @@ export default {
   },
   methods: {
     updateStep (step) {
-      if (step.number < this.currentStep) {
+      if (!this.$attrs.disabled && step.number < this.currentStep) {
         this.$emit('update:currentStep', step.number)
       }
     },
@@ -96,55 +97,61 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '~@scss/variables';
+@import '~@scss/variables';
 
-  .form-stepper__tabs {
-    display: flex;
-    flex-direction: row;
+.form-stepper__tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-stepper__tab {
+  border-bottom: .2rem solid $col-form-stepper-tab-border;
+  padding: 1rem;
+  cursor: pointer;
+  min-width: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .form-stepper__tab-title {
+    font-size: 1.2rem;
+    color: $col-form-stepper-text;
+    text-align: center;
   }
 
+  .form-stepper__tab-icon {
+    font-size: 1rem;
+    background-color: $col-form-stepper-icon-background;
+    color: $col-form-stepper-icon;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    padding: .2rem;
+    margin-right: .4rem;
+  }
+
+  .form-stepper__tab-title {
+    font-size: 1.2rem;
+    color: $col-primary;
+  }
+}
+
+.form-stepper__tab--active {
+  border-color: $col-form-stepper-tab-active;
+
+  & .form-stepper__tab-title {
+    color: $col-form-stepper-tab-active;
+    font-weight: bold;
+  }
+}
+
+.form-stepper__form {
+  margin-top: 3.2rem;
+}
+
+.form-stepper--disabled {
   .form-stepper__tab {
-    border-bottom: .2rem solid $col-form-stepper-tab-border;
-    padding: 1rem;
-    cursor: pointer;
-    min-width: 12rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .form-stepper__tab-title {
-      font-size: 1.2rem;
-      color: $col-form-stepper-text;
-      text-align: center;
-    }
-
-    .form-stepper__tab-icon {
-      font-size: 1rem;
-      background-color: $col-form-stepper-icon-background;
-      color: $col-form-stepper-icon;
-      width: 1.4rem;
-      height: 1.4rem;
-      border-radius: 50%;
-      padding: .2rem;
-      margin-right: .4rem;
-    }
-
-    .form-stepper__tab-title {
-      font-size: 1.2rem;
-      color: $col-primary;
-    }
+    cursor: default;
   }
-
-  .form-stepper__tab--active {
-    border-color: $col-form-stepper-tab-active;
-
-    & .form-stepper__tab-title {
-      color: $col-form-stepper-tab-active;
-      font-weight: bold;
-    }
-  }
-
-  .form-stepper__form {
-    margin-top: 3.2rem;
-  }
+}
 </style>

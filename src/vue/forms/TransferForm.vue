@@ -29,9 +29,10 @@
               :values="tokenCodes"
               v-model="form.tokenCode"
               :label="'transfer-form.asset-lbl' | globalize"
-              :readonly="view.mode === VIEW_MODES.confirm" />
-            <div class="app__form-field-description">
-              <p v-if="form.tokenCode">
+              :disabled="view.mode === VIEW_MODES.confirm"
+            />
+            <template v-if="form.tokenCode">
+              <p class="app__form-field-description">
                 {{
                   'transfer-form.balance' | globalize({
                     amount: balance.balance,
@@ -39,7 +40,7 @@
                   })
                 }}
               </p>
-            </div>
+            </template>
           </div>
         </div>
 
@@ -227,7 +228,6 @@
 
         <form-confirmation
           v-if="view.mode === VIEW_MODES.confirm"
-          :is-pending="formMixin.isDisabled"
           :message="'transfer-form.recheck-form' | globalize"
           :ok-button="'transfer-form.submit-btn' | globalize"
           @cancel="updateView(VIEW_MODES.submit)"
@@ -337,6 +337,7 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
+      this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
         await Sdk.horizon.transactions
@@ -382,10 +383,8 @@ export default {
     },
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
-        const response = await Sdk.api.users.getPage({
-          email: recipient,
-        })
-        return response.data[0].id
+        const response = await Sdk.horizon.public.getAccountIdByEmail(recipient)
+        return response.data.accountId
       } else {
         return recipient
       }

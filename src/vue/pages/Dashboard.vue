@@ -4,9 +4,9 @@
       <loader :message="'dashboard.data-loading' | globalize" />
     </template>
     <template v-else>
-      <div class="dashboard__asset-selector">
+      <div class="dashboard__toolbar">
         <asset-selector
-          class="dashboard__portfolio"
+          class="dashboard__asset-selector"
           :current-asset="currentAsset"
           @asset-change="setCurrentAsset"
           :scale="scale"
@@ -28,9 +28,11 @@
         </div>
       </div>
       <template v-if="currentAsset">
-        <div class="dashboard__chart">
+        <div
+          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
+          class="dashboard__chart"
+        >
           <chart
-            v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
             :base-asset="currentAsset"
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
@@ -147,13 +149,15 @@ export default {
   flex: 1;
 }
 
-.dashboard__asset-selector {
+.dashboard__toolbar {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .dashboard__actions {
   margin-top: .8rem;
+  display: flex;
 }
 
 .dashboard__action {
@@ -163,11 +167,12 @@ export default {
 }
 
 .dashboard__chart {
-  margin-bottom: 2.4rem;
   margin-top: -4rem;
 }
 
 .dashboard__activity {
   width: 100%;
+  margin-top: 2.4rem;
+  overflow-x: auto;
 }
 </style>

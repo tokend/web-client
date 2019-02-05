@@ -5,6 +5,8 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { MockHelper } from '@/test'
 
+import { Sdk } from '@/sdk'
+
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
 Vue.config.silent = true
@@ -78,6 +80,11 @@ describe('EmailGetter component unit test', () => {
 
   describe('method', () => {
     describe('loadResult', () => {
+      beforeEach(() => {
+        sinon.stub(Sdk, 'networkDetails').value({
+          masterAccountId: 'master',
+        })
+      })
       it('fetches user by account ID', async () => {
         sinon.stub(wrapper.vm, 'getAccountId').resolves(ACCOUNT_ID)
         const spy = sinon.stub(usersResource, 'get').resolves({ data: {} })

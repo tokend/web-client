@@ -1,7 +1,7 @@
 <template>
   <div class="auth-page">
     <h2 class="auth-page__title">
-      {{ 'auth-pages.log-in' | globalize }}
+      {{ 'auth-pages.sign-in' | globalize }}
     </h2>
 
     <div class="auth-page__content">

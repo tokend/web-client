@@ -7,7 +7,11 @@ $sidebar-hide-bp: 768px;
 $status-message-reposition-bp: 470px;
 
 $sidebar-width: 27.5rem;
-$content-side-paddings: 4rem;
+
+$content-padding-top: 3.7rem;
+$content-padding-bottom: 2.5rem;
+$content-padding-left: 5rem;
+$content-padding-right: 6.5rem;
 $content-side-paddings-sm: 2rem;
 
 // z-indexes
@@ -22,6 +26,7 @@ $_white: #ffffff;
 $_gray: #e2e3e3;
 $_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
+$_thinBlue: #f6f8fb;
 $_lightGray: #c6c6c6;
 $_mediumGray: #ccc;
 $_lightRed: #ef5350;
@@ -66,7 +71,7 @@ $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
-$col-app-content-background: $_thinGray;
+$col-app-content-background: $_thinBlue;
 
 // text colors:
 $col-heading: $col-text;
@@ -120,6 +125,7 @@ $col-field-background: $col-block-bg;
 $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
 $col-field-text-secondary: $_lightPurple;
+$col-field-shadow: rgba(0, 0, 0, 0.1);
 $col-select-field-selected-background: rgba($_eastBay, 0.1);
 $col-select-field-hover-background: rgba($_eastBay, 0.05);
 
@@ -192,5 +198,20 @@ $col-form-stepper-icon: $col-text-on-dark-bg;
 $col-form-stepper-icon-background: $col-primary;
 $col-form-stepper-tab-active: $col-primary-lighten;
 $col-form-stepper-tab-border: $_thinPurple;
+
+// asset card colors
+$col-asset-card-background: $_white;
+$col-asset-card-header-background: $_athensGray;
+$col-asset-card-text-primary: $col-text;
+$col-asset-card-text-secondary: $col-text-secondary;
+
+// request colors
+$col-request-approved: $_cyan;
+$col-request-pending: $_orangePeel;
+$col-request-rejected: $_lightRed;
+
+// asset logo
+$col-asset-logo-background: $_white;
+$col-asset-logo-text: $col-primary;
 
 // TODO: paste here variables that are ready to use during the refactor process
