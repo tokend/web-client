@@ -28,9 +28,7 @@
           <vue-markdown
             class="ios-installation-guide__step-description"
             :source="'ios-installation-guide.download-step' | globalize"
-            :prerender="replaceHtmlBreaks"
             :html="false"
-            :anchor-attributes="anchorAttributes"
           />
         </div>
         <div class="ios-installation-guide__step">
@@ -157,6 +155,7 @@ export default {
 
 .ios-installation-guide__link {
   @include button();
+
   padding: 0;
   font-weight: normal;
   font-size: 1.3rem;
@@ -170,9 +169,9 @@ export default {
 
 .ios-installation-guide__content {
   margin-top: 3.5rem;
+  padding: 2.7rem 2.4rem 4.4rem;
   border-radius: .2rem;
   background-color: $col-ios-guide-block-bg;
-  padding: 2.7rem 2.4rem 4.4rem;
 
   @include box-shadow();
 
@@ -206,13 +205,13 @@ export default {
 
 .ios-installation-guide__step-number {
   background-color: $col-ios-guide-step-number-bg;
+  color: $col-ios-guide-step-number-text;
   font-size: 1rem;
-  min-width: 2.3rem;
-  height: 2.3rem;
   font-weight: bold;
   text-align: center;
+  min-width: 2.3rem;
+  height: 2.3rem;
   padding-top: .5rem;
-  color: $col-ios-guide-step-number-text;
   border-radius: 50%;
 }
 

@@ -116,7 +116,7 @@ export default {
   }
 
   @include respond-to($medium) {
-    padding: 3.3rem 8rem;
+    padding: 3.3rem 6rem;
   }
 
   @include respond-to($tablet) {
@@ -145,17 +145,22 @@ export default {
   padding: 4.1rem 10rem;
 
   @include box-shadow();
+
+  @include respond-to($medium) {
+    padding: 4.1rem 6rem;
+  }
+
   @include respond-to($tablet) {
     padding: 2rem;
   }
 }
 
 .downloads__section {
-  margin-top: 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  margin-top: 1.2rem;
 
   &:not(:first-child) {
     margin-top: 4.7rem;
@@ -205,31 +210,23 @@ export default {
   display: flex;
   position: absolute;
   left: 50%;
-  width: 35rem;
+  max-width: 35rem;
   transform: translateX(-50%);
 
   @include respond-to(small) {
-    width: 100%;
-    position: relative;
     display: block;
+    position: relative;
     left: 0;
+    max-width: 100%;
     transform: none;
   }
 }
 
-.downloads__phone-img {
-  width: 16rem;
+.downloads__phone-img, .downloads__android, .downloads_ios {
+  max-width: 16rem;
 
   @include respond-to(small) {
-    width: 100%;
-  }
-}
-
-.downloads__android, .downloads_ios {
-  width: 16rem;
-
-  @include respond-to(small) {
-    width: 100%;
+    max-width: 100%;
   }
 }
 
