@@ -1,5 +1,7 @@
 <template>
   <div class="trade-exchange">
+    <trade-top-bar @reload-trade-data="loadData" />
+
     <div v-if="assetPair.base">
       <div class="trade-exchange__chart">
         <chart
@@ -58,12 +60,12 @@
 import Chart from '@/vue/common/chart/Chart'
 import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRenderer'
 import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
+import TradeTopBar from '@/vue/common/TradeTopBar'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'trade-exchange',
@@ -71,6 +73,7 @@ export default {
     Chart,
     TradeHistoryRenderer,
     TradeOffersRenderer,
+    TradeTopBar,
     CollectionLoader,
   },
   data: () => ({
@@ -108,7 +111,6 @@ export default {
     if (this.assetPair.base) {
       await this.loadData()
     }
-    Bus.on(Bus.eventList.reloadTradeData, this.loadData)
   },
   methods: {
     async loadData () {

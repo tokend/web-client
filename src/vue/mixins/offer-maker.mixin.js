@@ -38,7 +38,7 @@ export default {
     async createOffer (opts) {
       try {
         if (!this.getAssetDetails(opts.pair.base)) {
-          await base.manageBalance({
+          await base.Operation.manageBalance({
             destination: this.accountId,
             asset: opts.pair.base,
             action: base.xdr.ManageBalanceAction.create(),
@@ -47,7 +47,7 @@ export default {
         }
 
         if (!this.getAssetDetails(opts.pair.quote)) {
-          await base.manageBalance({
+          await base.Operation.manageBalance({
             destination: this.accountId,
             asset: opts.pair.quote,
             action: base.xdr.ManageBalanceAction.create(),

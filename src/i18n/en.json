@@ -576,7 +576,7 @@
       "submit-sell-btn": "Sell"
     },
 
-    "trade": {
+    "trade-top-bar": {
       "exchange-view": "Exchange",
       "my-offers-view": "My Orders",
       "create-buy-offer-button": "Create buy order",

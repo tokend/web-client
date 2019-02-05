@@ -1,5 +1,7 @@
 <template>
   <div class="trade-user-offers">
+    <trade-top-bar @reload-trade-data="loadOffersHistory" />
+
     <trade-open-offers
       :asset-pair="assetPair"
       :is-loading="isopenOffersLoading"
@@ -10,17 +12,18 @@
 
 <script>
 import TradeOpenOffers from '@/vue/pages/TradeUserOffers/Trade.OpenOffers'
+import TradeTopBar from '@/vue/common/TradeTopBar'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'trade-user-offers',
   components: {
     TradeOpenOffers,
+    TradeTopBar,
   },
   data: () => ({
     openOffers: [],
@@ -53,7 +56,6 @@ export default {
     if (this.assetPair.base) {
       await this.loadOffersHistory()
     }
-    Bus.on(Bus.eventList.reloadTradeData, this.loadOffersHistory)
   },
   methods: {
     setSelectedAssets ({ base, quote }) {
