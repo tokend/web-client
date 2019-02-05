@@ -9,6 +9,7 @@
     <h2 class="ios-installation-guide__title">
       {{ 'ios-installation-guide.title' | globalize }}
     </h2>
+
     <div class="ios-installation-guide__content">
       <h3 class="ios-installation-guide__header">
         {{ 'ios-installation-guide.how-to-install-header' | globalize }}
@@ -31,6 +32,7 @@
             :html="false"
           />
         </div>
+
         <div class="ios-installation-guide__step">
           <p class="ios-installation-guide__step-number">
             2
@@ -48,6 +50,7 @@
             <p class="ios-installation-guide__step-description">
               {{ 'ios-installation-guide.first-launch-step' | globalize }}
             </p>
+
             <div class="ios-installation-guide__img-steps">
               <div class="ios-installation-guide__img-step">
                 <!-- eslint-disable max-len -->
@@ -59,6 +62,7 @@
                   {{ 'ios-installation-guide.system-preferences-substep' | globalize }}
                 </p>
               </div>
+
               <div class="ios-installation-guide__img-step">
                 <img
                   src="@static/images/ios-install-guide/ios-install-guide__2.png"
@@ -68,6 +72,7 @@
                   {{ 'ios-installation-guide.general-preferences-substep' | globalize }}
                 </p>
               </div>
+
               <div class="ios-installation-guide__img-step">
                 <img
                   src="@static/images/ios-install-guide/ios-install-guide__3.png"
@@ -77,6 +82,7 @@
                   {{ 'ios-installation-guide.device-management-substep' | globalize }}
                 </p>
               </div>
+
               <div class="ios-installation-guide__img-step">
                 <img
                   src="@static/images/ios-install-guide/ios-install-guide__4.png"
@@ -86,6 +92,7 @@
                   {{ 'ios-installation-guide.distributed-lab-lp-substep' | globalize }}
                 </p>
               </div>
+
               <div class="ios-installation-guide__img-step">
                 <img
                   src="@static/images/ios-install-guide/ios-install-guide__5.png"
@@ -95,6 +102,7 @@
                   {{ 'ios-installation-guide.trust-substep' | globalize }}
                 </p>
               </div>
+
               <div class="ios-installation-guide__img-step">
                 <img
                   src="@static/images/ios-install-guide/ios-install-guide__6.png"

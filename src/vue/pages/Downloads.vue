@@ -9,6 +9,7 @@
     <h2 class="downloads__title">
       {{ 'downloads-page.title' | globalize }}
     </h2>
+
     <div class="downloads__content">
       <section class="downloads__section">
         <h3 class="downloads__section-header">
@@ -36,6 +37,7 @@
                 >
               </a>
             </div>
+
             <div class="downloads__ios">
               <img
                 class="downloads__phone-img"
