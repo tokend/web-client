@@ -456,6 +456,7 @@
       "token-creation-title": "Token creation",
       "fund-creation-title": "Fund creation",
       "preissuance-upload-title": "Pre-issuance upload",
+      "fund-name-header": "Fund name",
       "token-code-header": "Token code",
       "request-state-header": "Request state",
       "created-header": "Created",
