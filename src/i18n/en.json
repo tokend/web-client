@@ -573,7 +573,8 @@
       "amount": "Amount {{asset}}",
       "total": "Total {{asset}}",
       "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell"
+      "submit-sell-btn": "Sell",
+      "error-operation-cross-self": "Current order crosses your existing order"
     },
 
     "trade-top-bar": {

@@ -4,9 +4,8 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { base, errors, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
-import { globalize } from '@/vue/filters/globalize'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
-import { parseError } from '@/js/errors/error.parser'
+import { TRANSACTION_ERROR_CODES } from '@/js/const/transaction-error-codes'
 
 const OFFER_FEE_TYPE = 'offerFee'
 
@@ -79,10 +78,14 @@ export default {
 
         await Sdk.horizon.transactions.submitOperations(operation)
 
-        Bus.success(globalize('offer-creation-form.success'))
+        Bus.success('offer-creation-form.success')
       } catch (error) {
-        if (error instanceof errors.BadRequestError) {
-          Bus.error(parseError(error))
+        if (
+          error instanceof errors.TransactionError &&
+          // eslint-disable-next-line
+          error.resultCodes.operations.includes(TRANSACTION_ERROR_CODES.opCrossSelf)
+        ) {
+          Bus.error('offer-creation-form.error-operation-cross-self')
         } else {
           ErrorHandler.process(error)
         }
