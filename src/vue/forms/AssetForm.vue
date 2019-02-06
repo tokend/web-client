@@ -199,9 +199,13 @@
   </form-stepper>
 
   <loader
-    v-else
+    v-else-if="!isLoadingFailed"
     :message-id="'asset-form.loading-msg'"
   />
+
+  <p v-else>
+    {{ 'asset-form.loading-error-msg' | globalize }}
+  </p>
 </template>
 
 <script>
@@ -217,12 +221,15 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
+import { RecordWrapper } from '@/js/records'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
+
+import _merge from 'lodash/merge'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -260,7 +267,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    request: { type: Object, default: _ => ({}) },
+    assetForUpdate: { type: String, default: '' },
   },
   data: _ => ({
     form: {
@@ -278,7 +285,9 @@ export default {
         terms: null,
       },
     },
+    request: {},
     isLoaded: false,
+    isLoadingFailed: false,
     currentStep: 1,
     STEPS,
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -336,6 +345,7 @@ export default {
       const preissuedAssetSigner = this.form.advanced.isPreissuanceDisabled
         ? config.NULL_ASSET_SIGNER
         : this.form.advanced.preissuedAssetSigner
+
       const initialPreissuedAmount = this.form.advanced.isPreissuanceDisabled
         ? this.form.information.maxIssuanceAmount
         : this.form.advanced.initialPreissuedAmount
@@ -359,57 +369,104 @@ export default {
     },
   },
   async created () {
-    await this.tryPopulateForm(this.request)
-    this.isLoaded = true
+    if (this.assetForUpdate) {
+      try {
+        this.request = await this.getAssetRequestForUpdate(this.assetForUpdate)
+        this.populateForm()
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadingFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    }
   },
   methods: {
-    async tryPopulateForm (request) {
-      if (request.id) {
-        try {
-          const assetCreationRequest =
-            await this.fetchAssetCreationRequest(request.assetCode)
-          const assetRecord = new AssetCreateRequestRecord(
-            assetCreationRequest
-          )
-          const isPreissuanceDisabled =
-            assetRecord.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+    populateForm () {
+      const isPreissuanceDisabled =
+        this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
 
-          this.form = {
-            information: {
-              name: request.assetName,
-              code: request.assetCode,
-              maxIssuanceAmount: assetRecord.maxIssuanceAmount,
-              logo: request.logo.key
-                ? new DocumentContainer(request.logo)
-                : null,
-              policies: request.policies,
-            },
-            advanced: {
-              isPreissuanceDisabled: isPreissuanceDisabled,
-              preissuedAssetSigner: isPreissuanceDisabled
-                ? ''
-                : assetRecord.preissuedAssetSigner,
-              initialPreissuedAmount: isPreissuanceDisabled
-                ? ''
-                : assetRecord.initialPreissuedAmount,
-              terms: request.terms.key
-                ? new DocumentContainer(request.terms)
-                : null,
-            },
-          }
-        } catch (e) {
-          ErrorHandler.processWithoutFeedback(e)
-        }
+      this.form = {
+        information: {
+          name: this.request.assetName,
+          code: this.request.assetCode,
+          maxIssuanceAmount: this.request.maxIssuanceAmount,
+          logo: this.request.logo.key
+            ? new DocumentContainer(this.request.logo)
+            : null,
+          policies: this.request.policies,
+        },
+        advanced: {
+          isPreissuanceDisabled: isPreissuanceDisabled,
+          preissuedAssetSigner: isPreissuanceDisabled
+            ? ''
+            : this.request.preissuedAssetSigner,
+          initialPreissuedAmount: isPreissuanceDisabled
+            ? ''
+            : this.request.initialPreissuedAmount,
+          terms: this.request.terms.key
+            ? new DocumentContainer(this.request.terms)
+            : null,
+        },
       }
     },
-    async fetchAssetCreationRequest (assetCode) {
-      const { data } = await Sdk.horizon.request.getAllForAssets({
-        requestor: this.account.accountId,
+    async getAssetRequestForUpdate (assetCode) {
+      const requests = await this.getAssetRequests(assetCode)
+
+      if (requests.latestUpdatableRequest || requests.latestApprovedRequest) {
+        // AssetRecord from asset creation request used, because only asset
+        // creation request contains the info about asset issuance
+        // (initial preissued amount, preissued asset signer, etc.).
+        return _merge(
+          AssetUpdateRequestRecord.fromAssetRecord(
+            requests.creationRequest.asset
+          ),
+          requests.latestUpdatableRequest || Object.assign(
+            // Request ID is assigned, because approved requests are immutable.
+            requests.latestApprovedRequest,
+            { id: ASSET_CREATION_REQUEST_ID }
+          )
+        )
+      } else {
+        return requests.creationRequest
+      }
+    },
+    async getAssetRequests (assetCode) {
+      try {
+        const { data } = await Sdk.horizon.request.getAllForAssets({
+          requestor: this.account.accountId,
+          asset: assetCode,
+        })
+        const requests = data.map(request => RecordWrapper.request(request))
+
+        const creationRequest =
+          requests.find(request => request instanceof AssetCreateRequestRecord)
+        const latestUpdateRequests = this.getLatestAssetUpdateRequests(requests
+          .filter(request => request instanceof AssetUpdateRequestRecord)
+        )
+
+        return {
+          creationRequest,
+          ...latestUpdateRequests,
+        }
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+    getLatestAssetUpdateRequests (assetUpdateRequests) {
+      const latestUpdateTime = Math.max(
+        ...assetUpdateRequests.map(request => +new Date(request.updatedAt))
+      )
+      const latestApprovedRequest = assetUpdateRequests.find(request => {
+        return request.isApproved &&
+          +new Date(request.updatedAt) === latestUpdateTime
       })
-      return data.find(request => {
-        return request.details.assetCreate &&
-          request.details.assetCreate.code === assetCode
-      })
+      const latestUpdatableRequest = assetUpdateRequests
+        .find(request => request.isPending || request.isRejected)
+
+      return {
+        latestApprovedRequest,
+        latestUpdatableRequest,
+      }
     },
     next (formStep) {
       if (this.isFormValid(formStep)) {
@@ -434,7 +491,7 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.token-request-submitted-msg')
 
-        if (this.request.id) {
+        if (this.assetForUpdate) {
           this.$emit(EVENTS.update)
         }
       } catch (e) {

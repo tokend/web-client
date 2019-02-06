@@ -1,10 +1,17 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk/lib/index'
+
 import { RequestRecord } from '../request-record'
+import { AssetRecord } from '../entities/asset.record'
+
 import _get from 'lodash/get'
 
 export class AssetUpdateRequestRecord extends RequestRecord {
   constructor (record, details) {
     super(record)
+
+    this.asset = new AssetRecord(_get(
+      this._record, 'details.assetUpdate'
+    ))
 
     this.assetCode = _get(record, 'details.assetUpdate.code')
     this.assetName = _get(this._record, 'details.assetUpdate.details.name')
@@ -40,10 +47,16 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     this.attachedDetails = details
   }
 
-  static fromAsset (asset) {
+  /**
+   * Converts AssetRecord to AssetUpdateRequestRecord.
+   *
+   * @param {AssetRecord} assetRecord AssetRecord to be converted.
+   * @return {AssetUpdateRequestRecord} New AssetUpdateRequestRecord instance.
+   */
+  static fromAssetRecord (assetRecord) {
     return new this({
       details: {
-        assetUpdate: asset,
+        assetUpdate: assetRecord,
       },
     })
   }

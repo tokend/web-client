@@ -7,11 +7,12 @@ export class AssetRecord {
 
     this.code = record.code
     this.owner = record.owner
-    this.preissuedAssetSigner = record.preissuedAssetSigner
+    this.preIssuedAssetSigner = record.preIssuedAssetSigner
 
     this.availableForIssuance = record.availableForIssuance
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount
+    this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
 
     this.details = record.details

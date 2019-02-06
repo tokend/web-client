@@ -11,13 +11,13 @@
       </template>
       <asset-form
         v-if="isUpdateMode"
-        :request="assetUpdateRecord"
+        :asset-for-update="selectedAsset.code"
       />
       <asset-details
         v-else
         :asset="selectedAsset"
         @balance-added="refreshSelectedAsset"
-        @update="updateAsset"
+        @update="isUpdateMode = true"
       />
     </drawer>
     <div class="asset-cards">
@@ -67,13 +67,6 @@ import AssetLogo from '@/vue/common/assets/AssetLogo'
 import AssetForm from '@/vue/forms/AssetForm'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
-
-import { REQUEST_STATES } from '@/js/const/request-states.const'
-
-import { ErrorHandler } from '@/js/helpers/error-handler'
-
-import { Sdk } from '@/sdk'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -117,31 +110,6 @@ export default {
     refreshSelectedAsset () {
       this.selectedAsset = this.assetRecords
         .find(asset => asset.code === this.selectedAsset.code)
-    },
-    async updateAsset () {
-      try {
-        const assetUpdateRequest = await this.fetchAssetUpdateRequest()
-        if (assetUpdateRequest) {
-          this.assetUpdateRecord =
-            new AssetUpdateRequestRecord(assetUpdateRequest)
-        } else {
-          this.assetUpdateRecord =
-            AssetUpdateRequestRecord.fromAsset(this.selectedAsset)
-        }
-        this.isUpdateMode = true
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
-    },
-    async fetchAssetUpdateRequest () {
-      const { data } = await Sdk.horizon.request.getAllForAssets({
-        requestor: this.account.accountId,
-        state: REQUEST_STATES.pending,
-      })
-      return data.find(request => {
-        return request.details.assetUpdate &&
-          request.details.assetUpdate.code === this.selectedAsset.code
-      })
     },
   },
 }

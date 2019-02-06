@@ -432,6 +432,7 @@
 
     "asset-form": {
       "loading-msg": "Loading",
+      "loading-error-msg":"There was an error while loading.",
       "update-token-title": "Update token",
       "next-btn": "Next",
       "submit-btn": "Submit",

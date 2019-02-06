@@ -3,12 +3,12 @@
     <template v-if="isLoaded">
       <template v-if="requestsHistory.length">
         <drawer :is-shown.sync="isDetailsDrawerShown">
-          <template v-if="isUpdating">
+          <template v-if="isUpdateMode">
             <template slot="heading">
               {{ 'asset-form.update-token-title' | globalize }}
             </template>
             <asset-form
-              :request="selectedRequest"
+              :asset-for-update="selectedRequest.assetCode"
               @update="loadHistory"
             />
           </template>
@@ -18,7 +18,7 @@
             </template>
             <asset-request-details
               :request="selectedRequest"
-              @update="isUpdating = true"
+              @update="isUpdateMode = true"
               @cancel="cancelRequest"
             />
           </template>
@@ -157,7 +157,7 @@ export default {
     isLoadingFailed: false,
     isDetailsDrawerShown: false,
     selectedIndex: -1,
-    isUpdating: false,
+    isUpdateMode: false,
     REQUEST_STATES,
   }),
   computed: {
@@ -194,7 +194,7 @@ export default {
     },
     showRequestDetails (index) {
       this.selectedIndex = index
-      this.isUpdating = false
+      this.isUpdateMode = false
       this.isDetailsDrawerShown = true
     },
     async cancelRequest () {
