@@ -168,6 +168,11 @@ export const router = new Router({
                 },
               ],
             },
+            {
+              path: '/security',
+              name: vueRoutes.security.name,
+              component: resolve => require(['@/vue/pages/Security'], resolve),
+            },
           ],
         },
       ].filter(route => route.featureFlag !== false),

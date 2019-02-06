@@ -117,6 +117,7 @@
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
+      "tfa-code": "2FA code",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
@@ -146,6 +147,45 @@
       "verification-tab": "Verification",
       "security-tab": "Security",
       "my-account-tab": "My account"
+    },
+
+    "security-page": {
+      "enable-tfa-title": "Enable 2FA",
+      "disable-tfa-title": "Disable 2FA",
+      "password-title": "Password",
+      "change-password-btn": "Change password",
+      "account-id-title": "Account ID",
+      "view-account-id-btn": "View Account ID",
+      "secret-seed-title": "Secret seed",
+      "view-secret-seed-btn": "View secret seed",
+      "account-address-label": "Account address",
+      "secret-seed-desc": "Secret seed is private information that proves you own your account."
+    },
+
+    "change-password-form": {
+      "current-password-lbl": "Current password",
+      "new-password-lbl": "New password",
+      "confirm-password-lbl": "Confirm new password",
+      "tfa-code-lbl": "2FA code",
+      "change-password-btn": "Change password",
+      "wrong-password-err": "Your current password is wrong",
+      "password-changed-msg": "Your password was successfully changed"
+    },
+
+    "tfa-form": {
+      "password-lbl": "Current password",
+      "qr-desc": "Scan the QR with your 2FA app",
+      "code-lbl": "2FA code",
+      "secret-code-desc": "Or manually set the secret code",
+      "tfa-code-desc": "And enter your 2FA code to continue",
+      "wrong-password-err": "Wrong password",
+      "wrong-code-err": "Wrong code",
+      "tfa-enabled-msg": "2FA is enabled",
+      "tfa-disabled-msg": "2FA is disabled",
+      "secret-lbl": "Secret",
+      "disable-btn": "Disable",
+      "next-btn": "Next",
+      "enable-btn": "Enable"
     },
 
     "verification-page": {
