@@ -94,7 +94,6 @@ export default {
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
-      account: vuexTypes.account,
     }),
     assetRecords () {
       return this.assets
