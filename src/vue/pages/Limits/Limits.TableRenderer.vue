@@ -96,6 +96,7 @@ const OPERATION_TYPES_TRANSLATION_ID = {
 }
 
 export default {
+  name: 'limits-table-renderer',
   components: { Loader },
   props: {
     limits: { type: Object, required: true, default: () => [] },

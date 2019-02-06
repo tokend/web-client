@@ -142,7 +142,6 @@
 </template>
 
 <script>
-import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { globalize } from '@/vue/filters/globalize'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
@@ -176,7 +175,7 @@ export default {
   name: 'limits-form',
   components: {
   },
-  mixins: [OwnedAssetsLoaderMixin, FormMixin],
+  mixins: [FormMixin],
   props: {
     limits: { type: Object, required: true, default: () => ({}) },
   },
