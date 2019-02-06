@@ -39,9 +39,10 @@ export const vueRoutes = Object.freeze({
     fundCreation: { name: 'app.fund-creation' },
     preissuanceUpload: { name: 'app.preissuance-upload' },
   },
-  // stubs:
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
+  iosInstallationGuide: { name: 'ios-installation-guide' },
+  // stubs:
   deposit: { name: 'app.deposit' },
   limits: { name: 'app.limits' },
   transfers: { name: 'app.transfers' },

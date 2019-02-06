@@ -4,6 +4,7 @@ import numeral from 'numeral'
 import i18next from 'i18next'
 
 import _isObject from 'lodash/isObject'
+import _merge from 'lodash/merge'
 
 import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 
@@ -28,7 +29,10 @@ let i18n
 
 switch (language) {
   case 'en':
-    i18n = require(`./en`)
+    i18n = _merge(
+      require(`./en`),
+      require(`./en.terms`)
+    )
     break
   default:
     throw new Error('Locale not found')
