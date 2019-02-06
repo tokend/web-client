@@ -54,13 +54,14 @@ export default {
     show (messageType, payload) {
       this.messageType = messageType
 
-      if (!payload) {
-        this.messageId = 'status-message.default-message'
-      } else if (typeof payload === 'string') {
+      if (typeof payload === 'string') {
         this.messageId = payload
-      } else if (typeof payload === 'object' && !Array.isArray(payload)) {
+      // eslint-disable-next-line
+      } else if (typeof payload === 'object' && !Array.isArray(payload) && !null) {
         this.messageId = payload.messageId || 'status-message.default-message'
         this.messageArgs = payload.messageArgs || {}
+      } else {
+        this.messageId = 'status-message.default-message'
       }
 
       this.isShown = true
