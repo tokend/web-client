@@ -462,13 +462,19 @@
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
-      "request-approved-msg": "Approved",
-      "request-rejected-msg": "Rejected",
-      "request-pending-msg": "Pending",
-      "request-canceled-msg": "Cancelled",
+      "request-approved-state": "Approved",
+      "request-rejected-state": "Rejected",
+      "request-pending-state": "Pending",
+      "request-canceled-state": "Cancelled",
       "request-permanently-rejected-msg": "Permanently rejected",
       "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your requests"
+      "no-request-history-desc": "Here will be the list of your requests",
+      "approved-request-msg": "Your request was approved",
+      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-request-msg": "Your request was cancelled",
+      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
+      "request-canceled-msg": "Your request was successfully cancelled"
     },
 
     "asset-details": {
@@ -499,13 +505,25 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "asset-create-request-type": "Asset create",
-      "asset-update-request-type": "Asset update",
-      "approved-request-msg": "Your request was approved",
-      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
-      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
-      "canceled-request-msg": "Your request was cancelled",
-      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
-      "request-canceled-msg": "Your request was successfully cancelled"
+      "asset-update-request-type": "Asset update"
+    },
+
+    "fund-details": {
+      "title": "Fund details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "name-title": "Fund name",
+      "start-time-title": "Start time",
+      "close-time-title": "Close time",
+      "soft-cap-title": "Soft cap",
+      "hard-cap-title": "Hard cap",
+      "sell-title": "{{asset}} to sell",
+      "video-about-fund-title": "Video about fund",
+      "no-video-msg": "No video",
+      "view-video-btn": "View",
+      "view-btn": "View the fund",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL"
     },
 
     "file-field": {
@@ -518,8 +536,10 @@
     },
 
     "funds": {
-      "create-fund": "Create fund"
+      "create-fund": "Create fund",
+      "update-fund-title": "Update fund"
     },
+
     "create-fund-form": {
       "create-fund-header": "Create fund",
       "provide-fund-information": "Provide fund information",

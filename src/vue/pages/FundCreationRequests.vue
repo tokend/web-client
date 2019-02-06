@@ -5,8 +5,12 @@
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template v-if="isUpdateMode">
             <template slot="heading">
-              {{ 'fund-form.update-fund-title' | globalize }}
+              {{ 'funds.update-fund-title' | globalize }}
             </template>
+            <!--
+              TODO: add ability to update fund, when fund form is ready
+              to do it
+            -->
             <create-fund-form
               :fund="selectedRequest"
               @update="loadHistory"
@@ -15,7 +19,7 @@
 
           <template v-else>
             <template slot="heading">
-              {{ 'fund-request-details.title' | globalize }}
+              {{ 'fund-details.title' | globalize }}
             </template>
             <fund-details
               :request="selectedRequest"
@@ -73,42 +77,42 @@
               <td
                 v-if="request.isApproved"
                 class="request-state request-state--approved"
-                :title="'requests-page.request-approved-msg' | globalize"
+                :title="'requests-page.request-approved-state' | globalize"
               >
-                {{ 'requests-page.request-approved-msg' | globalize }}
+                {{ 'requests-page.request-approved-state' | globalize }}
               </td>
 
               <td
                 v-if="request.isPending"
                 class="request-state request-state--pending"
-                :title="'requests-page.request-pending-msg' | globalize"
+                :title="'requests-page.request-pending-state' | globalize"
               >
-                {{ 'requests-page.request-pending-msg' | globalize }}
+                {{ 'requests-page.request-pending-state' | globalize }}
               </td>
 
               <td
                 v-if="request.isRejected"
                 class="request-state request-state--rejected"
-                :title="'requests-page.request-rejected-msg' | globalize"
+                :title="'requests-page.request-rejected-state' | globalize"
               >
-                {{ 'requests-page.request-rejected-msg' | globalize }}
+                {{ 'requests-page.request-rejected-state' | globalize }}
               </td>
 
               <td
                 v-if="request.isCanceled"
                 class="request-state request-state--canceled"
-                :title="'requests-page.request-canceled-msg' | globalize"
+                :title="'requests-page.request-canceled-state' | globalize"
               >
-                {{ 'requests-page.request-canceled-msg' | globalize }}
+                {{ 'requests-page.request-canceled-state' | globalize }}
               </td>
               <!-- eslint-disable max-len -->
 
               <td
                 v-if="request.isPermanentlyRejected"
                 class="request-state request-state--permanently-rejected"
-                :title="'requests-page.request-permanently-rejected-msg' | globalize"
+                :title="'requests-page.request-permanently-rejected-state' | globalize"
               >
-                {{ 'requests-page.request-permanently-rejected-msg' | globalize }}
+                {{ 'requests-page.request-permanently-rejected-state' | globalize }}
               </td>
               <!-- eslint-enable max-len -->
 
@@ -239,7 +243,7 @@ export default {
     },
     async cancelRequest () {
       try {
-        const operation = base.ManageAssetBuilder.cancelAssetRequest({
+        const operation = base.SaleRequestBuilder.cancelSaleCreationRequest({
           requestID: this.selectedRequest.id,
         })
         await Sdk.horizon.transactions.submitOperations(operation)
@@ -249,7 +253,7 @@ export default {
           RecordWrapper.request(data)
         )
 
-        Bus.success('fund-request-details.request-canceled-msg')
+        Bus.success('requests-page.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
