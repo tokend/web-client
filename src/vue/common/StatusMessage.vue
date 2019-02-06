@@ -3,7 +3,8 @@
     <p class="status-message__content">
       {{
         messageId | globalize({
-          context: messageType
+          context: messageType,
+          ...messageArgs
         })
       }}
     </p>
@@ -31,27 +32,37 @@ const MESSAGE_TYPES = Object.freeze({
 })
 
 export default {
-  name: 'message',
+  name: 'status-message',
   data: _ => ({
     messageId: '',
     messageType: '',
+    messageArgs: {},
     isShown: false,
     timeoutId: null,
   }),
   created () {
-    Bus.on(Bus.eventList.success, message =>
-      this.show(MESSAGE_TYPES.success, message))
-    Bus.on(Bus.eventList.warning, message =>
-      this.show(MESSAGE_TYPES.warning, message))
-    Bus.on(Bus.eventList.error, message =>
-      this.show(MESSAGE_TYPES.error, message))
-    Bus.on(Bus.eventList.info, message =>
-      this.show(MESSAGE_TYPES.info, message))
+    Bus.on(Bus.eventList.success, payload =>
+      this.show(MESSAGE_TYPES.success, payload))
+    Bus.on(Bus.eventList.warning, payload =>
+      this.show(MESSAGE_TYPES.warning, payload))
+    Bus.on(Bus.eventList.error, payload =>
+      this.show(MESSAGE_TYPES.error, payload))
+    Bus.on(Bus.eventList.info, payload =>
+      this.show(MESSAGE_TYPES.info, payload))
   },
   methods: {
-    show (messageType, message) {
+    show (messageType, payload) {
       this.messageType = messageType
-      this.messageId = message || 'status-message.default-message'
+
+      if (!payload) {
+        this.messageId = 'status-message.default-message'
+      } else if (typeof payload === 'string') {
+        this.messageId = payload
+      } else if (typeof payload === 'object' && !Array.isArray(payload)) {
+        this.messageId = payload.messageId || 'status-message.default-message'
+        this.messageArgs = payload.messageArgs || {}
+      }
+
       this.isShown = true
 
       if (this.timeoutId) {
