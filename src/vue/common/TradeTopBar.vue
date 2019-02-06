@@ -97,7 +97,6 @@ import TopBar from '@/vue/common/TopBar'
 import { vueRoutes } from '@/vue-router/routes'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@tokend/js-sdk'
-import { globalize } from '@/vue/filters/globalize'
 
 const EVENTS = {
   reloadTradeData: 'reload-trade-data',
@@ -192,11 +191,14 @@ export default {
         this.selectedPair = this.formattedPairs[0]
         if (queryBase && queryQuote) {
           // eslint-disable-next-line
-          Bus.error(globalize('trade-top-bar.error-invalid-base-quote-query-in-link', {
-            invalidBase: queryBase,
-            invalidQuote: queryQuote,
-            defaultPair: this.formattedPairs[0],
-          }))
+          Bus.error({
+            messageId: 'trade-top-bar.error-invalid-base-quote-query-in-link',
+            messageArgs: {
+              invalidBase: queryBase,
+              invalidQuote: queryQuote,
+              defaultPair: this.formattedPairs[0],
+            },
+          })
         }
       }
     },

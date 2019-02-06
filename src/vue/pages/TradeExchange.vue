@@ -30,7 +30,7 @@
 
       <div class="trade-exchange__offers">
         <h2 class="app__table-title">
-          {{ 'trade.offers-section-title' | globalize }}
+          {{ 'trade-exchange.offers-section-title' | globalize }}
         </h2>
         <div class="trade-exchange__offers-wrapper">
           <trade-offers-renderer

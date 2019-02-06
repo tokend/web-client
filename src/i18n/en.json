@@ -617,6 +617,10 @@
       "error-operation-cross-self": "Current order crosses your existing order"
     },
 
+    "trade-exchange": {
+      "offers-section-title": "Open orders"
+    },
+
     "trade-top-bar": {
       "exchange-view": "Exchange",
       "my-offers-view": "My Orders",
@@ -625,7 +629,6 @@
       "user-balances-label": "Balances",
       "create-buy-offer-form-title": "Create buy order",
       "create-sell-offer-form-title": "Create sell order",
-      "offers-section-title": "Open orders",
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
     },
 
