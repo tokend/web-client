@@ -143,6 +143,16 @@
               </div>
             </div>
             <div class="app__form-row create-fund__form-row">
+              <div class="app__form-field">
+                {{ 'create-fund-form.price' | globalize({
+                  base: form.fundInformation.baseAsset,
+                  quote: config.DEFAULT_QUOTE_ASSET
+                }) }}
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+              </div>
+            </div>
+            <div class="app__form-row create-fund__form-row">
               {{ 'create-fund-form.accept-investments-in' | globalize }}
             </div>
             <div
@@ -306,11 +316,10 @@ import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import FormStepper from '@/vue/common/FormStepper'
 import DescriptionEditor from '@/vue/common/DescriptionEditor'
-import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
 
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
-import { DateUtil } from '@/js/utils'
+import { DateUtil, MathUtil } from '@/js/utils'
 import { vuexTypes } from '@/vuex/types'
 import {
   required,
@@ -319,12 +328,14 @@ import {
   requiredCheckbox,
   minDate,
 } from '@validators'
+import { SALE_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
 
 const STEPS = {
   fundInformation: {
@@ -372,6 +383,7 @@ export default {
       isFailed: false,
       currentStep: 1,
       assets: [],
+      price: '',
       form: {
         fundInformation: {
           name: '',
@@ -464,6 +476,16 @@ export default {
       return +this.request.id !== 0
     },
   },
+  watch: {
+    'form.fundInformation.hardCap' () {
+      this.price = MathUtil.divide(+this.form.fundInformation.hardCap,
+        +this.form.fundInformation.baseAssetForHardCap)
+    },
+    'form.fundInformation.baseAssetForHardCap' () {
+      this.price = MathUtil.divide(+this.form.fundInformation.hardCap,
+        +this.form.fundInformation.baseAssetForHardCap)
+    },
+  },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
@@ -523,7 +545,7 @@ export default {
               asset: item,
               price: '1',
             })),
-        isCrowdfunding: true,
+        saleType: SALE_TYPES.fixedPrice,
       }
       return Sdk.base.SaleRequestBuilder.createSaleCreationRequest(operation)
     },

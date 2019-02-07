@@ -541,6 +541,7 @@
       "cancel-btn": "Cancel",
       "create-btn": "Create",
       "request-submitted-msg": "Your request was successfully submitted",
+      "price": "Price ({{quote}} for 1 {{base}}) ≈ ",
       "not-available": "One last moment",
       "asset-not-available-yet": "Please create token before creating fund",
       "can-not-load-assets": "There was an error while loading assets. Please try again later"
