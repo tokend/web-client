@@ -1,12 +1,16 @@
 import { RequestRecord } from '../request-record'
 import _get from 'lodash/get'
+import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 
 export class LimitsUpdateRequestRecord extends RequestRecord {
   constructor (record) {
     super(record)
 
-    this.requestType = _get(record, 'details.limitsUpdate.details.requestType')
-    this.asset = _get(record, 'details.limitsUpdate.details.asset')
+    this.requestType = _get(this.limitsUpdate, 'details.requestType')
+    this.asset = _get(this.limitsUpdate, 'details.asset')
+    this.operationType = _get(this.limitsUpdate, 'details.operationType')
+    this.note = _get(this.limitsUpdate, 'details.note')
+    this.limits = _get(this.limitsUpdate, 'details.limits')
   }
 
   isValidJSONString (str) {
@@ -16,6 +20,10 @@ export class LimitsUpdateRequestRecord extends RequestRecord {
     } catch (e) {
       return false
     }
+  }
+
+  get operationTypeI () {
+    return STATS_OPERATION_TYPES[this.operationType]
   }
 
   get requestedDocs () {
