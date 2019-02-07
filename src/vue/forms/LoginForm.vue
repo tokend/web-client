@@ -117,7 +117,7 @@ export default {
         }
         await this.loadAccount(accountId)
         await this.loadKyc()
-        this.$router.push({ name: 'app' })
+        this.$router.go(-1)
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {
           this.$router.push({
