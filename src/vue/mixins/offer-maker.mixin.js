@@ -24,33 +24,35 @@ export default {
       return this.accountBalances.find(i => i.asset === assetCode)
     },
     /**
-     * @param opts
+     * @param {object} opts
      * @param {object} opts.pair - pair to create offer for
-     * @param {object} opts.pair.base
-     * @param {object} opts.pair.quote
-     * @param {object} opts.baseAmount
-     * @param {object} opts.quoteAmount
-     * @param {object} opts.price
-     * @param {object} opts.isBuy
+     * @param {string} opts.pair.base
+     * @param {string} opts.pair.quote
+     * @param {string} opts.baseAmount
+     * @param {string} opts.quoteAmount
+     * @param {string} opts.price
+     * @param {boolean} opts.isBuy
      * @returns {Promise<void>}
      */
     async createOffer (opts) {
       try {
         if (!this.getAssetDetails(opts.pair.base)) {
-          await base.Operation.manageBalance({
+          const operation = base.Operation.manageBalance({
             destination: this.accountId,
             asset: opts.pair.base,
-            action: base.xdr.ManageBalanceAction.create(),
+            action: base.xdr.ManageBalanceAction.createUnique(),
           })
+          await Sdk.horizon.transactions.submitOperations(operation)
           await this.loadBalances(this.accountId)
         }
 
         if (!this.getAssetDetails(opts.pair.quote)) {
-          await base.Operation.manageBalance({
+          const operation = base.Operation.manageBalance({
             destination: this.accountId,
             asset: opts.pair.quote,
-            action: base.xdr.ManageBalanceAction.create(),
+            action: base.xdr.ManageBalanceAction.createUnique(),
           })
+          await Sdk.horizon.transactions.submitOperations(operation)
           await this.loadBalances(this.accountId)
         }
 
