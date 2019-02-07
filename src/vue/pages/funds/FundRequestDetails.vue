@@ -150,6 +150,7 @@
         >
           {{ 'fund-request-details.view-btn' | globalize }}
         </button>
+
         <button
           v-ripple
           class="fund-request-details__update-btn"
@@ -158,6 +159,7 @@
         >
           {{ 'fund-request-details.update-btn' | globalize }}
         </button>
+
         <button
           v-ripple
           class="fund-request-details__cancel-btn"
@@ -171,9 +173,11 @@
         </button>
       </div>
     </template>
+
     <template v-else-if="!isLoadingFailed">
       <loader :message-id="'fund-request-details.loading-msg'" />
     </template>
+
     <template v-else>
       <p>
         {{ 'fund-request-details.loading-error-msg' | globalize }}
