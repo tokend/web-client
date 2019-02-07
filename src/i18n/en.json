@@ -182,6 +182,16 @@
       "website-lbl": "Website"
     },
 
+    "limits-documents-uploader-form": {
+      "file-type-note": "image/pdf (Max 5mb)",
+      "form-subheading": "Requirements",
+      "document-type-lbl": "Document type",
+      "note-lbl": "Note",
+      "upload-docs-btn": "Upload",
+      "documents-upload-success": "Documents successfully uploaded",
+      "error-duplicate-request": "Duplicate request"
+    },
+
     "sale-state": {
       "starts-in": "Starts in %{days} days",
       "starts": "Starts %{time}",
@@ -264,7 +274,8 @@
     "limits": {
       "explore-limits": "Explore limits",
       "limits-form-heading": "Change limits",
-      "change-limits-bth": "Change limits"
+      "change-limits-bth": "Change limits",
+      "requests-subheading": "Requests"
     },
 
     "limits-form": {

@@ -20,7 +20,9 @@
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
-        {{ getLabel(currentValue) || '&nbsp;' }}
+        {{
+          getLabel(currentValue) || '&nbsp;' | globalize
+        }}
       </span>
       <div>
         <i
@@ -44,7 +46,7 @@
         }"
         @click.prevent="selectItem(item)"
       >
-        {{ getLabel(item) }}
+        {{ getLabel(item) | globalize }}
       </button>
     </div>
     <p v-if="errorMessage" class="select-field__err-mes">

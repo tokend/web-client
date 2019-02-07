@@ -124,7 +124,7 @@
         type="button"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        @click="showFormConfirmation"
+        @click="tryToSubmit"
       >
         {{ 'limits-form.send-request-btn' | globalize }}
       </button>
@@ -143,16 +143,12 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import { globalize } from '@/vue/filters/globalize'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
 import { maxLength, maxValue, decimal } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import {
-  base,
-  STATS_OPERATION_TYPES,
-} from '@tokend/js-sdk'
+import { base, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import config from '@/config'
 
 const OPERATION_TYPES_TRANSLATION_ID = {
@@ -168,7 +164,7 @@ const STATS_OPERATION_TYPES_KEY_NAMES = {
 }
 
 const EVENTS = {
-  finished: 'finished',
+  limitsChanged: 'limits-changed',
 }
 
 export default {
@@ -232,9 +228,11 @@ export default {
     this.selectedOpType = this.formattedOpTypes[0]
   },
   methods: {
-    globalize,
-    async submit () {
+    tryToSubmit () {
       if (!this.isFormValid()) return
+      this.showFormConfirmation()
+    },
+    async submit () {
       this.disableForm()
       try {
         await this.createRequest()
@@ -245,7 +243,7 @@ export default {
       }
       this.enableForm()
       this.hideFormConfirmation()
-      this.$emit(EVENTS.finished)
+      this.$emit(EVENTS.limitsChanged)
     },
     async createRequest () {
       const asset = this.selectedLimitsByOpType.assetCode
@@ -280,7 +278,7 @@ export default {
       for (const [key, value] of Object.entries(OPERATION_TYPES_TRANSLATION_ID)) {
         this.formattedOpTypes.push({
           value: key,
-          label: this.globalize(value),
+          label: value,
         })
       }
     },

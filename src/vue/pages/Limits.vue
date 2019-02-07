@@ -40,13 +40,23 @@
 
     <div class="limits__requests">
       <h3 class="limits__requests-title">
-        Requests
+        {{ 'limits.requests-subheading' | globalize }}
       </h3>
 
       <limits-requests-list-renderer
-        :is-loading="isLimitsLoading"
+        :is-loading="isLimitsRequestsLoading"
         :requests="limitsRequests"
+        @requests-reload-ask="loadLimitsRequests"
       />
+
+      <div class="limits__requests-collection-loader">
+        <collection-loader
+          :first-page-loader="loadLimitsRequests"
+          :page-limit="limitsRequestsQueries.limit"
+          @first-page-load="setLimitsRequests"
+          @next-page-load="extendLimitsRequests"
+        />
+      </div>
     </div>
 
     <drawer :is-shown.sync="isLimitsDrawerShown">
@@ -54,7 +64,7 @@
         {{ 'limits.limits-form-heading' | globalize }}
       </template>
       <limits-form
-        @finished="hideLimitsDrawer"
+        @limits-changed="limitsChanged"
         :limits="selectedLimitsList"
       />
     </drawer>
@@ -77,6 +87,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { LimitsRecord } from '@/js/records/entities/limits.record'
 import { LimitsUpdateRequestRecord } from '@/js/records/requests/limits-update.record'
 import config from '@/config'
+import CollectionLoader from '@/vue/common/CollectionLoader'
 
 export default {
   name: 'limits',
@@ -87,14 +98,13 @@ export default {
     LimitsForm,
     LimitsTableRenderer,
     LimitsRequestsListRenderer,
+    CollectionLoader,
   },
   data: () => ({
     selectedAsset: '',
     isLimitsDrawerShown: false,
     vueRoutes,
     ACCOUNT_TYPES,
-    accountLimits: [],
-    selectedLimits: [],
     formattedAccountLimits: {},
     isLimitsLoading: false,
     isLimitsRequestsLoading: false,
@@ -143,20 +153,24 @@ export default {
     },
     async loadLimitsRequests () {
       this.isLimitsRequestsLoading = true
-      try {
-        const response = await Sdk.horizon.request
-          .getAllForLimitsUpdates({
-            ...this.limitsRequestsQueries,
-            requestor: this.accountId,
-          })
-
-        this.limitsRequests = response.data.map(item => {
-          return new LimitsUpdateRequestRecord(item)
+      const response = await Sdk.horizon.request
+        .getAllForLimitsUpdates({
+          ...this.limitsRequestsQueries,
+          requestor: this.accountId,
         })
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
+      return response
+    },
+    setLimitsRequests (data) {
+      this.limitsRequests = data.map(item =>
+        new LimitsUpdateRequestRecord(item)
+      )
       this.isLimitsRequestsLoading = false
+    },
+    extendLimitsRequests (data) {
+      this.limitsRequests = this.limitsRequests
+        .concat(data.map(item =>
+          new LimitsUpdateRequestRecord(item)
+        ))
     },
     formatLimits ({ limits }) {
       const formattedLimits = {}
@@ -165,16 +179,16 @@ export default {
         formattedLimits[assetCode] = limits
           .filter(item => item.limit.assetCode === assetCode)
           .reduce((acc, item) => {
-            if (item.limit.statsOpType === STATS_OPERATION_TYPES.paymentOut) {
-              return { ...acc, payment: new LimitsRecord(item) }
+            switch (item.limit.statsOpType) {
+              case STATS_OPERATION_TYPES.paymentOut:
+                return { ...acc, payment: new LimitsRecord(item) }
+              case STATS_OPERATION_TYPES.withdraw:
+                return { ...acc, withdraw: new LimitsRecord(item) }
+              case STATS_OPERATION_TYPES.deposit:
+                return { ...acc, deposit: new LimitsRecord(item) }
+              default:
+                return acc
             }
-            if (item.limit.statsOpType === STATS_OPERATION_TYPES.withdraw) {
-              return { ...acc, withdraw: new LimitsRecord(item) }
-            }
-            if (item.limit.statsOpType === STATS_OPERATION_TYPES.deposit) {
-              return { ...acc, deposit: new LimitsRecord(item) }
-            }
-            return acc
           }, {})
         if (!formattedLimits[assetCode].payment) {
           formattedLimits[assetCode].payment = new LimitsRecord({}, {
@@ -197,7 +211,7 @@ export default {
       })
       this.formattedAccountLimits = formattedLimits
     },
-    hideLimitsDrawer () {
+    limitsChanged () {
       this.isLimitsDrawerShown = false
       this.loadLimitsRequests()
     },
@@ -220,6 +234,7 @@ export default {
 .limits__assets-select {
   display: inline-block;
   width: auto;
+  min-width: 18rem;
 }
 
 .limits__requests-title {
@@ -230,6 +245,12 @@ export default {
   margin-bottom: 1.6rem;
 
   @include respond-to(medium) { margin-top: 2.4rem }
+}
+
+.limits__requests-collection-loader {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.6rem;
 }
 
 </style>

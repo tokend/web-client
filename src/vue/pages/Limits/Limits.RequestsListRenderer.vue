@@ -56,7 +56,7 @@
         {{ 'limits-requests-table-renderer.document-uploader-form-heading' | globalize }}
       </template>
       <limits-documents-uploader-form
-        @finished="hideDrawer"
+        @request-uploaded="requestUploaded"
         :request="selectedRequest"
       />
     </drawer>
@@ -85,6 +85,10 @@ const LIMITS_REQUEST_TYPE_TRANSLATE_ID = Object.freeze({
   [LIMITS_REQUEST_TYPE.docsUploading]: 'limits-requests-table-renderer.request-type-docs-uploading',
 })
 
+const EVENTS = Object.freeze({
+  requestsReloadAsk: 'requests-reload-ask',
+})
+
 export default {
   name: 'limits-requests-list-renderer',
   components: {
@@ -104,9 +108,10 @@ export default {
     selectedRequest: null,
   }),
   methods: {
-    hideDrawer () {
+    requestUploaded () {
       this.isDocumentsUploaderFormShown = false
       this.selectedRequest = null
+      this.$emit(EVENTS.requestsReloadAsk)
     },
     openDocumentsUploaderForm (request) {
       this.selectedRequest = request
