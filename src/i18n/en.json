@@ -424,10 +424,14 @@
     "assets-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-token-btn": "Create token",
+      "create-token-btn": "Create token"
+    },
+
+    "assets-list": {
+      "update-token-title": "Update token",
+      "details-title": "Token details",
       "list-item-balance-line": "Balance: {{value, money}}",
-      "no-balance-msg": "No balance",
-      "token-details-title": "Token details"
+      "no-balance-msg": "No balance"
     },
 
     "asset-form": {
@@ -474,7 +478,6 @@
     },
 
     "asset-details": {
-      "title": "Token details",
       "balance-title": "Balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",

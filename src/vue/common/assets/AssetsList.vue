@@ -3,10 +3,10 @@
     <drawer :is-shown.sync="isDetailsDrawerShown">
       <template slot="heading">
         <template v-if="isUpdateMode">
-          {{ 'asset-form.update-token-title' | globalize }}
+          {{ 'assets-list.update-token-title' | globalize }}
         </template>
         <template v-else>
-          {{ 'asset-details.title' | globalize }}
+          {{ 'assets-list.details-title' | globalize }}
         </template>
       </template>
       <asset-form
@@ -46,13 +46,13 @@
             class="asset-card__balance"
           >
             <!-- eslint-disable-next-line max-len -->
-            {{ 'assets-page.list-item-balance-line' | globalize({ value: asset.balance }) }}
+            {{ 'assets-list.list-item-balance-line' | globalize({ value: asset.balance }) }}
           </p>
           <p
             v-else
             class="asset-card__balance asset-card__no-balance"
           >
-            {{ 'assets-page.no-balance-msg' | globalize }}
+            {{ 'assets-list.no-balance-msg' | globalize }}
           </p>
         </div>
       </a>

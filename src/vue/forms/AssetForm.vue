@@ -230,6 +230,7 @@ import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
 import _merge from 'lodash/merge'
+import moment from 'moment'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -453,13 +454,17 @@ export default {
       }
     },
     getLatestAssetUpdateRequests (assetUpdateRequests) {
-      const latestUpdateTime = Math.max(
-        ...assetUpdateRequests.map(request => +new Date(request.updatedAt))
+      const latestApprovedRequestTime = moment.max(
+        assetUpdateRequests
+          .filter(request => request.isApproved)
+          .map(request => moment(request.updatedAt))
       )
+
       const latestApprovedRequest = assetUpdateRequests.find(request => {
         return request.isApproved &&
-          +new Date(request.updatedAt) === latestUpdateTime
+          latestApprovedRequestTime.isSame(request.updatedAt)
       })
+
       const latestUpdatableRequest = assetUpdateRequests
         .find(request => request.isPending || request.isRejected)
 
