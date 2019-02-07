@@ -23,8 +23,8 @@
             </template>
             <fund-request-details
               :request="selectedRequest"
-              @update="isUpdateMode = true"
-              @cancel="cancelRequest"
+              @update-ask="isUpdateMode = true"
+              @cancel-ask="cancelRequest"
             />
           </template>
         </drawer>
@@ -174,7 +174,6 @@ import CreateFundForm from '@/vue/forms/CreateFundForm'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { RecordWrapper } from '@/js/records'
 
 import { mapGetters } from 'vuex'
@@ -200,7 +199,6 @@ export default {
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdateMode: false,
-    REQUEST_STATES,
     filters: {
       baseAsset: '',
     },

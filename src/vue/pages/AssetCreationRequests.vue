@@ -136,7 +136,6 @@ import AssetForm from '@/vue/forms/AssetForm'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
@@ -162,7 +161,6 @@ export default {
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdating: false,
-    REQUEST_STATES,
   }),
   computed: {
     ...mapGetters({

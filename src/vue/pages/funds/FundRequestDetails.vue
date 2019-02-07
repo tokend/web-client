@@ -165,7 +165,7 @@
             'fund-request-details__cancel-btn--disabled': !canBeCanceled
           }"
           :disabled="!canBeCanceled"
-          @click="$emit(EVENTS.cancel)"
+          @click="$emit(EVENTS.cancelAsk)"
         >
           {{ 'fund-request-details.cancel-btn' | globalize }}
         </button>
@@ -187,9 +187,6 @@ import AssetLogo from '@/vue/common/assets/AssetLogo'
 import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
-import { REQUEST_TYPES } from '@tokend/js-sdk'
-
-import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import config from '@/config'
 
@@ -202,7 +199,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 
 const EVENTS = {
   updateAsk: 'update-ask',
-  cancel: 'cancel',
+  cancelAsk: 'cancel-ask',
 }
 
 export default {
@@ -221,8 +218,6 @@ export default {
     asset: {},
     config,
     EVENTS,
-    REQUEST_STATES,
-    REQUEST_TYPES,
     isLoaded: false,
     isLoadingFailed: false,
   }),
