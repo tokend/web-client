@@ -33,12 +33,14 @@
           :key is a hack to ensure that the component will be updated
           after computed calculated
         -->
+        <!-- eslint-disable max-len -->
         <select-field
           v-model="filters.baseAsset"
           :values="fundAssetCodes"
           :key="filters.baseAsset"
-          class="fund-creation-requests__asset-list app__select--no-border"
+          class="fund-creation-requests__asset-list app__select app__select--no-border"
         />
+        <!-- eslint-enable max-len -->
 
         <div class="fund-creation-requests__table-wrp">
           <table class="app__table fund-creation-requests__table">
