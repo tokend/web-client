@@ -11,10 +11,6 @@
               TODO: add ability to update fund, when fund form is ready
               to do it
             -->
-            <create-fund-form
-              :fund="selectedRequest"
-              @update="loadHistory"
-            />
           </template>
 
           <template v-else>
@@ -169,7 +165,6 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
 
 import FundRequestDetails from '@/vue/pages/funds/FundRequestDetails'
-import CreateFundForm from '@/vue/forms/CreateFundForm'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
@@ -190,7 +185,6 @@ export default {
     NoDataMessage,
     SelectField,
     FundRequestDetails,
-    CreateFundForm,
   },
   data: _ => ({
     requestsHistory: [],

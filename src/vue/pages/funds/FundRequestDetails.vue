@@ -194,8 +194,6 @@ import { Sdk } from '@/sdk'
 
 import config from '@/config'
 
-import { vueRoutes } from '@/vue-router/routes'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
@@ -250,7 +248,6 @@ export default {
     viewFund () {
       // TODO: add the fund details route when fund details component
       // is added.
-      this.$router.push(vueRoutes.funds)
     },
   },
 }

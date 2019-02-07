@@ -600,28 +600,6 @@
       "disabled-msg": "This field is disabled"
     },
 
-    "funds": {
-      "create-fund": "Create fund",
-      "update-fund-title": "Update fund"
-    },
-
-    "create-fund-form": {
-      "create-fund-header": "Create fund",
-      "provide-fund-information": "Provide fund information",
-      "add-short-blurb": "Add a short blurb",
-      "full-description": "Full description",
-      "sale-name": "Fund name",
-      "base-asset": "Base asset",
-      "start-time": "Start time",
-      "close-time": "Close time",
-      "soft-cap": "Soft cap",
-      "hard-cap": "Hard cap",
-      "base-asset-hard-cap-to-sell": "{{asset}} to sell",
-      "accept-investments-in": "Accept investments in:",
-      "image-users-will-see-in-searcher" : "Upload the image users will see first in their searcher",
-      "insert-youtube-video": "Insert YouTube video by its ID"
-    },
-
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
       "asset": "Asset",
