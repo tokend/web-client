@@ -30,6 +30,7 @@ $_mediumGray: #ccc;
 $_lightRed: #ef5350;
 $_cornflowerBlue: #7b6eff;
 $_green: #33A494;
+$_lightGreen: #51ca90;
 $_orange: #ef6c00;
 $_orangePeel: #f2a100;
 $_whiteSmoke: #f5f6f9;
@@ -66,6 +67,7 @@ $col-msg-shadow: rgba(0, 0, 0, 0.25);
 // global colors
 $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
+$col-link: $_cornflowerBlue;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinBlue;
@@ -101,6 +103,7 @@ $col-button-flat-light-text: $col-text;
 // block
 $col-block-bg: $_white;
 $col-block-shadow: rgba(0, 0, 0, 0.1);
+$col-block-line: $_thinPurple;
 
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
@@ -129,6 +132,12 @@ $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
 $col-select-field-selected-background: rgba($_eastBay, 0.1);
 $col-select-field-hover-background: rgba($_eastBay, 0.05);
+$col-switch-field-background: $_whiteSmoke;
+$col-switch-field-border: $_thinPurple;
+$col-switch-field-disabled: $_mediumGray;
+$col-switch-field-enabled: $_lightGreen;
+$col-switch-field-enabled-border: darken($col-switch-field-enabled, 10%);
+$col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 
 // other colors
 $col-auth-titles-background-light: #5d5882;
@@ -213,4 +222,29 @@ $col-request-rejected: $_lightRed;
 $col-asset-logo-background: $_white;
 $col-asset-logo-text: $col-primary;
 
+// terms colors
+$col-terms-title: $col-primary;
+$col-terms-block-bg: $col-block-bg;
+$col-terms-header: $col-primary;
+$col-terms-list-item: $_thinPurple;
+$col-terms-text: $col-secondary;
+$col-terms-link: $col-primary-lighten;
+
+// downloads colors
+$col-downloads-title: $col-primary;
+$col-downloads-block-bg: $col-block-bg;
+$col-downloads-header: $col-primary;
+$col-downloads-text: $col-secondary;
+$col-downloads-line: $_athensGray;
+
+// iOS guide colors
+$col-ios-guide-title: $col-primary;
+$col-ios-guide-block-bg: $col-block-bg;
+$col-ios-guide-header: $col-primary;
+$col-ios-guide-link: $col-primary-lighten;
+$col-ios-guide-text: $col-secondary;
+$col-ios-guide-step-number-bg: $col-primary;
+$col-ios-guide-step-number-text: $_white;
+$col-ios-guide-step-text: $col-primary;
+$col-ios-guide-substep-text: $col-secondary;
 // TODO: paste here variables that are ready to use during the refactor process

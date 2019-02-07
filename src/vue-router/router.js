@@ -25,13 +25,24 @@ export const router = new Router({
       beforeEnter: resolveRedirect,
     },
     {
+      path: '/terms',
+      name: vueRoutes.terms.name,
+      component: resolve => require(['@/vue/pages/Terms'], resolve),
+    },
+    {
+      path: '/downloads',
+      name: vueRoutes.downloads.name,
+      component: resolve => require(['@/vue/pages/Downloads'], resolve),
+    },
+    {
+      path: '/ios-installation-guide',
+      name: vueRoutes.iosInstallationGuide.name,
+      component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
+    },
+    {
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
-      // Used to define when App component should render
-      // main app content. If the current route is auth route
-      // the content shouldn't be rendered.
-      meta: { authRoute: true },
       component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
@@ -64,6 +75,7 @@ export const router = new Router({
     {
       path: '/',
       name: 'app',
+      meta: { isNavigationRendered: true },
       component: resolve => require(['@/vue/AppContent'], resolve),
       beforeEnter: inAppRouteGuard,
       redirect: vueRoutes.dashboard,
@@ -166,6 +178,11 @@ export const router = new Router({
                   component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve),
                 },
               ],
+            },
+            {
+              path: '/security',
+              name: vueRoutes.security.name,
+              component: resolve => require(['@/vue/pages/Security'], resolve),
             },
           ],
         },

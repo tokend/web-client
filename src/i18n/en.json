@@ -116,6 +116,7 @@
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
+      "tfa-code": "2FA code",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
@@ -145,6 +146,45 @@
       "verification-tab": "Verification",
       "security-tab": "Security",
       "my-account-tab": "My account"
+    },
+
+    "security-page": {
+      "enable-tfa-title": "Enable 2FA",
+      "disable-tfa-title": "Disable 2FA",
+      "password-title": "Password",
+      "change-password-btn": "Change password",
+      "account-id-title": "Account ID",
+      "view-account-id-btn": "View Account ID",
+      "secret-seed-title": "Secret seed",
+      "view-secret-seed-btn": "View secret seed",
+      "account-address-label": "Account address",
+      "secret-seed-desc": "Secret seed is private information that proves you own your account."
+    },
+
+    "change-password-form": {
+      "current-password-lbl": "Current password",
+      "new-password-lbl": "New password",
+      "confirm-password-lbl": "Confirm new password",
+      "tfa-code-lbl": "2FA code",
+      "change-password-btn": "Change password",
+      "wrong-password-err": "Your current password is wrong",
+      "password-changed-msg": "Your password was successfully changed"
+    },
+
+    "tfa-form": {
+      "password-lbl": "Current password",
+      "qr-desc": "Scan the QR with your 2FA app",
+      "code-lbl": "2FA code",
+      "secret-code-desc": "Or manually set the secret code",
+      "tfa-code-desc": "And enter your 2FA code to continue",
+      "wrong-password-err": "Wrong password",
+      "wrong-code-err": "Wrong code",
+      "tfa-enabled-msg": "2FA is enabled",
+      "tfa-disabled-msg": "2FA is disabled",
+      "secret-lbl": "Secret",
+      "disable-btn": "Disable",
+      "next-btn": "Next",
+      "enable-btn": "Enable"
     },
 
     "verification-page": {
@@ -594,6 +634,38 @@
     "email-getter": {
       "loading-msg": "Loading...",
       "master-account": "Master"
+    },
+
+    "downloads-page": {
+      "go-back-btn": "Go back",
+      "title": "Downloads",
+      "mobile-apps-header": "All your tokens right on your phone",
+      "mobile-apps-desc": "To access your assets everywhere, get the TokenD app on your mobile device.",
+      "config-header": "One important step",
+      "config-desc": "Scan this QR code with your application to provide correct configuration for TokenD environment"
+    },
+
+    "ios-installation-guide": {
+      "go-back-btn": "Go back",
+      "title": "iOS installation guide",
+      "how-to-install-header": "How to install TokenDwallet app on iOS",
+      "apple-policy-desc": "Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.",
+      "steps-desc": "In order to install TokenD iOS wallet app follow the next steps:",
+      "download-step": "[Download](itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist) the application with your device.",
+      "install-step": "Close browser and wait until the app is downloaded and installed.",
+      "first-launch-step": "On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.",
+      "system-preferences-substep": "Open “System Preferences”",
+      "general-preferences-substep": "Open “General”",
+      "device-management-substep": "Scroll to “Profiles & Device Management”",
+      "distributed-lab-lp-substep": "Tab “DISTRIBUTED LAB LP”",
+      "trust-substep": "Tab “Trust DISTRIBUTED LAB LP”",
+      "confirm-substep": "Confirm",
+      "use-app-step": "Use the app"
+    },
+
+    "terms-page": {
+      "go-back-btn": "Go back",
+      "title": "Terms & conditions"
     }
   }
 }
