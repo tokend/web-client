@@ -192,6 +192,32 @@
       "days-left": "days left"
     },
 
+    "document-types": {
+      "sale-logo": "Sale Logo",
+      "sale-document": "Sale Document",
+      "asset-terms": "Asset Terms",
+      "asset-logo": "Asset Logo",
+      "kyc-id-document": "KYC ID Document",
+      "kyc-proof-of-address": "KYC Proof Of Address",
+      "kyc-selfie": "KYC Selfie",
+      "kyc-tax-returns": "KYC Tax Returns",
+      "kyc-origination-certificate": "KYC Origination Certificate",
+      "kyc-investment-presentation": "KYC Investment Presentation",
+      "kyc-proof-of-investor": "KYC Proof Of Investor",
+      "kyc-shareholders-certificate": "KYC Shareholders Certificate",
+      "kyc-annual-report": "KYC Annual report",
+      "kyc-memorandium": "KYC Memorandium",
+      "kyc-signatories-authorization": "KYC Signatories Authorization",
+      "kyc-organization-chart": "KYC Organization Chart",
+      "kyc-business-model": "KYC Business Model",
+      "passport": "Passport",
+      "driving-license": "Driving License",
+      "identity-card": "Identity Card",
+      "residence-permit": "Residence Permit",
+      "token-terms": "Token Terms",
+      "token-logo": "Token Logo"
+    },
+
     "form-confirmation": {
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
