@@ -550,7 +550,11 @@
       "start-time": "Start time",
       "close-time": "Close time",
       "soft-cap": "Soft cap",
-      "hard-cap": "Hard cap"
+      "hard-cap": "Hard cap",
+      "base-asset-hard-cap-to-sell": "{{asset}} to sell",
+      "accept-investments-in": "Accept investments in:",
+      "image-users-will-see-in-searcher" : "Upload the image users will see first in their searcher",
+      "insert-youtube-video": "Insert YouTube video by its ID"
     },
 
     "withdrawal-form": {
