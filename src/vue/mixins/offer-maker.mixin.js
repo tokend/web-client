@@ -84,8 +84,7 @@ export default {
       } catch (error) {
         if (
           error instanceof errors.TransactionError &&
-          // eslint-disable-next-line
-          error.resultCodes.operations.includes(OPERATION_ERROR_CODES.opCrossSelf)
+          error.includesOpCode(OPERATION_ERROR_CODES.opCrossSelf)
         ) {
           Bus.error('offer-creation-form.error-operation-cross-self')
         } else {
