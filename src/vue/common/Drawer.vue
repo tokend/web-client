@@ -131,6 +131,8 @@ export default {
   padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
+  overflow: auto;
+  height: 0;
 }
 
 .drawer-transition-enter-active {
