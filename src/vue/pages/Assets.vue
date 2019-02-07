@@ -32,7 +32,7 @@
       <template slot="heading">
         {{ 'assets-page.create-token-btn' | globalize }}
       </template>
-      <asset-form />
+      <asset-create-form />
     </drawer>
     <router-view />
   </div>
@@ -41,7 +41,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import AssetForm from '@/vue/forms/AssetForm'
+import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
@@ -55,7 +55,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    AssetForm,
+    AssetCreateForm,
   },
   data: _ => ({
     ACCOUNT_TYPES,

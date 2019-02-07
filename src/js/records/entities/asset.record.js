@@ -7,7 +7,7 @@ export class AssetRecord {
 
     this.code = record.code
     this.owner = record.owner
-    this.preIssuedAssetSigner = record.preIssuedAssetSigner
+    this.preissuedAssetSigner = record.preissuedAssetSigner
 
     this.availableForIssuance = record.availableForIssuance
     this.issued = record.issued

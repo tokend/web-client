@@ -8,10 +8,6 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   constructor (record, details) {
     super(record)
 
-    this.assetDetails = _get(
-      this._record, 'details.assetUpdate'
-    )
-
     this.assetCode = _get(record, 'details.assetUpdate.code')
     this.assetName = _get(this._record, 'details.assetUpdate.details.name')
     this.preissuedAssetSigner = _get(
@@ -44,20 +40,6 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     )
 
     this.attachedDetails = details
-  }
-
-  /**
-   * Wraps request asset details to AssetUpdateRequestRecord.
-   *
-   * @param {Object} assetDetails Asset details to be wrapped.
-   * @return {AssetUpdateRequestRecord} New AssetUpdateRequestRecord instance.
-   */
-  static fromAssetDetails (assetDetails) {
-    return new this({
-      details: {
-        assetUpdate: assetDetails,
-      },
-    })
   }
 
   logoUrl (storageUrl) {

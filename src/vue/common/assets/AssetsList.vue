@@ -9,7 +9,7 @@
           {{ 'assets-list.details-title' | globalize }}
         </template>
       </template>
-      <asset-form
+      <asset-update-form
         v-if="isUpdateMode"
         :asset-for-update="selectedAsset.code"
       />
@@ -64,7 +64,7 @@
 import Drawer from '@/vue/common/Drawer'
 import AssetDetails from '@/vue/pages/assets/AssetDetails'
 import AssetLogo from '@/vue/common/assets/AssetLogo'
-import AssetForm from '@/vue/forms/AssetForm'
+import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -79,7 +79,7 @@ export default {
     Drawer,
     AssetDetails,
     AssetLogo,
-    AssetForm,
+    AssetUpdateForm,
   },
   props: {
     assets: { type: Array, default: _ => [] },

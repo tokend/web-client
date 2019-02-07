@@ -7,7 +7,15 @@
             <template slot="heading">
               {{ 'asset-form.update-token-title' | globalize }}
             </template>
-            <asset-form
+
+            <asset-create-form
+              v-if="isAssetCreateRequest"
+              :asset-for-update="selectedRequest.assetCode"
+              @update="loadHistory"
+            />
+
+            <asset-update-form
+              v-else
               :asset-for-update="selectedRequest.assetCode"
               @update="loadHistory"
             />
@@ -127,14 +135,17 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import AssetRequestDetails from '@/vue/pages/assets/AssetRequestDetails'
-import AssetForm from '@/vue/forms/AssetForm'
+
+import AssetCreateForm from '@/vue/forms/AssetCreateForm'
+import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
-import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
+
+import { RecordWrapper } from '@/js/records'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -149,7 +160,8 @@ export default {
     Drawer,
     NoDataMessage,
     AssetRequestDetails,
-    AssetForm,
+    AssetCreateForm,
+    AssetUpdateForm,
   },
   data: _ => ({
     requestsHistory: [],
@@ -167,6 +179,9 @@ export default {
     selectedRequest () {
       return this.requestsHistory[this.selectedIndex]
     },
+    isAssetCreateRequest () {
+      return this.selectedRequest instanceof AssetCreateRequestRecord
+    },
   },
   async created () {
     await this.loadHistory()
@@ -178,18 +193,11 @@ export default {
           requestor: this.account.accountId,
         })
         this.requestsHistory =
-          data.map(request => this.createRequestRecord(request))
+          data.map(request => RecordWrapper.request(request))
         this.isLoaded = true
       } catch (e) {
         this.isLoadingFailed = true
         ErrorHandler.process(e)
-      }
-    },
-    createRequestRecord (request) {
-      if (request.details.assetCreate) {
-        return new AssetCreateRequestRecord(request)
-      } else {
-        return new AssetUpdateRequestRecord(request)
       }
     },
     showRequestDetails (index) {

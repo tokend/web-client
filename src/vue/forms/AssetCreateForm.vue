@@ -42,7 +42,7 @@
               { length: CODE_MAX_LENGTH }
             )"
             :maxlength="CODE_MAX_LENGTH"
-            :disabled="formMixin.isDisabled || isUpdateMode"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
@@ -60,7 +60,7 @@
               'form.information.maxIssuanceAmount',
               { from: MIN_AMOUNT, to: MAX_AMOUNT }
             )"
-            :disabled="formMixin.isDisabled || isUpdateMode"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
@@ -123,7 +123,7 @@
         <div class="app__form-field">
           <tick-field
             v-model="form.advanced.isPreissuanceDisabled"
-            :disabled="formMixin.isDisabled || isUpdateMode"
+            :disabled="formMixin.isDisabled"
           >
             {{ 'asset-form.additional-issuance-check' | globalize }}
           </tick-field>
@@ -142,7 +142,7 @@
               :error-message="getFieldErrorMessage(
                 'form.advanced.preissuedAssetSigner',
               )"
-              :disabled="formMixin.isDisabled || isUpdateMode"
+              :disabled="formMixin.isDisabled"
             />
           </div>
         </div>
@@ -160,7 +160,7 @@
                 'form.advanced.initialPreissuedAmount',
                 { from: MIN_AMOUNT, to: form.information.maxIssuanceAmount }
               )"
-              :disabled="formMixin.isDisabled || isUpdateMode"
+              :disabled="formMixin.isDisabled"
             />
           </div>
         </div>
@@ -223,14 +223,10 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { RecordWrapper } from '@/js/records'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
-import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
-
-import _merge from 'lodash/merge'
-import moment from 'moment'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -261,7 +257,7 @@ const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
 export default {
-  name: 'asset-form',
+  name: 'asset-create-form',
   components: {
     FormStepper,
     Loader,
@@ -270,6 +266,7 @@ export default {
   props: {
     assetForUpdate: { type: String, default: '' },
   },
+
   data: _ => ({
     form: {
       information: {
@@ -298,6 +295,7 @@ export default {
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
+
   validations () {
     return {
       form: {
@@ -334,10 +332,12 @@ export default {
       },
     }
   },
+
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
     }),
+
     assetRequestOpts () {
       const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
@@ -365,22 +365,22 @@ export default {
         },
       }
     },
-    isUpdateMode () {
-      return this.request instanceof AssetUpdateRequestRecord
-    },
   },
+
   async created () {
     if (this.assetForUpdate) {
       try {
         this.request = await this.getAssetRequestForUpdate(this.assetForUpdate)
         this.populateForm()
-        this.isLoaded = true
       } catch (e) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
     }
+
+    this.isLoaded = true
   },
+
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
@@ -410,28 +410,8 @@ export default {
         },
       }
     },
-    async getAssetRequestForUpdate (assetCode) {
-      const requests = await this.getAssetRequests(assetCode)
 
-      if (requests.latestUpdatableRequest || requests.latestApprovedRequest) {
-        // AssetRecord from asset creation request used, because only asset
-        // creation request contains the info about asset issuance
-        // (initial preissued amount, preissued asset signer, etc.).
-        return _merge(
-          AssetUpdateRequestRecord.fromAssetDetails(
-            requests.creationRequest.assetDetails
-          ),
-          requests.latestUpdatableRequest || Object.assign(
-            // Request ID is assigned, because approved requests are immutable.
-            requests.latestApprovedRequest,
-            { id: ASSET_CREATION_REQUEST_ID }
-          )
-        )
-      } else {
-        return requests.creationRequest
-      }
-    },
-    async getAssetRequests (assetCode) {
+    async getAssetRequestForUpdate (assetCode) {
       try {
         const { data } = await Sdk.horizon.request.getAllForAssets({
           requestor: this.account.accountId,
@@ -441,58 +421,27 @@ export default {
 
         const creationRequest =
           requests.find(request => request instanceof AssetCreateRequestRecord)
-        const latestUpdateRequests = this.getLatestAssetUpdateRequests(requests
-          .filter(request => request instanceof AssetUpdateRequestRecord)
-        )
 
-        return {
-          creationRequest,
-          ...latestUpdateRequests,
-        }
+        return creationRequest
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
     },
-    getLatestAssetUpdateRequests (assetUpdateRequests) {
-      const latestApprovedRequestTime = moment.max(
-        assetUpdateRequests
-          .filter(request => request.isApproved)
-          .map(request => moment(request.updatedAt))
-      )
 
-      const latestApprovedRequest = assetUpdateRequests.find(request => {
-        return request.isApproved &&
-          latestApprovedRequestTime.isSame(request.updatedAt)
-      })
-
-      const latestUpdatableRequest = assetUpdateRequests
-        .find(request => request.isPending || request.isRejected)
-
-      return {
-        latestApprovedRequest,
-        latestUpdatableRequest,
-      }
-    },
     next (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }
     },
+
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
         await this.uploadDocuments()
 
-        let operation
-        if (this.isUpdateMode) {
-          operation =
-            base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
-        } else {
-          operation =
-            base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
-        }
-
+        const operation =
+          base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.token-request-submitted-msg')
 
@@ -504,6 +453,7 @@ export default {
       }
       this.enableForm()
     },
+
     async uploadDocuments () {
       const documents = [
         this.form.information.logo,
