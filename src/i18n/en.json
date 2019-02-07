@@ -300,6 +300,23 @@
       "data-loading": "Fetching limits data..."
     },
 
+    "limits-requests-table-renderer": {
+      "table-date-lbl": "Date",
+      "table-request-type-lbl": "Request type",
+      "table-state-lbl": "State",
+      "table-asset-lbl": "Asset",
+      "upload-documents-btn": "Upload documents",
+      "data-loading": "Fetching limits requests data...",
+      "document-uploader-form-heading": "Upload documents",
+      "request-state-pending": "Pending",
+      "request-state-cancelled": "Cancelled",
+      "request-state-approved": "Approved",
+      "request-state-rejected": "Rejected",
+      "request-state-permanently-rejected": "Permanently rejected",
+      "request-type-initial": "Initial",
+      "request-type-docs-uploading": "Documents uploading"
+    },
+
     "passport": {
       "account-unverified": "Unverified account",
       "account-general": "General account",

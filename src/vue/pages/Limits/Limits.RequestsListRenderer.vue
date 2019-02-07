@@ -4,10 +4,19 @@
       <table class="app__table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Request type</th>
-            <th>State</th>
-            <th>Asset</th>
+            <th>
+              {{ 'limits-requests-table-renderer.table-date-lbl' | globalize }}
+            </th>
+            <th>
+              <!-- eslint-disable-next-line -->
+              {{ 'limits-requests-table-renderer.table-request-type-lbl' | globalize }}
+            </th>
+            <th>
+              {{ 'limits-requests-table-renderer.table-state-lbl' | globalize }}
+            </th>
+            <th>
+              {{ 'limits-requests-table-renderer.table-asset-lbl' | globalize }}
+            </th>
             <th />
           </tr>
         </thead>
@@ -17,16 +26,19 @@
             :key="`limits-requests-table-row-${i}`"
           >
             <td>{{ item.updatedAt | formatDate }}</td>
-            <td>{{ item.requestType }}</td>
-            <td>{{ item.state }}</td>
+            <!-- eslint-disable-next-line -->
+            <td>{{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.requestType] | globalize }}</td>
+            <!-- eslint-disable-next-line -->
+            <td>{{ LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize }}</td>
             <td>{{ item.asset }}</td>
             <td>
               <button
                 class="app__button-raised"
                 @click="openDocumentsUploaderForm(item)"
-                :disabled="item.state !== LIMITS_REQUEST_STATES_STR.rejected"
+                :disabled="!item.requestedDocs.length"
               >
-                Upload documents
+                <!-- eslint-disable-next-line -->
+                {{ 'limits-requests-table-renderer.upload-documents-btn' | globalize }}
               </button>
             </td>
           </tr>
@@ -34,15 +46,18 @@
       </table>
     </div>
 
-    <loader v-else :message-id="'limits-table-renderer.data-loading'" />
+    <template v-else>
+      <loader :message-id="'limits-requests-table-renderer.data-loading'" />
+    </template>
 
     <drawer :is-shown.sync="isDocumentsUploaderFormShown">
       <template slot="heading">
-        {{ 'limits.limits-form-heading' | globalize }}
+        <!-- eslint-disable-next-line -->
+        {{ 'limits-requests-table-renderer.document-uploader-form-heading' | globalize }}
       </template>
       <limits-documents-uploader-form
         @finished="hideDrawer"
-        :limits="selectedLimitsList"
+        :request="selectedRequest"
       />
     </drawer>
   </div>
@@ -51,12 +66,30 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
-import { LIMITS_REQUEST_STATES_STR } from '@/js/const/limits.const'
+import Drawer from '@/vue/common/Drawer'
+import {
+  LIMITS_REQUEST_STATES_STR,
+  LIMITS_REQUEST_TYPE,
+} from '@/js/const/limits.const'
+
+const LIMITS_REQUEST_STATES_STR_TRANSLATE_ID = Object.freeze({
+  [LIMITS_REQUEST_STATES_STR.pending]: 'limits-requests-table-renderer.request-state-pending',
+  [LIMITS_REQUEST_STATES_STR.cancelled]: 'limits-requests-table-renderer.request-state-cancelled',
+  [LIMITS_REQUEST_STATES_STR.approved]: 'limits-requests-table-renderer.request-state-approved',
+  [LIMITS_REQUEST_STATES_STR.rejected]: 'limits-requests-table-renderer.request-state-rejected',
+  [LIMITS_REQUEST_STATES_STR.permanentlyRejected]: 'limits-requests-table-renderer.request-state-permanently-rejected',
+})
+
+const LIMITS_REQUEST_TYPE_TRANSLATE_ID = Object.freeze({
+  [LIMITS_REQUEST_TYPE.initial]: 'limits-requests-table-renderer.request-type-initial',
+  [LIMITS_REQUEST_TYPE.docsUploading]: 'limits-requests-table-renderer.request-type-docs-uploading',
+})
 
 export default {
   name: 'limits-requests-list-renderer',
   components: {
     Loader,
+    Drawer,
     LimitsDocumentsUploaderForm,
   },
   props: {
@@ -65,6 +98,8 @@ export default {
   },
   data: () => ({
     LIMITS_REQUEST_STATES_STR,
+    LIMITS_REQUEST_STATES_STR_TRANSLATE_ID,
+    LIMITS_REQUEST_TYPE_TRANSLATE_ID,
     isDocumentsUploaderFormShown: false,
     selectedRequest: null,
   }),
@@ -86,6 +121,11 @@ export default {
 
 .limits-table-renderer__table-item--inactive {
   color: rgba($col-text, .3);
+}
+
+.limits-table-renderer__table-cell-info-icon {
+  cursor: pointer;
+  font-size: 1.6rem;
 }
 
 </style>
