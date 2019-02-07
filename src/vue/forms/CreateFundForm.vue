@@ -1,7 +1,6 @@
 <template>
   <div class="create-fund">
     <template v-if="isLoaded && !isFailed">
-      {{ accountOwnedAssetCodes.length }}
       <template v-if="accountOwnedAssetCodes.length">
         <form-stepper
           :steps="STEPS"
@@ -467,14 +466,15 @@ export default {
   },
   async created () {
     try {
+      const { data: assets } = await Sdk.horizon.assets.getAll()
+      this.assets = assets.map(item => new AssetRecord(item))
       if (this.isUpdate) {
         this.tryPopulateForm(this.request)
+        this.form.fundInformation.baseAsset = this.request.baseAsset
       } else {
-        const { data: assets } = await Sdk.horizon.assets.getAll()
-        this.assets = assets.map(item => new AssetRecord(item))
         this.form.fundInformation.baseAsset = this.accountOwnedAssetCodes[0]
-        this.isLoaded = true
       }
+      this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
       this.isFailed = true
