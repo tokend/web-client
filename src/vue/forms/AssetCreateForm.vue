@@ -8,7 +8,7 @@
     <form
       novalidate
       v-if="currentStep === STEPS.information.number"
-      class="app__form asset-form"
+      class="app__form asset-create-form"
       @submit.prevent="next('form.information')"
     >
       <div class="app__form-row">
@@ -106,7 +106,7 @@
         <button
           v-ripple
           type="submit"
-          class="asset-form__btn"
+          class="asset-create-form__btn"
           :disabled="formMixin.isDisabled"
         >
           {{ 'asset-form.next-btn' | globalize }}
@@ -116,7 +116,7 @@
 
     <form
       v-if="currentStep === STEPS.advanced.number"
-      class="app__form asset-form"
+      class="app__form asset-create-form"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
@@ -189,7 +189,7 @@
           v-ripple
           v-else
           type="submit"
-          class="asset-form__btn"
+          class="asset-create-form__btn"
           :disabled="formMixin.isDisabled"
         >
           {{ 'asset-form.submit-btn' | globalize }}
@@ -476,16 +476,14 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.asset-form__btn {
+.asset-create-form__btn {
   @include button-raised();
 
   margin-bottom: 2rem;
   width: 14.4rem;
 }
 
-.asset-form {
-  .asset-form__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.asset-create-form__kyc-required-row {
+  margin-top: 2.1rem;
 }
 </style>

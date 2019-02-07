@@ -9,7 +9,7 @@
             </template>
 
             <asset-create-form
-              v-if="isAssetCreateRequest"
+              v-if="isAssetCreateRequestSelected"
               :asset-for-update="selectedRequest.assetCode"
               @update="loadHistory"
             />
@@ -179,7 +179,7 @@ export default {
     selectedRequest () {
       return this.requestsHistory[this.selectedIndex]
     },
-    isAssetCreateRequest () {
+    isAssetCreateRequestSelected () {
       return this.selectedRequest instanceof AssetCreateRequestRecord
     },
   },

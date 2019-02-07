@@ -8,7 +8,7 @@
     <form
       novalidate
       v-if="currentStep === STEPS.information.number"
-      class="app__form asset-form"
+      class="app__form asset-update-form"
       @submit.prevent="next('form.information')"
     >
       <div class="app__form-row">
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div class="app__form-row asset-form__kyc-required-row">
+      <div class="app__form-row asset-update-form__kyc-required-row">
         <div class="app__form-field">
           <tick-field
             v-model="form.information.policies"
@@ -70,7 +70,7 @@
         <button
           v-ripple
           type="submit"
-          class="asset-form__btn"
+          class="asset-update-form__btn"
           :disabled="formMixin.isDisabled"
         >
           {{ 'asset-form.next-btn' | globalize }}
@@ -80,7 +80,7 @@
 
     <form
       v-if="currentStep === STEPS.advanced.number"
-      class="app__form asset-form"
+      class="app__form asset-update-form"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
@@ -106,7 +106,7 @@
           v-ripple
           v-else
           type="submit"
-          class="asset-form__btn"
+          class="asset-update-form__btn"
           :disabled="formMixin.isDisabled"
         >
           {{ 'asset-form.submit-btn' | globalize }}
@@ -352,16 +352,14 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.asset-form__btn {
+.asset-update-form__btn {
   @include button-raised();
 
   margin-bottom: 2rem;
   width: 14.4rem;
 }
 
-.asset-form {
-  .asset-form__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.asset-update-form__kyc-required-row {
+  margin-top: 2.1rem;
 }
 </style>
