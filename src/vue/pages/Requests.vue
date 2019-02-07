@@ -8,6 +8,12 @@
         >
           <span>{{ 'requests-page.token-creation-title' | globalize }}</span>
         </router-link>
+        <router-link
+          v-ripple
+          :to="vueRoutes.requests.fundCreation"
+        >
+          <span>{{ 'requests-page.fund-creation-title' | globalize }}</span>
+        </router-link>
       </template>
     </top-bar>
     <router-view />

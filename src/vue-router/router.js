@@ -133,13 +133,18 @@ export const router = new Router({
           name: vueRoutes.requests.name,
           featureFlag: config.FEATURE_FLAGS.requests,
           redirect: vueRoutes.requests.assetCreation,
+          meta: { pageNameTranslationId: 'pages-names.requests' },
           component: resolve => require(['@/vue/pages/Requests'], resolve),
           children: [
             {
               path: '/requests/token-creation',
               name: vueRoutes.requests.assetCreation.name,
-              meta: { pageNameTranslationId: 'pages-names.requests' },
               component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
+            },
+            {
+              path: '/requests/fund-creation',
+              name: vueRoutes.requests.fundCreation.name,
+              component: resolve => require(['@/vue/pages/FundCreationRequests'], resolve),
             },
           ],
         },

@@ -1,0 +1,1286 @@
+diff --git a/package.json b/package.json
+index 8f75040..9d720bb 100644
+--- a/package.json
++++ b/package.json
+@@ -20,7 +20,7 @@
+   },
+   "dependencies": {
+     "@mdi/font": "3.3.92",
+-    "@tokend/js-sdk": "0.3.18",
++    "@tokend/js-sdk": "0.3.24",
+     "@tokend/wallet.js": "git+https://github.com/tokend/wallet.js.git",
+     "accounting": "0.4.1",
+     "bignumber.js": "8.0.1",
+diff --git a/src/i18n/en.json b/src/i18n/en.json
+index 53a1abc..d11a5b6 100644
+--- a/src/i18n/en.json
++++ b/src/i18n/en.json
+@@ -75,7 +75,6 @@
+       "field-error_sameAsPassword": "Passwords don't match",
+       "field-error_amount": "Amount must be a number, greater than 0",
+       "field-error_maxValueWrapper": "Value must be less then 250",
+-      "field-error_address": "Make sure the address is correct",
+       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
+       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
+@@ -275,7 +274,8 @@
+       "view-document": "View document",
+       "explore-documents": "Explore documents",
+       "find-document": "Find document",
+-      "update-token": "Update token"
++      "update-token": "Update token",
++      "funds": "Funds"
+     },
+ 
+     "pages-subnames": {
+@@ -491,23 +491,56 @@
+     },
+ 
+     "requests-page": {
+-      "loading-msg": "Loading",
+-      "loading-error-msg": "There was an error while loading.",
+       "token-creation-title": "Token creation",
+       "fund-creation-title": "Fund creation",
+-      "preissuance-upload-title": "Pre-issuance upload",
++      "preissuance-upload-title": "Pre-issuance upload"
++    },
++
++    "request-states": {
++      "approved-state": "Approved",
++      "rejected-state": "Rejected",
++      "pending-state": "Pending",
++      "canceled-state": "Cancelled",
++      "permanently-rejected-state": "Permanently rejected"
++    },
++
++    "request-messages": {
++      "approved-request-msg": "Your request was approved",
++      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
++      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
++      "canceled-request-msg": "Your request was cancelled",
++      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}"
++    },
++
++    "token-creation-requests": {
++      "update-token-title": "Update token",
++      "details-title": "Token request details",
++      "loading-msg": "Loading",
++      "loading-error-msg": "There was an error while loading.",
+       "token-code-header": "Token code",
+       "request-state-header": "Request state",
+       "created-header": "Created",
+       "last-updated-header": "Last updated",
+       "details-btn": "Details",
+-      "request-approved-msg": "Approved",
+-      "request-rejected-msg": "Rejected",
+-      "request-pending-msg": "Pending",
+-      "request-canceled-msg": "Cancelled",
+-      "request-permanently-rejected-msg": "Permanently rejected",
+       "no-request-history-title": "No request history",
+-      "no-request-history-desc": "Here will be the list of your requests"
++      "no-request-history-desc": "Here will be the list of your token creation requests",
++      "request-canceled-msg": "Your request was successfully cancelled"
++    },
++
++    "fund-creation-requests": {
++      "update-fund-title": "Update fund",
++      "details-title": "Fund request details",
++      "loading-msg": "Loading",
++      "loading-error-msg": "There was an error while loading.",
++      "fund-name-header": "Fund name",
++      "token-code-header": "Token code",
++      "request-state-header": "Request state",
++      "created-header": "Created",
++      "last-updated-header": "Last updated",
++      "details-btn": "Details",
++      "no-request-history-title": "No request history",
++      "no-request-history-desc": "Here will be the list of your fund creation requests",
++      "request-canceled-msg": "Your request was successfully cancelled"
+     },
+ 
+     "asset-details": {
+@@ -538,13 +571,24 @@
+       "update-btn": "Update",
+       "cancel-btn": "CANCEL",
+       "asset-create-request-type": "Asset create",
+-      "asset-update-request-type": "Asset update",
+-      "approved-request-msg": "Your request was approved",
+-      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+-      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+-      "canceled-request-msg": "Your request was cancelled",
+-      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
+-      "request-canceled-msg": "Your request was successfully cancelled"
++      "asset-update-request-type": "Asset update"
++    },
++
++    "fund-request-details": {
++      "loading-msg": "Loading",
++      "loading-error-msg": "There was an error while loading.",
++      "name-title": "Fund name",
++      "start-time-title": "Start time",
++      "close-time-title": "Close time",
++      "soft-cap-title": "Soft cap",
++      "hard-cap-title": "Hard cap",
++      "sell-title": "{{asset}} to sell",
++      "video-about-fund-title": "Video about fund",
++      "no-video-msg": "No video",
++      "view-video-btn": "View",
++      "view-btn": "View the fund",
++      "update-btn": "Update",
++      "cancel-btn": "CANCEL"
+     },
+ 
+     "file-field": {
+diff --git a/src/js/records/entities/sale.record.js b/src/js/records/entities/sale.record.js
+index 57a102d..de7c678 100644
+--- a/src/js/records/entities/sale.record.js
++++ b/src/js/records/entities/sale.record.js
+@@ -44,6 +44,16 @@ export class SaleRecord {
+     this.logoType = _get(this._record, 'details.logo.type')
+   }
+ 
++  /** video **/
++
++  get youtubeVideoUrl () {
++    if (this.youtubeVideoId) {
++      return `https://www.youtube.com/watch?v=${this.youtubeVideoId}`
++    } else {
++      return ''
++    }
++  }
++
+   /** quote assets: **/
+ 
+   get quoteAssetCodes () {
+diff --git a/src/js/records/requests/sale-create.record.js b/src/js/records/requests/sale-create.record.js
+index 260590a..b3ebbcf 100644
+--- a/src/js/records/requests/sale-create.record.js
++++ b/src/js/records/requests/sale-create.record.js
+@@ -46,6 +46,14 @@ export class SaleRequestRecord extends RequestRecord {
+     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+   }
+ 
++  get youtubeVideoUrl () {
++    if (this.youtubeVideoId) {
++      return `https://www.youtube.com/watch?v=${this.youtubeVideoId}`
++    } else {
++      return ''
++    }
++  }
++
+   _getQuoteAssets () {
+     return _get(this._record, 'details.sale.quoteAssets', [])
+       .map(asset => asset.quoteAsset)
+diff --git a/src/scss/variables.scss b/src/scss/variables.scss
+index 5e544ec..0c998d7 100644
+--- a/src/scss/variables.scss
++++ b/src/scss/variables.scss
+@@ -96,6 +96,10 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
+ $col-button-back-icon: $col-primary-inactive;
+ $col-button-back-icon-hover: $col-primary-lighten;
+ 
++$col-button-flat-light-bg: $_whiteSmoke;
++$col-button-flat-light-shadow: rgba(0, 0, 0, 0.15);
++$col-button-flat-light-text: $col-text;
++
+ // block
+ $col-block-bg: $_white;
+ $col-block-shadow: rgba(0, 0, 0, 0.1);
+diff --git a/src/vue-router/router.js b/src/vue-router/router.js
+index 72c6c3f..803e275 100644
+--- a/src/vue-router/router.js
++++ b/src/vue-router/router.js
+@@ -133,14 +133,19 @@ export const router = new Router({
+           name: vueRoutes.requests.name,
+           featureFlag: config.FEATURE_FLAGS.requests,
+           redirect: vueRoutes.requests.assetCreation,
++          meta: { pageNameTranslationId: 'pages-names.requests' },
+           component: resolve => require(['@/vue/pages/Requests'], resolve),
+           children: [
+             {
+               path: '/requests/token-creation',
+               name: vueRoutes.requests.assetCreation.name,
+-              meta: { pageNameTranslationId: 'pages-names.requests' },
+               component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
+             },
++            {
++              path: '/requests/fund-creation',
++              name: vueRoutes.requests.fundCreation.name,
++              component: resolve => require(['@/vue/pages/FundCreationRequests'], resolve),
++            },
+           ],
+         },
+         {
+diff --git a/src/vue/pages/AssetCreationRequests.vue b/src/vue/pages/AssetCreationRequests.vue
+index 56d2c88..26501a7 100644
+--- a/src/vue/pages/AssetCreationRequests.vue
++++ b/src/vue/pages/AssetCreationRequests.vue
+@@ -5,7 +5,7 @@
+         <drawer :is-shown.sync="isDetailsDrawerShown">
+           <template v-if="isUpdating">
+             <template slot="heading">
+-              {{ 'asset-form.update-token-title' | globalize }}
++              {{ 'token-creation-requests.update-token-title' | globalize }}
+             </template>
+             <asset-form
+               :request="selectedRequest"
+@@ -14,7 +14,7 @@
+           </template>
+           <template v-else>
+             <template slot="heading">
+-              {{ 'asset-request-details.title' | globalize }}
++              {{ 'token-creation-requests.details-title' | globalize }}
+             </template>
+             <asset-request-details
+               :request="selectedRequest"
+@@ -26,18 +26,20 @@
+         <table class="app__table asset-creation-requests__table">
+           <thead>
+             <tr>
+-              <th :title="'requests-page.token-code-header' | globalize">
+-                {{ 'requests-page.token-code-header' | globalize }}
++              <!-- eslint-disable max-len -->
++              <th :title="'token-creation-requests.token-code-header' | globalize">
++                {{ 'token-creation-requests.token-code-header' | globalize }}
+               </th>
+-              <th :title="'requests-page.request-state-header' | globalize">
+-                {{ 'requests-page.request-state-header' | globalize }}
++              <th :title="'token-creation-requests.request-state-header' | globalize">
++                {{ 'token-creation-requests.request-state-header' | globalize }}
+               </th>
+-              <th :title="'requests-page.created-header' | globalize">
+-                {{ 'requests-page.created-header' | globalize }}
++              <th :title="'token-creation-requests.created-header' | globalize">
++                {{ 'token-creation-requests.created-header' | globalize }}
+               </th>
+-              <th :title="'requests-page.last-updated-header' | globalize">
+-                {{ 'requests-page.last-updated-header' | globalize }}
++              <th :title="'token-creation-requests.last-updated-header' | globalize">
++                {{ 'token-creation-requests.last-updated-header' | globalize }}
+               </th>
++              <!-- eslint-enable max-len -->
+             </tr>
+           </thead>
+           <tbody>
+@@ -51,38 +53,38 @@
+               <td
+                 v-if="request.isApproved"
+                 class="request-state request-state--approved"
+-                :title="'requests-page.request-approved-msg' | globalize"
++                :title="'request-states.approved-state' | globalize"
+               >
+-                {{ 'requests-page.request-approved-msg' | globalize }}
++                {{ 'request-states.approved-state' | globalize }}
+               </td>
+               <td
+                 v-if="request.isPending"
+                 class="request-state request-state--pending"
+-                :title="'requests-page.request-pending-msg' | globalize"
++                :title="'request-states.pending-state' | globalize"
+               >
+-                {{ 'requests-page.request-pending-msg' | globalize }}
++                {{ 'request-states.pending-state' | globalize }}
+               </td>
+               <td
+                 v-if="request.isRejected"
+                 class="request-state request-state--rejected"
+-                :title="'requests-page.request-rejected-msg' | globalize"
++                :title="'request-states.rejected-state' | globalize"
+               >
+-                {{ 'requests-page.request-rejected-msg' | globalize }}
++                {{ 'request-states.rejected-state' | globalize }}
+               </td>
+               <td
+                 v-if="request.isCanceled"
+                 class="request-state request-state--canceled"
+-                :title="'requests-page.request-canceled-msg' | globalize"
++                :title="'request-states.canceled-state' | globalize"
+               >
+-                {{ 'requests-page.request-canceled-msg' | globalize }}
++                {{ 'request-states.canceled-state' | globalize }}
+               </td>
+               <!-- eslint-disable max-len -->
+               <td
+                 v-if="request.isPermanentlyRejected"
+                 class="request-state request-state--permanently-rejected"
+-                :title="'requests-page.request-permanently-rejected-msg' | globalize"
++                :title="'request-states.permanently-rejected-state' | globalize"
+               >
+-                {{ 'requests-page.request-permanently-rejected-msg' | globalize }}
++                {{ 'request-states.permanently-rejected-state' | globalize }}
+               </td>
+               <!-- eslint-enable max-len -->
+               <td :title="request.createdAt | formatCalendar">
+@@ -96,7 +98,7 @@
+                   class="request-details-btn"
+                   @click="showRequestDetails(index)"
+                 >
+-                  {{ 'requests-page.details-btn' | globalize }}
++                  {{ 'token-creation-requests.details-btn' | globalize }}
+                 </a>
+               </td>
+             </tr>
+@@ -104,19 +106,21 @@
+         </table>
+       </template>
+       <template v-else>
++        <!-- eslint-disable max-len -->
+         <no-data-message
+           icon-name="trending-up"
+-          :msg-title="'requests-page.no-request-history-title' | globalize"
+-          :msg-message="'requests-page.no-request-history-desc' | globalize"
++          :msg-title="'token-creation-requests.no-request-history-title' | globalize"
++          :msg-message="'token-creation-requests.no-request-history-desc' | globalize"
+         />
++        <!-- eslint-enable max-len -->
+       </template>
+     </template>
+     <template v-else-if="!isLoadingFailed">
+-      <loader :message-id="'requests-page.loading-msg'" />
++      <loader :message-id="'token-creation-requests.loading-msg'" />
+     </template>
+     <template v-else>
+       <p>
+-        {{ 'requests-page.loading-error-msg' | globalize }}
++        {{ 'token-creation-requests.loading-error-msg' | globalize }}
+       </p>
+     </template>
+   </div>
+@@ -132,7 +136,6 @@ import AssetForm from '@/vue/forms/AssetForm'
+ import { Sdk } from '@/sdk'
+ import { base } from '@tokend/js-sdk'
+ 
+-import { REQUEST_STATES } from '@/js/const/request-states.const'
+ import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
+ import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
+ 
+@@ -158,7 +161,6 @@ export default {
+     isDetailsDrawerShown: false,
+     selectedIndex: -1,
+     isUpdating: false,
+-    REQUEST_STATES,
+   }),
+   computed: {
+     ...mapGetters({
+@@ -225,7 +227,7 @@ export default {
+           this.createRequestRecord(data)
+         )
+ 
+-        Bus.success('asset-request-details.request-canceled-msg')
++        Bus.success('token-creation-requests.request-canceled-msg')
+       } catch (e) {
+         ErrorHandler.process(e)
+       }
+@@ -238,8 +240,11 @@ export default {
+ @import "~@scss/variables";
+ @import "~@scss/mixins";
+ 
+-.asset-creation-requests__table {
++.asset-creation-requests {
+   overflow-x: auto;
++}
++
++.asset-creation-requests__table {
+   @include box-shadow();
+ 
+   tr td:last-child {
+diff --git a/src/vue/pages/FundCreationRequests.vue b/src/vue/pages/FundCreationRequests.vue
+new file mode 100644
+index 0000000..db6cee7
+--- /dev/null
++++ b/src/vue/pages/FundCreationRequests.vue
+@@ -0,0 +1,322 @@
++<template>
++  <div class="fund-creation-requests">
++    <template v-if="isLoaded">
++      <template v-if="requestsHistory.length">
++        <drawer :is-shown.sync="isDetailsDrawerShown">
++          <template v-if="isUpdateMode">
++            <template slot="heading">
++              {{ 'fund-creation-requests.update-fund-title' | globalize }}
++            </template>
++            <!--
++              TODO: add ability to update fund, when fund form is ready
++              to do it
++            -->
++          </template>
++
++          <template v-else>
++            <template slot="heading">
++              {{ 'fund-creation-requests.details-title' | globalize }}
++            </template>
++            <fund-request-details
++              :request="selectedRequest"
++              @update-ask="isUpdateMode = true"
++              @cancel-ask="cancelRequest"
++            />
++          </template>
++        </drawer>
++
++        <!--
++          :key is a hack to ensure that the component will be updated
++          after computed calculated
++        -->
++        <!-- eslint-disable max-len -->
++        <select-field
++          v-model="filters.baseAsset"
++          :values="fundAssetCodes"
++          :key="filters.baseAsset"
++          class="fund-creation-requests__asset-list app__select app__select--no-border"
++        />
++        <!-- eslint-enable max-len -->
++
++        <div class="fund-creation-requests__table-wrp">
++          <table class="app__table fund-creation-requests__table">
++            <thead>
++              <tr>
++                <!-- eslint-disable max-len -->
++                <th :title="'fund-creation-requests.fund-name-header' | globalize">
++                  {{ 'fund-creation-requests.fund-name-header' | globalize }}
++                </th>
++                <th :title="'fund-creation-requests.token-code-header' | globalize">
++                  {{ 'fund-creation-requests.token-code-header' | globalize }}
++                </th>
++                <th :title="'fund-creation-requests.request-state-header' | globalize">
++                  {{ 'fund-creation-requests.request-state-header' | globalize }}
++                </th>
++                <th :title="'fund-creation-requests.created-header' | globalize">
++                  {{ 'fund-creation-requests.created-header' | globalize }}
++                </th>
++                <th :title="'fund-creation-requests.last-updated-header' | globalize">
++                  {{ 'fund-creation-requests.last-updated-header' | globalize }}
++                </th>
++                <!-- eslint-enable max-len -->
++              </tr>
++            </thead>
++
++            <tbody>
++              <tr
++                v-for="(request, index) in filteredRequests"
++                :key="index"
++              >
++                <td :title="request.name">
++                  {{ request.name }}
++                </td>
++
++                <td :title="request.baseAsset">
++                  {{ request.baseAsset }}
++                </td>
++
++                <td
++                  v-if="request.isApproved"
++                  class="request-state request-state--approved"
++                  :title="'request-states.request-approved-state' | globalize"
++                >
++                  {{ 'request-states.approved-state' | globalize }}
++                </td>
++
++                <td
++                  v-if="request.isPending"
++                  class="request-state request-state--pending"
++                  :title="'request-states.request-pending-state' | globalize"
++                >
++                  {{ 'request-states.pending-state' | globalize }}
++                </td>
++
++                <td
++                  v-if="request.isRejected"
++                  class="request-state request-state--rejected"
++                  :title="'request-states.request-rejected-state' | globalize"
++                >
++                  {{ 'request-states.rejected-state' | globalize }}
++                </td>
++
++                <td
++                  v-if="request.isCanceled"
++                  class="request-state request-state--canceled"
++                  :title="'request-states.request-canceled-state' | globalize"
++                >
++                  {{ 'request-states.canceled-state' | globalize }}
++                </td>
++                <!-- eslint-disable max-len -->
++
++                <td
++                  v-if="request.isPermanentlyRejected"
++                  class="request-state request-state--permanently-rejected"
++                  :title="'request-states.request-permanently-rejected-state' | globalize"
++                >
++                  {{ 'request-states.permanently-rejected-state' | globalize }}
++                </td>
++                <!-- eslint-enable max-len -->
++
++                <td :title="request.createdAt | formatCalendar">
++                  {{ request.createdAt | formatCalendar }}
++                </td>
++                <td :title="request.updatedAt | formatCalendar">
++                  {{ request.updatedAt | formatCalendar }}
++                </td>
++                <td>
++                  <a
++                    class="request-details-btn"
++                    @click="showRequestDetails(index)"
++                  >
++                    {{ 'fund-creation-requests.details-btn' | globalize }}
++                  </a>
++                </td>
++              </tr>
++            </tbody>
++          </table>
++        </div>
++      </template>
++
++      <template v-else>
++        <!-- eslint-disable max-len -->
++        <no-data-message
++          icon-name="trending-up"
++          :msg-title="'fund-creation-requests.no-request-history-title' | globalize"
++          :msg-message="'fund-creation-requests.no-request-history-desc' | globalize"
++        />
++        <!-- eslint-enable max-len -->
++      </template>
++    </template>
++
++    <template v-else-if="!isLoadingFailed">
++      <loader :message-id="'fund-creation-requests.loading-msg'" />
++    </template>
++
++    <template v-else>
++      <p>
++        {{ 'fund-creation-requests.loading-error-msg' | globalize }}
++      </p>
++    </template>
++  </div>
++</template>
++
++<script>
++import Loader from '@/vue/common/Loader'
++import Drawer from '@/vue/common/Drawer'
++import NoDataMessage from '@/vue/common/NoDataMessage'
++import SelectField from '@/vue/fields/SelectField'
++
++import FundRequestDetails from '@/vue/pages/funds/FundRequestDetails'
++
++import { Sdk } from '@/sdk'
++import { base } from '@tokend/js-sdk'
++
++import { RecordWrapper } from '@/js/records'
++
++import { mapGetters } from 'vuex'
++import { vuexTypes } from '@/vuex'
++
++import { Bus } from '@/js/helpers/event-bus'
++import { ErrorHandler } from '@/js/helpers/error-handler'
++
++export default {
++  name: 'fund-creation-requests',
++  components: {
++    Loader,
++    Drawer,
++    NoDataMessage,
++    SelectField,
++    FundRequestDetails,
++  },
++  data: _ => ({
++    requestsHistory: [],
++    isLoaded: false,
++    isLoadingFailed: false,
++    isDetailsDrawerShown: false,
++    selectedIndex: -1,
++    isUpdateMode: false,
++    filters: {
++      baseAsset: '',
++    },
++  }),
++  computed: {
++    ...mapGetters({
++      account: vuexTypes.account,
++    }),
++    selectedRequest () {
++      return this.filteredRequests[this.selectedIndex]
++    },
++    fundAssetCodes () {
++      return this.requestsHistory
++        .map(request => request.baseAsset)
++        .filter((asset, i, self) => self.indexOf(asset) === i)
++    },
++    filteredRequests () {
++      return this.requestsHistory
++        .filter(request => request.baseAsset === this.filters.baseAsset)
++    },
++  },
++  async created () {
++    await this.loadHistory()
++    if (this.requestsHistory.length) {
++      this.filters.baseAsset = this.fundAssetCodes[0]
++    }
++  },
++  methods: {
++    async loadHistory () {
++      try {
++        const { data } = await Sdk.horizon.request.getAllForSales({
++          requestor: this.account.accountId,
++        })
++        this.requestsHistory =
++          data.map(request => RecordWrapper.request(request))
++        this.isLoaded = true
++      } catch (e) {
++        this.isLoadingFailed = true
++        ErrorHandler.process(e)
++      }
++    },
++    showRequestDetails (index) {
++      this.selectedIndex = index
++      this.isUpdateMode = false
++      this.isDetailsDrawerShown = true
++    },
++    async cancelRequest () {
++      try {
++        const operation = base.SaleRequestBuilder.cancelSaleCreationRequest({
++          requestID: this.selectedRequest.id,
++        })
++        await Sdk.horizon.transactions.submitOperations(operation)
++
++        const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
++        this.requestsHistory.splice(this.selectedIndex, 1,
++          RecordWrapper.request(data)
++        )
++
++        Bus.success('fund-creation-requests.request-canceled-msg')
++      } catch (e) {
++        ErrorHandler.process(e)
++      }
++    },
++  },
++}
++</script>
++
++<style lang="scss" scoped>
++@import "~@scss/variables";
++@import "~@scss/mixins";
++
++.fund-creation-requests__asset-list {
++  width: fit-content;
++}
++
++.fund-creation-requests__table-wrp {
++  overflow-x: auto;
++}
++
++.fund-creation-requests__table {
++  margin-top: 2.1rem;
++  @include box-shadow();
++
++  tr td:last-child {
++    width: 3rem;
++    text-align: right;
++  }
++}
++
++.request-details-btn {
++  font-size: 1.2rem;
++  color: $col-primary-lighten;
++  cursor: pointer;
++}
++
++.request-state {
++  padding-left: 3rem;
++  position: relative;
++
++  &:before {
++    content: "";
++    position: absolute;
++    width: 0.6rem;
++    height: 0.6rem;
++    top: 1.7rem;
++    transform: translateY(-50%);
++    left: 1.6rem;
++    border-radius: 100%;
++  }
++
++  &--approved:before {
++    background-color: $col-success;
++  }
++
++  &--pending:before {
++    background-color: $col-warning;
++  }
++
++  &--rejected:before,
++  &--canceled:before,
++  &--permanently-rejected:before {
++    background-color: $col-error;
++  }
++}
++</style>
+diff --git a/src/vue/pages/Requests.vue b/src/vue/pages/Requests.vue
+index e9ea8d8..6fef7fa 100644
+--- a/src/vue/pages/Requests.vue
++++ b/src/vue/pages/Requests.vue
+@@ -8,6 +8,12 @@
+         >
+           <span>{{ 'requests-page.token-creation-title' | globalize }}</span>
+         </router-link>
++        <router-link
++          v-ripple
++          :to="vueRoutes.requests.fundCreation"
++        >
++          <span>{{ 'requests-page.fund-creation-title' | globalize }}</span>
++        </router-link>
+       </template>
+     </top-bar>
+     <router-view />
+diff --git a/src/vue/pages/assets/AssetRequestDetails.vue b/src/vue/pages/assets/AssetRequestDetails.vue
+index fc5cadf..3cdae12 100644
+--- a/src/vue/pages/assets/AssetRequestDetails.vue
++++ b/src/vue/pages/assets/AssetRequestDetails.vue
+@@ -14,48 +14,54 @@
+         </p>
+       </div>
+     </div>
++
+     <div
+       v-if="request.isApproved"
+       class="request-state request-state--approved"
+     >
+       <p class="request-state__content">
+-        {{ 'asset-request-details.approved-request-msg' | globalize }}
++        {{ 'request-messages.approved-request-msg' | globalize }}
+       </p>
+     </div>
++
+     <div
+       v-else-if="request.isPending"
+       class="request-state request-state--pending"
+     >
+       <p class="request-state__content">
+-        {{ 'asset-request-details.pending-request-msg' | globalize }}
++        {{ 'request-messages.pending-request-msg' | globalize }}
+       </p>
+     </div>
++
+     <div
+       v-else-if="request.isRejected"
+       class="request-state request-state--rejected"
+     >
+       <p class="request-state__content">
+         <!-- eslint-disable-next-line max-len -->
+-        {{ 'asset-request-details.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
++        {{ 'request-messages.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+       </p>
+     </div>
++
+     <div
+       v-else-if="request.isCanceled"
+       class="request-state request-state--canceled"
+     >
+       <p class="request-state__content">
+-        {{ 'asset-request-details.canceled-request-msg' | globalize() }}
++        {{ 'request-messages.canceled-request-msg' | globalize() }}
+       </p>
+     </div>
++
+     <div
+       v-else-if="request.isPermanentlyRejected"
+       class="request-state request-state--permanently-rejected"
+     >
+       <p class="request-state__content">
+         <!-- eslint-disable-next-line max-len -->
+-        {{ 'asset-request-details.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
++        {{ 'request-messages.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+       </p>
+     </div>
++
+     <table class="app__table asset-request-details__table">
+       <tbody>
+         <tr>
+@@ -67,12 +73,14 @@
+               <!-- eslint-disable-next-line max-len -->
+               {{ 'asset-request-details.asset-create-request-type' | globalize }}
+             </template>
++
+             <template v-else>
+               <!-- eslint-disable-next-line max-len -->
+               {{ 'asset-request-details.asset-update-request-type' | globalize }}
+             </template>
+           </td>
+         </tr>
++
+         <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+           <td>
+             {{ 'asset-request-details.max-issuance-amount-title' | globalize }}
+@@ -81,6 +89,7 @@
+             {{ request.maxIssuanceAmount | formatMoney }}
+           </td>
+         </tr>
++
+         <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+           <td>
+             <!-- eslint-disable-next-line max-len -->
+@@ -90,6 +99,7 @@
+             {{ request.initialPreissuedAmount | formatMoney }}
+           </td>
+         </tr>
++
+         <tr>
+           <td>
+             {{ 'asset-request-details.terms-title' | globalize }}
+@@ -102,11 +112,13 @@
+             >
+               {{ 'asset-request-details.download-terms-btn' | globalize }}
+             </a>
++
+             <p v-else>
+               {{ 'asset-request-details.no-terms-msg' | globalize }}
+             </p>
+           </td>
+         </tr>
++
+         <tr>
+           <td>
+             {{ 'asset-request-details.transferable-title' | globalize }}
+@@ -115,11 +127,13 @@
+             <template v-if="request.isTransferable">
+               {{ 'asset-request-details.present-msg' | globalize }}
+             </template>
++
+             <template v-else>
+               {{ 'asset-request-details.absent-msg' | globalize }}
+             </template>
+           </td>
+         </tr>
++
+         <tr>
+           <td>
+             {{ 'asset-request-details.requires-kyc-title' | globalize }}
+@@ -128,6 +142,7 @@
+             <template v-if="request.isRequiresKYC">
+               {{ 'asset-request-details.present-msg' | globalize }}
+             </template>
++
+             <template v-else>
+               {{ 'asset-request-details.absent-msg' | globalize }}
+             </template>
+@@ -135,6 +150,7 @@
+         </tr>
+       </tbody>
+     </table>
++
+     <div class="asset-request-details__buttons">
+       <button
+         v-ripple
+@@ -144,6 +160,7 @@
+       >
+         {{ 'asset-request-details.update-btn' | globalize }}
+       </button>
++
+       <button
+         v-ripple
+         class="asset-request-details__cancel-btn"
+diff --git a/src/vue/pages/funds/FundRequestDetails.vue b/src/vue/pages/funds/FundRequestDetails.vue
+new file mode 100644
+index 0000000..f677759
+--- /dev/null
++++ b/src/vue/pages/funds/FundRequestDetails.vue
+@@ -0,0 +1,383 @@
++<template>
++  <div class="fund-request-details">
++    <template v-if="isLoaded">
++      <div class="asset-details">
++        <asset-logo
++          :asset-code="asset.code"
++          :logo-url="asset.logoUrl(config.FILE_STORAGE)"
++        />
++        <div class="asset-details__info">
++          <p class="asset-details__code">
++            {{ asset.code }}
++          </p>
++          <p class="asset-details__name">
++            {{ asset.name }}
++          </p>
++        </div>
++      </div>
++
++      <div
++        v-if="request.isApproved"
++        class="request-state request-state--approved"
++      >
++        <p class="request-state__content">
++          {{ 'request-messages.approved-request-msg' | globalize }}
++        </p>
++      </div>
++
++      <div
++        v-else-if="request.isPending"
++        class="request-state request-state--pending"
++      >
++        <p class="request-state__content">
++          {{ 'request-messages.pending-request-msg' | globalize }}
++        </p>
++      </div>
++
++      <div
++        v-else-if="request.isRejected"
++        class="request-state request-state--rejected"
++      >
++        <p class="request-state__content">
++          <!-- eslint-disable-next-line max-len -->
++          {{ 'request-messages.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
++        </p>
++      </div>
++
++      <div
++        v-else-if="request.isCanceled"
++        class="request-state request-state--canceled"
++      >
++        <p class="request-state__content">
++          {{ 'request-messages.canceled-request-msg' | globalize() }}
++        </p>
++      </div>
++
++      <div
++        v-else-if="request.isPermanentlyRejected"
++        class="request-state request-state--permanently-rejected"
++      >
++        <p class="request-state__content">
++          <!-- eslint-disable-next-line max-len -->
++          {{ 'request-messages.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
++        </p>
++      </div>
++
++      <p class="fund-request-details__short-description">
++        {{ request.shortDescription }}
++      </p>
++
++      <table class="app__table fund-request-details__table">
++        <tbody>
++          <tr>
++            <td>
++              {{ 'fund-request-details.name-title' | globalize }}
++            </td>
++            <td>
++              {{ request.name }}
++            </td>
++          </tr>
++          <tr>
++            <td>
++              {{ 'fund-request-details.start-time-title' | globalize }}
++            </td>
++            <td>
++              {{ request.startTime | formatCalendar }}
++            </td>
++          </tr>
++          <tr>
++            <td>
++              {{ 'fund-request-details.close-time-title' | globalize }}
++            </td>
++            <td>
++              {{ request.endTime | formatCalendar }}
++            </td>
++          </tr>
++          <tr>
++            <td>
++              {{ 'fund-request-details.soft-cap-title' | globalize }}
++            </td>
++            <td>
++              <!-- eslint-disable-next-line max-len -->
++              {{ { value: request.softCap, currency: request.defaultQuoteAsset } | formatMoney }}
++            </td>
++          </tr>
++          <tr>
++            <td>
++              {{ 'fund-request-details.hard-cap-title' | globalize }}
++            </td>
++            <td>
++              <!-- eslint-disable-next-line max-len -->
++              {{ { value: request.hardCap, currency: request.defaultQuoteAsset } | formatMoney }}
++            </td>
++          </tr>
++          <tr>
++            <td>
++              <!-- eslint-disable-next-line max-len -->
++              {{ 'fund-request-details.sell-title' | globalize({ asset: request.baseAsset }) }}
++            </td>
++            <td>
++              <!-- eslint-disable-next-line max-len -->
++              {{ { value: request.baseAssetForHardCap, currency: request.baseAsset } | formatMoney }}
++            </td>
++          </tr>
++          <tr>
++            <td>
++              {{ 'fund-request-details.video-about-fund-title' | globalize }}
++            </td>
++            <td>
++              <a
++                v-if="request.youtubeVideoUrl"
++                class="fund-request-details__video-btn"
++                :href="request.youtubeVideoUrl"
++                target="_blank"
++              >
++                {{ 'fund-request-details.view-video-btn' | globalize }}
++              </a>
++              <p v-else>
++                {{ 'fund-request-details.no-video-msg' | globalize }}
++              </p>
++            </td>
++          </tr>
++        </tbody>
++      </table>
++      <div class="fund-request-details__buttons">
++        <button
++          v-ripple
++          class="fund-request-details__view-btn"
++          :disabled="!canBeViewed"
++          @click="viewFund"
++        >
++          {{ 'fund-request-details.view-btn' | globalize }}
++        </button>
++
++        <button
++          v-ripple
++          class="fund-request-details__update-btn"
++          :disabled="!canBeUpdated"
++          @click="$emit(EVENTS.updateAsk)"
++        >
++          {{ 'fund-request-details.update-btn' | globalize }}
++        </button>
++
++        <button
++          v-ripple
++          class="fund-request-details__cancel-btn"
++          :class="{
++            'fund-request-details__cancel-btn--disabled': !canBeCanceled
++          }"
++          :disabled="!canBeCanceled"
++          @click="$emit(EVENTS.cancelAsk)"
++        >
++          {{ 'fund-request-details.cancel-btn' | globalize }}
++        </button>
++      </div>
++    </template>
++
++    <template v-else-if="!isLoadingFailed">
++      <loader :message-id="'fund-request-details.loading-msg'" />
++    </template>
++
++    <template v-else>
++      <p>
++        {{ 'fund-request-details.loading-error-msg' | globalize }}
++      </p>
++    </template>
++  </div>
++</template>
++
++<script>
++import AssetLogo from '@/vue/common/assets/AssetLogo'
++import Loader from '@/vue/common/Loader'
++
++import { Sdk } from '@/sdk'
++
++import config from '@/config'
++
++import { ErrorHandler } from '@/js/helpers/error-handler'
++
++import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
++import { AssetRecord } from '@/js/records/entities/asset.record'
++
++const EVENTS = {
++  updateAsk: 'update-ask',
++  cancelAsk: 'cancel-ask',
++}
++
++export default {
++  name: 'fund-request-details',
++  components: {
++    AssetLogo,
++    Loader,
++  },
++  props: {
++    request: {
++      type: SaleRequestRecord,
++      required: true,
++    },
++  },
++  data: _ => ({
++    asset: {},
++    config,
++    EVENTS,
++    isLoaded: false,
++    isLoadingFailed: false,
++  }),
++  computed: {
++    canBeUpdated () {
++      return this.request.isPending || this.request.isRejected
++    },
++    canBeCanceled () {
++      return this.request.isPending
++    },
++    canBeViewed () {
++      return this.request.isApproved
++    },
++  },
++  async created () {
++    try {
++      const { data } = await Sdk.horizon.assets.get(this.request.baseAsset)
++      this.asset = new AssetRecord(data)
++      this.isLoaded = true
++    } catch (e) {
++      this.isLoadingFailed = true
++      ErrorHandler.processWithoutFeedback(e)
++    }
++  },
++  methods: {
++    viewFund () {
++      // TODO: add the fund details route when fund details component
++      // is added.
++    },
++  },
++}
++</script>
++
++<style lang="scss" scoped>
++@import "~@scss/variables";
++@import "~@scss/mixins";
++
++.request-state {
++  min-height: 6.4rem;
++  width: 100%;
++  margin-top: 2rem;
++  display: none;
++
++  .request-state__content {
++    padding: 2.4rem;
++    font-size: 1.3rem;
++    font-weight: normal;
++    color: $col-primary-txt;
++  }
++
++  @mixin apply-theme ($col-msg-background) {
++    background-color: $col-msg-background;
++    display: block;
++  }
++
++  &--approved { @include apply-theme($col-request-approved) }
++  &--pending { @include apply-theme($col-request-pending) }
++  &--rejected, &--canceled, &--permanently-rejected {
++    @include apply-theme($col-request-rejected)
++  }
++}
++
++.fund-request-details__short-description {
++  margin-top: 4rem;
++  font-size: 1.4rem;
++  color: $col-text;
++}
++
++.fund-request-details__table {
++  margin-top: 2rem;
++
++  tr td:last-child {
++    text-align: right;
++  }
++}
++
++.fund-request-details__terms {
++  font-size: 1.4rem;
++  color: $col-primary-lighten;
++  text-decoration: none;
++
++  &:visited {
++    color: $col-primary-lighten;
++  }
++}
++
++.fund-request-details__buttons {
++  margin-top: 4.9rem;
++  display: flex;
++
++  .fund-request-details__view-btn {
++    @include button-raised();
++
++    max-width: 14.4rem;
++    width: 100%;
++  }
++
++  .fund-request-details__update-btn {
++    @include button-raised();
++
++    margin-left: 1.2rem;
++    max-width: 14.4rem;
++    width: 100%;
++    font-weight: bold;
++    color: $col-button-flat-light-text;
++    box-shadow: 0 .5rem 1.5rem 0 $col-button-flat-light-shadow;
++    background-color: $col-button-flat-light-bg;
++  }
++
++  .fund-request-details__cancel-btn {
++    @include button();
++
++    padding-left: .1rem;
++    padding-right: .1rem;
++    font-weight: normal;
++    margin-left: auto;
++
++    &--disabled {
++      filter: grayscale(100%);
++      cursor: default;
++    }
++  }
++}
++
++.fund-request-details__video-btn {
++  color: $col-link;
++  text-decoration: none;
++
++  &:visited {
++    color: $col-link;
++  }
++}
++
++.asset-details {
++  display: flex;
++  align-items: center;
++
++  .asset-details__logo {
++    width: 5rem;
++    height: 5rem;
++    border-radius: 50%
++  }
++
++  .asset-details__info {
++    margin-left: 1.8rem;
++
++    .asset-details__code {
++      font-size: 1.8rem;
++      font-weight: bold;
++      color: $col-primary;
++    }
++
++    .asset-details__name {
++      margin-top: .1rem;
++      font-size: 1.4rem;
++      line-height: 1.29;
++      color: $col-primary;
++    }
++  }
++}
++</style>
+diff --git a/yarn.lock b/yarn.lock
+index 17a9a05..6804bea 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -654,10 +654,10 @@
+     array-from "^2.1.1"
+     lodash.get "^4.4.2"
+ 
+-"@tokend/js-sdk@0.3.18":
+-  version "0.3.18"
+-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.18.tgz#d15633bf917007807209da8d248b6385d5d16ebe"
+-  integrity sha512-2wvuIXmfO77Aj9yHlwvPSf/uoaxROkTH3iHa36dWflu2hJxOd97WjcmYcBpFtecbVjZTQHrEk+MpfWrF1SQxtw==
++"@tokend/js-sdk@0.3.24":
++  version "0.3.24"
++  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.24.tgz#f7484e8f2560263ad0fca76c2699b9a02c84a169"
++  integrity sha512-Zv/wrJ9ZRfX50IILEVNv1gQnj2d9JpvGXRwxUWlRszOdN9m9rdnFqPfzUntpoRQ7TNhaiv+kG1140j5EJZM67w==
+   dependencies:
+     axios "^0.16.0"
+     base32.js "~0.1.0"

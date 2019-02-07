@@ -75,7 +75,6 @@
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
-      "field-error_address": "Make sure the address is correct",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
@@ -275,7 +274,8 @@
       "view-document": "View document",
       "explore-documents": "Explore documents",
       "find-document": "Find document",
-      "update-token": "Update token"
+      "update-token": "Update token",
+      "funds": "Funds"
     },
 
     "pages-subnames": {
@@ -491,23 +491,56 @@
     },
 
     "requests-page": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
       "token-creation-title": "Token creation",
       "fund-creation-title": "Fund creation",
-      "preissuance-upload-title": "Pre-issuance upload",
+      "preissuance-upload-title": "Pre-issuance upload"
+    },
+
+    "request-states": {
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "canceled-state": "Cancelled",
+      "permanently-rejected-state": "Permanently rejected"
+    },
+
+    "request-messages": {
+      "approved-request-msg": "Your request was approved",
+      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-request-msg": "Your request was cancelled",
+      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}"
+    },
+
+    "token-creation-requests": {
+      "update-token-title": "Update token",
+      "details-title": "Token request details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "token-code-header": "Token code",
       "request-state-header": "Request state",
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
-      "request-approved-msg": "Approved",
-      "request-rejected-msg": "Rejected",
-      "request-pending-msg": "Pending",
-      "request-canceled-msg": "Cancelled",
-      "request-permanently-rejected-msg": "Permanently rejected",
       "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your requests"
+      "no-request-history-desc": "Here will be the list of your token creation requests",
+      "request-canceled-msg": "Your request was successfully cancelled"
+    },
+
+    "fund-creation-requests": {
+      "update-fund-title": "Update fund",
+      "details-title": "Fund request details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "fund-name-header": "Fund name",
+      "token-code-header": "Token code",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your fund creation requests",
+      "request-canceled-msg": "Your request was successfully cancelled"
     },
 
     "asset-details": {
@@ -538,13 +571,24 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "asset-create-request-type": "Asset create",
-      "asset-update-request-type": "Asset update",
-      "approved-request-msg": "Your request was approved",
-      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
-      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
-      "canceled-request-msg": "Your request was cancelled",
-      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
-      "request-canceled-msg": "Your request was successfully cancelled"
+      "asset-update-request-type": "Asset update"
+    },
+
+    "fund-request-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "name-title": "Fund name",
+      "start-time-title": "Start time",
+      "close-time-title": "Close time",
+      "soft-cap-title": "Soft cap",
+      "hard-cap-title": "Hard cap",
+      "sell-title": "{{asset}} to sell",
+      "video-about-fund-title": "Video about fund",
+      "no-video-msg": "No video",
+      "view-video-btn": "View",
+      "view-btn": "View the fund",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL"
     },
 
     "file-field": {

@@ -5,7 +5,7 @@
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template v-if="isUpdating">
             <template slot="heading">
-              {{ 'asset-form.update-token-title' | globalize }}
+              {{ 'token-creation-requests.update-token-title' | globalize }}
             </template>
             <asset-form
               :request="selectedRequest"
@@ -14,7 +14,7 @@
           </template>
           <template v-else>
             <template slot="heading">
-              {{ 'asset-request-details.title' | globalize }}
+              {{ 'token-creation-requests.details-title' | globalize }}
             </template>
             <asset-request-details
               :request="selectedRequest"
@@ -26,18 +26,20 @@
         <table class="app__table asset-creation-requests__table">
           <thead>
             <tr>
-              <th :title="'requests-page.token-code-header' | globalize">
-                {{ 'requests-page.token-code-header' | globalize }}
+              <!-- eslint-disable max-len -->
+              <th :title="'token-creation-requests.token-code-header' | globalize">
+                {{ 'token-creation-requests.token-code-header' | globalize }}
               </th>
-              <th :title="'requests-page.request-state-header' | globalize">
-                {{ 'requests-page.request-state-header' | globalize }}
+              <th :title="'token-creation-requests.request-state-header' | globalize">
+                {{ 'token-creation-requests.request-state-header' | globalize }}
               </th>
-              <th :title="'requests-page.created-header' | globalize">
-                {{ 'requests-page.created-header' | globalize }}
+              <th :title="'token-creation-requests.created-header' | globalize">
+                {{ 'token-creation-requests.created-header' | globalize }}
               </th>
-              <th :title="'requests-page.last-updated-header' | globalize">
-                {{ 'requests-page.last-updated-header' | globalize }}
+              <th :title="'token-creation-requests.last-updated-header' | globalize">
+                {{ 'token-creation-requests.last-updated-header' | globalize }}
               </th>
+              <!-- eslint-enable max-len -->
             </tr>
           </thead>
           <tbody>
@@ -51,38 +53,38 @@
               <td
                 v-if="request.isApproved"
                 class="request-state request-state--approved"
-                :title="'requests-page.request-approved-msg' | globalize"
+                :title="'request-states.approved-state' | globalize"
               >
-                {{ 'requests-page.request-approved-msg' | globalize }}
+                {{ 'request-states.approved-state' | globalize }}
               </td>
               <td
                 v-if="request.isPending"
                 class="request-state request-state--pending"
-                :title="'requests-page.request-pending-msg' | globalize"
+                :title="'request-states.pending-state' | globalize"
               >
-                {{ 'requests-page.request-pending-msg' | globalize }}
+                {{ 'request-states.pending-state' | globalize }}
               </td>
               <td
                 v-if="request.isRejected"
                 class="request-state request-state--rejected"
-                :title="'requests-page.request-rejected-msg' | globalize"
+                :title="'request-states.rejected-state' | globalize"
               >
-                {{ 'requests-page.request-rejected-msg' | globalize }}
+                {{ 'request-states.rejected-state' | globalize }}
               </td>
               <td
                 v-if="request.isCanceled"
                 class="request-state request-state--canceled"
-                :title="'requests-page.request-canceled-msg' | globalize"
+                :title="'request-states.canceled-state' | globalize"
               >
-                {{ 'requests-page.request-canceled-msg' | globalize }}
+                {{ 'request-states.canceled-state' | globalize }}
               </td>
               <!-- eslint-disable max-len -->
               <td
                 v-if="request.isPermanentlyRejected"
                 class="request-state request-state--permanently-rejected"
-                :title="'requests-page.request-permanently-rejected-msg' | globalize"
+                :title="'request-states.permanently-rejected-state' | globalize"
               >
-                {{ 'requests-page.request-permanently-rejected-msg' | globalize }}
+                {{ 'request-states.permanently-rejected-state' | globalize }}
               </td>
               <!-- eslint-enable max-len -->
               <td :title="request.createdAt | formatCalendar">
@@ -96,7 +98,7 @@
                   class="request-details-btn"
                   @click="showRequestDetails(index)"
                 >
-                  {{ 'requests-page.details-btn' | globalize }}
+                  {{ 'token-creation-requests.details-btn' | globalize }}
                 </a>
               </td>
             </tr>
@@ -104,19 +106,21 @@
         </table>
       </template>
       <template v-else>
+        <!-- eslint-disable max-len -->
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'requests-page.no-request-history-title' | globalize"
-          :msg-message="'requests-page.no-request-history-desc' | globalize"
+          :msg-title="'token-creation-requests.no-request-history-title' | globalize"
+          :msg-message="'token-creation-requests.no-request-history-desc' | globalize"
         />
+        <!-- eslint-enable max-len -->
       </template>
     </template>
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'requests-page.loading-msg'" />
+      <loader :message-id="'token-creation-requests.loading-msg'" />
     </template>
     <template v-else>
       <p>
-        {{ 'requests-page.loading-error-msg' | globalize }}
+        {{ 'token-creation-requests.loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -132,7 +136,6 @@ import AssetForm from '@/vue/forms/AssetForm'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
@@ -158,7 +161,6 @@ export default {
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdating: false,
-    REQUEST_STATES,
   }),
   computed: {
     ...mapGetters({
@@ -225,7 +227,7 @@ export default {
           this.createRequestRecord(data)
         )
 
-        Bus.success('asset-request-details.request-canceled-msg')
+        Bus.success('token-creation-requests.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -238,8 +240,11 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.asset-creation-requests__table {
+.asset-creation-requests {
   overflow-x: auto;
+}
+
+.asset-creation-requests__table {
   @include box-shadow();
 
   tr td:last-child {
