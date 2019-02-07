@@ -5,7 +5,7 @@ import { vuexTypes } from '@/vuex'
 import { base, errors, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
-import { TRANSACTION_ERROR_CODES } from '@/js/const/transaction-error-codes'
+import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
 const OFFER_FEE_TYPE = 'offerFee'
 
@@ -85,7 +85,7 @@ export default {
         if (
           error instanceof errors.TransactionError &&
           // eslint-disable-next-line
-          error.resultCodes.operations.includes(TRANSACTION_ERROR_CODES.opCrossSelf)
+          error.resultCodes.operations.includes(OPERATION_ERROR_CODES.opCrossSelf)
         ) {
           Bus.error('offer-creation-form.error-operation-cross-self')
         } else {
