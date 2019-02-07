@@ -491,29 +491,55 @@
     },
 
     "requests-page": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
       "token-creation-title": "Token creation",
       "fund-creation-title": "Fund creation",
-      "preissuance-upload-title": "Pre-issuance upload",
+      "preissuance-upload-title": "Pre-issuance upload"
+    },
+
+    "request-states": {
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "canceled-state": "Cancelled",
+      "permanently-rejected-state": "Permanently rejected"
+    },
+
+    "request-messages": {
+      "approved-request-msg": "Your request was approved",
+      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-request-msg": "Your request was cancelled",
+      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}"
+    },
+
+    "token-creation-requests": {
+      "update-token-title": "Update token",
+      "details-title": "Token request details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "token-code-header": "Token code",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your token creation requests",
+      "request-canceled-msg": "Your request was successfully cancelled"
+    },
+
+    "fund-creation-requests": {
+      "update-fund-title": "Update fund",
+      "details-title": "Fund request details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "fund-name-header": "Fund name",
       "token-code-header": "Token code",
       "request-state-header": "Request state",
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
-      "request-approved-state": "Approved",
-      "request-rejected-state": "Rejected",
-      "request-pending-state": "Pending",
-      "request-canceled-state": "Cancelled",
-      "request-permanently-rejected-msg": "Permanently rejected",
       "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your requests",
-      "approved-request-msg": "Your request was approved",
-      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
-      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
-      "canceled-request-msg": "Your request was cancelled",
-      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
+      "no-request-history-desc": "Here will be the list of your fund creation requests",
       "request-canceled-msg": "Your request was successfully cancelled"
     },
 
@@ -548,8 +574,7 @@
       "asset-update-request-type": "Asset update"
     },
 
-    "fund-details": {
-      "title": "Fund details",
+    "fund-request-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "name-title": "Fund name",

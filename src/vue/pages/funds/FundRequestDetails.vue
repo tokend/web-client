@@ -1,5 +1,5 @@
 <template>
-  <div class="fund-details">
+  <div class="fund-request-details">
     <template v-if="isLoaded">
       <div class="asset-details">
         <asset-logo
@@ -17,166 +17,166 @@
       </div>
 
       <div
-        v-if="fund.isApproved"
+        v-if="request.isApproved"
         class="request-state request-state--approved"
       >
         <p class="request-state__content">
-          {{ 'requests-page.approved-request-msg' | globalize }}
+          {{ 'request-messages.approved-request-msg' | globalize }}
         </p>
       </div>
 
       <div
-        v-else-if="fund.isPending"
+        v-else-if="request.isPending"
         class="request-state request-state--pending"
       >
         <p class="request-state__content">
-          {{ 'requests-page.pending-request-msg' | globalize }}
+          {{ 'request-messages.pending-request-msg' | globalize }}
         </p>
       </div>
 
       <div
-        v-else-if="fund.isRejected"
+        v-else-if="request.isRejected"
         class="request-state request-state--rejected"
       >
         <p class="request-state__content">
           <!-- eslint-disable-next-line max-len -->
-          {{ 'requests-page.rejected-request-msg' | globalize({ reason: fund.rejectReason }) }}
+          {{ 'request-messages.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
         </p>
       </div>
 
       <div
-        v-else-if="fund.isCanceled"
+        v-else-if="request.isCanceled"
         class="request-state request-state--canceled"
       >
         <p class="request-state__content">
-          {{ 'requests-page.canceled-request-msg' | globalize() }}
+          {{ 'request-messages.canceled-request-msg' | globalize() }}
         </p>
       </div>
 
       <div
-        v-else-if="fund.isPermanentlyRejected"
+        v-else-if="request.isPermanentlyRejected"
         class="request-state request-state--permanently-rejected"
       >
         <p class="request-state__content">
           <!-- eslint-disable-next-line max-len -->
-          {{ 'requests-page.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+          {{ 'request-messages.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
         </p>
       </div>
 
-      <p class="fund-details__short-description">
-        {{ fund.shortDescription }}
+      <p class="fund-request-details__short-description">
+        {{ request.shortDescription }}
       </p>
 
-      <table class="app__table fund-details__table">
+      <table class="app__table fund-request-details__table">
         <tbody>
           <tr>
             <td>
-              {{ 'fund-details.name-title' | globalize }}
+              {{ 'fund-request-details.name-title' | globalize }}
             </td>
             <td>
-              {{ fund.name }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'fund-details.start-time-title' | globalize }}
-            </td>
-            <td>
-              {{ fund.startTime | formatCalendar }}
+              {{ request.name }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ 'fund-details.close-time-title' | globalize }}
+              {{ 'fund-request-details.start-time-title' | globalize }}
             </td>
             <td>
-              {{ fund.endTime | formatCalendar }}
+              {{ request.startTime | formatCalendar }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ 'fund-details.soft-cap-title' | globalize }}
+              {{ 'fund-request-details.close-time-title' | globalize }}
+            </td>
+            <td>
+              {{ request.endTime | formatCalendar }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'fund-request-details.soft-cap-title' | globalize }}
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: fund.softCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+              {{ { value: request.softCap, currency: request.defaultQuoteAsset } | formatMoney }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ 'fund-details.hard-cap-title' | globalize }}
+              {{ 'fund-request-details.hard-cap-title' | globalize }}
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: fund.hardCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+              {{ { value: request.hardCap, currency: request.defaultQuoteAsset } | formatMoney }}
             </td>
           </tr>
           <tr>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ 'fund-details.sell-title' | globalize({ asset: fund.baseAsset }) }}
+              {{ 'fund-request-details.sell-title' | globalize({ asset: request.baseAsset }) }}
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: fund.baseHardCap, currency: fund.baseAsset } | formatMoney }}
+              {{ { value: request.baseAssetForHardCap, currency: request.baseAsset } | formatMoney }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ 'fund-details.video-about-fund-title' | globalize }}
+              {{ 'fund-request-details.video-about-fund-title' | globalize }}
             </td>
             <td>
               <a
-                v-if="fund.youtubeVideoUrl"
-                class="fund-details__video-btn"
-                :href="fund.youtubeVideoUrl"
+                v-if="request.youtubeVideoUrl"
+                class="fund-request-details__video-btn"
+                :href="request.youtubeVideoUrl"
                 target="_blank"
               >
-                {{ 'fund-details.view-video-btn' | globalize }}
+                {{ 'fund-request-details.view-video-btn' | globalize }}
               </a>
               <p v-else>
-                {{ 'fund-details.no-video-msg' | globalize }}
+                {{ 'fund-request-details.no-video-msg' | globalize }}
               </p>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="fund-details__buttons">
+      <div class="fund-request-details__buttons">
         <button
           v-ripple
-          class="fund-details__view-btn"
+          class="fund-request-details__view-btn"
           :disabled="!canBeViewed"
           @click="viewFund"
         >
-          {{ 'fund-details.view-btn' | globalize }}
+          {{ 'fund-request-details.view-btn' | globalize }}
         </button>
         <button
           v-ripple
-          class="fund-details__update-btn"
+          class="fund-request-details__update-btn"
           :disabled="!canBeUpdated"
-          @click="$emit(EVENTS.update)"
+          @click="$emit(EVENTS.updateAsk)"
         >
-          {{ 'fund-details.update-btn' | globalize }}
+          {{ 'fund-request-details.update-btn' | globalize }}
         </button>
         <button
           v-ripple
-          class="fund-details__cancel-btn"
+          class="fund-request-details__cancel-btn"
           :class="{
-            'fund-details__cancel-btn--disabled': !canBeCanceled
+            'fund-request-details__cancel-btn--disabled': !canBeCanceled
           }"
           :disabled="!canBeCanceled"
           @click="$emit(EVENTS.cancel)"
         >
-          {{ 'fund-details.cancel-btn' | globalize }}
+          {{ 'fund-request-details.cancel-btn' | globalize }}
         </button>
       </div>
     </template>
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'fund-details.loading-msg'" />
+      <loader :message-id="'fund-request-details.loading-msg'" />
     </template>
     <template v-else>
       <p>
-        {{ 'fund-details.loading-error-msg' | globalize }}
+        {{ 'fund-request-details.loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -198,16 +198,15 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
-import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 const EVENTS = {
-  update: 'update',
+  updateAsk: 'update-ask',
   cancel: 'cancel',
 }
 
 export default {
-  name: 'fund-details',
+  name: 'fund-request-details',
   components: {
     AssetLogo,
     Loader,
@@ -215,11 +214,7 @@ export default {
   props: {
     request: {
       type: SaleRequestRecord,
-      default: null,
-    },
-    record: {
-      type: SaleRecord,
-      default: null,
+      required: true,
     },
   },
   data: _ => ({
@@ -232,28 +227,19 @@ export default {
     isLoadingFailed: false,
   }),
   computed: {
-    fund () {
-      if (this.request instanceof SaleRequestRecord) {
-        return this.request
-      } else if (this.record instanceof SaleRecord) {
-        return this.record
-      } else {
-        return {}
-      }
-    },
     canBeUpdated () {
-      return this.fund.isPending || this.fund.isRejected || this.record
+      return this.request.isPending || this.request.isRejected
     },
     canBeCanceled () {
-      return this.fund.isPending
+      return this.request.isPending
     },
     canBeViewed () {
-      return this.fund.isApproved || this.record
+      return this.request.isApproved
     },
   },
   async created () {
     try {
-      const { data } = await Sdk.horizon.assets.get(this.fund.baseAsset)
+      const { data } = await Sdk.horizon.assets.get(this.request.baseAsset)
       this.asset = new AssetRecord(data)
       this.isLoaded = true
     } catch (e) {
@@ -300,13 +286,13 @@ export default {
   }
 }
 
-.fund-details__short-description {
+.fund-request-details__short-description {
   margin-top: 4rem;
   font-size: 1.4rem;
   color: $col-text;
 }
 
-.fund-details__table {
+.fund-request-details__table {
   margin-top: 2rem;
 
   tr td:last-child {
@@ -314,7 +300,7 @@ export default {
   }
 }
 
-.fund-details__terms {
+.fund-request-details__terms {
   font-size: 1.4rem;
   color: $col-primary-lighten;
   text-decoration: none;
@@ -324,18 +310,18 @@ export default {
   }
 }
 
-.fund-details__buttons {
+.fund-request-details__buttons {
   margin-top: 4.9rem;
   display: flex;
 
-  .fund-details__view-btn {
+  .fund-request-details__view-btn {
     @include button-raised();
 
     max-width: 14.4rem;
     width: 100%;
   }
 
-  .fund-details__update-btn {
+  .fund-request-details__update-btn {
     @include button-raised();
 
     margin-left: 1.2rem;
@@ -347,7 +333,7 @@ export default {
     background-color: $col-button-flat-light-bg;
   }
 
-  .fund-details__cancel-btn {
+  .fund-request-details__cancel-btn {
     @include button();
 
     padding-left: .1rem;
@@ -362,7 +348,7 @@ export default {
   }
 }
 
-.fund-details__video-btn {
+.fund-request-details__video-btn {
   color: $col-link;
   text-decoration: none;
 

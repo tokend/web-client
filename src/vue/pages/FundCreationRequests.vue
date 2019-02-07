@@ -5,7 +5,7 @@
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template v-if="isUpdateMode">
             <template slot="heading">
-              {{ 'funds.update-fund-title' | globalize }}
+              {{ 'fund-creation-requests.update-fund-title' | globalize }}
             </template>
             <!--
               TODO: add ability to update fund, when fund form is ready
@@ -19,9 +19,9 @@
 
           <template v-else>
             <template slot="heading">
-              {{ 'fund-details.title' | globalize }}
+              {{ 'fund-creation-requests.details-title' | globalize }}
             </template>
-            <fund-details
+            <fund-request-details
               :request="selectedRequest"
               @update="isUpdateMode = true"
               @cancel="cancelRequest"
@@ -44,21 +44,23 @@
           <table class="app__table fund-creation-requests__table">
             <thead>
               <tr>
-                <th :title="'requests-page.fund-name-header' | globalize">
-                  {{ 'requests-page.fund-name-header' | globalize }}
+                <!-- eslint-disable max-len -->
+                <th :title="'fund-creation-requests.fund-name-header' | globalize">
+                  {{ 'fund-creation-requests.fund-name-header' | globalize }}
                 </th>
-                <th :title="'requests-page.token-code-header' | globalize">
-                  {{ 'requests-page.token-code-header' | globalize }}
+                <th :title="'fund-creation-requests.token-code-header' | globalize">
+                  {{ 'fund-creation-requests.token-code-header' | globalize }}
                 </th>
-                <th :title="'requests-page.request-state-header' | globalize">
-                  {{ 'requests-page.request-state-header' | globalize }}
+                <th :title="'fund-creation-requests.request-state-header' | globalize">
+                  {{ 'fund-creation-requests.request-state-header' | globalize }}
                 </th>
-                <th :title="'requests-page.created-header' | globalize">
-                  {{ 'requests-page.created-header' | globalize }}
+                <th :title="'fund-creation-requests.created-header' | globalize">
+                  {{ 'fund-creation-requests.created-header' | globalize }}
                 </th>
-                <th :title="'requests-page.last-updated-header' | globalize">
-                  {{ 'requests-page.last-updated-header' | globalize }}
+                <th :title="'fund-creation-requests.last-updated-header' | globalize">
+                  {{ 'fund-creation-requests.last-updated-header' | globalize }}
                 </th>
+                <!-- eslint-enable max-len -->
               </tr>
             </thead>
 
@@ -78,42 +80,42 @@
                 <td
                   v-if="request.isApproved"
                   class="request-state request-state--approved"
-                  :title="'requests-page.request-approved-state' | globalize"
+                  :title="'request-states.request-approved-state' | globalize"
                 >
-                  {{ 'requests-page.request-approved-state' | globalize }}
+                  {{ 'request-states.approved-state' | globalize }}
                 </td>
 
                 <td
                   v-if="request.isPending"
                   class="request-state request-state--pending"
-                  :title="'requests-page.request-pending-state' | globalize"
+                  :title="'request-states.request-pending-state' | globalize"
                 >
-                  {{ 'requests-page.request-pending-state' | globalize }}
+                  {{ 'request-states.pending-state' | globalize }}
                 </td>
 
                 <td
                   v-if="request.isRejected"
                   class="request-state request-state--rejected"
-                  :title="'requests-page.request-rejected-state' | globalize"
+                  :title="'request-states.request-rejected-state' | globalize"
                 >
-                  {{ 'requests-page.request-rejected-state' | globalize }}
+                  {{ 'request-states.rejected-state' | globalize }}
                 </td>
 
                 <td
                   v-if="request.isCanceled"
                   class="request-state request-state--canceled"
-                  :title="'requests-page.request-canceled-state' | globalize"
+                  :title="'request-states.request-canceled-state' | globalize"
                 >
-                  {{ 'requests-page.request-canceled-state' | globalize }}
+                  {{ 'request-states.canceled-state' | globalize }}
                 </td>
                 <!-- eslint-disable max-len -->
 
                 <td
                   v-if="request.isPermanentlyRejected"
                   class="request-state request-state--permanently-rejected"
-                  :title="'requests-page.request-permanently-rejected-state' | globalize"
+                  :title="'request-states.request-permanently-rejected-state' | globalize"
                 >
-                  {{ 'requests-page.request-permanently-rejected-state' | globalize }}
+                  {{ 'request-states.permanently-rejected-state' | globalize }}
                 </td>
                 <!-- eslint-enable max-len -->
 
@@ -128,7 +130,7 @@
                     class="request-details-btn"
                     @click="showRequestDetails(index)"
                   >
-                    {{ 'requests-page.details-btn' | globalize }}
+                    {{ 'fund-creation-requests.details-btn' | globalize }}
                   </a>
                 </td>
               </tr>
@@ -138,21 +140,23 @@
       </template>
 
       <template v-else>
+        <!-- eslint-disable max-len -->
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'requests-page.no-request-history-title' | globalize"
-          :msg-message="'requests-page.no-request-history-desc' | globalize"
+          :msg-title="'fund-creation-requests.no-request-history-title' | globalize"
+          :msg-message="'fund-creation-requests.no-request-history-desc' | globalize"
         />
+        <!-- eslint-enable max-len -->
       </template>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'requests-page.loading-msg'" />
+      <loader :message-id="'fund-creation-requests.loading-msg'" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'requests-page.loading-error-msg' | globalize }}
+        {{ 'fund-creation-requests.loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -164,7 +168,7 @@ import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
 
-import FundDetails from '@/vue/common/funds/FundDetails'
+import FundRequestDetails from '@/vue/pages/funds/FundRequestDetails'
 import CreateFundForm from '@/vue/forms/CreateFundForm'
 
 import { Sdk } from '@/sdk'
@@ -186,7 +190,7 @@ export default {
     Drawer,
     NoDataMessage,
     SelectField,
-    FundDetails,
+    FundRequestDetails,
     CreateFundForm,
   },
   data: _ => ({
@@ -255,7 +259,7 @@ export default {
           RecordWrapper.request(data)
         )
 
-        Bus.success('requests-page.request-canceled-msg')
+        Bus.success('fund-creation-requests.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }

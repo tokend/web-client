@@ -16,7 +16,7 @@ export class SaleRequestRecord extends RequestRecord {
     this.endTime = _get(this._record, 'details.sale.endTime')
     this.softCap = _get(this._record, 'details.sale.softCap')
     this.hardCap = _get(this._record, 'details.sale.hardCap')
-    this.baseHardCap = _get(
+    this.baseAssetForHardCap = _get(
       this._record, 'details.sale.baseAssetForHardCap'
     )
     this.saleTypeStr = _get(this._record, 'details.sale.saleType.name')
