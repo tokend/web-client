@@ -15,8 +15,12 @@ export { minLength } from 'vuelidate/lib/validators'
 export const password = value => validators.minLength(6)(value)
 export const seed = value => base.Keypair.isValidSecretKey(value)
 export const amount = value => Number(value) && Number(value) > 0
+export const requiredCheckbox = value => !!value.length
 export const amountRange = (from, to) => value => Number(value) &&
   Number(value) >= +from && Number(value) <= +to
+export const minDate = (minDate) => value => {
+  return +new Date(minDate) < +new Date(value)
+}
 export const address = (asset) => value => {
   switch (asset) {
     case ASSETS.btc:
