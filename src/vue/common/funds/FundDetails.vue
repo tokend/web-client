@@ -17,7 +17,7 @@
       </div>
 
       <div
-        v-if="request.isApproved"
+        v-if="fund.isApproved"
         class="request-state request-state--approved"
       >
         <p class="request-state__content">
@@ -26,7 +26,7 @@
       </div>
 
       <div
-        v-else-if="request.isPending"
+        v-else-if="fund.isPending"
         class="request-state request-state--pending"
       >
         <p class="request-state__content">
@@ -35,17 +35,17 @@
       </div>
 
       <div
-        v-else-if="request.isRejected"
+        v-else-if="fund.isRejected"
         class="request-state request-state--rejected"
       >
         <p class="request-state__content">
           <!-- eslint-disable-next-line max-len -->
-          {{ 'requests-page.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+          {{ 'requests-page.rejected-request-msg' | globalize({ reason: fund.rejectReason }) }}
         </p>
       </div>
 
       <div
-        v-else-if="request.isCanceled"
+        v-else-if="fund.isCanceled"
         class="request-state request-state--canceled"
       >
         <p class="request-state__content">
@@ -54,7 +54,7 @@
       </div>
 
       <div
-        v-else-if="request.isPermanentlyRejected"
+        v-else-if="fund.isPermanentlyRejected"
         class="request-state request-state--permanently-rejected"
       >
         <p class="request-state__content">
@@ -64,7 +64,7 @@
       </div>
 
       <p class="fund-details__short-description">
-        {{ request.shortDescription }}
+        {{ fund.shortDescription }}
       </p>
 
       <table class="app__table fund-details__table">
@@ -74,7 +74,7 @@
               {{ 'fund-details.name-title' | globalize }}
             </td>
             <td>
-              {{ request.name }}
+              {{ fund.name }}
             </td>
           </tr>
           <tr>
@@ -82,7 +82,7 @@
               {{ 'fund-details.start-time-title' | globalize }}
             </td>
             <td>
-              {{ request.startTime | formatCalendar }}
+              {{ fund.startTime | formatCalendar }}
             </td>
           </tr>
           <tr>
@@ -90,7 +90,7 @@
               {{ 'fund-details.close-time-title' | globalize }}
             </td>
             <td>
-              {{ request.endTime | formatCalendar }}
+              {{ fund.endTime | formatCalendar }}
             </td>
           </tr>
           <tr>
@@ -99,7 +99,7 @@
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.softCap, currency: request.defaultQuoteAsset } | formatMoney }}
+              {{ { value: fund.softCap, currency: fund.defaultQuoteAsset } | formatMoney }}
             </td>
           </tr>
           <tr>
@@ -108,17 +108,17 @@
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.hardCap, currency: request.defaultQuoteAsset } | formatMoney }}
+              {{ { value: fund.hardCap, currency: fund.defaultQuoteAsset } | formatMoney }}
             </td>
           </tr>
           <tr>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ 'fund-details.sell-title' | globalize({ asset: request.baseAsset }) }}
+              {{ 'fund-details.sell-title' | globalize({ asset: fund.baseAsset }) }}
             </td>
             <td>
               <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.baseAssetForHardCap, currency: request.baseAsset } | formatMoney }}
+              {{ { value: fund.baseHardCap, currency: fund.baseAsset } | formatMoney }}
             </td>
           </tr>
           <tr>
@@ -127,9 +127,9 @@
             </td>
             <td>
               <a
-                v-if="request.youtubeVideoId"
-                class="asset-request-details__terms"
-                :href="fundVideoUrl"
+                v-if="fund.youtubeVideoUrl"
+                class="fund-details__video-btn"
+                :href="fund.youtubeVideoUrl"
                 target="_blank"
               >
                 {{ 'fund-details.view-video-btn' | globalize }}
@@ -214,8 +214,12 @@ export default {
   },
   props: {
     request: {
-      type: [SaleRecord, SaleRequestRecord],
-      required: true,
+      type: SaleRequestRecord,
+      default: null,
+    },
+    record: {
+      type: SaleRecord,
+      default: null,
     },
   },
   data: _ => ({
@@ -228,22 +232,28 @@ export default {
     isLoadingFailed: false,
   }),
   computed: {
-    fundVideoUrl () {
-      return `https://www.youtube.com/watch?v=${this.request.youtubeVideoUrl}`
+    fund () {
+      if (this.request instanceof SaleRequestRecord) {
+        return this.request
+      } else if (this.record instanceof SaleRecord) {
+        return this.record
+      } else {
+        return {}
+      }
     },
     canBeUpdated () {
-      return this.request.isPending || this.request.isRejected
+      return this.fund.isPending || this.fund.isRejected || this.record
     },
     canBeCanceled () {
-      return this.request.isPending
+      return this.fund.isPending
     },
     canBeViewed () {
-      return this.request.isApproved
+      return this.fund.isApproved || this.record
     },
   },
   async created () {
     try {
-      const { data } = await Sdk.horizon.assets.get(this.request.baseAsset)
+      const { data } = await Sdk.horizon.assets.get(this.fund.baseAsset)
       this.asset = new AssetRecord(data)
       this.isLoaded = true
     } catch (e) {
@@ -349,6 +359,15 @@ export default {
       filter: grayscale(100%);
       cursor: default;
     }
+  }
+}
+
+.fund-details__video-btn {
+  color: $col-link;
+  text-decoration: none;
+
+  &:visited {
+    color: $col-link;
   }
 }
 

@@ -40,99 +40,101 @@
           class="fund-creation-requests__asset-list app__select--no-border"
         />
 
-        <table class="app__table fund-creation-requests__table">
-          <thead>
-            <tr>
-              <th :title="'requests-page.fund-name-header' | globalize">
-                {{ 'requests-page.fund-name-header' | globalize }}
-              </th>
-              <th :title="'requests-page.token-code-header' | globalize">
-                {{ 'requests-page.token-code-header' | globalize }}
-              </th>
-              <th :title="'requests-page.request-state-header' | globalize">
-                {{ 'requests-page.request-state-header' | globalize }}
-              </th>
-              <th :title="'requests-page.created-header' | globalize">
-                {{ 'requests-page.created-header' | globalize }}
-              </th>
-              <th :title="'requests-page.last-updated-header' | globalize">
-                {{ 'requests-page.last-updated-header' | globalize }}
-              </th>
-            </tr>
-          </thead>
+        <div class="fund-creation-requests__table-wrp">
+          <table class="app__table fund-creation-requests__table">
+            <thead>
+              <tr>
+                <th :title="'requests-page.fund-name-header' | globalize">
+                  {{ 'requests-page.fund-name-header' | globalize }}
+                </th>
+                <th :title="'requests-page.token-code-header' | globalize">
+                  {{ 'requests-page.token-code-header' | globalize }}
+                </th>
+                <th :title="'requests-page.request-state-header' | globalize">
+                  {{ 'requests-page.request-state-header' | globalize }}
+                </th>
+                <th :title="'requests-page.created-header' | globalize">
+                  {{ 'requests-page.created-header' | globalize }}
+                </th>
+                <th :title="'requests-page.last-updated-header' | globalize">
+                  {{ 'requests-page.last-updated-header' | globalize }}
+                </th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr
-              v-for="(request, index) in filteredRequests"
-              :key="index"
-            >
-              <td :title="request.name">
-                {{ request.name }}
-              </td>
-
-              <td :title="request.baseAsset">
-                {{ request.baseAsset }}
-              </td>
-
-              <td
-                v-if="request.isApproved"
-                class="request-state request-state--approved"
-                :title="'requests-page.request-approved-state' | globalize"
+            <tbody>
+              <tr
+                v-for="(request, index) in filteredRequests"
+                :key="index"
               >
-                {{ 'requests-page.request-approved-state' | globalize }}
-              </td>
+                <td :title="request.name">
+                  {{ request.name }}
+                </td>
 
-              <td
-                v-if="request.isPending"
-                class="request-state request-state--pending"
-                :title="'requests-page.request-pending-state' | globalize"
-              >
-                {{ 'requests-page.request-pending-state' | globalize }}
-              </td>
+                <td :title="request.baseAsset">
+                  {{ request.baseAsset }}
+                </td>
 
-              <td
-                v-if="request.isRejected"
-                class="request-state request-state--rejected"
-                :title="'requests-page.request-rejected-state' | globalize"
-              >
-                {{ 'requests-page.request-rejected-state' | globalize }}
-              </td>
-
-              <td
-                v-if="request.isCanceled"
-                class="request-state request-state--canceled"
-                :title="'requests-page.request-canceled-state' | globalize"
-              >
-                {{ 'requests-page.request-canceled-state' | globalize }}
-              </td>
-              <!-- eslint-disable max-len -->
-
-              <td
-                v-if="request.isPermanentlyRejected"
-                class="request-state request-state--permanently-rejected"
-                :title="'requests-page.request-permanently-rejected-state' | globalize"
-              >
-                {{ 'requests-page.request-permanently-rejected-state' | globalize }}
-              </td>
-              <!-- eslint-enable max-len -->
-
-              <td :title="request.createdAt | formatCalendar">
-                {{ request.createdAt | formatCalendar }}
-              </td>
-              <td :title="request.updatedAt | formatCalendar">
-                {{ request.updatedAt | formatCalendar }}
-              </td>
-              <td>
-                <a
-                  class="request-details-btn"
-                  @click="showRequestDetails(index)"
+                <td
+                  v-if="request.isApproved"
+                  class="request-state request-state--approved"
+                  :title="'requests-page.request-approved-state' | globalize"
                 >
-                  {{ 'requests-page.details-btn' | globalize }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  {{ 'requests-page.request-approved-state' | globalize }}
+                </td>
+
+                <td
+                  v-if="request.isPending"
+                  class="request-state request-state--pending"
+                  :title="'requests-page.request-pending-state' | globalize"
+                >
+                  {{ 'requests-page.request-pending-state' | globalize }}
+                </td>
+
+                <td
+                  v-if="request.isRejected"
+                  class="request-state request-state--rejected"
+                  :title="'requests-page.request-rejected-state' | globalize"
+                >
+                  {{ 'requests-page.request-rejected-state' | globalize }}
+                </td>
+
+                <td
+                  v-if="request.isCanceled"
+                  class="request-state request-state--canceled"
+                  :title="'requests-page.request-canceled-state' | globalize"
+                >
+                  {{ 'requests-page.request-canceled-state' | globalize }}
+                </td>
+                <!-- eslint-disable max-len -->
+
+                <td
+                  v-if="request.isPermanentlyRejected"
+                  class="request-state request-state--permanently-rejected"
+                  :title="'requests-page.request-permanently-rejected-state' | globalize"
+                >
+                  {{ 'requests-page.request-permanently-rejected-state' | globalize }}
+                </td>
+                <!-- eslint-enable max-len -->
+
+                <td :title="request.createdAt | formatCalendar">
+                  {{ request.createdAt | formatCalendar }}
+                </td>
+                <td :title="request.updatedAt | formatCalendar">
+                  {{ request.updatedAt | formatCalendar }}
+                </td>
+                <td>
+                  <a
+                    class="request-details-btn"
+                    @click="showRequestDetails(index)"
+                  >
+                    {{ 'requests-page.details-btn' | globalize }}
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </template>
 
       <template v-else>
@@ -266,12 +268,12 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.fund-creation-requests {
-    overflow-x: auto;
-}
-
 .fund-creation-requests__asset-list {
   width: fit-content;
+}
+
+.fund-creation-requests__table-wrp {
+  overflow-x: auto;
 }
 
 .fund-creation-requests__table {

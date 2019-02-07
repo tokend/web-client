@@ -16,7 +16,7 @@ export class SaleRequestRecord extends RequestRecord {
     this.endTime = _get(this._record, 'details.sale.endTime')
     this.softCap = _get(this._record, 'details.sale.softCap')
     this.hardCap = _get(this._record, 'details.sale.hardCap')
-    this.baseAssetForHardCap = _get(
+    this.baseHardCap = _get(
       this._record, 'details.sale.baseAssetForHardCap'
     )
     this.saleTypeStr = _get(this._record, 'details.sale.saleType.name')
@@ -44,6 +44,14 @@ export class SaleRequestRecord extends RequestRecord {
 
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+  }
+
+  get youtubeVideoUrl () {
+    if (this.youtubeVideoId) {
+      return `https://www.youtube.com/watch?v=${this.youtubeVideoId}`
+    } else {
+      return ''
+    }
   }
 
   _getQuoteAssets () {
