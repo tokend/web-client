@@ -17,7 +17,7 @@
         v-else
         :asset="selectedAsset"
         @balance-added="refreshSelectedAsset"
-        @update="isUpdateMode = true"
+        @update-ask="isUpdateMode = true"
       />
     </drawer>
     <div class="asset-cards">
@@ -88,7 +88,6 @@ export default {
     isDetailsDrawerShown: false,
     isUpdateMode: false,
     selectedAsset: null,
-    assetUpdateRecord: null,
     config,
   }),
   computed: {

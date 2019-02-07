@@ -80,7 +80,7 @@
         v-if="asset.owner === account.accountId"
         v-ripple
         class="asset-details__update-btn"
-        @click="$emit(EVENTS.update)"
+        @click="$emit(EVENTS.updateAsk)"
       >
         {{ 'asset-details.update-btn' | globalize }}
       </button>
@@ -105,7 +105,7 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
-  update: 'update',
+  updateAsk: 'update-ask',
 }
 
 export default {

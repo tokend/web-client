@@ -418,8 +418,8 @@ export default {
         // creation request contains the info about asset issuance
         // (initial preissued amount, preissued asset signer, etc.).
         return _merge(
-          AssetUpdateRequestRecord.fromAssetRecord(
-            requests.creationRequest.asset
+          AssetUpdateRequestRecord.fromAssetDetails(
+            requests.creationRequest.assetDetails
           ),
           requests.latestUpdatableRequest || Object.assign(
             // Request ID is assigned, because approved requests are immutable.
