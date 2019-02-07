@@ -59,7 +59,7 @@
       <form-confirmation
         @cancel="cancelConfirmation"
         @ok="submit"
-        :is-pending="isOfferCreatingProcess"
+        :is-pending="isOfferCreating"
         class="app__form-confirmation"
       />
     </template>
@@ -112,7 +112,7 @@ export default {
       amount: '',
     },
     config,
-    isOfferCreatingProcess: false,
+    isOfferCreating: false,
   }),
   validations () {
     return {
@@ -142,11 +142,11 @@ export default {
     formatNumber,
     async submit () {
       this.disableForm()
-      this.isOfferCreatingProcess = true
+      this.isOfferCreating = true
 
       await this.createOffer(this.getCreateOfferOpts())
 
-      this.isOfferCreatingProcess = false
+      this.isOfferCreating = false
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
       this.hideConfirmation()
