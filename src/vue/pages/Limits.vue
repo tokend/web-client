@@ -1,5 +1,5 @@
 <template>
-  <div class="limits">
+  <div class="limits" v-if="accountBalances.length">
     <top-bar>
       <template slot="main">
         <router-link :to="vueRoutes.limits">
@@ -71,6 +71,12 @@
       />
     </drawer>
   </div>
+  <div v-else>
+    <no-data-message
+      :title-id="'limits.no-limits-list'"
+      :message-id="'limits.here-will-limits-list'"
+    />
+  </div>
 </template>
 
 <script>
@@ -80,6 +86,7 @@ import TopBar from '@/vue/common/TopBar'
 import LimitsForm from '@/vue/forms/LimitsForm'
 import LimitsTableRenderer from '@/vue/pages/Limits/Limits.TableRenderer'
 import LimitsRequestsListRenderer from '@/vue/pages/Limits/Limits.RequestsListRenderer'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -101,6 +108,7 @@ export default {
     LimitsTableRenderer,
     LimitsRequestsListRenderer,
     CollectionLoader,
+    NoDataMessage,
   },
   data: () => ({
     selectedAsset: '',
