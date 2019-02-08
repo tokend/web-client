@@ -5,16 +5,17 @@
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template v-if="isUpdating">
             <template slot="heading">
-              {{ 'token-creation-requests.update-token-title' | globalize }}
+              {{ 'asset-creation-requests.update-token-title' | globalize }}
             </template>
             <asset-form
               :request="selectedRequest"
-              @update="loadHistory"
+              @update="initHistoryLoading"
             />
           </template>
+
           <template v-else>
             <template slot="heading">
-              {{ 'token-creation-requests.details-title' | globalize }}
+              {{ 'asset-creation-requests.details-title' | globalize }}
             </template>
             <asset-request-details
               :request="selectedRequest"
@@ -23,25 +24,27 @@
             />
           </template>
         </drawer>
+
         <table class="app__table asset-creation-requests__table">
           <thead>
             <tr>
               <!-- eslint-disable max-len -->
-              <th :title="'token-creation-requests.token-code-header' | globalize">
-                {{ 'token-creation-requests.token-code-header' | globalize }}
+              <th :title="'asset-creation-requests.token-code-header' | globalize">
+                {{ 'asset-creation-requests.token-code-header' | globalize }}
               </th>
-              <th :title="'token-creation-requests.request-state-header' | globalize">
-                {{ 'token-creation-requests.request-state-header' | globalize }}
+              <th :title="'asset-creation-requests.request-state-header' | globalize">
+                {{ 'asset-creation-requests.request-state-header' | globalize }}
               </th>
-              <th :title="'token-creation-requests.created-header' | globalize">
-                {{ 'token-creation-requests.created-header' | globalize }}
+              <th :title="'asset-creation-requests.created-header' | globalize">
+                {{ 'asset-creation-requests.created-header' | globalize }}
               </th>
-              <th :title="'token-creation-requests.last-updated-header' | globalize">
-                {{ 'token-creation-requests.last-updated-header' | globalize }}
+              <th :title="'asset-creation-requests.last-updated-header' | globalize">
+                {{ 'asset-creation-requests.last-updated-header' | globalize }}
               </th>
               <!-- eslint-enable max-len -->
             </tr>
           </thead>
+
           <tbody>
             <tr
               v-for="(request, index) in requestsHistory"
@@ -50,6 +53,7 @@
               <td :title="request.assetCode">
                 {{ request.assetCode }}
               </td>
+
               <td
                 v-if="request.isApproved"
                 class="request-state request-state--approved"
@@ -57,6 +61,7 @@
               >
                 {{ 'request-states.approved-state' | globalize }}
               </td>
+
               <td
                 v-if="request.isPending"
                 class="request-state request-state--pending"
@@ -64,6 +69,7 @@
               >
                 {{ 'request-states.pending-state' | globalize }}
               </td>
+
               <td
                 v-if="request.isRejected"
                 class="request-state request-state--rejected"
@@ -71,6 +77,7 @@
               >
                 {{ 'request-states.rejected-state' | globalize }}
               </td>
+
               <td
                 v-if="request.isCanceled"
                 class="request-state request-state--canceled"
@@ -78,6 +85,7 @@
               >
                 {{ 'request-states.canceled-state' | globalize }}
               </td>
+
               <!-- eslint-disable max-len -->
               <td
                 v-if="request.isPermanentlyRejected"
@@ -87,42 +95,57 @@
                 {{ 'request-states.permanently-rejected-state' | globalize }}
               </td>
               <!-- eslint-enable max-len -->
+
               <td :title="request.createdAt | formatCalendar">
                 {{ request.createdAt | formatCalendar }}
               </td>
+
               <td :title="request.updatedAt | formatCalendar">
                 {{ request.updatedAt | formatCalendar }}
               </td>
+
               <td>
                 <a
                   class="request-details-btn"
                   @click="showRequestDetails(index)"
                 >
-                  {{ 'token-creation-requests.details-btn' | globalize }}
+                  {{ 'asset-creation-requests.details-btn' | globalize }}
                 </a>
               </td>
             </tr>
           </tbody>
         </table>
       </template>
+
       <template v-else>
         <!-- eslint-disable max-len -->
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'token-creation-requests.no-request-history-title' | globalize"
-          :msg-message="'token-creation-requests.no-request-history-desc' | globalize"
+          :msg-title="'asset-creation-requests.no-request-history-title' | globalize"
+          :msg-message="'asset-creation-requests.no-request-history-desc' | globalize"
         />
         <!-- eslint-enable max-len -->
       </template>
     </template>
+
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'token-creation-requests.loading-msg'" />
+      <loader :message-id="'asset-creation-requests.loading-msg'" />
     </template>
+
     <template v-else>
       <p>
-        {{ 'token-creation-requests.loading-error-msg' | globalize }}
+        {{ 'asset-creation-requests.loading-error-msg' | globalize }}
       </p>
     </template>
+
+    <collection-loader
+      class="asset-creation-requests__loader"
+      v-show="requestsHistory.length"
+      :first-page-loader="getHistory"
+      @first-page-load="setHistory"
+      @next-page-load="extendHistory"
+      @error="isLoadingFailed = true"
+    />
   </div>
 </template>
 
@@ -130,6 +153,8 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import CollectionLoader from '@/vue/common/CollectionLoader'
+
 import AssetRequestDetails from '@/vue/pages/assets/AssetRequestDetails'
 import AssetForm from '@/vue/forms/AssetForm'
 
@@ -151,9 +176,11 @@ export default {
     Loader,
     Drawer,
     NoDataMessage,
+    CollectionLoader,
     AssetRequestDetails,
     AssetForm,
   },
+
   data: _ => ({
     requestsHistory: [],
     isLoaded: false,
@@ -162,31 +189,41 @@ export default {
     selectedIndex: -1,
     isUpdating: false,
   }),
+
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
     }),
+
     selectedRequest () {
       return this.requestsHistory[this.selectedIndex]
     },
   },
-  async created () {
-    await this.loadHistory()
-  },
   methods: {
-    async loadHistory () {
-      try {
-        const { data } = await Sdk.horizon.request.getAllForAssets({
-          requestor: this.account.accountId,
-        })
-        this.requestsHistory =
-          data.map(request => this.createRequestRecord(request))
-        this.isLoaded = true
-      } catch (e) {
-        this.isLoadingFailed = true
-        ErrorHandler.process(e)
-      }
+    initHistoryLoading () {
+      this.isLoaded = false
     },
+
+    async getHistory () {
+      const response = await Sdk.horizon.request.getAllForAssets({
+        requestor: this.account.accountId,
+      })
+
+      return response
+    },
+
+    setHistory (data) {
+      this.requestsHistory =
+        data.map(request => this.createRequestRecord(request))
+      this.isLoaded = true
+    },
+
+    extendHistory (data) {
+      this.requestsHistory = this.requestsHistory.concat(
+        data.map(request => this.createRequestRecord(request))
+      )
+    },
+
     createRequestRecord (request) {
       if (request.details.assetCreate) {
         return new AssetCreateRequestRecord(request)
@@ -194,11 +231,13 @@ export default {
         return new AssetUpdateRequestRecord(request)
       }
     },
+
     showRequestDetails (index) {
       this.selectedIndex = index
       this.isUpdating = false
       this.isDetailsDrawerShown = true
     },
+
     async updateRequest () {
       try {
         if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
@@ -215,6 +254,7 @@ export default {
         ErrorHandler.process(e)
       }
     },
+
     async cancelRequest () {
       try {
         const operation = base.ManageAssetBuilder.cancelAssetRequest({
@@ -227,7 +267,7 @@ export default {
           this.createRequestRecord(data)
         )
 
-        Bus.success('token-creation-requests.request-canceled-msg')
+        Bus.success('asset-creation-requests.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -287,5 +327,9 @@ export default {
   &--permanently-rejected:before {
     background-color: $col-error;
   }
+}
+
+.asset-creation-requests__loader {
+  margin-top: .8rem;
 }
 </style>

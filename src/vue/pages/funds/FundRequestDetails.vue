@@ -21,7 +21,7 @@
         class="request-state request-state--approved"
       >
         <p class="request-state__content">
-          {{ 'request-messages.approved-request-msg' | globalize }}
+          {{ 'request-messages.approved-msg' | globalize }}
         </p>
       </div>
 
@@ -30,7 +30,7 @@
         class="request-state request-state--pending"
       >
         <p class="request-state__content">
-          {{ 'request-messages.pending-request-msg' | globalize }}
+          {{ 'request-messages.pending-msg' | globalize }}
         </p>
       </div>
 
@@ -40,7 +40,7 @@
       >
         <p class="request-state__content">
           <!-- eslint-disable-next-line max-len -->
-          {{ 'request-messages.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+          {{ 'request-messages.rejected-msg' | globalize({ reason: request.rejectReason }) }}
         </p>
       </div>
 
@@ -49,7 +49,7 @@
         class="request-state request-state--canceled"
       >
         <p class="request-state__content">
-          {{ 'request-messages.canceled-request-msg' | globalize() }}
+          {{ 'request-messages.canceled-msg' | globalize() }}
         </p>
       </div>
 
@@ -59,7 +59,7 @@
       >
         <p class="request-state__content">
           <!-- eslint-disable-next-line max-len -->
-          {{ 'request-messages.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+          {{ 'request-messages.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
         </p>
       </div>
 

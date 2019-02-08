@@ -157,6 +157,15 @@
         {{ 'fund-creation-requests.loading-error-msg' | globalize }}
       </p>
     </template>
+
+    <collection-loader
+      class="fund-creation-requests__loader"
+      v-show="requestsHistory.length"
+      :first-page-loader="getHistory"
+      @first-page-load="setHistory"
+      @next-page-load="extendHistory"
+      @error="isLoadingFailed = true"
+    />
   </div>
 </template>
 
@@ -164,6 +173,7 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import CollectionLoader from '@/vue/common/CollectionLoader'
 import SelectField from '@/vue/fields/SelectField'
 
 import FundRequestDetails from '@/vue/pages/funds/FundRequestDetails'
@@ -185,9 +195,11 @@ export default {
     Loader,
     Drawer,
     NoDataMessage,
+    CollectionLoader,
     SelectField,
     FundRequestDetails,
   },
+
   data: _ => ({
     requestsHistory: [],
     isLoaded: false,
@@ -203,44 +215,55 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
     }),
+
     selectedRequest () {
       return this.filteredRequests[this.selectedIndex]
     },
+
     fundAssetCodes () {
       return this.requestsHistory
         .map(request => request.baseAsset)
         .filter((asset, i, self) => self.indexOf(asset) === i)
     },
+
     filteredRequests () {
       return this.requestsHistory
         .filter(request => request.baseAsset === this.filters.baseAsset)
     },
   },
-  async created () {
-    await this.loadHistory()
-    if (this.requestsHistory.length) {
-      this.filters.baseAsset = this.fundAssetCodes[0]
-    }
-  },
+
   methods: {
-    async loadHistory () {
-      try {
-        const { data } = await Sdk.horizon.request.getAllForSales({
-          requestor: this.account.accountId,
-        })
-        this.requestsHistory =
-          data.map(request => RecordWrapper.request(request))
-        this.isLoaded = true
-      } catch (e) {
-        this.isLoadingFailed = true
-        ErrorHandler.process(e)
-      }
+    async getHistory () {
+      const response = await Sdk.horizon.request.getAllForSales({
+        requestor: this.account.accountId,
+      })
+
+      return response
     },
+
+    setHistory (data) {
+      this.requestsHistory =
+        data.map(request => RecordWrapper.request(request))
+
+      if (this.requestsHistory.length) {
+        this.filters.baseAsset = this.fundAssetCodes[0]
+      }
+
+      this.isLoaded = true
+    },
+
+    extendHistory (data) {
+      this.requestsHistory = this.requestsHistory.concat(
+        data.map(request => RecordWrapper.request(request))
+      )
+    },
+
     showRequestDetails (index) {
       this.selectedIndex = index
       this.isUpdateMode = false
       this.isDetailsDrawerShown = true
     },
+
     async cancelRequest () {
       try {
         const operation = base.SaleRequestBuilder.cancelSaleCreationRequest({
@@ -318,5 +341,9 @@ export default {
   &--permanently-rejected:before {
     background-color: $col-error;
   }
+}
+
+.fund-creation-requests__loader {
+  margin-top: .8rem;
 }
 </style>

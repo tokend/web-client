@@ -505,14 +505,14 @@
     },
 
     "request-messages": {
-      "approved-request-msg": "Your request was approved",
-      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
-      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
-      "canceled-request-msg": "Your request was cancelled",
-      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}"
+      "approved-msg": "Your request was approved",
+      "rejected-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-msg": "Your request was cancelled",
+      "permanently-rejected-msg": "Your request was rejected permanently with reason: {{reason}}"
     },
 
-    "token-creation-requests": {
+    "asset-creation-requests": {
       "update-token-title": "Update token",
       "details-title": "Token request details",
       "loading-msg": "Loading",

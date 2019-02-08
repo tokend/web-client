@@ -34,6 +34,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const EVENTS = {
   firstPageLoad: 'first-page-load',
   nextPageLoad: 'next-page-load',
+  error: 'error',
 }
 const DEFAULT_PAGE_LIMIT = 10
 
@@ -74,7 +75,8 @@ export default {
         this.isCollectionFetched =
           response.data.length < this.pageLimit
       } catch (e) {
-        ErrorHandler.process(e)
+        this.$emit(EVENTS.error, e)
+        ErrorHandler.processWithoutFeedback(e)
       }
     },
   },
