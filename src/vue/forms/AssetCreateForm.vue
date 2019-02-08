@@ -1,6 +1,5 @@
 <template>
   <form-stepper
-    v-if="isLoaded"
     :steps="STEPS"
     :current-step.sync="currentStep"
     :disabled="formMixin.isDisabled"
@@ -197,20 +196,10 @@
       </div>
     </form>
   </form-stepper>
-
-  <loader
-    v-else-if="!isLoadingFailed"
-    :message-id="'asset-form.loading-msg'"
-  />
-
-  <p v-else>
-    {{ 'asset-form.loading-error-msg' | globalize }}
-  </p>
 </template>
 
 <script>
 import FormStepper from '@/vue/common/FormStepper'
-import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -221,7 +210,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { RecordWrapper } from '@/js/records'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 
 import config from '@/config'
@@ -260,11 +248,10 @@ export default {
   name: 'asset-create-form',
   components: {
     FormStepper,
-    Loader,
   },
   mixins: [FormMixin],
   props: {
-    assetForUpdate: { type: String, default: '' },
+    request: { type: AssetCreateRequestRecord, default: null },
   },
 
   data: _ => ({
@@ -283,9 +270,6 @@ export default {
         terms: null,
       },
     },
-    request: {},
-    isLoaded: false,
-    isLoadingFailed: false,
     currentStep: 1,
     STEPS,
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -367,18 +351,10 @@ export default {
     },
   },
 
-  async created () {
-    if (this.assetForUpdate) {
-      try {
-        this.request = await this.getAssetRequestForUpdate(this.assetForUpdate)
-        this.populateForm()
-      } catch (e) {
-        this.isLoadingFailed = true
-        ErrorHandler.processWithoutFeedback(e)
-      }
+  created () {
+    if (this.request) {
+      this.populateForm()
     }
-
-    this.isLoaded = true
   },
 
   methods: {
@@ -411,23 +387,6 @@ export default {
       }
     },
 
-    async getAssetRequestForUpdate (assetCode) {
-      try {
-        const { data } = await Sdk.horizon.request.getAllForAssets({
-          requestor: this.account.accountId,
-          asset: assetCode,
-        })
-        const requests = data.map(request => RecordWrapper.request(request))
-
-        const creationRequest =
-          requests.find(request => request instanceof AssetCreateRequestRecord)
-
-        return creationRequest
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-
     next (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
@@ -445,7 +404,7 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.token-request-submitted-msg')
 
-        if (this.assetForUpdate) {
+        if (this.request) {
           this.$emit(EVENTS.update)
         }
       } catch (e) {

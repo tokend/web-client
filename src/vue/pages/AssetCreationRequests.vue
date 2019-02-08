@@ -10,12 +10,13 @@
 
             <asset-create-form
               v-if="isAssetCreateRequestSelected"
-              :asset-for-update="selectedRequest.assetCode"
+              :request="selectedRequest"
               @update="loadHistory"
             />
 
             <asset-update-form
               v-else
+              :request="selectedRequest"
               :asset-for-update="selectedRequest.assetCode"
               @update="loadHistory"
             />

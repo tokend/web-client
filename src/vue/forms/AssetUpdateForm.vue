@@ -138,13 +138,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { RecordWrapper } from '@/js/records'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
-
-import moment from 'moment'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -181,6 +178,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
+    request: { type: AssetUpdateRequestRecord, default: null },
     assetForUpdate: { type: String, required: true },
   },
 
@@ -195,7 +193,7 @@ export default {
         terms: null,
       },
     },
-    request: {},
+    assetRecord: {},
     isLoaded: false,
     isLoadingFailed: false,
     currentStep: 1,
@@ -243,8 +241,7 @@ export default {
 
   async created () {
     try {
-      this.request = await this.getAssetRequestForUpdate(this.assetForUpdate)
-      this.populateForm()
+      this.populateForm(this.request)
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
@@ -253,56 +250,21 @@ export default {
   },
 
   methods: {
-    populateForm () {
+    populateForm (request) {
       this.form = {
         information: {
-          name: this.request.assetName,
-          logo: this.request.logo.key
-            ? new DocumentContainer(this.request.logo)
+          name: request.assetName,
+          logo: request.logo.key
+            ? new DocumentContainer(request.logo)
             : null,
-          policies: this.request.policies,
+          policies: request.policies,
         },
         advanced: {
-          terms: this.request.terms.key
-            ? new DocumentContainer(this.request.terms)
+          terms: request.terms.key
+            ? new DocumentContainer(request.terms)
             : null,
         },
       }
-    },
-
-    async getAssetRequestForUpdate (assetCode) {
-      try {
-        const { data } = await Sdk.horizon.request.getAllForAssets({
-          requestor: this.account.accountId,
-          asset: assetCode,
-        })
-        const requests = data.map(request => RecordWrapper.request(request))
-
-        const assetUpdateRequests =
-          requests.filter(r => r instanceof AssetUpdateRequestRecord)
-
-        return this.getLatestUpdateRequest(assetUpdateRequests)
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    },
-
-    getLatestUpdateRequest (assetUpdateRequests) {
-      const latestApprovedRequestTime = moment.max(
-        assetUpdateRequests
-          .filter(request => request.isApproved)
-          .map(request => moment(request.updatedAt))
-      )
-
-      const latestApprovedRequest = assetUpdateRequests.find(request => {
-        return request.isApproved &&
-          latestApprovedRequestTime.isSame(request.updatedAt)
-      })
-
-      const latestUpdatableRequest = assetUpdateRequests
-        .find(request => request.isPending || request.isRejected)
-
-      return latestUpdatableRequest || latestApprovedRequest
     },
 
     next (formStep) {
