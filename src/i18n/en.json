@@ -558,9 +558,16 @@
     },
 
     "funds": {
+      "loading-msg": "Loading",
+      "no-funds-title": "No funds found",
+      "no-funds-desc": "Unfortunately, there are no funds matching your criteria",
       "create-fund-title": "Create fund",
       "update-fund-title": "Update fund",
-      "short-details-title": "Fund short details"
+      "short-details-title": "Fund short details",
+      "fund-card-funded": "{{funded, percent}} funded",
+      "fund-card-invested": "{{invested, money}} invested",
+      "fund-card-days-to-launch": "{{days}} days to launch",
+      "fund-card-offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
     },
 
     "fund-short-details": {
