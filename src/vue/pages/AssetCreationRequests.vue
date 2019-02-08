@@ -25,96 +25,98 @@
           </template>
         </drawer>
 
-        <table class="app__table asset-creation-requests__table">
-          <thead>
-            <tr>
-              <!-- eslint-disable max-len -->
-              <th :title="'asset-creation-requests.token-code-header' | globalize">
-                {{ 'asset-creation-requests.token-code-header' | globalize }}
-              </th>
-              <th :title="'asset-creation-requests.request-state-header' | globalize">
-                {{ 'asset-creation-requests.request-state-header' | globalize }}
-              </th>
-              <th :title="'asset-creation-requests.created-header' | globalize">
-                {{ 'asset-creation-requests.created-header' | globalize }}
-              </th>
-              <th :title="'asset-creation-requests.last-updated-header' | globalize">
-                {{ 'asset-creation-requests.last-updated-header' | globalize }}
-              </th>
-              <!-- eslint-enable max-len -->
-            </tr>
-          </thead>
+        <div class="asset-creation-requests__table-wrp">
+          <table class="app__table asset-creation-requests__table">
+            <thead>
+              <tr>
+                <!-- eslint-disable max-len -->
+                <th :title="'asset-creation-requests.token-code-header' | globalize">
+                  {{ 'asset-creation-requests.token-code-header' | globalize }}
+                </th>
+                <th :title="'asset-creation-requests.request-state-header' | globalize">
+                  {{ 'asset-creation-requests.request-state-header' | globalize }}
+                </th>
+                <th :title="'asset-creation-requests.created-header' | globalize">
+                  {{ 'asset-creation-requests.created-header' | globalize }}
+                </th>
+                <th :title="'asset-creation-requests.last-updated-header' | globalize">
+                  {{ 'asset-creation-requests.last-updated-header' | globalize }}
+                </th>
+                <!-- eslint-enable max-len -->
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr
-              v-for="(request, index) in requestsHistory"
-              :key="index"
-            >
-              <td :title="request.assetCode">
-                {{ request.assetCode }}
-              </td>
-
-              <td
-                v-if="request.isApproved"
-                class="request-state request-state--approved"
-                :title="'request-states.approved-state' | globalize"
+            <tbody>
+              <tr
+                v-for="(request, index) in requestsHistory"
+                :key="index"
               >
-                {{ 'request-states.approved-state' | globalize }}
-              </td>
+                <td :title="request.assetCode">
+                  {{ request.assetCode }}
+                </td>
 
-              <td
-                v-if="request.isPending"
-                class="request-state request-state--pending"
-                :title="'request-states.pending-state' | globalize"
-              >
-                {{ 'request-states.pending-state' | globalize }}
-              </td>
-
-              <td
-                v-if="request.isRejected"
-                class="request-state request-state--rejected"
-                :title="'request-states.rejected-state' | globalize"
-              >
-                {{ 'request-states.rejected-state' | globalize }}
-              </td>
-
-              <td
-                v-if="request.isCanceled"
-                class="request-state request-state--canceled"
-                :title="'request-states.canceled-state' | globalize"
-              >
-                {{ 'request-states.canceled-state' | globalize }}
-              </td>
-
-              <!-- eslint-disable max-len -->
-              <td
-                v-if="request.isPermanentlyRejected"
-                class="request-state request-state--permanently-rejected"
-                :title="'request-states.permanently-rejected-state' | globalize"
-              >
-                {{ 'request-states.permanently-rejected-state' | globalize }}
-              </td>
-              <!-- eslint-enable max-len -->
-
-              <td :title="request.createdAt | formatCalendar">
-                {{ request.createdAt | formatCalendar }}
-              </td>
-
-              <td :title="request.updatedAt | formatCalendar">
-                {{ request.updatedAt | formatCalendar }}
-              </td>
-
-              <td>
-                <a
-                  class="request-details-btn"
-                  @click="showRequestDetails(index)"
+                <td
+                  v-if="request.isApproved"
+                  class="request-state request-state--approved"
+                  :title="'request-states.approved-state' | globalize"
                 >
-                  {{ 'asset-creation-requests.details-btn' | globalize }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  {{ 'request-states.approved-state' | globalize }}
+                </td>
+
+                <td
+                  v-if="request.isPending"
+                  class="request-state request-state--pending"
+                  :title="'request-states.pending-state' | globalize"
+                >
+                  {{ 'request-states.pending-state' | globalize }}
+                </td>
+
+                <td
+                  v-if="request.isRejected"
+                  class="request-state request-state--rejected"
+                  :title="'request-states.rejected-state' | globalize"
+                >
+                  {{ 'request-states.rejected-state' | globalize }}
+                </td>
+
+                <td
+                  v-if="request.isCanceled"
+                  class="request-state request-state--canceled"
+                  :title="'request-states.canceled-state' | globalize"
+                >
+                  {{ 'request-states.canceled-state' | globalize }}
+                </td>
+
+                <!-- eslint-disable max-len -->
+                <td
+                  v-if="request.isPermanentlyRejected"
+                  class="request-state request-state--permanently-rejected"
+                  :title="'request-states.permanently-rejected-state' | globalize"
+                >
+                  {{ 'request-states.permanently-rejected-state' | globalize }}
+                </td>
+                <!-- eslint-enable max-len -->
+
+                <td :title="request.createdAt | formatCalendar">
+                  {{ request.createdAt | formatCalendar }}
+                </td>
+
+                <td :title="request.updatedAt | formatCalendar">
+                  {{ request.updatedAt | formatCalendar }}
+                </td>
+
+                <td>
+                  <a
+                    class="request-details-btn"
+                    @click="showRequestDetails(index)"
+                  >
+                    {{ 'asset-creation-requests.details-btn' | globalize }}
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </template>
 
       <template v-else>
@@ -141,7 +143,7 @@
     <collection-loader
       class="asset-creation-requests__loader"
       v-show="requestsHistory.length"
-      :first-page-loader="getHistory"
+      :first-page-loader="requestsLoader"
       @first-page-load="setHistory"
       @next-page-load="extendHistory"
       @error="isLoadingFailed = true"
@@ -188,6 +190,7 @@ export default {
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdating: false,
+    requestsLoader: () => {},
   }),
 
   computed: {
@@ -199,17 +202,25 @@ export default {
       return this.requestsHistory[this.selectedIndex]
     },
   },
+
+  created () {
+    this.initHistoryLoading()
+  },
+
   methods: {
     initHistoryLoading () {
+      this.isDetailsDrawerShown = false
       this.isLoaded = false
+      this.requestsHistory = []
+      this.requestsLoader = this.getRequestsLoader(this.account.accountId)
     },
 
-    async getHistory () {
-      const response = await Sdk.horizon.request.getAllForAssets({
-        requestor: this.account.accountId,
-      })
-
-      return response
+    getRequestsLoader (accountId) {
+      return function () {
+        return Sdk.horizon.request.getAllForAssets({
+          requestor: accountId,
+        })
+      }
     },
 
     setHistory (data) {
@@ -280,7 +291,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.asset-creation-requests {
+.asset-creation-requests__table-wrp {
   overflow-x: auto;
 }
 
