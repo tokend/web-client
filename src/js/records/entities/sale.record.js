@@ -44,6 +44,20 @@ export class SaleRecord {
     this.logoType = _get(this._record, 'details.logo.type')
   }
 
+  /** URLs **/
+
+  get youtubeVideoUrl () {
+    if (this.youtubeVideoId) {
+      return `https://www.youtube.com/watch?v=${this.youtubeVideoId}`
+    } else {
+      return ''
+    }
+  }
+
+  logoUrl (storageUrl) {
+    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+  }
+
   /** quote assets: **/
 
   get quoteAssetCodes () {

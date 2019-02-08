@@ -96,6 +96,10 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
 $col-button-back-icon: $col-primary-inactive;
 $col-button-back-icon-hover: $col-primary-lighten;
 
+$col-button-flat-light-bg: $_whiteSmoke;
+$col-button-flat-light-shadow: rgba(0, 0, 0, 0.15);
+$col-button-flat-light-text: $col-text;
+
 // block
 $col-block-bg: $_white;
 $col-block-shadow: rgba(0, 0, 0, 0.1);

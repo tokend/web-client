@@ -275,7 +275,8 @@
       "view-document": "View document",
       "explore-documents": "Explore documents",
       "find-document": "Find document",
-      "update-token": "Update token"
+      "update-token": "Update token",
+      "funds": "Funds"
     },
 
     "pages-subnames": {
@@ -554,6 +555,28 @@
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
       "file-not-uploaded-err": "A file was not uploaded",
       "disabled-msg": "This field is disabled"
+    },
+
+    "funds": {
+      "create-fund-title": "Create fund",
+      "update-fund-title": "Update fund",
+      "short-details-title": "Fund short details"
+    },
+
+    "fund-short-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "name-title": "Fund name",
+      "start-time-title": "Start time",
+      "close-time-title": "Close time",
+      "soft-cap-title": "Soft cap",
+      "hard-cap-title": "Hard cap",
+      "sell-title": "{{asset}} to sell",
+      "video-about-fund-title": "Video about fund",
+      "no-video-msg": "No video",
+      "view-video-btn": "View",
+      "view-btn": "View the fund",
+      "update-btn": "Update"
     },
 
     "withdrawal-form": {
