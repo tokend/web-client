@@ -50,18 +50,15 @@ export default {
     try {
       this.simplemde.togglePreview()
 
-      this.simplemde.codemirror.on('beforeChange', (instance, changeObj) => {
-        // do some things
-      })
-
-      this.$refs.markdownEditor.initialize() // init
+      this.simplemde.codemirror.on('beforeChange', (instance, changeObj) => {})
+      this.$refs.markdownEditor.initialize()
       this.simplemde.toTextArea()
-      this.simplemde.isPreviewActive() // returns boolean
-      this.simplemde.isSideBySideActive() // returns boolean
-      this.simplemde.isFullscreenActive() // returns boolean
-      this.simplemde.clearAutosavedValue() // no returned value
-      this.simplemde.markdown(this.content) // returns parsed html
-      this.simplemde.codemirror.refresh() // refresh codemirror
+      this.simplemde.isPreviewActive()
+      this.simplemde.isSideBySideActive()
+      this.simplemde.isFullscreenActive()
+      this.simplemde.clearAutosavedValue()
+      this.simplemde.markdown(this.content)
+      this.simplemde.codemirror.refresh()
     } catch (e) {}
   },
 

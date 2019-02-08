@@ -146,12 +146,14 @@
             </div>
             <div class="app__form-row create-fund__form-row">
               <div class="app__form-field">
-                {{ 'create-fund-form.price' | globalize({
-                  base: form.fundInformation.baseAsset,
-                  quote: config.DEFAULT_QUOTE_ASSET
-                }) }}
-                <!-- eslint-disable-next-line max-len -->
-                {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+                <p class="create-fund__price">
+                  {{ 'create-fund-form.price' | globalize({
+                    base: form.fundInformation.baseAsset,
+                    quote: config.DEFAULT_QUOTE_ASSET
+                  }) }}
+                  <!-- eslint-disable-next-line max-len -->
+                  {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+                </p>
               </div>
             </div>
             <div class="app__form-row create-fund__form-row">
@@ -307,7 +309,7 @@
         </div>
       </template>
     </template>
-    <loader v-if="!isLoaded" />
+    <loader v-if="!isLoaded" message-id="create-fund-form.loading-msg" />
     <template v-if="isFailed">
       {{ 'create-fund-form.can-not-load-assets' | globalize }}
     </template>
@@ -481,7 +483,7 @@ export default {
     price () {
       return MathUtil.divide(this.form.fundInformation.hardCap,
         this.form.fundInformation.baseAssetForHardCap)
-    }
+    },
   },
   async created () {
     try {
@@ -582,6 +584,7 @@ export default {
 
 <style lang="scss" scoped>
   @import '~@scss/variables';
+  @import './app-form';
 
   .create-fund__form-row {
     margin-bottom: 2rem;
@@ -613,6 +616,10 @@ export default {
     margin-bottom: 2rem;
     margin-top: -1rem;
     color: $col-error;
+  }
+
+  .create-fund__price {
+    font-size: 1.4rem;
   }
 
   .create-fund__no-owned-assets {
