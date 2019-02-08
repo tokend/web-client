@@ -78,6 +78,7 @@ export default {
 </script>
 
 <style lang="scss">
+  @import '~simplemde/dist/simplemde.min.css';
   @import '~@scss/variables';
 
   .description-editor {

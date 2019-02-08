@@ -264,7 +264,9 @@
                   class="create-fund__iframe" />
                 <div v-else class="create-fund__youtub-video">
                   <i class="mdi mdi-youtube create-fund__video-icon" />
-                  <span>Preview you video</span>
+                  <span>
+                    {{ 'create-fund-form.preview-you-video' | globalize }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -272,8 +274,8 @@
               <div class="app__form-field">
                 {{ 'create-fund-form.full-description' | globalize }}
                 <description-editor
-                  class="description-step__editor"
-                  v-model="form.fullDescription.description" />
+                  v-model="form.fullDescription.description"
+                />
               </div>
             </div>
             <div class="app__form-actions">
