@@ -93,14 +93,22 @@ export default {
       documents: {},
     },
   }),
-  validations: {
+  validations () {
+    const documents = {}
+
+    for (const doc of this.request.requestedDocs) {
+      documents[doc.label] = {
+        documentContainer,
+        required,
+      }
+    }
+
+    return {
     form: {
       // will filled by setDocumentsValidations method
-      documents: {},
+        documents,
     },
-  },
-  created () {
-    this.setDocumentsValidations()
+    }
   },
   methods: {
     tryToSubmit () {
@@ -160,14 +168,6 @@ export default {
         documents[key] = value
       }
       return documents
-    },
-    setDocumentsValidations () {
-      for (const doc of this.request.requestedDocs) {
-        this.$options.validations.form.documents[doc.label] = {
-          documentContainer,
-          required,
-        }
-      }
     },
   },
 }
