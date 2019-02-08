@@ -27,8 +27,8 @@ export class LimitsUpdateRequestRecord extends RequestRecord {
 
       if (Object.keys(rejectReason).includes('docsToUpload')) {
         requestedDocs = rejectReason.docsToUpload
-        // replace document-types from 'some type' to 'some_type' to allow
-        // translations using
+        // replace document-types from 'some type' to 'some_type' to make it
+        // valid and allow to translations using
         requestedDocs.forEach(item => {
           item.label = item.label.replace(/ /g, '_')
         })
