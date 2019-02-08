@@ -5,6 +5,7 @@
       'select-field--disabled': disabled,
       'select-field--focused': isExpanded,
       'select-field--label-minimized': selectedValue,
+      'select-field--form-free': formFree,
       'select-field--error': errorMessage
     }"
   >
@@ -81,6 +82,11 @@ export default {
     },
     disabled: {
       type: Boolean,
+      default: false,
+    },
+    formFree: {
+      type: Boolean,
+      required: false,
       default: false,
     },
     errorMessage: {
@@ -250,10 +256,16 @@ export default {
     "&.select-field__selected--focused"
   );
 
+  @include text-font-sizes;
+
+  .select-field--form-free & {
+    border-bottom: 0;
+    background-size: 0;
+  }
+
   &.select-field__selected--padding{
     padding: $field-input-padding;
   }
-  @include text-font-sizes;
 }
 
 .select-field__selected-icon {
@@ -282,6 +294,11 @@ export default {
   font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
+
+  .select-field--form-free & {
+    font-size: 1.8rem;
+    font-weight: 300;
+  }
 }
 
 .select-field__label {

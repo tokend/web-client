@@ -21,6 +21,15 @@ export const vueRoutes = Object.freeze({
   },
   security: { name: 'app.security' },
   dashboard: { name: 'app.dashboard' },
+  trade: {
+    name: 'app.trade',
+    exchange: {
+      name: 'app.exchange',
+    },
+    userOffers: {
+      name: 'app.user-offers',
+    },
+  },
   issuance: { name: 'app.issuance' },
   assets: { name: 'app.assets' },
   balances: { name: 'app.balances' },
@@ -41,7 +50,8 @@ export const vueRoutes = Object.freeze({
   massTransfers: { name: 'app.mass-transfers' },
   withdrawal: { name: 'app.withdrawal' },
   history: { name: 'app.history' },
-  trade: { name: 'app.trade' },
+  tokenCreation: { name: 'app.tokenCreation' },
+  saleCreation: { name: 'app.saleCreation' },
   issuanceCreation: { name: 'app.issuanceCreation' },
   sales: { name: 'app.sales' },
   mySales: { name: 'app.my-sales' },

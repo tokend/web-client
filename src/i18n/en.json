@@ -73,10 +73,13 @@
       "field-error_minValue": "This field should be less or equal {{value}}",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
+      "field-error_requiredAtLeastOne": "Choose at least one of the options",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
+      "field-error_minDate": "Date should be after {{ minDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
     },
@@ -243,7 +246,8 @@
     "form-confirmation": {
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
-      "button-text-cancel": "Cancel"
+      "button-text-cancel": "Cancel",
+      "submit-processing": "Processing..."
     },
 
     "pages-names": {
@@ -280,7 +284,8 @@
     },
 
     "pages-subnames": {
-      "exchange-tokens": "Exchange tokens"
+      "exchange-tokens": "Exchange tokens",
+      "user-orders": "Orders owned by you"
     },
 
     "passport": {
@@ -591,6 +596,107 @@
       "view-video-btn": "View",
       "view-btn": "View the fund",
       "update-btn": "Update"
+    },
+
+    "trade-history": {
+      "title": "Trade history",
+      "table-amount-lbl": "Amount ({{asset}})",
+      "table-price-lbl": "Price ({{asset}})",
+      "table-total-lbl": "Total ({{asset}})",
+      "table-time-lbl": "Time",
+      "loading-msg": "Loading...",
+      "no-data-title": "No trade history",
+      "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
+    },
+
+    "trade-open-offers": {
+      "title": "Your open {{base}}/{{quote}} orders",
+      "table-id-lbl": "Order ID",
+      "table-date-lbl": "Date",
+      "table-offer-lbl": "Order",
+      "table-base-amount-lbl": "Base asset amount",
+      "table-price-lbl": "Price in quote asset",
+      "loading-msg": "Loading...",
+      "no-data-title": "No open orders",
+      "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
+      "buy-lbl": "Buy",
+      "sell-lbl": "Sell"
+    },
+
+    "trade-offers": {
+      "title": "Open orders",
+      "subtitle-ask": "Ask",
+      "subtitle-bid": "Bid",
+      "submit-bid-offer-title": "Submit bid order",
+      "submit-ask-offer-title": "Submit ask order",
+      "table-want-lbl": "Want ({{asset}})",
+      "table-offer-lbl": "Order ({{asset}})",
+      "table-price-lbl": "Price ({{asset}})",
+      "loading-msg": "Loading...",
+      "no-data-title": "No orders",
+      "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
+      "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
+    },
+
+    "submit-trade-offers-form": {
+      "want-label": "Want ({{asset}})",
+      "offer-label": "Order ({{asset}})",
+      "price-label": "Price ({{asset}})",
+      "submit-buy-btn": "Buy",
+      "submit-sell-btn": "Sell"
+    },
+
+    "offer-creation-form": {
+      "success": "Offer successfully created",
+      "price-per-asset": "Price per {{asset}}",
+      "amount": "Amount {{asset}}",
+      "total": "Total {{asset}}",
+      "submit-buy-btn": "Buy",
+      "submit-sell-btn": "Sell",
+      "error-operation-cross-self": "Current order crosses your existing order"
+    },
+
+    "trade-exchange": {
+      "offers-section-title": "Open orders"
+    },
+
+    "trade-top-bar": {
+      "exchange-view": "Exchange",
+      "my-offers-view": "My Orders",
+      "create-buy-offer-button": "Create buy order",
+      "create-sell-offer-button": "Create sell order",
+      "user-balances-label": "Balances",
+      "create-buy-offer-form-title": "Create buy order",
+      "create-sell-offer-form-title": "Create sell order",
+      "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
+    },
+
+    "create-fund-form": {
+      "create-fund-header": "Create fund",
+      "provide-fund-information": "Provide fund information",
+      "add-short-blurb": "Add a short blurb",
+      "full-description": "Full description",
+      "short-description": "Short description",
+      "sale-name": "Fund name",
+      "base-asset": "Base asset",
+      "start-time": "Start time",
+      "close-time": "Close time",
+      "soft-cap": "Soft cap ({{asset}})",
+      "hard-cap": "Hard cap ({{asset}})",
+      "base-asset-hard-cap-to-sell": "{{asset}} to sell",
+      "accept-investments-in": "Accept investments in:",
+      "upload-image" : "Upload the image users will see first in their searcher",
+      "insert-youtube-video": "Insert YouTube video by its ID",
+      "next-btn": "Next",
+      "cancel-btn": "Cancel",
+      "create-btn": "Create",
+      "request-submitted-msg": "Your request was successfully submitted",
+      "price": "Price ({{quote}} for 1 {{base}}) ≈ ",
+      "not-available": "One last moment",
+      "preview-you-video": "Preview you video",
+      "loading-msg": "Loading...",
+      "asset-not-available-yet": "Please create token before creating fund",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
     "withdrawal-form": {

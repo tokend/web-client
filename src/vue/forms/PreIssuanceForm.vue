@@ -24,18 +24,20 @@
         class="pre-issuance-form__issuance-details"
       >
         <h3>{{ 'issuance.pre-issuance-details-title' | globalize }}</h3>
-        <table class="app__table">
-          <thead>
-            <th>{{ 'issuance.asset-lbl' | globalize }}</th>
-            <th>{{ 'issuance.amount-lbl' | globalize }}</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ issuance.asset }}</td>
-              <td>{{ issuance.amount | formatMoney }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="app__table">
+          <table>
+            <thead>
+              <th>{{ 'issuance.asset-lbl' | globalize }}</th>
+              <th>{{ 'issuance.amount-lbl' | globalize }}</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ issuance.asset }}</td>
+                <td>{{ issuance.amount | formatMoney }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="app__form-actions">
         <form-confirmation

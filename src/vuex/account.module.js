@@ -50,11 +50,12 @@ export const getters = {
   [vuexTypes.accountPoliciesTypeI]: state => _get(
     state.account, 'policies.accountPoliciesTypeI'
   ),
+  // accountPoliciesTypes can be null if not present, so here we
+  // overwrite it for easier interface
   [vuexTypes.accountPoliciesTypes]: state => _get(
     state.account, 'policies.accountPoliciesTypes', []
-  ), // accountPoliciesTypes can be null if not present, so here we
-  // overwrite it for easier interface
-  // accountBalances: [], // TODO
+  ),
+  [vuexTypes.accountBalances]: state => state.balancesDetails,
   [vuexTypes.accountDepositAddresses]: state =>
     AccountHelper.groupExternalSystemAccounts(
       state.account.externalSystemAccounts

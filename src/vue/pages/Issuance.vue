@@ -3,7 +3,6 @@
     <top-bar>
       <template slot="main">
         <router-link
-          v-ripple
           :to="{ name: 'app.issuance' }"
         >
           <span>{{ 'issuance.history-title' | globalize }}</span>
@@ -43,7 +42,7 @@
     </drawer>
     <div class="issuance" v-if="isLoaded">
       <template v-if="issuanceHistory.length">
-        <div class="issuance-history__table">
+        <div class="issuance-history__table app__table app__table--with-shadow">
           <table class="app__table">
             <thead>
               <tr>
@@ -184,8 +183,7 @@ export default {
 @import "~@scss/mixins";
 
 .issuance-history__table {
-  overflow-x: auto;
-  @include box-shadow();
+  max-width: 105rem;
 }
 
 .issuance-btn {
