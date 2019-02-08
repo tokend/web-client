@@ -25,8 +25,8 @@
           </template>
         </drawer>
 
-        <div class="asset-creation-requests__table-wrp">
-          <table class="app__table asset-creation-requests__table">
+        <div class="app__table asset-creation-requests__table">
+          <table>
             <thead>
               <tr>
                 <!-- eslint-disable max-len -->
@@ -290,10 +290,6 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 @import "~@scss/mixins";
-
-.asset-creation-requests__table-wrp {
-  overflow-x: auto;
-}
 
 .asset-creation-requests__table {
   @include box-shadow();

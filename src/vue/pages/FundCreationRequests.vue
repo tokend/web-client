@@ -7,10 +7,10 @@
             <template slot="heading">
               {{ 'fund-creation-requests.update-fund-title' | globalize }}
             </template>
-            <!--
-              TODO: add ability to update fund, when fund form is ready
-              to do it
-            -->
+            <create-fund-form
+              :request="selectedRequest"
+              @update="initHistoryLoading"
+            />
           </template>
 
           <template v-else>
@@ -38,8 +38,8 @@
         />
         <!-- eslint-enable max-len -->
 
-        <div class="fund-creation-requests__table-wrp">
-          <table class="app__table fund-creation-requests__table">
+        <div class="app__table fund-creation-requests__table">
+          <table>
             <thead>
               <tr>
                 <!-- eslint-disable max-len -->
@@ -161,7 +161,7 @@
     <collection-loader
       class="fund-creation-requests__loader"
       v-show="requestsHistory.length"
-      :first-page-loader="getHistory"
+      :first-page-loader="requestsLoader"
       @first-page-load="setHistory"
       @next-page-load="extendHistory"
       @error="isLoadingFailed = true"
@@ -176,6 +176,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import SelectField from '@/vue/fields/SelectField'
 
+import CreateFundForm from '@/vue/forms/CreateFundForm'
 import FundRequestDetails from '@/vue/pages/funds/FundRequestDetails'
 
 import { Sdk } from '@/sdk'
@@ -197,6 +198,7 @@ export default {
     NoDataMessage,
     CollectionLoader,
     SelectField,
+    CreateFundForm,
     FundRequestDetails,
   },
 
@@ -210,6 +212,7 @@ export default {
     filters: {
       baseAsset: '',
     },
+    requestsLoader: () => {},
   }),
   computed: {
     ...mapGetters({
@@ -232,13 +235,24 @@ export default {
     },
   },
 
-  methods: {
-    async getHistory () {
-      const response = await Sdk.horizon.request.getAllForSales({
-        requestor: this.account.accountId,
-      })
+  created () {
+    this.initHistoryLoading()
+  },
 
-      return response
+  methods: {
+    initHistoryLoading () {
+      this.isDetailsDrawerShown = false
+      this.isLoaded = false
+      this.requestsHistory = []
+      this.requestsLoader = this.getRequestsLoader(this.account.accountId)
+    },
+
+    getRequestsLoader (accountId) {
+      return function () {
+        return Sdk.horizon.request.getAllForSales({
+          requestor: accountId,
+        })
+      }
     },
 
     setHistory (data) {
@@ -291,10 +305,6 @@ export default {
 
 .fund-creation-requests__asset-list {
   width: fit-content;
-}
-
-.fund-creation-requests__table-wrp {
-  overflow-x: auto;
 }
 
 .fund-creation-requests__table {

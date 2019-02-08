@@ -67,80 +67,82 @@
         {{ request.shortDescription }}
       </p>
 
-      <table class="app__table fund-request-details__table">
-        <tbody>
-          <tr>
-            <td>
-              {{ 'fund-request-details.name-title' | globalize }}
-            </td>
-            <td>
-              {{ request.name }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'fund-request-details.start-time-title' | globalize }}
-            </td>
-            <td>
-              {{ request.startTime | formatCalendar }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'fund-request-details.close-time-title' | globalize }}
-            </td>
-            <td>
-              {{ request.endTime | formatCalendar }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'fund-request-details.soft-cap-title' | globalize }}
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.softCap, currency: request.defaultQuoteAsset } | formatMoney }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'fund-request-details.hard-cap-title' | globalize }}
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.hardCap, currency: request.defaultQuoteAsset } | formatMoney }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'fund-request-details.sell-title' | globalize({ asset: request.baseAsset }) }}
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: request.baseAssetForHardCap, currency: request.baseAsset } | formatMoney }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'fund-request-details.video-about-fund-title' | globalize }}
-            </td>
-            <td>
-              <a
-                v-if="request.youtubeVideoUrl"
-                class="fund-request-details__video-btn"
-                :href="request.youtubeVideoUrl"
-                target="_blank"
-              >
-                {{ 'fund-request-details.view-video-btn' | globalize }}
-              </a>
-              <p v-else>
-                {{ 'fund-request-details.no-video-msg' | globalize }}
-              </p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="app__table fund-request-details__table">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                {{ 'fund-request-details.name-title' | globalize }}
+              </td>
+              <td>
+                {{ request.name }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'fund-request-details.start-time-title' | globalize }}
+              </td>
+              <td>
+                {{ request.startTime | formatCalendar }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'fund-request-details.close-time-title' | globalize }}
+              </td>
+              <td>
+                {{ request.endTime | formatCalendar }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'fund-request-details.soft-cap-title' | globalize }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: request.softCap, currency: request.defaultQuoteAsset } | formatMoney }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'fund-request-details.hard-cap-title' | globalize }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: request.hardCap, currency: request.defaultQuoteAsset } | formatMoney }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ 'fund-request-details.sell-title' | globalize({ asset: request.baseAsset }) }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: request.baseAssetForHardCap, currency: request.baseAsset } | formatMoney }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'fund-request-details.video-about-fund-title' | globalize }}
+              </td>
+              <td>
+                <a
+                  v-if="request.youtubeVideoUrl"
+                  class="fund-request-details__video-btn"
+                  :href="request.youtubeVideoUrl"
+                  target="_blank"
+                >
+                  {{ 'fund-request-details.view-video-btn' | globalize }}
+                </a>
+                <p v-else>
+                  {{ 'fund-request-details.no-video-msg' | globalize }}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="fund-request-details__buttons">
         <button
           v-ripple

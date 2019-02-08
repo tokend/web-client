@@ -359,6 +359,7 @@ const STEPS = {
 }
 const EVENTS = {
   close: 'close',
+  update: 'update',
 }
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
@@ -516,6 +517,10 @@ export default {
         Bus.success('create-fund-form.request-submitted-msg')
         this.enableForm()
         this.$emit(EVENTS.close)
+
+        if (this.request.id) {
+          this.$emit(EVENTS.update)
+        }
       } catch (e) {
         ErrorHandler.process(e)
         this.enableForm()
