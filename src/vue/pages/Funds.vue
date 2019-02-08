@@ -4,6 +4,7 @@
       <template slot="extra">
         <button
           v-ripple
+          v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
           class="app__button-raised"
           @click="isCreateFundDrawerShown = true"
         >
@@ -26,6 +27,10 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import CreateFundForm from '@/vue/forms/CreateFundForm'
 
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 export default {
   name: 'history-index',
   components: {
@@ -34,8 +39,14 @@ export default {
     CreateFundForm,
   },
   data: _ => ({
+    ACCOUNT_TYPES,
     isCreateFundDrawerShown: false,
   }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.account,
+    ]),
+  },
 }
 </script>
 
