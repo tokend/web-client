@@ -12,14 +12,14 @@
         <select-field
           :disabled="!isLoaded"
           v-model="filters.state"
-          :values="fundStates"
+          :values="FUND_STATES"
           class="app__select app__select--no-border"
         />
 
         <select-field
           :disabled="!isLoaded"
           v-model="filters.sort"
-          :values="fundSortStates"
+          :values="FUND_SORT_STATES"
           class="app__select app__select--no-border"
         />
       </template>
@@ -159,7 +159,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
 
-const fundStates = {
+const FUND_STATES = {
   live: {
     label: 'funds.fund-live-state',
     value: 'live',
@@ -174,7 +174,7 @@ const fundStates = {
   },
 }
 
-const fundSortStates = {
+const FUND_SORT_STATES = {
   endingSoonest: {
     value: '3',
     label: 'funds.sort-by-ending-soonest',
@@ -208,16 +208,16 @@ export default {
     fundRecords: [],
     filters: {
       baseAsset: ALL_TOKENS_FILTER,
-      state: fundStates.live.value,
-      sort: fundSortStates.launchDate.value,
+      state: FUND_STATES.live.value,
+      sort: FUND_SORT_STATES.launchDate.value,
     },
     isLoaded: false,
     isCreateFundDrawerShown: false,
     isDetailsDrawerShown: false,
     selectedFund: null,
     config,
-    fundStates,
-    fundSortStates,
+    FUND_STATES,
+    FUND_SORT_STATES,
   }),
 
   computed: {
@@ -240,13 +240,14 @@ export default {
     recordsLoader () {
       const fundState = this.filters.state
       const sortState = this.filters.sort
-      this.loadRecords()
+
+      this.initRecordsLoading()
 
       return function () {
         return Sdk.horizon.sales.getPage({
-          open_only: sortState === fundStates.upcoming.value ||
-            fundState === fundStates.live,
-          upcoming: fundState === fundStates.upcoming.value,
+          open_only: sortState === FUND_STATES.upcoming.value ||
+            fundState === FUND_STATES.live,
+          upcoming: fundState === FUND_STATES.upcoming.value,
           sort_by: sortState,
         })
       }
@@ -261,7 +262,7 @@ export default {
       return progress >= 100 ? 100 : progress
     },
 
-    loadRecords () {
+    initRecordsLoading () {
       this.fundRecords = []
       this.isLoaded = false
     },

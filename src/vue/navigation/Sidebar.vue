@@ -119,7 +119,7 @@
             tag="a"
             v-if="config.FEATURE_FLAGS.funds"
           >
-            <i class="sidebar__link-icon mdi mdi-coins" />
+            <i class="sidebar__link-icon mdi mdi-trending-up" />
             <span>
               {{ 'pages-names.funds' | globalize }}
             </span>

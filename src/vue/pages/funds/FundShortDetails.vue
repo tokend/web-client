@@ -20,86 +20,88 @@
         {{ fund.shortDescription }}
       </p>
 
-      <table class="app__table fund-short-details__table">
-        <tbody>
-          <tr>
-            <td>
-              {{ 'fund-short-details.name-title' | globalize }}
-            </td>
-            <td>
-              {{ fund.name }}
-            </td>
-          </tr>
+      <div class="app__table fund-short-details__table">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                {{ 'fund-short-details.name-title' | globalize }}
+              </td>
+              <td>
+                {{ fund.name }}
+              </td>
+            </tr>
 
-          <tr>
-            <td>
-              {{ 'fund-short-details.start-time-title' | globalize }}
-            </td>
-            <td>
-              {{ fund.startTime | formatCalendar }}
-            </td>
-          </tr>
+            <tr>
+              <td>
+                {{ 'fund-short-details.start-time-title' | globalize }}
+              </td>
+              <td>
+                {{ fund.startTime | formatCalendar }}
+              </td>
+            </tr>
 
-          <tr>
-            <td>
-              {{ 'fund-short-details.close-time-title' | globalize }}
-            </td>
-            <td>
-              {{ fund.endTime | formatCalendar }}
-            </td>
-          </tr>
+            <tr>
+              <td>
+                {{ 'fund-short-details.close-time-title' | globalize }}
+              </td>
+              <td>
+                {{ fund.endTime | formatCalendar }}
+              </td>
+            </tr>
 
-          <tr>
-            <td>
-              {{ 'fund-short-details.soft-cap-title' | globalize }}
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: fund.softCap, currency: fund.defaultQuoteAsset } | formatMoney }}
-            </td>
-          </tr>
+            <tr>
+              <td>
+                {{ 'fund-short-details.soft-cap-title' | globalize }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: fund.softCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+              </td>
+            </tr>
 
-          <tr>
-            <td>
-              {{ 'fund-short-details.hard-cap-title' | globalize }}
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: fund.hardCap, currency: fund.defaultQuoteAsset } | formatMoney }}
-            </td>
-          </tr>
+            <tr>
+              <td>
+                {{ 'fund-short-details.hard-cap-title' | globalize }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: fund.hardCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+              </td>
+            </tr>
 
-          <tr>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'fund-short-details.sell-title' | globalize({ asset: fund.baseAsset }) }}
-            </td>
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: fund.baseHardCap, currency: fund.baseAsset } | formatMoney }}
-            </td>
-          </tr>
+            <tr>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ 'fund-short-details.sell-title' | globalize({ asset: fund.baseAsset }) }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: fund.baseHardCap, currency: fund.baseAsset } | formatMoney }}
+              </td>
+            </tr>
 
-          <tr>
-            <td>
-              {{ 'fund-short-details.video-about-fund-title' | globalize }}
-            </td>
-            <td>
-              <a
-                v-if="fund.youtubeVideoUrl"
-                class="fund-short-details__video-btn"
-                :href="fund.youtubeVideoUrl"
-                target="_blank"
-              >
-                {{ 'fund-short-details.view-video-btn' | globalize }}
-              </a>
-              <p v-else>
-                {{ 'fund-short-details.no-video-msg' | globalize }}
-              </p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <tr>
+              <td>
+                {{ 'fund-short-details.video-about-fund-title' | globalize }}
+              </td>
+              <td>
+                <a
+                  v-if="fund.youtubeVideoUrl"
+                  class="fund-short-details__video-btn"
+                  :href="fund.youtubeVideoUrl"
+                  target="_blank"
+                >
+                  {{ 'fund-short-details.view-video-btn' | globalize }}
+                </a>
+                <p v-else>
+                  {{ 'fund-short-details.no-video-msg' | globalize }}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <button
         v-ripple
