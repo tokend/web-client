@@ -115,6 +115,19 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.funds"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.funds"
+          >
+            <i class="sidebar__link-icon mdi mdi-coins" />
+            <span>
+              {{ 'pages-names.funds' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.requests"
             tag="a"
             v-if="config.FEATURE_FLAGS.requests"

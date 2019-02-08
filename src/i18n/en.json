@@ -73,11 +73,13 @@
       "field-error_minValue": "This field should be less or equal {{value}}",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
+      "field-error_requiredAtLeastOne": "Choose at least one of the options",
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value must be less then 250",
       "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
+      "field-error_minDate": "Date should be after {{ minDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols"
     },
@@ -277,7 +279,8 @@
       "view-document": "View document",
       "explore-documents": "Explore documents",
       "find-document": "Find document",
-      "update-token": "Update token"
+      "update-token": "Update token",
+      "funds": "Funds"
     },
 
     "pages-subnames": {
@@ -630,6 +633,38 @@
       "create-buy-offer-form-title": "Create buy order",
       "create-sell-offer-form-title": "Create sell order",
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
+    },
+
+    "funds": {
+      "create-fund": "Create fund"
+    },
+
+    "create-fund-form": {
+      "create-fund-header": "Create fund",
+      "provide-fund-information": "Provide fund information",
+      "add-short-blurb": "Add a short blurb",
+      "full-description": "Full description",
+      "short-description": "Short description",
+      "sale-name": "Fund name",
+      "base-asset": "Base asset",
+      "start-time": "Start time",
+      "close-time": "Close time",
+      "soft-cap": "Soft cap ({{asset}})",
+      "hard-cap": "Hard cap ({{asset}})",
+      "base-asset-hard-cap-to-sell": "{{asset}} to sell",
+      "accept-investments-in": "Accept investments in:",
+      "upload-image" : "Upload the image users will see first in their searcher",
+      "insert-youtube-video": "Insert YouTube video by its ID",
+      "next-btn": "Next",
+      "cancel-btn": "Cancel",
+      "create-btn": "Create",
+      "request-submitted-msg": "Your request was successfully submitted",
+      "price": "Price ({{quote}} for 1 {{base}}) ≈ ",
+      "not-available": "One last moment",
+      "preview-you-video": "Preview you video",
+      "loading-msg": "Loading...",
+      "asset-not-available-yet": "Please create token before creating fund",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
     "withdrawal-form": {
