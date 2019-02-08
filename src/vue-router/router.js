@@ -84,7 +84,7 @@ export const router = new Router({
           path: '/dashboard',
           name: vueRoutes.dashboard.name,
           meta: { pageNameTranslationId: 'pages-names.dashboard' },
-          component: resolve => require(['@/vue/pages/dashboard/Dashboard'], resolve),
+          component: resolve => require(['@/vue/pages/Dashboard'], resolve),
         },
         {
           path: '/fees',
@@ -92,6 +92,33 @@ export const router = new Router({
           meta: { pageNameTranslationId: 'pages-names.fees' },
           featureFlag: config.FEATURE_FLAGS.fees,
           component: resolve => require(['@/vue/pages/Fees'], resolve),
+        },
+        {
+          path: '/trade',
+          name: vueRoutes.trade.name,
+          meta: { pageNameTranslationId: 'pages-names.trade' },
+          component: resolve => require(['@/vue/pages/Trade'], resolve),
+          redirect: vueRoutes.trade.exchange,
+          children: [
+            {
+              path: '/trade/exchange',
+              name: vueRoutes.trade.exchange.name,
+              meta: {
+                pageNameTranslationId: 'pages-names.trade',
+                pageSubnameTranslationId: 'pages-subnames.exchange-tokens',
+              },
+              component: resolve => require(['@/vue/pages/TradeExchange'], resolve),
+            },
+            {
+              path: '/trade/my-orders',
+              name: vueRoutes.trade.userOffers.name,
+              meta: {
+                pageNameTranslationId: 'pages-names.trade',
+                pageSubnameTranslationId: 'pages-subnames.user-orders',
+              },
+              component: resolve => require(['@/vue/pages/TradeUserOffers'], resolve),
+            },
+          ],
         },
         {
           path: '/operations',

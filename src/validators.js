@@ -34,6 +34,9 @@ export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
 export const documentContainer = value => value instanceof DocumentContainer
+export const noMoreThanAvailableOnBalance = balance => value => {
+  return +balance > +value
+}
 
 export * from 'vuelidate/lib/validators'
 

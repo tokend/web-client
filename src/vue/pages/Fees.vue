@@ -15,8 +15,8 @@
           />
         </template>
       </top-bar>
-      <div class="fees__table">
-        <table class="app__table">
+      <div class="app__table app__table--with-shadow">
+        <table>
           <thead>
             <tr>
               <th :title="'fee-table.fee-type' | globalize">
@@ -151,10 +151,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import "~@scss/variables";
 
-.fees__table {
-  overflow-x: auto;
-  @include box-shadow();
+.fees {
+  width: 100%;
+}
+
+.fees__assets {
+  margin-bottom: 2.1rem;
+}
+
+.fees__assets-select {
+  display: inline-block;
+  width: auto;
 }
 </style>

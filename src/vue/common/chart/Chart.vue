@@ -116,15 +116,15 @@ export default {
 }
 
 .chart__tabs {
-  margin-bottom: 2.4rem;
+  margin-bottom: 6rem;
   display: flex;
   justify-content: flex-end;
   transition: all 0.25s;
+}
 
-  &--hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
+.chart__tabs--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 </style>

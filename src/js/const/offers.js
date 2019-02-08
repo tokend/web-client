@@ -1,0 +1,1 @@
+export const SECONDARY_MARKET_ORDER_BOOK_ID = '0'
