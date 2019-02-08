@@ -13,7 +13,7 @@
         <button
           v-ripple
           class="app__button-raised"
-          @click="isLimitsDrawerShown = true"
+          @click="isLimitsChangeDrawerShown = true"
         >
           {{ 'limits.change-limits-bth' | globalize }}
         </button>
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <drawer :is-shown.sync="isLimitsDrawerShown">
+    <drawer :is-shown.sync="isLimitsChangeDrawerShown">
       <template slot="heading">
         {{ 'limits.limits-form-heading' | globalize }}
       </template>
@@ -112,7 +112,7 @@ export default {
   },
   data: () => ({
     selectedAsset: '',
-    isLimitsDrawerShown: false,
+    isLimitsChangeDrawerShown: false,
     vueRoutes,
     ACCOUNT_TYPES,
     formattedAccountLimits: {},
@@ -223,7 +223,7 @@ export default {
       this.formattedAccountLimits = formattedLimits
     },
     limitsChanged () {
-      this.isLimitsDrawerShown = false
+      this.isLimitsChangeDrawerShown = false
       this.reloadRequests()
     },
     reloadRequests () {

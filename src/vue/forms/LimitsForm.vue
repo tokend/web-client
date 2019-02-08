@@ -1,5 +1,5 @@
 <template>
-  <form class="app-form limits-form" @submit.prevent="submit">
+  <form class="app-form limits-form">
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
@@ -54,9 +54,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="transfer-description"
-          name="description"
-          type="number"
+          id="limit-daily-out"
+          name="limit-daily-out"
           v-model="form.dailyOut"
           :label="'limits-form.daily-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
@@ -69,9 +68,8 @@
       </div>
       <div class="app__form-field">
         <input-field
-          id="transfer-description"
-          name="description"
-          type="number"
+          id="limit-weekly-out"
+          name="limit-weekly-out"
           v-model="form.weeklyOut"
           :label="'limits-form.weekly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
@@ -86,9 +84,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="transfer-description"
-          name="description"
-          type="number"
+          id="limit-monthly-out"
+          name="limit-monthly-out"
           v-model="form.monthlyOut"
           :label="'limits-form.monthly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
@@ -101,9 +98,8 @@
       </div>
       <div class="app__form-field">
         <input-field
-          id="transfer-description"
-          name="description"
-          type="number"
+          id="limit-annual-out"
+          name="limit-annual-out"
           v-model="form.annualOut"
           :label="'limits-form.annual-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
@@ -118,8 +114,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <textarea-field
-          id="transfer-description"
-          name="description"
+          id="limit-note"
+          name="limit-note"
           v-model="form.note"
           :label="'limits-form.note-lbl' | globalize"
           :maxlength="formNoteMaxLength"
@@ -165,7 +161,8 @@ import {
 import { Bus } from '@/js/helpers/event-bus'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { base, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
+import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
+import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
 import config from '@/config'
 
 const OPERATION_TYPES_TRANSLATION_ID = {
@@ -186,8 +183,6 @@ const EVENTS = {
 
 export default {
   name: 'limits-form',
-  components: {
-  },
   mixins: [FormMixin],
   props: {
     limits: { type: Object, required: true, default: () => ({}) },
@@ -258,10 +253,17 @@ export default {
       this.disableForm()
       try {
         await this.createRequest()
-
         Bus.success('limits-form.request-successfully-created')
       } catch (error) {
-        ErrorHandler.process(error)
+        if (
+          error instanceof errors.TransactionError &&
+          // eslint-disable-next-line
+          error.includesOpCode(OPERATION_ERROR_CODES.opManageLimitsRequestReferenceDuplication)
+        ) {
+          Bus.error('limits-form.error-duplicate-request')
+        } else {
+          ErrorHandler.process(error)
+        }
       }
       this.enableForm()
       this.hideFormConfirmation()
@@ -277,9 +279,8 @@ export default {
       }
       const note = this.form.note
       const requestType = LIMITS_REQUEST_TYPE.initial
-      // eslint-disable-next-line
-      const operationType = STATS_OPERATION_TYPES_KEY_NAMES[+this.selectedOpType.value]
       const statsOpType = +this.selectedOpType.value
+      const operationType = STATS_OPERATION_TYPES_KEY_NAMES[statsOpType]
 
       // eslint-disable-next-line
       const operation = base.CreateManageLimitsRequestBuilder.createManageLimitsRequest({

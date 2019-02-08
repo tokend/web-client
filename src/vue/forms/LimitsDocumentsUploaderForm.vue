@@ -81,8 +81,6 @@ const EVENTS = {
 
 export default {
   name: 'limits-documents-uploader-form',
-  components: {
-  },
   mixins: [FormMixin],
   props: {
     request: { type: Object, required: true, default: () => ({}) },
