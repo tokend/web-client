@@ -46,11 +46,13 @@
       <limits-requests-list-renderer
         :is-loading="isLimitsRequestsLoading"
         :requests="limitsRequests"
-        @requests-reload-ask="loadLimitsRequests"
+        @requests-reload-ask="reloadRequests"
       />
 
       <div class="limits__requests-collection-loader">
+        <!-- hack with key allows us to reload data -->
         <collection-loader
+          :key="`request-reloader-${currentRequestsReloadingCount}`"
           :first-page-loader="loadLimitsRequests"
           :page-limit="limitsRequestsQueries.limit"
           @first-page-load="setLimitsRequests"
@@ -113,6 +115,7 @@ export default {
       limit: config.REQUESTS_PER_PAGE,
       order: 'desc',
     },
+    currentRequestsReloadingCount: 0,
   }),
   computed: {
     ...mapGetters([
@@ -213,7 +216,10 @@ export default {
     },
     limitsChanged () {
       this.isLimitsDrawerShown = false
-      this.loadLimitsRequests()
+      this.reloadRequests()
+    },
+    reloadRequests () {
+      ++this.currentRequestsReloadingCount
     },
   },
 }

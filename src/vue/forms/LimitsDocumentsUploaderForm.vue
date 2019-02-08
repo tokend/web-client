@@ -144,7 +144,7 @@ export default {
           limits: this.request.limits,
           requestType: LIMITS_REQUEST_TYPE.docsUploading,
           note: this.request.note,
-          documents: this.prepareDocumentsList(),
+          documents: this.prepareDocumentsToUpload(),
         },
       })
       await Sdk.horizon.transactions.submitOperations(operation)
@@ -159,11 +159,16 @@ export default {
         }
       }
     },
-    prepareDocumentsList () {
+    prepareDocumentsToUpload () {
       const documents = {}
-      for (const [key, value] of Object.entries(this.form.documents)) {
-        documents[key] = value
-      }
+      this.request.requestedDocs.forEach(item => {
+        const doc = this.form.documents[item.label]
+
+        documents[item.label] = {
+          description: item.description,
+          file: doc,
+        }
+      })
       return documents
     },
   },
