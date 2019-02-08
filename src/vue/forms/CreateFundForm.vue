@@ -46,6 +46,7 @@
                   v-model="form.fundInformation.startTime"
                   :enable-time="false"
                   :disable-before="new Date().toString()"
+                  @input="touchField('form.fundInformation.startTime')"
                   @blur="touchField('form.fundInformation.startTime')"
                   id="fund-start-time"
                   :label="'create-fund-form.start-time' | globalize"
@@ -62,6 +63,7 @@
                   v-model="form.fundInformation.endTime"
                   :enable-time="false"
                   :disable-before="new Date().toString()"
+                  @input="touchField('form.fundInformation.endTime')"
                   @blur="touchField('form.fundInformation.endTime')"
                   id="fund-end-time"
                   :label="'create-fund-form.close-time' | globalize"
@@ -327,7 +329,7 @@ import {
   required,
   maxLength,
   amountRange,
-  requiredCheckbox,
+  requiredAtLeastOne,
   minDate,
 } from '@validators'
 import { SALE_TYPES } from '@tokend/js-sdk'
@@ -385,7 +387,6 @@ export default {
       isFailed: false,
       currentStep: 1,
       assets: [],
-      price: '',
       form: {
         fundInformation: {
           name: '',
@@ -442,7 +443,7 @@ export default {
               this.availableForIssuance),
           },
           quoteAssets: {
-            requiredCheckbox,
+            requiredAtLeastOne,
           },
         },
         shortBlurb: {
@@ -477,16 +478,10 @@ export default {
     isUpdate () {
       return +this.request.id !== 0
     },
-  },
-  watch: {
-    'form.fundInformation.hardCap' () {
-      this.price = MathUtil.divide(this.form.fundInformation.hardCap,
+    price () {
+      return MathUtil.divide(this.form.fundInformation.hardCap,
         this.form.fundInformation.baseAssetForHardCap)
-    },
-    'form.fundInformation.baseAssetForHardCap' () {
-      this.price = MathUtil.divide(this.form.fundInformation.hardCap,
-        this.form.fundInformation.baseAssetForHardCap)
-    },
+    }
   },
   async created () {
     try {
