@@ -1,6 +1,9 @@
 <template>
   <div class="limits-table-renderer">
-    <div v-if="!isLoading" class="limits-table-renderer__table">
+    <div
+      v-if="!isLoading && requests.length"
+      class="limits-table-renderer__table"
+    >
       <table class="app__table">
         <thead>
           <tr>
@@ -46,8 +49,15 @@
       </table>
     </div>
 
-    <template v-else>
+    <template v-else-if="isLoading">
       <loader :message-id="'limits-requests-table-renderer.data-loading'" />
+    </template>
+
+    <template v-else>
+      <no-data-message
+        :title-id="'limits-requests-table-renderer.no-requests-history'"
+        :message-id="'limits-requests-table-renderer.here-will-requests-list'"
+      />
     </template>
 
     <drawer :is-shown.sync="isDocumentsUploaderFormShown">
@@ -65,6 +75,7 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
 import Drawer from '@/vue/common/Drawer'
 import {
@@ -95,6 +106,7 @@ export default {
     Loader,
     Drawer,
     LimitsDocumentsUploaderForm,
+    NoDataMessage,
   },
   props: {
     requests: { type: Array, required: true, default: () => [] },
