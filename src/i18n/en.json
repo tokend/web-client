@@ -74,9 +74,12 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
-      "field-error_maxValueWrapper": "Value must be less then 250",
+      "field-error_maxValueWrapper": "Value should be less then {{maxValue}}",
+      "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
-      "field-error_emailOrAccountId": "This field should be a valid email or account ID"
+      "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+      "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
+      "field-error_maxLength": "Only {{quantity}} symbols allowed"
     },
 
     "errors": {
@@ -275,7 +278,9 @@
       "explore-limits": "Explore limits",
       "limits-form-heading": "Change limits",
       "change-limits-bth": "Change limits",
-      "requests-subheading": "Requests"
+      "requests-subheading": "Requests",
+      "no-limits-list": "No limits list",
+      "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one asset to your balances"
     },
 
     "limits-form": {
@@ -295,7 +300,8 @@
       "op-type-withdraw": "Withdraw",
       "op-type-payment-out": "Outgoing payment",
       "request-new-limits": "Request new limits",
-      "request-successfully-created": "Request successfully created"
+      "request-successfully-created": "Request successfully created",
+      "error-duplicate-request": "Duplicate request"
     },
 
     "limits-table-renderer": {
@@ -325,7 +331,9 @@
       "request-state-rejected": "Rejected",
       "request-state-permanently-rejected": "Permanently rejected",
       "request-type-initial": "Initial",
-      "request-type-docs-uploading": "Documents uploading"
+      "request-type-docs-uploading": "Documents uploading",
+      "no-requests-history": "No requests history",
+      "here-will-requests-list": "Here will be the list of your limits change requests"
     },
 
     "passport": {
@@ -429,10 +437,6 @@
       "here-will-be-the-tokens": "Here will be the list of your assets",
       "no-assets-in-your-wallet": "No assets in your wallet",
       "here-will-transactions-list": "Here will be the list of your transactions"
-    },
-
-    "email-getter": {
-      "loading-msg": "Loading..."
     },
 
     "chart": {
