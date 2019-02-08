@@ -89,7 +89,7 @@ export default {
     margin:
       0
       -1 * $content-side-paddings-sm
-      4rem
+      2rem
       -1 * $content-side-paddings-sm;
     flex-direction: column;
     justify-content: center;

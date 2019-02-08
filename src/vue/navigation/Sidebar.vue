@@ -47,6 +47,20 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.trade"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.trade"
+          >
+            <i class="sidebar__link-icon mdi mdi-finance" />
+            <span>
+              {{ 'pages-names.trade' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.operations"
             tag="a"
             v-if="config.FEATURE_FLAGS.operations"
@@ -315,6 +329,7 @@ $content-item-right-padding: 2.4rem;
   &.router-link-active {
     background-color: $col-sidebar-active-elem-background;
     color: $col-sidebar-active-elem-text;
+    pointer-events: none;
   }
 }
 
