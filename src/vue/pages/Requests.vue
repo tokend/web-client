@@ -6,7 +6,7 @@
           v-ripple
           :to="vueRoutes.requests.assetCreation"
         >
-          <span>{{ 'requests-page.token-creation-title' | globalize }}</span>
+          <span>{{ 'requests-page.asset-creation-title' | globalize }}</span>
         </router-link>
         <router-link
           v-ripple

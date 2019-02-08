@@ -5,7 +5,7 @@
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template v-if="isUpdating">
             <template slot="heading">
-              {{ 'asset-creation-requests.update-token-title' | globalize }}
+              {{ 'asset-creation-requests.update-asset-title' | globalize }}
             </template>
             <asset-form
               :request="selectedRequest"
@@ -30,8 +30,8 @@
             <thead>
               <tr>
                 <!-- eslint-disable max-len -->
-                <th :title="'asset-creation-requests.token-code-header' | globalize">
-                  {{ 'asset-creation-requests.token-code-header' | globalize }}
+                <th :title="'asset-creation-requests.asset-code-header' | globalize">
+                  {{ 'asset-creation-requests.asset-code-header' | globalize }}
                 </th>
                 <th :title="'asset-creation-requests.request-state-header' | globalize">
                   {{ 'asset-creation-requests.request-state-header' | globalize }}

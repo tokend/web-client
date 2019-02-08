@@ -24,13 +24,13 @@
           class="create-asset-btn"
           @click="isAssetDrawerShown = true"
         >
-          {{ 'assets-page.create-token-btn' | globalize }}
+          {{ 'assets-page.create-asset-title' | globalize }}
         </button>
       </template>
     </top-bar>
     <drawer :is-shown.sync="isAssetDrawerShown">
       <template slot="heading">
-        {{ 'assets-page.create-token-btn' | globalize }}
+        {{ 'assets-page.create-asset-title' | globalize }}
       </template>
       <asset-form />
     </drawer>

@@ -46,8 +46,8 @@
                 <th :title="'fund-creation-requests.fund-name-header' | globalize">
                   {{ 'fund-creation-requests.fund-name-header' | globalize }}
                 </th>
-                <th :title="'fund-creation-requests.token-code-header' | globalize">
-                  {{ 'fund-creation-requests.token-code-header' | globalize }}
+                <th :title="'fund-creation-requests.asset-code-header' | globalize">
+                  {{ 'fund-creation-requests.asset-code-header' | globalize }}
                 </th>
                 <th :title="'fund-creation-requests.request-state-header' | globalize">
                   {{ 'fund-creation-requests.request-state-header' | globalize }}
