@@ -131,6 +131,7 @@ import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -138,7 +139,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
+import { RecordWrapper } from '@/js/records'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
@@ -169,6 +172,7 @@ const EMPTY_DOCUMENT = {
 }
 
 const NAME_MAX_LENGTH = 255
+const REQUESTS_PAGE_LIMIT = 1000
 
 export default {
   name: 'asset-update-form',
@@ -179,7 +183,7 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: AssetUpdateRequestRecord, default: null },
-    assetForUpdate: { type: String, required: true },
+    assetRecord: { type: AssetRecord, default: null },
   },
 
   data: _ => ({
@@ -193,7 +197,7 @@ export default {
         terms: null,
       },
     },
-    assetRecord: {},
+    updateRequest: {},
     isLoaded: false,
     isLoadingFailed: false,
     currentStep: 1,
@@ -222,13 +226,13 @@ export default {
     }),
 
     assetRequestOpts () {
-      const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
+      const requestId = this.updateRequest.id || ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
       const terms = this.form.advanced.terms
 
       return {
         requestID: requestId,
-        code: this.assetForUpdate,
+        code: this.updateRequest.assetCode,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
         details: {
           name: this.form.information.name,
@@ -241,7 +245,11 @@ export default {
 
   async created () {
     try {
-      this.populateForm(this.request)
+      this.updateRequest = this.request ||
+        await this.getUpdatableRequest(this.assetRecord.code) ||
+        AssetUpdateRequestRecord.fromAssetRecord(this.assetRecord)
+
+      this.populateForm(this.updateRequest)
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
@@ -250,6 +258,34 @@ export default {
   },
 
   methods: {
+    async getUpdatableRequest (assetCode) {
+      const pendingRequests = await this.getAssetRequests(
+        assetCode, REQUEST_STATES.pending
+      )
+      const rejectedRequests = await this.getAssetRequests(
+        assetCode, REQUEST_STATES.rejected
+      )
+
+      const updatableRequests = pendingRequests
+        .concat(rejectedRequests)
+        .map(request => RecordWrapper.request(request))
+        .filter(record => record instanceof AssetUpdateRequestRecord)
+
+      return updatableRequests[0]
+    },
+
+    async getAssetRequests (assetCode, requestState) {
+      const { data } = await Sdk.horizon.request.getAllForAssets({
+        requestor: this.account.accountId,
+        asset: assetCode,
+        state: requestState,
+        order: 'desc',
+        limit: REQUESTS_PAGE_LIMIT,
+      })
+
+      return data
+    },
+
     populateForm (request) {
       this.form = {
         information: {

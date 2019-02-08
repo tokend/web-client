@@ -47,6 +47,27 @@ export class AssetCreateRequestRecord extends RequestRecord {
     this.attachedDetails = details
   }
 
+  /**
+   * Converts AssetRecord to AssetCreateRequestRecord.
+   *
+   * @param {AssetRecord} assetRecord AssetRecord to be converted.
+   * @return {AssetCreateRequestRecord} New AssetCreateRequestRecord instance.
+   */
+  static fromAssetRecord (assetRecord) {
+    return new this({
+      details: {
+        assetUpdate: {
+          code: assetRecord.code,
+          preIssuedAssetSigner: assetRecord.preissuedAssetSigner,
+          maxIssuanceAmount: assetRecord.maxIssuanceAmount,
+          initialPreissuedAmount: assetRecord.initialPreissuedAmount,
+          policies: assetRecord.policies.map(policy => ({ value: policy })),
+          details: assetRecord.details,
+        },
+      },
+    })
+  }
+
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }

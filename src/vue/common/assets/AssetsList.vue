@@ -11,7 +11,7 @@
       </template>
       <asset-update-form
         v-if="isUpdateMode"
-        :asset-for-update="selectedAsset.code"
+        :asset-record="selectedAsset"
       />
       <asset-details
         v-else
