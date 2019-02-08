@@ -11,7 +11,7 @@
             novalidate
             v-if="currentStep === STEPS.fundInformation.number"
             class="app__form"
-            @submit.prevent="next('form.fundInformation')"
+            @submit.prevent="nextStep('form.fundInformation')"
           >
             <div class="app__form-row create-fund__form-row">
               <div class="app__form-field">
@@ -157,7 +157,7 @@
             </div>
             <div
               class="app__form-row create-fund__form-row"
-              v-for="item in baseAssets"
+              v-for="item in baseAssetCodes"
               :key="item"
             >
               <div class="app__form-field">
@@ -188,7 +188,7 @@
             novalidate
             v-if="currentStep === STEPS.shortBlurb.number"
             class="app__form"
-            @submit.prevent="next('form.shortBlurb')"
+            @submit.prevent="nextStep('form.shortBlurb')"
           >
             <div class="app__form-row create-fund__form-row">
               <div class="app__form-field">
@@ -354,7 +354,7 @@ const STEPS = {
   },
 }
 const EVENTS = {
-  cancel: 'cancel',
+  close: 'close',
 }
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
@@ -461,7 +461,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountId,
     ]),
-    baseAssets () {
+    baseAssetCodes () {
       return this.assets.filter(item => item.isBaseAsset)
         .map(item => item.code)
     },
@@ -480,12 +480,12 @@ export default {
   },
   watch: {
     'form.fundInformation.hardCap' () {
-      this.price = MathUtil.divide(+this.form.fundInformation.hardCap,
-        +this.form.fundInformation.baseAssetForHardCap)
+      this.price = MathUtil.divide(this.form.fundInformation.hardCap,
+        this.form.fundInformation.baseAssetForHardCap)
     },
     'form.fundInformation.baseAssetForHardCap' () {
-      this.price = MathUtil.divide(+this.form.fundInformation.hardCap,
-        +this.form.fundInformation.baseAssetForHardCap)
+      this.price = MathUtil.divide(this.form.fundInformation.hardCap,
+        this.form.fundInformation.baseAssetForHardCap)
     },
   },
   async created () {
@@ -493,7 +493,7 @@ export default {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
       if (this.isUpdate) {
-        this.tryPopulateForm(this.request)
+        this.populateForm(this.request)
         this.form.fundInformation.baseAsset = this.request.baseAsset
       } else {
         this.form.fundInformation.baseAsset = this.accountOwnedAssetCodes[0]
@@ -506,7 +506,7 @@ export default {
     }
   },
   methods: {
-    next (formStep) {
+    nextStep (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }
@@ -518,7 +518,7 @@ export default {
         await Sdk.horizon.transactions.submitOperations(this.getOperation())
         Bus.success('create-fund-form.request-submitted-msg')
         this.enableForm()
-        this.$emit(EVENTS.cancel)
+        this.$emit(EVENTS.close)
       } catch (e) {
         ErrorHandler.process(e)
         this.enableForm()
@@ -564,7 +564,7 @@ export default {
         }
       }
     },
-    tryPopulateForm (request) {
+    populateForm (request) {
       this.form.fundInformation.name = request.name
       this.form.fundInformation.baseAsset = request.baseAsset
       this.form.fundInformation.startTime = request.startTime

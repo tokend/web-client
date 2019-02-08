@@ -12,8 +12,6 @@
 <script>
 import MarkdownEditor from 'vue-simplemde/src/markdown-editor'
 
-import { ErrorHandler } from '@/js/helpers/error-handler'
-
 const EVENT = {
   input: 'input',
 }
@@ -64,9 +62,7 @@ export default {
       this.simplemde.clearAutosavedValue() // no returned value
       this.simplemde.markdown(this.content) // returns parsed html
       this.simplemde.codemirror.refresh() // refresh codemirror
-    } catch (e) {
-      ErrorHandler.processWithoutFeedback(e)
-    }
+    } catch (e) {}
   },
 
   methods: {
@@ -88,11 +84,6 @@ export default {
       width: 0;
       height: 0;
     }
-  }
-
-  .CodeMirror-fullscreen,
-  .editor-toolbar.fullscreen {
-    z-index: 45 !important;
   }
 
 </style>

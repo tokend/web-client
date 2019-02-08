@@ -17,7 +17,7 @@
       <template slot="heading">
         {{ 'create-fund-form.create-fund-header' | globalize }}
       </template>
-      <create-fund-form @cancel="isCreateFundDrawerShown = false" />
+      <create-fund-form @close="isCreateFundDrawerShown = false" />
     </drawer>
   </div>
 </template>

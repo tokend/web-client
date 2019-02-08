@@ -1,4 +1,6 @@
 import WAValidator from 'wallet-address-validator'
+import moment from 'moment'
+
 import { base } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -19,7 +21,7 @@ export const requiredCheckbox = value => !!value.length
 export const amountRange = (from, to) => value => Number(value) &&
   Number(value) >= +from && Number(value) <= +to
 export const minDate = (minDate) => value => {
-  return +new Date(minDate) < +new Date(value)
+  return moment(minDate).unix() < moment(value).unix()
 }
 export const address = (asset) => value => {
   switch (asset) {
