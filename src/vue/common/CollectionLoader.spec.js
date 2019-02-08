@@ -60,7 +60,7 @@ describe('CollectionLoader component test', () => {
     it('loadPage delegates error to ErrorHandler when got one', async () => {
       const error = new Error('Error')
       const errorThrownFn = sinon.stub().throws(error)
-      const spyError = sinon.stub(ErrorHandler, 'process')
+      const spyError = sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
       await wrapper.vm.loadPage('event', errorThrownFn)
 
