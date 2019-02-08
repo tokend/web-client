@@ -131,6 +131,8 @@ export default {
   padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
+
+  // allows to scroll drawer content when it height more than drawer height
   overflow: auto;
   height: 0;
 }
