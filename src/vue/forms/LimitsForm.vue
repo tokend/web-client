@@ -61,7 +61,10 @@
           :label="'limits-form.daily-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.dailyOut')"
-          :error-message="getFieldErrorMessage('form.dailyOut')"
+          :error-message="getFieldErrorMessage(
+            'form.dailyOut',
+            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+          )"
         />
       </div>
       <div class="app__form-field">
@@ -73,7 +76,10 @@
           :label="'limits-form.weekly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.weeklyOut')"
-          :error-message="getFieldErrorMessage('form.weeklyOut')"
+          :error-message="getFieldErrorMessage(
+            'form.weeklyOut',
+            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+          )"
         />
       </div>
     </div>
@@ -87,7 +93,10 @@
           :label="'limits-form.monthly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.monthlyOut')"
-          :error-message="getFieldErrorMessage('form.monthlyOut')"
+          :error-message="getFieldErrorMessage(
+            'form.monthlyOut',
+            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+          )"
         />
       </div>
       <div class="app__form-field">
@@ -99,7 +108,10 @@
           :label="'limits-form.annual-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.annualOut')"
-          :error-message="getFieldErrorMessage('form.annualOut')"
+          :error-message="getFieldErrorMessage(
+            'form.annualOut',
+            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+          )"
         />
       </div>
     </div>
@@ -144,7 +156,12 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
-import { maxLength, maxValue, decimal } from '@validators'
+import {
+  maxLength,
+  maxValueWrapper,
+  decimal,
+  maxDecimalPoints,
+} from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -191,25 +208,30 @@ export default {
     formattedOpTypes: [],
     isLimitsChanged: false,
     formNoteMaxLength: 250,
+    config,
   }),
   validations () {
     return {
       form: {
         dailyOut: {
-          maxValue: maxValue(config.MAX_AMOUNT),
           decimal,
+          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
         },
         weeklyOut: {
-          maxValue: maxValue(config.MAX_AMOUNT),
           decimal,
+          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
         },
         monthlyOut: {
-          maxValue: maxValue(config.MAX_AMOUNT),
           decimal,
+          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
         },
         annualOut: {
-          maxValue: maxValue(config.MAX_AMOUNT),
           decimal,
+          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
         },
         note: {
           maxLength: maxLength(this.formNoteMaxLength),
