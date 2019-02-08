@@ -104,10 +104,7 @@ export default {
     }
 
     return {
-    form: {
-      // will filled by setDocumentsValidations method
-        documents,
-    },
+      form: { documents },
     }
   },
   methods: {
