@@ -24,7 +24,7 @@
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
-        {{ getLabel(currentValue) || '&nbsp;' }}
+        {{ getLabel(currentValue) | globalize }}
       </span>
       <i
         class="select-field__selected-icon mdi mdi-chevron-down"
@@ -37,7 +37,7 @@
       :class="{ 'select-field__list--active': isExpanded }"
     >
       <button
-        v-for="(item, i) in values"
+        v-for="(item, i) in listValues"
         :key="i"
         type="button"
         class="select-field__list-item"
@@ -47,7 +47,7 @@
         }"
         @click.prevent="selectItem(item)"
       >
-        {{ getLabel(item) }}
+        {{ getLabel(item) | globalize }}
       </button>
     </div>
     <p v-if="errorMessage" class="select-field__err-mes">
@@ -72,7 +72,7 @@ export default {
       default: '',
     },
     values: {
-      type: Array,
+      type: [Array, Object],
       default: _ => [],
     },
     label: {
@@ -94,6 +94,7 @@ export default {
     selectedValue: null, // active list element (for arrow navigation)
     isExpanded: false,
     KEY_CODES,
+    listValues: [],
   }),
 
   watch: {
@@ -102,11 +103,19 @@ export default {
         document.addEventListener('click', this.onDocumentClick)
       }
     },
+    values (value) {
+      this.listValues = Array.isArray(value)
+        ? value
+        : Object.values(value)
+    },
   },
 
   created () {
-    const value = this.values.every(v => _isObject(v))
-      ? this.values.find(v => v.value === this.value)
+    this.listValues = Array.isArray(this.values)
+      ? this.values
+      : Object.values(this.values)
+    const value = this.listValues.every(v => _isObject(v))
+      ? this.listValues.find(v => v.value === this.value)
       : this.value
     this.selectedValue = value
     this.currentValue = value
@@ -160,25 +169,25 @@ export default {
 
       switch (event.which) {
         case KEY_CODES.enter:
-          this.selectItem(this.values[index])
+          this.selectItem(this.listValues[index])
           break
         case KEY_CODES.up:
-          index = this.selectPrevItem(index, this.values)
+          index = this.selectPrevItem(index, this.listValues)
           break
         case KEY_CODES.right:
-          this.selectItem(this.values[index])
+          this.selectItem(this.listValues[index])
           break
         case KEY_CODES.down:
-          index = this.selectNextItem(index, this.values)
+          index = this.selectNextItem(index, this.listValues)
           break
         case KEY_CODES.escape:
           this.toggleListVisibility()
           break
         case KEY_CODES.tab:
           if (event.shiftKey) {
-            index = this.selectPrevItem(index, this.values)
+            index = this.selectPrevItem(index, this.listValues)
           } else {
-            index = this.selectNextItem(index, this.values)
+            index = this.selectNextItem(index, this.listValues)
           }
           break
         default:
@@ -188,9 +197,9 @@ export default {
     },
     getIndex (item) {
       if (_isObject(item)) {
-        return this.values.findIndex(entry => entry.value === item.value)
+        return this.listValues.findIndex(entry => entry.value === item.value)
       }
-      return this.values.indexOf(item)
+      return this.listValues.indexOf(item)
     },
     scrollList (index) {
       const list = this.$refs.list

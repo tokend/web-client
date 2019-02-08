@@ -1,6 +1,29 @@
 <template>
   <div class="funds">
     <top-bar>
+      <template slot="main">
+        <select-field
+          :disabled="!isLoaded"
+          v-model="filters.baseAsset"
+          :values="fundAssets"
+          class="app__select app__select--no-border"
+        />
+
+        <select-field
+          :disabled="!isLoaded"
+          v-model="filters.state"
+          :values="fundStates"
+          class="app__select app__select--no-border"
+        />
+
+        <select-field
+          :disabled="!isLoaded"
+          v-model="filters.sort"
+          :values="fundSortStates"
+          class="app__select app__select--no-border"
+        />
+      </template>
+
       <template slot="extra">
         <button
           v-ripple
@@ -27,11 +50,11 @@
       <fund-short-details :fund="selectedFund" />
     </drawer>
 
-    <template v-if="fundRecords.length">
+    <template v-if="filteredFunds.length">
       <div class="fund-cards">
         <a
           class="fund-card"
-          v-for="fund in fundRecords"
+          v-for="fund in filteredFunds"
           :key="fund.id"
           @click="selectFund(fund)"
         >
@@ -108,8 +131,9 @@
     </template>
 
     <collection-loader
-      v-show="fundRecords.length"
-      :first-page-loader="getRecords"
+      v-show="filteredFunds.length"
+      class="funds__loader"
+      :first-page-loader="recordsLoader"
       @first-page-load="setRecords"
       @next-page-load="extendRecords"
     />
@@ -123,16 +147,49 @@ import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import VueMarkdown from 'vue-markdown'
-
+import SelectField from '@/vue/fields/SelectField'
 import CreateFundForm from '@/vue/forms/CreateFundForm'
 import FundShortDetails from '@/vue/pages/funds/FundShortDetails'
+
+import VueMarkdown from 'vue-markdown'
 
 import { Sdk } from '@/sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
+
+const fundStates = {
+  live: {
+    label: 'funds.fund-live-state',
+    value: 'live',
+  },
+  upcoming: {
+    label: 'funds.fund-upcoming-state',
+    value: 'upcoming',
+  },
+  all: {
+    label: 'funds.fund-all-state',
+    value: 'all',
+  },
+}
+
+const fundSortStates = {
+  endingSoonest: {
+    value: '3',
+    label: 'funds.sort-by-ending-soonest',
+  },
+  popularity: {
+    value: '4',
+    label: 'funds.sort-by-popularity',
+  },
+  launchDate: {
+    value: '',
+    label: 'funds.sort-by-launch-date',
+  },
+}
+
+const ALL_TOKENS_FILTER = 'funds.all-tokens-filter'
 
 export default {
   name: 'funds',
@@ -142,18 +199,60 @@ export default {
     Loader,
     CollectionLoader,
     NoDataMessage,
-    VueMarkdown,
+    SelectField,
     CreateFundForm,
     FundShortDetails,
+    VueMarkdown,
   },
   data: _ => ({
-    isCreateFundDrawerShown: false,
     fundRecords: [],
+    filters: {
+      baseAsset: ALL_TOKENS_FILTER,
+      state: fundStates.live.value,
+      sort: fundSortStates.launchDate.value,
+    },
     isLoaded: false,
-    config,
-    selectedFund: null,
+    isCreateFundDrawerShown: false,
     isDetailsDrawerShown: false,
+    selectedFund: null,
+    config,
+    fundStates,
+    fundSortStates,
   }),
+
+  computed: {
+    fundAssets () {
+      return [ALL_TOKENS_FILTER].concat(
+        this.fundRecords.map(fund => fund.baseAsset)
+          .filter((asset, i, self) => self.indexOf(asset) === i)
+      )
+    },
+
+    filteredFunds () {
+      if (this.filters.baseAsset === ALL_TOKENS_FILTER) {
+        return this.fundRecords
+      } else {
+        return this.fundRecords
+          .filter(fund => fund.baseAsset === this.filters.baseAsset)
+      }
+    },
+
+    recordsLoader () {
+      const fundState = this.filters.state
+      const sortState = this.filters.sort
+      this.loadRecords()
+
+      return function () {
+        return Sdk.horizon.sales.getPage({
+          open_only: sortState === fundStates.upcoming.value ||
+            fundState === fundStates.live,
+          upcoming: fundState === fundStates.upcoming.value,
+          sort_by: sortState,
+        })
+      }
+    },
+  },
+
   methods: {
     getCapProgress (fund) {
       const capPercentage = (fund.currentCap / fund.hardCap) * 100
@@ -161,18 +260,22 @@ export default {
 
       return progress >= 100 ? 100 : progress
     },
-    async getRecords () {
-      const response = await Sdk.horizon.sales.getPage()
-      return response
+
+    loadRecords () {
+      this.fundRecords = []
+      this.isLoaded = false
     },
+
     setRecords (data) {
       this.fundRecords = data.map(fund => new SaleRecord(fund))
       this.isLoaded = true
     },
+
     extendRecords (data) {
       this.fundRecords = this.fundRecords
         .concat(data.map(fund => new SaleRecord(fund)))
     },
+
     selectFund (fund) {
       this.selectedFund = fund
       this.isDetailsDrawerShown = true
@@ -291,5 +394,9 @@ export default {
   strong {
     color: $col-fund-card-text-bold;
   }
+}
+
+.funds__loader {
+  margin-top: 1rem;
 }
 </style>
