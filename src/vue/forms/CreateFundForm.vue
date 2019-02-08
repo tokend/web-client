@@ -358,7 +358,7 @@ const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
 
 export default {
-  name: 'trade-orders-buy',
+  name: 'create-fund-form',
   components: {
     FormStepper,
     DescriptionEditor,

@@ -32,7 +32,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
-  name: 'history-index',
+  name: 'funds',
   components: {
     TopBar,
     Drawer,
