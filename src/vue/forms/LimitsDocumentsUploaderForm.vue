@@ -28,7 +28,7 @@
         </div>
         <div class="app__form-field">
           <file-field
-            v-model="form.documents[doc.label].file"
+            v-model="form.documents[doc.label]"
             :note="'limits-documents-uploader-form.file-type-note' | globalize"
             accept="image/*, .pdf"
             :error-message="getFieldErrorMessage(
@@ -100,23 +100,12 @@ export default {
     },
   },
   created () {
-    this.setDocumentsTemplate()
-    setTimeout(() => {
-      this.setDocumentsValidations()
-    }, 0)
+    this.setDocumentsValidations()
   },
   methods: {
     tryToSubmit () {
       if (!this.isFormValid()) return
       this.showFormConfirmation()
-    },
-    setDocumentsTemplate () {
-      this.request.requestedDocs.forEach(item => {
-        this.form.documents[item.label] = {
-          file: {},
-          description: item.description,
-        }
-      })
     },
     async submit () {
       this.disableForm()
@@ -157,30 +146,26 @@ export default {
     },
     async uploadDocuments () {
       for (const document of Object.values(this.form.documents)) {
-        if (!document.file.key) {
+        if (!document.key) {
           const documentKey = await DocumentUploader.uploadDocument(
-            document.file.getDetailsForUpload()
+            document.getDetailsForUpload()
           )
-          document.file.setKey(documentKey)
+          document.setKey(documentKey)
         }
       }
     },
-    // op_manage_limits_request_reference_duplication
     prepareDocumentsList () {
       const documents = {}
       for (const [key, value] of Object.entries(this.form.documents)) {
-        documents[key] = {
-          description: value.description,
-          file: value.file.getDetailsForSave(),
-        }
+        documents[key] = value
       }
       return documents
     },
     setDocumentsValidations () {
       for (const doc of this.request.requestedDocs) {
-        this.$options.validations.form.documents[doc.label].file = {
-          required,
+        this.$options.validations.form.documents[doc.label] = {
           documentContainer,
+          required,
         }
       }
     },
