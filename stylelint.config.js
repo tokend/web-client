@@ -1,0 +1,186 @@
+// https://stylelint.io/user-guide/rules/
+
+module.exports = {
+  // Default <stylelint-processor-html> sometimes shows wrong number of the line
+  // that has an error, so we use this add-on
+  processors: '@mapbox/stylelint-processor-arbitrary-tags',
+  plugins: ['stylelint-scss'],
+  // css also is a valid scss so we don't need to use both - scss is enough
+  syntax: 'scss',
+  rules: {
+    'color-no-invalid-hex': [true, { severity: 'warning' }],
+
+    'font-family-no-duplicate-names': [true, { severity: 'warning' }],
+    'font-family-no-missing-generic-family-keyword': [true, { severity: 'warning' }],
+
+    'function-calc-no-invalid': [true, { severity: 'warning' }],
+    'function-calc-no-unspaced-operator': [true, { severity: 'warning' }],
+    'function-linear-gradient-no-nonstandard-direction': [true, { severity: 'warning' }],
+
+    'string-no-newline': [true, { severity: 'warning' }],
+
+    'unit-no-unknown': [true, { severity: 'warning' }],
+
+    'property-no-unknown': [true, { severity: 'warning' }],
+
+    'keyframe-declaration-no-important': [true, { severity: 'warning' }],
+
+    'declaration-block-no-duplicate-properties': [true, { severity: 'warning' }],
+    'declaration-block-no-shorthand-property-overrides': [true, { severity: 'warning' }],
+
+    'block-no-empty': [true, { severity: 'warning' }],
+
+    'selector-pseudo-class-no-unknown': [true, { severity: 'warning' }],
+    'selector-pseudo-element-no-unknown': [true, { severity: 'warning' }],
+    'selector-type-no-unknown': [true, { severity: 'warning' }],
+
+    'media-feature-name-no-unknown': [true, { severity: 'warning' }],
+
+    'at-rule-no-unknown': [true, {
+      severity: 'warning',
+      ignore: ['mixin', 'include'],
+    }],
+
+    'comment-no-empty': [true, { severity: 'warning' }],
+
+    'no-duplicate-at-import-rules': [true, { severity: 'warning' }],
+    'no-duplicate-selectors': [true, { severity: 'warning' }],
+    'no-extra-semicolons': [true, { severity: 'warning' }],
+
+    'number-max-precision': ['6', { severity: 'warning' }],
+
+    'time-min-milliseconds': ['100', { severity: 'warning' }],
+
+    'unit-blacklist': [['px', 'cm', 'mm', 'pt', 'in', 'pc'], {
+      severity: 'warning',
+      ignoreMediaFeatureNames: ['px', 'dpi'],
+    }],
+
+    'shorthand-property-no-redundant-values': [true, { severity: 'warning' }],
+
+    'value-no-vendor-prefix': [true, { severity: 'warning' }],
+
+    'property-no-vendor-prefix': [true, { severity: 'warning' }],
+
+    'declaration-block-no-redundant-longhand-properties': [true, { severity: 'warning' }],
+    'declaration-no-important': [true, { severity: 'warning' }],
+
+    'declaration-block-single-line-max-declarations': ['1', { severity: 'warning' }],
+
+    'selector-max-empty-lines': ['0', { severity: 'warning' }],
+
+    'at-rule-no-vendor-prefix': [true, { severity: 'warning' }],
+
+    'no-unknown-animations': [true, { severity: 'warning' }],
+
+    'color-hex-case': ['lower', { severity: 'warning' }],
+    'color-hex-length': ['long', { severity: 'warning' }],
+
+    'font-family-name-quotes': ['always-unless-keyword', { severity: 'warning' }],
+
+    'font-weight-notation': ['numeric', { severity: 'warning' }],
+
+    'function-comma-newline-after': ['never-multi-line', { severity: 'warning' }],
+    'function-comma-newline-before': ['never-multi-line', { severity: 'warning' }],
+    'function-comma-space-after': ['always', { severity: 'warning' }],
+    'function-comma-space-before': ['never', { severity: 'warning' }],
+    'function-max-empty-lines': ['0', { severity: 'warning' }],
+    'function-name-case': ['lower', { severity: 'warning' }],
+    'function-parentheses-newline-inside': ['never-multi-line', { severity: 'warning' }],
+    'function-parentheses-space-inside': ['never', { severity: 'warning' }],
+    'function-url-quotes': ['always', { severity: 'warning' }],
+    'function-whitespace-after': ['always', { severity: 'warning' }],
+
+    'number-leading-zero': ['always', { severity: 'warning' }],
+    'number-no-trailing-zeros': [true, { severity: 'warning' }],
+
+    'string-quotes': ['single', { severity: 'warning' }],
+
+    'length-zero-no-unit': [true, { severity: 'warning' }],
+
+    'unit-case': ['lower', { severity: 'warning' }],
+
+    'value-keyword-case': ['lower', { severity: 'warning' }],
+
+    'value-list-comma-space-after': ['always', { severity: 'warning' }],
+    'value-list-comma-space-before': ['never', { severity: 'warning' }],
+    'value-list-max-empty-lines': ['0', { severity: 'warning' }],
+
+    'property-case': ['lower', { severity: 'warning' }],
+
+    'declaration-bang-space-after': ['never', { severity: 'warning' }],
+    'declaration-bang-space-before': ['always', { severity: 'warning' }],
+    'declaration-colon-newline-after': ['always-multi-line', { severity: 'warning' }],
+    'declaration-colon-space-after': ['always', { severity: 'warning' }],
+    'declaration-colon-space-before': ['never', { severity: 'warning' }],
+
+    'declaration-block-semicolon-newline-after': ['always-multi-line', { severity: 'warning' }],
+    'declaration-block-semicolon-space-after': ['always-single-line', { severity: 'warning' }],
+    'declaration-block-trailing-semicolon': ['always', { severity: 'warning' }],
+
+    'block-closing-brace-empty-line-before': ['never', { severity: 'warning' }],
+    'block-closing-brace-newline-after': ['always', { severity: 'warning' }],
+    'block-closing-brace-space-after': ['always-single-line', { severity: 'warning' }],
+    'block-closing-brace-space-before': ['always', { severity: 'warning' }],
+    'block-opening-brace-newline-after': ['always-multi-line', { severity: 'warning' }],
+    'block-opening-brace-space-after': ['always-single-line', { severity: 'warning' }],
+    'block-opening-brace-space-before': ['always', { severity: 'warning' }],
+
+    'selector-attribute-brackets-space-inside': ['never', { severity: 'warning' }],
+    'selector-attribute-quotes': ['always', { severity: 'warning' }],
+    'selector-combinator-space-after': ['always', { severity: 'warning' }],
+    'selector-combinator-space-before': ['always', { severity: 'warning' }],
+    'selector-pseudo-class-case': ['lower', { severity: 'warning' }],
+    'selector-pseudo-class-parentheses-space-inside': ['never', { severity: 'warning' }],
+    'selector-pseudo-element-case': ['lower', { severity: 'warning' }],
+    'selector-pseudo-element-colon-notation': ['single', { severity: 'warning' }],
+    'selector-type-case': ['lower', { severity: 'warning' }],
+
+    'selector-list-comma-newline-after': ['always', { severity: 'warning' }],
+    'selector-list-comma-space-after': ['always-single-line', { severity: 'warning' }],
+    'selector-list-comma-space-before': ['never', { severity: 'warning' }],
+
+    'rule-empty-line-before': ['always-multi-line', {
+      severity: 'warning',
+      ignore: ['after-comment', 'first-nested']
+    }],
+
+    'media-feature-colon-space-after': ['slways', { severity: 'warning' }],
+    'media-feature-colon-space-before': ['never', { severity: 'warning' }],
+    'media-feature-name-case': ['lower', { severity: 'warning' }],
+    'media-feature-parentheses-space-inside': ['never', { severity: 'warning' }],
+    'media-feature-range-operator-space-after': ['always', { severity: 'warning' }],
+    'media-feature-range-operator-space-before': ['always', { severity: 'warning' }],
+
+    'media-query-list-comma-newline-after': ['always-multi-line', { severity: 'warning' }],
+    'media-query-list-comma-space-after': ['always-single-line', { severity: 'warning' }],
+
+    'at-rule-empty-line-before': ['always', {
+      severity: 'warning',
+      except: ['after-same-name', 'blockless-after-same-name-blockless', 'first-nested'],
+      ignore: ['after-comment', 'first-nested']
+    }],
+    'at-rule-name-case': ['lower', { severity: 'warning' }],
+    'at-rule-name-newline-after': ['never', { severity: 'warning' }],
+    'at-rule-name-space-after': ['always', { severity: 'warning' }],
+    'at-rule-semicolon-newline-after': ['always', { severity: 'warning' }],
+    'at-rule-semicolon-space-before': ['never', { severity: 'warning' }],
+
+    'comment-whitespace-inside': ['always', { severity: 'warning' }],
+
+    'indentation': ['2', {
+      severity: 'warning',
+      baseIndentLevel: 0,
+      ignore: ['param']
+    }],
+    'max-empty-lines': ['1', {
+      severity: 'warning',
+      ignore: ['comments']
+    }],
+    'max-line-length': ['80', {
+      severity: 'warning',
+      ignore: ['comments'],
+    }],
+    'no-eol-whitespace': [true, { severity: 'warning' }],
+  },
+}
