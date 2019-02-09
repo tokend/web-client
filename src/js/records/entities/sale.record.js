@@ -44,6 +44,10 @@ export class SaleRecord {
     this.logoType = _get(this._record, 'details.logo.type')
   }
 
+  logoUrl (storageUrl) {
+    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+  }
+
   /** quote assets: **/
 
   get quoteAssetCodes () {

@@ -134,6 +134,21 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Funds'], resolve),
         },
         {
+          path: '/funds/:id',
+          name: vueRoutes.fundDetails.name,
+          featureFlag: config.FEATURE_FLAGS.fundDetails,
+          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          redirect: vueRoutes.fundDetails.campaign,
+          component: resolve => require(['@/vue/pages/FundDetails'], resolve),
+          children: [
+            {
+              path: '/funds/:id/campaign',
+              name: vueRoutes.fundDetails.campaign.name,
+              component: resolve => require(['@/vue/pages/fund-details/FundCampaign'], resolve),
+            },
+          ],
+        },
+        {
           path: '/issuance',
           name: vueRoutes.issuance.name,
           featureFlag: config.FEATURE_FLAGS.issuance,
