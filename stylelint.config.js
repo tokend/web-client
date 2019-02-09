@@ -120,8 +120,7 @@ module.exports = {
 
     'block-closing-brace-empty-line-before': ['never', { severity: 'warning' }],
     'block-closing-brace-newline-after': ['always', { severity: 'warning' }],
-    'block-closing-brace-space-after': ['always-single-line', { severity: 'warning' }],
-    'block-closing-brace-space-before': ['always', { severity: 'warning' }],
+    'block-closing-brace-space-before': ['always-single-line', { severity: 'warning' }],
     'block-opening-brace-newline-after': ['always-multi-line', { severity: 'warning' }],
     'block-opening-brace-space-after': ['always-single-line', { severity: 'warning' }],
     'block-opening-brace-space-before': ['always', { severity: 'warning' }],
