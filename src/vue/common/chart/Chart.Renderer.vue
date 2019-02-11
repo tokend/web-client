@@ -92,7 +92,9 @@ export default {
       const parentElement = this.$el.parentElement
       return {
         width: parentElement.clientWidth,
-        height: parentElement.clientHeight,
+        height: parentElement.clientHeight < 250
+          ? 250
+          : parentElement.clientHeight,
       }
     },
     getMaxAndMin () {
@@ -246,7 +248,7 @@ export default {
           .attr('fill', '#837fa1')
           .attr('opacity', '0.2')
           .attr('width', '1')
-          .attr('height', (localData) => height - y(localData.value) - height / 25)
+          .attr('height', (localData) => height - y(localData.value) - 9)
           .attr('x', (localData) => x(localData.time))
           .attr('y', (localData) => y(localData.value))
         const chartTipsPoints = svg.append('g')

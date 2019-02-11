@@ -14,12 +14,20 @@
         <button
           v-ripple
           class="app__button-raised fund-details__invest-btn"
-          @click="isCreateFundDrawerShown = true"
+          @click="isInvestDrawerShown = true"
         >
           {{ 'fund-details.invest-title' | globalize }}
         </button>
       </template>
     </top-bar>
+
+    <drawer :is-shown.sync="isInvestDrawerShown">
+      <template slot="heading">
+        {{ 'fund-details.invest-title' | globalize }}
+      </template>
+
+      <invest-form :fund="fund" />
+    </drawer>
 
     <template v-if="isLoaded">
       <template v-if="fund.id">
@@ -60,7 +68,9 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
+import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import InvestForm from '@/vue/forms/InvestForm'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -76,13 +86,16 @@ export default {
   components: {
     TopBar,
     Loader,
+    Drawer,
     NoDataMessage,
+    InvestForm,
   },
 
   data: _ => ({
     fund: {},
     isLoaded: false,
     isLoadingFailed: false,
+    isInvestDrawerShown: false,
     vueRoutes,
   }),
 

@@ -563,19 +563,6 @@
       "disabled-msg": "This field is disabled"
     },
 
-    "fund-details": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
-      "campaign-title": "Campaign",
-      "invest-title": "Invest",
-      "fund-not-found-title": "Fund not found",
-      "fund-not-found-desc": "There are no funds with this ID",
-      "no-description-msg": "No description provided",
-      "funded": "{{funded, percent}} funded",
-      "investors": "### {{investors}}\ninvestors",
-      "days-to-go": "### {{days}}\ndays to go"
-    },
-
     "trade-history": {
       "title": "Trade history",
       "table-amount-lbl": "Amount ({{asset}})",
@@ -651,6 +638,27 @@
 
     "funds": {
       "create-fund": "Create fund"
+    },
+
+    "fund-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "campaign-title": "Campaign",
+      "invest-title": "Invest",
+      "fund-not-found-title": "Fund not found",
+      "fund-not-found-desc": "There are no funds with this ID",
+      "no-description-msg": "No description provided",
+      "funded": "{{funded, percent}} funded",
+      "investors": "### {{investors}}\ninvestors",
+      "days-to-go": "### {{days}}\ndays to go"
+    },
+
+    "invest-form": {
+      "asset-lbl": "Asset",
+      "available-amount-hint": "Available: {{amount, money}}",
+      "amount-lbl": "Amount {{asset}}",
+      "converted-amount-hint": "Converted: {{amount, money}}",
+      "invest-btn": "Invest"
     },
 
     "create-fund-form": {

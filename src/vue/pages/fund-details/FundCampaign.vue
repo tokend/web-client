@@ -1,6 +1,14 @@
 <template>
   <div class="fund-campaign">
     <template v-if="isLoaded">
+      <drawer :is-shown.sync="isInvestDrawerShown">
+        <template slot="heading">
+          {{ 'fund-details.invest-title' | globalize }}
+        </template>
+
+        <invest-form :fund="fund" />
+      </drawer>
+
       <div class="fund-campaign__content">
         <div class="fund-campaign__overview">
           <div class="fund-campaign__fund-logo-wrp">
@@ -71,7 +79,7 @@
           <button
             v-ripple
             class="app__button-raised fund-campaign__invest-btn"
-            @click="isCreateFundDrawerShown = true"
+            @click="isInvestDrawerShown = true"
           >
             {{ 'fund-details.invest-title' | globalize }}
           </button>
@@ -93,7 +101,9 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
+import Drawer from '@/vue/common/Drawer'
 import Chart from '@/vue/common/chart/Chart'
+import InvestForm from '@/vue/forms/InvestForm'
 
 import VueMarkdown from 'vue-markdown'
 
@@ -108,8 +118,10 @@ export default {
   name: 'fund-campaign',
   components: {
     Loader,
+    Drawer,
     VueMarkdown,
     Chart,
+    InvestForm,
   },
 
   data: _ => ({
@@ -117,6 +129,7 @@ export default {
     fundDescription: '',
     isLoaded: false,
     isLoadingFailed: false,
+    isInvestDrawerShown: false,
     config,
   }),
 
@@ -226,7 +239,7 @@ export default {
 }
 
 .fund-campaign__marketprice {
-  height: 15rem;
+  height: 25rem;
 }
 
 .fund-campaign__progress-bar {

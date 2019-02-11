@@ -69,8 +69,6 @@ export default {
 .input-field {
   position: relative;
   width: 100%;
-  // TODO: remove height
-  height: 4.9rem;
   flex: 1;
 }
 
