@@ -9,11 +9,19 @@
               :src="fund.logoUrl(config.FILE_STORAGE)"
             >
           </div>
-          <vue-markdown
-            class="fund-campaign__fund-description"
-            :source="fundDescription"
-            :html="false"
-          />
+          <template v-if="fundDescription">
+            <vue-markdown
+              class="fund-campaign__fund-description"
+              :source="fundDescription"
+              :html="false"
+            />
+          </template>
+
+          <template v-else>
+            <p class="fund-campaign__no-description">
+              {{ 'fund-details.no-description-msg' | globalize }}
+            </p>
+          </template>
         </div>
 
         <div class="fund-campaign__investment">
@@ -24,6 +32,49 @@
             :is-tabs-shown="false"
             :is-ticks-shown="false"
           />
+
+          <p class="fund-campaign__invested">
+            <!-- eslint-disable max-len -->
+            {{ { value: fund.currentCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+            <!-- eslint-enable max-len -->
+          </p>
+
+          <p class="fund-campaign__funded">
+            <!-- eslint-disable max-len -->
+            {{ 'fund-details.funded' | globalize({ funded: fund.currentCap / fund.hardCap }) }}
+            <!-- eslint-enable max-len -->
+          </p>
+
+          <div class="fund-campaign__progress-bar">
+            <div
+              class="fund-campaign__progress"
+              :style="`width: ${capProgress}%`"
+            />
+          </div>
+
+          <!-- eslint-disable max-len -->
+          <vue-markdown
+            class="fund-campaign__investors"
+            :source="'fund-details.investors' | globalize({ investors: fund.investors })"
+            :html="false"
+          />
+          <!-- eslint-enable max-len -->
+
+          <!-- eslint-disable max-len -->
+          <vue-markdown
+            class="fund-campaign__days-to-go"
+            :source="'fund-details.days-to-go' | globalize({ days: fund.daysToGo })"
+            :html="false"
+          />
+          <!-- eslint-enable max-len -->
+
+          <button
+            v-ripple
+            class="app__button-raised fund-campaign__invest-btn"
+            @click="isCreateFundDrawerShown = true"
+          >
+            {{ 'fund-details.invest-title' | globalize }}
+          </button>
         </div>
       </div>
     </template>
@@ -69,6 +120,15 @@ export default {
     config,
   }),
 
+  computed: {
+    capProgress () {
+      const capPercentage = (this.fund.currentCap / this.fund.hardCap) * 100
+      const progress = Math.round(capPercentage * 100) / 100
+
+      return progress >= 100 ? 100 : progress
+    },
+  },
+
   async created () {
     await this.loadFund(this.$route.params.id)
   },
@@ -92,13 +152,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
 .fund-campaign__content {
   display: flex;
-  margin: -1.6rem;
+  align-items: flex-start;
+  margin: .8rem -1.6rem -1.6rem;
+
+  @include respond-to($small) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
 }
 
 .fund-campaign__overview {
@@ -106,6 +172,10 @@ export default {
   background-color: #fff;
   border-radius: .4rem;
   margin: 1.6rem;
+
+  @include respond-to($x-medium) {
+    flex-basis: 55%;
+  }
 }
 
 .fund-campaign__fund-logo-wrp {
@@ -113,6 +183,10 @@ export default {
   position: relative;
   height: 36rem;
   width: 100%;
+
+  @include respond-to($x-medium) {
+    height: 24rem;
+  }
 }
 
 .fund-campaign__fund-logo {
@@ -128,6 +202,13 @@ export default {
   margin: auto;
 }
 
+.fund-campaign__no-description {
+  padding: 2rem 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
 .fund-campaign__fund-description {
   padding: 3.2rem;
 }
@@ -138,9 +219,62 @@ export default {
   border-radius: .4rem;
   margin: 1.6rem;
   padding: 3.3rem 3.4rem 2.2rem 2.4rem;
+
+  @include respond-to($x-medium) {
+    flex: 0 1 45%;
+  }
 }
 
 .fund-campaign__marketprice {
   height: 15rem;
+}
+
+.fund-campaign__progress-bar {
+  margin-top: 3rem;
+  width: 100%;
+  height: .3rem;
+  background-color: #c1bfd0;
+
+  .fund-campaign__progress {
+    background: #7b6eff;
+    height: 100%;
+  }
+}
+
+.fund-campaign__invested {
+  font-size: 2.4rem;
+  color: #3a4180;
+}
+
+.fund-campaign__funded {
+  font-size: 1.4rem;
+  color: #837fa1;
+}
+
+.fund-campaign__investors, .fund-campaign__days-to-go {
+  h3 {
+    font-size: 2.4rem;
+    font-weight: normal;
+    color: #3a4180;
+  }
+
+  p {
+    font-size: 1.4rem;
+    color: #837fa1;
+  }
+}
+
+.fund-campaign__investors {
+  margin-top: 2.4rem;
+}
+
+.fund-campaign__days-to-go {
+  margin-top: 1.6rem;
+}
+
+.fund-campaign__invest-btn {
+  margin-top: 2.4rem;
+  max-width: 18rem;
+  width: 100%;
 }
 </style>

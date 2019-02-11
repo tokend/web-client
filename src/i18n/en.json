@@ -567,7 +567,13 @@
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "campaign-title": "Campaign",
-      "invest-title": "Invest"
+      "invest-title": "Invest",
+      "fund-not-found-title": "Fund not found",
+      "fund-not-found-desc": "There are no funds with this ID",
+      "no-description-msg": "No description provided",
+      "funded": "{{funded, percent}} funded",
+      "investors": "### {{investors}}\ninvestors",
+      "days-to-go": "### {{days}}\ndays to go"
     },
 
     "trade-history": {

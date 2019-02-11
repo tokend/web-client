@@ -157,19 +157,21 @@ export default {
         .attr('class', className)
         .append('g')
       if (!this.hasValue) {
-        const y = d3.scaleLinear()
-          .range([height, 0])
-          .domain([0, 12])
-        const yAxisLine = d3.axisRight(y)
-          .tickValues([0, 5, 10])
-          .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
-          .tickSizeInner(width)
-          .tickSizeOuter(0)
-          .tickPadding(25)
-        svg.append('g')
-          .attr('class', `${className}__y-axis`)
-          .call(yAxisLine)
-          .selectAll('line')
+        if (this.isTicksShown) {
+          const y = d3.scaleLinear()
+            .range([height, 0])
+            .domain([0, 12])
+          const yAxisLine = d3.axisRight(y)
+            .tickValues([0, 5, 10])
+            .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
+            .tickSizeInner(width)
+            .tickSizeOuter(0)
+            .tickPadding(25)
+          svg.append('g')
+            .attr('class', `${className}__y-axis`)
+            .call(yAxisLine)
+            .selectAll('line')
+        }
         return
       }
       // Define domains
@@ -244,7 +246,7 @@ export default {
           .attr('fill', '#837fa1')
           .attr('opacity', '0.2')
           .attr('width', '1')
-          .attr('height', (localData) => height - y(localData.value) - 9)
+          .attr('height', (localData) => height - y(localData.value) - height / 25)
           .attr('x', (localData) => x(localData.time))
           .attr('y', (localData) => y(localData.value))
         const chartTipsPoints = svg.append('g')
@@ -447,9 +449,6 @@ export default {
   .chart-renderer__chart,
   .chart-renderer__chart svg {
     transition: .2s;
-    @media (min-width: 76.7rem) {
-      min-height: 20rem;
-    }
   }
   svg.chart {
     display: block;

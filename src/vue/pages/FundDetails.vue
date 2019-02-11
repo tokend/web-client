@@ -13,7 +13,7 @@
       <template slot="extra">
         <button
           v-ripple
-          class="app__button-raised"
+          class="app__button-raised fund-details__invest-btn"
           @click="isCreateFundDrawerShown = true"
         >
           {{ 'fund-details.invest-title' | globalize }}
@@ -23,6 +23,16 @@
 
     <template v-if="isLoaded">
       <template v-if="fund.id">
+        <div class="fund__details__title">
+          <h2 class="fund-details__name">
+            {{ fund.name }}
+          </h2>
+
+          <p class="fund-details__short-desc">
+            {{ fund.shortDescription }}
+          </p>
+        </div>
+
         <router-view />
       </template>
 
@@ -51,6 +61,8 @@
 import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+
+import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { Sdk } from '@/sdk'
 
@@ -82,7 +94,7 @@ export default {
     async loadFund (fundId) {
       try {
         const { data } = await Sdk.horizon.sales.get(fundId)
-        this.fund = data
+        this.fund = new SaleRecord(data)
         this.isLoaded = true
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
@@ -97,6 +109,18 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "~@scss/variables";
 
+.fund-details__name {
+  font-size: 3.6rem;
+  font-weight: normal;
+  color: #3a4180;
+}
+
+.fund-details__short-desc {
+  margin-top: .4rem;
+  font-size: 1.6rem;
+  color: #837fa1;
+}
 </style>
