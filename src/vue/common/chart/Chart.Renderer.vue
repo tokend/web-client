@@ -47,6 +47,7 @@ export default {
     precision: { type: Number, default: 0 },
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
+    isTicksShown: { type: Boolean, default: true },
   },
   data: () => ({
     defaultAsset: config.DEFAULT_QUOTE_ASSET,
@@ -91,9 +92,7 @@ export default {
       const parentElement = this.$el.parentElement
       return {
         width: parentElement.clientWidth,
-        height: parentElement.clientHeight < 250
-          ? 250
-          : parentElement.clientHeight,
+        height: parentElement.clientHeight,
       }
     },
     getMaxAndMin () {
@@ -141,7 +140,9 @@ export default {
       const lastDate = data[data.length - 1].time
       // Setup svg
       const className = 'chart'
-      const yAxisTickWidth = this.formatMoneyCustom(max).length * 9 + 5
+      const yAxisTickWidth = this.isTicksShown
+        ? this.formatMoneyCustom(max).length * 9 + 5
+        : 0
       const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
       const dimensions = this.getDimensions(this.$el)
       const width = dimensions.width // - margin.right - margin.left
@@ -263,21 +264,23 @@ export default {
         }, this.chartRenderingTime)
       }
       // Render x-axis
-      const yAxisLine = d3.axisRight(y)
-        .tickValues([
-          max,
-          max - ((max - min) * 0.3333),
-          max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
-          min,
-        ].concat(this.requiredTicks))
-        .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
-        .tickSizeInner(width)
-        .tickSizeOuter(0)
-        .tickPadding(25)
-      svg.append('g')
-        .attr('class', `${className}__y-axis`)
-        .call(yAxisLine)
-        .selectAll('line')
+      if (this.isTicksShown) {
+        const yAxisLine = d3.axisRight(y)
+          .tickValues([
+            max,
+            max - ((max - min) * 0.3333),
+            max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
+            min,
+          ].concat(this.requiredTicks))
+          .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
+          .tickSizeInner(width)
+          .tickSizeOuter(0)
+          .tickPadding(25)
+        svg.append('g')
+          .attr('class', `${className}__y-axis`)
+          .call(yAxisLine)
+          .selectAll('line')
+      }
       // Tip
       const tip = svg.append('g')
         .attr('class', `${className}__tip`)

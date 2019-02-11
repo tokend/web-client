@@ -13,12 +13,17 @@
             class="fund-campaign__fund-description"
             :source="fundDescription"
             :html="false"
-            :prerender="prerender"
           />
         </div>
 
         <div class="fund-campaign__investment">
-          Investment
+          <chart
+            class="fund-campaign__marketprice"
+            :base-asset="fund.baseAsset"
+            :quote-asset="fund.defaultQuoteAsset"
+            :is-tabs-shown="false"
+            :is-ticks-shown="false"
+          />
         </div>
       </div>
     </template>
@@ -37,6 +42,7 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
+import Chart from '@/vue/common/chart/Chart'
 
 import VueMarkdown from 'vue-markdown'
 
@@ -52,6 +58,7 @@ export default {
   components: {
     Loader,
     VueMarkdown,
+    Chart,
   },
 
   data: _ => ({
@@ -102,6 +109,7 @@ export default {
 }
 
 .fund-campaign__fund-logo-wrp {
+  background-color: #ccc;
   position: relative;
   height: 36rem;
   width: 100%;
@@ -129,5 +137,10 @@ export default {
   background-color: #fff;
   border-radius: .4rem;
   margin: 1.6rem;
+  padding: 3.3rem 3.4rem 2.2rem 2.4rem;
+}
+
+.fund-campaign__marketprice {
+  height: 15rem;
 }
 </style>
