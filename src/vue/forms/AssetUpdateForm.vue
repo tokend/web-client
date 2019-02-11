@@ -172,7 +172,6 @@ const EMPTY_DOCUMENT = {
 }
 
 const NAME_MAX_LENGTH = 255
-const REQUESTS_PAGE_LIMIT = 1000
 
 export default {
   name: 'asset-update-form',
@@ -279,8 +278,6 @@ export default {
         requestor: this.account.accountId,
         asset: assetCode,
         state: requestState,
-        order: 'desc',
-        limit: REQUESTS_PAGE_LIMIT,
       })
 
       return data
