@@ -1,51 +1,52 @@
 <template>
-  <a class="asset-card" v-bind="$listeners">
-    <div class="asset-card__header">
-      <logo-viewer class="asset-card__logo" :asset="asset" />
+  <a class="card-viewer" v-on="$listeners">
+    <div class="card-viewer__header">
+      <logo-viewer class="card-viewer__logo" :asset="asset" />
     </div>
-    <div class="asset-card__info">
-      <p class="asset-card__code">
+    <div class="card-viewer__info">
+      <p class="card-viewer__code">
         {{ asset.code }}
       </p>
-      <p class="asset-card__name">
+      <p class="card-viewer__name">
         {{ asset.name }}
       </p>
-      <p v-if="balance" class="asset-card__balance">
+      <p v-if="balance" class="card-viewer__balance">
         {{
-          'assets-page.list-item-balance-line' | globalize({
+          'asset-explorer.list-item-balance-line' | globalize({
             value: balance.available
           })
         }}
       </p>
-      <p v-else class="asset-card__balance asset-card__no-balance">
-        {{ 'assets-page.no-balance-msg' | globalize }}
+      <p v-else class="card-viewer__balance card-viewer__no-balance">
+        {{ 'asset-explorer.no-balance-msg' | globalize }}
       </p>
     </div>
   </a>
 </template>
 
 <script>
-import LogoViewer from './LogoViewer'
+import LogoViewer from './logo-viewer'
 
-import { AssetRecord } from '../asset-record'
+import { Asset } from '../wrappers/asset'
+
 import { mapGetters } from 'vuex'
 import { types } from '../store/types'
 
 export default {
-  name: 'asset-card',
+  name: 'card-viewer',
   components: { LogoViewer },
   props: {
     asset: {
-      type: AssetRecord,
+      type: Asset,
       required: true,
     },
   },
   computed: {
-    ...mapGetters({
-      balances: types.balances,
+    ...mapGetters('asset-explorer', {
+      getBalanceByAssetCode: types.getBalanceByAssetCode,
     }),
     balance () {
-      return this.balances[this.asset.code]
+      return this.getBalanceByAssetCode(this.asset.code)
     },
   },
 }
@@ -55,7 +56,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.asset-card {
+.card-viewer {
   flex: 0 1 calc(25% - 1.5rem);
   min-height: 19rem;
   cursor: pointer;
@@ -73,42 +74,42 @@ export default {
   }
 }
 
-.asset-card__header {
+.card-viewer__header {
   border-radius: .4rem .4rem 0 0;
   height: 8.5rem;
   background-color: $col-asset-card-header-background;
   padding-top: 1.5rem;
 }
 
-.asset-card__logo {
+.card-viewer__logo {
   margin: 0 auto;
 }
 
-.asset-card__info {
+.card-viewer__info {
   padding: 1.6rem 2rem;
 }
 
-.asset-card__code {
+.card-viewer__code {
   font-size: 1.8rem;
   font-weight: bold;
   color: $col-asset-card-text-primary;
 }
 
-.asset-card__name {
+.card-viewer__name {
   margin-top: .2rem;
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-asset-card-text-primary;
 }
 
-.asset-card__balance {
+.card-viewer__balance {
   margin-top: 1.2rem;
   font-size: 1.2rem;
   line-height: 1.5;
   color: $col-asset-card-text-primary;
 }
 
-.asset-card__no-balance {
+.card-viewer__no-balance {
   color: $col-asset-card-text-secondary;
 }
 </style>

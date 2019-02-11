@@ -118,7 +118,7 @@ export const router = new Router({
               path: '/tokens/explore',
               name: vueRoutes.assetsExplore.name,
               meta: { pageNameTranslationId: 'pages-names.tokens' },
-              component: resolve => require(['@/vue/modules/assets-explorer/Page'], resolve),
+              component: resolve => require(['@/vue/pages/AssetsExplorer'], resolve),
             },
             {
               path: '/tokens/balances',

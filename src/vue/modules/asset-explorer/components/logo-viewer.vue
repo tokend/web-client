@@ -10,25 +10,20 @@
 </template>
 
 <script>
-import { AssetRecord } from '../asset-record'
-
-const fileStorageUrl = 'http://black.hole' // TODO: provide from the top
+import { Asset } from '../wrappers/asset'
+import { config } from '@/vue/modules/asset-explorer/_config'
 
 export default {
   name: 'asset-logo',
   props: {
     asset: {
-      type: AssetRecord,
+      type: Asset,
       required: true,
     },
   },
   computed: {
     url () {
-      if (!this.asset.logoKey) {
-        return ''
-      }
-
-      return this.asset.logoUrl(fileStorageUrl)
+      return this.asset.logoUrl(config().storageURL)
     },
   },
 }

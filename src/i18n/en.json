@@ -625,6 +625,21 @@
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
+    },
+
+    "asset-explorer": {
+      "balance-title": "Balance",
+      "maximum-title": "Maximum",
+      "issued-title": "Issued",
+      "available-title": "Available",
+      "terms-title": "Terms",
+      "add-balance-btn": "Add to my balances",
+      "drawer-title": "Token details",
+      "list-item-balance-line": "Balance: {{value, money}}",
+      "no-balance-msg": "No balance",
+      "download-terms-btn": "Download terms",
+      "no-terms-msg": "No terms",
+      "balance-added-msg": "Added to your balances"
     }
   }
 }

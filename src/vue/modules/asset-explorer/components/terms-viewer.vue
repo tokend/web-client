@@ -5,33 +5,29 @@
       :href="href"
       class="terms-viewer__link"
     >
-      {{ 'asset-details.download-terms-btn' | globalize }}
+      {{ 'asset-explorer.download-terms-btn' | globalize }}
     </a>
     <p v-else>
-      {{ 'asset-details.no-terms-msg' | globalize }}
+      {{ 'asset-explorer.no-terms-msg' | globalize }}
     </p>
   </div>
 </template>
 
 <script>
-import { AssetRecord } from '../asset-record'
-
-const fileStorageUrl = 'http://black.hole' // TODO: provide from the top
+import { Asset } from '../wrappers/asset'
+import { config } from '../_config'
 
 export default {
   name: 'terms-viewer',
   props: {
     asset: {
-      type: AssetRecord,
+      type: Asset,
       required: true,
     },
   },
   computed: {
     href () {
-      if (!this.asset.termsKey) {
-        return ''
-      }
-      return this.asset.termsUrl(fileStorageUrl)
+      return this.asset.termsUrl(config().storageURL)
     },
   },
 }
@@ -41,7 +37,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.asset-details__terms {
+.terms-viewer__link {
   font-size: 1.4rem;
   color: $col-primary-lighten;
   text-decoration: none;

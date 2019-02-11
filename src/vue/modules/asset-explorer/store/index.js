@@ -1,7 +1,8 @@
-import { api } from '../api'
+import { Balance } from '../wrappers/balance'
+import { Asset } from '../wrappers/asset'
+
+import { api } from '../_api'
 import { types } from './types'
-import { AssetRecord } from '../asset-record'
-import { BalanceRecord } from '../balance-record'
 
 import { base } from '@tokend/js-sdk'
 
@@ -53,11 +54,19 @@ export const actions = {
 export const getters = {
   [types.balancesOwnerId]: state => state.balancesOwnerId,
 
-  [types.assets]: state => state.assets.map(a => new AssetRecord(a)),
-  [types.balances]: state => state.balances
-    .map(b => new BalanceRecord(b))
-    .reduce((res, b) => ({
-      ...res,
-      [b.assetCode]: b,
-    }), {}),
+  [types.assets]: state => state.assets.map(a => new Asset(a)),
+  [types.getBalanceByAssetCode]: state => assetCode => {
+    const record = state.balances.find(b => b.asset.code === assetCode)
+    if (record) {
+      return new Balance(record)
+    }
+  },
+}
+
+export const assetExplorerModule = {
+  namespaced: true,
+  mutations,
+  actions,
+  getters,
+  state,
 }

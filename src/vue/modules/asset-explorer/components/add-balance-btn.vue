@@ -1,32 +1,28 @@
 <template>
-  <div class="balance-creator">
-    <div class="balance-creator__actions">
-      <button
-        v-ripple
-        class="balance-creator__update-btn"
-        :disabled="isPending"
-        @click="submit"
-      >
-        {{ 'asset-details.add-balance-btn' | globalize }}
-      </button>
-    </div>
-  </div>
+  <button
+    v-ripple
+    class="add-balance-btn"
+    :disabled="isPending"
+    @click="submit"
+  >
+    {{ 'asset-explorer.add-balance-btn' | globalize }}
+  </button>
 </template>
 
 <script>
-import { AssetRecord } from '../asset-record'
+import { Asset } from '../wrappers/asset'
 
-import { mapActions } from 'vuex'
 import { types } from '../store/types'
+import { mapActions } from 'vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
 export default {
-  name: 'balance-creator',
+  name: 'add-balance-btn',
   props: {
     asset: {
-      type: AssetRecord,
+      type: Asset,
       required: true,
     },
   },
@@ -34,7 +30,7 @@ export default {
     isPending: false,
   }),
   methods: {
-    ...mapActions({
+    ...mapActions('asset-explorer', {
       createBalance: types.CREATE_BALANCE,
       loadBalances: types.LOAD_BALANCES,
     }),
@@ -44,7 +40,7 @@ export default {
         await this.createBalance(this.asset.code)
         await this.loadBalances()
 
-        Bus.success('asset-details.balance-added-msg')
+        Bus.success('asset-explorer.balance-added-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -58,16 +54,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.balance-creator__actions {
-  margin-top: 4.9rem;
-  display: flex;
-
-  button + button {
-    margin-left: auto;
-  }
-}
-
-.balance-creator__update-btn {
+.add-balance-btn {
   @include button-raised();
 
   margin-bottom: 2rem;

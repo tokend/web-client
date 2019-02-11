@@ -13,8 +13,8 @@ const actions = {
 
 const getters = {
   assets: 'assets',
-  balances: 'balances',
   balancesOwnerId: 'balancesOwnerId',
+  getBalanceByAssetCode: 'getBalanceByAssetCode',
 }
 
 export const types = {

@@ -1,40 +1,35 @@
 <template>
-  <div class="assets-explorer">
-    <assets-list :assets="assets" />
+  <div class="asset-explorer">
+    <asset-explorer-module
+      :config="config"
+      :wallet="wallet"
+    />
   </div>
 </template>
 
 <script>
-import AssetsList from '@/vue/common/assets/AssetsList'
+import AssetExplorerModule from '@modules/asset-explorer'
 
-import { Sdk } from '@/sdk'
+import config from '../../config'
 
-import { ErrorHandler } from '@/js/helpers/error-handler'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'assets-explorer',
   components: {
-    AssetsList,
+    AssetExplorerModule,
   },
   data: _ => ({
-    assets: [],
-  }),
-  async created () {
-    await this.loadAssets()
-  },
-  methods: {
-    async loadAssets () {
-      try {
-        const { data } = await Sdk.horizon.assets.getAll()
-        this.assets = data
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+      storageURL: config.FILE_STORAGE,
     },
+  }),
+  computed: {
+    ...mapGetters({
+      wallet: vuexTypes.wallet,
+    }),
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -6,6 +6,8 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 
+import { assetExplorerModule } from '@modules/asset-explorer/store'
+
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
@@ -31,10 +33,13 @@ export const rootModule = {
 const store = new Vuex.Store({
   ...rootModule,
   modules: {
+    // global modules:
     account,
     factors,
     wallet,
     kyc,
+    // namespaced local modules (used by a specific set of components)
+    'asset-explorer': assetExplorerModule,
   },
   plugins: [sessionStoragePlugin],
 })
