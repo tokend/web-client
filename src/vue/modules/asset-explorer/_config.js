@@ -5,16 +5,17 @@ let _config = null
  * @param {string} storageURL - the URL of the storage server
  */
 export function initConfig (horizonURL, storageURL) {
-  _config = {}
   if (!horizonURL) {
     throw new Error('horizonURL is not provided')
   }
-  _config.horizonURL = horizonURL
-
   if (!storageURL) {
     throw new Error('storageURL is not provided')
   }
-  _config.storageURL = storageURL
+
+  _config = {
+    horizonURL,
+    storageURL,
+  }
 }
 
 export function config () {
