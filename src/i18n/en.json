@@ -672,9 +672,9 @@
 
     "invest-form": {
       "asset-lbl": "Asset",
-      "available-amount-hint": "Available: {{amount, money}}",
+      "available-amount-hint": "Available: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
-      "converted-amount-hint": "Converted: {{amount, money}}",
+      "converted-amount-hint": "Converted: **{{amount, money}}**",
       "invest-btn": "Invest"
     },
 

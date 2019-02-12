@@ -21,10 +21,13 @@
             :disabled="formMixin.isDisabled"
           />
 
-          <p class="app__form-field-description">
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'invest-form.available-amount-hint' | globalize({ value: availableAmount }) }}
-          </p>
+          <!-- eslint-disable max-len -->
+          <vue-markdown
+            class="app__form-field-description invest-form__amount-hint"
+            :source="'invest-form.available-amount-hint' | globalize({ amount: availableAmount })"
+            :html="false"
+          />
+          <!-- eslint-enable max-len -->
         </div>
       </div>
 
@@ -46,9 +49,27 @@
             />
           </div>
 
-          <p class="app__form-field-description">
-            <!-- eslint-disable-next-line max-len -->
-            {{ 'invest-form.converted-amount-hint' | globalize({ value: convertedAmount }) }}
+          <!-- eslint-disable max-len -->
+          <vue-markdown
+            v-if="isConvertedAmountLoaded"
+            class="app__form-field-description invest-form__amount-hint"
+            :source="'invest-form.converted-amount-hint' | globalize({ amount: convertedAmount })"
+            :html="false"
+          />
+          <!-- eslint-enable max-len -->
+
+          <p
+            v-else-if="isConvertedAmountFailed"
+            class="app__form-field-description"
+          >
+            Error
+          </p>
+
+          <p
+            v-else
+            class="app__form-field-description"
+          >
+            Loading...
           </p>
         </div>
       </div>
@@ -65,7 +86,7 @@
           v-ripple
           type="submit"
           class="invest-form__submit-btn"
-          :disabled="formMixin.isDisabled"
+          :disabled="formMixin.isDisabled || isInvestmentDisabled"
         >
           {{ 'invest-form.invest-btn' | globalize }}
         </button>
@@ -76,6 +97,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import VueMarkdown from 'vue-markdown'
 
 import config from '@/config'
 
@@ -83,16 +105,22 @@ import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
-// import { base } from '@tokend/js-sdk'
+import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { required, amountRange } from '@validators'
+
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import _throttle from 'lodash/throttle'
+
 export default {
   name: 'invest-form',
+  components: {
+    VueMarkdown,
+  },
   mixins: [FormMixin],
   props: {
     sale: { type: SaleRecord, required: true },
@@ -103,7 +131,9 @@ export default {
       amount: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
-    conversionRate: 0,
+    converted: 0,
+    isConvertedAmountLoaded: true,
+    isConvertedAmountFailed: false,
   }),
   validations () {
     return {
@@ -118,11 +148,27 @@ export default {
   },
   computed: {
     ...mapGetters({
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
 
+    throttled () {
+      return _throttle(this.loadConvertedAmount, 1000)
+    },
+
     assetListValues () {
-      return this.sale.quoteAssets.map(quote => quote.asset)
+      const quoteBalances = this.sale.quoteAssets.map(quote => {
+        return this.balances.find(balance => balance.asset === quote.asset)
+      })
+
+      return quoteBalances.map(balance => {
+        const asset = balance.assetDetails
+
+        return {
+          value: asset.code,
+          label: `${asset.name} (${asset.code})`,
+        }
+      })
     },
 
     availableAmount () {
@@ -137,46 +183,96 @@ export default {
 
     convertedAmount () {
       return {
-        value: this.form.amount * this.conversionRate,
+        value: this.converted,
         currency: this.sale.defaultQuoteAsset,
       }
+    },
+
+    isInvestmentDisabled () {
+      return this.sale.isUpcoming ||
+        this.sale.isClosed ||
+        this.sale.owner === this.accountId ||
+        !this.isConvertedAmountLoaded ||
+        +this.converted > +this.sale.hardCap ||
+        +this.form.amount > +this.availableAmount.value
     },
   },
 
   watch: {
-    'form.asset': async function (value) {
-      if (value === this.sale.defaultQuoteAsset) {
-        this.conversionRate = 1
-      } else {
-        try {
-          const { data } = await Sdk.horizon.assetPairs.convert({
-            source_asset: value,
-            dest_asset: this.sale.defaultQuoteAsset,
-            amount: 1,
-          })
-          this.conversionRate = data.amount
-        } catch (e) {
-          ErrorHandler.processWithoutFeedback(e)
-        }
-      }
+    'form.amount': function () {
+      this.setConvertedAmount()
+    },
+
+    'form.asset': function () {
+      this.setConvertedAmount()
     },
   },
 
   async created () {
-    this.form.asset = this.assetListValues[0]
+    this.form.asset = this.assetListValues[0].value
   },
 
   methods: {
+    setConvertedAmount () {
+      if (this.form.asset === this.sale.defaultQuoteAsset) {
+        this.converted = this.form.amount
+      } else if (this.form.amount === '') {
+        this.converted = 0
+      } else {
+        this.isConvertedAmountFailed = false
+        this.isConvertedAmountLoaded = false
+        this.throttled()
+      }
+    },
+
+    async loadConvertedAmount () {
+      try {
+        const { data } = await Sdk.horizon.assetPairs.convert({
+          source_asset: this.form.asset,
+          dest_asset: this.sale.defaultQuoteAsset,
+          amount: this.form.amount,
+        })
+        this.converted = data.amount
+        this.isConvertedAmountLoaded = true
+      } catch (e) {
+        this.isConvertedAmountFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+
+      try {
+        const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+          asset: this.form.asset,
+          account: this.accountId,
+          amount: this.converted,
+        })
+        const operation = base.ManageOfferBuilder.manageOffer({
+          baseBalance: this.balances
+            .find(balance => balance.asset === this.sale.baseAsset).balanceId,
+          quoteBalance: this.balances
+            .find(balance => balance.asset === this.form.asset).balanceId,
+          isBuy: true,
+          amount: this.form.amount,
+          price: this.sale.quoteAssetPrices[this.form.quoteAsset] || '1',
+          fee: fee.percent,
+          orderBookID: this.sale.id,
+        })
+        await Sdk.horizon.transactions.submitOperations(operation)
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+
       this.enableForm()
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import './app-form';
 
 .invest-form__submit-btn {
@@ -186,8 +282,14 @@ export default {
   width: 18rem;
 }
 
-.invest-form__amount-wrapper {
-  display: flex;
+.invest-form__amount-hint {
+  p {
+    font-size: 1.2rem;
+  }
+
+  strong {
+    color: #7b6eff;
+  }
 }
 
 .invest-form__issuance-asset-code {
