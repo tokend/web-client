@@ -24,7 +24,7 @@ export const DOCUMENT_TYPES = Object.freeze({
   tokenLogo: 'asset_logo',
 })
 
-export const DOCUMENT_TYPES_TRANSLATIONS_ID = Object.freeze({
+export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
   [DOCUMENT_TYPES.saleLogo]: 'document-types.sale-logo',
   [DOCUMENT_TYPES.saleDocument]: 'document-types.sale-document',
   [DOCUMENT_TYPES.assetTerms]: 'document-types.asset-terms',

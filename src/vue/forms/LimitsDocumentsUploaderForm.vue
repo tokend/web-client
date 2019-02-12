@@ -14,7 +14,7 @@
             {{ 'limits-documents-uploader-form.document-type-lbl' | globalize }}:
           </span>
           <span>
-            {{ DOCUMENT_TYPES_TRANSLATIONS_ID[doc.label] | globalize }}
+            {{ DOCUMENT_TYPES_TRANSLATION_IDS[doc.label] | globalize }}
           </span>
         </div>
         <div
@@ -65,7 +65,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import { DOCUMENT_TYPES_TRANSLATIONS_ID } from '@/js/const/document-types.const'
+import { DOCUMENT_TYPES_TRANSLATION_IDS } from '@/js/const/document-types.const'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { required, documentContainer } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
@@ -86,7 +86,7 @@ export default {
     request: { type: Object, required: true, default: () => ({}) },
   },
   data: () => ({
-    DOCUMENT_TYPES_TRANSLATIONS_ID,
+    DOCUMENT_TYPES_TRANSLATION_IDS,
     form: {
       documents: {},
     },
