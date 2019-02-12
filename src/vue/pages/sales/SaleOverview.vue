@@ -102,14 +102,6 @@
           </tbody>
         </table>
       </div>
-
-      <button
-        v-ripple
-        class="sale-overview__view-btn"
-        @click="viewSale"
-      >
-        {{ 'sale-overview.view-btn' | globalize }}
-      </button>
     </template>
 
     <template v-else-if="!isLoadingFailed">
@@ -165,18 +157,11 @@ export default {
       ErrorHandler.processWithoutFeedback(e)
     }
   },
-  methods: {
-    viewSale () {
-      // TODO: add the sale details route when sale details component
-      // is added.
-    },
-  },
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@scss/variables";
-@import "~@scss/mixins";
 
 .sale-overview__short-description {
   margin-top: 4rem;
@@ -190,14 +175,6 @@ export default {
   tr td:last-child {
     text-align: right;
   }
-}
-
-.sale-overview__view-btn {
-  @include button-raised();
-
-  margin-top: 4.9rem;
-  max-width: 14.4rem;
-  width: 100%;
 }
 
 .sale-overview__video-btn {

@@ -56,7 +56,7 @@
           v-for="sale in filteredSales"
           :key="sale.id"
           :sale="sale"
-          @select="selectSale(sale)"
+          @select="viewSale(sale)"
         />
       </div>
     </template>
@@ -73,6 +73,10 @@
       <loader :message-id="'sales.loading-msg'" />
     </template>
 
+    <!--
+      v-show is a hack to hide `More` button if there are no sales,
+      matching the filtering criteria (when no data message is shown).
+    -->
     <collection-loader
       v-show="filteredSales.length"
       class="sales__loader"
@@ -161,6 +165,8 @@ export default {
         .filter((asset, i, self) => self.indexOf(asset) === i)
     },
 
+    // A workaround for filtering sales by base asset, since sales.getPage 
+    // method loads all the existing sales.
     filteredSales () {
       if (this.filters.baseAsset === '') {
         return this.saleRecords
@@ -204,9 +210,9 @@ export default {
         .concat(data.map(sale => new SaleRecord(sale)))
     },
 
-    selectSale (sale) {
-      this.selectedSale = sale
-      this.isDetailsDrawerShown = true
+    viewSale (sale) {
+      // TODO: add the sale details route when sale details component
+      // is added.
     },
   },
 }
