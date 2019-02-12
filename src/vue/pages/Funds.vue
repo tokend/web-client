@@ -2,127 +2,70 @@
   <div class="funds">
     <top-bar>
       <template slot="main">
-        <select-field
-          :disabled="!isLoaded"
-          v-model="filters.baseAsset"
-          :values="fundAssets"
-          class="app__select app__select--no-border"
-        />
+        <div class="funds__asset-filter">
+          <input-field
+            :disabled="!isLoaded"
+            v-model="filters.baseAsset"
+            :label="'funds.asset-code-label' | globalize"
+          />
+        </div>
 
-        <select-field
-          :disabled="!isLoaded"
-          v-model="filters.state"
-          :values="FUND_STATES"
-          class="app__select app__select--no-border"
-        />
-
-        <select-field
-          :disabled="!isLoaded"
-          v-model="filters.sort"
-          :values="FUND_SORT_STATES"
-          class="app__select app__select--no-border"
-        />
+        <div class="funds__state-filter">
+          <select-field
+            :disabled="!isLoaded"
+            v-model="filters.state"
+            :values="FUND_STATES"
+            class="app__select app__select--no-border"
+          />
+        </div>
       </template>
 
-      <template slot="extra">
+      <template
+        slot="extra"
+        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
+      >
         <button
           v-ripple
           class="app__button-raised"
           @click="isCreateFundDrawerShown = true"
         >
           <i class="mdi mdi-plus funds__btn-icon" />
-          {{ 'funds.create-fund-title' | globalize }}
+          {{ 'funds.create-fund' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer :is-shown.sync="isCreateFundDrawerShown">
       <template slot="heading">
-        {{ 'funds.create-fund-title' | globalize }}
+        {{ 'funds.create-fund' | globalize }}
       </template>
-      <create-fund-form @cancel="isCreateFundDrawerShown = false" />
-    </drawer>
-
-    <drawer :is-shown.sync="isDetailsDrawerShown">
-      <template slot="heading">
-        {{ 'funds.short-details-title' | globalize }}
-      </template>
-      <fund-short-details :fund="selectedFund" />
+      <create-fund-form />
     </drawer>
 
     <template v-if="filteredFunds.length">
-      <div class="fund-cards">
-        <a
-          class="fund-card"
+      <div class="funds__fund-cards">
+        <drawer :is-shown.sync="isDetailsDrawerShown">
+          <template slot="heading">
+            {{ 'funds.short-details-title' | globalize }}
+          </template>
+          <fund-short-details :fund="selectedFund" />
+        </drawer>
+
+        <fund-card
+          class="funds__fund-card"
           v-for="fund in filteredFunds"
           :key="fund.id"
-          @click="selectFund(fund)"
-        >
-          <div class="fund-card__header">
-            <img
-              class="fund-card__logo"
-              :src="fund.logoUrl(config.FILE_STORAGE)"
-            >
-          </div>
-
-          <div class="fund-card__info">
-            <p class="fund-card__name">
-              {{ fund.name }}
-            </p>
-
-            <p class="fund-card__desc">
-              {{ fund.shortDescription }}
-            </p>
-
-            <div class="fund-card__progress-bar">
-              <div
-                class="fund-card__progress"
-                :style="`width: ${getCapProgress(fund)}%`"
-              />
-            </div>
-
-            <p class="fund-card__funded">
-              <!-- eslint-disable max-len -->
-              {{ 'funds.fund-card-funded' | globalize({ funded: fund.currentCap / fund.hardCap }) }}
-              <!-- eslint-enable max-len -->
-            </p>
-
-            <p class="fund-card__invested">
-              <!-- eslint-disable max-len -->
-              {{ 'funds.fund-card-invested' | globalize({ invested: { value: fund.currentCap, currency: fund.defaultQuoteAsset } }) }}
-              <!-- eslint-enable max-len -->
-            </p>
-
-            <p class="fund-card__days-to-launch">
-              <!-- eslint-disable max-len -->
-              {{ 'funds.fund-card-days-to-launch' | globalize({ days: fund.daysToGo }) }}
-              <!-- eslint-enable max-len -->
-            </p>
-
-            <vue-markdown
-              class="fund-card__offer"
-              :source="'funds.fund-card-offer' | globalize({
-                baseHardCap: {
-                  value: fund.baseHardCap,
-                  currency: fund.baseAsset
-                },
-                hardCap: {
-                  value: fund.hardCap,
-                  currency: fund.defaultQuoteAsset
-                }
-              })"
-              :html="false"
-            />
-          </div>
-        </a>
+          :fund="fund"
+          @select="selectFund(fund)"
+        />
       </div>
     </template>
 
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="inbox"
-        :msg-title="'funds.no-funds-title' | globalize"
-        :msg-message="'funds.no-funds-desc' | globalize"
+        title-id="funds.no-funds-title"
+        message-id="funds.no-funds-desc"
       />
     </template>
 
@@ -147,13 +90,17 @@ import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
+import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
 import CreateFundForm from '@/vue/forms/CreateFundForm'
 import FundShortDetails from '@/vue/pages/funds/FundShortDetails'
-
-import VueMarkdown from 'vue-markdown'
+import FundCard from '@/vue/pages/funds/FundCard'
 
 import { Sdk } from '@/sdk'
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -174,23 +121,6 @@ const FUND_STATES = {
   },
 }
 
-const FUND_SORT_STATES = {
-  endingSoonest: {
-    value: '3',
-    label: 'funds.sort-by-ending-soonest',
-  },
-  popularity: {
-    value: '4',
-    label: 'funds.sort-by-popularity',
-  },
-  launchDate: {
-    value: '',
-    label: 'funds.sort-by-launch-date',
-  },
-}
-
-const ALL_TOKENS_FILTER = 'funds.all-tokens-filter'
-
 export default {
   name: 'funds',
   components: {
@@ -200,16 +130,16 @@ export default {
     CollectionLoader,
     NoDataMessage,
     SelectField,
+    InputField,
     CreateFundForm,
     FundShortDetails,
-    VueMarkdown,
+    FundCard,
   },
   data: _ => ({
     fundRecords: [],
     filters: {
-      baseAsset: ALL_TOKENS_FILTER,
+      baseAsset: '',
       state: FUND_STATES.live.value,
-      sort: FUND_SORT_STATES.launchDate.value,
     },
     isLoaded: false,
     isCreateFundDrawerShown: false,
@@ -217,56 +147,53 @@ export default {
     selectedFund: null,
     config,
     FUND_STATES,
-    FUND_SORT_STATES,
+    ACCOUNT_TYPES,
   }),
 
   computed: {
+    ...mapGetters({
+      account: vuexTypes.account,
+    }),
+
     fundAssets () {
-      return [ALL_TOKENS_FILTER].concat(
-        this.fundRecords.map(fund => fund.baseAsset)
-          .filter((asset, i, self) => self.indexOf(asset) === i)
-      )
+      return this.fundRecords
+        .map(fund => fund.baseAsset)
+        .filter((asset, i, self) => self.indexOf(asset) === i)
     },
 
     filteredFunds () {
-      if (this.filters.baseAsset === ALL_TOKENS_FILTER) {
+      if (this.filters.baseAsset === '') {
         return this.fundRecords
       } else {
         return this.fundRecords
-          .filter(fund => fund.baseAsset === this.filters.baseAsset)
+          .filter(fund => {
+            return fund.baseAsset.toLowerCase()
+              .includes(this.filters.baseAsset.toLowerCase())
+          })
       }
     },
 
     recordsLoader () {
       const fundState = this.filters.state
-      const sortState = this.filters.sort
-
-      this.initRecordsLoading()
 
       return function () {
         return Sdk.horizon.sales.getPage({
-          open_only: sortState === FUND_STATES.upcoming.value ||
-            fundState === FUND_STATES.live,
+          open_only: fundState === FUND_STATES.upcoming.value ||
+            fundState === FUND_STATES.live.value,
           upcoming: fundState === FUND_STATES.upcoming.value,
-          sort_by: sortState,
         })
       }
     },
   },
 
-  methods: {
-    getCapProgress (fund) {
-      const capPercentage = (fund.currentCap / fund.hardCap) * 100
-      const progress = Math.round(capPercentage * 100) / 100
-
-      return progress >= 100 ? 100 : progress
-    },
-
-    initRecordsLoading () {
+  watch: {
+    'recordsLoader': function () {
       this.fundRecords = []
       this.isLoaded = false
     },
+  },
 
+  methods: {
     setRecords (data) {
       this.fundRecords = data.map(fund => new SaleRecord(fund))
       this.isLoaded = true
@@ -295,19 +222,22 @@ export default {
   margin-right: 0.5rem;
 }
 
-.fund-cards {
+.funds__asset-filter {
+  margin-top: -.6rem;
+}
+
+.funds__state-filter {
+  margin-top: 1rem;
+}
+
+.funds__fund-cards {
   display: flex;
   flex-wrap: wrap;
   margin: -1rem;
 }
 
-.fund-card {
+.funds__fund-card {
   flex: 0 1 calc(25% - 2rem);
-  cursor: pointer;
-  border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-fund-card-shadow;
-  background-color: $col-fund-card-background;
-  margin: 1rem;
 
   @include respond-to($large) {
     flex: 0 1 calc(33.3% - 2rem);
@@ -319,81 +249,6 @@ export default {
 
   @include respond-to($x-small) {
     flex: 0 1 calc(100% - 2rem);
-  }
-}
-
-.fund-card__header {
-  position: relative;
-  border-radius: .4rem .4rem 0rem 0rem;
-  height: 16rem;
-  width: 100%;
-  background-color: $col-fund-card-header-background;
-
-  @include respond-to($x-medium) {
-    height: 12rem;
-  }
-}
-
-.fund-card__logo {
-  border-radius: .4rem .4rem 0rem 0rem;
-  max-height: 100%;
-  max-width: 100%;
-  width: auto;
-  height: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
-.fund-card__info {
-  padding: 2.2rem 1.5rem;
-}
-
-.fund-card__name {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: $col-fund-card-text-primary;
-}
-
-.fund-card__desc {
-  margin-top: .5rem;
-  font-size: 1.4rem;
-  line-height: 1.29;
-  color: $col-fund-card-text-primary;
-}
-
-.fund-card__progress-bar {
-  margin-top: 3rem;
-  width: 100%;
-  height: .3rem;
-  background-color: $fund-card-progress-bar-background;
-
-  .fund-card__progress {
-    background: $fund-card-progress-bar-value;
-    height: 100%;
-  }
-}
-
-.fund-card__funded {
-  margin-top: .9rem;
-}
-
-.fund-card__funded, .fund-card__invested, .fund-card__days-to-launch {
-  font-size: 1.3rem;
-  color: $col-fund-card-text-primary;
-  line-height: 1.69;
-}
-
-.fund-card__offer {
-  margin-top: 2.5rem;
-  font-size: 1.4rem;
-  color: $col-fund-card-text-primary;
-
-  strong {
-    color: $col-fund-card-text-bold;
   }
 }
 

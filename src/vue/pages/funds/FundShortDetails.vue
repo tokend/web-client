@@ -1,16 +1,16 @@
 <template>
   <div class="fund-short-details">
     <template v-if="isLoaded">
-      <div class="asset-details">
+      <div class="fund-short-details__asset">
         <asset-logo
           :asset-code="asset.code"
           :logo-url="asset.logoUrl(config.FILE_STORAGE)"
         />
-        <div class="asset-details__info">
-          <p class="asset-details__code">
+        <div class="fund-short-details__asset-info">
+          <p class="fund-short-details__asset-code">
             {{ asset.code }}
           </p>
-          <p class="asset-details__name">
+          <p class="fund-short-details__asset-name">
             {{ asset.name }}
           </p>
         </div>
@@ -73,7 +73,7 @@
             <tr>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ 'fund-short-details.sell-title' | globalize({ asset: fund.baseAsset }) }}
+                {{ 'fund-short-details.asset-to-sell-title' | globalize({ asset: fund.baseAsset }) }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -209,26 +209,26 @@ export default {
   }
 }
 
-.asset-details {
+.fund-short-details__asset {
   display: flex;
   align-items: center;
 
-  .asset-details__logo {
+  .fund-short-details__asset-logo {
     width: 5rem;
     height: 5rem;
     border-radius: 50%
   }
 
-  .asset-details__info {
+  .fund-short-details__asset-info {
     margin-left: 1.8rem;
 
-    .asset-details__code {
+    .fund-short-details__asset-code {
       font-size: 1.8rem;
       font-weight: bold;
       color: $col-text;
     }
 
-    .asset-details__name {
+    .fund-short-details__asset-name {
       margin-top: .1rem;
       font-size: 1.4rem;
       line-height: 1.29;

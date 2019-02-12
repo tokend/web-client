@@ -566,20 +566,20 @@
       "loading-msg": "Loading",
       "no-funds-title": "No funds found",
       "no-funds-desc": "Unfortunately, there are no funds matching your criteria",
-      "create-fund-title": "Create fund",
-      "update-fund-title": "Update fund",
+      "create-fund": "Create fund",
+      "update-fund": "Update fund",
       "short-details-title": "Fund short details",
-      "all-tokens-filter": "All tokens",
+      "asset-code-label": "Token code",
       "fund-live-state": "Live",
       "fund-upcoming-state": "Upcoming only",
-      "fund-all-state": "All",
-      "sort-by-ending-soonest": "Ending soonest",
-      "sort-by-popularity": "Popularity",
-      "sort-by-launch-date": "Launch date",
-      "fund-card-funded": "{{funded, percent}} funded",
-      "fund-card-invested": "{{invested, money}} invested",
-      "fund-card-days-to-launch": "{{days}} days to launch",
-      "fund-card-offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
+      "fund-all-state": "All"
+    },
+
+    "fund-card": {
+      "funded": "{{funded, percent}} funded",
+      "invested": "{{invested, money}} invested",
+      "days-to-launch": "{{days}} days to launch",
+      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
     },
 
     "fund-short-details": {
@@ -590,7 +590,7 @@
       "close-time-title": "Close time",
       "soft-cap-title": "Soft cap",
       "hard-cap-title": "Hard cap",
-      "sell-title": "{{asset}} to sell",
+      "asset-to-sell-title": "{{asset}} to sell",
       "video-about-fund-title": "Video about fund",
       "no-video-msg": "No video",
       "view-video-btn": "View",

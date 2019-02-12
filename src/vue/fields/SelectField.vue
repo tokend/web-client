@@ -25,7 +25,7 @@
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
-        {{ getLabel(currentValue) | globalize }}
+        {{ $options.filters.globalize(getLabel(currentValue)) || '&nbsp;' }}
       </span>
       <i
         class="select-field__selected-icon mdi mdi-chevron-down"
@@ -48,7 +48,7 @@
         }"
         @click.prevent="selectItem(item)"
       >
-        {{ getLabel(item) | globalize }}
+        {{ $options.filters.globalize(getLabel(item)) || '&nbsp;' }}
       </button>
     </div>
     <p v-if="errorMessage" class="select-field__err-mes">
@@ -100,8 +100,15 @@ export default {
     selectedValue: null, // active list element (for arrow navigation)
     isExpanded: false,
     KEY_CODES,
-    listValues: [],
   }),
+
+  computed: {
+    listValues () {
+      return Array.isArray(this.values)
+        ? this.values
+        : Object.values(this.values)
+    },
+  },
 
   watch: {
     isExpanded (value) {
@@ -109,17 +116,9 @@ export default {
         document.addEventListener('click', this.onDocumentClick)
       }
     },
-    values (value) {
-      this.listValues = Array.isArray(value)
-        ? value
-        : Object.values(value)
-    },
   },
 
   created () {
-    this.listValues = Array.isArray(this.values)
-      ? this.values
-      : Object.values(this.values)
     const value = this.listValues.every(v => _isObject(v))
       ? this.listValues.find(v => v.value === this.value)
       : this.value
