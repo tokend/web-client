@@ -282,18 +282,19 @@ export default {
       const statsOpType = +this.selectedOpType.value
       const operationType = STATS_OPERATION_TYPES_KEY_NAMES[statsOpType]
 
-      // eslint-disable-next-line
-      const operation = base.CreateManageLimitsRequestBuilder.createManageLimitsRequest({
-        requestID: '0',
-        details: {
-          operationType,
-          statsOpType,
-          asset,
-          limits,
-          requestType,
-          note,
-        },
-      })
+      const operation = base
+        .CreateManageLimitsRequestBuilder
+        .createManageLimitsRequest({
+          requestID: '0',
+          details: {
+            operationType,
+            statsOpType,
+            asset,
+            limits,
+            requestType,
+            note,
+          },
+        })
       await Sdk.horizon.transactions.submitOperations(operation)
     },
     formatOpTypes () {

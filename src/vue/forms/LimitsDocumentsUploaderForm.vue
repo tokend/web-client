@@ -114,7 +114,7 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        await this.uploadLimitsUpdateRequest()
+        await this.createLimitsUpdateRequest()
         Bus.success('limits-documents-uploader-form.documents-upload-success')
         this.$emit(EVENTS.requestUploaded)
       } catch (error) {
@@ -131,20 +131,21 @@ export default {
       this.enableForm()
       this.hideFormConfirmation()
     },
-    async uploadLimitsUpdateRequest () {
-      // eslint-disable-next-line
-      const operation = base.CreateManageLimitsRequestBuilder.createManageLimitsRequest({
-        requestID: this.request.id,
-        details: {
-          operationType: this.request.operationType,
-          statsOpType: this.request.operationTypeI,
-          asset: this.request.asset,
-          limits: this.request.limits,
-          requestType: LIMITS_REQUEST_TYPE.docsUploading,
-          note: this.request.note,
-          documents: this.prepareDocumentsToUpload(),
-        },
-      })
+    async createLimitsUpdateRequest () {
+      const operation = base
+        .CreateManageLimitsRequestBuilder
+        .createManageLimitsRequest({
+          requestID: this.request.id,
+          details: {
+            operationType: this.request.operationType,
+            statsOpType: this.request.operationTypeI,
+            asset: this.request.asset,
+            limits: this.request.limits,
+            requestType: LIMITS_REQUEST_TYPE.docsUploading,
+            note: this.request.note,
+            documents: this.formatDocumentsForRequest(),
+          },
+        })
       await Sdk.horizon.transactions.submitOperations(operation)
     },
     async uploadDocuments () {
@@ -157,7 +158,7 @@ export default {
         }
       }
     },
-    prepareDocumentsToUpload () {
+    formatDocumentsForRequest () {
       const documents = {}
       this.request.requestedDocs.forEach(item => {
         const doc = this.form.documents[item.label]
