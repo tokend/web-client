@@ -129,9 +129,9 @@ export const router = new Router({
         },
         {
           path: '/funds',
-          name: vueRoutes.funds.name,
-          featureFlag: config.FEATURE_FLAGS.funds,
-          component: resolve => require(['@/vue/pages/Funds'], resolve),
+          name: vueRoutes.sales.name,
+          featureFlag: config.FEATURE_FLAGS.sales,
+          component: resolve => require(['@/vue/pages/Sales'], resolve),
         },
         {
           path: '/issuance',
@@ -176,8 +176,8 @@ export const router = new Router({
             },
             {
               path: '/requests/fund-creation',
-              name: vueRoutes.requests.fundCreation.name,
-              component: resolve => require(['@/vue/pages/FundCreationRequests'], resolve),
+              name: vueRoutes.requests.saleCreation.name,
+              component: resolve => require(['@/vue/pages/SaleCreationRequests'], resolve),
             },
           ],
         },

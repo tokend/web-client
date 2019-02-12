@@ -478,7 +478,7 @@
 
     "requests-page": {
       "asset-creation-title": "Token creation",
-      "fund-creation-title": "Fund creation",
+      "sale-creation-title": "Fund creation",
       "preissuance-upload-title": "Pre-issuance upload"
     },
 
@@ -513,12 +513,12 @@
       "request-canceled-msg": "Your request was successfully cancelled"
     },
 
-    "fund-creation-requests": {
-      "update-fund-title": "Update fund",
+    "sale-creation-requests": {
+      "update-sale-title": "Update fund",
       "details-title": "Fund request details",
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "fund-name-header": "Fund name",
+      "sale-name-header": "Fund name",
       "asset-code-header": "Token code",
       "request-state-header": "Request state",
       "created-header": "Created",
@@ -560,7 +560,7 @@
       "asset-update-request-type": "Asset update"
     },
 
-    "fund-request-details": {
+    "sale-request-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "name-title": "Fund name",
@@ -569,7 +569,7 @@
       "soft-cap-title": "Soft cap",
       "hard-cap-title": "Hard cap",
       "sell-title": "{{asset}} to sell",
-      "video-about-fund-title": "Video about fund",
+      "video-about-sale-title": "Video about fund",
       "no-video-msg": "No video",
       "view-video-btn": "View",
       "view-btn": "View the fund",
@@ -659,13 +659,13 @@
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
     },
 
-    "funds": {
-      "create-fund": "Create fund"
+    "sales": {
+      "create-sale": "Create fund"
     },
 
-    "create-fund-form": {
-      "create-fund-header": "Create fund",
-      "provide-fund-information": "Provide fund information",
+    "create-sale-form": {
+      "create-sale-header": "Create fund",
+      "provide-sale-information": "Provide fund information",
       "add-short-blurb": "Add a short blurb",
       "full-description": "Full description",
       "short-description": "Short description",
@@ -680,8 +680,7 @@
       "upload-image" : "Upload the image users will see first in their searcher",
       "insert-youtube-video": "Insert YouTube video by its ID",
       "next-btn": "Next",
-      "cancel-btn": "Cancel",
-      "create-btn": "Create",
+      "submit-btn": "Submit",
       "request-submitted-msg": "Your request was successfully submitted",
       "price": "Price ({{quote}} for 1 {{base}}) ≈ ",
       "not-available": "One last moment",

@@ -6,7 +6,7 @@ export const vueRoutes = Object.freeze({
   verify: { name: 'verify' },
   fees: { name: 'app.fees' },
   operations: { name: 'app.operations' },
-  funds: { name: 'app.funds' },
+  sales: { name: 'app.sales' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
   settings: { name: 'app.settings' },
@@ -37,7 +37,7 @@ export const vueRoutes = Object.freeze({
   requests: {
     name: 'app.requests',
     assetCreation: { name: 'app.asset-creation' },
-    fundCreation: { name: 'app.fund-creation' },
+    saleCreation: { name: 'app.sale-creation' },
     preissuanceUpload: { name: 'app.preissuance-upload' },
   },
   terms: { name: 'terms' },
@@ -53,6 +53,5 @@ export const vueRoutes = Object.freeze({
   tokenCreation: { name: 'app.tokenCreation' },
   saleCreation: { name: 'app.saleCreation' },
   issuanceCreation: { name: 'app.issuanceCreation' },
-  sales: { name: 'app.sales' },
   mySales: { name: 'app.my-sales' },
 })

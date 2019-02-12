@@ -1,5 +1,5 @@
 <template>
-  <div class="fund-request-details">
+  <div class="sale-request-details">
     <template v-if="isLoaded">
       <div class="asset-details">
         <asset-logo
@@ -63,16 +63,16 @@
         </p>
       </div>
 
-      <p class="fund-request-details__short-description">
+      <p class="sale-request-details__short-description">
         {{ request.shortDescription }}
       </p>
 
-      <div class="app__table fund-request-details__table">
+      <div class="app__table sale-request-details__table">
         <table>
           <tbody>
             <tr>
               <td>
-                {{ 'fund-request-details.name-title' | globalize }}
+                {{ 'sale-request-details.name-title' | globalize }}
               </td>
               <td>
                 {{ request.name }}
@@ -80,7 +80,7 @@
             </tr>
             <tr>
               <td>
-                {{ 'fund-request-details.start-time-title' | globalize }}
+                {{ 'sale-request-details.start-time-title' | globalize }}
               </td>
               <td>
                 {{ request.startTime | formatCalendar }}
@@ -88,7 +88,7 @@
             </tr>
             <tr>
               <td>
-                {{ 'fund-request-details.close-time-title' | globalize }}
+                {{ 'sale-request-details.close-time-title' | globalize }}
               </td>
               <td>
                 {{ request.endTime | formatCalendar }}
@@ -96,7 +96,7 @@
             </tr>
             <tr>
               <td>
-                {{ 'fund-request-details.soft-cap-title' | globalize }}
+                {{ 'sale-request-details.soft-cap-title' | globalize }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -105,7 +105,7 @@
             </tr>
             <tr>
               <td>
-                {{ 'fund-request-details.hard-cap-title' | globalize }}
+                {{ 'sale-request-details.hard-cap-title' | globalize }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -115,7 +115,7 @@
             <tr>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ 'fund-request-details.sell-title' | globalize({ asset: request.baseAsset }) }}
+                {{ 'sale-request-details.sell-title' | globalize({ asset: request.baseAsset }) }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -124,65 +124,65 @@
             </tr>
             <tr>
               <td>
-                {{ 'fund-request-details.video-about-fund-title' | globalize }}
+                {{ 'sale-request-details.video-about-sale-title' | globalize }}
               </td>
               <td>
                 <a
                   v-if="request.youtubeVideoUrl"
-                  class="fund-request-details__video-btn"
+                  class="sale-request-details__video-btn"
                   :href="request.youtubeVideoUrl"
                   target="_blank"
                 >
-                  {{ 'fund-request-details.view-video-btn' | globalize }}
+                  {{ 'sale-request-details.view-video-btn' | globalize }}
                 </a>
                 <p v-else>
-                  {{ 'fund-request-details.no-video-msg' | globalize }}
+                  {{ 'sale-request-details.no-video-msg' | globalize }}
                 </p>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="fund-request-details__buttons">
+      <div class="sale-request-details__buttons">
         <button
           v-ripple
-          class="fund-request-details__view-btn"
+          class="sale-request-details__view-btn"
           :disabled="!canBeViewed"
-          @click="viewFund"
+          @click="viewSale"
         >
-          {{ 'fund-request-details.view-btn' | globalize }}
+          {{ 'sale-request-details.view-btn' | globalize }}
         </button>
 
         <button
           v-ripple
-          class="fund-request-details__update-btn"
+          class="sale-request-details__update-btn"
           :disabled="!canBeUpdated"
           @click="$emit(EVENTS.updateAsk)"
         >
-          {{ 'fund-request-details.update-btn' | globalize }}
+          {{ 'sale-request-details.update-btn' | globalize }}
         </button>
 
         <button
           v-ripple
-          class="fund-request-details__cancel-btn"
+          class="sale-request-details__cancel-btn"
           :class="{
-            'fund-request-details__cancel-btn--disabled': !canBeCanceled
+            'sale-request-details__cancel-btn--disabled': !canBeCanceled
           }"
           :disabled="!canBeCanceled"
           @click="$emit(EVENTS.cancelAsk)"
         >
-          {{ 'fund-request-details.cancel-btn' | globalize }}
+          {{ 'sale-request-details.cancel-btn' | globalize }}
         </button>
       </div>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'fund-request-details.loading-msg'" />
+      <loader :message-id="'sale-request-details.loading-msg'" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'fund-request-details.loading-error-msg' | globalize }}
+        {{ 'sale-request-details.loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -207,7 +207,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'fund-request-details',
+  name: 'sale-request-details',
   components: {
     AssetLogo,
     Loader,
@@ -247,8 +247,8 @@ export default {
     }
   },
   methods: {
-    viewFund () {
-      // TODO: add the fund details route when fund details component
+    viewSale () {
+      // TODO: add the sale details route when sale details component
       // is added.
     },
   },
@@ -284,13 +284,13 @@ export default {
   }
 }
 
-.fund-request-details__short-description {
+.sale-request-details__short-description {
   margin-top: 4rem;
   font-size: 1.4rem;
   color: $col-text;
 }
 
-.fund-request-details__table {
+.sale-request-details__table {
   margin-top: 2rem;
 
   tr td:last-child {
@@ -298,7 +298,7 @@ export default {
   }
 }
 
-.fund-request-details__terms {
+.sale-request-details__terms {
   font-size: 1.4rem;
   color: $col-primary-lighten;
   text-decoration: none;
@@ -308,18 +308,18 @@ export default {
   }
 }
 
-.fund-request-details__buttons {
+.sale-request-details__buttons {
   margin-top: 4.9rem;
   display: flex;
 
-  .fund-request-details__view-btn {
+  .sale-request-details__view-btn {
     @include button-raised();
 
     max-width: 14.4rem;
     width: 100%;
   }
 
-  .fund-request-details__update-btn {
+  .sale-request-details__update-btn {
     @include button-raised();
 
     margin-left: 1.2rem;
@@ -331,7 +331,7 @@ export default {
     background-color: $col-button-flat-light-bg;
   }
 
-  .fund-request-details__cancel-btn {
+  .sale-request-details__cancel-btn {
     @include button();
 
     padding-left: .1rem;
@@ -346,7 +346,7 @@ export default {
   }
 }
 
-.fund-request-details__video-btn {
+.sale-request-details__video-btn {
   color: $col-link;
   text-decoration: none;
 

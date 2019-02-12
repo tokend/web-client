@@ -10,9 +10,9 @@
         </router-link>
         <router-link
           v-ripple
-          :to="vueRoutes.requests.fundCreation"
+          :to="vueRoutes.requests.saleCreation"
         >
-          <span>{{ 'requests-page.fund-creation-title' | globalize }}</span>
+          <span>{{ 'requests-page.sale-creation-title' | globalize }}</span>
         </router-link>
       </template>
     </top-bar>

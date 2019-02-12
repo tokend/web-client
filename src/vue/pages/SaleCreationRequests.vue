@@ -1,23 +1,23 @@
 <template>
-  <div class="fund-creation-requests">
+  <div class="sale-creation-requests">
     <template v-if="isLoaded">
       <template v-if="requestsHistory.length">
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template v-if="isUpdateMode">
             <template slot="heading">
-              {{ 'fund-creation-requests.update-fund-title' | globalize }}
+              {{ 'sale-creation-requests.update-sale-title' | globalize }}
             </template>
-            <create-fund-form
+            <create-sale-form
               :request="selectedRequest"
-              @update="initHistoryLoading"
+              @request-updated="initFirstPageLoader"
             />
           </template>
 
           <template v-else>
             <template slot="heading">
-              {{ 'fund-creation-requests.details-title' | globalize }}
+              {{ 'sale-creation-requests.details-title' | globalize }}
             </template>
-            <fund-request-details
+            <sale-request-details
               :request="selectedRequest"
               @update-ask="isUpdateMode = true"
               @cancel-ask="cancelRequest"
@@ -32,31 +32,31 @@
         <!-- eslint-disable max-len -->
         <select-field
           v-model="filters.baseAsset"
-          :values="fundAssetCodes"
+          :values="saleAssetCodes"
           :key="filters.baseAsset"
-          class="fund-creation-requests__asset-list app__select app__select--no-border"
+          class="sale-creation-requests__asset-list app__select app__select--no-border"
         />
         <!-- eslint-enable max-len -->
 
-        <div class="app__table fund-creation-requests__table">
+        <div class="app__table sale-creation-requests__table">
           <table>
             <thead>
               <tr>
                 <!-- eslint-disable max-len -->
-                <th :title="'fund-creation-requests.fund-name-header' | globalize">
-                  {{ 'fund-creation-requests.fund-name-header' | globalize }}
+                <th :title="'sale-creation-requests.sale-name-header' | globalize">
+                  {{ 'sale-creation-requests.sale-name-header' | globalize }}
                 </th>
-                <th :title="'fund-creation-requests.asset-code-header' | globalize">
-                  {{ 'fund-creation-requests.asset-code-header' | globalize }}
+                <th :title="'sale-creation-requests.asset-code-header' | globalize">
+                  {{ 'sale-creation-requests.asset-code-header' | globalize }}
                 </th>
-                <th :title="'fund-creation-requests.request-state-header' | globalize">
-                  {{ 'fund-creation-requests.request-state-header' | globalize }}
+                <th :title="'sale-creation-requests.request-state-header' | globalize">
+                  {{ 'sale-creation-requests.request-state-header' | globalize }}
                 </th>
-                <th :title="'fund-creation-requests.created-header' | globalize">
-                  {{ 'fund-creation-requests.created-header' | globalize }}
+                <th :title="'sale-creation-requests.created-header' | globalize">
+                  {{ 'sale-creation-requests.created-header' | globalize }}
                 </th>
-                <th :title="'fund-creation-requests.last-updated-header' | globalize">
-                  {{ 'fund-creation-requests.last-updated-header' | globalize }}
+                <th :title="'sale-creation-requests.last-updated-header' | globalize">
+                  {{ 'sale-creation-requests.last-updated-header' | globalize }}
                 </th>
                 <!-- eslint-enable max-len -->
               </tr>
@@ -128,7 +128,7 @@
                     class="request-details-btn"
                     @click="showRequestDetails(index)"
                   >
-                    {{ 'fund-creation-requests.details-btn' | globalize }}
+                    {{ 'sale-creation-requests.details-btn' | globalize }}
                   </a>
                 </td>
               </tr>
@@ -141,27 +141,27 @@
         <!-- eslint-disable max-len -->
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'fund-creation-requests.no-request-history-title' | globalize"
-          :msg-message="'fund-creation-requests.no-request-history-desc' | globalize"
+          :msg-title="'sale-creation-requests.no-request-history-title' | globalize"
+          :msg-message="'sale-creation-requests.no-request-history-desc' | globalize"
         />
         <!-- eslint-enable max-len -->
       </template>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'fund-creation-requests.loading-msg'" />
+      <loader :message-id="'sale-creation-requests.loading-msg'" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'fund-creation-requests.loading-error-msg' | globalize }}
+        {{ 'sale-creation-requests.loading-error-msg' | globalize }}
       </p>
     </template>
 
     <collection-loader
-      class="fund-creation-requests__loader"
+      class="sale-creation-requests__loader"
       v-show="requestsHistory.length"
-      :first-page-loader="requestsLoader"
+      :first-page-loader="firstPageLoader"
       @first-page-load="setHistory"
       @next-page-load="extendHistory"
       @error="isLoadingFailed = true"
@@ -176,8 +176,8 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import SelectField from '@/vue/fields/SelectField'
 
-import CreateFundForm from '@/vue/forms/CreateFundForm'
-import FundRequestDetails from '@/vue/pages/funds/FundRequestDetails'
+import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+import SaleRequestDetails from '@/vue/pages/sales/SaleRequestDetails'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
@@ -191,15 +191,15 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'fund-creation-requests',
+  name: 'sale-creation-requests',
   components: {
     Loader,
     Drawer,
     NoDataMessage,
     CollectionLoader,
     SelectField,
-    CreateFundForm,
-    FundRequestDetails,
+    CreateSaleForm,
+    SaleRequestDetails,
   },
 
   data: _ => ({
@@ -212,7 +212,7 @@ export default {
     filters: {
       baseAsset: '',
     },
-    requestsLoader: () => {},
+    firstPageLoader: () => {},
   }),
   computed: {
     ...mapGetters({
@@ -223,7 +223,7 @@ export default {
       return this.filteredRequests[this.selectedIndex]
     },
 
-    fundAssetCodes () {
+    saleAssetCodes () {
       return this.requestsHistory
         .map(request => request.baseAsset)
         .filter((asset, i, self) => self.indexOf(asset) === i)
@@ -236,18 +236,18 @@ export default {
   },
 
   created () {
-    this.initHistoryLoading()
+    this.initFirstPageLoader()
   },
 
   methods: {
-    initHistoryLoading () {
+    initFirstPageLoader () {
       this.isDetailsDrawerShown = false
       this.isLoaded = false
       this.requestsHistory = []
-      this.requestsLoader = this.getRequestsLoader(this.account.accountId)
+      this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
     },
 
-    getRequestsLoader (accountId) {
+    getFirstPageLoader (accountId) {
       return function () {
         return Sdk.horizon.request.getAllForSales({
           requestor: accountId,
@@ -260,7 +260,7 @@ export default {
         data.map(request => RecordWrapper.request(request))
 
       if (this.requestsHistory.length) {
-        this.filters.baseAsset = this.fundAssetCodes[0]
+        this.filters.baseAsset = this.saleAssetCodes[0]
       }
 
       this.isLoaded = true
@@ -290,7 +290,7 @@ export default {
           RecordWrapper.request(data)
         )
 
-        Bus.success('fund-creation-requests.request-canceled-msg')
+        Bus.success('sale-creation-requests.request-canceled-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -303,11 +303,11 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.fund-creation-requests__asset-list {
+.sale-creation-requests__asset-list {
   width: fit-content;
 }
 
-.fund-creation-requests__table {
+.sale-creation-requests__table {
   margin-top: 2.1rem;
   @include box-shadow();
 
@@ -353,7 +353,7 @@ export default {
   }
 }
 
-.fund-creation-requests__loader {
+.sale-creation-requests__loader {
   margin-top: .8rem;
 }
 </style>

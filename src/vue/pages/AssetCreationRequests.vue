@@ -9,7 +9,7 @@
             </template>
             <asset-form
               :request="selectedRequest"
-              @update="initHistoryLoading"
+              @update="initFirstPageLoader"
             />
           </template>
 
@@ -143,7 +143,7 @@
     <collection-loader
       class="asset-creation-requests__loader"
       v-show="requestsHistory.length"
-      :first-page-loader="requestsLoader"
+      :first-page-loader="firstPageLoader"
       @first-page-load="setHistory"
       @next-page-load="extendHistory"
       @error="isLoadingFailed = true"
@@ -190,7 +190,7 @@ export default {
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdating: false,
-    requestsLoader: () => {},
+    firstPageLoader: () => {},
   }),
 
   computed: {
@@ -204,18 +204,18 @@ export default {
   },
 
   created () {
-    this.initHistoryLoading()
+    this.initFirstPageLoader()
   },
 
   methods: {
-    initHistoryLoading () {
+    initFirstPageLoader () {
       this.isDetailsDrawerShown = false
       this.isLoaded = false
       this.requestsHistory = []
-      this.requestsLoader = this.getRequestsLoader(this.account.accountId)
+      this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
     },
 
-    getRequestsLoader (accountId) {
+    getFirstPageLoader (accountId) {
       return function () {
         return Sdk.horizon.request.getAllForAssets({
           requestor: accountId,
