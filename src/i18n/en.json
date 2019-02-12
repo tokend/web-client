@@ -640,13 +640,13 @@
       "create-fund": "Create fund"
     },
 
-    "fund-details": {
+    "sale-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "campaign-title": "Campaign",
       "invest-title": "Invest",
-      "fund-not-found-title": "Fund not found",
-      "fund-not-found-desc": "There are no funds with this ID",
+      "sale-not-found-title": "Fund not found",
+      "sale-not-found-desc": "There are no funds with this ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
       "investors": "### {{investors}}\ninvestors",

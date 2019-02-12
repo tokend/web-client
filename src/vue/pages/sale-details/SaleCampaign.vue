@@ -1,87 +1,87 @@
 <template>
-  <div class="fund-campaign">
+  <div class="sale-campaign">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isInvestDrawerShown">
         <template slot="heading">
-          {{ 'fund-details.invest-title' | globalize }}
+          {{ 'sale-details.invest-title' | globalize }}
         </template>
 
-        <invest-form :fund="fund" />
+        <invest-form :sale="sale" />
       </drawer>
 
-      <div class="fund-campaign__content">
-        <div class="fund-campaign__overview">
-          <div class="fund-campaign__fund-logo-wrp">
+      <div class="sale-campaign__content">
+        <div class="sale-campaign__overview">
+          <div class="sale-campaign__sale-logo-wrp">
             <img
-              class="fund-campaign__fund-logo"
-              :src="fund.logoUrl(config.FILE_STORAGE)"
+              class="sale-campaign__sale-logo"
+              :src="sale.logoUrl(config.FILE_STORAGE)"
             >
           </div>
-          <template v-if="fundDescription">
+          <template v-if="saleDescription">
             <vue-markdown
-              class="fund-campaign__fund-description"
-              :source="fundDescription"
+              class="sale-campaign__sale-description"
+              :source="saleDescription"
               :html="false"
             />
           </template>
 
           <template v-else>
-            <p class="fund-campaign__no-description">
-              {{ 'fund-details.no-description-msg' | globalize }}
+            <p class="sale-campaign__no-description">
+              {{ 'sale-details.no-description-msg' | globalize }}
             </p>
           </template>
         </div>
 
-        <div class="fund-campaign__investment">
+        <div class="sale-campaign__investment">
           <chart
-            class="fund-campaign__marketprice"
-            :base-asset="fund.baseAsset"
-            :quote-asset="fund.defaultQuoteAsset"
+            class="sale-campaign__marketprice"
+            :base-asset="sale.baseAsset"
+            :quote-asset="sale.defaultQuoteAsset"
             :is-tabs-shown="false"
             :is-ticks-shown="false"
           />
 
-          <p class="fund-campaign__invested">
+          <p class="sale-campaign__invested">
             <!-- eslint-disable max-len -->
-            {{ { value: fund.currentCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+            {{ { value: sale.currentCap, currency: sale.defaultQuoteAsset } | formatMoney }}
             <!-- eslint-enable max-len -->
           </p>
 
-          <p class="fund-campaign__funded">
+          <p class="sale-campaign__funded">
             <!-- eslint-disable max-len -->
-            {{ 'fund-details.funded' | globalize({ funded: fund.currentCap / fund.hardCap }) }}
+            {{ 'sale-details.funded' | globalize({ funded: sale.currentCap / sale.hardCap }) }}
             <!-- eslint-enable max-len -->
           </p>
 
-          <div class="fund-campaign__progress-bar">
+          <div class="sale-campaign__progress-bar">
             <div
-              class="fund-campaign__progress"
+              class="sale-campaign__progress"
               :style="`width: ${capProgress}%`"
             />
           </div>
 
           <!-- eslint-disable max-len -->
           <vue-markdown
-            class="fund-campaign__investors"
-            :source="'fund-details.investors' | globalize({ investors: fund.investors })"
+            class="sale-campaign__investors"
+            :source="'sale-details.investors' | globalize({ investors: sale.investors })"
             :html="false"
           />
           <!-- eslint-enable max-len -->
 
           <!-- eslint-disable max-len -->
           <vue-markdown
-            class="fund-campaign__days-to-go"
-            :source="'fund-details.days-to-go' | globalize({ days: fund.daysToGo })"
+            class="sale-campaign__days-to-go"
+            :source="'sale-details.days-to-go' | globalize({ days: sale.daysToGo })"
             :html="false"
           />
           <!-- eslint-enable max-len -->
 
           <button
             v-ripple
-            class="app__button-raised fund-campaign__invest-btn"
+            class="app__button-raised sale-campaign__invest-btn"
             @click="isInvestDrawerShown = true"
           >
-            {{ 'fund-details.invest-title' | globalize }}
+            {{ 'sale-details.invest-title' | globalize }}
           </button>
         </div>
       </div>
@@ -89,12 +89,12 @@
 
     <template v-else-if="isLoadingFailed">
       <p>
-        {{ 'fund-details.loading-error-msg' | globalize }}
+        {{ 'sale-details.loading-error-msg' | globalize }}
       </p>
     </template>
 
     <template v-else>
-      <loader :message-id="'fund-details.loading-msg'" />
+      <loader :message-id="'sale-details.loading-msg'" />
     </template>
   </div>
 </template>
@@ -115,7 +115,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'fund-campaign',
+  name: 'sale-campaign',
   components: {
     Loader,
     Drawer,
@@ -125,8 +125,8 @@ export default {
   },
 
   data: _ => ({
-    fund: {},
-    fundDescription: '',
+    sale: {},
+    saleDescription: '',
     isLoaded: false,
     isLoadingFailed: false,
     isInvestDrawerShown: false,
@@ -135,7 +135,7 @@ export default {
 
   computed: {
     capProgress () {
-      const capPercentage = (this.fund.currentCap / this.fund.hardCap) * 100
+      const capPercentage = (this.sale.currentCap / this.sale.hardCap) * 100
       const progress = Math.round(capPercentage * 100) / 100
 
       return progress >= 100 ? 100 : progress
@@ -143,18 +143,18 @@ export default {
   },
 
   async created () {
-    await this.loadFund(this.$route.params.id)
+    await this.loadSale(this.$route.params.id)
   },
 
   methods: {
-    async loadFund (fundId) {
+    async loadSale (saleId) {
       try {
-        const { data: fund } = await Sdk.horizon.sales.get(fundId)
-        this.fund = new SaleRecord(fund)
+        const { data: sale } = await Sdk.horizon.sales.get(saleId)
+        this.sale = new SaleRecord(sale)
 
         const { data: blob } =
-          await Sdk.api.blobs.get(this.fund.description, this.fund.owner)
-        this.fundDescription = JSON.parse(blob.value)
+          await Sdk.api.blobs.get(this.sale.description, this.sale.owner)
+        this.saleDescription = JSON.parse(blob.value)
         this.isLoaded = true
       } catch (e) {
         this.isLoadingFailed = true
@@ -169,7 +169,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.fund-campaign__content {
+.sale-campaign__content {
   display: flex;
   align-items: flex-start;
   margin: .8rem -1.6rem -1.6rem;
@@ -180,7 +180,7 @@ export default {
   }
 }
 
-.fund-campaign__overview {
+.sale-campaign__overview {
   flex: 0 1 62.5%;
   background-color: #fff;
   border-radius: .4rem;
@@ -191,7 +191,7 @@ export default {
   }
 }
 
-.fund-campaign__fund-logo-wrp {
+.sale-campaign__sale-logo-wrp {
   background-color: #ccc;
   position: relative;
   height: 36rem;
@@ -202,7 +202,7 @@ export default {
   }
 }
 
-.fund-campaign__fund-logo {
+.sale-campaign__sale-logo {
   max-height: 100%;
   max-width: 100%;
   width: auto;
@@ -215,18 +215,18 @@ export default {
   margin: auto;
 }
 
-.fund-campaign__no-description {
+.sale-campaign__no-description {
   padding: 2rem 0;
   text-align: center;
   font-weight: bold;
   font-size: 1.6rem;
 }
 
-.fund-campaign__fund-description {
+.sale-campaign__sale-description {
   padding: 3.2rem;
 }
 
-.fund-campaign__investment {
+.sale-campaign__investment {
   flex: 0 1 34.4%;
   background-color: #fff;
   border-radius: .4rem;
@@ -238,33 +238,33 @@ export default {
   }
 }
 
-.fund-campaign__marketprice {
+.sale-campaign__marketprice {
   height: 25rem;
 }
 
-.fund-campaign__progress-bar {
+.sale-campaign__progress-bar {
   margin-top: 3rem;
   width: 100%;
   height: .3rem;
   background-color: #c1bfd0;
 
-  .fund-campaign__progress {
+  .sale-campaign__progress {
     background: #7b6eff;
     height: 100%;
   }
 }
 
-.fund-campaign__invested {
+.sale-campaign__invested {
   font-size: 2.4rem;
   color: #3a4180;
 }
 
-.fund-campaign__funded {
+.sale-campaign__funded {
   font-size: 1.4rem;
   color: #837fa1;
 }
 
-.fund-campaign__investors, .fund-campaign__days-to-go {
+.sale-campaign__investors, .sale-campaign__days-to-go {
   h3 {
     font-size: 2.4rem;
     font-weight: normal;
@@ -277,15 +277,15 @@ export default {
   }
 }
 
-.fund-campaign__investors {
+.sale-campaign__investors {
   margin-top: 2.4rem;
 }
 
-.fund-campaign__days-to-go {
+.sale-campaign__days-to-go {
   margin-top: 1.6rem;
 }
 
-.fund-campaign__invest-btn {
+.sale-campaign__invest-btn {
   margin-top: 2.4rem;
   max-width: 18rem;
   width: 100%;

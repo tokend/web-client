@@ -95,7 +95,7 @@ export default {
   name: 'invest-form',
   mixins: [FormMixin],
   props: {
-    fund: { type: SaleRecord, required: true },
+    sale: { type: SaleRecord, required: true },
   },
   data: _ => ({
     form: {
@@ -122,7 +122,7 @@ export default {
     }),
 
     assetListValues () {
-      return this.fund.quoteAssets.map(quote => quote.asset)
+      return this.sale.quoteAssets.map(quote => quote.asset)
     },
 
     availableAmount () {
@@ -138,20 +138,20 @@ export default {
     convertedAmount () {
       return {
         value: this.form.amount * this.conversionRate,
-        currency: this.fund.defaultQuoteAsset,
+        currency: this.sale.defaultQuoteAsset,
       }
     },
   },
 
   watch: {
     'form.asset': async function (value) {
-      if (value === this.fund.defaultQuoteAsset) {
+      if (value === this.sale.defaultQuoteAsset) {
         this.conversionRate = 1
       } else {
         try {
           const { data } = await Sdk.horizon.assetPairs.convert({
             source_asset: value,
-            dest_asset: this.fund.defaultQuoteAsset,
+            dest_asset: this.sale.defaultQuoteAsset,
             amount: 1,
           })
           this.conversionRate = data.amount

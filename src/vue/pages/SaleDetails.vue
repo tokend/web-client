@@ -1,43 +1,43 @@
 <template>
-  <div class="fund-details">
-    <top-bar v-if="fund.id">
+  <div class="sale-details">
+    <top-bar v-if="sale.id">
       <template slot="main">
         <router-link
           v-ripple
-          :to="vueRoutes.fundDetails.campaign"
+          :to="vueRoutes.saleDetails.campaign"
         >
-          <span>{{ 'fund-details.campaign-title' | globalize }}</span>
+          <span>{{ 'sale-details.campaign-title' | globalize }}</span>
         </router-link>
       </template>
 
       <template slot="extra">
         <button
           v-ripple
-          class="app__button-raised fund-details__invest-btn"
+          class="app__button-raised sale-details__invest-btn"
           @click="isInvestDrawerShown = true"
         >
-          {{ 'fund-details.invest-title' | globalize }}
+          {{ 'sale-details.invest-title' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer :is-shown.sync="isInvestDrawerShown">
       <template slot="heading">
-        {{ 'fund-details.invest-title' | globalize }}
+        {{ 'sale-details.invest-title' | globalize }}
       </template>
 
-      <invest-form :fund="fund" />
+      <invest-form :sale="sale" />
     </drawer>
 
     <template v-if="isLoaded">
-      <template v-if="fund.id">
-        <div class="fund__details__title">
-          <h2 class="fund-details__name">
-            {{ fund.name }}
+      <template v-if="sale.id">
+        <div class="sale-details__title">
+          <h2 class="sale-details__name">
+            {{ sale.name }}
           </h2>
 
-          <p class="fund-details__short-desc">
-            {{ fund.shortDescription }}
+          <p class="sale-details__short-desc">
+            {{ sale.shortDescription }}
           </p>
         </div>
 
@@ -47,20 +47,20 @@
       <template v-else>
         <no-data-message
           icon-name="alert-circle"
-          :title-id="'fund-details.fund-not-found-title'"
-          :message-id="'fund-details.fund-not-found-desc'"
+          :title-id="'sale-details.sale-not-found-title'"
+          :message-id="'sale-details.sale-not-found-desc'"
         />
       </template>
     </template>
 
     <template v-else-if="isLoadingFailed">
       <p>
-        {{ 'fund-details.loading-error-msg' | globalize }}
+        {{ 'sale-details.loading-error-msg' | globalize }}
       </p>
     </template>
 
     <template v-else>
-      <loader :message-id="'fund-details.loading-msg'" />
+      <loader :message-id="'sale-details.loading-msg'" />
     </template>
   </div>
 </template>
@@ -82,7 +82,7 @@ import { errors } from '@/js/errors'
 import { vueRoutes } from '@/vue-router/routes'
 
 export default {
-  name: 'fund-details',
+  name: 'sale-details',
   components: {
     TopBar,
     Loader,
@@ -92,7 +92,7 @@ export default {
   },
 
   data: _ => ({
-    fund: {},
+    sale: {},
     isLoaded: false,
     isLoadingFailed: false,
     isInvestDrawerShown: false,
@@ -100,14 +100,14 @@ export default {
   }),
 
   async created () {
-    await this.loadFund(this.$route.params.id)
+    await this.loadSale(this.$route.params.id)
   },
 
   methods: {
-    async loadFund (fundId) {
+    async loadSale (saleId) {
       try {
-        const { data } = await Sdk.horizon.sales.get(fundId)
-        this.fund = new SaleRecord(data)
+        const { data } = await Sdk.horizon.sales.get(saleId)
+        this.sale = new SaleRecord(data)
         this.isLoaded = true
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
@@ -125,13 +125,13 @@ export default {
 <style lang="scss">
 @import "~@scss/variables";
 
-.fund-details__name {
+.sale-details__name {
   font-size: 3.6rem;
   font-weight: normal;
   color: #3a4180;
 }
 
-.fund-details__short-desc {
+.sale-details__short-desc {
   margin-top: .4rem;
   font-size: 1.6rem;
   color: #837fa1;

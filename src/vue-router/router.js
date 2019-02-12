@@ -135,16 +135,16 @@ export const router = new Router({
         },
         {
           path: '/funds/:id',
-          name: vueRoutes.fundDetails.name,
-          featureFlag: config.FEATURE_FLAGS.fundDetails,
+          name: vueRoutes.saleDetails.name,
+          featureFlag: config.FEATURE_FLAGS.saleDetails,
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
-          redirect: vueRoutes.fundDetails.campaign,
-          component: resolve => require(['@/vue/pages/FundDetails'], resolve),
+          redirect: vueRoutes.saleDetails.campaign,
+          component: resolve => require(['@/vue/pages/SaleDetails'], resolve),
           children: [
             {
               path: '/funds/:id/campaign',
-              name: vueRoutes.fundDetails.campaign.name,
-              component: resolve => require(['@/vue/pages/fund-details/FundCampaign'], resolve),
+              name: vueRoutes.saleDetails.campaign.name,
+              component: resolve => require(['@/vue/pages/sale-details/SaleCampaign'], resolve),
             },
           ],
         },

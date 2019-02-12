@@ -9,7 +9,7 @@ const featureFlags = {
   assets: true,
   requests: true,
   funds: true,
-  fundDetails: true,
+  saleDetails: true,
   settings: true,
 }
 
