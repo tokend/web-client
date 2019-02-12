@@ -25,7 +25,7 @@
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
-        {{ $options.filters.globalize(getLabel(currentValue)) || '&nbsp;' }}
+        {{ getLabel(currentValue) | globalize }}
       </span>
       <i
         class="select-field__selected-icon mdi mdi-chevron-down"
@@ -48,7 +48,7 @@
         }"
         @click.prevent="selectItem(item)"
       >
-        {{ $options.filters.globalize(getLabel(item)) || '&nbsp;' }}
+        {{ getLabel(item) | globalize }}
       </button>
     </div>
     <p v-if="errorMessage" class="select-field__err-mes">
@@ -134,7 +134,7 @@ export default {
 
   methods: {
     getLabel (item) {
-      return _isObject(item) ? item.label : item
+      return (_isObject(item) ? item.label : item) || '&nbsp;'
     },
     getValue (item) {
       return _isObject(item) ? item.value : item
