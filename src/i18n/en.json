@@ -645,12 +645,29 @@
       "loading-error-msg": "There was an error while loading.",
       "campaign-title": "Campaign",
       "invest-title": "Invest",
+      "overview-title": "Fund overview",
       "sale-not-found-title": "Fund not found",
       "sale-not-found-desc": "There are no funds with this ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
       "investors": "### {{investors}}\ninvestors",
-      "days-to-go": "### {{days}}\ndays to go"
+      "days-to-go": "### {{days}}\ndays to go",
+      "view-details-btn": "VIEW DETAILS"
+    },
+
+    "sale-overview": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "asset-title": "Token",
+      "details-title": "Details",
+      "start-time-title": "Start time",
+      "close-time-title": "Close time",
+      "soft-cap-title": "Soft cap",
+      "hard-cap-title": "Hard cap",
+      "asset-to-sell-title": "{{asset}} to sell",
+      "video-about-sale-title": "Video about fund",
+      "no-video-msg": "No video",
+      "view-video-btn": "View"
     },
 
     "invest-form": {

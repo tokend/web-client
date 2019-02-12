@@ -4,7 +4,7 @@
       <template slot="main">
         <router-link
           v-ripple
-          :to="vueRoutes.saleDetails.campaign"
+          :to="vueRoutes.saleDetails"
         >
           <span>{{ 'sale-details.campaign-title' | globalize }}</span>
         </router-link>
@@ -41,7 +41,7 @@
           </p>
         </div>
 
-        <router-view />
+        <sale-campaign :sale="sale" />
       </template>
 
       <template v-else>
@@ -71,6 +71,7 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import InvestForm from '@/vue/forms/InvestForm'
+import SaleCampaign from '@/vue/pages/sale-details/SaleCampaign'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -89,6 +90,7 @@ export default {
     Drawer,
     NoDataMessage,
     InvestForm,
+    SaleCampaign,
   },
 
   data: _ => ({

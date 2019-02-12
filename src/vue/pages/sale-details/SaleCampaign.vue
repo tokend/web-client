@@ -9,6 +9,14 @@
         <invest-form :sale="sale" />
       </drawer>
 
+      <drawer :is-shown.sync="isOverviewDrawerShown">
+        <template slot="heading">
+          {{ 'sale-details.overview-title' | globalize }}
+        </template>
+
+        <sale-overview :sale="sale" />
+      </drawer>
+
       <div class="sale-campaign__content">
         <div class="sale-campaign__overview">
           <div class="sale-campaign__sale-logo-wrp">
@@ -76,13 +84,23 @@
           />
           <!-- eslint-enable max-len -->
 
-          <button
-            v-ripple
-            class="app__button-raised sale-campaign__invest-btn"
-            @click="isInvestDrawerShown = true"
-          >
-            {{ 'sale-details.invest-title' | globalize }}
-          </button>
+          <div class="sale-campaign__actions">
+            <button
+              v-ripple
+              class="app__button-raised sale-campaign__invest-btn"
+              @click="isInvestDrawerShown = true"
+            >
+              {{ 'sale-details.invest-title' | globalize }}
+            </button>
+
+            <button
+              v-ripple
+              class="app__button sale-campaign__overview-btn"
+              @click="isOverviewDrawerShown = true"
+            >
+              {{ 'sale-details.view-details-btn' | globalize }}
+            </button>
+          </div>
         </div>
       </div>
     </template>
@@ -104,6 +122,7 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import Chart from '@/vue/common/chart/Chart'
 import InvestForm from '@/vue/forms/InvestForm'
+import SaleOverview from '@/vue/pages/sale-details/SaleOverview'
 
 import VueMarkdown from 'vue-markdown'
 
@@ -122,14 +141,19 @@ export default {
     VueMarkdown,
     Chart,
     InvestForm,
+    SaleOverview,
+  },
+
+  props: {
+    sale: { type: SaleRecord, required: true },
   },
 
   data: _ => ({
-    sale: {},
     saleDescription: '',
     isLoaded: false,
     isLoadingFailed: false,
     isInvestDrawerShown: false,
+    isOverviewDrawerShown: false,
     config,
   }),
 
@@ -143,15 +167,12 @@ export default {
   },
 
   async created () {
-    await this.loadSale(this.$route.params.id)
+    await this.loadSaleDescription()
   },
 
   methods: {
-    async loadSale (saleId) {
+    async loadSaleDescription () {
       try {
-        const { data: sale } = await Sdk.horizon.sales.get(saleId)
-        this.sale = new SaleRecord(sale)
-
         const { data: blob } =
           await Sdk.api.blobs.get(this.sale.description, this.sale.owner)
         this.saleDescription = JSON.parse(blob.value)
@@ -285,9 +306,24 @@ export default {
   margin-top: 1.6rem;
 }
 
+.sale-campaign__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1.9rem -.5rem -.5rem;
+}
+
 .sale-campaign__invest-btn {
-  margin-top: 2.4rem;
-  max-width: 18rem;
+  margin: .5rem;
+  max-width: 12rem;
   width: 100%;
+}
+
+.sale-campaign__overview-btn {
+  padding: 0;
+  font-weight: normal;
+  max-width: 13rem;
+  margin: .5rem;
 }
 </style>
