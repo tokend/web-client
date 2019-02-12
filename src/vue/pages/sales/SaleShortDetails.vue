@@ -1,101 +1,101 @@
 <template>
-  <div class="fund-short-details">
+  <div class="sale-short-details">
     <template v-if="isLoaded">
-      <div class="fund-short-details__asset">
+      <div class="sale-short-details__asset">
         <asset-logo
           :asset-code="asset.code"
           :logo-url="asset.logoUrl(config.FILE_STORAGE)"
         />
-        <div class="fund-short-details__asset-info">
-          <p class="fund-short-details__asset-code">
+        <div class="sale-short-details__asset-info">
+          <p class="sale-short-details__asset-code">
             {{ asset.code }}
           </p>
-          <p class="fund-short-details__asset-name">
+          <p class="sale-short-details__asset-name">
             {{ asset.name }}
           </p>
         </div>
       </div>
 
-      <p class="fund-short-details__short-description">
-        {{ fund.shortDescription }}
+      <p class="sale-short-details__short-description">
+        {{ sale.shortDescription }}
       </p>
 
-      <div class="app__table fund-short-details__table">
+      <div class="app__table sale-short-details__table">
         <table>
           <tbody>
             <tr>
               <td>
-                {{ 'fund-short-details.name-title' | globalize }}
+                {{ 'sale-short-details.name-title' | globalize }}
               </td>
               <td>
-                {{ fund.name }}
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                {{ 'fund-short-details.start-time-title' | globalize }}
-              </td>
-              <td>
-                {{ fund.startTime | formatCalendar }}
+                {{ sale.name }}
               </td>
             </tr>
 
             <tr>
               <td>
-                {{ 'fund-short-details.close-time-title' | globalize }}
+                {{ 'sale-short-details.start-time-title' | globalize }}
               </td>
               <td>
-                {{ fund.endTime | formatCalendar }}
+                {{ sale.startTime | formatCalendar }}
               </td>
             </tr>
 
             <tr>
               <td>
-                {{ 'fund-short-details.soft-cap-title' | globalize }}
+                {{ 'sale-short-details.close-time-title' | globalize }}
+              </td>
+              <td>
+                {{ sale.endTime | formatCalendar }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ 'sale-short-details.soft-cap-title' | globalize }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ { value: fund.softCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+                {{ { value: sale.softCap, currency: sale.defaultQuoteAsset } | formatMoney }}
               </td>
             </tr>
 
             <tr>
               <td>
-                {{ 'fund-short-details.hard-cap-title' | globalize }}
+                {{ 'sale-short-details.hard-cap-title' | globalize }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ { value: fund.hardCap, currency: fund.defaultQuoteAsset } | formatMoney }}
+                {{ { value: sale.hardCap, currency: sale.defaultQuoteAsset } | formatMoney }}
               </td>
             </tr>
 
             <tr>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ 'fund-short-details.asset-to-sell-title' | globalize({ asset: fund.baseAsset }) }}
+                {{ 'sale-short-details.asset-to-sell-title' | globalize({ asset: sale.baseAsset }) }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ { value: fund.baseHardCap, currency: fund.baseAsset } | formatMoney }}
+                {{ { value: sale.baseHardCap, currency: sale.baseAsset } | formatMoney }}
               </td>
             </tr>
 
             <tr>
               <td>
-                {{ 'fund-short-details.video-about-fund-title' | globalize }}
+                {{ 'sale-short-details.video-about-sale-title' | globalize }}
               </td>
               <td>
                 <a
-                  v-if="fund.youtubeVideoUrl"
-                  class="fund-short-details__video-btn"
-                  :href="fund.youtubeVideoUrl"
+                  v-if="sale.youtubeVideoUrl"
+                  class="sale-short-details__video-btn"
+                  :href="sale.youtubeVideoUrl"
                   target="_blank"
                 >
-                  {{ 'fund-short-details.view-video-btn' | globalize }}
+                  {{ 'sale-short-details.view-video-btn' | globalize }}
                 </a>
                 <p v-else>
-                  {{ 'fund-short-details.no-video-msg' | globalize }}
+                  {{ 'sale-short-details.no-video-msg' | globalize }}
                 </p>
               </td>
             </tr>
@@ -105,20 +105,20 @@
 
       <button
         v-ripple
-        class="fund-short-details__view-btn"
-        @click="viewFund"
+        class="sale-short-details__view-btn"
+        @click="viewSale"
       >
-        {{ 'fund-short-details.view-btn' | globalize }}
+        {{ 'sale-short-details.view-btn' | globalize }}
       </button>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'fund-short-details.loading-msg'" />
+      <loader :message-id="'sale-short-details.loading-msg'" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'fund-short-details.loading-error-msg' | globalize }}
+        {{ 'sale-short-details.loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -138,13 +138,13 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
-  name: 'fund-short-details',
+  name: 'sale-short-details',
   components: {
     AssetLogo,
     Loader,
   },
   props: {
-    fund: {
+    sale: {
       type: SaleRecord,
       required: true,
     },
@@ -157,7 +157,7 @@ export default {
   }),
   async created () {
     try {
-      const { data } = await Sdk.horizon.assets.get(this.fund.baseAsset)
+      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
       this.asset = new AssetRecord(data)
       this.isLoaded = true
     } catch (e) {
@@ -166,8 +166,8 @@ export default {
     }
   },
   methods: {
-    viewFund () {
-      // TODO: add the fund details route when fund details component
+    viewSale () {
+      // TODO: add the sale details route when sale details component
       // is added.
     },
   },
@@ -178,13 +178,13 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.fund-short-details__short-description {
+.sale-short-details__short-description {
   margin-top: 4rem;
   font-size: 1.4rem;
   color: $col-text;
 }
 
-.fund-short-details__table {
+.sale-short-details__table {
   margin-top: 2rem;
 
   tr td:last-child {
@@ -192,7 +192,7 @@ export default {
   }
 }
 
-.fund-short-details__view-btn {
+.sale-short-details__view-btn {
   @include button-raised();
 
   margin-top: 4.9rem;
@@ -200,7 +200,7 @@ export default {
   width: 100%;
 }
 
-.fund-short-details__video-btn {
+.sale-short-details__video-btn {
   color: $col-link;
   text-decoration: none;
 
@@ -209,26 +209,26 @@ export default {
   }
 }
 
-.fund-short-details__asset {
+.sale-short-details__asset {
   display: flex;
   align-items: center;
 
-  .fund-short-details__asset-logo {
+  .sale-short-details__asset-logo {
     width: 5rem;
     height: 5rem;
     border-radius: 50%
   }
 
-  .fund-short-details__asset-info {
+  .sale-short-details__asset-info {
     margin-left: 1.8rem;
 
-    .fund-short-details__asset-code {
+    .sale-short-details__asset-code {
       font-size: 1.8rem;
       font-weight: bold;
       color: $col-text;
     }
 
-    .fund-short-details__asset-name {
+    .sale-short-details__asset-name {
       margin-top: .1rem;
       font-size: 1.4rem;
       line-height: 1.29;

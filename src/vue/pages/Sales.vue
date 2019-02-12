@@ -1,20 +1,20 @@
 <template>
-  <div class="funds">
+  <div class="sales">
     <top-bar>
       <template slot="main">
-        <div class="funds__asset-filter">
+        <div class="sales__asset-filter">
           <input-field
             :disabled="!isLoaded"
             v-model="filters.baseAsset"
-            :label="'funds.asset-code-label' | globalize"
+            :label="'sales.asset-code-label' | globalize"
           />
         </div>
 
-        <div class="funds__state-filter">
+        <div class="sales__state-filter">
           <select-field
             :disabled="!isLoaded"
             v-model="filters.state"
-            :values="FUND_STATES"
+            :values="SALE_STATES"
             class="app__select app__select--no-border"
           />
         </div>
@@ -27,36 +27,36 @@
         <button
           v-ripple
           class="app__button-raised"
-          @click="isCreateFundDrawerShown = true"
+          @click="isCreateSaleDrawerShown = true"
         >
-          <i class="mdi mdi-plus funds__btn-icon" />
-          {{ 'funds.create-fund' | globalize }}
+          <i class="mdi mdi-plus sales__btn-icon" />
+          {{ 'sales.create-sale' | globalize }}
         </button>
       </template>
     </top-bar>
 
-    <drawer :is-shown.sync="isCreateFundDrawerShown">
+    <drawer :is-shown.sync="isCreateSaleDrawerShown">
       <template slot="heading">
-        {{ 'funds.create-fund' | globalize }}
+        {{ 'sales.create-sale' | globalize }}
       </template>
-      <create-fund-form />
+      <create-sale-form />
     </drawer>
 
-    <template v-if="filteredFunds.length">
-      <div class="funds__fund-cards">
+    <template v-if="filteredSales.length">
+      <div class="sales__sale-cards">
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template slot="heading">
-            {{ 'funds.short-details-title' | globalize }}
+            {{ 'sales.short-details-title' | globalize }}
           </template>
-          <fund-short-details :fund="selectedFund" />
+          <sale-short-details :sale="selectedSale" />
         </drawer>
 
-        <fund-card
-          class="funds__fund-card"
-          v-for="fund in filteredFunds"
-          :key="fund.id"
-          :fund="fund"
-          @select="selectFund(fund)"
+        <sale-card
+          class="sales__sale-card"
+          v-for="sale in filteredSales"
+          :key="sale.id"
+          :sale="sale"
+          @select="selectSale(sale)"
         />
       </div>
     </template>
@@ -64,18 +64,18 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="inbox"
-        title-id="funds.no-funds-title"
-        message-id="funds.no-funds-desc"
+        title-id="sales.no-sales-title"
+        message-id="sales.no-sales-desc"
       />
     </template>
 
     <template v-else>
-      <loader :message-id="'funds.loading-msg'" />
+      <loader :message-id="'sales.loading-msg'" />
     </template>
 
     <collection-loader
-      v-show="filteredFunds.length"
-      class="funds__loader"
+      v-show="filteredSales.length"
+      class="sales__loader"
       :first-page-loader="recordsLoader"
       @first-page-load="setRecords"
       @next-page-load="extendRecords"
@@ -92,9 +92,9 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
-import CreateFundForm from '@/vue/forms/CreateFundForm'
-import FundShortDetails from '@/vue/pages/funds/FundShortDetails'
-import FundCard from '@/vue/pages/funds/FundCard'
+import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+import SaleShortDetails from '@/vue/pages/sales/SaleShortDetails'
+import SaleCard from '@/vue/pages/sales/SaleCard'
 
 import { Sdk } from '@/sdk'
 import { ACCOUNT_TYPES } from '@tokend/js-sdk'
@@ -106,23 +106,23 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
 
-const FUND_STATES = {
+const SALE_STATES = {
   live: {
-    label: 'funds.fund-live-state',
+    label: 'sales.sale-live-state',
     value: 'live',
   },
   upcoming: {
-    label: 'funds.fund-upcoming-state',
+    label: 'sales.sale-upcoming-state',
     value: 'upcoming',
   },
   all: {
-    label: 'funds.fund-all-state',
+    label: 'sales.sale-all-state',
     value: 'all',
   },
 }
 
 export default {
-  name: 'funds',
+  name: 'sales',
   components: {
     TopBar,
     Drawer,
@@ -131,22 +131,22 @@ export default {
     NoDataMessage,
     SelectField,
     InputField,
-    CreateFundForm,
-    FundShortDetails,
-    FundCard,
+    CreateSaleForm,
+    SaleShortDetails,
+    SaleCard,
   },
   data: _ => ({
-    fundRecords: [],
+    saleRecords: [],
     filters: {
       baseAsset: '',
-      state: FUND_STATES.live.value,
+      state: SALE_STATES.live.value,
     },
     isLoaded: false,
-    isCreateFundDrawerShown: false,
+    isCreateSaleDrawerShown: false,
     isDetailsDrawerShown: false,
-    selectedFund: null,
+    selectedSale: null,
     config,
-    FUND_STATES,
+    SALE_STATES,
     ACCOUNT_TYPES,
   }),
 
@@ -155,32 +155,32 @@ export default {
       account: vuexTypes.account,
     }),
 
-    fundAssets () {
-      return this.fundRecords
-        .map(fund => fund.baseAsset)
+    saleAssets () {
+      return this.saleRecords
+        .map(sale => sale.baseAsset)
         .filter((asset, i, self) => self.indexOf(asset) === i)
     },
 
-    filteredFunds () {
+    filteredSales () {
       if (this.filters.baseAsset === '') {
-        return this.fundRecords
+        return this.saleRecords
       } else {
-        return this.fundRecords
-          .filter(fund => {
-            return fund.baseAsset.toLowerCase()
+        return this.saleRecords
+          .filter(sale => {
+            return sale.baseAsset.toLowerCase()
               .includes(this.filters.baseAsset.toLowerCase())
           })
       }
     },
 
     recordsLoader () {
-      const fundState = this.filters.state
+      const saleState = this.filters.state
 
       return function () {
         return Sdk.horizon.sales.getPage({
-          open_only: fundState === FUND_STATES.upcoming.value ||
-            fundState === FUND_STATES.live.value,
-          upcoming: fundState === FUND_STATES.upcoming.value,
+          open_only: saleState === SALE_STATES.upcoming.value ||
+            saleState === SALE_STATES.live.value,
+          upcoming: saleState === SALE_STATES.upcoming.value,
         })
       }
     },
@@ -188,24 +188,24 @@ export default {
 
   watch: {
     'recordsLoader': function () {
-      this.fundRecords = []
+      this.saleRecords = []
       this.isLoaded = false
     },
   },
 
   methods: {
     setRecords (data) {
-      this.fundRecords = data.map(fund => new SaleRecord(fund))
+      this.saleRecords = data.map(sale => new SaleRecord(sale))
       this.isLoaded = true
     },
 
     extendRecords (data) {
-      this.fundRecords = this.fundRecords
-        .concat(data.map(fund => new SaleRecord(fund)))
+      this.saleRecords = this.saleRecords
+        .concat(data.map(sale => new SaleRecord(sale)))
     },
 
-    selectFund (fund) {
-      this.selectedFund = fund
+    selectSale (sale) {
+      this.selectedSale = sale
       this.isDetailsDrawerShown = true
     },
   },
@@ -216,27 +216,27 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.funds__btn-icon {
+.sales__btn-icon {
   display: flex;
   font-size: 1.8rem;
   margin-right: 0.5rem;
 }
 
-.funds__asset-filter {
+.sales__asset-filter {
   margin-top: -.6rem;
 }
 
-.funds__state-filter {
+.sales__state-filter {
   margin-top: 1rem;
 }
 
-.funds__fund-cards {
+.sales__sale-cards {
   display: flex;
   flex-wrap: wrap;
   margin: -1rem;
 }
 
-.funds__fund-card {
+.sales__sale-card {
   flex: 0 1 calc(25% - 2rem);
 
   @include respond-to($large) {
@@ -252,7 +252,7 @@ export default {
   }
 }
 
-.funds__loader {
+.sales__loader {
   margin-top: 1rem;
 }
 </style>

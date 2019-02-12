@@ -1,59 +1,59 @@
 <template>
   <a
-    class="fund-card"
+    class="sale-card"
     @click="$emit(EVENTS.select)"
   >
-    <div class="fund-card__header">
+    <div class="sale-card__header">
       <img
-        class="fund-card__logo"
-        :src="fund.logoUrl(config.FILE_STORAGE)"
+        class="sale-card__logo"
+        :src="sale.logoUrl(config.FILE_STORAGE)"
       >
     </div>
 
-    <div class="fund-card__info">
-      <p class="fund-card__name">
-        {{ fund.name }}
+    <div class="sale-card__info">
+      <p class="sale-card__name">
+        {{ sale.name }}
       </p>
 
-      <p class="fund-card__desc">
-        {{ fund.shortDescription }}
+      <p class="sale-card__desc">
+        {{ sale.shortDescription }}
       </p>
 
-      <div class="fund-card__progress-bar">
+      <div class="sale-card__progress-bar">
         <div
-          class="fund-card__progress"
+          class="sale-card__progress"
           :style="`width: ${capProgress}%`"
         />
       </div>
 
-      <p class="fund-card__funded">
+      <p class="sale-card__funded">
         <!-- eslint-disable max-len -->
-        {{ 'fund-card.funded' | globalize({ funded: fund.currentCap / fund.hardCap }) }}
+        {{ 'sale-card.funded' | globalize({ funded: sale.currentCap / sale.hardCap }) }}
         <!-- eslint-enable max-len -->
       </p>
 
-      <p class="fund-card__invested">
+      <p class="sale-card__invested">
         <!-- eslint-disable max-len -->
-        {{ 'fund-card.invested' | globalize({ invested: { value: fund.currentCap, currency: fund.defaultQuoteAsset } }) }}
+        {{ 'sale-card.invested' | globalize({ invested: { value: sale.currentCap, currency: sale.defaultQuoteAsset } }) }}
         <!-- eslint-enable max-len -->
       </p>
 
-      <p class="fund-card__days-to-launch">
+      <p class="sale-card__days-to-launch">
         <!-- eslint-disable max-len -->
-        {{ 'fund-card.days-to-launch' | globalize({ days: fund.daysToGo }) }}
+        {{ 'sale-card.days-to-launch' | globalize({ days: sale.daysToGo }) }}
         <!-- eslint-enable max-len -->
       </p>
 
       <vue-markdown
-        class="fund-card__offer"
-        :source="'fund-card.offer' | globalize({
+        class="sale-card__offer"
+        :source="'sale-card.offer' | globalize({
           baseHardCap: {
-            value: fund.baseHardCap,
-            currency: fund.baseAsset
+            value: sale.baseHardCap,
+            currency: sale.baseAsset
           },
           hardCap: {
-            value: fund.hardCap,
-            currency: fund.defaultQuoteAsset
+            value: sale.hardCap,
+            currency: sale.defaultQuoteAsset
           }
         })"
         :html="false"
@@ -74,13 +74,13 @@ const EVENTS = {
 }
 
 export default {
-  name: 'fund-card',
+  name: 'sale-card',
   components: {
     VueMarkdown,
   },
 
   props: {
-    fund: { type: SaleRecord, required: true },
+    sale: { type: SaleRecord, required: true },
   },
 
   data: _ => ({
@@ -90,7 +90,7 @@ export default {
 
   computed: {
     capProgress () {
-      const capPercentage = (this.fund.currentCap / this.fund.hardCap) * 100
+      const capPercentage = (this.sale.currentCap / this.sale.hardCap) * 100
       const progress = Math.round(capPercentage * 100) / 100
 
       return progress >= 100 ? 100 : progress
@@ -103,27 +103,27 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.fund-card {
+.sale-card {
   cursor: pointer;
   border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-fund-card-shadow;
-  background-color: $col-fund-card-background;
+  box-shadow: 0 .5rem 1rem 0 $col-sale-card-shadow;
+  background-color: $col-sale-card-background;
   margin: 1rem;
 }
 
-.fund-card__header {
+.sale-card__header {
   position: relative;
   border-radius: .4rem .4rem 0rem 0rem;
   height: 16rem;
   width: 100%;
-  background-color: $col-fund-card-header-background;
+  background-color: $col-sale-card-header-background;
 
   @include respond-to($x-medium) {
     height: 12rem;
   }
 }
 
-.fund-card__logo {
+.sale-card__logo {
   border-radius: .4rem .4rem 0rem 0rem;
   max-height: 100%;
   max-width: 100%;
@@ -137,52 +137,52 @@ export default {
   margin: auto;
 }
 
-.fund-card__info {
+.sale-card__info {
   padding: 2.2rem 1.5rem;
 }
 
-.fund-card__name {
+.sale-card__name {
   font-size: 1.8rem;
   font-weight: bold;
-  color: $col-fund-card-text-primary;
+  color: $col-sale-card-text-primary;
 }
 
-.fund-card__desc {
+.sale-card__desc {
   margin-top: .5rem;
   font-size: 1.4rem;
   line-height: 1.29;
-  color: $col-fund-card-text-primary;
+  color: $col-sale-card-text-primary;
 }
 
-.fund-card__progress-bar {
+.sale-card__progress-bar {
   margin-top: 3rem;
   width: 100%;
   height: .3rem;
-  background-color: $col-fund-card-progress-bar-background;
+  background-color: $col-sale-card-progress-bar-background;
 
-  .fund-card__progress {
-    background: $col-fund-card-progress-bar-value;
+  .sale-card__progress {
+    background: $col-sale-card-progress-bar-value;
     height: 100%;
   }
 }
 
-.fund-card__funded {
+.sale-card__funded {
   margin-top: .9rem;
 }
 
-.fund-card__funded, .fund-card__invested, .fund-card__days-to-launch {
+.sale-card__funded, .sale-card__invested, .sale-card__days-to-launch {
   font-size: 1.3rem;
-  color: $col-fund-card-text-primary;
+  color: $col-sale-card-text-primary;
   line-height: 1.69;
 }
 
-.fund-card__offer {
+.sale-card__offer {
   margin-top: 2.5rem;
   font-size: 1.4rem;
-  color: $col-fund-card-text-primary;
+  color: $col-sale-card-text-primary;
 
   strong {
-    color: $col-fund-card-text-bold;
+    color: $col-sale-card-text-bold;
   }
 }
 </style>
