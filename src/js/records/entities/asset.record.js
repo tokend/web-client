@@ -12,6 +12,7 @@ export class AssetRecord {
     this.availableForIssuance = record.availableForIssuance
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount
+    this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
 
     this.details = record.details

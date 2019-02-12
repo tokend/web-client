@@ -7,7 +7,7 @@
     <form
       novalidate
       v-if="currentStep === STEPS.information.number"
-      class="app__form asset-form"
+      class="app__form asset-create-form"
       @submit.prevent="next('form.information')"
     >
       <div class="app__form-row">
@@ -27,6 +27,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -40,10 +41,11 @@
               { length: CODE_MAX_LENGTH }
             )"
             :maxlength="CODE_MAX_LENGTH"
-            :disabled="formMixin.isDisabled || isUpdateMode"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
@@ -57,10 +59,11 @@
               'form.information.maxIssuanceAmount',
               { from: MIN_AMOUNT, to: MAX_AMOUNT }
             )"
-            :disabled="formMixin.isDisabled || isUpdateMode"
+            :disabled="formMixin.isDisabled"
           />
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
@@ -72,6 +75,7 @@
           </tick-field>
         </div>
       </div>
+
       <div class="app__form-row asset-form__kyc-required-row">
         <div class="app__form-field">
           <tick-field
@@ -83,6 +87,7 @@
           </tick-field>
         </div>
       </div>
+
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
@@ -95,26 +100,75 @@
           />
         </div>
       </div>
+
       <div class="app__form-actions">
         <button
           v-ripple
           type="submit"
-          class="asset-form__btn"
+          class="asset-create-form__btn"
           :disabled="formMixin.isDisabled"
         >
           {{ 'asset-form.next-btn' | globalize }}
         </button>
       </div>
     </form>
+
     <form
-      v-if="currentStep === STEPS.terms.number"
-      class="app__form asset-form"
+      v-if="currentStep === STEPS.advanced.number"
+      class="app__form asset-create-form"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
+          <tick-field
+            v-model="form.advanced.isPreissuanceDisabled"
+            :disabled="formMixin.isDisabled"
+          >
+            {{ 'asset-form.additional-issuance-check' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <template v-if="!form.advanced.isPreissuanceDisabled">
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.advanced.preissuedAssetSigner"
+              @blur="touchField('form.advanced.preissuedAssetSigner')"
+              id="asset-preissued-asset-signer"
+              :label="'asset-form.preissued-asset-signer-lbl' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.advanced.preissuedAssetSigner',
+              )"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              type="number"
+              v-model="form.advanced.initialPreissuedAmount"
+              @blur="touchField('form.advanced.initialPreissuedAmount')"
+              id="asset-initial-preissued-amount"
+              :label="'asset-form.initial-preissued-amount-lbl' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.advanced.initialPreissuedAmount',
+                { from: MIN_AMOUNT, to: form.information.maxIssuanceAmount }
+              )"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+      </template>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
-            v-model="form.terms.terms"
+            v-model="form.advanced.terms"
             :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
@@ -123,6 +177,7 @@
           />
         </div>
       </div>
+
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
@@ -133,7 +188,7 @@
           v-ripple
           v-else
           type="submit"
-          class="asset-form__btn"
+          class="asset-create-form__btn"
           :disabled="formMixin.isDisabled"
         >
           {{ 'asset-form.submit-btn' | globalize }}
@@ -155,22 +210,25 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
+import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { required, amountRange, maxLength } from '@validators'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+import { required, requiredUnless, amountRange, maxLength } from '@validators'
 
 const STEPS = {
   information: {
     number: 1,
     titleId: 'asset-form.information-step',
   },
-  terms: {
+  advanced: {
     number: 2,
-    titleId: 'asset-form.terms-step',
+    titleId: 'asset-form.advanced-step',
   },
 }
 const ASSET_CREATION_REQUEST_ID = '0'
@@ -187,14 +245,15 @@ const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
 export default {
-  name: 'asset-form',
+  name: 'asset-create-form',
   components: {
     FormStepper,
   },
   mixins: [FormMixin],
   props: {
-    request: { type: Object, default: _ => ({}) },
+    request: { type: AssetCreateRequestRecord, default: null },
   },
+
   data: _ => ({
     form: {
       information: {
@@ -204,7 +263,10 @@ export default {
         logo: null,
         policies: [],
       },
-      terms: {
+      advanced: {
+        isPreissuanceDisabled: false,
+        preissuedAssetSigner: '',
+        initialPreissuedAmount: '',
         terms: null,
       },
     },
@@ -217,6 +279,7 @@ export default {
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
+
   validations () {
     return {
       form: {
@@ -234,20 +297,49 @@ export default {
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
           },
         },
+        advanced: {
+          preissuedAssetSigner: {
+            required: requiredUnless(function () {
+              return this.form.advanced.isPreissuanceDisabled
+            }),
+          },
+          initialPreissuedAmount: {
+            required: requiredUnless(function () {
+              return this.form.advanced.isPreissuanceDisabled
+            }),
+            amountRange: amountRange(
+              this.MIN_AMOUNT,
+              this.form.information.maxIssuanceAmount
+            ),
+          },
+        },
       },
     }
   },
+
   computed: {
+    ...mapGetters({
+      account: vuexTypes.account,
+    }),
+
     assetRequestOpts () {
       const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
-      const terms = this.form.terms.terms
+      const terms = this.form.advanced.terms
+
+      const preissuedAssetSigner = this.form.advanced.isPreissuanceDisabled
+        ? config.NULL_ASSET_SIGNER
+        : this.form.advanced.preissuedAssetSigner
+
+      const initialPreissuedAmount = this.form.advanced.isPreissuanceDisabled
+        ? this.form.information.maxIssuanceAmount
+        : this.form.advanced.initialPreissuedAmount
 
       return {
         requestID: requestId,
         code: this.form.information.code,
-        preissuedAssetSigner: config.NULL_ASSET_SIGNER,
-        initialPreissuedAmount: this.form.information.maxIssuanceAmount,
+        preissuedAssetSigner: preissuedAssetSigner,
+        initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
         details: {
@@ -257,67 +349,76 @@ export default {
         },
       }
     },
-    isUpdateMode () {
-      return this.request instanceof AssetUpdateRequestRecord
-    },
   },
+
   created () {
-    this.tryPopulateForm(this.request)
+    if (this.request) {
+      this.populateForm()
+    }
   },
+
   methods: {
-    tryPopulateForm (request) {
-      if (request.id) {
-        this.form = {
-          information: {
-            name: request.assetName,
-            code: request.assetCode,
-            maxIssuanceAmount: request.maxIssuanceAmount,
-            logo: request.logo.key
-              ? new DocumentContainer(request.logo)
-              : null,
-            policies: request.policies,
-          },
-          terms: {
-            terms: request.terms.key
-              ? new DocumentContainer(request.terms)
-              : null,
-          },
-        }
+    populateForm () {
+      const isPreissuanceDisabled =
+        this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+
+      this.form = {
+        information: {
+          name: this.request.assetName,
+          code: this.request.assetCode,
+          maxIssuanceAmount: this.request.maxIssuanceAmount,
+          logo: this.request.logo.key
+            ? new DocumentContainer(this.request.logo)
+            : null,
+          policies: this.request.policies,
+        },
+        advanced: {
+          isPreissuanceDisabled: isPreissuanceDisabled,
+          preissuedAssetSigner: isPreissuanceDisabled
+            ? ''
+            : this.request.preissuedAssetSigner,
+          initialPreissuedAmount: isPreissuanceDisabled
+            ? ''
+            : this.request.initialPreissuedAmount,
+          terms: this.request.terms.key
+            ? new DocumentContainer(this.request.terms)
+            : null,
+        },
       }
     },
+
     next (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
       }
     },
+
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
         await this.uploadDocuments()
-        let operation
-        if (this.isUpdateMode) {
-          operation =
-            base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
-        } else {
-          operation =
-            base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
-        }
+
+        const operation =
+          base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.token-request-submitted-msg')
-        if (this.request.id) {
-          this.$emit(EVENTS.submit)
+
+        if (this.request) {
+          this.$emit(EVENTS.update)
         }
       } catch (e) {
         ErrorHandler.process(e)
       }
       this.enableForm()
     },
+
     async uploadDocuments () {
       const documents = [
         this.form.information.logo,
-        this.form.terms.terms,
+        this.form.advanced.terms,
       ]
+
       for (let document of documents) {
         if (document && !document.key) {
           const documentKey = await DocumentUploader.uploadDocument(
@@ -334,16 +435,14 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.asset-form__btn {
+.asset-create-form__btn {
   @include button-raised();
 
   margin-bottom: 2rem;
   width: 14.4rem;
 }
 
-.asset-form {
-  .asset-form__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.asset-create-form__kyc-required-row {
+  margin-top: 2.1rem;
 }
 </style>
