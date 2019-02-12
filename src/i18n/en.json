@@ -568,7 +568,7 @@
       "no-sales-desc": "Unfortunately, there are no funds matching your criteria",
       "create-sale": "Create fund",
       "update-sale": "Update fund",
-      "short-details-title": "Fund short details",
+      "overview-title": "Fund overview",
       "asset-code-label": "Token code",
       "sale-live-state": "Live",
       "sale-upcoming-state": "Upcoming only",
@@ -582,7 +582,7 @@
       "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
     },
 
-    "sale-short-details": {
+    "sale-overview": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "name-title": "Fund name",

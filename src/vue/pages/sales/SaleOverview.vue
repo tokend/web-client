@@ -1,31 +1,31 @@
 <template>
-  <div class="sale-short-details">
+  <div class="sale-overview">
     <template v-if="isLoaded">
-      <div class="sale-short-details__asset">
+      <div class="sale-overview__asset">
         <asset-logo
           :asset-code="asset.code"
           :logo-url="asset.logoUrl(config.FILE_STORAGE)"
         />
-        <div class="sale-short-details__asset-info">
-          <p class="sale-short-details__asset-code">
+        <div class="sale-overview__asset-info">
+          <p class="sale-overview__asset-code">
             {{ asset.code }}
           </p>
-          <p class="sale-short-details__asset-name">
+          <p class="sale-overview__asset-name">
             {{ asset.name }}
           </p>
         </div>
       </div>
 
-      <p class="sale-short-details__short-description">
+      <p class="sale-overview__short-description">
         {{ sale.shortDescription }}
       </p>
 
-      <div class="app__table sale-short-details__table">
+      <div class="app__table sale-overview__table">
         <table>
           <tbody>
             <tr>
               <td>
-                {{ 'sale-short-details.name-title' | globalize }}
+                {{ 'sale-overview.name-title' | globalize }}
               </td>
               <td>
                 {{ sale.name }}
@@ -34,7 +34,7 @@
 
             <tr>
               <td>
-                {{ 'sale-short-details.start-time-title' | globalize }}
+                {{ 'sale-overview.start-time-title' | globalize }}
               </td>
               <td>
                 {{ sale.startTime | formatCalendar }}
@@ -43,7 +43,7 @@
 
             <tr>
               <td>
-                {{ 'sale-short-details.close-time-title' | globalize }}
+                {{ 'sale-overview.close-time-title' | globalize }}
               </td>
               <td>
                 {{ sale.endTime | formatCalendar }}
@@ -52,7 +52,7 @@
 
             <tr>
               <td>
-                {{ 'sale-short-details.soft-cap-title' | globalize }}
+                {{ 'sale-overview.soft-cap-title' | globalize }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -62,7 +62,7 @@
 
             <tr>
               <td>
-                {{ 'sale-short-details.hard-cap-title' | globalize }}
+                {{ 'sale-overview.hard-cap-title' | globalize }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -73,7 +73,7 @@
             <tr>
               <td>
                 <!-- eslint-disable-next-line max-len -->
-                {{ 'sale-short-details.asset-to-sell-title' | globalize({ asset: sale.baseAsset }) }}
+                {{ 'sale-overview.asset-to-sell-title' | globalize({ asset: sale.baseAsset }) }}
               </td>
               <td>
                 <!-- eslint-disable-next-line max-len -->
@@ -83,19 +83,19 @@
 
             <tr>
               <td>
-                {{ 'sale-short-details.video-about-sale-title' | globalize }}
+                {{ 'sale-overview.video-about-sale-title' | globalize }}
               </td>
               <td>
                 <a
                   v-if="sale.youtubeVideoUrl"
-                  class="sale-short-details__video-btn"
+                  class="sale-overview__video-btn"
                   :href="sale.youtubeVideoUrl"
                   target="_blank"
                 >
-                  {{ 'sale-short-details.view-video-btn' | globalize }}
+                  {{ 'sale-overview.view-video-btn' | globalize }}
                 </a>
                 <p v-else>
-                  {{ 'sale-short-details.no-video-msg' | globalize }}
+                  {{ 'sale-overview.no-video-msg' | globalize }}
                 </p>
               </td>
             </tr>
@@ -105,20 +105,20 @@
 
       <button
         v-ripple
-        class="sale-short-details__view-btn"
+        class="sale-overview__view-btn"
         @click="viewSale"
       >
-        {{ 'sale-short-details.view-btn' | globalize }}
+        {{ 'sale-overview.view-btn' | globalize }}
       </button>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'sale-short-details.loading-msg'" />
+      <loader :message-id="'sale-overview.loading-msg'" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'sale-short-details.loading-error-msg' | globalize }}
+        {{ 'sale-overview.loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -138,7 +138,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
-  name: 'sale-short-details',
+  name: 'sale-overview',
   components: {
     AssetLogo,
     Loader,
@@ -178,13 +178,13 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.sale-short-details__short-description {
+.sale-overview__short-description {
   margin-top: 4rem;
   font-size: 1.4rem;
   color: $col-text;
 }
 
-.sale-short-details__table {
+.sale-overview__table {
   margin-top: 2rem;
 
   tr td:last-child {
@@ -192,7 +192,7 @@ export default {
   }
 }
 
-.sale-short-details__view-btn {
+.sale-overview__view-btn {
   @include button-raised();
 
   margin-top: 4.9rem;
@@ -200,7 +200,7 @@ export default {
   width: 100%;
 }
 
-.sale-short-details__video-btn {
+.sale-overview__video-btn {
   color: $col-link;
   text-decoration: none;
 
@@ -209,26 +209,26 @@ export default {
   }
 }
 
-.sale-short-details__asset {
+.sale-overview__asset {
   display: flex;
   align-items: center;
 
-  .sale-short-details__asset-logo {
+  .sale-overview__asset-logo {
     width: 5rem;
     height: 5rem;
     border-radius: 50%
   }
 
-  .sale-short-details__asset-info {
+  .sale-overview__asset-info {
     margin-left: 1.8rem;
 
-    .sale-short-details__asset-code {
+    .sale-overview__asset-code {
       font-size: 1.8rem;
       font-weight: bold;
       color: $col-text;
     }
 
-    .sale-short-details__asset-name {
+    .sale-overview__asset-name {
       margin-top: .1rem;
       font-size: 1.4rem;
       line-height: 1.29;

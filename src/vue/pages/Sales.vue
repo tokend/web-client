@@ -46,9 +46,9 @@
       <div class="sales__sale-cards">
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template slot="heading">
-            {{ 'sales.short-details-title' | globalize }}
+            {{ 'sales.overview-title' | globalize }}
           </template>
-          <sale-short-details :sale="selectedSale" />
+          <sale-overview :sale="selectedSale" />
         </drawer>
 
         <sale-card
@@ -93,7 +93,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
 import CreateSaleForm from '@/vue/forms/CreateSaleForm'
-import SaleShortDetails from '@/vue/pages/sales/SaleShortDetails'
+import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
 import { Sdk } from '@/sdk'
@@ -132,7 +132,7 @@ export default {
     SelectField,
     InputField,
     CreateSaleForm,
-    SaleShortDetails,
+    SaleOverview,
     SaleCard,
   },
   data: _ => ({
