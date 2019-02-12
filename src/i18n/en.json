@@ -285,7 +285,7 @@
 
     "limits-form": {
       "operation-type": "Operation type limit",
-      "to-lbl": "To",
+      "type-lbl": "Type",
       "limit-lbl": "Limit",
       "not-set-lbl": "Not set",
       "daily-limit-lbl": "Daily Limit",

@@ -17,7 +17,7 @@
         <thead>
           <tr>
             <th>
-              {{ 'limits-form.to-lbl' | globalize }}
+              {{ 'limits-form.type-lbl' | globalize }}
             </th>
             <th>
               {{ 'limits-form.limit-lbl' | globalize }}
