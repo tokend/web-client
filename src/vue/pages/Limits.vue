@@ -50,10 +50,8 @@
       />
 
       <div class="limits__requests-collection-loader">
-        <!-- hack with key allows us to reload data -->
         <collection-loader
-          :key="`request-reloader-${currentRequestsReloadingCount}`"
-          :first-page-loader="loadLimitsRequests"
+          :first-page-loader="limitsRequestsLoader"
           :page-limit="limitsRequestsQueries.limit"
           @first-page-load="setLimitsRequests"
           @next-page-load="extendLimitsRequests"
@@ -123,7 +121,7 @@ export default {
       limit: config.REQUESTS_PER_PAGE,
       order: 'desc',
     },
-    currentRequestsReloadingCount: 0,
+    limitsRequestsLoader: () => {},
   }),
   computed: {
     ...mapGetters([
@@ -139,18 +137,21 @@ export default {
     },
   },
   async created () {
-    if (!this.accountBalances.length) await this.loadCurrentBalances()
+    if (!this.accountBalances.length) {
+      try {
+        await this.loadCurrentBalances()
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+    }
     if (this.accountBalancesAssetsCodes.length) this.setDefaultAssetCode()
     this.loadLimits()
-    this.loadLimitsRequests()
+    this.setLimitsRequestsLoader()
   },
   methods: {
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    setDefaultAssetCode () {
-      this.selectedAsset = this.accountBalancesAssetsCodes[0]
-    },
     async loadLimits () {
       this.isLimitsLoading = true
       try {
@@ -164,18 +165,23 @@ export default {
     },
     async loadLimitsRequests () {
       this.isLimitsRequestsLoading = true
-      const response = await Sdk.horizon.request
-        .getAllForLimitsUpdates({
-          ...this.limitsRequestsQueries,
-          requestor: this.accountId,
-        })
+      let response = {}
+      try {
+        response = await Sdk.horizon.request
+          .getAllForLimitsUpdates({
+            ...this.limitsRequestsQueries,
+            requestor: this.accountId,
+          })
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+      this.isLimitsRequestsLoading = false
       return response
     },
     setLimitsRequests (data) {
       this.limitsRequests = data.map(item =>
         new LimitsUpdateRequestRecord(item)
       )
-      this.isLimitsRequestsLoading = false
     },
     extendLimitsRequests (data) {
       this.limitsRequests = this.limitsRequests
@@ -227,7 +233,18 @@ export default {
       this.reloadRequests()
     },
     reloadRequests () {
-      ++this.currentRequestsReloadingCount
+      this.setLimitsRequestsLoader()
+    },
+    setDefaultAssetCode () {
+      this.selectedAsset = this.accountBalancesAssetsCodes[0]
+    },
+    setLimitsRequestsLoader () {
+      this.limitsRequestsLoader = this.getLimitsRequestsLoader()
+    },
+    getLimitsRequestsLoader () {
+      return () => {
+        return this.loadLimitsRequests()
+      }
     },
   },
 }
