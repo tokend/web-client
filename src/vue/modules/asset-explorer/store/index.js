@@ -8,23 +8,22 @@ import { base } from '@tokend/js-sdk'
 
 export const state = {
   assets: [],
+  accountId: '',
   balances: [],
-
-  balancesOwnerId: '',
 }
 
 export const mutations = {
   [types.SET_ASSETS] (state, assets) {
     state.assets = assets
   },
-  [types.SET_NEXT_ASSETS] (state, assets) {
+  [types.CONCAT_ASSETS] (state, assets) {
     state.assets = state.assets.concat(assets)
   },
   [types.SET_BALANCES] (state, balances) {
     state.balances = balances || []
   },
-  [types.SET_BALANCES_OWNER_ID] (state, id) {
-    state.balancesOwnerId = id
+  [types.SET_ACCOUNT_ID] (state, id) {
+    state.accountId = id
   },
 }
 
@@ -34,7 +33,7 @@ export const actions = {
   },
   async [types.LOAD_BALANCES] ({ commit, getters }) {
     const { data: account } = await api().getWithSignature(
-      `/accounts/${getters.balancesOwnerId}`, {
+      `/accounts/${getters[types.accountId]}`, {
         include: ['balances.state'],
       })
 
@@ -43,7 +42,7 @@ export const actions = {
   async [types.CREATE_BALANCE] ({ getters }, assetCode) {
     const operation = base.Operation.manageBalance({
       asset: assetCode,
-      destination: getters[types.balancesOwnerId],
+      destination: getters[types.accountId],
       action: base.xdr.ManageBalanceAction.createUnique(),
     })
 
@@ -52,9 +51,8 @@ export const actions = {
 }
 
 export const getters = {
-  [types.balancesOwnerId]: state => state.balancesOwnerId,
-
   [types.assets]: state => state.assets.map(a => new Asset(a)),
+  [types.accountId]: state => state.accountId,
   [types.getBalanceByAssetCode]: state => assetCode => {
     const record = state.balances.find(b => b.asset.code === assetCode)
     if (record) {

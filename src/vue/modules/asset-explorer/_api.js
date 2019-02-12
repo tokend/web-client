@@ -1,22 +1,24 @@
 import { ApiCaller } from '@tokend/js-sdk'
-import { config } from './_config'
 
-let _instance = null
+let _api = null
 
 /**
  * @param {Wallet} wallet - wallet to sign the requests
+ * @param {Wallet} config - wallet to sign the requests
+ * @param {Wallet} config.horizonURL - the url of the horizon server
+ * (without version prefix)
  */
-export function initApi (wallet) {
-  const horizonURL = config().horizonURL
+export function initApi (wallet, config) {
+  const horizonURL = config.horizonURL
 
-  _instance = ApiCaller.getInstance(`${horizonURL}/v2`)
-  _instance.useWallet(wallet)
+  _api = ApiCaller.getInstance(`${horizonURL}/v2`)
+  _api.useWallet(wallet)
 }
 
 export function api () {
-  if (!_instance) {
+  if (!_api) {
     throw new Error('API is not initialized')
   }
 
-  return _instance
+  return _api
 }

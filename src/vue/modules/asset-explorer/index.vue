@@ -7,7 +7,7 @@
       <collection-loader
         :first-page-loader="loadAssets"
         @first-page-load="setAssets"
-        @next-page-load="setNextAssets"
+        @next-page-load="concatAssets"
       />
     </div>
   </div>
@@ -51,17 +51,17 @@ export default {
     }),
   },
   async created () {
-    initConfig(this.config.horizonURL, this.config.storageURL)
-    initApi(this.wallet)
+    initConfig(this.config)
+    initApi(this.wallet, this.config)
 
-    this.setBalancesOwnerId(this.wallet.accountId)
+    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
   },
   methods: {
     ...mapMutations('asset-explorer', {
       setAssets: types.SET_ASSETS,
-      setNextAssets: types.SET_NEXT_ASSETS,
-      setBalancesOwnerId: types.SET_BALANCES_OWNER_ID,
+      concatAssets: types.CONCAT_ASSETS,
+      setAccountId: types.SET_ACCOUNT_ID,
     }),
     ...mapActions('asset-explorer', {
       loadAssets: types.LOAD_ASSETS,

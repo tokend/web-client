@@ -1,8 +1,8 @@
 const mutations = {
   SET_ASSETS: 'SET_ASSETS',
-  SET_NEXT_ASSETS: 'SET_NEXT_ASSETS',
+  CONCAT_ASSETS: 'CONCAT_ASSETS',
   SET_BALANCES: 'SET_BALANCES',
-  SET_BALANCES_OWNER_ID: 'SET_BALANCES_OWNER_ID',
+  SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
 }
 
 const actions = {
@@ -13,7 +13,7 @@ const actions = {
 
 const getters = {
   assets: 'assets',
-  balancesOwnerId: 'balancesOwnerId',
+  accountId: 'accountId',
   getBalanceByAssetCode: 'getBalanceByAssetCode',
 }
 

@@ -4,7 +4,7 @@ let _config = null
  * @param {string} horizonURL - the URL of the horizon server (without version)
  * @param {string} storageURL - the URL of the storage server
  */
-export function initConfig (horizonURL, storageURL) {
+export function initConfig ({ horizonURL, storageURL }) {
   if (!horizonURL) {
     throw new Error('horizonURL is not provided')
   }
