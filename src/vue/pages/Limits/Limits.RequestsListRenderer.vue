@@ -134,15 +134,4 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-
-.limits-table-renderer__table-item--inactive {
-  color: rgba($col-text, .3);
-}
-
-.limits-table-renderer__table-cell-info-icon {
-  cursor: pointer;
-  font-size: 1.6rem;
-}
-
 </style>

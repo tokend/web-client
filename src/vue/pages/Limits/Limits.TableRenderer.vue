@@ -112,7 +112,7 @@ export default {
 @import "~@scss/variables";
 
 .limits-table-renderer__table-item--inactive {
-  color: rgba($col-text, .3);
+  color: $col-table-cell-text-inactive;
 }
 
 </style>
