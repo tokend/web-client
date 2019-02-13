@@ -165,7 +165,7 @@ export default {
         .filter((asset, i, self) => self.indexOf(asset) === i)
     },
 
-    // A workaround for filtering sales by base asset, since sales.getPage 
+    // A workaround for filtering sales by base asset, since sales.getPage
     // method loads all the existing sales.
     filteredSales () {
       if (this.filters.baseAsset === '') {
