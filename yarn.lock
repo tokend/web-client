@@ -654,17 +654,21 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
-"@tokend/js-sdk@0.3.18":
-  version "0.3.18"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-0.3.18.tgz#d15633bf917007807209da8d248b6385d5d16ebe"
-  integrity sha512-2wvuIXmfO77Aj9yHlwvPSf/uoaxROkTH3iHa36dWflu2hJxOd97WjcmYcBpFtecbVjZTQHrEk+MpfWrF1SQxtw==
+"@tokend/js-sdk@1.0.0-x.5":
+  version "1.0.0-x.5"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.0.0-x.5.tgz#dfb874ae2191e3da6f95770ffe1407fee44326a5"
+  integrity sha512-gPWuzz6v15qXom46jef4TnOqX49NHfrDi3hK6Wi32JkxB5hZ5j4BjnlFtNL3Hji/wC30PEUDVKGu2/aLKXIQdA==
   dependencies:
     axios "^0.16.0"
     base32.js "~0.1.0"
     bignumber.js "^2.0.7"
     crc "^3.3.0"
     js-xdr "^1.0.5"
+    jsona "^1.3.0"
     lodash "^4.17.11"
+    loglevel "^1.6.1"
+    loglevel-plugin-prefix "^0.8.4"
+    moment "^2.23.0"
     sjcl-tokend "^1.0.6"
     tweetnacl "^0.13.0"
     urijs "^1.19.1"
@@ -5529,6 +5533,11 @@ json5@^2.1.0:
   dependencies:
     minimist "^1.2.0"
 
+jsona@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/jsona/-/jsona-1.3.0.tgz#f73275fec864534cb7c44abb76d3502496478aee"
+  integrity sha512-nOfNhB7aAfRJPB+HyfSRNJkbis4lSn8h0i/0pMFmzJ28J+yiQ4b1IgqSlhElWPlBI9GinNm/vra0dk5wHXLznA==
+
 jsprim@^1.2.2:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jsprim/-/jsprim-1.4.1.tgz#313e66bc1e5cc06e438bc1b7499c2e5c56acb6a2"
@@ -5858,7 +5867,12 @@ log4js@^3.0.0:
     rfdc "^1.1.2"
     streamroller "0.7.0"
 
-loglevel@1.6.1, loglevel@^1.4.1:
+loglevel-plugin-prefix@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/loglevel-plugin-prefix/-/loglevel-plugin-prefix-0.8.4.tgz#2fe0e05f1a820317d98d8c123e634c1bd84ff644"
+  integrity sha512-WpG9CcFAOjz/FtNht+QJeGpvVl/cdR6P0z6OcXSkr8wFJOsV2GRj2j10JLfjuA4aYkcKCNIEqRGCyTife9R8/g==
+
+loglevel@1.6.1, loglevel@^1.4.1, loglevel@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
   integrity sha1-4PyVEztu8nbNyIh82vJKpvFW+Po=
@@ -6320,6 +6334,11 @@ moment@2.23.0:
   version "2.23.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
   integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
+
+moment@^2.23.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
