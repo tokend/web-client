@@ -354,10 +354,7 @@ export default {
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
         if (!document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
-          )
-          document.setKey(documentKey)
+          document = await DocumentUploader.uploadSingleDocument(document)
         }
       }
     },

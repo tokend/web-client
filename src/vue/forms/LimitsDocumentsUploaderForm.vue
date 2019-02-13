@@ -149,13 +149,8 @@ export default {
       await Sdk.horizon.transactions.submitOperations(operation)
     },
     async uploadDocuments () {
-      for (const document of Object.values(this.form.documents)) {
-        if (!document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
-          )
-          document.setKey(documentKey)
-        }
+      for (let document of Object.values(this.form.documents)) {
+        document = await DocumentUploader.uploadSingleDocument(document)
       }
     },
     formatDocumentsForRequest () {
