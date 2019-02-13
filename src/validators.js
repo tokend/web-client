@@ -41,6 +41,14 @@ export const documentContainer = value => value instanceof DocumentContainer
 export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance > +value
 }
+export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
+  const [, decimals] = value.split('.')
+  if (decimals) {
+    return decimals.length <= maxDecimalDigitsCount
+  } else {
+    return true
+  }
+}
 
 export * from 'vuelidate/lib/validators'
 
