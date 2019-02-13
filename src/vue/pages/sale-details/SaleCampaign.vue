@@ -29,6 +29,7 @@
               :src="sale.logoUrl(config.FILE_STORAGE)"
             >
           </div>
+
           <template v-if="saleDescription">
             <vue-markdown
               class="sale-campaign__sale-description"
@@ -54,15 +55,13 @@
           />
 
           <p class="sale-campaign__invested">
-            <!-- eslint-disable max-len -->
+            <!-- eslint-disable-next-line max-len -->
             {{ { value: sale.currentCap, currency: sale.defaultQuoteAsset } | formatMoney }}
-            <!-- eslint-enable max-len -->
           </p>
 
           <p class="sale-campaign__funded">
-            <!-- eslint-disable max-len -->
+            <!-- eslint-disable-next-line max-len -->
             {{ 'sale-details.funded' | globalize({ funded: sale.currentCap / sale.hardCap }) }}
-            <!-- eslint-enable max-len -->
           </p>
 
           <div class="sale-campaign__progress-bar">
@@ -94,7 +93,7 @@
               class="app__button-raised sale-campaign__invest-btn"
               @click="isInvestDrawerShown = true"
             >
-              {{ 'sale-details.invest-title' | globalize }}
+              {{ 'sale-details.invest' | globalize }}
             </button>
 
             <button
@@ -125,6 +124,7 @@
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import Chart from '@/vue/common/chart/Chart'
+
 import InvestForm from '@/vue/forms/InvestForm'
 import SaleOverview from '@/vue/pages/sale-details/SaleOverview'
 
@@ -203,7 +203,7 @@ export default {
 
 .sale-campaign__overview {
   flex: 0 1 62.5%;
-  background-color: #fff;
+  background-color: $col-sale-details-block;
   border-radius: .4rem;
   margin: 1.6rem;
 
@@ -213,7 +213,7 @@ export default {
 }
 
 .sale-campaign__sale-logo-wrp {
-  background-color: #ccc;
+  background-color: $col-sale-details-logo-bg;
   position: relative;
   height: 36rem;
   width: 100%;
@@ -249,7 +249,7 @@ export default {
 
 .sale-campaign__investment {
   flex: 0 1 34.4%;
-  background-color: #fff;
+  background-color: $col-sale-details-block;
   border-radius: .4rem;
   margin: 1.6rem;
   padding: 3.3rem 3.4rem 2.2rem 2.4rem;
@@ -267,34 +267,34 @@ export default {
   margin-top: 3rem;
   width: 100%;
   height: .3rem;
-  background-color: #c1bfd0;
+  background-color: $col-sale-details-progress-bar-bg;
 
   .sale-campaign__progress {
-    background: #7b6eff;
+    background: $col-sale-details-progress-bar-funded;
     height: 100%;
   }
 }
 
 .sale-campaign__invested {
   font-size: 2.4rem;
-  color: #3a4180;
+  color: $col-sale-details-text-primary;
 }
 
 .sale-campaign__funded {
   font-size: 1.4rem;
-  color: #837fa1;
+  color: $col-sale-details-text-secondary;
 }
 
 .sale-campaign__investors, .sale-campaign__days-to-go {
   h3 {
     font-size: 2.4rem;
     font-weight: normal;
-    color: #3a4180;
+    color: $col-sale-details-text-primary;
   }
 
   p {
     font-size: 1.4rem;
-    color: #837fa1;
+    color: $col-sale-details-text-secondary;
   }
 }
 

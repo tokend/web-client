@@ -16,20 +16,20 @@
           class="app__button-raised sale-details__invest-btn"
           @click="isInvestDrawerShown = true"
         >
-          {{ 'sale-details.invest-title' | globalize }}
+          {{ 'sale-details.invest' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer :is-shown.sync="isInvestDrawerShown">
       <template slot="heading">
-        {{ 'sale-details.invest-title' | globalize }}
+        {{ 'sale-details.invest' | globalize }}
       </template>
 
       <invest-form
         :sale="sale"
-        @submitted="updateSale"
-        @canceled="updateSale"
+        @submitted="refreshSale"
+        @canceled="refreshSale"
       />
     </drawer>
 
@@ -47,7 +47,7 @@
 
         <sale-campaign
           :sale="sale"
-          @update-ask="updateSale"
+          @update-ask="refreshSale"
         />
       </template>
 
@@ -77,6 +77,7 @@ import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+
 import InvestForm from '@/vue/forms/InvestForm'
 import SaleCampaign from '@/vue/pages/sale-details/SaleCampaign'
 
@@ -127,7 +128,8 @@ export default {
         }
       }
     },
-    async updateSale () {
+
+    async refreshSale () {
       this.sale = {}
       this.isLoaded = false
       this.isInvestDrawerShown = false
@@ -144,12 +146,12 @@ export default {
 .sale-details__name {
   font-size: 3.6rem;
   font-weight: normal;
-  color: #3a4180;
+  color: $col-sale-details-title;
 }
 
 .sale-details__short-desc {
   margin-top: .4rem;
   font-size: 1.6rem;
-  color: #837fa1;
+  color: $col-sale-details-subtitle;
 }
 </style>

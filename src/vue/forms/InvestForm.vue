@@ -59,27 +59,23 @@
             :disabled="formMixin.isDisabled || isInvestmentDisabled"
           />
 
-          <vue-markdown
-            v-if="isConvertedAmountLoaded"
-            class="app__form-field-description invest-form__amount-hint"
-            :source="'invest-form.converted-amount-hint' | globalize({
-              amount: convertedAmount
-            })"
-            :html="false"
-          />
+          <p class="app__form-field-description">
+            <vue-markdown
+              v-if="isConvertedAmountLoaded"
+              class="app__form-field-description invest-form__amount-hint"
+              :source="'invest-form.converted-amount-hint' | globalize({
+                amount: convertedAmount
+              })"
+              :html="false"
+            />
 
-          <p
-            v-else-if="isConvertedAmountFailed"
-            class="app__form-field-description"
-          >
-            {{ 'invest-form.converting-error-msg' | globalize }}
-          </p>
+            <template v-else-if="isConvertedAmountFailed">
+              {{ 'invest-form.converting-error-msg' | globalize }}
+            </template>
 
-          <p
-            v-else
-            class="app__form-field-description"
-          >
-            {{ 'invest-form.loading-msg' | globalize }}
+            <template v-else>
+              {{ 'invest-form.loading-msg' | globalize }}
+            </template>
           </p>
         </div>
       </div>
@@ -454,7 +450,7 @@ export default {
   }
 
   strong {
-    color: #7b6eff;
+    color: $col-text-highlighted;
   }
 }
 
@@ -466,7 +462,7 @@ export default {
   }
 
   strong {
-    color: #7b6eff;
+    color: $col-text-highlighted;
   }
 }
 
