@@ -673,9 +673,12 @@
     "invest-form": {
       "asset-lbl": "Asset",
       "available-amount-hint": "Available: **{{amount, money}}**",
+      "current-offer": "Current offer: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
       "converted-amount-hint": "Converted: **{{amount, money}}**",
-      "invest-btn": "Invest"
+      "invest-btn": "Invest",
+      "update-offer-btn": "Update offer",
+      "cancel-offer-btn": "CANCEL OFFER"
     },
 
     "create-fund-form": {

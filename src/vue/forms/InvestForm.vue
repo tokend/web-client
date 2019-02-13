@@ -31,23 +31,35 @@
         </div>
       </div>
 
+      <!-- eslint-disable max-len -->
+      <vue-markdown
+        v-if="currentAssetOffer.quoteAmount"
+        class="invest-form__current-offer"
+        :source="'invest-form.current-offer' | globalize({
+          amount: {
+            value: currentAssetOffer.quoteAmount,
+            currency: currentAssetOffer.quoteAssetCode
+          }
+        })"
+        :html="false"
+      />
+      <!-- eslint-enable max-len -->
+
       <div class="app__form-row">
         <div class="app__form-field">
-          <div class="invest-form__amount-wrapper">
-            <input-field
-              white-autofill
-              type="number"
-              v-model="form.amount"
-              @blur="touchField('form.amount')"
-              id="invest-amount"
-              :label="'invest-form.amount-lbl' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.amount',
-                { from: MIN_AMOUNT, to: availableAmount.value }
-              )"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
+          <input-field
+            white-autofill
+            type="number"
+            v-model="form.amount"
+            @input="touchField('form.amount')"
+            id="invest-amount"
+            :label="'invest-form.amount-lbl' | globalize({ asset: form.asset })"
+            :error-message="getFieldErrorMessage(
+              'form.amount',
+              { from: MIN_AMOUNT, to: availableAmount.value }
+            )"
+            :disabled="formMixin.isDisabled"
+          />
 
           <!-- eslint-disable max-len -->
           <vue-markdown
@@ -81,15 +93,42 @@
           @cancel="hideConfirmation"
         />
 
-        <button
+        <div
           v-else
-          v-ripple
-          type="submit"
-          class="invest-form__submit-btn"
-          :disabled="formMixin.isDisabled || isInvestmentDisabled"
+          class="invest-form__actions"
         >
-          {{ 'invest-form.invest-btn' | globalize }}
-        </button>
+          <template v-if="currentAssetOffer.offerId">
+            <button
+              v-ripple
+              type="submit"
+              class="invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || isInvestmentDisabled"
+            >
+              {{ 'invest-form.update-offer-btn' | globalize }}
+            </button>
+
+            <button
+              v-ripple
+              type="button"
+              @click="cancelOffer"
+              class="invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || isInvestmentDisabled"
+            >
+              {{ 'invest-form.cancel-offer-btn' | globalize }}
+            </button>
+          </template>
+
+          <template v-else>
+            <button
+              v-ripple
+              type="submit"
+              class="invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || isInvestmentDisabled"
+            >
+              {{ 'invest-form.invest-btn' | globalize }}
+            </button>
+          </template>
+        </div>
       </div>
     </form>
   </div>
@@ -130,6 +169,7 @@ export default {
       asset: '',
       amount: '',
     },
+    offers: [],
     MIN_AMOUNT: config.MIN_AMOUNT,
     converted: 0,
     isConvertedAmountLoaded: true,
@@ -175,9 +215,16 @@ export default {
       const assetBalance = this.balances
         .find(balance => balance.asset === this.form.asset)
 
-      return {
-        value: assetBalance.balance,
-        currency: this.form.asset,
+      if (this.currentAssetOffer.quoteAmount) {
+        return {
+          value: +assetBalance.balance + +this.currentAssetOffer.quoteAmount,
+          currency: this.form.asset,
+        }
+      } else {
+        return {
+          value: assetBalance.balance,
+          currency: this.form.asset,
+        }
       }
     },
 
@@ -196,6 +243,11 @@ export default {
         +this.converted > +this.sale.hardCap ||
         +this.form.amount > +this.availableAmount.value
     },
+
+    currentAssetOffer () {
+      return this.offers
+        .find(offer => offer.quoteAssetCode === this.form.asset) || {}
+    },
   },
 
   watch: {
@@ -210,6 +262,12 @@ export default {
 
   async created () {
     this.form.asset = this.assetListValues[0].value
+
+    const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
+      is_buy: true,
+      order_book_id: this.sale.id,
+    })
+    this.offers = data
   },
 
   methods: {
@@ -250,23 +308,58 @@ export default {
           account: this.accountId,
           amount: this.converted,
         })
-        const operation = base.ManageOfferBuilder.manageOffer({
-          baseBalance: this.balances
-            .find(balance => balance.asset === this.sale.baseAsset).balanceId,
-          quoteBalance: this.balances
-            .find(balance => balance.asset === this.form.asset).balanceId,
-          isBuy: true,
-          amount: this.form.amount,
-          price: this.sale.quoteAssetPrices[this.form.quoteAsset] || '1',
-          fee: fee.percent,
-          orderBookID: this.sale.id,
-        })
-        await Sdk.horizon.transactions.submitOperations(operation)
+
+        let operations = [
+          base.ManageOfferBuilder.manageOffer(this.getOfferOpts('0', fee)),
+        ]
+
+        if (this.currentAssetOffer.offerId) {
+          operations.push(base.ManageOfferBuilder.cancelOffer(
+            this.getOfferOpts(String(this.currentAssetOffer.offerId), fee)
+          ))
+        }
+
+        await Sdk.horizon.transactions.submitOperations(...operations)
       } catch (e) {
+        this.enableForm()
         ErrorHandler.process(e)
       }
+    },
 
-      this.enableForm()
+    getOfferOpts (offerId, offerFee) {
+      return {
+        offerID: offerId,
+        baseBalance: this.balances
+          .find(balance => balance.asset === this.sale.baseAsset).balanceId,
+        quoteBalance: this.balances
+          .find(balance => balance.asset === this.form.asset).balanceId,
+        isBuy: true,
+        amount: this.form.amount,
+        price: this.sale.quoteAssetPrices[this.form.quoteAsset] || '1',
+        fee: offerFee.percent,
+        orderBookID: this.sale.id,
+      }
+    },
+
+    async cancelOffer () {
+      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+        asset: this.form.asset,
+        account: this.accountId,
+        amount: this.converted,
+      })
+      const operation = base.ManageOfferBuilder.cancelOffer({
+        offerID: String(this.currentAssetOffer.offerId),
+        baseBalance: this.balances
+          .find(balance => balance.asset === this.sale.baseAsset).balanceId,
+        quoteBalance: this.balances
+          .find(balance => balance.asset === this.form.asset).balanceId,
+        isBuy: true,
+        amount: this.form.amount,
+        price: this.sale.quoteAssetPrices[this.form.quoteAsset] || '1',
+        fee: fee.percent,
+        orderBookID: this.sale.id,
+      })
+      await Sdk.horizon.transactions.submitOperations(operation)
     },
   },
 }
