@@ -18,20 +18,19 @@
             :label="'invest-form.asset-lbl' | globalize"
             id="invest-asset"
             @blur="touchField('form.asset')"
-            :disabled="formMixin.isDisabled"
+            :disabled="formMixin.isDisabled || isInvestmentDisabled"
           />
 
-          <!-- eslint-disable max-len -->
           <vue-markdown
             class="app__form-field-description invest-form__amount-hint"
-            :source="'invest-form.available-amount-hint' | globalize({ amount: availableAmount })"
+            :source="'invest-form.available-amount-hint' | globalize({
+              amount: availableAmount
+            })"
             :html="false"
           />
-          <!-- eslint-enable max-len -->
         </div>
       </div>
 
-      <!-- eslint-disable max-len -->
       <vue-markdown
         v-if="currentAssetOffer.quoteAmount"
         class="invest-form__current-offer"
@@ -43,7 +42,6 @@
         })"
         :html="false"
       />
-      <!-- eslint-enable max-len -->
 
       <div class="app__form-row">
         <div class="app__form-field">
@@ -58,51 +56,49 @@
               'form.amount',
               { from: MIN_AMOUNT, to: availableAmount.value }
             )"
-            :disabled="formMixin.isDisabled"
+            :disabled="formMixin.isDisabled || isInvestmentDisabled"
           />
 
-          <!-- eslint-disable max-len -->
           <vue-markdown
             v-if="isConvertedAmountLoaded"
             class="app__form-field-description invest-form__amount-hint"
-            :source="'invest-form.converted-amount-hint' | globalize({ amount: convertedAmount })"
+            :source="'invest-form.converted-amount-hint' | globalize({
+              amount: convertedAmount
+            })"
             :html="false"
           />
-          <!-- eslint-enable max-len -->
 
           <p
             v-else-if="isConvertedAmountFailed"
             class="app__form-field-description"
           >
-            Error
+            {{ 'invest-form.converting-error-msg' | globalize }}
           </p>
 
           <p
             v-else
             class="app__form-field-description"
           >
-            Loading...
+            {{ 'invest-form.loading-msg' | globalize }}
           </p>
         </div>
       </div>
 
-      <div class="app__form-actions">
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown"
-          @ok="hideConfirmation() || submit()"
-          @cancel="hideConfirmation"
-        />
+      <div class="app__form-actions invest-form__actions">
+        <template v-if="formMixin.isConfirmationShown">
+          <form-confirmation
+            @ok="hideConfirmation() || submit()"
+            @cancel="hideConfirmation"
+          />
+        </template>
 
-        <div
-          v-else
-          class="invest-form__actions"
-        >
+        <template v-else>
           <template v-if="currentAssetOffer.offerId">
             <button
               v-ripple
               type="submit"
-              class="invest-form__submit-btn"
-              :disabled="formMixin.isDisabled || isInvestmentDisabled"
+              class="app__button-raised invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || isSubmitDisabled"
             >
               {{ 'invest-form.update-offer-btn' | globalize }}
             </button>
@@ -111,7 +107,7 @@
               v-ripple
               type="button"
               @click="cancelOffer"
-              class="invest-form__submit-btn"
+              class="app__button invest-form__cancel-btn"
               :disabled="formMixin.isDisabled || isInvestmentDisabled"
             >
               {{ 'invest-form.cancel-offer-btn' | globalize }}
@@ -122,14 +118,45 @@
             <button
               v-ripple
               type="submit"
-              class="invest-form__submit-btn"
-              :disabled="formMixin.isDisabled || isInvestmentDisabled"
+              class="app__button-raised invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || isSubmitDisabled"
             >
               {{ 'invest-form.invest-btn' | globalize }}
             </button>
           </template>
-        </div>
+        </template>
       </div>
+
+      <p class="app__form-field-description">
+        <template v-if="sale.owner === accountId">
+          {{ 'invest-form.sale-owner-msg' | globalize }}
+        </template>
+
+        <template v-else-if="sale.isClosed">
+          {{ 'invest-form.closed-sale-msg' | globalize }}
+        </template>
+
+        <template v-else-if="sale.isUpcoming">
+          {{ 'invest-form.upcoming-sale-msg' | globalize }}
+        </template>
+
+        <template v-else-if="sale.isCanceled">
+          {{ 'invest-form.canceled-sale-msg' | globalize }}
+        </template>
+
+        <template v-else-if="isHardCapExceeded">
+          <vue-markdown
+            class="invest-form__amount-hint"
+            :source="'invest-form.cap-exceeded-msg' | globalize({
+              amount: {
+                value: investedCap,
+                currency: sale.defaultQuoteAsset
+              }
+            })"
+            :html="false"
+          />
+        </template>
+      </p>
     </form>
   </div>
 </template>
@@ -236,17 +263,35 @@ export default {
     },
 
     isInvestmentDisabled () {
-      return this.sale.isUpcoming ||
+      return this.sale.owner === this.accountId ||
+        this.sale.isUpcoming ||
         this.sale.isClosed ||
-        this.sale.owner === this.accountId ||
-        !this.isConvertedAmountLoaded ||
-        +this.converted > +this.sale.hardCap ||
-        +this.form.amount > +this.availableAmount.value
+        this.sale.isCanceled
+    },
+
+    isSubmitDisabled () {
+      return this.isInvestmentDisabled ||
+        this.isHardCapExceeded ||
+        !this.isConvertedAmountLoaded
+    },
+
+    isHardCapExceeded () {
+      return +this.converted > this.investedCap
     },
 
     currentAssetOffer () {
       return this.offers
         .find(offer => offer.quoteAssetCode === this.form.asset) || {}
+    },
+
+    investedCap () {
+      const capRest = this.sale.hardCap - this.sale.currentCap
+
+      if (this.currentAssetOffer.quoteAmount) {
+        return capRest + +this.currentAssetOffer.quoteAmount
+      } else {
+        return capRest
+      }
     },
   },
 
@@ -368,13 +413,6 @@ export default {
 <style lang="scss">
 @import './app-form';
 
-.invest-form__submit-btn {
-  @include button-raised();
-
-  margin-bottom: 2rem;
-  width: 18rem;
-}
-
 .invest-form__amount-hint {
   p {
     font-size: 1.2rem;
@@ -385,9 +423,23 @@ export default {
   }
 }
 
-.invest-form__issuance-asset-code {
-  margin-left: 1rem;
-  padding-top: 1.8rem;
-  font-size: 1.8rem;
+.invest-form__actions {
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1.9rem -.5rem -.5rem;
+}
+
+.invest-form__submit-btn {
+  margin: .5rem;
+  max-width: 18rem;
+  width: 100%;
+}
+
+.invest-form__cancel-btn {
+  padding: 0;
+  font-weight: normal;
+  max-width: 13rem;
+  margin: .5rem;
 }
 </style>

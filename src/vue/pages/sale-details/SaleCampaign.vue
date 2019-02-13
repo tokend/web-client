@@ -64,25 +64,25 @@
           <div class="sale-campaign__progress-bar">
             <div
               class="sale-campaign__progress"
-              :style="`width: ${capProgress}%`"
+              :style="`width: ${sale.hardCapProgress}%`"
             />
           </div>
 
-          <!-- eslint-disable max-len -->
           <vue-markdown
             class="sale-campaign__investors"
-            :source="'sale-details.investors' | globalize({ investors: sale.investors })"
+            :source="'sale-details.investors' | globalize({
+              investors: sale.investors
+            })"
             :html="false"
           />
-          <!-- eslint-enable max-len -->
 
-          <!-- eslint-disable max-len -->
           <vue-markdown
             class="sale-campaign__days-to-go"
-            :source="'sale-details.days-to-go' | globalize({ days: sale.daysToGo })"
+            :source="'sale-details.days-to-go' | globalize({
+              days: sale.daysToGo
+            })"
             :html="false"
           />
-          <!-- eslint-enable max-len -->
 
           <div class="sale-campaign__actions">
             <button
@@ -156,15 +156,6 @@ export default {
     isOverviewDrawerShown: false,
     config,
   }),
-
-  computed: {
-    capProgress () {
-      const capPercentage = (this.sale.currentCap / this.sale.hardCap) * 100
-      const progress = Math.round(capPercentage * 100) / 100
-
-      return progress >= 100 ? 100 : progress
-    },
-  },
 
   async created () {
     await this.loadSaleDescription()

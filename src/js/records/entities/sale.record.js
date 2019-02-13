@@ -4,7 +4,7 @@ import _get from 'lodash/get'
 const STATES = {
   Open: 1,
   Closed: 2,
-  Cancelled: 4,
+  Canceled: 4,
   Promotion: 8,
   Voting: 16,
 }
@@ -101,7 +101,7 @@ export class SaleRecord {
   get isVoting () { return this._isInState(STATES.Voting) }
   get isOpened () { return this._isInState(STATES.Open) }
   get isClosed () { return this._isInState(STATES.Closed) }
-  get isCanceled () { return this._isInState(STATES.Cancelled) }
+  get isCanceled () { return this._isInState(STATES.Canceled) }
   get isUpcoming () { return moment(this.startTime).isAfter(moment()) }
 
   /** progress info: **/
@@ -115,10 +115,10 @@ export class SaleRecord {
   }
 
   get hardCapProgress () {
-    return Math.round(this.currentCap / this.hardCap / 100) * 10000
+    return Math.round(this.currentCap / this.hardCap * 10000) / 100
   }
 
   get softCapProgress () {
-    return Math.round(this.currentCap / this.softCap / 100) * 10000
+    return Math.round(this.currentCap / this.softCap * 10000) / 100
   }
 }

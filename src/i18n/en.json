@@ -3,9 +3,9 @@
     "number": {
       "formats": {
         "amounts": {
-          "usd": "$0,0.[00]",
-          "eur": "0,0.[00]€",
-          "gbp": "0,0.[00]£",
+          "usd": "$0,0.[000000]",
+          "eur": "0,0.[000000]€",
+          "gbp": "0,0.[000000]£",
           "default": "0,0.[000000]"
         },
         "default": "0,0.[000000]",
@@ -676,9 +676,16 @@
       "current-offer": "Current offer: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
       "converted-amount-hint": "Converted: **{{amount, money}}**",
+      "loading-msg": "Loading...",
+      "converting-error-msg": "Converting error. Enter another amount, please",
       "invest-btn": "Invest",
       "update-offer-btn": "Update offer",
-      "cancel-offer-btn": "CANCEL OFFER"
+      "cancel-offer-btn": "CANCEL OFFER",
+      "sale-owner-msg": "'Owners of the fund cannot invest themselves",
+      "closed-sale-msg": "Closed funds are not investable",
+      "upcoming-sale-msg": "Upcoming funds are not investable",
+      "canceled-sale-msg": "Cancelled funds are not investable",
+      "cap-exceeded-msg": "Investing amount has exceeded the fund hard cap **{{amount, money}}**"
     },
 
     "create-fund-form": {
