@@ -6,7 +6,9 @@
           v-ripple
           :to="vueRoutes.saleDetails"
         >
-          <span>{{ 'sale-details.campaign-title' | globalize }}</span>
+          <span>
+            {{ 'sale-details.campaign-title' | globalize }}
+          </span>
         </router-link>
       </template>
 
@@ -37,7 +39,7 @@
       <template v-if="sale.id">
         <div class="sale-details__title">
           <h2 class="sale-details__name">
-            {{ sale.name }}
+            {{ `${sale.name} (${sale.baseAsset})` }}
           </h2>
 
           <p class="sale-details__short-desc">

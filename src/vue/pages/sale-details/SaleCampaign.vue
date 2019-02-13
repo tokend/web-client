@@ -259,10 +259,6 @@ export default {
   }
 }
 
-.sale-campaign__marketprice {
-  max-height: 25rem;
-}
-
 .sale-campaign__progress-bar {
   margin-top: 3rem;
   width: 100%;

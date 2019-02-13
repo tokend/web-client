@@ -451,6 +451,9 @@ export default {
   .chart-renderer__chart,
   .chart-renderer__chart svg {
     transition: .2s;
+    @media (min-width: 76.7rem) {
+      min-height: 20rem;
+    }
   }
   svg.chart {
     display: block;
