@@ -1,5 +1,8 @@
 <template>
-  <div v-if="!isLoading" class="limits-table-renderer__table app__table">
+  <div
+    v-if="!isLoading && !isLoadingFailed"
+    class="limits-table-renderer__table app__table"
+  >
     <table class="app__table">
       <thead>
         <tr>
@@ -81,12 +84,29 @@
       </tbody>
     </table>
   </div>
-  <loader v-else :message-id="'limits-table-renderer.data-loading'" />
+  <loader
+    v-else-if="isLoading && !isLoadingFailed"
+    :message-id="'limits-table-renderer.data-loading'"
+  />
+  <no-data-message
+    v-else-if="!isLoading && isLoadingFailed"
+    :title-id="'limits-table-renderer.loading-failed'"
+    :message-id="'limits-table-renderer.loading-failed-message'"
+    class="limits-table-renderer__no-data-message"
+  >
+    <button
+      class="app__button-raised limits-table-renderer__reload-limits-btn"
+      @click="askLimitsReload"
+    >
+      {{ 'limits-table-renderer.load-limits-btn' | globalize }}
+    </button>
+  </no-data-message>
 </template>
 
 <script>
 import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 const OPERATION_TYPES_TRANSLATION_ID = {
   [STATS_OPERATION_TYPES.deposit]: 'limits-table-renderer.op-type-deposit',
@@ -95,16 +115,29 @@ const OPERATION_TYPES_TRANSLATION_ID = {
   [STATS_OPERATION_TYPES.paymentOut]: 'limits-table-renderer.op-type-payment-out',
 }
 
+const EVENTS = Object.freeze({
+  limitsReloadAsk: 'limits-reload-ask',
+})
+
 export default {
   name: 'limits-table-renderer',
-  components: { Loader },
+  components: {
+    Loader,
+    NoDataMessage,
+  },
   props: {
     limits: { type: Object, required: true, default: () => [] },
     isLoading: { type: Boolean, required: true, default: false },
+    isLoadingFailed: { type: Boolean, required: true, default: false },
   },
   data: () => ({
     OPERATION_TYPES_TRANSLATION_ID,
   }),
+  methods: {
+    askLimitsReload () {
+      this.$emit(EVENTS.limitsReloadAsk)
+    },
+  },
 }
 </script>
 
@@ -113,6 +146,14 @@ export default {
 
 .limits-table-renderer__table-item--inactive {
   color: $col-table-cell-text-inactive;
+}
+
+.limits-table-renderer__reload-limits-btn {
+  margin-top: 1.6rem;
+}
+
+.limits-table-renderer__no-data-message {
+  margin-top: 3.2rem;
 }
 
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="limits-table-renderer">
+  <div class="limits-requests-list-renderer">
     <div
-      v-if="!isLoading && requests.length"
-      class="limits-table-renderer__table"
+      v-if="!isLoading && !isLoadingFailed && requests.length"
+      class="limits-requests-list-renderer__table"
     >
       <table class="app__table">
         <thead>
@@ -49,15 +49,30 @@
       </table>
     </div>
 
-    <template v-else-if="isLoading">
-      <loader :message-id="'limits-requests-table-renderer.data-loading'" />
-    </template>
-
-    <template v-else>
+    <template v-else-if="!isLoading && !isLoadingFailed && !requests.length">
       <no-data-message
         :title-id="'limits-requests-table-renderer.no-requests-history'"
         :message-id="'limits-requests-table-renderer.here-will-requests-list'"
       />
+    </template>
+
+    <template v-else-if="isLoading && !isLoadingFailed">
+      <loader :message-id="'limits-requests-table-renderer.data-loading'" />
+    </template>
+
+    <template v-else-if="!isLoading && isLoadingFailed">
+      <no-data-message
+        :title-id="'limits-requests-table-renderer.loading-failed'"
+        :message-id="'limits-requests-table-renderer.loading-failed-message'"
+      >
+        <button
+          class="app__button-raised
+                limits-requests-list-renderer__reload-requests-btn"
+          @click="askRequestsReload"
+        >
+          {{ 'limits-requests-table-renderer.load-requests-btn' | globalize }}
+        </button>
+      </no-data-message>
     </template>
 
     <drawer :is-shown.sync="isDocumentsUploaderFormShown">
@@ -111,6 +126,7 @@ export default {
   props: {
     requests: { type: Array, required: true, default: () => [] },
     isLoading: { type: Boolean, required: true, default: false },
+    isLoadingFailed: { type: Boolean, required: true, default: false },
   },
   data: () => ({
     LIMITS_REQUEST_STATES_STR,
@@ -123,6 +139,9 @@ export default {
     requestUploaded () {
       this.isDocumentsUploaderFormShown = false
       this.selectedRequest = null
+      this.askRequestsReload()
+    },
+    askRequestsReload () {
       this.$emit(EVENTS.requestsReloadAsk)
     },
     openDocumentsUploaderForm (request) {
@@ -134,4 +153,7 @@ export default {
 </script>
 
 <style lang="scss">
+.limits-requests-list-renderer__reload-requests-btn {
+  margin-top: 1.6rem;
+}
 </style>

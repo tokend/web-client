@@ -3,6 +3,7 @@
     <i v-if="iconName" :class="`mdi mdi-${iconName}`" />
     <h2>{{ titleId | globalize(titleIdArgs) }}</h2>
     <p>{{ messageId | globalize(messageIdArgs) }}</p>
+    <slot />
   </div>
 </template>
 

@@ -35,7 +35,9 @@
 
     <limits-table-renderer
       :is-loading="isLimitsLoading"
+      :is-loading-failed="isLimitsLoadingFailed"
       :limits="selectedLimitsList"
+      @limits-reload-ask="loadLimits"
     />
 
     <div class="limits__requests">
@@ -45,6 +47,7 @@
 
       <limits-requests-list-renderer
         :is-loading="isLimitsRequestsLoading"
+        :is-loading-failed="isLimitsRequestsLoadingFailed"
         :requests="limitsRequests"
         @requests-reload-ask="reloadRequests"
       />
@@ -115,7 +118,9 @@ export default {
     ACCOUNT_TYPES,
     formattedAccountLimits: {},
     isLimitsLoading: false,
+    isLimitsLoadingFailed: false,
     isLimitsRequestsLoading: false,
+    isLimitsRequestsLoadingFailed: false,
     limitsRequests: [],
     limitsRequestsQueries: {
       limit: config.REQUESTS_PER_PAGE,
@@ -154,17 +159,20 @@ export default {
     }),
     async loadLimits () {
       this.isLimitsLoading = true
+      this.isLimitsLoadingFailed = false
       try {
         const response = await Sdk.horizon.account.getLimits(this.accountId)
 
         this.formatLimits({ limits: response.data.limits })
       } catch (error) {
-        ErrorHandler.process(error)
+        this.isLimitsLoadingFailed = true
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isLimitsLoading = false
     },
     async loadLimitsRequests () {
       this.isLimitsRequestsLoading = true
+      this.isLimitsRequestsLoadingFailed = false
       let response = {}
       try {
         response = await Sdk.horizon.request
@@ -173,7 +181,8 @@ export default {
             requestor: this.accountId,
           })
       } catch (error) {
-        ErrorHandler.process(error)
+        this.isLimitsRequestsLoadingFailed = true
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isLimitsRequestsLoading = false
       return response

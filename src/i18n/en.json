@@ -314,7 +314,10 @@
       "table-monthly-limit-lbl": "Monthly limit (left/total)",
       "table-annual-limit-lbl": "Annual limit (left/total)",
       "not-set-lbl": "Not set",
-      "data-loading": "Fetching limits data..."
+      "data-loading": "Fetching limits data...",
+      "load-limits-btn": "Load limits",
+      "loading-failed": "Failed to load limits",
+      "loading-failed-message": "Limits loading was failed in some way. Try to load limits again"
     },
 
     "limits-requests-table-renderer": {
@@ -333,7 +336,10 @@
       "request-type-initial": "Initial",
       "request-type-docs-uploading": "Documents uploading",
       "no-requests-history": "No requests history",
-      "here-will-requests-list": "Here will be the list of your limits change requests"
+      "here-will-requests-list": "Here will be the list of your limits change requests",
+      "load-requests-btn": "Load requests",
+      "loading-failed": "Failed to load limits requests",
+      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again"
     },
 
     "passport": {
