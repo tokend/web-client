@@ -11,7 +11,7 @@ let _api = null
 export function initApi (wallet, config) {
   const horizonURL = config.horizonURL
 
-  _api = ApiCaller.getInstance(`${horizonURL}/v2`)
+  _api = ApiCaller.getInstance(`${horizonURL}/v3`)
   _api.useWallet(wallet)
 }
 
