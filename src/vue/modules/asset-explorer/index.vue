@@ -5,7 +5,8 @@
     </div>
     <div class="asset-explorer__collection-loader-wrp">
       <collection-loader
-        :first-page-loader="loadAssets"
+        :first-page-loader="loadAssetsPage"
+        :page-limit="ASSETS_PER_PAGE"
         @first-page-load="setAssets"
         @next-page-load="concatAssets"
       />
@@ -23,6 +24,8 @@ import { types } from './store/types'
 import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
 import { initConfig } from './_config'
+
+const ASSETS_PER_PAGE = 12
 
 export default {
   name: 'asset-explorer',
@@ -45,6 +48,9 @@ export default {
       required: true,
     },
   },
+  data: _ => ({
+    ASSETS_PER_PAGE,
+  }),
   computed: {
     ...mapGetters('asset-explorer', {
       assets: types.assets,
@@ -67,6 +73,19 @@ export default {
       loadAssets: types.LOAD_ASSETS,
       loadBalances: types.LOAD_BALANCES,
     }),
+    loadAssetsPage () {
+      return this.loadAssets({
+        page: {
+          limit: ASSETS_PER_PAGE,
+        },
+      })
+    },
   },
 }
 </script>
+
+<style scoped>
+.asset-explorer__collection-loader-wrp {
+  margin-top: 1.5rem;
+}
+</style>
