@@ -167,7 +167,7 @@ import VueMarkdown from 'vue-markdown'
 
 import config from '@/config'
 
-// import { Bus } from '@/js/helpers/event-bus'
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
@@ -177,10 +177,15 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { required, amountRange } from '@validators'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import _throttle from 'lodash/throttle'
+
+const EVENTS = {
+  submitted: 'submitted',
+  canceled: 'canceled',
+}
 
 export default {
   name: 'invest-form',
@@ -316,6 +321,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
+
     setConvertedAmount () {
       if (this.form.asset === this.sale.defaultQuoteAsset) {
         this.converted = this.form.amount
@@ -345,30 +354,59 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
+
       this.disableForm()
 
       try {
-        const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-          asset: this.form.asset,
-          account: this.accountId,
-          amount: this.converted,
-        })
-
-        let operations = [
-          base.ManageOfferBuilder.manageOffer(this.getOfferOpts('0', fee)),
-        ]
-
-        if (this.currentAssetOffer.offerId) {
-          operations.push(base.ManageOfferBuilder.cancelOffer(
-            this.getOfferOpts(String(this.currentAssetOffer.offerId), fee)
-          ))
+        const baseBalance = this.balances
+          .find(balance => balance.asset === this.sale.baseAsset)
+        if (!baseBalance) {
+          await this.createBalance(this.sale.baseAsset)
         }
 
+        const operations = await this.getOfferOperations()
         await Sdk.horizon.transactions.submitOperations(...operations)
+        await this.loadBalances()
+
+        Bus.success('invest-form.investment-submitted-msg')
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    async getOfferOperations () {
+      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+        asset: this.form.asset,
+        account: this.accountId,
+        amount: this.converted,
+      })
+
+      let operations = [
+        base.ManageOfferBuilder.manageOffer(
+          this.getOfferOpts('0', fee.percent)
+        ),
+      ]
+
+      if (this.currentAssetOffer.offerId) {
+        operations.push(base.ManageOfferBuilder.cancelOffer(
+          this.getOfferOpts(String(this.currentAssetOffer.offerId), '0')
+        ))
+      }
+
+      return operations
+    },
+
+    async createBalance (assetCode) {
+      const operation = base.Operation.manageBalance({
+        destination: this.accountId,
+        asset: assetCode,
+        action: base.xdr.ManageBalanceAction.createUnique(),
+      })
+
+      await Sdk.horizon.transactions.submitOperations(operation)
+      await this.loadBalances()
     },
 
     getOfferOpts (offerId, offerFee) {
@@ -380,31 +418,28 @@ export default {
           .find(balance => balance.asset === this.form.asset).balanceId,
         isBuy: true,
         amount: this.form.amount,
-        price: this.sale.quoteAssetPrices[this.form.quoteAsset] || '1',
-        fee: offerFee.percent,
+        price: this.sale.quoteAssetPrices[this.form.asset] || '1',
+        fee: offerFee,
         orderBookID: this.sale.id,
       }
     },
 
     async cancelOffer () {
-      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-        asset: this.form.asset,
-        account: this.accountId,
-        amount: this.converted,
-      })
-      const operation = base.ManageOfferBuilder.cancelOffer({
-        offerID: String(this.currentAssetOffer.offerId),
-        baseBalance: this.balances
-          .find(balance => balance.asset === this.sale.baseAsset).balanceId,
-        quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset).balanceId,
-        isBuy: true,
-        amount: this.form.amount,
-        price: this.sale.quoteAssetPrices[this.form.quoteAsset] || '1',
-        fee: fee.percent,
-        orderBookID: this.sale.id,
-      })
-      await Sdk.horizon.transactions.submitOperations(operation)
+      this.disableForm()
+
+      try {
+        const operation = base.ManageOfferBuilder.cancelOffer(
+          this.getOfferOpts(String(this.currentAssetOffer.offerId), '0')
+        )
+        await Sdk.horizon.transactions.submitOperations(operation)
+        await this.loadBalances()
+
+        Bus.success('invest-form.offer-canceled-msg')
+        this.$emit(EVENTS.canceled)
+      } catch (e) {
+        this.enableForm()
+        ErrorHandler.process(e)
+      }
     },
   },
 }
@@ -416,6 +451,18 @@ export default {
 .invest-form__amount-hint {
   p {
     font-size: 1.2rem;
+  }
+
+  strong {
+    color: #7b6eff;
+  }
+}
+
+.invest-form__current-offer {
+  margin-top: 2rem;
+
+    p {
+    font-size: 1.6rem;
   }
 
   strong {

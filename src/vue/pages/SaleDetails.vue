@@ -26,7 +26,11 @@
         {{ 'sale-details.invest-title' | globalize }}
       </template>
 
-      <invest-form :sale="sale" />
+      <invest-form
+        :sale="sale"
+        @submitted="updateSale"
+        @canceled="updateSale"
+      />
     </drawer>
 
     <template v-if="isLoaded">
@@ -41,7 +45,10 @@
           </p>
         </div>
 
-        <sale-campaign :sale="sale" />
+        <sale-campaign
+          :sale="sale"
+          @update-ask="updateSale"
+        />
       </template>
 
       <template v-else>
@@ -119,6 +126,13 @@ export default {
           ErrorHandler.processWithoutFeedback(e)
         }
       }
+    },
+    async updateSale () {
+      this.sale = {}
+      this.isLoaded = false
+      this.isInvestDrawerShown = false
+
+      await this.loadSale(this.$route.params.id)
     },
   },
 }

@@ -6,7 +6,11 @@
           {{ 'sale-details.invest-title' | globalize }}
         </template>
 
-        <invest-form :sale="sale" />
+        <invest-form
+          :sale="sale"
+          @submitted="$emit(EVENTS.updateAsk)"
+          @canceled="$emit(EVENTS.updateAsk)"
+        />
       </drawer>
 
       <drawer :is-shown.sync="isOverviewDrawerShown">
@@ -133,6 +137,10 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+const EVENTS = {
+  updateAsk: 'update-ask',
+}
+
 export default {
   name: 'sale-campaign',
   components: {
@@ -155,6 +163,7 @@ export default {
     isInvestDrawerShown: false,
     isOverviewDrawerShown: false,
     config,
+    EVENTS,
   }),
 
   async created () {

@@ -677,6 +677,7 @@
       "amount-lbl": "Amount {{asset}}",
       "converted-amount-hint": "Converted: **{{amount, money}}**",
       "loading-msg": "Loading...",
+      "loading-error-msg": "There was an error while loading.",
       "converting-error-msg": "Converting error. Enter another amount, please",
       "invest-btn": "Invest",
       "update-offer-btn": "Update offer",
@@ -685,7 +686,9 @@
       "closed-sale-msg": "Closed funds are not investable",
       "upcoming-sale-msg": "Upcoming funds are not investable",
       "canceled-sale-msg": "Cancelled funds are not investable",
-      "cap-exceeded-msg": "Investing amount has exceeded the fund hard cap **{{amount, money}}**"
+      "cap-exceeded-msg": "Investing amount has exceeded the fund hard cap **{{amount, money}}**",
+      "investment-submitted-msg": "Your investment was successfully submitted",
+      "offer-canceled-msg": "Your offer was successfully cancelled"
     },
 
     "create-fund-form": {
