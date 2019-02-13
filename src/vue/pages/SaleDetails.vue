@@ -67,7 +67,7 @@
     </template>
 
     <template v-else>
-      <loader :message-id="'sale-details.loading-msg'" />
+      <loader message-id="sale-details.loading-msg" />
     </template>
   </div>
 </template>

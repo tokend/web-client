@@ -1,165 +1,192 @@
 <template>
   <div class="invest-form">
-    <form
-      novalidate
-      class="app__form"
-      @submit.prevent="isFormValid() && showConfirmation()"
-    >
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <!--
-            :key is a hack to ensure that the component will be updated
-            after property change
-          -->
-          <select-field
-            :key="form.asset"
-            v-model="form.asset"
-            :values="assetListValues"
-            :label="'invest-form.asset-lbl' | globalize"
-            id="invest-asset"
-            @blur="touchField('form.asset')"
-            :disabled="formMixin.isDisabled || isInvestmentDisabled"
-          />
+    <template v-if="isLoaded && quoteAssetBalances.length">
+      <form
+        novalidate
+        class="app__form"
+        @submit.prevent="isFormValid() && showConfirmation()"
+      >
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <!--
+              :key is a hack to ensure that the component will be updated
+              after property change
+            -->
+            <select-field
+              :key="form.asset"
+              v-model="form.asset"
+              :values="quoteAssetListValues"
+              :label="'invest-form.asset-lbl' | globalize"
+              id="invest-asset"
+              @blur="touchField('form.asset')"
+              :disabled="formMixin.isDisabled || !canUpdateOffer"
+            />
 
-          <vue-markdown
-            class="app__form-field-description invest-form__amount-hint"
-            :source="'invest-form.available-amount-hint' | globalize({
-              amount: availableAmount
-            })"
-            :html="false"
-          />
-        </div>
-      </div>
-
-      <vue-markdown
-        v-if="currentAssetOffer.quoteAmount"
-        class="invest-form__current-offer"
-        :source="'invest-form.current-offer' | globalize({
-          amount: {
-            value: currentAssetOffer.quoteAmount,
-            currency: currentAssetOffer.quoteAssetCode
-          }
-        })"
-        :html="false"
-      />
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            type="number"
-            v-model="form.amount"
-            @input="touchField('form.amount')"
-            id="invest-amount"
-            :label="'invest-form.amount-lbl' | globalize({ asset: form.asset })"
-            :error-message="getFieldErrorMessage(
-              'form.amount',
-              { from: MIN_AMOUNT, to: availableAmount.value }
-            )"
-            :disabled="formMixin.isDisabled || isInvestmentDisabled"
-          />
-
-          <p class="app__form-field-description">
             <vue-markdown
-              v-if="isConvertedAmountLoaded"
               class="app__form-field-description invest-form__amount-hint"
-              :source="'invest-form.converted-amount-hint' | globalize({
-                amount: convertedAmount
+              :source="'invest-form.available-amount-hint' | globalize({
+                amount: availableAmount
               })"
               :html="false"
             />
-
-            <template v-else-if="isConvertedAmountFailed">
-              {{ 'invest-form.converting-error-msg' | globalize }}
-            </template>
-
-            <template v-else>
-              {{ 'invest-form.loading-msg' | globalize }}
-            </template>
-          </p>
+          </div>
         </div>
-      </div>
 
-      <div class="app__form-actions invest-form__actions">
-        <template v-if="formMixin.isConfirmationShown">
-          <form-confirmation
-            @ok="hideConfirmation() || submit()"
-            @cancel="hideConfirmation"
-          />
-        </template>
+        <vue-markdown
+          v-if="currentAssetOffer.quoteAmount"
+          class="invest-form__current-offer"
+          :source="'invest-form.current-offer' | globalize({
+            amount: {
+              value: currentAssetOffer.quoteAmount,
+              currency: currentAssetOffer.quoteAssetCode
+            }
+          })"
+          :html="false"
+        />
 
-        <template v-else>
-          <template v-if="currentAssetOffer.offerId">
-            <button
-              v-ripple
-              type="submit"
-              class="app__button-raised invest-form__submit-btn"
-              :disabled="formMixin.isDisabled || isSubmitDisabled"
-            >
-              {{ 'invest-form.update-offer-btn' | globalize }}
-            </button>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              type="number"
+              v-model="form.amount"
+              @input="touchField('form.amount')"
+              id="invest-amount"
+              :label="'invest-form.amount-lbl' | globalize({
+                asset: form.asset
+              })"
+              :error-message="getFieldErrorMessage(
+                'form.amount',
+                { from: MIN_AMOUNT, to: availableAmount.value }
+              )"
+              :disabled="formMixin.isDisabled || !canUpdateOffer"
+            />
 
-            <button
-              v-ripple
-              type="button"
-              @click="cancelOffer"
-              class="app__button invest-form__cancel-btn"
-              :disabled="formMixin.isDisabled || isInvestmentDisabled"
-            >
-              {{ 'invest-form.cancel-offer-btn' | globalize }}
-            </button>
+            <p class="app__form-field-description">
+              <vue-markdown
+                v-if="isConvertedAmountLoaded"
+                class="app__form-field-description invest-form__amount-hint"
+                :source="'invest-form.converted-amount-hint' | globalize({
+                  amount: {
+                    value: convertedAmount,
+                    currency: sale.defaultQuoteAsset
+                  }
+                })"
+                :html="false"
+              />
+
+              <template v-else-if="isConvertingFailed">
+                {{ 'invest-form.converting-error-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'invest-form.loading-msg' | globalize }}
+              </template>
+            </p>
+          </div>
+        </div>
+
+        <div class="app__form-actions invest-form__actions">
+          <template v-if="formMixin.isConfirmationShown">
+            <form-confirmation
+              @ok="hideConfirmation() || submit()"
+              @cancel="hideConfirmation"
+            />
           </template>
 
           <template v-else>
-            <button
-              v-ripple
-              type="submit"
-              class="app__button-raised invest-form__submit-btn"
-              :disabled="formMixin.isDisabled || isSubmitDisabled"
-            >
-              {{ 'invest-form.invest-btn' | globalize }}
-            </button>
+            <template v-if="currentAssetOffer.offerId">
+              <button
+                v-ripple
+                type="submit"
+                class="app__button-raised invest-form__submit-btn"
+                :disabled="formMixin.isDisabled || !canSubmit"
+              >
+                {{ 'invest-form.update-offer-btn' | globalize }}
+              </button>
+
+              <button
+                v-ripple
+                type="button"
+                @click="cancelOffer"
+                class="app__button invest-form__cancel-btn"
+                :disabled="formMixin.isDisabled || !canUpdateOffer"
+              >
+                {{ 'invest-form.cancel-offer-btn' | globalize }}
+              </button>
+            </template>
+
+            <template v-else>
+              <button
+                v-ripple
+                type="submit"
+                class="app__button-raised invest-form__submit-btn"
+                :disabled="formMixin.isDisabled || !canSubmit"
+              >
+                {{ 'invest-form.invest-btn' | globalize }}
+              </button>
+            </template>
           </template>
-        </template>
-      </div>
+        </div>
 
-      <p class="app__form-field-description">
-        <template v-if="sale.owner === accountId">
-          {{ 'invest-form.sale-owner-msg' | globalize }}
-        </template>
+        <p class="app__form-field-description">
+          <template v-if="sale.owner === accountId">
+            {{ 'invest-form.sale-owner-msg' | globalize }}
+          </template>
 
-        <template v-else-if="sale.isClosed">
-          {{ 'invest-form.closed-sale-msg' | globalize }}
-        </template>
+          <template v-else-if="sale.isClosed">
+            {{ 'invest-form.closed-sale-msg' | globalize }}
+          </template>
 
-        <template v-else-if="sale.isUpcoming">
-          {{ 'invest-form.upcoming-sale-msg' | globalize }}
-        </template>
+          <template v-else-if="sale.isUpcoming">
+            {{ 'invest-form.upcoming-sale-msg' | globalize }}
+          </template>
 
-        <template v-else-if="sale.isCanceled">
-          {{ 'invest-form.canceled-sale-msg' | globalize }}
-        </template>
+          <template v-else-if="sale.isCanceled">
+            {{ 'invest-form.canceled-sale-msg' | globalize }}
+          </template>
 
-        <template v-else-if="isHardCapExceeded">
-          <vue-markdown
-            class="invest-form__amount-hint"
-            :source="'invest-form.cap-exceeded-msg' | globalize({
-              amount: {
-                value: investedCap,
-                currency: sale.defaultQuoteAsset
-              }
-            })"
-            :html="false"
-          />
-        </template>
+          <template v-else-if="isCapExceeded">
+            <vue-markdown
+              class="invest-form__amount-hint"
+              :source="'invest-form.cap-exceeded-msg' | globalize({
+                amount: {
+                  value: investedCap,
+                  currency: sale.defaultQuoteAsset
+                }
+              })"
+              :html="false"
+            />
+          </template>
+        </p>
+      </form>
+    </template>
+
+    <template v-else-if="isLoaded">
+      <no-data-message
+        icon-name="alert-circle"
+        :title-id="'invest-form.insufficient-balance-title'"
+        :message-id="'invest-form.insufficient-balance-desc'"
+      />
+    </template>
+
+    <template v-else-if="isLoadingFailed">
+      <p>
+        {{ 'invest-form.loading-error-msg' | globalize }}
       </p>
-    </form>
+    </template>
+
+    <template v-else>
+      <loader message-id="invest-form.loading-msg" />
+    </template>
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
+import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import config from '@/config'
 
@@ -183,26 +210,38 @@ const EVENTS = {
   canceled: 'canceled',
 }
 
+const OFFER_CREATE_ID = '0'
+const CANCEL_OFFER_FEE = '0'
+const DEFAULT_QUOTE_PRICE = '1'
+const CONVERTING_DELAY = 1000
+
 export default {
   name: 'invest-form',
   components: {
     VueMarkdown,
+    Loader,
+    NoDataMessage,
   },
   mixins: [FormMixin],
+
   props: {
     sale: { type: SaleRecord, required: true },
   },
+
   data: _ => ({
     form: {
       asset: '',
       amount: '',
     },
     offers: [],
+    isLoaded: false,
+    isLoadingFailed: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
-    converted: 0,
+    convertedAmount: 0,
     isConvertedAmountLoaded: true,
-    isConvertedAmountFailed: false,
+    isConvertingFailed: false,
   }),
+
   validations () {
     return {
       form: {
@@ -214,22 +253,32 @@ export default {
       },
     }
   },
+
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
 
-    throttled () {
-      return _throttle(this.loadConvertedAmount, 1000)
-    },
+    quoteAssetBalances () {
+      let quoteAssetBalances = []
 
-    assetListValues () {
-      const quoteBalances = this.sale.quoteAssets.map(quote => {
-        return this.balances.find(balance => balance.asset === quote.asset)
+      this.sale.quoteAssets.forEach(quote => {
+        const balance = this.balances.find(balanceItem => {
+          return balanceItem.asset === quote.asset &&
+            Number(balanceItem.balance) > 0
+        })
+
+        if (balance) {
+          quoteAssetBalances.push(balance)
+        }
       })
 
-      return quoteBalances.map(balance => {
+      return quoteAssetBalances
+    },
+
+    quoteAssetListValues () {
+      return this.quoteAssetBalances.map(balance => {
         const asset = balance.assetDetails
 
         return {
@@ -240,44 +289,22 @@ export default {
     },
 
     availableAmount () {
-      const assetBalance = this.balances
+      const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset === this.form.asset)
 
-      if (this.currentAssetOffer.quoteAmount) {
-        return {
-          value: +assetBalance.balance + +this.currentAssetOffer.quoteAmount,
-          currency: this.form.asset,
-        }
-      } else {
-        return {
-          value: assetBalance.balance,
-          currency: this.form.asset,
-        }
-      }
-    },
+      const availableBalance = this.currentAssetOffer.quoteAmount
+        ? Number(quoteBalance.balance) +
+            Number(this.currentAssetOffer.quoteAmount)
+        : quoteBalance.balance
 
-    convertedAmount () {
       return {
-        value: this.converted,
-        currency: this.sale.defaultQuoteAsset,
+        value: availableBalance,
+        currency: this.form.asset,
       }
     },
 
-    isInvestmentDisabled () {
-      return this.sale.owner === this.accountId ||
-        this.sale.isUpcoming ||
-        this.sale.isClosed ||
-        this.sale.isCanceled
-    },
-
-    isSubmitDisabled () {
-      return this.isInvestmentDisabled ||
-        this.isHardCapExceeded ||
-        !this.isConvertedAmountLoaded
-    },
-
-    isHardCapExceeded () {
-      return +this.converted > this.investedCap
+    convertAmountLoader () {
+      return _throttle(this.loadConvertedAmount, CONVERTING_DELAY)
     },
 
     currentAssetOffer () {
@@ -285,14 +312,31 @@ export default {
         .find(offer => offer.quoteAssetCode === this.form.asset) || {}
     },
 
+    isCapExceeded () {
+      return Number(this.convertedAmount) > this.investedCap
+    },
+
     investedCap () {
-      const capRest = this.sale.hardCap - this.sale.currentCap
+      const availableCap = this.sale.hardCap - this.sale.currentCap
 
       if (this.currentAssetOffer.quoteAmount) {
-        return capRest + +this.currentAssetOffer.quoteAmount
+        return availableCap + Number(this.currentAssetOffer.quoteAmount)
       } else {
-        return capRest
+        return availableCap
       }
+    },
+
+    canUpdateOffer () {
+      return this.sale.owner !== this.accountId &&
+        !this.sale.isUpcoming &&
+        !this.sale.isClosed &&
+        !this.sale.isCanceled
+    },
+
+    canSubmit () {
+      return this.canUpdateOffer &&
+        !this.isCapExceeded &&
+        this.isConvertedAmountLoaded
     },
   },
 
@@ -307,13 +351,11 @@ export default {
   },
 
   async created () {
-    this.form.asset = this.assetListValues[0].value
+    if (this.quoteAssetListValues.length) {
+      this.form.asset = this.quoteAssetListValues[0].value
+    }
 
-    const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
-      is_buy: true,
-      order_book_id: this.sale.id,
-    })
-    this.offers = data
+    await this.loadOffers()
   },
 
   methods: {
@@ -321,29 +363,44 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
+    async loadOffers () {
+      try {
+        const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
+          is_buy: true,
+          order_book_id: this.sale.id,
+        })
+        this.offers = data
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadingFailed = true
+        ErrorHandler.processWithoutFeedback()
+      }
+    },
+
     setConvertedAmount () {
       if (this.form.asset === this.sale.defaultQuoteAsset) {
-        this.converted = this.form.amount
+        this.convertedAmount = this.form.amount
       } else if (this.form.amount === '') {
-        this.converted = 0
+        this.convertedAmount = 0
       } else {
-        this.isConvertedAmountFailed = false
-        this.isConvertedAmountLoaded = false
-        this.throttled()
+        this.convertAmountLoader()
       }
     },
 
     async loadConvertedAmount () {
+      this.isConvertingFailed = false
+      this.isConvertedAmountLoaded = false
+
       try {
         const { data } = await Sdk.horizon.assetPairs.convert({
           source_asset: this.form.asset,
           dest_asset: this.sale.defaultQuoteAsset,
           amount: this.form.amount,
         })
-        this.converted = data.amount
+        this.convertedAmount = data.amount
         this.isConvertedAmountLoaded = true
       } catch (e) {
-        this.isConvertedAmountFailed = true
+        this.isConvertingFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
     },
@@ -364,34 +421,17 @@ export default {
         await Sdk.horizon.transactions.submitOperations(...operations)
         await this.loadBalances()
 
-        Bus.success('invest-form.investment-submitted-msg')
+        Bus.success({
+          messageId: 'invest-form.investment-submitted-msg',
+          messageArgs: {
+            asset: this.sale.baseAsset,
+          },
+        })
         this.$emit(EVENTS.submitted)
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
-    },
-
-    async getOfferOperations () {
-      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-        asset: this.form.asset,
-        account: this.accountId,
-        amount: this.converted,
-      })
-
-      let operations = [
-        base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts('0', fee.percent)
-        ),
-      ]
-
-      if (this.currentAssetOffer.offerId) {
-        operations.push(base.ManageOfferBuilder.cancelOffer(
-          this.getOfferOpts(String(this.currentAssetOffer.offerId), '0')
-        ))
-      }
-
-      return operations
     },
 
     async createBalance (assetCode) {
@@ -405,6 +445,33 @@ export default {
       await this.loadBalances()
     },
 
+    async getOfferOperations () {
+      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+        asset: this.form.asset,
+        account: this.accountId,
+        amount: this.converted,
+      })
+
+      let operations = []
+
+      if (this.currentAssetOffer.offerId) {
+        operations.push(base.ManageOfferBuilder.cancelOffer(
+          this.getOfferOpts(
+            String(this.currentAssetOffer.offerId),
+            CANCEL_OFFER_FEE
+          )
+        ))
+      }
+
+      operations.push(
+        base.ManageOfferBuilder.manageOffer(
+          this.getOfferOpts(OFFER_CREATE_ID, fee.percent)
+        ),
+      )
+
+      return operations
+    },
+
     getOfferOpts (offerId, offerFee) {
       return {
         offerID: offerId,
@@ -414,7 +481,8 @@ export default {
           .find(balance => balance.asset === this.form.asset).balanceId,
         isBuy: true,
         amount: this.form.amount,
-        price: this.sale.quoteAssetPrices[this.form.asset] || '1',
+        price: this.sale.quoteAssetPrices[this.form.asset] ||
+          DEFAULT_QUOTE_PRICE,
         fee: offerFee,
         orderBookID: this.sale.id,
       }
@@ -425,7 +493,10 @@ export default {
 
       try {
         const operation = base.ManageOfferBuilder.cancelOffer(
-          this.getOfferOpts(String(this.currentAssetOffer.offerId), '0')
+          this.getOfferOpts(
+            String(this.currentAssetOffer.offerId),
+            CANCEL_OFFER_FEE
+          )
         )
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadBalances()
@@ -457,7 +528,7 @@ export default {
 .invest-form__current-offer {
   margin-top: 2rem;
 
-    p {
+  p {
     font-size: 1.6rem;
   }
 
@@ -484,5 +555,10 @@ export default {
   font-weight: normal;
   max-width: 13rem;
   margin: .5rem;
+
+  &[disabled] {
+    filter: grayscale(100%);
+    cursor: default;
+  }
 }
 </style>

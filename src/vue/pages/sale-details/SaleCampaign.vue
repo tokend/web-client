@@ -3,7 +3,7 @@
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isInvestDrawerShown">
         <template slot="heading">
-          {{ 'sale-details.invest-title' | globalize }}
+          {{ 'sale-details.invest' | globalize }}
         </template>
 
         <invest-form
@@ -202,7 +202,7 @@ export default {
 }
 
 .sale-campaign__overview {
-  flex: 0 1 62.5%;
+  flex-basis: 64%;
   background-color: $col-sale-details-block;
   border-radius: .4rem;
   margin: 1.6rem;
@@ -224,11 +224,11 @@ export default {
 }
 
 .sale-campaign__sale-logo {
+  position: absolute;
   max-height: 100%;
   max-width: 100%;
   width: auto;
   height: auto;
-  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -248,19 +248,19 @@ export default {
 }
 
 .sale-campaign__investment {
-  flex: 0 1 34.4%;
+  flex-basis: 36%;
   background-color: $col-sale-details-block;
   border-radius: .4rem;
   margin: 1.6rem;
   padding: 3.3rem 3.4rem 2.2rem 2.4rem;
 
   @include respond-to($x-medium) {
-    flex: 0 1 45%;
+    flex-basis: 45%;
   }
 }
 
 .sale-campaign__marketprice {
-  height: 25rem;
+  max-height: 25rem;
 }
 
 .sale-campaign__progress-bar {
@@ -323,7 +323,6 @@ export default {
 .sale-campaign__overview-btn {
   padding: 0;
   font-weight: normal;
-  max-width: 13rem;
   margin: .5rem;
 }
 </style>
