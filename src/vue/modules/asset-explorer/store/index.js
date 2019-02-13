@@ -3,8 +3,9 @@ import { Asset } from '../wrappers/asset'
 
 import { api } from '../_api'
 import { types } from './types'
-
 import { base } from '@tokend/js-sdk'
+
+const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
   assets: [],
@@ -28,14 +29,14 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_ASSETS] () {
-    return api().get('/assets')
+  async [types.LOAD_ASSETS] (_, query) {
+    return api().get(`/${HORIZON_VERSION_PREFIX}/assets`, query)
   },
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const { data: account } = await api().getWithSignature(
-      `/accounts/${getters[types.accountId]}`, {
-        include: ['balances.state'],
-      })
+    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const { data: account } = await api().getWithSignature(endpoint, {
+      include: ['balances.state'],
+    })
 
     commit(types.SET_BALANCES, account.balances)
   },

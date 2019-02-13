@@ -11,10 +11,13 @@ let _api = null
 export function initApi (wallet, config) {
   const horizonURL = config.horizonURL
 
-  _api = ApiCaller.getInstance(`${horizonURL}/v3`)
+  _api = ApiCaller.getInstance(horizonURL)
   _api.useWallet(wallet)
 }
 
+/**
+ * @returns {sdk.ApiCaller}
+ */
 export function api () {
   if (!_api) {
     throw new Error('API is not initialized')
