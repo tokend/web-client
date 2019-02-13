@@ -79,7 +79,8 @@
       "field-error_address": "Make sure the address is correct",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
-      "field-error_maxLength": "This field must contain maximum {{length}} symbols"
+      "field-error_maxLength": "This field must contain maximum {{length}} symbols",
+      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
     },
 
     "errors": {
