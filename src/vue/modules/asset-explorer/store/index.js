@@ -54,12 +54,9 @@ export const actions = {
 export const getters = {
   [types.assets]: state => state.assets.map(a => new Asset(a)),
   [types.accountId]: state => state.accountId,
-  [types.getBalanceByAssetCode]: state => assetCode => {
-    const record = state.balances.find(b => b.asset.code === assetCode)
-    if (record) {
-      return new Balance(record)
-    }
-  },
+  [types.getBalanceByAssetCode]: state => assetCode => state.balances
+    .map(b => new Balance(b))
+    .find(b => b.assetCode === assetCode),
 }
 
 export const assetExplorerModule = {
