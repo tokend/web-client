@@ -117,7 +117,11 @@ export default {
         }
         await this.loadAccount(accountId)
         await this.loadKyc()
-        this.$router.go(-1)
+        if (Object.keys(this.$route.query).includes('return')) {
+          this.$router.push({ path: this.$route.query.return })
+        } else {
+          this.$router.push({ name: 'app' })
+        }
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {
           this.$router.push({
