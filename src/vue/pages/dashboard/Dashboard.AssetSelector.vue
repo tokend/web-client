@@ -27,7 +27,6 @@
             :value="currentAssetForSelect"
             :values="tokensList"
             :key="currentAssetForSelect"
-            :form-free="true"
             @input="$emit(EVENTS.assetChange, $event)"
             class="app__select app__select--no-border"
           />

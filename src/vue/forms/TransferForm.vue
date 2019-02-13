@@ -149,7 +149,7 @@
             {{ 'transfer-form.recipient-fees' | globalize }}
           </h3>
 
-          <!-- eslint-disable-next-line -->
+          <!-- eslint-disable-next-line max-len -->
           <template v-if="(+fees.destination.fixed || +fees.destination.percent) && !form.isPaidForRecipient">
             <p
               class="transfer__fee"
@@ -263,6 +263,10 @@ const VIEW_MODES = {
   confirm: 'confirm',
 }
 
+const EVENTS = {
+  operationSubmitted: 'operation-submitted',
+}
+
 export default {
   name: 'transfers-form',
   components: {
@@ -344,6 +348,7 @@ export default {
           .submitOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
+        this.$emit(EVENTS.operationSubmitted)
 
         await this.loadCurrentBalances()
         this.rerenderForm()

@@ -334,8 +334,12 @@
       "no-fees-msg": "Here will be the list of your fees"
     },
 
+    "fee-page": {
+      "filters-prefix": "Show:"
+    },
+
     "op-pages": {
-      "show": "Show",
+      "filters-prefix": "Show:",
       "no-operation-history": "No operation history",
       "here-will-be-the-list": "Here will be the list of your operations",
       "something-went-wrong": "Something went wrong",
@@ -575,7 +579,7 @@
       "table-price-lbl": "Price ({{asset}})",
       "table-total-lbl": "Total ({{asset}})",
       "table-time-lbl": "Time",
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "no-data-title": "No trade history",
       "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
     },
@@ -587,7 +591,7 @@
       "table-offer-lbl": "Order",
       "table-base-amount-lbl": "Base asset amount",
       "table-price-lbl": "Price in quote asset",
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "no-data-title": "No open orders",
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
       "buy-lbl": "Buy",
@@ -603,7 +607,7 @@
       "table-want-lbl": "Want ({{asset}})",
       "table-offer-lbl": "Order ({{asset}})",
       "table-price-lbl": "Price ({{asset}})",
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "no-data-title": "No orders",
       "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
       "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
@@ -658,7 +662,9 @@
       "no-assets-heading": "Ops!",
       "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "loading-msg": "Loading…",
+      "fee-loading-msg": "Loading…"
     },
 
     "deposit-form": {
@@ -673,11 +679,12 @@
       "no-assets-heading": "Ops!",
       "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "loading-msg": "Loading…"
     },
 
     "email-getter": {
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "master-account": "Master"
     },
 
