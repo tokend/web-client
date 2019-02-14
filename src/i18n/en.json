@@ -81,7 +81,8 @@
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_minDate": "Date should be after {{ minDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
-      "field-error_maxLength": "This field must contain maximum {{length}} symbols"
+      "field-error_maxLength": "This field must contain maximum {{length}} symbols",
+      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
     },
 
     "errors": {
@@ -336,8 +337,12 @@
       "no-fees-msg": "Here will be the list of your fees"
     },
 
+    "fee-page": {
+      "filters-prefix": "Show:"
+    },
+
     "op-pages": {
-      "show": "Show",
+      "filters-prefix": "Show:",
       "no-operation-history": "No operation history",
       "here-will-be-the-list": "Here will be the list of your operations",
       "something-went-wrong": "Something went wrong",
@@ -472,18 +477,24 @@
     "assets-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-token-btn": "Create token",
+      "create-token-btn": "Create token"
+    },
+
+    "assets-list": {
+      "update-token-title": "Update token",
+      "details-title": "Token details",
       "list-item-balance-line": "Balance: {{value, money}}",
-      "no-balance-msg": "No balance",
-      "token-details-title": "Token details"
+      "no-balance-msg": "No balance"
     },
 
     "asset-form": {
+      "loading-msg": "Loading",
+      "loading-error-msg":"There was an error while loading.",
       "update-token-title": "Update token",
       "next-btn": "Next",
       "submit-btn": "Submit",
       "information-step": "Token information",
-      "terms-step": "Terms",
+      "advanced-step": "Advanced",
       "name-lbl": "Token name",
       "code-lbl": "Token code",
       "max-issuance-amount-lbl": "Max issuance amount",
@@ -491,6 +502,9 @@
       "logo-note": "JPG or PNG, no less then 120x120 px",
       "transferable-lbl": "Transferable",
       "kyc-required-lbl": "Requires KYC",
+      "additional-issuance-check": "I do not want to make additional issuance later",
+      "preissued-asset-signer-lbl": "Preissued asset signer",
+      "initial-preissued-amount-lbl": "Initial preissued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "token-request-submitted-msg": "Your request was successfully submitted"
@@ -517,7 +531,6 @@
     },
 
     "asset-details": {
-      "title": "Token details",
       "balance-title": "Balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
@@ -526,6 +539,7 @@
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
       "add-balance-btn": "Add to my balances",
+      "update-btn": "Update",
       "balance-added-msg": "Added to your balances"
     },
 
@@ -604,7 +618,7 @@
       "table-price-lbl": "Price ({{asset}})",
       "table-total-lbl": "Total ({{asset}})",
       "table-time-lbl": "Time",
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "no-data-title": "No trade history",
       "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
     },
@@ -616,7 +630,7 @@
       "table-offer-lbl": "Order",
       "table-base-amount-lbl": "Base asset amount",
       "table-price-lbl": "Price in quote asset",
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "no-data-title": "No open orders",
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
       "buy-lbl": "Buy",
@@ -632,7 +646,7 @@
       "table-want-lbl": "Want ({{asset}})",
       "table-offer-lbl": "Order ({{asset}})",
       "table-price-lbl": "Price ({{asset}})",
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "no-data-title": "No orders",
       "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
       "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
@@ -715,7 +729,9 @@
       "no-assets-heading": "Ops!",
       "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "loading-msg": "Loading…",
+      "fee-loading-msg": "Loading…"
     },
 
     "deposit-form": {
@@ -730,11 +746,12 @@
       "no-assets-heading": "Ops!",
       "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "loading-msg": "Loading…"
     },
 
     "email-getter": {
-      "loading-msg": "Loading...",
+      "loading-msg": "Loading…",
       "master-account": "Master"
     },
 

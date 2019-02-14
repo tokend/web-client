@@ -2,11 +2,22 @@
   <div class="assets-list">
     <drawer :is-shown.sync="isDetailsDrawerShown">
       <template slot="heading">
-        {{ 'asset-details.title' | globalize }}
+        <template v-if="isUpdateMode">
+          {{ 'assets-list.update-token-title' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'assets-list.details-title' | globalize }}
+        </template>
       </template>
+      <asset-update-form
+        v-if="isUpdateMode"
+        :asset-record="selectedAsset"
+      />
       <asset-details
+        v-else
         :asset="selectedAsset"
-        @balance-added="updateSelectedAsset"
+        @balance-added="refreshSelectedAsset"
+        @update-ask="isUpdateMode = true"
       />
     </drawer>
     <div class="asset-cards">
@@ -35,13 +46,13 @@
             class="asset-card__balance"
           >
             <!-- eslint-disable-next-line max-len -->
-            {{ 'assets-page.list-item-balance-line' | globalize({ value: asset.balance }) }}
+            {{ 'assets-list.list-item-balance-line' | globalize({ value: asset.balance }) }}
           </p>
           <p
             v-else
             class="asset-card__balance asset-card__no-balance"
           >
-            {{ 'assets-page.no-balance-msg' | globalize }}
+            {{ 'assets-list.no-balance-msg' | globalize }}
           </p>
         </div>
       </a>
@@ -53,6 +64,7 @@
 import Drawer from '@/vue/common/Drawer'
 import AssetDetails from '@/vue/pages/assets/AssetDetails'
 import AssetLogo from '@/vue/common/assets/AssetLogo'
+import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -67,12 +79,14 @@ export default {
     Drawer,
     AssetDetails,
     AssetLogo,
+    AssetUpdateForm,
   },
   props: {
     assets: { type: Array, default: _ => [] },
   },
   data: _ => ({
     isDetailsDrawerShown: false,
+    isUpdateMode: false,
     selectedAsset: null,
     config,
   }),
@@ -88,9 +102,10 @@ export default {
   methods: {
     selectAsset (asset) {
       this.selectedAsset = asset
+      this.isUpdateMode = false
       this.isDetailsDrawerShown = true
     },
-    updateSelectedAsset () {
+    refreshSelectedAsset () {
       this.selectedAsset = this.assetRecords
         .find(asset => asset.code === this.selectedAsset.code)
     },
