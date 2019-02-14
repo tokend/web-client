@@ -117,9 +117,7 @@ export default {
     fees: {},
     isLoaded: false,
     isLoadingFailed: false,
-    filters: {
-      asset: '',
-    },
+    filters: { asset: {} },
     assets: [],
   }),
   computed: {
@@ -129,7 +127,8 @@ export default {
     ]),
 
     selectedFees () {
-      return this.fees[this.filters.asset.code.toLowerCase()]
+      const selected = (this.filters.asset.code || '').toLowerCase()
+      return this.fees[selected]
     },
   },
 
@@ -139,7 +138,7 @@ export default {
       await this.loadFees()
       this.isLoaded = true
     } catch (error) {
-      this.isLoadFailed = true
+      this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(error)
     }
   },
