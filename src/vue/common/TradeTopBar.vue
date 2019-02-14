@@ -42,8 +42,7 @@
         v-model="selectedPair"
         :values="formattedPairs"
         :key="selectedPair"
-        :form-free="true"
-        class="trade-asset-selector__field"
+        class="trade-asset-selector__field app__select app__select--no-border"
       />
     </div>
     <div class="trade-asset-selector__balances">

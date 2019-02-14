@@ -49,6 +49,7 @@ export class AssetRecord {
       return {
         value: balance.balance,
         currency: balance.asset,
+        id: balance.balanceId,
       }
     } else {
       return {}
@@ -62,6 +63,11 @@ export class AssetRecord {
 
   _policy () {
     return this._policies().reduce((s, p) => s | p, 0)
+  }
+
+  get nameAndCode () {
+    const name = this.name || this.code
+    return `${name} (${this.code})`
   }
 
   get isBaseAsset () {
