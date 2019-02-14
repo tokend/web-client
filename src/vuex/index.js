@@ -6,6 +6,7 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 
+import { movementHistoryModule } from '@/vue/modules/movement-history/store'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
@@ -35,6 +36,8 @@ const store = new Vuex.Store({
     factors,
     wallet,
     kyc,
+    // namespaced local modules (used by a specific set of components)
+    'movement-history': movementHistoryModule,
   },
   plugins: [sessionStoragePlugin],
 })
