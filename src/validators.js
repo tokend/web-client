@@ -42,7 +42,7 @@ export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance > +value
 }
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
-  const [, decimals] = value.split('.')
+  const [, decimals] = String(value).split('.')
   if (decimals) {
     return decimals.length <= maxDecimalDigitsCount
   } else {
