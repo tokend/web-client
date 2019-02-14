@@ -88,8 +88,8 @@
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'issuance.no-issuance-history-title' | globalize"
-          :msg-message="'issuance.no-issuance-history-msg' | globalize"
+          title-id="issuance.no-issuance-history-title"
+          message-id="issuance.no-issuance-history-msg"
         />
       </template>
     </div>
@@ -183,7 +183,7 @@ export default {
 @import "~@scss/mixins";
 
 .issuance-history__table {
-  max-width: 105rem;
+  width: 100%;
 }
 
 .issuance-btn {

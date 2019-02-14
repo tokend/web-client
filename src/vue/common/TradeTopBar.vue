@@ -8,7 +8,9 @@
             query: { base: assetPair.base, quote: assetPair.quote }
           }"
         >
-          {{ 'trade-top-bar.exchange-view' | globalize }}
+          <span>
+            {{ 'trade-top-bar.exchange-view' | globalize }}
+          </span>
         </router-link>
         <router-link
           :to="{
@@ -16,7 +18,9 @@
             query: { base: assetPair.base, quote: assetPair.quote }
           }"
         >
-          {{ 'trade-top-bar.my-offers-view' | globalize }}
+          <span>
+            {{ 'trade-top-bar.my-offers-view' | globalize }}
+          </span>
         </router-link>
       </template>
       <template slot="extra">
