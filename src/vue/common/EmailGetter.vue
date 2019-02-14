@@ -51,19 +51,23 @@ export default {
   }),
 
   async created () {
-    if (this.accountId === Sdk.networkDetails.masterAccountId) {
-      this.isMasterAccount = true
-      return
-    }
-
-    if (this.accountId || this.balanceId) {
-      this.isLoading = true
-      await this.loadEmail()
-      this.isLoading = false
-    }
+    await this.init()
   },
 
   methods: {
+    async init () {
+      if (this.accountId === Sdk.networkDetails.masterAccountId) {
+        this.isMasterAccount = true
+        return
+      }
+
+      if (this.accountId || this.balanceId) {
+        this.isLoading = true
+        await this.loadEmail()
+        this.isLoading = false
+      }
+    },
+
     async loadEmail () {
       try {
         const accountId = await this.getAccountId()
