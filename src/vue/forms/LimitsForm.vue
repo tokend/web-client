@@ -223,7 +223,6 @@ export default {
     isLimitsChanged: false,
     formNoteMaxLength: 250,
     config,
-    MIN_VALID_LIMIT_VALUE,
   }),
   validations () {
     return {
