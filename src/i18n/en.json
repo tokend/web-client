@@ -201,6 +201,8 @@
     },
 
     "verification-form": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
