@@ -53,7 +53,6 @@
     >
       {{ errorMessage }}
     </p>
-    <!-- Selected: {{ value }} -->
   </div>
 </template>
 
