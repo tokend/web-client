@@ -180,11 +180,11 @@ describe('Dashboard.AssetSelector component', () => {
         expect(wrapper.vm.currentAssetForSelect).to.equal('Ethereum (ETH)')
       })
 
-      it('returns "null" if this.tokens list is empty', () => {
+      it('returns empty string if this.tokens list is empty', () => {
         wrapper.vm.currentAsset = 'ETH'
         wrapper.vm.tokens = []
 
-        expect(wrapper.vm.currentAssetForSelect).to.equal(null)
+        expect(wrapper.vm.currentAssetForSelect).to.equal('')
       })
     })
 

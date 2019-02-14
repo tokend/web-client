@@ -3,12 +3,21 @@
     <template v-if="isLoaded">
       <template v-if="requestsHistory.length">
         <drawer :is-shown.sync="isDetailsDrawerShown">
-          <template v-if="isUpdating">
+          <template v-if="isUpdateMode">
             <template slot="heading">
               {{ 'asset-form.update-token-title' | globalize }}
             </template>
-            <asset-form
+
+            <asset-create-form
+              v-if="isAssetCreateRequestSelected"
               :request="selectedRequest"
+              @update="loadHistory"
+            />
+
+            <asset-update-form
+              v-else
+              :request="selectedRequest"
+              :asset-for-update="selectedRequest.assetCode"
               @update="loadHistory"
             />
           </template>
@@ -18,7 +27,7 @@
             </template>
             <asset-request-details
               :request="selectedRequest"
-              @update="updateRequest"
+              @update="isUpdateMode = true"
               @cancel="cancelRequest"
             />
           </template>
@@ -127,14 +136,17 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import AssetRequestDetails from '@/vue/pages/assets/AssetRequestDetails'
-import AssetForm from '@/vue/forms/AssetForm'
+
+import AssetCreateForm from '@/vue/forms/AssetCreateForm'
+import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
-import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
+
+import { RecordWrapper } from '@/js/records'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -149,7 +161,8 @@ export default {
     Drawer,
     NoDataMessage,
     AssetRequestDetails,
-    AssetForm,
+    AssetCreateForm,
+    AssetUpdateForm,
   },
   data: _ => ({
     requestsHistory: [],
@@ -157,7 +170,7 @@ export default {
     isLoadingFailed: false,
     isDetailsDrawerShown: false,
     selectedIndex: -1,
-    isUpdating: false,
+    isUpdateMode: false,
     REQUEST_STATES,
   }),
   computed: {
@@ -166,6 +179,9 @@ export default {
     }),
     selectedRequest () {
       return this.requestsHistory[this.selectedIndex]
+    },
+    isAssetCreateRequestSelected () {
+      return this.selectedRequest instanceof AssetCreateRequestRecord
     },
   },
   async created () {
@@ -178,40 +194,17 @@ export default {
           requestor: this.account.accountId,
         })
         this.requestsHistory =
-          data.map(request => this.createRequestRecord(request))
+          data.map(request => RecordWrapper.request(request))
         this.isLoaded = true
       } catch (e) {
         this.isLoadingFailed = true
         ErrorHandler.process(e)
       }
     },
-    createRequestRecord (request) {
-      if (request.details.assetCreate) {
-        return new AssetCreateRequestRecord(request)
-      } else {
-        return new AssetUpdateRequestRecord(request)
-      }
-    },
     showRequestDetails (index) {
       this.selectedIndex = index
-      this.isUpdating = false
+      this.isUpdateMode = false
       this.isDetailsDrawerShown = true
-    },
-    async updateRequest () {
-      try {
-        if (this.selectedRequest instanceof AssetUpdateRequestRecord) {
-          const { data } =
-            await Sdk.horizon.assets.get(this.selectedRequest.assetCode)
-          this.requestsHistory.splice(this.selectedIndex, 1,
-            Object.assign(this.selectedRequest, {
-              maxIssuanceAmount: data.maxIssuanceAmount,
-            })
-          )
-        }
-        this.isUpdating = true
-      } catch (e) {
-        ErrorHandler.process(e)
-      }
     },
     async cancelRequest () {
       try {

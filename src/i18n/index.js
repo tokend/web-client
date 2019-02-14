@@ -72,9 +72,9 @@ export const i18nOptions = {
           if (!_isObject(param)) {
             return numeral(param)
               .format(formats.default)
-          } else if (formats[param.currency.toLowerCase()]) {
+          } else if (formats[(param.currency || '').toLowerCase()]) {
             return numeral(param.value)
-              .format(formats[param.currency.toLowerCase()])
+              .format(formats[(param.currency || '').toLowerCase()])
           } else {
             return numeral(param.value)
               .format(formats.default)
