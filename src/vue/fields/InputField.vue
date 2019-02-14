@@ -69,8 +69,6 @@ export default {
 .input-field {
   position: relative;
   width: 100%;
-  // TODO: remove height
-  height: 4.9rem;
   flex: 1;
 }
 
@@ -79,8 +77,6 @@ export default {
   width: 100%;
   background: none;
   border: none;
-  // TODO: remove height
-  height: 4.9rem;
   caret-color: $field-color-focused;
   color: $field-color-text;
   padding: $field-input-padding;

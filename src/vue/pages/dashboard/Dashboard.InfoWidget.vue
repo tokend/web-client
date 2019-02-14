@@ -63,7 +63,10 @@ export default {
       })
 
       this.transactions = response.data.map(el => {
-        return RecordWrapper.operation(el, { accountId: this.accountId })
+        return RecordWrapper.operation(el, {
+          accountId: this.accountId,
+          asset: this.currentAsset,
+        })
       })
     },
     toggleDetails (index) {

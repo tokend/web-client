@@ -123,7 +123,6 @@ export default {
         Bus.success('issuance.pre-issuance-uploaded-msg')
         this.reset()
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
