@@ -62,7 +62,11 @@
           @blur="touchField('form.dailyOut')"
           :error-message="getFieldErrorMessage(
             'form.dailyOut',
-            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+            {
+              maxValue: config.MAX_AMOUNT,
+              minValue: getMinValidDailyOutValue(),
+              quantity: config.DECIMAL_POINTS,
+            }
           )"
         />
       </div>
@@ -76,7 +80,11 @@
           @blur="touchField('form.weeklyOut')"
           :error-message="getFieldErrorMessage(
             'form.weeklyOut',
-            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+            {
+              maxValue: config.MAX_AMOUNT,
+              minValue: getMinValidWeeklyOutValue(),
+              quantity: config.DECIMAL_POINTS,
+            }
           )"
         />
       </div>
@@ -92,7 +100,11 @@
           @blur="touchField('form.monthlyOut')"
           :error-message="getFieldErrorMessage(
             'form.monthlyOut',
-            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+            {
+              maxValue: config.MAX_AMOUNT,
+              minValue: getMinValidMonthlyOutValue(),
+              quantity: config.DECIMAL_POINTS,
+            }
           )"
         />
       </div>
@@ -106,7 +118,11 @@
           @blur="touchField('form.annualOut')"
           :error-message="getFieldErrorMessage(
             'form.annualOut',
-            { maxValue: config.MAX_AMOUNT, quantity: config.DECIMAL_POINTS }
+            {
+              maxValue: config.MAX_AMOUNT,
+              minValue: getMinValidAnnualOutValue(),
+              quantity: config.DECIMAL_POINTS,
+            }
           )"
         />
       </div>
@@ -156,6 +172,7 @@ import {
   maxLength,
   maxValueWrapper,
   decimal,
+  minValue,
   maxDecimalPoints,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
@@ -181,6 +198,8 @@ const EVENTS = {
   limitsChanged: 'limits-changed',
 }
 
+const MIN_VALID_LIMIT_VALUE = 0
+
 export default {
   name: 'limits-form',
   mixins: [FormMixin],
@@ -204,6 +223,7 @@ export default {
     isLimitsChanged: false,
     formNoteMaxLength: 250,
     config,
+    MIN_VALID_LIMIT_VALUE,
   }),
   validations () {
     return {
@@ -212,21 +232,25 @@ export default {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          minValue: minValue(this.getMinValidDailyOutValue()),
         },
         weeklyOut: {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          minValue: minValue(this.getMinValidWeeklyOutValue()),
         },
         monthlyOut: {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          minValue: minValue(this.getMinValidMonthlyOutValue()),
         },
         annualOut: {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          minValue: minValue(this.getMinValidAnnualOutValue()),
         },
         note: {
           maxLength: maxLength(this.formNoteMaxLength),
@@ -305,6 +329,37 @@ export default {
           label: value,
         })
       }
+    },
+
+    // ####### VALIDATIONS
+
+    getMinValidDailyOutValue () {
+      return this.getMaxValue([MIN_VALID_LIMIT_VALUE])
+    },
+    getMinValidWeeklyOutValue () {
+      return this.getMaxValue([
+        MIN_VALID_LIMIT_VALUE,
+        this.form.dailyOut,
+      ])
+    },
+    getMinValidMonthlyOutValue () {
+      return this.getMaxValue([
+        MIN_VALID_LIMIT_VALUE,
+        this.form.dailyOut,
+        this.form.weeklyOut,
+      ])
+    },
+    getMinValidAnnualOutValue () {
+      return this.getMaxValue([
+        MIN_VALID_LIMIT_VALUE,
+        this.form.dailyOut,
+        this.form.weeklyOut,
+        this.form.monthlyOut,
+      ])
+    },
+
+    getMaxValue (values) {
+      return Math.max(...values.map(item => Number(item)))
     },
   },
 }
