@@ -173,7 +173,6 @@ export default {
     try {
       await this.loadKyc()
     } catch (e) {
-      console.error(e)
       ErrorHandler.process(e)
     }
     if (this.kycState) {
@@ -193,7 +192,6 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
         this.enableForm()
       }

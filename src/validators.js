@@ -18,8 +18,12 @@ export const password = value => validators.minLength(6)(value)
 export const seed = value => base.Keypair.isValidSecretKey(value)
 export const amount = value => Number(value) && Number(value) > 0
 export const requiredAtLeastOne = value => !!value.length
-export const amountRange = (from, to) => value => Number(value) &&
-  Number(value) >= +from && Number(value) <= +to
+export const amountRange = (from, to) => value =>
+  !validators.helpers.req(value) || (
+    Number(value) &&
+    Number(value) >= Number(from) &&
+    Number(value) <= Number(to)
+  )
 export const minDate = (minDate) => value => {
   return moment(value).isAfter(moment(minDate))
 }
@@ -42,6 +46,14 @@ export const emailOrAccountId = value => {
 export const documentContainer = value => value instanceof DocumentContainer
 export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance > +value
+}
+export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
+  const [, decimals] = String(value).split('.')
+  if (decimals) {
+    return decimals.length <= maxDecimalDigitsCount
+  } else {
+    return true
+  }
 }
 
 export * from 'vuelidate/lib/validators'
