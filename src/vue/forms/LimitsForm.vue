@@ -330,8 +330,6 @@ export default {
       }
     },
 
-    // ####### VALIDATIONS
-
     getMinValidDailyOutValue () {
       return this.getMaxValue([MIN_VALID_LIMIT_VALUE])
     },
