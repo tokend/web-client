@@ -324,7 +324,7 @@ export default {
     }),
 
     assetRequestOpts () {
-      const requestId = this.request instanceof AssetCreateRequestRecord
+      const requestId = this.request
         ? this.request.id
         : ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
