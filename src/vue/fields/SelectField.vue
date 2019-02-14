@@ -4,7 +4,7 @@
     :class="{
       'select-field--disabled': disabled,
       'select-field--focused': isListOpened,
-      'select-field--label-minimized': preSelected,
+      'select-field--label-minimized': highlighten,
       'select-field--error': errorMessage
     }"
   >
@@ -24,7 +24,7 @@
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
-        {{ selected | getOptionText(keyAsValueText) }}
+        {{ selected | getValueText(keyAsValueText) }}
       </span>
       <i
         class="select-field__selected-icon mdi mdi-chevron-down"
@@ -41,10 +41,10 @@
         :key="index"
         type="button"
         class="select-field__list-item"
-        :class="{ 'select-field__list-item--selected': preSelected === item }"
+        :class="{ 'select-field__list-item--selected': highlighten === item }"
         @click.prevent="selectItem(item)"
       >
-        {{ item | getOptionText(keyAsValueText) }}
+        {{ item | getValueText(keyAsValueText) }}
       </button>
     </div>
     <p
@@ -57,6 +57,25 @@
 </template>
 
 <script>
+/**
+ * The values prop of the component accepts an array of strings or objects.
+ * If you provide collection of objects you should provide also
+ * key-as-value-text - name of the object key to be shown as text of selected
+ * value. key-as-value-text accepts names of properties, getters and methods
+ *
+ * The field emits items as is - if you provide arrays of strings the string
+ * will be emitted on selection, if you provide arrays of objects the object
+ * will be emitted on selection.
+ *
+ * Example of how to provide object collection and show code of each value as
+ * the value text
+ *
+ * <select-field
+ *   :values="assets"
+ *   key-as-value-text="code"
+ * />
+ */
+
 import { KEY_CODES } from '@/js/const/key-codes.const'
 import _get from 'lodash/get'
 
@@ -68,7 +87,7 @@ export default {
   name: 'select-field',
 
   filters: {
-    getOptionText (item, keyAsValueText) {
+    getValueText (item, keyAsValueText) {
       const result = keyAsValueText
         ? _get(item, keyAsValueText, item)
         : item
@@ -106,22 +125,14 @@ export default {
   },
 
   data: () => ({
-    selected: null, // selected item in the list
-    preSelected: null, // active list element (for arrow navigation)
+    selected: null,
+    highlighten: null, // active list element (for arrow navigation)
     isListOpened: false,
     KEY_CODES,
   }),
 
-  watch: {
-    isListOpened (value) {
-      if (value) {
-        document.addEventListener('click', this.onDocumentClick)
-      }
-    },
-  },
-
   created () {
-    this.preSelected = this.value
+    this.highlighten = this.value
     this.selected = this.value
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
@@ -133,7 +144,7 @@ export default {
 
   methods: {
     selectItem (item) {
-      this.preSelected = item
+      this.highlighten = item
       this.selected = item
       this.$emit(EVENTS.input, item)
       this.toggleListVisibility()
@@ -143,16 +154,17 @@ export default {
     },
     openList () {
       const index = this.getIndex(this.selected)
-      this.preSelected = this.selected
+      this.highlighten = this.selected
 
       this.scrollList(index)
       this.isListOpened = true
+      document.addEventListener('click', this.onDocumentClick)
     },
     closeList () {
       this.isListOpened = false
     },
     onDocumentClick (event) {
-      if (!event.target.closest('.select__list')) {
+      if (!event.target.closest('.select-field')) {
         this.closeList()
         document.removeEventListener('click', this.onDocumentClick)
       }
@@ -163,7 +175,7 @@ export default {
       }
 
       event.preventDefault()
-      let index = this.getIndex(this.preSelected)
+      let index = this.getIndex(this.highlighten)
 
       switch (event.which) {
         case KEY_CODES.enter:
@@ -206,12 +218,12 @@ export default {
     },
     selectNextItem (index, valuesList) {
       index === valuesList.length - 1 ? index = 0 : index += 1
-      this.preSelected = valuesList[index]
+      this.highlighten = valuesList[index]
       return index
     },
     selectPrevItem (index, valuesList) {
       index === 0 ? index += valuesList.length - 1 : index -= 1
-      this.preSelected = valuesList[index]
+      this.highlighten = valuesList[index]
       return index
     },
   },
