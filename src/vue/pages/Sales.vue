@@ -14,7 +14,8 @@
           <select-field
             :disabled="!isLoaded"
             v-model="filters.state"
-            :values="SALE_STATES"
+            :values="Object.values(SALE_STATES)"
+            key-as-value-text="label"
             class="app__select app__select--no-border"
           />
         </div>
@@ -106,21 +107,30 @@ import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { vueRoutes } from '@/vue-router/routes'
+
+import { globalize } from '@/vue/filters/globalize'
+
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
 
+
+// We need to translate sale states for displaying them in select field,
+// that's why globalize filter was used here.
+//
+// TODO: find a better way to use translations in select field
 const SALE_STATES = {
   live: {
-    label: 'sales.sale-live-state',
+    label: globalize('sales.sale-live-state'),
     value: 'live',
   },
   upcoming: {
-    label: 'sales.sale-upcoming-state',
+    label: globalize('sales.sale-upcoming-state'),
     value: 'upcoming',
   },
   all: {
-    label: 'sales.sale-all-state',
+    label: globalize('sales.sale-all-state'),
     value: 'all',
   },
 }
@@ -143,7 +153,7 @@ export default {
     saleRecords: [],
     filters: {
       baseAsset: '',
-      state: SALE_STATES.live.value,
+      state: SALE_STATES.live,
     },
     isLoaded: false,
     isCreateSaleDrawerShown: false,
@@ -180,7 +190,7 @@ export default {
     },
 
     recordsLoader () {
-      const saleState = this.filters.state
+      const saleState = this.filters.state.value
 
       return function () {
         return Sdk.horizon.sales.getPage({
@@ -211,8 +221,12 @@ export default {
     },
 
     viewSale (sale) {
-      // TODO: add the sale details route when sale details component
-      // is added.
+      this.$router.push({
+        name: vueRoutes.saleDetails.name,
+        params: {
+          id: sale.id,
+        },
+      })
     },
   },
 }
