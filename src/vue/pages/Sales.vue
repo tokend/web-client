@@ -115,7 +115,6 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
 
-
 // We need to translate sale states for displaying them in select field,
 // that's why globalize filter was used here.
 //
