@@ -194,7 +194,7 @@ export default {
       return operations.map((operation) => {
         return RecordWrapper.operation(operation, {
           accountId: this.accountId,
-          asset: this.asset,
+          asset: this.asset.code,
           balanceId: this.asset.balance.id,
         })
       }).reduce((list, item) => {
