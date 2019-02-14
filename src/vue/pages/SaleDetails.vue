@@ -1,65 +1,60 @@
 <template>
   <div class="sale-details">
-    <top-bar v-if="sale.id">
-      <template slot="main">
-        <router-link
-          v-ripple
-          :to="vueRoutes.saleDetails"
-        >
-          <span>
-            {{ 'sale-details.campaign-title' | globalize }}
-          </span>
-        </router-link>
-      </template>
+    <template v-if="sale">
+      <top-bar>
+        <template slot="main">
+          <router-link
+            v-ripple
+            :to="vueRoutes.saleDetails"
+          >
+            <span>
+              {{ 'sale-details.campaign-title' | globalize }}
+            </span>
+          </router-link>
+        </template>
 
-      <template slot="extra">
-        <button
-          v-ripple
-          class="app__button-raised sale-details__invest-btn"
-          @click="isInvestDrawerShown = true"
-        >
+        <template slot="extra">
+          <button
+            v-ripple
+            class="app__button-raised sale-details__invest-btn"
+            @click="isInvestDrawerShown = true"
+          >
+            {{ 'sale-details.invest' | globalize }}
+          </button>
+        </template>
+      </top-bar>
+
+      <drawer :is-shown.sync="isInvestDrawerShown">
+        <template slot="heading">
           {{ 'sale-details.invest' | globalize }}
-        </button>
-      </template>
-    </top-bar>
+        </template>
 
-    <drawer :is-shown.sync="isInvestDrawerShown">
-      <template slot="heading">
-        {{ 'sale-details.invest' | globalize }}
-      </template>
-
-      <invest-form
-        :sale="sale"
-        @submitted="refreshSale"
-        @canceled="refreshSale"
-      />
-    </drawer>
-
-    <template v-if="isLoaded">
-      <template v-if="sale.id">
-        <div class="sale-details__title">
-          <h2 class="sale-details__name">
-            {{ `${sale.name} (${sale.baseAsset})` }}
-          </h2>
-
-          <p class="sale-details__short-desc">
-            {{ sale.shortDescription }}
-          </p>
-        </div>
-
-        <sale-campaign
+        <invest-form
           :sale="sale"
-          @update-ask="refreshSale"
+          @submitted=" isInvestDrawerShown = false || refreshSale"
+          @canceled="isInvestDrawerShown = false || refreshSale"
         />
-      </template>
+      </drawer>
 
-      <template v-else>
-        <no-data-message
-          icon-name="alert-circle"
-          :title-id="'sale-details.sale-not-found-title'"
-          :message-id="'sale-details.sale-not-found-desc'"
-        />
-      </template>
+      <div class="sale-details__title">
+        <h2 class="sale-details__name">
+          {{ `${sale.name} (${sale.baseAsset})` }}
+        </h2>
+
+        <p class="sale-details__short-desc">
+          {{ sale.shortDescription }}
+        </p>
+      </div>
+
+      <router-view :sale="sale" />
+    </template>
+
+    <template v-else-if="isSaleNotFound">
+      <no-data-message
+        icon-name="alert-circle"
+        :title-id="'sale-details.sale-not-found-title'"
+        :message-id="'sale-details.sale-not-found-desc'"
+      />
     </template>
 
     <template v-else-if="isLoadingFailed">
@@ -81,7 +76,6 @@ import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InvestForm from '@/vue/forms/InvestForm'
-import SaleCampaign from '@/vue/pages/sale-details/SaleCampaign'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -100,19 +94,22 @@ export default {
     Drawer,
     NoDataMessage,
     InvestForm,
-    SaleCampaign,
+  },
+
+  props: {
+    id: { type: String, default: '' },
   },
 
   data: _ => ({
-    sale: {},
-    isLoaded: false,
+    sale: null,
+    isSaleNotFound: false,
     isLoadingFailed: false,
     isInvestDrawerShown: false,
     vueRoutes,
   }),
 
   async created () {
-    await this.loadSale(this.$route.params.id)
+    await this.loadSale(this.id)
   },
 
   methods: {
@@ -120,10 +117,9 @@ export default {
       try {
         const { data } = await Sdk.horizon.sales.get(saleId)
         this.sale = new SaleRecord(data)
-        this.isLoaded = true
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
-          this.isLoaded = true
+          this.isSaleNotFound = true
         } else {
           this.isLoadingFailed = true
           ErrorHandler.processWithoutFeedback(e)
@@ -132,11 +128,8 @@ export default {
     },
 
     async refreshSale () {
-      this.sale = {}
-      this.isLoaded = false
-      this.isInvestDrawerShown = false
-
-      await this.loadSale(this.$route.params.id)
+      this.sale = null
+      await this.loadSale(this.id)
     },
   },
 }

@@ -1,18 +1,6 @@
 <template>
   <div class="sale-campaign">
     <template v-if="isLoaded">
-      <drawer :is-shown.sync="isInvestDrawerShown">
-        <template slot="heading">
-          {{ 'sale-details.invest' | globalize }}
-        </template>
-
-        <invest-form
-          :sale="sale"
-          @submitted="$emit(EVENTS.updateAsk)"
-          @canceled="$emit(EVENTS.updateAsk)"
-        />
-      </drawer>
-
       <drawer :is-shown.sync="isOverviewDrawerShown">
         <template slot="heading">
           {{ 'sale-details.overview-title' | globalize }}
@@ -50,8 +38,8 @@
             class="sale-campaign__marketprice"
             :base-asset="sale.baseAsset"
             :quote-asset="sale.defaultQuoteAsset"
-            :is-tabs-shown="false"
-            :is-ticks-shown="false"
+            :show-tabs="false"
+            :show-ticks="false"
           />
 
           <p class="sale-campaign__invested">
@@ -90,15 +78,7 @@
           <div class="sale-campaign__actions">
             <button
               v-ripple
-              class="app__button-raised sale-campaign__invest-btn"
-              @click="isInvestDrawerShown = true"
-            >
-              {{ 'sale-details.invest' | globalize }}
-            </button>
-
-            <button
-              v-ripple
-              class="app__button sale-campaign__overview-btn"
+              class="app__button-raised sale-campaign__overview-btn"
               @click="isOverviewDrawerShown = true"
             >
               {{ 'sale-details.view-details-btn' | globalize }}
@@ -125,7 +105,6 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import Chart from '@/vue/common/chart/Chart'
 
-import InvestForm from '@/vue/forms/InvestForm'
 import SaleOverview from '@/vue/pages/sale-details/SaleOverview'
 
 import VueMarkdown from 'vue-markdown'
@@ -137,10 +116,6 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-const EVENTS = {
-  updateAsk: 'update-ask',
-}
-
 export default {
   name: 'sale-campaign',
   components: {
@@ -148,7 +123,6 @@ export default {
     Drawer,
     VueMarkdown,
     Chart,
-    InvestForm,
     SaleOverview,
   },
 
@@ -158,12 +132,10 @@ export default {
 
   data: _ => ({
     saleDescription: '',
-    isLoaded: false,
+    isLoaded: true,
     isLoadingFailed: false,
-    isInvestDrawerShown: false,
     isOverviewDrawerShown: false,
     config,
-    EVENTS,
   }),
 
   async created () {
@@ -190,10 +162,14 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+.sale-campaign {
+  margin-top: 2.4rem;
+}
+
 .sale-campaign__content {
   display: flex;
   align-items: flex-start;
-  margin: .8rem -1.6rem -1.6rem;
+  margin: -1.6rem;
 
   @include respond-to($small) {
     flex-direction: column-reverse;
@@ -302,23 +278,9 @@ export default {
   margin-top: 1.6rem;
 }
 
-.sale-campaign__actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 1.9rem -.5rem -.5rem;
-}
-
-.sale-campaign__invest-btn {
-  margin: .5rem;
-  max-width: 12rem;
-  width: 100%;
-}
-
 .sale-campaign__overview-btn {
-  padding: 0;
-  font-weight: normal;
-  margin: .5rem;
+  margin-top: 3.2rem;
+  max-width: 18rem;
+  width: 100%;
 }
 </style>
