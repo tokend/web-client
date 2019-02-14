@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
-    "@tokend/js-sdk": "0.3.23",
+    "@tokend/js-sdk": "0.3.31",
     "@tokend/wallet.js": "git+https://github.com/tokend/wallet.js.git",
     "accounting": "0.4.1",
     "bignumber.js": "8.0.1",
