@@ -117,8 +117,8 @@ export default {
         }
         await this.loadAccount(accountId)
         await this.loadKyc()
-        if (Object.keys(this.$route.query).includes('return')) {
-          this.$router.push({ path: this.$route.query.return })
+        if (Object.keys(this.$route.query).includes('redirectPath')) {
+          this.$router.push({ path: this.$route.query.redirectPath })
         } else {
           this.$router.push({ name: 'app' })
         }
