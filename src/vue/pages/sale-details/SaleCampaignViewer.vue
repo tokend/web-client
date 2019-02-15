@@ -1,12 +1,12 @@
 <template>
   <div class="sale-campaign-viewer">
     <div class="sale-campaign-viewer__content">
-      <div class="sale-campaign-viewer__overview">
+      <div class="sale-campaign-viewer__description">
         <sale-logo-viewer :sale="sale" />
         <sale-description-viewer :sale="sale" />
       </div>
 
-      <div class="sale-campaign-viewer__investment">
+      <div class="sale-campaign-viewer__state">
         <sale-state-widget :sale="sale" />
       </div>
     </div>
@@ -53,7 +53,7 @@ export default {
   }
 }
 
-.sale-campaign-viewer__overview {
+.sale-campaign-viewer__description {
   flex-basis: 64%;
   background-color: $col-sale-details-block;
   border-radius: .4rem;
@@ -64,7 +64,7 @@ export default {
   }
 }
 
-.sale-campaign-viewer__investment {
+.sale-campaign-viewer__state {
   flex-basis: 36%;
   background-color: $col-sale-details-block;
   border-radius: .4rem;
