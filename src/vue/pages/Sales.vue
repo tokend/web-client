@@ -12,10 +12,11 @@
 
         <div class="sales__state-filter">
           <select-field
+            :is-value-translatable="true"
             :disabled="!isLoaded"
             v-model="filters.state"
             :values="Object.values(SALE_STATES)"
-            key-as-value-text="label"
+            key-as-value-text="labelTranslationId"
             class="app__select app__select--no-border"
           />
         </div>
@@ -109,27 +110,21 @@ import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import { globalize } from '@/vue/filters/globalize'
-
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
 
-// We need to translate sale states for displaying them in select field,
-// that's why globalize filter was used here.
-//
-// TODO: find a better way to use translations in select field
 const SALE_STATES = {
   live: {
-    label: globalize('sales.sale-live-state'),
+    labelTranslationId: 'sales.sale-live-state',
     value: 'live',
   },
   upcoming: {
-    label: globalize('sales.sale-upcoming-state'),
+    labelTranslationId: 'sales.sale-upcoming-state',
     value: 'upcoming',
   },
   all: {
-    label: globalize('sales.sale-all-state'),
+    labelTranslationId: 'sales.sale-all-state',
     value: 'all',
   },
 }
