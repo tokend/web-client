@@ -1,6 +1,6 @@
 <template>
   <div class="transfer app__page-content-wrp">
-    <template v-if="!tokenCodes.length">
+    <template v-if="!tokens.length">
       <h2 class="app__page-heading">
         {{ 'transfer-form.no-assets-heading' | globalize }}
       </h2>
@@ -26,17 +26,18 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
-              :values="tokenCodes"
-              v-model="form.tokenCode"
+              :values="tokens"
+              v-model="form.token"
+              key-as-value-text="nameAndCode"
               :label="'transfer-form.asset-lbl' | globalize"
               :disabled="view.mode === VIEW_MODES.confirm"
             />
-            <template v-if="form.tokenCode">
+            <template v-if="form.token">
               <p class="app__form-field-description">
                 {{
                   'transfer-form.balance' | globalize({
                     amount: balance.balance,
-                    asset: form.tokenCode
+                    asset: form.token.code
                   })
                 }}
               </p>
@@ -197,7 +198,7 @@
           </p>
 
           <p class="transfer__fee">
-            - {{ form.amount }} {{ form.tokenCode }}
+            - {{ form.amount }} {{ form.token.code }}
             <span class="transfer__fee-type">
               {{ 'transfer-form.total-amount' | globalize }}
             </span>
@@ -273,9 +274,12 @@ export default {
     FormConfirmation,
   },
   mixins: [FormMixin],
+  props: {
+    assetToTransfer: { type: String, default: '' },
+  },
   data: () => ({
     form: {
-      tokenCode: null,
+      token: null,
       amount: '',
       recipient: '',
       subject: '',
@@ -319,11 +323,11 @@ export default {
     userTransferableTokens () {
       return this.accountBalances.filter(i => i.assetDetails.isTransferable)
     },
-    tokenCodes () {
-      return this.userTransferableTokens.map(token => token.asset)
+    tokens () {
+      return this.userTransferableTokens.map(token => token.assetDetails)
     },
     balance () {
-      return this.accountBalances.find(i => i.asset === this.form.tokenCode)
+      return this.accountBalances.find(i => i.asset === this.form.token.code)
     },
     isLimitExceeded () {
       const amount = Number(this.form.amount)
@@ -332,7 +336,7 @@ export default {
     },
   },
   created () {
-    this.setTokenCode()
+    this.setToken()
     this.loadCurrentBalances()
   },
   methods: {
@@ -378,7 +382,7 @@ export default {
           sourcePercentFee: fees.source.percent,
           sourceFeeAsset: fees.source.feeAsset,
           subject: this.form.subject,
-          tokenCode: this.form.tokenCode,
+          tokenCode: this.form.token.code,
         }
         this.updateView(VIEW_MODES.confirm, opts)
       } catch (error) {
@@ -397,13 +401,13 @@ export default {
     async getFees (recipientAccountId) {
       const [senderFees, recipientFees] = await Promise.all([
         this.loadPaymentFee({
-          asset: this.form.tokenCode,
+          asset: this.form.token.code,
           amount: this.form.amount,
           account: this.accountId,
           subtype: PAYMENT_FEE_SUBTYPES.outgoing,
         }),
         this.loadPaymentFee({
-          asset: this.form.tokenCode,
+          asset: this.form.token.code,
           amount: this.form.amount,
           account: recipientAccountId,
           subtype: PAYMENT_FEE_SUBTYPES.incoming,
@@ -444,7 +448,7 @@ export default {
           sourcePaysForDest: this.view.opts.feeFromSource,
         },
         subject: this.view.opts.subject,
-        asset: this.form.tokenCode,
+        asset: this.form.token.code,
       })
     },
     updateView (mode, opts = {}, clear = false) {
@@ -452,7 +456,7 @@ export default {
       this.view.opts = opts
       if (clear) {
         this.clearFields()
-        this.setTokenCode()
+        this.setToken()
       }
     },
     rerenderForm () {
@@ -460,10 +464,10 @@ export default {
       this.isFeesLoaded = false
       setTimeout(() => this.updateView(VIEW_MODES.submit, {}, true), 1)
     },
-    setTokenCode () {
-      this.form.tokenCode =
-        this.$route.params.tokenCode ||
-        this.tokenCodes[0] ||
+    setToken () {
+      this.form.token =
+        this.tokens.find(token => token.code === this.assetToTransfer) ||
+        this.tokens[0] ||
         null
     },
   },

@@ -1,75 +1,83 @@
 <template>
   <div class="asset-selector">
-    <div
-      class="asset-selector__wrapper"
-      v-if="currentAsset"
-    >
-      <div class="asset-selector__select">
-        <div class="asset-selector__select-picture">
-          <img
-            v-if="imgUrl"
-            class="asset-selector__asset-logo"
-            :src="imgUrl"
-          >
-          <p
-            v-else
-            class="asset-selector__asset-code-abbr"
-          >
-            {{ currentAsset | abbreviate }}
-          </p>
-        </div>
-        <div>
-          <!--
-              :key is a hack to ensure that the component will be updated
-              after computed calculated
-            -->
-          <select-field
-            :value="currentAssetForSelect"
-            :values="tokensList"
-            :key="currentAssetForSelect"
-            @input="$emit(EVENTS.assetChange, $event)"
-            class="app__select app__select--no-border"
-          />
-        </div>
-      </div>
-    </div>
-    <template v-if="currentAsset">
-      <div class="asset-selector__wrapper asset-selector__wrapper--values">
-        <div class="asset-selector__asset-available">
-          <div class="asset-selector__asset-value">
-            <span class="asset-selector__asset-value-main">
-              {{
-                currentAssetBalanceDetails.balance | formatMoney({
-                  currency: currentAsset
-                })
-              }}
-              {{ currentAsset }}
-            </span>
+    <template v-if="tokens.length">
+      <div
+        class="asset-selector__wrapper"
+        v-if="currentAsset"
+      >
+        <div class="asset-selector__select">
+          <div class="asset-selector__select-picture">
+            <img
+              v-if="imgUrl"
+              class="asset-selector__asset-logo"
+              :src="imgUrl"
+            >
+            <p
+              v-else
+              class="asset-selector__asset-code-abbr"
+            >
+              {{ currentAsset | abbreviate }}
+            </p>
           </div>
-          <div class="asset-selector__asset-subvalue">
-            <span class="asset-selector__asset-value-secondary">
-              {{
-                currentAssetBalanceDetails.convertedBalance | formatMoney({
-                  currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
-                })
-              }}
-              {{ config.DEFAULT_QUOTE_ASSET }}
-            </span>
+          <div>
+            <select-field
+              :value="currentAssetForSelect"
+              :values="tokensList"
+              :key="currentAssetForSelect.code"
+              key-as-value-text="nameAndCode"
+              @input="$emit(EVENTS.assetChange, $event)"
+              class="app__select app__select--no-border"
+            />
           </div>
         </div>
       </div>
+      <template v-if="currentAsset">
+        <div class="asset-selector__wrapper asset-selector__wrapper--values">
+          <div class="asset-selector__asset-available">
+            <div class="asset-selector__asset-value">
+              <span class="asset-selector__asset-value-main">
+                {{
+                  currentAssetBalanceDetails.balance | formatMoney({
+                    currency: currentAsset
+                  })
+                }}
+                {{ currentAsset }}
+              </span>
+            </div>
+            <div class="asset-selector__asset-subvalue">
+              <span class="asset-selector__asset-value-secondary">
+                {{
+                  currentAssetBalanceDetails.convertedBalance | formatMoney({
+                    currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
+                  })
+                }}
+                {{ config.DEFAULT_QUOTE_ASSET }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-if="!currentAsset">
+        <no-data-message
+          icon-name="toll"
+          :title-id="'tx-history.no-assets-in-your-wallet'"
+          :message-id="'tx-history.here-will-be-the-tokens'"
+        />
+      </template>
     </template>
-    <template v-if="!currentAsset">
-      <no-data-message
-        icon-name="toll"
-        :title-id="'tx-history.no-assets-in-your-wallet'"
-        :message-id="'tx-history.here-will-be-the-tokens'"
-      />
+    <template v-else-if="isLoadingFailed">
+      <p>
+        {{ 'dashboard.loading-error-msg' | globalize }}
+      </p>
+    </template>
+    <template v-else>
+      <loader message-id="dashboard.loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
+import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
@@ -89,6 +97,7 @@ export default {
   components: {
     SelectField,
     NoDataMessage,
+    Loader,
   },
   props: {
     currentAsset: {
@@ -99,6 +108,7 @@ export default {
   data: () => ({
     EVENTS,
     tokens: [],
+    isLoadingFailed: false,
     config,
     ASSET_POLICIES,
   }),
@@ -125,15 +135,10 @@ export default {
       return [
         ...baseAssets,
         ...otherAssets,
-      ].map(item => `${item.name || item.code} (${item.code})`)
+      ]
     },
     currentAssetForSelect () {
-      if (this.tokens.length) {
-        const token = this.tokens.find(t => t.code === this.currentAsset)
-        return `${token.name || token.code} (${token.code})`
-      } else {
-        return ''
-      }
+      return this.tokens.find(t => t.code === this.currentAsset) || {}
     },
     currentAssetBalanceDetails () {
       return this.balances
@@ -153,7 +158,8 @@ export default {
         const response = await Sdk.horizon.assets.getAll()
         this.tokens = response.data.map(asset => new AssetRecord(asset))
       } catch (error) {
-        ErrorHandler.process(error)
+        this.isLoadingFailed = true
+        ErrorHandler.processWithoutFeedback(error)
       }
     },
   },

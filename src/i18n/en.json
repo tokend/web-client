@@ -385,6 +385,8 @@
 
     "dashboard": {
       "data-loading": "Fetching dashboard data...",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "transaction-details": "Transaction details",
       "close": "Close",
       "activity": "Activity",
