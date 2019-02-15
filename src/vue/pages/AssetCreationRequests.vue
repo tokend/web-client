@@ -121,8 +121,8 @@
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'requests-page.no-request-history-title' | globalize"
-          :msg-message="'requests-page.no-request-history-desc' | globalize"
+          :title-id="'requests-page.no-request-history-title'"
+          :message-id="'requests-page.no-request-history-desc'"
         />
       </template>
     </template>
