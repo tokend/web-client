@@ -42,6 +42,14 @@ export class SaleRequestRecord extends RequestRecord {
     this.quoteAssets = this._getQuoteAssets()
   }
 
+  get youtubeVideoUrl () {
+    if (this.youtubeVideoId) {
+      return `https://www.youtube.com/watch?v=${this.youtubeVideoId}`
+    } else {
+      return ''
+    }
+  }
+
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }

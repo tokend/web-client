@@ -8,7 +8,7 @@ const featureFlags = {
   issuance: true,
   assets: true,
   requests: true,
-  funds: true,
+  sales: true,
   saleDetails: true,
   settings: true,
 }

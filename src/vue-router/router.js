@@ -129,9 +129,10 @@ export const router = new Router({
         },
         {
           path: '/funds',
-          name: vueRoutes.funds.name,
-          featureFlag: config.FEATURE_FLAGS.funds,
-          component: resolve => require(['@/vue/pages/Funds'], resolve),
+          name: vueRoutes.sales.name,
+          featureFlag: config.FEATURE_FLAGS.sales,
+          meta: { pageNameTranslationId: 'pages-names.funds' },
+          component: resolve => require(['@/vue/pages/Sales'], resolve),
         },
         {
           path: '/funds/:id',

@@ -577,6 +577,42 @@
       "disabled-msg": "This field is disabled"
     },
 
+    "sales": {
+      "loading-msg": "Loading",
+      "no-sales-title": "No funds found",
+      "no-sales-desc": "Unfortunately, there are no funds matching your criteria",
+      "create-sale": "Create fund",
+      "update-sale": "Update fund",
+      "overview-title": "Fund overview",
+      "asset-code-label": "Token code",
+      "sale-live-state": "Live",
+      "sale-upcoming-state": "Upcoming only",
+      "sale-all-state": "All"
+    },
+
+    "sale-card": {
+      "funded": "{{funded, percent}} funded",
+      "invested": "{{invested, money}} invested",
+      "days-to-launch": "{{days}} days to launch",
+      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
+    },
+
+    "sale-overview": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "name-title": "Fund name",
+      "start-time-title": "Start time",
+      "close-time-title": "Close time",
+      "soft-cap-title": "Soft cap",
+      "hard-cap-title": "Hard cap",
+      "asset-to-sell-title": "{{asset}} to sell",
+      "video-about-sale-title": "Video about fund",
+      "no-video-msg": "No video",
+      "view-video-btn": "View",
+      "view-btn": "View the fund",
+      "update-btn": "Update"
+    },
+
     "trade-history": {
       "title": "Trade history",
       "table-amount-lbl": "Amount ({{asset}})",
@@ -650,10 +686,6 @@
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
     },
 
-    "funds": {
-      "create-fund": "Create fund"
-    },
-
     "sale-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
@@ -707,9 +739,9 @@
       "offer-canceled-msg": "Your offer was successfully cancelled"
     },
 
-    "create-fund-form": {
-      "create-fund-header": "Create fund",
-      "provide-fund-information": "Provide fund information",
+    "create-sale-form": {
+      "create-sale-header": "Create fund",
+      "provide-sale-information": "Provide fund information",
       "add-short-blurb": "Add a short blurb",
       "full-description": "Full description",
       "short-description": "Short description",
