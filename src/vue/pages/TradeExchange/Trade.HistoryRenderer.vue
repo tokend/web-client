@@ -45,7 +45,7 @@
       <no-data-message
         :title-id="'trade-history.no-data-title'"
         :message-id="'trade-history.no-data-message'"
-        :message-id-args="{ base: assetPair.base, quote: assetPair.quote }"
+        :message-id-keys="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
   </div>
