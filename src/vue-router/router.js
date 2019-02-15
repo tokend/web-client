@@ -128,6 +128,16 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
         {
+          path: '/limits',
+          name: vueRoutes.limits.name,
+          featureFlag: config.FEATURE_FLAGS.limits,
+          meta: {
+            pageNameTranslationId: 'pages-names.limits',
+            pageSubnameTranslationId: 'pages-subnames.explore-limits',
+          },
+          component: resolve => require(['@/vue/pages/Limits'], resolve),
+        },
+        {
           path: '/tokens',
           name: vueRoutes.assets.name,
           featureFlag: config.featureFlags.assets,

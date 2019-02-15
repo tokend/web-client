@@ -30,6 +30,7 @@ export const vueRoutes = Object.freeze({
     },
   },
   issuance: { name: 'app.issuance' },
+  limits: { name: 'app.limits' },
   assets: { name: 'app.assets' },
   balances: { name: 'app.balances' },
   assetsExplore: { name: 'app.assets-explore' },
@@ -44,7 +45,6 @@ export const vueRoutes = Object.freeze({
   iosInstallationGuide: { name: 'ios-installation-guide' },
   // stubs:
   deposit: { name: 'app.deposit' },
-  limits: { name: 'app.limits' },
   transfers: { name: 'app.transfers' },
   massTransfers: { name: 'app.mass-transfers' },
   withdrawal: { name: 'app.withdrawal' },

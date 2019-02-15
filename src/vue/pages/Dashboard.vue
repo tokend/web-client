@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <template v-if="isLoading">
-      <loader :message="'dashboard.data-loading' | globalize" />
+      <loader :message-id="'dashboard.data-loading' | globalize" />
     </template>
     <template v-else>
       <div class="dashboard__toolbar">

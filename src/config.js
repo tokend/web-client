@@ -34,6 +34,7 @@ export default Object.assign(
       assets: true,
       requests: true,
       settings: true,
+      limits: true,
     },
 
     /**
