@@ -157,25 +157,25 @@ describe('TransferForm component', () => {
 
   describe('updateView()', () => {
     beforeEach(() => {
-      sinon.stub(wrapper.vm, 'setTokenCode')
+      sinon.stub(wrapper.vm, 'setToken')
     })
 
     it('do not reset form if third argument (clear) not passed', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {})
 
-      expect(wrapper.vm.setTokenCode.called).to.be.false
+      expect(wrapper.vm.setToken.called).to.be.false
     })
 
     it('do not reset form if third argument (clear) passed with value "false"', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {}, false)
 
-      expect(wrapper.vm.setTokenCode.called).to.be.false
+      expect(wrapper.vm.setToken.called).to.be.false
     })
 
     it('reset form if third argument (clear) passed with value "true"', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {}, true)
 
-      expect(wrapper.vm.setTokenCode.calledOnce).to.be.true
+      expect(wrapper.vm.setToken.calledOnce).to.be.true
     })
   })
 
@@ -191,7 +191,7 @@ describe('TransferForm component', () => {
     wrapper.vm.view.opts.destinationFeeAsset = 'BTC'
     wrapper.vm.view.opts.feeFromSource = false
     wrapper.vm.view.opts.subject = 'Some text'
-    wrapper.vm.form.tokenCode = 'BTC'
+    wrapper.vm.form.token = { code: 'BTC' }
 
     sinon.stub(base.PaymentV2Builder, 'paymentV2').returns('some operation')
 
@@ -252,7 +252,7 @@ describe('TransferForm component', () => {
       stubFeesWithValidResult()
 
       wrapper.vm.form = {
-        tokenCode: null,
+        token: {},
         amount: '',
         recipient: '',
         subject: '',
@@ -274,7 +274,7 @@ describe('TransferForm component', () => {
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
-        tokenCode: 'BTC',
+        token: { code: 'BTC' },
         amount: '10',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
@@ -296,7 +296,7 @@ describe('TransferForm component', () => {
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
-        tokenCode: 'BTC',
+        token: { code: 'BTC' },
         amount: '10',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
@@ -319,7 +319,7 @@ describe('TransferForm component', () => {
         .to.deep.equal(expectUserTransferableTokens)
     })
 
-    it('tokenCodes()', () => {
+    it('tokens()', () => {
       const expectUserTransferableTokens = [
         mockedAccountBalances[0],
         mockedAccountBalances[1],
@@ -334,12 +334,15 @@ describe('TransferForm component', () => {
         },
       })
 
-      expect(wrapper.vm.tokenCodes)
-        .to.deep.equal(['BTC', 'USD'])
+      expect(wrapper.vm.tokens)
+        .to.deep.equal([
+          mockedAccountBalances[0].assetDetails,
+          mockedAccountBalances[1].assetDetails,
+        ])
     })
 
     it('balance()', () => {
-      wrapper.vm.form.tokenCode = 'USD'
+      wrapper.vm.form.token = { code: 'USD' }
 
       expect(wrapper.vm.balance).to.equal(mockedAccountBalances[1])
     })

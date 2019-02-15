@@ -135,7 +135,7 @@ describe('Dashboard.AssetSelector component', () => {
 
     beforeEach(() => {
       assetsResource = mockHelper.getHorizonResourcePrototype('assets')
-      sinon.stub(ErrorHandler, 'process')
+      sinon.stub(ErrorHandler, 'processWithoutFeedback')
     })
 
     it('is called inside created hook', () => {
@@ -157,7 +157,7 @@ describe('Dashboard.AssetSelector component', () => {
 
       expect(wrapper.vm.tokens).to.deep.equal(expectAssets.data)
       expect(assetsResource.getAll.calledOnce).to.be.true
-      expect(ErrorHandler.process.calledOnce).to.be.false
+      expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.false
     })
 
     it('handle errors', async () => {
@@ -167,24 +167,24 @@ describe('Dashboard.AssetSelector component', () => {
 
       expect(assetsResource.getAll.calledOnce).to.be.true
       expect(wrapper.vm.tokens).to.deep.equal([])
-      expect(ErrorHandler.process.calledOnce).to.be.true
+      expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.true
     })
   })
 
   describe('computed properties', () => {
     describe('currentAssetForSelect()', () => {
-      it('returns asset name and code if this.tokens list is not empty', () => {
+      it('returns asset if this.tokens list is not empty', () => {
         wrapper.vm.currentAsset = 'ETH'
         wrapper.vm.tokens = mockedTokens
 
-        expect(wrapper.vm.currentAssetForSelect).to.equal('Ethereum (ETH)')
+        expect(wrapper.vm.currentAssetForSelect).to.equal(mockedTokens[2])
       })
 
-      it('returns empty string if this.tokens list is empty', () => {
+      it('returns empty object if this.tokens list is empty', () => {
         wrapper.vm.currentAsset = 'ETH'
         wrapper.vm.tokens = []
 
-        expect(wrapper.vm.currentAssetForSelect).to.equal('')
+        expect(wrapper.vm.currentAssetForSelect).to.deep.equal({})
       })
     })
 
@@ -224,9 +224,11 @@ describe('Dashboard.AssetSelector component', () => {
       await wrapper.vm.loadTokens()
 
       wrapper.vm.tokens = mockedTokens
+      const sortedTokens = mockedTokens
+        .sort((a, b) => a.code.localeCompare(b.code))
 
       expect(wrapper.vm.tokensList)
-        .to.deep.equal(['Bitcoin (BTC)', 'Ethereum (ETH)', 'Dollar (USD)'])
+        .to.deep.equal(sortedTokens)
     })
   })
 })

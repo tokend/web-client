@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <template v-if="isLoading">
-      <loader :message-id="'dashboard.data-loading' | globalize" />
+      <loader message-id="dashboard.data-loading" />
     </template>
     <template v-else>
       <div class="dashboard__toolbar">
@@ -54,7 +54,7 @@
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>
-        <transfer />
+        <transfer :asset-to-transfer="currentAsset" />
       </template>
     </drawer>
   </div>
@@ -101,9 +101,6 @@ export default {
     ]),
   },
   watch: {
-    accountBalances () {
-      this.setCurrentAsset()
-    },
     showDrawer (status) {
       if (!status) {
         this.createIssuanceFormIsShown = false
@@ -128,13 +125,12 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setCurrentAsset (value) {
-      const regExp = /\(([^)]+)\)/
       if (value) {
-        this.currentAsset = regExp.exec(value)[1]
+        this.currentAsset = value.code
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.find(a => a === 'ETH') || keys[0] || null
+          keys.find(a => a === 'ETH') || keys[0] || ''
       }
     },
   },

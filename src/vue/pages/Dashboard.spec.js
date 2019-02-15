@@ -26,6 +26,7 @@ describe('Dashboard component', () => {
       asset: 'BTC',
       balance: '1',
       assetDetails: {
+        code: 'BTC',
         policies: [
           { value: ASSET_POLICIES.transferable },
           { value: ASSET_POLICIES.baseAsset },
@@ -36,6 +37,7 @@ describe('Dashboard component', () => {
       asset: 'USD',
       balance: '3',
       assetDetails: {
+        code: 'USD',
         policies: [
           { value: ASSET_POLICIES.transferable },
           { value: ASSET_POLICIES.baseAsset },
@@ -47,6 +49,7 @@ describe('Dashboard component', () => {
       asset: 'ETH',
       balance: '0',
       assetDetails: {
+        code: 'ETH',
         policies: [
           { value: ASSET_POLICIES.baseAsset },
         ],
@@ -76,7 +79,7 @@ describe('Dashboard component', () => {
   describe('setCurrentAsset()', () => {
     it('set currentAsset as passed value', () => {
       mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-      wrapper.vm.setCurrentAsset('some name (BTC)')
+      wrapper.vm.setCurrentAsset({ code: 'BTC' })
 
       expect(wrapper.vm.currentAsset).to.equal('BTC')
     })
@@ -109,13 +112,13 @@ describe('Dashboard component', () => {
         expect(wrapper.vm.currentAsset).to.equal('BTC')
       })
 
-      it('set null if accountBalances is empty', () => {
+      it('set empty string if accountBalances is empty', () => {
         const mockedAccountBalances = []
         mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
 
         wrapper.vm.setCurrentAsset()
 
-        expect(wrapper.vm.currentAsset).to.equal(null)
+        expect(wrapper.vm.currentAsset).to.equal('')
       })
     })
   })
