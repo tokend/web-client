@@ -44,6 +44,7 @@ export default {
       default: true,
     },
   },
+
   data: _ => ({
     email: '',
     isMasterAccount: false,
@@ -93,5 +94,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
