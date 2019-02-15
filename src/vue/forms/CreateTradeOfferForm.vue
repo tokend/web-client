@@ -13,8 +13,10 @@
           :white-autofill="true"
           type="number"
           :disabled="formMixin.isDisabled"
-          :step="config.MINIMAL_NUMBER_INPUT_STEP"
-          :error-message="getFieldErrorMessage('form.price')"
+          :error-message="getFieldErrorMessage(
+            'form.price',
+            { from: config.MIN_AMOUNT, to: config.MAX_AMOUNT }
+          )"
           @blur="touchField('form.price')"
         />
       </div>
@@ -32,10 +34,9 @@
           type="number"
           :max="baseAssetBalance"
           :disabled="formMixin.isDisabled"
-          :step="config.MINIMAL_NUMBER_INPUT_STEP"
           :error-message="getFieldErrorMessage(
             'form.amount',
-            { available: formatNumber(baseAssetBalance) }
+            { minValue: config.MIN_AMOUNT, available: baseAssetBalance }
           )"
           @blur="touchField('form.amount')"
         />
@@ -89,7 +90,7 @@ import OfferMakerMixin from '@/vue/mixins/offer-maker.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { MathUtil } from '@/js/utils/math.util'
 import config from '@/config'
-import { required, noMoreThanAvailableOnBalance } from '@validators'
+import { required, amountRange, minValue, noMoreThanAvailableOnBalance } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { formatNumber } from '@/vue/filters/formatNumber'
@@ -117,10 +118,14 @@ export default {
   validations () {
     return {
       form: {
-        price: { required },
+        price: {
+          required,
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+        },
         amount: {
           required,
-          // eslint-disable-next-line
+          minValue: minValue(config.MIN_AMOUNT),
+          // eslint-disable-next-line max-len
           noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(this.baseAssetBalance),
         },
       },
