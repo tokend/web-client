@@ -7,9 +7,16 @@
       <div class="asset-selector__select">
         <div class="asset-selector__select-picture">
           <img
-            class="asset-selector__asset"
+            v-if="imgUrl"
+            class="asset-selector__asset-logo"
             :src="imgUrl"
           >
+          <p
+            v-else
+            class="asset-selector__asset-code-abbr"
+          >
+            {{ currentAsset | abbreviate }}
+          </p>
         </div>
         <div>
           <!--
@@ -21,7 +28,7 @@
             :values="tokensList"
             :key="currentAssetForSelect"
             @input="$emit(EVENTS.assetChange, $event)"
-            class="asset-selector__select-field"
+            class="app__select app__select--no-border"
           />
         </div>
       </div>
@@ -125,7 +132,7 @@ export default {
         const token = this.tokens.find(t => t.code === this.currentAsset)
         return `${token.name || token.code} (${token.code})`
       } else {
-        return null
+        return ''
       }
     },
     currentAssetBalanceDetails () {
@@ -133,9 +140,8 @@ export default {
         .find(i => i.asset === this.currentAsset) || {}
     },
     imgUrl () {
-      const defaultUrl = '/static/coin-picture.png'
       const balance = this.balances.find(i => i.asset === this.currentAsset)
-      return balance.assetDetails.logoUrl(config.FILE_STORAGE) || defaultUrl
+      return balance.assetDetails.logoUrl(config.FILE_STORAGE) || ''
     },
   },
   async created () {
@@ -223,27 +229,32 @@ $custom-breakpoint-medium: 870px;
 }
 
 .asset-selector__select-picture {
-  width: 5.5rem;
-  height: 5.5rem;
-  padding: .4rem;
-  border-radius: .2rem;
-  background-color: $col-block-bg;
-  box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, 0.15);
   margin-right: 1.6rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
 
-  @include respond-to(small) {
-    width: 4rem;
-    height: 4rem;
+  & > * {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: .2rem;
+    @include box-shadow();
+
+    @include respond-to(small) {
+      width: 4rem;
+      height: 4rem;
+    }
   }
 
   img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
+  }
+
+  .asset-selector__asset-code-abbr {
+    font-size: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $col-asset-logo-background;
+    color: $col-asset-logo-text;
   }
 }
 

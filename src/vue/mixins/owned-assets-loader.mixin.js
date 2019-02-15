@@ -1,5 +1,6 @@
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -19,10 +20,9 @@ export default {
         const { data } = await Sdk.horizon.assets.getAll({
           owner: this.account.accountId,
         })
-        this.ownedAssets = data
+        this.ownedAssets = data.map(item => new AssetRecord(item))
       } catch (e) {
-        console.error(e)
-        ErrorHandler.process(e)
+        ErrorHandler.processWithoutFeedback(e)
       }
     },
   },

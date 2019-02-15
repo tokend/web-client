@@ -34,13 +34,13 @@
 
   "translations": {
     "formats": {
-      "date":  "{{value, date}}",
-      "dmy":  "{{value, dmy}}",
+      "date": "{{value, date}}",
+      "dmy": "{{value, dmy}}",
       "money": "{{value, money}}",
       "number": "{{value, number}}",
       "integer": "{{value, integer}}",
-      "calendar":  "{{value, calendar}}",
-      "order_number":  "{{value, order_number}}",
+      "calendar": "{{value, calendar}}",
+      "order_number": "{{value, order_number}}",
       "percent": "{{value, percent}}",
       "fee_type": "{{value, fee_type}}",
       "fee_subtype": "{{value, fee_subtype}}"
@@ -60,7 +60,7 @@
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
       "close-lbl_info": "Got it"
-     },
+    },
 
     "validation": {
       "failed": "Please fill out all the fields before continuing",
@@ -76,25 +76,28 @@
       "field-error_amount": "Amount must be a number, greater than 0",
       "field-error_maxValueWrapper": "Value should be less then {{maxValue}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
-      "field-error_amountRange": "Amount should be in the range from {{from}} to {{to}}",
+      "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
-      "field-error_maxLength": "Only {{quantity}} symbols allowed"
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available}}",
+      "field-error_address": "Make sure the address is correct",
+      "field-error_maxLength": "This field must contain maximum {{length}} symbols",
+      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
     },
 
     "errors": {
       "default": "Something bad happened. Please try again later",
-      "server":  "This service is temporary unavailable. Please try again later",
+      "server": "This service is temporary unavailable. Please try again later",
       "timeout": "Timeout exceeded. Please re-check your internet connection and try again",
       "network": "Network error. Please re-check your internet connection and try again",
-      "internal":  "This service is temporary unavailable. Please try again later",
+      "internal": "This service is temporary unavailable. Please try again later",
       "conflict": "Such item already exists",
       "not-found": "Such item not found",
       "forbidden": "Request forbidden",
       "bad-request": "The request you sent is invalid in some way",
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
-      "tfa-required":  "2FA required",
+      "tfa-required": "2FA required",
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists"
     },
@@ -107,14 +110,21 @@
       "investment": "Investment"
     },
 
+    "operation-states": {
+      "success": "Completed",
+      "pending": "Pending",
+      "failed": "Failed"
+    },
+
     "auth-pages": {
       "small-title": "Create, distribute and trade",
-      "big-title": "Start tokenizing your assets in minutes",
+      "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
+      "tfa-code": "2FA code",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
-      "log-in": "Log In",
+      "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "almost-done": "Almost done",
       "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
@@ -122,7 +132,7 @@
       "email-verified": "Email successfully verified",
       "get-started": "Get started",
       "recover-account": "Recover your account",
-      "recovered": "Account recovered. You can now use the new credentials to log in",
+      "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
       "save-recovery-seed": "Save this seed to your offline device",
@@ -141,6 +151,45 @@
       "verification-tab": "Verification",
       "security-tab": "Security",
       "my-account-tab": "My account"
+    },
+
+    "security-page": {
+      "enable-tfa-title": "Enable 2FA",
+      "disable-tfa-title": "Disable 2FA",
+      "password-title": "Password",
+      "change-password-btn": "Change password",
+      "account-id-title": "Account ID",
+      "view-account-id-btn": "View Account ID",
+      "secret-seed-title": "Secret seed",
+      "view-secret-seed-btn": "View secret seed",
+      "account-address-label": "Account address",
+      "secret-seed-desc": "Secret seed is private information that proves you own your account."
+    },
+
+    "change-password-form": {
+      "current-password-lbl": "Current password",
+      "new-password-lbl": "New password",
+      "confirm-password-lbl": "Confirm new password",
+      "tfa-code-lbl": "2FA code",
+      "change-password-btn": "Change password",
+      "wrong-password-err": "Your current password is wrong",
+      "password-changed-msg": "Your password was successfully changed"
+    },
+
+    "tfa-form": {
+      "password-lbl": "Current password",
+      "qr-desc": "Scan the QR with your 2FA app",
+      "code-lbl": "2FA code",
+      "secret-code-desc": "Or manually set the secret code",
+      "tfa-code-desc": "And enter your 2FA code to continue",
+      "wrong-password-err": "Wrong password",
+      "wrong-code-err": "Wrong code",
+      "tfa-enabled-msg": "2FA is enabled",
+      "tfa-disabled-msg": "2FA is disabled",
+      "secret-lbl": "Secret",
+      "disable-btn": "Disable",
+      "next-btn": "Next",
+      "enable-btn": "Enable"
     },
 
     "verification-page": {
@@ -234,7 +283,8 @@
     "form-confirmation": {
       "message-text-default": "Please recheck the form before confirmation",
       "button-text-ok": "Confirm",
-      "button-text-cancel": "Cancel"
+      "button-text-cancel": "Cancel",
+      "submit-processing": "Processing..."
     },
 
     "pages-names": {
@@ -243,7 +293,7 @@
       "limits": "Limits",
       "withdraw": "Withdraw",
       "send": "Send",
-      "explore-tokens": "Explore tokens",
+      "tokens": "Tokens",
       "create-token": "Create token",
       "create-issuance": "Create issuance",
       "upload-pre-issuance": "Upload pre-issuance",
@@ -271,7 +321,8 @@
 
     "pages-subnames": {
       "exchange-tokens": "Exchange tokens",
-      "explore-limits": "Explore limits"
+      "explore-limits": "Explore limits",
+      "user-orders": "Orders owned by you"
     },
 
     "limits": {
@@ -348,7 +399,7 @@
       "account-corporate": "Corporate account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "log-out-btn": "Log out"
+      "sign-out-btn": "Sign out"
     },
 
     "sidebar": {
@@ -385,14 +436,25 @@
       "upper-bound": "Upper bound",
       "subtype": "Subtype",
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
+      "loading-error-msg": "There was an error while loading.",
+      "no-fees-title": "No fees",
+      "no-fees-msg": "Here will be the list of your fees"
+    },
+
+    "fee-page": {
+      "filters-prefix": "Show:"
     },
 
     "op-pages": {
-      "show": "Show",
+      "filters-prefix": "Show:",
       "no-operation-history": "No operation history",
       "here-will-be-the-list": "Here will be the list of your operations",
-      "something-went-wrong": "Something went wrong"
+      "something-went-wrong": "Something went wrong",
+      "can-not-load-assets": "There was an error while loading assets",
+      "loading-msg": "Loading",
+      "withdrawal": "Withdrawal",
+      "deposit": "Deposit",
+      "send": "Send"
     },
 
     "op-details": {
@@ -458,7 +520,7 @@
       "no-assets-heading": "No assets, no transfers",
       "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
-      "form-heading": "Transfer form",
+      "form-heading": "Send",
       "asset-lbl": "Asset",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount-lbl": "Amount",
@@ -473,7 +535,7 @@
       "source-no-fees": "Sender won’t pay any fees for this transaction.",
       "recipient-fees": "Recipient fees",
       "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
-      "total": "total",
+      "total": "Total",
       "total-sender-fee": "Total sender fee",
       "total-receiver-fee": "Total receiver fee",
       "total-amount": "Total amount",
@@ -487,6 +549,8 @@
 
     "issuance": {
       "loading-msg": "Loading",
+      "no-issuance-history-title": "No issuance history",
+      "no-issuance-history-msg": "Here will be the list of your issuances",
       "create-issuance-btn": "Create issuance",
       "upload-pre-issuance-btn": "Upload pre-issuance",
       "counterparty-lbl": "Counterparty",
@@ -514,6 +578,99 @@
       "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you"
     },
 
+    "assets-page": {
+      "explore-title": "Explore tokens",
+      "balances-title": "My balances",
+      "create-token-btn": "Create token"
+    },
+
+    "assets-list": {
+      "update-token-title": "Update token",
+      "details-title": "Token details",
+      "list-item-balance-line": "Balance: {{value, money}}",
+      "no-balance-msg": "No balance"
+    },
+
+    "asset-form": {
+      "loading-msg": "Loading",
+      "loading-error-msg":"There was an error while loading.",
+      "update-token-title": "Update token",
+      "next-btn": "Next",
+      "submit-btn": "Submit",
+      "information-step": "Token information",
+      "advanced-step": "Advanced",
+      "name-lbl": "Token name",
+      "code-lbl": "Token code",
+      "max-issuance-amount-lbl": "Max issuance amount",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less then 120x120 px",
+      "transferable-lbl": "Transferable",
+      "kyc-required-lbl": "Requires KYC",
+      "additional-issuance-check": "I do not want to make additional issuance later",
+      "preissued-asset-signer-lbl": "Preissued asset signer",
+      "initial-preissued-amount-lbl": "Initial preissued amount",
+      "terms-lbl": "Upload terms",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "token-request-submitted-msg": "Your request was successfully submitted"
+    },
+
+    "requests-page": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "token-creation-title": "Token creation",
+      "fund-creation-title": "Fund creation",
+      "preissuance-upload-title": "Pre-issuance upload",
+      "token-code-header": "Token code",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "request-approved-msg": "Approved",
+      "request-rejected-msg": "Rejected",
+      "request-pending-msg": "Pending",
+      "request-canceled-msg": "Cancelled",
+      "request-permanently-rejected-msg": "Permanently rejected",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your requests"
+    },
+
+    "asset-details": {
+      "balance-title": "Balance",
+      "maximum-title": "Maximum",
+      "issued-title": "Issued",
+      "available-title": "Available",
+      "terms-title": "Terms",
+      "download-terms-btn": "Download terms",
+      "no-terms-msg": "No terms",
+      "add-balance-btn": "Add to my balances",
+      "update-btn": "Update",
+      "balance-added-msg": "Added to your balances"
+    },
+
+    "asset-request-details": {
+      "title": "Token request details",
+      "request-type-title": "Request type",
+      "max-issuance-amount-title": "Max issuance amount",
+      "initial-preissued-amount-title": "Initial preissued amount",
+      "terms-title": "Terms",
+      "no-terms-msg": "No terms",
+      "download-terms-btn": "Download terms",
+      "transferable-title": "Transferable",
+      "requires-kyc-title": "Requires KYC",
+      "present-msg": "Yes",
+      "absent-msg": "No",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL",
+      "asset-create-request-type": "Asset create",
+      "asset-update-request-type": "Asset update",
+      "approved-request-msg": "Your request was approved",
+      "rejected-request-msg": "Your request was rejected with reason: {{reason}}",
+      "pending-request-msg": "Your request was submitted. Please wait until it is reviewed",
+      "canceled-request-msg": "Your request was cancelled",
+      "permanently-rejected-request-msg": "Your request was rejected permanently with reason: {{reason}}",
+      "request-canceled-msg": "Your request was successfully cancelled"
+    },
+
     "file-field": {
       "title": "Drop files here or click to browse",
       "selected-file": "Selected file: {{name}}",
@@ -523,8 +680,151 @@
       "disabled-msg": "This field is disabled"
     },
 
+    "trade-history": {
+      "title": "Trade history",
+      "table-amount-lbl": "Amount ({{asset}})",
+      "table-price-lbl": "Price ({{asset}})",
+      "table-total-lbl": "Total ({{asset}})",
+      "table-time-lbl": "Time",
+      "loading-msg": "Loading…",
+      "no-data-title": "No trade history",
+      "no-data-message": "Here will be the list of completed trades for {{base}}/{{quote}} pair"
+    },
+
+    "trade-open-offers": {
+      "title": "Your open {{base}}/{{quote}} orders",
+      "table-id-lbl": "Order ID",
+      "table-date-lbl": "Date",
+      "table-offer-lbl": "Order",
+      "table-base-amount-lbl": "Base asset amount",
+      "table-price-lbl": "Price in quote asset",
+      "loading-msg": "Loading…",
+      "no-data-title": "No open orders",
+      "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
+      "buy-lbl": "Buy",
+      "sell-lbl": "Sell"
+    },
+
+    "trade-offers": {
+      "title": "Open orders",
+      "subtitle-ask": "Ask",
+      "subtitle-bid": "Bid",
+      "submit-bid-offer-title": "Submit bid order",
+      "submit-ask-offer-title": "Submit ask order",
+      "table-want-lbl": "Want ({{asset}})",
+      "table-offer-lbl": "Order ({{asset}})",
+      "table-price-lbl": "Price ({{asset}})",
+      "loading-msg": "Loading…",
+      "no-data-title": "No orders",
+      "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
+      "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
+    },
+
+    "submit-trade-offers-form": {
+      "want-label": "Want ({{asset}})",
+      "offer-label": "Order ({{asset}})",
+      "price-label": "Price ({{asset}})",
+      "submit-buy-btn": "Buy",
+      "submit-sell-btn": "Sell"
+    },
+
+    "offer-creation-form": {
+      "success": "Offer successfully created",
+      "price-per-asset": "Price per {{asset}}",
+      "amount": "Amount {{asset}}",
+      "total": "Total {{asset}}",
+      "submit-buy-btn": "Buy",
+      "submit-sell-btn": "Sell",
+      "error-operation-cross-self": "Current order crosses your existing order"
+    },
+
+    "trade-exchange": {
+      "offers-section-title": "Open orders"
+    },
+
+    "trade-top-bar": {
+      "exchange-view": "Exchange",
+      "my-offers-view": "My Orders",
+      "create-buy-offer-button": "Create buy order",
+      "create-sell-offer-button": "Create sell order",
+      "user-balances-label": "Balances",
+      "create-buy-offer-form-title": "Create buy order",
+      "create-sell-offer-form-title": "Create sell order",
+      "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
+    },
+
+    "withdrawal-form": {
+      "withdrawal": "Withdrawal",
+      "asset": "Asset",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "amount": "Amount ({{asset}})",
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "total-amount-account": "Total fee",
+      "withdraw-success": "Withdrawal request successfully created",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "no-assets-heading": "Ops!",
+      "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "loading-msg": "Loading…",
+      "fee-loading-msg": "Loading…"
+    },
+
+    "deposit-form": {
+      "deposit": "Deposit",
+      "asset": "Asset",
+      "how-to": "To make a deposit send some tokens to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
+      "asset-only-prefix": "Attention:",
+      "asset-only": "The address below accepts {{asset}} only! All the other tokens will be irretrievably lost.",
+      "where-to": "{{asset}} address to deposit",
+      "binding-address": "Please wait while we are trying to bind the address for you...",
+      "no-address": "No available addresses to deposit yet. Please try again later.",
+      "no-assets-heading": "Ops!",
+      "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the token list.",
+      "discover-assets-btn": "Discover assets",
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "loading-msg": "Loading…"
+    },
+
     "email-getter": {
-      "loading-msg": "Loading..."
+      "loading-msg": "Loading…",
+      "master-account": "Master"
+    },
+
+    "downloads-page": {
+      "go-back-btn": "Go back",
+      "title": "Downloads",
+      "mobile-apps-header": "All your tokens right on your phone",
+      "mobile-apps-desc": "To access your assets everywhere, get the TokenD app on your mobile device.",
+      "config-header": "One important step",
+      "config-desc": "Scan this QR code with your application to provide correct configuration for TokenD environment"
+    },
+
+    "ios-installation-guide": {
+      "go-back-btn": "Go back",
+      "title": "iOS installation guide",
+      "how-to-install-header": "How to install TokenDwallet app on iOS",
+      "apple-policy-desc": "Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.",
+      "steps-desc": "In order to install TokenD iOS wallet app follow the next steps:",
+      "download-step": "[Download](itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist) the application with your device.",
+      "install-step": "Close browser and wait until the app is downloaded and installed.",
+      "first-launch-step": "On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.",
+      "system-preferences-substep": "Open “System Preferences”",
+      "general-preferences-substep": "Open “General”",
+      "device-management-substep": "Scroll to “Profiles & Device Management”",
+      "distributed-lab-lp-substep": "Tab “DISTRIBUTED LAB LP”",
+      "trust-substep": "Tab “Trust DISTRIBUTED LAB LP”",
+      "confirm-substep": "Confirm",
+      "use-app-step": "Use the app"
+    },
+
+    "terms-page": {
+      "go-back-btn": "Go back",
+      "title": "Terms & conditions"
     }
   }
 }

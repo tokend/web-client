@@ -1,5 +1,7 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk/lib/index'
+
 import { RequestRecord } from '../request-record'
+
 import _get from 'lodash/get'
 
 export class AssetUpdateRequestRecord extends RequestRecord {
@@ -7,7 +9,18 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     super(record)
 
     this.assetCode = _get(record, 'details.assetUpdate.code')
-    this.assetName = _get(this._record, 'details.assetCreate.details.name')
+    this.assetName = _get(this._record, 'details.assetUpdate.details.name')
+    this.preissuedAssetSigner = _get(
+      this._record, 'details.assetUpdate.preIssuedAssetSigner'
+    )
+    this.maxIssuanceAmount = _get(
+      this._record, 'details.assetUpdate.maxIssuanceAmount'
+    )
+    this.initialPreissuedAmount = _get(
+      this._record, 'details.assetUpdate.initialPreissuedAmount'
+    )
+    this.policies = this._policies()
+    this.policy = this._policy()
 
     this.details = _get(this._record, 'details.assetUpdate.details')
     this.terms = _get(this._record, 'details.assetUpdate.details.terms')
@@ -26,18 +39,36 @@ export class AssetUpdateRequestRecord extends RequestRecord {
       this._record, 'details.assetUpdate.details.externalSystemType'
     )
 
-    this.policies = (_get(record, 'details.assetUpdate.policies') || [])
-      .map(p => p.value)
-
     this.attachedDetails = details
   }
 
+  /**
+   * Converts AssetRecord to AssetUpdateRequestRecord.
+   *
+   * @param {AssetRecord} assetRecord AssetRecord to be converted.
+   * @return {AssetUpdateRequestRecord} New AssetUpdateRequestRecord instance.
+   */
+  static fromAssetRecord (assetRecord) {
+    return new this({
+      details: {
+        assetUpdate: {
+          code: assetRecord.code,
+          preIssuedAssetSigner: assetRecord.preissuedAssetSigner,
+          maxIssuanceAmount: assetRecord.maxIssuanceAmount,
+          initialPreissuedAmount: assetRecord.initialPreissuedAmount,
+          policies: assetRecord.policies.map(policy => ({ value: policy })),
+          details: assetRecord.details,
+        },
+      },
+    })
+  }
+
   logoUrl (storageUrl) {
-    return this.logoKey ? '' : `${storageUrl}/${this.logoKey}`
+    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }
 
   termsUrl (storageUrl) {
-    return this.termsKey ? '' : `${storageUrl}/${this.termsKey}`
+    return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
   }
 
   _policies () {
@@ -46,8 +77,7 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   }
 
   _policy () {
-    return _get(this._record, 'details.assetUpdate.policies', [])
-      .reduce((s, p) => s | p, 0)
+    return this._policies().reduce((s, p) => s | p, 0)
   }
 
   get isBaseAsset () {

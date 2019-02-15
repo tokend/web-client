@@ -1,4 +1,4 @@
-import { TokenD } from '@tokend/js-sdk'
+import { TokenD, base } from '@tokend/js-sdk'
 
 let _sdkInstance = null
 
@@ -23,11 +23,19 @@ export class Sdk {
     return _sdkInstance
   }
 
+  static get base () {
+    return base
+  }
+
   static get horizon () {
     return _sdkInstance.horizon
   }
 
   static get api () {
     return _sdkInstance.api
+  }
+
+  static get networkDetails () {
+    return _sdkInstance.networkDetails
   }
 }

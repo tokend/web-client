@@ -7,7 +7,7 @@
         </h3>
       </template>
       <h2 class="navbar__title">
-        {{ $route.meta.pageNameTranslationId | globalize }}
+        {{ pageNameTranslationId | globalize }}
       </h2>
     </div>
 
@@ -23,6 +23,17 @@ import Passport from './Passport'
 export default {
   name: 'navbar',
   components: { Passport },
+  computed: {
+    pageNameTranslationId () {
+      const pageNamePath = this.$route.matched
+        .find(path => path.meta.pageNameTranslationId)
+      if (pageNamePath) {
+        return pageNamePath.meta.pageNameTranslationId
+      } else {
+        return ''
+      }
+    },
+  },
 }
 </script>
 
@@ -32,15 +43,42 @@ export default {
 
 .navbar {
   width: 100%;
-  min-height: 12rem;
   background-color: $col-app-content-background;
-  padding: 0 $content-side-paddings;
+  padding: 3.3rem $content-padding-right 2.1rem $content-padding-left;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @include respond-to-custom($sidebar-hide-bp) {
-    padding: 0 $content-side-paddings-sm 0 $content-side-paddings-sm + 5.2rem;
+    padding: 3.3rem $content-side-paddings-sm
+      2.1rem $content-side-paddings-sm + 5.2rem;
   }
+
+  .navbar__title {
+    font-size: 4rem;
+    font-weight: normal;
+    min-width: 15rem;
+
+    @include respond-to-custom($sidebar-hide-bp) {
+      font-size: 3rem;
+    }
+  }
+}
+
+.navbar__title {
+  color: $col-text-page-heading;
+  font-size: 4rem;
+  line-height: 1.5;
+  font-weight: 400;
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    font-size: 3.2rem;
+  }
+}
+
+.navbar__sub-title {
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 400;
 }
 </style>

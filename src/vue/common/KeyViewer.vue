@@ -4,16 +4,18 @@
       <qr-code
         :text="value"
         :margin="0"
-        :size="200"
+        :size="250"
         :color-light="'#f2f2f4'"
         :color-dark="'#262626'"
       />
     </div>
-    <div class="key-viewer__clipboard-wrp">
+    <div
+      v-if="isClipboardShown"
+      class="key-viewer__clipboard-wrp"
+    >
       <clipboard-field
-        :id="value"
         :value="value"
-        :label="'auth-pages.recovery-seed' | globalize"
+        :label="label"
       />
     </div>
   </div>
@@ -37,6 +39,14 @@ export default {
     value: {
       type: String,
       required: true,
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    isClipboardShown: {
+      type: Boolean,
+      default: true,
     },
   },
 }

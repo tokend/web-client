@@ -5,7 +5,7 @@
   >
     <form
       class="app__form pre-issuance-form"
-      @submit.prevent="submit"
+      @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
         <div class="app__form-field">
@@ -14,6 +14,8 @@
             :note="'issuance.file-type-note' | globalize"
             accept=".iss"
             v-model="preIssuanceDocument"
+            :disabled="formMixin.isDisabled"
+            :error-message="getFieldErrorMessage('preIssuanceDocument')"
           />
         </div>
       </div>
@@ -22,21 +24,29 @@
         class="pre-issuance-form__issuance-details"
       >
         <h3>{{ 'issuance.pre-issuance-details-title' | globalize }}</h3>
-        <table class="app__table">
-          <thead>
-            <th>{{ 'issuance.asset-lbl' | globalize }}</th>
-            <th>{{ 'issuance.amount-lbl' | globalize }}</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ issuance.asset }}</td>
-              <td>{{ issuance.amount | formatMoney }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="app__table">
+          <table>
+            <thead>
+              <th>{{ 'issuance.asset-lbl' | globalize }}</th>
+              <th>{{ 'issuance.amount-lbl' | globalize }}</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ issuance.asset }}</td>
+                <td>{{ issuance.amount | formatMoney }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="app__form-actions">
+        <form-confirmation
+          v-if="formMixin.isConfirmationShown"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
+        />
         <button
+          v-else
           v-ripple
           type="submit"
           class="pre-issuance-form__submit-btn"
@@ -44,26 +54,16 @@
         >
           {{ 'issuance.upload-btn' | globalize }}
         </button>
-        <button
-          v-ripple
-          type="button"
-          class="pre-issuance-form__cancel-btn"
-          @click.prevent="$emit(EVENTS.cancel)"
-        >
-          {{ 'issuance.cancel-btn' | globalize }}
-        </button>
       </div>
     </form>
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
-    <loader
-      :message-id="'issuance.loading-msg'"
-    />
-  </div>
-  <div v-else>
     <p>
       {{ 'issuance.no-owned-tokens-msg' | globalize }}
     </p>
+  </div>
+  <div v-else>
+    <loader :message-id="'issuance.loading-msg'" />
   </div>
 </template>
 
@@ -80,10 +80,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
-
-const EVENTS = {
-  cancel: 'cancel',
-}
+import { documentContainer } from '@validators'
 
 export default {
   name: 'pre-issuance-form',
@@ -95,8 +92,10 @@ export default {
     preIssuanceDocument: null,
     issuance: null,
     isLoaded: false,
-    EVENTS,
   }),
+  validations: {
+    preIssuanceDocument: { documentContainer },
+  },
   watch: {
     'preIssuanceDocument': async function (value) {
       if (value && value.file) {
@@ -124,7 +123,6 @@ export default {
         Bus.success('issuance.pre-issuance-uploaded-msg')
         this.reset()
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
@@ -176,19 +174,6 @@ export default {
 
   margin-bottom: 2rem;
   width: 18rem;
-}
-
-.pre-issuance-form button + button {
-  margin-left: auto;
-}
-
-.pre-issuance-form__cancel-btn {
-  @include button();
-
-  padding-left: .1rem;
-  padding-right: .1rem;
-  margin-bottom: 2rem;
-  font-weight: normal;
 }
 
 .pre-issuance-form__issuance-details {

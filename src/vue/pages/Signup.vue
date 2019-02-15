@@ -32,7 +32,10 @@
             {{ 'auth-pages.save-recovery-seed-details' | globalize }}
           </p>
 
-          <key-viewer :value="recoveryKeypair.secret()" />
+          <key-viewer
+            :value="recoveryKeypair.secret()"
+            :label="'auth-pages.recovery-seed' | globalize"
+          />
 
           <div class="signup__actions">
             <button
@@ -96,6 +99,7 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
+          Sdk.sdk.useWallet(wallet)
           await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
         } else {

@@ -6,7 +6,7 @@
     <form
       novalidate
       class="app-form"
-      @submit.prevent="isFormValid() && showFormConfirmation()"
+      @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="verification-general-form__block">
         <p class="verification-general-form__block-label">
@@ -228,9 +228,9 @@
       </div>
       <div class="app__form-actions">
         <form-confirmation
-          v-if="formMixin.isFormConfirmationShown"
-          @ok="hideFormConfirmation() || submit()"
-          @cancel="hideFormConfirmation"
+          v-if="formMixin.isConfirmationShown"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
         />
         <button
           v-ripple
@@ -325,7 +325,6 @@ export default {
       const { data } = await Sdk.horizon.public.getEnums()
       this.countries = data.countries
     } catch (e) {
-      console.error(e)
       ErrorHandler.process(e)
     }
     if (this.kycState) {
@@ -346,7 +345,6 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
         this.enableForm()
       }
@@ -399,15 +397,16 @@ export default {
           postalCode: kycData.address.postal_code,
         },
         documents: {
-          idDocument: this.wrapDocument(
-            kycData.documents[DOCUMENT_TYPES.kycIdDocument]
-          ),
-          proofDocument: this.wrapDocument(
-            kycData.documents[DOCUMENT_TYPES.kycProofOfAddress]
-          ),
-          verificationPhoto: this.wrapDocument(
-            kycData.documents[DOCUMENT_TYPES.kycSelfie]
-          ),
+          idDocument: kycData.documents[DOCUMENT_TYPES.kycIdDocument]
+            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycIdDocument])
+            : {},
+          proofDocument: kycData.documents[DOCUMENT_TYPES.kycProofOfAddress]
+            ? this.wrapDocument(kycData
+              .documents[DOCUMENT_TYPES.kycProofOfAddress])
+            : {},
+          verificationPhoto: kycData.documents[DOCUMENT_TYPES.kycSelfie]
+            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycSelfie])
+            : {},
         },
       }
     },

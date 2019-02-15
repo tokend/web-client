@@ -5,7 +5,7 @@
       :message-id="'common.browser-not-supported'"
     />
 
-    <template v-if="isLoggedIn">
+    <template v-if="isLoggedIn && isNavigationRendered">
       <div class="app__container">
         <sidebar />
 
@@ -39,7 +39,6 @@ import {
   mapGetters,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { Wallet } from '@tokend/js-sdk'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -64,6 +63,9 @@ export default {
       vuexTypes.wallet,
       vuexTypes.isLoggedIn,
     ]),
+    isNavigationRendered () {
+      return this.$route.matched.some(m => m.meta.isNavigationRendered)
+    },
   },
 
   async created () {
@@ -78,14 +80,7 @@ export default {
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
       if (this[vuexTypes.isLoggedIn]) {
-        Sdk
-          .sdk
-          .useWallet(new Wallet(
-            '',
-            this[vuexTypes.wallet].secretSeed,
-            this[vuexTypes.wallet].accountId,
-            this[vuexTypes.wallet].id
-          ))
+        Sdk.sdk.useWallet(this[vuexTypes.wallet])
       }
     },
     detectIE () {
@@ -134,12 +129,13 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 4rem $content-side-paddings;
+  padding: $content-padding-top $content-padding-right
+    $content-padding-bottom $content-padding-left;
   background-color: $col-app-content-background;
 
   @include respond-to-custom($sidebar-hide-bp) {
     width: 100vw;
-    padding: 0 $content-side-paddings-sm;
+    padding: 0 $content-side-paddings-sm 3rem;
   }
 }
 </style>

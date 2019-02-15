@@ -25,13 +25,28 @@ export const router = new Router({
       beforeEnter: resolveRedirect,
     },
     {
+      path: '/terms',
+      name: vueRoutes.terms.name,
+      component: resolve => require(['@/vue/pages/Terms'], resolve),
+    },
+    {
+      path: '/downloads',
+      name: vueRoutes.downloads.name,
+      component: resolve => require(['@/vue/pages/Downloads'], resolve),
+    },
+    {
+      path: '/ios-installation-guide',
+      name: vueRoutes.iosInstallationGuide.name,
+      component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
+    },
+    {
       path: '/auth',
       name: vueRoutes.auth.name,
       redirect: vueRoutes.login,
       component: resolve => require(['@/vue/pages/Auth'], resolve),
       children: [
         {
-          path: '/log-in',
+          path: '/sign-in',
           name: vueRoutes.login.name,
           component: resolve => require(['@/vue/pages/Login'], resolve),
           beforeEnter: authPageGuard,
@@ -60,6 +75,7 @@ export const router = new Router({
     {
       path: '/',
       name: 'app',
+      meta: { isNavigationRendered: true },
       component: resolve => require(['@/vue/AppContent'], resolve),
       beforeEnter: inAppRouteGuard,
       redirect: vueRoutes.dashboard,
@@ -68,7 +84,7 @@ export const router = new Router({
           path: '/dashboard',
           name: vueRoutes.dashboard.name,
           meta: { pageNameTranslationId: 'pages-names.dashboard' },
-          component: resolve => require(['@/vue/pages/dashboard/Dashboard'], resolve),
+          component: resolve => require(['@/vue/pages/Dashboard'], resolve),
         },
         {
           path: '/fees',
@@ -78,9 +94,37 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Fees'], resolve),
         },
         {
+          path: '/trade',
+          name: vueRoutes.trade.name,
+          meta: { pageNameTranslationId: 'pages-names.trade' },
+          component: resolve => require(['@/vue/pages/Trade'], resolve),
+          redirect: vueRoutes.trade.exchange,
+          children: [
+            {
+              path: '/trade/exchange',
+              name: vueRoutes.trade.exchange.name,
+              meta: {
+                pageNameTranslationId: 'pages-names.trade',
+                pageSubnameTranslationId: 'pages-subnames.exchange-tokens',
+              },
+              component: resolve => require(['@/vue/pages/TradeExchange'], resolve),
+            },
+            {
+              path: '/trade/my-orders',
+              name: vueRoutes.trade.userOffers.name,
+              meta: {
+                pageNameTranslationId: 'pages-names.trade',
+                pageSubnameTranslationId: 'pages-subnames.user-orders',
+              },
+              component: resolve => require(['@/vue/pages/TradeUserOffers'], resolve),
+            },
+          ],
+        },
+        {
           path: '/operations',
           name: vueRoutes.operations.name,
           featureFlag: config.FEATURE_FLAGS.operations,
+          meta: { pageNameTranslationId: 'pages-names.operations' },
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
@@ -101,8 +145,46 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Limits'], resolve),
         },
         {
+          path: '/tokens',
+          name: vueRoutes.assets.name,
+          featureFlag: config.FEATURE_FLAGS.assets,
+          redirect: vueRoutes.assetsExplore,
+          component: resolve => require(['@/vue/pages/Assets'], resolve),
+          children: [
+            {
+              path: '/tokens/explore',
+              name: vueRoutes.assetsExplore.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              component: resolve => require(['@/vue/pages/AssetsExplorer'], resolve),
+            },
+            {
+              path: '/tokens/balances',
+              name: vueRoutes.balances.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              component: resolve => require(['@/vue/pages/Balances'], resolve),
+            },
+          ],
+        },
+        {
+          path: '/requests',
+          name: vueRoutes.requests.name,
+          featureFlag: config.FEATURE_FLAGS.requests,
+          redirect: vueRoutes.requests.assetCreation,
+          component: resolve => require(['@/vue/pages/Requests'], resolve),
+          children: [
+            {
+              path: '/requests/token-creation',
+              name: vueRoutes.requests.assetCreation.name,
+              meta: { pageNameTranslationId: 'pages-names.requests' },
+              component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
+            },
+          ],
+        },
+        {
           path: '/settings',
           name: vueRoutes.settings.name,
+          featureFlag: config.FEATURE_FLAGS.settings,
+          meta: { pageNameTranslationId: 'pages-names.settings' },
           redirect: vueRoutes.verification,
           component: resolve => require(['@/vue/pages/Settings'], resolve),
           children: [
@@ -122,6 +204,11 @@ export const router = new Router({
                   component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve),
                 },
               ],
+            },
+            {
+              path: '/security',
+              name: vueRoutes.security.name,
+              component: resolve => require(['@/vue/pages/Security'], resolve),
             },
           ],
         },

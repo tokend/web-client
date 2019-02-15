@@ -47,6 +47,20 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.trade"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.trade"
+          >
+            <i class="sidebar__link-icon mdi mdi-finance" />
+            <span>
+              {{ 'pages-names.trade' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.operations"
             tag="a"
             v-if="config.FEATURE_FLAGS.operations"
@@ -89,13 +103,58 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.assets"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.assets"
+          >
+            <i class="sidebar__link-icon mdi mdi-coins" />
+            <span>
+              {{ 'pages-names.tokens' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.issuance"
             tag="a"
             v-if="config.FEATURE_FLAGS.issuance"
           >
-            <i class="sidebar__link-icon mdi mdi-label" />
+            <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
               {{ 'pages-names.issuance' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.requests"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.requests"
+          >
+            <i class="sidebar__link-icon mdi mdi-book-open-variant" />
+            <span>
+              {{ 'pages-names.requests' | globalize }}
+            </span>
+          </router-link>
+        </nav>
+        <nav class="sidebar__links-group">
+          <p class="sidebar__links-group-title">
+            {{ 'sidebar.section-account' | globalize }}
+          </p>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.verification"
+            tag="a"
+            v-if="config.FEATURE_FLAGS.settings"
+          >
+            <i class="sidebar__link-icon mdi mdi-account-settings" />
+            <span>
+              {{ 'pages-names.settings' | globalize }}
             </span>
           </router-link>
         </nav>
@@ -202,6 +261,12 @@ $content-item-right-padding: 2.4rem;
     transform: translateX(0);
   }
 
+  i {
+    display: flex;
+    justify-content: center;
+    font-size: 2.4rem;
+  }
+
   &.sidebar__burger-btn--sidebar-active {
     transform: translateX($sidebar-width);
   }
@@ -253,11 +318,18 @@ $content-item-right-padding: 2.4rem;
   flex: 1;
 }
 
+.sidebar__links-group {
+  margin-bottom: 4rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .sidebar__links-group-title {
   padding: 0 $content-item-right-padding 0 $content-item-left-padding;
-  color: $col-sidebar-active-elem-text;
-  font-size: 1.6rem;
-  margin-bottom: .8rem;
+  opacity: 0.7;
+  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
 }
 
 .sidebar__link {
@@ -272,6 +344,7 @@ $content-item-right-padding: 2.4rem;
   &.router-link-active {
     background-color: $col-sidebar-active-elem-background;
     color: $col-sidebar-active-elem-text;
+    pointer-events: none;
   }
 }
 

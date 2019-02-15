@@ -2,7 +2,7 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 import _get from 'lodash/get'
 
 export class AssetRecord {
-  constructor (record = {}) {
+  constructor (record = {}, balances = []) {
     this._record = record
 
     this.code = record.code
@@ -12,6 +12,7 @@ export class AssetRecord {
     this.availableForIssuance = record.availableForIssuance
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount
+    this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
 
     this.details = record.details
@@ -30,6 +31,8 @@ export class AssetRecord {
 
     this.policies = this._policies()
     this.policy = this._policy()
+
+    this.balance = this._getBalance(balances)
   }
 
   logoUrl (storageUrl) {
@@ -40,6 +43,19 @@ export class AssetRecord {
     return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
   }
 
+  _getBalance (balances) {
+    const balance = balances.find(balance => balance.asset === this.code)
+    if (balance) {
+      return {
+        value: balance.balance,
+        currency: balance.asset,
+        id: balance.balanceId,
+      }
+    } else {
+      return {}
+    }
+  }
+
   _policies () {
     const policies = this._record.policies || []
     return policies.map(policy => policy.value)
@@ -47,6 +63,11 @@ export class AssetRecord {
 
   _policy () {
     return this._policies().reduce((s, p) => s | p, 0)
+  }
+
+  get nameAndCode () {
+    const name = this.name || this.code
+    return `${name} (${this.code})`
   }
 
   get isBaseAsset () {
@@ -78,6 +99,7 @@ export class AssetRecord {
   }
 
   get isWithdrawable () {
-    return !!(this.policy & ASSET_POLICIES.withdrawable)
+    return !!(this.policy & ASSET_POLICIES.withdrawable) ||
+      !!(this.policy & ASSET_POLICIES.withdrawableV2)
   }
 }

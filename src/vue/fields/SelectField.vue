@@ -3,8 +3,8 @@
     class="select-field"
     :class="{
       'select-field--disabled': disabled,
-      'select-field--focused': isExpanded,
-      'select-field--label-minimized': selectedValue,
+      'select-field--focused': isListOpened,
+      'select-field--label-minimized': highlighten,
       'select-field--error': errorMessage
     }"
   >
@@ -14,50 +14,70 @@
       </div>
     </template>
     <button
+      type="button"
       class="select-field__selected"
-      :class="{'select-field__selected--focused': isExpanded}"
+      :class="{
+        'select-field__selected--focused': isListOpened,
+        'select-field__selected--padding': label
+      }"
       :disabled="disabled"
       @click.prevent="toggleListVisibility"
     >
       <span class="select-field__selected-value">
-        {{
-          getLabel(currentValue) || '&nbsp;' | globalize
-        }}
+        {{ selected | getValueText(keyAsValueText) }}
       </span>
-      <div>
-        <i
-          class="select-field__selected-icon mdi mdi-chevron-down"
-          :class="{ 'select-field__selected-icon--active': isExpanded }"
-        />
-      </div>
+      <i
+        class="select-field__selected-icon mdi mdi-chevron-down"
+        :class="{ 'select-field__selected-icon--active': isListOpened }"
+      />
     </button>
     <div
       class="select-field__list"
       ref="list"
-      :class="{ 'select-field__list--active': isExpanded }"
+      :class="{ 'select-field__list--active': isListOpened }"
     >
       <button
-        v-for="(item, i) in values"
-        :key="i"
+        v-for="(item, index) in values"
+        :key="index"
+        type="button"
         class="select-field__list-item"
-        :class="{
-          'select-field__list-item--selected':
-            getValue(selectedValue) === getValue(item)
-        }"
+        :class="{ 'select-field__list-item--selected': highlighten === item }"
         @click.prevent="selectItem(item)"
       >
-        {{ getLabel(item) | globalize }}
+        {{ item | getValueText(keyAsValueText) }}
       </button>
     </div>
-    <p v-if="errorMessage" class="select-field__err-mes">
+    <p
+      v-if="errorMessage"
+      class="select-field__err-mes"
+    >
       {{ errorMessage }}
     </p>
   </div>
 </template>
 
 <script>
+/**
+ * The values prop of the component accepts an array of strings or objects.
+ * If you provide collection of objects you should provide also
+ * key-as-value-text - name of the object key to be shown as text of selected
+ * value. key-as-value-text accepts names of properties, getters and methods
+ *
+ * The field emits items as is - if you provide arrays of strings the string
+ * will be emitted on selection, if you provide arrays of objects the object
+ * will be emitted on selection.
+ *
+ * Example of how to provide object collection and show code of each value as
+ * the value text
+ *
+ * <select-field
+ *   :values="assets"
+ *   key-as-value-text="code"
+ * />
+ */
+
 import { KEY_CODES } from '@/js/const/key-codes.const'
-import _isObject from 'lodash/isObject'
+import _get from 'lodash/get'
 
 const EVENTS = {
   input: 'input',
@@ -65,10 +85,22 @@ const EVENTS = {
 
 export default {
   name: 'select-field',
+
+  filters: {
+    getValueText (item, keyAsValueText) {
+      const result = keyAsValueText
+        ? _get(item, keyAsValueText, item)
+        : item
+      return typeof result === 'function'
+        ? result()
+        : result
+    },
+  },
+
   props: {
     value: {
       type: [String, Number, Boolean, Object, Array, Date],
-      default: '',
+      required: true,
     },
     values: {
       type: Array,
@@ -84,28 +116,24 @@ export default {
     },
     errorMessage: {
       type: String,
-      default: undefined,
+      default: '',
+    },
+    keyAsValueText: {
+      type: String,
+      default: '',
     },
   },
 
   data: () => ({
-    currentValue: null, // selected item in the list
-    selectedValue: null, // active list element (for arrow navigation)
-    isExpanded: false,
+    selected: null,
+    highlighten: null, // active list element (for arrow navigation)
+    isListOpened: false,
     KEY_CODES,
   }),
 
-  watch: {
-    isExpanded (value) {
-      if (value) {
-        document.addEventListener('click', this.onDocumentClick)
-      }
-    },
-  },
-
   created () {
-    this.selectedValue = this.value
-    this.currentValue = this.value
+    this.highlighten = this.value
+    this.selected = this.value
 
     document.addEventListener('keydown', this.onDocumentKeyDown)
   },
@@ -115,44 +143,39 @@ export default {
   },
 
   methods: {
-    getLabel (item) {
-      return _isObject(item) ? item.label : item
-    },
-    getValue (item) {
-      return _isObject(item) ? item.value : item
-    },
     selectItem (item) {
-      this.selectedValue = item
-      this.currentValue = item
+      this.highlighten = item
+      this.selected = item
       this.$emit(EVENTS.input, item)
       this.toggleListVisibility()
     },
     toggleListVisibility () {
-      this.isExpanded ? this.closeList() : this.openList()
+      this.isListOpened ? this.closeList() : this.openList()
     },
     openList () {
-      const index = this.getIndex(this.currentValue)
+      const index = this.getIndex(this.selected)
+      this.highlighten = this.selected
 
       this.scrollList(index)
-      this.isExpanded = true
+      this.isListOpened = true
+      document.addEventListener('click', this.onDocumentClick)
     },
     closeList () {
-      // set active element as selected:
-      this.selectedValue = this.currentValue
-      this.isExpanded = false
+      this.isListOpened = false
     },
     onDocumentClick (event) {
-      if (!event.target.closest('.select__list')) {
+      if (!event.target.closest('.select-field')) {
         this.closeList()
         document.removeEventListener('click', this.onDocumentClick)
       }
     },
     onDocumentKeyDown (event) {
-      if (!this.isExpanded) {
+      if (!this.isListOpened) {
         return
       }
 
-      let index = this.getIndex(this.selectedValue)
+      event.preventDefault()
+      let index = this.getIndex(this.highlighten)
 
       switch (event.which) {
         case KEY_CODES.enter:
@@ -180,14 +203,10 @@ export default {
         default:
           return
       }
-
       this.scrollList(index)
     },
     getIndex (item) {
-      if (!_isObject(item)) {
-        return this.values.findIndex(entry => entry.value === item.value)
-      }
-      return this.values.indexOf(item)
+      return this.values.findIndex(it => item === it)
     },
     scrollList (index) {
       const list = this.$refs.list
@@ -199,12 +218,12 @@ export default {
     },
     selectNextItem (index, valuesList) {
       index === valuesList.length - 1 ? index = 0 : index += 1
-      this.selectedValue = valuesList[index]
+      this.highlighten = valuesList[index]
       return index
     },
     selectPrevItem (index, valuesList) {
       index === 0 ? index += valuesList.length - 1 : index -= 1
-      this.selectedValue = valuesList[index]
+      this.highlighten = valuesList[index]
       return index
     },
   },
@@ -231,7 +250,6 @@ export default {
   border: none;
   caret-color: $field-color-focused;
   color: $field-color-text;
-  padding: $field-input-padding;
 
   @include material-border(
     $field-color-focused,
@@ -241,10 +259,8 @@ export default {
 
   @include text-font-sizes;
 
-  .asset-selector__select-field &,
-  .fees__assets-select & {
-    border-bottom: 0;
-    background-size: 0;
+  &.select-field__selected--padding {
+    padding: $field-input-padding;
   }
 }
 
@@ -255,31 +271,23 @@ export default {
   line-height: 1.5rem;
 
   &:before {
-    transition: transform .2s ease-out;
+    transition: transform 0.2s ease-out;
   }
 
   &.select-field__selected-icon--active:before {
-    transform: rotate(-180deg)
+    transform: rotate(-180deg);
   }
 }
 
 .select-field__selected-value {
-  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   background-color: transparent;
   border: none;
   color: $field-color-text;
-  font-size: 1.6rem;
-  font-weight: 500;
+  @include text-font-sizes;
   cursor: pointer;
-
-  .asset-selector__select-field &,
-  .fees__assets-select & {
-    font-size: 1.8rem;
-    font-weight: 300;
-  }
 }
 
 .select-field__label {
@@ -322,19 +330,19 @@ export default {
 .select-field__list {
   opacity: 0;
   visibility: hidden;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
   margin-top: -1rem;
   position: absolute;
   left: 0;
   width: 100%;
   min-width: 16rem;
-  top: calc(100% + .4rem);
+  top: 100%;
   background-color: $col-dropdown-bg;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
   z-index: 5;
   max-height: 24.4rem;
   overflow-y: auto;
-  padding: .8rem 0;
+  padding: 0.8rem 0;
 
   @include box-shadow;
 }
@@ -346,9 +354,9 @@ export default {
 }
 
 .select-field__list-item {
-  padding: .8rem 1.6rem;
+  padding: 0.8rem 1.6rem;
   font-size: 1.6rem;
-  transition: background-color .15s ease-out;
+  transition: background-color 0.15s ease-out;
   cursor: pointer;
   border: none;
   display: block;

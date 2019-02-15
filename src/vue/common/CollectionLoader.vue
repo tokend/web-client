@@ -71,8 +71,7 @@ export default {
         const response = await loaderFn()
         this.$emit(eventName, response.data)
         this.nextPageLoader = response.fetchNext
-        this.isCollectionFetched =
-          response.data.length < this.pageLimit
+        this.isCollectionFetched = response.data.length < this.pageLimit
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -84,6 +83,11 @@ export default {
 <style lang="scss">
   @import '~@scss/variables';
   @import '~@scss/mixins';
+
+  .collection-loader {
+    display: flex;
+    justify-content: center;
+  }
 
   .collection-loader__more-button {
     @include button-flat();

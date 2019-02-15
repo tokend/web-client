@@ -1,124 +1,7 @@
 <template>
   <div class="info-widget">
     <template v-if="transactions.length">
-      <div class="info-widget__title">
-        {{ 'dashboard.activity' | globalize }}
-      </div>
-      <div class="info-widget__list-wrapper">
-        <div
-          class="info-widget__list"
-          v-table-scroll-shadow>
-          <div class="info-widget__list-header">
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--date">
-              {{ 'dashboard.date' | globalize }}
-            </div>
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--type">
-              {{ 'dashboard.transaction-type' | globalize }}
-            </div>
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--asset">
-              {{ 'dashboard.asset' | globalize }}
-            </div>
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--amount">
-              {{ 'dashboard.amount' | globalize }}
-            </div>
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--counterparty">
-              {{ 'dashboard.counterparty' | globalize }}
-            </div>
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--status">
-              {{ 'dashboard.status' | globalize }}
-            </div>
-            <div
-              class="info-widget__list-header-item
-                     info-widget__list-header-item--btn" />
-          </div>
-          <div class="info-widget__list-body">
-            <template v-for="(tx, i) in transactions">
-              <div
-                class="info-widget__list-body-elem"
-                v-if="i < transactionsToShow"
-                :key="`activity-item-${i}`"
-                :class="`info-widget__list-body-elem--${tx.state}`">
-                <div class="info-widget__list-body-row">
-                  <div
-                    :title="tx.date"
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--date">
-                    {{ tx.date | formatDateDMY }}
-                  </div>
-                  <div
-                    :title="tx.name"
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--type">
-                    {{ tx.name }}
-                  </div>
-                  <div
-                    :title="tx.asset"
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--asset">
-                    {{ tx.asset }}
-                  </div>
-                  <div
-                    :title="tx.direction"
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--amount">
-                    {{ tx.receiver === accountId ? '+' : '-' }}{{ tx.amount }}
-                  </div>
-                  <div
-                    :title="tx.counterparty"
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--counterparty">
-                    <email-getter :id="tx.counterparty" />
-                  </div>
-                  <div
-                    :title="tx.state"
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--status">
-                    {{ tx.state }}
-                  </div>
-                  <div
-                    class="info-widget__list-body-item
-                           info-widget__list-body-item--btn">
-                    <button
-                      class="info-widget__list-body-item-btn"
-                      @click="toggleDetails(i)">
-                      <i
-                        class="mdi
-                              mdi-menu-down
-                              info-widget__list-body-item-icon"
-                        :class="{
-                          'info-widget__list-body-item-icon--active':
-                            isSelected(i)
-                        }"
-                      />
-                    </button>
-                  </div>
-                </div>
-                <div
-                  class="info-widget__list-body-row
-                         info-widget__list-body-row--details"
-                  v-if="isSelected(i)">
-                  <!-- <record-details-viewer
-                    class="info-widget__list-body-row-details"
-                    :tx="tx"
-                  /> -->
-                </div>
-              </div>
-            </template>
-          </div>
-        </div>
-      </div>
+      <op-list :list="transactions" />
     </template>
     <template v-else>
       <no-data-message
@@ -136,7 +19,7 @@ import { vuexTypes } from '@/vuex'
 import config from '@/config'
 import { TX_STATES } from '@/js/const/transaction-statuses.const'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import EmailGetter from '@/vue/common/EmailGetter'
+import OpList from '@/vue/common/OpList'
 import { Sdk } from '@/sdk'
 import { RecordWrapper } from '@/js/records'
 
@@ -144,7 +27,7 @@ export default {
   name: 'info-widget',
   components: {
     NoDataMessage,
-    EmailGetter,
+    OpList,
   },
   props: {
     currentAsset: { type: String, required: true },
@@ -180,7 +63,10 @@ export default {
       })
 
       this.transactions = response.data.map(el => {
-        return RecordWrapper.operation(el, { accountId: this.accountId })
+        return RecordWrapper.operation(el, {
+          accountId: this.accountId,
+          asset: this.currentAsset,
+        })
       })
     },
     toggleDetails (index) {

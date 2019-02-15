@@ -91,6 +91,7 @@ export default {
 }
 
 .drawer__close-icon {
+  display: flex;
   font-size: 2.4rem;
   margin-top: -.2rem; // magic value to align icon in the center
 
@@ -107,6 +108,7 @@ export default {
   width: 52.8rem;
   max-width: 100%;
   min-height: 100%;
+  height: 100%;
   box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -133,7 +135,7 @@ export default {
   flex: 1;
 
   // allows to scroll drawer content when it height more than drawer height
-  overflow: auto;
+  overflow-y: auto;
   height: 0;
 }
 

@@ -11,6 +11,7 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'
+import isObject from 'lodash/isObject'
 
 export default {
   components: {
@@ -26,7 +27,7 @@ export default {
   data: _ => ({
     formMixin: {
       isDisabled: false,
-      isFormConfirmationShown: false,
+      isConfirmationShown: false,
     },
   }),
   methods: {
@@ -93,9 +94,24 @@ export default {
       }
     },
     clearFields () {
-      Object.keys(this.form).forEach(key => {
-        this.form[key] = ''
-      })
+      this.clearFieldsWithOverriding({})
+    },
+    clearFieldsWithOverriding (overriddenFields) {
+      for (const [fieldName, fieldValue] of Object.entries(this.form)) {
+        if (overriddenFields[fieldName]) {
+          this.form[fieldName] = overriddenFields[fieldName]
+        } else if (typeof fieldValue === 'string') {
+          this.form[fieldName] = ''
+        } else if (typeof fieldValue === 'number') {
+          this.form[fieldValue] = 0
+        } else if (Array.isArray(fieldValue)) {
+          this.form[fieldName] = []
+        } else if (isObject(fieldValue)) {
+          this.form[fieldName] = {}
+        } else {
+          continue
+        }
+      }
       this.$v.$reset()
     },
     touchField (fieldName) {
@@ -110,11 +126,13 @@ export default {
     enableForm () {
       this.formMixin.isDisabled = false
     },
-    showFormConfirmation () {
-      this.formMixin.isFormConfirmationShown = true
+    showConfirmation () {
+      this.disableForm()
+      this.formMixin.isConfirmationShown = true
     },
-    hideFormConfirmation () {
-      this.formMixin.isFormConfirmationShown = false
+    hideConfirmation () {
+      this.enableForm()
+      this.formMixin.isConfirmationShown = false
     },
   },
 }
