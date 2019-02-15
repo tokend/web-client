@@ -156,21 +156,21 @@ export default {
     },
   },
   async created () {
-    await this.loadBalances()
-    await this.loadTradablePairs()
+    try {
+      await this.loadBalances()
+      await this.loadTradablePairs()
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error)
+    }
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async loadTradablePairs () {
-      try {
-        const response = await Sdk.horizon.assetPairs.getAll()
-        this.formatTradablePairs(response.data)
-        this.setDefaultSelectedPair(response.data)
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
+      const { data } = await Sdk.horizon.assetPairs.getAll()
+      this.formatTradablePairs(data)
+      this.setDefaultSelectedPair(data)
     },
     formatTradablePairs (pairs) {
       this.formattedPairs = pairs.map(item => {
