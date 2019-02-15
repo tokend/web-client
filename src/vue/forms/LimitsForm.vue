@@ -171,7 +171,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
 import {
   maxLength,
-  maxValueWrapper,
+  maxValue,
   decimal,
   minValue,
   maxDecimalPoints,
@@ -243,25 +243,25 @@ export default {
       form: {
         dailyOut: {
           decimal,
-          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidDailyOutValue),
         },
         weeklyOut: {
           decimal,
-          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidWeeklyOutValue),
         },
         monthlyOut: {
           decimal,
-          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidMonthlyOutValue),
         },
         annualOut: {
           decimal,
-          maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
+          maxValue: maxValue(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
           minValue: minValue(this.minValidAnnualOutValue),
         },

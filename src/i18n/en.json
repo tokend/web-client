@@ -74,7 +74,7 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_amount": "Amount must be a number, greater than 0",
-      "field-error_maxValueWrapper": "Value should be less then {{maxValue}}",
+      "field-error_maxValue": "Value should be less then {{maxValue}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",

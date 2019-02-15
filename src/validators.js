@@ -15,9 +15,6 @@ export { minLength } from 'vuelidate/lib/validators'
 export const password = value => validators.minLength(6)(value)
 export const seed = value => base.Keypair.isValidSecretKey(value)
 export const amount = value => Number(value) && Number(value) > 0
-export const maxValueWrapper = maxValue => value => {
-  return Number(value) < Number(maxValue)
-}
 export const maxDecimalPoints = points => value => {
   const splittedValue = value.split('.')
   if (splittedValue.length < 2) {
