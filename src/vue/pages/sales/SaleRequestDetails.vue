@@ -144,11 +144,14 @@
         </table>
       </div>
       <div class="sale-request-details__buttons">
+        <!--
+          Currently, we cannot definitely identify the sale by its request,
+          therefore we temporarily disable view button.
+        -->
         <button
           v-ripple
           class="sale-request-details__view-btn"
-          :disabled="!canBeViewed"
-          @click="viewSale"
+          :disabled="true"
         >
           {{ 'sale-request-details.view-btn' | globalize }}
         </button>
@@ -245,12 +248,6 @@ export default {
       this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(e)
     }
-  },
-  methods: {
-    viewSale () {
-      // TODO: add the sale details route when sale details component
-      // is added.
-    },
   },
 }
 </script>
