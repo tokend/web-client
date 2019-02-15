@@ -99,6 +99,10 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
 $col-button-back-icon: $col-primary-inactive;
 $col-button-back-icon-hover: $col-primary-lighten;
 
+$col-button-flat-light-bg: $_whiteSmoke;
+$col-button-flat-light-shadow: rgba(0, 0, 0, 0.15);
+$col-button-flat-light-text: $col-text;
+
 // block
 $col-block-bg: $_white;
 $col-block-shadow: rgba(0, 0, 0, 0.1);
@@ -213,6 +217,15 @@ $col-asset-card-background: $_white;
 $col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
+
+// sale card colors
+$col-sale-card-background: $_white;
+$col-sale-card-shadow: $col-block-shadow;
+$col-sale-card-header-background: $_athensGray;
+$col-sale-card-text-primary: $col-text;
+$col-sale-card-text-bold: $_cornflowerBlue;
+$col-sale-card-progress-bar-background: $_thinPurple;
+$col-sale-card-progress-bar-value: $_cornflowerBlue;
 
 // request colors
 $col-request-approved: $_cyan;

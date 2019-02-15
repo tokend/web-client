@@ -115,11 +115,11 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.funds"
+            :to="vueRoutes.sales"
             tag="a"
-            v-if="config.FEATURE_FLAGS.funds"
+            v-if="config.FEATURE_FLAGS.sales"
           >
-            <i class="sidebar__link-icon mdi mdi-coins" />
+            <i class="sidebar__link-icon mdi mdi-trending-up" />
             <span>
               {{ 'pages-names.funds' | globalize }}
             </span>
