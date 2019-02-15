@@ -2,9 +2,11 @@
   <div class="limits-requests-list-renderer">
     <div
       v-if="!isLoading && !isLoadingFailed && requests.length"
-      class="limits-requests-list-renderer__table"
+      class="limits-requests-list-renderer__table
+            app__table
+            app__table--with-shadow"
     >
-      <table class="app__table">
+      <table>
         <thead>
           <tr>
             <th>
@@ -28,13 +30,23 @@
             v-for="(item, i) in requests"
             :key="`limits-requests-table-row-${i}`"
           >
-            <td>{{ item.updatedAt | formatDate }}</td>
+            <td :title="item.updatedAt | formatDate">
+              {{ item.updatedAt | formatDate }}
+            </td>
             <!-- eslint-disable-next-line -->
-            <td>{{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.requestType] | globalize }}</td>
+            <td :title="LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.requestType] | globalize">
+              <!-- eslint-disable-next-line -->
+              {{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.requestType] | globalize }}
+            </td>
             <!-- eslint-disable-next-line -->
-            <td>{{ LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize }}</td>
-            <td>{{ item.asset }}</td>
-            <td>
+            <td :title="LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize">
+              <!-- eslint-disable-next-line -->
+              {{ LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize }}
+            </td>
+            <td :title="item.asset">
+              {{ item.asset }}
+            </td>
+            <td class="limits-requests-list-renderer__table-cell-btn">
               <button
                 class="app__button-raised"
                 @click="openDocumentsUploaderForm(item)"
@@ -155,5 +167,10 @@ export default {
 <style lang="scss">
 .limits-requests-list-renderer__reload-requests-btn {
   margin-top: 1.6rem;
+}
+.limits-requests-list-renderer__table-cell-btn {
+  // allows buttons to look good on mobile screens
+  box-sizing: content-box;
+  min-width: 13rem;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div
     v-if="!isLoading && !isLoadingFailed"
-    class="limits-table-renderer__table app__table"
+    class="limits-table-renderer__table app__table app__table--with-shadow"
   >
-    <table class="app__table">
+    <table>
       <thead>
         <tr>
           <th>
@@ -31,53 +31,85 @@
           <td>
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailySpent }">
-              <!-- eslint-disable-next-line -->
-              {{ item.dailySpent || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.dailySpent">
+                {{ item.dailySpent | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailyOut }">
-              <!-- eslint-disable-next-line -->
-              {{ item.dailyOut || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.dailyOut">
+                {{ item.dailyOut | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
           </td>
           <td>
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklySpent }">
-              <!-- eslint-disable-next-line -->
-              {{ item.weeklySpent || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.weeklySpent">
+                {{ item.weeklySpent | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklyOut }">
-              <!-- eslint-disable-next-line -->
-              {{ item.weeklyOut || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.weeklyOut">
+                {{ item.weeklyOut | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
           </td>
           <td>
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlySpent }">
-              <!-- eslint-disable-next-line -->
-              {{ item.monthlySpent || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.monthlySpent">
+                {{ item.monthlySpent | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlyOut }">
-              <!-- eslint-disable-next-line -->
-              {{ item.monthlyOut || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.monthlyOut">
+                {{ item.monthlyOut | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
           </td>
           <td>
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualSpent }">
-              <!-- eslint-disable-next-line -->
-              {{ item.annualSpent || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.annualSpent">
+                {{ item.annualSpent | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualOut }">
-              <!-- eslint-disable-next-line -->
-              {{ item.annualOut || 'limits-table-renderer.not-set-lbl' | globalize }}
+              <template v-if="item.annualOut">
+                {{ item.annualOut | formatNumber }}
+              </template>
+              <template v-else>
+                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
+              </template>
             </span>
           </td>
         </tr>
