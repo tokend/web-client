@@ -15,30 +15,30 @@ module.exports = merge(baseWebpackConfig, {
     overlay: true,
     open: true,
     watchOptions: {
-      poll: true
+      poll: true,
     },
     stats: 'errors-only',
     historyApiFallback: true,
-    progress: true
+    progress: true,
   },
   module: {
     rules: [
       {
         test: /\.css?$/,
-        loader: 'style-loader!css-loader'
-      }
-    ]
+        loader: 'style-loader!css-loader',
+      },
+    ],
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../envs/local')
+      'process.env': require('../envs/local'),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
     }),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
   ]
 })
