@@ -281,7 +281,8 @@
       "explore-documents": "Explore documents",
       "find-document": "Find document",
       "update-token": "Update token",
-      "funds": "Funds"
+      "funds": "Funds",
+      "fund-details": "Fund details"
     },
 
     "pages-subnames": {
@@ -683,6 +684,59 @@
       "create-buy-offer-form-title": "Create buy order",
       "create-sell-offer-form-title": "Create sell order",
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
+    },
+
+    "sale-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "campaign-title": "Campaign",
+      "invest": "Invest",
+      "overview-title": "Fund overview",
+      "sale-not-found-title": "Fund not found",
+      "sale-not-found-desc": "There are no funds with this ID",
+      "no-description-msg": "No description provided",
+      "funded": "{{funded, percent}} funded",
+      "investors": "### {{investors}}\ninvestors",
+      "days-to-go": "### {{days}}\ndays to go",
+      "view-details-btn": "View details"
+    },
+
+    "sale-overview": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "asset-title": "Token",
+      "details-title": "Details",
+      "start-time-title": "Start time",
+      "close-time-title": "Close time",
+      "soft-cap-title": "Soft cap",
+      "hard-cap-title": "Hard cap",
+      "asset-to-sell-title": "{{asset}} to sell",
+      "video-about-sale-title": "Video about fund",
+      "no-video-msg": "No video",
+      "view-video-btn": "View"
+    },
+
+    "invest-form": {
+      "asset-lbl": "Asset",
+      "available-amount-hint": "Available: **{{amount, money}}**",
+      "current-investment": "Current investment: **{{amount, money}}**",
+      "amount-lbl": "Amount {{asset}}",
+      "converted-amount-hint": "Converted: **{{amount, money}}**",
+      "loading-msg": "Loading...",
+      "loading-error-msg": "There was an error while loading.",
+      "insufficient-balance-title": "Insufficient balance",
+      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this fund",
+      "converting-error-msg": "Converting error. Enter another amount, please",
+      "invest-btn": "Invest",
+      "update-offer-btn": "Update offer",
+      "cancel-offer-btn": "CANCEL OFFER",
+      "sale-owner-msg": "Owners of the fund cannot invest themselves",
+      "closed-sale-msg": "Closed funds are not investable",
+      "upcoming-sale-msg": "Upcoming funds are not investable",
+      "canceled-sale-msg": "Cancelled funds are not investable",
+      "cap-exceeded-msg": "Investing amount has exceeded the fund cap **{{amount, money}}**",
+      "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the fund succeeds",
+      "offer-canceled-msg": "Your offer was successfully cancelled"
     },
 
     "create-sale-form": {

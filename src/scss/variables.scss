@@ -82,6 +82,7 @@ $col-text-auth-title-big: $_white;
 $col-text-auth-title-small: $_cornflowerBlue;
 $col-text-auth-tip-link: $_cornflowerBlue;
 $col-text-status-message: $_white;
+$col-text-highlighted: $col-primary-lighten;
 
 // button colors:
 $col-button-raised: $col-primary-lighten;
@@ -261,4 +262,14 @@ $col-ios-guide-step-number-bg: $col-primary;
 $col-ios-guide-step-number-text: $_white;
 $col-ios-guide-step-text: $col-primary;
 $col-ios-guide-substep-text: $col-secondary;
+
+// sale details colors
+$col-sale-details-title: $col-primary;
+$col-sale-details-subtitle: $col-secondary;
+$col-sale-details-text-primary: $col-text;
+$col-sale-details-text-secondary: $col-text-secondary;
+$col-sale-details-block: $col-block-bg;
+$col-sale-details-logo-bg: $_athensGray;
+$col-sale-details-progress-bar-bg: $_thinPurple;
+$col-sale-details-progress-bar-funded: $col-primary-lighten;
 // TODO: paste here variables that are ready to use during the refactor process
