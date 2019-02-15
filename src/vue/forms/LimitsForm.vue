@@ -143,7 +143,7 @@
     </div>
     <div class="app__form-actions">
       <button
-        v-if="!formMixin.isFormConfirmationShown"
+        v-if="!formMixin.isConfirmationShown"
         v-ripple
         type="button"
         class="app__button-raised"
@@ -154,11 +154,11 @@
       </button>
 
       <form-confirmation
-        v-if="formMixin.isFormConfirmationShown"
-        :is-pending="formMixin.isDisabled"
+        v-if="formMixin.isConfirmationShown"
+        :is-pending="isRequestCreating"
         :message="'transfer-form.recheck-form' | globalize"
         :ok-button="'transfer-form.submit-btn' | globalize"
-        @cancel="hideFormConfirmation"
+        @cancel="hideConfirmation"
         @ok="submit"
       />
     </div>
@@ -221,6 +221,7 @@ export default {
     STATS_OPERATION_TYPES_KEY_NAMES,
     formattedOpTypes: [],
     isLimitsChanged: false,
+    isRequestCreating: false,
     formNoteMaxLength: 250,
     config,
   }),
@@ -270,10 +271,11 @@ export default {
   methods: {
     tryToSubmit () {
       if (!this.isFormValid()) return
-      this.showFormConfirmation()
+      this.showConfirmation()
     },
     async submit () {
       this.disableForm()
+      this.isRequestCreating = true
       try {
         await this.createRequest()
         Bus.success('limits-form.request-successfully-created')
@@ -288,8 +290,9 @@ export default {
           ErrorHandler.process(error)
         }
       }
+      this.isRequestCreating = true
       this.enableForm()
-      this.hideFormConfirmation()
+      this.hideConfirmation()
       this.$emit(EVENTS.limitsChanged)
     },
     async createRequest () {

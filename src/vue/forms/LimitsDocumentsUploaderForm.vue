@@ -43,7 +43,7 @@
 
     <div class="app__form-actions">
       <button
-        v-if="!formMixin.isFormConfirmationShown"
+        v-if="!formMixin.isConfirmationShown"
         v-ripple
         type="button"
         class="app__button-raised"
@@ -54,9 +54,9 @@
       </button>
 
       <form-confirmation
-        v-if="formMixin.isFormConfirmationShown"
-        :is-pending="formMixin.isDisabled"
-        @cancel="hideFormConfirmation"
+        v-if="formMixin.isConfirmationShown"
+        :is-pending="isRequestCreating"
+        @cancel="hideConfirmation"
         @ok="submit"
       />
     </div>
@@ -87,6 +87,7 @@ export default {
   },
   data: () => ({
     DOCUMENT_TYPES_TRANSLATION_IDS,
+    isRequestCreating: false,
     form: {
       documents: {},
     },
@@ -108,10 +109,11 @@ export default {
   methods: {
     tryToSubmit () {
       if (!this.isFormValid()) return
-      this.showFormConfirmation()
+      this.showConfirmation()
     },
     async submit () {
       this.disableForm()
+      this.isRequestCreating = true
       try {
         await this.uploadDocuments()
         await this.createLimitsUpdateRequest()
@@ -128,8 +130,9 @@ export default {
           ErrorHandler.process(error)
         }
       }
+      this.isRequestCreating = false
       this.enableForm()
-      this.hideFormConfirmation()
+      this.hideConfirmation()
     },
     async createLimitsUpdateRequest () {
       const operation = base
