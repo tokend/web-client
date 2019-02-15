@@ -25,6 +25,7 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 import { abbreviate } from '@/vue/filters/abbreviate'
+import { cropAddress } from '@/vue/filters/cropAddress'
 
 i18next.init(i18nOptions)
 
@@ -47,6 +48,7 @@ Vue.filter('formatCalendar', formatCalendar)
 Vue.filter('formatFeeSubType', formatFeeSubType)
 Vue.filter('formatOrderNumber', formatOrderNumber)
 Vue.filter('abbreviate', abbreviate)
+Vue.filter('cropAddress', cropAddress)
 
 /* eslint-disable no-new */
 new Vue({

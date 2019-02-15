@@ -27,7 +27,6 @@
             :value="currentAssetForSelect"
             :values="tokensList"
             :key="currentAssetForSelect"
-            :form-free="true"
             @input="$emit(EVENTS.assetChange, $event)"
             class="app__select app__select--no-border"
           />
@@ -133,7 +132,7 @@ export default {
         const token = this.tokens.find(t => t.code === this.currentAsset)
         return `${token.name || token.code} (${token.code})`
       } else {
-        return null
+        return ''
       }
     },
     currentAssetBalanceDetails () {
