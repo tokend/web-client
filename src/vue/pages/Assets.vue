@@ -32,7 +32,7 @@
       <template slot="heading">
         {{ 'assets-page.create-asset-title' | globalize }}
       </template>
-      <asset-create-form />
+      <asset-create-form @close="isAssetDrawerShown = false" />
     </drawer>
     <router-view />
   </div>

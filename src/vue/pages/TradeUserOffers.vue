@@ -85,11 +85,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
-
-.trade-user-offers {
-  margin-top: 4rem;
-}
 
 </style>

@@ -90,12 +90,13 @@ export const router = new Router({
           path: '/fees',
           name: vueRoutes.fees.name,
           meta: { pageNameTranslationId: 'pages-names.fees' },
-          featureFlag: config.FEATURE_FLAGS.fees,
+          featureFlag: config.featureFlags.fees,
           component: resolve => require(['@/vue/pages/Fees'], resolve),
         },
         {
           path: '/trade',
           name: vueRoutes.trade.name,
+          featureFlag: config.featureFlags.trade,
           meta: { pageNameTranslationId: 'pages-names.trade' },
           component: resolve => require(['@/vue/pages/Trade'], resolve),
           redirect: vueRoutes.trade.exchange,
@@ -103,19 +104,11 @@ export const router = new Router({
             {
               path: '/trade/exchange',
               name: vueRoutes.trade.exchange.name,
-              meta: {
-                pageNameTranslationId: 'pages-names.trade',
-                pageSubnameTranslationId: 'pages-subnames.exchange-tokens',
-              },
               component: resolve => require(['@/vue/pages/TradeExchange'], resolve),
             },
             {
               path: '/trade/my-orders',
               name: vueRoutes.trade.userOffers.name,
-              meta: {
-                pageNameTranslationId: 'pages-names.trade',
-                pageSubnameTranslationId: 'pages-subnames.user-orders',
-              },
               component: resolve => require(['@/vue/pages/TradeUserOffers'], resolve),
             },
           ],
@@ -123,21 +116,21 @@ export const router = new Router({
         {
           path: '/operations',
           name: vueRoutes.operations.name,
-          featureFlag: config.FEATURE_FLAGS.operations,
+          featureFlag: config.featureFlags.operations,
           meta: { pageNameTranslationId: 'pages-names.operations' },
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
           path: '/funds',
           name: vueRoutes.sales.name,
-          featureFlag: config.FEATURE_FLAGS.sales,
+          featureFlag: config.featureFlags.sales,
           meta: { pageNameTranslationId: 'pages-names.funds' },
           component: resolve => require(['@/vue/pages/Sales'], resolve),
         },
         {
           path: '/funds/:id',
           name: vueRoutes.saleDetails.name,
-          featureFlag: config.FEATURE_FLAGS.saleDetails,
+          featureFlag: config.featureFlags.saleDetails,
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
           redirect: vueRoutes.saleDetails.campaign,
           component: resolve => require(['@/vue/pages/SaleDetails'], resolve),
@@ -154,14 +147,24 @@ export const router = new Router({
         {
           path: '/issuance',
           name: vueRoutes.issuance.name,
-          featureFlag: config.FEATURE_FLAGS.issuance,
+          featureFlag: config.featureFlags.issuance,
           meta: { pageNameTranslationId: 'pages-names.issuance' },
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
         {
+          path: '/limits',
+          name: vueRoutes.limits.name,
+          featureFlag: config.featureFlags.limits,
+          meta: {
+            pageNameTranslationId: 'pages-names.limits',
+            pageSubnameTranslationId: 'pages-subnames.explore-limits',
+          },
+          component: resolve => require(['@/vue/pages/Limits'], resolve),
+        },
+        {
           path: '/tokens',
           name: vueRoutes.assets.name,
-          featureFlag: config.FEATURE_FLAGS.assets,
+          featureFlag: config.featureFlags.assets,
           redirect: vueRoutes.assetsExplore,
           component: resolve => require(['@/vue/pages/Assets'], resolve),
           children: [
@@ -182,7 +185,7 @@ export const router = new Router({
         {
           path: '/requests',
           name: vueRoutes.requests.name,
-          featureFlag: config.FEATURE_FLAGS.requests,
+          featureFlag: config.featureFlags.requests,
           redirect: vueRoutes.requests.assetCreation,
           meta: { pageNameTranslationId: 'pages-names.requests' },
           component: resolve => require(['@/vue/pages/Requests'], resolve),
@@ -202,7 +205,7 @@ export const router = new Router({
         {
           path: '/settings',
           name: vueRoutes.settings.name,
-          featureFlag: config.FEATURE_FLAGS.settings,
+          featureFlag: config.featureFlags.settings,
           meta: { pageNameTranslationId: 'pages-names.settings' },
           redirect: vueRoutes.verification,
           component: resolve => require(['@/vue/pages/Settings'], resolve),
@@ -252,5 +255,5 @@ function inAppRouteGuard (to, from, next) {
 
   isLoggedIn
     ? next()
-    : next(vueRoutes.login)
+    : next({ name: vueRoutes.login.name, query: { redirectPath: to.fullPath } })
 }

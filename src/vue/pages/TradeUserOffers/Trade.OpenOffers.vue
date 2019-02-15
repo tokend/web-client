@@ -58,7 +58,7 @@
       <no-data-message
         :title-id="'trade-open-offers.no-data-title'"
         :message-id="'trade-open-offers.no-data-message'"
-        :message-id-args="{ base: assetPair.base, quote: assetPair.quote }"
+        :message-id-keys="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
   </div>

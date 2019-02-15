@@ -70,17 +70,19 @@
       "field-error_url": "This field should be a valid website URL",
       "field-error_documentContainer": "This field should contain a document",
       "field-error_integer": "This field should be a valid integer",
-      "field-error_minValue": "This field should be less or equal {{value}}",
+      "field-error_minValue": "This field should be more or equal {{minValue}}",
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_requiredAtLeastOne": "Choose at least one of the options",
       "field-error_amount": "Amount must be a number, greater than 0",
-      "field-error_maxValueWrapper": "Value must be less then 250",
-      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available}}",
-      "field-error_address": "Make sure the address is correct",
+      "field-error_maxValue": "Value should be less then {{maxValue}}",
+      "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_minDate": "Date should be after {{ minDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
+      "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available}}",
+      "field-error_address": "Make sure the address is correct",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
       "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
     },
@@ -204,6 +206,8 @@
     },
 
     "verification-form": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
@@ -234,6 +238,16 @@
       "website-lbl": "Website"
     },
 
+    "limits-documents-uploader-form": {
+      "file-type-note": "image/pdf (Max 5mb)",
+      "form-subheading": "Requirements",
+      "document-type-lbl": "Document type",
+      "note-lbl": "Note",
+      "upload-docs-btn": "Upload",
+      "documents-upload-success": "Documents successfully uploaded",
+      "error-duplicate-request": "Duplicate request"
+    },
+
     "sale-state": {
       "starts-in": "Starts in %{days} days",
       "starts": "Starts %{time}",
@@ -242,6 +256,32 @@
       "canceled": "canceled",
       "ends": "ends",
       "days-left": "days left"
+    },
+
+    "document-types": {
+      "sale-logo": "Sale Logo",
+      "sale-document": "Sale Document",
+      "asset-terms": "Asset Terms",
+      "asset-logo": "Asset Logo",
+      "kyc-id-document": "KYC ID Document",
+      "kyc-proof-of-address": "KYC Proof Of Address",
+      "kyc-selfie": "KYC Selfie",
+      "kyc-tax-returns": "KYC Tax Returns",
+      "kyc-origination-certificate": "KYC Origination Certificate",
+      "kyc-investment-presentation": "KYC Investment Presentation",
+      "kyc-proof-of-investor": "KYC Proof Of Investor",
+      "kyc-shareholders-certificate": "KYC Shareholders Certificate",
+      "kyc-annual-report": "KYC Annual report",
+      "kyc-memorandium": "KYC Memorandium",
+      "kyc-signatories-authorization": "KYC Signatories Authorization",
+      "kyc-organization-chart": "KYC Organization Chart",
+      "kyc-business-model": "KYC Business Model",
+      "passport": "Passport",
+      "driving-license": "Driving License",
+      "identity-card": "Identity Card",
+      "residence-permit": "Residence Permit",
+      "token-terms": "Token Terms",
+      "token-logo": "Token Logo"
     },
 
     "form-confirmation": {
@@ -269,7 +309,76 @@
 
     "pages-subnames": {
       "exchange-tokens": "Exchange tokens",
+      "explore-limits": "Explore limits",
       "user-orders": "Orders owned by you"
+    },
+
+    "limits": {
+      "explore-limits": "Explore limits",
+      "limits-form-heading": "Change limits",
+      "change-limits-bth": "Change limits",
+      "requests-subheading": "Requests",
+      "no-limits-list": "No limits list",
+      "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one asset to your balances"
+    },
+
+    "limits-form": {
+      "operation-type": "Operation type limit",
+      "type-lbl": "Type",
+      "limit-lbl": "Limit",
+      "not-set-lbl": "Not set",
+      "daily-limit-lbl": "Daily Limit",
+      "weekly-limit-lbl": "Weekly Limit",
+      "monthly-limit-lbl": "Monthly Limit",
+      "annual-limit-lbl": "Annual Limit",
+      "note-lbl": "Note (optional)",
+      "add-limit-btn": "Add limit",
+      "change-limit-btn": "Change limit",
+      "send-request-btn": "Send request",
+      "op-type-deposit": "Deposit",
+      "op-type-withdraw": "Withdraw",
+      "op-type-payment-out": "Outgoing payment",
+      "request-new-limits": "Request new limits",
+      "request-successfully-created": "Request successfully created",
+      "error-duplicate-request": "Duplicate request"
+    },
+
+    "limits-table-renderer": {
+      "op-type-deposit": "Deposit",
+      "op-type-withdraw": "Withdraw",
+      "op-type-payment-out": "Payment",
+      "table-tx-type-lbl": "Transaction type",
+      "table-daily-limit-lbl": "Daily limit (left/total)",
+      "table-weekly-limit-lbl": "Weekly limit (left/total)",
+      "table-monthly-limit-lbl": "Monthly limit (left/total)",
+      "table-annual-limit-lbl": "Annual limit (left/total)",
+      "not-set-lbl": "Not set",
+      "data-loading": "Fetching limits data...",
+      "load-limits-btn": "Load limits",
+      "loading-failed": "Failed to load limits",
+      "loading-failed-message": "Limits loading was failed in some way. Try to load limits again"
+    },
+
+    "limits-requests-table-renderer": {
+      "table-date-lbl": "Date",
+      "table-request-type-lbl": "Request type",
+      "table-state-lbl": "State",
+      "table-asset-lbl": "Asset",
+      "upload-documents-btn": "Upload documents",
+      "data-loading": "Fetching limits requests data...",
+      "document-uploader-form-heading": "Upload documents",
+      "request-state-pending": "Pending",
+      "request-state-cancelled": "Cancelled",
+      "request-state-approved": "Approved",
+      "request-state-rejected": "Rejected",
+      "request-state-permanently-rejected": "Permanently rejected",
+      "request-type-initial": "Initial",
+      "request-type-docs-uploading": "Documents uploading",
+      "no-requests-history": "No requests history",
+      "here-will-requests-list": "Here will be the list of your limits change requests",
+      "load-requests-btn": "Load requests",
+      "loading-failed": "Failed to load limits requests",
+      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again"
     },
 
     "passport": {
@@ -460,7 +569,9 @@
     "assets-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-asset-title": "Create token"
+      "create-asset-title": "Create token",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading."
     },
 
     "assets-list": {

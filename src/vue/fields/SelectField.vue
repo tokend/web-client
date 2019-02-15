@@ -23,7 +23,10 @@
       :disabled="disabled"
       @click.prevent="toggleListVisibility"
     >
-      <span class="select-field__selected-value">
+      <span class="select-field__selected-value" v-if="isValueTranslatable">
+        {{ selected | getValueText(keyAsValueText) | globalize }}
+      </span>
+      <span class="select-field__selected-value" v-else>
         {{ selected | getValueText(keyAsValueText) }}
       </span>
       <i
@@ -44,7 +47,12 @@
         :class="{ 'select-field__list-item--selected': highlighten === item }"
         @click.prevent="selectItem(item)"
       >
-        {{ item | getValueText(keyAsValueText) }}
+        <template v-if="isValueTranslatable">
+          {{ item | getValueText(keyAsValueText) | globalize }}
+        </template>
+        <template v-else>
+          {{ item | getValueText(keyAsValueText) }}
+        </template>
       </button>
     </div>
     <p
@@ -121,6 +129,10 @@ export default {
     keyAsValueText: {
       type: String,
       default: '',
+    },
+    isValueTranslatable: {
+      type: Boolean,
+      default: false,
     },
   },
 

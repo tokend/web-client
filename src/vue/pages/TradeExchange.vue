@@ -133,7 +133,7 @@ export default {
           limit: this.recordsToShow,
         })
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isTradeHistoryLoading = false
       return response
@@ -155,7 +155,7 @@ export default {
         })
         this.buyOffersList = response.data
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isBuyOffersLoading = false
     },
@@ -169,7 +169,7 @@ export default {
         })
         this.sellOffersList = response.data
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isSellOffersLoading = false
     },

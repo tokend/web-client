@@ -12,6 +12,7 @@
       <asset-update-form
         v-if="isUpdateMode"
         :asset-record="selectedAsset"
+        @close="isDetailsDrawerShown = false"
       />
       <asset-details
         v-else

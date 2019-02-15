@@ -133,7 +133,10 @@ export default {
   padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
+
+  // allows to scroll drawer content when it height more than drawer height
   overflow-y: auto;
+  height: 0;
 }
 
 .drawer-transition-enter-active {

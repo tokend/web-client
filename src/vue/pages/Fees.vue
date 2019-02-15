@@ -77,8 +77,8 @@
     <template v-else>
       <no-data-message
         icon-name="trending-up"
-        :msg-title="'fee-table.no-fees-title' | globalize"
-        :msg-message="'fee-table.no-fees-msg' | globalize"
+        :title-id="'fee-table.no-fees-title'"
+        :message-id="'fee-table.no-fees-msg'"
       />
     </template>
   </div>

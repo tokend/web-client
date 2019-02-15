@@ -163,7 +163,8 @@ const STEPS = {
 }
 const ASSET_CREATION_REQUEST_ID = '0'
 const EVENTS = {
-  update: 'update',
+  requestUpdated: 'request-updated',
+  close: 'close',
 }
 const EMPTY_DOCUMENT = {
   mime_type: '',
@@ -317,11 +318,13 @@ export default {
           base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.asset-request-submitted-msg')
-        this.$emit(EVENTS.update)
+
+        this.$emit(EVENTS.requestUpdated)
+        this.$emit(EVENTS.close)
       } catch (e) {
+        this.enableForm()
         ErrorHandler.process(e)
       }
-      this.enableForm()
     },
 
     async uploadDocuments () {

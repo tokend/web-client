@@ -117,7 +117,11 @@ export default {
         }
         await this.loadAccount(accountId)
         await this.loadKyc()
-        this.$router.push({ name: 'app' })
+        if (Object.keys(this.$route.query).includes('redirectPath')) {
+          this.$router.push({ path: this.$route.query.redirectPath })
+        } else {
+          this.$router.push({ name: 'app' })
+        }
       } catch (e) {
         if (e instanceof errors.VerificationRequiredError) {
           this.$router.push({

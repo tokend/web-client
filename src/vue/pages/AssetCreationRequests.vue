@@ -11,14 +11,16 @@
             <asset-create-form
               v-if="isAssetCreateRequestSelected"
               :request="selectedRequest"
-              @update="initFirstPageLoader"
+              @request-updated="loadHistory"
+              @close="isDetailsDrawerShown = false"
             />
 
             <asset-update-form
               v-else
               :request="selectedRequest"
               :asset-for-update="selectedRequest.assetCode"
-              @update="initFirstPageLoader"
+              @request-updated="loadHistory"
+              @close="isDetailsDrawerShown = false"
             />
           </template>
 
@@ -35,7 +37,11 @@
           </template>
         </drawer>
 
-        <div class="app__table asset-creation-requests__table">
+        <div
+          class="app__table
+                app__table--with-shadow
+                asset-creation-requests__table"
+        >
           <table>
             <thead>
               <tr>
@@ -133,15 +139,15 @@
         <!-- eslint-disable max-len -->
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'asset-creation-requests.no-request-history-title' | globalize"
-          :msg-message="'asset-creation-requests.no-request-history-desc' | globalize"
+          title-id="requests-page.no-request-history-title"
+          message-id="requests-page.no-request-history-desc"
         />
         <!-- eslint-enable max-len -->
       </template>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'asset-creation-requests.loading-msg'" />
+      <loader message-id="requests-page.loading-msg" />
     </template>
 
     <template v-else>
@@ -281,8 +287,6 @@ export default {
 @import "~@scss/mixins";
 
 .asset-creation-requests__table {
-  @include box-shadow();
-
   tr td:last-child {
     width: 3rem;
     text-align: right;
