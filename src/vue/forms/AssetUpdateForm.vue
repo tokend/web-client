@@ -316,8 +316,7 @@ export default {
         const operation =
           base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
-
-        Bus.success('asset-form.token-request-submitted-msg')
+        Bus.success('asset-form.asset-request-submitted-msg')
         this.$emit(EVENTS.update)
       } catch (e) {
         ErrorHandler.process(e)

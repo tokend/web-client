@@ -290,7 +290,7 @@
                 class="app__button-raised"
                 :disabled="formMixin.isDisabled"
               >
-                {{ 'create-sale-form.create-btn' | globalize }}
+                {{ 'create-sale-form.submit-btn' | globalize }}
               </button>
               <form-confirmation
                 v-if="formMixin.isConfirmationShown"
@@ -359,6 +359,7 @@ const STEPS = {
 }
 const EVENTS = {
   close: 'close',
+  requestUpdated: 'request-updated',
 }
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
@@ -461,9 +462,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
     baseAssetCodes () {
       return this.assets.filter(item => item.isBaseAsset)
         .map(item => item.code)
@@ -490,7 +491,7 @@ export default {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
       if (this.isUpdate) {
-        this.populateForm(this.request)
+        await this.populateForm(this.request)
         this.form.saleInformation.baseAsset = this.request.baseAsset
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssetCodes[0]
@@ -516,6 +517,10 @@ export default {
         Bus.success('create-sale-form.request-submitted-msg')
         this.enableForm()
         this.$emit(EVENTS.close)
+
+        if (this.request.id) {
+          this.$emit(EVENTS.requestUpdated)
+        }
       } catch (e) {
         ErrorHandler.process(e)
         this.enableForm()
@@ -561,7 +566,7 @@ export default {
         }
       }
     },
-    populateForm (request) {
+    async populateForm (request) {
       this.form.saleInformation.name = request.name
       this.form.saleInformation.baseAsset = request.baseAsset
       this.form.saleInformation.startTime = request.startTime
@@ -576,60 +581,71 @@ export default {
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
       this.form.fullDescription.youtubeId = request.youtubeVideoId
-      this.form.fullDescription.description = request.description
+      this.form.fullDescription.description =
+        await this.getSaleDescription(request)
+    },
+
+    async getSaleDescription (request) {
+      try {
+        const { data } =
+          await Sdk.api.blobs.get(request.description, this.accountId)
+        return JSON.parse(data.value)
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import '~@scss/variables';
-  @import './app-form';
+@import '~@scss/variables';
+@import './app-form';
 
-  .create-sale__form-row {
-    margin-bottom: 2rem;
-  }
+.create-sale__form-row {
+  margin-bottom: 2rem;
+}
 
-  .create-sale__youtub-video {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 26.4rem;
-    border: 0.2rem dashed $_eastBay;
-    border-radius: 0.4rem;
-    opacity: 0.5;
-  }
+.create-sale__youtub-video {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 26.4rem;
+  border: 0.2rem dashed $_eastBay;
+  border-radius: 0.4rem;
+  opacity: 0.5;
+}
 
-  .create-sale__iframe {
-    width: 100%;
-    min-height: 26rem;
-  }
+.create-sale__iframe {
+  width: 100%;
+  min-height: 26rem;
+}
 
-  .create-sale__video-icon {
-    display: flex;
-    font-size: 9rem;
-  }
+.create-sale__video-icon {
+  display: flex;
+  font-size: 9rem;
+}
 
-  .create-sale__error-text {
-    margin-bottom: 2rem;
-    margin-top: -1rem;
-    color: $col-error;
-  }
+.create-sale__error-text {
+  margin-bottom: 2rem;
+  margin-top: -1rem;
+  color: $col-error;
+}
 
-  .create-sale__price {
-    font-size: 1.4rem;
-  }
+.create-sale__price {
+  font-size: 1.4rem;
+}
 
-  .create-sale__no-owned-assets {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.create-sale__no-owned-assets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .create-sale__no-owned-assets-icon {
-    font-size: 6.4rem;
-    opacity: 0.6;
-  }
+.create-sale__no-owned-assets-icon {
+  font-size: 6.4rem;
+  opacity: 0.6;
+}
 </style>

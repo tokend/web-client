@@ -113,7 +113,7 @@
     </div>
     <div v-else-if="isLoaded && !ownedAssets.length">
       <p>
-        {{ 'issuance.no-owned-tokens-msg' | globalize }}
+        {{ 'issuance.no-owned-assets-msg' | globalize }}
       </p>
     </div>
     <div v-else>
@@ -222,7 +222,7 @@ export default {
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           await this.reinitAssetSelector()
-          Bus.success('issuance.tokens-issued-msg')
+          Bus.success('issuance.assets-issued-msg')
         } else {
           Bus.error('issuance.balance-required-err')
         }

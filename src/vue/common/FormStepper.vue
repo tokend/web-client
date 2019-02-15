@@ -102,6 +102,7 @@ export default {
 .form-stepper__tabs {
   display: flex;
   flex-direction: row;
+  overflow-x: auto;
 }
 
 .form-stepper__tab {

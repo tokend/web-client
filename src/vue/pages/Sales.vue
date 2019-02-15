@@ -148,6 +148,7 @@ export default {
     SaleOverview,
     SaleCard,
   },
+
   data: _ => ({
     saleRecords: [],
     filters: {
@@ -167,7 +168,6 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
     }),
-
     saleAssets () {
       return this.saleRecords
         .map(sale => sale.baseAsset)
@@ -190,7 +190,6 @@ export default {
 
     recordsLoader () {
       const saleState = this.filters.state.value
-
       return function () {
         return Sdk.horizon.sales.getPage({
           open_only: saleState === SALE_STATES.upcoming.value ||
