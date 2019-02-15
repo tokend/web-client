@@ -32,7 +32,7 @@
               :label="'transfer-form.asset-lbl' | globalize"
               :disabled="view.mode === VIEW_MODES.confirm"
             />
-            <template v-if="form.token">
+            <template v-if="form.token.code">
               <p class="app__form-field-description">
                 {{
                   'transfer-form.balance' | globalize({
@@ -279,7 +279,7 @@ export default {
   },
   data: () => ({
     form: {
-      token: null,
+      token: {},
       amount: '',
       recipient: '',
       subject: '',
