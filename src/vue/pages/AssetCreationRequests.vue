@@ -11,14 +11,16 @@
             <asset-create-form
               v-if="isAssetCreateRequestSelected"
               :request="selectedRequest"
-              @update="loadHistory"
+              @request-updated="loadHistory"
+              @close="isDetailsDrawerShown = false"
             />
 
             <asset-update-form
               v-else
               :request="selectedRequest"
               :asset-for-update="selectedRequest.assetCode"
-              @update="loadHistory"
+              @request-updated="loadHistory"
+              @close="isDetailsDrawerShown = false"
             />
           </template>
           <template v-else>
