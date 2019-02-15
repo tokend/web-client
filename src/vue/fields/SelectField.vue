@@ -103,7 +103,7 @@ export default {
       required: true,
     },
     values: {
-      type: [Array, Object],
+      type: Array,
       default: _ => [],
     },
     label: {
@@ -179,25 +179,25 @@ export default {
 
       switch (event.which) {
         case KEY_CODES.enter:
-          this.selectItem(this.listValues[index])
+          this.selectItem(this.values[index])
           break
         case KEY_CODES.up:
-          index = this.selectPrevItem(index, this.listValues)
+          index = this.selectPrevItem(index, this.values)
           break
         case KEY_CODES.right:
-          this.selectItem(this.listValues[index])
+          this.selectItem(this.values[index])
           break
         case KEY_CODES.down:
-          index = this.selectNextItem(index, this.listValues)
+          index = this.selectNextItem(index, this.values)
           break
         case KEY_CODES.escape:
           this.toggleListVisibility()
           break
         case KEY_CODES.tab:
           if (event.shiftKey) {
-            index = this.selectPrevItem(index, this.listValues)
+            index = this.selectPrevItem(index, this.values)
           } else {
-            index = this.selectNextItem(index, this.listValues)
+            index = this.selectNextItem(index, this.values)
           }
           break
         default:
