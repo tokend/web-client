@@ -583,7 +583,9 @@
     "assets-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-token-btn": "Create token"
+      "create-token-btn": "Create token",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading."
     },
 
     "assets-list": {

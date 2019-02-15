@@ -90,12 +90,13 @@ export const router = new Router({
           path: '/fees',
           name: vueRoutes.fees.name,
           meta: { pageNameTranslationId: 'pages-names.fees' },
-          featureFlag: config.FEATURE_FLAGS.fees,
+          featureFlag: config.featureFlags.fees,
           component: resolve => require(['@/vue/pages/Fees'], resolve),
         },
         {
           path: '/trade',
           name: vueRoutes.trade.name,
+          featureFlag: config.featureFlags.trade,
           meta: { pageNameTranslationId: 'pages-names.trade' },
           component: resolve => require(['@/vue/pages/Trade'], resolve),
           redirect: vueRoutes.trade.exchange,
@@ -115,14 +116,14 @@ export const router = new Router({
         {
           path: '/operations',
           name: vueRoutes.operations.name,
-          featureFlag: config.FEATURE_FLAGS.operations,
+          featureFlag: config.featureFlags.operations,
           meta: { pageNameTranslationId: 'pages-names.operations' },
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
           path: '/issuance',
           name: vueRoutes.issuance.name,
-          featureFlag: config.FEATURE_FLAGS.issuance,
+          featureFlag: config.featureFlags.issuance,
           meta: { pageNameTranslationId: 'pages-names.issuance' },
           component: resolve => require(['@/vue/pages/Issuance'], resolve),
         },
@@ -139,7 +140,7 @@ export const router = new Router({
         {
           path: '/tokens',
           name: vueRoutes.assets.name,
-          featureFlag: config.FEATURE_FLAGS.assets,
+          featureFlag: config.featureFlags.assets,
           redirect: vueRoutes.assetsExplore,
           component: resolve => require(['@/vue/pages/Assets'], resolve),
           children: [
@@ -160,7 +161,7 @@ export const router = new Router({
         {
           path: '/requests',
           name: vueRoutes.requests.name,
-          featureFlag: config.FEATURE_FLAGS.requests,
+          featureFlag: config.featureFlags.requests,
           redirect: vueRoutes.requests.assetCreation,
           component: resolve => require(['@/vue/pages/Requests'], resolve),
           children: [
@@ -175,7 +176,7 @@ export const router = new Router({
         {
           path: '/settings',
           name: vueRoutes.settings.name,
-          featureFlag: config.FEATURE_FLAGS.settings,
+          featureFlag: config.featureFlags.settings,
           meta: { pageNameTranslationId: 'pages-names.settings' },
           redirect: vueRoutes.verification,
           component: resolve => require(['@/vue/pages/Settings'], resolve),
@@ -225,5 +226,5 @@ function inAppRouteGuard (to, from, next) {
 
   isLoggedIn
     ? next()
-    : next(vueRoutes.login)
+    : next({ name: vueRoutes.login.name, query: { redirectPath: to.fullPath } })
 }

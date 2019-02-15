@@ -35,7 +35,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.dashboard"
             tag="a"
-            v-if="config.FEATURE_FLAGS.dashboard"
+            v-if="config.featureFlags.dashboard"
           >
             <i class="sidebar__link-icon mdi mdi-view-dashboard" />
             <span>
@@ -49,7 +49,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.trade"
             tag="a"
-            v-if="config.FEATURE_FLAGS.trade"
+            v-if="config.featureFlags.trade"
           >
             <i class="sidebar__link-icon mdi mdi-finance" />
             <span>
@@ -63,7 +63,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.operations"
             tag="a"
-            v-if="config.FEATURE_FLAGS.operations"
+            v-if="config.featureFlags.operations"
           >
             <i class="sidebar__link-icon mdi mdi-menu" />
             <span>
@@ -77,7 +77,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="a"
-            v-if="config.FEATURE_FLAGS.fees"
+            v-if="config.featureFlags.fees"
           >
             <i class="sidebar__link-icon mdi mdi-flash" />
             <span>
@@ -105,7 +105,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.assets"
             tag="a"
-            v-if="config.FEATURE_FLAGS.assets"
+            v-if="config.featureFlags.assets"
           >
             <i class="sidebar__link-icon mdi mdi-coins" />
             <span>
@@ -119,7 +119,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.issuance"
             tag="a"
-            v-if="config.FEATURE_FLAGS.issuance"
+            v-if="config.featureFlags.issuance"
           >
             <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
@@ -132,7 +132,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.requests"
             tag="a"
-            v-if="config.FEATURE_FLAGS.requests"
+            v-if="config.featureFlags.requests"
           >
             <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
@@ -150,7 +150,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.verification"
             tag="a"
-            v-if="config.FEATURE_FLAGS.settings"
+            v-if="config.featureFlags.settings"
           >
             <i class="sidebar__link-icon mdi mdi-account-settings" />
             <span>

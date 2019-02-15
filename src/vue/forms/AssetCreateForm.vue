@@ -233,7 +233,8 @@ const STEPS = {
 }
 const ASSET_CREATION_REQUEST_ID = '0'
 const EVENTS = {
-  update: 'update',
+  requestUpdated: 'request-updated',
+  close: 'close',
 }
 const EMPTY_DOCUMENT = {
   mime_type: '',
@@ -323,7 +324,9 @@ export default {
     }),
 
     assetRequestOpts () {
-      const requestId = this.request.id || ASSET_CREATION_REQUEST_ID
+      const requestId = this.request
+        ? this.request.id
+        : ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
       const terms = this.form.advanced.terms
 
@@ -405,12 +408,14 @@ export default {
         Bus.success('asset-form.token-request-submitted-msg')
 
         if (this.request) {
-          this.$emit(EVENTS.update)
+          this.$emit(EVENTS.requestUpdated)
         }
+
+        this.$emit(EVENTS.close)
       } catch (e) {
+        this.enableForm()
         ErrorHandler.process(e)
       }
-      this.enableForm()
     },
 
     async uploadDocuments () {
