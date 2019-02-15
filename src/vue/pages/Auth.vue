@@ -14,17 +14,22 @@
     <div class="auth__form">
       <logo class="auth__logo" />
       <router-view />
+      <section class="auth__footer-section">
+        <app-footer />
+      </section>
     </div>
   </div>
 </template>
 
 <script>
 import Logo from '../assets/Logo'
+import AppFooter from '@/vue/navigation/Footer'
 
 export default {
   name: 'auth',
   components: {
     Logo,
+    AppFooter,
   },
 }
 </script>
@@ -110,5 +115,13 @@ export default {
   @include respond-to-height(750px) {
     margin-bottom: 6.4rem;
   }
+}
+
+.auth__footer-section {
+  padding: 1.6rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 </style>

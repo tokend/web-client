@@ -121,13 +121,13 @@
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          :title-id="'requests-page.no-request-history-title'"
-          :message-id="'requests-page.no-request-history-desc'"
+          title-id="requests-page.no-request-history-title"
+          message-id="requests-page.no-request-history-desc"
         />
       </template>
     </template>
     <template v-else-if="!isLoadingFailed">
-      <loader :message-id="'requests-page.loading-msg'" />
+      <loader message-id="requests-page.loading-msg" />
     </template>
     <template v-else>
       <p>
