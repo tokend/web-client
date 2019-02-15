@@ -23,22 +23,9 @@
               :source="'invest-form.available-amount-hint' | globalize({
                 amount: availableAmount
               })"
-              :html="false"
             />
           </div>
         </div>
-
-        <vue-markdown
-          v-if="currentAssetOffer.quoteAmount"
-          class="invest-form__current-offer"
-          :source="'invest-form.current-offer' | globalize({
-            amount: {
-              value: currentAssetOffer.quoteAmount,
-              currency: currentAssetOffer.quoteAssetCode
-            }
-          })"
-          :html="false"
-        />
 
         <div class="app__form-row">
           <div class="app__form-field">
@@ -68,7 +55,6 @@
                     currency: sale.defaultQuoteAsset
                   }
                 })"
-                :html="false"
               />
 
               <template v-else-if="isConvertingFailed">
@@ -82,6 +68,17 @@
           </div>
         </div>
 
+        <vue-markdown
+          v-if="currentInvestment.quoteAmount"
+          class="invest-form__current-investment"
+          :source="'invest-form.current-investment' | globalize({
+            amount: {
+              value: currentInvestment.quoteAmount,
+              currency: currentInvestment.quoteAssetCode
+            }
+          })"
+        />
+
         <div class="app__form-actions invest-form__actions">
           <template v-if="formMixin.isConfirmationShown">
             <form-confirmation
@@ -91,7 +88,7 @@
           </template>
 
           <template v-else>
-            <template v-if="currentAssetOffer.offerId">
+            <template v-if="currentInvestment.offerId">
               <button
                 v-ripple
                 type="submit"
@@ -151,7 +148,6 @@
                   currency: sale.defaultQuoteAsset
                 }
               })"
-              :html="false"
             />
           </template>
         </p>
@@ -281,9 +277,9 @@ export default {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset === this.form.asset.code)
 
-      const availableBalance = this.currentAssetOffer.quoteAmount
+      const availableBalance = this.currentInvestment.quoteAmount
         ? Number(quoteBalance.balance) +
-            Number(this.currentAssetOffer.quoteAmount)
+            Number(this.currentInvestment.quoteAmount)
         : quoteBalance.balance
 
       return {
@@ -296,7 +292,7 @@ export default {
       return _throttle(this.loadConvertedAmount, CONVERTING_DELAY)
     },
 
-    currentAssetOffer () {
+    currentInvestment () {
       return this.offers
         .find(offer => offer.quoteAssetCode === this.form.asset.code) || {}
     },
@@ -308,8 +304,8 @@ export default {
     investedCap () {
       const availableCap = this.sale.hardCap - this.sale.currentCap
 
-      if (this.currentAssetOffer.quoteAmount) {
-        return availableCap + Number(this.currentAssetOffer.quoteAmount)
+      if (this.currentInvestment.quoteAmount) {
+        return availableCap + Number(this.currentInvestment.quoteAmount)
       } else {
         return availableCap
       }
@@ -445,10 +441,10 @@ export default {
 
       let operations = []
 
-      if (this.currentAssetOffer.offerId) {
+      if (this.currentInvestment.offerId) {
         operations.push(base.ManageOfferBuilder.cancelOffer(
           this.getOfferOpts(
-            String(this.currentAssetOffer.offerId),
+            String(this.currentInvestment.offerId),
             CANCEL_OFFER_FEE
           )
         ))
@@ -485,7 +481,7 @@ export default {
       try {
         const operation = base.ManageOfferBuilder.cancelOffer(
           this.getOfferOpts(
-            String(this.currentAssetOffer.offerId),
+            String(this.currentInvestment.offerId),
             CANCEL_OFFER_FEE
           )
         )
@@ -516,7 +512,7 @@ export default {
   }
 }
 
-.invest-form__current-offer {
+.invest-form__current-investment {
   margin-top: 2rem;
 
   p {
@@ -532,7 +528,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 1.9rem -.5rem -.5rem;
+  margin: -.5rem;
 }
 
 .invest-form__submit-btn {

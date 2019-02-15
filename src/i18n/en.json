@@ -687,7 +687,7 @@
     "invest-form": {
       "asset-lbl": "Asset",
       "available-amount-hint": "Available: **{{amount, money}}**",
-      "current-offer": "Current offer: **{{amount, money}}**",
+      "current-investment": "Current investment: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
       "converted-amount-hint": "Converted: **{{amount, money}}**",
       "loading-msg": "Loading...",
