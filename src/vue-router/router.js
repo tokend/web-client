@@ -216,5 +216,5 @@ function inAppRouteGuard (to, from, next) {
 
   isLoggedIn
     ? next()
-    : next(vueRoutes.login)
+    : next({ name: vueRoutes.login.name, query: { redirectPath: to.fullPath } })
 }
