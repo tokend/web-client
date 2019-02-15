@@ -4,11 +4,12 @@
       <div class="app__form-field">
         <select-field
           v-model="selectedOpType"
-          :values="formattedOpTypes"
-          :form-free="true"
+          :values="FORMATTED_STATS_OPERATION_TYPES"
+          key-as-value-text="label"
+          :is-value-translatable="true"
           :label="'limits-form.operation-type' | globalize"
           :key="`limits-asset-selector-${selectedOpType.value}`"
-          class="limits__assets-select"
+          class="limits__assets-select app__select--no-border"
         />
       </div>
     </div>
@@ -182,17 +183,30 @@ import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
 import config from '@/config'
 
-const OPERATION_TYPES_TRANSLATION_ID = {
-  [STATS_OPERATION_TYPES.deposit]: 'limits-form.op-type-deposit',
-  [STATS_OPERATION_TYPES.withdraw]: 'limits-form.op-type-withdraw',
-  [STATS_OPERATION_TYPES.paymentOut]: 'limits-form.op-type-payment-out',
-}
-
 const STATS_OPERATION_TYPES_KEY_NAMES = {
   [STATS_OPERATION_TYPES.deposit]: 'deposit',
   [STATS_OPERATION_TYPES.withdraw]: 'withdraw',
   [STATS_OPERATION_TYPES.paymentOut]: 'payment',
 }
+
+/**
+ * This is an array with formatted actual STATS_OPERATION_TYPES that allows
+ * <select-field> to work right.
+*/
+const FORMATTED_STATS_OPERATION_TYPES = [
+  {
+    value: STATS_OPERATION_TYPES.deposit,
+    label: 'limits-form.op-type-deposit',
+  },
+  {
+    value: [STATS_OPERATION_TYPES.withdraw],
+    label: 'limits-form.op-type-withdraw',
+  },
+  {
+    value: [STATS_OPERATION_TYPES.paymentOut],
+    label: 'limits-form.op-type-payment-out',
+  },
+]
 
 const EVENTS = {
   limitsChanged: 'limits-changed',
@@ -216,8 +230,7 @@ export default {
     },
     selectedOpType: {},
     opts: [],
-    STATS_OPERATION_TYPES,
-    OPERATION_TYPES_TRANSLATION_ID,
+    FORMATTED_STATS_OPERATION_TYPES,
     STATS_OPERATION_TYPES_KEY_NAMES,
     formattedOpTypes: [],
     isLimitsChanged: false,
@@ -265,8 +278,7 @@ export default {
     },
   },
   created () {
-    this.formatOpTypes()
-    this.selectedOpType = this.formattedOpTypes[0]
+    this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
   },
   methods: {
     tryToSubmit () {
@@ -323,15 +335,6 @@ export default {
         })
       await Sdk.horizon.transactions.submitOperations(operation)
     },
-    formatOpTypes () {
-      // eslint-disable-next-line
-      for (const [key, value] of Object.entries(OPERATION_TYPES_TRANSLATION_ID)) {
-        this.formattedOpTypes.push({
-          value: key,
-          label: value,
-        })
-      }
-    },
 
     getMinValidDailyOutValue () {
       return this.getMaxValue([MIN_VALID_LIMIT_VALUE])
@@ -371,5 +374,9 @@ export default {
 .limits-form__form-subheading {
   margin-top: 3.2rem;
   margin-bottom: -.8rem;
+}
+
+.limits__assets-select {
+  min-width: 11rem;
 }
 </style>
