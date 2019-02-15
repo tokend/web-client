@@ -52,7 +52,7 @@
       <no-data-message
         :title-id="'trade-offers.no-data-title'"
         :message-id="noDataMessage.messageId"
-        :message-id-args="noDataMessage.messageIdArgs"
+        :message-id-keys="noDataMessage.messageIdKeys"
       />
     </template>
 
@@ -122,7 +122,7 @@ export default {
 
       return {
         messageId: messageId,
-        messageIdArgs: {
+        messageIdKeys: {
           base: this.assetPair.base,
           quote: this.assetPair.quote,
         },

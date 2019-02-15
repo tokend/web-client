@@ -34,7 +34,11 @@
             />
           </template>
         </drawer>
-        <div class="app__table asset-creation-requests__table">
+        <div
+          class="app__table
+                app__table--with-shadow
+                asset-creation-requests__table"
+        >
           <table>
             <thead>
               <tr>
@@ -236,9 +240,6 @@ export default {
 @import "~@scss/mixins";
 
 .asset-creation-requests__table {
-  overflow-x: auto;
-  @include box-shadow();
-
   tr td:last-child {
     width: 3rem;
     text-align: right;

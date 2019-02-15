@@ -1,8 +1,9 @@
 <template>
   <div class="no-data-message">
     <i v-if="iconName" :class="`mdi mdi-${iconName}`" />
-    <h2>{{ titleId | globalize(titleIdArgs) }}</h2>
-    <p>{{ messageId | globalize(messageIdArgs) }}</p>
+    <h2>{{ titleId | globalize(titleIdKeys) }}</h2>
+    <p>{{ messageId | globalize(messageIdKeys) }}</p>
+    <slot />
   </div>
 </template>
 
@@ -12,9 +13,9 @@ export default {
   props: {
     iconName: { type: String, default: '' },
     titleId: { type: String, required: true },
-    titleIdArgs: { type: Object, required: false, default: () => ({}) },
+    titleIdKeys: { type: Object, required: false, default: () => ({}) },
     messageId: { type: String, required: true },
-    messageIdArgs: { type: Object, required: false, default: () => ({}) },
+    messageIdKeys: { type: Object, required: false, default: () => ({}) },
   },
 }
 </script>
