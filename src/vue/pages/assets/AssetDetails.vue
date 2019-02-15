@@ -70,7 +70,7 @@
       </table>
     </div>
     <div
-      v-if="isActionsShown"
+      v-if="showActions"
       class="asset-details__buttons"
     >
       <button
@@ -120,7 +120,7 @@ export default {
   },
   props: {
     asset: { type: Object, required: true },
-    isActionsShown: { type: Boolean, default: true },
+    showActions: { type: Boolean, default: true },
   },
   data: _ => ({
     isBalanceCreating: false,

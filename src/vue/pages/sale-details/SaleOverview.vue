@@ -9,7 +9,7 @@
         <asset-details
           class="sale-overview__asset-details"
           :asset="asset"
-          :is-actions-shown="false"
+          :show-actions="false"
         />
       </div>
 

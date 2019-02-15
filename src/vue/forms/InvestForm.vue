@@ -8,14 +8,10 @@
       >
         <div class="app__form-row">
           <div class="app__form-field">
-            <!--
-              :key is a hack to ensure that the component will be updated
-              after property change
-            -->
             <select-field
-              :key="form.asset"
               v-model="form.asset"
               :values="quoteAssetListValues"
+              key-as-value-text="nameAndCode"
               :label="'invest-form.asset-lbl' | globalize"
               id="invest-asset"
               @blur="touchField('form.asset')"
@@ -53,7 +49,7 @@
               @input="touchField('form.amount')"
               id="invest-amount"
               :label="'invest-form.amount-lbl' | globalize({
-                asset: form.asset
+                asset: form.asset.code
               })"
               :error-message="getFieldErrorMessage(
                 'form.amount',
@@ -230,7 +226,7 @@ export default {
 
   data: _ => ({
     form: {
-      asset: '',
+      asset: {},
       amount: '',
     },
     offers: [],
@@ -278,19 +274,12 @@ export default {
     },
 
     quoteAssetListValues () {
-      return this.quoteAssetBalances.map(balance => {
-        const asset = balance.assetDetails
-
-        return {
-          value: asset.code,
-          label: `${asset.name} (${asset.code})`,
-        }
-      })
+      return this.quoteAssetBalances.map(balance => balance.assetDetails)
     },
 
     availableAmount () {
       const quoteBalance = this.quoteAssetBalances
-        .find(balance => balance.asset === this.form.asset)
+        .find(balance => balance.asset === this.form.asset.code)
 
       const availableBalance = this.currentAssetOffer.quoteAmount
         ? Number(quoteBalance.balance) +
@@ -299,7 +288,7 @@ export default {
 
       return {
         value: availableBalance,
-        currency: this.form.asset,
+        currency: this.form.asset.code,
       }
     },
 
@@ -309,7 +298,7 @@ export default {
 
     currentAssetOffer () {
       return this.offers
-        .find(offer => offer.quoteAssetCode === this.form.asset) || {}
+        .find(offer => offer.quoteAssetCode === this.form.asset.code) || {}
     },
 
     isCapExceeded () {
@@ -351,11 +340,19 @@ export default {
   },
 
   async created () {
-    if (this.quoteAssetListValues.length) {
-      this.form.asset = this.quoteAssetListValues[0].value
-    }
+    try {
+      await this.loadBalances()
+      await this.loadOffers()
 
-    await this.loadOffers()
+      if (this.quoteAssetListValues.length) {
+        this.form.asset = this.quoteAssetListValues[0]
+      }
+
+      this.isLoaded = true
+    } catch (e) {
+      this.isLoadingFailed = true
+      ErrorHandler.processWithoutFeedback()
+    }
   },
 
   methods: {
@@ -364,21 +361,15 @@ export default {
     }),
 
     async loadOffers () {
-      try {
-        const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
-          is_buy: true,
-          order_book_id: this.sale.id,
-        })
-        this.offers = data
-        this.isLoaded = true
-      } catch (e) {
-        this.isLoadingFailed = true
-        ErrorHandler.processWithoutFeedback()
-      }
+      const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
+        is_buy: true,
+        order_book_id: this.sale.id,
+      })
+      this.offers = data
     },
 
     setConvertedAmount () {
-      if (this.form.asset === this.sale.defaultQuoteAsset) {
+      if (this.form.asset.code === this.sale.defaultQuoteAsset) {
         this.convertedAmount = this.form.amount
       } else if (this.form.amount === '') {
         this.convertedAmount = 0
@@ -393,7 +384,7 @@ export default {
 
       try {
         const { data } = await Sdk.horizon.assetPairs.convert({
-          source_asset: this.form.asset,
+          source_asset: this.form.asset.code,
           dest_asset: this.sale.defaultQuoteAsset,
           amount: this.form.amount,
         })
@@ -447,7 +438,7 @@ export default {
 
     async getOfferOperations () {
       const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-        asset: this.form.asset,
+        asset: this.form.asset.code,
         account: this.accountId,
         amount: this.converted,
       })
@@ -478,10 +469,10 @@ export default {
         baseBalance: this.balances
           .find(balance => balance.asset === this.sale.baseAsset).balanceId,
         quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset).balanceId,
+          .find(balance => balance.asset === this.form.asset.code).balanceId,
         isBuy: true,
         amount: this.form.amount,
-        price: this.sale.quoteAssetPrices[this.form.asset] ||
+        price: this.sale.quoteAssetPrices[this.form.asset.code] ||
           DEFAULT_QUOTE_PRICE,
         fee: offerFee,
         orderBookID: this.sale.id,

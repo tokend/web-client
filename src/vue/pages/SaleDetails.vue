@@ -31,8 +31,8 @@
 
         <invest-form
           :sale="sale"
-          @submitted=" isInvestDrawerShown = false || refreshSale"
-          @canceled="isInvestDrawerShown = false || refreshSale"
+          @submitted="hideInvestDrawer() || refreshSale()"
+          @canceled="hideInvestDrawer() || refreshSale()"
         />
       </drawer>
 
@@ -131,6 +131,10 @@ export default {
       this.sale = null
       await this.loadSale(this.id)
     },
+
+    hideInvestDrawer () {
+      this.isInvestDrawerShown = false
+    },
   },
 }
 </script>
@@ -139,7 +143,7 @@ export default {
 @import "~@scss/variables";
 
 .sale-details__name {
-  font-size: 3.6rem;
+  font-size: 3rem;
   font-weight: normal;
   color: $col-sale-details-title;
 }
