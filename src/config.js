@@ -35,6 +35,8 @@ export default Object.assign(
       requests: true,
       settings: true,
       limits: true,
+      sales: true,
+      saleDetails: true,
     },
 
     /**

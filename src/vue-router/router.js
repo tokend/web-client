@@ -121,6 +121,30 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Operations'], resolve),
         },
         {
+          path: '/funds',
+          name: vueRoutes.sales.name,
+          featureFlag: config.featureFlags.sales,
+          meta: { pageNameTranslationId: 'pages-names.funds' },
+          component: resolve => require(['@/vue/pages/Sales'], resolve),
+        },
+        {
+          path: '/funds/:id',
+          name: vueRoutes.saleDetails.name,
+          featureFlag: config.featureFlags.saleDetails,
+          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          redirect: vueRoutes.saleDetails.campaign,
+          component: resolve => require(['@/vue/pages/SaleDetails'], resolve),
+          props: true,
+          children: [
+            {
+              path: '/funds/:id/campaign',
+              name: vueRoutes.saleDetails.campaign.name,
+              component: resolve => require(['@/vue/pages/sale-details/SaleCampaignViewer'], resolve),
+              props: true,
+            },
+          ],
+        },
+        {
           path: '/issuance',
           name: vueRoutes.issuance.name,
           featureFlag: config.featureFlags.issuance,
@@ -130,7 +154,7 @@ export const router = new Router({
         {
           path: '/limits',
           name: vueRoutes.limits.name,
-          featureFlag: config.FEATURE_FLAGS.limits,
+          featureFlag: config.featureFlags.limits,
           meta: {
             pageNameTranslationId: 'pages-names.limits',
             pageSubnameTranslationId: 'pages-subnames.explore-limits',
@@ -163,13 +187,18 @@ export const router = new Router({
           name: vueRoutes.requests.name,
           featureFlag: config.featureFlags.requests,
           redirect: vueRoutes.requests.assetCreation,
+          meta: { pageNameTranslationId: 'pages-names.requests' },
           component: resolve => require(['@/vue/pages/Requests'], resolve),
           children: [
             {
               path: '/requests/token-creation',
               name: vueRoutes.requests.assetCreation.name,
-              meta: { pageNameTranslationId: 'pages-names.requests' },
               component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
+            },
+            {
+              path: '/requests/fund-creation',
+              name: vueRoutes.requests.saleCreation.name,
+              component: resolve => require(['@/vue/pages/SaleCreationRequests'], resolve),
             },
           ],
         },

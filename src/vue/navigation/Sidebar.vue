@@ -91,7 +91,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.limits"
             tag="a"
-            v-if="config.FEATURE_FLAGS.limits"
+            v-if="config.featureFlags.limits"
           >
             <i class="sidebar__link-icon mdi mdi-poll-box" />
             <span>
@@ -124,6 +124,19 @@
             <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
               {{ 'pages-names.issuance' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.sales"
+            tag="a"
+            v-if="config.featureFlags.sales"
+          >
+            <i class="sidebar__link-icon mdi mdi-trending-up" />
+            <span>
+              {{ 'pages-names.funds' | globalize }}
             </span>
           </router-link>
           <router-link

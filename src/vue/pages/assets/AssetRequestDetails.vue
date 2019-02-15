@@ -14,48 +14,54 @@
         </p>
       </div>
     </div>
+
     <div
       v-if="request.isApproved"
       class="request-state request-state--approved"
     >
       <p class="request-state__content">
-        {{ 'asset-request-details.approved-request-msg' | globalize }}
+        {{ 'request-messages.approved-msg' | globalize }}
       </p>
     </div>
+
     <div
       v-else-if="request.isPending"
       class="request-state request-state--pending"
     >
       <p class="request-state__content">
-        {{ 'asset-request-details.pending-request-msg' | globalize }}
+        {{ 'request-messages.pending-msg' | globalize }}
       </p>
     </div>
+
     <div
       v-else-if="request.isRejected"
       class="request-state request-state--rejected"
     >
       <p class="request-state__content">
         <!-- eslint-disable-next-line max-len -->
-        {{ 'asset-request-details.rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+        {{ 'request-messages.rejected-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
+
     <div
       v-else-if="request.isCanceled"
       class="request-state request-state--canceled"
     >
       <p class="request-state__content">
-        {{ 'asset-request-details.canceled-request-msg' | globalize() }}
+        {{ 'request-messages.canceled-msg' | globalize() }}
       </p>
     </div>
+
     <div
       v-else-if="request.isPermanentlyRejected"
       class="request-state request-state--permanently-rejected"
     >
       <p class="request-state__content">
         <!-- eslint-disable-next-line max-len -->
-        {{ 'asset-request-details.permanently-rejected-request-msg' | globalize({ reason: request.rejectReason }) }}
+        {{ 'request-messages.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
+
     <div class="app__table asset-request-details__table">
       <table>
         <tbody>
@@ -63,17 +69,20 @@
             <td>
               {{ 'asset-request-details.request-type-title' | globalize }}
             </td>
+
+            <!-- eslint-disable max-len -->
             <td>
-              <!-- eslint-disable max-len -->
               <template v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
                 {{ 'asset-request-details.asset-create-request-type' | globalize }}
               </template>
+
               <template v-else>
                 {{ 'asset-request-details.asset-update-request-type' | globalize }}
               </template>
-              <!-- eslint-enable max-len -->
             </td>
+            <!-- eslint-enable max-len -->
           </tr>
+
           <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
             <td>
               <!-- eslint-disable-next-line max-len -->
@@ -83,6 +92,7 @@
               {{ request.maxIssuanceAmount | formatMoney }}
             </td>
           </tr>
+
           <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
             <td>
               <!-- eslint-disable-next-line max-len -->
@@ -92,6 +102,7 @@
               {{ request.initialPreissuedAmount | formatMoney }}
             </td>
           </tr>
+
           <tr>
             <td>
               {{ 'asset-request-details.terms-title' | globalize }}
@@ -104,11 +115,13 @@
               >
                 {{ 'asset-request-details.download-terms-btn' | globalize }}
               </a>
+
               <p v-else>
                 {{ 'asset-request-details.no-terms-msg' | globalize }}
               </p>
             </td>
           </tr>
+
           <tr>
             <td>
               {{ 'asset-request-details.transferable-title' | globalize }}
@@ -117,11 +130,13 @@
               <template v-if="request.isTransferable">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
+
               <template v-else>
                 {{ 'asset-request-details.absent-msg' | globalize }}
               </template>
             </td>
           </tr>
+
           <tr>
             <td>
               {{ 'asset-request-details.requires-kyc-title' | globalize }}
@@ -130,6 +145,7 @@
               <template v-if="request.isRequiresKYC">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
+
               <template v-else>
                 {{ 'asset-request-details.absent-msg' | globalize }}
               </template>
@@ -138,6 +154,7 @@
         </tbody>
       </table>
     </div>
+
     <div class="asset-request-details__buttons">
       <button
         v-ripple
@@ -147,6 +164,7 @@
       >
         {{ 'asset-request-details.update-btn' | globalize }}
       </button>
+
       <button
         v-ripple
         class="asset-request-details__cancel-btn"

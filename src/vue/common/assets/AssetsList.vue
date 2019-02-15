@@ -3,7 +3,7 @@
     <drawer :is-shown.sync="isDetailsDrawerShown">
       <template slot="heading">
         <template v-if="isUpdateMode">
-          {{ 'assets-list.update-token-title' | globalize }}
+          {{ 'assets-list.update-asset-title' | globalize }}
         </template>
         <template v-else>
           {{ 'assets-list.details-title' | globalize }}

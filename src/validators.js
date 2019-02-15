@@ -1,4 +1,6 @@
 import WAValidator from 'wallet-address-validator'
+import moment from 'moment'
+
 import { base } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -15,6 +17,7 @@ export { minLength } from 'vuelidate/lib/validators'
 export const password = value => validators.minLength(6)(value)
 export const seed = value => base.Keypair.isValidSecretKey(value)
 export const amount = value => Number(value) && Number(value) > 0
+export const requiredAtLeastOne = value => !!value.length
 export const maxDecimalPoints = points => value => {
   const splittedValue = value.split('.')
   if (splittedValue.length < 2) {
@@ -29,7 +32,9 @@ export const amountRange = (from, to) => value =>
     Number(value) >= Number(from) &&
     Number(value) <= Number(to)
   )
-
+export const minDate = (minDate) => value => {
+  return moment(value).isAfter(moment(minDate))
+}
 export const address = (asset) => value => {
   switch (asset) {
     case ASSETS.btc:

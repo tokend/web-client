@@ -59,7 +59,7 @@
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
     <p>
-      {{ 'issuance.no-owned-tokens-msg' | globalize }}
+      {{ 'issuance.no-owned-assets-msg' | globalize }}
     </p>
   </div>
   <div v-else>
