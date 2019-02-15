@@ -103,19 +103,11 @@ export const router = new Router({
             {
               path: '/trade/exchange',
               name: vueRoutes.trade.exchange.name,
-              meta: {
-                pageNameTranslationId: 'pages-names.trade',
-                pageSubnameTranslationId: 'pages-subnames.exchange-tokens',
-              },
               component: resolve => require(['@/vue/pages/TradeExchange'], resolve),
             },
             {
               path: '/trade/my-orders',
               name: vueRoutes.trade.userOffers.name,
-              meta: {
-                pageNameTranslationId: 'pages-names.trade',
-                pageSubnameTranslationId: 'pages-subnames.user-orders',
-              },
               component: resolve => require(['@/vue/pages/TradeUserOffers'], resolve),
             },
           ],
