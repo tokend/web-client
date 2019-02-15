@@ -15,12 +15,16 @@
           <button
             v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
             class="app__button-raised dashboard__action"
-            @click="createIssuanceFormIsShown = true">
+            @click="createIssuanceFormIsShown = true"
+          >
+            <i class="mdi mdi-plus dashboard__plus-icon" />
             {{ 'dashboard.create-issuance-lbl' | globalize }}
           </button>
           <button
             class="app__button-raised dashboard__action"
-            @click="transferFormIsShown = true">
+            @click="transferFormIsShown = true"
+          >
+            <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
             {{
               'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
             }}
@@ -149,11 +153,30 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin: -1rem;
+
+  @include respond-to($small) {
+    flex-direction: column-reverse;
+  }
 }
 
 .dashboard__actions {
-  margin-top: .8rem;
   display: flex;
+  margin: 1.8rem 1rem 1rem;
+}
+
+.dashboard__plus-icon,
+.dashboard__send-icon {
+  font-size: 1.8rem;
+  margin-right: 0.5rem;
+}
+
+.dashboard__send-icon {
+  margin-top: -0.6rem;
+}
+
+.dashboard__asset-selector {
+  margin: 1rem;
 }
 
 .dashboard__action {
