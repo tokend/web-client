@@ -27,9 +27,8 @@
       <select-field
         v-model="selectedAsset"
         :values="accountBalancesAssetsCodes"
-        :form-free="true"
         :key="`limits-asset-selector-${selectedAsset}`"
-        class="limits__assets-select"
+        class="limits__assets-select app__select--no-border"
       />
     </div>
 
@@ -274,7 +273,6 @@ export default {
 .limits__assets-select {
   display: inline-block;
   width: auto;
-  min-width: 18rem;
 }
 
 .limits__requests-title {
