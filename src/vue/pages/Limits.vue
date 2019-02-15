@@ -145,7 +145,7 @@ export default {
       try {
         await this.loadCurrentBalances()
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
     }
     if (this.accountBalancesAssetsCodes.length) this.setDefaultAssetCode()
