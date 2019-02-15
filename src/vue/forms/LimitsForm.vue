@@ -65,7 +65,7 @@
             'form.dailyOut',
             {
               maxValue: config.MAX_AMOUNT,
-              minValue: getMinValidDailyOutValue(),
+              minValue: minValidDailyOutValue,
               quantity: config.DECIMAL_POINTS,
             }
           )"
@@ -83,7 +83,7 @@
             'form.weeklyOut',
             {
               maxValue: config.MAX_AMOUNT,
-              minValue: getMinValidWeeklyOutValue(),
+              minValue: minValidWeeklyOutValue,
               quantity: config.DECIMAL_POINTS,
             }
           )"
@@ -103,7 +103,7 @@
             'form.monthlyOut',
             {
               maxValue: config.MAX_AMOUNT,
-              minValue: getMinValidMonthlyOutValue(),
+              minValue: minValidMonthlyOutValue,
               quantity: config.DECIMAL_POINTS,
             }
           )"
@@ -121,7 +121,7 @@
             'form.annualOut',
             {
               maxValue: config.MAX_AMOUNT,
-              minValue: getMinValidAnnualOutValue(),
+              minValue: minValidAnnualOutValue,
               quantity: config.DECIMAL_POINTS,
             }
           )"
@@ -245,25 +245,25 @@ export default {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
-          minValue: minValue(this.getMinValidDailyOutValue()),
+          minValue: minValue(this.minValidDailyOutValue),
         },
         weeklyOut: {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
-          minValue: minValue(this.getMinValidWeeklyOutValue()),
+          minValue: minValue(this.minValidWeeklyOutValue),
         },
         monthlyOut: {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
-          minValue: minValue(this.getMinValidMonthlyOutValue()),
+          minValue: minValue(this.minValidMonthlyOutValue),
         },
         annualOut: {
           decimal,
           maxValueWrapper: maxValueWrapper(config.MAX_AMOUNT),
           maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
-          minValue: minValue(this.getMinValidAnnualOutValue()),
+          minValue: minValue(this.minValidAnnualOutValue),
         },
         note: {
           maxLength: maxLength(this.formNoteMaxLength),
@@ -275,6 +275,30 @@ export default {
     selectedLimitsByOpType () {
       // eslint-disable-next-line
       return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType.value]]
+    },
+    minValidDailyOutValue () {
+      return MIN_VALID_LIMIT_VALUE
+    },
+    minValidWeeklyOutValue () {
+      return Math.max(
+        MIN_VALID_LIMIT_VALUE,
+        +this.form.dailyOut,
+      )
+    },
+    minValidMonthlyOutValue () {
+      return Math.max(
+        MIN_VALID_LIMIT_VALUE,
+        +this.form.dailyOut,
+        +this.form.weeklyOut,
+      )
+    },
+    minValidAnnualOutValue () {
+      return Math.max(
+        MIN_VALID_LIMIT_VALUE,
+        +this.form.dailyOut,
+        +this.form.weeklyOut,
+        +this.form.monthlyOut,
+      )
     },
   },
   created () {
@@ -334,35 +358,6 @@ export default {
           },
         })
       await Sdk.horizon.transactions.submitOperations(operation)
-    },
-
-    getMinValidDailyOutValue () {
-      return this.getMaxValue([MIN_VALID_LIMIT_VALUE])
-    },
-    getMinValidWeeklyOutValue () {
-      return this.getMaxValue([
-        MIN_VALID_LIMIT_VALUE,
-        this.form.dailyOut,
-      ])
-    },
-    getMinValidMonthlyOutValue () {
-      return this.getMaxValue([
-        MIN_VALID_LIMIT_VALUE,
-        this.form.dailyOut,
-        this.form.weeklyOut,
-      ])
-    },
-    getMinValidAnnualOutValue () {
-      return this.getMaxValue([
-        MIN_VALID_LIMIT_VALUE,
-        this.form.dailyOut,
-        this.form.weeklyOut,
-        this.form.monthlyOut,
-      ])
-    },
-
-    getMaxValue (values) {
-      return Math.max(...values.map(item => Number(item)))
     },
   },
 }
