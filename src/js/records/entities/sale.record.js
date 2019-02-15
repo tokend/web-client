@@ -44,7 +44,7 @@ export class SaleRecord {
     this.logoType = _get(this._record, 'details.logo.type')
   }
 
-  /** video **/
+  /** URLs **/
 
   get youtubeVideoUrl () {
     if (this.youtubeVideoId) {
@@ -52,6 +52,10 @@ export class SaleRecord {
     } else {
       return ''
     }
+  }
+
+  logoUrl (storageUrl) {
+    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }
 
   /** quote assets: **/

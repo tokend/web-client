@@ -131,6 +131,7 @@ export const router = new Router({
           path: '/funds',
           name: vueRoutes.sales.name,
           featureFlag: config.FEATURE_FLAGS.sales,
+          meta: { pageNameTranslationId: 'pages-names.funds' },
           component: resolve => require(['@/vue/pages/Sales'], resolve),
         },
         {
