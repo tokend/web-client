@@ -32,85 +32,91 @@
             />
           </template>
         </drawer>
-        <table class="app__table asset-creation-requests__table">
-          <thead>
-            <tr>
-              <th :title="'requests-page.token-code-header' | globalize">
-                {{ 'requests-page.token-code-header' | globalize }}
-              </th>
-              <th :title="'requests-page.request-state-header' | globalize">
-                {{ 'requests-page.request-state-header' | globalize }}
-              </th>
-              <th :title="'requests-page.created-header' | globalize">
-                {{ 'requests-page.created-header' | globalize }}
-              </th>
-              <th :title="'requests-page.last-updated-header' | globalize">
-                {{ 'requests-page.last-updated-header' | globalize }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(request, index) in requestsHistory"
-              :key="index"
-            >
-              <td :title="request.assetCode">
-                {{ request.assetCode }}
-              </td>
-              <td
-                v-if="request.isApproved"
-                class="request-state request-state--approved"
-                :title="'requests-page.request-approved-msg' | globalize"
+        <div
+          class="app__table
+                app__table--with-shadow
+                asset-creation-requests__table"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th :title="'requests-page.token-code-header' | globalize">
+                  {{ 'requests-page.token-code-header' | globalize }}
+                </th>
+                <th :title="'requests-page.request-state-header' | globalize">
+                  {{ 'requests-page.request-state-header' | globalize }}
+                </th>
+                <th :title="'requests-page.created-header' | globalize">
+                  {{ 'requests-page.created-header' | globalize }}
+                </th>
+                <th :title="'requests-page.last-updated-header' | globalize">
+                  {{ 'requests-page.last-updated-header' | globalize }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(request, index) in requestsHistory"
+                :key="index"
               >
-                {{ 'requests-page.request-approved-msg' | globalize }}
-              </td>
-              <td
-                v-if="request.isPending"
-                class="request-state request-state--pending"
-                :title="'requests-page.request-pending-msg' | globalize"
-              >
-                {{ 'requests-page.request-pending-msg' | globalize }}
-              </td>
-              <td
-                v-if="request.isRejected"
-                class="request-state request-state--rejected"
-                :title="'requests-page.request-rejected-msg' | globalize"
-              >
-                {{ 'requests-page.request-rejected-msg' | globalize }}
-              </td>
-              <td
-                v-if="request.isCanceled"
-                class="request-state request-state--canceled"
-                :title="'requests-page.request-canceled-msg' | globalize"
-              >
-                {{ 'requests-page.request-canceled-msg' | globalize }}
-              </td>
-              <!-- eslint-disable max-len -->
-              <td
-                v-if="request.isPermanentlyRejected"
-                class="request-state request-state--permanently-rejected"
-                :title="'requests-page.request-permanently-rejected-msg' | globalize"
-              >
-                {{ 'requests-page.request-permanently-rejected-msg' | globalize }}
-              </td>
-              <!-- eslint-enable max-len -->
-              <td :title="request.createdAt | formatCalendar">
-                {{ request.createdAt | formatCalendar }}
-              </td>
-              <td :title="request.updatedAt | formatCalendar">
-                {{ request.updatedAt | formatCalendar }}
-              </td>
-              <td>
-                <a
-                  class="request-details-btn"
-                  @click="showRequestDetails(index)"
+                <td :title="request.assetCode">
+                  {{ request.assetCode }}
+                </td>
+                <td
+                  v-if="request.isApproved"
+                  class="request-state request-state--approved"
+                  :title="'requests-page.request-approved-msg' | globalize"
                 >
-                  {{ 'requests-page.details-btn' | globalize }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  {{ 'requests-page.request-approved-msg' | globalize }}
+                </td>
+                <td
+                  v-if="request.isPending"
+                  class="request-state request-state--pending"
+                  :title="'requests-page.request-pending-msg' | globalize"
+                >
+                  {{ 'requests-page.request-pending-msg' | globalize }}
+                </td>
+                <td
+                  v-if="request.isRejected"
+                  class="request-state request-state--rejected"
+                  :title="'requests-page.request-rejected-msg' | globalize"
+                >
+                  {{ 'requests-page.request-rejected-msg' | globalize }}
+                </td>
+                <td
+                  v-if="request.isCanceled"
+                  class="request-state request-state--canceled"
+                  :title="'requests-page.request-canceled-msg' | globalize"
+                >
+                  {{ 'requests-page.request-canceled-msg' | globalize }}
+                </td>
+                <!-- eslint-disable max-len -->
+                <td
+                  v-if="request.isPermanentlyRejected"
+                  class="request-state request-state--permanently-rejected"
+                  :title="'requests-page.request-permanently-rejected-msg' | globalize"
+                >
+                  {{ 'requests-page.request-permanently-rejected-msg' | globalize }}
+                </td>
+                <!-- eslint-enable max-len -->
+                <td :title="request.createdAt | formatCalendar">
+                  {{ request.createdAt | formatCalendar }}
+                </td>
+                <td :title="request.updatedAt | formatCalendar">
+                  {{ request.updatedAt | formatCalendar }}
+                </td>
+                <td>
+                  <a
+                    class="request-details-btn"
+                    @click="showRequestDetails(index)"
+                  >
+                    {{ 'requests-page.details-btn' | globalize }}
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </template>
       <template v-else>
         <no-data-message
@@ -232,9 +238,6 @@ export default {
 @import "~@scss/mixins";
 
 .asset-creation-requests__table {
-  overflow-x: auto;
-  @include box-shadow();
-
   tr td:last-child {
     width: 3rem;
     text-align: right;
