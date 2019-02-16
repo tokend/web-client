@@ -3,11 +3,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 
 export class ErrorHandler {
-  static process (error) {
+  static process (error, translationId = '') {
     ErrorHandler.processWithoutFeedback(error)
-
-    const translationId = ErrorHandler._getTranslationId(error)
-    Bus.error(translationId)
+    Bus.error(translationId || ErrorHandler._getTranslationId(error))
   }
 
   static processWithoutFeedback (error) {

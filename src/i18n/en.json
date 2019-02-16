@@ -128,6 +128,8 @@
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
+      "wrong-email-or-password-err": "Wrong email or password",
+      "wrong-tfa-code-err": "Wrong 2FA code",
       "almost-done": "Almost done",
       "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
       "continue": "Continue",
@@ -175,6 +177,7 @@
       "tfa-code-lbl": "2FA code",
       "change-password-btn": "Change password",
       "wrong-password-err": "Your current password is wrong",
+      "wrong-code-err": "Wrong 2FA code",
       "password-changed-msg": "Your password was successfully changed"
     },
 
@@ -185,7 +188,7 @@
       "secret-code-desc": "Or manually set the secret code",
       "tfa-code-desc": "And enter your 2FA code to continue",
       "wrong-password-err": "Wrong password",
-      "wrong-code-err": "Wrong code",
+      "wrong-code-err": "Wrong 2FA code",
       "tfa-enabled-msg": "2FA is enabled",
       "tfa-disabled-msg": "2FA is disabled",
       "secret-lbl": "Secret",
