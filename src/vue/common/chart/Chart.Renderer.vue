@@ -143,7 +143,7 @@ export default {
       // Setup svg
       const className = 'chart'
       const yAxisTickWidth = this.isTicksShown
-        ? this.formatMoneyCustom(max).length * 9 + 5
+        ? this.formatMoneyCustom(max).length * 10 + 55
         : 0
       const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
       const dimensions = this.getDimensions(this.$el)

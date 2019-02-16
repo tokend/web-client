@@ -82,6 +82,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { FileUtil } from '@/js/utils/file.util'
 import { documentContainer } from '@validators'
 
+const EVENTS = {
+  close: 'close',
+}
+
 export default {
   name: 'pre-issuance-form',
   components: {
@@ -121,6 +125,7 @@ export default {
           })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('issuance.pre-issuance-uploaded-msg')
+        this.$emit(EVENTS.close)
         this.reset()
       } catch (e) {
         ErrorHandler.process(e)

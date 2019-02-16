@@ -20,7 +20,7 @@
 
               <create-sale-form
                 :request="selectedRequest"
-                @request-updated="initFirstPageLoader"
+                @request-updated="closeDetailsDrawer() || initFirstPageLoader()"
               />
             </template>
 
@@ -250,10 +250,13 @@ export default {
 
   methods: {
     initFirstPageLoader () {
-      this.isDetailsDrawerShown = false
       this.isHistoryLoaded = false
       this.requestsHistory = []
       this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
+    },
+
+    closeDetailsDrawer () {
+      this.isDetailsDrawerShown = false
     },
 
     getFirstPageLoader (accountId) {

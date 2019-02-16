@@ -514,6 +514,8 @@
     },
 
     "transfer-form": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "no-assets-heading": "No assets, no transfers",
       "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
       "discover-assets-btn": "Discover assets",
