@@ -298,7 +298,7 @@
       "requests": "Requests",
       "trade": "Trade",
       "settings": "Settings",
-      "fees": "My fees",
+      "fees": "Fees",
       "operations": "Operations",
       "issuance": "Issuance",
       "downloads": "TokenD downloads",
@@ -424,13 +424,17 @@
       "upper-bound": "Upper bound",
       "subtype": "Subtype",
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
-      "no-fees-title": "No fees",
-      "no-fees-msg": "Here will be the list of your fees"
+      "loading-error-msg": "There was an error while loading."
     },
 
     "fee-page": {
-      "filters-prefix": "Show:"
+      "asset-filter-prefix": "Asset:",
+      "scope-filter-prefix": "Scope:",
+      "scope-global": "Global",
+      "scope-account-type": "Account type",
+      "scope-account": "Account",
+      "no-valuable-fees-title": "No valuable fees",
+      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
     },
 
     "op-pages": {
