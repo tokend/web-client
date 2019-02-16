@@ -26,8 +26,14 @@ localVue.filter('formatPercent', formatPercent)
 
 describe('Fees’', () => {
   const feesSampleData = {
-    ali: [0],
-    btc: [0, 1],
+    ali: [{
+      fixed: '1',
+      percent: '0.1',
+    }],
+    btc: [{
+      fixed: '1',
+      percent: '0',
+    }],
   }
   let mockHelper
   let feesResource
@@ -125,7 +131,7 @@ describe('Fees’', () => {
     expect(wrapper.vm.fees).to.not.equal(null)
   })
 
-  it('selectedFees returns only the fees with the code filters.asset', () => {
+  it('valuableAssetFees returns only the fees with the code filters.asset', () => {
     wrapper.setData({
       fees: feesSampleData,
       filters: {
@@ -133,7 +139,7 @@ describe('Fees’', () => {
       },
     })
 
-    expect(wrapper.vm.selectedFees).to.deep.equal(feesSampleData.btc)
+    expect(wrapper.vm.valuableAssetFees).to.deep.equal(feesSampleData.btc)
   })
 
   // TODO: test initAssetSelector, loadAssets
