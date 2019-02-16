@@ -72,8 +72,7 @@ export default {
     async loadEmail () {
       try {
         const accountId = await this.getAccountId()
-        const { data: { email } } = await Sdk.api.users.get(accountId)
-        this.email = email
+        this.email = await Sdk.horizon.public.getEmailByAccountId(accountId)
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
