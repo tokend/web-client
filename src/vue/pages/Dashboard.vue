@@ -52,7 +52,7 @@
         <template slot="heading">
           {{ 'issuance.issuance-form-heading' | globalize }}
         </template>
-        <issuance-form @cancel="showDrawer = false" />
+        <issuance-form @close="showDrawer = false" />
       </template>
       <template v-if="transferFormIsShown">
         <template slot="heading">
@@ -167,7 +167,7 @@ export default {
 
 .dashboard__plus-icon,
 .dashboard__send-icon {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   margin-right: 0.5rem;
 }
 

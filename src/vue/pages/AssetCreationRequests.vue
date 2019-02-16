@@ -11,16 +11,16 @@
             <asset-create-form
               v-if="isAssetCreateRequestSelected"
               :request="selectedRequest"
-              @request-updated="loadHistory"
-              @close="isDetailsDrawerShown = false"
+              @request-updated="closeDetailsDrawer() || initFirstPageLoader()"
+              @close="closeDetailsDrawer"
             />
 
             <asset-update-form
               v-else
               :request="selectedRequest"
               :asset-for-update="selectedRequest.assetCode"
-              @request-updated="loadHistory"
-              @close="isDetailsDrawerShown = false"
+              @request-updated="closeDetailsDrawer() || initFirstPageLoader()"
+              @close="closeDetailsDrawer"
             />
           </template>
 
@@ -139,15 +139,15 @@
         <!-- eslint-disable max-len -->
         <no-data-message
           icon-name="trending-up"
-          title-id="requests-page.no-request-history-title"
-          message-id="requests-page.no-request-history-desc"
+          title-id="asset-creation-requests.no-request-history-title"
+          message-id="asset-creation-requests.no-request-history-desc"
         />
         <!-- eslint-enable max-len -->
       </template>
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader message-id="requests-page.loading-msg" />
+      <loader message-id="asset-creation-requests.loading-msg" />
     </template>
 
     <template v-else>
@@ -231,10 +231,13 @@ export default {
 
   methods: {
     initFirstPageLoader () {
-      this.isDetailsDrawerShown = false
       this.isLoaded = false
       this.requestsHistory = []
       this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
+    },
+
+    closeDetailsDrawer () {
+      this.isDetailsDrawerShown = false
     },
 
     getFirstPageLoader (accountId) {

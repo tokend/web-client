@@ -161,7 +161,7 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.verification"
+            :to="vueRoutes.settings"
             tag="a"
             v-if="config.featureFlags.settings"
           >
