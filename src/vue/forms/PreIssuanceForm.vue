@@ -132,7 +132,6 @@ export default {
         const extracted = await FileUtil.getText(file)
         this.parsePreIssuance(JSON.parse(extracted).issuances[0])
       } catch (e) {
-        console.error(e)
         Bus.error('file-field.file-corrupted-err')
       }
     },

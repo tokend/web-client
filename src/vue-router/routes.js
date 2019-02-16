@@ -45,7 +45,7 @@ export const vueRoutes = Object.freeze({
     name: 'app.requests',
     assetCreation: { name: 'app.asset-creation' },
     saleCreation: { name: 'app.sale-creation' },
-    preissuanceUpload: { name: 'app.preissuance-upload' },
+    preIssuanceUpload: { name: 'app.pre-issuance-upload' },
   },
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
