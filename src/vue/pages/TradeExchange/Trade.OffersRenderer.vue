@@ -1,6 +1,6 @@
 <template>
   <div class="trade-offers">
-    <h3 class="app__table-title">
+    <h3 class="app__table-title trade-offers__title">
       <template v-if="isBuy">
         {{ 'trade-offers.subtitle-ask' | globalize }}
       </template>
@@ -145,5 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+.trade-offers__title {
+  font-size: 1.4rem;
+}
 </style>

@@ -86,6 +86,11 @@ export default Object.assign(
      * depends on amount precision
      */
     MINIMAL_NUMBER_INPUT_STEP: 0.000001,
+
+    /**
+     * Default asset signer for pre-issuance upload
+     */
+    NULL_ASSET_SIGNER: 'GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4',
   },
   process.env,
   document.ENV
