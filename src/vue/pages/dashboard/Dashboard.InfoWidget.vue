@@ -14,14 +14,19 @@
 </template>
 
 <script>
+import OpList from '@/vue/common/OpList'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+
+import { Sdk } from '@/sdk'
+import config from '@/config'
+
+import { TX_STATES } from '@/js/const/transaction-statuses.const'
+
+import { RecordWrapper } from '@/js/records'
+import { MatchRecord } from '@/js/records/operations/match.record'
+
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import config from '@/config'
-import { TX_STATES } from '@/js/const/transaction-statuses.const'
-import NoDataMessage from '@/vue/common/NoDataMessage'
-import OpList from '@/vue/common/OpList'
-import { Sdk } from '@/sdk'
-import { RecordWrapper } from '@/js/records'
 
 export default {
   name: 'info-widget',
@@ -41,9 +46,10 @@ export default {
     transactions: [],
   }),
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      balances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
+    }),
   },
   watch: {
     currentAsset () {
@@ -66,8 +72,21 @@ export default {
         return RecordWrapper.operation(el, {
           accountId: this.accountId,
           asset: this.currentAsset,
+          balanceId: this.balances
+            .find(item => item.asset === this.currentAsset)
+            .balanceId,
         })
-      })
+      }).reduce((list, item) => {
+        if (item instanceof MatchRecord) {
+          item.effects.forEach(tx => {
+            list.push(Object.assign(item, tx))
+          })
+        } else {
+          list.push(item)
+        }
+
+        return list
+      }, [])
     },
     toggleDetails (index) {
       this.index = this.index === index ? -1 : index
