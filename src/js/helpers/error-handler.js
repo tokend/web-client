@@ -2,6 +2,8 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 
+import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
+
 export class ErrorHandler {
   static process (error, translationId = '') {
     ErrorHandler.processWithoutFeedback(error)
@@ -51,6 +53,13 @@ export class ErrorHandler {
         break
       case errors.UserExistsError:
         translationId = 'errors.user-exists'
+        break
+      case errors.TransactionError:
+        if (error.includesOpCode(OPERATION_ERROR_CODES.opAccountBlocked)) {
+          translationId = 'errors.account-blocked'
+        } else {
+          translationId = 'errors.transaction'
+        }
         break
       default:
         translationId = 'errors.default'

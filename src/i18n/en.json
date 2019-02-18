@@ -101,7 +101,9 @@
       "unauthorized": "Access denied",
       "tfa-required": "2FA required",
       "verification-required": "Verification required",
-      "user-exists": "User with such email already exists"
+      "user-exists": "User with such email already exists",
+      "transaction": "The transaction you sent is invalid",
+      "account-blocked": "Your account is blocked"
     },
 
     "operation-names": {
