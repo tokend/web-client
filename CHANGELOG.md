@@ -8,8 +8,17 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+### Changed
+- `MatchRecord` initialization
+- displaying base & quote amount on `MatchOpDetails`
+
 ### Fixed
-+ Displaying order match operations
+- Displaying order match operations
+- Parsing operations on dashboard page
+
+### Removed
+- Outdated license file
+
 ## [1.0.0-rc.0] - 2019-02-18
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...HEAD
