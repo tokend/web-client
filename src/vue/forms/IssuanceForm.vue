@@ -148,6 +148,9 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const REFERENCE_MAX_LENGTH = 255
+const EVENTS = {
+  close: 'close',
+}
 
 export default {
   name: 'issuance-form',
@@ -223,6 +226,7 @@ export default {
           await Sdk.horizon.transactions.submitOperations(operation)
           await this.reinitAssetSelector()
           Bus.success('issuance.assets-issued-msg')
+          this.$emit(EVENTS.close)
         } else {
           Bus.error('issuance.balance-required-err')
         }

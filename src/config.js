@@ -56,6 +56,41 @@ export default Object.assign(
      * dropped one day
      */
     MAX_AMOUNT: String(base.Operation.MAX_INT64_AMOUNT),
+
+    // deprecated constants
+
+    /**
+     * Default asset code for converting token's price,
+     * trade and sale offers
+     */
+    DEFAULT_QUOTE_ASSET: 'USD',
+
+    /**
+     * Default limit of the number of transactions per a page
+     */
+    TRANSACTIONS_PER_PAGE: 12,
+
+    /**
+     * Default limit of the number of requests per a page
+     */
+    REQUESTS_PER_PAGE: 10,
+
+    /**
+     * Default amount precision, the number of digits
+     * after a point
+     */
+    DECIMAL_POINTS: 6,
+
+    /**
+     * Default acceptable step for amount change,
+     * depends on amount precision
+     */
+    MINIMAL_NUMBER_INPUT_STEP: 0.000001,
+
+    /**
+     * Default asset signer for pre-issuance upload
+     */
+    NULL_ASSET_SIGNER: 'GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4',
   },
   process.env,
   document.ENV

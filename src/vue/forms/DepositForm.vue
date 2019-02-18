@@ -1,7 +1,7 @@
 <template>
   <div class="deposit">
     <template v-if="isLoaded">
-      <template v-if="selectedAsset">
+      <template v-if="selectedAsset.code">
         <div class="deposit__help-message-wrp">
           <p class="deposit__help-message">
             {{ 'deposit-form.how-to' | globalize }}
