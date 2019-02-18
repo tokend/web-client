@@ -104,21 +104,27 @@
 </template>
 
 <script>
-import SelectField from '@/vue/fields/SelectField'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import OpList from '@/vue/common/OpList'
+
+import SelectField from '@/vue/fields/SelectField'
+
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
-import OpList from '@/vue/common/OpList'
+
 import { Sdk } from '@/sdk'
-import { mapGetters, mapActions } from 'vuex'
-import { vuexTypes } from '@/vuex/types'
-import { ErrorHandler } from '@/js/helpers/error-handler'
+
 import { RecordWrapper } from '@/js/records'
 import { MatchRecord } from '@/js/records/operations/match.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+
+import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex/types'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'op-history',
@@ -147,10 +153,10 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.account,
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
+    }),
   },
 
   watch: {
@@ -199,10 +205,13 @@ export default {
         })
       }).reduce((list, item) => {
         if (item instanceof MatchRecord) {
-          item.effects.forEach(tx => { list.push(tx) })
-          return list
+          item.effects.forEach(tx => {
+            list.push(Object.assign(item, tx))
+          })
+        } else {
+          list.push(item)
         }
-        list.push(item)
+
         return list
       }, [])
     },

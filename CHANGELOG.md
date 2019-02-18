@@ -11,9 +11,19 @@ for further information about branching and tagging conventions.
 ### Added
 - `AssetPairRecord` for wrapping asset pairs
 
+### Changed
+- `MatchRecord` initialization
+- displaying base & quote amount on `MatchOpDetails`
+
+### Removed
+- Outdated license file
+
 ### Fixed
 - Displaying only tradable asset pairs on the trade page
 - Chart margins
+- Displaying order match operations
+- Parsing operations on dashboard page
+
 ## [1.0.0-rc.0] - 2019-02-18
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...HEAD
