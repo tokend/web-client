@@ -617,7 +617,7 @@
     "requests-page": {
       "asset-creation-title": "Token creation",
       "sale-creation-title": "Fund creation",
-      "preissuance-upload-title": "Pre-issuance upload"
+      "pre-issuance-upload-title": "Pre-issuance upload"
     },
 
     "request-states": {
@@ -667,6 +667,17 @@
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your fund creation requests",
       "request-canceled-msg": "Your request was successfully cancelled"
+    },
+
+    "pre-issuance-requests": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "asset-code-header": "Token code",
+      "amount-header": "Amount",
+      "request-state-header": "Request state",
+      "created-header": "Created at",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
     },
 
     "asset-details": {

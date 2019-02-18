@@ -220,8 +220,8 @@ $custom-breakpoint: 985px;
 
 .trade-exchange__offers-wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  flex-basis: 50%;
 
   @include respond-to($custom-breakpoint) {
     flex-direction: column;
@@ -229,7 +229,7 @@ $custom-breakpoint: 985px;
 }
 
 .trade-exchange__offers-list {
-  max-width: 49.5%;
+  width: 100%;
 
   @include respond-to($custom-breakpoint) {
     max-width: 100%;
