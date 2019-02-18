@@ -11,6 +11,8 @@ for further information about branching and tagging conventions.
 ### Added
 - `AssetPairRecord` for wrapping asset pairs
 - Ability to cancel your trade order
+- User account blocked error
+- Transaction error
 
 ### Changed
 - `MatchRecord` initialization
