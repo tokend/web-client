@@ -8,11 +8,20 @@
         >
           <span>{{ 'requests-page.asset-creation-title' | globalize }}</span>
         </router-link>
+
         <router-link
           v-ripple
           :to="vueRoutes.requests.saleCreation"
         >
           <span>{{ 'requests-page.sale-creation-title' | globalize }}</span>
+        </router-link>
+
+        <router-link
+          v-ripple
+          :to="vueRoutes.requests.preIssuanceUpload"
+        >
+          <!-- eslint-disable-next-line max-len -->
+          <span>{{ 'requests-page.pre-issuance-upload-title' | globalize }}</span>
         </router-link>
       </template>
     </top-bar>

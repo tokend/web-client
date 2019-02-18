@@ -200,6 +200,11 @@ export const router = new Router({
               name: vueRoutes.requests.saleCreation.name,
               component: resolve => require(['@/vue/pages/SaleCreationRequests'], resolve),
             },
+            {
+              path: '/requests/pre-issuance-upload',
+              name: vueRoutes.requests.preIssuanceUpload.name,
+              component: resolve => require(['@/vue/pages/PreIssuanceRequests'], resolve),
+            },
           ],
         },
         {
