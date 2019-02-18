@@ -8,7 +8,7 @@
     <template v-if="isLoggedIn && isNavigationRendered">
       <div class="app__container">
         <sidebar />
-        <idle-message :is-idle="isIdle" />
+        <idle-message />
 
         <div class="app__main-content">
           <div class="app__navbar">
@@ -61,13 +61,7 @@ export default {
   data: () => ({
     isNotSupportedBrowser: false,
     isAppInitialized: false,
-    isIdle: false,
   }),
-
-  onIdle () {
-    this.isIdle = true
-    console.error('Idle time exceeded')
-  },
 
   computed: {
     ...mapGetters([

@@ -26,26 +26,25 @@ export default {
   components: {
     Drawer,
   },
-  props: {
-    isIdle: { type: Boolean, default: false },
-  },
+
   data: _ => ({
     isDetailsDrawerShown: false,
+    isIdle: false,
   }),
+
+  onIdle () {
+    this.isIdle = true
+    this.isDetailsDrawerShown = this.isIdle
+    this.clearState()
+  },
+
   computed: {
     ...mapGetters({
       email: vuexTypes.walletEmail,
       typeI: vuexTypes.accountTypeI,
     }),
   },
-  watch: {
-    isIdle: function () {
-      if (this.isIdle) {
-        this.isDetailsDrawerShown = this.isIdle
-        this.clearState()
-      }
-    },
-  },
+
   methods: {
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
