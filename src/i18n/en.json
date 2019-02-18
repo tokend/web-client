@@ -50,7 +50,8 @@
       "close-lbl_warning": "OK",
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
-      "close-lbl_info": "Got it"
+      "close-lbl_info": "Got it",
+      "idle-notification-message": "You have been logged out due to long inactivity!"
     },
     "validation": {
       "failed": "Please fill out all the fields before continuing",

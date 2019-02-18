@@ -8,6 +8,7 @@
     <template v-if="isLoggedIn && isNavigationRendered">
       <div class="app__container">
         <sidebar />
+        <idle-message :is-idle="isIdle" />
 
         <div class="app__main-content">
           <div class="app__navbar">
@@ -33,6 +34,7 @@
 import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
+import IdleMessage from '@/vue/common/idle/IdleMessage'
 import WarningBanner from '@/vue/common/WarningBanner'
 
 import {
@@ -51,6 +53,7 @@ export default {
   components: {
     Navbar,
     Sidebar,
+    IdleMessage,
     StatusMessage,
     WarningBanner,
   },
@@ -58,7 +61,13 @@ export default {
   data: () => ({
     isNotSupportedBrowser: false,
     isAppInitialized: false,
+    isIdle: false,
   }),
+
+  onIdle () {
+    this.isIdle = true
+    console.error('Idle time exceeded')
+  },
 
   computed: {
     ...mapGetters([

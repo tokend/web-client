@@ -43,6 +43,7 @@ export default {
   methods: {
     closeSelf () {
       this.$emit('update:isShown', false)
+      this.$emit('close-drawer')
     },
   },
 }
