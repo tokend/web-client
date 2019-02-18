@@ -80,16 +80,38 @@ export default {
 
         await Sdk.horizon.transactions.submitOperations(operation)
 
-        Bus.success('offer-creation-form.success')
+        Bus.success('offer-manager.success-creating')
       } catch (error) {
         if (
           error instanceof errors.TransactionError &&
           error.includesOpCode(OPERATION_ERROR_CODES.opCrossSelf)
         ) {
-          Bus.error('offer-creation-form.error-operation-cross-self')
+          Bus.error('offer-manager.error-operation-cross-self')
         } else {
           ErrorHandler.process(error)
         }
+      }
+    },
+    /**
+     * @param {object} opts
+     * @param {object} opts.baseBalance - balance id of the base asset
+     * @param {string} opts.quoteBalance - balace id of the quote asset
+     * @param {string} opts.offerId - offer id
+     * @param {string} opts.price - offer price
+     * @returns {Promise<void>}
+     */
+    async cancelOffer (opts) {
+      try {
+        const operation = base.ManageOfferBuilder.cancelOffer({
+          ...opts,
+          offerID: String(opts.offerId),
+          price: opts.price,
+          orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
+        })
+        await Sdk.horizon.transactions.submitOperations(operation)
+        Bus.success('offer-manager.success-cancelling')
+      } catch (error) {
+        ErrorHandler.process(error)
       }
     },
   },

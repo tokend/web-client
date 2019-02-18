@@ -803,17 +803,22 @@
       "offer-label": "Order ({{asset}})",
       "price-label": "Price ({{asset}})",
       "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell"
+      "submit-sell-btn": "Sell",
+      "cancel-offer-btn": "Cancel order"
+    },
+
+    "offer-manager": {
+      "success-creating": "Order successfully created",
+      "success-cancelling": "Order successfully cancelled",
+      "error-operation-cross-self": "Current order crosses your existing order"
     },
 
     "offer-creation-form": {
-      "success": "Offer successfully created",
       "price-per-asset": "Price per {{asset}}",
       "amount": "Amount {{asset}}",
       "total": "Total {{asset}}",
       "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell",
-      "error-operation-cross-self": "Current order crosses your existing order"
+      "submit-sell-btn": "Sell"
     },
 
     "trade-exchange": {

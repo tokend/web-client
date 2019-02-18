@@ -335,7 +335,6 @@ h4 {
         }
 
         &[disabled] {
-          cursor: default;
           background-color: #e0e0e0;
         }
 
@@ -354,10 +353,6 @@ h4 {
 
   &.app__table--clickable-rows tbody tr {
     cursor: pointer;
-
-    &[disabled] {
-      cursor: default;
-    }
   }
 }
 

@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - `AssetPairRecord` for wrapping asset pairs
+- Ability to cancel your trade order
 
 ### Changed
 - `MatchRecord` initialization
@@ -23,6 +24,7 @@ for further information about branching and tagging conventions.
 - Chart margins
 - Displaying order match operations
 - Parsing operations on dashboard page
+- Balances update after creating/updating your trade order
 
 ## [1.0.0-rc.0] - 2019-02-18
 
