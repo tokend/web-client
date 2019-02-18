@@ -38,7 +38,8 @@
 
                 <td
                   v-if="request.isApproved"
-                  class="request-state request-state--approved"
+                  class="pre-issuance-requests__request-state
+                         pre-issuance-requests__request-state--approved"
                   :title="'request-states.approved-state' | globalize"
                 >
                   {{ 'request-states.approved-state' | globalize }}
@@ -46,7 +47,8 @@
 
                 <td
                   v-if="request.isPending"
-                  class="request-state request-state--pending"
+                  class="pre-issuance-requests__request-state
+                         pre-issuance-requests__request-state--pending"
                   :title="'request-states.pending-state' | globalize"
                 >
                   {{ 'request-states.pending-state' | globalize }}
@@ -54,7 +56,8 @@
 
                 <td
                   v-if="request.isRejected"
-                  class="request-state request-state--rejected"
+                  class="pre-issuance-requests__request-state
+                         pre-issuance-requests__request-state--rejected"
                   :title="'request-states.rejected-state' | globalize"
                 >
                   {{ 'request-states.rejected-state' | globalize }}
@@ -62,7 +65,8 @@
 
                 <td
                   v-if="request.isCanceled"
-                  class="request-state request-state--canceled"
+                  class="pre-issuance-requests__request-state
+                         pre-issuance-requests__request-state--canceled"
                   :title="'request-states.canceled-state' | globalize"
                 >
                   {{ 'request-states.canceled-state' | globalize }}
@@ -71,7 +75,7 @@
                 <!-- eslint-disable max-len -->
                 <td
                   v-if="request.isPermanentlyRejected"
-                  class="request-state request-state--permanently-rejected"
+                  class="pre-issuance-requests__request-state pre-issuance-requests__request-state--permanently-rejected"
                   :title="'request-states.permanently-rejected-state' | globalize"
                 >
                   {{ 'request-states.permanently-rejected-state' | globalize }}
@@ -189,7 +193,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.request-state {
+.pre-issuance-requests__request-state {
   padding-left: 3rem;
   position: relative;
 
