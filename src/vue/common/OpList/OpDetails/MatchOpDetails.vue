@@ -33,7 +33,10 @@
         </td>
       </tr>
 
-      <tr class="op-details__row">
+      <tr
+        v-if="operation.isSaleMatch"
+        class="op-details__row"
+      >
         <td
           class="op-details__cell"
           :title="'op-details.fund-name-lbl' | globalize"
@@ -70,17 +73,35 @@
       <tr class="op-details__row">
         <td
           class="op-details__cell"
-          :title="'op-details.amount-lbl' | globalize"
+          :title="'op-details.base-amount-lbl' | globalize"
         >
-          {{ 'op-details.amount-lbl' | globalize }}
+          {{ 'op-details.base-amount-lbl' | globalize }}
         </td>
 
         <!-- eslint-disable max-len -->
         <td
           class="op-details__cell"
-          :title="{ value: operation.amount, currency: operation.asset } | formatMoney"
+          :title="{ value: operation.baseAmount, currency: operation.baseAsset } | formatMoney"
         >
-          {{ { value: operation.amount, currency: operation.asset } | formatMoney }}
+          {{ { value: operation.baseAmount, currency: operation.baseAsset } | formatMoney }}
+        </td>
+        <!-- eslint-enable max-len -->
+      </tr>
+
+      <tr class="op-details__row">
+        <td
+          class="op-details__cell"
+          :title="'op-details.quote-amount-lbl' | globalize"
+        >
+          {{ 'op-details.quote-amount-lbl' | globalize }}
+        </td>
+
+        <!-- eslint-disable max-len -->
+        <td
+          class="op-details__cell"
+          :title="{ value: operation.quoteAmount, currency: operation.quoteAsset } | formatMoney"
+        >
+          {{ { value: operation.quoteAmount, currency: operation.quoteAsset } | formatMoney }}
         </td>
         <!-- eslint-enable max-len -->
       </tr>

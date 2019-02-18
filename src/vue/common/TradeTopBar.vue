@@ -89,17 +89,24 @@
 </template>
 
 <script>
-import SelectField from '@/vue/fields/SelectField'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Sdk } from '@/sdk'
-import { mapActions, mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
-import { vueRoutes } from '@/vue-router/routes'
-import { Bus } from '@/js/helpers/event-bus'
+
+import SelectField from '@/vue/fields/SelectField'
+import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
+
+import { Sdk } from '@/sdk'
 import { errors } from '@tokend/js-sdk'
+
+import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
+
+import { vuexTypes } from '@/vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+import { vueRoutes } from '@/vue-router/routes'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
   reloadTradeData: 'reload-trade-data',
@@ -120,7 +127,6 @@ export default {
     },
     errors,
     selectedPair: '',
-    tradeablePairs: [],
     formattedPairs: [],
     isCreateBuyOfferDrawerShown: false,
     isCreateSellOfferDrawerShown: false,
@@ -169,13 +175,11 @@ export default {
     }),
     async loadTradablePairs () {
       const { data } = await Sdk.horizon.assetPairs.getAll()
-      this.formatTradablePairs(data)
-      this.setDefaultSelectedPair(data)
-    },
-    formatTradablePairs (pairs) {
-      this.formattedPairs = pairs.map(item => {
-        return `${item.base}/${item.quote}`
-      })
+      const tradablePairs = data
+        .map(assetPair => new AssetPairRecord(assetPair))
+        .filter(pair => pair.isTradable)
+      this.formattedPairs = tradablePairs.map(item => item.baseAndQuote)
+      this.setDefaultSelectedPair(tradablePairs)
     },
     setDefaultSelectedPair (pairs) {
       const queryBase = this.$route.query.base
@@ -186,10 +190,10 @@ export default {
       // (exists in system) and set the appropriate
       if (this.isQueryParamsValid(pairs)) {
         const pair = pairs.find((i) => {
-          return i.base === queryBase &&
-                  i.quote === queryQuote
+          return i.baseAssetCode === queryBase &&
+                  i.quoteAssetCode === queryQuote
         })
-        this.selectedPair = `${pair.base}/${pair.quote}`
+        this.selectedPair = pair.baseAndQuote
       } else {
         this.selectedPair = this.formattedPairs[0]
         if (queryBase && queryQuote) {
@@ -211,7 +215,8 @@ export default {
 
       if (queryBase && queryQuote) {
         return Boolean(pairs.find((i) => {
-          return i.base === queryBase && i.quote === queryQuote
+          return i.baseAssetCode === queryBase &&
+            i.quoteAssetCode === queryQuote
         }))
       }
       return false

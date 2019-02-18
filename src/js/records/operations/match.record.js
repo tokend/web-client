@@ -26,12 +26,23 @@ export class MatchRecord extends OpRecord {
     this.participants = record.participants
     this.participant = this._getParticipant()
     this.effects = this._getEffects()
+
+    this.counterparty = this._getCounterparty()
+  }
+
+  _getCounterparty () {
+    let participant = this.participants
+      .find(p => p.accountId !== this.accountId ||
+                 p.balanceId !== this.balanceId
+      )
+    return _get(participant, 'accountId')
   }
 
   _getParticipant () {
     return this.participants
       .find(participant => participant.accountId === this.accountId &&
-                           participant.balanceId === this.balanceId) || {}
+                           participant.balanceId === this.balanceId
+      ) || {}
   }
 
   _getEffects () {
@@ -58,7 +69,6 @@ export class MatchEffect {
 
     this.baseAsset = effect.baseAsset
     this.quoteAsset = effect.quoteAsset
-    this.counterparty = `${effect.baseAsset} fund`
     this.isBuy = effect.isBuy
     this.matches = effect.matches
 
@@ -70,10 +80,8 @@ export class MatchEffect {
     this.direction = this._getDirection()
 
     this.name = this._getName()
-  }
 
-  get isIncoming () {
-    return this.direction === DIRECTIONS_VERBOSE.in
+    this.isIncoming = this.direction === DIRECTIONS_VERBOSE.in
   }
 
   _getQuoteAmount () {

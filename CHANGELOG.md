@@ -8,15 +8,22 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+### Added
+- `AssetPairRecord` for wrapping asset pairs
+- Ability to cancel your trade order
+
+### Changed
+- `MatchRecord` initialization
+- displaying base & quote amount on `MatchOpDetails`
+
 ### Removed
 - Outdated license file
 
-### Added
-
-- Ability to cancel your trade order
-
 ### Fixed
-
+- Displaying only tradable asset pairs on the trade page
+- Chart margins
+- Displaying order match operations
+- Parsing operations on dashboard page
 - Balances update after creating/updating your trade order
 
 ## [1.0.0-rc.0] - 2019-02-18
