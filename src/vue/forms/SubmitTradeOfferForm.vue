@@ -50,9 +50,9 @@
 
     <template v-if="formMixin.isConfirmationShown">
       <form-confirmation
-        @cancel="cancelConfirmation"
+        @cancel="hideConfirmation"
         @ok="submit"
-        :is-pending="isOfferCreating"
+        :is-pending="isOfferSubmitting"
         class="app__form-confirmation"
       />
     </template>
@@ -61,14 +61,20 @@
         <button
           v-ripple
           type="button"
-          @click="tryToSubmit"
+          @click="showConfirmation"
           class="app__form-submit-btn"
-          :disabled="formMixin.isDisabled">
-          <template v-if="isBuy">
-            {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
+          :disabled="formMixin.isDisabled"
+        >
+          <template v-if="offer.ownerId === accountId">
+            {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
           </template>
           <template v-else>
-            {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
+            <template v-if="isBuy">
+              {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
+            </template>
+            <template v-else>
+              {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
+            </template>
           </template>
         </button>
       </div>
@@ -78,8 +84,10 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferMakerMixin from '@/vue/mixins/offer-maker.mixin'
+import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -88,31 +96,33 @@ const EVENTS = {
 export default {
   name: 'submit-trade-offer-form',
   components: { FormConfirmation },
-  mixins: [FormMixin, OfferMakerMixin],
+  mixins: [FormMixin, OfferManagerMixin],
   props: {
     assetPair: { type: Object, require: true, default: () => ({}) },
     isBuy: { type: Boolean, require: false, default: true },
     offer: { type: Object, require: true, default: () => ({}) },
   },
   data: () => ({
-    isOfferCreating: false,
+    isOfferSubmitting: false,
   }),
+  ...mapGetters([
+    vuexTypes.accountId,
+    vuexTypes.accountBalances,
+  ]),
   methods: {
-    tryToSubmit () {
-      this.showConfirmation()
-    },
     async submit () {
       this.disableForm()
-      this.isOfferCreating = true
+      this.isOfferSubmitting = true
 
-      await this.createOffer(this.getCreateOfferOpts())
+      if (this.offer.ownerId === this.accountId) {
+        await this.cancelOffer(this.getCancelOfferOpts())
+      } else {
+        await this.createOffer(this.getCreateOfferOpts())
+      }
 
-      this.isOfferCreating = false
+      this.isOfferSubmitting = false
       this.enableForm()
       this.$emit(EVENTS.closeDrawer)
-      this.hideConfirmation()
-    },
-    cancelConfirmation () {
       this.hideConfirmation()
     },
     getCreateOfferOpts () {
@@ -125,6 +135,16 @@ export default {
         quoteAmount: this.offer.quoteAmount,
         price: this.offer.price,
         isBuy: !this.offer.isBuy,
+      }
+    },
+    getCancelOfferOpts () {
+      return {
+        price: this.offer.price,
+        baseBalance: this.accountBalances
+          .find(item => item.asset === this.offer.baseAssetCode).balanceId,
+        quoteBalance: this.accountBalances
+          .find(item => item.asset === this.offer.quoteAssetCode).balanceId,
+        offerId: this.offer.offerId,
       }
     },
   },

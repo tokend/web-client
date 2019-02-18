@@ -9,6 +9,10 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 
+### Added
+
+- Ability to cancel your trade order
+
 ## [1.0.0-rc.0] - 2019-02-18
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...HEAD

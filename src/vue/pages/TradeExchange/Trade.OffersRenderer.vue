@@ -131,10 +131,8 @@ export default {
   },
   methods: {
     selectOffer (offer) {
-      if (offer.ownerId !== this.accountId) {
-        this.isSubmitOfferDrawerShown = true
-        this.selectedOffer = offer
-      }
+      this.isSubmitOfferDrawerShown = true
+      this.selectedOffer = offer
     },
     closeDrawer () {
       this.isSubmitOfferDrawerShown = false
