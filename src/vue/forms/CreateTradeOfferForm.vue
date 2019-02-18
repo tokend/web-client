@@ -11,7 +11,6 @@
           "
           name="trade-offer-price"
           :white-autofill="true"
-          type="number"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
             'form.price', {
@@ -34,7 +33,6 @@
           })"
           name="trade-offer-amount"
           :white-autofill="true"
-          type="number"
           :max="baseAssetBalance"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
@@ -62,7 +60,8 @@
     <template v-if="formMixin.isConfirmationShown">
       <form-confirmation
         @cancel="hideConfirmation"
-        @ok="hideConfirmation() || submit()"
+        @ok="submit"
+        :is-pending="isOfferCreating"
         class="app__form-confirmation"
       />
     </template>
@@ -90,7 +89,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferMakerMixin from '@/vue/mixins/offer-maker.mixin'
+import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
 
@@ -98,7 +97,13 @@ import { MathUtil } from '@/js/utils/math.util'
 
 import config from '@/config'
 
-import { required, amountRange, minValue, noMoreThanAvailableOnBalance } from '@validators'
+import {
+  required,
+  amountRange,
+  minValue,
+  noMoreThanAvailableOnBalance,
+  decimal,
+} from '@validators'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
@@ -110,7 +115,7 @@ const EVENTS = {
 export default {
   name: 'create-trade-offer-form',
   components: { FormConfirmation },
-  mixins: [FormMixin, OfferMakerMixin],
+  mixins: [FormMixin, OfferManagerMixin],
   props: {
     assetPair: { type: Object, require: true, default: () => {} },
     isBuy: { type: Boolean, require: false, default: true },
@@ -121,6 +126,7 @@ export default {
       amount: '',
     },
     config,
+    isOfferCreating: false,
   }),
   validations () {
     return {
@@ -128,6 +134,7 @@ export default {
         price: {
           required,
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          decimal,
           noMoreThanAvailableOnBalance: this.isBuy
             ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
             : true,
@@ -135,6 +142,7 @@ export default {
         amount: {
           required,
           minValue: minValue(config.MIN_AMOUNT),
+          decimal,
           noMoreThanAvailableOnBalance: this.isBuy
             ? true
             : noMoreThanAvailableOnBalance(this.baseAssetBalance),
@@ -161,8 +169,11 @@ export default {
   methods: {
     async submit () {
       this.disableForm()
+      this.isOfferCreating = true
       await this.createOffer(this.getCreateOfferOpts())
+      this.isOfferCreating = false
       this.enableForm()
+      this.hideConfirmation()
       this.$emit(EVENTS.closeDrawer)
     },
     getCreateOfferOpts () {

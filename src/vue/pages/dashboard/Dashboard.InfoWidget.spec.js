@@ -31,7 +31,11 @@ describe('Dashboard.InfoWidget component', () => {
     mockHelper = new MockHelper()
     sinon.stub(accountModule.getters, vuexTypes.accountId)
       .returns(mockHelper.getDefaultAccountId)
-
+    sinon.stub(accountModule.getters, vuexTypes.accountBalances)
+      .returns([{
+        asset: 'BTC',
+        balanceId: mockHelper.getDefaultBalanceId,
+      }])
     store = new Vuex.Store({
       getters: accountModule.getters,
       actions: accountModule.actions,
@@ -40,6 +44,9 @@ describe('Dashboard.InfoWidget component', () => {
     wrapper = shallowMount(InfoWidget, {
       store,
       localVue,
+      propsData: {
+        currentAsset: 'BTC',
+      },
     })
   })
 

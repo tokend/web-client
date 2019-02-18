@@ -459,13 +459,15 @@
       "percent-fee-lbl": "Percent fee",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
+      "base-amount-lbl": "Base amount",
+      "quote-amount-lbl": "Quote amount",
       "counterparty-email-lbl": "Counterparty email",
       "id-lbl": "Operation ID",
       "source-fees-lbl": "Sender fees",
       "destination-fees-lbl": "Recipient fees",
       "subject-lbl": "Subject",
       "fund-name-lbl": "Fund name",
-      "token-fund-val": "{asset} token fund",
+      "token-fund-val": "{{asset}} token fund",
       "base-asset-lbl": "Base asset",
       "fee-paid-lbl": "Fee paid",
       "price-lbl": "Price",
@@ -803,17 +805,22 @@
       "offer-label": "Order ({{asset}})",
       "price-label": "Price ({{asset}})",
       "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell"
+      "submit-sell-btn": "Sell",
+      "cancel-offer-btn": "Cancel order"
+    },
+
+    "offer-manager": {
+      "success-creating": "Order successfully created",
+      "success-cancelling": "Order successfully cancelled",
+      "error-operation-cross-self": "Current order crosses your existing order"
     },
 
     "offer-creation-form": {
-      "success": "Offer successfully created",
       "price-per-asset": "Price per {{asset}}",
       "amount": "Amount {{asset}}",
       "total": "Total {{asset}}",
       "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell",
-      "error-operation-cross-self": "Current order crosses your existing order"
+      "submit-sell-btn": "Sell"
     },
 
     "trade-exchange": {
