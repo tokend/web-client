@@ -7,6 +7,7 @@ import Vuelidate from 'vuelidate'
 import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
+import IdleVue from 'idle-vue'
 
 import { store } from '@/vuex'
 import { router } from '@/vue-router'
@@ -25,6 +26,7 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 import { abbreviate } from '@/vue/filters/abbreviate'
+import { IDLE } from './js/const/idle.const'
 
 i18next.init(i18nOptions)
 
@@ -47,6 +49,13 @@ Vue.filter('formatCalendar', formatCalendar)
 Vue.filter('formatFeeSubType', formatFeeSubType)
 Vue.filter('formatOrderNumber', formatOrderNumber)
 Vue.filter('abbreviate', abbreviate)
+
+const eventsHub = new Vue()
+
+Vue.use(IdleVue, {
+  eventEmitter: eventsHub,
+  idleTime: IDLE.time,
+})
 
 /* eslint-disable no-new */
 new Vue({

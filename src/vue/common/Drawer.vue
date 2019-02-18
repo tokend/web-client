@@ -54,6 +54,7 @@ export default {
     },
     closeSelf () {
       this.$emit('update:isShown', false)
+      this.$emit('close-drawer')
     },
   },
 }
