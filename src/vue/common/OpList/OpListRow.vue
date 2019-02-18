@@ -14,14 +14,13 @@
       >
         {{ operation | getOpTypeTranslationId | globalize }}
       </td>
-      <!-- eslint-disable max-len -->
+
       <td
         class="op-list-row__cell"
         :title="operationAmount | formatMoney"
       >
         {{ operationAmount | formatMoney }}
       </td>
-      <!-- eslint-enable max-len -->
 
       <td
         class="op-list-row__cell op-list-row__cell--counterparty"
@@ -150,6 +149,7 @@ $op-list-toggle-btn-col-width: 6.7rem;
     position: relative;
     padding-left: $op-list-cell-side-padding + 1.2rem;
     width: $op-list-status-col-width;
+
     &:before {
       content: "";
       position: absolute;
