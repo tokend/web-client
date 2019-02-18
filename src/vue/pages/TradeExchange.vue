@@ -39,7 +39,7 @@
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
-            @reload-trades="loadData"
+            @reload-trades="reloadTrades"
           />
 
           <trade-offers-renderer
@@ -48,7 +48,7 @@
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
-            @reload-trades="loadData"
+            @reload-trades="reloadTrades"
           />
         </div>
       </div>
@@ -66,6 +66,8 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import { mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'trade-exchange',
@@ -113,6 +115,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     async loadData () {
       await this.loadTradeOffers()
       await this.loadTradeHistory()
@@ -176,6 +181,10 @@ export default {
     setCurrentAssets (assetPair) {
       this.assetPair.base = assetPair.base
       this.assetPair.quote = assetPair.quote
+    },
+    reloadTrades () {
+      this.loadData()
+      this.loadBalances()
     },
   },
 }
