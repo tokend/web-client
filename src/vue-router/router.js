@@ -114,7 +114,7 @@ export const router = new Router({
           ],
         },
         {
-          path: '/operations',
+          path: '/movements',
           name: vueRoutes.movements.name,
           featureFlag: config.featureFlags.movements,
           meta: { pageNameTranslationId: 'pages-names.movements' },
