@@ -1,95 +1,102 @@
 <template>
   <div class="trade-top-bar">
-    <top-bar>
-      <template slot="main">
-        <router-link
-          :to="{
-            name: vueRoutes.trade.exchange.name,
-            query: { base: assetPair.base, quote: assetPair.quote }
-          }"
-        >
-          <span>
-            {{ 'trade-top-bar.exchange-view' | globalize }}
-          </span>
-        </router-link>
-        <router-link
-          :to="{
-            name: vueRoutes.trade.userOffers.name,
-            query: { base: assetPair.base, quote: assetPair.quote }
-          }"
-        >
-          <span>
-            {{ 'trade-top-bar.my-offers-view' | globalize }}
-          </span>
-        </router-link>
-      </template>
-      <template slot="extra">
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isCreateBuyOfferDrawerShown = true"
-        >
-          {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isCreateSellOfferDrawerShown = true"
-        >
-          {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
-        </button>
-      </template>
-    </top-bar>
+    <template v-if="isLoaded">
+      <top-bar>
+        <template slot="main">
+          <router-link
+            :to="{
+              name: vueRoutes.trade.exchange.name,
+              query: { base: assetPair.base, quote: assetPair.quote }
+            }"
+          >
+            <span>
+              {{ 'trade-top-bar.exchange-view' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            :to="{
+              name: vueRoutes.trade.userOffers.name,
+              query: { base: assetPair.base, quote: assetPair.quote }
+            }"
+          >
+            <span>
+              {{ 'trade-top-bar.my-offers-view' | globalize }}
+            </span>
+          </router-link>
+        </template>
+        <template slot="extra">
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreateBuyOfferDrawerShown = true"
+          >
+            {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
+          </button>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreateSellOfferDrawerShown = true"
+          >
+            {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
+          </button>
+        </template>
+      </top-bar>
 
-    <div class="trade-asset-selector__wrapper">
-      <select-field
-        v-model="selectedPair"
-        :values="formattedPairs"
-        :key="selectedPair"
-        class="trade-asset-selector__field app__select app__select--no-border"
-      />
-    </div>
-    <div class="trade-asset-selector__balances">
-      <p class="trade-asset-selector__balances-value">
-        {{
-          // eslint-disable-next-line
-          { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
-        }}
-        /
-        {{
-          // eslint-disable-next-line
-          { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
-        }}
-      </p>
-      <p class="trade-asset-selector__balances-label">
-        {{ 'trade-top-bar.user-balances-label' | globalize }}
-      </p>
-    </div>
+      <div class="trade-asset-selector__wrapper">
+        <select-field
+          v-model="selectedPair"
+          :values="formattedPairs"
+          :key="selectedPair"
+          class="trade-asset-selector__field app__select app__select--no-border"
+        />
+      </div>
+      <div class="trade-asset-selector__balances">
+        <p class="trade-asset-selector__balances-value">
+          {{
+            // eslint-disable-next-line
+            { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
+          }}
+          /
+          {{
+            // eslint-disable-next-line
+            { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
+          }}
+        </p>
+        <p class="trade-asset-selector__balances-label">
+          {{ 'trade-top-bar.user-balances-label' | globalize }}
+        </p>
+      </div>
 
-    <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
-      <template slot="heading">
-        {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
-      </template>
-      <create-trade-offer-form
-        :asset-pair="assetPair"
-        @close-drawer="closeBuyOfferDrawer"
-      />
-    </drawer>
-    <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
-      <template slot="heading">
-        {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
-      </template>
-      <create-trade-offer-form
-        :asset-pair="assetPair"
-        :is-buy="false"
-        @close-drawer="closeSellOfferDrawer"
-      />
-    </drawer>
+      <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
+        <template slot="heading">
+          {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
+        </template>
+        <create-trade-offer-form
+          :asset-pair="assetPair"
+          @close-drawer="closeBuyOfferDrawer"
+        />
+      </drawer>
+      <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
+        <template slot="heading">
+          {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
+        </template>
+        <create-trade-offer-form
+          :asset-pair="assetPair"
+          :is-buy="false"
+          @close-drawer="closeSellOfferDrawer"
+        />
+      </drawer>
+    </template>
+
+    <template v-else-if="!isLoadingFailed">
+      <loader message-id="trade-top-bar.loading-msg" />
+    </template>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
 import TopBar from '@/vue/common/TopBar'
 
 import SelectField from '@/vue/fields/SelectField'
@@ -118,6 +125,7 @@ export default {
     SelectField,
     CreateTradeOfferForm,
     Drawer,
+    Loader,
     TopBar,
   },
   data: () => ({
@@ -125,6 +133,8 @@ export default {
       base: '',
       quote: '',
     },
+    isLoaded: false,
+    isLoadingFailed: false,
     errors,
     selectedPair: '',
     formattedPairs: [],
@@ -165,7 +175,9 @@ export default {
     try {
       await this.loadBalances()
       await this.loadTradablePairs()
+      this.isLoaded = true
     } catch (error) {
+      this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(error)
     }
   },

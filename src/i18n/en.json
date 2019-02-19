@@ -866,6 +866,8 @@
     },
 
     "trade-top-bar": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "exchange-view": "Exchange",
       "my-offers-view": "My Orders",
       "create-buy-offer-button": "Create buy order",

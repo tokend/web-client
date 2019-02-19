@@ -13,10 +13,15 @@ for further information about branching and tagging conventions.
 - Ability to cancel your trade order
 - User account blocked error
 - Transaction error
+- Loading state for trades & operations pages
+- Disabling select filters while loading
 
 ### Changed
 - `MatchRecord` initialization
-- displaying base & quote amount on `MatchOpDetails`
+- Displaying base & quote amount on `MatchOpDetails`
+- Moved `TradeTopBar` to the root `Trade` component
+- `Requests` menu item is shown only for syndicate users
+
 
 ### Removed
 - Outdated license file
@@ -27,6 +32,7 @@ for further information about branching and tagging conventions.
 - Displaying order match operations
 - Parsing operations on dashboard page
 - Balances update after creating/updating your trade order
+- Using `NoDataMessage` on operations page
 
 ## [1.0.0-rc.0] - 2019-02-18
 
