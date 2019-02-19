@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
 - Displaying base & quote amount on `MatchOpDetails`
 - Moved `TradeTopBar` to the root `Trade` component
 - `Requests` menu item is shown only for syndicate users
+- Use sdk version 1.0.0-x.8
 
 
 ### Removed

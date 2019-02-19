@@ -654,24 +654,24 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
-"@tokend/js-sdk@1.0.0-x.7":
-  version "1.0.0-x.7"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.0.0-x.7.tgz#b686d1fecf7307041f5f69794da16356683aff39"
-  integrity sha512-1OYcEjtDLoa0rDxkpwkTXTlTPvL5Kg6eZqVLUNMqxIfjAxBr9eVrt3AKvfJ86Z9pHPmtajn1s65nW1Pj7EUK1A==
+"@tokend/js-sdk@1.0.0-x.8":
+  version "1.0.0-x.8"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.0.0-x.8.tgz#f471ed6051b3a615b8b805b109b8f302318b6d55"
+  integrity sha512-1AXXsMSW0gYcLJ8I4iNuLFFN0gRYbIB7otpp+rHa8SCj7gAVhpCysi4n7lsRYKWLM0BgQeeBCg8jT4tJpqmieQ==
   dependencies:
-    axios "^0.16.0"
-    base32.js "~0.1.0"
-    bignumber.js "^2.0.7"
-    crc "^3.3.0"
-    js-xdr "^1.0.5"
-    jsona "^1.3.0"
-    lodash "^4.17.11"
-    loglevel "^1.6.1"
-    loglevel-plugin-prefix "^0.8.4"
-    moment "^2.23.0"
-    sjcl-tokend "^1.0.6"
-    tweetnacl "^0.13.0"
-    urijs "^1.19.1"
+    axios "0.16.2"
+    base32.js "0.1.0"
+    bignumber.js "2.4.0"
+    crc "3.8.0"
+    js-xdr "1.0.5"
+    jsona "1.3.0"
+    lodash "4.17.11"
+    loglevel "1.6.1"
+    loglevel-plugin-prefix "0.8.4"
+    moment "2.24.0"
+    sjcl-tokend "1.0.6"
+    tweetnacl "0.13.3"
+    urijs "1.19.1"
   optionalDependencies:
     ed25519 "0.0.4"
 
@@ -1170,7 +1170,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
   integrity sha512-ReZxvNHIOv88FlT7rxcXIIC0fPt4KZqZbOlivyWtXLt8ESx84zd3kMC6iK5jVeS2qt+g7ftS7ye4fi06X5rtRQ==
 
-axios@^0.16.0:
+axios@0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.16.2.tgz#ba4f92f17167dfbab40983785454b9ac149c3c6d"
   integrity sha1-uk+S8XFn37q0CYN4VFS5rBScPG0=
@@ -1359,7 +1359,7 @@ base-x@^3.0.4:
   dependencies:
     safe-buffer "^5.0.1"
 
-base32.js@~0.1.0:
+base32.js@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base32.js/-/base32.js-0.1.0.tgz#b582dec693c2f11e893cf064ee6ac5b6131a2202"
   integrity sha1-tYLexpPC8R6JPPBk7mrFthMaIgI=
@@ -1431,15 +1431,15 @@ big.js@^5.2.2:
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
+bignumber.js@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-2.4.0.tgz#838a992da9f9d737e0f4b2db0be62bb09dd0c5e8"
+  integrity sha1-g4qZLan51zfg9LLbC+YrsJ3Qxeg=
+
 bignumber.js@8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-8.0.1.tgz#5d419191370fb558c64e3e5f70d68e5947138832"
   integrity sha512-zAySveTJXkgLYCBi0b14xzfnOs+f3G6x36I8w2a1+PFQpWk/dp0mI0F+ZZK2bu+3ELewDcSyP+Cfq++NcHX7sg==
-
-bignumber.js@^2.0.7:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-2.4.0.tgz#838a992da9f9d737e0f4b2db0be62bb09dd0c5e8"
-  integrity sha1-g4qZLan51zfg9LLbC+YrsJ3Qxeg=
 
 binary-extensions@^1.0.0:
   version "1.12.0"
@@ -2323,11 +2323,6 @@ core-js@^2.2.0, core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.3.tgz#4b70938bdffdaf64931e66e2db158f0892289c49"
   integrity sha512-l00tmFFZOBHtYhN4Cz7k32VM7vTn3rE2ANjQDxdEN6zmXZ/xq1jQuutnmHvMG1ZJ7xd72+TA5YpUK8wz3rWsfQ==
 
-core-js@^2.6.3:
-  version "2.6.5"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.5.tgz#44bc8d249e7fb2ff5d00e0341a7ffb94fbf67895"
-  integrity sha512-klh/kDpwX8hryYL14M9w/xei6vrv6sE8gTHDG7/T/+SEovB/G4ejwcfE/CBzO6Edsu+OETZMZ3wcX/EjUkrl5A==
-
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -2343,7 +2338,7 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.0.7:
     js-yaml "^3.9.0"
     parse-json "^4.0.0"
 
-crc@^3.3.0:
+crc@3.8.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/crc/-/crc-3.8.0.tgz#ad60269c2c856f8c299e2c4cc0de4556914056c6"
   integrity sha512-iX3mfgcTMIq3ZKLIsVFAbv7+Mc10kxabAGQb8HvjA1o3T1PIYprbakQ65d3I+2HGHt6nSKkM9PYjgoJO2KcFBQ==
@@ -5358,12 +5353,11 @@ js-tokens@^3.0.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
-js-xdr@^1.0.5:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/js-xdr/-/js-xdr-1.1.0.tgz#2b0d9373f58020a7061838a0eac75a408897a3d5"
-  integrity sha512-g2Q0ccis46I9IgyYhQDAC6P9vW9ceB0HW1UyzbVUPjr1Mpd63bbk3EjopTvjGbglCHO7Lx2ftcRzaXjKso95HA==
+js-xdr@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/js-xdr/-/js-xdr-1.0.5.tgz#c639f62e5988675e20dfe5fc51ede875e8989072"
+  integrity sha512-v0jffMa8bko3uFcGYt1lHrtpd1adhH6qk41RfLPsNPj77/K8fi7LOi4+lUUY3MBEIFnJgaGHrbc6sxdTwHImxQ==
   dependencies:
-    core-js "^2.6.3"
     cursor "^0.1.5"
     lodash "^4.17.5"
     long "^2.2.3"
@@ -5450,7 +5444,7 @@ json5@^2.1.0:
   dependencies:
     minimist "^1.2.0"
 
-jsona@^1.3.0:
+jsona@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/jsona/-/jsona-1.3.0.tgz#f73275fec864534cb7c44abb76d3502496478aee"
   integrity sha512-nOfNhB7aAfRJPB+HyfSRNJkbis4lSn8h0i/0pMFmzJ28J+yiQ4b1IgqSlhElWPlBI9GinNm/vra0dk5wHXLznA==
@@ -5763,12 +5757,12 @@ log4js@^3.0.0:
     rfdc "^1.1.2"
     streamroller "0.7.0"
 
-loglevel-plugin-prefix@^0.8.4:
+loglevel-plugin-prefix@0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/loglevel-plugin-prefix/-/loglevel-plugin-prefix-0.8.4.tgz#2fe0e05f1a820317d98d8c123e634c1bd84ff644"
   integrity sha512-WpG9CcFAOjz/FtNht+QJeGpvVl/cdR6P0z6OcXSkr8wFJOsV2GRj2j10JLfjuA4aYkcKCNIEqRGCyTife9R8/g==
 
-loglevel@1.6.1, loglevel@^1.4.1, loglevel@^1.6.1:
+loglevel@1.6.1, loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
   integrity sha1-4PyVEztu8nbNyIh82vJKpvFW+Po=
@@ -6231,7 +6225,7 @@ moment@2.23.0:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
   integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
 
-moment@^2.23.0:
+moment@2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -8302,7 +8296,7 @@ sinon@7.2.2:
     nise "^1.4.7"
     supports-color "^5.5.0"
 
-sjcl-tokend@^1.0.6:
+sjcl-tokend@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/sjcl-tokend/-/sjcl-tokend-1.0.6.tgz#71ba66630723d5cc0e8194f2b0a2aab17565c36f"
   integrity sha512-GapeH/fnMRYO5czpUc1fnbeNG4ieB/afgHj6Y/gYTNq8osn8Vfh6INJIyNPUFMLE1IeIBBqZ2OWPt2BQ+XiDWQ==
@@ -9027,7 +9021,7 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tweetnacl@^0.13.0:
+tweetnacl@0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.13.3.tgz#d628b56f3bcc3d5ae74ba9d4c1a704def5ab4b56"
   integrity sha1-1ii1bzvMPVrnS6nUwacE3vWrS1Y=
@@ -9182,7 +9176,7 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-urijs@^1.19.1:
+urijs@1.19.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.1.tgz#5b0ff530c0cbde8386f6342235ba5ca6e995d25a"
   integrity sha512-xVrGVi94ueCJNrBSTjWqjvtgvl3cyOTThp2zaMaFNGp3F542TR6sM3f2o8RqZl+AwteClSVmoCyt0ka4RjQOQg==
