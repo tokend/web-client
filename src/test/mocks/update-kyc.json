@@ -7,7 +7,7 @@
   "reject_reason": "",
   "hash": "2ab87437a6872833e723ca853f0c0db84d40970a98e3b71a2b53e54ba20c28a5",
   "details": {
-    "request_type_i": 9,
+    "request_type_i": 8,
     "request_type": "update_kyc",
     "update_kyc": {
       "account_to_update_kyc": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",

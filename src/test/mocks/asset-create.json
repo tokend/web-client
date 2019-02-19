@@ -7,7 +7,7 @@
   "reject_reason": "",
   "hash": "e3ef53ae1b817e1870f3bc99d5c83cc1a2bccdddcb0d57919538893af3a2d36d",
   "details": {
-    "request_type_i": 0,
+    "request_type_i": 10,
     "request_type": "asset_create",
     "asset_create": {
       "code": "CAT",
