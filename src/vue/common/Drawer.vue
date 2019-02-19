@@ -24,6 +24,7 @@ import { KEY_CODES } from '@/js/const/key-codes.const'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
+  updateDrawerShown: 'update:isShown',
 }
 
 /**
@@ -57,7 +58,7 @@ export default {
       }
     },
     closeSelf () {
-      this.$emit('update:isShown', false)
+      this.$emit(EVENTS.updateDrawerShown, false)
       this.$emit(EVENTS.closeDrawer)
     },
   },
