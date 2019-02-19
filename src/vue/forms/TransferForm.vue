@@ -459,14 +459,12 @@ export default {
         amount: this.view.opts.amount,
         feeData: {
           sourceFee: {
-            maxPaymentFee: +this.view.opts.sourcePercentFee,
-            fixedFee: +this.view.opts.sourceFixedFee,
-            feeAsset: this.view.opts.sourceFeeAsset,
+            percent: this.view.opts.sourcePercentFee,
+            fixed: this.view.opts.sourceFixedFee,
           },
           destinationFee: {
-            maxPaymentFee: +this.view.opts.destinationPercentFee,
-            fixedFee: +this.view.opts.destinationFixedFee,
-            feeAsset: this.view.opts.destinationFeeAsset,
+            percent: this.view.opts.destinationPercentFee,
+            fixed: this.view.opts.destinationFixedFee,
           },
           sourcePaysForDest: this.view.opts.feeFromSource,
         },
