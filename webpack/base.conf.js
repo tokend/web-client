@@ -28,6 +28,7 @@ module.exports = {
       '@validators': resolve('src/validators'),
       '@static': resolve('static'),
       '@scss': resolve('src/scss'),
+      '@modules': resolve('src/vue/modules'),
     },
   },
   module: {
