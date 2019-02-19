@@ -12,6 +12,12 @@
           class="movements-table__head-cell"
           :title="'movements-table.head.date' | globalize"
         >
+          {{ 'movements-history.table-head.operation' | globalize }}
+        </th>
+        <th
+          class="movements-table__head-cell"
+          :title="'movements-table.head.date' | globalize"
+        >
           {{ 'movements-history.table-head.date' | globalize }}
         </th>
         <th

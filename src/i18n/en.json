@@ -490,7 +490,8 @@
         "fee": "Fee",
         "type": "Type",
         "amount": "Amount",
-        "date": "Date"
+        "date": "Date",
+        "operation": "Operation"
       },
       "effects": {
         "funded": "Funded",
@@ -501,6 +502,15 @@
         "withdrawn": "Withdrawn",
         "charged-from-locked": "Charged from locked",
         "matched": "Matched"
+      },
+      "operations": {
+        "create-issuance-request":  "Issuance/deposit requested",
+        "create-withdraw-request": "Withdraw requested",
+        "check-sale-state": "Sale state updated",
+        "review-request":  "Request reviewed",
+        "create-aml-alert-request": "AML alert",
+        "manage-offer": "Offer",
+        "payment": "Payment"
       },
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",

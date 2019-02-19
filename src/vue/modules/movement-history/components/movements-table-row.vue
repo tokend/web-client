@@ -10,7 +10,15 @@
         <movement-direction-mark :movement="movement" />
         {{ movement.effect | effectTypeTranslationId | globalize }}
       </td>
-      <!--eslint-enable-->
+      <td
+        class="movements-table-row__cell"
+        :title="movement.operationDetails
+          | operationTypeTranslationId
+          | globalize
+        "
+      >
+        {{ movement.operationDetails | operationTypeTranslationId | globalize }}
+      </td>
       <td
         class="movements-table-row__cell"
         :title="movement.appliedAt | formatCalendar"
@@ -51,7 +59,7 @@
       v-if="isAttributesViewerShown"
       class="movements-table-row__attributes"
     >
-      <td colspan="5">
+      <td colspan="6">
         <div class="movements-table-row__attributes-viewer-wrp">
           <movement-attributes-viewer :movement="movement" />
         </div>
@@ -73,6 +81,14 @@ import {
   ChargedFromLockedEffect,
   ParticularBalanceChangeEffect,
 } from '../wrappers/effect'
+
+import { CreateAMLAlertRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/create-aml-alert-request'
+import { CheckSaleStateOp } from '@/vue/modules/movement-history/wrappers/operation-details/check-sale-state'
+import { CreateIssuanceRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/create-issuance-request'
+import { CreateWithdrawRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/create-withdrawal-request'
+import { ManageOfferOp } from '@/vue/modules/movement-history/wrappers/operation-details/manage-offer'
+import { PaymentOp } from '@/vue/modules/movement-history/wrappers/operation-details/payment'
+import { ReviewRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/review-request'
 
 import MovementAttributesViewer from './movement-attributes-viewer'
 import MovementDirectionMark from './movement-direction-mark'
@@ -102,6 +118,24 @@ export default {
           return 'movements-history.effects.charged-from-locked'
         case ParticularBalanceChangeEffect:
           return 'movements-history.effects.matched'
+      }
+    },
+    operationTypeTranslationId (operationDetails) {
+      switch (operationDetails.constructor) {
+        case CreateAMLAlertRequestOp:
+          return 'movements-history.operations.create-aml-alert-request'
+        case CheckSaleStateOp:
+          return 'movements-history.operations.check-sale-state'
+        case CreateIssuanceRequestOp:
+          return 'movements-history.operations.create-issuance-request'
+        case CreateWithdrawRequestOp:
+          return 'movements-history.operations.create-withdraw-request'
+        case ManageOfferOp:
+          return 'movements-history.operations.manage-offer'
+        case PaymentOp:
+          return 'movements-history.operations.payment'
+        case ReviewRequestOp:
+          return 'movements-history.operations.review-request'
       }
     },
     movementAmount (movement) {
