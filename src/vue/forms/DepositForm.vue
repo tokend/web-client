@@ -43,7 +43,7 @@
         <router-link
           to="/tokens"
           tag="button"
-          class="app__button-raised deposit__discove-asset-btn">
+          class="app__button-raised deposit__discover-asset-btn">
           {{ 'deposit-form.discover-assets-btn' | globalize }}
         </router-link>
       </template>
@@ -125,8 +125,8 @@ export default {
     line-height: 1.25;
   }
 
-  .deposit__discove-asset-btn {
-      margin-top: 2.5rem;
+  .deposit__discover-asset-btn {
+    margin-top: 2.5rem;
   }
 
   .deposit__help-message-wrp,
