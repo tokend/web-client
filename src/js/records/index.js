@@ -22,17 +22,17 @@ export class RecordWrapper {
         return new AssetUpdateRequestRecord(...arguments)
       case REQUEST_TYPES.preIssuanceCreate:
         return new PreIssuanceCreateRequestRecord(...arguments)
-      case REQUEST_TYPES.issuanceCreate:
-      case REQUEST_TYPES.withdraw:
       case REQUEST_TYPES.sale:
         return new SaleRequestRecord(...arguments)
-      case REQUEST_TYPES.limitsUpdate:
-      case REQUEST_TYPES.twoStepWithdrawal:
-      case REQUEST_TYPES.amlAlert:
       case REQUEST_TYPES.updateKyc:
         return new UpdateKycRequestRecord(...arguments)
       case REQUEST_TYPES.updateSaleDetail:
         return new UpdateSaleDetailsRequestRecord(...arguments)
+      case REQUEST_TYPES.amlAlert:
+      case REQUEST_TYPES.withdraw:
+      case REQUEST_TYPES.limitsUpdate:
+      case REQUEST_TYPES.issuanceCreate:
+      case REQUEST_TYPES.twoStepWithdrawal:
       default:
         return new RequestRecord(...arguments)
     }
