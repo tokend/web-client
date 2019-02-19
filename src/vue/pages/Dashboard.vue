@@ -41,10 +41,14 @@
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
         </div>
-        <info-widget
-          class="dashboard__activity"
-          :current-asset="currentAsset"
-        />
+        <div class="dashboard__activity">
+          <movements-history-module
+            v-if="currentAsset"
+            :asset-code="currentAsset"
+            :config="{ horizonURL: config.HORIZON_SERVER }"
+            :wallet="wallet"
+          />
+        </div>
       </template>
     </template>
     <drawer :is-shown.sync="showDrawer">
@@ -65,11 +69,13 @@
 </template>
 
 <script>
+import MovementsHistoryModule from '@modules/movements-history'
+
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
-import InfoWidget from '@/vue/pages/dashboard/Dashboard.InfoWidget.vue'
 import Chart from '@/vue/common/chart/Chart'
+
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
@@ -83,7 +89,7 @@ export default {
     AssetSelector,
     IssuanceForm,
     Transfer,
-    InfoWidget,
+    MovementsHistoryModule,
     Chart,
     Loader,
     Drawer,
@@ -102,6 +108,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
       vuexTypes.accountTypeI,
+      vuexTypes.wallet,
     ]),
   },
   watch: {

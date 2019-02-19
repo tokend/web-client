@@ -106,20 +106,6 @@
       "account-blocked": "Your account is blocked"
     },
 
-    "operation-names": {
-      "issuance": "Tokens received",
-      "withdrawal": "Withdrawal",
-      "transfer": "Transfer",
-      "order-match": "Order match",
-      "investment": "Investment"
-    },
-
-    "operation-states": {
-      "success": "Completed",
-      "pending": "Pending",
-      "failed": "Failed"
-    },
-
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
@@ -304,7 +290,7 @@
       "trade": "Trade",
       "settings": "Settings",
       "fees": "Fees",
-      "operations": "Operations",
+      "movements": "Movements",
       "issuance": "Issuance",
       "downloads": "TokenD downloads",
       "terms": "Terms",
@@ -444,8 +430,6 @@
 
     "op-pages": {
       "filters-prefix": "Show:",
-      "no-operation-history": "No operation history",
-      "here-will-be-the-list": "Here will be the list of your operations",
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
       "loading-msg": "Loading",
@@ -477,14 +461,68 @@
       "counterparty-lbl": "Counterparty"
     },
 
-    "op-list": {
-      "head": {
-        "date": "Date",
-        "tx-type": "Operation type",
-        "amount": "Amount",
-        "counterparty": "Counterparty",
-        "status": "Status"
-      }
+    "movements-history": {
+      "effects": {
+        "funded": "Funded",
+        "locked": "Locked",
+        "issued":  "Issued",
+        "charged": "Charged",
+        "unlocked":  "Unlocked",
+        "withdrawn": "Withdrawn",
+        "charged-from-locked": "Charged from locked",
+        "matched": "Matched"
+      },
+      "operations": {
+        "create-issuance-request":  "Issuance/deposit requested",
+        "create-withdraw-request": "Withdraw requested",
+        "check-sale-state": "Sale state updated",
+        "review-request":  "Request reviewed",
+        "create-aml-alert-request": "AML alert",
+        "manage-offer": "Offer",
+        "payment": "Payment"
+      },
+      "fee-th": "Fee",
+      "type-th": "Type",
+      "amount-th": "Amount",
+      "date-th": "Date",
+      "operation-th": "Operation",
+      "movements-load-failed-msg": "Failed to load account movements. Please try again later",
+      "loading-movements-msg": "Please wait while we loading your movements",
+      "no-movements-title": "No movements history",
+      "no-movements-msg": "Nothing happened with your balances yet",
+      "amount-lbl": "Amount",
+      "fixed-fee-lbl": "Fixed fee",
+      "calculated-percent-fee-lbl": "Percent fee (calculated)",
+      "sale-id-lbl": "Sale ID",
+      "sale-state-lbl": "Sale state",
+      "sale-closed-msg": "Sale funded and closed",
+      "sale-canceled-msg": "Sale not funded and canceled",
+      "reason-lbl": "Reason",
+      "reference-lbl": "Reference",
+      "source-fixed-fee-lbl": "Source fixed fee",
+      "source-calculated-percent-fee-lbl": "Source percent fee (calculated)",
+      "destination-fixed-fee-lbl": "Destination fixed fee",
+      "destination-calculated-percent-fee-lbl": "Destination percent fee (calculated)",
+      "source-pays-for-destination-lbl": "Source pays for destination",
+      "subject-lbl": "Subject",
+      "payment-sender-lbl": "Payment sender",
+      "payment-recipient-lbl": "Payment recipient",
+      "request-state-lbl": "Request state",
+      "request-rejected-msg": "Request rejected",
+      "request-approved-msg": "Request approved",
+      "request-reviewed-msg": "Request reviewed",
+      "order-book-id-lbl": "Order book (sale) ID",
+      "secondary-market-msg": "Secondary market",
+      "base-amount-lbl": "Base amount",
+      "quote-amount-lbl": "Quote amount",
+      "offer-id-lbl": "Offer ID",
+      "price-lbl": "Price",
+      "offer-state-lbl": "Offer state",
+      "offer-still-placed-msg": "Offer still placed",
+      "offer-deleted-msg": "Offer deleted or matched",
+      "offer-direction-lbl": "Offer direction",
+      "offer-buy-asset-msg": "Buy {{asset}}",
+      "offer-sell-asset-msg": "Sell {{asset}}"
     },
 
     "dashboard": {

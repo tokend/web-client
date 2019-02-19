@@ -29,7 +29,7 @@ export default Object.assign(
       dashboard: true,
       fees: true,
       trade: true,
-      operations: true,
+      movements: true,
       issuance: true,
       assets: true,
       requests: true,

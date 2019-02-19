@@ -1,8 +1,5 @@
 import { DateUtil } from '@/js/utils'
-import {
-  OP_TYPES,
-  REQUEST_TYPES,
-} from '@tokend/js-sdk'
+import { REQUEST_TYPES } from '@tokend/js-sdk'
 
 import { RequestRecord } from './request-record'
 import { AssetCreateRequestRecord } from './requests/asset-create.record'
@@ -16,32 +13,7 @@ import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
 
-import { OpRecord } from './op-record'
-import { IssuanceRecord } from './operations/issuance.record'
-import { WithdrawRecord } from './operations/withdraw.record'
-import { PaymentRecord } from './operations/payment.record'
-import { MatchRecord } from './operations/match.record'
-
 export class RecordWrapper {
-  static operation (record, details) {
-    switch (record.typeI) {
-      case OP_TYPES.payment:
-        return new PaymentRecord(record, details)
-      case OP_TYPES.createIssuanceRequest:
-        return new IssuanceRecord(record, details)
-      case OP_TYPES.createWithdrawalRequest:
-        return new WithdrawRecord(record, details)
-      case OP_TYPES.manageOffer:
-        return new MatchRecord(record, details)
-      case OP_TYPES.checkSaleState:
-        return new MatchRecord(record, details)
-      case OP_TYPES.paymentV2:
-        return new PaymentRecord(record, details)
-      default:
-        return new OpRecord(record, details)
-    }
-  }
-
   static request (record, details) {
     switch (record.details.requestTypeI) {
       case REQUEST_TYPES.assetCreate:
