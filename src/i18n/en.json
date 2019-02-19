@@ -106,20 +106,6 @@
       "account-blocked": "Your account is blocked"
     },
 
-    "operation-names": {
-      "issuance": "Tokens received",
-      "withdrawal": "Withdrawal",
-      "transfer": "Transfer",
-      "order-match": "Order match",
-      "investment": "Investment"
-    },
-
-    "operation-states": {
-      "success": "Completed",
-      "pending": "Pending",
-      "failed": "Failed"
-    },
-
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
@@ -473,16 +459,6 @@
       "destination-amount-lbl": "Destination amount",
       "date-lbl": "Date",
       "counterparty-lbl": "Counterparty"
-    },
-
-    "op-list": {
-      "head": {
-        "date": "Date",
-        "tx-type": "Operation type",
-        "amount": "Amount",
-        "counterparty": "Counterparty",
-        "status": "Status"
-      }
     },
 
     "movements-history": {
