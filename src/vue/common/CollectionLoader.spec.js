@@ -147,7 +147,9 @@ describe('CollectionLoader component test', () => {
         firstPageLoader,
       },
     })
+
     wrapper.setData({ isCollectionFetched: true })
+    await localVue.nextTick()
 
     expect(wrapper.contains('button')).to.be.false
   })

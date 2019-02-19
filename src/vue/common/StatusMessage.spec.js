@@ -10,7 +10,7 @@ const localVue = createLocalVue()
 localVue.filter('globalize', globalize)
 
 describe('StatusMessage component test', () => {
-  describe('shows correctly styled depending on event type', () => {
+  describe('is being applied correct styles depending on event type', () => {
     const expectedResults = {
       [Bus.eventList.warning]: 'status-message--warning',
       [Bus.eventList.success]: 'status-message--success',
@@ -19,11 +19,13 @@ describe('StatusMessage component test', () => {
     }
 
     for (const [eventName, className] of Object.entries(expectedResults)) {
-      it(`${eventName} event`, () => {
+      it(`${eventName} event`, async () => {
         const wrapper = mount(StatusMessage, { localVue })
-        Bus.emit(eventName)
-        const element = wrapper.find('.status-message')
 
+        Bus.emit(eventName)
+        await localVue.nextTick()
+
+        const element = wrapper.find('.status-message')
         expect(element.classes(className)).to.be.true
       })
     }
@@ -53,9 +55,10 @@ describe('StatusMessage component test', () => {
     }
 
     for (const [eventName, label] of Object.entries(expectedResults)) {
-      it(`${eventName} event`, () => {
+      it(`${eventName} event`, async () => {
         const wrapper = mount(StatusMessage, { localVue })
         Bus.emit(eventName)
+        await localVue.nextTick()
         const button = wrapper.find('.status-message__btn')
 
         expect(button.text()).to.equal(label)
