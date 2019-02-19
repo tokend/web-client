@@ -12,6 +12,7 @@ const actions = {
 
 const getters = {
   accountId: 'accountId',
+  balances: 'balances',
   movements: 'movements',
   getBalanceByAssetCode: 'getBalanceByAssetCode',
 }
