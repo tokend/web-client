@@ -1,96 +1,106 @@
 <template>
   <div class="op-history">
-    <top-bar v-if="!isLoadFailed">
-      <div
-        slot="main"
-        class="op-history__filters"
-      >
-        <span class="op-history__filters-prefix">
-          {{ 'op-pages.filters-prefix' | globalize }}
-        </span>
-        <select-field
-          v-if="isLoaded"
-          v-model="asset"
-          :values="assets"
-          key-as-value-text="nameAndCode"
-          class="app__select app__select--no-border"
-        />
-      </div>
-      <div
-        class="op-history__actions"
-        slot="extra"
-      >
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isWithdrawalDrawerShown = true"
+    <template v-if="isLoaded">
+      <top-bar>
+        <div
+          slot="main"
+          class="op-history__filters"
         >
-          <i class="mdi mdi-download op-history__btn-icon" />
-          {{ 'op-pages.withdrawal' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isDepositDrawerShown = true"
+          <span class="op-history__filters-prefix">
+            {{ 'op-pages.filters-prefix' | globalize }}
+          </span>
+          <select-field
+            v-if="isLoaded"
+            :disabled="!isOperationsLoaded"
+            v-model="asset"
+            :values="assets"
+            key-as-value-text="nameAndCode"
+            class="app__select app__select--no-border"
+          />
+        </div>
+        <div
+          class="op-history__actions"
+          slot="extra"
         >
-          <i class="mdi mdi-upload op-history__btn-icon" />
-          {{ 'op-pages.deposit' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isTransferDrawerShown = true"
-        >
-          <i
-            class="mdi mdi-send op-history__btn-icon
-            op-history__btn-icon--rotate" />
-          {{ 'op-pages.send' | globalize }}
-        </button>
-      </div>
-    </top-bar>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isWithdrawalDrawerShown = true"
+          >
+            <i class="mdi mdi-download op-history__btn-icon" />
+            {{ 'op-pages.withdrawal' | globalize }}
+          </button>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isDepositDrawerShown = true"
+          >
+            <i class="mdi mdi-upload op-history__btn-icon" />
+            {{ 'op-pages.deposit' | globalize }}
+          </button>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isTransferDrawerShown = true"
+          >
+            <i
+              class="mdi mdi-send op-history__btn-icon
+              op-history__btn-icon--rotate" />
+            {{ 'op-pages.send' | globalize }}
+          </button>
+        </div>
+      </top-bar>
 
-    <drawer :is-shown.sync="isWithdrawalDrawerShown">
-      <template slot="heading">
-        {{ 'withdrawal-form.withdrawal' | globalize }}
-      </template>
-      <withdrawal-form />
-    </drawer>
-
-    <drawer :is-shown.sync="isDepositDrawerShown">
-      <template slot="heading">
-        {{ 'deposit-form.deposit' | globalize }}
-      </template>
-      <deposit-form />
-    </drawer>
-
-    <drawer :is-shown.sync="isTransferDrawerShown">
-      <template slot="heading">
-        {{ 'transfer-form.form-heading' | globalize }}
-      </template>
-      <transfer-form />
-    </drawer>
-
-    <template v-if="!isLoadFailed">
-      <div
-        class="op-history__list"
-        v-if="isLoaded"
-      >
-        <template v-if="operations.length">
-          <op-list :list="operations" />
+      <drawer :is-shown.sync="isWithdrawalDrawerShown">
+        <template slot="heading">
+          {{ 'withdrawal-form.withdrawal' | globalize }}
         </template>
-        <template v-else>
-          <div class="op-history__no-transactions">
-            <i class="op-history__no-tx-icon mdi mdi-trending-up" />
-            <h2>{{ 'op-pages.no-operation-history' | globalize }}</h2>
-            <p>{{ 'op-pages.here-will-be-the-list' | globalize }}</p>
-          </div>
+        <withdrawal-form />
+      </drawer>
+
+      <drawer :is-shown.sync="isDepositDrawerShown">
+        <template slot="heading">
+          {{ 'deposit-form.deposit' | globalize }}
         </template>
-        <collection-loader
-          :first-page-loader="pageLoader"
-          @first-page-load="setFirstPageData"
-          @next-page-load="setNextPageData"
+        <deposit-form />
+      </drawer>
+
+      <drawer :is-shown.sync="isTransferDrawerShown">
+        <template slot="heading">
+          {{ 'transfer-form.form-heading' | globalize }}
+        </template>
+        <transfer-form />
+      </drawer>
+
+      <template v-if="operations.length">
+        <op-list
+          class="op-history__list"
+          :list="operations"
         />
-      </div>
+      </template>
+
+      <template v-else-if="isOperationsLoaded">
+        <no-data-message
+          icon-name="trending-up"
+          title-id="op-pages.no-operation-history"
+          message-id="op-pages.here-will-be-the-list"
+        />
+      </template>
+
+      <template v-else>
+        <loader message-id="op-pages.loading-msg" />
+      </template>
+
+      <collection-loader
+        v-show="operations.length"
+        :first-page-loader="pageLoader"
+        @first-page-load="setFirstPageData"
+        @next-page-load="setNextPageData"
+      />
+    </template>
+
+    <template v-else-if="!isLoadFailed">
+      <loader message-id="op-pages.loading-msg" />
     </template>
 
     <template v-else>
@@ -107,6 +117,8 @@
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import OpList from '@/vue/common/OpList'
 
 import SelectField from '@/vue/fields/SelectField'
@@ -134,6 +146,8 @@ export default {
     CollectionLoader,
     TopBar,
     Drawer,
+    Loader,
+    NoDataMessage,
     WithdrawalForm,
     DepositForm,
     TransferForm,
@@ -146,6 +160,7 @@ export default {
     operations: [],
     isLoaded: false,
     isLoadFailed: false,
+    isOperationsLoaded: false,
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
@@ -161,6 +176,8 @@ export default {
 
   watch: {
     'asset.code' () {
+      this.isOperationsLoaded = false
+      this.operations = []
       this.pageLoader = this.getPageLoader(this.accountId, {
         asset: this.asset.code,
       })
@@ -190,6 +207,7 @@ export default {
 
     setFirstPageData (data) {
       this.operations = this.parseOperations(data)
+      this.isOperationsLoaded = true
     },
 
     setNextPageData (data) {

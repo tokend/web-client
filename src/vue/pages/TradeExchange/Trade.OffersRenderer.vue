@@ -8,7 +8,7 @@
         {{ 'trade-offers.subtitle-bid' | globalize }}
       </template>
     </h3>
-    <template v-if="offersList.length">
+    <template v-if="offersList.length && !isLoading">
       <div
         class="app__table
               app__table--with-shadow
@@ -50,7 +50,7 @@
     </template>
     <template v-else>
       <no-data-message
-        :title-id="'trade-offers.no-data-title'"
+        title-id="trade-offers.no-data-title"
         :message-id="noDataMessage.messageId"
         :message-id-keys="noDataMessage.messageIdKeys"
       />

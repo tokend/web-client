@@ -8,7 +8,7 @@
         })
       }}
     </h2>
-    <template v-if="openOffers.length">
+    <template v-if="openOffers.length && !isLoading">
       <div class="app__table app__table--with-shadow">
         <table>
           <thead>
@@ -56,8 +56,9 @@
     </template>
     <template v-else>
       <no-data-message
-        :title-id="'trade-open-offers.no-data-title'"
-        :message-id="'trade-open-offers.no-data-message'"
+        icon-name="trending-up"
+        title-id="trade-open-offers.no-data-title"
+        message-id="trade-open-offers.no-data-message"
         :message-id-keys="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
