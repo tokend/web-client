@@ -23,6 +23,10 @@
 </template>
 
 <script>
+const EVENTS = {
+  closeDrawer: 'close-drawer',
+}
+
 /**
  * Drawer component serves as a wrapper for modal content.
  *
@@ -43,7 +47,7 @@ export default {
   methods: {
     closeSelf () {
       this.$emit('update:isShown', false)
-      this.$emit('close-drawer')
+      this.$emit(EVENTS.closeDrawer)
     },
   },
 }

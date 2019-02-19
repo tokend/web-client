@@ -50,8 +50,7 @@
       "close-lbl_warning": "OK",
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
-      "close-lbl_info": "Got it",
-      "idle-notification-message": "You have been logged out due to long inactivity!"
+      "close-lbl_info": "Got it"
     },
     "validation": {
       "failed": "Please fill out all the fields before continuing",
@@ -387,6 +386,10 @@
       "op_poll_not_started": "CreatePoll has not started yet",
       "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
       "op_vote_not_found": "Vote to remove cannot be found"
+    },
+    "idle": {
+      "form-heading": "Log out",
+      "notification-message": "You have been logged out due to long inactivity!"
     },
     "auth-pages": {
       "small-title": "Create, distribute and trade",
