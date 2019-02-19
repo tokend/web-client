@@ -89,7 +89,7 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
-import MovementsHistoryModule from '@modules/movement-history'
+import MovementsHistoryModule from '@modules/movements-history'
 
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'

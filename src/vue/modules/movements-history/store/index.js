@@ -66,7 +66,7 @@ export const getters = {
     .find(b => b.assetCode === assetCode),
 }
 
-export const movementHistoryModule = {
+export const movementsHistoryModule = {
   namespaced: true,
   state,
   getters,

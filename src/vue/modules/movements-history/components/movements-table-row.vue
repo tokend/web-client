@@ -86,7 +86,7 @@ import { CreateAMLAlertRequestOp } from '../wrappers/operation-details/create-am
 import { CheckSaleStateOp } from '../wrappers/operation-details/check-sale-state'
 import { CreateIssuanceRequestOp } from '../wrappers/operation-details/create-issuance-request'
 import { CreateWithdrawRequestOp } from '../wrappers/operation-details/create-withdrawal-request'
-import { ManageOfferOp } from '@/vue/modules/movement-history/wrappers/operation-details/manage-offer'
+import { ManageOfferOp } from '../wrappers/operation-details/manage-offer'
 import { PaymentOp } from '../wrappers/operation-details/payment'
 import { ReviewRequestOp } from '../wrappers/operation-details/review-request'
 

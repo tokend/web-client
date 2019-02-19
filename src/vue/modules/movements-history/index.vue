@@ -70,7 +70,7 @@ export default {
     isMovementsLoadFailed: false,
   }),
   computed: {
-    ...mapGetters('movement-history', {
+    ...mapGetters('movements-history', {
       balances: types.balances,
       movements: types.movements,
     }),
@@ -89,12 +89,12 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('movement-history', {
+    ...mapMutations('movements-history', {
       setMovements: types.SET_MOVEMENTS,
       setAccountId: types.SET_ACCOUNT_ID,
       concatMovements: types.CONCAT_MOVEMENTS,
     }),
-    ...mapActions('movement-history', {
+    ...mapActions('movements-history', {
       loadMovements: types.LOAD_MOVEMENTS,
       loadBalances: types.LOAD_BALANCES,
     }),

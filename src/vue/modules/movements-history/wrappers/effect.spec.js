@@ -2,7 +2,7 @@ import {
   MatchedEffect,
   BalanceChangedEffect,
   ParticularBalanceChangeEffect,
-} from '@/vue/modules/movement-history/wrappers/effect'
+} from './effect'
 
 describe('BalanceChangedEffect', () => {
   it('should properly parse the record', () => {

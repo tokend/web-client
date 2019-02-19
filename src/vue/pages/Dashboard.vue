@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import MovementsHistoryModule from '@modules/movement-history'
+import MovementsHistoryModule from '@modules/movements-history'
 
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
