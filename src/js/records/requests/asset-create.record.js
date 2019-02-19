@@ -105,10 +105,6 @@ export class AssetCreateRequestRecord extends RequestRecord {
     return !!(this.policy & ASSET_POLICIES.statsQuoteAsset)
   }
 
-  get isTwoStepWithdrawal () {
-    return !!(this.policy & ASSET_POLICIES.twoStepWithdrawal)
-  }
-
   get isTransferable () {
     return !!(this.policy & ASSET_POLICIES.transferable)
   }

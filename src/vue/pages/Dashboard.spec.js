@@ -129,36 +129,46 @@ describe('Dashboard component', () => {
     })
 
     describe('createIssuanceFormIsShown()', () => {
-      it('apply "true" value', () => {
+      it('apply "true" value', async () => {
         wrapper.vm.createIssuanceFormIsShown = true
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.true
       })
 
-      it('apply "false" value', () => {
+      it('apply "false" value', async () => {
         wrapper.vm.createIssuanceFormIsShown = false
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.false
       })
     })
 
     describe('transferFormIsShown()', () => {
-      it('apply "true" value', () => {
+      it('apply "true" value', async () => {
         wrapper.vm.transferFormIsShown = true
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.true
       })
 
-      it('apply "false" value', () => {
+      it('apply "false" value', async () => {
         wrapper.vm.transferFormIsShown = false
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.false
       })
     })
 
     describe('showDrawer()', () => {
-      it('apply "true" value', () => {
+      it('apply "true" value', async () => {
         wrapper.vm.showDrawer = true
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.createIssuanceFormIsShown)
           .to.equal(wrapper.vm.createIssuanceFormIsShown)
@@ -166,8 +176,10 @@ describe('Dashboard component', () => {
           .to.equal(wrapper.vm.transferFormIsShown)
       })
 
-      it('apply "false" value', () => {
+      it('apply "false" value', async () => {
         wrapper.vm.showDrawer = false
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.createIssuanceFormIsShown).to.be.false
         expect(wrapper.vm.transferFormIsShown).to.be.false
