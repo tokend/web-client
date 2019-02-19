@@ -36,10 +36,14 @@ export const actions = {
     }
 
     return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/history`, {
+      page: {
+        order: 'desc',
+      },
       filter: {
         account: getters[types.accountId],
         balance: balance.id,
       },
+      include: ['effect', 'operation.details'],
     })
   },
 
