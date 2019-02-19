@@ -3,15 +3,11 @@
     <tr class="movements-table-row__brief">
       <td
         class="movements-table-row__cell
-               movements-table-row__cell--direction">
-        <movement-direction-mark :movement="movement" />
-      </td>
-      <!--eslint-disable-->
-      <td
-        class="movements-table-row__cell
-               movements-table-row__cell--bold"
+               movements-table-row__cell--bold
+               movements-table-row__cell--iconed"
         :title="movement.effect | effectTypeTranslationId | globalize"
       >
+        <movement-direction-mark :movement="movement" />
         {{ movement.effect | effectTypeTranslationId | globalize }}
       </td>
       <!--eslint-enable-->
@@ -55,7 +51,7 @@
       v-if="isAttributesViewerShown"
       class="movements-table-row__attributes"
     >
-      <td colspan="6">
+      <td colspan="5">
         <div class="movements-table-row__attributes-viewer-wrp">
           <movement-attributes-viewer :movement="movement" />
         </div>
@@ -159,9 +155,24 @@ export default {
 
   &--bold {
     font-weight: 600;
+
+  }
+
+  &--iconed {
+    position: relative;
+    padding-left: $movements-table-cell-side-padding + 3rem;
+
+    i {
+      left: $movements-table-cell-side-padding + 1rem;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   &--direction {
+    padding-right: 0;
+    min-width: $movements-table-cell-width-direction;
     width: $movements-table-cell-width-direction;
   }
 

@@ -3,9 +3,6 @@
     <thead>
       <tr class="movements-table__head-row">
         <th
-          class="movements-table__head-cell
-                 movements-table__head-cell--direction" />
-        <th
           class="movements-table__head-cell"
           :title="'movements-table.head.type' | globalize"
         >
@@ -93,6 +90,8 @@ export default {
   width: $movements-table-cell-width;
 
   &--direction {
+    padding-right: 0;
+    min-width: $movements-table-cell-width-direction;
     width: $movements-table-cell-width-direction;
   }
 
