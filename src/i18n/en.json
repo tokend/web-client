@@ -387,7 +387,7 @@
       "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
       "op_vote_not_found": "Vote to remove cannot be found"
     },
-    "idle": {
+    "idle-message": {
       "form-heading": "Log out",
       "notification-message": "You have been logged out due to long inactivity!"
     },
