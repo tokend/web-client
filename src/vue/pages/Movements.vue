@@ -1,28 +1,29 @@
 <template>
   <div class="movements">
     <top-bar v-if="!isLoadFailed">
-      <div
-        slot="main"
-        class="movements__filters"
-      >
-        <span class="movements__filters-prefix">
-          {{ 'op-pages.filters-prefix' | globalize }}
-        </span>
-        <select-field
-          v-if="isLoaded"
-          v-model="asset"
-          :values="assets"
-          key-as-value-text="nameAndCode"
-          class="app__select app__select--no-border"
-        />
-      </div>
+      <template v-if="isLoaded && assets.length">
+        <div
+          slot="main"
+          class="movements__filters"
+        >
+          <span class="movements__filters-prefix">
+            {{ 'op-pages.filters-prefix' | globalize }}
+          </span>
+          <select-field
+            v-model="asset"
+            :values="assets"
+            key-as-value-text="nameAndCode"
+            class="app__select app__select--no-border"
+          />
+        </div>
+      </template>
       <div
         class="movements__actions"
         slot="extra"
       >
         <button
           v-ripple
-          class="app__button-raised"
+          class="app__button-raised movements__button-raised"
           @click="isWithdrawalDrawerShown = true"
         >
           <i class="mdi mdi-download movements__btn-icon" />
@@ -30,7 +31,7 @@
         </button>
         <button
           v-ripple
-          class="app__button-raised"
+          class="app__button-raised movements__button-raised"
           @click="isDepositDrawerShown = true"
         >
           <i class="mdi mdi-upload movements__btn-icon" />
@@ -38,12 +39,10 @@
         </button>
         <button
           v-ripple
-          class="app__button-raised"
+          class="app__button-raised movements__button-raised"
           @click="isTransferDrawerShown = true"
         >
-          <i
-            class="mdi mdi-send movements__btn-icon
-            movements__btn-icon--rotate" />
+          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
           {{ 'op-pages.send' | globalize }}
         </button>
       </div>
@@ -76,12 +75,20 @@
       :wallet="wallet"
       :config="config"
     />
+
+    <no-data-message
+      v-else
+      icon-name="trending-up"
+      title-id="op-pages.no-data-title"
+      message-id="op-pages.no-data-msg"
+    />
   </div>
 </template>
 
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
 
@@ -105,6 +112,7 @@ export default {
     SelectField,
     TopBar,
     Drawer,
+    NoDataMessage,
     WithdrawalForm,
     DepositForm,
     TransferForm,
@@ -192,13 +200,16 @@ export default {
   }
 }
 
+.movements__button-raised.app__button-raised {
+  line-height: 1;
+}
+
 .movements__btn-icon {
-  display: flex;
   font-size: 1.8rem;
   margin-right: 0.5rem;
 
-  &--rotate {
-    transform: rotate(-45deg);
+  &.mdi-rotate-315 {
+    transform: translateY(-0.2rem);
   }
 }
 </style>
