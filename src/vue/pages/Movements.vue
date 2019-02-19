@@ -80,10 +80,8 @@
 </template>
 
 <script>
-import SelectField from '@/vue/fields/SelectField'
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import OpList from '@/vue/common/OpList'
 
 import SelectField from '@/vue/fields/SelectField'
 
