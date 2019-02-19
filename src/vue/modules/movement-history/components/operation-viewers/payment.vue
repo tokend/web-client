@@ -52,43 +52,32 @@
     </tr>
     <tr class="attributes-viewer__table-row">
       <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.from-account-id-lbl' | globalize }}
+        {{ 'movements-history.payment-sender-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ operationDetails.fromAccountId | cropAddress }}
-      </td>
-    </tr>
-    <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.to-account-id-lbl' | globalize }}
-      </td>
-      <td class="attributes-viewer__table-cell">
-        {{ operationDetails.toAccountId | cropAddress }}
+        <email-getter :account-id="operationDetails.fromAccountId" />
       </td>
     </tr>
     <tr class="attributes-viewer__table-row">
       <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.from-balance-id-lbl' | globalize }}
+        {{ 'movements-history.payment-recipient-lbl' | globalize }}
       </td>
       <td class="attributes-viewer__table-cell">
-        {{ operationDetails.fromBalanceId | cropAddress }}
-      </td>
-    </tr>
-    <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.to-balance-id-lbl' | globalize }}
-      </td>
-      <td class="attributes-viewer__table-cell">
-        {{ operationDetails.toBalanceId | cropAddress }}
+        <email-getter :account-id="operationDetails.toAccountId" />
       </td>
     </tr>
   </tbody>
 </template>
 
 <script>
+import EmailGetter from '@/vue/common/EmailGetter'
+
 import { PaymentOp } from '../../wrappers/operation-details/payment'
 
 export default {
+  components: {
+    EmailGetter,
+  },
   props: {
     operationDetails: {
       type: PaymentOp,
