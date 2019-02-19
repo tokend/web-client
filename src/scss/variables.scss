@@ -274,3 +274,9 @@ $col-sale-details-logo-bg: $_athensGray;
 $col-sale-details-progress-bar-bg: $_thinPurple;
 $col-sale-details-progress-bar-funded: $col-primary-lighten;
 // TODO: paste here variables that are ready to use during the refactor process
+
+// movement history colors:
+$col-incoming: $_green;
+$col-outgoing: $_lightRed;
+$col-locked: $_orangePeel;
+$col-unlocked: $_orangePeel;

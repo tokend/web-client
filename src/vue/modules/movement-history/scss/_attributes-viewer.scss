@@ -1,0 +1,24 @@
+@import '~@/scss/variables';
+
+.attributes-viewer {
+  width: 100%;
+  overflow: auto;
+  padding: 1.5rem 0 0;
+  border-top: 0.1rem solid $col-button-flat-disabled-txt;
+}
+
+.attributes-viewer__table {
+  max-width: 55rem;
+  width: 100%;
+}
+
+.attributes-viewer__table-cell {
+  max-width: 2rem;
+  padding: 0.7rem 1.5rem 0.7rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  &:first-of-type {
+    color: $col-table-head-text;
+  }
+}
