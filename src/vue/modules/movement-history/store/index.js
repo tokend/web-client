@@ -67,6 +67,7 @@ export const getters = {
 }
 
 export const movementHistoryModule = {
+  namespaced: true,
   state,
   getters,
   actions,
