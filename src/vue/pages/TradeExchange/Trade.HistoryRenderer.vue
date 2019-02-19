@@ -3,7 +3,7 @@
     <h2 class="app__table-title">
       {{ 'trade-history.title' | globalize }}
     </h2>
-    <template v-if="tradeHistory.length">
+    <template v-if="tradeHistory.length && !isLoading">
       <div class="app__table app__table--with-shadow">
         <table>
           <thead>

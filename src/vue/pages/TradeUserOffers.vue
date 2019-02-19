@@ -1,10 +1,9 @@
 <template>
   <div class="trade-user-offers">
-    <trade-top-bar @reload-trade-data="loadOffersHistory" />
-
     <trade-open-offers
+      class="trade-user-offers__open-orders"
       :asset-pair="assetPair"
-      :is-loading="isopenOffersLoading"
+      :is-loading="isOpenOffersLoading"
       :open-offers="openOffers"
     />
   </div>
@@ -12,7 +11,6 @@
 
 <script>
 import TradeOpenOffers from '@/vue/pages/TradeUserOffers/Trade.OpenOffers'
-import TradeTopBar from '@/vue/common/TradeTopBar'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { Sdk } from '@/sdk'
@@ -23,11 +21,13 @@ export default {
   name: 'trade-user-offers',
   components: {
     TradeOpenOffers,
-    TradeTopBar,
+  },
+  props: {
+    isLoading: { type: Boolean, default: false },
   },
   data: () => ({
     openOffers: [],
-    isopenOffersLoading: false,
+    isOpenOffersLoading: false,
   }),
   computed: {
     ...mapGetters([
@@ -50,6 +50,10 @@ export default {
         }
       },
     },
+    isLoading: async function () {
+      await this.loadOffersHistory()
+      this.$emit('update:isLoading', false)
+    },
   },
   async created () {
     this.setSelectedAssets(this.assetPair)
@@ -63,7 +67,7 @@ export default {
       this.assetPair.quote = quote
     },
     async loadOffersHistory () {
-      this.isopenOffersLoading = true
+      this.isOpenOffersLoading = true
       try {
         const response = await Sdk.horizon.account.getOffers(
           this.accountId,
@@ -76,14 +80,16 @@ export default {
         )
         this.openOffers = response.data
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
-      this.isopenOffersLoading = false
+      this.isOpenOffersLoading = false
     },
   },
 }
 </script>
 
 <style lang="scss">
-
+.trade-user-offers__open-orders {
+  margin-top: 4.8rem;
+}
 </style>

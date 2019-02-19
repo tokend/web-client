@@ -8,7 +8,7 @@
         {{ 'trade-offers.subtitle-bid' | globalize }}
       </template>
     </h3>
-    <template v-if="offersList.length">
+    <template v-if="offersList.length && !isLoading">
       <div
         class="app__table
               app__table--with-shadow

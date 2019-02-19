@@ -145,7 +145,8 @@
             @click.native="closeSidebar"
             :to="vueRoutes.requests"
             tag="a"
-            v-if="config.featureFlags.requests"
+            v-if="config.featureFlags.requests &&
+              accountTypeI === ACCOUNT_TYPES.syndicate"
           >
             <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
@@ -184,7 +185,12 @@
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+
 import { vueRoutes } from '@/vue-router/routes'
+
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 import config from '@/config'
 
@@ -200,7 +206,14 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
+    ACCOUNT_TYPES,
   }),
+
+  computed: {
+    ...mapGetters({
+      accountTypeI: vuexTypes.accountTypeI,
+    }),
+  },
 
   methods: {
     openSidebar () {
