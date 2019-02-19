@@ -211,21 +211,6 @@ describe('AssetCreateRequestRecord', () => {
       expect(record.isStatsQuoteAsset).to.equal(false)
     })
 
-    it('isTwoStepWithdrawal', () => {
-      let rawJSON = setPolicies(
-        assetCreateRecordJSON,
-        [ASSET_POLICIES.twoStepWithdrawal]
-      )
-      let record = getRecord(rawJSON)
-
-      expect(record.isTwoStepWithdrawal).to.equal(true)
-
-      rawJSON = setPolicies(assetCreateRecordJSON, [])
-      record = getRecord(rawJSON)
-
-      expect(record.isTwoStepWithdrawal).to.equal(false)
-    })
-
     it('isTransferable', () => {
       let rawJSON = setPolicies(
         assetCreateRecordJSON,
