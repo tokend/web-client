@@ -24,6 +24,7 @@ $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
 $_gray: #e2e3e3;
+$_silverChalice: #aeaeae;
 $_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
 $_thinBlue: #f6f8fb;
@@ -237,6 +238,10 @@ $col-request-rejected: $_lightRed;
 // asset logo
 $col-asset-logo-background: $_white;
 $col-asset-logo-text: $col-primary;
+
+// asset logo
+$col-asset-logo-dark-background: $_silverChalice;
+$col-asset-logo-dark-text: $_white;
 
 // terms colors
 $col-terms-title: $col-primary;
