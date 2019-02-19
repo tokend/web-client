@@ -70,41 +70,17 @@
       <transfer-form />
     </drawer>
 
-    <template v-if="!isLoadFailed">
-      <div
-        class="op-history__list"
-        v-if="isLoaded"
-      >
-        <template v-if="operations.length">
-          <op-list :list="operations" />
-        </template>
-        <template v-else>
-          <div class="op-history__no-transactions">
-            <i class="op-history__no-tx-icon mdi mdi-trending-up" />
-            <h2>{{ 'op-pages.no-operation-history' | globalize }}</h2>
-            <p>{{ 'op-pages.here-will-be-the-list' | globalize }}</p>
-          </div>
-        </template>
-        <collection-loader
-          :first-page-loader="pageLoader"
-          @first-page-load="setFirstPageData"
-          @next-page-load="setNextPageData"
-        />
-      </div>
-    </template>
-
-    <template v-else>
-      <div class="op-history__error">
-        <i class="op-history__error-icon mdi mdi-comment-alert-outline" />
-        <h2>{{ 'op-pages.something-went-wrong' | globalize }}</h2>
-        <p>{{ 'op-pages.can-not-load-assets' | globalize }}</p>
-      </div>
-    </template>
+    <movements-history-module
+      v-if="asset.code"
+      :asset-code="asset.code"
+      :wallet="wallet"
+      :config="config"
+    />
   </div>
 </template>
 
 <script>
-import CollectionLoader from '@/vue/common/CollectionLoader'
+import SelectField from '@/vue/fields/SelectField'
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import OpList from '@/vue/common/OpList'
@@ -115,29 +91,26 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
+import MovementsHistoryModule from '@modules/movement-history'
+
 import { Sdk } from '@/sdk'
-
-import { RecordWrapper } from '@/js/records'
-import { MatchRecord } from '@/js/records/operations/match.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
-
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+
+import config from '../../config'
 
 export default {
-  name: 'op-history',
-
+  name: 'operations-page',
   components: {
     SelectField,
-    CollectionLoader,
     TopBar,
     Drawer,
     WithdrawalForm,
     DepositForm,
     TransferForm,
-    OpList,
+    MovementsHistoryModule,
   },
 
   data: _ => ({
@@ -149,22 +122,18 @@ export default {
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
-    pageLoader: () => { },
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
   }),
 
   computed: {
-    ...mapGetters({
-      account: vuexTypes.account,
-      accountId: vuexTypes.accountId,
-    }),
-  },
-
-  watch: {
-    'asset.code' () {
-      this.pageLoader = this.getPageLoader(this.accountId, {
-        asset: this.asset.code,
-      })
-    },
+    ...mapGetters([
+      vuexTypes.wallet,
+      vuexTypes.account,
+      vuexTypes.accountBalances,
+      vuexTypes.accountId,
+    ]),
   },
 
   async created () {
@@ -182,53 +151,10 @@ export default {
       loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
 
-    getPageLoader (accountId, filter) {
-      return function () {
-        return Sdk.horizon.account.getPayments(accountId, filter)
-      }
-    },
-
-    setFirstPageData (data) {
-      this.operations = this.parseOperations(data)
-    },
-
-    setNextPageData (data) {
-      this.operations = this.operations.concat(this.parseOperations(data))
-    },
-
-    parseOperations (operations) {
-      return operations.map((operation) => {
-        return RecordWrapper.operation(operation, {
-          accountId: this.accountId,
-          asset: this.asset.code,
-          balanceId: this.asset.balance.id,
-        })
-      }).reduce((list, item) => {
-        if (item instanceof MatchRecord) {
-          item.effects.forEach(tx => {
-            list.push(Object.assign(item, tx))
-          })
-        } else {
-          list.push(item)
-        }
-
-        return list
-      }, [])
-    },
-
     async initAssetSelector () {
       await this.loadAssets()
       if (this.assets.length) {
         this.asset = this.assets[0]
-      }
-    },
-
-    async reinitAssetSelector () {
-      await this.loadAssets()
-      if (this.assets.length) {
-        const updatedAsset = this.assets
-          .find(item => item.code === this.asset.code)
-        this.asset = updatedAsset || this.assets[0]
       }
     },
 
