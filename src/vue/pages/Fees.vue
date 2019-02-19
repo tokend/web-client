@@ -4,18 +4,20 @@
       <top-bar>
         <template slot="main">
           <div class="fees__filters">
-            <div class="fees__filter">
-              <span class="fees__filters-prefix">
-                {{ 'fee-page.asset-filter-prefix' | globalize }}
-              </span>
-              <select-field
-                v-model="filters.asset"
-                :values="assets"
-                :disabled="!isFeesLoaded"
-                key-as-value-text="nameAndCode"
-                class="fees__assets-select app__select app__select--no-border"
-              />
-            </div>
+            <template v-if="assets.length">
+              <div class="fees__filter">
+                <span class="fees__filters-prefix">
+                  {{ 'fee-page.asset-filter-prefix' | globalize }}
+                </span>
+                <select-field
+                  v-model="filters.asset"
+                  :values="assets"
+                  :disabled="!isFeesLoaded"
+                  key-as-value-text="nameAndCode"
+                  class="fees__assets-select app__select app__select--no-border"
+                />
+              </div>
+            </template>
 
             <div class="fees__filter">
               <span class="fees__filters-prefix">

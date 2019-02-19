@@ -81,7 +81,7 @@
       "field-error_minDate": "Date should be after {{ minDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
-      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. Is available: {{available, number}}",
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. You have {{available, number}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
       "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
@@ -298,12 +298,6 @@
       "fund-details": "Fund details"
     },
 
-    "pages-subnames": {
-      "exchange-tokens": "Exchange tokens",
-      "explore-limits": "Explore limits",
-      "user-orders": "Orders owned by you"
-    },
-
     "limits": {
       "explore-limits": "Explore limits",
       "limits-form-heading": "Change limits",
@@ -435,7 +429,9 @@
       "loading-msg": "Loading",
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
-      "send": "Send"
+      "send": "Send",
+      "no-data-title": "No balance movements yet",
+      "no-data-msg": "Here will be your balance movements history"
     },
 
     "op-details": {

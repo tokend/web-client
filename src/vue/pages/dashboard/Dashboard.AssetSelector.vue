@@ -60,8 +60,8 @@
       <template v-if="!currentAsset">
         <no-data-message
           icon-name="toll"
-          :title-id="'tx-history.no-assets-in-your-wallet'"
-          :message-id="'tx-history.here-will-be-the-tokens'"
+          :title-id="'dashboard.no-assets-in-your-wallet'"
+          :message-id="'dashboard.here-will-be-the-tokens'"
         />
       </template>
     </template>

@@ -155,12 +155,12 @@ export default {
       vuexTypes.accountBalances,
     ]),
     baseAssetBalance () {
-      return this.accountBalances
-        .find(i => i.asset === this.assetPair.base).balance
+      return (this.accountBalances
+        .find(i => i.asset === this.assetPair.base) || {}).balance
     },
     quoteAssetBalance () {
-      return this.accountBalances
-        .find(i => i.asset === this.assetPair.quote).balance
+      return (this.accountBalances
+        .find(i => i.asset === this.assetPair.quote) || {}).balance
     },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)

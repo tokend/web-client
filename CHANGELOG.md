@@ -23,7 +23,6 @@ for further information about branching and tagging conventions.
 - `Requests` menu item is shown only for syndicate users
 - Use sdk version 1.0.0-x.8
 
-
 ### Removed
 - Outdated license file
 
@@ -34,6 +33,8 @@ for further information about branching and tagging conventions.
 - Parsing operations on dashboard page
 - Balances update after creating/updating your trade order
 - Using `NoDataMessage` on operations page
+- Auto login after recovery seed screen of sign-up
+- Fixed many minor markup issues when no logged-in user have no balances at all
 
 ## [1.0.0-rc.0] - 2019-02-18
 

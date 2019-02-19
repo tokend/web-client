@@ -1,12 +1,12 @@
 <template>
   <img
     v-if="logoUrl"
-    class="asset-logo asset-logo__image"
+    class="asset-logo-dark asset-logo-dark__image"
     :src="logoUrl"
   >
   <p
     v-else
-    class="asset-logo asset-logo__code-abbr"
+    class="asset-logo-dark asset-logo-dark__code-abbr"
   >
     {{ assetCode | abbreviate }}
   </p>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'asset-logo',
+  name: 'asset-logo-dark',
   props: {
     logoUrl: { type: String, required: true },
     assetCode: { type: String, required: true },
@@ -25,23 +25,23 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.asset-logo {
+.asset-logo-dark {
   width: 5.3rem;
   height: 5.3rem;
   border-radius: 50%;
 }
 
-.asset-logo__image {
+.asset-logo-dark__image {
   display: block;
 }
 
-.asset-logo__code-abbr {
+.asset-logo-dark__code-abbr {
   font-size: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $col-asset-logo-background;
-  color: $col-asset-logo-text;
+  background: $col-asset-logo-dark-background;
+  color: $col-asset-logo-dark-text;
   line-height: 1;
 }
 </style>

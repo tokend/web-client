@@ -40,7 +40,7 @@
             {{ asset.code }}
           </p>
           <p class="asset-card__name">
-            {{ asset.name }}
+            {{ asset.name || asset.code }}
           </p>
           <p
             v-if="asset.balance.value"
