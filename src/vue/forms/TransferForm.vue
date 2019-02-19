@@ -11,7 +11,7 @@
         <router-link
           to="/tokens"
           tag="button"
-          class="app__button-raised">
+          class="app__button-raised transfer-form__discover-asset-btn">
           {{ 'transfer-form.discover-assets-btn' | globalize }}
         </router-link>
       </template>
@@ -534,5 +534,9 @@ export default {
 
 .transfer__fee-type {
   color: $col-details-label;
+}
+
+.transfer-form__discover-asset-btn {
+  margin-top: 2.5rem;
 }
 </style>
