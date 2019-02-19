@@ -1,7 +1,11 @@
 <template>
   <div class="info-widget">
     <template v-if="transactions.length">
-      <op-list :list="transactions" />
+      <movements-history-module
+        :asset-code="currentAsset"
+        :config="config"
+        :wallet="wallet"
+      />
     </template>
     <template v-else>
       <no-data-message
@@ -21,18 +25,18 @@ import { Sdk } from '@/sdk'
 import config from '@/config'
 
 import { TX_STATES } from '@/js/const/transaction-statuses.const'
-
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import { Sdk } from '@/sdk'
 import { RecordWrapper } from '@/js/records'
 import { MatchRecord } from '@/js/records/operations/match.record'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
+import MovementsHistoryModule from '@modules/movement-history'
 
 export default {
   name: 'info-widget',
   components: {
+    MovementsHistoryModule,
     NoDataMessage,
-    OpList,
   },
   props: {
     currentAsset: { type: String, required: true },
@@ -40,16 +44,18 @@ export default {
   data: () => ({
     transactionsToShow: 10,
     transactionsOrder: 'desc',
-    config,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
     TX_STATES,
     index: -1,
     transactions: [],
   }),
   computed: {
-    ...mapGetters({
-      balances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
-    }),
+    ...mapGetters([
+      vuexTypes.accountId,
+      vuexTypes.wallet,
+    ]),
   },
   watch: {
     currentAsset () {
