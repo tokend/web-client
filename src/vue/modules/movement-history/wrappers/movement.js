@@ -54,21 +54,69 @@ const EFFECT_TYPES = Object.freeze({
  */
 export class Movement {
   constructor (record) {
+    this.id = record.id
     this.balanceId = record.balance.id
     this.assetCode = record.asset.id
 
-    if (record.operation && record.operation.details) {
-      this.operationDetails = Movement.parseOperationDetails(
-        record.operation.details
-      )
+    if (record.operation) {
+      this.appliedAt = record.operation.appliedAt
+      this.operationDetails = Movement.parseOperationDetails(record.operation)
     }
 
     if (record.effect) {
-      this.effect = Movement.parseEffect(record.effect)
+      this._effect = Movement.parseEffect(record.effect)
     }
   }
 
-  static parseOperationDetails (details) {
+  get effect () {
+    if (this._effect instanceof MatchedEffect) {
+      if (this.isIncoming) {
+        return this._effect.funded
+      }
+
+      if (this.isOutgoing) {
+        return this._effect.charged
+      }
+
+      throw new Error('Unexpected effect')
+    }
+
+    return this._effect
+  }
+
+  get isIncoming () {
+    return (
+      this._effect instanceof FundedEffect ||
+      this._effect instanceof IssuedEffect ||
+      (
+        this._effect instanceof MatchedEffect &&
+        this._effect.funded.assetCode === this.assetCode
+      )
+    )
+  }
+
+  get isOutgoing () {
+    return (
+      this._effect instanceof ChargedEffect ||
+      this._effect instanceof WithdrawnEffect ||
+      this._effect instanceof ChargedFromLockedEffect ||
+      (
+        this._effect instanceof MatchedEffect &&
+        this._effect.charged.assetCode === this.assetCode
+      )
+    )
+  }
+
+  get isLocked () {
+    return this._effect instanceof LockedEffect
+  }
+
+  get isUnlocked () {
+    return this._effect instanceof UnlockedEffect
+  }
+
+  static parseOperationDetails (operation) {
+    const details = operation.details
     switch (details.type) {
       case OPERATION_DETAILS_TYPES.payment:
         return new PaymentOp(details)
