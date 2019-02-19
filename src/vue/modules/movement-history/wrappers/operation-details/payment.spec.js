@@ -41,7 +41,7 @@ describe('PaymentOp', () => {
 
     expect(result.sourceFixedFee).to.equal('1.001200')
     expect(result.sourceCalculatedPercentFee).to.equal('0.201000')
-    expect(result.destinationFee).to.equal('1.001200')
+    expect(result.destinationFixedFee).to.equal('1.001200')
     expect(result.destinationCalculatedPercentFee).to.equal('0.201000')
     expect(result.sourcePayForDestination).to.equal(true)
     expect(result.subject).to.equal('Thanks for the help!')

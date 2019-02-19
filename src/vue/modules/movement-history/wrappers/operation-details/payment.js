@@ -6,7 +6,7 @@ export class PaymentOp {
   constructor (record) {
     this.sourceFixedFee = record.sourceFee.fixed
     this.sourceCalculatedPercentFee = record.sourceFee.calculatedPercent
-    this.destinationFee = record.destinationFee.fixed
+    this.destinationFixedFee = record.destinationFee.fixed
     this.destinationCalculatedPercentFee = record.destinationFee
       .calculatedPercent
     this.sourcePayForDestination = record.sourcePayForDestination
