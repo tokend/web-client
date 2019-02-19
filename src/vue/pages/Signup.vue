@@ -63,7 +63,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import { vueRoutes } from '@/vue-router/routes'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
@@ -79,9 +79,16 @@ export default {
     email: null,
     vueRoutes,
   }),
+  computed: {
+    ...mapGetters({
+      storedWallet: vuexTypes.wallet,
+    }),
+  },
   methods: {
     ...mapActions({
       storeWallet: vuexTypes.STORE_WALLET,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKyc: vuexTypes.LOAD_KYC,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -102,6 +109,9 @@ export default {
           Sdk.sdk.useWallet(wallet)
           await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
+          await this.loadAccount(this.storedWallet.accountId)
+          await this.loadKyc()
+          this.$router.push(vueRoutes.app)
         } else {
           this.$router.push({
             ...vueRoutes.verify,
