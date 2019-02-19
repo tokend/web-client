@@ -1,7 +1,7 @@
 <template>
   <div class="asset-details">
     <div class="asset-details__header">
-      <asset-logo
+      <asset-logo-dark
         :asset-code="asset.code"
         :logo-url="asset.logoUrl(config.FILE_STORAGE)"
       />
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import AssetLogo from '@/vue/common/assets/AssetLogo'
+import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
 import config from '@/config'
 
@@ -116,7 +116,7 @@ const EVENTS = {
 export default {
   name: 'asset-details',
   components: {
-    AssetLogo,
+    AssetLogoDark,
   },
   props: {
     asset: { type: Object, required: true },
