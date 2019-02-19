@@ -1,11 +1,11 @@
 <template>
-  <div class="op-history">
+  <div class="movements">
     <top-bar v-if="!isLoadFailed">
       <div
         slot="main"
-        class="op-history__filters"
+        class="movements__filters"
       >
-        <span class="op-history__filters-prefix">
+        <span class="movements__filters-prefix">
           {{ 'op-pages.filters-prefix' | globalize }}
         </span>
         <select-field
@@ -17,7 +17,7 @@
         />
       </div>
       <div
-        class="op-history__actions"
+        class="movements__actions"
         slot="extra"
       >
         <button
@@ -25,7 +25,7 @@
           class="app__button-raised"
           @click="isWithdrawalDrawerShown = true"
         >
-          <i class="mdi mdi-download op-history__btn-icon" />
+          <i class="mdi mdi-download movements__btn-icon" />
           {{ 'op-pages.withdrawal' | globalize }}
         </button>
         <button
@@ -33,7 +33,7 @@
           class="app__button-raised"
           @click="isDepositDrawerShown = true"
         >
-          <i class="mdi mdi-upload op-history__btn-icon" />
+          <i class="mdi mdi-upload movements__btn-icon" />
           {{ 'op-pages.deposit' | globalize }}
         </button>
         <button
@@ -42,8 +42,8 @@
           @click="isTransferDrawerShown = true"
         >
           <i
-            class="mdi mdi-send op-history__btn-icon
-            op-history__btn-icon--rotate" />
+            class="mdi mdi-send movements__btn-icon
+            movements__btn-icon--rotate" />
           {{ 'op-pages.send' | globalize }}
         </button>
       </div>
@@ -102,7 +102,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import config from '../../config'
 
 export default {
-  name: 'operations-page',
+  name: 'movements-page',
   components: {
     SelectField,
     TopBar,
@@ -116,7 +116,6 @@ export default {
   data: _ => ({
     asset: {},
     assets: [],
-    operations: [],
     isLoaded: false,
     isLoadFailed: false,
     isWithdrawalDrawerShown: false,
@@ -173,17 +172,17 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.op-history__filters {
+.movements__filters {
   display: inline-flex;
   align-items: center;
 }
 
-.op-history__filters-prefix {
+.movements__filters-prefix {
   margin-right: 1.5rem;
   line-height: 1;
 }
 
-.op-history__actions {
+.movements__actions {
   display: flex;
   justify-content: space-between;
 
@@ -195,7 +194,7 @@ export default {
   }
 }
 
-.op-history__btn-icon {
+.movements__btn-icon {
   display: flex;
   font-size: 1.8rem;
   margin-right: 0.5rem;
@@ -203,71 +202,5 @@ export default {
   &--rotate {
     transform: rotate(-45deg);
   }
-}
-
-.op-history__list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-x: auto;
-}
-
-.op-history__table {
-  width: 100%;
-  table-layout: fixed;
-  border-spacing: 0 0.6rem;
-  border-color: transparent;
-
-  .op-history__td-btn {
-    text-align: right;
-    width: 6.7rem;
-  }
-
-  .op-history__counterparty {
-    width: 30rem;
-  }
-
-  .op-history__status {
-    width: 13rem;
-  }
-}
-
-.op-history__th {
-  padding: 0 1.5rem 1rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-align: left;
-  font-size: 1.4rem;
-  color: $col-text-secondary;
-  font-weight: normal;
-}
-
-.op-history__no-transactions {
-  padding: 0 1.6rem 3.2rem;
-  text-align: center;
-
-  p {
-    margin-top: 1rem;
-  }
-}
-
-.op-history__no-tx-icon {
-  margin-right: 1.6rem;
-  font-size: 6.4rem;
-}
-
-.op-history__error {
-  padding: 0 1.6rem 3.2rem;
-  text-align: center;
-  color: $col-error;
-  p {
-    margin-top: 1rem;
-  }
-}
-
-.op-history__error-icon {
-  margin-right: 1.6rem;
-  font-size: 6.4rem;
 }
 </style>

@@ -115,10 +115,10 @@ export const router = new Router({
         },
         {
           path: '/operations',
-          name: vueRoutes.operations.name,
-          featureFlag: config.featureFlags.operations,
-          meta: { pageNameTranslationId: 'pages-names.operations' },
-          component: resolve => require(['@/vue/pages/Operations'], resolve),
+          name: vueRoutes.movements.name,
+          featureFlag: config.featureFlags.movements,
+          meta: { pageNameTranslationId: 'pages-names.movements' },
+          component: resolve => require(['@/vue/pages/Movements'], resolve),
         },
         {
           path: '/funds',

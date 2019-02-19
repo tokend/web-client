@@ -61,13 +61,13 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.operations"
+            :to="vueRoutes.movements"
             tag="a"
-            v-if="config.featureFlags.operations"
+            v-if="config.featureFlags.movements"
           >
             <i class="sidebar__link-icon mdi mdi-menu" />
             <span>
-              {{ 'pages-names.operations' | globalize }}
+              {{ 'pages-names.movements' | globalize }}
             </span>
           </router-link>
 
