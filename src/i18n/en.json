@@ -462,13 +462,6 @@
     },
 
     "movements-history": {
-      "table-head": {
-        "fee": "Fee",
-        "type": "Type",
-        "amount": "Amount",
-        "date": "Date",
-        "operation": "Operation"
-      },
       "effects": {
         "funded": "Funded",
         "locked": "Locked",
@@ -488,6 +481,11 @@
         "manage-offer": "Offer",
         "payment": "Payment"
       },
+      "fee-th": "Fee",
+      "type-th": "Type",
+      "amount-th": "Amount",
+      "date-th": "Date",
+      "operation-th": "Operation",
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",
       "no-movements-title": "No movements history",

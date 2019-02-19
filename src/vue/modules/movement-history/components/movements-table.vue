@@ -6,31 +6,31 @@
           class="movements-table__head-cell"
           :title="'movements-table.head.type' | globalize"
         >
-          {{ 'movements-history.table-head.type' | globalize }}
+          {{ 'movements-history.type-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
           :title="'movements-table.head.date' | globalize"
         >
-          {{ 'movements-history.table-head.operation' | globalize }}
+          {{ 'movements-history.operation-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
           :title="'movements-table.head.date' | globalize"
         >
-          {{ 'movements-history.table-head.date' | globalize }}
+          {{ 'movements-history.date-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
           :title="'movements-table.head.amount' | globalize"
         >
-          {{ 'movements-history.table-head.amount' | globalize }}
+          {{ 'movements-history.amount-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
           :title="'movements-table.head.fee' | globalize"
         >
-          {{ 'movements-history.table-head.fee' | globalize }}
+          {{ 'movements-history.fee-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell
