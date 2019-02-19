@@ -504,6 +504,10 @@
         "charged-from-locked": "Charged from locked",
         "matched": "Matched"
       },
+      "movements-load-failed-msg": "Failed to load account movements. Please try again later",
+      "loading-movements-msg": "Please wait while we loading your movements",
+      "no-movements-title": "No movements history",
+      "no-movements-msg": "Nothing happened with your balances yet",
       "amount-lbl": "Amount",
       "fixed-fee-lbl": "Fixed fee",
       "calculated-percent-fee-lbl": "Percent fee (calculated)",

@@ -1,11 +1,23 @@
 <template>
   <div class="movements-history">
     <template v-if="isInitialized && assetCode">
-      <div class="movements-history__list-wrp">
-        <movements-table :movements="movements" />
-      </div>
+      <template v-if="isMovementsLoaded">
+        <div class="movements-history__list-wrp">
+          <movements-table :movements="movements" />
+        </div>
+      </template>
+      <template v-else-if="isMovementsLoadFailed">
+        <p class="movements-history__error-msg">
+          {{ 'movements-history.movements-load-failed-msg' | globalize }}
+        </p>
+      </template>
+      <template v-else>
+        <load-spinner message-id="movements-history.loading-movements-msg" />
+      </template>
+
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
+          v-if="!isMovementsLoadFailed"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
           @next-page-load="concatMovements"
@@ -18,8 +30,10 @@
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import MovementsTable from './components/movements-table'
+import LoadSpinner from '@/vue/common/Loader'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 
 import { Wallet } from '@tokend/js-sdk'
@@ -28,6 +42,7 @@ import { initApi } from './_api'
 export default {
   name: 'movements-history-module',
   components: {
+    LoadSpinner,
     MovementsTable,
     CollectionLoader,
   },
@@ -51,6 +66,8 @@ export default {
   },
   data: _ => ({
     isInitialized: false,
+    isMovementsLoaded: false,
+    isMovementsLoadFailed: false,
   }),
   computed: {
     ...mapGetters('movement-history', {
@@ -58,9 +75,10 @@ export default {
       movements: types.movements,
     }),
     firstPageLoader () {
-      const assetCode = this.assetCode
+      const assetCode = this.assetCode // HACK: passing this.assetCode directly
+      // to function will lead to losing reactivity
 
-      return _ => this.loadMovements(assetCode)
+      return _ => this.loadMovementsFirstPage(assetCode)
     },
   },
   async created () {
@@ -80,6 +98,17 @@ export default {
       loadMovements: types.LOAD_MOVEMENTS,
       loadBalances: types.LOAD_BALANCES,
     }),
+    async loadMovementsFirstPage (assetCode) {
+      this.isLoaded = false
+      try {
+        const response = await this.loadMovements(assetCode)
+        this.isMovementsLoaded = true
+        return response
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+        this.isMovementsLoadFailed = true
+      }
+    },
   },
 }
 </script>
