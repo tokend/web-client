@@ -34,7 +34,7 @@
 import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
-import IdleMessage from '@/vue/common/idle/IdleMessage'
+import IdleMessage from '@/vue/common/IdleMessage'
 import WarningBanner from '@/vue/common/WarningBanner'
 
 import {

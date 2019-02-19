@@ -59,8 +59,7 @@
       "close-lbl_warning": "OK",
       "close-lbl_success": "OK",
       "close-lbl_error": "Close",
-      "close-lbl_info": "Got it",
-      "idle-notification-message": "You have been logged out due to long inactivity!"
+      "close-lbl_info": "Got it"
     },
 
     "validation": {
@@ -97,6 +96,11 @@
       "tfa-required": "2FA required",
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists"
+    },
+
+    "idle": {
+      "form-heading": "Log out",
+      "notification-message": "You have been logged out due to long inactivity!"
     },
 
     "operation-names": {

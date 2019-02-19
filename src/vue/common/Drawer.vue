@@ -22,6 +22,10 @@
 <script>
 import { KEY_CODES } from '@/js/const/key-codes.const'
 
+const EVENTS = {
+  closeDrawer: 'close-drawer',
+}
+
 /**
  * Drawer component serves as a wrapper for modal content.
  *
@@ -54,7 +58,7 @@ export default {
     },
     closeSelf () {
       this.$emit('update:isShown', false)
-      this.$emit('close-drawer')
+      this.$emit(EVENTS.closeDrawer)
     },
   },
 }
