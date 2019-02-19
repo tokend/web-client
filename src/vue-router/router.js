@@ -157,7 +157,6 @@ export const router = new Router({
           featureFlag: config.featureFlags.limits,
           meta: {
             pageNameTranslationId: 'pages-names.limits',
-            pageSubnameTranslationId: 'pages-subnames.explore-limits',
           },
           component: resolve => require(['@/vue/pages/Limits'], resolve),
         },
