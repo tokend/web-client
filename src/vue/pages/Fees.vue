@@ -11,6 +11,7 @@
               <select-field
                 v-model="filters.asset"
                 :values="assets"
+                :disabled="!isFeesLoaded"
                 key-as-value-text="nameAndCode"
                 class="fees__assets-select app__select app__select--no-border"
               />
@@ -23,6 +24,7 @@
               <select-field
                 :is-value-translatable="true"
                 v-model="filters.scope"
+                :disabled="!isFeesLoaded"
                 :values="Object.values(FEE_SCOPES)"
                 class="app__select app__select--no-border"
               />

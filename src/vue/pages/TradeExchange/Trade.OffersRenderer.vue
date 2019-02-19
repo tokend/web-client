@@ -50,7 +50,7 @@
     </template>
     <template v-else>
       <no-data-message
-        :title-id="'trade-offers.no-data-title'"
+        title-id="trade-offers.no-data-title"
         :message-id="noDataMessage.messageId"
         :message-id-keys="noDataMessage.messageIdKeys"
       />
