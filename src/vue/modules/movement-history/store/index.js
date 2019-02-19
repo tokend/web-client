@@ -20,10 +20,10 @@ export const mutations = {
     state.balances = balances
   },
   [types.SET_MOVEMENTS] (state, movements) {
-    state.history = movements
+    state.movements = movements
   },
-  [types.CONCAT_MOVEMENTS] (state, entries) {
-    state.history = state.history.concat(entries)
+  [types.CONCAT_MOVEMENTS] (state, movements) {
+    state.movements = state.movements.concat(movements)
   },
 }
 
