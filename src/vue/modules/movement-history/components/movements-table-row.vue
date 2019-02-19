@@ -82,13 +82,13 @@ import {
   ParticularBalanceChangeEffect,
 } from '../wrappers/effect'
 
-import { CreateAMLAlertRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/create-aml-alert-request'
-import { CheckSaleStateOp } from '@/vue/modules/movement-history/wrappers/operation-details/check-sale-state'
-import { CreateIssuanceRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/create-issuance-request'
-import { CreateWithdrawRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/create-withdrawal-request'
+import { CreateAMLAlertRequestOp } from '../wrappers/operation-details/create-aml-alert-request'
+import { CheckSaleStateOp } from '../wrappers/operation-details/check-sale-state'
+import { CreateIssuanceRequestOp } from '../wrappers/operation-details/create-issuance-request'
+import { CreateWithdrawRequestOp } from '../wrappers/operation-details/create-withdrawal-request'
 import { ManageOfferOp } from '@/vue/modules/movement-history/wrappers/operation-details/manage-offer'
-import { PaymentOp } from '@/vue/modules/movement-history/wrappers/operation-details/payment'
-import { ReviewRequestOp } from '@/vue/modules/movement-history/wrappers/operation-details/review-request'
+import { PaymentOp } from '../wrappers/operation-details/payment'
+import { ReviewRequestOp } from '../wrappers/operation-details/review-request'
 
 import MovementAttributesViewer from './movement-attributes-viewer'
 import MovementDirectionMark from './movement-direction-mark'
