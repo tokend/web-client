@@ -444,8 +444,6 @@
 
     "op-pages": {
       "filters-prefix": "Show:",
-      "no-operation-history": "No operation history",
-      "here-will-be-the-list": "Here will be the list of your operations",
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
       "loading-msg": "Loading",
