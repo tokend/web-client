@@ -18,6 +18,7 @@ export default {
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
       account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
   },
   methods: {

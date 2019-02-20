@@ -281,7 +281,7 @@ import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -325,7 +325,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isCodeShown: false,
-    accountType: ACCOUNT_TYPES.general,
+    accountRole: ACCOUNT_ROLES.general,
     DOCUMENT_TYPES,
     countries: [],
   }),
@@ -361,7 +361,7 @@ export default {
 
   async created () {
     try {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       await this.loadKyc()
       const { data } = await Sdk.horizon.public.getEnums()
       this.countries = data.countries

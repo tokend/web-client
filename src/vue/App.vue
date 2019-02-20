@@ -39,6 +39,7 @@ import {
   mapGetters,
 } from 'vuex'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -79,8 +80,11 @@ export default {
   methods: {
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
+      Api.init({ horizonURL: config.HORIZON_SERVER })
+
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
+        Api.useWallet(this[vuexTypes.wallet])
       }
     },
     detectIE () {

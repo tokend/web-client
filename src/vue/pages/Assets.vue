@@ -16,7 +16,7 @@
         </router-link>
       </template>
       <template
-        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
+        v-if="accountRoleId === ACCOUNT_ROLES.syndicate"
         slot="extra"
       >
         <button
@@ -43,7 +43,7 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -58,13 +58,14 @@ export default {
     AssetCreateForm,
   },
   data: _ => ({
-    ACCOUNT_TYPES,
+    ACCOUNT_ROLES,
     vueRoutes,
     isAssetDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      accountRoleId: vuexTypes.accountRoleId,
     }),
   },
 }

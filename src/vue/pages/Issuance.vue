@@ -10,7 +10,7 @@
       </template>
 
       <template
-        v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
+        v-if="accountRoleId === ACCOUNT_ROLES.syndicate"
         slot="extra"
       >
         <button
@@ -131,9 +131,11 @@ import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES, OP_TYPES } from '@tokend/js-sdk'
+import { OP_TYPES } from '@tokend/js-sdk'
 
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
+
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -157,13 +159,13 @@ export default {
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
     firstPageLoader: () => {},
-    ACCOUNT_TYPES,
+    ACCOUNT_ROLES,
   }),
 
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      accountTypeI: vuexTypes.accountTypeI,
+      accountRoleId: vuexTypes.accountRoleId,
     }),
   },
 

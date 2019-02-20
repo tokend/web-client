@@ -146,7 +146,7 @@
             :to="vueRoutes.requests"
             tag="a"
             v-if="config.featureFlags.requests &&
-              accountTypeI === ACCOUNT_TYPES.syndicate"
+              accountRoleId === ACCOUNT_ROLES.syndicate"
           >
             <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
@@ -185,7 +185,7 @@
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -206,12 +206,12 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
-    ACCOUNT_TYPES,
+    ACCOUNT_ROLES,
   }),
 
   computed: {
     ...mapGetters({
-      accountTypeI: vuexTypes.accountTypeI,
+      accountRoleId: vuexTypes.accountRoleId,
     }),
   },
 

@@ -34,7 +34,7 @@
       <router-link
         :to="vueRoutes.verification.general"
         class="account-type-selector__item"
-        :disabled="kycAccountType && kycAccountType !== ACCOUNT_TYPES.general"
+        :disabled="kycAccountRole && kycAccountRole !== ACCOUNT_ROLES.general"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
@@ -50,7 +50,7 @@
       <router-link
         :to="vueRoutes.verification.corporate"
         class="account-type-selector__item"
-        :disabled="kycAccountType && kycAccountType !== ACCOUNT_TYPES.syndicate"
+        :disabled="kycAccountRole && kycAccountRole !== ACCOUNT_ROLES.syndicate"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -77,7 +77,7 @@ import { store, vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request. It redirects
@@ -88,14 +88,14 @@ import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 // the guard when routing from the child's path to the parent's one.
 // Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
 function verificationGuard (to, from, next) {
-  const kycAccountType = store.getters[vuexTypes.kycAccountTypeToSet]
-  switch (kycAccountType) {
-    case ACCOUNT_TYPES.syndicate:
+  const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
+  switch (kycAccountRole) {
+    case ACCOUNT_ROLES.syndicate:
       to.name === vueRoutes.verification.corporate.name
         ? next()
         : next(vueRoutes.verification.corporate)
       break
-    case ACCOUNT_TYPES.general:
+    case ACCOUNT_ROLES.general:
       to.name === vueRoutes.verification.general.name
         ? next()
         : next(vueRoutes.verification.general)
@@ -111,13 +111,13 @@ export default {
   data: _ => ({
     vueRoutes,
     REQUEST_STATES_STR,
-    ACCOUNT_TYPES,
+    ACCOUNT_ROLES,
   }),
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
-      kycAccountType: vuexTypes.kycAccountTypeToSet,
+      kycAccountRole: vuexTypes.kycAccountRoleToSet,
     }),
   },
   beforeRouteEnter (to, from, next) {

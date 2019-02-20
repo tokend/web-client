@@ -62,6 +62,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 
@@ -111,7 +112,10 @@ export default {
           password: this.form.password,
         })
         const accountId = this[vuexTypes.wallet].accountId
+
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
+        Api.useWallet(this[vuexTypes.wallet])
+
         if (!await this.isUserExist(accountId)) {
           await Sdk.api.users.create(accountId)
         }
@@ -129,7 +133,7 @@ export default {
     },
     async isUserExist (accountId) {
       try {
-        await Sdk.api.users.get(accountId)
+        await Api.getWithSignature(`accounts/${accountId}`)
         return true
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
