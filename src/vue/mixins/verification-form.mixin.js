@@ -8,7 +8,6 @@ import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
-const KYC_LEVEL_TO_SET = 0
 const KYC_CREATION_REQUEST_ID = '0'
 
 export default {
@@ -34,13 +33,12 @@ export default {
       return data.id
     },
     createKycOperation (kycBlobId) {
-      return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
+      return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest({
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
-        accountToUpdateKYC: this.account.accountId,
-        accountTypeToSet: this.accountType,
-        kycLevelToSet: KYC_LEVEL_TO_SET,
+        destinationAccount: this.account.accountId,
+        accountRoleToSet: this.accountType,
         kycData: {
           blob_id: kycBlobId,
         },
