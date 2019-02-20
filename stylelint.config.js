@@ -64,7 +64,7 @@ module.exports = {
         'dpi': [/a-zA-Z0-9/],
       },
       /**
-       * allow to use 'px and 'dpi' in variables that has prefix 'media-'
+       * allow to use 'px' and 'dpi' in variables that has prefix 'media-'
        *
        * we need to use "." (dot) at the beginning of the regex to prevent
        * handle variables values because linter doesn't read '$' value in the
