@@ -4,7 +4,10 @@ module.exports = {
   // Default <stylelint-processor-html> sometimes shows wrong number of the line
   // that has an error, so we use this add-on
   processors: '@mapbox/stylelint-processor-arbitrary-tags',
-  plugins: ['stylelint-scss'],
+  plugins: [
+    'stylelint-scss',
+    'stylelint-declaration-strict-value',
+  ],
   // css also is a valid scss so we don't need to use both - scss is enough
   syntax: 'scss',
   rules: {
@@ -198,5 +201,25 @@ module.exports = {
       ignore: ['comments'],
     }],
     'no-eol-whitespace': [true, { severity: 'warning' }],
+    /**
+     * disallow to use defined properties without variables
+     */
+    'scale-unlimited/declaration-strict-value': [
+      [
+        '/color/',
+        'z-index',
+        'fill',
+        'stroke',
+      ],
+      {
+        ignoreFunctions: false,
+        ignoreKeywords: {
+          // '' means default, for all
+          '': ['currentColor', 'transparent'],
+          'fill': ['none'],
+          'stroke': ['none'],
+        },
+      },
+    ],
   },
 }
