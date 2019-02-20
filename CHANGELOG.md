@@ -14,6 +14,7 @@ for further information about branching and tagging conventions.
 - Passing creatorDetails instead of externalDetails param in the createIssuanceRequest
 - Passing creatorDetails instead of externalDetails param in the createWithdrawWithAutoConversion
 - Passing creatorDetails instead of details in the assetCreationRequest
+- Passing creatorDetails instead of details in the assetUpdateRequest
 
 ### Removed
 - Passing keyLevelToSet to CreateChangeRoleRequestBuilder.createChangeRoleRequest
