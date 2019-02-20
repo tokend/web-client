@@ -309,7 +309,7 @@ export default {
       return {
         balance: this.form.asset.balance.id,
         amount: this.form.amount,
-        externalDetails: { address: this.form.address },
+        creatorDetails: { address: this.form.address },
         destAsset: this.form.asset.code,
         expectedDestAssetAmount: this.form.amount,
         fee: {
