@@ -38,7 +38,7 @@ module.exports = {
 
     'at-rule-no-unknown': [true, {
       severity: 'warning',
-      ignore: ['mixin', 'include'],
+      ignoreAtRules: ['mixin', 'include'],
     }],
 
     'comment-no-empty': [true, { severity: 'warning' }],
@@ -47,13 +47,33 @@ module.exports = {
     'no-duplicate-selectors': [true, { severity: 'warning' }],
     'no-extra-semicolons': [true, { severity: 'warning' }],
 
-    'number-max-precision': ['6', { severity: 'warning' }],
+    'number-max-precision': [6, { severity: 'warning' }],
 
-    'time-min-milliseconds': ['100', { severity: 'warning' }],
+    'time-min-milliseconds': [100, { severity: 'warning' }],
 
     'unit-blacklist': [['px', 'cm', 'mm', 'pt', 'in', 'pc'], {
       severity: 'warning',
-      ignoreMediaFeatureNames: ['px', 'dpi'],
+      /**
+       * it's not working with '["px", "dpi"]' syntax as in example in the docs
+       * so we need to use this hack with regex.
+       *
+       * @link https://stylelint.io/user-guide/rules/unit-blacklist/#ignoremediafeaturenames--unit-property-regex-regex-
+       */
+      ignoreMediaFeatureNames: {
+        'px': [/a-zA-Z0-9/],
+        'dpi': [/a-zA-Z0-9/],
+      },
+      /**
+       * allow to use 'px and 'dpi' in variables that has prefix 'media-'
+       *
+       * we need to use "." (dot) at the beginning of the regex to prevent
+       * handle variables values because linter doesn't read '$' value in the
+       * "/^\$media-/"" regex, so we try to don't match the first character
+       */
+      ignoreProperties: {
+        'px': ['/^.media-/'],
+        'dpi': ['/^.media-/'],
+      },
     }],
 
     'shorthand-property-no-redundant-values': [true, { severity: 'warning' }],
@@ -65,9 +85,9 @@ module.exports = {
     'declaration-block-no-redundant-longhand-properties': [true, { severity: 'warning' }],
     'declaration-no-important': [true, { severity: 'warning' }],
 
-    'declaration-block-single-line-max-declarations': ['1', { severity: 'warning' }],
+    'declaration-block-single-line-max-declarations': [1, { severity: 'warning' }],
 
-    'selector-max-empty-lines': ['0', { severity: 'warning' }],
+    'selector-max-empty-lines': [0, { severity: 'warning' }],
 
     'at-rule-no-vendor-prefix': [true, { severity: 'warning' }],
 
@@ -84,7 +104,7 @@ module.exports = {
     'function-comma-newline-before': ['never-multi-line', { severity: 'warning' }],
     'function-comma-space-after': ['always', { severity: 'warning' }],
     'function-comma-space-before': ['never', { severity: 'warning' }],
-    'function-max-empty-lines': ['0', { severity: 'warning' }],
+    'function-max-empty-lines': [0, { severity: 'warning' }],
     'function-name-case': ['lower', { severity: 'warning' }],
     'function-parentheses-newline-inside': ['never-multi-line', { severity: 'warning' }],
     'function-parentheses-space-inside': ['never', { severity: 'warning' }],
@@ -104,7 +124,7 @@ module.exports = {
 
     'value-list-comma-space-after': ['always', { severity: 'warning' }],
     'value-list-comma-space-before': ['never', { severity: 'warning' }],
-    'value-list-max-empty-lines': ['0', { severity: 'warning' }],
+    'value-list-max-empty-lines': [0, { severity: 'warning' }],
 
     'property-case': ['lower', { severity: 'warning' }],
 
@@ -144,7 +164,7 @@ module.exports = {
       ignore: ['after-comment', 'first-nested']
     }],
 
-    'media-feature-colon-space-after': ['slways', { severity: 'warning' }],
+    'media-feature-colon-space-after': ['always', { severity: 'warning' }],
     'media-feature-colon-space-before': ['never', { severity: 'warning' }],
     'media-feature-name-case': ['lower', { severity: 'warning' }],
     'media-feature-parentheses-space-inside': ['never', { severity: 'warning' }],
@@ -160,23 +180,22 @@ module.exports = {
       ignore: ['after-comment', 'first-nested']
     }],
     'at-rule-name-case': ['lower', { severity: 'warning' }],
-    'at-rule-name-newline-after': ['never', { severity: 'warning' }],
     'at-rule-name-space-after': ['always', { severity: 'warning' }],
     'at-rule-semicolon-newline-after': ['always', { severity: 'warning' }],
     'at-rule-semicolon-space-before': ['never', { severity: 'warning' }],
 
     'comment-whitespace-inside': ['always', { severity: 'warning' }],
 
-    'indentation': ['2', {
+    'indentation': [2, {
       severity: 'warning',
       baseIndentLevel: 0,
-      ignore: ['param']
+      ignore: ['param'],
     }],
-    'max-empty-lines': ['1', {
+    'max-empty-lines': [1, {
       severity: 'warning',
-      ignore: ['comments']
+      ignore: ['comments'],
     }],
-    'max-line-length': ['80', {
+    'max-line-length': [80, {
       severity: 'warning',
       ignore: ['comments'],
     }],
