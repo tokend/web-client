@@ -11,8 +11,9 @@ for further information about branching and tagging conventions.
 
 ### Changed
 - Renamed CreateUpdateKYCRequestBuilder -> CreateChangeRoleRequestBuilder
-- Passing creatorDetails but not externalDetails param in the createIssuanceRequest
-- Passing creatorDetails but not externalDetails param in the createWithdrawWithAutoConversion
+- Passing creatorDetails instead of externalDetails param in the createIssuanceRequest
+- Passing creatorDetails instead of externalDetails param in the createWithdrawWithAutoConversion
+- Passing creatorDetails instead of details in the assetCreationRequest
 
 ### Removed
 - Passing keyLevelToSet to CreateChangeRoleRequestBuilder.createChangeRoleRequest
