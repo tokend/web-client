@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.0.0-rc.1] - 2019-02-20
 ### Added
 - `AssetPairRecord` for wrapping asset pairs
 - Ability to cancel your trade order
@@ -21,7 +21,7 @@ for further information about branching and tagging conventions.
 - Displaying base & quote amount on `MatchOpDetails`
 - Moved `TradeTopBar` to the root `Trade` component
 - `Requests` menu item is shown only for syndicate users
-- Use sdk version 1.0.0-x.8
+- Use sdk version 1.0.0-x.9
 
 ### Removed
 - Outdated license file
@@ -39,4 +39,5 @@ for further information about branching and tagging conventions.
 ## [1.0.0-rc.0] - 2019-02-18
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...HEAD
+[1.0.0-rc.1]: https://github.com/tokend/web-client/compare/1.0.0-rc.0...1.0.0-rc.1
 [1.0.0-rc.0]: https://github.com/tokend/web-client/releases/tag/1.0.0-rc.0
