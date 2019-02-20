@@ -35,7 +35,7 @@ export default {
     * isFormValid checks if your form (or a part of it) meets
     * the validation rules, established for its fields.
     *
-    * @param {string} formPart - the string with the form part name.
+    * @param {string} [formPart] - the string with the form part name.
     *                 Works also for nested parts, such as `form.part1`.
     *
     * @returns {boolean} True if the form (or its part) meets
@@ -67,7 +67,7 @@ export default {
     *
     * @param {string} field - the string with the field name. Works also for
      *                nested fields, such as `form.email`.
-    * @param {Object} options - the interpolation options object for
+    * @param {Object} [options] - the interpolation options object for
      *                translation.
     *
     * @returns {string} the human-readable error message if the

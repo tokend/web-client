@@ -20,6 +20,10 @@ for further information about branching and tagging conventions.
 ### Removed
 - Passing keyLevelToSet to CreateChangeRoleRequestBuilder.createChangeRoleRequest
 
+## [1.0.0-rc.2] - 2019-02-20
+### Added
+- Build version displaying
+
 ## [1.0.0-rc.1] - 2019-02-20
 ### Added
 - `AssetPairRecord` for wrapping asset pairs
@@ -51,6 +55,7 @@ for further information about branching and tagging conventions.
 
 ## [1.0.0-rc.0] - 2019-02-18
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.2...HEAD
+[1.0.0-rc.2]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/tokend/web-client/compare/1.0.0-rc.0...1.0.0-rc.1
 [1.0.0-rc.0]: https://github.com/tokend/web-client/releases/tag/1.0.0-rc.0

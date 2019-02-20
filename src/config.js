@@ -1,4 +1,5 @@
 import { base } from '@tokend/js-sdk'
+import packageJson from '../package.json'
 
 export default Object.assign(
   {
@@ -91,6 +92,12 @@ export default Object.assign(
      * Default asset signer for pre-issuance upload
      */
     NULL_ASSET_SIGNER: 'GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4',
+
+    /**
+     * Should be populated by DevOps team during the deployment
+     * The field being displayed on login screen.
+     */
+    BUILD_VERSION: 'dev: ' + packageJson.version,
   },
   process.env,
   document.ENV

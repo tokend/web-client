@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import log from 'loglevel'
 
 export class EventBus extends Vue {
   constructor () {
@@ -16,7 +17,7 @@ export class EventBus extends Vue {
     for (const [index, event] of backloggedEvents.entries()) {
       handlerFn(event.payload)
       this._backlog.splice(index, 1)
-      console.warn(`Event ${eventName} is backlogged. Handling...`)
+      log.debug(`Event ${eventName} is backlogged. Handling...`)
     }
 
     this.$on(eventName, handlerFn)
@@ -33,7 +34,7 @@ export class EventBus extends Vue {
         payload,
       })
 
-      console.warn(`Backlogging event: ${eventName}`)
+      log.debug(`Backlogging event: ${eventName}`)
       return
     }
 
