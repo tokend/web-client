@@ -535,7 +535,7 @@ export default {
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
         hardCap: this.form.saleInformation.hardCap,
-        details: {
+        creatorDetails: {
           name: this.form.saleInformation.name,
           short_description: this.form.shortBlurb.shortDescription,
           description: this.form.fullDescription.description,
