@@ -72,7 +72,7 @@
 
             <!-- eslint-disable max-len -->
             <td>
-              <template v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+              <template v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
                 {{ 'asset-request-details.asset-create-request-type' | globalize }}
               </template>
 
@@ -83,7 +83,7 @@
             <!-- eslint-enable max-len -->
           </tr>
 
-          <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+          <tr v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
             <td>
               <!-- eslint-disable-next-line max-len -->
               {{ 'asset-request-details.max-issuance-amount-title' | globalize }}
@@ -93,7 +93,7 @@
             </td>
           </tr>
 
-          <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+          <tr v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
             <td>
               <!-- eslint-disable-next-line max-len -->
               {{ 'asset-request-details.initial-preissued-amount-title' | globalize }}
