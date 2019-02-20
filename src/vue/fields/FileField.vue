@@ -103,7 +103,6 @@ export default {
           this.$emit('input', this.document)
           return
         }
-        console.error(e)
         ErrorHandler.process(e)
       }
       if (this.isValidFileSize(file)) {

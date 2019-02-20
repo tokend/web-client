@@ -1,7 +1,7 @@
 <template>
   <div class="asset-details">
     <div class="asset-details__header">
-      <asset-logo
+      <asset-logo-dark
         :asset-code="asset.code"
         :logo-url="asset.logoUrl(config.FILE_STORAGE)"
       />
@@ -14,60 +14,65 @@
         </p>
       </div>
     </div>
-    <table class="app__table asset-details__table">
-      <tbody>
-        <tr v-if="asset.balance.value">
-          <td>
-            {{ 'asset-details.balance-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.balance | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.maximum-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.maxIssuanceAmount | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.issued-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.issued | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.available-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.availableForIssuance | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.terms-title' | globalize }}
-          </td>
-          <td>
-            <a
-              v-if="asset.termsKey"
-              class="asset-details__terms"
-              :href="assetTermsUrl"
-            >
-              {{ 'asset-details.download-terms-btn' | globalize }}
-            </a>
-            <p v-else>
-              {{ 'asset-details.no-terms-msg' | globalize }}
-            </p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="asset-details__buttons">
+    <div class="app__table asset-details__table">
+      <table>
+        <tbody>
+          <tr v-if="asset.balance.value">
+            <td>
+              {{ 'asset-details.balance-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.balance | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.maximum-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.maxIssuanceAmount | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.issued-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.issued | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.available-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.availableForIssuance | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.terms-title' | globalize }}
+            </td>
+            <td>
+              <a
+                v-if="asset.termsKey"
+                class="asset-details__terms"
+                :href="assetTermsUrl"
+              >
+                {{ 'asset-details.download-terms-btn' | globalize }}
+              </a>
+              <p v-else>
+                {{ 'asset-details.no-terms-msg' | globalize }}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      v-if="showActions"
+      class="asset-details__buttons"
+    >
       <button
         v-ripple
         class="asset-details__update-btn"
@@ -76,12 +81,20 @@
       >
         {{ 'asset-details.add-balance-btn' | globalize }}
       </button>
+      <button
+        v-if="asset.owner === account.accountId"
+        v-ripple
+        class="asset-details__update-btn"
+        @click="$emit(EVENTS.updateAsk)"
+      >
+        {{ 'asset-details.update-btn' | globalize }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import AssetLogo from '@/vue/common/assets/AssetLogo'
+import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
 import config from '@/config'
 
@@ -97,19 +110,22 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
+  updateAsk: 'update-ask',
 }
 
 export default {
   name: 'asset-details',
   components: {
-    AssetLogo,
+    AssetLogoDark,
   },
   props: {
     asset: { type: Object, required: true },
+    showActions: { type: Boolean, default: true },
   },
   data: _ => ({
     isBalanceCreating: false,
     config,
+    EVENTS,
   }),
   computed: {
     ...mapGetters({

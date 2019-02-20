@@ -162,7 +162,7 @@ export default {
               )
             this.factor = data
           } catch (e) {
-            ErrorHandler.process(e)
+            ErrorHandler.process(e, 'tfa-form.wrong-password-err')
           }
         } else {
           ErrorHandler.process(error)
@@ -183,7 +183,7 @@ export default {
             Bus.success('tfa-form.tfa-disabled-msg')
             this.$emit(EVENTS.update)
           } catch (e) {
-            ErrorHandler.process(error)
+            ErrorHandler.process(e, 'tfa-form.wrong-password-err')
           }
         } else {
           ErrorHandler.process(error)
@@ -211,7 +211,7 @@ export default {
             this.$emit(EVENTS.update)
             Bus.success('tfa-form.tfa-enabled-msg')
           } catch (e) {
-            ErrorHandler.process(error)
+            ErrorHandler.process(e, 'tfa-form.wrong-code-err')
           }
         } else {
           ErrorHandler.process(error)

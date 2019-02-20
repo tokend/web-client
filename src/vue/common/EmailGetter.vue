@@ -1,25 +1,33 @@
 <template>
   <span
     class="email-getter"
-    :title="result | globalize"
+    :title="isTitled && (email || accountId || balanceId)"
   >
-    <template
-      v-if="isLoaded"
-    >
-      {{ result | globalize }}
+    <template v-if="isMasterAccount">
+      {{ 'email-getter.master-account' | globalize }}
     </template>
-    <template v-else-if="isLoadingFailed">
-      &mdash;
-    </template>
-    <template v-else>
+
+    <template v-else-if="isLoading">
       {{ 'email-getter.loading-msg' | globalize }}
+    </template>
+
+    <template v-else-if="email">
+      {{ email }}
+    </template>
+
+    <template v-else-if="accountId || balanceId">
+      {{ accountId || balanceId | cropAddress }}
+    </template>
+
+    <template v-else>
+      &mdash;
     </template>
   </span>
 </template>
 
 <script>
 import { Sdk } from '@/sdk'
-import config from '@/config'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   props: {
@@ -31,37 +39,42 @@ export default {
       type: String,
       default: '',
     },
+    isTitled: {
+      type: Boolean,
+      default: true,
+    },
   },
+
   data: _ => ({
-    result: '',
-    isLoaded: false,
-    isLoadingFailed: false,
+    email: '',
+    isMasterAccount: false,
+    isLoading: false,
   }),
 
   async created () {
-    if (this.accountId || this.balanceId) {
-      await this.loadResult()
-      this.isLoaded = true
-    } else {
-      this.isLoadingFailed = true
-    }
+    await this.init()
   },
 
   methods: {
-    async loadResult () {
+    async init () {
       if (this.accountId === Sdk.networkDetails.masterAccountId) {
-        this.result = 'email-getter.master-account'
+        this.isMasterAccount = true
         return
       }
+
+      if (this.accountId || this.balanceId) {
+        this.isLoading = true
+        await this.loadEmail()
+        this.isLoading = false
+      }
+    },
+
+    async loadEmail () {
       try {
         const accountId = await this.getAccountId()
-        const { data } = await Sdk.api.users.get(accountId)
-        this.result = data.email
+        this.email = await Sdk.horizon.public.getEmailByAccountId(accountId)
       } catch (error) {
-        if (config.DEBUG) {
-          console.error(error)
-        }
-        this.result = this.accountId || this.balanceId
+        ErrorHandler.processWithoutFeedback(error)
       }
     },
 
@@ -80,5 +93,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

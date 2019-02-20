@@ -3,7 +3,7 @@ import Fees from './Fees'
 import Vuex from 'vuex'
 
 import { vuexTypes } from '@/vuex'
-import walletModule from '@/vuex/wallet.module'
+import account from '@/vuex/account.module'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
@@ -14,6 +14,7 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatPercent } from '@/vue/filters/formatPercent'
 
 import { MockHelper, MockWrapper } from '@/test'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -23,10 +24,16 @@ localVue.filter('formatFeeSubType', formatFeeSubType)
 localVue.filter('formatMoney', formatMoney)
 localVue.filter('formatPercent', formatPercent)
 
-describe('Fees component unit test', () => {
+describe('Fees’', () => {
   const feesSampleData = {
-    ali: [0],
-    btc: [0, 1],
+    ali: [{
+      fixed: '1',
+      percent: '0.1',
+    }],
+    btc: [{
+      fixed: '1',
+      percent: '0',
+    }],
   }
   let mockHelper
   let feesResource
@@ -37,15 +44,11 @@ describe('Fees component unit test', () => {
   beforeEach(() => {
     mockHelper = new MockHelper()
     feesResource = mockHelper.getHorizonResourcePrototype('fees')
-    getters = walletModule.getters
+    getters = account.getters
 
-    sinon.stub(getters, vuexTypes.wallet).returns(
-      mockHelper.getMockWallet()
-    )
+    sinon.stub(getters, vuexTypes.accountId).returns('STORED_ACCOUNT_ID')
 
-    store = new Vuex.Store({
-      getters,
-    })
+    store = new Vuex.Store({ getters })
 
     sinon.stub(Fees, 'created').resolves()
     wrapper = shallowMount(Fees, {
@@ -58,6 +61,52 @@ describe('Fees component unit test', () => {
     sinon.restore()
   })
 
+  describe('created hook', () => {
+    beforeEach(() => {
+      Fees.created.restore()
+    })
+
+    it('initializes asset selector', async () => {
+      const initAssetSelectorStub = sinon
+        .stub(Fees.methods, 'initAssetSelector')
+        .resolves()
+      const loadFeesStub = sinon
+        .stub(Fees.methods, 'loadFees')
+        .resolves()
+      sinon.stub(ErrorHandler, 'processWithoutFeedback')
+
+      const wrp = await shallowMount(Fees, { localVue, store })
+
+      expect(initAssetSelectorStub).to.has.been.calledOnce
+      expect(loadFeesStub).to.has.been.called
+      expect(wrp.vm.isLoaded).to.equal(false)
+      expect(wrp.vm.isLoadingFailed).to.equal(false)
+      expect(ErrorHandler.processWithoutFeedback).to.has.not.been.called
+
+      initAssetSelectorStub.restore()
+      loadFeesStub.restore()
+      ErrorHandler.processWithoutFeedback.restore()
+    })
+
+    it('handles an occurred error without any feedback to the user', async () => {
+      const theError = new Error()
+      const initAssetSelectorStub = sinon
+        .stub(Fees.methods, 'initAssetSelector')
+        .throws(theError)
+      sinon.stub(ErrorHandler, 'processWithoutFeedback')
+
+      const wrp = await shallowMount(Fees, { localVue, store })
+
+      expect(wrp.vm.isLoaded).to.equal(false)
+      expect(wrp.vm.isLoadingFailed).to.equal(true)
+      expect(ErrorHandler.processWithoutFeedback).to.has.been
+        .calledOnceWithExactly(theError)
+
+      initAssetSelectorStub.restore()
+      ErrorHandler.processWithoutFeedback.restore()
+    })
+  })
+
   it('loadFees() calls the horizon.fees.getAll() with the correct params', async () => {
     const spy = sinon.stub(feesResource, 'getAll').resolves({
       data: {
@@ -67,23 +116,9 @@ describe('Fees component unit test', () => {
 
     await wrapper.vm.loadFees()
 
-    expect(
-      spy
-        .withArgs({ account_id: mockHelper.getMockWallet().accountId })
-        .calledOnce)
-      .to.be.true
-  })
-
-  it('loadFees() method is called inside created hook', () => {
-    sinon.restore()
-    const spy = sinon.stub(Fees.methods, 'loadFees')
-
-    shallowMount(Fees, {
-      store,
-      localVue,
+    expect(spy).to.has.been.calledOnceWithExactly({
+      account_id: wrapper.vm.accountId,
     })
-
-    expect(spy.calledOnce).to.be.true
   })
 
   it('loadFees() changes fees data after loading', async () => {
@@ -96,22 +131,16 @@ describe('Fees component unit test', () => {
     expect(wrapper.vm.fees).to.not.equal(null)
   })
 
-  it('assetFees returns only the fees with the code filters.asset', () => {
+  it('valuableAssetFees returns only the fees with the code filters.asset', () => {
     wrapper.setData({
       fees: feesSampleData,
       filters: {
-        asset: 'BTC',
+        asset: { code: 'BTC' },
       },
     })
 
-    expect(wrapper.vm.assetFees).to.deep.equal(feesSampleData.btc)
+    expect(wrapper.vm.valuableAssetFees).to.deep.equal(feesSampleData.btc)
   })
 
-  it('assetCodes returns array of assets', () => {
-    wrapper.setData({
-      fees: feesSampleData,
-    })
-
-    expect(wrapper.vm.assetCodes).to.deep.equal(['ALI', 'BTC'])
-  })
+  // TODO: test initAssetSelector, loadAssets
 })

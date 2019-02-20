@@ -26,6 +26,7 @@ describe('Dashboard component', () => {
       asset: 'BTC',
       balance: '1',
       assetDetails: {
+        code: 'BTC',
         policies: [
           { value: ASSET_POLICIES.transferable },
           { value: ASSET_POLICIES.baseAsset },
@@ -36,6 +37,7 @@ describe('Dashboard component', () => {
       asset: 'USD',
       balance: '3',
       assetDetails: {
+        code: 'USD',
         policies: [
           { value: ASSET_POLICIES.transferable },
           { value: ASSET_POLICIES.baseAsset },
@@ -47,6 +49,7 @@ describe('Dashboard component', () => {
       asset: 'ETH',
       balance: '0',
       assetDetails: {
+        code: 'ETH',
         policies: [
           { value: ASSET_POLICIES.baseAsset },
         ],
@@ -76,7 +79,7 @@ describe('Dashboard component', () => {
   describe('setCurrentAsset()', () => {
     it('set currentAsset as passed value', () => {
       mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
-      wrapper.vm.setCurrentAsset('some name (BTC)')
+      wrapper.vm.setCurrentAsset({ code: 'BTC' })
 
       expect(wrapper.vm.currentAsset).to.equal('BTC')
     })
@@ -109,13 +112,13 @@ describe('Dashboard component', () => {
         expect(wrapper.vm.currentAsset).to.equal('BTC')
       })
 
-      it('set null if accountBalances is empty', () => {
+      it('set empty string if accountBalances is empty', () => {
         const mockedAccountBalances = []
         mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
 
         wrapper.vm.setCurrentAsset()
 
-        expect(wrapper.vm.currentAsset).to.equal(null)
+        expect(wrapper.vm.currentAsset).to.equal('')
       })
     })
   })
@@ -126,36 +129,46 @@ describe('Dashboard component', () => {
     })
 
     describe('createIssuanceFormIsShown()', () => {
-      it('apply "true" value', () => {
+      it('apply "true" value', async () => {
         wrapper.vm.createIssuanceFormIsShown = true
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.true
       })
 
-      it('apply "false" value', () => {
+      it('apply "false" value', async () => {
         wrapper.vm.createIssuanceFormIsShown = false
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.false
       })
     })
 
     describe('transferFormIsShown()', () => {
-      it('apply "true" value', () => {
+      it('apply "true" value', async () => {
         wrapper.vm.transferFormIsShown = true
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.true
       })
 
-      it('apply "false" value', () => {
+      it('apply "false" value', async () => {
         wrapper.vm.transferFormIsShown = false
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.showDrawer).to.be.false
       })
     })
 
     describe('showDrawer()', () => {
-      it('apply "true" value', () => {
+      it('apply "true" value', async () => {
         wrapper.vm.showDrawer = true
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.createIssuanceFormIsShown)
           .to.equal(wrapper.vm.createIssuanceFormIsShown)
@@ -163,8 +176,10 @@ describe('Dashboard component', () => {
           .to.equal(wrapper.vm.transferFormIsShown)
       })
 
-      it('apply "false" value', () => {
+      it('apply "false" value', async () => {
         wrapper.vm.showDrawer = false
+
+        await localVue.nextTick()
 
         expect(wrapper.vm.createIssuanceFormIsShown).to.be.false
         expect(wrapper.vm.transferFormIsShown).to.be.false

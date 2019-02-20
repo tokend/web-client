@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <template v-if="isLoading">
-      <loader :message="'dashboard.data-loading' | globalize" />
+      <loader message-id="dashboard.data-loading" />
     </template>
     <template v-else>
       <div class="dashboard__toolbar">
@@ -15,12 +15,16 @@
           <button
             v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
             class="app__button-raised dashboard__action"
-            @click="createIssuanceFormIsShown = true">
+            @click="createIssuanceFormIsShown = true"
+          >
+            <i class="mdi mdi-plus dashboard__plus-icon" />
             {{ 'dashboard.create-issuance-lbl' | globalize }}
           </button>
           <button
             class="app__button-raised dashboard__action"
-            @click="transferFormIsShown = true">
+            @click="transferFormIsShown = true"
+          >
+            <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
             {{
               'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
             }}
@@ -37,10 +41,14 @@
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
         </div>
-        <info-widget
-          class="dashboard__activity"
-          :current-asset="currentAsset"
-        />
+        <div class="dashboard__activity">
+          <movements-history-module
+            v-if="currentAsset"
+            :asset-code="currentAsset"
+            :config="{ horizonURL: config.HORIZON_SERVER }"
+            :wallet="wallet"
+          />
+        </div>
       </template>
     </template>
     <drawer :is-shown.sync="showDrawer">
@@ -48,24 +56,26 @@
         <template slot="heading">
           {{ 'issuance.issuance-form-heading' | globalize }}
         </template>
-        <issuance-form @cancel="showDrawer = false" />
+        <issuance-form @close="showDrawer = false" />
       </template>
       <template v-if="transferFormIsShown">
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>
-        <transfer />
+        <transfer :asset-to-transfer="currentAsset" />
       </template>
     </drawer>
   </div>
 </template>
 
 <script>
-import AssetSelector from '@/vue/pages/Dashboard/Dashboard.AssetSelector.vue'
+import MovementsHistoryModule from '@modules/movements-history'
+
+import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
-import InfoWidget from '@/vue/pages/Dashboard/Dashboard.InfoWidget.vue'
 import Chart from '@/vue/common/chart/Chart'
+
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
@@ -79,7 +89,7 @@ export default {
     AssetSelector,
     IssuanceForm,
     Transfer,
-    InfoWidget,
+    MovementsHistoryModule,
     Chart,
     Loader,
     Drawer,
@@ -98,12 +108,10 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
       vuexTypes.accountTypeI,
+      vuexTypes.wallet,
     ]),
   },
   watch: {
-    accountBalances () {
-      this.setCurrentAsset()
-    },
     showDrawer (status) {
       if (!status) {
         this.createIssuanceFormIsShown = false
@@ -128,13 +136,12 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setCurrentAsset (value) {
-      const regExp = /\(([^)]+)\)/
       if (value) {
-        this.currentAsset = regExp.exec(value)[1]
+        this.currentAsset = value.code
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.find(a => a === 'ETH') || keys[0] || null
+          keys.find(a => a === 'ETH') || keys[0] || ''
       }
     },
   },
@@ -153,11 +160,30 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin: -1rem;
+
+  @include respond-to($small) {
+    flex-direction: column-reverse;
+  }
 }
 
 .dashboard__actions {
-  margin-top: .8rem;
   display: flex;
+  margin: 1.8rem 1rem 1rem;
+}
+
+.dashboard__plus-icon,
+.dashboard__send-icon {
+  font-size: 1.6rem;
+  margin-right: 0.5rem;
+}
+
+.dashboard__send-icon {
+  margin-top: -0.6rem;
+}
+
+.dashboard__asset-selector {
+  margin: 1rem;
 }
 
 .dashboard__action {

@@ -1,7 +1,5 @@
 <template>
   <div class="trade-exchange">
-    <trade-top-bar @reload-trade-data="loadData" />
-
     <div v-if="assetPair.base">
       <div class="trade-exchange__chart">
         <chart
@@ -20,6 +18,7 @@
         <div class="trade-exchange__history-collection-loader">
           <collection-loader
             :key="`collection-loader-${assetPair.base}-${assetPair.quote}`"
+            v-show="tradeHistory.length && !isTradeHistoryLoading"
             :first-page-loader="loadTradeHistory"
             :page-limit="recordsToShow"
             @first-page-load="setTradeHistory"
@@ -39,7 +38,7 @@
             :is-buy="true"
             :is-loading="isBuyOffersLoading"
             :offers-list="buyOffersList"
-            @reload-trades="loadData"
+            @reload-trades="reloadTrades"
           />
 
           <trade-offers-renderer
@@ -48,7 +47,7 @@
             :is-buy="false"
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
-            @reload-trades="loadData"
+            @reload-trades="reloadTrades"
           />
         </div>
       </div>
@@ -60,12 +59,13 @@
 import Chart from '@/vue/common/chart/Chart'
 import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRenderer'
 import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
-import TradeTopBar from '@/vue/common/TradeTopBar'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import { mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'trade-exchange',
@@ -73,8 +73,10 @@ export default {
     Chart,
     TradeHistoryRenderer,
     TradeOffersRenderer,
-    TradeTopBar,
     CollectionLoader,
+  },
+  props: {
+    isLoading: { type: Boolean, default: false },
   },
   data: () => ({
     tradeHistory: [],
@@ -105,6 +107,10 @@ export default {
         }
       },
     },
+    isLoading: async function () {
+      await this.loadData()
+      this.$emit('update:isLoading', false)
+    },
   },
   async created () {
     this.setCurrentAssets(this.assetPair)
@@ -113,7 +119,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     async loadData () {
+      this.isTradeHistoryLoading = true
+      this.isBuyOffersLoading = true
+      this.isSellOffersLoading = true
+
       await this.loadTradeOffers()
       await this.loadTradeHistory()
     },
@@ -122,19 +135,13 @@ export default {
       await this.loadTradeSellOffers()
     },
     async loadTradeHistory () {
-      this.isTradeHistoryLoading = true
-      let response = {}
-      try {
-        response = await Sdk.horizon.trades.getPage({
-          base_asset: this.assetPair.base,
-          quote_asset: this.assetPair.quote,
-          order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
-          order: this.recordsOrder,
-          limit: this.recordsToShow,
-        })
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
+      let response = await Sdk.horizon.trades.getPage({
+        base_asset: this.assetPair.base,
+        quote_asset: this.assetPair.quote,
+        order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
+        order: this.recordsOrder,
+        limit: this.recordsToShow,
+      })
       this.isTradeHistoryLoading = false
       return response
     },
@@ -146,7 +153,6 @@ export default {
       this.tradeHistory = this.tradeHistory.concat(data)
     },
     async loadTradeBuyOffers () {
-      this.isBuyOffersLoading = true
       try {
         const response = await Sdk.horizon.orderBook.getAll({
           base_asset: this.assetPair.base,
@@ -155,12 +161,11 @@ export default {
         })
         this.buyOffersList = response.data
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isBuyOffersLoading = false
     },
     async loadTradeSellOffers () {
-      this.isSellOffersLoading = true
       try {
         const response = await Sdk.horizon.orderBook.getAll({
           base_asset: this.assetPair.base,
@@ -169,13 +174,17 @@ export default {
         })
         this.sellOffersList = response.data
       } catch (error) {
-        ErrorHandler.process(error)
+        ErrorHandler.processWithoutFeedback(error)
       }
       this.isSellOffersLoading = false
     },
     setCurrentAssets (assetPair) {
       this.assetPair.base = assetPair.base
       this.assetPair.quote = assetPair.quote
+    },
+    async reloadTrades () {
+      await this.loadData()
+      await this.loadBalances()
     },
   },
 }
@@ -220,8 +229,8 @@ $custom-breakpoint: 985px;
 
 .trade-exchange__offers-wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  flex-basis: 50%;
 
   @include respond-to($custom-breakpoint) {
     flex-direction: column;
@@ -229,7 +238,7 @@ $custom-breakpoint: 985px;
 }
 
 .trade-exchange__offers-list {
-  max-width: 49.5%;
+  width: 100%;
 
   @include respond-to($custom-breakpoint) {
     max-width: 100%;

@@ -35,7 +35,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.dashboard"
             tag="a"
-            v-if="config.FEATURE_FLAGS.dashboard"
+            v-if="config.featureFlags.dashboard"
           >
             <i class="sidebar__link-icon mdi mdi-view-dashboard" />
             <span>
@@ -49,7 +49,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.trade"
             tag="a"
-            v-if="config.FEATURE_FLAGS.trade"
+            v-if="config.featureFlags.trade"
           >
             <i class="sidebar__link-icon mdi mdi-finance" />
             <span>
@@ -61,13 +61,13 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.operations"
+            :to="vueRoutes.movements"
             tag="a"
-            v-if="config.FEATURE_FLAGS.operations"
+            v-if="config.featureFlags.movements"
           >
             <i class="sidebar__link-icon mdi mdi-menu" />
             <span>
-              {{ 'pages-names.operations' | globalize }}
+              {{ 'pages-names.movements' | globalize }}
             </span>
           </router-link>
 
@@ -77,7 +77,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="a"
-            v-if="config.FEATURE_FLAGS.fees"
+            v-if="config.featureFlags.fees"
           >
             <i class="sidebar__link-icon mdi mdi-flash" />
             <span>
@@ -89,22 +89,37 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.limits"
+            tag="a"
+            v-if="config.featureFlags.limits"
+          >
+            <i class="sidebar__link-icon mdi mdi-poll-box" />
+            <span>
+              {{ 'pages-names.limits' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.assets"
             tag="a"
-            v-if="config.FEATURE_FLAGS.assets"
+            v-if="config.featureFlags.assets"
           >
             <i class="sidebar__link-icon mdi mdi-coins" />
             <span>
               {{ 'pages-names.tokens' | globalize }}
             </span>
           </router-link>
+
           <router-link
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
             :to="vueRoutes.issuance"
             tag="a"
-            v-if="config.FEATURE_FLAGS.issuance"
+            v-if="config.featureFlags.issuance"
           >
             <i class="sidebar__link-icon mdi mdi-poll" />
             <span>
@@ -115,9 +130,23 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.sales"
+            tag="a"
+            v-if="config.featureFlags.sales"
+          >
+            <i class="sidebar__link-icon mdi mdi-trending-up" />
+            <span>
+              {{ 'pages-names.funds' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.requests"
             tag="a"
-            v-if="config.FEATURE_FLAGS.requests"
+            v-if="config.featureFlags.requests &&
+              accountTypeI === ACCOUNT_TYPES.syndicate"
           >
             <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
@@ -133,9 +162,9 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.verification"
+            :to="vueRoutes.settings"
             tag="a"
-            v-if="config.FEATURE_FLAGS.settings"
+            v-if="config.featureFlags.settings"
           >
             <i class="sidebar__link-icon mdi mdi-account-settings" />
             <span>
@@ -156,7 +185,12 @@
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
+import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+
 import { vueRoutes } from '@/vue-router/routes'
+
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 import config from '@/config'
 
@@ -172,7 +206,14 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
+    ACCOUNT_TYPES,
   }),
+
+  computed: {
+    ...mapGetters({
+      accountTypeI: vuexTypes.accountTypeI,
+    }),
+  },
 
   methods: {
     openSidebar () {

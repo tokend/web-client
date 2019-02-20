@@ -59,7 +59,7 @@
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
     <p>
-      {{ 'issuance.no-owned-tokens-msg' | globalize }}
+      {{ 'issuance.no-owned-assets-msg' | globalize }}
     </p>
   </div>
   <div v-else>
@@ -81,6 +81,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
 import { documentContainer } from '@validators'
+
+const EVENTS = {
+  close: 'close',
+}
 
 export default {
   name: 'pre-issuance-form',
@@ -121,9 +125,9 @@ export default {
           })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('issuance.pre-issuance-uploaded-msg')
+        this.$emit(EVENTS.close)
         this.reset()
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
@@ -133,7 +137,6 @@ export default {
         const extracted = await FileUtil.getText(file)
         this.parsePreIssuance(JSON.parse(extracted).issuances[0])
       } catch (e) {
-        console.error(e)
         Bus.error('file-field.file-corrupted-err')
       }
     },

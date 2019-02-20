@@ -160,12 +160,12 @@ export default {
                 this.form.currentPassword
               )
             } else {
-              ErrorHandler.process(e)
+              ErrorHandler.process(e, 'change-password-form.wrong-code-err')
               return
             }
           }
         } else {
-          ErrorHandler.process(e)
+          ErrorHandler.process(e, 'change-password-form.wrong-password-err')
           return
         }
       }

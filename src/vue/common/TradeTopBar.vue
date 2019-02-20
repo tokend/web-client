@@ -1,102 +1,119 @@
 <template>
   <div class="trade-top-bar">
-    <top-bar>
-      <template slot="main">
-        <router-link
-          :to="{
-            name: vueRoutes.trade.exchange.name,
-            query: { base: assetPair.base, quote: assetPair.quote }
-          }"
-        >
-          {{ 'trade-top-bar.exchange-view' | globalize }}
-        </router-link>
-        <router-link
-          :to="{
-            name: vueRoutes.trade.userOffers.name,
-            query: { base: assetPair.base, quote: assetPair.quote }
-          }"
-        >
-          {{ 'trade-top-bar.my-offers-view' | globalize }}
-        </router-link>
-      </template>
-      <template slot="extra">
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isCreateBuyOfferDrawerShown = true"
-        >
-          {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised"
-          @click="isCreateSellOfferDrawerShown = true"
-        >
-          {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
-        </button>
-      </template>
-    </top-bar>
+    <template v-if="isLoaded">
+      <top-bar>
+        <template slot="main">
+          <router-link
+            :to="{
+              name: vueRoutes.trade.exchange.name,
+              query: { base: assetPair.base, quote: assetPair.quote }
+            }"
+          >
+            <span>
+              {{ 'trade-top-bar.exchange-view' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            :to="{
+              name: vueRoutes.trade.userOffers.name,
+              query: { base: assetPair.base, quote: assetPair.quote }
+            }"
+          >
+            <span>
+              {{ 'trade-top-bar.my-offers-view' | globalize }}
+            </span>
+          </router-link>
+        </template>
+        <template slot="extra">
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreateBuyOfferDrawerShown = true"
+          >
+            {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
+          </button>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreateSellOfferDrawerShown = true"
+          >
+            {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
+          </button>
+        </template>
+      </top-bar>
 
-    <div class="trade-asset-selector__wrapper">
-      <select-field
-        v-model="selectedPair"
-        :values="formattedPairs"
-        :key="selectedPair"
-        :form-free="true"
-        class="trade-asset-selector__field"
-      />
-    </div>
-    <div class="trade-asset-selector__balances">
-      <p class="trade-asset-selector__balances-value">
-        {{
-          // eslint-disable-next-line
-          { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
-        }}
-        /
-        {{
-          // eslint-disable-next-line
-          { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
-        }}
-      </p>
-      <p class="trade-asset-selector__balances-label">
-        {{ 'trade-top-bar.user-balances-label' | globalize }}
-      </p>
-    </div>
+      <div class="trade-asset-selector__wrapper">
+        <select-field
+          v-model="selectedPair"
+          :values="formattedPairs"
+          :key="selectedPair"
+          class="trade-asset-selector__field app__select app__select--no-border"
+        />
+      </div>
+      <div class="trade-asset-selector__balances">
+        <p class="trade-asset-selector__balances-value">
+          {{
+            // eslint-disable-next-line
+            { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
+          }}
+          /
+          {{
+            // eslint-disable-next-line
+            { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
+          }}
+        </p>
+        <p class="trade-asset-selector__balances-label">
+          {{ 'trade-top-bar.user-balances-label' | globalize }}
+        </p>
+      </div>
 
-    <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
-      <template slot="heading">
-        {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
-      </template>
-      <create-trade-offer-form
-        :asset-pair="assetPair"
-        @close-drawer="closeBuyOfferDrawer"
-      />
-    </drawer>
-    <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
-      <template slot="heading">
-        {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
-      </template>
-      <create-trade-offer-form
-        :asset-pair="assetPair"
-        :is-buy="false"
-        @close-drawer="closeSellOfferDrawer"
-      />
-    </drawer>
+      <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
+        <template slot="heading">
+          {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
+        </template>
+        <create-trade-offer-form
+          :asset-pair="assetPair"
+          @close-drawer="closeBuyOfferDrawer"
+        />
+      </drawer>
+      <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
+        <template slot="heading">
+          {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
+        </template>
+        <create-trade-offer-form
+          :asset-pair="assetPair"
+          :is-buy="false"
+          @close-drawer="closeSellOfferDrawer"
+        />
+      </drawer>
+    </template>
+
+    <template v-else-if="!isLoadingFailed">
+      <loader message-id="trade-top-bar.loading-msg" />
+    </template>
   </div>
 </template>
 
 <script>
-import SelectField from '@/vue/fields/SelectField'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Sdk } from '@/sdk'
-import { mapActions, mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
 import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
 import TopBar from '@/vue/common/TopBar'
-import { vueRoutes } from '@/vue-router/routes'
-import { Bus } from '@/js/helpers/event-bus'
+
+import SelectField from '@/vue/fields/SelectField'
+import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
+
+import { Sdk } from '@/sdk'
 import { errors } from '@tokend/js-sdk'
+
+import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
+
+import { vuexTypes } from '@/vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+import { vueRoutes } from '@/vue-router/routes'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
   reloadTradeData: 'reload-trade-data',
@@ -108,6 +125,7 @@ export default {
     SelectField,
     CreateTradeOfferForm,
     Drawer,
+    Loader,
     TopBar,
   },
   data: () => ({
@@ -115,9 +133,10 @@ export default {
       base: '',
       quote: '',
     },
+    isLoaded: false,
+    isLoadingFailed: false,
     errors,
     selectedPair: '',
-    tradeablePairs: [],
     formattedPairs: [],
     isCreateBuyOfferDrawerShown: false,
     isCreateSellOfferDrawerShown: false,
@@ -153,26 +172,26 @@ export default {
     },
   },
   async created () {
-    await this.loadBalances()
-    await this.loadTradablePairs()
+    try {
+      await this.loadBalances()
+      await this.loadTradablePairs()
+      this.isLoaded = true
+    } catch (error) {
+      this.isLoadingFailed = true
+      ErrorHandler.processWithoutFeedback(error)
+    }
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async loadTradablePairs () {
-      try {
-        const response = await Sdk.horizon.assetPairs.getAll()
-        this.formatTradablePairs(response.data)
-        this.setDefaultSelectedPair(response.data)
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
-    },
-    formatTradablePairs (pairs) {
-      this.formattedPairs = pairs.map(item => {
-        return `${item.base}/${item.quote}`
-      })
+      const { data } = await Sdk.horizon.assetPairs.getAll()
+      const tradablePairs = data
+        .map(assetPair => new AssetPairRecord(assetPair))
+        .filter(pair => pair.isTradable)
+      this.formattedPairs = tradablePairs.map(item => item.baseAndQuote)
+      this.setDefaultSelectedPair(tradablePairs)
     },
     setDefaultSelectedPair (pairs) {
       const queryBase = this.$route.query.base
@@ -183,10 +202,10 @@ export default {
       // (exists in system) and set the appropriate
       if (this.isQueryParamsValid(pairs)) {
         const pair = pairs.find((i) => {
-          return i.base === queryBase &&
-                  i.quote === queryQuote
+          return i.baseAssetCode === queryBase &&
+                  i.quoteAssetCode === queryQuote
         })
-        this.selectedPair = `${pair.base}/${pair.quote}`
+        this.selectedPair = pair.baseAndQuote
       } else {
         this.selectedPair = this.formattedPairs[0]
         if (queryBase && queryQuote) {
@@ -208,7 +227,8 @@ export default {
 
       if (queryBase && queryQuote) {
         return Boolean(pairs.find((i) => {
-          return i.base === queryBase && i.quote === queryQuote
+          return i.baseAssetCode === queryBase &&
+            i.quoteAssetCode === queryQuote
         }))
       }
       return false

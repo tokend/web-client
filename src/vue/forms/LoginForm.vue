@@ -117,23 +117,13 @@ export default {
         }
         await this.loadAccount(accountId)
         await this.loadKyc()
-        this.$router.push({ name: 'app' })
-      } catch (e) {
-        if (e instanceof errors.VerificationRequiredError) {
-          this.$router.push({
-            ...vueRoutes.verify,
-            params: {
-              paramsBase64: btoa(JSON.stringify({
-                walletId: e.meta.walletId,
-                email: this.form.email,
-              })),
-            },
-          })
-        } else if (e instanceof errors.TFARequiredError) {
-          this.tfaError = e
+        if (Object.keys(this.$route.query).includes('redirectPath')) {
+          this.$router.push({ path: this.$route.query.redirectPath })
         } else {
-          ErrorHandler.process(e)
+          this.$router.push({ name: 'app' })
         }
+      } catch (e) {
+        this.processAuthError(e)
       }
       this.enableForm()
     },
@@ -146,6 +136,38 @@ export default {
           return false
         }
         throw e
+      }
+    },
+    processAuthError (error) {
+      switch (error.constructor) {
+        case errors.VerificationRequiredError:
+          this.$router.push({
+            ...vueRoutes.verify,
+            params: {
+              paramsBase64: btoa(JSON.stringify({
+                walletId: error.meta.walletId,
+                email: this.form.email,
+              })),
+            },
+          })
+          break
+        case errors.TFARequiredError:
+          this.tfaError = error
+          break
+        case errors.NotFoundError:
+          ErrorHandler.process(
+            error,
+            'auth-pages.wrong-email-or-password-err'
+          )
+          break
+        case errors.BadRequestError:
+          ErrorHandler.process(
+            error,
+            'auth-pages.wrong-tfa-code-err'
+          )
+          break
+        default:
+          ErrorHandler.process(error)
       }
     },
   },

@@ -3,7 +3,7 @@
     <h2 class="app__table-title">
       {{ 'trade-history.title' | globalize }}
     </h2>
-    <template v-if="tradeHistory.length">
+    <template v-if="tradeHistory.length && !isLoading">
       <div class="app__table app__table--with-shadow">
         <table>
           <thead>
@@ -45,7 +45,7 @@
       <no-data-message
         :title-id="'trade-history.no-data-title'"
         :message-id="'trade-history.no-data-message'"
-        :message-id-args="{ base: assetPair.base, quote: assetPair.quote }"
+        :message-id-keys="{ base: assetPair.base, quote: assetPair.quote }"
       />
     </template>
   </div>

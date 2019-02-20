@@ -1,5 +1,7 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk'
+
 import { RequestRecord } from '../request-record'
+
 import _get from 'lodash/get'
 
 export class AssetCreateRequestRecord extends RequestRecord {
@@ -45,6 +47,27 @@ export class AssetCreateRequestRecord extends RequestRecord {
     this.attachedDetails = details
   }
 
+  /**
+   * Converts AssetRecord to AssetCreateRequestRecord.
+   *
+   * @param {AssetRecord} assetRecord AssetRecord to be converted.
+   * @return {AssetCreateRequestRecord} New AssetCreateRequestRecord instance.
+   */
+  static fromAssetRecord (assetRecord) {
+    return new this({
+      details: {
+        assetUpdate: {
+          code: assetRecord.code,
+          preIssuedAssetSigner: assetRecord.preissuedAssetSigner,
+          maxIssuanceAmount: assetRecord.maxIssuanceAmount,
+          initialPreissuedAmount: assetRecord.initialPreissuedAmount,
+          policies: assetRecord.policies.map(policy => ({ value: policy })),
+          details: assetRecord.details,
+        },
+      },
+    })
+  }
+
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
   }
@@ -80,10 +103,6 @@ export class AssetCreateRequestRecord extends RequestRecord {
 
   get isStatsQuoteAsset () {
     return !!(this.policy & ASSET_POLICIES.statsQuoteAsset)
-  }
-
-  get isTwoStepWithdrawal () {
-    return !!(this.policy & ASSET_POLICIES.twoStepWithdrawal)
   }
 
   get isTransferable () {

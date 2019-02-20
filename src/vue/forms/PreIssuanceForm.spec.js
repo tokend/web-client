@@ -66,11 +66,13 @@ describe('PreIssuanceForm component', () => {
   })
 
   describe('watcher', () => {
-    it('extracts pre-issuance request after changing preIssuanceDocument', () => {
+    it('extracts pre-issuance request after changing preIssuanceDocument', async () => {
       const spy = sinon.stub(wrapper.vm, 'extractPreIssuanceRequest')
         .resolves()
 
       wrapper.setData({ preIssuanceDocument: { file: {} } })
+
+      await localVue.nextTick()
 
       expect(spy.calledOnce).to.be.true
     })

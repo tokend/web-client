@@ -4,7 +4,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 
-import { OP_TYPES } from '@tokend/js-sdk'
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
 import { vuexTypes } from '@/vuex'
@@ -29,7 +28,6 @@ describe('Issuance component unit test', () => {
   }]
 
   let mockHelper
-  let operationsResource
 
   let getters
   let store
@@ -37,14 +35,14 @@ describe('Issuance component unit test', () => {
 
   beforeEach(() => {
     mockHelper = new MockHelper()
-    operationsResource = mockHelper.getHorizonResourcePrototype('operations')
 
     getters = {
       ...accountModule.getters,
     }
-    sinon.stub(getters, vuexTypes.account).returns({
-      accountId: mockHelper.getMockWallet().accountId,
-    })
+    sinon.stub(getters, vuexTypes.accountId).returns(
+      mockHelper.getMockWallet().accountId
+    )
+    sinon.stub(getters, vuexTypes.accountTypeI).returns(-1)
     store = new Vuex.Store({
       getters,
     })
@@ -60,24 +58,6 @@ describe('Issuance component unit test', () => {
   })
 
   describe('method', () => {
-    describe('getHistory', () => {
-      it('fetches issuance operations for provided account ID', async () => {
-        const spy = sinon.stub(operationsResource, 'getPage').resolves({
-          data: [{}],
-        })
-
-        await wrapper.vm.getHistory()
-
-        expect(spy
-          .withArgs({
-            account_id: mockHelper.getMockWallet().accountId,
-            operation_type: OP_TYPES.createIssuanceRequest,
-          })
-          .calledOnce
-        ).to.be.true
-      })
-    })
-
     describe('setHistory', () => {
       it('changes issuance history data', () => {
         wrapper.vm.setHistory(sampleData)

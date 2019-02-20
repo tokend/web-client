@@ -1,6 +1,6 @@
 <template>
   <div class="trade-offers">
-    <h3 class="app__table-title">
+    <h3 class="app__table-title trade-offers__title">
       <template v-if="isBuy">
         {{ 'trade-offers.subtitle-ask' | globalize }}
       </template>
@@ -8,7 +8,7 @@
         {{ 'trade-offers.subtitle-bid' | globalize }}
       </template>
     </h3>
-    <template v-if="offersList.length">
+    <template v-if="offersList.length && !isLoading">
       <div
         class="app__table
               app__table--with-shadow
@@ -50,9 +50,9 @@
     </template>
     <template v-else>
       <no-data-message
-        :title-id="'trade-offers.no-data-title'"
+        title-id="trade-offers.no-data-title"
         :message-id="noDataMessage.messageId"
-        :message-id-args="noDataMessage.messageIdArgs"
+        :message-id-keys="noDataMessage.messageIdKeys"
       />
     </template>
 
@@ -122,7 +122,7 @@ export default {
 
       return {
         messageId: messageId,
-        messageIdArgs: {
+        messageIdKeys: {
           base: this.assetPair.base,
           quote: this.assetPair.quote,
         },
@@ -131,10 +131,8 @@ export default {
   },
   methods: {
     selectOffer (offer) {
-      if (offer.ownerId !== this.accountId) {
-        this.isSubmitOfferDrawerShown = true
-        this.selectedOffer = offer
-      }
+      this.isSubmitOfferDrawerShown = true
+      this.selectedOffer = offer
     },
     closeDrawer () {
       this.isSubmitOfferDrawerShown = false
@@ -145,5 +143,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+.trade-offers__title {
+  font-size: 1.4rem;
+}
 </style>

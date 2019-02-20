@@ -335,7 +335,6 @@ h4 {
         }
 
         &[disabled] {
-          cursor: default;
           background-color: #e0e0e0;
         }
 
@@ -354,10 +353,6 @@ h4 {
 
   &.app__table--clickable-rows tbody tr {
     cursor: pointer;
-
-    &[disabled] {
-      cursor: default;
-    }
   }
 }
 
@@ -402,15 +397,11 @@ h4 {
 .app__select {
 
   &--no-border {
-    // it is necessary to override the default style of select
+    // to remove the borders and background of the asset-selector to use the
+    // component outside forms
     button {
       border-bottom: 0 !important;
       background-size: 0 !important;
-    }
-
-    span {
-      font-size: 1.8rem !important;
-      font-weight: 300 !important;
     }
   }
 }

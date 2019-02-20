@@ -73,7 +73,7 @@ describe('kyc.module end-to-end test', () => {
               'reject_reason': '',
               'hash': '9dfe099b40545901544549c0490b2250725245c2fe8aa3235c75c9d3a3e1128c',
               'details': {
-                'request_type_i': 9,
+                'request_type_i': 8,
                 'request_type': 'update_kyc',
                 'update_kyc': {
                   'account_to_update_kyc': accountId,

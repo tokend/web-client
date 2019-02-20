@@ -24,6 +24,7 @@ export default {
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
     async createKycBlob (blobType) {
       const { data } = await Sdk.api.blobs.create(
