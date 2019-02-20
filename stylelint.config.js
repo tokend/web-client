@@ -56,8 +56,6 @@ module.exports = {
       /**
        * it's not working with '["px", "dpi"]' syntax as in example in the docs
        * so we need to use this hack with regex.
-       *
-       * @link https://stylelint.io/user-guide/rules/unit-blacklist/#ignoremediafeaturenames--unit-property-regex-regex-
        */
       ignoreMediaFeatureNames: {
         'px': [/a-zA-Z0-9/],
@@ -68,7 +66,7 @@ module.exports = {
        *
        * we need to use "." (dot) at the beginning of the regex to prevent
        * handle variables values because linter doesn't read '$' value in the
-       * "/^\$media-/"" regex, so we try to don't match the first character
+       * "/^\$media-/" regex, so we try not to match the first character
        */
       ignoreProperties: {
         'px': ['/^.media-/'],
