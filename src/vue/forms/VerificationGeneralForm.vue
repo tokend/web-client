@@ -325,7 +325,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isCodeShown: false,
-    accountType: ACCOUNT_ROLES.general,
+    accountRole: ACCOUNT_ROLES.general,
     DOCUMENT_TYPES,
     countries: [],
   }),
@@ -361,7 +361,7 @@ export default {
 
   async created () {
     try {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       await this.loadKyc()
       const { data } = await Sdk.horizon.public.getEnums()
       this.countries = data.countries

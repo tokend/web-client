@@ -19,6 +19,7 @@ export default {
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
       account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
   },
   methods: {
@@ -34,12 +35,12 @@ export default {
       return data.id
     },
     createKycOperation (kycBlobId) {
-      return base.CreateUpdateKYCRequestBuilder.createUpdateKYCRequest({
+      return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest({
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
-        accountToUpdateKYC: this.account.accountId,
-        accountTypeToSet: this.accountType,
+        destinationAccount: this.accountId,
+        accountRoleToSet: this.accountRole,
         kycLevelToSet: KYC_LEVEL_TO_SET,
         kycData: {
           blob_id: kycBlobId,

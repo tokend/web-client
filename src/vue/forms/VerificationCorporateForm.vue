@@ -147,7 +147,8 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
+
 import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
@@ -178,7 +179,7 @@ export default {
     },
     isLoaded: false,
     isLoadingFailed: false,
-    accountType: ACCOUNT_ROLES.syndicate,
+    accountRole: ACCOUNT_ROLES.syndicate,
     MIN_TEAM_SIZE,
   }),
 
@@ -200,7 +201,7 @@ export default {
 
   async created () {
     try {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       await this.loadKyc()
       this.isLoaded = true
     } catch (e) {
@@ -223,7 +224,7 @@ export default {
       try {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
         const operation = this.createKycOperation(kycBlobId)
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         await this.loadKyc()
       } catch (e) {
         this.enableForm()
