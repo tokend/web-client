@@ -4,6 +4,6 @@
  */
 export class CreateAMLAlertRequestOp {
   constructor (record) {
-    this.reason = record.reason
+    this.creatorDetails = record.creatorDetails
   }
 }
