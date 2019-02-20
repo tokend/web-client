@@ -57,6 +57,7 @@ const getters = {
   accountBalances: 'accountBalances',
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycBlobId: 'accountKycBlobId',
+  accountRoleId: 'accountRoleId',
 
   // wallet
   wallet: 'wallet',
@@ -79,7 +80,7 @@ const getters = {
   kycStateI: 'kycStateI',
   kycRequestId: 'kycRequestId',
   kycRequestRejectReason: 'kycRequestRejectReason',
-  kycAccountTypeToSet: 'kycAccountTypeToSet',
+  kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycLatestData: 'kycLatestData',
   kycApprovedData: 'kycApprovedData',
 }

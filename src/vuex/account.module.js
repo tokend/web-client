@@ -2,6 +2,7 @@ import _get from 'lodash/get'
 import { AccountHelper } from './account.helper'
 import { vuexTypes } from './types'
 import { Sdk } from '../sdk'
+import { Api } from '../api'
 import { AssetRecord } from '../js/records/entities/asset.record'
 
 export const state = {
@@ -21,7 +22,7 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
-    const response = await Sdk.horizon.account.get(accountId)
+    const response = await Api.getWithSignature(`accounts/${accountId}`)
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },
 
@@ -64,6 +65,7 @@ export const getters = {
     state.account,
     'accountKyc.kycData.blobId'
   ),
+  [vuexTypes.accountRoleId]: state => state.account.role.id,
 }
 
 export default {

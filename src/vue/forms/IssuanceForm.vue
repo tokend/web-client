@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="accountTypeI !== ACCOUNT_TYPES.syndicate">
+    <div v-if="accountRoleId !== ACCOUNT_ROLES.syndicate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
@@ -134,7 +134,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
-import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
+
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import {
   required,
@@ -166,7 +168,7 @@ export default {
       reference: '',
     },
     isLoaded: false,
-    ACCOUNT_TYPES,
+    ACCOUNT_ROLES,
     MIN_AMOUNT: config.MIN_AMOUNT,
     REFERENCE_MAX_LENGTH,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
@@ -193,7 +195,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountTypeI,
+      vuexTypes.accountRoleId,
     ]),
   },
   async created () {

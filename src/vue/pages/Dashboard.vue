@@ -13,7 +13,7 @@
         />
         <div class="dashboard__actions">
           <button
-            v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
+            v-if="accountRoleId === ACCOUNT_ROLES.syndicate"
             class="app__button-raised dashboard__action"
             @click="createIssuanceFormIsShown = true"
           >
@@ -81,7 +81,7 @@ import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 export default {
   name: 'dashboard',
@@ -102,12 +102,12 @@ export default {
     showDrawer: false,
     scale: 'month',
     config,
-    ACCOUNT_TYPES,
+    ACCOUNT_ROLES,
   }),
   computed: {
     ...mapGetters([
       vuexTypes.accountBalances,
-      vuexTypes.accountTypeI,
+      vuexTypes.accountRoleId,
       vuexTypes.wallet,
     ]),
   },

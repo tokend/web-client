@@ -1,36 +1,44 @@
 import { ApiCaller } from '@tokend/js-sdk'
 
-export class Api {
-  constructor () {
-    this._api = null
-  }
+const HORIZON_VERSION_PREFIX = 'v3'
 
+let _api = null
+
+export class Api {
   /**
    * @param {Object} config - wallet to sign the requests
    * @param {String} config.horizonURL - the url of the horizon server
    * (without version prefix)
    */
-  init (config) {
+  static init (config) {
     const horizonURL = config.horizonURL
-    this._api = ApiCaller.getInstance(horizonURL)
+    _api = ApiCaller.getInstance(horizonURL)
   }
 
   /**
    *
    * @param {Wallet} wallet - wallet to sign the requests
    */
-  useWallet (wallet) {
-    this._api.useWallet(wallet)
+  static useWallet (wallet) {
+    _api.useWallet(wallet)
+  }
+
+  static getWithSignature (endpoint) {
+    return _api.getWithSignature(this._getEndpoint(endpoint))
+  }
+
+  static _getEndpoint (path) {
+    return `/${HORIZON_VERSION_PREFIX}/${path}`
   }
 
   /**
    * @returns {sdk.ApiCaller}
    */
-  get api () {
-    if (!this._api) {
+  static get api () {
+    if (!_api) {
       throw new Error('API is not initialized')
     }
 
-    return this._api
+    return _api
   }
 }

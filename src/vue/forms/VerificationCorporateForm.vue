@@ -148,7 +148,7 @@ import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
@@ -178,7 +178,7 @@ export default {
     },
     isLoaded: false,
     isLoadingFailed: false,
-    accountType: ACCOUNT_TYPES.syndicate,
+    accountType: ACCOUNT_ROLES.syndicate,
     MIN_TEAM_SIZE,
   }),
 
