@@ -16,8 +16,9 @@
     "build": "node webpack/build.js",
     "test": "node --max-old-space-size=4096 node_modules/.bin/karma start",
     "test:watch": "node --max-old-space-size=4096 node_modules/.bin/karma start --no-single-run --auto-watch",
-    "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0",
-    "lint:css": "stylelint 'src/**/*.{vue,css,scss}' --syntax scss"
+    "lint": "npm run lint:styles && npm run lint:scripts",
+    "lint:scripts": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0",
+    "lint:styles": "stylelint 'src/**/*.{vue,css,scss}' --syntax scss"
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
