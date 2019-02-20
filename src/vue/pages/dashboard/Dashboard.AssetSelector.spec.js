@@ -124,6 +124,7 @@ describe('Dashboard.AssetSelector component', () => {
       actions: accountModule.actions,
     })
 
+    sinon.stub(AssetSelector, 'created')
     wrapper = shallowMount(AssetSelector, {
       store,
       localVue,
@@ -139,6 +140,7 @@ describe('Dashboard.AssetSelector component', () => {
     })
 
     it('is called inside created hook', () => {
+      AssetSelector.created.restore()
       sinon.stub(AssetSelector.methods, 'loadTokens')
 
       shallowMount(AssetSelector, {
@@ -220,9 +222,7 @@ describe('Dashboard.AssetSelector component', () => {
       })
     })
 
-    it('tokensList()', async () => {
-      await wrapper.vm.loadTokens()
-
+    it('tokensList()', () => {
       wrapper.vm.tokens = mockedTokens
       const sortedTokens = mockedTokens
         .sort((a, b) => a.code.localeCompare(b.code))
