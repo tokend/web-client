@@ -3,10 +3,6 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./base.conf')
 
-const log = require('loglevel')
-
-log.setDefaultLevel('error')
-
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   module: {
