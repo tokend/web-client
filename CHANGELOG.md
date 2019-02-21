@@ -16,6 +16,37 @@ for further information about branching and tagging conventions.
 - Passing creatorDetails instead of details in the assetCreationRequest
 - Passing creatorDetails instead of details in the assetUpdateRequest
 - Passing creatorDetails instead of details in the createSaleCreationRequest
+- Rename update kyc request to change role request
+
+- Renamed request types:
+  - `xdr.ReviewableRequestType.preIssuanceCreate` -> `xdr.ReviewableRequestType.createPreIssuance`
+  - `xdr.ReviewableRequestType.issuanceCreate` -> `xdr.ReviewableRequestType.createIssuance`
+  - `xdr.ReviewableRequestType.sale` -> `xdr.ReviewableRequestType.createSale`
+  - `xdr.ReviewableRequestType.limitsUpdate` -> `xdr.ReviewableRequestType.updateLimit`
+  - `xdr.ReviewableRequestType.amlAlert` -> `xdr.ReviewableRequestType.createAmlAlert`
+  - `xdr.ReviewableRequestType.updateKyc` -> `xdr.ReviewableRequestType.changeRole`
+  - `xdr.ReviewableRequestType.assetCreate` -> `xdr.ReviewableRequestType.createAsset`
+  - `xdr.ReviewableRequestType.assetUpdate` -> `xdr.ReviewableRequestType.updateAsset`
+
+- Renamed fields with names like `details` to `creatorDetails` according to new XDR structs
+  - `createAmlAlert (opts)`:
+    - field `opts.reason -> opts.creatorDetails`
+  - `createWithdrawWithAutoConversion (opts)`:
+    - field `opts.externalDetails -> opts.creatorDetails`
+  - `assetCreationRequest (opts)`:
+    - field `opts.details -> opts.creatorDetails`
+  - `assetUpdateRequest (opts)`:
+    - field `opts.details -> opts.creatorDetails`
+  - `createSaleCreationRequest (opts)`:
+    - field `opts.details -> opts.creatorDetails`
+  - `createIssuanceRequest (opts)`:
+    - field `opts.externalDetails -> opts.creatorDetails`
+  - `createChangeRoleRequest (opts)`:
+    - field `opts.kycData -> opts.creatorDetails`
+  - `createUpdateSaleDetailsRequest (opts)`:
+    - field `opts.newDetails -> opts.creatorDetails`
+  - `createPreIssuanceRequestOp (opts)`:
+    - introduced field `opts.creatorDetails`
 
 ### Removed
 - Passing keyLevelToSet to CreateChangeRoleRequestBuilder.createChangeRoleRequest

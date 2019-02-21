@@ -10,7 +10,7 @@
     "request_type_i": 5,
     "request_type": "sale",
     "two_step_withdrawal": null,
-    "sale": {
+    "create_sale": {
       "base_asset": "ETH2",
       "default_quote_asset": "USD",
       "start_time": "2018-02-11T21:22:00Z",
@@ -22,7 +22,7 @@
         "value": 2
       },
       "base_asset_for_hard_cap": "150000.000000",
-      "details": {
+      "creator_details": {
         "description": "BUDXEPAFDOG4EQA2C5ZGWFM2BIOS5BFEDE3U465RWLFG6XMSE7OQ",
         "logo": {
           "key": "dpurah4infpebjhcost7fvo3l3qinkqqg73q7gakvchkiuvbjsje4osa",

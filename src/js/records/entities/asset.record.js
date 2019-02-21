@@ -15,19 +15,19 @@ export class AssetRecord {
     this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
 
-    this.details = record.details
-    this.name = _get(record, 'details.name')
-    this.externalSystemType = _get(record, 'details.externalSystemType')
+    this.details = record.creatorDetails
+    this.name = _get(record, 'creatorDetails.name')
+    this.externalSystemType = _get(record, 'creatorDetails.externalSystemType')
 
-    this.logo = _get(record, 'details.logo')
-    this.logoKey = _get(record, 'details.logo.key')
-    this.logoName = _get(record, 'details.logo.name')
-    this.logoType = _get(record, 'details.logo.type')
+    this.logo = _get(record, 'creatorDetails.logo')
+    this.logoKey = _get(record, 'creatorDetails.logo.key')
+    this.logoName = _get(record, 'creatorDetails.logo.name')
+    this.logoType = _get(record, 'creatorDetails.logo.type')
 
-    this.terms = _get(record, 'details.terms')
-    this.termsKey = _get(record, 'details.terms.key')
-    this.termsName = _get(record, 'details.terms.name')
-    this.termsType = _get(record, 'details.terms.type')
+    this.terms = _get(record, 'creatorDetails.terms')
+    this.termsKey = _get(record, 'creatorDetails.terms.key')
+    this.termsName = _get(record, 'creatorDetails.terms.name')
+    this.termsType = _get(record, 'creatorDetails.terms.type')
 
     this.policies = this._policies()
     this.policy = this._policy()

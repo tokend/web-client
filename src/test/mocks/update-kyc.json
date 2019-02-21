@@ -8,15 +8,15 @@
   "hash": "2ab87437a6872833e723ca853f0c0db84d40970a98e3b71a2b53e54ba20c28a5",
   "details": {
     "request_type_i": 8,
-    "request_type": "update_kyc",
-    "update_kyc": {
-      "account_to_update_kyc": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",
-      "account_type_to_set": {
+    "request_type": "change_role",
+    "change_role": {
+      "destination_account": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",
+      "account_role_to_set": {
         "int": 2,
         "string": "general"
       },
       "kyc_level": 0,
-      "kyc_data": {
+      "creator_details": {
         "blob_id": "IE2Y72WTREFRVISICOHFWSJJ44AMWGLWOEJTX46L2AXWNQF7LCVA"
       },
       "all_tasks": 31,

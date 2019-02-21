@@ -113,10 +113,10 @@ describe('Record unwrapper opts() method should return proper data', () => {
     })
 
     it('name', () => {
-      expect(opts.details.name)
+      expect(opts.creator_details.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.name
+          assetCreateJSON.details.asset_create.creator_details.name
         )
     })
 
@@ -130,42 +130,42 @@ describe('Record unwrapper opts() method should return proper data', () => {
     })
 
     it('logo', () => {
-      expect(opts.details.logo.key)
+      expect(opts.creator_details.logo.key)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.key
+          assetCreateJSON.details.asset_create.creator_details.logo.key
         )
 
-      expect(opts.details.logo.type)
+      expect(opts.creator_details.logo.type)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.type
+          assetCreateJSON.details.asset_create.creator_details.logo.type
         )
 
-      expect(opts.details.logo.name)
+      expect(opts.creator_details.logo.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.name
+          assetCreateJSON.details.asset_create.creator_details.logo.name
         )
     })
 
     it('terms', () => {
-      expect(opts.details.terms.key)
+      expect(opts.creator_details.terms.key)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.key
+          assetCreateJSON.details.asset_create.creator_details.terms.key
         )
 
-      expect(opts.details.terms.type)
+      expect(opts.creator_details.terms.type)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.type
+          assetCreateJSON.details.asset_create.creator_details.terms.type
         )
 
-      expect(opts.details.terms.name)
+      expect(opts.creator_details.terms.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.name
+          assetCreateJSON.details.asset_create.creator_details.terms.name
         )
     })
   })
@@ -270,21 +270,21 @@ describe('Record unwrapper opts() method should return proper data', () => {
     })
 
     it('details.name', () => {
-      expect(opts.details.name)
+      expect(opts.creator_details.name)
         .to
-        .equal(saleCreateJSON.details.sale.details.name)
+        .equal(saleCreateJSON.details.sale.creator_details.name)
     })
 
     it('details.short_description', () => {
-      expect(opts.details.short_description)
+      expect(opts.creator_details.short_description)
         .to
-        .equal(saleCreateJSON.details.sale.details.short_description)
+        .equal(saleCreateJSON.details.sale.creator_details.short_description)
     })
 
     it('details.description', () => {
-      expect(opts.details.description)
+      expect(opts.creator_details.description)
         .to
-        .equal(saleCreateJSON.details.sale.details.description)
+        .equal(saleCreateJSON.details.sale.creator_details.description)
     })
 
     it('quoteAssets', () => {
@@ -318,17 +318,17 @@ describe('Record unwrapper opts() method should return proper data', () => {
     })
 
     it('logo', () => {
-      expect(opts.details.logo.key)
+      expect(opts.creator_details.logo.key)
         .to
-        .equal(saleCreateJSON.details.sale.details.logo.key)
+        .equal(saleCreateJSON.details.sale.creator_details.logo.key)
 
-      expect(opts.details.logo.type)
+      expect(opts.creator_details.logo.type)
         .to
-        .equal(saleCreateJSON.details.sale.details.logo.type)
+        .equal(saleCreateJSON.details.sale.creator_details.logo.type)
 
-      expect(opts.details.logo.name)
+      expect(opts.creator_details.logo.name)
         .to
-        .equal(saleCreateJSON.details.sale.details.logo.name)
+        .equal(saleCreateJSON.details.sale.creator_details.logo.name)
     })
   })
 })

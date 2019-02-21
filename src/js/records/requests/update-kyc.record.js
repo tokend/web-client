@@ -6,20 +6,20 @@ export class UpdateKycRequestRecord extends RequestRecord {
     super(record)
 
     this.accountToUpdateKyc = _get(
-      record, 'details.updateKyc.accountToUpdateKyc'
+      record, 'details.changeRole.destinationAccount'
     )
-    this.accountTypeToSet = _get(
-      record, 'details.updateKyc.accountTypeToSet.int'
+    this.accountRoleToSet = _get(
+      record, 'details.changeRole.accountRoleToSet.int'
     )
-    this.accountTypeToSetStr = _get(
-      record, 'details.updateKyc.accountTypeToSet.string'
+    this.accountRoleToSetStr = _get(
+      record, 'details.changeRole.accountRoleToSet.string'
     )
-    this.kycLevel = _get(record, 'details.updateKyc.kycLevel')
-    this.blobId = _get(record, 'details.updateKyc.kycData.blobId')
-    this.allTasks = _get(record, 'details.updateKyc.allTasks')
-    this.pendingTasks = _get(record, 'details.updateKyc.pendingTasks')
-    this.sequenceNumber = _get(record, 'details.updateKyc.sequenceNumber')
-    this.externalDetails = _get(record, 'details.updateKyc.externalDetails')
+    this.kycLevel = _get(record, 'details.changeRole.kycLevel')
+    this.blobId = _get(record, 'details.changeRole.creatorDetails.blobId')
+    this.allTasks = _get(record, 'details.changeRole.allTasks')
+    this.pendingTasks = _get(record, 'details.changeRole.pendingTasks')
+    this.sequenceNumber = _get(record, 'details.changeRole.sequenceNumber')
+    this.externalDetails = _get(record, 'details.changeRole.externalDetails')
   }
 
   get rejector () {

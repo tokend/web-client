@@ -10,14 +10,14 @@ describe('SaleRequestRecord', () => {
   }
 
   const setQuoteAssets = (rawJSON, assets) => {
-    rawJSON.details.sale.quote_assets = assets
+    rawJSON.details.create_sale.quote_assets = assets
 
     return rawJSON
   }
 
   const setLogoKey = (rawJSON, key) => {
-    rawJSON.details.sale.details.logo = {}
-    rawJSON.details.sale.details.logo.key = key
+    rawJSON.details.create_sale.creatorDetails.logo = {}
+    rawJSON.details.create_sale.creatorDetails.logo.key = key
 
     return rawJSON
   }
@@ -28,49 +28,49 @@ describe('SaleRequestRecord', () => {
     expect(record.baseAsset)
       .to
       .equal(
-        saleCreateJSON.details.sale.base_asset
+        saleCreateJSON.details.create_sale.base_asset
       )
 
     expect(record.name)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.name
+        saleCreateJSON.details.create_sale.creatorDetails.name
       )
 
     expect(record.defaultQuoteAsset)
       .to
       .equal(
-        saleCreateJSON.details.sale.default_quote_asset
+        saleCreateJSON.details.create_sale.default_quote_asset
       )
 
     expect(record.startTime)
       .to
       .equal(
-        saleCreateJSON.details.sale.start_time
+        saleCreateJSON.details.create_sale.start_time
       )
 
     expect(record.endTime)
       .to
       .equal(
-        saleCreateJSON.details.sale.end_time
+        saleCreateJSON.details.create_sale.end_time
       )
 
     expect(record.softCap)
       .to
       .equal(
-        saleCreateJSON.details.sale.soft_cap
+        saleCreateJSON.details.create_sale.soft_cap
       )
 
     expect(record.hardCap)
       .to
       .equal(
-        saleCreateJSON.details.sale.hard_cap
+        saleCreateJSON.details.create_sale.hard_cap
       )
 
     expect(record.baseAssetForHardCap)
       .to
       .equal(
-        saleCreateJSON.details.sale.base_asset_for_hard_cap
+        saleCreateJSON.details.create_sale.base_asset_for_hard_cap
       )
   })
 
@@ -80,13 +80,13 @@ describe('SaleRequestRecord', () => {
     expect(record.saleState)
       .to
       .equal(
-        saleCreateJSON.details.sale.state.value
+        saleCreateJSON.details.create_sale.state.value
       )
 
     expect(record.saleStateStr)
       .to
       .equal(
-        saleCreateJSON.details.sale.state.name
+        saleCreateJSON.details.create_sale.state.name
       )
   })
 
@@ -96,13 +96,13 @@ describe('SaleRequestRecord', () => {
     expect(record.saleTypeStr)
       .to
       .equal(
-        saleCreateJSON.details.sale.sale_type.name
+        saleCreateJSON.details.create_sale.sale_type.name
       )
 
     expect(record.saleType)
       .to
       .equal(
-        saleCreateJSON.details.sale.sale_type.value
+        saleCreateJSON.details.create_sale.sale_type.value
       )
   })
 
@@ -112,19 +112,19 @@ describe('SaleRequestRecord', () => {
     expect(record.description)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.description
+        saleCreateJSON.details.create_sale.creatorDetails.description
       )
 
     expect(record.shortDescription)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.short_description
+        saleCreateJSON.details.create_sale.creatorDetails.short_description
       )
 
     expect(record.youtubeVideoId)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.youtube_video_id
+        saleCreateJSON.details.create_sale.creatorDetails.youtube_video_id
       )
   })
 
@@ -147,19 +147,19 @@ describe('SaleRequestRecord', () => {
     expect(record.logoKey)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.logo.key
+        saleCreateJSON.details.create_sale.creatorDetails.logo.key
       )
 
     expect(record.logoName)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.logo.name
+        saleCreateJSON.details.create_sale.creatorDetails.logo.name
       )
 
     expect(record.logoType)
       .to
       .equal(
-        saleCreateJSON.details.sale.details.logo.type
+        saleCreateJSON.details.create_sale.creatorDetails.logo.type
       )
   })
 

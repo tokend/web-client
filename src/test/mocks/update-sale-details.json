@@ -14,7 +14,7 @@
     "aml_alert": null,
     "update_sale_details": {
       "sale_id": 10,
-      "new_details": {
+      "creator_details": {
         "description": "XZUXFXNYKU3DYN46RZITWRNDP6FAW2BDCY4JZEOMOKNZFBOYKJMA",
         "logo": {
           "key": "dpurah4inf7edjhcost7fvlmu3oygszwf7lho4e3h6rqujdxnpwfrkn3",

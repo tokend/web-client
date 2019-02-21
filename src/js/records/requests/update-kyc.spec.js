@@ -12,36 +12,36 @@ describe('UpdateKycRequestRecord', () => {
   it('constructor should properly set all the basic fields', () => {
     const record = getRecord()
 
-    expect(record.accountToUpdateKyc)
+    expect(record.destinationAccount)
       .to
-      .equal(updateKycJSON.details.update_kyc.account_to_update_kyc)
+      .equal(updateKycJSON.details.change_role.destination_account)
 
-    expect(record.accountToUpdateKyc)
-      .to
-      .not
-      .equal(undefined)
-
-    expect(record.accountTypeToSet)
-      .to
-      .equal(updateKycJSON.details.update_kyc.account_type_to_set.int)
-
-    expect(record.accountTypeToSet)
+    expect(record.destinationAccount)
       .to
       .not
       .equal(undefined)
 
-    expect(record.accountTypeToSetStr)
+    expect(record.accountRoleToSet)
       .to
-      .equal(updateKycJSON.details.update_kyc.account_type_to_set.string)
+      .equal(updateKycJSON.details.change_role.account_role_to_set.int)
 
-    expect(record.accountTypeToSetStr)
+    expect(record.accountRoleToSet)
+      .to
+      .not
+      .equal(undefined)
+
+    expect(record.accountRoleToSetStr)
+      .to
+      .equal(updateKycJSON.details.change_role.account_role_to_set.string)
+
+    expect(record.accountRoleToSetStr)
       .to
       .not
       .equal(undefined)
 
     expect(record.kycLevel)
       .to
-      .equal(updateKycJSON.details.update_kyc.kyc_level)
+      .equal(updateKycJSON.details.change_role.kyc_level)
 
     expect(record.kycLevel)
       .to
@@ -50,7 +50,7 @@ describe('UpdateKycRequestRecord', () => {
 
     expect(record.blobId)
       .to
-      .equal(updateKycJSON.details.update_kyc.kyc_data.blob_id)
+      .equal(updateKycJSON.details.change_role.creator_details.blob_id)
 
     expect(record.blobId)
       .to
@@ -59,7 +59,7 @@ describe('UpdateKycRequestRecord', () => {
 
     expect(record.allTasks)
       .to
-      .equal(updateKycJSON.details.update_kyc.all_tasks)
+      .equal(updateKycJSON.details.change_role.all_tasks)
 
     expect(record.allTasks)
       .to
@@ -68,7 +68,7 @@ describe('UpdateKycRequestRecord', () => {
 
     expect(record.pendingTasks)
       .to
-      .equal(updateKycJSON.details.update_kyc.pending_tasks)
+      .equal(updateKycJSON.details.change_role.pending_tasks)
 
     expect(record.pendingTasks)
       .to
@@ -77,7 +77,7 @@ describe('UpdateKycRequestRecord', () => {
 
     expect(record.sequenceNumber)
       .to
-      .equal(updateKycJSON.details.update_kyc.sequence_number)
+      .equal(updateKycJSON.details.change_role.sequence_number)
 
     expect(record.sequenceNumber)
       .to
@@ -90,7 +90,7 @@ describe('UpdateKycRequestRecord', () => {
 
     expect(record.rejector)
       .to
-      .equal(updateKycJSON.details.update_kyc.external_details[1].rejector)
+      .equal(updateKycJSON.details.change_role.external_details[1].rejector)
 
     expect(record.rejector)
       .to

@@ -12,7 +12,7 @@ export class ReviewRequestOp {
     this.isFulfilled = record.isFulfilled
     this.actionValue = record.action.value
 
-    this.externalDetails = record.externalDetails
+    this.creatorDetails = record.creatorDetails
   }
 
   get isApprove () {

@@ -40,7 +40,7 @@ export default {
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.account.accountId,
         accountRoleToSet: this.accountType,
-        kycData: {
+        creatorDetails: {
           blob_id: kycBlobId,
         },
       })

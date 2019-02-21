@@ -59,7 +59,7 @@ export class RecordUnwrapper {
           hardCap: record.hardCap,
           saleState: record.saleState,
           baseAssetForHardCap: record.baseAssetForHardCap,
-          details: {
+          creatorDetails: {
             name: record.name,
             short_description: record.shortDescription,
             description: record.description,
@@ -76,7 +76,7 @@ export class RecordUnwrapper {
           maxIssuanceAmount: record.maxIssuanceAmount,
           policies: record.policy,
           initialPreissuedAmount: record.initialPreissuedAmount,
-          details: {
+          creatorDetails: {
             name: record.assetName,
             logo: {
               key: record.logoKey,
