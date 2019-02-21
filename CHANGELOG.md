@@ -9,7 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Fixed
-- Withdrawal from displaying
+- Withdrawal form displaying
 
 ## [1.0.0-rc.2] - 2019-02-20
 ### Added
