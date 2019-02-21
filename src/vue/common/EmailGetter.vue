@@ -26,10 +26,14 @@
 </template>
 
 <script>
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
+
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
+  mixins: [IdentityGetterMixin],
+
   props: {
     accountId: {
       type: String,
@@ -72,7 +76,7 @@ export default {
     async loadEmail () {
       try {
         const accountId = await this.getAccountId()
-        this.email = await Sdk.horizon.public.getEmailByAccountId(accountId)
+        this.email = await this.getEmailByAccountId(accountId)
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }

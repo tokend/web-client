@@ -111,7 +111,6 @@ describe('IssuanceForm', () => {
     let mockHelper
 
     let accountResource
-    let publicResource
     let transactionsResource
 
     let store
@@ -120,7 +119,6 @@ describe('IssuanceForm', () => {
       mockHelper = new MockHelper()
 
       accountResource = mockHelper.getHorizonResourcePrototype('account')
-      publicResource = mockHelper.getHorizonResourcePrototype('public')
       transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
 
@@ -283,8 +281,8 @@ describe('IssuanceForm', () => {
       describe('getReceiverAccountId', () => {
         it('loads account ID by email if receiver is a valid email', async () => {
           const receiver = 'foo@bar.com'
-          const spy = sinon.stub(publicResource, 'getAccountIdByEmail')
-            .resolves({ data: {} })
+          const spy = sinon.stub(wrapper.vm, 'getAccountIdByEmail')
+            .resolves('')
 
           await wrapper.vm.getReceiverAccountId(receiver)
 
