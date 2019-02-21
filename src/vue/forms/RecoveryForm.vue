@@ -83,6 +83,8 @@ import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
+import { vuexTypes } from '@/vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'recovery-form',
@@ -108,6 +110,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      storeWallet: vuexTypes.STORE_WALLET,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKyc: vuexTypes.LOAD_KYC,
+    }),
     async submit () {
       if (!this.isFormValid()) {
         return
@@ -119,8 +126,18 @@ export default {
           this.form.recoverySeed,
           this.form.password
         )
+
+        const newWallet = await Sdk.api.wallets.get(
+          this.form.email,
+          this.form.password
+        )
+        Sdk.sdk.useWallet(newWallet)
+        this.storeWallet(newWallet)
+
+        await this.loadAccount()
+        await this.loadKyc()
         Bus.success('auth-pages.recovered')
-        this.$router.push(vueRoutes.login)
+        this.$router.push(vueRoutes.app)
       } catch (e) {
         switch (e.constructor) {
           case errors.NotFoundError:
