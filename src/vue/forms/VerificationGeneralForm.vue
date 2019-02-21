@@ -141,25 +141,6 @@
 
           <div class="app__form-row">
             <div class="app__form-field">
-              <!--
-                :key is a hack to ensure that the component will be updated
-                after property change
-              -->
-              <select-field
-                :key="form.address.country"
-                v-model="form.address.country"
-                :values="countries"
-                @blur="touchField('form.address.country')"
-                id="verification-general-country"
-                :label="'verification-form.country-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.address.country')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
               <input-field
                 white-autofill
                 v-model="form.address.state"
@@ -312,7 +293,6 @@ export default {
         firstLine: '',
         secondLine: '',
         city: '',
-        country: '',
         state: '',
         postalCode: '',
       },
@@ -327,7 +307,6 @@ export default {
     isCodeShown: false,
     accountRole: config.ACCOUNT_ROLES.general,
     DOCUMENT_TYPES,
-    countries: [],
   }),
 
   validations: {
@@ -341,7 +320,6 @@ export default {
       address: {
         firstLine: { required },
         city: { required },
-        country: { required },
         state: { required },
         postalCode: { required },
       },
@@ -363,8 +341,6 @@ export default {
     try {
       await this.loadAccount(this.accountId)
       await this.loadKyc()
-      const { data } = await Sdk.horizon.public.getEnums()
-      this.countries = data.countries
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
@@ -413,7 +389,6 @@ export default {
           line_1: this.form.address.firstLine,
           line_2: this.form.address.secondLine,
           city: this.form.address.city,
-          country: this.form.address.country,
           state: this.form.address.state,
           postal_code: this.form.address.postalCode,
         },
@@ -440,7 +415,6 @@ export default {
           firstLine: kycData.address.line_1,
           secondLine: kycData.address.line_2,
           city: kycData.address.city,
-          country: kycData.address.country,
           state: kycData.address.state,
           postalCode: kycData.address.postal_code,
         },
