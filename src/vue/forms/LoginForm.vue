@@ -116,9 +116,6 @@ export default {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
 
-        if (!await this.isUserExist(accountId)) {
-          await Sdk.api.users.create(accountId)
-        }
         await this.loadAccount(accountId)
         await this.loadKyc()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
@@ -130,17 +127,6 @@ export default {
         this.processAuthError(e)
       }
       this.enableForm()
-    },
-    async isUserExist (accountId) {
-      try {
-        await Api.getWithSignature(`accounts/${accountId}`)
-        return true
-      } catch (e) {
-        if (e instanceof errors.NotFoundError) {
-          return false
-        }
-        throw e
-      }
     },
     processAuthError (error) {
       switch (error.constructor) {
