@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+### Added
+- CSS rule that prevents any events on disabled buttons.
+
 ### Fixed
 - Trade offer validations. Earlier, the user was able to enter invalid value without some error message but he cannot be able to send from, so it was confusing for him.
 
