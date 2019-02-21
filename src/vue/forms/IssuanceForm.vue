@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="accountRoleId !== ACCOUNT_ROLES.syndicate">
+    <div v-if="accountRoleId !== config.ACCOUNT_ROLES.syndicate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
@@ -136,8 +136,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Sdk } from '@/sdk'
 import { base } from '@tokend/js-sdk'
 
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
-
 import {
   required,
   amountRange,
@@ -167,8 +165,8 @@ export default {
       receiver: '',
       reference: '',
     },
+    config,
     isLoaded: false,
-    ACCOUNT_ROLES,
     MIN_AMOUNT: config.MIN_AMOUNT,
     REFERENCE_MAX_LENGTH,
     DECIMAL_POINTS: config.DECIMAL_POINTS,

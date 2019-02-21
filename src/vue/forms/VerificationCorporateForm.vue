@@ -149,7 +149,7 @@ import Loader from '@/vue/common/Loader'
 
 import { Api } from '@/api'
 
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
+import config from '@/config'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
@@ -179,7 +179,7 @@ export default {
     },
     isLoaded: false,
     isLoadingFailed: false,
-    accountRole: ACCOUNT_ROLES.syndicate,
+    accountRole: config.ACCOUNT_ROLES.syndicate,
     MIN_TEAM_SIZE,
   }),
 

@@ -199,6 +199,7 @@ export default {
           throw e
         }
       }
+      Api.useWallet(newWallet)
       Sdk.sdk.useWallet(newWallet)
       this.storeWallet(newWallet)
     },

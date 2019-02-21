@@ -34,7 +34,8 @@
       <router-link
         :to="vueRoutes.verification.general"
         class="account-type-selector__item"
-        :disabled="kycAccountRole && kycAccountRole !== ACCOUNT_ROLES.general"
+        :disabled="kycAccountRole &&
+          kycAccountRole !== config.ACCOUNT_ROLES.general"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
@@ -50,7 +51,8 @@
       <router-link
         :to="vueRoutes.verification.corporate"
         class="account-type-selector__item"
-        :disabled="kycAccountRole && kycAccountRole !== ACCOUNT_ROLES.syndicate"
+        :disabled="kycAccountRole &&
+          kycAccountRole !== config.ACCOUNT_ROLES.syndicate"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -77,7 +79,7 @@ import { store, vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
+import config from '@/config'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request. It redirects
@@ -90,12 +92,12 @@ import { ACCOUNT_ROLES } from '@/js/const/account-roles'
 function verificationGuard (to, from, next) {
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   switch (kycAccountRole) {
-    case ACCOUNT_ROLES.syndicate:
+    case config.ACCOUNT_ROLES.syndicate:
       to.name === vueRoutes.verification.corporate.name
         ? next()
         : next(vueRoutes.verification.corporate)
       break
-    case ACCOUNT_ROLES.general:
+    case config.ACCOUNT_ROLES.general:
       to.name === vueRoutes.verification.general.name
         ? next()
         : next(vueRoutes.verification.general)
@@ -111,7 +113,7 @@ export default {
   data: _ => ({
     vueRoutes,
     REQUEST_STATES_STR,
-    ACCOUNT_ROLES,
+    config,
   }),
   computed: {
     ...mapGetters({

@@ -146,7 +146,7 @@
             :to="vueRoutes.requests"
             tag="a"
             v-if="config.featureFlags.requests &&
-              accountRoleId === ACCOUNT_ROLES.syndicate"
+              accountRoleId === config.ACCOUNT_ROLES.syndicate"
           >
             <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
@@ -185,8 +185,6 @@
 import Logo from '@/vue/assets/Logo'
 import AppFooter from '@/vue/navigation/Footer'
 
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
-
 import { vueRoutes } from '@/vue-router/routes'
 
 import { vuexTypes } from '@/vuex'
@@ -206,7 +204,6 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
-    ACCOUNT_ROLES,
   }),
 
   computed: {

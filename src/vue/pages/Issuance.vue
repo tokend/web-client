@@ -10,7 +10,7 @@
       </template>
 
       <template
-        v-if="accountRoleId === ACCOUNT_ROLES.syndicate"
+        v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
         slot="extra"
       >
         <button
@@ -135,7 +135,7 @@ import { OP_TYPES } from '@tokend/js-sdk'
 
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
+import config from '@/config'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -159,7 +159,7 @@ export default {
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
     firstPageLoader: () => {},
-    ACCOUNT_ROLES,
+    config,
   }),
 
   computed: {

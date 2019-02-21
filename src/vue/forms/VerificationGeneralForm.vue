@@ -281,7 +281,7 @@ import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
+import config from '@/config'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -325,7 +325,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isCodeShown: false,
-    accountRole: ACCOUNT_ROLES.general,
+    accountRole: config.ACCOUNT_ROLES.general,
     DOCUMENT_TYPES,
     countries: [],
   }),

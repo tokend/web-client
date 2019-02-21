@@ -24,7 +24,7 @@
 
       <template
         slot="extra"
-        v-if="accountRoleId === ACCOUNT_ROLES.syndicate"
+        v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
       >
         <button
           v-ripple
@@ -103,7 +103,7 @@ import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_ROLES } from '@/js/const/account-roles'
+import config from '@/config'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -111,8 +111,6 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-
-import config from '@/config'
 
 const SALE_STATES = {
   live: {
@@ -156,7 +154,6 @@ export default {
     selectedSale: null,
     config,
     SALE_STATES,
-    ACCOUNT_ROLES,
   }),
 
   computed: {
