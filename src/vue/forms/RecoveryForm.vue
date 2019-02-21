@@ -129,7 +129,7 @@ export default {
         Sdk.sdk.useWallet(newWallet)
         this.storeWallet(newWallet)
 
-        await this.loadAccount()
+        await this.loadAccount(newWallet._accountId)
         await this.loadKyc()
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.app)
