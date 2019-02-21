@@ -164,7 +164,7 @@ export default {
     },
 
     async loadAssets () {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
         .map(item => new AssetRecord(item, this.account.balances))

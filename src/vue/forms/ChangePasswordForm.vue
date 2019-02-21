@@ -86,6 +86,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
@@ -120,6 +121,7 @@ export default {
     ...mapGetters({
       wallet: vuexTypes.wallet,
       isTotpEnabled: vuexTypes.isTotpEnabled,
+      accountId: vuexTypes.accountId,
     }),
   },
   methods: {
@@ -132,7 +134,8 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.changePassword(this.form.newPassword)
+        const { data: signers } = await Api.getWithSignature(`accounts/${this.accountId}/signers`)
+        await Sdk.api.wallets.changePassword(this.form.newPassword, signers)
       } catch (e) {
         if (e instanceof errors.TFARequiredError) {
           await this.retryPasswordChange(e)

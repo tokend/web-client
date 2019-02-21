@@ -1,5 +1,5 @@
 import { DateUtil } from '@/js/utils'
-import { REQUEST_TYPES } from '@tokend/js-sdk'
+import { REQUEST_TYPES } from '@/js/const/request-types.const'
 
 import { RequestRecord } from './request-record'
 import { AssetCreateRequestRecord } from './requests/asset-create.record'
@@ -8,14 +8,14 @@ import {
   PreIssuanceCreateRequestRecord,
 } from './requests/pre-issuance-create.record'
 import { SaleRequestRecord } from './requests/sale-create.record'
-import { UpdateKycRequestRecord } from './requests/update-kyc.record'
+import { ChangeRoleRequestRecord } from './requests/change-role.record'
 import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
 
 export class RecordWrapper {
   static request (record, details) {
-    switch (record.details.requestTypeI) {
+    switch (record.requestDetails.type) {
       case REQUEST_TYPES.assetCreate:
         return new AssetCreateRequestRecord(...arguments)
       case REQUEST_TYPES.assetUpdate:
@@ -24,8 +24,8 @@ export class RecordWrapper {
         return new PreIssuanceCreateRequestRecord(...arguments)
       case REQUEST_TYPES.sale:
         return new SaleRequestRecord(...arguments)
-      case REQUEST_TYPES.updateKyc:
-        return new UpdateKycRequestRecord(...arguments)
+      case REQUEST_TYPES.changeRole:
+        return new ChangeRoleRequestRecord(...arguments)
       case REQUEST_TYPES.updateSaleDetail:
         return new UpdateSaleDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.amlAlert:

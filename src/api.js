@@ -23,8 +23,8 @@ export class Api {
     _api.useWallet(wallet)
   }
 
-  static getWithSignature (endpoint) {
-    return _api.getWithSignature(this._getEndpoint(endpoint))
+  static getWithSignature (endpoint, params) {
+    return _api.getWithSignature(this._getEndpoint(endpoint), params)
   }
 
   static _getEndpoint (path) {

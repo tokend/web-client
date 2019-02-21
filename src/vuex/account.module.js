@@ -43,8 +43,6 @@ export const getters = {
   [vuexTypes.accountId]: state => state.account.id,
   [vuexTypes.accountIsBlocked]: state => state.account.isBlocked,
   [vuexTypes.accountBlockReasons]: state => state.account.blockReasons,
-  [vuexTypes.accountType]: state => state.account.accountType,
-  [vuexTypes.accountTypeI]: state => state.account.accountTypeI,
   [vuexTypes.accountThresholds]: state => state.account.thresholds,
   [vuexTypes.accountReferrer]: state => state.account.referrer,
   [vuexTypes.accountReferrals]: state => state.account.referrals,
@@ -65,7 +63,9 @@ export const getters = {
     state.account,
     'accountKyc.kycData.blobId'
   ),
-  [vuexTypes.accountRoleId]: state => state.account.role.id,
+  [vuexTypes.accountRoleId]: state => _get(
+    state.account, 'role.id'
+  ),
 }
 
 export default {

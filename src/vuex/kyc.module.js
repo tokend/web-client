@@ -1,6 +1,15 @@
-import { RecordWrapper } from '../js/records'
-import { vuexTypes } from './types'
-import { Sdk } from '@/sdk'
+import {
+  RecordWrapper,
+} from '../js/records'
+import {
+  vuexTypes,
+} from './types'
+import {
+  Sdk,
+} from '@/sdk'
+import {
+  Api,
+} from '@/api'
 
 /**
  * @module
@@ -34,12 +43,17 @@ export const mutations = {
 }
 
 export const actions = {
-  async [vuexTypes.LOAD_KYC] ({ dispatch }) {
+  async [vuexTypes.LOAD_KYC] ({
+    dispatch,
+  }) {
     await dispatch(vuexTypes.LOAD_KYC_LATEST_REQUEST)
     await dispatch(vuexTypes.LOAD_KYC_DATA)
   },
 
-  async [vuexTypes.LOAD_KYC_LATEST_REQUEST] ({ rootGetters, commit }) {
+  async [vuexTypes.LOAD_KYC_LATEST_REQUEST] ({
+    rootGetters,
+    commit,
+  }) {
     const requestor = rootGetters[vuexTypes.accountId]
 
     // kinda optimization cause we are interested only in the latest
@@ -49,23 +63,31 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await Sdk.horizon.request.getAllForUpdateKyc({
-      requestor,
-      limit,
-      order,
+    const response = await Api.getWithSignature(`change_role_requests`, {
+      filter: {
+        requestor,
+      },
+      page: {
+        limit,
+        order,
+      },
+      include: ['request_details'],
     })
 
     if (!response.data[0]) {
       return
     }
-
     commit(
       vuexTypes.SET_KYC_LATEST_REQUEST,
       RecordWrapper.request(response.data[0])
     )
   },
 
-  async [vuexTypes.LOAD_KYC_DATA] ({ state, rootGetters, commit }) {
+  async [vuexTypes.LOAD_KYC_DATA] ({
+    state,
+    rootGetters,
+    commit,
+  }) {
     const latestBlobId = state.request.blobId
     if (!latestBlobId) {
       return
@@ -90,7 +112,7 @@ export const getters = {
   [vuexTypes.kycState]: state => state.request.state,
   [vuexTypes.kycStateI]: state => state.request.stateI,
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
-  [vuexTypes.kycAccountRoleToSet]: state => state.request.accountTypeToSet,
+  [vuexTypes.kycAccountRoleToSet]: state => state.request.accountRoleToSet,
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycApprovedData]: state => JSON.parse(state.approvedData),

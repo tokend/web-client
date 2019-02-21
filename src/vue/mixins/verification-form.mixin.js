@@ -8,7 +8,6 @@ import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 
-const KYC_LEVEL_TO_SET = 0
 const KYC_CREATION_REQUEST_ID = '0'
 
 export default {
@@ -40,8 +39,7 @@ export default {
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.accountId,
-        accountRoleToSet: this.accountRole,
-        kycLevelToSet: KYC_LEVEL_TO_SET,
+        accountRoleToSet: String(this.accountRole),
         kycData: {
           blob_id: kycBlobId,
         },
