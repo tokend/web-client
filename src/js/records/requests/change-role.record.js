@@ -6,12 +6,13 @@ export class ChangeRoleRequestRecord extends RequestRecord {
     super(record)
 
     this.accountToUpdateRole = _get(
-      record, 'requestDetails.accountToUpdateRole'
+      record, 'requestDetails.accountToUpdateRole.id'
     )
     this.accountRoleToSet = _get(
       record, 'requestDetails.accountRoleToSet'
     )
     this.blobId = _get(record, 'requestDetails.kycData.blobId')
+    this.externalDetails = _get(record, 'externalDetails.data')
   }
 
   get rejector () {

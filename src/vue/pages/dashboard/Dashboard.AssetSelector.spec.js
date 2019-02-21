@@ -9,7 +9,7 @@ import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
 import { vuexTypes } from '@/vuex'
 import { MockHelper } from '@/test'
-import { ASSET_POLICIES, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
@@ -116,8 +116,8 @@ describe('Dashboard.AssetSelector component', () => {
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
-    sinon.stub(accountModule.getters, vuexTypes.accountTypeI)
-      .returns(ACCOUNT_TYPES.syndicate)
+    sinon.stub(accountModule.getters, vuexTypes.accountRoleId)
+      .returns(config.ACCOUNT_ROLES.syndicate)
 
     store = new Vuex.Store({
       getters: accountModule.getters,

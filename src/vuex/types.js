@@ -47,8 +47,6 @@ const getters = {
   accountId: 'accountId',
   accountIsBlocked: 'accountIsBlocked',
   accountBlockReasons: 'accountBlockReasons',
-  accountType: 'accountType',
-  accountTypeI: 'accountTypeI',
   accountThresholds: 'accountThresholds',
   accountReferrer: 'accountReferrer',
   accountReferrals: 'accountReferrals',

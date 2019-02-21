@@ -161,10 +161,8 @@ describe('LoginForm component unit test', () => {
     })
 
     it('isUserExist method returns false for 404 error', async () => {
-      const resource = mockHelper.getApiResourcePrototype('users')
-
       sinon
-        .stub(resource, 'get')
+        .stub(mockHelper.apiInstance, 'getWithSignature')
         .throws(TestHelper.getError(errors.NotFoundError))
 
       const result = await wrapper.vm.isUserExist()

@@ -5,13 +5,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
-import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 import { MockHelper, MockWrapper } from '@/test'
 
 import { Bus } from '@/js/helpers/event-bus'
+
+import config from '@/config'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
@@ -59,8 +61,8 @@ describe('IssuanceForm', () => {
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountTypeI)
-        .returns(ACCOUNT_TYPES.syndicate)
+      sinon.stub(getters, vuexTypes.accountRoleId)
+        .returns(config.ACCOUNT_ROLES.syndicate)
       const store = new Vuex.Store({
         getters,
       })
@@ -123,8 +125,8 @@ describe('IssuanceForm', () => {
         mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountTypeI)
-        .returns(ACCOUNT_TYPES.syndicate)
+      sinon.stub(getters, vuexTypes.accountRoleId)
+        .returns(config.ACCOUNT_ROLES.syndicate)
       store = new Vuex.Store({
         getters,
       })

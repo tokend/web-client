@@ -16,17 +16,17 @@ import {
 export class RecordWrapper {
   static request (record, details) {
     switch (record.requestDetails.type) {
-      case REQUEST_TYPES.assetCreate:
+      case REQUEST_TYPES.createAsset:
         return new AssetCreateRequestRecord(...arguments)
-      case REQUEST_TYPES.assetUpdate:
+      case REQUEST_TYPES.updateAsset:
         return new AssetUpdateRequestRecord(...arguments)
-      case REQUEST_TYPES.preIssuanceCreate:
+      case REQUEST_TYPES.createPreIssuance:
         return new PreIssuanceCreateRequestRecord(...arguments)
-      case REQUEST_TYPES.sale:
+      case REQUEST_TYPES.createSale:
         return new SaleRequestRecord(...arguments)
       case REQUEST_TYPES.changeRole:
         return new ChangeRoleRequestRecord(...arguments)
-      case REQUEST_TYPES.updateSaleDetail:
+      case REQUEST_TYPES.updateSaleDetails:
         return new UpdateSaleDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.amlAlert:
       case REQUEST_TYPES.withdraw:

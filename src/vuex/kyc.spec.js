@@ -7,7 +7,7 @@ import { MockHelper, MockWrapper } from '../test'
 import { mutations, actions, getters } from './kyc.module'
 import { vuexTypes } from './types'
 
-import responseJSON from '../test/mocks/update-kyc-multiple'
+import responseJSON from '../test/mocks/update-kyc'
 
 describe('kyc.module', () => {
   afterEach(() => {
@@ -94,15 +94,11 @@ describe('kyc.module', () => {
     })
 
     it('LOAD_KYC_LATEST_REQUEST commits the proper set of mutations', async () => {
-      mockHelper.mockHorizonMethod(
-        'request',
-        'getAllForUpdateKyc',
-        responseJSON
-      )
+      sinon.stub(mockHelper.apiInstance, 'getWithSignature')
+        .resolves(MockWrapper.makeJsonapiResponse(responseJSON))
 
-      const expectedRequest = MockWrapper.makeHorizonResponse(
-        responseJSON
-      ).data[0]
+      const expectedRequest = MockWrapper
+        .makeJsonapiResponseData(responseJSON)[0]
       const expectedPayload = RecordWrapper.request(expectedRequest)
       const expectedMutation = vuexTypes.SET_KYC_LATEST_REQUEST
       const expectedMutations = {
