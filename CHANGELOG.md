@@ -9,7 +9,8 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Fixed
--Fix bug with asset create(lost `trailingDigitsCount` in op)
+- Fix bug with asset create (lost `trailingDigitsCount` in op)
+- Withdrawal form displaying
 
 ## [1.0.0-rc.2] - 2019-02-20
 ### Added
