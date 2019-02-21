@@ -1,15 +1,7 @@
-import {
-  RecordWrapper,
-} from '../js/records'
-import {
-  vuexTypes,
-} from './types'
-import {
-  Sdk,
-} from '@/sdk'
-import {
-  Api,
-} from '@/api'
+import { RecordWrapper } from '../js/records'
+import { vuexTypes } from './types'
+import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 /**
  * @module
