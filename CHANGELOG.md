@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Added
+- `Api` class, representing SDK class `ApiCaller`
+- `ACCOUNT_ROLES` constant to the config
+- `REQUEST_TYPES` constant
+- `ChangeRoleRequestRecord` wrapper for change role requests
+- `Api` instance to the `MockHelper`
+- `JsonapiResponse` to the `MockWrapper`
+
+### Fixed
+- `RecordWrapper.request`, `RequestRecord` according to the new request types
+- failed unit tests
+
+### Changed
+- Use sdk version 1.0.0-x.12
+- Comment failed tests, that are not fixed yet
+- test mocks according to the new API
+- Use `Api` class for the new API requests
+- Use `accountRoleId` instead of `accountType`
+- Use `CreateChangeRoleRequestBuilder.createChangeRoleRequest` instead of `CreateUpdateKYCRequestBuilder.createUpdateKYCRequest`
+- request mocks according to the new API responses
+
+### Removed
+- unnecessary test mocks
+- `UpdateKycRequestRecord` (replaced by `ChangeRoleRequestRecord`)
+
 ## [1.0.0-rc.2] - 2019-02-20
 ### Added
 - Build version displaying

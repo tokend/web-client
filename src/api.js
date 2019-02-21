@@ -16,17 +16,27 @@ export class Api {
   }
 
   /**
-   *
    * @param {Wallet} wallet - wallet to sign the requests
    */
   static useWallet (wallet) {
     _api.useWallet(wallet)
   }
 
-  static getWithSignature (endpoint, params) {
-    return _api.getWithSignature(this._getEndpoint(endpoint), params)
+  /**
+   * @param {String} path - endpoint path for the request
+   * @param {Object} opts - request options
+   *
+   * @returns {Promise} - API response
+   */
+  static getWithSignature (path, opts) {
+    return _api.getWithSignature(this._getEndpoint(path), opts)
   }
 
+  /**
+   * @param {String} path - endpoint path for the request
+   *
+   * @returns {String} - endpoint path, containing horizon version
+   */
   static _getEndpoint (path) {
     return `/${HORIZON_VERSION_PREFIX}/${path}`
   }

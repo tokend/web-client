@@ -134,8 +134,7 @@ export default {
       }
       this.disableForm()
       try {
-        const { data: signers } = await Api.getWithSignature(`accounts/${this.accountId}/signers`)
-        await Sdk.api.wallets.changePassword(this.form.newPassword, signers)
+        await Sdk.api.wallets.changePassword(this.form.newPassword)
       } catch (e) {
         if (e instanceof errors.TFARequiredError) {
           await this.retryPasswordChange(e)
