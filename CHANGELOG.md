@@ -13,6 +13,8 @@ for further information about branching and tagging conventions.
 
 ### Fixed
 - Trade offer validations. Earlier, the user was able to enter invalid value without some error message but he cannot be able to send from, so it was confusing for him.
+- Fix bug with asset create (lost `trailingDigitsCount` in op)
+- Withdrawal form displaying
 
 ## [1.0.0-rc.2] - 2019-02-20
 ### Added
