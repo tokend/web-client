@@ -62,6 +62,7 @@ import KeyViewer from '../common/KeyViewer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -107,6 +108,7 @@ export default {
         )
         if (response.data.verified) {
           Sdk.sdk.useWallet(wallet)
+          Api.useWallet(wallet)
           await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
           await this.loadAccount(this.storedWallet.accountId)
