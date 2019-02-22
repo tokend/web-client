@@ -7,10 +7,10 @@ export default Object.assign(
      * Account roles, existing in the system.
      */
     ACCOUNT_ROLES: Object.freeze({
-      notVerified: 2,
-      general: 3,
-      syndicate: 4,
-      blocked: 5,
+      blocked: '2',
+      general: '3',
+      syndicate: '4',
+      notVerified: '5',
     }),
 
     /**
