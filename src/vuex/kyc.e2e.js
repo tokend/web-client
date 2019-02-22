@@ -15,9 +15,7 @@ describe('kyc.module end-to-end test', () => {
     let store, mockHelper
 
     const accountId = 'GA4BFNAN3UHKCMK3Q5QVQFLANHHEGMOCDRHY6MN4OSPEPWOYGHYVY7M2'
-    const approvedBlobId = ''
     const latestBlobId = 'OOFBHZPK2Y2VUJRRTO2X6GKUXH6MO6GNKAIM4TYJFA3VZGZ2LB7A'
-    const approvedKycData = {}
     const latestKycData = { first_name: 'Bob', last_name: 'Smith' }
     const kycState = 'pending'
     const kycStateI = 1
@@ -28,7 +26,6 @@ describe('kyc.module end-to-end test', () => {
         actions: {},
         getters: {
           accountId: _ => accountId,
-          accountKycBlobId: _ => approvedBlobId,
         },
         mutations: {},
         state: {},
@@ -69,13 +66,6 @@ describe('kyc.module end-to-end test', () => {
         .to
         .deep
         .equal(latestKycData)
-    })
-
-    it('kycApprovedData', () => {
-      expect(store.getters[vuexTypes.kycApprovedData])
-        .to
-        .deep
-        .equal(approvedKycData)
     })
   })
 })

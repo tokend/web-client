@@ -43,7 +43,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID, unverifiedRoleId)
 
     async function loadRole (keyValueEntryKey) {
-      const { data } = await Api.get(`/v3/key_value/${keyValueEntryKey}`)
+      const { data } = await Api.api.get(`/v3/key_values/${keyValueEntryKey}`)
       return data.value.u32
     }
   },
