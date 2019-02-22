@@ -193,7 +193,7 @@ describe('TransferForm component', () => {
     wrapper.vm.view.opts.subject = 'Some text'
     wrapper.vm.form.token = { code: 'BTC' }
 
-    sinon.stub(base.PaymentV2Builder, 'paymentV2').returns('some operation')
+    sinon.stub(base.PaymentBuilder, 'payment').returns('some operation')
 
     const operation = wrapper.vm.buildPaymentOperation()
 

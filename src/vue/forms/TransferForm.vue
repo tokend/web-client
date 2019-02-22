@@ -453,7 +453,7 @@ export default {
       }
     },
     buildPaymentOperation () {
-      return base.PaymentV2Builder.paymentV2({
+      return base.PaymentBuilder.payment({
         sourceBalanceId: this.view.opts.sourceBalanceId,
         destination: this.view.opts.destinationAccountId,
         amount: this.view.opts.amount,

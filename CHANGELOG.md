@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 - Passing creatorDetails instead of details in the assetUpdateRequest
 - Passing creatorDetails instead of details in the createSaleCreationRequest
 - Rename update kyc request to change role request
+- Rename PaymentV2 builder to Payment builder
 
 - Renamed request types:
   - `xdr.ReviewableRequestType.preIssuanceCreate` -> `xdr.ReviewableRequestType.createPreIssuance`
