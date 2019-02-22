@@ -9,7 +9,7 @@
   "details": {
     "request_type_i": 13,
     "request_type": "asset_update",
-    "update_asset": {
+    "asset_update": {
       "code": "ETH",
       "policies": [
         {

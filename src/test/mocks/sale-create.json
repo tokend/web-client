@@ -10,7 +10,7 @@
     "request_type_i": 5,
     "request_type": "sale",
     "two_step_withdrawal": null,
-    "create_sale": {
+    "sale": {
       "base_asset": "ETH2",
       "default_quote_asset": "USD",
       "start_time": "2018-02-11T21:22:00Z",

@@ -4,7 +4,7 @@ import { MockWrapper } from '../../../test/index'
 
 import assetCreateRecordJSON from '../../../test/mocks/asset-create'
 
-describe.skip('AssetCreateRequestRecord', () => {
+describe('AssetCreateRequestRecord', () => {
   const getRecord = (rawJSON = assetCreateRecordJSON) => {
     const sdkResponse = MockWrapper.makeHorizonData(rawJSON)
     return new AssetCreateRequestRecord(sdkResponse)
@@ -180,21 +180,6 @@ describe.skip('AssetCreateRequestRecord', () => {
       record = getRecord(rawJSON)
 
       expect(record.isIssuanceManualReviewRequired).to.equal(false)
-    })
-
-    it('isRequiresKYC', () => {
-      let rawJSON = setPolicies(
-        assetCreateRecordJSON,
-        [ASSET_POLICIES.requiresKyc]
-      )
-      let record = getRecord(rawJSON)
-
-      expect(record.isRequiresKYC).to.equal(true)
-
-      rawJSON = setPolicies(assetCreateRecordJSON, [])
-      record = getRecord(rawJSON)
-
-      expect(record.isRequiresKYC).to.equal(false)
     })
 
     it('isStatsQuoteAsset', () => {

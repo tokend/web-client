@@ -9,39 +9,39 @@ export class AssetCreateRequestRecord extends RequestRecord {
     super(record)
 
     this.assetName = _get(
-      this._record, 'details.createAsset.details.name'
+      this._record, 'details.assetCreate.details.name'
     )
     this.assetCode = _get(
-      this._record, 'details.createAsset.code'
+      this._record, 'details.assetCreate.code'
     )
     this.preissuedAssetSigner = _get(
-      this._record, 'details.createAsset.preIssuedAssetSigner'
+      this._record, 'details.assetCreate.preIssuedAssetSigner'
     )
     this.maxIssuanceAmount = _get(
-      this._record, 'details.createAsset.maxIssuanceAmount'
+      this._record, 'details.assetCreate.maxIssuanceAmount'
     )
     this.initialPreissuedAmount = _get(
-      this._record, 'details.createAsset.initialPreissuedAmount'
+      this._record, 'details.assetCreate.initialPreissuedAmount'
     )
 
     this.policies = this._policies()
     this.policy = this._policy()
 
-    this.details = _get(this._record, 'details.createAsset.details')
-    this.terms = _get(this._record, 'details.createAsset.details.terms')
-    this.termsKey = _get(this._record, 'details.createAsset.details.terms.key')
+    this.details = _get(this._record, 'details.assetCreate.details')
+    this.terms = _get(this._record, 'details.assetCreate.details.terms')
+    this.termsKey = _get(this._record, 'details.assetCreate.details.terms.key')
     this.termsName = _get(
-      this._record, 'details.createAsset.details.terms.name'
+      this._record, 'details.assetCreate.details.terms.name'
     )
     this.termsType = _get(
-      this._record, 'details.createAsset.details.terms.type'
+      this._record, 'details.assetCreate.details.terms.type'
     )
-    this.logo = _get(this._record, 'details.createAsset.details.logo')
-    this.logoKey = _get(this._record, 'details.createAsset.details.logo.key')
-    this.logoName = _get(this._record, 'details.createAsset.details.logo.name')
-    this.logoType = _get(this._record, 'details.createAsset.details.logo.type')
+    this.logo = _get(this._record, 'details.assetCreate.details.logo')
+    this.logoKey = _get(this._record, 'details.assetCreate.details.logo.key')
+    this.logoName = _get(this._record, 'details.assetCreate.details.logo.name')
+    this.logoType = _get(this._record, 'details.assetCreate.details.logo.type')
     this.externalSystemType = _get(
-      this._record, 'details.createAsset.details.externalSystemType'
+      this._record, 'details.assetCreate.details.externalSystemType'
     )
 
     this.attachedDetails = details
@@ -77,7 +77,7 @@ export class AssetCreateRequestRecord extends RequestRecord {
   }
 
   _policies () {
-    return _get(this._record, 'details.createAsset.policies', [])
+    return _get(this._record, 'details.assetCreate.policies', [])
       .map(policy => policy.value)
   }
 
@@ -95,10 +95,6 @@ export class AssetCreateRequestRecord extends RequestRecord {
 
   get isIssuanceManualReviewRequired () {
     return !!(this.policy & ASSET_POLICIES.issuanceManualReviewRequired)
-  }
-
-  get isRequiresKYC () {
-    return !!(this.policy & ASSET_POLICIES.requiresKyc)
   }
 
   get isStatsQuoteAsset () {

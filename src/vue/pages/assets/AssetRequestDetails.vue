@@ -137,20 +137,19 @@
             </td>
           </tr>
 
-          <tr>
-            <td>
-              {{ 'asset-request-details.requires-kyc-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="request.isRequiresKYC">
-                {{ 'asset-request-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-request-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
+          <!--<tr>-->
+          <!--<td>-->
+          <!--{{ 'asset-request-details.requires-kyc-title' | globalize }}-->
+          <!--</td>-->
+          <!--<td>-->
+          <!--<template v-if="request.isRequiresKYC">-->
+          <!--{{ 'asset-request-details.present-msg' | globalize }}-->
+          <!--</template>-->
+          <!--<template v-else>-->
+          <!--{{ 'asset-request-details.absent-msg' | globalize }}-->
+          <!--</template>-->
+          <!--</td>-->
+          <!--</tr>-->
         </tbody>
       </table>
     </div>

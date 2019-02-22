@@ -92,10 +92,6 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     return !!(this.policy & ASSET_POLICIES.issuanceManualReviewRequired)
   }
 
-  get isRequiresKYC () {
-    return !!(this.policy & ASSET_POLICIES.requiresKyc)
-  }
-
   get isStatsQuoteAsset () {
     return !!(this.policy & ASSET_POLICIES.statsQuoteAsset)
   }
