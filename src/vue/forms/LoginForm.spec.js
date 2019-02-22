@@ -7,7 +7,6 @@ import Vue from 'vue'
 
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
-import { errors } from '@tokend/js-sdk'
 import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 
@@ -16,7 +15,6 @@ import accountModule from '@/vuex/account.module'
 import kycModule from '@/vuex/kyc.module'
 
 import { MockHelper } from '@/test'
-import { TestHelper } from '@/test/test-helper'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -121,8 +119,6 @@ describe('LoginForm component unit test', () => {
       const email = 'alice@mail.com'
       const password = 'qwe123'
 
-      sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
-
       wrapper.setData({
         form: { email, password },
       })
@@ -136,38 +132,6 @@ describe('LoginForm component unit test', () => {
         .to
         .be
         .true
-    })
-
-    it('submit() creates user when it doesn\'t exist', async () => {
-      sinon.stub(wrapper.vm, 'isUserExist').resolves(false)
-
-      const resource = mockHelper.getApiResourcePrototype('users')
-      const spy = sinon.stub(resource, 'create').resolves()
-
-      await wrapper.vm.submit()
-
-      expect(spy.calledOnce).to.be.true
-    })
-
-    it('submit() doesn\'t create user when it exists', async () => {
-      sinon.stub(wrapper.vm, 'isUserExist').resolves(true)
-
-      const resource = mockHelper.getApiResourcePrototype('users')
-      const spy = sinon.stub(resource, 'create').resolves()
-
-      await wrapper.vm.submit()
-
-      expect(spy.notCalled).to.be.true
-    })
-
-    it('isUserExist method returns false for 404 error', async () => {
-      sinon
-        .stub(mockHelper.apiInstance, 'getWithSignature')
-        .throws(TestHelper.getError(errors.NotFoundError))
-
-      const result = await wrapper.vm.isUserExist()
-
-      expect(result).to.be.false
     })
   })
 })

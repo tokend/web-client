@@ -3,6 +3,10 @@ const mutations = {
   CLEAR_STATE: 'CLEAR_STATE',
   POP_STATE: 'POP_STATE',
 
+  // key-value
+  SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',
+  SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
+
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
   SET_ACCOUNT_BALANCES_DETAILS: 'SET_ACCOUNT_BALANCES_DETAILS',
@@ -20,6 +24,9 @@ const mutations = {
 }
 
 const actions = {
+  // key-value
+  LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
+
   // account
   LOAD_ACCOUNT: 'LOAD_ACCOUNT',
   LOAD_ACCOUNT_BALANCES_DETAILS: 'LOAD_ACCOUNT_BALANCES_DETAILS',
@@ -40,6 +47,10 @@ const actions = {
 const getters = {
   // root
   isLoggedIn: 'isLoggedIn',
+
+  // key-values
+  kvEntryGeneralRoleId: 'kvEntryGeneralRoleId',
+  kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
 
   // account
   account: 'account',

@@ -109,7 +109,6 @@ export default {
         if (response.data.verified) {
           Sdk.sdk.useWallet(wallet)
           Api.useWallet(wallet)
-          await Sdk.api.users.create(wallet.accountId)
           this.storeWallet(wallet)
           await this.loadAccount(this.storedWallet.accountId)
           await this.loadKyc()

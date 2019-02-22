@@ -124,6 +124,7 @@
 
 <script>
 import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
@@ -157,7 +158,7 @@ export default {
   components: {
     Loader,
   },
-  mixins: [OwnedAssetsLoaderMixin, FormMixin],
+  mixins: [IdentityGetterMixin, OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
     form: {
       asset: {},
@@ -245,8 +246,7 @@ export default {
     },
     async getReceiverAccountId (receiver) {
       if (email(receiver)) {
-        const { data } = await Sdk.horizon.public.getAccountIdByEmail(receiver)
-        return data.accountId
+        return this.getEmailByAccountId(receiver)
       }
       return receiver
     },
