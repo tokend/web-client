@@ -33,13 +33,13 @@ export default {
       )
       return data.id
     },
-    createKycOperation (kycBlobId) {
+    createKycOperation (kycBlobId, accountRole) {
       return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest({
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.accountId,
-        accountRoleToSet: String(this.accountRole),
+        accountRoleToSet: String(accountRole),
         creatorDetails: {
           blob_id: kycBlobId,
         },

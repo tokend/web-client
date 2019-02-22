@@ -365,7 +365,10 @@ export default {
       try {
         await this.uploadDocuments()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
-        const operation = this.createKycOperation(kycBlobId)
+        const operation = this.createKycOperation(
+          kycBlobId,
+          this.kvEntryGeneralRoleId
+        )
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {
