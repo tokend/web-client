@@ -1,5 +1,5 @@
 import { vuexTypes } from '@/vuex/types'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 const KEY_VALUE_ENTRY_KEYS = Object.freeze({
   general: 'account_role:general',
@@ -43,8 +43,8 @@ export const actions = {
     commit(vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID, unverifiedRoleId)
 
     async function loadRole (keyValueEntryKey) {
-      const { data } = await Sdk.horizon.keyValue.get(keyValueEntryKey)
-      return String(data.uint32Value)
+      const { data } = await Api.get(`/v3/key_value/${keyValueEntryKey}`)
+      return data.value.u32
     }
   },
 }
