@@ -132,26 +132,20 @@ describe('TransferForm component', () => {
   })
 
   describe('getCounterparty()', () => {
-    let usersApiResource
-
     beforeEach(() => {
-      usersApiResource = mockHelper.getHorizonResourcePrototype('public')
-      const expectedCounterpartyData = {
-        data: [{ accountId: mockHelper.getDefaultAccountId }],
-      }
-      sinon.stub(usersApiResource, 'getAccountIdByEmail').resolves(expectedCounterpartyData)
+      sinon.stub(wrapper.vm, 'getAccountIdByEmail').resolves(mockHelper.getDefaultAccountId)
     })
 
     it('check that handles email as argument', async () => {
       await wrapper.vm.getCounterparty('some@email.com')
 
-      expect(usersApiResource.getAccountIdByEmail.calledOnce).to.be.true
+      expect(wrapper.vm.getAccountIdByEmail.calledOnce).to.be.true
     })
 
     it('check that handles accountId as argument', async () => {
       await wrapper.vm.getCounterparty(mockHelper.getDefaultAccountId)
 
-      expect(usersApiResource.getAccountIdByEmail.called).to.be.false
+      expect(wrapper.vm.getAccountIdByEmail.called).to.be.false
     })
   })
 
