@@ -7,6 +7,7 @@ const mutations = {
   SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',
   SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
   SET_KV_ENTRY_UNVERIFIED_ROLE_ID: 'SET_KV_ENTRY_UNVERIFIED_ROLE_ID',
+  SET_KV_ASSET_TYPE: 'SET_KV_ASSET_TYPE',
 
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
@@ -27,6 +28,7 @@ const mutations = {
 const actions = {
   // key-value
   LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
+  LOAD_KV_ASSET_TYPE: 'LOAD_KV_ASSET_TYPE',
 
   // account
   LOAD_ACCOUNT: 'LOAD_ACCOUNT',
@@ -53,6 +55,7 @@ const getters = {
   kvEntryGeneralRoleId: 'kvEntryGeneralRoleId',
   kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
   kvEntryUnverifiedRoleId: 'kvEntryUnverifiedRoleId',
+  kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
 
   // account
   account: 'account',

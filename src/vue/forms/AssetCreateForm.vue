@@ -105,7 +105,7 @@
         <div class="app__form-field">
           <select-field
             v-model="form.information.assetType"
-            :values="assetType"
+            :values="assetTypes"
             :label="'deposit-form.asset-type' | globalize"
             :disabled="formMixin.isDisabled"
             @blur="touchField('form.information.assetType')"
@@ -232,7 +232,7 @@ import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
+import { vuexTypes, mapActions } from '@/vuex'
 
 import { required, requiredUnless, amountRange, maxLength } from '@validators'
 
@@ -340,6 +340,7 @@ export default {
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
 
     assetRequestOpts () {
@@ -360,7 +361,7 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.information.assetType,
+        assetType: this.form.information.kvAssetTypeKycRequired,
         preissuedAssetSigner: preissuedAssetSigner,
         initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
@@ -372,19 +373,22 @@ export default {
         },
       }
     },
-    assetType () {
-      // hard-code use keyValue
-      return [ '19', '78', '13', '33', '123' ]
+    assetTypes () {
+      return [ this.kvAssetTypeKycRequired ]
     },
   },
 
   created () {
+    this.loadAssetType()
     if (this.request) {
       this.populateForm()
     }
   },
 
   methods: {
+    ...mapActions({
+      loadAssetType: vuexTypes.LOAD_KV_ASSET_TYPE,
+    }),
     populateForm () {
       const isPreissuanceDisabled =
           this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER

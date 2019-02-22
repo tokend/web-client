@@ -154,7 +154,7 @@ import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, url, integer, minValue } from '@validators'
@@ -202,11 +202,13 @@ export default {
   computed: {
     ...mapGetters({
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      account: vuexTypes.account,
     }),
   },
 
   async created () {
     try {
+      await this.loadAccountRoleIds()
       await this.loadAccount(this.accountId)
       await this.loadKyc()
       this.isLoaded = true
@@ -224,12 +226,16 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+    }),
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
-        const operation = this.createKycOperation(kycBlobId)
+        const operation = this.createKycOperation(kycBlobId,
+          this.kvEntryCorporateRoleId)
         await Api.api.postOperations(operation)
         await this.loadKyc()
       } catch (e) {

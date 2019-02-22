@@ -13,6 +13,7 @@ export const state = {
     corporate: null,
     unverified: null,
   },
+  kvAssetTypeKycRequired: null,
 }
 
 export const mutations = {
@@ -26,6 +27,9 @@ export const mutations = {
 
   [vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID] (state, id) {
     state.defaultRoleIds.unverified = id
+  },
+  [vuexTypes.SET_KV_ASSET_TYPE] (state, assetType) {
+    state.assetType = assetType
   },
 }
 
@@ -43,9 +47,13 @@ export const actions = {
     commit(vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID, unverifiedRoleId)
 
     async function loadRole (keyValueEntryKey) {
-      const { data } = await Api.get(`key_values/${keyValueEntryKey}`)
+      const { data } = await Api.api.get(`v3/key_values/${keyValueEntryKey}`)
       return data.value.u32
     }
+  },
+  async [vuexTypes.LOAD_KV_ASSET_TYPE] ({ commit }) {
+    const { data } = await Api.api.get(`v3/key_value/kycRequired`)
+    commit(vuexTypes.SET_KV_ASSET_TYPE, data.value.u32)
   },
 }
 
@@ -53,6 +61,7 @@ export const getters = {
   [vuexTypes.kvEntryGeneralRoleId]: state => state.defaultRoleIds.general,
   [vuexTypes.kvEntryCorporateRoleId]: state => state.defaultRoleIds.corporate,
   [vuexTypes.kvEntryUnverifiedRoleId]: state => state.defaultRoleIds.unverified,
+  [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
 }
 
 export default {

@@ -142,6 +142,7 @@
               {{ 'asset-request-details.requires-kyc-title' | globalize }}
             </td>
             <td>
+              <!--fix-->
               <template v-if="request.isRequiresKYC">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
