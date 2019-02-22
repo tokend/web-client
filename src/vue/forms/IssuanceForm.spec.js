@@ -13,10 +13,9 @@ import { MockHelper, MockWrapper } from '@/test'
 
 import { Bus } from '@/js/helpers/event-bus'
 
-import config from '@/config'
-
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
@@ -61,8 +60,9 @@ describe('IssuanceForm', () => {
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(config.ACCOUNT_ROLES.syndicate)
+
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       const store = new Vuex.Store({
         getters,
       })
@@ -111,7 +111,6 @@ describe('IssuanceForm', () => {
     let mockHelper
 
     let accountResource
-    let publicResource
     let transactionsResource
 
     let store
@@ -120,13 +119,12 @@ describe('IssuanceForm', () => {
       mockHelper = new MockHelper()
 
       accountResource = mockHelper.getHorizonResourcePrototype('account')
-      publicResource = mockHelper.getHorizonResourcePrototype('public')
       transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(config.ACCOUNT_ROLES.syndicate)
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       store = new Vuex.Store({
         getters,
       })
@@ -283,8 +281,8 @@ describe('IssuanceForm', () => {
       describe('getReceiverAccountId', () => {
         it('loads account ID by email if receiver is a valid email', async () => {
           const receiver = 'foo@bar.com'
-          const spy = sinon.stub(publicResource, 'getAccountIdByEmail')
-            .resolves({ data: {} })
+          const spy = sinon.stub(wrapper.vm, 'getAccountIdByEmail')
+            .resolves('')
 
           await wrapper.vm.getReceiverAccountId(receiver)
 

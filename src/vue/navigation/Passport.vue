@@ -22,7 +22,7 @@
       </button>
 
       <div class="passport__account-type">
-        {{ accountRoleTranslationIds[accountRoleId] | globalize }}
+        {{ accountRoleTranslationId | globalize }}
       </div>
     </div>
 
@@ -63,7 +63,6 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapMutations } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
-import config from '@/config'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 
 export default {
@@ -71,19 +70,27 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
-    accountRoleTranslationIds: {
-      [config.ACCOUNT_ROLES.notVerified]: 'passport.account-unverified',
-      [config.ACCOUNT_ROLES.general]: 'passport.account-general',
-      [config.ACCOUNT_ROLES.syndicate]: 'passport.account-corporate',
-    },
     destructClickOutsideHandler: () => {},
   }),
 
   computed: {
     ...mapGetters({
       email: vuexTypes.walletEmail,
-      accountRoleId: vuexTypes.accountRoleId,
+
+      isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
     }),
+
+    accountRoleTranslationId () {
+      if (this.isAccountGeneral) {
+        return 'passport.account-general'
+      } else if (this.isAccountCorporate) {
+        return 'passport.account-corporate'
+      } else {
+        return 'passport.account-unverified'
+      }
+    },
   },
 
   methods: {

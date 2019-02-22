@@ -259,6 +259,7 @@ import get from 'lodash/get'
 import Loader from '@/vue/common/Loader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
@@ -288,7 +289,7 @@ export default {
   components: {
     Loader,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, IdentityGetterMixin],
   props: {
     assetToTransfer: { type: String, default: '' },
   },
@@ -415,8 +416,7 @@ export default {
     },
     async getCounterparty (recipient) {
       if (!base.Keypair.isValidPublicKey(recipient)) {
-        const response = await Sdk.horizon.public.getAccountIdByEmail(recipient)
-        return response.data.accountId
+        return this.getAccountIdByEmail(recipient)
       } else {
         return recipient
       }

@@ -9,10 +9,7 @@
         </router-link>
       </template>
 
-      <template
-        v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
-        slot="extra"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="issuance-btn"
@@ -135,8 +132,6 @@ import { OP_TYPES } from '@tokend/js-sdk'
 
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
-import config from '@/config'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -159,13 +154,12 @@ export default {
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
     firstPageLoader: () => {},
-    config,
   }),
 
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      accountRoleId: vuexTypes.accountRoleId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 

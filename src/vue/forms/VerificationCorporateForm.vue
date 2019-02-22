@@ -149,12 +149,13 @@ import Loader from '@/vue/common/Loader'
 
 import { Api } from '@/api'
 
-import config from '@/config'
-
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { required, url, integer, minValue } from '@validators'
 
@@ -179,7 +180,6 @@ export default {
     },
     isLoaded: false,
     isLoadingFailed: false,
-    accountRole: config.ACCOUNT_ROLES.syndicate,
     MIN_TEAM_SIZE,
   }),
 
@@ -197,6 +197,12 @@ export default {
       },
       website: { required, url },
     },
+  },
+
+  computed: {
+    ...mapGetters({
+      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+    }),
   },
 
   async created () {

@@ -1,7 +1,7 @@
-import { RecordWrapper } from '../js/records'
 import { vuexTypes } from './types'
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
+import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 
 /**
  * @module
@@ -69,9 +69,10 @@ export const actions = {
     if (!response.data[0]) {
       return
     }
+
     commit(
       vuexTypes.SET_KYC_LATEST_REQUEST,
-      RecordWrapper.request(response.data[0])
+      new ChangeRoleRequestRecord(response.data[0])
     )
   },
 

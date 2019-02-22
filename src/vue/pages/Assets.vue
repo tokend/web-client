@@ -15,10 +15,7 @@
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
-        slot="extra"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="create-asset-btn"
@@ -43,8 +40,6 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 
-import config from '@/config'
-
 import { vueRoutes } from '@/vue-router/routes'
 
 import { mapGetters } from 'vuex'
@@ -58,14 +53,13 @@ export default {
     AssetCreateForm,
   },
   data: _ => ({
-    config,
     vueRoutes,
     isAssetDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      accountRoleId: vuexTypes.accountRoleId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 }

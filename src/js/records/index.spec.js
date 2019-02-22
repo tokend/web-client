@@ -1,5 +1,3 @@
-// TODO: fix tests
-import assetCreateRecordJSON from '@/test/mocks/asset-create'
 import { MockWrapper } from '../../test/index'
 import {
   RecordWrapper,
@@ -22,8 +20,8 @@ import updateKycJSON from '../../test/mocks/update-kyc'
 
 describe('Record wrapper', () => {
   const test = (request, constructor) => {
-    const response = MockWrapper.makeJsonapiResponseData(request)
-    const parsed = RecordWrapper.request(response[0])
+    const response = MockWrapper.makeHorizonData(request)
+    const parsed = RecordWrapper.request(response)
     expect(parsed).to.be.instanceOf(constructor)
   }
 
@@ -47,8 +45,7 @@ describe('Record wrapper', () => {
     test(updateKycJSON, ChangeRoleRequestRecord)
   })
 })
-// eslint-disable-next-line
-describe.skip('Record unwrapper opts() method should return proper data', () => {
+describe('Record unwrapper opts() method should return proper data', () => {
   describe('AssetCreateRequestRecord opts are being unwrapped properly', () => {
     let opts
 
@@ -77,7 +74,7 @@ describe.skip('Record unwrapper opts() method should return proper data', () => 
       expect(opts.requestID)
         .to
         .equal(
-          assetCreateRecordJSON.id
+          assetCreateJSON.id
         )
     })
 
@@ -85,7 +82,7 @@ describe.skip('Record unwrapper opts() method should return proper data', () => 
       expect(opts.code)
         .to
         .equal(
-          assetCreateRecordJSON.details.asset_create.code
+          assetCreateJSON.details.asset_create.code
         )
     })
 

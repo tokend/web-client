@@ -116,8 +116,6 @@ describe('Dashboard.AssetSelector component', () => {
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
-    sinon.stub(accountModule.getters, vuexTypes.accountRoleId)
-      .returns(config.ACCOUNT_ROLES.syndicate)
 
     store = new Vuex.Store({
       getters: accountModule.getters,

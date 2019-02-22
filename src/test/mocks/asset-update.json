@@ -1,62 +1,56 @@
 {
-  "data": [
-    {
-      "id": "12345",
-      "type": "requests",
-      "relationships": {
-        "requestor": {
-          "data": {
-            "id": "GBSR6JG5AYSAW7HK6EGJFYVIVN54LVGSY3ZLJ6X3IBQZ766EJABCZQTH",
-            "type": "accounts"
-          }
+  "id": "114",
+  "paging_token": "114",
+  "requestor": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
+  "reviewer": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
+  "reference": "ETH",
+  "reject_reason": "",
+  "hash": "04cb5cb9ff39b333bcd0b83245d97e0513a07ce6381a5adfc231dbbc0dbe301e",
+  "details": {
+    "request_type_i": 13,
+    "request_type": "asset_update",
+    "asset_update": {
+      "code": "ETH",
+      "policies": [
+        {
+          "name": "AssetPolicyTransferable",
+          "value": 1
         },
-        "reviewer": {
-          "data": {
-            "id": "GBSR6JG5AYSAW7HK6EGJFYVIVN54LVGSY3ZLJ6X3IBQZ766EJABCZQTH",
-            "type": "accounts"
-          }
+        {
+          "name": "AssetPolicyBaseAsset",
+          "value": 2
         },
-        "request_details": {
-          "data": {
-            "id": "12345",
-            "type": "request-details-update-asset"
-          }
+        {
+          "name": "AssetPolicyWithdrawable",
+          "value": 8
+        },
+        {
+          "name": "AssetPolicyTwoStepWithdrawal",
+          "value": 16
         }
-      },
-      "attributes": {
-        "reject_reason": "source account underfunded",
-        "hash": "13935d561f9ec54341243e6afaf0c8bf936928b07f6600204ba8ca550757d0a6",
-        "all_tasks": 12,
-        "pending_tasks": 2,
-        "created_at": "2012-11-01T22:08:41+00:00",
-        "updated_at": "2012-11-01T22:08:41+00:00",
-        "state": "pending",
-        "state_i": 0,
-        "reference": "719111a51cfc5ad214e4e90ce6610f10e1cba165fd1bc9db73a031352b3bb61c",
-        "external_details": {}
-      }
-    }
-  ],
-  "included": [
-    {
-      "id": "12345",
-      "type": "requests",
-      "relationships": {
-        "asset": {
-          "data": {
-            "id": "USD",
-            "type": "assets"
-          }
+      ],
+      "details": {
+        "logo": {
+          "key": "",
+          "type": ""
+        },
+        "name": "",
+        "terms": {
+          "key": "",
+          "name": "",
+          "type": ""
         }
-      },
-      "attributes": {
-        "policies": 12,
-        "creator_details": {}
       }
-    }
-  ],
-  "links": {
-    "next": "/v3/asset_update_requests?include=asset&page[number]=2&page[limit]=15",
-    "self": "/v3/asset_update_requests?include=asset&page[number]=1&page[limit]=15"
-  }
+    },
+    "two_step_withdrawal": null,
+    "limits_update": null,
+    "aml_alert": null,
+    "update_sale_details": null,
+    "update_sale_end_time": null,
+    "promotion_update_request": null
+  },
+  "created_at": "2018-04-20T14:39:07Z",
+  "updated_at": "2018-04-20T14:39:07Z",
+  "request_state_i": 3,
+  "request_state": "approved"
 }

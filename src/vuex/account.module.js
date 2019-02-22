@@ -66,6 +66,16 @@ export const getters = {
   [vuexTypes.accountRoleId]: state => _get(
     state.account, 'role.id'
   ),
+
+  [vuexTypes.isAccountGeneral]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryGeneralRoleId],
+  [vuexTypes.isAccountCorporate]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryCorporateRoleId],
+  [vuexTypes.isAccountUnverified]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryUnverifiedRoleId],
 }
 
 export default {
