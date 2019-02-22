@@ -70,6 +70,10 @@ const getters = {
   accountKycBlobId: 'accountKycBlobId',
   accountRoleId: 'accountRoleId',
 
+  isAccountGeneral: 'isAccountGeneral',
+  isAccountCorporate: 'isAccountCorporate',
+  isAccountUnverified: 'isAccountUnverified',
+
   // wallet
   wallet: 'wallet',
   walletId: 'walletId',

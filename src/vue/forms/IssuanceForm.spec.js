@@ -15,7 +15,6 @@ import { Bus } from '@/js/helpers/event-bus'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
-import keyValueModule from '@/vuex/key-value.module'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -60,15 +59,10 @@ describe('IssuanceForm', () => {
 
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
-      const getters = {
-        ...accountModule.getters,
-        ...keyValueModule.getters,
-      }
-      const syndicateRoleId = 2
-      sinon.stub(getters, vuexTypes.kvEntryCorporateRoleId)
-        .returns(syndicateRoleId)
-      sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(syndicateRoleId)
+      const getters = accountModule.getters
+
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       const store = new Vuex.Store({
         getters,
       })
@@ -128,15 +122,8 @@ describe('IssuanceForm', () => {
       transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
 
-      const getters = {
-        ...accountModule.getters,
-        ...keyValueModule.getters,
-      }
-      const syndicateRoleId = 2
-      sinon.stub(getters, vuexTypes.kvEntryCorporateRoleId)
-        .returns(syndicateRoleId)
-      sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(syndicateRoleId)
+      const getters = accountModule.getters
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
 
       store = new Vuex.Store({
         getters,

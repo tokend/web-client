@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="accountRoleId !== kvEntryCorporateRoleId">
+    <div v-if="isAccountCorporate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
@@ -194,8 +194,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountRoleId,
-      vuexTypes.kvEntryCorporateRoleId,
+      vuexTypes.isAccountCorporate,
     ]),
   },
   async created () {

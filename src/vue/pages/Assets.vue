@@ -15,10 +15,7 @@
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="accountRoleId === kvEntryCorporateRoleId"
-        slot="extra"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="create-asset-btn"
@@ -62,8 +59,7 @@ export default {
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      accountRoleId: vuexTypes.accountRoleId,
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 }

@@ -22,10 +22,7 @@
         </div>
       </template>
 
-      <template
-        slot="extra"
-        v-if="accountRoleId === kvEntryCorporateRoleId"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -156,8 +153,7 @@ export default {
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      accountRoleId: vuexTypes.accountRoleId,
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
     saleAssets () {
       return this.saleRecords

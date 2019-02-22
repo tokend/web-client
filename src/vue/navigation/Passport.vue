@@ -22,7 +22,7 @@
       </button>
 
       <div class="passport__account-type">
-        {{ accountRoleTranslationIds[accountRoleId] | globalize }}
+        {{ accountRoleTranslationId | globalize }}
       </div>
     </div>
 
@@ -76,17 +76,19 @@ export default {
   computed: {
     ...mapGetters({
       email: vuexTypes.walletEmail,
-      accountRoleId: vuexTypes.accountRoleId,
-      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
-      kvEntryUnverifiedRoleId: vuexTypes.kvEntryUnverifiedRoleId,
+
+      isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
     }),
 
-    accountRoleTranslationIds () {
-      return {
-        [this.kvEntryGeneralRoleId]: 'passport.account-general',
-        [this.kvEntryCorporateRoleId]: 'passport.account-corporate',
-        [this.kvEntryUnverifiedRoleId]: 'passport.account-unverified',
+    accountRoleTranslationId () {
+      if (this.isAccountGeneral) {
+        return 'passport.account-general'
+      } else if (this.isAccountCorporate) {
+        return 'passport.account-corporate'
+      } else {
+        return 'passport.account-unverified'
       }
     },
   },

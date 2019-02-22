@@ -9,10 +9,7 @@
         </router-link>
       </template>
 
-      <template
-        v-if="accountRoleId === kvEntryCorporateRoleId"
-        slot="extra"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="issuance-btn"
@@ -162,8 +159,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      accountRoleId: vuexTypes.accountRoleId,
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 

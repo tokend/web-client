@@ -145,8 +145,7 @@
             @click.native="closeSidebar"
             :to="vueRoutes.requests"
             tag="a"
-            v-if="config.featureFlags.requests &&
-              accountRoleId === kvEntryCorporateRoleId"
+            v-if="config.featureFlags.requests && isAccountCorporate"
           >
             <i class="sidebar__link-icon mdi mdi-book-open-variant" />
             <span>
@@ -208,8 +207,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      accountRoleId: vuexTypes.accountRoleId,
-      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 
