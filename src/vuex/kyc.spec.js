@@ -2,7 +2,7 @@ import {
   REQUEST_STATES,
   REQUEST_STATES_STR,
 } from '../js/const/request-states.const'
-import { RecordWrapper } from '../js/records'
+import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 import { MockHelper, MockWrapper } from '../test'
 import { mutations, actions, getters } from './kyc.module'
 import { vuexTypes } from './types'
@@ -99,7 +99,7 @@ describe('kyc.module', () => {
 
       const expectedRequest = MockWrapper
         .makeJsonapiResponseData(responseJSON)[0]
-      const expectedPayload = RecordWrapper.request(expectedRequest)
+      const expectedPayload = new ChangeRoleRequestRecord(expectedRequest)
       const expectedMutation = vuexTypes.SET_KYC_LATEST_REQUEST
       const expectedMutations = {
         [expectedMutation]: expectedPayload,

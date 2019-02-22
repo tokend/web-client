@@ -96,6 +96,7 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -116,10 +117,8 @@ export default {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
 
-        if (!await this.isUserExist(accountId)) {
-          await Sdk.api.users.create(accountId)
-        }
         await this.loadAccount(accountId)
+        await this.loadKvEntriesAccountRoleIds()
         await this.loadKyc()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })
@@ -130,17 +129,6 @@ export default {
         this.processAuthError(e)
       }
       this.enableForm()
-    },
-    async isUserExist (accountId) {
-      try {
-        await Api.getWithSignature(`accounts/${accountId}`)
-        return true
-      } catch (e) {
-        if (e instanceof errors.NotFoundError) {
-          return false
-        }
-        throw e
-      }
     },
     processAuthError (error) {
       switch (error.constructor) {
