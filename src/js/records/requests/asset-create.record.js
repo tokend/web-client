@@ -9,7 +9,7 @@ export class AssetCreateRequestRecord extends RequestRecord {
     super(record)
 
     this.assetName = _get(
-      this._record, 'details.createAsset.creatorDetails.name'
+      this._record, 'details.createAsset.details.name'
     )
     this.assetCode = _get(
       this._record, 'details.createAsset.code'
@@ -27,21 +27,21 @@ export class AssetCreateRequestRecord extends RequestRecord {
     this.policies = this._policies()
     this.policy = this._policy()
 
-    this.creatorDetails = _get(this._record, 'details.createAsset.creatorDetails')
-    this.terms = _get(this._record, 'details.createAsset.creatorDetails.terms')
-    this.termsKey = _get(this._record, 'details.createAsset.creatorDetails.terms.key')
+    this.details = _get(this._record, 'details.createAsset.details')
+    this.terms = _get(this._record, 'details.createAsset.details.terms')
+    this.termsKey = _get(this._record, 'details.createAsset.details.terms.key')
     this.termsName = _get(
-      this._record, 'details.createAsset.creatorDetails.terms.name'
+      this._record, 'details.createAsset.details.terms.name'
     )
     this.termsType = _get(
-      this._record, 'details.createAsset.creatorDetails.terms.type'
+      this._record, 'details.createAsset.details.terms.type'
     )
-    this.logo = _get(this._record, 'details.createAsset.creatorDetails.logo')
-    this.logoKey = _get(this._record, 'details.createAsset.creatorDetails.logo.key')
-    this.logoName = _get(this._record, 'details.createAsset.creatorDetails.logo.name')
-    this.logoType = _get(this._record, 'details.createAsset.creatorDetails.logo.type')
+    this.logo = _get(this._record, 'details.createAsset.details.logo')
+    this.logoKey = _get(this._record, 'details.createAsset.details.logo.key')
+    this.logoName = _get(this._record, 'details.createAsset.details.logo.name')
+    this.logoType = _get(this._record, 'details.createAsset.details.logo.type')
     this.externalSystemType = _get(
-      this._record, 'details.createAsset.creatorDetails.externalSystemType'
+      this._record, 'details.createAsset.details.externalSystemType'
     )
 
     this.attachedDetails = details
@@ -62,7 +62,7 @@ export class AssetCreateRequestRecord extends RequestRecord {
           maxIssuanceAmount: assetRecord.maxIssuanceAmount,
           initialPreissuedAmount: assetRecord.initialPreissuedAmount,
           policies: assetRecord.policies.map(policy => ({ value: policy })),
-          creatorDetails: assetRecord.creatorDetails,
+          details: assetRecord.details,
         },
       },
     })
