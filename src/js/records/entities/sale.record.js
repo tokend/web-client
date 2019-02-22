@@ -33,15 +33,15 @@ export class SaleRecord {
     this.stateValue = _get(record, 'state.value')
     this.stateStr = _get(record, 'state.name')
 
-    this.creatorDetails = _get(this._record, 'creatorDetails')
-    this.name = _get(record, 'creatorDetails.name')
-    this.description = _get(record, 'creatorDetails.description')
-    this.shortDescription = _get(record, 'creatorDetails.shortDescription')
-    this.youtubeVideoId = _get(record, 'creatorDetails.youtubeVideoId')
-    this.logo = _get(this._record, 'creatorDetails.logo')
-    this.logoKey = _get(this._record, 'creatorDetails.logo.key')
-    this.logoName = _get(this._record, 'creatorDetails.logo.name')
-    this.logoType = _get(this._record, 'creatorDetails.logo.type')
+    this.details = _get(this._record, 'details')
+    this.name = _get(record, 'details.name')
+    this.description = _get(record, 'details.description')
+    this.shortDescription = _get(record, 'details.shortDescription')
+    this.youtubeVideoId = _get(record, 'details.youtubeVideoId')
+    this.logo = _get(this._record, 'details.logo')
+    this.logoKey = _get(this._record, 'details.logo.key')
+    this.logoName = _get(this._record, 'details.logo.name')
+    this.logoType = _get(this._record, 'details.logo.type')
   }
 
   /** URLs **/
