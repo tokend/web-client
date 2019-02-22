@@ -8,7 +8,6 @@ import {
   PreIssuanceCreateRequestRecord,
 } from './requests/pre-issuance-create.record'
 import { SaleRequestRecord } from './requests/sale-create.record'
-import { ChangeRoleRequestRecord } from './requests/change-role.record'
 import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
@@ -24,8 +23,6 @@ export class RecordWrapper {
         return new PreIssuanceCreateRequestRecord(...arguments)
       case REQUEST_TYPES.createSale:
         return new SaleRequestRecord(...arguments)
-      case REQUEST_TYPES.changeRole:
-        return new ChangeRoleRequestRecord(...arguments)
       case REQUEST_TYPES.updateSaleDetail:
         return new UpdateSaleDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.createAmlAlert:
