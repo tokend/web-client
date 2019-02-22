@@ -35,7 +35,7 @@
         :to="vueRoutes.verification.general"
         class="account-type-selector__item"
         :disabled="kycAccountRole &&
-          kycAccountRole !== config.ACCOUNT_ROLES.general"
+          kycAccountRole !== kvEntryCorporateRoleId"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
@@ -52,7 +52,7 @@
         :to="vueRoutes.verification.corporate"
         class="account-type-selector__item"
         :disabled="kycAccountRole &&
-          kycAccountRole !== config.ACCOUNT_ROLES.syndicate"
+          kycAccountRole !== kvEntryCorporateRoleId"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -91,13 +91,16 @@ import config from '@/config'
 // Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
 function verificationGuard (to, from, next) {
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
+  const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+
   switch (kycAccountRole) {
-    case config.ACCOUNT_ROLES.syndicate:
+    case kvEntryCorporateRoleId:
       to.name === vueRoutes.verification.corporate.name
         ? next()
         : next(vueRoutes.verification.corporate)
       break
-    case config.ACCOUNT_ROLES.general:
+    case kvEntryGeneralRoleId:
       to.name === vueRoutes.verification.general.name
         ? next()
         : next(vueRoutes.verification.general)
@@ -120,6 +123,8 @@ export default {
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
+      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
   },
   beforeRouteEnter (to, from, next) {

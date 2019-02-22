@@ -6,6 +6,7 @@ const mutations = {
   // key-value
   SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',
   SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
+  SET_KV_ENTRY_UNVERIFIED_ROLE_ID: 'SET_KV_ENTRY_UNVERIFIED_ROLE_ID',
 
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
@@ -51,6 +52,7 @@ const getters = {
   // key-values
   kvEntryGeneralRoleId: 'kvEntryGeneralRoleId',
   kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
+  kvEntryUnverifiedRoleId: 'kvEntryUnverifiedRoleId',
 
   // account
   account: 'account',
@@ -67,6 +69,10 @@ const getters = {
   accountDepositAddresses: 'accountDepositAddresses',
   accountKycBlobId: 'accountKycBlobId',
   accountRoleId: 'accountRoleId',
+
+  isAccountGeneral: 'isAccountGeneral',
+  isAccountCorporate: 'isAccountCorporate',
+  isAccountUnverified: 'isAccountUnverified',
 
   // wallet
   wallet: 'wallet',

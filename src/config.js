@@ -4,16 +4,6 @@ import packageJson from '../package.json'
 export default Object.assign(
   {
     /**
-     * Account roles, existing in the system.
-     */
-    ACCOUNT_ROLES: Object.freeze({
-      blocked: '2',
-      general: '3',
-      syndicate: '4',
-      notVerified: '5',
-    }),
-
-    /**
      * URL of the Horizon server. The application is going to fetch all the
      * needed network configs from the provided value.
      */

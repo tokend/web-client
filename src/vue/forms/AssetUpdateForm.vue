@@ -234,7 +234,7 @@ export default {
         requestID: requestId,
         code: this.updateRequest.assetCode,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
-        details: {
+        creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,

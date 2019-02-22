@@ -1,5 +1,5 @@
 import { DateUtil } from '@/js/utils'
-import { REQUEST_TYPES } from '@/js/const/request-types.const'
+import { REQUEST_TYPES } from '@tokend/js-sdk'
 
 import { RequestRecord } from './request-record'
 import { AssetCreateRequestRecord } from './requests/asset-create.record'
@@ -15,7 +15,7 @@ import {
 
 export class RecordWrapper {
   static request (record, details) {
-    switch (record.requestDetails.type) {
+    switch (record.details.requestTypeI) {
       case REQUEST_TYPES.createAsset:
         return new AssetCreateRequestRecord(...arguments)
       case REQUEST_TYPES.updateAsset:
@@ -26,13 +26,12 @@ export class RecordWrapper {
         return new SaleRequestRecord(...arguments)
       case REQUEST_TYPES.changeRole:
         return new ChangeRoleRequestRecord(...arguments)
-      case REQUEST_TYPES.updateSaleDetails:
+      case REQUEST_TYPES.updateSaleDetail:
         return new UpdateSaleDetailsRequestRecord(...arguments)
-      case REQUEST_TYPES.amlAlert:
-      case REQUEST_TYPES.withdraw:
-      case REQUEST_TYPES.limitsUpdate:
-      case REQUEST_TYPES.issuanceCreate:
-      case REQUEST_TYPES.twoStepWithdrawal:
+      case REQUEST_TYPES.createAmlAlert:
+      case REQUEST_TYPES.createWithdraw:
+      case REQUEST_TYPES.updateLimit:
+      case REQUEST_TYPES.createIssuance:
       default:
         return new RequestRecord(...arguments)
     }
@@ -59,7 +58,7 @@ export class RecordUnwrapper {
           hardCap: record.hardCap,
           saleState: record.saleState,
           baseAssetForHardCap: record.baseAssetForHardCap,
-          details: {
+          creatorDetails: {
             name: record.name,
             short_description: record.shortDescription,
             description: record.description,
@@ -76,7 +75,7 @@ export class RecordUnwrapper {
           maxIssuanceAmount: record.maxIssuanceAmount,
           policies: record.policy,
           initialPreissuedAmount: record.initialPreissuedAmount,
-          details: {
+          creatorDetails: {
             name: record.assetName,
             logo: {
               key: record.logoKey,

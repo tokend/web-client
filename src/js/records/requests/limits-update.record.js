@@ -7,11 +7,11 @@ export class LimitsUpdateRequestRecord extends RequestRecord {
   constructor (record) {
     super(record)
 
-    this.requestType = _get(this.limitsUpdate, 'details.requestType')
-    this.asset = _get(this.limitsUpdate, 'details.asset')
-    this.operationType = _get(this.limitsUpdate, 'details.operationType')
-    this.note = _get(this.limitsUpdate, 'details.note')
-    this.limits = _get(this.limitsUpdate, 'details.limits')
+    this.requestType = _get(this.updateLimit, 'details.requestType')
+    this.asset = _get(this.updateLimit, 'details.asset')
+    this.operationType = _get(this.updateLimit, 'details.operationType')
+    this.note = _get(this.updateLimit, 'details.note')
+    this.limits = _get(this.updateLimit, 'details.limits')
   }
 
   get operationTypeI () {

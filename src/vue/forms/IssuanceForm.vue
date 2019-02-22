@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="accountRoleId !== config.ACCOUNT_ROLES.syndicate">
+    <div v-if="isAccountCorporate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
@@ -194,7 +194,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountRoleId,
+      vuexTypes.isAccountCorporate,
     ]),
   },
   async created () {
@@ -222,7 +222,7 @@ export default {
               amount: this.form.amount.toString(),
               receiver: receiverBalance.balanceId,
               reference: this.form.reference,
-              externalDetails: {},
+              creatorDetails: {},
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           await this.reinitAssetSelector()

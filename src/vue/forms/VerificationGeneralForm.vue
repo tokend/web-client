@@ -262,7 +262,6 @@ import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
-import config from '@/config'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -273,6 +272,8 @@ import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { required, documentContainer } from '@validators'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'verification-general-form',
@@ -305,7 +306,6 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isCodeShown: false,
-    accountRole: config.ACCOUNT_ROLES.general,
     DOCUMENT_TYPES,
   }),
 
@@ -332,6 +332,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+    }),
     verificationCode () {
       return this.account.accountId.slice(1, 6)
     },

@@ -13,10 +13,9 @@ import { MockHelper, MockWrapper } from '@/test'
 
 import { Bus } from '@/js/helpers/event-bus'
 
-import config from '@/config'
-
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
@@ -61,8 +60,9 @@ describe('IssuanceForm', () => {
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(config.ACCOUNT_ROLES.syndicate)
+
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       const store = new Vuex.Store({
         getters,
       })
@@ -123,8 +123,8 @@ describe('IssuanceForm', () => {
         mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(config.ACCOUNT_ROLES.syndicate)
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       store = new Vuex.Store({
         getters,
       })

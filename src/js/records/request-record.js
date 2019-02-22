@@ -19,8 +19,8 @@ export class RequestRecord {
     this.requestType = _get(record, 'details.requestType')
 
     this.twoStepWithdrawal = _get(record, 'details.twoStepWithdrawal')
-    this.limitsUpdate = _get(record, 'details.limitsUpdate')
-    this.amlAlert = _get(record, 'details.amlAlert')
+    this.updateLimit = _get(record, 'details.updateLimit')
+    this.amlAlert = _get(record, 'details.createAmlAlert')
     this.updateSaleDetails = _get(record, 'details.updateSaleDetails')
     this.updateSaleEndTime = _get(record, 'details.updateSaleEndTime')
     this.promotionUpdateRequest = _get(record, 'details.promotionUpdateRequest')

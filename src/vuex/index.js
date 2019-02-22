@@ -5,6 +5,7 @@ import account from './account.module'
 import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
+import keyValue from './key-value.module'
 
 import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
 import { vuexTypes } from '@/vuex/types'
@@ -36,6 +37,7 @@ const store = new Vuex.Store({
     factors,
     wallet,
     kyc,
+    keyValue,
     // namespaced local modules (used by a specific set of components)
     'movements-history': movementsHistoryModule,
   },

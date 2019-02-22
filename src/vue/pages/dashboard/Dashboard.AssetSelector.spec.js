@@ -43,7 +43,7 @@ describe('Dashboard.AssetSelector component', () => {
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
           ],
-          details: { logo: { key: 'some-key' } },
+          creatorDetails: { logo: { key: 'some-key' } },
         }),
       },
       {
@@ -70,7 +70,7 @@ describe('Dashboard.AssetSelector component', () => {
     mockedTokens = [
       new AssetRecord({
         code: 'USD',
-        details: {
+        creatorDetails: {
           name: 'Dollar',
         },
         policies: [
@@ -87,7 +87,7 @@ describe('Dashboard.AssetSelector component', () => {
       }),
       new AssetRecord({
         code: 'BTC',
-        details: {
+        creatorDetails: {
           name: 'Bitcoin',
         },
         policies: [
@@ -101,7 +101,7 @@ describe('Dashboard.AssetSelector component', () => {
       }),
       new AssetRecord({
         code: 'ETH',
-        details: {
+        creatorDetails: {
           name: 'Ethereum',
         },
         policies: [
@@ -116,8 +116,6 @@ describe('Dashboard.AssetSelector component', () => {
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
-    sinon.stub(accountModule.getters, vuexTypes.accountRoleId)
-      .returns(config.ACCOUNT_ROLES.syndicate)
 
     store = new Vuex.Store({
       getters: accountModule.getters,
