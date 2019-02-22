@@ -1,5 +1,5 @@
 import { DateUtil } from '@/js/utils'
-import { REQUEST_TYPES } from '@/js/const/request-types.const'
+import { REQUEST_TYPES } from '@tokend/js-sdk'
 
 import { RequestRecord } from './request-record'
 import { AssetCreateRequestRecord } from './requests/asset-create.record'
@@ -15,7 +15,7 @@ import {
 
 export class RecordWrapper {
   static request (record, details) {
-    switch (record.requestDetails.type) {
+    switch (record.details.requestTypeI) {
       case REQUEST_TYPES.createAsset:
         return new AssetCreateRequestRecord(...arguments)
       case REQUEST_TYPES.updateAsset:
@@ -26,13 +26,12 @@ export class RecordWrapper {
         return new SaleRequestRecord(...arguments)
       case REQUEST_TYPES.changeRole:
         return new ChangeRoleRequestRecord(...arguments)
-      case REQUEST_TYPES.updateSaleDetails:
+      case REQUEST_TYPES.updateSaleDetail:
         return new UpdateSaleDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.createAmlAlert:
       case REQUEST_TYPES.createWithdraw:
       case REQUEST_TYPES.updateLimit:
       case REQUEST_TYPES.createIssuance:
-      case REQUEST_TYPES.twoStepWithdrawal:
       default:
         return new RequestRecord(...arguments)
     }

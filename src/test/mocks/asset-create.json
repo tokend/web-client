@@ -1,62 +1,42 @@
 {
-  "data": [{
-    "id": "12345",
-    "type": "requests",
-    "relationships": {
-      "requestor": {
-        "data": {
-          "id": "GBSR6JG5AYSAW7HK6EGJFYVIVN54LVGSY3ZLJ6X3IBQZ766EJABCZQTH",
-          "type": "accounts"
-        }
-      },
-      "reviewer": {
-        "data": {
-          "id": "GBSR6JG5AYSAW7HK6EGJFYVIVN54LVGSY3ZLJ6X3IBQZ766EJABCZQTH",
-          "type": "accounts"
-        }
-      },
-      "request_details": {
-        "data": {
-          "id": "12345",
-          "type": "request-details-create-asset"
-        }
+  "id": "11",
+  "paging_token": "11",
+  "requestor": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+  "reviewer": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP",
+  "reference": "CAT",
+  "reject_reason": "",
+  "hash": "e3ef53ae1b817e1870f3bc99d5c83cc1a2bccdddcb0d57919538893af3a2d36d",
+  "details": {
+    "request_type_i": 10,
+    "request_type": "asset_create",
+    "asset_create": {
+      "code": "CAT",
+      "policies": [],
+      "pre_issued_asset_signer": "GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4",
+      "max_issuance_amount": "213123.000000",
+      "initial_preissued_amount": "213123.000000",
+      "details": {
+        "logo": {
+          "key": "dpurgh4infpebjhcost7fvijeh5zh732at53ry4mkuwkvkyx6xxffusl",
+          "name": "A-gray-kitten-meowing.jpg",
+          "type": "image/jpeg"
+        },
+        "name": "CAT",
+        "terms": {
+          "key": "dpurgh4infpebjhcost7fvi3313123123jeh5zh732at53ry4mkuwkvksl",
+          "name": "Foo bar",
+          "type": "image/png"
+        },
+        "external_system_type": "20"
       }
     },
-    "attributes": {
-      "reject_reason": "source account underfunded",
-      "hash": "13935d561f9ec54341243e6afaf0c8bf936928b07f6600204ba8ca550757d0a6",
-      "all_tasks": 12,
-      "pending_tasks": 2,
-      "created_at": "2012-11-01T22:08:41+00:00",
-      "updated_at": "2012-11-01T22:08:41+00:00",
-      "state": "pending",
-      "state_i": 0,
-      "reference": "719111a51cfc5ad214e4e90ce6610f10e1cba165fd1bc9db73a031352b3bb61c",
-      "external_details": {}
-    }
-  }],
-  "included": [{
-    "id": "12345",
-    "type": "requests",
-    "relationships": {
-      "asset": {
-        "data": {
-          "id": "USD",
-          "type": "assets"
-        }
-      }
-    },
-    "attributes": {
-      "asset": "USD",
-      "policies": 12,
-      "pre_issuance_asset_signer": "GBSR6JG5AYSAW7HK6EGJFYVIVN54LVGSY3ZLJ6X3IBQZ766EJABCZQTH",
-      "max_issuance_amount": "1000.123456",
-      "initial_preissued_amount": "1000.123456",
-      "creator_details": {}
-    }
-  }],
-  "links": {
-    "next": "/v3/create_asset_requests?include=details&page[number]=2&page[limit]=15",
-    "self": "/v3/create_asset_requests?include=details&page[number]=1&page[limit]=15"
-  }
+    "two_step_withdrawal": null,
+    "limits_update": null,
+    "aml_alert": null,
+    "update_sale_details": null
+  },
+  "created_at": "2018-05-19T16:58:47Z",
+  "updated_at": "2018-05-19T16:58:47Z",
+  "request_state_i": 2,
+  "request_state": "canceled"
 }
