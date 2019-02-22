@@ -13,7 +13,7 @@
         />
         <div class="dashboard__actions">
           <button
-            v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
+            v-if="accountRoleId === kvEntryCorporateRoleId"
             class="app__button-raised dashboard__action"
             @click="createIssuanceFormIsShown = true"
           >
@@ -104,6 +104,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
+      vuexTypes.kvEntryCorporateRoleId,
       vuexTypes.accountBalances,
       vuexTypes.accountRoleId,
       vuexTypes.wallet,

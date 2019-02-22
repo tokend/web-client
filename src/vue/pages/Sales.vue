@@ -24,7 +24,7 @@
 
       <template
         slot="extra"
-        v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
+        v-if="accountRoleId === kvEntryCorporateRoleId"
       >
         <button
           v-ripple
@@ -103,8 +103,6 @@ import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
 import { Sdk } from '@/sdk'
-import config from '@/config'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -152,7 +150,6 @@ export default {
     isCreateSaleDrawerShown: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
-    config,
     SALE_STATES,
   }),
 
@@ -160,6 +157,7 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
       accountRoleId: vuexTypes.accountRoleId,
+      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
     }),
     saleAssets () {
       return this.saleRecords

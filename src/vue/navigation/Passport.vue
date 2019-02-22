@@ -63,7 +63,6 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapMutations } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
-import config from '@/config'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 
 export default {
@@ -71,11 +70,6 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
-    accountRoleTranslationIds: {
-      [config.ACCOUNT_ROLES.notVerified]: 'passport.account-unverified',
-      [config.ACCOUNT_ROLES.general]: 'passport.account-general',
-      [config.ACCOUNT_ROLES.syndicate]: 'passport.account-corporate',
-    },
     destructClickOutsideHandler: () => {},
   }),
 
@@ -83,7 +77,18 @@ export default {
     ...mapGetters({
       email: vuexTypes.walletEmail,
       accountRoleId: vuexTypes.accountRoleId,
+      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      kvEntryUnverifiedRoleId: vuexTypes.kvEntryUnverifiedRoleId,
     }),
+
+    accountRoleTranslationIds () {
+      return {
+        [this.kvEntryGeneralRoleId]: 'passport.account-general',
+        [this.kvEntryCorporateRoleId]: 'passport.account-corporate',
+        [this.kvEntryUnverifiedRoleId]: 'passport.account-unverified',
+      }
+    },
   },
 
   methods: {

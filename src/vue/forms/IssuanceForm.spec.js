@@ -13,10 +13,10 @@ import { MockHelper, MockWrapper } from '@/test'
 
 import { Bus } from '@/js/helpers/event-bus'
 
-import config from '@/config'
-
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
+import keyValueModule from '@/vuex/key-value.module'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
@@ -60,9 +60,15 @@ describe('IssuanceForm', () => {
 
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
-      const getters = accountModule.getters
+      const getters = {
+        ...accountModule.getters,
+        ...keyValueModule.getters,
+      }
+      const syndicateRoleId = 2
+      sinon.stub(getters, vuexTypes.kvEntryCorporateRoleId)
+        .returns(syndicateRoleId)
       sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(config.ACCOUNT_ROLES.syndicate)
+        .returns(syndicateRoleId)
       const store = new Vuex.Store({
         getters,
       })
@@ -122,9 +128,16 @@ describe('IssuanceForm', () => {
       transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
 
-      const getters = accountModule.getters
+      const getters = {
+        ...accountModule.getters,
+        ...keyValueModule.getters,
+      }
+      const syndicateRoleId = 2
+      sinon.stub(getters, vuexTypes.kvEntryCorporateRoleId)
+        .returns(syndicateRoleId)
       sinon.stub(getters, vuexTypes.accountRoleId)
-        .returns(config.ACCOUNT_ROLES.syndicate)
+        .returns(syndicateRoleId)
+
       store = new Vuex.Store({
         getters,
       })
