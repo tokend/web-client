@@ -37,6 +37,7 @@ import WarningBanner from '@/vue/common/WarningBanner'
 
 import {
   mapGetters,
+  mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
@@ -78,6 +79,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+    }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
       Api.init({ horizonURL: config.HORIZON_SERVER })
@@ -85,6 +89,7 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
+        await this.loadKvEntriesAccountRoleIds()
       }
     },
     detectIE () {
