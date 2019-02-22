@@ -15,28 +15,29 @@ for further information about branching and tagging conventions.
 - `ChangeRoleRequestRecord` wrapper for change role requests
 - `Api` instance to the `MockHelper`
 - `JsonapiResponse` to the `MockWrapper`
+- vuex module for API `key-value` storage
+- `UserDoesntExistError`, when user's account is not found
+- `IdentityGetterMixin` for getting user's email by their account ID & vice versa
+- Loading account roles from the key-value storage
 
 ### Fixed
 - `RecordWrapper.request`, `RequestRecord` according to the new request types
 - failed unit tests
 
 ### Changed
-- Use sdk version 1.0.0-x.12
-- Comment failed tests, that are not fixed yet
-- test mocks according to the new API
+- Use sdk version 1.0.0-x.15
 - Use `Api` class for the new API requests
 - Use `accountRoleId` instead of `accountType`
 - Use `CreateChangeRoleRequestBuilder.createChangeRoleRequest` instead of `CreateUpdateKYCRequestBuilder.createUpdateKYCRequest`
-- request mocks according to the new API responses
-- Renamed CreateUpdateKYCRequestBuilder -> CreateChangeRoleRequestBuilder
-- Passing creatorDetails instead of externalDetails param in the createIssuanceRequest
-- Passing creatorDetails instead of externalDetails param in the createWithdrawWithAutoConversion
-- Passing creatorDetails instead of details in the assetCreationRequest
-- Passing creatorDetails instead of details in the assetUpdateRequest
-- Passing creatorDetails instead of details in the createSaleCreationRequest
-- Rename update kyc request to change role request
+- Use `IdentityGetterMixin` for getting account ID & email in `EmailGetter`, `IssuanceForm` & `TransferForm`
+- Use `vuexTypes.kvEntryGeneralRoleId` & `vuexTypes.kvEntryCorporateRoleId` for making chane role operation
+- Change role request mocks according to the new API responses
+- Passing `creatorDetails` instead of `externalDetails` param in the `createIssuanceRequest`
+- Passing `creatorDetails` instead of `externalDetails` param in the `createWithdrawWithAutoConversion`
+- Passing `creatorDetails` instead of `details` in the `assetCreationRequest`
+- Passing `creatorDetails` instead of `details` in the `assetUpdateRequest`
+- Passing `creatorDetails` instead of `details` in the `createSaleCreationRequest`
 - Rename PaymentV2 builder to Payment builder
-
 - Renamed request types:
   - `xdr.ReviewableRequestType.preIssuanceCreate` -> `xdr.ReviewableRequestType.createPreIssuance`
   - `xdr.ReviewableRequestType.issuanceCreate` -> `xdr.ReviewableRequestType.createIssuance`
@@ -46,7 +47,6 @@ for further information about branching and tagging conventions.
   - `xdr.ReviewableRequestType.updateKyc` -> `xdr.ReviewableRequestType.changeRole`
   - `xdr.ReviewableRequestType.assetCreate` -> `xdr.ReviewableRequestType.createAsset`
   - `xdr.ReviewableRequestType.assetUpdate` -> `xdr.ReviewableRequestType.updateAsset`
-
 - Renamed fields with names like `details` to `creatorDetails` according to new XDR structs
   - `createAmlAlert (opts)`:
     - field `opts.reason -> opts.creatorDetails`
@@ -68,9 +68,11 @@ for further information about branching and tagging conventions.
     - introduced field `opts.creatorDetails`
 
 ### Removed
-- Passing keyLevelToSet to CreateChangeRoleRequestBuilder.createChangeRoleRequest
-- unnecessary test mocks
+- Passing `kycLevelToSet` to `CreateChangeRoleRequestBuilder.createChangeRoleRequest`
+- Unnecessary test mocks
 - `UpdateKycRequestRecord` (replaced by `ChangeRoleRequestRecord`)
+- Use of `ACCOUNT_TYPES` constant
+- Countries list from `VerificationGeneralForm`
 
 ## [1.0.0-rc.3] - 2019-02-21
 ### Added
