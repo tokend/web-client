@@ -20,7 +20,6 @@ const mutations = {
 
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
-  SET_KYC_APPROVED_DATA: 'SET_KYC_APPROVED_DATA',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
 }
 
@@ -56,18 +55,8 @@ const getters = {
 
   // account
   account: 'account',
-  balancesDetails: 'balancesDetails',
   accountId: 'accountId',
-  accountIsBlocked: 'accountIsBlocked',
-  accountBlockReasons: 'accountBlockReasons',
-  accountThresholds: 'accountThresholds',
-  accountReferrer: 'accountReferrer',
-  accountReferrals: 'accountReferrals',
-  accountPoliciesTypeI: 'accountPoliciesTypeI',
-  accountPoliciesTypes: 'accountPoliciesTypes',
   accountBalances: 'accountBalances',
-  accountDepositAddresses: 'accountDepositAddresses',
-  accountKycBlobId: 'accountKycBlobId',
   accountRoleId: 'accountRoleId',
 
   isAccountGeneral: 'isAccountGeneral',
@@ -97,7 +86,6 @@ const getters = {
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycLatestData: 'kycLatestData',
-  kycApprovedData: 'kycApprovedData',
 }
 
 export const vuexTypes = {

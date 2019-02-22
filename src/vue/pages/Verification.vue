@@ -35,7 +35,7 @@
         :to="vueRoutes.verification.general"
         class="account-type-selector__item"
         :disabled="kycAccountRole &&
-          kycAccountRole !== kvEntryCorporateRoleId"
+          kycAccountRole !== kvEntryGeneralRoleId"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
