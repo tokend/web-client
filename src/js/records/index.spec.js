@@ -57,7 +57,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
     }
 
     const setPolicies = (rawJSON, policies) => {
-      rawJSON.details.asset_create.policies = policies
+      rawJSON.details.create_asset.policies = policies
         .map(p => ({
           value: p,
           name: 'SomePolicyNameWeDoNotInterestedIn',
@@ -82,7 +82,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.code)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.code
+          assetCreateJSON.details.create_asset.code
         )
     })
 
@@ -90,7 +90,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.initialPreissuedAmount)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.initial_preissued_amount
+          assetCreateJSON.details.create_asset.initial_preissued_amount
         )
     })
 
@@ -98,7 +98,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.preissuedAssetSigner)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.pre_issued_asset_signer
+          assetCreateJSON.details.create_asset.pre_issued_asset_signer
         )
     })
 
@@ -106,7 +106,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.maxIssuanceAmount)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.max_issuance_amount
+          assetCreateJSON.details.create_asset.max_issuance_amount
         )
     })
 
@@ -114,7 +114,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.details.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.name
+          assetCreateJSON.details.create_asset.details.name
         )
     })
 
@@ -131,19 +131,19 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.details.logo.key)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.key
+          assetCreateJSON.details.create_asset.details.logo.key
         )
 
       expect(opts.details.logo.type)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.type
+          assetCreateJSON.details.create_asset.details.logo.type
         )
 
       expect(opts.details.logo.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.name
+          assetCreateJSON.details.create_asset.details.logo.name
         )
     })
 
@@ -151,19 +151,19 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.details.terms.key)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.key
+          assetCreateJSON.details.create_asset.details.terms.key
         )
 
       expect(opts.details.terms.type)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.type
+          assetCreateJSON.details.create_asset.details.terms.type
         )
 
       expect(opts.details.terms.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.name
+          assetCreateJSON.details.create_asset.details.terms.name
         )
     })
   })
@@ -179,25 +179,25 @@ describe('Record unwrapper opts() method should return proper data', () => {
     }
 
     const setStartTime = (rawJSON, time) => {
-      rawJSON.details.sale.start_time = time
+      rawJSON.details.create_sale.start_time = time
 
       return rawJSON
     }
 
     const setEndTime = (rawJSON, time) => {
-      rawJSON.details.sale.end_time = time
+      rawJSON.details.create_sale.end_time = time
 
       return rawJSON
     }
 
     const setSaleType = (rawJSON, type) => {
-      rawJSON.details.sale.sale_type = type
+      rawJSON.details.create_sale.sale_type = type
 
       return rawJSON
     }
 
     const setQuoteAssets = (rawJSON, assets) => {
-      rawJSON.details.sale.quote_assets = assets
+      rawJSON.details.create_sale.quote_assets = assets
 
       return rawJSON
     }
@@ -215,13 +215,13 @@ describe('Record unwrapper opts() method should return proper data', () => {
     it('baseAsset', () => {
       expect(opts.baseAsset)
         .to
-        .equal(saleCreateJSON.details.sale.base_asset)
+        .equal(saleCreateJSON.details.create_sale.base_asset)
     })
 
     it('defaultQuoteAsset', () => {
       expect(opts.defaultQuoteAsset)
         .to
-        .equal(saleCreateJSON.details.sale.default_quote_asset)
+        .equal(saleCreateJSON.details.create_sale.default_quote_asset)
     })
 
     it('startTime', () => {
@@ -246,43 +246,43 @@ describe('Record unwrapper opts() method should return proper data', () => {
     it('softCap', () => {
       expect(opts.softCap)
         .to
-        .equal(saleCreateJSON.details.sale.soft_cap)
+        .equal(saleCreateJSON.details.create_sale.soft_cap)
     })
 
     it('hardCap', () => {
       expect(opts.hardCap)
         .to
-        .equal(saleCreateJSON.details.sale.hard_cap)
+        .equal(saleCreateJSON.details.create_sale.hard_cap)
     })
 
     it('baseAssetForHardCap', () => {
       expect(opts.baseAssetForHardCap)
         .to
-        .equal(saleCreateJSON.details.sale.base_asset_for_hard_cap)
+        .equal(saleCreateJSON.details.create_sale.base_asset_for_hard_cap)
     })
 
     it('saleStaten', () => {
       expect(opts.saleState)
         .to
-        .equal(saleCreateJSON.details.sale.state.value)
+        .equal(saleCreateJSON.details.create_sale.state.value)
     })
 
     it('details.name', () => {
       expect(opts.details.name)
         .to
-        .equal(saleCreateJSON.details.sale.details.name)
+        .equal(saleCreateJSON.details.create_sale.details.name)
     })
 
     it('details.short_description', () => {
       expect(opts.details.short_description)
         .to
-        .equal(saleCreateJSON.details.sale.details.short_description)
+        .equal(saleCreateJSON.details.create_sale.details.short_description)
     })
 
     it('details.description', () => {
       expect(opts.details.description)
         .to
-        .equal(saleCreateJSON.details.sale.details.description)
+        .equal(saleCreateJSON.details.create_sale.details.description)
     })
 
     it('quoteAssets', () => {
@@ -318,15 +318,15 @@ describe('Record unwrapper opts() method should return proper data', () => {
     it('logo', () => {
       expect(opts.details.logo.key)
         .to
-        .equal(saleCreateJSON.details.sale.details.logo.key)
+        .equal(saleCreateJSON.details.create_sale.details.logo.key)
 
       expect(opts.details.logo.type)
         .to
-        .equal(saleCreateJSON.details.sale.details.logo.type)
+        .equal(saleCreateJSON.details.create_sale.details.logo.type)
 
       expect(opts.details.logo.name)
         .to
-        .equal(saleCreateJSON.details.sale.details.logo.name)
+        .equal(saleCreateJSON.details.create_sale.details.logo.name)
     })
   })
 })

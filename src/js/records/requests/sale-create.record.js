@@ -6,7 +6,7 @@ export class SaleRequestRecord extends RequestRecord {
     super(record)
 
     this.baseAsset = _get(this._record, 'details.createSale.baseAsset')
-    this.name = _get(this._record, 'details.createSale.creatorDetails.name')
+    this.name = _get(this._record, 'details.createSale.details.name')
     this.defaultQuoteAsset = _get(
       this._record, 'details.createSale.defaultQuoteAsset'
     )
@@ -24,19 +24,19 @@ export class SaleRequestRecord extends RequestRecord {
     this.saleState = _get(this._record, 'details.createSale.state.value')
     this.saleStateStr = _get(this._record, 'details.createSale.state.name')
 
-    this.details = _get(this._record, 'details.createSale.creatorDetails')
+    this.details = _get(this._record, 'details.createSale.details')
     this.description = _get(
-      this._record, 'details.createSale.creatorDetails.description'
+      this._record, 'details.createSale.details.description'
     )
-    this.logo = _get(this._record, 'details.createSale.creatorDetails.logo')
-    this.logoKey = _get(this._record, 'details.createSale.creatorDetails.logo.key')
-    this.logoName = _get(this._record, 'details.createSale.creatorDetails.logo.name')
-    this.logoType = _get(this._record, 'details.createSale.creatorDetails.logo.type')
+    this.logo = _get(this._record, 'details.createSale.details.logo')
+    this.logoKey = _get(this._record, 'details.createSale.details.logo.key')
+    this.logoName = _get(this._record, 'details.createSale.details.logo.name')
+    this.logoType = _get(this._record, 'details.createSale.details.logo.type')
     this.shortDescription = _get(
-      this._record, 'details.createSale.creatorDetails.shortDescription'
+      this._record, 'details.createSale.details.shortDescription'
     )
     this.youtubeVideoId = _get(
-      this._record, 'details.createSale.creatorDetails.youtubeVideoId'
+      this._record, 'details.createSale.details.youtubeVideoId'
     )
 
     this.quoteAssets = this._getQuoteAssets()

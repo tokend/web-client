@@ -9,7 +9,7 @@
   "details": {
     "request_type_i": 10,
     "request_type": "asset_create",
-    "asset_create": {
+    "create_asset": {
       "code": "CAT",
       "policies": [],
       "pre_issued_asset_signer": "GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4",
