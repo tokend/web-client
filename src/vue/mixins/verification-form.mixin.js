@@ -38,8 +38,8 @@ export default {
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
-        destinationAccount: this.account.accountId,
-        accountRoleToSet: this.accountType,
+        destinationAccount: this.accountId,
+        accountRoleToSet: String(this.accountRole),
         creatorDetails: {
           blob_id: kycBlobId,
         },

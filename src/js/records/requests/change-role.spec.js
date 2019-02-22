@@ -23,7 +23,7 @@ describe('UpdateKycRequestRecord', () => {
       .not
       .equal(undefined)
 
-    expect(record.accountRoleToSet)
+    expect(+record.accountRoleToSet)
       .to
       .equal(updateKycJSON.included[0].attributes.account_role_to_set)
 
