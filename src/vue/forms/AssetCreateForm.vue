@@ -101,6 +101,21 @@
         </div>
       </div>
 
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <select-field
+            v-model="form.information.assetType"
+            :values="assetType"
+            :label="'deposit-form.asset-type' | globalize"
+            :disabled="formMixin.isDisabled"
+            @blur="touchField('form.information.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.information.assetType',
+            )"
+          />
+        </div>
+      </div>
+
       <div class="app__form-actions">
         <button
           v-ripple
@@ -263,6 +278,7 @@ export default {
         maxIssuanceAmount: '',
         logo: null,
         policies: [],
+        assetType: '',
       },
       advanced: {
         isPreissuanceDisabled: false,
@@ -296,6 +312,9 @@ export default {
           maxIssuanceAmount: {
             required,
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
+          },
+          assetType: {
+            required,
           },
         },
         advanced: {
@@ -341,6 +360,7 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
+        assetType: this.form.information.assetType,
         preissuedAssetSigner: preissuedAssetSigner,
         initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
@@ -351,6 +371,10 @@ export default {
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },
       }
+    },
+    assetType () {
+      // hard-code use keyValue
+      return [ '19', '78', '13', '33', '123' ]
     },
   },
 
@@ -363,12 +387,13 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+          this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
 
       this.form = {
         information: {
           name: this.request.assetName,
           code: this.request.assetCode,
+          assetType: this.request.assetType,
           maxIssuanceAmount: this.request.maxIssuanceAmount,
           logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)
@@ -403,7 +428,7 @@ export default {
         await this.uploadDocuments()
 
         const operation =
-          base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
+            base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.asset-request-submitted-msg')
 
@@ -438,16 +463,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+  @import './app-form';
 
-.asset-create-form__btn {
-  @include button-raised();
+  .asset-create-form__btn {
+    @include button-raised();
 
-  margin-bottom: 2rem;
-  width: 14.4rem;
-}
+    margin-bottom: 2rem;
+    width: 14.4rem;
+  }
 
-.asset-create-form__kyc-required-row {
-  margin-top: 2.1rem;
-}
+  .asset-create-form__kyc-required-row {
+    margin-top: 2.1rem;
+  }
 </style>

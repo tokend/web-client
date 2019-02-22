@@ -16,7 +16,7 @@
         </router-link>
       </template>
       <template
-        v-if="accountRoleId === config.ACCOUNT_ROLES.syndicate"
+
         slot="extra"
       >
         <button
