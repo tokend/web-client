@@ -28,10 +28,10 @@ export class RecordWrapper {
         return new ChangeRoleRequestRecord(...arguments)
       case REQUEST_TYPES.updateSaleDetails:
         return new UpdateSaleDetailsRequestRecord(...arguments)
-      case REQUEST_TYPES.amlAlert:
-      case REQUEST_TYPES.withdraw:
-      case REQUEST_TYPES.limitsUpdate:
-      case REQUEST_TYPES.issuanceCreate:
+      case REQUEST_TYPES.createAmlAlert:
+      case REQUEST_TYPES.createWithdraw:
+      case REQUEST_TYPES.updateLimit:
+      case REQUEST_TYPES.createIssuance:
       case REQUEST_TYPES.twoStepWithdrawal:
       default:
         return new RequestRecord(...arguments)
@@ -59,7 +59,7 @@ export class RecordUnwrapper {
           hardCap: record.hardCap,
           saleState: record.saleState,
           baseAssetForHardCap: record.baseAssetForHardCap,
-          details: {
+          creatorDetails: {
             name: record.name,
             short_description: record.shortDescription,
             description: record.description,
@@ -76,7 +76,7 @@ export class RecordUnwrapper {
           maxIssuanceAmount: record.maxIssuanceAmount,
           policies: record.policy,
           initialPreissuedAmount: record.initialPreissuedAmount,
-          details: {
+          creatorDetails: {
             name: record.assetName,
             logo: {
               key: record.logoKey,

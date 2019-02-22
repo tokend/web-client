@@ -6,32 +6,32 @@ export class UpdateSaleDetailsRequestRecord extends RequestRecord {
     super(record)
 
     this.saleId = _get(record, 'details.updateSaleDetails.saleId')
-    this.name = _get(record, 'details.updateSaleDetails.newDetails.name')
+    this.name = _get(record, 'details.updateSaleDetails.creatorDetails.name')
     this.shortDescription = _get(
-      record, 'details.updateSaleDetails.newDetails.shortDescription'
+      record, 'details.updateSaleDetails.creatorDetails.shortDescription'
     )
-    this.logo = _get(record, 'details.updateSaleDetails.newDetails.logo')
-    this.logoKey = _get(record, 'details.updateSaleDetails.newDetails.logo.key')
+    this.logo = _get(record, 'details.updateSaleDetails.creatorDetails.logo')
+    this.logoKey = _get(record, 'details.updateSaleDetails.creatorDetails.logo.key')
     this.logoName = _get(
-      record, 'details.updateSaleDetails.newDetails.logo.name'
+      record, 'details.updateSaleDetails.creatorDetails.logo.name'
     )
     this.logoType = _get(
-      record, 'details.updateSaleDetails.newDetails.logo.type'
+      record, 'details.updateSaleDetails.creatorDetails.logo.type'
     )
     this.description = _get(
-      record, 'details.updateSaleDetails.newDetails.description'
+      record, 'details.updateSaleDetails.creatorDetails.description'
     )
     this.youtubeVideoId = _get(
-      record, 'details.updateSaleDetails.newDetails.youtubeVideoId'
+      record, 'details.updateSaleDetails.creatorDetails.youtubeVideoId'
     )
     this.returnOfInvestment = _get(
-      record, 'details.updateSaleDetails.newDetails.returnOfInvestment'
+      record, 'details.updateSaleDetails.creatorDetails.returnOfInvestment'
     )
     this.returnOfInvestmentFrom = _get(
-      record, 'details.updateSaleDetails.newDetails.returnOfInvestment.from'
+      record, 'details.updateSaleDetails.creatorDetails.returnOfInvestment.from'
     )
     this.returnOfInvestmentTo = _get(
-      record, 'details.updateSaleDetails.newDetails.returnOfInvestment.to'
+      record, 'details.updateSaleDetails.creatorDetails.returnOfInvestment.to'
     )
   }
 }

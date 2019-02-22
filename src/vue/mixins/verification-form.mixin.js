@@ -38,9 +38,9 @@ export default {
         requestID: this.kycState === REQUEST_STATES_STR.rejected
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
-        destinationAccount: this.accountId,
-        accountRoleToSet: String(this.accountRole),
-        kycData: {
+        destinationAccount: this.account.accountId,
+        accountRoleToSet: this.accountType,
+        creatorDetails: {
           blob_id: kycBlobId,
         },
       })

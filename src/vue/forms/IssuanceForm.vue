@@ -221,7 +221,7 @@ export default {
               amount: this.form.amount.toString(),
               receiver: receiverBalance.balanceId,
               reference: this.form.reference,
-              externalDetails: {},
+              creatorDetails: {},
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           await this.reinitAssetSelector()

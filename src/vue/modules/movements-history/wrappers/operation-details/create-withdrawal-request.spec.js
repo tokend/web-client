@@ -8,7 +8,7 @@ describe('CreateWithdrawRequestOp', () => {
         fixed: '1.001200',
         calculatedPercent: '0.201000',
       },
-      externalDetails: {
+      creatorDetails: {
         fizz: 'buzz',
       },
       balance: {
@@ -19,7 +19,7 @@ describe('CreateWithdrawRequestOp', () => {
 
     const result = new CreateWithdrawRequestOp(record)
 
-    expect(result.externalDetails).to.have
+    expect(result.creatorDetails).to.have
       .property('fizz')
       .equal('buzz')
   })
