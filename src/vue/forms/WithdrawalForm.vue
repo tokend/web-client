@@ -1,7 +1,7 @@
 <template>
   <div class="withdrawal">
     <template v-if="isLoaded">
-      <template v-if="account.balances.length">
+      <template v-if="assets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           id="withdrawal-form"

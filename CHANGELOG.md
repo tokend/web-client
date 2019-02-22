@@ -72,6 +72,15 @@ for further information about branching and tagging conventions.
 - unnecessary test mocks
 - `UpdateKycRequestRecord` (replaced by `ChangeRoleRequestRecord`)
 
+## [1.0.0-rc.3] - 2019-02-21
+### Added
+- CSS rule that prevents any events on disabled buttons.
+
+### Fixed
+- Trade offer validations. Earlier, the user was able to enter invalid value without some error message but he cannot be able to send from, so it was confusing for him.
+- Fix bug with asset create (lost `trailingDigitsCount` in op)
+- Withdrawal form displaying
+
 ## [1.0.0-rc.2] - 2019-02-20
 ### Added
 - Build version displaying
@@ -107,7 +116,8 @@ for further information about branching and tagging conventions.
 
 ## [1.0.0-rc.0] - 2019-02-18
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.3...HEAD
+[1.0.0-rc.3]: https://github.com/tokend/web-client/compare/1.0.0-rc.2...1.0.0-rc.3
 [1.0.0-rc.2]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/tokend/web-client/compare/1.0.0-rc.0...1.0.0-rc.1
 [1.0.0-rc.0]: https://github.com/tokend/web-client/releases/tag/1.0.0-rc.0
