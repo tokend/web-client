@@ -61,6 +61,7 @@ const getters = {
   accountId: 'accountId',
   accountBalances: 'accountBalances',
   accountRoleId: 'accountRoleId',
+  accountDepositAddresses: 'accountDepositAddresses',
 
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',

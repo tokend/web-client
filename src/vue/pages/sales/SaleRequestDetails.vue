@@ -159,7 +159,7 @@
         <button
           v-ripple
           class="sale-request-details__update-btn"
-          :disabled="!canBeUpdated"
+          :disabled="isPending || !canBeUpdated"
           @click="$emit(EVENTS.updateAsk)"
         >
           {{ 'sale-request-details.update-btn' | globalize }}
@@ -168,10 +168,7 @@
         <button
           v-ripple
           class="sale-request-details__cancel-btn"
-          :class="{
-            'sale-request-details__cancel-btn--disabled': !canBeCanceled
-          }"
-          :disabled="!canBeCanceled"
+          :disabled="isPending || !canBeCanceled"
           @click="$emit(EVENTS.cancelAsk)"
         >
           {{ 'sale-request-details.cancel-btn' | globalize }}
@@ -219,6 +216,11 @@ export default {
     request: {
       type: SaleRequestRecord,
       required: true,
+    },
+    isPending: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   data: _ => ({
@@ -329,17 +331,10 @@ export default {
   }
 
   .sale-request-details__cancel-btn {
-    @include button();
+    @include button-flat();
 
-    padding-left: .1rem;
-    padding-right: .1rem;
     font-weight: normal;
     margin-left: auto;
-
-    &--disabled {
-      filter: grayscale(100%);
-      cursor: default;
-    }
   }
 }
 

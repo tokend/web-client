@@ -93,6 +93,7 @@
         <div class="app__form-field">
           <select-field
             v-model="form.information.assetType"
+            key-as-value-text="label"
             :values="assetTypes"
             :label="'asset-form.asset-type' | globalize"
             :disabled="formMixin.isDisabled"
@@ -223,6 +224,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, requiredUnless, amountRange, maxLength } from '@validators'
+import { globalize } from '@/vue/filters/globalize'
 
 const STEPS = {
   information: {
@@ -266,7 +268,7 @@ export default {
         maxIssuanceAmount: '',
         logo: null,
         policies: [],
-        assetType: '0',
+        assetType: '',
       },
       advanced: {
         isPreissuanceDisabled: false,
@@ -349,7 +351,7 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.information.kvAssetTypeKycRequired || '0',
+        assetType: this.form.information.assetType.value,
         preissuedAssetSigner: preissuedAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
@@ -363,7 +365,16 @@ export default {
       }
     },
     assetTypes () {
-      return [ this.kvAssetTypeKycRequired ]
+      return [
+        {
+          label: globalize('asset-form.asset-type-not-required-kyc'),
+          value: '0',
+        },
+        {
+          label: globalize('asset-form.asset-type-required-kyc'),
+          value: String(this.kvAssetTypeKycRequired),
+        },
+      ]
     },
   },
 

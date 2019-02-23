@@ -59,10 +59,15 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.account,
+      vuexTypes.accountDepositAddresses,
     ]),
     address () {
-      const externalSystemAccount = this.account.externalSystemAccounts
-        .find(item => +item.type.value === +this.externalSystemType) || {}
+      const externalSystemAccount = Object
+        .values(this[vuexTypes.accountDepositAddresses])
+        .find(
+          item => +item.externalSystemType === +this.externalSystemType
+        ) || {}
+
       return externalSystemAccount.data
     },
   },
