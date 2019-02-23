@@ -4,12 +4,11 @@ import { errors } from '@/js/errors'
 export default {
   methods: {
     async getAccountIdByEmail (email) {
-      const { data } = await Api.getWithSignature('/identities', {
+      const { data } = await Api.getWithSignature('identities', {
         filter: {
           email: email,
         },
         page: {
-          number: 0,
           limit: 1,
         },
       })
@@ -21,7 +20,7 @@ export default {
       }
     },
     async getEmailByAccountId (accountId) {
-      const { data } = await Api.getWithSignature(`/identities/${accountId}`)
+      const { data } = await Api.getWithSignature(`identities/${accountId}`)
 
       return data.email
     },

@@ -1,6 +1,7 @@
 import { ApiCaller } from '@tokend/js-sdk'
 
 const HORIZON_VERSION_PREFIX = 'v3'
+const IDENTITIES_PATH = 'identities'
 
 let _api = null
 
@@ -38,7 +39,12 @@ export class Api {
    * @returns {String} - endpoint path, containing horizon version
    */
   static _getEndpoint (path) {
-    return `/${HORIZON_VERSION_PREFIX}/${path}`
+    // TODO: refactor it. maked near deadline
+    if (path.split('/')[0] !== IDENTITIES_PATH) {
+      return `/${HORIZON_VERSION_PREFIX}/${path}`
+    } else {
+      return `/${path}`
+    }
   }
 
   /**
