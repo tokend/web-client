@@ -107,7 +107,8 @@
               <p
                 class="transfer__fee"
                 v-if="fees.source.fixed">
-                - {{ fees.source.fixed }} {{ fees.source.feeAsset }}
+                - {{ fees.source.fixed | formatNumber }}
+                {{ fees.source.asset }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.sender-fixed-fee' | globalize }}
                 </span>
@@ -116,7 +117,8 @@
               <p
                 class="transfer__fee"
                 v-if="fees.source.percent">
-                - {{ fees.source.percent }} {{ fees.source.feeAsset }}
+                - {{ fees.source.percent | formatNumber }}
+                {{ fees.source.asset }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.sender-percent-fee' | globalize }}
                 </span>
@@ -125,7 +127,8 @@
               <p
                 class="transfer__fee"
                 v-if="form.isPaidForRecipient && +fees.destination.fixed">
-                - {{ fees.destination.fixed }} {{ fees.destination.feeAsset }}
+                - {{ fees.destination.fixed | formatNumber }}
+                {{ fees.destination.asset }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.recipient-fixed-fee' | globalize }}
                 </span>
@@ -134,7 +137,8 @@
               <p
                 class="transfer__fee"
                 v-if="form.isPaidForRecipient && +fees.destination.percent">
-                - {{ fees.destination.percent }} {{ fees.destination.feeAsset }}
+                - {{ fees.destination.percent | formatNumber }}
+                {{ fees.destination.asset }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.recipient-percent-fee' | globalize }}
                 </span>
@@ -156,7 +160,8 @@
               <p
                 class="transfer__fee"
                 v-if="fees.destination.fixed">
-                - {{ fees.destination.fixed }} {{ fees.destination.feeAsset }}
+                - {{ fees.destination.fixed | formatNumber }}
+                {{ fees.destination.asset }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.recipient-fixed-fee' | globalize }}
                 </span>
@@ -165,7 +170,8 @@
               <p
                 class="transfer__fee"
                 v-if="fees.destination.percent">
-                - {{ fees.destination.percent }} {{ fees.destination.feeAsset }}
+                - {{ fees.destination.percent | formatNumber }}
+                {{ fees.destination.asset }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.recipient-percent-fee' | globalize }}
                 </span>
@@ -183,23 +189,23 @@
             </h3>
 
             <p class="transfer__fee">
-              - {{ +(fees.source.fixed) + +(fees.source.percent) }}
-              {{ fees.source.feeAsset }}
+              - {{ totalSenderFee | formatNumber }}
+              {{ fees.source.asset }}
               <span class="transfer__fee-type">
                 {{ 'transfer-form.total-sender-fee' | globalize }}
               </span>
             </p>
 
             <p class="transfer__fee">
-              - {{ +(fees.destination.fixed) + +(fees.destination.percent) }}
-              {{ fees.destination.feeAsset }}
+              - {{ totalReceiverFee | formatNumber }}
+              {{ fees.destination.asset }}
               <span class="transfer__fee-type">
                 {{ 'transfer-form.total-receiver-fee' | globalize }}
               </span>
             </p>
 
             <p class="transfer__fee">
-              - {{ form.amount }} {{ form.token.code }}
+              - {{ totalAmount | formatNumber }} {{ form.token.code }}
               <span class="transfer__fee-type">
                 {{ 'transfer-form.total-amount' | globalize }}
               </span>
@@ -266,6 +272,7 @@ import {
   PAYMENT_FEE_SUBTYPES,
   FEE_TYPES,
 } from '@tokend/js-sdk'
+import { MathUtil } from '@/js/utils'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -353,6 +360,18 @@ export default {
     balance () {
       return this.accountBalances
         .find(i => i.asset === this.form.token.code) || {}
+    },
+    totalSenderFee () {
+      return MathUtil.add(this.fees.source.fixed, this.fees.source.percent)
+    },
+    totalReceiverFee () {
+      return MathUtil
+        .add(this.fees.destination.fixed, this.fees.destination.percent)
+    },
+    totalAmount () {
+      const fees = MathUtil
+        .add(this.totalSenderFee, this.totalReceiverFee)
+      return MathUtil.add(fees, this.form.amount)
     },
   },
   async created () {
