@@ -34,7 +34,7 @@ describe('UpdateKycRequestRecord', () => {
 
     expect(record.blobId)
       .to
-      .equal(updateKycJSON.included[0].attributes.kyc_data.blob_id)
+      .equal(updateKycJSON.included[0].attributes.creator_details.blob_id)
 
     expect(record.blobId)
       .to

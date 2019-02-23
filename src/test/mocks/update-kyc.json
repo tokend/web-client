@@ -49,11 +49,10 @@
     "type": "request-details-change-role",
     "attributes": {
       "account_role_to_set": 3,
-      "kyc_data": {
+      "creator_details": {
         "blob_id": "OOFBHZPK2Y2VUJRRTO2X6GKUXH6MO6GNKAIM4TYJFA3VZGZ2LB7A"
       },
-      "sequence_number": 0,
-      "creator_details": []
+      "sequence_number": 0
     },
     "relationships": {
       "account_to_update_role": {
