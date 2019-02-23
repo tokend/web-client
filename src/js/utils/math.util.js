@@ -58,7 +58,7 @@ export class MathUtil {
     const one = new BigNumber(a)
     const two = new BigNumber(b)
 
-    const result = one.sub(two)
+    const result = one.minus(two)
     return result
       .toFixed(DECIMAL_PLACES)
   }
