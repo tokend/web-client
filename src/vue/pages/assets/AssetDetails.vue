@@ -79,7 +79,12 @@
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
-        {{ 'asset-details.add-balance-btn' | globalize }}
+        <template v-if="!isExistsInUserBalances">
+          {{ 'asset-details.add-balance-btn' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'asset-details.already-in-your-balance-btn' | globalize }}
+        </template>
       </button>
       <button
         v-if="asset.owner === accountId"
@@ -134,6 +139,9 @@ export default {
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
+    },
+    isExistsInUserBalances () {
+      return !!this.balances.find(item => item.asset === this.asset.code)
     },
   },
   methods: {
