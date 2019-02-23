@@ -13,13 +13,12 @@ export class RequestRecord {
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
-    this.state = record.state
-    this.stateI = record.stateI
+    this.state = record.state || record.requestState
+    this.stateI = record.stateI || record.requestStateI
 
     this.requestType = _get(record, 'details.requestType')
 
-    this.twoStepWithdrawal = _get(record, 'details.twoStepWithdrawal')
-    this.updateLimit = _get(record, 'details.updateLimit')
+    this.limitsUpdate = _get(record, 'details.limitsUpdate')
     this.amlAlert = _get(record, 'details.createAmlAlert')
     this.updateSaleDetails = _get(record, 'details.updateSaleDetails')
     this.updateSaleEndTime = _get(record, 'details.updateSaleEndTime')
