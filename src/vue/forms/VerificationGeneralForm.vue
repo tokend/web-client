@@ -336,7 +336,7 @@ export default {
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
     verificationCode () {
-      return this.account.accountId.slice(1, 6)
+      return this.accountId.slice(1, 6)
     },
   },
 

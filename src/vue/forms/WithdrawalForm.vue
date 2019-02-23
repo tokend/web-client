@@ -232,10 +232,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.account,
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      balances: vuexTypes.accountBalances,
+    }),
   },
   watch: {
     'form.amount' (value) {
@@ -333,10 +333,10 @@ export default {
       }
     },
     async loadAssets () {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
-        .map(item => new AssetRecord(item, this.account.balances))
+        .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.isWithdrawable && item.balance.id)
     },
   },

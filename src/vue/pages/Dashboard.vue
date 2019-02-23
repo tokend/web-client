@@ -21,6 +21,7 @@
             {{ 'dashboard.create-issuance-lbl' | globalize }}
           </button>
           <button
+            v-if="currentAsset"
             class="app__button-raised dashboard__action"
             @click="transferFormIsShown = true"
           >
