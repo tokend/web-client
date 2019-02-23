@@ -59,7 +59,7 @@ export default {
     disabled: { type: Boolean, default: false },
     name: { type: String, default: undefined },
     placeholder: { type: String, default: undefined },
-    required: { type: Boolean, default: true },
+    required: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
     title: { type: [String, Number], default: undefined },
     maxlength: { type: [String, Number], default: undefined },

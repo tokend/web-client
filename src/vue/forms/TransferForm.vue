@@ -9,7 +9,7 @@
           {{ 'transfer-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.assets.name"
           tag="button"
           class="app__button-raised transfer-form__discover-asset-btn">
           {{ 'transfer-form.discover-assets-btn' | globalize }}
@@ -38,7 +38,8 @@
                   {{
                     'transfer-form.balance' | globalize({
                       amount: balance.balance,
-                      asset: form.token.code
+                      asset: form.token.code,
+                      available: balance.balance
                     })
                   }}
                 </p>
@@ -57,10 +58,9 @@
                 :label="'transfer-form.amount-lbl' | globalize"
                 :readonly="view.mode === VIEW_MODES.confirm"
                 @blur="touchField('form.amount')"
-                :error-message="getFieldErrorMessage('form.amount') ||
-                  (isLimitExceeded
-                    ? globalize('transfer-form.insufficient-funds') : '')
-                "
+                :error-message="getFieldErrorMessage('form.amount', {
+                  available: balance.balance
+                })"
               />
             </div>
           </div>
@@ -84,12 +84,10 @@
                 id="transfer-description"
                 name="description"
                 v-model="form.subject"
-                @blur="touchField('form.subject')"
                 :label="'transfer-form.subject-lbl' | globalize({
                   length: 250
                 })"
                 :maxlength="250"
-                :error-message="getFieldErrorMessage('form.subject')"
                 :readonly="view.mode === VIEW_MODES.confirm"
               />
             </div>
@@ -254,12 +252,11 @@
 </template>
 
 <script>
-import get from 'lodash/get'
-
 import Loader from '@/vue/common/Loader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
+import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
@@ -273,7 +270,12 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
-import { required, emailOrAccountId, amount } from '@validators'
+import {
+  required,
+  emailOrAccountId,
+  amount,
+  noMoreThanAvailableOnBalance,
+} from '@validators'
 
 const VIEW_MODES = {
   submit: 'submit',
@@ -321,17 +323,21 @@ export default {
     isLoadingFailed: false,
     isFeesLoaded: false,
     VIEW_MODES,
+    vueRoutes,
     config,
   }),
-  validations: {
-    form: {
-      amount: {
-        required,
-        amount,
+  validations () {
+    return {
+      form: {
+        amount: {
+          required,
+          amount,
+          noMoreThanAvailableOnBalance:
+            noMoreThanAvailableOnBalance(this.balance.balance),
+        },
+        recipient: { required, emailOrAccountId },
       },
-      recipient: { required, emailOrAccountId },
-      subject: { required },
-    },
+    }
   },
   computed: {
     ...mapGetters([
@@ -345,12 +351,8 @@ export default {
       return this.userTransferableTokens.map(token => token.assetDetails)
     },
     balance () {
-      return this.accountBalances.find(i => i.asset === this.form.token.code)
-    },
-    isLimitExceeded () {
-      const amount = Number(this.form.amount)
-      const balance = Number(get(this.balance, 'balance') || 0)
-      return amount > balance
+      return this.accountBalances
+        .find(i => i.asset === this.form.token.code) || {}
     },
   },
   async created () {
