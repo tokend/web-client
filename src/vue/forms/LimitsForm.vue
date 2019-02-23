@@ -348,7 +348,7 @@ export default {
         .CreateManageLimitsRequestBuilder
         .createManageLimitsRequest({
           requestID: '0',
-          details: {
+          creatorDetails: {
             operationType,
             statsOpType,
             asset,

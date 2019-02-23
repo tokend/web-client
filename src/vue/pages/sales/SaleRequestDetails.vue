@@ -230,7 +230,7 @@ export default {
   }),
   computed: {
     canBeUpdated () {
-      return this.request.isPending || this.request.isRejected
+      return this.request.isRejected
     },
     canBeCanceled () {
       return this.request.isPending

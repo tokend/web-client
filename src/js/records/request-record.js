@@ -6,28 +6,25 @@ export class RequestRecord {
     this._record = record
 
     this.id = record.id || '0'
-    this.requestor = _get(record, 'requestor.id')
-    this.reviewer = _get(record, 'reviewer.id')
+    this.requestor = record.requestor
+    this.reviewer = record.reviewer
     this.reference = record.reference
     this.rejectReason = record.rejectReason
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
-    this.state = record.state
-    this.stateI = record.stateI
+    this.state = record.requestState
+    this.stateI = record.requestStateI
 
     this.requestType = _get(record, 'details.requestType')
+    this.requestTypeI = _get(record, 'details.requestTypeI')
 
     this.twoStepWithdrawal = _get(record, 'details.twoStepWithdrawal')
-    this.updateLimit = _get(record, 'details.updateLimit')
-    this.amlAlert = _get(record, 'details.createAmlAlert')
+    this.limitsUpdate = _get(record, 'details.limitsUpdate')
+    this.amlAlert = _get(record, 'details.amlAlert')
     this.updateSaleDetails = _get(record, 'details.updateSaleDetails')
     this.updateSaleEndTime = _get(record, 'details.updateSaleEndTime')
     this.promotionUpdateRequest = _get(record, 'details.promotionUpdateRequest')
-
-    this.allTasks = record.allTasks
-    this.pendingTasks = record.pendingTasks
-    this.externalDetails = record.externalDetails
   }
 
   get isPending () {

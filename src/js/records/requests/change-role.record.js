@@ -1,9 +1,25 @@
-import { RequestRecord } from '../request-record'
 import _get from 'lodash/get'
 
-export class ChangeRoleRequestRecord extends RequestRecord {
+export class ChangeRoleRequestRecord {
   constructor (record) {
-    super(record)
+    this._record = record
+
+    this.id = record.id || '0'
+    this.requestor = _get(record, 'requestor.id')
+    this.reviewer = _get(record, 'reviewer.id')
+    this.reference = record.reference
+    this.rejectReason = record.rejectReason
+    this.hash = record.hash
+    this.createdAt = record.createdAt
+    this.updatedAt = record.updatedAt
+    this.state = record.state
+    this.stateI = record.stateI
+
+    this.requestType = _get(record, 'requestDetails.type')
+
+    this.allTasks = record.allTasks
+    this.pendingTasks = record.pendingTasks
+    this.externalDetails = record.externalDetails
 
     this.accountToUpdateRole = _get(
       record, 'requestDetails.accountToUpdateRole.id'

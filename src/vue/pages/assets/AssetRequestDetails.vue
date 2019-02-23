@@ -142,7 +142,7 @@
               {{ 'asset-request-details.requires-kyc-title' | globalize }}
             </td>
             <td>
-              <template v-if="request.isRequiresKYC(kvAssetTypeKycRequired)">
+              <template v-if="request.isRequiresKYC">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
 
@@ -226,14 +226,14 @@ export default {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
     canBeUpdated () {
-      return this.request.isPending || this.request.isRejected
+      return this.request.isRejected
     },
     canBeCanceled () {
       return this.request.isPending
     },
   },
   created () {
-    this.loadKvAssetTypeKycRequired()
+    // this.loadKvAssetTypeKycRequired()
   },
   methods: {
     ...mapActions({
