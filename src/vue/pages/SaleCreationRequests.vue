@@ -2,15 +2,12 @@
   <div class="sale-creation-requests">
     <template v-if="isAssetsLoaded && ownedAssets.length">
       <!-- eslint-disable max-len -->
-      <!--
-        TODO: Commented because of back-end cannot filter requests by assetCode
-      -->
-      <!-- <select-field
+      <select-field
         v-model="filters.baseAsset"
         :values="ownedAssets"
         key-as-value-text="nameAndCode"
         class="sale-creation-requests__asset-list app__select app__select--no-border"
-      /> -->
+      />
       <!-- eslint-enable max-len -->
 
       <template v-if="isHistoryLoaded">
@@ -188,10 +185,7 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-/**
- * TODO: Commented because of back-end cannot filter requests by assetCode
- */
-// import SelectField from '@/vue/fields/SelectField'
+import SelectField from '@/vue/fields/SelectField'
 
 import CreateSaleForm from '@/vue/forms/CreateSaleForm'
 import SaleRequestDetails from '@/vue/pages/sales/SaleRequestDetails'
@@ -213,10 +207,7 @@ export default {
     Drawer,
     NoDataMessage,
     CollectionLoader,
-    /**
-     * TODO: Commented because of back-end cannot filter requests by assetCode
-     */
-    // SelectField,
+    SelectField,
     CreateSaleForm,
     SaleRequestDetails,
   },
@@ -271,19 +262,12 @@ export default {
     },
 
     getFirstPageLoader (accountId) {
-      /**
-       * TODO: Commented because of back-end cannot filter requests by assetCode
-       */
-      // const baseAssetCode = this.filters.baseAsset.code
+      const baseAssetCode = this.filters.baseAsset.code
 
       return function () {
         return Sdk.horizon.request.getAllForSales({
           requestor: accountId,
-          /**
-           * TODO: Commented because of back-end cannot filter requests by
-           * assetCode
-           */
-          // base_asset: baseAssetCode,
+          base_asset: baseAssetCode,
         })
       }
     },
