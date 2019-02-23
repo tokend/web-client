@@ -1,6 +1,5 @@
 import { Api } from '@/api'
 import { errors } from '@/js/errors'
-import { Sdk } from '@/sdk'
 
 export default {
   methods: {
@@ -21,13 +20,9 @@ export default {
       }
     },
     async getEmailByAccountId (accountId) {
-      if (accountId === Sdk.networkDetails.adminAccountId) {
-        // TODO: Move to translations
-        return 'Master'
-      } else {
-        const { data } = await Api.getWithSignature(`identities/${accountId}`)
-        return data.email
-      }
+      const { data } = await Api.getWithSignature(`identities/${accountId}`)
+
+      return data.email
     },
   },
 }
