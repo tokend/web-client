@@ -4,7 +4,7 @@ import { errors } from '@/js/errors'
 export default {
   methods: {
     async getAccountIdByEmail (email) {
-      const { data } = await Api.getWithSignature('identities', {
+      const { data } = await Api.api.get('identities', {
         filter: {
           email: email,
         },
@@ -20,7 +20,7 @@ export default {
       }
     },
     async getEmailByAccountId (accountId) {
-      const { data } = await Api.getWithSignature(`identities/${accountId}`)
+      const { data } = await Api.api.get(`identities/${accountId}`)
 
       return data.email
     },
