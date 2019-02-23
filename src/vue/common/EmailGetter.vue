@@ -61,7 +61,7 @@ export default {
 
   methods: {
     async init () {
-      if (this.accountId === Sdk.networkDetails.masterAccountId) {
+      if (this.accountId === Sdk.networkDetails.adminAccountId) {
         this.isMasterAccount = true
         return
       }

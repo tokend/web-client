@@ -168,7 +168,6 @@ export default {
       },
       documents: {
         idDocument: null,
-        proofDocument: null,
         verificationPhoto: null,
       },
     },
