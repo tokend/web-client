@@ -9,7 +9,9 @@ export class ChangeRoleRequestRecord extends RequestRecord {
       record, 'requestDetails.accountToUpdateRole.id'
     )
 
-    this.accountRoleToSet = _get(record, 'requestDetails.accountRoleToSet')
+    this.accountRoleToSet = String(
+      _get(record, 'requestDetails.accountRoleToSet')
+    )
     this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
     this.externalDetails = _get(record, 'externalDetails.data')
   }

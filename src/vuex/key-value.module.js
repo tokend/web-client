@@ -44,7 +44,7 @@ export const actions = {
 
     async function loadRole (keyValueEntryKey) {
       const { data } = await Api.api.get(`/v3/key_values/${keyValueEntryKey}`)
-      return data.value.u32
+      return String(data.value.u32)
     }
   },
 }

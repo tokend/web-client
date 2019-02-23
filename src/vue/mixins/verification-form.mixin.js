@@ -38,7 +38,7 @@ export default {
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.accountId,
-        accountRoleToSet: String(accountRole),
+        accountRoleToSet: accountRole,
         creatorDetails: {
           blob_id: kycBlobId,
         },
