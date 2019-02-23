@@ -75,6 +75,7 @@
     >
       <button
         v-ripple
+        v-if="asset.owner !== accountId"
         class="asset-details__update-btn"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
@@ -87,7 +88,7 @@
         </template>
       </button>
       <button
-        v-if="asset.owner === accountId"
+        v-else
         v-ripple
         class="asset-details__update-btn"
         @click="$emit(EVENTS.updateAsk)"
