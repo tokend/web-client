@@ -600,7 +600,7 @@
       "loading-msg": "Loading",
       "loading-error-msg":"There was an error while loading.",
       "next-btn": "Next",
-      "asset-type": "Next",
+      "asset-type": "Type",
       "submit-btn": "Submit",
       "information-step": "Token information",
       "advanced-step": "Advanced",

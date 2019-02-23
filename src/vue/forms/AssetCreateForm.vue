@@ -76,18 +76,6 @@
         </div>
       </div>
 
-      <div class="app__form-row asset-form__kyc-required-row">
-        <div class="app__form-field">
-          <tick-field
-            v-model="form.information.policies"
-            :disabled="formMixin.isDisabled"
-            :cb-value="ASSET_POLICIES.requiresKyc"
-          >
-            {{ 'asset-form.kyc-required-lbl' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
@@ -106,7 +94,7 @@
           <select-field
             v-model="form.information.assetType"
             :values="assetTypes"
-            :label="'deposit-form.asset-type' | globalize"
+            :label="'asset-form.asset-type' | globalize"
             :disabled="formMixin.isDisabled"
             @blur="touchField('form.information.assetType')"
             :error-message="getFieldErrorMessage(
@@ -278,7 +266,7 @@ export default {
         maxIssuanceAmount: '',
         logo: null,
         policies: [],
-        assetType: '',
+        assetType: '0',
       },
       advanced: {
         isPreissuanceDisabled: false,
@@ -361,7 +349,7 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.information.kvAssetTypeKycRequired,
+        assetType: this.form.information.kvAssetTypeKycRequired || '0',
         preissuedAssetSigner: preissuedAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
