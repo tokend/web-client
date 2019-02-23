@@ -125,8 +125,10 @@
               <div class="app__form-field">
                 <input-field
                   white-autofill
-                  v-model="form.saleInformation.baseAssetForHardCap"
-                  @blur="touchField('form.saleInformation.baseAssetForHardCap')"
+                  v-model="form.saleInformation.requiredBaseAssetForHardCap"
+                  @blur="touchField(
+                    'form.saleInformation.requiredBaseAssetForHardCap'
+                  )"
                   id="base-asset-for-hard-cap"
                   type="number"
                   :label="'create-sale-form.base-asset-hard-cap-to-sell' |
@@ -134,7 +136,7 @@
                       asset: form.saleInformation.baseAsset
                     })"
                   :error-message="getFieldErrorMessage(
-                    'form.saleInformation.baseAssetForHardCap',
+                    'form.saleInformation.requiredBaseAssetForHardCap',
                     {
                       from:MIN_AMOUNT,
                       to:availableForIssuance
@@ -398,7 +400,7 @@ export default {
           endTime: '',
           softCap: '',
           hardCap: '',
-          baseAssetForHardCap: '',
+          requiredBaseAssetForHardCap: '',
           quoteAssets: [],
         },
         shortBlurb: {
@@ -440,7 +442,7 @@ export default {
             amountRange: amountRange(this.form.saleInformation.softCap,
               this.MAX_AMOUNT),
           },
-          baseAssetForHardCap: {
+          requiredBaseAssetForHardCap: {
             required,
             amountRange: amountRange(this.MIN_AMOUNT,
               this.availableForIssuance),
@@ -483,7 +485,7 @@ export default {
     },
     price () {
       return MathUtil.divide(this.form.saleInformation.hardCap,
-        this.form.saleInformation.baseAssetForHardCap)
+        this.form.saleInformation.requiredBaseAssetForHardCap)
     },
   },
   async created () {
@@ -542,14 +544,15 @@ export default {
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
           youtube_video_id: this.form.fullDescription.youtubeId,
         },
-        baseAssetForHardCap: this.form.saleInformation.baseAssetForHardCap,
+        // eslint-disable-next-line
+        requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
         quoteAssets: this.isUpdate ? this.form.saleInformation.quoteAssets
           : this.form.saleInformation.quoteAssets
             .map((item) => ({
               asset: item,
               price: '1',
             })),
-        saleType: SALE_TYPES.fixedPrice,
+        saleType: String(SALE_TYPES.fixedPrice),
       }
       return Sdk.base.SaleRequestBuilder.createSaleCreationRequest(operation)
     },
@@ -573,8 +576,8 @@ export default {
       this.form.saleInformation.endTime = request.endTime
       this.form.saleInformation.softCap = request.softCap
       this.form.saleInformation.hardCap = request.hardCap
-      this.form.saleInformation.baseAssetForHardCap = request
-        .baseAssetForHardCap
+      this.form.saleInformation.requiredBaseAssetForHardCap = request
+        .requiredBaseAssetForHardCap
       this.form.saleInformation.quoteAssets = request.quoteAssets
       this.form.shortBlurb.saleLogo = request.logo.key
         ? new DocumentContainer(request.logo)
