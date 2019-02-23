@@ -35,7 +35,7 @@
         :to="vueRoutes.verification.general"
         class="account-type-selector__item"
         :disabled="kycAccountRole &&
-          kycAccountRole !== kvEntryCorporateRoleId"
+          kycAccountRole !== kvEntryGeneralRoleId"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
@@ -92,7 +92,7 @@ import config from '@/config'
 function verificationGuard (to, from, next) {
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
-  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
 
   switch (kycAccountRole) {
     case kvEntryCorporateRoleId:

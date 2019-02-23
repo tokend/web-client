@@ -189,10 +189,11 @@ describe('PreIssuanceForm component', () => {
         expect(spy.calledOnce).to.be.true
       })
 
-      it('sets converted pre-issuance to issuance property', () => {
+      it('sets converted pre-issuance to issuance property if asset is defined', () => {
         wrapper.setData({
           issuance: null,
         })
+        sinon.stub(wrapper.vm, 'isAssetDefined').returns(true)
 
         wrapper.vm.parsePreIssuance(preIssuance)
 

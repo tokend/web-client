@@ -22,11 +22,11 @@ export class IssuanceRecord extends OpRecord {
       this.accountId = ''
     }
 
-    this.creatorDetails = record.creatorDetails
+    this.externalDetails = record.externalDetails
 
-    this.blockNumber = _get(record, 'creatorDetails.blockNumber')
-    this.outIndex = _get(record, 'creatorDetails.outIndex')
-    this.txHash = _get(record, 'creatorDetails.txHash')
+    this.blockNumber = _get(record, 'externalDetails.blockNumber')
+    this.outIndex = _get(record, 'externalDetails.outIndex')
+    this.txHash = _get(record, 'externalDetails.txHash')
   }
 
   get isIncoming () {

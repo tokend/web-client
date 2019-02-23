@@ -3,7 +3,7 @@ import { SaleRequestRecord } from './sale-create.record'
 
 import saleCreateJSON from '../../../test/mocks/sale-create'
 
-describe.skip('SaleRequestRecord', () => {
+describe('SaleRequestRecord', () => {
   const getRecord = (rawJSON = saleCreateJSON) => {
     const sdkResponse = MockWrapper.makeHorizonData(rawJSON)
     return new SaleRequestRecord(sdkResponse)

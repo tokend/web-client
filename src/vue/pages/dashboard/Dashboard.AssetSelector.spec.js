@@ -43,7 +43,7 @@ describe('Dashboard.AssetSelector component', () => {
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
           ],
-          creatorDetails: { logo: { key: 'some-key' } },
+          details: { logo: { key: 'some-key' } },
         }),
       },
       {
@@ -70,7 +70,7 @@ describe('Dashboard.AssetSelector component', () => {
     mockedTokens = [
       new AssetRecord({
         code: 'USD',
-        creatorDetails: {
+        details: {
           name: 'Dollar',
         },
         policies: [
@@ -87,7 +87,7 @@ describe('Dashboard.AssetSelector component', () => {
       }),
       new AssetRecord({
         code: 'BTC',
-        creatorDetails: {
+        details: {
           name: 'Bitcoin',
         },
         policies: [
@@ -101,7 +101,7 @@ describe('Dashboard.AssetSelector component', () => {
       }),
       new AssetRecord({
         code: 'ETH',
-        creatorDetails: {
+        details: {
           name: 'Ethereum',
         },
         policies: [

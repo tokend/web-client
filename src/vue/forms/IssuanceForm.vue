@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isAccountCorporate">
+    <div v-if="!isAccountCorporate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
@@ -246,7 +246,7 @@ export default {
     },
     async getReceiverAccountId (receiver) {
       if (email(receiver)) {
-        return this.getEmailByAccountId(receiver)
+        return this.getAccountIdByEmail(receiver)
       }
       return receiver
     },

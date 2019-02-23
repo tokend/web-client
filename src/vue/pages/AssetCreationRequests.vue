@@ -213,7 +213,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
 
     selectedRequest () {
@@ -233,7 +233,7 @@ export default {
     initFirstPageLoader () {
       this.isLoaded = false
       this.requestsHistory = []
-      this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
+      this.firstPageLoader = this.getFirstPageLoader(this.accountId)
     },
 
     closeDetailsDrawer () {

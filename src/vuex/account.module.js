@@ -1,5 +1,4 @@
 import _get from 'lodash/get'
-import { AccountHelper } from './account.helper'
 import { vuexTypes } from './types'
 import { Sdk } from '../sdk'
 import { Api } from '../api'
@@ -39,30 +38,8 @@ export const actions = {
 
 export const getters = {
   [vuexTypes.account]: state => state.account,
-  [vuexTypes.balancesDetails]: state => state.balancesDetails,
   [vuexTypes.accountId]: state => state.account.id,
-  [vuexTypes.accountIsBlocked]: state => state.account.isBlocked,
-  [vuexTypes.accountBlockReasons]: state => state.account.blockReasons,
-  [vuexTypes.accountThresholds]: state => state.account.thresholds,
-  [vuexTypes.accountReferrer]: state => state.account.referrer,
-  [vuexTypes.accountReferrals]: state => state.account.referrals,
-  [vuexTypes.accountPoliciesTypeI]: state => _get(
-    state.account, 'policies.accountPoliciesTypeI'
-  ),
-  // accountPoliciesTypes can be null if not present, so here we
-  // overwrite it for easier interface
-  [vuexTypes.accountPoliciesTypes]: state => _get(
-    state.account, 'policies.accountPoliciesTypes', []
-  ),
   [vuexTypes.accountBalances]: state => state.balancesDetails,
-  [vuexTypes.accountDepositAddresses]: state =>
-    AccountHelper.groupExternalSystemAccounts(
-      state.account.externalSystemAccounts
-    ),
-  [vuexTypes.accountKycBlobId]: state => _get(
-    state.account,
-    'accountKyc.kycData.blobId'
-  ),
   [vuexTypes.accountRoleId]: state => _get(
     state.account, 'role.id'
   ),

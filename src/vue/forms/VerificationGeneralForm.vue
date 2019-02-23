@@ -336,7 +336,7 @@ export default {
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
     verificationCode () {
-      return this.account.accountId.slice(1, 6)
+      return this.accountId.slice(1, 6)
     },
   },
 
@@ -365,7 +365,10 @@ export default {
       try {
         await this.uploadDocuments()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
-        const operation = this.createKycOperation(kycBlobId)
+        const operation = this.createKycOperation(
+          kycBlobId,
+          this.kvEntryGeneralRoleId
+        )
         await Sdk.horizon.transactions.submitOperations(operation)
         await this.loadKyc()
       } catch (e) {

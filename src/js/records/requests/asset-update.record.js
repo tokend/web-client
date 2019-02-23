@@ -5,11 +5,11 @@ import { RequestRecord } from '../request-record'
 import _get from 'lodash/get'
 
 export class AssetUpdateRequestRecord extends RequestRecord {
-  constructor (record, creatorDetails) {
+  constructor (record, details) {
     super(record)
 
     this.assetCode = _get(record, 'details.updateAsset.code')
-    this.assetName = _get(this._record, 'details.updateAsset.creatorDetails.name')
+    this.assetName = _get(this._record, 'details.updateAsset.details.name')
     this.preissuedAssetSigner = _get(
       this._record, 'details.updateAsset.preIssuedAssetSigner'
     )
@@ -22,24 +22,24 @@ export class AssetUpdateRequestRecord extends RequestRecord {
     this.policies = this._policies()
     this.policy = this._policy()
 
-    this.creatorDetails = _get(this._record, 'details.updateAsset.creatorDetails')
-    this.terms = _get(this._record, 'details.updateAsset.creatorDetails.terms')
-    this.termsKey = _get(this._record, 'details.updateAsset.creatorDetails.terms.key')
+    this.details = _get(this._record, 'details.updateAsset.details')
+    this.terms = _get(this._record, 'details.updateAsset.details.terms')
+    this.termsKey = _get(this._record, 'details.updateAsset.details.terms.key')
     this.termsName = _get(
-      this._record, 'details.updateAsset.creatorDetails.terms.name'
+      this._record, 'details.updateAsset.details.terms.name'
     )
     this.termsType = _get(
-      this._record, 'details.updateAsset.creatorDetails.terms.type'
+      this._record, 'details.updateAsset.details.terms.type'
     )
-    this.logo = _get(this._record, 'details.updateAsset.creatorDetails.logo')
-    this.logoKey = _get(this._record, 'details.updateAsset.creatorDetails.logo.key')
-    this.logoName = _get(this._record, 'details.updateAsset.creatorDetails.logo.name')
-    this.logoType = _get(this._record, 'details.updateAsset.creatorDetails.logo.type')
+    this.logo = _get(this._record, 'details.updateAsset.details.logo')
+    this.logoKey = _get(this._record, 'details.updateAsset.details.logo.key')
+    this.logoName = _get(this._record, 'details.updateAsset.details.logo.name')
+    this.logoType = _get(this._record, 'details.updateAsset.details.logo.type')
     this.externalSystemType = _get(
-      this._record, 'details.updateAsset.creatorDetails.externalSystemType'
+      this._record, 'details.updateAsset.details.externalSystemType'
     )
 
-    this.attachedDetails = creatorDetails
+    this.attachedDetails = details
   }
 
   /**
@@ -57,7 +57,7 @@ export class AssetUpdateRequestRecord extends RequestRecord {
           maxIssuanceAmount: assetRecord.maxIssuanceAmount,
           initialPreissuedAmount: assetRecord.initialPreissuedAmount,
           policies: assetRecord.policies.map(policy => ({ value: policy })),
-          creatorDetails: assetRecord.creatorDetails,
+          details: assetRecord.details,
         },
       },
     })
@@ -90,10 +90,6 @@ export class AssetUpdateRequestRecord extends RequestRecord {
 
   get isIssuanceManualReviewRequired () {
     return !!(this.policy & ASSET_POLICIES.issuanceManualReviewRequired)
-  }
-
-  get isRequiresKYC () {
-    return !!(this.policy & ASSET_POLICIES.requiresKyc)
   }
 
   get isStatsQuoteAsset () {

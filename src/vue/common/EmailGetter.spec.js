@@ -83,8 +83,7 @@ describe('EmailGetter\'s', () => {
 
     describe('loadEmail()', () => {
       it('fetches email by account ID and assigns it', async () => {
-        const publicResource = new MockHelper().getHorizonResourcePrototype('public')
-        sandbox.stub(publicResource, 'getEmailByAccountId')
+        sandbox.stub(wrapper.vm, 'getEmailByAccountId')
           .withArgs('SOME_ACCOUNT_ID')
           .resolves('EMAIL')
         sandbox.stub(wrapper.vm, 'getAccountId')

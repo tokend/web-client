@@ -10,15 +10,15 @@ export default {
     ownedAssets: [],
   }),
   computed: {
-    ...mapGetters([
-      vuexTypes.account,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
   },
   methods: {
     async loadOwnedAssets () {
       try {
         const { data } = await Sdk.horizon.assets.getAll({
-          owner: this.account.accountId,
+          owner: this.accountId,
         })
         this.ownedAssets = data.map(item => new AssetRecord(item))
       } catch (e) {

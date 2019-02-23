@@ -10,13 +10,11 @@ import { SaleRequestRecord } from './requests/sale-create.record'
 import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
-import { ChangeRoleRequestRecord } from './requests/change-role.record'
 
 import assetUpdateJSON from '../../test/mocks/asset-update'
 import assetCreateJSON from '../../test/mocks/asset-create'
 import saleCreateJSON from '../../test/mocks/sale-create'
 import updateSaleDetailsJSON from '../../test/mocks/update-sale-details'
-import updateKycJSON from '../../test/mocks/update-kyc'
 
 describe('Record wrapper', () => {
   const test = (request, constructor) => {
@@ -39,10 +37,6 @@ describe('Record wrapper', () => {
 
   it('should properly define update_sale_details request', () => {
     test(updateSaleDetailsJSON, UpdateSaleDetailsRequestRecord)
-  })
-
-  it('should properly define update_kyc request', () => {
-    test(updateKycJSON, ChangeRoleRequestRecord)
   })
 })
 describe('Record unwrapper opts() method should return proper data', () => {

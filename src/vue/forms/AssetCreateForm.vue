@@ -363,6 +363,7 @@ export default {
         code: this.form.information.code,
         assetType: this.form.information.kvAssetTypeKycRequired,
         preissuedAssetSigner: preissuedAssetSigner,
+        trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),

@@ -222,7 +222,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
 
     assetRequestOpts () {
@@ -276,7 +276,7 @@ export default {
 
     async getAssetRequests (assetCode, requestState) {
       const { data } = await Sdk.horizon.request.getAllForAssets({
-        requestor: this.account.accountId,
+        requestor: this.accountId,
         asset: assetCode,
         state: requestState,
       })

@@ -82,7 +82,7 @@
         {{ 'asset-details.add-balance-btn' | globalize }}
       </button>
       <button
-        v-if="asset.owner === account.accountId"
+        v-if="asset.owner === accountId"
         v-ripple
         class="asset-details__update-btn"
         @click="$emit(EVENTS.updateAsk)"
@@ -129,7 +129,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
     assetTermsUrl () {
@@ -144,7 +144,7 @@ export default {
       this.isBalanceCreating = true
       try {
         const operation = base.Operation.manageBalance({
-          destination: this.account.accountId,
+          destination: this.accountId,
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })

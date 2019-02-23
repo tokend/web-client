@@ -5,38 +5,38 @@ export class SaleRequestRecord extends RequestRecord {
   constructor (record, details = {}) {
     super(record)
 
-    this.baseAsset = _get(this._record, 'details.createSale.baseAsset')
-    this.name = _get(this._record, 'details.createSale.creatorDetails.name')
+    this.baseAsset = _get(this._record, 'details.sale.baseAsset')
+    this.name = _get(this._record, 'details.sale.details.name')
     this.defaultQuoteAsset = _get(
-      this._record, 'details.createSale.defaultQuoteAsset'
+      this._record, 'details.sale.defaultQuoteAsset'
     )
     this.startTime = _get(
-      this._record, 'details.createSale.startTime'
+      this._record, 'details.sale.startTime'
     )
-    this.endTime = _get(this._record, 'details.createSale.endTime')
-    this.softCap = _get(this._record, 'details.createSale.softCap')
-    this.hardCap = _get(this._record, 'details.createSale.hardCap')
+    this.endTime = _get(this._record, 'details.sale.endTime')
+    this.softCap = _get(this._record, 'details.sale.softCap')
+    this.hardCap = _get(this._record, 'details.sale.hardCap')
     this.baseAssetForHardCap = _get(
-      this._record, 'details.createSale.baseAssetForHardCap'
+      this._record, 'details.sale.baseAssetForHardCap'
     )
-    this.saleTypeStr = _get(this._record, 'details.createSale.saleType.name')
-    this.saleType = _get(this._record, 'details.createSale.saleType.value')
-    this.saleState = _get(this._record, 'details.createSale.state.value')
-    this.saleStateStr = _get(this._record, 'details.createSale.state.name')
+    this.saleTypeStr = _get(this._record, 'details.sale.saleType.name')
+    this.saleType = _get(this._record, 'details.sale.saleType.value')
+    this.saleState = _get(this._record, 'details.sale.state.value')
+    this.saleStateStr = _get(this._record, 'details.sale.state.name')
 
-    this.details = _get(this._record, 'details.createSale.creatorDetails')
+    this.details = _get(this._record, 'details.sale.details')
     this.description = _get(
-      this._record, 'details.createSale.creatorDetails.description'
+      this._record, 'details.sale.details.description'
     )
-    this.logo = _get(this._record, 'details.createSale.creatorDetails.logo')
-    this.logoKey = _get(this._record, 'details.createSale.creatorDetails.logo.key')
-    this.logoName = _get(this._record, 'details.createSale.creatorDetails.logo.name')
-    this.logoType = _get(this._record, 'details.createSale.creatorDetails.logo.type')
+    this.logo = _get(this._record, 'details.sale.details.logo')
+    this.logoKey = _get(this._record, 'details.sale.details.logo.key')
+    this.logoName = _get(this._record, 'details.sale.details.logo.name')
+    this.logoType = _get(this._record, 'details.sale.details.logo.type')
     this.shortDescription = _get(
-      this._record, 'details.createSale.creatorDetails.shortDescription'
+      this._record, 'details.sale.details.shortDescription'
     )
     this.youtubeVideoId = _get(
-      this._record, 'details.createSale.creatorDetails.youtubeVideoId'
+      this._record, 'details.sale.details.youtubeVideoId'
     )
 
     this.quoteAssets = this._getQuoteAssets()
@@ -55,7 +55,7 @@ export class SaleRequestRecord extends RequestRecord {
   }
 
   _getQuoteAssets () {
-    return _get(this._record, 'details.createSale.quoteAssets', [])
+    return _get(this._record, 'details.sale.quoteAssets', [])
       .map(asset => asset.quoteAsset)
   }
 }

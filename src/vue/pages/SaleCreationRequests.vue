@@ -252,7 +252,7 @@ export default {
     initFirstPageLoader () {
       this.isHistoryLoaded = false
       this.requestsHistory = []
-      this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
+      this.firstPageLoader = this.getFirstPageLoader(this.accountId)
     },
 
     closeDetailsDrawer () {

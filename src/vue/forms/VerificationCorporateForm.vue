@@ -234,8 +234,10 @@ export default {
       this.disableForm()
       try {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
-        const operation = this.createKycOperation(kycBlobId,
-          this.kvEntryCorporateRoleId)
+        const operation = this.createKycOperation(
+          kycBlobId,
+          this.kvEntryCorporateRoleId
+        )
         await Api.api.postOperations(operation)
         await this.loadKyc()
       } catch (e) {
