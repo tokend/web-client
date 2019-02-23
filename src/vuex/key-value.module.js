@@ -28,8 +28,8 @@ export const mutations = {
   [vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID] (state, id) {
     state.defaultRoleIds.unverified = id
   },
-  [vuexTypes.SET_KV_ASSET_TYPE] (state, assetType) {
-    state.assetType = assetType
+  [vuexTypes.SET_KV_KYC_REQUIRED] (state, kvAssetTypeKycRequired) {
+    state.kvAssetTypeKycRequired = kvAssetTypeKycRequired
   },
 }
 
@@ -51,9 +51,9 @@ export const actions = {
       return data.value.u32
     }
   },
-  async [vuexTypes.LOAD_KV_ASSET_TYPE] ({ commit }) {
+  async [vuexTypes.LOAD_KV_KYC_REQUIRED] ({ commit }) {
     const { data } = await Api.api.get(`v3/key_value/kycRequired`)
-    commit(vuexTypes.SET_KV_ASSET_TYPE, data.value.u32)
+    commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
   },
 }
 

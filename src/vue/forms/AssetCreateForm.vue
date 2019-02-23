@@ -231,8 +231,8 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes, mapActions } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { required, requiredUnless, amountRange, maxLength } from '@validators'
 
@@ -379,7 +379,7 @@ export default {
   },
 
   created () {
-    this.loadAssetType()
+    this.loadKvAssetTypeKycRequired()
     if (this.request) {
       this.populateForm()
     }
@@ -387,7 +387,7 @@ export default {
 
   methods: {
     ...mapActions({
-      loadAssetType: vuexTypes.LOAD_KV_ASSET_TYPE,
+      loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
     }),
     populateForm () {
       const isPreissuanceDisabled =

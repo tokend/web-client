@@ -142,8 +142,7 @@
               {{ 'asset-request-details.requires-kyc-title' | globalize }}
             </td>
             <td>
-              <!--fix-->
-              <template v-if="request.isRequiresKYC">
+              <template v-if="request.isRequiresKYC(kvAssetTypeKycRequired)">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
 
@@ -190,6 +189,9 @@ import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import config from '@/config'
 
+import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
 
@@ -217,6 +219,9 @@ export default {
     REQUEST_TYPES,
   }),
   computed: {
+    ...mapGetters({
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+    }),
     assetTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
@@ -226,6 +231,14 @@ export default {
     canBeCanceled () {
       return this.request.isPending
     },
+  },
+  created () {
+    this.loadKvAssetTypeKycRequired()
+  },
+  methods: {
+    ...mapActions({
+      loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
+    }),
   },
 }
 </script>
