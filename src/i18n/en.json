@@ -616,7 +616,9 @@
       "initial-preissued-amount-lbl": "Initial preissued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "asset-request-submitted-msg": "Your request was successfully submitted"
+      "asset-request-submitted-msg": "Your request was successfully submitted",
+      "asset-type-required-kyc": "Requires KYC",
+      "asset-type-not-required-kyc": "Don't require KYC"
     },
 
     "requests-page": {
