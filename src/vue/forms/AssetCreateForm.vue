@@ -101,6 +101,21 @@
         </div>
       </div>
 
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <select-field
+            v-model="form.information.assetType"
+            :values="assetTypes"
+            :label="'deposit-form.asset-type' | globalize"
+            :disabled="formMixin.isDisabled"
+            @blur="touchField('form.information.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.information.assetType',
+            )"
+          />
+        </div>
+      </div>
+
       <div class="app__form-actions">
         <button
           v-ripple
@@ -216,7 +231,7 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, requiredUnless, amountRange, maxLength } from '@validators'
@@ -263,6 +278,7 @@ export default {
         maxIssuanceAmount: '',
         logo: null,
         policies: [],
+        assetType: '',
       },
       advanced: {
         isPreissuanceDisabled: false,
@@ -297,6 +313,9 @@ export default {
             required,
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
           },
+          assetType: {
+            required,
+          },
         },
         advanced: {
           preissuedAssetSigner: {
@@ -321,6 +340,7 @@ export default {
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
 
     assetRequestOpts () {
@@ -341,6 +361,7 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
+        assetType: this.form.information.kvAssetTypeKycRequired,
         preissuedAssetSigner: preissuedAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
@@ -353,23 +374,31 @@ export default {
         },
       }
     },
+    assetTypes () {
+      return [ this.kvAssetTypeKycRequired ]
+    },
   },
 
   created () {
+    this.loadKvAssetTypeKycRequired()
     if (this.request) {
       this.populateForm()
     }
   },
 
   methods: {
+    ...mapActions({
+      loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
+    }),
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+          this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
 
       this.form = {
         information: {
           name: this.request.assetName,
           code: this.request.assetCode,
+          assetType: this.request.assetType,
           maxIssuanceAmount: this.request.maxIssuanceAmount,
           logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)
@@ -404,7 +433,7 @@ export default {
         await this.uploadDocuments()
 
         const operation =
-          base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
+            base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.asset-request-submitted-msg')
 
@@ -439,16 +468,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+  @import './app-form';
 
-.asset-create-form__btn {
-  @include button-raised();
+  .asset-create-form__btn {
+    @include button-raised();
 
-  margin-bottom: 2rem;
-  width: 14.4rem;
-}
+    margin-bottom: 2rem;
+    width: 14.4rem;
+  }
 
-.asset-create-form__kyc-required-row {
-  margin-top: 2.1rem;
-}
+  .asset-create-form__kyc-required-row {
+    margin-top: 2.1rem;
+  }
 </style>
