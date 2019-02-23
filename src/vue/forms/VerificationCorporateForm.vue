@@ -68,21 +68,6 @@
 
         <div class="app__form-row">
           <div class="app__form-field">
-            <date-field
-              v-model="form.foundDate"
-              :enable-time="false"
-              :disable-after="new Date().toString()"
-              @blur="touchField('form.foundDate')"
-              id="verification-corporate-found-date"
-              :label="'verification-form.found-date-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.foundDate')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
             <input-field
               white-autofill
               type="number"
@@ -174,7 +159,6 @@ export default {
       company: '',
       headquarters: '',
       industry: '',
-      foundDate: '',
       teamSize: '0',
       website: '',
     },
@@ -189,7 +173,6 @@ export default {
       company: { required },
       headquarters: { required },
       industry: { required },
-      foundDate: { required },
       teamSize: {
         required,
         integer,
@@ -247,7 +230,6 @@ export default {
         company: this.form.company,
         headquarters: this.form.headquarters,
         industry: this.form.industry,
-        found_date: this.form.foundDate,
         team_size: this.form.teamSize,
         homepage: this.form.website,
       }
@@ -259,7 +241,6 @@ export default {
         company: kycData.company,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
-        foundDate: kycData.found_date,
         teamSize: kycData.team_size,
         website: kycData.homepage,
       }
