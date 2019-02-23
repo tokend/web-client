@@ -13,8 +13,8 @@ export class RequestRecord {
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
-    this.state = record.requestState
-    this.stateI = record.requestStateI
+    this.state = record.state || record.requestState
+    this.stateI = record.stateI || record.requestStateI
 
     this.requestType = _get(record, 'details.requestType')
 
