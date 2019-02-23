@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
-    "@tokend/js-sdk": "1.0.0-x.15",
+    "@tokend/js-sdk": "git+https://github.com/tokend/new-js-sdk.git#e1c490ff481d0535653b8ea7ac384038d6b7b1a9",
     "bignumber.js": "8.0.1",
     "clipboard": "2.0.4",
     "d3": "5.7.0",

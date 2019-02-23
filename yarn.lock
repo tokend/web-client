@@ -654,10 +654,9 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
-"@tokend/js-sdk@1.0.0-x.12":
-  version "1.0.0-x.12"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.0.0-x.12.tgz#6117277942f112bfa7521fc5755051fb8119c24e"
-  integrity sha512-P1kuAAkooBfVrPT3zLtwhPaayACU8uLeg516AuuHvCsR8pe4UfcPDv/RrcOD7pqvSV7d+2vQ2L5jUfXJaogXEw==
+"@tokend/js-sdk@git+https://github.com/tokend/new-js-sdk.git#e1c490ff481d0535653b8ea7ac384038d6b7b1a9":
+  version "1.0.0-x.15"
+  resolved "git+https://github.com/tokend/new-js-sdk.git#e1c490ff481d0535653b8ea7ac384038d6b7b1a9"
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"

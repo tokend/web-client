@@ -10,7 +10,7 @@ export class ChangeRoleRequestRecord extends RequestRecord {
     )
 
     this.accountRoleToSet = _get(record, 'requestDetails.accountRoleToSet')
-    this.blobId = _get(record, 'requestDetails.kycData.blobId')
+    this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
     this.externalDetails = _get(record, 'externalDetails.data')
   }
 
