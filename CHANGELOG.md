@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Use sdk version 1.0.0-x.15
 - Use `Api` class for the new API requests
 - Use `accountRoleId` instead of `accountType`
+- Use `vuexTypes.accountId` getter instead of `vuexTypes.account.accountId` one
 - Use `CreateChangeRoleRequestBuilder.createChangeRoleRequest` instead of `CreateUpdateKYCRequestBuilder.createUpdateKYCRequest`
 - Use `IdentityGetterMixin` for getting account ID & email in `EmailGetter`, `IssuanceForm` & `TransferForm`
 - Use `vuexTypes.kvEntryGeneralRoleId` & `vuexTypes.kvEntryCorporateRoleId` for making chane role operation
@@ -73,6 +74,7 @@ for further information about branching and tagging conventions.
 - `UpdateKycRequestRecord` (replaced by `ChangeRoleRequestRecord`)
 - Use of `ACCOUNT_TYPES` constant
 - Countries list from `VerificationGeneralForm`
+- Unused vuex getters
 
 ## [1.0.0-rc.3] - 2019-02-21
 ### Added
