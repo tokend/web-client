@@ -163,7 +163,7 @@ export default {
       },
       totalValue: {
         noMoreThanAvailableOnBalance: this.isBuy
-          ? noMoreThanAvailableOnBalance(this.baseAssetBalance)
+          ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
           : true,
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
