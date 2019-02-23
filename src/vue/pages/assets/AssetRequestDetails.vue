@@ -159,7 +159,7 @@
       <button
         v-ripple
         class="asset-request-details__update-btn"
-        :disabled="!canBeUpdated"
+        :disabled="isPending || !canBeUpdated"
         @click="$emit(EVENTS.update)"
       >
         {{ 'asset-request-details.update-btn' | globalize }}
@@ -168,10 +168,7 @@
       <button
         v-ripple
         class="asset-request-details__cancel-btn"
-        :class="{
-          'asset-request-details__cancel-btn--disabled': !canBeCanceled
-        }"
-        :disabled="!canBeCanceled"
+        :disabled="isPending || !canBeCanceled"
         @click="$emit(EVENTS.cancel)"
       >
         {{ 'asset-request-details.cancel-btn' | globalize }}
@@ -210,6 +207,11 @@ export default {
       type: [AssetCreateRequestRecord, AssetUpdateRequestRecord],
       required: true,
     },
+    isPending: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data: _ => ({
     config,
@@ -231,9 +233,6 @@ export default {
     canBeCanceled () {
       return this.request.isPending
     },
-  },
-  created () {
-    // this.loadKvAssetTypeKycRequired()
   },
   methods: {
     ...mapActions({
@@ -307,17 +306,10 @@ export default {
 }
 
 .asset-request-details__cancel-btn {
-  @include button();
+  @include button-flat();
 
-  padding-left: .1rem;
-  padding-right: .1rem;
   margin-bottom: 2rem;
   font-weight: normal;
-
-  &--disabled {
-    filter: grayscale(100%);
-    cursor: default;
-  }
 }
 
 .asset-details {
