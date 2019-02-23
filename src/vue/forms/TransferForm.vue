@@ -351,7 +351,8 @@ export default {
       return this.userTransferableTokens.map(token => token.assetDetails)
     },
     balance () {
-      return this.accountBalances.find(i => i.asset === this.form.token.code)
+      return this.accountBalances
+        .find(i => i.asset === this.form.token.code) || {}
     },
   },
   async created () {
