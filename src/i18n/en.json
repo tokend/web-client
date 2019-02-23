@@ -394,7 +394,6 @@
       "asset-filter-prefix": "Asset:",
       "scope-filter-prefix": "Scope:",
       "scope-global": "Global",
-      "scope-account-type": "Account type",
       "scope-account": "Account",
       "no-valuable-fees-title": "No valuable fees",
       "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
