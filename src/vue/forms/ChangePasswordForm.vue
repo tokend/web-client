@@ -129,14 +129,10 @@ export default {
         await Sdk.api.factors.verifyPasswordFactorAndRetry(tfaError,
           this.form.currentPassword
         )
-      } catch (e) {
-        ErrorHandler.process(e, 'change-password-form.wrong-password-err')
-      }
-      try {
         await this.useNewWallet()
         Bus.success('change-password-form.password-changed-msg')
       } catch (e) {
-        ErrorHandler.process(e)
+        ErrorHandler.process(e, 'change-password-form.wrong-password-err')
       }
     },
     async useNewWallet () {

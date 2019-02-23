@@ -92,7 +92,7 @@ import config from '@/config'
 function verificationGuard (to, from, next) {
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
-  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
 
   switch (kycAccountRole) {
     case kvEntryCorporateRoleId:

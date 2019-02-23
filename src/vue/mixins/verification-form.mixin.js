@@ -17,7 +17,6 @@ export default {
       kycLatestData: vuexTypes.kycLatestData,
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
-      account: vuexTypes.account,
       accountId: vuexTypes.accountId,
     }),
   },
