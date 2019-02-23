@@ -10,7 +10,7 @@ describe('CreateIssuanceRequestOp', () => {
       amount: '10.233000',
       reference: '1qwWbaXnmTu2we2we',
       allTasks: 2,
-      externalDetails: {
+      creatorDetails: {
         foo: 'bar',
       },
       asset: {

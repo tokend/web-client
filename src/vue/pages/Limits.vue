@@ -7,7 +7,7 @@
         </router-link>
       </template>
       <template
-        v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
+        v-if="isAccountCorporate"
         slot="extra"
       >
         <button
@@ -128,11 +128,11 @@ export default {
     limitsRequestsLoader: () => {},
   }),
   computed: {
-    ...mapGetters([
-      vuexTypes.accountBalances,
-      vuexTypes.accountTypeI,
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountBalances: vuexTypes.accountBalances,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+      accountId: vuexTypes.accountId,
+    }),
     accountBalancesAssetsCodes () {
       return this.accountBalances.map(i => i.asset)
     },

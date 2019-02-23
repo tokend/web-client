@@ -22,10 +22,7 @@
         </div>
       </template>
 
-      <template
-        slot="extra"
-        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -103,16 +100,12 @@ import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-
-import config from '@/config'
 
 const SALE_STATES = {
   live: {
@@ -154,14 +147,13 @@ export default {
     isCreateSaleDrawerShown: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
-    config,
     SALE_STATES,
-    ACCOUNT_TYPES,
   }),
 
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
     saleAssets () {
       return this.saleRecords

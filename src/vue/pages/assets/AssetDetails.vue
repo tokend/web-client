@@ -75,14 +75,20 @@
     >
       <button
         v-ripple
+        v-if="asset.owner !== accountId"
         class="asset-details__update-btn"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
-        {{ 'asset-details.add-balance-btn' | globalize }}
+        <template v-if="!isExistsInUserBalances">
+          {{ 'asset-details.add-balance-btn' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'asset-details.already-in-your-balance-btn' | globalize }}
+        </template>
       </button>
       <button
-        v-if="asset.owner === account.accountId"
+        v-else
         v-ripple
         class="asset-details__update-btn"
         @click="$emit(EVENTS.updateAsk)"
@@ -129,11 +135,14 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
+    },
+    isExistsInUserBalances () {
+      return !!this.balances.find(item => item.asset === this.asset.code)
     },
   },
   methods: {
@@ -144,7 +153,7 @@ export default {
       this.isBalanceCreating = true
       try {
         const operation = base.Operation.manageBalance({
-          destination: this.account.accountId,
+          destination: this.accountId,
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })

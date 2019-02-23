@@ -77,7 +77,8 @@ describe('AssetCreateRequestRecord', () => {
       .to
       .deep
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.external_system_type
+        assetCreateRecordJSON.details
+          .asset_create.details.external_system_type
       )
   })
 
@@ -179,21 +180,6 @@ describe('AssetCreateRequestRecord', () => {
       record = getRecord(rawJSON)
 
       expect(record.isIssuanceManualReviewRequired).to.equal(false)
-    })
-
-    it('isRequiresKYC', () => {
-      let rawJSON = setPolicies(
-        assetCreateRecordJSON,
-        [ASSET_POLICIES.requiresKyc]
-      )
-      let record = getRecord(rawJSON)
-
-      expect(record.isRequiresKYC).to.equal(true)
-
-      rawJSON = setPolicies(assetCreateRecordJSON, [])
-      record = getRecord(rawJSON)
-
-      expect(record.isRequiresKYC).to.equal(false)
     })
 
     it('isStatsQuoteAsset', () => {

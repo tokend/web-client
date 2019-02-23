@@ -1,4 +1,3 @@
-import assetCreateRecordJSON from '@/test/mocks/asset-create'
 import { MockWrapper } from '../../test/index'
 import {
   RecordWrapper,
@@ -11,13 +10,11 @@ import { SaleRequestRecord } from './requests/sale-create.record'
 import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
-import { UpdateKycRequestRecord } from './requests/update-kyc.record'
 
 import assetUpdateJSON from '../../test/mocks/asset-update'
 import assetCreateJSON from '../../test/mocks/asset-create'
 import saleCreateJSON from '../../test/mocks/sale-create'
 import updateSaleDetailsJSON from '../../test/mocks/update-sale-details'
-import updateKycJSON from '../../test/mocks/update-kyc'
 
 describe('Record wrapper', () => {
   const test = (request, constructor) => {
@@ -41,12 +38,7 @@ describe('Record wrapper', () => {
   it('should properly define update_sale_details request', () => {
     test(updateSaleDetailsJSON, UpdateSaleDetailsRequestRecord)
   })
-
-  it('should properly define update_kyc request', () => {
-    test(updateKycJSON, UpdateKycRequestRecord)
-  })
 })
-
 describe('Record unwrapper opts() method should return proper data', () => {
   describe('AssetCreateRequestRecord opts are being unwrapped properly', () => {
     let opts
@@ -76,7 +68,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.requestID)
         .to
         .equal(
-          assetCreateRecordJSON.id
+          assetCreateJSON.id
         )
     })
 
@@ -84,7 +76,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.code)
         .to
         .equal(
-          assetCreateRecordJSON.details.asset_create.code
+          assetCreateJSON.details.asset_create.code
         )
     })
 

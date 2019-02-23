@@ -31,6 +31,7 @@
 
             <asset-request-details
               :request="selectedRequest"
+              :is-pending="isRequestCancelling"
               @update="isUpdateMode = true"
               @cancel="cancelRequest"
             />
@@ -208,12 +209,13 @@ export default {
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdateMode: false,
+    isRequestCancelling: false,
     firstPageLoader: () => {},
   }),
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
 
     selectedRequest () {
@@ -233,7 +235,7 @@ export default {
     initFirstPageLoader () {
       this.isLoaded = false
       this.requestsHistory = []
-      this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
+      this.firstPageLoader = this.getFirstPageLoader(this.accountId)
     },
 
     closeDetailsDrawer () {
@@ -267,6 +269,7 @@ export default {
     },
 
     async cancelRequest () {
+      this.isRequestCancelling = true
       try {
         const operation = base.ManageAssetBuilder.cancelAssetRequest({
           requestID: this.selectedRequest.id,
@@ -280,6 +283,7 @@ export default {
       } catch (e) {
         ErrorHandler.process(e)
       }
+      this.isRequestCancelling = false
     },
   },
 }

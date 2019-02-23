@@ -99,7 +99,6 @@
       "bad-request": "The request you sent is invalid in some way",
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
-      "tfa-required": "2FA required",
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
@@ -111,13 +110,11 @@
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
-      "tfa-code": "2FA code",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "wrong-email-or-password-err": "Wrong email or password",
-      "wrong-tfa-code-err": "Wrong 2FA code",
       "almost-done": "Almost done",
       "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
       "continue": "Continue",
@@ -146,8 +143,6 @@
     },
 
     "security-page": {
-      "enable-tfa-title": "Enable 2FA",
-      "disable-tfa-title": "Disable 2FA",
       "password-title": "Password",
       "change-password-btn": "Change password",
       "account-id-title": "Account ID",
@@ -162,27 +157,10 @@
       "current-password-lbl": "Current password",
       "new-password-lbl": "New password",
       "confirm-password-lbl": "Confirm new password",
-      "tfa-code-lbl": "2FA code",
       "change-password-btn": "Change password",
       "wrong-password-err": "Your current password is wrong",
       "wrong-code-err": "Wrong 2FA code",
       "password-changed-msg": "Your password was successfully changed"
-    },
-
-    "tfa-form": {
-      "password-lbl": "Current password",
-      "qr-desc": "Scan the QR with your 2FA app",
-      "code-lbl": "2FA code",
-      "secret-code-desc": "Or manually set the secret code",
-      "tfa-code-desc": "And enter your 2FA code to continue",
-      "wrong-password-err": "Wrong password",
-      "wrong-code-err": "Wrong 2FA code",
-      "tfa-enabled-msg": "2FA is enabled",
-      "tfa-disabled-msg": "2FA is disabled",
-      "secret-lbl": "Secret",
-      "disable-btn": "Disable",
-      "next-btn": "Next",
-      "enable-btn": "Enable"
     },
 
     "verification-page": {
@@ -202,21 +180,11 @@
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
-      "address-details-lbl": "Address details",
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
-      "birth-date-lbl": "Date of birth",
-      "document-expiration-date-lbl": "ID document expiration date",
       "id-document-lbl": "ID document",
       "file-type-note": "image/pdf (Max 5mb)",
-      "address-first-line-lbl": "Line 1",
-      "address-second-line-lbl": "Line 2",
-      "city-lbl": "City",
-      "country-lbl": "Country",
-      "state-lbl": "State",
-      "postal-code-lbl": "Postal code",
-      "proof-document-lbl": "Proof of address",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -224,7 +192,6 @@
       "company-lbl": "Company",
       "headquarters-lbl": "Headquarters",
       "industry-lbl": "Industry",
-      "found-date-lbl": "Founded",
       "team-size-lbl": "Team size",
       "website-lbl": "Website"
     },
@@ -416,7 +383,6 @@
       "asset-filter-prefix": "Asset:",
       "scope-filter-prefix": "Scope:",
       "scope-global": "Global",
-      "scope-account-type": "Account type",
       "scope-account": "Account",
       "no-valuable-fees-title": "No valuable fees",
       "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
@@ -634,6 +600,7 @@
       "loading-msg": "Loading",
       "loading-error-msg":"There was an error while loading.",
       "next-btn": "Next",
+      "asset-type": "Type",
       "submit-btn": "Submit",
       "information-step": "Token information",
       "advanced-step": "Advanced",
@@ -649,7 +616,9 @@
       "initial-preissued-amount-lbl": "Initial preissued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "asset-request-submitted-msg": "Your request was successfully submitted"
+      "asset-request-submitted-msg": "Your request was successfully submitted",
+      "asset-type-required-kyc": "Requires KYC",
+      "asset-type-not-required-kyc": "Doesn't require KYC"
     },
 
     "requests-page": {
@@ -727,6 +696,7 @@
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
       "add-balance-btn": "Add to my balances",
+      "already-in-your-balance-btn": "Already in your balances",
       "update-btn": "Update",
       "balance-added-msg": "Added to your balances"
     },

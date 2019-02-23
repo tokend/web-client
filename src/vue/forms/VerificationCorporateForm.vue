@@ -68,21 +68,6 @@
 
         <div class="app__form-row">
           <div class="app__form-field">
-            <date-field
-              v-model="form.foundDate"
-              :enable-time="false"
-              :disable-after="new Date().toString()"
-              @blur="touchField('form.foundDate')"
-              id="verification-corporate-found-date"
-              :label="'verification-form.found-date-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.foundDate')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
             <input-field
               white-autofill
               type="number"
@@ -147,13 +132,15 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
-import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { Api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { required, url, integer, minValue } from '@validators'
 
@@ -172,13 +159,11 @@ export default {
       company: '',
       headquarters: '',
       industry: '',
-      foundDate: '',
       teamSize: '0',
       website: '',
     },
     isLoaded: false,
     isLoadingFailed: false,
-    accountType: ACCOUNT_TYPES.syndicate,
     MIN_TEAM_SIZE,
   }),
 
@@ -188,7 +173,6 @@ export default {
       company: { required },
       headquarters: { required },
       industry: { required },
-      foundDate: { required },
       teamSize: {
         required,
         integer,
@@ -198,9 +182,15 @@ export default {
     },
   },
 
+  computed: {
+    ...mapGetters({
+      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+    }),
+  },
+
   async created () {
     try {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       await this.loadKyc()
       this.isLoaded = true
     } catch (e) {
@@ -222,8 +212,11 @@ export default {
       this.disableForm()
       try {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
-        const operation = this.createKycOperation(kycBlobId)
-        await Sdk.horizon.transactions.submitOperations(operation)
+        const operation = this.createKycOperation(
+          kycBlobId,
+          this.kvEntryCorporateRoleId
+        )
+        await Api.api.postOperations(operation)
         await this.loadKyc()
       } catch (e) {
         this.enableForm()
@@ -237,7 +230,6 @@ export default {
         company: this.form.company,
         headquarters: this.form.headquarters,
         industry: this.form.industry,
-        found_date: this.form.foundDate,
         team_size: this.form.teamSize,
         homepage: this.form.website,
       }
@@ -249,7 +241,6 @@ export default {
         company: kycData.company,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
-        foundDate: kycData.found_date,
         teamSize: kycData.team_size,
         website: kycData.homepage,
       }

@@ -13,7 +13,7 @@
         />
         <div class="dashboard__actions">
           <button
-            v-if="accountTypeI === ACCOUNT_TYPES.syndicate"
+            v-if="isAccountCorporate"
             class="app__button-raised dashboard__action"
             @click="createIssuanceFormIsShown = true"
           >
@@ -21,6 +21,7 @@
             {{ 'dashboard.create-issuance-lbl' | globalize }}
           </button>
           <button
+            v-if="currentAsset"
             class="app__button-raised dashboard__action"
             @click="transferFormIsShown = true"
           >
@@ -81,7 +82,6 @@ import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
 export default {
   name: 'dashboard',
@@ -102,12 +102,11 @@ export default {
     showDrawer: false,
     scale: 'month',
     config,
-    ACCOUNT_TYPES,
   }),
   computed: {
     ...mapGetters([
+      vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
-      vuexTypes.accountTypeI,
       vuexTypes.wallet,
     ]),
   },

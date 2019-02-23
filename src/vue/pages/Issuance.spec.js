@@ -11,8 +11,6 @@ import accountModule from '@/vuex/account.module'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { MockHelper } from '@/test'
-
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
 Vue.config.silent = true
@@ -27,22 +25,16 @@ describe('Issuance component unit test', () => {
     participants: [],
   }]
 
-  let mockHelper
-
   let getters
   let store
   let wrapper
 
   beforeEach(() => {
-    mockHelper = new MockHelper()
-
     getters = {
       ...accountModule.getters,
     }
-    sinon.stub(getters, vuexTypes.accountId).returns(
-      mockHelper.getMockWallet().accountId
-    )
-    sinon.stub(getters, vuexTypes.accountTypeI).returns(-1)
+    sinon.stub(getters, vuexTypes.accountId).returns('ACCOUNT_ID')
+    sinon.stub(getters, vuexTypes.accountRoleId).returns(-1)
     store = new Vuex.Store({
       getters,
     })

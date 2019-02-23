@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="accountTypeI !== ACCOUNT_TYPES.syndicate">
+    <div v-if="!isAccountCorporate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
@@ -124,6 +124,7 @@
 
 <script>
 import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
@@ -134,7 +135,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
-import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import {
   required,
@@ -157,7 +158,7 @@ export default {
   components: {
     Loader,
   },
-  mixins: [OwnedAssetsLoaderMixin, FormMixin],
+  mixins: [IdentityGetterMixin, OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
     form: {
       asset: {},
@@ -165,8 +166,8 @@ export default {
       receiver: '',
       reference: '',
     },
+    config,
     isLoaded: false,
-    ACCOUNT_TYPES,
     MIN_AMOUNT: config.MIN_AMOUNT,
     REFERENCE_MAX_LENGTH,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
@@ -193,7 +194,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountTypeI,
+      vuexTypes.isAccountCorporate,
     ]),
   },
   async created () {
@@ -221,7 +222,7 @@ export default {
               amount: this.form.amount.toString(),
               receiver: receiverBalance.balanceId,
               reference: this.form.reference,
-              externalDetails: {},
+              creatorDetails: {},
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           await this.reinitAssetSelector()
@@ -245,8 +246,7 @@ export default {
     },
     async getReceiverAccountId (receiver) {
       if (email(receiver)) {
-        const { data } = await Sdk.horizon.public.getAccountIdByEmail(receiver)
-        return data.accountId
+        return this.getAccountIdByEmail(receiver)
       }
       return receiver
     },

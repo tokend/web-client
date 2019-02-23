@@ -222,7 +222,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
 
     assetRequestOpts () {
@@ -234,7 +234,7 @@ export default {
         requestID: requestId,
         code: this.updateRequest.assetCode,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
-        details: {
+        creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
@@ -276,7 +276,7 @@ export default {
 
     async getAssetRequests (assetCode, requestState) {
       const { data } = await Sdk.horizon.request.getAllForAssets({
-        requestor: this.account.accountId,
+        requestor: this.accountId,
         asset: assetCode,
         state: requestState,
       })

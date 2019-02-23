@@ -13,7 +13,7 @@ describe('ReviewRequestOp', () => {
       isFulfilled: false,
       addedTasks: 0,
       removedTasks: 0,
-      externalDetails: {
+      creatorDetails: {
         hello: 'world',
       },
     }
@@ -24,7 +24,7 @@ describe('ReviewRequestOp', () => {
     expect(result.reason).to.equal('Invalid details')
     expect(result.isFulfilled).to.equal(false)
 
-    expect(result.externalDetails).to.have
+    expect(result.creatorDetails).to.have
       .property('hello')
       .equal('world')
   })
