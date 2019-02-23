@@ -351,7 +351,7 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.information.kvAssetTypeKycRequired.value,
+        assetType: this.form.information.assetType.value,
         preissuedAssetSigner: preissuedAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
@@ -367,12 +367,12 @@ export default {
     assetTypes () {
       return [
         {
-          label: globalize('asset-form.asset-type-required-kyc'),
-          value: 0,
+          label: globalize('asset-form.asset-type-not-required-kyc'),
+          value: '0',
         },
         {
-          label: globalize('asset-form.asset-type-not-required-kyc'),
-          value: this.kvAssetTypeKycRequired,
+          label: globalize('asset-form.asset-type-required-kyc'),
+          value: String(this.kvAssetTypeKycRequired),
         },
       ]
     },
