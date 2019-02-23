@@ -40,7 +40,7 @@ describe('EmailGetter\'s', () => {
       beforeEach(() => {
         sandbox.stub(wrapper.vm, 'loadEmail')
         sandbox.stub(Sdk, 'networkDetails').value({
-          masterAccountId: 'MASTER_ACCOUNT_ID',
+          adminAccountId: 'MASTER_ACCOUNT_ID',
         })
       })
 

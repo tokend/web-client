@@ -30,9 +30,9 @@
           </td>
           <td>
             <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailySpent }">
-              <template v-if="item.dailySpent">
-                {{ item.dailySpent | formatNumber }}
+            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailyLeft }">
+              <template v-if="item.dailyLeft && item.dailyOut !== MAX_AMOUNT">
+                {{ item.dailyLeft | formatNumber }}
               </template>
               <template v-else>
                 {{ 'limits-table-renderer.not-set-lbl' | globalize }}
@@ -41,7 +41,7 @@
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailyOut }">
-              <template v-if="item.dailyOut">
+              <template v-if="item.dailyOut && item.dailyOut !== MAX_AMOUNT">
                 {{ item.dailyOut | formatNumber }}
               </template>
               <template v-else>
@@ -51,9 +51,13 @@
           </td>
           <td>
             <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklySpent }">
-              <template v-if="item.weeklySpent">
-                {{ item.weeklySpent | formatNumber }}
+            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklyLeft }">
+              <template
+                v-if="
+                  item.weeklyLeft &&
+                    item.weeklyOut !== MAX_AMOUNT
+                ">
+                {{ item.weeklyLeft | formatNumber }}
               </template>
               <template v-else>
                 {{ 'limits-table-renderer.not-set-lbl' | globalize }}
@@ -62,7 +66,7 @@
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklyOut }">
-              <template v-if="item.weeklyOut">
+              <template v-if="item.weeklyOut && item.weeklyOut !== MAX_AMOUNT">
                 {{ item.weeklyOut | formatNumber }}
               </template>
               <template v-else>
@@ -72,9 +76,12 @@
           </td>
           <td>
             <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlySpent }">
-              <template v-if="item.monthlySpent">
-                {{ item.monthlySpent | formatNumber }}
+            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlyLeft }">
+              <template
+                v-if="
+                  item.monthlyLeft &&
+                    item.monthlyOut !== MAX_AMOUNT">
+                {{ item.monthlyLeft | formatNumber }}
               </template>
               <template v-else>
                 {{ 'limits-table-renderer.not-set-lbl' | globalize }}
@@ -83,7 +90,11 @@
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlyOut }">
-              <template v-if="item.monthlyOut">
+              <template
+                v-if="
+                  item.monthlyOut &&
+                    item.monthlyOut !== MAX_AMOUNT
+                ">
                 {{ item.monthlyOut | formatNumber }}
               </template>
               <template v-else>
@@ -93,9 +104,12 @@
           </td>
           <td>
             <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualSpent }">
-              <template v-if="item.annualSpent">
-                {{ item.annualSpent | formatNumber }}
+            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualLeft }">
+              <template
+                v-if="
+                  item.annualLeft &&
+                    item.annualOut !== MAX_AMOUNT">
+                {{ item.annualLeft | formatNumber }}
               </template>
               <template v-else>
                 {{ 'limits-table-renderer.not-set-lbl' | globalize }}
@@ -104,7 +118,7 @@
             /
             <!-- eslint-disable-next-line -->
             <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualOut }">
-              <template v-if="item.annualOut">
+              <template v-if="item.annualOut && item.annualOut !== MAX_AMOUNT">
                 {{ item.annualOut | formatNumber }}
               </template>
               <template v-else>
@@ -140,6 +154,8 @@ import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
+import config from '../../../config'
+
 const OPERATION_TYPES_TRANSLATION_ID = {
   [STATS_OPERATION_TYPES.deposit]: 'limits-table-renderer.op-type-deposit',
   [STATS_OPERATION_TYPES.withdraw]: 'limits-table-renderer.op-type-withdraw',
@@ -164,6 +180,7 @@ export default {
   },
   data: () => ({
     OPERATION_TYPES_TRANSLATION_ID,
+    MAX_AMOUNT: config.MAX_AMOUNT,
   }),
   methods: {
     askLimitsReload () {

@@ -151,6 +151,26 @@ describe('TransferForm component', () => {
 
   describe('updateView()', () => {
     beforeEach(() => {
+      const mockedBalance = {
+        accountId: mockHelper.getDefaultAccountId,
+        asset: 'BTC',
+        balance: '1.000000',
+        balanceId: mockHelper.getDefaultBalanceId,
+        convertedBalance: '0.000000',
+        convertedLocked: '0.000000',
+        convertedToAsset: 'USD',
+        locked: '0.000000',
+        requireReview: false,
+      }
+      wrapper = shallowMount(TransferForm, {
+        store,
+        localVue,
+        computed: {
+          balance () {
+            return mockedBalance
+          },
+        },
+      })
       sinon.stub(wrapper.vm, 'setToken')
     })
 
@@ -214,8 +234,8 @@ describe('TransferForm component', () => {
     beforeEach(() => {
       const mockedBalance = {
         accountId: mockHelper.getDefaultAccountId,
-        asset: 'ETH',
-        balance: '0.000000',
+        asset: 'BTC',
+        balance: '1.000000',
         balanceId: mockHelper.getDefaultBalanceId,
         convertedBalance: '0.000000',
         convertedLocked: '0.000000',
@@ -269,7 +289,7 @@ describe('TransferForm component', () => {
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
         token: { code: 'BTC' },
-        amount: '10',
+        amount: '1',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
         isPaidForRecipient: false,
@@ -291,7 +311,7 @@ describe('TransferForm component', () => {
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
         token: { code: 'BTC' },
-        amount: '10',
+        amount: '1',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
         isPaidForRecipient: false,
@@ -339,40 +359,6 @@ describe('TransferForm component', () => {
       wrapper.vm.form.token = { code: 'USD' }
 
       expect(wrapper.vm.balance).to.equal(mockedAccountBalances[1])
-    })
-
-    describe('isLimitExceeded()', () => {
-      it('check than amount > than balance', () => {
-        wrapper = shallowMount(TransferForm, {
-          localVue,
-          store,
-          computed: {
-            balance () {
-              return mockedAccountBalances[0]
-            },
-          },
-        })
-
-        wrapper.vm.form.amount = '2'
-
-        expect(wrapper.vm.isLimitExceeded).to.be.true
-      })
-
-      it('check than amount < than balance', () => {
-        wrapper = shallowMount(TransferForm, {
-          localVue,
-          store,
-          computed: {
-            balance () {
-              return mockedAccountBalances[1]
-            },
-          },
-        })
-
-        wrapper.vm.form.amount = '1'
-
-        expect(wrapper.vm.isLimitExceeded).to.be.false
-      })
     })
   })
 
