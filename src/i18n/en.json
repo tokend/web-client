@@ -693,6 +693,7 @@
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
       "add-balance-btn": "Add to my balances",
+      "already-in-your-balance-btn": "Already in your balances",
       "update-btn": "Update",
       "balance-added-msg": "Added to your balances"
     },
