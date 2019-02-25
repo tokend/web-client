@@ -216,7 +216,7 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        for (; Object.keys(this.kycLatestData).length === 0;) {
+        while (Object.keys(this.kycLatestData).length === 0) {
           await this.loadKyc()
         }
       } catch (e) {
