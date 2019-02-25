@@ -23,7 +23,7 @@ describe('Record wrapper', () => {
     expect(parsed).to.be.instanceOf(constructor)
   }
 
-  it('should properly define asset_create request', () => {
+  it('should properly define create_asset request', () => {
     test(assetCreateJSON, AssetCreateRequestRecord)
   })
 
@@ -51,7 +51,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
     }
 
     const setPolicies = (rawJSON, policies) => {
-      rawJSON.details.asset_create.policies = policies
+      rawJSON.details.create_asset.policies = policies
         .map(p => ({
           value: p,
           name: 'SomePolicyNameWeDoNotInterestedIn',
@@ -76,7 +76,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.code)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.code
+          assetCreateJSON.details.create_asset.code
         )
     })
 
@@ -84,7 +84,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.initialPreissuedAmount)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.initial_preissued_amount
+          assetCreateJSON.details.create_asset.initial_preissued_amount
         )
     })
 
@@ -92,7 +92,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.preissuedAssetSigner)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.pre_issued_asset_signer
+          assetCreateJSON.details.create_asset.pre_issued_asset_signer
         )
     })
 
@@ -100,7 +100,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.maxIssuanceAmount)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.max_issuance_amount
+          assetCreateJSON.details.create_asset.max_issuance_amount
         )
     })
 
@@ -108,7 +108,7 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.details.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.name
+          assetCreateJSON.details.create_asset.details.name
         )
     })
 
@@ -125,19 +125,19 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.details.logo.key)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.key
+          assetCreateJSON.details.create_asset.details.logo.key
         )
 
       expect(opts.details.logo.type)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.type
+          assetCreateJSON.details.create_asset.details.logo.type
         )
 
       expect(opts.details.logo.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.logo.name
+          assetCreateJSON.details.create_asset.details.logo.name
         )
     })
 
@@ -145,19 +145,19 @@ describe('Record unwrapper opts() method should return proper data', () => {
       expect(opts.details.terms.key)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.key
+          assetCreateJSON.details.create_asset.details.terms.key
         )
 
       expect(opts.details.terms.type)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.type
+          assetCreateJSON.details.create_asset.details.terms.type
         )
 
       expect(opts.details.terms.name)
         .to
         .equal(
-          assetCreateJSON.details.asset_create.details.terms.name
+          assetCreateJSON.details.create_asset.details.terms.name
         )
     })
   })

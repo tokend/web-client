@@ -34,9 +34,9 @@
               {{ item.updatedAt | formatDate }}
             </td>
             <!-- eslint-disable-next-line -->
-            <td :title="LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.requestType] | globalize">
+            <td :title="LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.limitsRequestType] | globalize">
               <!-- eslint-disable-next-line -->
-              {{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.requestType] | globalize }}
+              {{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.limitsRequestType] | globalize }}
             </td>
             <!-- eslint-disable-next-line -->
             <td :title="LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize">
