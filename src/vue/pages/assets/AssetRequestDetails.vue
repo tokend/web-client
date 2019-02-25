@@ -228,7 +228,7 @@ export default {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
     canBeUpdated () {
-      return this.request.isRejected
+      return this.request.isRejected || this.request.isPending
     },
     canBeCanceled () {
       return this.request.isPending

@@ -10,6 +10,17 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Fixed
 - Add loadKvEntriesAccountRoleIds after sign in
+- Lower case email before submitting on Login, Sign up and Recovery
+- Ability to update pending sale & asset requests
+- Request details fields:
+  - `preIssuanceCreate` -> `createPreIssuance`
+  - `assetCreate` -> `createAsset`
+- `LimitsUpdateRequestRecord` `updateLimits` details field
+- Asset request records mocks & unit tests
+
+### Changed
+- Local environment from `anubis` to `angus`
+- `LimitsUpdateRequestRecord` field `requestType` to `limitsRequestType`
 
 ## [1.0.0-rc.4] - 2019-02-23
 ### Added
