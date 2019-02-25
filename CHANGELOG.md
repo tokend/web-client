@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Fixed
+- Add loadKvEntriesAccountRoleIds after sign in
 - Lower case email before submitting on Login, Sign up and Recovery
 - Ability to update pending sale & asset requests
 - Request details fields:
