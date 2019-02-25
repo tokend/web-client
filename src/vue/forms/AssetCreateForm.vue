@@ -3,6 +3,7 @@
     :steps="STEPS"
     :current-step.sync="currentStep"
     :disabled="formMixin.isDisabled"
+    v-if="kvAssetTypeKycRequired"
   >
     <form
       novalidate
@@ -66,6 +67,22 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <select-field
+            v-model="form.information.assetType"
+            key-as-value-text="label"
+            :values="assetTypes"
+            :label="'asset-form.asset-type' | globalize"
+            :disabled="formMixin.isDisabled"
+            @blur="touchField('form.information.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.information.assetType',
+            )"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <tick-field
             v-model="form.information.policies"
             :disabled="formMixin.isDisabled"
@@ -85,22 +102,6 @@
             :document-type="DOCUMENT_TYPES.assetLogo"
             :label="'asset-form.logo-lbl' | globalize"
             :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <select-field
-            v-model="form.information.assetType"
-            key-as-value-text="label"
-            :values="assetTypes"
-            :label="'asset-form.asset-type' | globalize"
-            :disabled="formMixin.isDisabled"
-            @blur="touchField('form.information.assetType')"
-            :error-message="getFieldErrorMessage(
-              'form.information.assetType',
-            )"
           />
         </div>
       </div>
@@ -200,11 +201,15 @@
       </div>
     </form>
   </form-stepper>
+  <loader
+    v-else
+    message-id="asset-form.loading-msg" />
 </template>
 
 <script>
 import FormStepper from '@/vue/common/FormStepper'
 import FormMixin from '@/vue/mixins/form.mixin'
+import Loader from '@/vue/common/Loader'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
@@ -254,6 +259,7 @@ export default {
   name: 'asset-create-form',
   components: {
     FormStepper,
+    Loader,
   },
   mixins: [FormMixin],
   props: {
@@ -397,7 +403,8 @@ export default {
         information: {
           name: this.request.assetName,
           code: this.request.assetCode,
-          assetType: this.request.assetType,
+          assetType: this.assetTypes
+            .find(item => item.value === String(this.request.assetType)),
           maxIssuanceAmount: this.request.maxIssuanceAmount,
           logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)

@@ -83,7 +83,7 @@ export default {
       this.disableForm()
       try {
         await this.loadWallet({
-          email: this.form.email,
+          email: this.form.email.toLowerCase(),
           password: this.form.password,
         })
         const accountId = this[vuexTypes.wallet].accountId
@@ -112,7 +112,7 @@ export default {
             params: {
               paramsBase64: btoa(JSON.stringify({
                 walletId: error.meta.walletId,
-                email: this.form.email,
+                email: this.form.email.toLowerCase(),
               })),
             },
           })

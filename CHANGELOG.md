@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Fixed
+- Fixed bug with displaying isRequiresKYC in AssetRequestDetails
+- Fix bug with assetType select
+
+### Added
+- Added assetType in to asset.record
+- Add loader in to AssetCreateForm
+- Add assetType in to asset-create.record,
+ 
+### Changed
+- Remove in AssetUpdateForm tick-field 'requiresKyc'
+
+## [1.0.0-rc.6] - 2019-02-25
+### Fixed
+- Closing `CreateSaleForm` after submitting
+- Using asset records instead of asset codes in `CreateSaleForm`
+- Populating `CreateSaleForm`
+- Using `saleEnumType` for sale type
+
+## [1.0.0-rc.5] - 2019-02-25
+### Fixed
+- Add loadKvEntriesAccountRoleIds after sign in
+- Lower case email before submitting on Login, Sign up and Recovery
+- Ability to update pending sale & asset requests
+- Request details fields:
+  - `preIssuanceCreate` -> `createPreIssuance`
+  - `assetCreate` -> `createAsset`
+- `LimitsUpdateRequestRecord` `updateLimits` details field
+- Asset request records mocks & unit tests
+
+### Changed
+- Local environment from `anubis` to `angus`
+- `LimitsUpdateRequestRecord` field `requestType` to `limitsRequestType`
+
 ## [1.0.0-rc.4] - 2019-02-23
 ### Added
 - `Api` class, representing SDK class `ApiCaller`
@@ -121,7 +156,9 @@ for further information about branching and tagging conventions.
 
 ## [1.0.0-rc.0] - 2019-02-18
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.4...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.6...HEAD
+[1.0.0-rc.6]: https://github.com/tokend/web-client/compare/1.0.0-rc.5...1.0.0-rc.6
+[1.0.0-rc.5]: https://github.com/tokend/web-client/compare/1.0.0-rc.4...1.0.0-rc.5
 [1.0.0-rc.4]: https://github.com/tokend/web-client/compare/1.0.0-rc.3...1.0.0-rc.4
 [1.0.0-rc.3]: https://github.com/tokend/web-client/compare/1.0.0-rc.2...1.0.0-rc.3
 [1.0.0-rc.2]: https://github.com/tokend/web-client/compare/1.0.0-rc.1...1.0.0-rc.2

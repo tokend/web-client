@@ -142,7 +142,7 @@
               {{ 'asset-request-details.requires-kyc-title' | globalize }}
             </td>
             <td>
-              <template v-if="request.isRequiresKYC">
+              <template v-if="request.assetType === kvAssetTypeKycRequired">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
 
@@ -228,7 +228,7 @@ export default {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
     canBeUpdated () {
-      return this.request.isRejected
+      return this.request.isRejected || this.request.isPending
     },
     canBeCanceled () {
       return this.request.isPending

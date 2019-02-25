@@ -90,6 +90,7 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -102,7 +103,7 @@ export default {
       this.disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
-          this.email,
+          this.email.toLowerCase(),
           this.password,
           this.recoveryKeypair
         )
@@ -118,12 +119,13 @@ export default {
             ...vueRoutes.verify,
             params: {
               paramsBase64: btoa(JSON.stringify({
-                email: wallet.email,
+                email: wallet.email.toLowerCase(),
                 walletId: wallet.id,
               })),
             },
           })
         }
+        this.loadKvEntriesAccountRoleIds()
       } catch (e) {
         ErrorHandler.process(e)
       }
