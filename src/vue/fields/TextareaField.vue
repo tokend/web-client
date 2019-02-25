@@ -70,7 +70,6 @@ export default {
   },
 
   data: () => ({
-    hasValue: false,
     currentLength: '0',
   }),
 
@@ -78,11 +77,13 @@ export default {
     isNoLabel () {
       return this.label === null || this.label === '' || this.label === undefined
     },
+    hasValue () {
+      return Boolean(this.value)
+    },
   },
 
   methods: {
     onInput (event) {
-      event.target.value === '' ? this.hasValue = false : this.hasValue = true
       if (this.maxlength) this.currentLength = event.target.value.length
       this.$emit(EVENTS.input, event.target.value)
     },
@@ -99,6 +100,7 @@ export default {
   // we leave padding-bottom here to  keep out plugins that draw something on
   // the fields from our digit counter on the bottom
   padding-bottom: 2.6rem;
+  padding-top: 2.6rem;
   caret-color: $field-color-text;
   background-color: $textarea-background-color;
   border: .2rem solid rgba($field-color-unfocused, 0.5);
@@ -140,7 +142,7 @@ export default {
   display: block;
   font-size: 1.6rem;
   overflow-y: auto;
-  padding: 2.6rem 1.6rem 0;
+  padding: 0 1.6rem;
 
   &:disabled {
     cursor: default;
