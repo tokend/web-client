@@ -14,6 +14,7 @@ for further information about branching and tagging conventions.
   - `preIssuanceCreate` -> `createPreIssuance`
   - `assetCreate` -> `createAsset`
 - `LimitsUpdateRequestRecord` `updateLimits` details field
+- Asset request records mocks & unit tests
 
 ## Changed
 - Local environment from `anubis` to `angus`

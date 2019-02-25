@@ -11,7 +11,7 @@ describe('AssetCreateRequestRecord', () => {
   }
 
   const setPolicies = (rawJSON, policies) => {
-    rawJSON.details.asset_create.policies = policies
+    rawJSON.details.create_asset.policies = policies
       .map(p => ({
         value: p,
         name: 'SomePolicyNameWeDoNotInterestedIn',
@@ -21,21 +21,21 @@ describe('AssetCreateRequestRecord', () => {
   }
 
   const setLogoKey = (rawJSON, key) => {
-    rawJSON.details.asset_create.details.logo = {}
-    rawJSON.details.asset_create.details.logo.key = key
+    rawJSON.details.create_asset.details.logo = {}
+    rawJSON.details.create_asset.details.logo.key = key
 
     return rawJSON
   }
 
   const setTermsKey = (rawJSON, key) => {
-    rawJSON.details.asset_create.details.terms = {}
-    rawJSON.details.asset_create.details.terms.key = key
+    rawJSON.details.create_asset.details.terms = {}
+    rawJSON.details.create_asset.details.terms.key = key
 
     return rawJSON
   }
 
   const setExternalSystemType = (rawJSON, type) => {
-    rawJSON.details.asset_create.external_system_type = type
+    rawJSON.details.create_asset.external_system_type = type
 
     return rawJSON
   }
@@ -46,31 +46,31 @@ describe('AssetCreateRequestRecord', () => {
     expect(record.assetName)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.name
+        assetCreateRecordJSON.details.create_asset.details.name
       )
 
     expect(record.assetCode)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.code
+        assetCreateRecordJSON.details.create_asset.code
       )
 
     expect(record.preissuedAssetSigner)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.pre_issued_asset_signer
+        assetCreateRecordJSON.details.create_asset.pre_issued_asset_signer
       )
 
     expect(record.maxIssuanceAmount)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.max_issuance_amount
+        assetCreateRecordJSON.details.create_asset.max_issuance_amount
       )
 
     expect(record.initialPreissuedAmount)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.initial_preissued_amount
+        assetCreateRecordJSON.details.create_asset.initial_preissued_amount
       )
 
     expect(record.externalSystemType)
@@ -78,7 +78,7 @@ describe('AssetCreateRequestRecord', () => {
       .deep
       .equal(
         assetCreateRecordJSON.details
-          .asset_create.details.external_system_type
+          .create_asset.details.external_system_type
       )
   })
 
@@ -100,25 +100,25 @@ describe('AssetCreateRequestRecord', () => {
       .to
       .deep
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.logo
+        assetCreateRecordJSON.details.create_asset.details.logo
       )
 
     expect(record.logoKey)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.logo.key
+        assetCreateRecordJSON.details.create_asset.details.logo.key
       )
 
     expect(record.logoName)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.logo.name
+        assetCreateRecordJSON.details.create_asset.details.logo.name
       )
 
     expect(record.logoType)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.logo.type
+        assetCreateRecordJSON.details.create_asset.details.logo.type
       )
   })
 
@@ -129,25 +129,25 @@ describe('AssetCreateRequestRecord', () => {
       .to
       .deep
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.terms
+        assetCreateRecordJSON.details.create_asset.details.terms
       )
 
     expect(record.termsKey)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.terms.key
+        assetCreateRecordJSON.details.create_asset.details.terms.key
       )
 
     expect(record.termsName)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.terms.name
+        assetCreateRecordJSON.details.create_asset.details.terms.name
       )
 
     expect(record.termsType)
       .to
       .equal(
-        assetCreateRecordJSON.details.asset_create.details.terms.type
+        assetCreateRecordJSON.details.create_asset.details.terms.type
       )
   })
 
