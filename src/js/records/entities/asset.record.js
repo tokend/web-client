@@ -44,10 +44,6 @@ export class AssetRecord {
     return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
   }
 
-  isRequiresKYC (kvAssetTypeKycRequired) {
-    return kvAssetTypeKycRequired === this.assetType
-  }
-
   _getBalance (balances) {
     const balance = balances.find(balance => balance.asset === this.code)
     if (balance) {
