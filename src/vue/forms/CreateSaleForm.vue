@@ -1,7 +1,7 @@
 <template>
   <div class="create-sale">
     <template v-if="isLoaded && !isFailed">
-      <template v-if="accountOwnedAssetCodes.length">
+      <template v-if="accountOwnedAssets.length">
         <form-stepper
           :steps="STEPS"
           :current-step.sync="currentStep"
@@ -33,9 +33,10 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <select-field
-                  :values="accountOwnedAssetCodes"
+                  :values="accountOwnedAssets"
                   :disabled="formMixin.isDisabled"
                   v-model="form.saleInformation.baseAsset"
+                  key-as-value-text="nameAndCode"
                   :label="'create-sale-form.base-asset' | globalize"
                 />
               </div>
@@ -44,7 +45,7 @@
               <div class="app__form-field">
                 <date-field
                   v-model="form.saleInformation.startTime"
-                  :enable-time="false"
+                  :enable-time="true"
                   :disable-before="new Date().toString()"
                   @input="touchField('form.saleInformation.startTime')"
                   @blur="touchField('form.saleInformation.startTime')"
@@ -61,7 +62,7 @@
               <div class="app__form-field">
                 <date-field
                   v-model="form.saleInformation.endTime"
-                  :enable-time="false"
+                  :enable-time="true"
                   :disable-before="new Date().toString()"
                   @input="touchField('form.saleInformation.endTime')"
                   @blur="touchField('form.saleInformation.endTime')"
@@ -133,7 +134,7 @@
                   type="number"
                   :label="'create-sale-form.base-asset-hard-cap-to-sell' |
                     globalize({
-                      asset: form.saleInformation.baseAsset
+                      asset: form.saleInformation.baseAsset.code
                     })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.requiredBaseAssetForHardCap',
@@ -150,7 +151,7 @@
               <div class="app__form-field">
                 <p class="create-sale__price">
                   {{ 'create-sale-form.price' | globalize({
-                    base: form.saleInformation.baseAsset,
+                    base: form.saleInformation.baseAsset.code,
                     quote: config.DEFAULT_QUOTE_ASSET
                   }) }}
                   <!-- eslint-disable-next-line max-len -->
@@ -163,16 +164,16 @@
             </div>
             <div
               class="app__form-row create-sale__form-row"
-              v-for="item in baseAssetCodes"
-              :key="item"
+              v-for="item in baseAssets"
+              :key="item.code"
             >
               <div class="app__form-field">
                 <tick-field
                   v-model="form.saleInformation.quoteAssets"
                   :disabled="formMixin.isDisabled"
-                  :cb-value="item"
+                  :cb-value="item.code"
                 >
-                  {{ item }}
+                  {{ item.nameAndCode }}
                 </tick-field>
               </div>
             </div>
@@ -366,6 +367,8 @@ const EVENTS = {
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
 
+const DEFAULT_SALE_TYPE = '0'
+
 export default {
   name: 'create-sale-form',
   components: {
@@ -395,7 +398,7 @@ export default {
       form: {
         saleInformation: {
           name: '',
-          baseAsset: '',
+          baseAsset: {},
           startTime: '',
           endTime: '',
           softCap: '',
@@ -467,18 +470,14 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
     }),
-    baseAssetCodes () {
+    baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
-        .map(item => item.code)
     },
-    accountOwnedAssetCodes () {
+    accountOwnedAssets () {
       return this.assets.filter(item => item.owner === this.accountId)
-        .map(item => item.code)
     },
     availableForIssuance () {
-      const asset = this.assets.filter(item => item.owner === this.accountId)
-        .find(item => item.code === this.form.saleInformation.baseAsset)
-      return asset.availableForIssuance
+      return this.form.saleInformation.baseAsset.availableForIssuance
     },
     isUpdate () {
       return +this.request.id !== 0
@@ -494,9 +493,8 @@ export default {
       this.assets = assets.map(item => new AssetRecord(item))
       if (this.isUpdate) {
         await this.populateForm(this.request)
-        this.form.saleInformation.baseAsset = this.request.baseAsset
       } else {
-        this.form.saleInformation.baseAsset = this.accountOwnedAssetCodes[0]
+        this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
       }
       this.isLoaded = true
     } catch (e) {
@@ -531,7 +529,7 @@ export default {
     getOperation () {
       const operation = {
         requestID: this.isUpdate ? this.request.id : '0',
-        baseAsset: this.form.saleInformation.baseAsset,
+        baseAsset: this.form.saleInformation.baseAsset.code,
         defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
@@ -546,13 +544,13 @@ export default {
         },
         // eslint-disable-next-line
         requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
-        quoteAssets: this.isUpdate ? this.form.saleInformation.quoteAssets
-          : this.form.saleInformation.quoteAssets
-            .map((item) => ({
-              asset: item,
-              price: '1',
-            })),
-        saleType: String(SALE_TYPES.fixedPrice),
+        quoteAssets: this.form.saleInformation.quoteAssets
+          .map((item) => ({
+            asset: item,
+            price: '1',
+          })),
+        saleEnumType: SALE_TYPES.fixedPrice,
+        saleType: DEFAULT_SALE_TYPE,
       }
       return Sdk.base.SaleRequestBuilder.createSaleCreationRequest(operation)
     },
@@ -571,31 +569,21 @@ export default {
     },
     async populateForm (request) {
       this.form.saleInformation.name = request.name
-      this.form.saleInformation.baseAsset = request.baseAsset
+      this.form.saleInformation.baseAsset = this.accountOwnedAssets
+        .find(item => item.code === request.baseAsset)
       this.form.saleInformation.startTime = request.startTime
       this.form.saleInformation.endTime = request.endTime
       this.form.saleInformation.softCap = request.softCap
       this.form.saleInformation.hardCap = request.hardCap
-      this.form.saleInformation.requiredBaseAssetForHardCap = request
-        .requiredBaseAssetForHardCap
+      this.form.saleInformation.requiredBaseAssetForHardCap =
+        request.baseAssetForHardCap
       this.form.saleInformation.quoteAssets = request.quoteAssets
       this.form.shortBlurb.saleLogo = request.logo.key
         ? new DocumentContainer(request.logo)
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
       this.form.fullDescription.youtubeId = request.youtubeVideoId
-      this.form.fullDescription.description =
-        await this.getSaleDescription(request)
-    },
-
-    async getSaleDescription (request) {
-      try {
-        const { data } =
-          await Sdk.api.blobs.get(request.description, this.accountId)
-        return JSON.parse(data.value)
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
-      }
+      this.form.fullDescription.description = request.description
     },
   },
 }

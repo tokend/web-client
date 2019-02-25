@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Fixed
+- Closing `CreateSaleForm` after submitting
+- Using asset records instead of asset codes in `CreateSaleForm`
+- Populating `CreateSaleForm`
+- Using `saleEnumType` for sale type
+
 ## [1.0.0-rc.5] - 2019-02-25
 ### Fixed
 - Add loadKvEntriesAccountRoleIds after sign in
