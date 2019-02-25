@@ -8,7 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-## Fixed
+### Fixed
 - Lower case email before submitting on Login, Sign up and Recovery
 - Ability to update pending sale & asset requests
 - Request details fields:
@@ -17,7 +17,7 @@ for further information about branching and tagging conventions.
 - `LimitsUpdateRequestRecord` `updateLimits` details field
 - Asset request records mocks & unit tests
 
-## Changed
+### Changed
 - Local environment from `anubis` to `angus`
 - `LimitsUpdateRequestRecord` field `requestType` to `limitsRequestType`
 
