@@ -232,7 +232,7 @@ export default {
   }),
   computed: {
     canBeUpdated () {
-      return this.request.isRejected
+      return this.request.isRejected || this.request.isPending
     },
     canBeCanceled () {
       return this.request.isPending

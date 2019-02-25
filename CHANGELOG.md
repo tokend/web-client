@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+## Fixed
+- Ability to update pending sale & asset requests
+- Request details fields:
+  - `preIssuanceCreate` -> `createPreIssuance`
+  - `assetCreate` -> `createAsset`
+- `LimitsUpdateRequestRecord` `updateLimits` details field
+
+## Changed
+- Local environment from `anubis` to `angus`
+- `LimitsUpdateRequestRecord` field `requestType` to `limitsRequestType`
+
 ## [1.0.0-rc.4] - 2019-02-23
 ### Added
 - `Api` class, representing SDK class `ApiCaller`
