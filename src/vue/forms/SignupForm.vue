@@ -100,7 +100,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.getKdfParams(this.form.email)
+        await Sdk.api.wallets.getKdfParams(this.form.email.toLowerCase())
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
         throw new errors.UserExistsError()
