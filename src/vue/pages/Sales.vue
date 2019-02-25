@@ -38,7 +38,7 @@
       <template slot="heading">
         {{ 'sales.create-sale' | globalize }}
       </template>
-      <create-sale-form />
+      <create-sale-form @close="isCreateSaleDrawerShown = false" />
     </drawer>
 
     <template v-if="filteredSales.length">
