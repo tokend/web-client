@@ -197,7 +197,6 @@ export default {
       this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(e)
     }
-
     if (this.kycState) {
       this.form = this.parseKycData(this.kycLatestData)
       if (this.kycState !== REQUEST_STATES_STR.rejected) {
@@ -217,7 +216,9 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        await this.loadKyc()
+        while (Object.keys(this.kycLatestData).length === 0) {
+          await this.loadKyc()
+        }
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
