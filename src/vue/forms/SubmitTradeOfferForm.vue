@@ -57,26 +57,38 @@
       />
     </template>
     <template v-else>
-      <div class="app__form-actions">
-        <button
-          v-ripple
-          type="button"
-          @click="showConfirmation"
-          class="app__form-submit-btn"
-          :disabled="formMixin.isDisabled"
-        >
-          <template v-if="offer.ownerId === accountId">
-            {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
-          </template>
-          <template v-else>
-            <template v-if="isBuy">
-              {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
+      <div class="submit-trade-offer-form__actions">
+        <!-- TODO: make it via tooltip message -->
+        <p v-if="!isEnoughOnBalance" class="app__form-field-description">
+          {{
+            'submit-trade-offers-form.insufficient-funds' | globalize({
+              amount: (isBuy
+                ? offerQuoteAssetBalance.balance
+                : offerBaseAssetBalance.balance) | formatNumber
+            })
+          }}
+        </p>
+        <div class="app__form-actions">
+          <button
+            v-ripple
+            type="button"
+            @click="showConfirmation"
+            class="app__form-submit-btn"
+            :disabled="!isEnoughOnBalance || formMixin.isDisabled"
+          >
+            <template v-if="offer.ownerId === accountId">
+              {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
             </template>
             <template v-else>
-              {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
+              <template v-if="isBuy">
+                {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
+              </template>
+              <template v-else>
+                {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
+              </template>
             </template>
-          </template>
-        </button>
+          </button>
+        </div>
       </div>
     </template>
   </form>
@@ -86,6 +98,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
+import { formatNumber } from '@/vue/filters/formatNumber'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
@@ -105,11 +118,27 @@ export default {
   data: () => ({
     isOfferSubmitting: false,
   }),
-  ...mapGetters([
-    vuexTypes.accountId,
-    vuexTypes.accountBalances,
-  ]),
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+      vuexTypes.accountBalances,
+    ]),
+    offerBaseAssetBalance () {
+      return this.accountBalances
+        .find(item => item.asset === this.offer.baseAssetCode) || {}
+    },
+    offerQuoteAssetBalance () {
+      return this.accountBalances
+        .find(item => item.asset === this.offer.quoteAssetCode)
+    },
+    isEnoughOnBalance () {
+      return this.isBuy
+        ? +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
+        : +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
+    },
+  },
   methods: {
+    formatNumber,
     async submit () {
       this.disableForm()
       this.isOfferSubmitting = true
@@ -140,10 +169,8 @@ export default {
     getCancelOfferOpts () {
       return {
         price: this.offer.price,
-        baseBalance: this.accountBalances
-          .find(item => item.asset === this.offer.baseAssetCode).balanceId,
-        quoteBalance: this.accountBalances
-          .find(item => item.asset === this.offer.quoteAssetCode).balanceId,
+        baseBalance: this.offerBaseAssetBalance.balanceId,
+        quoteBalance: this.offerQuoteAssetBalance.balanceId,
         offerId: this.offer.offerId,
       }
     },
@@ -153,4 +180,12 @@ export default {
 
 <style lang="scss" scoped>
   @import './app-form';
+
+  .submit-trade-offer-form__actions {
+    margin-top: 5rem;
+
+    & > .app__form-actions {
+      margin-top: 1.6rem;
+    }
+  }
 </style>

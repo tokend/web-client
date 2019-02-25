@@ -810,7 +810,8 @@
       "price-label": "Price ({{asset}})",
       "submit-buy-btn": "Buy",
       "submit-sell-btn": "Sell",
-      "cancel-offer-btn": "Cancel order"
+      "cancel-offer-btn": "Cancel order",
+      "insufficient-funds": "Insufficient funds on your balance. You have {{amount}}"
     },
 
     "offer-manager": {

@@ -238,7 +238,7 @@ $custom-breakpoint: 985px;
 }
 
 .trade-exchange__offers-list {
-  width: 100%;
+  width: 50%;
 
   @include respond-to($custom-breakpoint) {
     max-width: 100%;
