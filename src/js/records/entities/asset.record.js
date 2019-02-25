@@ -7,6 +7,7 @@ export class AssetRecord {
 
     this.code = record.code
     this.owner = record.owner
+    this.assetType = record.assetType
     this.preissuedAssetSigner = record.preissuedAssetSigner
 
     this.availableForIssuance = record.availableForIssuance
@@ -41,6 +42,10 @@ export class AssetRecord {
 
   termsUrl (storageUrl) {
     return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
+  }
+
+  isRequiresKYC (kvAssetTypeKycRequired) {
+    return kvAssetTypeKycRequired === this.assetType
   }
 
   _getBalance (balances) {
