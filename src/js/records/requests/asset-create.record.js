@@ -20,6 +20,9 @@ export class AssetCreateRequestRecord extends RequestRecord {
     this.maxIssuanceAmount = _get(
       this._record, 'details.createAsset.maxIssuanceAmount'
     )
+    this.assetType = _get(
+      this._record, 'details.createAsset.type'
+    )
     this.initialPreissuedAmount = _get(
       this._record, 'details.createAsset.initialPreissuedAmount'
     )

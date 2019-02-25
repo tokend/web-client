@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Fixed
+- Fixed bug with displaying isRequiresKYC in AssetRequestDetails
+- Fix bug with assetType select
+
+### Added
+- Added assetType in to asset.record
+- Add loader in to AssetCreateForm
+- Add assetType in to asset-create.record,
+ 
+### Changed
+- Remove in AssetUpdateForm tick-field 'requiresKyc'
+
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
 - Closing `CreateSaleForm` after submitting
