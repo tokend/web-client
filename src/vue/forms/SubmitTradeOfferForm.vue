@@ -62,9 +62,9 @@
         <p v-if="!isEnoughOnBalance" class="app__form-field-description">
           {{
             'submit-trade-offers-form.insufficient-funds' | globalize({
-              amount: (isBuy
-                ? offerQuoteAssetBalance.balance
-                : offerBaseAssetBalance.balance) | formatNumber
+              amount: formatNumber(isBuy
+                ? offerBaseAssetBalance.balance
+                : offerQuoteAssetBalance.balance)
             })
           }}
         </p>
@@ -133,8 +133,8 @@ export default {
     },
     isEnoughOnBalance () {
       return this.isBuy
-        ? +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
-        : +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
+        ? +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
+        : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
     },
   },
   methods: {
