@@ -102,7 +102,7 @@ export default {
       this.disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
-          this.email,
+          this.email.toLowerCase(),
           this.password,
           this.recoveryKeypair
         )
@@ -118,7 +118,7 @@ export default {
             ...vueRoutes.verify,
             params: {
               paramsBase64: btoa(JSON.stringify({
-                email: wallet.email,
+                email: wallet.email.toLowerCase(),
                 walletId: wallet.id,
               })),
             },
