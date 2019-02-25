@@ -61,7 +61,7 @@
             'totalValue',
             {
               minValue: config.MIN_AMOUNT,
-              available: baseAssetBalance,
+              available: isBuy ? quoteAssetBalance : baseAssetBalance,
               from: config.MIN_AMOUNT,
               to: config.MAX_AMOUNT,
             }
