@@ -16,9 +16,13 @@ for further information about branching and tagging conventions.
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
 - Add assetType in to asset-create.record,
- 
+
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
+
+### Removed
+- Escape pressing handler in Drawer. The Drawer will no longer close by clicking on Escape button
+- Ability to enter date manually in all date fields
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed

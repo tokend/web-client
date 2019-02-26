@@ -19,7 +19,7 @@
         class="date-field-flatpickr__input"
         :config="config"
         v-model="flatpickrDate"
-        :placeholder="placeholder || ' '"
+        :placeholder="placeholder"
         :key="_uid"
         @input.native="dateFieldUpdated"
         @on-close="onClose"
@@ -71,7 +71,7 @@ export default {
     config () {
       return {
         altInput: true,
-        allowInput: true,
+        allowInput: false,
         altFormat: this.enableTime ? 'Y-m-d at H:i' : 'F j, Y',
         disableMobile: true,
         disable: [
