@@ -32,6 +32,7 @@ for further information about branching and tagging conventions.
 - Favicon
 - Contact email in terms (now enterprise@distributedlab.com)
 - `vueRoutes` structure: no nested routes
+- Withdrawal validation message
 
 ### Removed
 - Escape pressing handler in Drawer. The Drawer will no longer close by clicking on Escape button
