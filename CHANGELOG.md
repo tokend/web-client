@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
  
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
+- Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
