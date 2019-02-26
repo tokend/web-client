@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
 - Fix bug with assetType select
 - Removed displaying assetType in AssetUpdateRequestRecord
+- Wrapping sale description into a blob on the `CreateSaleForm`
 
 ### Added
 - Added assetType in to asset.record
@@ -21,6 +22,7 @@ for further information about branching and tagging conventions.
  
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
+- Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
