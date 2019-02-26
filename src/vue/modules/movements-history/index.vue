@@ -18,11 +18,16 @@
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
           v-if="!isMovementsLoadFailed"
+          v-show="isMovementsLoaded"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
           @next-page-load="concatMovements"
         />
       </div>
+    </template>
+
+    <template v-else>
+      <load-spinner message-id="movements-history.initializing-msg" />
     </template>
   </div>
 </template>
@@ -99,7 +104,7 @@ export default {
       loadBalances: types.LOAD_BALANCES,
     }),
     async loadMovementsFirstPage (assetCode) {
-      this.isLoaded = false
+      this.isMovementsLoaded = false
       try {
         const response = await this.loadMovements(assetCode)
         this.isMovementsLoaded = true

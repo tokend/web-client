@@ -77,17 +77,20 @@
     />
 
     <no-data-message
-      v-else
+      v-else-if="isLoaded"
       icon-name="trending-up"
       title-id="op-pages.no-data-title"
       message-id="op-pages.no-data-msg"
     />
+
+    <loader v-else message-id="op-pages.assets-loading-msg" />
   </div>
 </template>
 
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
@@ -112,6 +115,7 @@ export default {
     SelectField,
     TopBar,
     Drawer,
+    Loader,
     NoDataMessage,
     WithdrawalForm,
     DepositForm,
