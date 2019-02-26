@@ -5,7 +5,7 @@
         <template slot="main">
           <router-link
             v-ripple
-            :to="vueRoutes.saleDetails.campaign"
+            :to="{ ...vueRoutes.saleCampaign, params: { id: id } }"
           >
             <span>
               {{ 'sale-details.campaign-title' | globalize }}

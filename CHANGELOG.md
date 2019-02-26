@@ -9,18 +9,23 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Fixed
-- Fixed bug with displaying isRequiresKYC in AssetRequestDetails
-- Fix bug with assetType select
+- Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
+- Bug with assetType select
 - Wrapping sale description into a blob on the `CreateSaleForm`
 
 ### Added
-- Added assetType in to asset.record
-- Add loader in to AssetCreateForm
-- Add assetType in to asset-create.record,
+- `assetType` to `asset.record`
+- Loader to `AssetCreateForm`
+- `assetType` to `asset-create.record`
+- `<router-link>` to the `SaleCard` component
  
 ### Changed
-- Remove in AssetUpdateForm tick-field 'requiresKyc'
-- Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
+- Renamed `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
+- `vueRoutes` structure: no nested routes
+
+### Removed
+- Tick field `requiresKyc` from `AssetUpdateForm`
+- `viewSale` method from `Sales` component
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
