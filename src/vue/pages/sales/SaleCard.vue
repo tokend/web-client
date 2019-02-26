@@ -1,7 +1,7 @@
 <template>
-  <a
+  <router-link
     class="sale-card"
-    @click="$emit(EVENTS.select)"
+    :to="{ ...vueRoutes.saleDetails, params: { id: sale.id } }"
   >
     <div class="sale-card__header">
       <img
@@ -59,7 +59,7 @@
         :html="false"
       />
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -68,10 +68,7 @@ import VueMarkdown from 'vue-markdown'
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
-
-const EVENTS = {
-  select: 'select',
-}
+import { vueRoutes } from '@/vue-router/routes'
 
 export default {
   name: 'sale-card',
@@ -85,7 +82,7 @@ export default {
 
   data: _ => ({
     config,
-    EVENTS,
+    vueRoutes,
   }),
 
   computed: {
@@ -109,6 +106,8 @@ export default {
   box-shadow: 0 .5rem 1rem 0 $col-sale-card-shadow;
   background-color: $col-sale-card-background;
   margin: 1rem;
+  text-decoration: none;
+  color: inherit;
 }
 
 .sale-card__header {

@@ -19,6 +19,7 @@
             <select-field
               v-model="form.asset"
               :values="ownedAssets"
+              name="issuance-asset"
               key-as-value-text="nameAndCode"
               :label="'issuance.asset-lbl' | globalize"
               id="issuance-asset"
@@ -36,6 +37,7 @@
                 v-model="form.amount"
                 @blur="touchField('form.amount')"
                 id="issuance-amount"
+                name="issuance-amount"
                 :label="'issuance.amount-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
                   'form.amount',
@@ -70,6 +72,7 @@
               v-model="form.receiver"
               @blur="touchField('form.receiver')"
               id="issuance-receiver"
+              name="issuance-receiver"
               :label="'issuance.receiver-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.receiver')"
               :disabled="formMixin.isDisabled"
@@ -83,6 +86,7 @@
               v-model="form.reference"
               @blur="touchField('form.reference')"
               id="issuance-reference"
+              name="issuance-reference"
               :error-message="getFieldErrorMessage(
                 'form.reference',
                 { length: REFERENCE_MAX_LENGTH }
