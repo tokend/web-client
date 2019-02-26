@@ -20,7 +20,7 @@
         :config="config"
         v-model="flatpickrDate"
         :placeholder="placeholder || ' '"
-        :key="flatpickrDate + $attrs.disabled"
+        :key="_uid"
         @input.native="dateFieldUpdated"
         @on-close="onClose"
         @on-open="onOpen"

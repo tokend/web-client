@@ -46,7 +46,7 @@
                 <date-field
                   v-model="form.saleInformation.startTime"
                   :enable-time="true"
-                  :disable-before="new Date().toString()"
+                  :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.startTime')"
                   @blur="touchField('form.saleInformation.startTime')"
                   id="sale-start-time"
@@ -63,7 +63,7 @@
                 <date-field
                   v-model="form.saleInformation.endTime"
                   :enable-time="true"
-                  :disable-before="new Date().toString()"
+                  :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.endTime')"
                   @blur="touchField('form.saleInformation.endTime')"
                   id="sale-end-time"
@@ -71,7 +71,7 @@
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.endTime',{
                       minDate: form.saleInformation.startTime ||
-                        new Date().toString()
+                        moment().subtract(1, 'days').toString()
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -320,6 +320,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 import config from '@/config'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -434,7 +436,7 @@ export default {
           endTime: {
             required,
             minDate: minDate(this.form.saleInformation.startTime ||
-              new Date().toString()),
+              moment().subtract(1, 'days').toString()),
           },
           softCap: {
             required,
@@ -504,6 +506,7 @@ export default {
     }
   },
   methods: {
+    moment,
     nextStep (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
