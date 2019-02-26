@@ -38,8 +38,7 @@
               })"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
-                from: MIN_AMOUNT,
-                to: form.asset.balance.value,
+                available: form.asset.balance.value,
                 maxDecimalDigitsCount: DECIMAL_POINTS,
               })"
             />
