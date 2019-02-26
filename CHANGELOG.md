@@ -17,10 +17,11 @@ for further information about branching and tagging conventions.
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
 - Add assetType in to asset-create.record,
- 
+
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
 - Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
+- Favicon
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
