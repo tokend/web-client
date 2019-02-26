@@ -102,7 +102,8 @@
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
-      "account-blocked": "Your account is blocked"
+      "account-blocked": "Your account is blocked",
+      "user-doesnt-exist": "This user doesn't exist in system"
     },
 
     "auth-pages": {

@@ -11,14 +11,18 @@ for further information about branching and tagging conventions.
 ### Fixed
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
 - Fix bug with assetType select
+- Removed displaying assetType in AssetUpdateRequestRecord
+- Wrapping sale description into a blob on the `CreateSaleForm`
 
 ### Added
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
-- Add assetType in to asset-create.record,
+- Add assetType in to asset-create.record
+- Add error handling UserDoesntExistError
 
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
+- Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
 
 ### Removed
 - Escape pressing handler in Drawer. The Drawer will no longer close by clicking on Escape button

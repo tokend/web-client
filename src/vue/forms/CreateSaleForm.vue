@@ -354,6 +354,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
+import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
   saleInformation: {
@@ -488,7 +489,7 @@ export default {
     availableForIssuance () {
       return this.form.saleInformation.baseAsset.availableForIssuance
     },
-    isUpdate () {
+    isUpdateMode () {
       return +this.request.id !== 0
     },
     price () {
@@ -500,7 +501,7 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
-      if (this.isUpdate) {
+      if (this.isUpdateMode) {
         await this.populateForm(this.request)
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
@@ -523,7 +524,13 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        await Sdk.horizon.transactions.submitOperations(this.getOperation())
+        const { data: blob } = await Sdk.api.blobs.create(
+          BLOB_TYPES.fundOverview,
+          JSON.stringify(this.form.fullDescription.description)
+        )
+        await Sdk.horizon.transactions.submitOperations(
+          this.getOperation(blob.id)
+        )
         Bus.success('create-sale-form.request-submitted-msg')
         this.enableForm()
         this.$emit(EVENTS.close)
@@ -536,9 +543,9 @@ export default {
         this.enableForm()
       }
     },
-    getOperation () {
+    getOperation (saleDescriptionBlobId) {
       const operation = {
-        requestID: this.isUpdate ? this.request.id : '0',
+        requestID: this.isUpdateMode ? this.request.id : '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
         defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
@@ -548,7 +555,7 @@ export default {
         creatorDetails: {
           name: this.form.saleInformation.name,
           short_description: this.form.shortBlurb.shortDescription,
-          description: this.form.fullDescription.description,
+          description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
           youtube_video_id: this.form.fullDescription.youtubeId,
         },
@@ -593,7 +600,18 @@ export default {
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
       this.form.fullDescription.youtubeId = request.youtubeVideoId
-      this.form.fullDescription.description = request.description
+      this.form.fullDescription.description =
+        await this.getSaleDescription(request)
+    },
+
+    async getSaleDescription (request) {
+      try {
+        const { data } =
+          await Sdk.api.blobs.get(request.description, this.accountId)
+        return JSON.parse(data.value)
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }
