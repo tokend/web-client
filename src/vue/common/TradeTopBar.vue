@@ -44,13 +44,19 @@
 
       <div class="trade-asset-selector__wrapper">
         <select-field
+          v-if="formattedPairs.length"
           v-model="selectedPair"
           :values="formattedPairs"
           :key="selectedPair"
           class="trade-asset-selector__field app__select app__select--no-border"
         />
+        <no-data-message
+          v-else
+          :title-id="'trade-top-bar.no-pairs-message'"
+          :message-id="'trade-top-bar.here-will-pairs-list'"
+        />
       </div>
-      <div class="trade-asset-selector__balances">
+      <div class="trade-asset-selector__balances" v-if="formattedPairs.length">
         <p class="trade-asset-selector__balances-value">
           {{
             // eslint-disable-next-line
@@ -98,6 +104,7 @@
 import Drawer from '@/vue/common/Drawer'
 import Loader from '@/vue/common/Loader'
 import TopBar from '@/vue/common/TopBar'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
 import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
@@ -127,6 +134,7 @@ export default {
     Drawer,
     Loader,
     TopBar,
+    NoDataMessage,
   },
   data: () => ({
     assetPair: {
@@ -157,18 +165,20 @@ export default {
   },
   watch: {
     selectedPair (value) {
-      const baseAsset = value.split('/')[0]
-      const quoteAsset = value.split('/')[1]
-      this.assetPair.base = baseAsset
-      this.assetPair.quote = quoteAsset
+      if (value) {
+        const baseAsset = value.split('/')[0]
+        const quoteAsset = value.split('/')[1]
+        this.assetPair.base = baseAsset
+        this.assetPair.quote = quoteAsset
 
-      this.$router.replace({
-        name: this.$route.name,
-        query: {
-          base: baseAsset,
-          quote: quoteAsset,
-        },
-      })
+        this.$router.replace({
+          name: this.$route.name,
+          query: {
+            base: baseAsset,
+            quote: quoteAsset,
+          },
+        })
+      }
     },
   },
   async created () {

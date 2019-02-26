@@ -14,6 +14,7 @@ for further information about branching and tagging conventions.
 - `assetType` to `asset-create.record`
 - `<router-link>` to the `SaleCard` component
 - `UserDoesntExistError` handling
+- Message about no assets pairs exists in the system
 
 ### Fixed
 - Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
