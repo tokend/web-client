@@ -15,7 +15,8 @@ for further information about branching and tagging conventions.
 ### Added
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
-- Add assetType in to asset-create.record,
+- Add assetType in to asset-create.record
+- Add error handling UserDoesntExistError
  
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
