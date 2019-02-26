@@ -136,7 +136,7 @@
               </template>
             </td>
           </tr>
-          <template v-if="request.assetType">
+          <template v-if="request.assetType !== undefined">
             <tr>
               <td>
                 {{ 'asset-request-details.requires-kyc-title' | globalize }}
