@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
  
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
+- Wrapping sale description into a blob on the `CreateSaleForm`
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
