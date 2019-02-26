@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
 - Bug with assetType select
 - Wrapping sale description into a blob on the `CreateSaleForm`
+- Trade chart displaying
 
 ### Added
 - Added assetType in to asset.record
