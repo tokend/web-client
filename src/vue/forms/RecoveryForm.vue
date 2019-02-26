@@ -20,7 +20,7 @@
           id="recovery-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
-          :label="'auth-pages.password' | globalize"
+          :label="'auth-pages.new-password' | globalize"
           :white-autofill="false"
         />
       </div>
@@ -59,7 +59,7 @@
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.sign-up' | globalize }}
+        {{ 'auth-pages.recovery' | globalize }}
       </button>
     </div>
   </form>
