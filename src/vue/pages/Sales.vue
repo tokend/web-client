@@ -56,7 +56,6 @@
           v-for="sale in filteredSales"
           :key="sale.id"
           :sale="sale"
-          @select="viewSale(sale)"
         />
       </div>
     </template>
@@ -103,8 +102,6 @@ import SaleCard from '@/vue/pages/sales/SaleCard'
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-
-import { vueRoutes } from '@/vue-router/routes'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -204,15 +201,6 @@ export default {
     extendRecords (data) {
       this.saleRecords = this.saleRecords
         .concat(data.map(sale => new SaleRecord(sale)))
-    },
-
-    viewSale (sale) {
-      this.$router.push({
-        name: vueRoutes.saleDetails.name,
-        params: {
-          id: sale.id,
-        },
-      })
     },
   },
 }

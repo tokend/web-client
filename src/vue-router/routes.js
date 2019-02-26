@@ -1,5 +1,4 @@
 export const vueRoutes = Object.freeze({
-  // existing routes:
   app: { name: 'app' },
   auth: { name: 'auth' },
   login: { name: 'login' },
@@ -7,57 +6,29 @@ export const vueRoutes = Object.freeze({
   fees: { name: 'app.fees' },
   movements: { name: 'app.movements' },
   sales: { name: 'app.sales' },
-  saleDetails: {
-    name: 'app.sale-details',
-    campaign: {
-      name: 'app.sale-details.campaign',
-    },
-  },
+  saleDetails: { name: 'app.sale-details' },
+  saleCampaign: { name: 'app.sale-campaign' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
   settings: { name: 'app.settings' },
-  verification: {
-    name: 'app.verification',
-    general: {
-      name: 'app.verification.general',
-    },
-    corporate: {
-      name: 'app.verification.corporate',
-    },
-  },
+  verification: { name: 'app.verification' },
+  verificationGeneral: { name: 'app.verification.general' },
+  verificationCorporate: { name: 'app.verification.corporate' },
   security: { name: 'app.security' },
   dashboard: { name: 'app.dashboard' },
-  trade: {
-    name: 'app.trade',
-    exchange: {
-      name: 'app.exchange',
-    },
-    userOffers: {
-      name: 'app.user-offers',
-    },
-  },
+  trade: { name: 'app.trade' },
+  tradeUserOffers: { name: 'app.trade.user-offers' },
+  tradeExchange: { name: 'app.trade.exchange' },
   issuance: { name: 'app.issuance' },
   limits: { name: 'app.limits' },
   assets: { name: 'app.assets' },
   balances: { name: 'app.balances' },
   assetsExplore: { name: 'app.assets-explore' },
-  requests: {
-    name: 'app.requests',
-    assetCreation: { name: 'app.asset-creation' },
-    saleCreation: { name: 'app.sale-creation' },
-    preIssuanceUpload: { name: 'app.pre-issuance-upload' },
-  },
+  requests: { name: 'app.requests' },
+  assetCreationRequests: { name: 'app.asset-creation-requests' },
+  saleCreationRequests: { name: 'app.sale-creation-requests' },
+  preIssuanceUploadRequests: { name: 'app.pre-issuance-upload-requests' },
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
   iosInstallationGuide: { name: 'ios-installation-guide' },
-  // stubs:
-  deposit: { name: 'app.deposit' },
-  transfers: { name: 'app.transfers' },
-  massTransfers: { name: 'app.mass-transfers' },
-  withdrawal: { name: 'app.withdrawal' },
-  history: { name: 'app.history' },
-  tokenCreation: { name: 'app.tokenCreation' },
-  saleCreation: { name: 'app.saleCreation' },
-  issuanceCreation: { name: 'app.issuanceCreation' },
-  mySales: { name: 'app.my-sales' },
 })
