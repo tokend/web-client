@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
 - Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
 - Favicon
+- Contact email in terms (now enterprise@distributedlab.com)
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
