@@ -1,23 +1,30 @@
 <template>
-  <div v-if="isShown" :class="`status-message status-message--${messageType}`">
-    <p class="status-message__content">
-      {{
-        messageId | globalize({
-          context: messageType,
-          ...messageArgs
-        })
-      }}
-    </p>
-    <div class="status-message__btn-wrp">
-      <button class="status-message__btn" @click="isShown = false">
-        {{
-          "status-message.close-lbl" | globalize({
-            context: messageType
-          })
-        }}
-      </button>
+  <transition name="toggle">
+    <div
+      v-if="isShown"
+      :class="`status-message status-message--${messageType}`"
+    >
+      <div class="status-message__content">
+        <p class="status-message__text">
+          {{
+            messageId | globalize({
+              context: messageType,
+              ...messageArgs
+            })
+          }}
+        </p>
+        <div class="status-message__btn-wrp">
+          <button class="status-message__btn" @click="isShown = false">
+            {{
+              "status-message.close-lbl" | globalize({
+                context: messageType
+              })
+            }}
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -91,12 +98,17 @@ export default {
     $col-msg-shadow;
   border-radius: .3rem;
   font-size: 1.6rem;
-  padding: 2rem 4rem;
+  padding: 1.5rem 2rem;
   position: fixed;
   right: 4rem;
   top: 4rem;
   z-index: $z-status-message;
   max-width: 42rem;
+  min-width: 32rem;
+  text-align: center;
+  @include respond-to($tablet) {
+    min-width: auto;
+  }
 
   @include respond-to-custom($status-message-reposition-bp) {
     right: $content-side-paddings-sm;
@@ -107,7 +119,7 @@ export default {
   @mixin apply-theme ($col-msg-background, $col-msg-text) {
     background: $col-msg-background;
 
-    .status-message__content,
+    .status-message__text,
     .status-message__btn {
       color: $col-msg-text;
     }
@@ -122,7 +134,38 @@ export default {
   &--info { @include apply-theme($col-info, $col-text-msg-info) }
 }
 
-.status-message__content {
+  .status-message__content {
+    position: relative;
+    border-color: transparent;
+    padding: 2rem 2rem 0.5rem;
+    border-left: 1px solid #fff;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      height: 1px;
+      width: 75px;
+      background-color: #fff;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: 0;
+      height: 50%;
+      width: 1px;
+      background-color: #fff;
+    }
+
+    p {
+      font-size: 1.6rem;
+    }
+  }
+
+.status-message__text {
   margin-bottom: 2.5rem;
 }
 
@@ -131,13 +174,24 @@ export default {
 }
 
 .status-message__btn {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.05);
   border-radius: .5rem;
-  font-size: 1.4rem;
-  padding: .5rem 2rem;
+  font-size: 1.6rem;
+  padding: 1rem 2.9rem;
   cursor: pointer;
   transition: .2s;
 
-  &:hover { opacity: .75 }
+  &:hover {
+    background: transparent;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    opacity: .75;
+  }
+}
+.toggle-enter-active, .toggle-leave-active {
+  transition: all 0.2s linear;
+}
+.toggle-enter, .toggle-leave-to {
+  transform: rotateY(90deg);
+  opacity: 0;
 }
 </style>
