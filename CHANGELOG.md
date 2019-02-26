@@ -11,18 +11,24 @@ for further information about branching and tagging conventions.
 ### Fixed
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
 - Fix bug with assetType select
+- Removed displaying assetType in AssetUpdateRequestRecord
 - Wrapping sale description into a blob on the `CreateSaleForm`
 
 ### Added
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
-- Add assetType in to asset-create.record,
+- Add assetType in to asset-create.record
+- Add error handling UserDoesntExistError
 
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
 - Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
 - Favicon
 - Contact email in terms (now enterprise@distributedlab.com)
+
+### Removed
+- Escape pressing handler in Drawer. The Drawer will no longer close by clicking on Escape button
+- Ability to enter date manually in all date fields
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed

@@ -21,6 +21,9 @@ export class ErrorHandler {
       case errors.NetworkError:
         translationId = 'errors.network'
         break
+      case errors.UserDoesntExistError:
+        translationId = 'errors.user-doesnt-exist'
+        break
       case errors.TimeoutError:
         translationId = 'errors.timeout'
         break

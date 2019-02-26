@@ -20,6 +20,7 @@
                   v-model="form.saleInformation.name"
                   @blur="touchField('form.saleInformation.name')"
                   id="sale-name"
+                  name="create-sale-name"
                   :label="'create-sale-form.sale-name' | globalize"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.name',{
@@ -34,6 +35,7 @@
               <div class="app__form-field">
                 <select-field
                   :values="accountOwnedAssets"
+                  name="create-sale-base-asset"
                   :disabled="formMixin.isDisabled"
                   v-model="form.saleInformation.baseAsset"
                   key-as-value-text="nameAndCode"
@@ -45,8 +47,9 @@
               <div class="app__form-field">
                 <date-field
                   v-model="form.saleInformation.startTime"
+                  name="create-sale-start-time"
                   :enable-time="true"
-                  :disable-before="new Date().toString()"
+                  :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.startTime')"
                   @blur="touchField('form.saleInformation.startTime')"
                   id="sale-start-time"
@@ -63,15 +66,16 @@
                 <date-field
                   v-model="form.saleInformation.endTime"
                   :enable-time="true"
-                  :disable-before="new Date().toString()"
+                  :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.endTime')"
                   @blur="touchField('form.saleInformation.endTime')"
                   id="sale-end-time"
+                  name="create-sale-end-time"
                   :label="'create-sale-form.close-time' | globalize"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.endTime',{
                       minDate: form.saleInformation.startTime ||
-                        new Date().toString()
+                        moment().subtract(1, 'days').toString()
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -86,6 +90,7 @@
                   v-model="form.saleInformation.softCap"
                   @blur="touchField('form.saleInformation.softCap')"
                   id="soft-cap"
+                  name="create-sale-soft-cap"
                   :label="'create-sale-form.soft-cap' | globalize({
                     asset: config.DEFAULT_QUOTE_ASSET
                   })"
@@ -108,6 +113,7 @@
                   v-model="form.saleInformation.hardCap"
                   @blur="touchField('form.saleInformation.hardCap')"
                   id="hard-cap"
+                  name="create-sale-hard-cap"
                   :label="'create-sale-form.hard-cap' | globalize({
                     asset: config.DEFAULT_QUOTE_ASSET
                   })"
@@ -131,6 +137,7 @@
                     'form.saleInformation.requiredBaseAssetForHardCap'
                   )"
                   id="base-asset-for-hard-cap"
+                  name="create-sale-base-asset-for-hard-cap"
                   type="number"
                   :label="'create-sale-form.base-asset-hard-cap-to-sell' |
                     globalize({
@@ -169,6 +176,7 @@
             >
               <div class="app__form-field">
                 <tick-field
+                  :name="`create-sale-tick-${item.code}`"
                   v-model="form.saleInformation.quoteAssets"
                   :disabled="formMixin.isDisabled"
                   :cb-value="item.code"
@@ -200,12 +208,9 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <file-field
-                  :label="
-                    'create-sale-form.upload-image' | globalize
-                  "
-                  :note="
-                    'create-sale-form.upload-image' | globalize
-                  "
+                  :label="'create-sale-form.upload-image' | globalize"
+                  :note="'create-sale-form.upload-image' | globalize"
+                  name="create-sale-sale-logo"
                   accept=".jpg, .png"
                   :document-type="DOCUMENT_TYPES.saleLogo"
                   v-model="form.shortBlurb.saleLogo"
@@ -221,6 +226,7 @@
                 {{ 'create-sale-form.short-description' | globalize }}
                 <textarea-field
                   id="sale-short-description"
+                  name="create-sale-short-description"
                   v-model="form.shortBlurb.shortDescription"
                   @blur="touchField('form.shortBlurb.shortDescription')"
                   :label="'transfer-form.subject-lbl' | globalize({
@@ -258,6 +264,7 @@
                   white-autofill
                   v-model="form.fullDescription.youtubeId"
                   id="youtube-id"
+                  name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
                   :disabled="formMixin.isDisabled"
                 />
@@ -320,6 +327,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 import config from '@/config'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -435,7 +444,7 @@ export default {
           endTime: {
             required,
             minDate: minDate(this.form.saleInformation.startTime ||
-              new Date().toString()),
+              moment().subtract(1, 'days').toString()),
           },
           softCap: {
             required,
@@ -505,6 +514,7 @@ export default {
     }
   },
   methods: {
+    moment,
     nextStep (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++

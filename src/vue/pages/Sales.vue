@@ -4,6 +4,7 @@
       <template slot="main">
         <div class="sales__asset-filter">
           <input-field
+            name="sales-filter-base-asset"
             :disabled="!isLoaded"
             v-model="filters.baseAsset"
             :label="'sales.asset-code-label' | globalize"
