@@ -13,13 +13,14 @@ for further information about branching and tagging conventions.
 - Fix bug with assetType select
 - Removed displaying assetType in AssetUpdateRequestRecord
 - Wrapping sale description into a blob on the `CreateSaleForm`
+- Trade chart displaying
 
 ### Added
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
 - Add assetType in to asset-create.record
 - Add error handling UserDoesntExistError
- 
+
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
 - Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
