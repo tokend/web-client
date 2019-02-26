@@ -142,18 +142,28 @@
       <template v-if="!form.advanced.isPreissuanceDisabled">
         <div class="app__form-row">
           <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.advanced.preissuedAssetSigner"
-              @blur="touchField('form.advanced.preissuedAssetSigner')"
-              id="asset-preissued-asset-signer"
-              name="asset-create-preissued-asset-signer"
-              :label="'asset-form.preissued-asset-signer-lbl' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.advanced.preissuedAssetSigner',
-              )"
-              :disabled="formMixin.isDisabled"
-            />
+            <div class="issuance-form__pre-issued-asset-signer-wrp">
+              <input-field
+                white-autofill
+                v-model="form.advanced.preissuedAssetSigner"
+                @blur="touchField('form.advanced.preissuedAssetSigner')"
+                id="asset-preissued-asset-signer"
+                name="asset-create-preissued-asset-signer"
+                :label="'asset-form.preissued-asset-signer-lbl' | globalize"
+                :error-message="getFieldErrorMessage(
+                  'form.advanced.preissuedAssetSigner',
+                )"
+                :disabled="formMixin.isDisabled"
+              />
+              <button
+                v-ripple
+                type="button"
+                class="issuance-form__insert-account-id-btn"
+                @click="form.advanced.preissuedAssetSigner = accountId"
+              >
+                {{ 'asset-form.use-my-account-id-btn' | globalize }}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -343,7 +353,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
 
@@ -482,16 +492,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './app-form';
+@import './app-form';
 
-  .asset-create-form__btn {
-    @include button-raised();
+.asset-create-form__btn {
+  @include button-raised();
 
-    margin-bottom: 2rem;
-    width: 14.4rem;
-  }
+  margin-bottom: 2rem;
+  width: 14.4rem;
+}
 
-  .asset-create-form__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.asset-create-form__kyc-required-row {
+  margin-top: 2.1rem;
+}
+
+.issuance-form__pre-issued-asset-signer-wrp {
+  display: flex;
+  align-items: flex-start;
+}
+
+.issuance-form__insert-account-id-btn {
+  margin-left: 1.6rem;
+  margin-top: 1.8rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: $col-link;
+}
 </style>

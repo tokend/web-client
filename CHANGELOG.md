@@ -14,11 +14,17 @@ for further information about branching and tagging conventions.
 - `assetType` to `asset-create.record`
 - `<router-link>` to the `SaleCard` component
 - `UserDoesntExistError` handling
+- Message while loading assets & balances on the movements page
+- No data messages for `AssetsExplore` & `Balances` pages
+- `Use mine` button for pre-issued asset signer field on the `AssetCreateForm`
 
 ### Fixed
 - Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
 - Bug with assetType select
 - Wrapping sale description into a blob on the `CreateSaleForm`
+- Sale description loading
+- Hiding `More` button while loading the movements
+- Displaying percent fees & fee assets on the fees page
 
 ### Added
 - Added assetType in to asset.record

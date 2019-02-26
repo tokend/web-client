@@ -393,7 +393,7 @@
       "filters-prefix": "Show:",
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
-      "loading-msg": "Loading",
+      "assets-loading-msg": "Loading the tokens…",
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
@@ -449,6 +449,7 @@
       "amount-th": "Amount",
       "date-th": "Date",
       "operation-th": "Operation",
+      "initializing-msg": "Initializing…",
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",
       "no-movements-title": "No movements history",
@@ -587,7 +588,11 @@
       "balances-title": "My balances",
       "create-asset-title": "Create token",
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
+      "loading-error-msg": "There was an error while loading.",
+      "no-assets-title": "No tokens",
+      "no-assets-msg": "There are no available tokens",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet"
     },
 
     "assets-list": {
@@ -614,6 +619,7 @@
       "kyc-required-lbl": "Requires KYC",
       "additional-issuance-check": "I do not want to make additional issuance later",
       "preissued-asset-signer-lbl": "Preissued asset signer",
+      "use-my-account-id-btn": "Use mine",
       "initial-preissued-amount-lbl": "Initial preissued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
