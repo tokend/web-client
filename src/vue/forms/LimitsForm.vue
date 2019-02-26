@@ -3,6 +3,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
+          name="limits-op-type"
           v-model="selectedOpType"
           :values="FORMATTED_STATS_OPERATION_TYPES"
           key-as-value-text="label"

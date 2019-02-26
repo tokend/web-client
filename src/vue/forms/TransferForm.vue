@@ -27,6 +27,7 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <select-field
+                name="transfer-token"
                 :values="tokens"
                 v-model="form.token"
                 key-as-value-text="nameAndCode"
@@ -50,7 +51,7 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <input-field
-                name="amount"
+                name="transfer-amount"
                 :step="config.MINIMAL_NUMBER_INPUT_STEP"
                 type="number"
                 v-model.trim="form.amount"
@@ -68,7 +69,7 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <input-field
-                name="recipient"
+                name="transfer-recipient"
                 v-model.trim="form.recipient"
                 :label="'transfer-form.recipient-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.recipient')"
@@ -82,7 +83,7 @@
             <div class="app__form-field">
               <textarea-field
                 id="transfer-description"
-                name="description"
+                name="transfer-description"
                 v-model="form.subject"
                 :label="'transfer-form.subject-lbl' | globalize({
                   length: 250

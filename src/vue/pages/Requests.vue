@@ -2,15 +2,15 @@
   <div>
     <top-bar>
       <template slot="main">
-        <router-link :to="vueRoutes.requests.assetCreation">
+        <router-link :to="vueRoutes.assetCreationRequests">
           <span>{{ 'requests-page.asset-creation-title' | globalize }}</span>
         </router-link>
 
-        <router-link :to="vueRoutes.requests.saleCreation">
+        <router-link :to="vueRoutes.saleCreationRequests">
           <span>{{ 'requests-page.sale-creation-title' | globalize }}</span>
         </router-link>
 
-        <router-link :to="vueRoutes.requests.preIssuanceUpload">
+        <router-link :to="vueRoutes.preIssuanceUploadRequests">
           <span>
             {{ 'requests-page.pre-issuance-upload-title' | globalize }}
           </span>

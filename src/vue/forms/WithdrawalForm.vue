@@ -10,6 +10,7 @@
           <div class="app__form-row withdrawal__form-row">
             <div class="app__form-field">
               <select-field
+                name="withdrawal-asset"
                 v-model="form.asset"
                 :values="assets"
                 key-as-value-text="nameAndCode"
@@ -30,6 +31,7 @@
               class="app__form-field"
               v-model.trim="form.amount"
               type="number"
+              name="withdrawal-amount"
               @blur="touchField('form.amount')"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
@@ -48,6 +50,7 @@
               white-autofill
               class="app__form-field"
               v-model.trim="form.address"
+              name="withdrawal-address"
               @blur="touchField('form.address')"
               :error-message="getFieldErrorMessage('form.address')"
               :label="'withdrawal-form.destination-address' | globalize({

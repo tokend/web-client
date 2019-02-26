@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import { KEY_CODES } from '@/js/const/key-codes.const'
-
 /**
  * Drawer component serves as a wrapper for modal content.
  *
@@ -38,20 +36,7 @@ export default {
   props: {
     isShown: { type: Boolean, default: true },
   },
-  created () {
-    document.addEventListener('keydown', this.onDocumentKeyDown)
-  },
-  destroyed () {
-    document.removeEventListener('keydown', this.onDocumentKeyDown)
-  },
   methods: {
-    onDocumentKeyDown () {
-      const keyCode = event.which || event.keyCode
-
-      if (keyCode === KEY_CODES.escape) {
-        this.closeSelf()
-      }
-    },
     closeSelf () {
       this.$emit('update:isShown', false)
     },

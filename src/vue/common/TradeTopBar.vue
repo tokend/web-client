@@ -5,7 +5,7 @@
         <template slot="main">
           <router-link
             :to="{
-              name: vueRoutes.trade.exchange.name,
+              name: vueRoutes.tradeExchange.name,
               query: { base: assetPair.base, quote: assetPair.quote }
             }"
           >
@@ -15,7 +15,7 @@
           </router-link>
           <router-link
             :to="{
-              name: vueRoutes.trade.userOffers.name,
+              name: vueRoutes.tradeUserOffers.name,
               query: { base: assetPair.base, quote: assetPair.quote }
             }"
           >
