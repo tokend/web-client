@@ -55,7 +55,9 @@
                   id="sale-start-time"
                   :label="'create-sale-form.start-time' | globalize"
                   :error-message="getFieldErrorMessage(
-                    'form.saleInformation.startTime'
+                    'form.saleInformation.startTime', {
+                      minDate: formatDate(moment().toString())
+                    }
                   )"
                   :disabled="formMixin.isDisabled"
                 />
@@ -73,9 +75,9 @@
                   name="create-sale-end-time"
                   :label="'create-sale-form.close-time' | globalize"
                   :error-message="getFieldErrorMessage(
-                    'form.saleInformation.endTime',{
+                    'form.saleInformation.endTime', {
                       minDate: form.saleInformation.startTime ||
-                        moment().subtract(1, 'days').toString()
+                        formatDate(moment().toString())
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -346,6 +348,7 @@ import {
   requiredAtLeastOne,
   minDate,
 } from '@validators'
+import { formatDate } from '@/vue/filters/formatDate'
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -440,11 +443,12 @@ export default {
           },
           startTime: {
             required,
+            minDate: minDate(moment().toString()),
           },
           endTime: {
             required,
             minDate: minDate(this.form.saleInformation.startTime ||
-              moment().subtract(1, 'days').toString()),
+              moment().toString()),
           },
           softCap: {
             required,
@@ -515,6 +519,7 @@ export default {
   },
   methods: {
     moment,
+    formatDate,
     nextStep (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
