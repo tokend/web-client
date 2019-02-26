@@ -8,16 +8,17 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-### Fixed
-- Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
-- Bug with assetType select
-- Wrapping sale description into a blob on the `CreateSaleForm`
-
 ### Added
 - `assetType` to `asset.record`
 - Loader to `AssetCreateForm`
 - `assetType` to `asset-create.record`
 - `<router-link>` to the `SaleCard` component
+- `UserDoesntExistError` handling
+
+### Fixed
+- Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
+- Bug with assetType select
+- Wrapping sale description into a blob on the `CreateSaleForm`
  
 ### Changed
 - Renamed `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
@@ -26,6 +27,7 @@ for further information about branching and tagging conventions.
 ### Removed
 - Tick field `requiresKyc` from `AssetUpdateForm`
 - `viewSale` method from `Sales` component
+- Displaying `assetType` in `AssetUpdateRequestRecord`
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
