@@ -136,21 +136,22 @@
               </template>
             </td>
           </tr>
+          <template v-if="request.assetType">
+            <tr>
+              <td>
+                {{ 'asset-request-details.requires-kyc-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="request.assetType === kvAssetTypeKycRequired">
+                  {{ 'asset-request-details.present-msg' | globalize }}
+                </template>
 
-          <tr>
-            <td>
-              {{ 'asset-request-details.requires-kyc-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="request.assetType === kvAssetTypeKycRequired">
-                {{ 'asset-request-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-request-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
+                <template v-else>
+                  {{ 'asset-request-details.absent-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>

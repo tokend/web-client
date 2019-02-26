@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 ### Fixed
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
 - Fix bug with assetType select
+- Removed displaying assetType in AssetUpdateRequestRecord
 
 ### Added
 - Added assetType in to asset.record
