@@ -36,15 +36,19 @@
           />
         </div>
         <div class="asset-card__info">
-          <p class="asset-card__code">
+          <p :title="asset.code" class="asset-card__code">
             {{ asset.code }}
           </p>
-          <p class="asset-card__name">
+          <p :title="asset.name" class="asset-card__name">
             {{ asset.name || asset.code }}
           </p>
           <p
             v-if="asset.balance.value"
             class="asset-card__balance"
+            :title="
+              'assets-list.list-item-balance-line' |
+                globalize({ value: asset.balance })
+            "
           >
             <!-- eslint-disable-next-line max-len -->
             {{ 'assets-list.list-item-balance-line' | globalize({ value: asset.balance }) }}
@@ -118,6 +122,10 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+$asset-card-header-height: 8.5rem;
+$media-desktop: 1130px;
+$media-small-desktop: 960px;
+
 .asset-cards {
   display: flex;
   flex-wrap: wrap;
@@ -127,6 +135,7 @@ export default {
 
 .asset-card {
   flex: 0 1 calc(25% - 1.5rem);
+  max-width: calc(25% - 1.5rem);
   min-height: 19rem;
   cursor: pointer;
   border-radius: .4rem;
@@ -134,12 +143,29 @@ export default {
   background-color: $col-asset-card-background;
   margin: .75rem;
 
-  @include respond-to($medium) {
+  @include respond-to-custom($media-desktop) {
     flex: 0 1 calc(33% - 1.5rem);
+    max-width: calc(33% - 1.5rem);
   }
 
-  @include respond-to($x-small) {
+  @include respond-to-custom($media-small-desktop) {
+    flex: 0 1 calc(50% - 1.5rem);
+    max-width: calc(50% - 1.5rem);
+  }
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    flex: 0 1 calc(33% - 1.5rem);
+    max-width: calc(33% - 1.5rem);
+  }
+
+  @include respond-to(small) {
+    flex: 0 1 calc(50% - 1.5rem);
+    max-width: calc(50% - 1.5rem);
+  }
+
+  @include respond-to(xsmall) {
     flex: 0 1 calc(100% - 1.5rem);
+    max-width: calc(100% - 1.5rem);
   }
 }
 
@@ -156,12 +182,17 @@ export default {
 
 .asset-card__info {
   padding: 1.6rem 2rem;
+  height: calc(100% - #{$asset-card-header-height});
+  display: flex;
+  flex-direction: column;
 }
 
 .asset-card__code {
   font-size: 1.8rem;
   font-weight: bold;
   color: $col-asset-card-text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .asset-card__name {
@@ -169,6 +200,8 @@ export default {
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-asset-card-text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .asset-card__balance {
@@ -176,6 +209,10 @@ export default {
   font-size: 1.2rem;
   line-height: 1.5;
   color: $col-asset-card-text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: auto;
 }
 
 .asset-card__no-balance {
