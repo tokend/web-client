@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - No data messages for `AssetsExplore` & `Balances` pages
 - "Use mine" button for pre-issued asset signer field on the `AssetCreateForm`
 - Message about no assets pairs exists in the system
+- CLI config passing
 
 ### Fixed
 - Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
