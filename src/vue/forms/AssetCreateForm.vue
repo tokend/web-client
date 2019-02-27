@@ -3,6 +3,7 @@
     :steps="STEPS"
     :current-step.sync="currentStep"
     :disabled="formMixin.isDisabled"
+    v-if="kvAssetTypeKycRequired"
   >
     <form
       novalidate
@@ -17,6 +18,7 @@
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
             id="asset-name"
+            name="asset-create-name"
             :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.name',
@@ -35,6 +37,7 @@
             v-model="form.information.code"
             @blur="touchField('form.information.code')"
             id="asset-code"
+            name="asset-create-asset-code"
             :label="'asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.code',
@@ -54,12 +57,30 @@
             v-model="form.information.maxIssuanceAmount"
             @blur="touchField('form.information.maxIssuanceAmount')"
             id="asset-max-issuance-amount"
+            name="asset-create-max-issuance-amount"
             :label="'asset-form.max-issuance-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.maxIssuanceAmount',
               { from: MIN_AMOUNT, to: MAX_AMOUNT }
             )"
             :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <select-field
+            v-model="form.information.assetType"
+            name="asset-create-asset-type"
+            key-as-value-text="label"
+            :values="assetTypes"
+            :label="'asset-form.asset-type' | globalize"
+            :disabled="formMixin.isDisabled"
+            @blur="touchField('form.information.assetType')"
+            :error-message="getFieldErrorMessage(
+              'form.information.assetType',
+            )"
           />
         </div>
       </div>
@@ -76,21 +97,10 @@
         </div>
       </div>
 
-      <div class="app__form-row asset-form__kyc-required-row">
-        <div class="app__form-field">
-          <tick-field
-            v-model="form.information.policies"
-            :disabled="formMixin.isDisabled"
-            :cb-value="ASSET_POLICIES.requiresKyc"
-          >
-            {{ 'asset-form.kyc-required-lbl' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
+            name="asset-create-logo"
             v-model="form.information.logo"
             :note="'asset-form.logo-note' | globalize"
             accept=".jpg, .png"
@@ -132,17 +142,28 @@
       <template v-if="!form.advanced.isPreissuanceDisabled">
         <div class="app__form-row">
           <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.advanced.preissuedAssetSigner"
-              @blur="touchField('form.advanced.preissuedAssetSigner')"
-              id="asset-preissued-asset-signer"
-              :label="'asset-form.preissued-asset-signer-lbl' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.advanced.preissuedAssetSigner',
-              )"
-              :disabled="formMixin.isDisabled"
-            />
+            <div class="issuance-form__pre-issued-asset-signer-wrp">
+              <input-field
+                white-autofill
+                v-model="form.advanced.preissuedAssetSigner"
+                @blur="touchField('form.advanced.preissuedAssetSigner')"
+                id="asset-preissued-asset-signer"
+                name="asset-create-preissued-asset-signer"
+                :label="'asset-form.preissued-asset-signer-lbl' | globalize"
+                :error-message="getFieldErrorMessage(
+                  'form.advanced.preissuedAssetSigner',
+                )"
+                :disabled="formMixin.isDisabled"
+              />
+              <button
+                v-ripple
+                type="button"
+                class="issuance-form__insert-account-id-btn"
+                @click="form.advanced.preissuedAssetSigner = accountId"
+              >
+                {{ 'asset-form.use-my-account-id-btn' | globalize }}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -154,6 +175,7 @@
               v-model="form.advanced.initialPreissuedAmount"
               @blur="touchField('form.advanced.initialPreissuedAmount')"
               id="asset-initial-preissued-amount"
+              name="asset-create-initial-preissued-amount"
               :label="'asset-form.initial-preissued-amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.advanced.initialPreissuedAmount',
@@ -169,6 +191,7 @@
         <div class="app__form-field">
           <file-field
             v-model="form.advanced.terms"
+            name="asset-create-terms"
             :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
@@ -196,11 +219,15 @@
       </div>
     </form>
   </form-stepper>
+  <loader
+    v-else
+    message-id="asset-form.loading-msg" />
 </template>
 
 <script>
 import FormStepper from '@/vue/common/FormStepper'
 import FormMixin from '@/vue/mixins/form.mixin'
+import Loader from '@/vue/common/Loader'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
@@ -216,10 +243,11 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { required, requiredUnless, amountRange, maxLength } from '@validators'
+import { globalize } from '@/vue/filters/globalize'
 
 const STEPS = {
   information: {
@@ -249,6 +277,7 @@ export default {
   name: 'asset-create-form',
   components: {
     FormStepper,
+    Loader,
   },
   mixins: [FormMixin],
   props: {
@@ -263,6 +292,7 @@ export default {
         maxIssuanceAmount: '',
         logo: null,
         policies: [],
+        assetType: '',
       },
       advanced: {
         isPreissuanceDisabled: false,
@@ -297,6 +327,9 @@ export default {
             required,
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
           },
+          assetType: {
+            required,
+          },
         },
         advanced: {
           preissuedAssetSigner: {
@@ -320,7 +353,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
 
     assetRequestOpts () {
@@ -341,34 +375,54 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
+        assetType: this.form.information.assetType.value,
         preissuedAssetSigner: preissuedAssetSigner,
+        trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
-        details: {
+        creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },
       }
     },
+    assetTypes () {
+      return [
+        {
+          label: globalize('asset-form.asset-type-not-required-kyc'),
+          value: '0',
+        },
+        {
+          label: globalize('asset-form.asset-type-required-kyc'),
+          value: String(this.kvAssetTypeKycRequired),
+        },
+      ]
+    },
   },
 
   created () {
+    this.loadKvAssetTypeKycRequired()
     if (this.request) {
       this.populateForm()
     }
   },
 
   methods: {
+    ...mapActions({
+      loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
+    }),
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+          this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
 
       this.form = {
         information: {
           name: this.request.assetName,
           code: this.request.assetCode,
+          assetType: this.assetTypes
+            .find(item => item.value === String(this.request.assetType)),
           maxIssuanceAmount: this.request.maxIssuanceAmount,
           logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)
@@ -403,7 +457,7 @@ export default {
         await this.uploadDocuments()
 
         const operation =
-          base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
+            base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('asset-form.asset-request-submitted-msg')
 
@@ -449,5 +503,18 @@ export default {
 
 .asset-create-form__kyc-required-row {
   margin-top: 2.1rem;
+}
+
+.issuance-form__pre-issued-asset-signer-wrp {
+  display: flex;
+  align-items: flex-start;
+}
+
+.issuance-form__insert-account-id-btn {
+  margin-left: 1.6rem;
+  margin-top: 1.8rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: $col-link;
 }
 </style>

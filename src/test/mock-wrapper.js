@@ -1,4 +1,8 @@
-import { HorizonResponse, ApiResponse } from '@tokend/js-sdk'
+import {
+  HorizonResponse,
+  ApiResponse,
+  JsonapiResponse,
+} from '@tokend/js-sdk'
 
 export class MockWrapper {
   static makeHorizonData (record) {
@@ -14,7 +18,16 @@ export class MockWrapper {
   static makeHorizonResponse (record) {
     return new HorizonResponse({ data: record }, {})
   }
+
   static makeApiResponse (record) {
     return new ApiResponse({ data: record }, {})
+  }
+
+  static makeJsonapiResponse (record) {
+    return new JsonapiResponse({ data: record }, {})
+  }
+
+  static makeJsonapiResponseData (record) {
+    return this.makeJsonapiResponse(record).data
   }
 }

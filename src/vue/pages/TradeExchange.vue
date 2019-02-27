@@ -3,9 +3,8 @@
     <div v-if="assetPair.base">
       <div class="trade-exchange__chart">
         <chart
-          v-if="assetPair.base !== config.DEFAULT_QUOTE_ASSET"
           :base-asset="assetPair.base"
-          :quote-asset="config.DEFAULT_QUOTE_ASSET"
+          :quote-asset="assetPair.quote"
         />
       </div>
 
@@ -87,7 +86,6 @@ export default {
     isSellOffersLoading: false,
     recordsOrder: 'desc',
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
-    config,
   }),
   computed: {
     assetPair () {
@@ -238,7 +236,7 @@ $custom-breakpoint: 985px;
 }
 
 .trade-exchange__offers-list {
-  width: 100%;
+  width: 50%;
 
   @include respond-to($custom-breakpoint) {
     max-width: 100%;

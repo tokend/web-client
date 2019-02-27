@@ -22,6 +22,7 @@
                 v-model="form.personal.firstName"
                 @blur="touchField('form.personal.firstName')"
                 id="verification-general-first-name"
+                name="verification-general-first-name"
                 :label="'verification-form.first-name-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.personal.firstName')"
                 :disabled="formMixin.isDisabled"
@@ -36,41 +37,9 @@
                 v-model="form.personal.lastName"
                 @blur="touchField('form.personal.lastName')"
                 id="verification-general-last-name"
+                name="verification-general-last-name"
                 :label="'verification-form.last-name-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.personal.lastName')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <date-field
-                v-model="form.personal.birthDate"
-                :enable-time="false"
-                :disable-after="new Date().toString()"
-                @blur="touchField('form.personal.birthDate')"
-                id="verification-general-birth-date"
-                :label="'verification-form.birth-date-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.personal.birthDate')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <date-field
-                v-model="form.personal.documentExpirationDate"
-                :enable-time="false"
-                :disable-before="new Date().toString()"
-                @blur="touchField('form.personal.documentExpirationDate')"
-                id="verification-general-document-expiration-date"
-                :label="'verification-form.document-expiration-date-lbl'
-                  | globalize"
-                :error-message="getFieldErrorMessage(
-                  'form.personal.documentExpirationDate'
-                )"
                 :disabled="formMixin.isDisabled"
               />
             </div>
@@ -81,6 +50,7 @@
               <!-- eslint-disable max-len -->
               <file-field
                 v-model="form.documents.idDocument"
+                name="verification-general-id-document"
                 :note="'verification-form.file-type-note' | globalize"
                 accept="image/*, .pdf"
                 :document-type="DOCUMENT_TYPES.kycIdDocument"
@@ -89,116 +59,6 @@
                 :error-message="getFieldErrorMessage('form.documents.idDocument')"
               />
               <!-- eslint-enable max-len -->
-            </div>
-          </div>
-        </div>
-
-        <div class="verification-general-form__block">
-          <p class="verification-general-form__block-label">
-            {{ 'verification-form.address-details-lbl' | globalize }}
-          </p>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.address.firstLine"
-                @blur="touchField('form.address.firstLine')"
-                id="verification-general-address-first-line"
-                :label="'verification-form.address-first-line-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.address.firstLine')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.address.secondLine"
-                @blur="touchField('form.address.secondLine')"
-                id="verification-general-address-second-line"
-                :label="'verification-form.address-second-line-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.address.city"
-                @blur="touchField('form.address.city')"
-                id="verification-general-city"
-                :label="'verification-form.city-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.address.city')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <!--
-                :key is a hack to ensure that the component will be updated
-                after property change
-              -->
-              <select-field
-                :key="form.address.country"
-                v-model="form.address.country"
-                :values="countries"
-                @blur="touchField('form.address.country')"
-                id="verification-general-country"
-                :label="'verification-form.country-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.address.country')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.address.state"
-                @blur="touchField('form.address.state')"
-                id="verification-general-state"
-                :label="'verification-form.state-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.address.state')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.address.postalCode"
-                @blur="touchField('form.address.postalCode')"
-                id="verification-general-postal-code"
-                :label="'verification-form.postal-code-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.address.postalCode')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <file-field
-                v-model="form.documents.proofDocument"
-                :note="'verification-form.file-type-note' | globalize"
-                accept="image/*, .pdf"
-                :document-type="DOCUMENT_TYPES.kycProofOfAddress"
-                :label="'verification-form.proof-document-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-                :error-message="getFieldErrorMessage(
-                  'form.documents.proofDocument'
-                )"
-              />
             </div>
           </div>
         </div>
@@ -232,6 +92,7 @@
             <div class="app__form-field">
               <file-field
                 v-model="form.documents.verificationPhoto"
+                name="verification-general-verification-photo"
                 :note="'verification-form.file-type-note' | globalize"
                 accept="image/*, .pdf"
                 :document-type="DOCUMENT_TYPES.kycSelfie"
@@ -281,7 +142,6 @@ import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -292,6 +152,8 @@ import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { required, documentContainer } from '@validators'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'verification-general-form',
@@ -308,26 +170,15 @@ export default {
         birthDate: '',
         documentExpirationDate: '',
       },
-      address: {
-        firstLine: '',
-        secondLine: '',
-        city: '',
-        country: '',
-        state: '',
-        postalCode: '',
-      },
       documents: {
         idDocument: null,
-        proofDocument: null,
         verificationPhoto: null,
       },
     },
     isLoaded: false,
     isLoadingFailed: false,
     isCodeShown: false,
-    accountType: ACCOUNT_TYPES.general,
     DOCUMENT_TYPES,
-    countries: [],
   }),
 
   validations: {
@@ -335,36 +186,27 @@ export default {
       personal: {
         firstName: { required },
         lastName: { required },
-        birthDate: { required },
-        documentExpirationDate: { required },
-      },
-      address: {
-        firstLine: { required },
-        city: { required },
-        country: { required },
-        state: { required },
-        postalCode: { required },
       },
       documents: {
         idDocument: { documentContainer },
-        proofDocument: { documentContainer },
         verificationPhoto: { documentContainer },
       },
     },
   },
 
   computed: {
+    ...mapGetters({
+      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+    }),
     verificationCode () {
-      return this.account.accountId.slice(1, 6)
+      return this.accountId.slice(1, 6)
     },
   },
 
   async created () {
     try {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       await this.loadKyc()
-      const { data } = await Sdk.horizon.public.getEnums()
-      this.countries = data.countries
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
@@ -386,9 +228,14 @@ export default {
       try {
         await this.uploadDocuments()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
-        const operation = this.createKycOperation(kycBlobId)
+        const operation = this.createKycOperation(
+          kycBlobId,
+          this.kvEntryGeneralRoleId
+        )
         await Sdk.horizon.transactions.submitOperations(operation)
-        await this.loadKyc()
+        while (Object.keys(this.kycLatestData).length === 0) {
+          await this.loadKyc()
+        }
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
@@ -407,21 +254,9 @@ export default {
       return {
         first_name: this.form.personal.firstName,
         last_name: this.form.personal.lastName,
-        date_of_birth: this.form.personal.birthDate,
-        id_expiration_date: this.form.personal.documentExpirationDate,
-        address: {
-          line_1: this.form.address.firstLine,
-          line_2: this.form.address.secondLine,
-          city: this.form.address.city,
-          country: this.form.address.country,
-          state: this.form.address.state,
-          postal_code: this.form.address.postalCode,
-        },
         documents: {
           [DOCUMENT_TYPES.kycIdDocument]:
             this.form.documents.idDocument.getDetailsForSave(),
-          [DOCUMENT_TYPES.kycProofOfAddress]:
-            this.form.documents.proofDocument.getDetailsForSave(),
           [DOCUMENT_TYPES.kycSelfie]:
             this.form.documents.verificationPhoto.getDetailsForSave(),
         },
@@ -433,24 +268,10 @@ export default {
         personal: {
           firstName: kycData.first_name,
           lastName: kycData.last_name,
-          birthDate: kycData.date_of_birth,
-          documentExpirationDate: kycData.id_expiration_date,
-        },
-        address: {
-          firstLine: kycData.address.line_1,
-          secondLine: kycData.address.line_2,
-          city: kycData.address.city,
-          country: kycData.address.country,
-          state: kycData.address.state,
-          postalCode: kycData.address.postal_code,
         },
         documents: {
           idDocument: kycData.documents[DOCUMENT_TYPES.kycIdDocument]
             ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycIdDocument])
-            : {},
-          proofDocument: kycData.documents[DOCUMENT_TYPES.kycProofOfAddress]
-            ? this.wrapDocument(kycData
-              .documents[DOCUMENT_TYPES.kycProofOfAddress])
             : {},
           verificationPhoto: kycData.documents[DOCUMENT_TYPES.kycSelfie]
             ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycSelfie])

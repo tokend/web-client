@@ -31,6 +31,7 @@
 
               <sale-request-details
                 :request="selectedRequest"
+                :is-pending="isRequestCancelling"
                 @update-ask="isUpdateMode = true"
                 @cancel-ask="cancelRequest"
               />
@@ -217,6 +218,7 @@ export default {
     isHistoryLoaded: false,
     isAssetsLoaded: false,
     isLoadingFailed: false,
+    isRequestCancelling: false,
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     isUpdateMode: false,
@@ -252,7 +254,7 @@ export default {
     initFirstPageLoader () {
       this.isHistoryLoaded = false
       this.requestsHistory = []
-      this.firstPageLoader = this.getFirstPageLoader(this.account.accountId)
+      this.firstPageLoader = this.getFirstPageLoader(this.accountId)
     },
 
     closeDetailsDrawer () {
@@ -290,6 +292,7 @@ export default {
     },
 
     async cancelRequest () {
+      this.isRequestCancelling = true
       try {
         const operation = base.SaleRequestBuilder.cancelSaleCreationRequest({
           requestID: this.selectedRequest.id,
@@ -305,6 +308,7 @@ export default {
       } catch (e) {
         ErrorHandler.process(e)
       }
+      this.isRequestCancelling = false
     },
   },
 }

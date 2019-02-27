@@ -77,17 +77,20 @@
     />
 
     <no-data-message
-      v-else
+      v-else-if="isLoaded"
       icon-name="trending-up"
       title-id="op-pages.no-data-title"
       message-id="op-pages.no-data-msg"
     />
+
+    <loader v-else message-id="op-pages.assets-loading-msg" />
   </div>
 </template>
 
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
@@ -112,6 +115,7 @@ export default {
     SelectField,
     TopBar,
     Drawer,
+    Loader,
     NoDataMessage,
     WithdrawalForm,
     DepositForm,
@@ -133,12 +137,11 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.wallet,
-      vuexTypes.account,
-      vuexTypes.accountBalances,
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      wallet: vuexTypes.wallet,
+      balances: vuexTypes.accountBalances,
+      accountId: vuexTypes.accountId,
+    }),
   },
 
   async created () {
@@ -164,10 +167,10 @@ export default {
     },
 
     async loadAssets () {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
-        .map(item => new AssetRecord(item, this.account.balances))
+        .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.balance.id)
     },
   },

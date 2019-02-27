@@ -5,7 +5,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
-import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
@@ -15,6 +15,7 @@ import { Bus } from '@/js/helpers/event-bus'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
@@ -59,8 +60,9 @@ describe('IssuanceForm', () => {
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountTypeI)
-        .returns(ACCOUNT_TYPES.syndicate)
+
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       const store = new Vuex.Store({
         getters,
       })
@@ -109,7 +111,6 @@ describe('IssuanceForm', () => {
     let mockHelper
 
     let accountResource
-    let publicResource
     let transactionsResource
 
     let store
@@ -118,13 +119,12 @@ describe('IssuanceForm', () => {
       mockHelper = new MockHelper()
 
       accountResource = mockHelper.getHorizonResourcePrototype('account')
-      publicResource = mockHelper.getHorizonResourcePrototype('public')
       transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountTypeI)
-        .returns(ACCOUNT_TYPES.syndicate)
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       store = new Vuex.Store({
         getters,
       })
@@ -281,8 +281,8 @@ describe('IssuanceForm', () => {
       describe('getReceiverAccountId', () => {
         it('loads account ID by email if receiver is a valid email', async () => {
           const receiver = 'foo@bar.com'
-          const spy = sinon.stub(publicResource, 'getAccountIdByEmail')
-            .resolves({ data: {} })
+          const spy = sinon.stub(wrapper.vm, 'getAccountIdByEmail')
+            .resolves('')
 
           await wrapper.vm.getReceiverAccountId(receiver)
 

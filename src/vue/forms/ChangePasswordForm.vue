@@ -9,6 +9,7 @@
           v-model="form.currentPassword"
           @blur="touchField('form.currentPassword')"
           id="change-password-current"
+          name="change-password-current-password"
           type="password"
           :error-message="getFieldErrorMessage('form.currentPassword')"
           :label="'change-password-form.current-password-lbl' | globalize"
@@ -22,6 +23,7 @@
           v-model="form.newPassword"
           @blur="touchField('form.newPassword')"
           id="change-password-new"
+          name="change-password-new-password"
           type="password"
           :error-message="getFieldErrorMessage('form.newPassword')"
           :label="'change-password-form.new-password-lbl' | globalize"
@@ -35,24 +37,10 @@
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
           id="change-password-confirm"
+          name="change-password-new-password-confirm"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'change-password-form.confirm-password-lbl' | globalize"
-          :disabled="formMixin.isDisabled"
-        />
-      </div>
-    </div>
-    <div
-      v-if="isTotpEnabled"
-      class="app__form-row"
-    >
-      <div class="app__form-field">
-        <input-field
-          v-model="form.tfaCode"
-          @blur="touchField('form.tfaCode')"
-          id="change-password-tfa-code"
-          :error-message="getFieldErrorMessage('form.tfaCode')"
-          :label="'change-password-form.tfa-code-lbl' | globalize"
           :disabled="formMixin.isDisabled"
         />
       </div>
@@ -80,12 +68,13 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, requiredIf, password, sameAs } from '@validators'
+import { required, password, sameAs } from '@validators'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
@@ -99,7 +88,6 @@ export default {
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
-      tfaCode: '',
     },
   }),
   validations: {
@@ -111,15 +99,12 @@ export default {
         password,
         sameAsPassword: sameAs(function () { return this.form.newPassword }),
       },
-      tfaCode: {
-        required: requiredIf(function () { return this.isTotpEnabled }),
-      },
     },
   },
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
-      isTotpEnabled: vuexTypes.isTotpEnabled,
+      accountId: vuexTypes.accountId,
     }),
   },
   methods: {
@@ -147,55 +132,18 @@ export default {
         await Sdk.api.factors.verifyPasswordFactorAndRetry(tfaError,
           this.form.currentPassword
         )
-      } catch (e) {
-        if (e instanceof errors.TFARequiredError) {
-          try {
-            await Sdk.api.factors.verifyTotpFactorAndRetry(e,
-              this.form.tfaCode
-            )
-            await e.retryRequest()
-          } catch (e) {
-            if (e instanceof errors.TFARequiredError) {
-              await Sdk.api.factors.verifyPasswordFactorAndRetry(e,
-                this.form.currentPassword
-              )
-            } else {
-              ErrorHandler.process(e, 'change-password-form.wrong-code-err')
-              return
-            }
-          }
-        } else {
-          ErrorHandler.process(e, 'change-password-form.wrong-password-err')
-          return
-        }
-      }
-      try {
         await this.useNewWallet()
         Bus.success('change-password-form.password-changed-msg')
       } catch (e) {
-        ErrorHandler.process(e)
+        ErrorHandler.process(e, 'change-password-form.wrong-password-err')
       }
     },
     async useNewWallet () {
-      let newWallet
-      try {
-        newWallet = await Sdk.api.wallets.get(
-          this.wallet.email,
-          this.form.newPassword
-        )
-      } catch (e) {
-        if (e instanceof errors.TFARequiredError) {
-          await Sdk.api.factors.verifyTotpFactor(e,
-            this.form.tfaCode
-          )
-          newWallet = await Sdk.api.wallets.get(
-            this.wallet.email,
-            this.form.newPassword
-          )
-        } else {
-          throw e
-        }
-      }
+      const newWallet = await Sdk.api.wallets.get(
+        this.wallet.email,
+        this.form.newPassword
+      )
+      Api.useWallet(newWallet)
       Sdk.sdk.useWallet(newWallet)
       this.storeWallet(newWallet)
     },

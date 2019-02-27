@@ -8,7 +8,6 @@ import {
   PreIssuanceCreateRequestRecord,
 } from './requests/pre-issuance-create.record'
 import { SaleRequestRecord } from './requests/sale-create.record'
-import { UpdateKycRequestRecord } from './requests/update-kyc.record'
 import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
@@ -16,23 +15,20 @@ import {
 export class RecordWrapper {
   static request (record, details) {
     switch (record.details.requestTypeI) {
-      case REQUEST_TYPES.assetCreate:
+      case REQUEST_TYPES.createAsset:
         return new AssetCreateRequestRecord(...arguments)
-      case REQUEST_TYPES.assetUpdate:
+      case REQUEST_TYPES.updateAsset:
         return new AssetUpdateRequestRecord(...arguments)
-      case REQUEST_TYPES.preIssuanceCreate:
+      case REQUEST_TYPES.createPreIssuance:
         return new PreIssuanceCreateRequestRecord(...arguments)
-      case REQUEST_TYPES.sale:
+      case REQUEST_TYPES.createSale:
         return new SaleRequestRecord(...arguments)
-      case REQUEST_TYPES.updateKyc:
-        return new UpdateKycRequestRecord(...arguments)
       case REQUEST_TYPES.updateSaleDetail:
         return new UpdateSaleDetailsRequestRecord(...arguments)
-      case REQUEST_TYPES.amlAlert:
-      case REQUEST_TYPES.withdraw:
-      case REQUEST_TYPES.limitsUpdate:
-      case REQUEST_TYPES.issuanceCreate:
-      case REQUEST_TYPES.twoStepWithdrawal:
+      case REQUEST_TYPES.createAmlAlert:
+      case REQUEST_TYPES.createWithdraw:
+      case REQUEST_TYPES.updateLimit:
+      case REQUEST_TYPES.createIssuance:
       default:
         return new RequestRecord(...arguments)
     }

@@ -8,35 +8,35 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   constructor (record, details) {
     super(record)
 
-    this.assetCode = _get(record, 'details.assetUpdate.code')
-    this.assetName = _get(this._record, 'details.assetUpdate.details.name')
+    this.assetCode = _get(record, 'details.updateAsset.code')
+    this.assetName = _get(this._record, 'details.updateAsset.details.name')
     this.preissuedAssetSigner = _get(
-      this._record, 'details.assetUpdate.preIssuedAssetSigner'
+      this._record, 'details.updateAsset.preIssuedAssetSigner'
     )
     this.maxIssuanceAmount = _get(
-      this._record, 'details.assetUpdate.maxIssuanceAmount'
+      this._record, 'details.updateAsset.maxIssuanceAmount'
     )
     this.initialPreissuedAmount = _get(
-      this._record, 'details.assetUpdate.initialPreissuedAmount'
+      this._record, 'details.updateAsset.initialPreissuedAmount'
     )
     this.policies = this._policies()
     this.policy = this._policy()
 
-    this.details = _get(this._record, 'details.assetUpdate.details')
-    this.terms = _get(this._record, 'details.assetUpdate.details.terms')
-    this.termsKey = _get(this._record, 'details.assetUpdate.details.terms.key')
+    this.details = _get(this._record, 'details.updateAsset.details')
+    this.terms = _get(this._record, 'details.updateAsset.details.terms')
+    this.termsKey = _get(this._record, 'details.updateAsset.details.terms.key')
     this.termsName = _get(
-      this._record, 'details.assetUpdate.details.terms.name'
+      this._record, 'details.updateAsset.details.terms.name'
     )
     this.termsType = _get(
-      this._record, 'details.assetUpdate.details.terms.type'
+      this._record, 'details.updateAsset.details.terms.type'
     )
-    this.logo = _get(this._record, 'details.assetUpdate.details.logo')
-    this.logoKey = _get(this._record, 'details.assetUpdate.details.logo.key')
-    this.logoName = _get(this._record, 'details.assetUpdate.details.logo.name')
-    this.logoType = _get(this._record, 'details.assetUpdate.details.logo.type')
+    this.logo = _get(this._record, 'details.updateAsset.details.logo')
+    this.logoKey = _get(this._record, 'details.updateAsset.details.logo.key')
+    this.logoName = _get(this._record, 'details.updateAsset.details.logo.name')
+    this.logoType = _get(this._record, 'details.updateAsset.details.logo.type')
     this.externalSystemType = _get(
-      this._record, 'details.assetUpdate.details.externalSystemType'
+      this._record, 'details.updateAsset.details.externalSystemType'
     )
 
     this.attachedDetails = details
@@ -51,7 +51,7 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   static fromAssetRecord (assetRecord) {
     return new this({
       details: {
-        assetUpdate: {
+        updateAsset: {
           code: assetRecord.code,
           preIssuedAssetSigner: assetRecord.preissuedAssetSigner,
           maxIssuanceAmount: assetRecord.maxIssuanceAmount,
@@ -72,7 +72,7 @@ export class AssetUpdateRequestRecord extends RequestRecord {
   }
 
   _policies () {
-    return _get(this._record, 'details.assetUpdate.policies', [])
+    return _get(this._record, 'details.updateAsset.policies', [])
       .map(policy => policy.value)
   }
 
@@ -90,10 +90,6 @@ export class AssetUpdateRequestRecord extends RequestRecord {
 
   get isIssuanceManualReviewRequired () {
     return !!(this.policy & ASSET_POLICIES.issuanceManualReviewRequired)
-  }
-
-  get isRequiresKYC () {
-    return !!(this.policy & ASSET_POLICIES.requiresKyc)
   }
 
   get isStatsQuoteAsset () {

@@ -1,7 +1,7 @@
 <template>
   <div class="withdrawal">
     <template v-if="isLoaded">
-      <template v-if="account.balances.length">
+      <template v-if="assets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           id="withdrawal-form"
@@ -10,6 +10,7 @@
           <div class="app__form-row withdrawal__form-row">
             <div class="app__form-field">
               <select-field
+                name="withdrawal-asset"
                 v-model="form.asset"
                 :values="assets"
                 key-as-value-text="nameAndCode"
@@ -30,14 +31,14 @@
               class="app__form-field"
               v-model.trim="form.amount"
               type="number"
+              name="withdrawal-amount"
               @blur="touchField('form.amount')"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
-                from: MIN_AMOUNT,
-                to: form.asset.balance.value,
+                available: form.asset.balance.value,
                 maxDecimalDigitsCount: DECIMAL_POINTS,
               })"
             />
@@ -48,6 +49,7 @@
               white-autofill
               class="app__form-field"
               v-model.trim="form.address"
+              name="withdrawal-address"
               @blur="touchField('form.address')"
               :error-message="getFieldErrorMessage('form.address')"
               :label="'withdrawal-form.destination-address' | globalize({
@@ -178,7 +180,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
-  amountRange,
+  noMoreThanAvailableOnBalance,
   address,
   maxDecimalDigitsCount,
 } from '@validators'
@@ -221,8 +223,7 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(
-            this.MIN_AMOUNT,
+          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
@@ -232,10 +233,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.account,
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      balances: vuexTypes.accountBalances,
+    }),
   },
   watch: {
     'form.amount' (value) {
@@ -309,7 +310,7 @@ export default {
       return {
         balance: this.form.asset.balance.id,
         amount: this.form.amount,
-        externalDetails: { address: this.form.address },
+        creatorDetails: { address: this.form.address },
         destAsset: this.form.asset.code,
         expectedDestAssetAmount: this.form.amount,
         fee: {
@@ -333,10 +334,10 @@ export default {
       }
     },
     async loadAssets () {
-      await this.loadAccount()
+      await this.loadAccount(this.accountId)
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
-        .map(item => new AssetRecord(item, this.account.balances))
+        .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.isWithdrawable && item.balance.id)
     },
   },

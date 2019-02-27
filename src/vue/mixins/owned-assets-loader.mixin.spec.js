@@ -43,8 +43,8 @@ describe('asset-loader.mixin unit test', () => {
       )
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.account)
-        .returns({ accountId: mockHelper.getMockWallet().accountId })
+      sinon.stub(getters, vuexTypes.accountId)
+        .returns(mockHelper.getMockWallet().accountId)
       store = new Vuex.Store({
         getters,
       })

@@ -51,7 +51,7 @@ export const emailOrAccountId = value => {
 export const documentContainer = value => value instanceof DocumentContainer
 
 export const noMoreThanAvailableOnBalance = balance => value => {
-  return +balance > +value
+  return +balance >= +value
 }
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
   const [, decimals] = String(value).split('.')

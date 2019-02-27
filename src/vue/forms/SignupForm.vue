@@ -6,6 +6,7 @@
           v-model="form.email"
           @blur="touchField('form.email')"
           id="signup-email"
+          name="signup-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
@@ -18,6 +19,7 @@
           v-model="form.password"
           @blur="touchField('form.password')"
           id="signup-password"
+          name="signup-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
@@ -31,6 +33,7 @@
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
           id="signup-confirm-password"
+          name="signup-password-confirm"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :white-autofill="false"
@@ -100,7 +103,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.getKdfParams(this.form.email)
+        await Sdk.api.wallets.getKdfParams(this.form.email.toLowerCase())
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
         throw new errors.UserExistsError()

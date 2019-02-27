@@ -62,6 +62,7 @@ import KeyViewer from '../common/KeyViewer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -89,6 +90,7 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -101,13 +103,13 @@ export default {
       this.disableForm()
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
-          this.email,
+          this.email.toLowerCase(),
           this.password,
           this.recoveryKeypair
         )
         if (response.data.verified) {
           Sdk.sdk.useWallet(wallet)
-          await Sdk.api.users.create(wallet.accountId)
+          Api.useWallet(wallet)
           this.storeWallet(wallet)
           await this.loadAccount(this.storedWallet.accountId)
           await this.loadKyc()
@@ -117,12 +119,13 @@ export default {
             ...vueRoutes.verify,
             params: {
               paramsBase64: btoa(JSON.stringify({
-                email: wallet.email,
+                email: wallet.email.toLowerCase(),
                 walletId: wallet.id,
               })),
             },
           })
         }
+        this.loadKvEntriesAccountRoleIds()
       } catch (e) {
         ErrorHandler.process(e)
       }

@@ -37,7 +37,12 @@
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
             'form.amount',
-            { minValue: config.MIN_AMOUNT, available: baseAssetBalance }
+            {
+              minValue: config.MIN_AMOUNT,
+              available: baseAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
           )"
           @blur="touchField('form.amount')"
         />
@@ -50,8 +55,18 @@
           :label="'offer-creation-form.total' | globalize({
             asset: assetPair.quote
           })"
-          :value="+formQuoteAmount ? formQuoteAmount : ''"
+          v-model="totalValue"
           name="trade-offer-total"
+          :error-message="getFieldErrorMessage(
+            'totalValue',
+            {
+              minValue: config.MIN_AMOUNT,
+              available: isBuy ? quoteAssetBalance : baseAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
+          @change="touchField('totalValue')"
           :readonly="true"
         />
       </div>
@@ -133,20 +148,24 @@ export default {
       form: {
         price: {
           required,
-          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
           decimal,
-          noMoreThanAvailableOnBalance: this.isBuy
-            ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
-            : true,
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
         amount: {
           required,
-          minValue: minValue(config.MIN_AMOUNT),
           decimal,
+          minValue: minValue(config.MIN_AMOUNT),
           noMoreThanAvailableOnBalance: this.isBuy
             ? true
             : noMoreThanAvailableOnBalance(this.baseAssetBalance),
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
+      },
+      totalValue: {
+        noMoreThanAvailableOnBalance: this.isBuy
+          ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
+          : true,
+        amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
     }
   },
@@ -164,6 +183,9 @@ export default {
     },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
+    },
+    totalValue () {
+      return +this.formQuoteAmount ? this.formQuoteAmount : ''
     },
   },
   methods: {

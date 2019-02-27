@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="auth-page__actions">
+    <div class="app__form-actions">
       <button
         v-ripple
         @click="submit"
@@ -82,4 +82,5 @@ export default {
 
 <style lang="scss" scoped>
 @import './auth-page';
+@import '~@/vue/forms/app-form';
 </style>

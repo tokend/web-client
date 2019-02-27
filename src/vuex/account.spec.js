@@ -58,10 +58,12 @@ describe('account.module', () => {
     })
 
     it('LOAD_ACCOUNT properly commit it\'s set of mutations', async () => {
-      mockHelper.mockHorizonMethod('account', 'get', accountJSON)
+      sinon.stub(mockHelper.apiInstance, 'getWithSignature')
+        .resolves(MockWrapper.makeJsonapiResponse(accountJSON))
 
       const expectedMutations = {
-        [vuexTypes.SET_ACCOUNT]: MockWrapper.makeHorizonData(accountJSON),
+        [vuexTypes.SET_ACCOUNT]:
+          MockWrapper.makeJsonapiResponseData(accountJSON),
       }
 
       await actions[vuexTypes.LOAD_ACCOUNT](store)
@@ -116,178 +118,17 @@ describe('account.module', () => {
         .equal(id)
     })
 
-    it('accountIsBlocked', () => {
-      const state = {
-        account: {
-          isBlocked: true,
-        },
-      }
+    it('accountRoleId', () => {
+      const accountRoleId = 2
+      const state = { account: { role: { id: accountRoleId } } }
 
-      expect(getters[vuexTypes.accountIsBlocked](state))
+      expect(getters[vuexTypes.accountRoleId](state))
         .to
-        .equal(true)
-    })
-
-    it('accountBlockReasons', () => {
-      const blockReasons = [1, 2]
-      const state = { account: { blockReasons } }
-
-      expect(getters[vuexTypes.accountBlockReasons](state))
-        .to
-        .deep
-        .equal(blockReasons)
-    })
-
-    it('accountType', () => {
-      const accountType = 'AccountTypeVerified'
-      const state = { account: { accountType } }
-
-      expect(getters[vuexTypes.accountType](state))
-        .to
-        .equal(accountType)
-    })
-
-    it('accountTypeI', () => {
-      const accountTypeI = 7
-      const state = { account: { accountTypeI } }
-
-      expect(getters[vuexTypes.accountTypeI](state))
-        .to
-        .equal(accountTypeI)
-    })
-
-    it('accountThresholds', () => {
-      const thresholds = {
-        lowThreshold: 10,
-        medThreshold: 20,
-        highThreshold: 30,
-      }
-      const state = {
-        account: {
-          thresholds,
-        },
-      }
-
-      expect(getters[vuexTypes.accountThresholds](state))
-        .to
-        .deep
-        .equal(thresholds)
-    })
-
-    it('accountReferrer', () => {
-      const referrer = 'GDH5GJRAA43JUFR62ETZD7R3LCTCTKMXQ5DDMOFI5TMAPTQVIUY5FJPG'
-      const state = { account: { referrer } }
-      expect(getters[vuexTypes.accountReferrer](state))
-        .to
-        .equal(referrer)
-    })
-
-    it('accountReferrals', () => {
-      const referrals = [
-        'GDH5GJRAA43JUFR62ETZD7R3LCTCTKMXQ5DDMOFI5TMAPTQVIUY5FJPG',
-        'GCQRB4AW7GM6OVRFSTRKSIW6MUAKH4VWIXZ75YWRCBI2UQ7HXUB4URRD',
-        'GCHSQIZACYBXLVZJG4VEHVJ3OTNICYPP74BQN4EOGWJQBPARKIMYOJQA',
-      ]
-      const state = { account: { referrals } }
-
-      expect(getters[vuexTypes.accountReferrals](state))
-        .to
-        .deep
-        .equal(referrals)
-    })
-
-    it('accountPoliciesTypeI', () => {
-      const accountPoliciesTypeI = 6
-      const state = {
-        account: {
-          policies: {
-            accountPoliciesTypeI,
-          },
-        },
-      }
-
-      expect(getters[vuexTypes.accountPoliciesTypeI](state))
-        .to
-        .equal(accountPoliciesTypeI)
-    })
-
-    it('accountPoliciesTypes', () => {
-      const accountPoliciesTypes = [2, 4, 8]
-      const state = {
-        account: {
-          policies: {
-            accountPoliciesTypes,
-          },
-        },
-      }
-
-      expect(getters[vuexTypes.accountPoliciesTypes](state))
-        .to
-        .deep
-        .equal(accountPoliciesTypes)
+        .equal(accountRoleId)
     })
 
     it('accountBalances', () => {
       // TODO
-    })
-
-    it('accountDepositAddresses', () => {
-      const externalSystemAccounts = [
-        {
-          'type': {
-            'name': 'Bitcoin',
-            'value': 1,
-          },
-          'data': 'mutsYGuQyAKjyT4a7d9t2T2kDhjbxwFZju',
-          'asset_code': 'BTC',
-        },
-        {
-          'type': {
-            'name': 'Ethereum',
-            'value': 2,
-          },
-          'data': '0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E35e',
-          'asset_code': 'ETH',
-        },
-        {
-          'type': {
-            'name': 'Litecoin',
-            'value': 10,
-          },
-          'data': 'mgTbDyNGwJeewjdXmU9cRQe8WDauVqn4WK',
-          'asset_code': 'LTC',
-        },
-      ]
-
-      const expectedResult = {
-        1: 'mutsYGuQyAKjyT4a7d9t2T2kDhjbxwFZju',
-        2: '0xD338E268D1F052B5c58D5F4ceA6AEdD4f5F1E35e',
-        10: 'mgTbDyNGwJeewjdXmU9cRQe8WDauVqn4WK',
-      }
-
-      const state = { account: { externalSystemAccounts } }
-      expect(getters[vuexTypes.accountDepositAddresses](state))
-        .to
-        .deep
-        .equal(expectedResult)
-    })
-
-    it('accountKycBlobId', () => {
-      const blobId = 'TLHGZSU4WIQIVBGVT7QFDNWIH4LKF6NQOXUCDW5NJUH7MWWDRFLQ'
-      const state = {
-        account: {
-          accountKyc: {
-            kycData: {
-              blobId,
-            },
-          },
-        },
-      }
-
-      expect(getters[vuexTypes.accountKycBlobId](state))
-        .to
-        .deep
-        .equal(blobId)
     })
   })
 })

@@ -99,16 +99,16 @@ export const router = new Router({
           featureFlag: config.featureFlags.trade,
           meta: { pageNameTranslationId: 'pages-names.trade' },
           component: resolve => require(['@/vue/pages/Trade'], resolve),
-          redirect: vueRoutes.trade.exchange,
+          redirect: vueRoutes.tradeExchange,
           children: [
             {
               path: '/trade/exchange',
-              name: vueRoutes.trade.exchange.name,
+              name: vueRoutes.tradeExchange.name,
               component: resolve => require(['@/vue/pages/TradeExchange'], resolve),
             },
             {
               path: '/trade/my-orders',
-              name: vueRoutes.trade.userOffers.name,
+              name: vueRoutes.tradeUserOffers.name,
               component: resolve => require(['@/vue/pages/TradeUserOffers'], resolve),
             },
           ],
@@ -132,13 +132,13 @@ export const router = new Router({
           name: vueRoutes.saleDetails.name,
           featureFlag: config.featureFlags.saleDetails,
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
-          redirect: vueRoutes.saleDetails.campaign,
+          redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           component: resolve => require(['@/vue/pages/SaleDetails'], resolve),
           props: true,
           children: [
             {
               path: '/funds/:id/campaign',
-              name: vueRoutes.saleDetails.campaign.name,
+              name: vueRoutes.saleCampaign.name,
               component: resolve => require(['@/vue/pages/sale-details/SaleCampaignViewer'], resolve),
               props: true,
             },
@@ -185,23 +185,23 @@ export const router = new Router({
           path: '/requests',
           name: vueRoutes.requests.name,
           featureFlag: config.featureFlags.requests,
-          redirect: vueRoutes.requests.assetCreation,
+          redirect: vueRoutes.assetCreationRequests,
           meta: { pageNameTranslationId: 'pages-names.requests' },
           component: resolve => require(['@/vue/pages/Requests'], resolve),
           children: [
             {
               path: '/requests/token-creation',
-              name: vueRoutes.requests.assetCreation.name,
+              name: vueRoutes.assetCreationRequests.name,
               component: resolve => require(['@/vue/pages/AssetCreationRequests'], resolve),
             },
             {
               path: '/requests/fund-creation',
-              name: vueRoutes.requests.saleCreation.name,
+              name: vueRoutes.saleCreationRequests.name,
               component: resolve => require(['@/vue/pages/SaleCreationRequests'], resolve),
             },
             {
               path: '/requests/pre-issuance-upload',
-              name: vueRoutes.requests.preIssuanceUpload.name,
+              name: vueRoutes.preIssuanceUploadRequests.name,
               component: resolve => require(['@/vue/pages/PreIssuanceRequests'], resolve),
             },
           ],
@@ -221,12 +221,12 @@ export const router = new Router({
               children: [
                 {
                   path: '/settings/verification/general',
-                  name: vueRoutes.verification.general.name,
+                  name: vueRoutes.verificationGeneral.name,
                   component: resolve => require(['@/vue/forms/VerificationGeneralForm'], resolve),
                 },
                 {
                   path: '/settings/verification/corporate',
-                  name: vueRoutes.verification.corporate.name,
+                  name: vueRoutes.verificationCorporate.name,
                   component: resolve => require(['@/vue/forms/VerificationCorporateForm'], resolve),
                 },
               ],

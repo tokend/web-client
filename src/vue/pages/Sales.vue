@@ -4,6 +4,7 @@
       <template slot="main">
         <div class="sales__asset-filter">
           <input-field
+            name="sales-filter-base-asset"
             :disabled="!isLoaded"
             v-model="filters.baseAsset"
             :label="'sales.asset-code-label' | globalize"
@@ -22,10 +23,7 @@
         </div>
       </template>
 
-      <template
-        slot="extra"
-        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -41,7 +39,7 @@
       <template slot="heading">
         {{ 'sales.create-sale' | globalize }}
       </template>
-      <create-sale-form />
+      <create-sale-form @close="isCreateSaleDrawerShown = false" />
     </drawer>
 
     <template v-if="filteredSales.length">
@@ -58,7 +56,6 @@
           v-for="sale in filteredSales"
           :key="sale.id"
           :sale="sale"
-          @select="viewSale(sale)"
         />
       </div>
     </template>
@@ -103,16 +100,10 @@ import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { vueRoutes } from '@/vue-router/routes'
-
 import { SaleRecord } from '@/js/records/entities/sale.record'
-
-import config from '@/config'
 
 const SALE_STATES = {
   live: {
@@ -154,14 +145,13 @@ export default {
     isCreateSaleDrawerShown: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
-    config,
     SALE_STATES,
-    ACCOUNT_TYPES,
   }),
 
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
     saleAssets () {
       return this.saleRecords
@@ -211,15 +201,6 @@ export default {
     extendRecords (data) {
       this.saleRecords = this.saleRecords
         .concat(data.map(sale => new SaleRecord(sale)))
-    },
-
-    viewSale (sale) {
-      this.$router.push({
-        name: vueRoutes.saleDetails.name,
-        params: {
-          id: sale.id,
-        },
-      })
     },
   },
 }

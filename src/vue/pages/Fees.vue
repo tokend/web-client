@@ -75,13 +75,13 @@
                   {{ { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType }}
                 </td>
 
-                <td :title="{ value: fee.fixed, currency: fee.feeAsset } | formatMoney">
-                  {{ { value: fee.fixed, currency: fee.feeAsset } | formatMoney }}
+                <td :title="{ value: fee.fixed, currency: fee.asset } | formatMoney">
+                  {{ { value: fee.fixed, currency: fee.asset } | formatMoney }}
                 </td>
 
                 <!-- eslint-enable max-len -->
                 <td :title="fee.percent | formatPercent">
-                  {{ fee.percent | formatPercent }}
+                  {{ (fee.percent / 100) | formatPercent }}
                 </td>
 
                 <td :title="fee.lowerBound | formatMoney">
@@ -143,7 +143,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const FEE_SCOPES = {
   global: 'fee-page.scope-global',
-  accountType: 'fee-page.scope-account-type',
   account: 'fee-page.scope-account',
 }
 
@@ -171,7 +170,6 @@ export default {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
-      accountTypeI: vuexTypes.accountTypeI,
     }),
 
     valuableAssetFees () {
@@ -186,9 +184,6 @@ export default {
       let opts = {}
 
       switch (this.filters.scope) {
-        case FEE_SCOPES.accountType:
-          opts.account_type = this.accountTypeI
-          break
         case FEE_SCOPES.account:
           opts.account_id = this.accountId
           break

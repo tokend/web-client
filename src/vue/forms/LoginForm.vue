@@ -6,6 +6,7 @@
           v-model="form.email"
           @blur="touchField('form.email')"
           id="login-email"
+          name="login-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
@@ -18,25 +19,11 @@
           v-model="form.password"
           @blur="touchField('form.password')"
           id="login-password"
+          name="login-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
-        />
-      </div>
-    </div>
-    <div
-      v-if="tfaError"
-      class="app__form-row"
-    >
-      <div class="app__form-field">
-        <input-field
-          v-model="form.tfaCode"
-          @blur="touchField('form.tfaCode')"
-          id="login-tfa-code"
-          :error-message="getFieldErrorMessage('form.tfaCode')"
-          :white-autofill="false"
-          :label="'auth-pages.tfa-code' | globalize"
         />
       </div>
     </div>
@@ -56,12 +43,13 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, requiredIf } from '@validators'
+import { required } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 
@@ -72,17 +60,12 @@ export default {
     form: {
       email: '',
       password: '',
-      tfaCode: '',
     },
-    tfaError: null,
   }),
   validations: {
     form: {
       email: { required },
       password: { required },
-      tfaCode: {
-        required: requiredIf(function () { return this.tfaError }),
-      },
     },
   },
   computed: {
@@ -95,27 +78,23 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        if (this.tfaError) {
-          await Sdk.api.factors.verifyTotpFactor(
-            this.tfaError,
-            this.form.tfaCode
-          )
-        }
         await this.loadWallet({
-          email: this.form.email,
+          email: this.form.email.toLowerCase(),
           password: this.form.password,
         })
         const accountId = this[vuexTypes.wallet].accountId
+
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        if (!await this.isUserExist(accountId)) {
-          await Sdk.api.users.create(accountId)
-        }
+        Api.useWallet(this[vuexTypes.wallet])
+
         await this.loadAccount(accountId)
+        await this.loadKvEntriesAccountRoleIds()
         await this.loadKyc()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })
@@ -127,17 +106,6 @@ export default {
       }
       this.enableForm()
     },
-    async isUserExist (accountId) {
-      try {
-        await Sdk.api.users.get(accountId)
-        return true
-      } catch (e) {
-        if (e instanceof errors.NotFoundError) {
-          return false
-        }
-        throw e
-      }
-    },
     processAuthError (error) {
       switch (error.constructor) {
         case errors.VerificationRequiredError:
@@ -146,24 +114,15 @@ export default {
             params: {
               paramsBase64: btoa(JSON.stringify({
                 walletId: error.meta.walletId,
-                email: this.form.email,
+                email: this.form.email.toLowerCase(),
               })),
             },
           })
-          break
-        case errors.TFARequiredError:
-          this.tfaError = error
           break
         case errors.NotFoundError:
           ErrorHandler.process(
             error,
             'auth-pages.wrong-email-or-password-err'
-          )
-          break
-        case errors.BadRequestError:
-          ErrorHandler.process(
-            error,
-            'auth-pages.wrong-tfa-code-err'
           )
           break
         default:

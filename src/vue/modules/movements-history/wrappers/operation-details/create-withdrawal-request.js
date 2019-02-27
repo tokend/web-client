@@ -4,6 +4,6 @@
  */
 export class CreateWithdrawRequestOp {
   constructor (record) {
-    this.externalDetails = record.externalDetails
+    this.creatorDetails = record.creatorDetails
   }
 }

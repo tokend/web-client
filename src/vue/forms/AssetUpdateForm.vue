@@ -18,6 +18,7 @@
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
             id="asset-name"
+            name="asset-update-name"
             :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.name',
@@ -41,21 +42,10 @@
         </div>
       </div>
 
-      <div class="app__form-row asset-update-form__kyc-required-row">
-        <div class="app__form-field">
-          <tick-field
-            v-model="form.information.policies"
-            :disabled="formMixin.isDisabled"
-            :cb-value="ASSET_POLICIES.requiresKyc"
-          >
-            {{ 'asset-form.kyc-required-lbl' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
+            name="asset-update-logo"
             v-model="form.information.logo"
             :note="'asset-form.logo-note' | globalize"
             accept=".jpg, .png"
@@ -87,6 +77,7 @@
         <div class="app__form-field">
           <file-field
             v-model="form.advanced.terms"
+            name="asset-update-terms"
             :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
@@ -222,7 +213,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
     }),
 
     assetRequestOpts () {
@@ -234,7 +225,7 @@ export default {
         requestID: requestId,
         code: this.updateRequest.assetCode,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
-        details: {
+        creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
@@ -276,7 +267,7 @@ export default {
 
     async getAssetRequests (assetCode, requestState) {
       const { data } = await Sdk.horizon.request.getAllForAssets({
-        requestor: this.account.accountId,
+        requestor: this.accountId,
         asset: assetCode,
         state: requestState,
       })

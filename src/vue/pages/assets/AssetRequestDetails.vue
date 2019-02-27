@@ -72,7 +72,7 @@
 
             <!-- eslint-disable max-len -->
             <td>
-              <template v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+              <template v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
                 {{ 'asset-request-details.asset-create-request-type' | globalize }}
               </template>
 
@@ -83,7 +83,7 @@
             <!-- eslint-enable max-len -->
           </tr>
 
-          <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+          <tr v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
             <td>
               <!-- eslint-disable-next-line max-len -->
               {{ 'asset-request-details.max-issuance-amount-title' | globalize }}
@@ -93,7 +93,7 @@
             </td>
           </tr>
 
-          <tr v-if="request.requestTypeI === REQUEST_TYPES.assetCreate">
+          <tr v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
             <td>
               <!-- eslint-disable-next-line max-len -->
               {{ 'asset-request-details.initial-preissued-amount-title' | globalize }}
@@ -136,21 +136,22 @@
               </template>
             </td>
           </tr>
+          <template v-if="request.assetType !== undefined">
+            <tr>
+              <td>
+                {{ 'asset-request-details.requires-kyc-title' | globalize }}
+              </td>
+              <td>
+                <template v-if="request.assetType === kvAssetTypeKycRequired">
+                  {{ 'asset-request-details.present-msg' | globalize }}
+                </template>
 
-          <tr>
-            <td>
-              {{ 'asset-request-details.requires-kyc-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="request.isRequiresKYC">
-                {{ 'asset-request-details.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-request-details.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
+                <template v-else>
+                  {{ 'asset-request-details.absent-msg' | globalize }}
+                </template>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -159,7 +160,7 @@
       <button
         v-ripple
         class="asset-request-details__update-btn"
-        :disabled="!canBeUpdated"
+        :disabled="isPending || !canBeUpdated"
         @click="$emit(EVENTS.update)"
       >
         {{ 'asset-request-details.update-btn' | globalize }}
@@ -168,10 +169,7 @@
       <button
         v-ripple
         class="asset-request-details__cancel-btn"
-        :class="{
-          'asset-request-details__cancel-btn--disabled': !canBeCanceled
-        }"
-        :disabled="!canBeCanceled"
+        :disabled="isPending || !canBeCanceled"
         @click="$emit(EVENTS.cancel)"
       >
         {{ 'asset-request-details.cancel-btn' | globalize }}
@@ -188,6 +186,9 @@ import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import config from '@/config'
+
+import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
@@ -207,6 +208,11 @@ export default {
       type: [AssetCreateRequestRecord, AssetUpdateRequestRecord],
       required: true,
     },
+    isPending: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data: _ => ({
     config,
@@ -216,15 +222,23 @@ export default {
     REQUEST_TYPES,
   }),
   computed: {
+    ...mapGetters({
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+    }),
     assetTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
     canBeUpdated () {
-      return this.request.isPending || this.request.isRejected
+      return this.request.isRejected || this.request.isPending
     },
     canBeCanceled () {
       return this.request.isPending
     },
+  },
+  methods: {
+    ...mapActions({
+      loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
+    }),
   },
 }
 </script>
@@ -293,17 +307,10 @@ export default {
 }
 
 .asset-request-details__cancel-btn {
-  @include button();
+  @include button-flat();
 
-  padding-left: .1rem;
-  padding-right: .1rem;
   margin-bottom: 2rem;
   font-weight: normal;
-
-  &--disabled {
-    filter: grayscale(100%);
-    cursor: default;
-  }
 }
 
 .asset-details {
