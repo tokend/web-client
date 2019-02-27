@@ -324,7 +324,6 @@ $content-item-right-padding: 2.4rem;
   padding-bottom: 5rem;
   padding: 4rem 2.4rem 5rem 4rem;
   padding: 4rem $content-item-right-padding 5rem $content-item-left-padding;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   .sidebar__aside--closed & {
     display: none;
@@ -340,7 +339,6 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__links-section {
   flex: 1;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   .sidebar__aside--closed & {
     display: none;
@@ -389,7 +387,6 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__footer-section {
   padding-top: 2rem;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   .sidebar__aside--closed & {
     display: none;
