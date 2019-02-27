@@ -63,7 +63,7 @@
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.recovery' | globalize }}
+        {{ 'auth-pages.recover' | globalize }}
       </button>
     </div>
   </form>
