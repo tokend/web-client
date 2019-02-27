@@ -4,7 +4,7 @@ WORKDIR /build
 COPY . .
 RUN true \
  && yarn install \
- && yarn build \
+ && yarn build --set-build-version $BUILD_VERSION \
  && true
 
 FROM nginx:latest
