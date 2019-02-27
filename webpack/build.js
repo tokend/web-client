@@ -1,11 +1,60 @@
 'use strict'
-const envArg = process.argv[2]
+const path = require('path')
 
-if (envArg) process.env.CONFIG_PATH = envArg
+const ArgumentParser = require('argparse').ArgumentParser
+const parser = new ArgumentParser({ addHelp: true })
+parser.addArgument(['--env-file'], {
+  metavar: 'ENV_PATH',
+  help: 'Path to the env file to use',
+  dest: 'envFile',
+})
+parser.addArgument(['--env-arg'], {
+  metavar: 'KEY VALUE',
+  action: 'append',
+  help: 'Set an env key',
+  dest: 'envArgs',
+  type: 'string',
+  nargs: 2,
+})
+parser.addArgument(['--set-build-version'], {
+  metavar: 'VALUE',
+  help: 'Set build version env key. Equivalent to --env-arg BUILD_VERSION [VALUE]',
+  type: 'string',
+  dest: 'setBuildVersion',
+})
+const args = parser.parseArgs()
+
+let appEnv = {}
+function makeEnvArgValue (val) { return `"${val}"` }
+if (args.envFile) {
+  appEnv = {
+    ...appEnv,
+    ...require(path.resolve(args.envFile))
+  }
+}
+if (args.envArgs) {
+  appEnv = {
+    ...appEnv,
+    ...args.envArgs
+      .reduce((res, [key, val]) => ({
+        ...res,
+        ...{ [key]: makeEnvArgValue(val) }
+      }), {})
+  }
+}
+if (args.setBuildVersion) {
+  appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
+}
+
+/* eslint-disable-next-line no-console */
+console.log(
+  'Using the following env config:\n',
+  appEnv
+)
+process.env.APP_ENV_JSON = JSON.stringify(appEnv)
 
 const ora = require('ora')
 const rm = require('rimraf')
-const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
 const webpackConfig = require('./prod.conf')
@@ -37,6 +86,7 @@ rm(path.join(path.resolve(__dirname, '../dist'), 'static'), err => {
       process.exit(1)
     }
 
+    /* eslint-disable-next-line no-console */
     console.log(chalk.cyan('  Build complete.\n'))
   })
 })
