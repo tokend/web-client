@@ -30,6 +30,7 @@ for further information about branching and tagging conventions.
 - Hiding `More` button while loading the movements
 - Displaying percent fees & fee assets on the fees page
 - Trade chart displaying
+- Buttons position on Verify page
 
 ### Added
 - Added assetType in to asset.record
