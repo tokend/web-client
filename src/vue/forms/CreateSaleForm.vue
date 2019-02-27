@@ -20,6 +20,7 @@
                   v-model="form.saleInformation.name"
                   @blur="touchField('form.saleInformation.name')"
                   id="sale-name"
+                  name="create-sale-name"
                   :label="'create-sale-form.sale-name' | globalize"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.name',{
@@ -34,6 +35,7 @@
               <div class="app__form-field">
                 <select-field
                   :values="accountOwnedAssets"
+                  name="create-sale-base-asset"
                   :disabled="formMixin.isDisabled"
                   v-model="form.saleInformation.baseAsset"
                   key-as-value-text="nameAndCode"
@@ -45,14 +47,17 @@
               <div class="app__form-field">
                 <date-field
                   v-model="form.saleInformation.startTime"
+                  name="create-sale-start-time"
                   :enable-time="true"
-                  :disable-before="new Date().toString()"
+                  :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.startTime')"
                   @blur="touchField('form.saleInformation.startTime')"
                   id="sale-start-time"
                   :label="'create-sale-form.start-time' | globalize"
                   :error-message="getFieldErrorMessage(
-                    'form.saleInformation.startTime'
+                    'form.saleInformation.startTime', {
+                      minDate: formatDate(moment().toString())
+                    }
                   )"
                   :disabled="formMixin.isDisabled"
                 />
@@ -63,15 +68,16 @@
                 <date-field
                   v-model="form.saleInformation.endTime"
                   :enable-time="true"
-                  :disable-before="new Date().toString()"
+                  :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.endTime')"
                   @blur="touchField('form.saleInformation.endTime')"
                   id="sale-end-time"
+                  name="create-sale-end-time"
                   :label="'create-sale-form.close-time' | globalize"
                   :error-message="getFieldErrorMessage(
-                    'form.saleInformation.endTime',{
+                    'form.saleInformation.endTime', {
                       minDate: form.saleInformation.startTime ||
-                        new Date().toString()
+                        formatDate(moment().toString())
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -86,6 +92,7 @@
                   v-model="form.saleInformation.softCap"
                   @blur="touchField('form.saleInformation.softCap')"
                   id="soft-cap"
+                  name="create-sale-soft-cap"
                   :label="'create-sale-form.soft-cap' | globalize({
                     asset: config.DEFAULT_QUOTE_ASSET
                   })"
@@ -108,6 +115,7 @@
                   v-model="form.saleInformation.hardCap"
                   @blur="touchField('form.saleInformation.hardCap')"
                   id="hard-cap"
+                  name="create-sale-hard-cap"
                   :label="'create-sale-form.hard-cap' | globalize({
                     asset: config.DEFAULT_QUOTE_ASSET
                   })"
@@ -131,6 +139,7 @@
                     'form.saleInformation.requiredBaseAssetForHardCap'
                   )"
                   id="base-asset-for-hard-cap"
+                  name="create-sale-base-asset-for-hard-cap"
                   type="number"
                   :label="'create-sale-form.base-asset-hard-cap-to-sell' |
                     globalize({
@@ -169,6 +178,7 @@
             >
               <div class="app__form-field">
                 <tick-field
+                  :name="`create-sale-tick-${item.code}`"
                   v-model="form.saleInformation.quoteAssets"
                   :disabled="formMixin.isDisabled"
                   :cb-value="item.code"
@@ -200,12 +210,9 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <file-field
-                  :label="
-                    'create-sale-form.upload-image' | globalize
-                  "
-                  :note="
-                    'create-sale-form.upload-image' | globalize
-                  "
+                  :label="'create-sale-form.upload-image' | globalize"
+                  :note="'create-sale-form.upload-image' | globalize"
+                  name="create-sale-sale-logo"
                   accept=".jpg, .png"
                   :document-type="DOCUMENT_TYPES.saleLogo"
                   v-model="form.shortBlurb.saleLogo"
@@ -221,6 +228,7 @@
                 {{ 'create-sale-form.short-description' | globalize }}
                 <textarea-field
                   id="sale-short-description"
+                  name="create-sale-short-description"
                   v-model="form.shortBlurb.shortDescription"
                   @blur="touchField('form.shortBlurb.shortDescription')"
                   :label="'transfer-form.subject-lbl' | globalize({
@@ -258,6 +266,7 @@
                   white-autofill
                   v-model="form.fullDescription.youtubeId"
                   id="youtube-id"
+                  name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
                   :disabled="formMixin.isDisabled"
                 />
@@ -320,6 +329,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 import config from '@/config'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -337,6 +348,7 @@ import {
   requiredAtLeastOne,
   minDate,
 } from '@validators'
+import { formatDate } from '@/vue/filters/formatDate'
 import { SALE_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -345,6 +357,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
+import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
   saleInformation: {
@@ -430,11 +443,12 @@ export default {
           },
           startTime: {
             required,
+            minDate: minDate(moment().toString()),
           },
           endTime: {
             required,
             minDate: minDate(this.form.saleInformation.startTime ||
-              new Date().toString()),
+              moment().toString()),
           },
           softCap: {
             required,
@@ -479,7 +493,7 @@ export default {
     availableForIssuance () {
       return this.form.saleInformation.baseAsset.availableForIssuance
     },
-    isUpdate () {
+    isUpdateMode () {
       return +this.request.id !== 0
     },
     price () {
@@ -491,7 +505,7 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
-      if (this.isUpdate) {
+      if (this.isUpdateMode) {
         await this.populateForm(this.request)
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
@@ -504,6 +518,8 @@ export default {
     }
   },
   methods: {
+    moment,
+    formatDate,
     nextStep (formStep) {
       if (this.isFormValid(formStep)) {
         this.currentStep++
@@ -513,7 +529,13 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        await Sdk.horizon.transactions.submitOperations(this.getOperation())
+        const { data: blob } = await Sdk.api.blobs.create(
+          BLOB_TYPES.fundOverview,
+          JSON.stringify(this.form.fullDescription.description)
+        )
+        await Sdk.horizon.transactions.submitOperations(
+          this.getOperation(blob.id)
+        )
         Bus.success('create-sale-form.request-submitted-msg')
         this.enableForm()
         this.$emit(EVENTS.close)
@@ -526,9 +548,9 @@ export default {
         this.enableForm()
       }
     },
-    getOperation () {
+    getOperation (saleDescriptionBlobId) {
       const operation = {
-        requestID: this.isUpdate ? this.request.id : '0',
+        requestID: this.isUpdateMode ? this.request.id : '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
         defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
@@ -538,7 +560,7 @@ export default {
         creatorDetails: {
           name: this.form.saleInformation.name,
           short_description: this.form.shortBlurb.shortDescription,
-          description: this.form.fullDescription.description,
+          description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
           youtube_video_id: this.form.fullDescription.youtubeId,
         },
@@ -583,7 +605,18 @@ export default {
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
       this.form.fullDescription.youtubeId = request.youtubeVideoId
-      this.form.fullDescription.description = request.description
+      this.form.fullDescription.description =
+        await this.getSaleDescription(request)
+    },
+
+    async getSaleDescription (request) {
+      try {
+        const { data } =
+          await Sdk.api.blobs.get(request.description, this.accountId)
+        return JSON.parse(data.value)
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }

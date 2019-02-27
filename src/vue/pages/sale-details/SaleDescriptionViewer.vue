@@ -47,7 +47,7 @@ export default {
 
   data: _ => ({
     saleDescription: '',
-    isLoaded: true,
+    isLoaded: false,
     isLoadingFailed: false,
   }),
 

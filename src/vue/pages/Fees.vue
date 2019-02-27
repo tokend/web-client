@@ -75,13 +75,13 @@
                   {{ { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType }}
                 </td>
 
-                <td :title="{ value: fee.fixed, currency: fee.feeAsset } | formatMoney">
-                  {{ { value: fee.fixed, currency: fee.feeAsset } | formatMoney }}
+                <td :title="{ value: fee.fixed, currency: fee.asset } | formatMoney">
+                  {{ { value: fee.fixed, currency: fee.asset } | formatMoney }}
                 </td>
 
                 <!-- eslint-enable max-len -->
                 <td :title="fee.percent | formatPercent">
-                  {{ fee.percent | formatPercent }}
+                  {{ (fee.percent / 100) | formatPercent }}
                 </td>
 
                 <td :title="fee.lowerBound | formatMoney">

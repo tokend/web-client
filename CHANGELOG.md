@@ -8,19 +8,49 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+### Added
+- `assetType` to `asset.record`
+- Loader to `AssetCreateForm`
+- `assetType` to `asset-create.record`
+- `<router-link>` to the `SaleCard` component
+- `UserDoesntExistError` handling
+- Message while loading assets & balances on the movements page
+- No data messages for `AssetsExplore` & `Balances` pages
+- "Use mine" button for pre-issued asset signer field on the `AssetCreateForm`
+- Message about no assets pairs exists in the system
+
 ### Fixed
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
 - Fix bug with assetType select
 - Removed displaying assetType in AssetUpdateRequestRecord
+- Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
+- Bug with assetType select
+- Wrapping sale description into a blob on the `CreateSaleForm`
+- Sale description loading
+- Hiding `More` button while loading the movements
+- Displaying percent fees & fee assets on the fees page
+- Trade chart displaying
 
 ### Added
 - Added assetType in to asset.record
 - Add loader in to AssetCreateForm
 - Add assetType in to asset-create.record
 - Add error handling UserDoesntExistError
- 
+
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
+- Rename `isUpdate` -> `isUpdateMode` on the `CreateSaleForm`
+- Favicon
+- Contact email in terms (now enterprise@distributedlab.com)
+- `vueRoutes` structure: no nested routes
+- Withdrawal validation message
+
+### Removed
+- Escape pressing handler in Drawer. The Drawer will no longer close by clicking on Escape button
+- Ability to enter date manually in all date fields
+- Tick field `requiresKyc` from `AssetUpdateForm`
+- `viewSale` method from `Sales` component
+- Displaying `assetType` in `AssetUpdateRequestRecord`
 
 ## [1.0.0-rc.6] - 2019-02-25
 ### Fixed
