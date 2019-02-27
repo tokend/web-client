@@ -20,6 +20,9 @@ for further information about branching and tagging conventions.
 - Message about no assets pairs exists in the system
 
 ### Fixed
+- Fixed bug with displaying isRequiresKYC in AssetRequestDetails
+- Fix bug with assetType select
+- Removed displaying assetType in AssetUpdateRequestRecord
 - Bug with displaying `isRequiresKYC` in `AssetRequestDetails`
 - Bug with assetType select
 - Wrapping sale description into a blob on the `CreateSaleForm`
