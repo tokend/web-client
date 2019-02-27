@@ -21,30 +21,30 @@
         @update-ask="isUpdateMode = true"
       />
     </drawer>
-    <div class="asset-cards">
+    <div class="assets-list__cards">
       <a
-        class="asset-card"
+        class="assets-list__card"
         v-for="asset in assetRecords"
         :key="asset.code"
         @click="selectAsset(asset)"
       >
-        <div class="asset-card__header">
+        <div class="assets-list__card-header">
           <asset-logo
-            class="asset-card__logo"
+            class="assets-list__card-logo"
             :asset-code="asset.code"
             :logo-url="asset.logoUrl(config.FILE_STORAGE)"
           />
         </div>
-        <div class="asset-card__info">
-          <p :title="asset.code" class="asset-card__code">
+        <div class="assets-list__card-info">
+          <p :title="asset.code" class="assets-list__card-code">
             {{ asset.code }}
           </p>
-          <p :title="asset.name" class="asset-card__name">
+          <p :title="asset.name" class="assets-list__card-name">
             {{ asset.name || asset.code }}
           </p>
           <p
             v-if="asset.balance.value"
-            class="asset-card__balance"
+            class="assets-list__card-balance"
             :title="
               'assets-list.list-item-balance-line' |
                 globalize({ value: asset.balance })
@@ -55,7 +55,7 @@
           </p>
           <p
             v-else
-            class="asset-card__balance asset-card__no-balance"
+            class="assets-list__card-balance assets-list__card-no-balance"
           >
             {{ 'assets-list.no-balance-msg' | globalize }}
           </p>
@@ -123,71 +123,74 @@ export default {
 @import "~@scss/mixins";
 
 $asset-card-header-height: 8.5rem;
+$asset-card-margin: 0.75rem;
+
 $media-desktop: 1130px;
 $media-small-desktop: 960px;
 
-.asset-cards {
+// width in percentage
+@mixin asset-card-width ($width) {
+  flex: 0 1 calc(#{$width}% - (#{$asset-card-margin} * 2));
+  max-width: calc(#{$width}% - (#{$asset-card-margin} * 2));
+}
+
+.assets-list__cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: -.75rem;
+  margin: -$asset-card-margin;
 }
 
-.asset-card {
-  flex: 0 1 calc(25% - 1.5rem);
-  max-width: calc(25% - 1.5rem);
+.assets-list__card {
   min-height: 19rem;
   cursor: pointer;
-  border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-field-shadow;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.5rem 1rem 0 $col-field-shadow;
   background-color: $col-asset-card-background;
-  margin: .75rem;
+  margin: $asset-card-margin;
+
+  @include asset-card-width(25);
 
   @include respond-to-custom($media-desktop) {
-    flex: 0 1 calc(33% - 1.5rem);
-    max-width: calc(33% - 1.5rem);
+    @include asset-card-width(33);
   }
 
   @include respond-to-custom($media-small-desktop) {
-    flex: 0 1 calc(50% - 1.5rem);
-    max-width: calc(50% - 1.5rem);
+    @include asset-card-width(50);
   }
 
   @include respond-to-custom($sidebar-hide-bp) {
-    flex: 0 1 calc(33% - 1.5rem);
-    max-width: calc(33% - 1.5rem);
+    @include asset-card-width(33);
   }
 
   @include respond-to(small) {
-    flex: 0 1 calc(50% - 1.5rem);
-    max-width: calc(50% - 1.5rem);
+    @include asset-card-width(50);
   }
 
   @include respond-to(xsmall) {
-    flex: 0 1 calc(100% - 1.5rem);
-    max-width: calc(100% - 1.5rem);
+    @include asset-card-width(100);
   }
 }
 
-.asset-card__header {
+.assets-list__card-header {
   border-radius: .4rem .4rem 0rem 0rem;
-  height: 8.5rem;
+  height: $asset-card-header-height;
   background-color: $col-asset-card-header-background;
   padding-top: 1.5rem;
 }
 
-.asset-card__logo {
+.assets-list__card-logo {
   margin: 0 auto;
 }
 
-.asset-card__info {
+.assets-list__card-info {
   padding: 1.6rem 2rem;
   height: calc(100% - #{$asset-card-header-height});
   display: flex;
   flex-direction: column;
 }
 
-.asset-card__code {
+.assets-list__card-code {
   font-size: 1.8rem;
   font-weight: bold;
   color: $col-asset-card-text-primary;
@@ -195,8 +198,8 @@ $media-small-desktop: 960px;
   text-overflow: ellipsis;
 }
 
-.asset-card__name {
-  margin-top: .2rem;
+.assets-list__card-name {
+  margin-top: 0.2rem;
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-asset-card-text-primary;
@@ -204,7 +207,7 @@ $media-small-desktop: 960px;
   text-overflow: ellipsis;
 }
 
-.asset-card__balance {
+.assets-list__card-balance {
   margin-top: 1.2rem;
   font-size: 1.2rem;
   line-height: 1.5;
@@ -215,7 +218,7 @@ $media-small-desktop: 960px;
   margin-top: auto;
 }
 
-.asset-card__no-balance {
+.assets-list__card-no-balance {
   color: $col-asset-card-text-secondary;
 }
 </style>
