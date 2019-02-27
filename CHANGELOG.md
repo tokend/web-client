@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.0.0-rc.7] - 2019-02-27
 ### Added
 - `assetType` to `asset.record`
 - Loader to `AssetCreateForm`
@@ -31,6 +31,7 @@ for further information about branching and tagging conventions.
 - Displaying percent fees & fee assets on the fees page
 - Trade chart displaying
 - Buttons position on Verify page
+- Drop down text overflow
 
 ### Added
 - Added assetType in to asset.record
@@ -190,7 +191,8 @@ for further information about branching and tagging conventions.
 
 ## [1.0.0-rc.0] - 2019-02-18
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.6...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.0.0-rc.7...HEAD
+[1.0.0-rc.7]: https://github.com/tokend/web-client/compare/1.0.0-rc.6...1.0.0-rc.7
 [1.0.0-rc.6]: https://github.com/tokend/web-client/compare/1.0.0-rc.5...1.0.0-rc.6
 [1.0.0-rc.5]: https://github.com/tokend/web-client/compare/1.0.0-rc.4...1.0.0-rc.5
 [1.0.0-rc.4]: https://github.com/tokend/web-client/compare/1.0.0-rc.3...1.0.0-rc.4
