@@ -1,5 +1,6 @@
 FROM node:11
 
+ARG BUILD_VERSION
 WORKDIR /build
 COPY . .
 RUN true \
