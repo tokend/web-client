@@ -373,6 +373,8 @@ export default {
   border: none;
   display: block;
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-align: left;
   background-color: transparent;
   &:not(.select-field__list-item--selected):hover {
