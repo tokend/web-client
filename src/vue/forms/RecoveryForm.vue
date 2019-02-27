@@ -80,6 +80,7 @@ import {
 } from '@validators'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
+import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -121,7 +122,14 @@ export default {
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.login)
       } catch (e) {
-        ErrorHandler.process(e)
+        switch (e.constructor) {
+          case errors.NotFoundError:
+            Bus.error('errors.user-doesnt-exist')
+            ErrorHandler.processWithoutFeedback(e)
+            break
+          default:
+            ErrorHandler.process(e)
+        }
       }
       this.enableForm()
     },

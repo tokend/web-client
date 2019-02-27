@@ -37,6 +37,7 @@ for further information about branching and tagging conventions.
 - Add loader in to AssetCreateForm
 - Add assetType in to asset-create.record
 - Add error handling UserDoesntExistError
+- Add NotFound error handler in to recovery form
 
 ### Changed
 - Remove in AssetUpdateForm tick-field 'requiresKyc'
