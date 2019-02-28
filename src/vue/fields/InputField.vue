@@ -14,13 +14,20 @@
       :class="{
         'input-field__input--autofill-white': whiteAutofill
       }"
+      :type="type"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
+      @focus="onFocus"
+      @blur="onBlur"
     >
 
     <span class="input-field__label">
       {{ label }}
+
+      <template v-if="isCapsLockState">
+        ({{ 'input-field.caps-lock-warning' | globalize }})
+      </template>
     </span>
 
     <transition name="input-field__err-transition">
@@ -44,7 +51,12 @@ export default {
     monospaced: { type: Boolean, default: false },
     errorMessage: { type: String, default: undefined },
     whiteAutofill: { type: Boolean, default: true },
+    type: { type: String, default: undefined },
   },
+
+  data: () => ({
+    isCapsLockState: false,
+  }),
 
   computed: {
     listeners () {
@@ -59,6 +71,35 @@ export default {
 
   methods: {
     onInput (event) {},
+    onFocus (event) {
+      if (this.type === 'password') {
+        /**
+         * Use two events to detect Caps Lock up and down.
+         * If we will use only 'keydown', we can detect only Caps Lock press to
+         * ON state, but we cannot detect the OFF state.
+         *
+         * Actual only for MacOS's browsers.
+         */
+        document.addEventListener('keydown', this.detectCapsLock)
+        document.addEventListener('keyup', this.detectCapsLock)
+      }
+    },
+    onBlur (event) {
+      if (this.type === 'password') {
+        document.removeEventListener('keydown', this.detectCapsLock)
+        document.removeEventListener('keyup', this.detectCapsLock)
+
+        if (!this.value) this.isCapsLockState = false
+      }
+    },
+    detectCapsLock (event) {
+      /**
+       * {KeyboardEvent} getModifierState
+       *
+       * @return {Boolean}
+       */
+      this.isCapsLockState = event.getModifierState('CapsLock')
+    },
   },
 }
 </script>

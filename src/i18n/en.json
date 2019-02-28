@@ -196,6 +196,10 @@
       "website-lbl": "Website"
     },
 
+    "input-field": {
+      "caps-lock-warning": "Warning: Caps-Lock is ON"
+    },
+
     "limits-documents-uploader-form": {
       "file-type-note": "image/pdf (Max 5mb)",
       "form-subheading": "Requirements",
