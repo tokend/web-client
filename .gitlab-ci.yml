@@ -3,9 +3,11 @@ services:
 
 variables:
   GITHUB_REF: $CI_COMMIT_SHA
+  DH_IMAGE: tokend/web-client
 
 stages:
   - build
+  - publish
 
 build:
   image: registry.gitlab.com/tokend/deployment/docker-build:latest
@@ -39,3 +41,14 @@ unit_test:
     - .ci/test.sh && STATE=0 || STATE=1
     - ci-little-helper set-state $STATE unit_test && exit $STATE
 
+publish dockerhub:                                                                                                                                                                                                 
+  image: registry.gitlab.com/tokend/deployment/docker-build:latest
+  stage: publish
+  tags:
+    - tokend
+  only:
+    - /^.+\..+\..+$/
+  script:
+    - ci-little-helper set-pending publish
+    - .ci/publish.sh && STATE=0 || STATE=1
+    - ci-little-helper set-state $STATE publish && exit $STATE
