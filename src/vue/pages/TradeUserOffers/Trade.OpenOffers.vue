@@ -57,9 +57,11 @@
     <template v-else>
       <no-data-message
         icon-name="trending-up"
-        title-id="trade-open-offers.no-data-title"
-        message-id="trade-open-offers.no-data-message"
-        :message-id-keys="{ base: assetPair.base, quote: assetPair.quote }"
+        :title="'trade-open-offers.no-data-title' | globalize"
+        :message="'trade-open-offers.no-data-message' | globalize({
+          base: assetPair.base,
+          quote: assetPair.quote
+        })"
       />
     </template>
   </div>

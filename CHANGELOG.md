@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Fixed
+- Move no-data-message translate ids pass to the elements that use component
+
 ## [1.0.0-rc.7] - 2019-02-27
 ### Added
 - `assetType` to `asset.record`

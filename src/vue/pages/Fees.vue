@@ -100,9 +100,10 @@
       <template v-else-if="isFeesLoaded">
         <no-data-message
           icon-name="trending-up"
-          title-id="fee-page.no-valuable-fees-title"
-          message-id="fee-page.no-valuable-fees-msg"
-          :message-id-keys="{ asset: filters.asset.code }"
+          :title="'fee-page.no-valuable-fees-title' | globalize"
+          :message="'fee-page.no-valuable-fees-msg' | globalize({
+            asset: filters.asset.code
+          })"
         />
       </template>
 
