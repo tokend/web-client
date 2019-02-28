@@ -36,10 +36,12 @@
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
+              :step="selectedAssetStep"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
                 available: form.asset.balance.value,
                 maxDecimalDigitsCount: DECIMAL_POINTS,
+                minValue: selectedAssetStep
               })"
             />
           </div>
@@ -171,6 +173,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
@@ -182,6 +185,7 @@ import {
   required,
   noMoreThanAvailableOnBalance,
   address,
+  minValue,
   maxDecimalDigitsCount,
 } from '@validators'
 
@@ -198,25 +202,23 @@ export default {
     Loader,
   },
   mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-      },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+  }),
   validations () {
     return {
       form: {
@@ -227,6 +229,7 @@ export default {
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          minValue: minValue(this.selectedAssetStep),
         },
         address: { required, address: address(this.form.asset.code) },
       },
@@ -237,6 +240,10 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
+    selectedAssetStep () {
+      // eslint-disable-next-line
+      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
+    },
   },
   watch: {
     'form.amount' (value) {
