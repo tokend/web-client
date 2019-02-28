@@ -8,6 +8,10 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+### Added
+- Displaying asset policies & asset type on the `AssetDetails` page
+- `record` getter to the `AssetRecord`
+
 ### Fixed
 - Scrolling to the top of the form after moving to the next step
 
