@@ -32,6 +32,8 @@ for further information about branching and tagging conventions.
 - Trade chart displaying
 - Buttons position on Verify page
 - Drop down text overflow
+- Loading balances instead of account on the movements page
+- Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 
 ### Added
 - Added assetType in to asset.record
