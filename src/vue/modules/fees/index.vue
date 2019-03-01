@@ -86,7 +86,7 @@ export default {
     },
   },
 
-  async created () {
+  created () {
     initApi(this.config)
 
     this.setAccountId(this.accountId)

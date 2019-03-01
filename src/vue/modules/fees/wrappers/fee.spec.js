@@ -13,7 +13,7 @@ describe('Fee', () => {
           upperBound: '10000.000000',
         },
         account: {
-          id: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
+          id: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
         },
         accountRole: {
           id: '5',

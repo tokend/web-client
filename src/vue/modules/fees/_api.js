@@ -3,7 +3,7 @@ import { ApiCaller } from '@tokend/js-sdk'
 let _api = null
 
 /**
- * @param {Object} config - wallet to sign the requests
+ * @param {Object} config
  * @param {String} config.horizonURL - the url of the horizon server
  * (without version prefix)
  */
