@@ -27,10 +27,6 @@ describe('Fees module', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      actions: {},
-      getters: {},
-      mutations: {},
-      state: {},
       modules: { 'fees': feesModule },
     })
 
@@ -93,6 +89,8 @@ describe('Fees module', () => {
         await wrapper.vm.firstPageLoader()
 
         expect(spy.withArgs(props.assetCode).calledOnce).to.be.true
+
+        spy.restore()
       })
     })
   })
@@ -107,6 +105,8 @@ describe('Fees module', () => {
         await wrapper.vm.loadFeesFirstPage(props.assetCode)
 
         expect(spy.withArgs(props.assetCode).calledOnce).to.be.true
+
+        spy.restore()
       })
 
       it('sets isLoaded property to true if loading was succeded', async () => {
@@ -117,6 +117,8 @@ describe('Fees module', () => {
         await wrapper.vm.loadFeesFirstPage(props.assetCode)
 
         expect(wrapper.vm.isLoaded).to.be.true
+
+        wrapper.vm.loadFees.restore()
       })
 
       it('handles the error if loading was failed', async () => {
@@ -127,6 +129,9 @@ describe('Fees module', () => {
 
         expect(wrapper.vm.isLoadFailed).to.be.true
         expect(spy.calledOnce).to.be.true
+
+        wrapper.vm.loadFees.restore()
+        spy.restore()
       })
     })
   })
