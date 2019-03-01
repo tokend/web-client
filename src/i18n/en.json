@@ -353,6 +353,11 @@
     },
 
     "fees": {
+      "scopes": {
+        "account": "Your account",
+        "account-role": "Your account type",
+        "global": "Global"
+      },
       "types": {
         "payment": "Payment",
         "offer": "Offer",
@@ -369,12 +374,13 @@
         "incoming": "Incoming"
       },
       "table": {
-        "fee-type": "Fee type",
-        "fixed": "Fixed",
-        "percent": "Percent",
-        "lower-bound": "Lower bound",
-        "upper-bound": "Upper bound",
-        "subtype": "Subtype"
+        "scope-th": "Scope",
+        "type-th": "Type",
+        "fixed-th": "Fixed",
+        "percent-th": "Percent",
+        "lower-bound-th": "Lower bound",
+        "upper-bound-th": "Upper bound",
+        "subtype-th": "Subtype"
       },
       "fees-loading-msg": "Loading your fees…",
       "loading-error-msg": "There was an error while loading your fees.",

@@ -32,7 +32,7 @@ export const actions = {
   [types.LOAD_FEES] ({ getters }, assetCode) {
     return api().get(`/${HORIZON_VERSION_PREFIX}/fees`, {
       page: {
-        order: 'desc',
+        order: 'asc',
       },
       filter: {
         asset: assetCode,

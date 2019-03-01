@@ -7,23 +7,26 @@
       <table>
         <thead>
           <tr>
-            <th :title="'fees.table.fee-type' | globalize">
-              {{ 'fees.table.fee-type' | globalize }}
+            <th :title="'fees.table.scope-th' | globalize">
+              {{ 'fees.table.scope-th' | globalize }}
             </th>
-            <th :title="'fees.table.subtype' | globalize">
-              {{ 'fees.table.subtype' | globalize }}
+            <th :title="'fees.table.type-th' | globalize">
+              {{ 'fees.table.type-th' | globalize }}
             </th>
-            <th :title="'fees.table.fixed' | globalize">
-              {{ 'fees.table.fixed' | globalize }}
+            <th :title="'fees.table.subtype-th' | globalize">
+              {{ 'fees.table.subtype-th' | globalize }}
             </th>
-            <th :title="'fees.table.percent' | globalize">
-              {{ 'fees.table.percent' | globalize }}
+            <th :title="'fees.table.fixed-th' | globalize">
+              {{ 'fees.table.fixed-th' | globalize }}
             </th>
-            <th :title="'fees.table.lower-bound' | globalize">
-              {{ 'fees.table.lower-bound' | globalize }}
+            <th :title="'fees.table.percent-th' | globalize">
+              {{ 'fees.table.percent-th' | globalize }}
             </th>
-            <th :title="'fees.table.upper-bound' | globalize">
-              {{ 'fees.table.upper-bound' | globalize }}
+            <th :title="'fees.table.lower-bound-th' | globalize">
+              {{ 'fees.table.lower-bound-th' | globalize }}
+            </th>
+            <th :title="'fees.table.upper-bound-th' | globalize">
+              {{ 'fees.table.upper-bound-th' | globalize }}
             </th>
           </tr>
         </thead>
@@ -33,6 +36,10 @@
             v-for="(fee, i) in fees"
             :key="i"
           >
+            <td>
+              <fee-scope-viewer :fee="fee" />
+            </td>
+
             <td>
               <fee-type-viewer :fee="fee" />
             </td>
@@ -74,6 +81,8 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
+
+import FeeScopeViewer from './fee-scope-viewer.vue'
 import FeeTypeViewer from './fee-type-viewer'
 import FeeSubtypeViewer from './fee-subtype-viewer'
 
@@ -81,6 +90,7 @@ export default {
   name: 'fees-table',
   components: {
     NoDataMessage,
+    FeeScopeViewer,
     FeeTypeViewer,
     FeeSubtypeViewer,
   },
