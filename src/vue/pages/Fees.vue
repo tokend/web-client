@@ -21,6 +21,7 @@
         v-if="asset.code"
         :asset-code="asset.code"
         :account-id="accountId"
+        :account-role-id="accountRoleId"
         :config="config"
       />
     </template>
@@ -85,6 +86,7 @@ export default {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
+      accountRoleId: vuexTypes.accountRoleId,
     }),
   },
 

@@ -9,7 +9,7 @@
       <template v-else-if="isMovementsLoadFailed">
         <p class="movements-history__error-msg">
           {{ 'movements-history.movements-load-failed-msg' | globalize }}
-        </p>
+        </p>E
       </template>
       <template v-else>
         <load-spinner message-id="movements-history.loading-movements-msg" />
