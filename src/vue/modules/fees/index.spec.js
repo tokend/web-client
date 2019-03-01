@@ -7,6 +7,7 @@ import { feesModule } from './store/index'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import * as Api from './_api'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -118,12 +119,14 @@ describe('Fees module', () => {
         expect(wrapper.vm.isLoaded).to.be.true
       })
 
-      it('sets isLoadFailed property to true if loading was failed', async () => {
+      it('handles the error if loading was failed', async () => {
         sinon.stub(wrapper.vm, 'loadFees').throws()
+        const spy = sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
         await wrapper.vm.loadFeesFirstPage(props.assetCode)
 
         expect(wrapper.vm.isLoadFailed).to.be.true
+        expect(spy.calledOnce).to.be.true
       })
     })
   })
