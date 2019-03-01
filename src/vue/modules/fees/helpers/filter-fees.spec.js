@@ -2,7 +2,7 @@ import { filterFees } from './filter-fees'
 import { Fee } from '../wrappers/fee'
 
 describe('filterFees function', () => {
-  it('properly filters received fees', () => {
+  it('returns only fees for specific account, account role, and general fees', () => {
     const filteredAccountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
     const filteredAccountRoleId = '5'
 
