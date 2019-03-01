@@ -38,9 +38,7 @@
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "order_number": "{{value, order_number}}",
-      "percent": "{{value, percent}}",
-      "fee_type": "{{value, fee_type}}",
-      "fee_subtype": "{{value, fee_subtype}}"
+      "percent": "{{value, percent}}"
     },
 
     "common": {
@@ -354,38 +352,45 @@
       "download-apps": "Downloads"
     },
 
-    "fee-types": {
-      "payment": "Payment",
-      "offer": "Offer",
-      "withdrawal": "Withdrawal",
-      "issuance": "Issuance",
-      "invest": "Invest",
-      "capital-deployment": "Capital deployment",
-      "operation": "Operation",
-      "payout": "Payout",
-      "incoming-outgoing": "Incoming & Outgoing",
-      "outgoing": "Outgoing",
-      "incoming": "Incoming"
+    "fees": {
+      "types": {
+        "payment": "Payment",
+        "offer": "Offer",
+        "withdrawal": "Withdrawal",
+        "issuance": "Issuance",
+        "invest": "Invest",
+        "capital-deployment": "Capital deployment",
+        "operation": "Operation",
+        "payout": "Payout"
+      },
+      "subtypes": {
+        "incoming-outgoing": "Incoming & Outgoing",
+        "outgoing": "Outgoing",
+        "incoming": "Incoming"
+      },
+      "table": {
+        "fee-type": "Fee type",
+        "fixed": "Fixed",
+        "percent": "Percent",
+        "lower-bound": "Lower bound",
+        "upper-bound": "Upper bound",
+        "subtype": "Subtype"
+      },
+      "fees-loading-msg": "Loading your fees…",
+      "loading-error-msg": "There was an error while loading your fees.",
+      "no-valuable-fees-title": "No valuable fees",
+      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
     },
 
-    "fee-table": {
-      "fee-type": "Fee type",
-      "fixed": "Fixed",
-      "percent": "Percent",
-      "lower-bound": "Lower bound",
-      "upper-bound": "Upper bound",
-      "subtype": "Subtype",
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "fee-page": {
+    "fees-page": {
       "asset-filter-prefix": "Asset:",
       "scope-filter-prefix": "Scope:",
       "scope-global": "Global",
       "scope-account": "Account",
-      "no-valuable-fees-title": "No valuable fees",
-      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
+      "balances-loading-msg": "Loading your balances…",
+      "balances-loading-error-msg": "There was an error while loading your balances.",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet"
     },
 
     "op-pages": {

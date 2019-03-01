@@ -1,7 +1,7 @@
-import { Fee } from '../wrappers/fee'
-
 import { types } from './types'
 import { api } from '../_api'
+
+import { filterFees } from '../helpers/filter-fees'
 
 const HORIZON_VERSION_PREFIX = 'v3'
 
@@ -19,18 +19,11 @@ export const mutations = {
     state.accountRoleId = accountRoleId
   },
   [types.SET_FEES] (state, fees) {
-    state.fees = fees
-      .map(f => new Fee(f))
-      .filter(f => !f.accountId || f.accountId === state.accountId)
-      .filter(f => !f.accountRoleId || f.accountRoleId === state.accountRoleId)
+    state.fees = filterFees(fees, state.accountId, state.accountRoleId)
   },
   [types.CONCAT_FEES] (state, fees) {
     state.fees = state.fees.concat(
-      fees.map(f => new Fee(f))
-        .filter(f => !f.accountId || f.accountId === state.accountId)
-        .filter(f => !f.accountRoleId ||
-          f.accountRoleId === state.accountRoleId
-        )
+      filterFees(fees, state.accountId, state.accountRoleId)
     )
   },
 }

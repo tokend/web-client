@@ -1,33 +1,29 @@
 <template>
   <div class="fees">
-    <template v-if="isInitialized && assetCode">
-      <template v-if="isFeesLoaded">
-        <fees-table :fees="fees" />
+    <template v-if="assetCode">
+      <template v-if="isLoaded">
+        <fees-table :fees="fees" :asset-code="assetCode" />
       </template>
 
-      <template v-else-if="isFeesLoadFailed">
+      <template v-else-if="isLoadFailed">
         <p class="fees__error-msg">
-          {{ 'fees.fees-load-failed-msg' | globalize }}
+          {{ 'fees.fees-loading-error-msg' | globalize }}
         </p>
       </template>
 
       <template v-else>
-        <load-spinner message-id="fees.loading-fees-msg" />
+        <load-spinner message-id="fees.fees-loading-msg" />
       </template>
 
       <div class="fees__collection-loader-wrp">
         <collection-loader
-          v-if="!isFeesLoadFailed"
-          v-show="isFeesLoaded"
+          v-if="!isLoadFailed"
+          v-show="isLoaded"
           :first-page-loader="firstPageLoader"
           @first-page-load="setFees"
           @next-page-load="concatFees"
         />
       </div>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="fees.initializing-msg" />
     </template>
   </div>
 </template>
@@ -74,9 +70,8 @@ export default {
   },
 
   data: _ => ({
-    isInitialized: false,
-    isFeesLoaded: false,
-    isFeesLoadFailed: false,
+    isLoaded: false,
+    isLoadFailed: false,
   }),
 
   computed: {
@@ -96,9 +91,6 @@ export default {
 
     this.setAccountId(this.accountId)
     this.setAccountRoleId(this.accountRoleId)
-
-    await this.loadFees()
-    this.isInitialized = true
   },
 
   methods: {
@@ -108,17 +100,19 @@ export default {
       setFees: types.SET_FEES,
       concatFees: types.CONCAT_FEES,
     }),
+
     ...mapActions('fees', {
       loadFees: types.LOAD_FEES,
     }),
+
     async loadFeesFirstPage (assetCode) {
-      this.isFeesLoaded = false
+      this.isLoaded = false
       try {
         const response = await this.loadFees(assetCode)
-        this.isFeesLoaded = true
+        this.isLoaded = true
         return response
       } catch (e) {
-        this.isFeesLoadFailed = true
+        this.isLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
     },
@@ -127,5 +121,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.fees__collection-loader-wrp {
+  margin-top: 1rem;
+}
 </style>

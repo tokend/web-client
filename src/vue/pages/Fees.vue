@@ -5,7 +5,7 @@
         <template slot="main">
           <div class="fees-page__filter">
             <span class="fees-page__filter-prefix">
-              {{ 'fee-page.asset-filter-prefix' | globalize }}
+              {{ 'fees-page.asset-filter-prefix' | globalize }}
             </span>
             <select-field
               v-model="asset"
@@ -29,19 +29,19 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="trending-up"
-        title-id="fees-page.no-assets-title"
-        message-id="fees-page.no-assets-msg"
+        title-id="fees-page.no-balances-title"
+        message-id="fees-page.no-balances-msg"
         :message-id-keys="{ asset: asset.code }"
       />
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader message-id="fee-table.loading-msg" />
+      <loader message-id="fees-page.balances-loading-msg" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'fee-table.loading-error-msg' | globalize }}
+        {{ 'fees-page.balances-loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
