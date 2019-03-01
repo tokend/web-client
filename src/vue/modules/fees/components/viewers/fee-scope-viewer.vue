@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import { Fee } from '../wrappers/fee'
+import { Fee } from '../../wrappers/fee'
 
-import { FEE_SCOPES } from '../const/fee-scopes'
+import { FEE_SCOPES } from '../../const/fee-scopes'
 
 const FEE_SCOPE_TRANSLATION_IDS = {
   [FEE_SCOPES.account]: 'fees.scopes.account',

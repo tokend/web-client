@@ -82,9 +82,9 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import FeeScopeViewer from './fee-scope-viewer.vue'
-import FeeTypeViewer from './fee-type-viewer'
-import FeeSubtypeViewer from './fee-subtype-viewer'
+import FeeScopeViewer from './viewers/fee-scope-viewer'
+import FeeTypeViewer from './viewers/fee-type-viewer'
+import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
 
 export default {
   name: 'fees-table',

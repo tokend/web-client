@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { Fee } from '../wrappers/fee'
+import { Fee } from '../../wrappers/fee'
 
 import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 

@@ -1,6 +1,6 @@
 import _get from 'lodash/get'
 
-import { FEE_SCOPES } from './../const/fee-scopes'
+import { FEE_SCOPES } from '../const/fee-scopes'
 
 export class Fee {
   constructor (record) {
