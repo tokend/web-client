@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Added
+- Issuances explorer module
+- Issuances explorer vuex namespaced module
+- Issuance wrapper, issuances explorer module & store unit tests
+
+### Changed
+- Using issuances explorer module for displaying the issuances on the issuance page
+- Moving issuance record wrapper to the issuances explorer module
+
 ## [1.3.0] - 2019-03-01
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD
