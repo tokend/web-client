@@ -5,20 +5,21 @@
         <table>
           <thead>
             <tr>
-              <th :title="'issuance.counterparty-lbl' | globalize">
-                {{ 'issuance.counterparty-lbl' | globalize }}
+              <!-- eslint-disable-next-line max-len -->
+              <th :title="'issuances-explorer.table.counterparty-th' | globalize">
+                {{ 'issuances-explorer.table.counterparty-th' | globalize }}
               </th>
-              <th :title="'issuance.amount-lbl' | globalize">
-                {{ 'issuance.amount-lbl' | globalize }}
+              <th :title="'issuances-explorer.table.amount-th' | globalize">
+                {{ 'issuances-explorer.table.amount-th' | globalize }}
               </th>
-              <th :title="'issuance.asset-code-lbl' | globalize">
-                {{ 'issuance.asset-code-lbl' | globalize }}
+              <th :title="'issuances-explorer.table.asset-code-th' | globalize">
+                {{ 'issuances-explorer.table.asset-code-th' | globalize }}
               </th>
-              <th :title="'issuance.date-lbl' | globalize">
-                {{ 'issuance.date-lbl' | globalize }}
+              <th :title="'issuances-explorer.table.date-th' | globalize">
+                {{ 'issuances-explorer.table.date-th' | globalize }}
               </th>
-              <th :title="'issuance.reference-lbl' | globalize">
-                {{ 'issuance.reference-lbl' | globalize }}
+              <th :title="'issuances-explorer.table.reference-th' | globalize">
+                {{ 'issuances-explorer.table.reference-th' | globalize }}
               </th>
             </tr>
           </thead>
@@ -53,8 +54,8 @@
     <template v-else>
       <no-data-message
         icon-name="trending-up"
-        title-id="issuance.no-issuance-history-title"
-        message-id="issuance.no-issuance-history-msg"
+        title-id="issuances-explorer.no-issuances-title"
+        message-id="issuances-explorer.no-issuances-msg"
       />
     </template>
   </div>

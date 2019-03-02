@@ -1,11 +1,11 @@
 <template>
-  <div class="issuance">
+  <div class="issuance-page">
     <top-bar>
       <template slot="main">
         <router-link
-          :to="{ name: 'app.issuance' }"
+          :to="vueRoutes.issuance"
         >
-          <span>{{ 'issuance.history-title' | globalize }}</span>
+          <span>{{ 'issuance-page.history-title' | globalize }}</span>
         </router-link>
       </template>
 
@@ -15,29 +15,29 @@
           class="app__button-raised"
           @click="isPreIssuanceDrawerShown = true"
         >
-          {{ 'issuance.upload-pre-issuance-btn' | globalize }}
+          {{ 'issuance-page.upload-pre-issuance' | globalize }}
         </button>
 
         <button
           v-ripple
           class="app__button-raised"
-          @click="isIssuanceCreated = true"
+          @click="isIssuanceDrawerShown = true"
         >
-          {{ 'issuance.create-issuance-btn' | globalize }}
+          {{ 'issuance-page.create-issuance' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
-        {{ 'issuance.upload-pre-issuance-btn' | globalize }}
+        {{ 'issuance-page.upload-pre-issuance' | globalize }}
       </template>
       <pre-issuance-form @close="isPreIssuanceDrawerShown = false" />
     </drawer>
 
     <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
-        {{ 'issuance.issuance-form-heading' | globalize }}
+        {{ 'issuance-page.create-issuance' | globalize }}
       </template>
       <issuance-form
         @submit="isIssuanceCreated = true"
@@ -65,6 +65,8 @@ import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { vueRoutes } from '@/vue-router/routes'
+
 import config from '@/config'
 
 export default {
@@ -84,6 +86,7 @@ export default {
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
+    vueRoutes,
   }),
 
   computed: {
