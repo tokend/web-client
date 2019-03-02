@@ -100,18 +100,6 @@ describe('Issuances explorer module', () => {
         })
       })
 
-      it('should emit update event if the passed value is true', () => {
-        sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
-        const updateEvent = 'update:shouldUpdate'
-
-        wrapper.setProps({ shouldUpdate: true })
-
-        wrapper.vm.$nextTick(_ => {
-          expect(wrapper.emitted()[updateEvent]).to.exist
-          wrapper.vm.initFirstPageLoader.restore()
-        })
-      })
-
       it('should not initialize page loader if the passed value is false', () => {
         const spy = sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 

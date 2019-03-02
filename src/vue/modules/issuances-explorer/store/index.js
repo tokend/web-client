@@ -24,6 +24,8 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_ISSUANCES] ({ getters }) {
+    // TODO: Use API caller when the new endpoint is able
+    // to filter operations by their type
     return Sdk.horizon.operations.getPage({
       account_id: getters[types.accountId],
       operation_type: OP_TYPES.createIssuanceRequest,

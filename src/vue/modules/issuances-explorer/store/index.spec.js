@@ -1,7 +1,10 @@
-import { mutations, getters } from './index'
+import { mutations, getters, actions } from './index'
 import { types } from './types'
 
 import { Issuance } from '../wrappers/issuance'
+
+import { Sdk } from '@/sdk'
+import { OP_TYPES } from '@tokend/js-sdk'
 
 describe('issuances-explorer.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
@@ -48,6 +51,28 @@ describe('issuances-explorer.module', () => {
       expect(state).to.deep.equal({
         accountId: '',
         issuances: issuances.concat(issuances),
+      })
+    })
+  })
+
+  describe('actions', () => {
+    it('LOAD_ISSUANCES', async () => {
+      it('loads create issuance operations by provided account ID', async () => {
+        const spy = sinon.stub(Sdk.horizon.operations, 'getPage').resolves({
+          data: [],
+        })
+
+        await actions[types.LOAD_ISSUANCES]({ getters: { accountId } })
+
+        expect(spy
+          .withArgs({
+            account_id: accountId,
+            operation_type: OP_TYPES.createIssuanceRequest,
+          })
+          .calledOnce
+        ).to.be.true
+
+        spy.restore()
       })
     })
   })
