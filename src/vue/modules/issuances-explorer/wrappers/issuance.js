@@ -14,7 +14,8 @@ export class Issuance {
 
   get counterparty () {
     const participant = this.participants
-      .find(p => p.accountId !== this.accountId || !p.balanceId)
+      .find(p => p.accountId !== this.accountId) ||
+      this.participants.find(p => !p.balanceId)
 
     return _get(participant, 'accountId')
   }
