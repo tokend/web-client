@@ -21,7 +21,7 @@
         <button
           v-ripple
           class="app__button-raised"
-          @click="isIssuanceDrawerShown = true"
+          @click="isIssuanceCreated = true"
         >
           {{ 'issuance.create-issuance-btn' | globalize }}
         </button>
@@ -32,19 +32,23 @@
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance-btn' | globalize }}
       </template>
-      <pre-issuance-form @close="closePreIssuanceDrawer" />
+      <pre-issuance-form @close="isPreIssuanceDrawerShown = false" />
     </drawer>
 
     <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.issuance-form-heading' | globalize }}
       </template>
-      <issuance-form @close="closeIssuanceDrawer" />
+      <issuance-form
+        @submit="isIssuanceCreated = true"
+        @close="isIssuanceDrawerShown = false"
+      />
     </drawer>
 
     <issuances-explorer-module
       :wallet="wallet"
       :config="config"
+      :should-update.sync="isIssuanceCreated"
     />
   </div>
 </template>
@@ -76,6 +80,7 @@ export default {
   data: _ => ({
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
+    isIssuanceCreated: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
@@ -86,16 +91,6 @@ export default {
       isAccountCorporate: vuexTypes.isAccountCorporate,
       wallet: vuexTypes.wallet,
     }),
-  },
-
-  methods: {
-    closeIssuanceDrawer () {
-      this.isIssuanceDrawerShown = false
-    },
-
-    closePreIssuanceDrawer () {
-      this.isPreIssuanceDrawerShown = false
-    },
   },
 }
 </script>

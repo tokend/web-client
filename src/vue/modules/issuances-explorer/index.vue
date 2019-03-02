@@ -39,6 +39,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
 
+const EVENTS = {
+  shouldUpdate: 'update:shouldUpdate',
+}
+
 export default {
   name: 'issuances-explorer-module',
   components: {
@@ -60,11 +64,16 @@ export default {
       type: Object,
       required: true,
     },
+    shouldUpdate: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
+    firstPageLoader: _ => {},
   }),
 
   computed: {
@@ -72,15 +81,22 @@ export default {
       accountId: types.accountId,
       issuances: types.issuances,
     }),
+  },
 
-    firstPageLoader () {
-      return _ => this.loadIssuancesFirstPage()
+  watch: {
+    shouldUpdate: function (value) {
+      if (value) {
+        this.initFirstPageLoader()
+        this.$emit(EVENTS.shouldUpdate, false)
+      }
     },
   },
 
   created () {
     initApi(this.wallet, this.config)
     this.setAccountId(this.wallet.accountId)
+
+    this.initFirstPageLoader()
   },
   methods: {
     ...mapMutations('issuances-explorer', {
@@ -91,6 +107,10 @@ export default {
     ...mapActions('issuances-explorer', {
       loadIssuances: types.LOAD_ISSUANCES,
     }),
+
+    initFirstPageLoader () {
+      this.firstPageLoader = _ => this.loadIssuancesFirstPage()
+    },
 
     async loadIssuancesFirstPage () {
       this.isLoaded = false
