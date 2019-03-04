@@ -17,11 +17,9 @@ export class Fee {
 
     this.accountId = _get(record, 'account.id')
     this.accountRoleId = _get(record, 'accountRole.id')
-
-    this.scope = this._getScope()
   }
 
-  _getScope () {
+  get scope () {
     if (this.accountId) {
       return FEE_SCOPES.account
     } else if (this.accountRoleId) {

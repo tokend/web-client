@@ -40,8 +40,8 @@ describe('Fee', () => {
     })
   })
 
-  describe('method', () => {
-    describe('_getScope', () => {
+  describe('getter', () => {
+    describe('scope', () => {
       it('should return account scope if account ID is present', () => {
         const fee = new Fee({
           account: {
@@ -49,7 +49,7 @@ describe('Fee', () => {
           },
         })
 
-        const result = fee._getScope()
+        const result = fee.scope
 
         expect(result).to.equal(FEE_SCOPES.account)
       })
@@ -61,7 +61,7 @@ describe('Fee', () => {
           },
         })
 
-        const result = fee._getScope()
+        const result = fee.scope
 
         expect(result).to.equal(FEE_SCOPES.accountRole)
       })
@@ -69,7 +69,7 @@ describe('Fee', () => {
       it('should return general scope if neither account ID nor account role ID is present', () => {
         const fee = new Fee({})
 
-        const result = fee._getScope()
+        const result = fee.scope
 
         expect(result).to.equal(FEE_SCOPES.general)
       })

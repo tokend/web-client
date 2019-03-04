@@ -18,9 +18,9 @@ for further information about branching and tagging conventions.
 - `filterFees` helper for getting only the fees corresponding to the specific account & account role
 
 ### Changed
-- Using new API endpoint for loading the fees
-- Using fees module for displaying the fees on the fees page
-- Moving fees filters to the corresponding viewers
+- Now using new API endpoint for loading the fees
+- Now using fees module for displaying the fees on the fees page
+- Moved fees filters to the corresponding viewers
 
 ## [1.3.0] - 2019-03-01
 

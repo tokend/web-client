@@ -38,7 +38,7 @@ describe('Fees module', () => {
   })
 
   describe('created hook', () => {
-    it('initializes the API', () => {
+    it('calls initApi function', () => {
       const spy = sinon.spy(Api, 'initApi')
 
       shallowMount(FeesModule, {
@@ -52,7 +52,7 @@ describe('Fees module', () => {
       spy.restore()
     })
 
-    it('sets the account ID', () => {
+    it('calls setAccountId method', () => {
       const spy = sinon.spy(FeesModule.methods, 'setAccountId')
 
       shallowMount(FeesModule, {
@@ -66,7 +66,7 @@ describe('Fees module', () => {
       spy.restore()
     })
 
-    it('sets the account role ID', () => {
+    it('calls setAccountRoleId method', () => {
       const spy = sinon.spy(FeesModule.methods, 'setAccountRoleId')
 
       shallowMount(FeesModule, {
@@ -97,10 +97,8 @@ describe('Fees module', () => {
 
   describe('method', () => {
     describe('loadFeesFirstPage', () => {
-      it('loads the fees by provided asset code', async () => {
-        const spy = sinon.stub(wrapper.vm, 'loadFees').resolves({
-          data: [],
-        })
+      it('calls loadFees method with proper set of params', async () => {
+        const spy = sinon.stub(wrapper.vm, 'loadFees').resolves()
 
         await wrapper.vm.loadFeesFirstPage(props.assetCode)
 
@@ -110,9 +108,7 @@ describe('Fees module', () => {
       })
 
       it('sets isLoaded property to true if loading was succeded', async () => {
-        sinon.stub(wrapper.vm, 'loadFees').resolves({
-          data: [],
-        })
+        sinon.stub(wrapper.vm, 'loadFees').resolves()
 
         await wrapper.vm.loadFeesFirstPage(props.assetCode)
 

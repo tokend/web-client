@@ -20,59 +20,54 @@ describe('fees.module', () => {
   }]
 
   describe('mutations', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        accountId: '',
-        accountRoleId: '',
-        fees: [],
-      }
-    })
-
     it('SET_ACCOUNT_ID should properly modify state', () => {
+      const state = {
+        accountId: '',
+      }
+
       mutations[types.SET_ACCOUNT_ID](state, accountId)
 
-      expect(state).to.deep.equal({
-        accountId: accountId,
-        accountRoleId: '',
-        fees: [],
-      })
+      expect(state).to.deep.equal({ accountId })
     })
 
     it('SET_ACCOUNT_ROLE_ID should properly modify state', () => {
+      const state = {
+        accountRoleId: '',
+      }
+
       mutations[types.SET_ACCOUNT_ROLE_ID](state, accountRoleId)
 
-      expect(state).to.deep.equal({
-        accountId: '',
-        accountRoleId: accountRoleId,
-        fees: [],
-      })
+      expect(state).to.deep.equal({ accountRoleId })
     })
 
     it('SET_FEES should properly modify state', () => {
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-      mutations[types.SET_ACCOUNT_ROLE_ID](state, accountRoleId)
+      const state = {
+        accountId,
+        accountRoleId,
+        fees: [],
+      }
 
       mutations[types.SET_FEES](state, fees)
 
       expect(state).to.deep.equal({
-        accountId: accountId,
-        accountRoleId: accountRoleId,
+        accountId,
+        accountRoleId,
         fees: filterFees(fees, accountId, accountRoleId),
       })
     })
 
     it('CONCAT_FEES should properly modify state', () => {
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-      mutations[types.SET_ACCOUNT_ROLE_ID](state, accountRoleId)
+      const state = {
+        accountId,
+        accountRoleId,
+        fees: filterFees(fees, accountId, accountRoleId),
+      }
 
-      mutations[types.SET_FEES](state, fees)
       mutations[types.CONCAT_FEES](state, fees)
 
       expect(state).to.deep.equal({
-        accountId: accountId,
-        accountRoleId: accountRoleId,
+        accountId,
+        accountRoleId,
         fees: filterFees(fees.concat(fees), accountId, accountRoleId),
       })
     })
