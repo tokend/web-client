@@ -37,11 +37,18 @@
             :label="'auth-pages.recovery-seed' | globalize"
           />
 
+          <checkbox-field
+            :disabled="isCheckboxDisable"
+            :title="'auth-pages.save-recovery-seed-confirmation' | globalize"
+            :required="true"
+            :is-sending-enabled.sync="isSendingEnabled"
+          />
+
           <div class="signup__actions">
             <button
               v-ripple
               @click="submit"
-              :disabled="formMixin.isDisabled"
+              :disabled="!isSendingEnabled"
               class="auth-page__submit-btn"
             >
               {{ 'auth-pages.continue' | globalize }}
@@ -55,9 +62,9 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-
 import SignupForm from '../forms/SignupForm'
 import KeyViewer from '../common/KeyViewer'
+import CheckboxField from '@/vue/fields/CheckboxField'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -72,12 +79,15 @@ export default {
   components: {
     SignupForm,
     KeyViewer,
+    CheckboxField,
   },
   mixins: [FormMixin],
   data: _ => ({
     recoveryKeypair: null,
     password: null,
     email: null,
+    isCheckboxDisable: false,
+    isSendingEnabled: false,
     vueRoutes,
   }),
   computed: {
@@ -144,6 +154,7 @@ export default {
 
 .signup__seed-explanations {
   margin-bottom: 2rem;
+  font-size: 1.8rem;
 }
 
 .signup__actions {

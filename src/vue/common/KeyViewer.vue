@@ -1,12 +1,11 @@
 <template>
   <div class="key-viewer">
     <div class="key-viewer__qr-wrp">
-      <qr-code
-        :text="value"
-        :margin="0"
+      <qr-code-wrapper
+        :value="value"
         :size="250"
-        :color-light="'#f2f2f4'"
-        :color-dark="'#262626'"
+        :background="'#f6f8fb'"
+        :foreground="'#262626'"
       />
     </div>
     <div
@@ -26,14 +25,14 @@
  * KeyViewer accepts the key (recoverySeed/accountID/depositAddress etc) and
  * renders the qr-code and copyable field for it
  */
-import QrCode from 'vue-qr'
+import QrCodeWrapper from '@/vue/common/QrCodeWrapper'
 import ClipboardField from '@/vue/fields/ClipboardField'
 
 export default {
   name: 'key-viewer',
   components: {
     ClipboardField,
-    QrCode,
+    QrCodeWrapper,
   },
   props: {
     value: {

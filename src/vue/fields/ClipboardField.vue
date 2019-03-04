@@ -56,8 +56,7 @@ export default {
 
 .clipboard-field__value {
   width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: auto;
   color: $field-color-text;
   padding: $field-input-padding;
   @include text-font-sizes;
