@@ -970,6 +970,16 @@
       "loading-msg": "Loading…"
     },
 
+    "coinpayments-form": {
+      "amount": "Amount",
+      "request-cp": "Request the address",
+      "no-address": "No available addresses to deposit yet. Please try again later.",
+      "time-left": "Time left",
+      "loading-msg": "Please wait while we loading your data.",
+      "load-failed-msg": "Failed to load account data. Please try again later",
+      "ready-cp": "Please send {{amount}} {{asset}} to the address provided below. Note that any other token sent to this address will be irretrievably lost."
+    },
+
     "email-getter": {
       "loading-msg": "Loading…",
       "master-account": "Master"

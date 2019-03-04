@@ -30,6 +30,15 @@
               'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
             }}
           </button>
+
+          <button
+            v-if="currentAsset"
+            class="app__button-raised dashboard__action"
+            @click="depositCoinPay = true"
+          >
+            <i class="mdi mdi-fridge-bottom dashboard__send-icon" />
+            DEPOSIT CHUDO
+          </button>
         </div>
       </div>
       <template v-if="currentAsset">
@@ -66,11 +75,25 @@
         <transfer :asset-to-transfer="currentAsset" />
       </template>
     </drawer>
+
+    <drawer :is-shown.sync="depositCoinPay">
+      <template slot="heading">
+        Deposit Coinpayments
+      </template>
+      <coinpayments
+        :asset="{
+          balanceId: '3kf4f4fo5o5oo',
+          asset: 'BTC',
+          amount: '1000000',
+        }"
+      />
+    </drawer>
   </div>
 </template>
 
 <script>
 import MovementsHistoryModule from '@modules/movements-history'
+import Coinpayments from '@modules/coinpayments'
 
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
@@ -93,9 +116,11 @@ export default {
     Chart,
     Loader,
     Drawer,
+    Coinpayments,
   },
   data: () => ({
     currentAsset: null,
+    depositCoinPay: false,
     isLoading: false,
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
