@@ -1,78 +1,101 @@
 import { mutations, getters, actions } from './index'
 import { types } from './types'
 
+import { Wallet } from '@tokend/js-sdk'
+
 import { Issuance } from '../wrappers/issuance'
 
-import { Sdk } from '@/sdk'
-import { OP_TYPES } from '@tokend/js-sdk'
+import * as Api from '../_api'
 
 describe('issuances-explorer.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-  const issuances = [{
-    id: '1',
-    amount: '100.000000',
-  }, {
-    id: '2',
-    amount: '50.000000',
-  }]
+  const issuances = [
+    {
+      id: '1',
+      amount: '100.000000',
+    },
+    {
+      id: '2',
+      amount: '50.000000',
+    },
+  ]
 
   describe('mutations', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        accountId: '',
-        issuances: [],
-      }
-    })
-
     it('SET_ACCOUNT_ID should properly modify state', () => {
+      const state = {
+        accountId: '',
+      }
+
       mutations[types.SET_ACCOUNT_ID](state, accountId)
 
       expect(state).to.deep.equal({
-        accountId: accountId,
-        issuances: [],
+        accountId,
       })
     })
 
     it('SET_ISSUANCES should properly modify state', () => {
+      const state = {
+        issuances: [],
+      }
+
       mutations[types.SET_ISSUANCES](state, issuances)
 
       expect(state).to.deep.equal({
-        accountId: '',
         issuances,
       })
     })
 
     it('CONCAT_ISSUANCES should properly modify state', () => {
-      mutations[types.SET_ISSUANCES](state, issuances)
+      const state = {
+        issuances,
+      }
+
       mutations[types.CONCAT_ISSUANCES](state, issuances)
 
       expect(state).to.deep.equal({
-        accountId: '',
         issuances: issuances.concat(issuances),
       })
     })
   })
 
   describe('actions', () => {
-    it('LOAD_ISSUANCES', async () => {
-      it('loads create issuance operations by provided account ID', async () => {
-        const spy = sinon.stub(Sdk.horizon.operations, 'getPage').resolves({
-          data: [],
-        })
+    const wallet = new Wallet(
+      'test@mail.com',
+      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
+      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
+      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
+    )
+    const config = {
+      horizonURL: 'https://test.api.com',
+    }
+
+    beforeEach(() => {
+      Api.initApi(wallet, config)
+    })
+
+    describe('LOAD_ISSUANCES', () => {
+      it('calls Api.getWithSignature method with provided params', async () => {
+        const expectedParams = {
+          page: {
+            order: 'desc',
+          },
+          filter: {
+            requestor: accountId,
+          },
+          include: ['request_details'],
+        }
+
+        sinon.stub(Api.api(), 'getWithSignature').resolves()
 
         await actions[types.LOAD_ISSUANCES]({ getters: { accountId } })
 
-        expect(spy
-          .withArgs({
-            account_id: accountId,
-            operation_type: OP_TYPES.createIssuanceRequest,
-          })
-          .calledOnce
-        ).to.be.true
+        expect(Api.api().getWithSignature)
+          .to.have.been.calledOnceWithExactly(
+            '/v3/create_issuance_requests',
+            expectedParams
+          )
 
-        spy.restore()
+        Api.api().getWithSignature.restore()
       })
     })
   })

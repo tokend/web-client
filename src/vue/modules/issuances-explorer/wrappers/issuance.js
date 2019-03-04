@@ -1,22 +1,12 @@
 import _get from 'lodash/get'
 
 export class Issuance {
-  constructor (record, accountId) {
+  constructor (record) {
     this.id = record.id
-    this.amount = record.amount
-    this.asset = record.asset
-    this.date = record.ledgerCloseTime
+    this.amount = _get(record, 'requestDetails.amount')
+    this.asset = _get(record, 'requestDetails.asset.id')
+    this.date = record.createdAt
     this.reference = record.reference
-
-    this.accountId = accountId
-    this.participants = record.participants
-  }
-
-  get counterparty () {
-    const participant = this.participants
-      .find(p => p.accountId !== this.accountId) ||
-      this.participants.find(p => !p.balanceId)
-
-    return _get(participant, 'accountId')
+    this.counterparty = _get(record, 'requestDetails.receiver.id')
   }
 }

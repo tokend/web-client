@@ -6,13 +6,17 @@ describe('Issuance', () => {
       const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
       const record = {
         id: '1',
-        amount: '100.000000',
-        asset: 'USD',
-        ledgerCloseTime: '2019-02-26T15:09:01Z',
+        createdAt: '2019-02-26T15:09:01Z',
         reference: 'ref',
-        participants: [{
-          accountId,
-        }],
+        requestDetails: {
+          amount: '100.000000',
+          asset: {
+            id: 'USD',
+          },
+          receiver: {
+            id: 'BARK3WRP4M5WSW2ERWPQ3FEXA4A2AYNRSANIBRKQRC62JUI6SG3XDXK5',
+          },
+        },
       }
 
       const result = new Issuance(record, accountId)
@@ -22,41 +26,7 @@ describe('Issuance', () => {
       expect(result.asset).to.equal('USD')
       expect(result.date).to.equal('2019-02-26T15:09:01Z')
       expect(result.reference).to.equal('ref')
-
-      expect(result.accountId).to.equal('GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ')
-      expect(result.participants).to.deep.equal([{
-        accountId: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      }])
-    })
-  })
-
-  describe('getter', () => {
-    describe('counterparty', () => {
-      it('should return participant account ID that is not equal to the record account ID', () => {
-        const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-        const issuance = new Issuance({
-          participants: [{
-            accountId,
-          }, {
-            accountId: 'SOME_OTHER',
-          }],
-        }, accountId)
-
-        const result = issuance.counterparty
-
-        expect(result).to.equal('SOME_OTHER')
-      })
-
-      it('should return record account ID if issuance was created by account with that ID (both participants have that account ID)', () => {
-        const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-        const issuance = new Issuance({
-          participants: [{ accountId }],
-        }, accountId)
-
-        const result = issuance.counterparty
-
-        expect(result).to.equal('GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ')
-      })
+      expect(result.counterparty).to.equal('BARK3WRP4M5WSW2ERWPQ3FEXA4A2AYNRSANIBRKQRC62JUI6SG3XDXK5')
     })
   })
 })

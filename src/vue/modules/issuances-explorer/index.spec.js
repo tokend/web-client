@@ -29,23 +29,16 @@ describe('Issuances explorer module', () => {
   }
 
   let store
-  let wrapper
 
   beforeEach(() => {
     store = new Vuex.Store({
       modules: { 'issuances-explorer': issuancesExplorerModule },
     })
-
-    wrapper = shallowMount(IssuancesExplorerModule, {
-      store,
-      localVue,
-      propsData: props,
-    })
   })
 
   describe('created hook', () => {
-    it('initializes the API', () => {
-      const spy = sinon.spy(Api, 'initApi')
+    it('calls initApi function', () => {
+      sinon.stub(Api, 'initApi')
 
       shallowMount(IssuancesExplorerModule, {
         localVue,
@@ -53,13 +46,14 @@ describe('Issuances explorer module', () => {
         propsData: props,
       })
 
-      expect(spy.withArgs(props.wallet, props.config).calledOnce).to.be.true
+      expect(Api.initApi.withArgs(props.wallet, props.config))
+        .to.have.been.calledOnce
 
-      spy.restore()
+      Api.initApi.restore()
     })
 
-    it('sets the account ID', () => {
-      const spy = sinon.spy(IssuancesExplorerModule.methods, 'setAccountId')
+    it('calls setAccountId method', () => {
+      sinon.stub(IssuancesExplorerModule.methods, 'setAccountId')
 
       shallowMount(IssuancesExplorerModule, {
         localVue,
@@ -67,13 +61,15 @@ describe('Issuances explorer module', () => {
         propsData: props,
       })
 
-      expect(spy.withArgs(props.wallet.accountId).calledOnce).to.be.true
+      expect(IssuancesExplorerModule.methods.setAccountId
+        .withArgs(props.wallet.accountId)
+      ).to.have.been.calledOnce
 
-      spy.restore()
+      IssuancesExplorerModule.methods.setAccountId.restore()
     })
 
-    it('initializes first issuances page loader', () => {
-      const spy = sinon.spy(IssuancesExplorerModule.methods, 'initFirstPageLoader')
+    it('calls initFirstPageLoader method', () => {
+      sinon.stub(IssuancesExplorerModule.methods, 'initFirstPageLoader')
 
       shallowMount(IssuancesExplorerModule, {
         localVue,
@@ -81,75 +77,90 @@ describe('Issuances explorer module', () => {
         propsData: props,
       })
 
-      expect(spy.calledOnce).to.be.true
+      expect(IssuancesExplorerModule.methods.initFirstPageLoader)
+        .to.have.been.calledOnce
 
-      spy.restore()
+      IssuancesExplorerModule.methods.initFirstPageLoader.restore()
     })
   })
 
-  describe('watcher', () => {
-    describe('shouldUpdate', () => {
-      it('should initialize page loader if the passed value is true', () => {
-        const spy = sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
+  describe('component', () => {
+    let wrapper
 
-        wrapper.setProps({ shouldUpdate: true })
-
-        wrapper.vm.$nextTick(_ => {
-          expect(spy.calledOnce).to.be.true
-          spy.restore()
-        })
+    beforeEach(() => {
+      wrapper = shallowMount(IssuancesExplorerModule, {
+        store,
+        localVue,
+        propsData: props,
       })
+    })
 
-      it('should not initialize page loader if the passed value is false', () => {
-        const spy = sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
+    describe('watcher', () => {
+      describe('shouldUpdate', () => {
+        it('should call initFirstPageLoader method if the passed value is true', (done) => {
+          sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 
-        wrapper.setProps({ shouldUpdate: false })
+          wrapper.setProps({ shouldUpdate: true })
 
-        wrapper.vm.$nextTick(_ => {
-          expect(spy.notCalled).to.be.true
-          spy.restore()
+          wrapper.vm.$nextTick(_ => {
+            expect(wrapper.vm.initFirstPageLoader)
+              .to.have.been.calledOnce
+
+            wrapper.vm.initFirstPageLoader.restore()
+            done()
+          })
+        })
+
+        it('should not call initFirstPageLoader method if the passed value is false', (done) => {
+          sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
+
+          wrapper.setProps({ shouldUpdate: false })
+
+          wrapper.vm.$nextTick(_ => {
+            expect(wrapper.vm.initFirstPageLoader)
+              .to.have.not.been.called
+            wrapper.vm.initFirstPageLoader.restore()
+            done()
+          })
         })
       })
     })
-  })
 
-  describe('method', () => {
-    describe('loadIssuancesFirstPage', () => {
-      it('loads the account issuances', async () => {
-        const spy = sinon.stub(wrapper.vm, 'loadIssuances').resolves({
-          data: [],
+    describe('method', () => {
+      describe('loadIssuancesFirstPage', () => {
+        it('calls loadIssuances method', async () => {
+          sinon.stub(wrapper.vm, 'loadIssuances').resolves()
+
+          await wrapper.vm.loadIssuancesFirstPage()
+
+          expect(wrapper.vm.loadIssuances).to.have.been.calledOnce
+
+          wrapper.vm.loadIssuances.restore()
         })
 
-        await wrapper.vm.loadIssuancesFirstPage()
+        it('sets isLoaded property to true if loading was succeded', async () => {
+          sinon.stub(wrapper.vm, 'loadIssuances').resolves()
 
-        expect(spy.calledOnce).to.be.true
+          await wrapper.vm.loadIssuancesFirstPage()
 
-        spy.restore()
-      })
+          expect(wrapper.vm.isLoaded).to.be.true
 
-      it('sets isLoaded property to true if loading was succeded', async () => {
-        sinon.stub(wrapper.vm, 'loadIssuances').resolves({
-          data: [],
+          wrapper.vm.loadIssuances.restore()
         })
 
-        await wrapper.vm.loadIssuancesFirstPage()
+        it('handles the error if loading was failed', async () => {
+          sinon.stub(wrapper.vm, 'loadIssuances').throws()
+          sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
-        expect(wrapper.vm.isLoaded).to.be.true
+          await wrapper.vm.loadIssuancesFirstPage()
 
-        wrapper.vm.loadIssuances.restore()
-      })
+          expect(wrapper.vm.isLoadFailed).to.be.true
+          expect(ErrorHandler.processWithoutFeedback)
+            .to.have.been.calledOnce
 
-      it('handles the error if loading was failed', async () => {
-        sinon.stub(wrapper.vm, 'loadIssuances').throws()
-        const spy = sinon.stub(ErrorHandler, 'processWithoutFeedback')
-
-        await wrapper.vm.loadIssuancesFirstPage()
-
-        expect(wrapper.vm.isLoadFailed).to.be.true
-        expect(spy.calledOnce).to.be.true
-
-        wrapper.vm.loadIssuances.restore()
-        spy.restore()
+          wrapper.vm.loadIssuances.restore()
+          ErrorHandler.processWithoutFeedback.restore()
+        })
       })
     })
   })

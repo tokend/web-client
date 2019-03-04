@@ -2,8 +2,9 @@ import { Issuance } from '../wrappers/issuance'
 
 import { types } from './types'
 
-import { Sdk } from '@/sdk'
-import { OP_TYPES } from '@tokend/js-sdk'
+import { api } from '../_api'
+
+const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
   accountId: '',
@@ -24,11 +25,14 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_ISSUANCES] ({ getters }) {
-    // TODO: Use API caller when the new endpoint is able
-    // to filter operations by their type
-    return Sdk.horizon.operations.getPage({
-      account_id: getters[types.accountId],
-      operation_type: OP_TYPES.createIssuanceRequest,
+    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_issuance_requests`, {
+      page: {
+        order: 'desc',
+      },
+      filter: {
+        requestor: getters[types.accountId],
+      },
+      include: ['request_details'],
     })
   },
 }

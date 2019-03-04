@@ -27,7 +27,7 @@
           <tbody>
             <tr v-for="issuance in issuances" :key="issuance.id">
               <td>
-                <email-getter :account-id="issuance.counterparty" />
+                <email-getter :balance-id="issuance.counterparty" />
               </td>
 
               <td :title="issuance.amount | formatMoney">
@@ -54,8 +54,8 @@
     <template v-else>
       <no-data-message
         icon-name="trending-up"
-        title-id="issuances-explorer.no-issuances-title"
-        message-id="issuances-explorer.no-issuances-msg"
+        title-id="issuances-explorer.table.no-issuances-title"
+        message-id="issuances-explorer.table.no-issuances-msg"
       />
     </template>
   </div>
