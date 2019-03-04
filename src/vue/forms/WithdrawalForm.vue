@@ -74,7 +74,7 @@
                 name="withdrawal-address"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
-                :label="'withdrawal-form.comment'"
+                :label="'withdrawal-form.comment' | globalize"
                 :monospaced="true"
                 :disabled="formMixin.isDisabled"
               />
@@ -242,6 +242,10 @@ export default {
     }
   },
   validations () {
+    const addressRules = {
+      required,
+      address: address(this.form.asset.code),
+    }
     return {
       form: {
         asset: { required },
@@ -252,7 +256,7 @@ export default {
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
-        address: { required, address: address(this.form.asset.code) },
+        address: this.isMasterAccount ? addressRules : {},
       },
     }
   },
