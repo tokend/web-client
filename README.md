@@ -1,7 +1,6 @@
 # web-client
-#test_ci_tag 
-TokenD client application (Work in progress). The current stable version is
-available [here](https://github.com/tokend/client-scaffold).
+
+TokenD client application.
 
 Known issues: 
 
