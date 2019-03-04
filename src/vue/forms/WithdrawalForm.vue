@@ -25,6 +25,12 @@
               </div>
             </div>
           </div>
+
+          <p v-if="selectedAssetOwnerEmail">
+            {{ 'withdrawal-form.reviewer-email' | globalize }}
+            {{ selectedAssetOwnerEmail }}
+          </p>
+
           <div class="app__form-row withdrawal__form-row">
             <input-field
               white-autofill
@@ -45,19 +51,34 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <input-field
-              white-autofill
-              class="app__form-field"
-              v-model.trim="form.address"
-              name="withdrawal-address"
-              @blur="touchField('form.address')"
-              :error-message="getFieldErrorMessage('form.address')"
-              :label="'withdrawal-form.destination-address' | globalize({
-                asset: form.asset.code
-              })"
-              :monospaced="true"
-              :disabled="formMixin.isDisabled"
-            />
+            <template v-if="isMasterAccount">
+              <input-field
+                white-autofill
+                class="app__form-field"
+                v-model.trim="form.address"
+                name="withdrawal-address"
+                @blur="touchField('form.address')"
+                :error-message="getFieldErrorMessage('form.address')"
+                :label="'withdrawal-form.destination-address' | globalize({
+                  asset: form.asset.code
+                })"
+                :monospaced="true"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
+            <template v-else>
+              <input-field
+                white-autofill
+                class="app__form-field"
+                v-model.trim="form.comment"
+                name="withdrawal-address"
+                @blur="touchField('form.address')"
+                :error-message="getFieldErrorMessage('form.address')"
+                :label="'withdrawal-form.comment'"
+                :monospaced="true"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
           </div>
 
           <div class="app__form-row withdrawal__form-row">
@@ -170,12 +191,14 @@ import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
+// import { Api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
@@ -197,7 +220,7 @@ export default {
     FormConfirmation,
     Loader,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, IdentityGetterMixin],
   data () {
     return {
       isLoaded: false,
@@ -206,6 +229,7 @@ export default {
         asset: {},
         amount: '',
         address: '',
+        comment: '',
       },
       assets: [],
       MIN_AMOUNT: config.MIN_AMOUNT,
@@ -215,6 +239,7 @@ export default {
       isFeesLoadPending: false,
       isFeesLoadFailed: false,
       DECIMAL_POINTS: config.DECIMAL_POINTS,
+      selectedAssetOwnerEmail: '',
     }
   },
   validations () {
@@ -237,6 +262,9 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
+    isMasterAccount () {
+      return this.form.asset.owner === Sdk.networkDetails.adminAccountId
+    },
   },
   watch: {
     'form.amount' (value) {
@@ -249,6 +277,7 @@ export default {
     },
     'form.asset.code' () {
       this.tryGetFees()
+      this.loadOwner()
     },
   },
   async created () {
@@ -306,11 +335,28 @@ export default {
       }
       return this.feesDebouncedRequest()
     },
+    async loadOwner () {
+      const ownerId = this.form.asset.owner
+      try {
+        const email = await this.getEmailByAccountId(ownerId)
+        this.selectedAssetOwnerEmail = email
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
     composeOptions () {
+      const creatorDetails = {}
+
+      if (this.isMasterAccount) {
+        creatorDetails.address = this.form.address
+      } else {
+        creatorDetails.comment = this.form.comment
+      }
+
       return {
         balance: this.form.asset.balance.id,
         amount: this.form.amount,
-        creatorDetails: { address: this.form.address },
+        creatorDetails: creatorDetails,
         destAsset: this.form.asset.code,
         expectedDestAssetAmount: this.form.amount,
         fee: {

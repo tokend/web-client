@@ -951,7 +951,9 @@
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "reviewer-email": "Reviewer email:",
+      "comment": "Comment"
     },
 
     "deposit-form": {
