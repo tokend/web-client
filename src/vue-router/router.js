@@ -126,6 +126,14 @@ export const router = new Router({
           featureFlag: config.featureFlags.movements,
           meta: { pageNameTranslationId: 'pages-names.loyalty-points' },
           component: resolve => require(['@/vue/pages/LoyaltyPoints'], resolve),
+          redirect: vueRoutes.statistics,
+          children: [
+            {
+              path: '/loyalty-points/statistics',
+              name: vueRoutes.statistics.name,
+              component: resolve => require(['@/vue/pages/Statistics'], resolve),
+            },
+          ],
         },
         {
           path: '/funds',

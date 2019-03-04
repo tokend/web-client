@@ -6,6 +6,7 @@ export const vueRoutes = Object.freeze({
   fees: { name: 'app.fees' },
   movements: { name: 'app.movements' },
   loyaltyPoints: { name: 'app.loyalty-points' },
+  statistics: { name: 'app.statistics' },
   sales: { name: 'app.sales' },
   saleDetails: { name: 'app.sale-details' },
   saleCampaign: { name: 'app.sale-campaign' },

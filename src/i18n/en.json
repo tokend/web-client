@@ -424,6 +424,20 @@
       "counterparty-lbl": "Counterparty"
     },
 
+    "create-invoice-module": {
+      "create-invoice-btn": "Create invoice",
+      "create-invoice-form-title": "Create invoice",
+      "statistics-page": "Statistics"
+    },
+
+    "create-invoice-form": {
+      "amount-lbl": "Amount {{asset}}",
+      "close": "Close",
+      "price": "Price",
+      "total-amount": "Total amount",
+      "create-invoice": "Create invoice"
+    },
+
     "movements-history": {
       "effects": {
         "funded": "Funded",
