@@ -7,7 +7,9 @@ import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
 
-import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
+import { movementsHistoryModule } from '@modules/movements-history/store'
+import { assetCreationRequestsModule } from '@modules/asset-creation-requests/store'
+
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
@@ -40,6 +42,7 @@ const store = new Vuex.Store({
     keyValue,
     // namespaced local modules (used by a specific set of components)
     'movements-history': movementsHistoryModule,
+    'asset-creation-requests-module': assetCreationRequestsModule,
   },
   plugins: [sessionStoragePlugin],
 })
