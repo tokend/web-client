@@ -55,13 +55,11 @@
               <input-field
                 white-autofill
                 class="app__form-field"
-                v-model.trim="form.address"
+                v-model.trim="form.comment"
                 name="withdrawal-address"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
-                :label="'withdrawal-form.destination-address' | globalize({
-                  asset: form.asset.code
-                })"
+                :label="'withdrawal-form.comment' | globalize"
                 :monospaced="true"
                 :disabled="formMixin.isDisabled"
               />
@@ -70,11 +68,13 @@
               <input-field
                 white-autofill
                 class="app__form-field"
-                v-model.trim="form.comment"
+                v-model.trim="form.address"
                 name="withdrawal-address"
                 @blur="touchField('form.address')"
                 :error-message="getFieldErrorMessage('form.address')"
-                :label="'withdrawal-form.comment' | globalize"
+                :label="'withdrawal-form.destination-address' | globalize({
+                  asset: form.asset.code
+                })"
                 :monospaced="true"
                 :disabled="formMixin.isDisabled"
               />
@@ -256,7 +256,7 @@ export default {
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
-        address: this.isMasterAccount ? addressRules : {},
+        address: this.isMasterAccount ? {} : addressRules,
       },
     }
   },
@@ -344,6 +344,7 @@ export default {
         const email = await this.getEmailByAccountId(ownerId)
         this.selectedAssetOwnerEmail = email
       } catch (e) {
+        this.selectedAssetOwnerEmail = ''
         ErrorHandler.processWithoutFeedback(e)
       }
     },
@@ -351,9 +352,9 @@ export default {
       const creatorDetails = {}
 
       if (this.isMasterAccount) {
-        creatorDetails.address = this.form.address
-      } else {
         creatorDetails.comment = this.form.comment
+      } else {
+        creatorDetails.address = this.form.address
       }
 
       return {
