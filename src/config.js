@@ -31,6 +31,7 @@ export default Object.assign(
       fees: true,
       trade: true,
       movements: true,
+      loyaltyPoints: true,
       issuance: true,
       assets: true,
       requests: true,

@@ -121,6 +121,13 @@ export const router = new Router({
           component: resolve => require(['@/vue/pages/Movements'], resolve),
         },
         {
+          path: '/loyalty-points',
+          name: vueRoutes.loyaltyPoints.name,
+          featureFlag: config.featureFlags.movements,
+          meta: { pageNameTranslationId: 'pages-names.loyalty-points' },
+          component: resolve => require(['@/vue/pages/LoyaltyPoints'], resolve),
+        },
+        {
           path: '/funds',
           name: vueRoutes.sales.name,
           featureFlag: config.featureFlags.sales,
