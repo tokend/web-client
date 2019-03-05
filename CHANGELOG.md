@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 ### Added
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
+- Displaying TokenD logo & load spinner while loading the page 
 
 ### Changed
 - Now using new account endpoint for loading the fees
