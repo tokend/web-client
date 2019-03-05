@@ -631,7 +631,8 @@
     "requests-page": {
       "asset-creation-title": "Token creation",
       "sale-creation-title": "Fund creation",
-      "pre-issuance-upload-title": "Pre-issuance upload"
+      "pre-issuance-upload-title": "Pre-issuance upload",
+      "incoming-withdrawal-title": "Incoming withdrawal"
     },
 
     "request-states": {
@@ -694,6 +695,20 @@
       "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
     },
 
+    "incoming-withdrawal-requests": {
+      "details-title": "Incoming withdrawal request details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "requestor-header": "Requestor",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
+      "request-rejected-msg": "Your request was successfully rejected"
+    },
+
     "asset-details": {
       "balance-title": "Balance",
       "maximum-title": "Maximum",
@@ -741,6 +756,14 @@
       "view-btn": "View the fund",
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
+    },
+
+    "withdrawal-request-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "approve-btn": "Approve",
+      "rejected-btn": "REJECT",
+      "requestor-email": "Requestor email"
     },
 
     "file-field": {

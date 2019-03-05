@@ -28,6 +28,7 @@ export const vueRoutes = Object.freeze({
   assetCreationRequests: { name: 'app.asset-creation-requests' },
   saleCreationRequests: { name: 'app.sale-creation-requests' },
   preIssuanceUploadRequests: { name: 'app.pre-issuance-upload-requests' },
+  incomingWithdrawalRequests: { name: 'app.incoming-withdrawal-requests' },
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
   iosInstallationGuide: { name: 'ios-installation-guide' },
