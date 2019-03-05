@@ -2,8 +2,8 @@
   <div>
     <p class="address-viewer__help">
       {{ 'coinpayments-form.ready-cp' | globalize({
-        amount: formatMoney(asset.amount),
-        asset: asset.asset
+        amount: formatMoney(depositDetails.amount),
+        asset: asset.code
       }) }}
     </p>
     <key-viewer :value="depositDetails.address" />
@@ -21,25 +21,14 @@ import TimeoutTicker from './coinpayments-timeout-ticker'
 import { formatMoney } from '@/vue/filters/formatMoney'
 
 export default {
-  name: '',
+  name: 'address-viewer',
   components: {
     KeyViewer,
     TimeoutTicker,
   },
-  mixins: [],
   props: {
     depositDetails: { type: Object, required: true },
     asset: { type: Object, required: true },
-  },
-  data () {
-    return {}
-  },
-  computed: {
-  },
-  watch: {},
-  created () {
-  },
-  destroyed () {
   },
   methods: {
     formatMoney,
