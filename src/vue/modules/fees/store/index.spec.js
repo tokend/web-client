@@ -1,23 +1,20 @@
-import { mutations, getters } from './index'
+import { mutations, actions, getters } from './index'
 import { types } from './types'
-import { filterFees } from '../helpers/filter-fees'
+import { Fee } from '../wrappers/fee'
+
+import { Wallet } from '@tokend/js-sdk'
+import * as Api from '../_api'
 
 describe('fees.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-  const accountRoleId = '5'
-  const fees = [{
-    account: {
-      id: accountId,
+  const fees = [
+    {
+      fixed: '1.000000',
     },
-    fixed: '1.000000',
-  }, {
-    accountRole: {
-      id: accountRoleId,
+    {
+      percent: '2.000000',
     },
-    fixed: '5.000000',
-  }, {
-    fixed: '7.000000',
-  }]
+  ]
 
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
@@ -30,46 +27,60 @@ describe('fees.module', () => {
       expect(state).to.deep.equal({ accountId })
     })
 
-    it('SET_ACCOUNT_ROLE_ID should properly modify state', () => {
+    it('SET_ACCOUNT_FEES should properly modify state', () => {
       const state = {
-        accountRoleId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ROLE_ID](state, accountRoleId)
-
-      expect(state).to.deep.equal({ accountRoleId })
-    })
-
-    it('SET_FEES should properly modify state', () => {
-      const state = {
-        accountId,
-        accountRoleId,
         fees: [],
       }
 
-      mutations[types.SET_FEES](state, fees)
+      mutations[types.SET_ACCOUNT_FEES](state, fees)
 
-      expect(state).to.deep.equal({
-        accountId,
-        accountRoleId,
-        fees: filterFees(fees, accountId, accountRoleId),
-      })
+      expect(state).to.deep.equal({ fees })
     })
+  })
 
-    it('CONCAT_FEES should properly modify state', () => {
-      const state = {
-        accountId,
-        accountRoleId,
-        fees: filterFees(fees, accountId, accountRoleId),
+  describe('actions', () => {
+    const config = {
+      horizonUrl: 'https://test.api.com',
+    }
+    const wallet = new Wallet(
+      'test@mail.com',
+      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
+      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
+      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
+    )
+
+    let store
+
+    beforeEach(() => {
+      store = {
+        state: {},
+        getters: {
+          accountId,
+        },
+        commit: sinon.stub(),
+        dispatch: sinon.stub(),
       }
 
-      mutations[types.CONCAT_FEES](state, fees)
+      Api.initApi(wallet, config)
+    })
 
-      expect(state).to.deep.equal({
-        accountId,
-        accountRoleId,
-        fees: filterFees(fees.concat(fees), accountId, accountRoleId),
+    it('LOAD_ACCOUNT_FEES properly commit its set of mutations', async () => {
+      sinon.stub(Api.api(), 'getWithSignature').resolves({
+        data: {
+          fees: [{ foo: 'bar' }],
+        },
       })
+
+      const expectedMutations = {
+        [types.SET_ACCOUNT_FEES]:
+        [{ foo: 'bar' }],
+      }
+
+      await actions[types.LOAD_ACCOUNT_FEES](store)
+
+      expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
+
+      Api.api().getWithSignature.restore()
     })
   })
 
@@ -81,18 +92,11 @@ describe('fees.module', () => {
         .to.equal(accountId)
     })
 
-    it('accountRoleId', () => {
-      const state = { accountRoleId }
-
-      expect(getters[types.accountRoleId](state))
-        .to.equal(accountRoleId)
-    })
-
     it('fees', () => {
       const state = { fees }
 
       expect(getters[types.fees](state))
-        .to.deep.equal(fees)
+        .to.deep.equal(fees.map(f => new Fee(f)))
     })
   })
 })

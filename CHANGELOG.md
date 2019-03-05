@@ -10,16 +10,9 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Fees module
-- Fees vuex namespaced module
-- Fee scope column to the fees table
-- Fee type, subtype & scope viewers
-- Fee record wrapper
-- Fees module, wrapper & store unit tests
-- `filterFees` helper for getting only the fees corresponding to the specific account & account role
 
 ### Changed
-- Now using new API endpoint for loading the fees
-- Now using fees module for displaying the fees on the fees page
+- Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
 
 ## [1.3.0] - 2019-03-01

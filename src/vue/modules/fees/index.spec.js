@@ -3,10 +3,15 @@ import FeesModule from './index'
 import Vuex from 'vuex'
 
 import { feesModule } from './store/index'
+import { types } from './store/types'
+
+import { Fee } from './wrappers/fee'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
+import { Wallet } from '@tokend/js-sdk'
 import * as Api from './_api'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -17,117 +22,179 @@ describe('Fees module', () => {
     config: {
       horizonUrl: 'https://test.api.com',
     },
+    wallet: new Wallet(
+      'test@mail.com',
+      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
+      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
+      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
+    ),
     assetCode: 'USD',
-    accountId: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-    accountRoleId: '5',
   }
 
+  const fees = [
+    new Fee({
+      appliedTo: {
+        asset: 'USD',
+      },
+      fixed: '1.000000',
+    }),
+    new Fee({
+      appliedTo: {
+        asset: 'BTC',
+      },
+      fixed: '2.000000',
+      percent: '3.000000',
+    }),
+    new Fee({
+      appliedTo: {
+        asset: 'USD',
+      },
+      percent: '2.000000',
+    }),
+    new Fee({
+      appliedTo: {
+        asset: 'USD',
+      },
+    }),
+  ]
+
   let store
-  let wrapper
 
   beforeEach(() => {
+    sinon.stub(feesModule.getters, types.fees).returns(fees)
+
     store = new Vuex.Store({
       modules: { 'fees': feesModule },
     })
+  })
 
-    wrapper = shallowMount(FeesModule, {
-      store,
-      localVue,
-      propsData: props,
-    })
+  afterEach(() => {
+    feesModule.getters[types.fees].restore()
   })
 
   describe('created hook', () => {
-    it('calls initApi function', () => {
-      const spy = sinon.spy(Api, 'initApi')
-
-      shallowMount(FeesModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(spy.withArgs(props.config).calledOnce).to.be.true
-
-      spy.restore()
+    beforeEach(() => {
+      sinon.stub(Api, 'initApi')
+      sinon.stub(FeesModule.methods, 'setAccountId')
+      sinon.stub(FeesModule.methods, 'loadFees')
     })
 
-    it('calls setAccountId method', () => {
-      const spy = sinon.spy(FeesModule.methods, 'setAccountId')
-
-      shallowMount(FeesModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(spy.withArgs(props.accountId).calledOnce).to.be.true
-
-      spy.restore()
+    afterEach(() => {
+      Api.initApi.restore()
+      FeesModule.methods.setAccountId.restore()
+      FeesModule.methods.loadFees.restore()
     })
 
-    it('calls setAccountRoleId method', () => {
-      const spy = sinon.spy(FeesModule.methods, 'setAccountRoleId')
-
-      shallowMount(FeesModule, {
+    it('calls initApi function with correct params', async () => {
+      await shallowMount(FeesModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(spy.withArgs(props.accountRoleId).calledOnce).to.be.true
+      expect(Api.initApi).to.has.been.calledOnceWithExactly(
+        props.wallet, props.config
+      )
+    })
 
-      spy.restore()
+    it('calls setAccountId method with correct params', async () => {
+      await shallowMount(FeesModule, {
+        localVue,
+        store,
+        propsData: props,
+      })
+
+      expect(FeesModule.methods.setAccountId)
+        .to.have.been.calledOnceWithExactly(props.wallet.accountId)
+    })
+
+    it('calls loadFees method', async () => {
+      await shallowMount(FeesModule, {
+        localVue,
+        store,
+        propsData: props,
+      })
+
+      expect(FeesModule.methods.loadFees)
+        .to.have.been.calledOnce
     })
   })
 
-  describe('computed property', () => {
-    describe('firstPageLoader', () => {
-      it('returns an instance of loadFeesFirstPage method', async () => {
-        const spy = sinon.stub(wrapper.vm, 'loadFeesFirstPage').resolves()
+  describe('component', () => {
+    let wrapper
 
-        await wrapper.vm.firstPageLoader()
+    beforeEach(() => {
+      sinon.stub(FeesModule, 'created').resolves()
 
-        expect(spy.withArgs(props.assetCode).calledOnce).to.be.true
-
-        spy.restore()
+      wrapper = shallowMount(FeesModule, {
+        store,
+        localVue,
+        propsData: props,
       })
     })
-  })
 
-  describe('method', () => {
-    describe('loadFeesFirstPage', () => {
-      it('calls loadFees method with proper set of params', async () => {
-        const spy = sinon.stub(wrapper.vm, 'loadFees').resolves()
+    afterEach(() => {
+      FeesModule.created.restore()
+    })
 
-        await wrapper.vm.loadFeesFirstPage(props.assetCode)
+    describe('computed property', () => {
+      describe('valuableFeesByAssetCode', () => {
+        it('returns fees filtered by asset code and having fixed or percent value', () => {
+          const expectedFees = [
+            new Fee({
+              appliedTo: {
+                asset: 'USD',
+              },
+              fixed: '1.000000',
+            }),
+            new Fee({
+              appliedTo: {
+                asset: 'USD',
+              },
+              percent: '2.000000',
+            }),
+          ]
 
-        expect(spy.withArgs(props.assetCode).calledOnce).to.be.true
-
-        spy.restore()
+          expect(wrapper.vm.valuableFeesByAssetCode)
+            .to.deep.equal(expectedFees)
+        })
       })
+    })
 
-      it('sets isLoaded property to true if loading was succeded', async () => {
-        sinon.stub(wrapper.vm, 'loadFees').resolves()
+    describe('method', () => {
+      describe('loadFees', () => {
+        it('calls loadAccountFees method', async () => {
+          sinon.stub(wrapper.vm, 'loadAccountFees').resolves()
 
-        await wrapper.vm.loadFeesFirstPage(props.assetCode)
+          await wrapper.vm.loadFees()
 
-        expect(wrapper.vm.isLoaded).to.be.true
+          expect(wrapper.vm.loadAccountFees).to.have.been.calledOnce
 
-        wrapper.vm.loadFees.restore()
-      })
+          wrapper.vm.loadAccountFees.restore()
+        })
 
-      it('handles the error if loading was failed', async () => {
-        sinon.stub(wrapper.vm, 'loadFees').throws()
-        const spy = sinon.stub(ErrorHandler, 'processWithoutFeedback')
+        it('sets isLoaded property to true if loading was succeded', async () => {
+          sinon.stub(wrapper.vm, 'loadAccountFees').resolves()
 
-        await wrapper.vm.loadFeesFirstPage(props.assetCode)
+          await wrapper.vm.loadFees()
 
-        expect(wrapper.vm.isLoadFailed).to.be.true
-        expect(spy.calledOnce).to.be.true
+          expect(wrapper.vm.isLoaded).to.be.true
 
-        wrapper.vm.loadFees.restore()
-        spy.restore()
+          wrapper.vm.loadAccountFees.restore()
+        })
+
+        it('handles the error if loading was failed', async () => {
+          sinon.stub(wrapper.vm, 'loadAccountFees').throws()
+          sinon.stub(ErrorHandler, 'processWithoutFeedback')
+
+          await wrapper.vm.loadFees()
+
+          expect(wrapper.vm.isLoadFailed).to.be.true
+          expect(ErrorHandler.processWithoutFeedback).to.have.been.calledOnce
+
+          wrapper.vm.loadAccountFees.restore()
+          ErrorHandler.processWithoutFeedback.restore()
+        })
       })
     })
   })

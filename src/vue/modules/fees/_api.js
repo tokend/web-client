@@ -3,14 +3,16 @@ import { ApiCaller } from '@tokend/js-sdk'
 let _api = null
 
 /**
+ * @param {Wallet} wallet - wallet to sign the requests
  * @param {Object} config
  * @param {String} config.horizonURL - the url of the horizon server
  * (without version prefix)
  */
-export function initApi (config) {
+export function initApi (wallet, config) {
   const horizonURL = config.horizonURL
 
   _api = ApiCaller.getInstance(horizonURL)
+  _api.useWallet(wallet)
 }
 
 /**

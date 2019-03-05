@@ -374,7 +374,6 @@
         "incoming": "Incoming"
       },
       "table": {
-        "scope-th": "Scope",
         "type-th": "Type",
         "fixed-th": "Fixed",
         "percent-th": "Percent",
@@ -383,7 +382,7 @@
         "subtype-th": "Subtype"
       },
       "fees-loading-msg": "Loading your fees…",
-      "loading-error-msg": "There was an error while loading your fees.",
+      "fees-loading-error-msg": "There was an error while loading your fees.",
       "no-valuable-fees-title": "No valuable fees",
       "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
     },

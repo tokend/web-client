@@ -20,8 +20,7 @@
       <fees-module
         v-if="asset.code"
         :asset-code="asset.code"
-        :account-id="accountId"
-        :account-role-id="accountRoleId"
+        :wallet="wallet"
         :config="config"
       />
     </template>
@@ -85,8 +84,7 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
-      accountRoleId: vuexTypes.accountRoleId,
+      wallet: vuexTypes.wallet,
     }),
   },
 

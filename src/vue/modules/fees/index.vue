@@ -2,7 +2,7 @@
   <div class="fees">
     <template v-if="assetCode">
       <template v-if="isLoaded">
-        <fees-table :fees="fees" :asset-code="assetCode" />
+        <fees-table :fees="valuableFeesByAssetCode" :asset-code="assetCode" />
       </template>
 
       <template v-else-if="isLoadFailed">
@@ -14,37 +14,27 @@
       <template v-else>
         <load-spinner message-id="fees.fees-loading-msg" />
       </template>
-
-      <div class="fees__collection-loader-wrp">
-        <collection-loader
-          v-if="!isLoadFailed"
-          v-show="isLoaded"
-          :first-page-loader="firstPageLoader"
-          @first-page-load="setFees"
-          @next-page-load="concatFees"
-        />
-      </div>
     </template>
   </div>
 </template>
 
 <script>
-import CollectionLoader from '@/vue/common/CollectionLoader'
 import FeesTable from './components/fees-table'
 import LoadSpinner from '@/vue/common/Loader'
 
+import { Wallet } from '@tokend/js-sdk'
+
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 
 import { initApi } from './_api'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'fees-module',
   components: {
     LoadSpinner,
     FeesTable,
-    CollectionLoader,
   },
   props: {
     /**
@@ -55,17 +45,13 @@ export default {
       type: Object,
       required: true,
     },
+    wallet: {
+      type: Wallet,
+      required: true,
+    },
     assetCode: {
       type: String,
       default: '',
-    },
-    accountId: {
-      type: String,
-      required: true,
-    },
-    accountRoleId: {
-      type: String,
-      required: true,
     },
   },
 
@@ -78,39 +64,34 @@ export default {
     ...mapGetters('fees', {
       fees: types.fees,
     }),
-    firstPageLoader () {
-      const assetCode = this.assetCode // HACK: passing this.assetCode directly
-      // to function will lead to losing reactivity
 
-      return _ => this.loadFeesFirstPage(assetCode)
+    valuableFeesByAssetCode () {
+      return this.fees.filter(item => {
+        return item.asset === this.assetCode &&
+          (Number(item.fixed) || Number(item.percent))
+      })
     },
   },
 
-  created () {
-    initApi(this.config)
-
-    this.setAccountId(this.accountId)
-    this.setAccountRoleId(this.accountRoleId)
+  async created () {
+    initApi(this.wallet, this.config)
+    this.setAccountId(this.wallet.accountId)
+    await this.loadFees()
   },
 
   methods: {
     ...mapMutations('fees', {
       setAccountId: types.SET_ACCOUNT_ID,
-      setAccountRoleId: types.SET_ACCOUNT_ROLE_ID,
-      setFees: types.SET_FEES,
-      concatFees: types.CONCAT_FEES,
     }),
 
     ...mapActions('fees', {
-      loadFees: types.LOAD_FEES,
+      loadAccountFees: types.LOAD_ACCOUNT_FEES,
     }),
 
-    async loadFeesFirstPage (assetCode) {
-      this.isLoaded = false
+    async loadFees () {
       try {
-        const response = await this.loadFees(assetCode)
+        await this.loadAccountFees()
         this.isLoaded = true
-        return response
       } catch (e) {
         this.isLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)

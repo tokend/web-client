@@ -2,14 +2,11 @@
   <div class="fees-table">
     <div
       v-if="fees.length"
-      class="fees-table__wrp app__table app__table--with-shadow"
+      class="app__table app__table--with-shadow"
     >
       <table>
         <thead>
           <tr>
-            <th :title="'fees.table.scope-th' | globalize">
-              {{ 'fees.table.scope-th' | globalize }}
-            </th>
             <th :title="'fees.table.type-th' | globalize">
               {{ 'fees.table.type-th' | globalize }}
             </th>
@@ -36,10 +33,6 @@
             v-for="(fee, i) in fees"
             :key="i"
           >
-            <td>
-              <fee-scope-viewer :fee="fee" />
-            </td>
-
             <td>
               <fee-type-viewer :fee="fee" />
             </td>
@@ -82,7 +75,6 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import FeeScopeViewer from './viewers/fee-scope-viewer'
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
 
@@ -90,7 +82,6 @@ export default {
   name: 'fees-table',
   components: {
     NoDataMessage,
-    FeeScopeViewer,
     FeeTypeViewer,
     FeeSubtypeViewer,
   },
