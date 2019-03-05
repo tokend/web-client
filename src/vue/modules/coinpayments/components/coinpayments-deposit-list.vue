@@ -1,7 +1,7 @@
 <template>
-  <div class="coinpayments-deposit-list">
+  <div class="deposit-list">
     <template v-if="isLoaded && !isFailed">
-      <table class="coinpayments-deposit-list__table">
+      <table class="deposit-list__table">
         <deposit-list-item
           v-for="(item, index) in list"
           :item="item"
@@ -10,7 +10,7 @@
         />
       </table>
     </template>
-    <div class="coinpayments-deposit-list__collection-loader-wrp">
+    <div class="deposit-list__collection-loader-wrp">
       <collection-loader
         v-show="list.length"
         :first-page-loader="firstPageLoader"
@@ -33,19 +33,20 @@
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 import DepositListItem from './coinpayments-deposit-list-item'
+import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { types } from '../store/types'
 
 export default {
-  name: '',
+  name: 'deposit-list',
   components: {
     DepositListItem,
     CollectionLoader,
     Loader,
   },
-  mixins: [],
   props: {
+    accountId: { type: String, required: true },
   },
   data () {
     return {
@@ -55,30 +56,26 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('coinpayments', {}),
     firstPageLoader () {
       return _ => this.loadFirstPage()
     },
-  },
-  watch: {},
-  async created () {
-  },
-  destroyed () {
   },
   methods: {
     ...mapActions('coinpayments', {
       loadPendingIssuances: types.LOAD_PENDING_ISSUANCES,
     }),
-    setPendingIssuances (data) {
-      this.list = data
+    setPendingIssuances (records) {
+      this.list = records.map(item => new IssuanceRecord(item))
     },
-    concatPendingIssuances (data) {
-      this.list = [...this.list, ...data]
+    concatPendingIssuances (records) {
+      this.list = this.list.concat(records
+        .map(item => new IssuanceRecord(item))
+      )
     },
     async loadFirstPage () {
       this.isLoaded = false
       try {
-        const response = await this.loadPendingIssuances()
+        const response = await this.loadPendingIssuances(this.accountId)
         this.isLoaded = true
         return response
       } catch (e) {
@@ -92,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .coinpayments-deposit-list__table {
+  .deposit-list__table {
     width: 100%;
     border-collapse: collapse;
   }

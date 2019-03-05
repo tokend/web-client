@@ -1,5 +1,6 @@
 import { OpRecord } from '../op-record'
 import _get from 'lodash/get'
+import moment from 'moment'
 
 export class IssuanceRecord extends OpRecord {
   constructor (record, detailsOrAccountId) {
@@ -13,6 +14,7 @@ export class IssuanceRecord extends OpRecord {
     this.subject = record.reference
     this.date = record.ledgerCloseTime
 
+    this.timeLeft = this._calculateTimeout()
     // TODO: fix (merge conflict quick fix)
     if (typeof detailsOrAccountId === 'string') {
       this.accountId = detailsOrAccountId
@@ -27,6 +29,17 @@ export class IssuanceRecord extends OpRecord {
     this.blockNumber = _get(record, 'externalDetails.blockNumber')
     this.outIndex = _get(record, 'externalDetails.outIndex')
     this.txHash = _get(record, 'externalDetails.txHash')
+  }
+
+  _calculateTimeout () {
+    const timeout = _get(this._record, 'externalDetails.timeout')
+    const margin = 600 // seconds
+
+    const now = moment()
+    const ledgerCloseTime = moment(_get(this._record, 'ledgerCloseTime'))
+    const diff = now.diff(ledgerCloseTime) / 1000
+
+    return timeout - diff - margin
   }
 
   get isIncoming () {

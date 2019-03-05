@@ -1,46 +1,24 @@
 import { types } from './types'
-// import { api } from '../_api'
-
-// const HORIZON_VERSION_PREFIX = 'v3'
-
-const hardCode = {
-  address: 'ADRESS',
-  amount: '123',
-  asset: 'BTC',
-  confirms_needed: '2',
-  timeout: +new Date() + 9000,
-  txn_id: '9379992',
-}
-export const state = {
-}
-
-export const mutations = {
-  [types.SET_DEPOSIT_DETAILS] (state, data) {
-    state.depositDetails[data.balanceId] = data.depositDetails
-  },
-}
+import { api } from '../_api'
 
 export const actions = {
-  [types.LOAD_DEPOSIT] ({ getters }) {
-    return hardCode
+  async [types.LOAD_DEPOSIT] ({ commit }, params) {
+    const endpoint = `/integrations/coinpayments/deposit`
+    const { data: response } = await api().postWithSignature(endpoint, params)
+    return response.extras
   },
-  [types.LOAD_PENDING_ISSUANCES] () {
-    return { data: [hardCode, hardCode, hardCode, hardCode, hardCode, hardCode,
-      hardCode, hardCode, hardCode, hardCode],
-    fetchNext: function () {
-      return { data: [hardCode, hardCode] }
-    },
+  async [types.LOAD_PENDING_ISSUANCES] ({ commit }, accountId) {
+    const params = {
+      asset: '',
+      order: 'desc',
     }
+    const endpoint = `/operations/accounts/${accountId}/payments`
+    const { data: response } = await api().getWithSignature(endpoint, params)
+    return response
   },
-}
-
-export const getters = {
 }
 
 export const coinpaymentsModule = {
   namespaced: true,
-  state,
-  getters,
   actions,
-  mutations,
 }

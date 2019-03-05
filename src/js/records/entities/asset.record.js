@@ -19,6 +19,7 @@ export class AssetRecord {
     this.details = record.details
     this.name = _get(record, 'details.name')
     this.externalSystemType = _get(record, 'details.externalSystemType')
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
 
     this.logo = _get(record, 'details.logo')
     this.logoKey = _get(record, 'details.logo.key')
