@@ -7,6 +7,6 @@ export class WithdrawalDetailsRequestRecord extends RequestRecord {
     this.amount = _get(record, 'details.createWithdraw.amount')
     this.fixedFee = _get(record, 'details.createWithdraw.fixed_fee')
     this.percentFee = _get(record, 'details.createWithdraw.percent_fee')
-    this.address = _get(record, 'details.createWithdraw.external_details.address')
+    this.address = _get(record, 'details.createWithdraw.externalDetails.address')
   }
 }

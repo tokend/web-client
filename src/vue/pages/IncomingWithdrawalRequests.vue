@@ -10,7 +10,7 @@
           <withdrawal-request-details
             :request="selectedRequest"
             :is-pending="isRequestRejected"
-            @approve="isUpdateMode = true"
+            @approve="approveRequest"
             @reject="rejectRequest()"
           />
         </drawer>
@@ -20,14 +20,14 @@
             <thead>
               <tr>
                 <!-- eslint-disable max-len -->
+                <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
+                  {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
+                </th>
                 <th :title="'incoming-withdrawal-requests.amount-header' | globalize">
                   {{ 'incoming-withdrawal-requests.amount-header' | globalize }}
                 </th>
                 <th :title="'incoming-withdrawal-requests.request-state-header' | globalize">
                   {{ 'incoming-withdrawal-requests.request-state-header' | globalize }}
-                </th>
-                <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
-                  {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
                 </th>
                 <!-- eslint-enable max-len -->
               </tr>
@@ -38,6 +38,10 @@
                 v-for="(request, index) in requestsHistory"
                 :key="index"
               >
+                <td :title="request.requestor">
+                  {{ request.requestor }}
+                </td>
+
                 <td :title="request.amount | formatMoney">
                   {{ request.amount | formatMoney }}
                 </td>
@@ -76,9 +80,6 @@
                 </td>
                 <!-- eslint-enable max-len -->
 
-                <td :title="request.requestor">
-                  {{ request.requestor }}
-                </td>
                 <td>
                   <a
                     class="request-details-btn"
@@ -185,10 +186,10 @@ export default {
       this.isDetailsDrawerShown = false
     },
 
-    getFirstPageLoader (accountId) {
+    async getFirstPageLoader (accountId) {
       return function () {
         return Sdk.horizon.request.getAllForWithdrawals({
-          requestor: accountId,
+          reviewer: accountId,
         })
       }
     },
@@ -211,6 +212,23 @@ export default {
       this.isDetailsDrawerShown = true
     },
 
+    async approveRequest () {
+      this.isRequestRejected = true
+      try {
+        const action = base.xdr.ReviewRequestOpAction.approve().value
+        await this._reviewWithdraw({ action }, this.selectedRequest)
+        const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
+        this.requestsHistory.splice(this.selectedIndex, 1,
+          RecordWrapper.request(data)
+        )
+
+        Bus.success('incoming-withdrawal-requests.request-approved-msg')
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.isRequestRejected = false
+    },
+
     async rejectRequest () {
       this.isRequestRejected = true
       try {
@@ -227,6 +245,7 @@ export default {
       }
       this.isRequestRejected = false
     },
+
     _reviewWithdraw ({ action, reason = '' }, ...requests) {
       const operations = requests.map(function (item) {
         const opts = {
@@ -243,7 +262,7 @@ export default {
         }
         return base.ReviewRequestBuilder.reviewWithdrawRequest({
           ...opts,
-          requestDetails: '{}',
+          requestDetails: JSON.stringify(opts),
         })
       })
       return Sdk.horizon.transactions.submitOperations(...operations)

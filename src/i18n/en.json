@@ -707,7 +707,8 @@
       "details-btn": "Details",
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
-      "request-rejected-msg": "Your request was successfully rejected"
+      "request-rejected-msg": "Your request was successfully rejected",
+      "request-approved-msg": "Your request was successfully approved"
     },
 
     "asset-details": {
@@ -769,7 +770,9 @@
       "amount": "Amount",
       "fixed-fee": "Fixed fee",
       "percent-fee": "Percent fee",
-      "total-fee": "Total fee"
+      "total-fee": "Total fee",
+      "address": "Address",
+      "created": "Created"
     },
 
     "file-field": {
