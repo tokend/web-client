@@ -39,8 +39,7 @@ export const actions = {
 
 export const getters = {
   [types.accountId]: state => state.accountId,
-  [types.issuances]: state => state.issuances
-    .map(i => new Issuance(i, state.accountId)),
+  [types.issuances]: state => state.issuances.map(i => new Issuance(i)),
 }
 
 export const issuancesExplorerModule = {

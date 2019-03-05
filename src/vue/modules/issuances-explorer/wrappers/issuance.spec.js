@@ -3,7 +3,6 @@ import { Issuance } from './issuance'
 describe('Issuance', () => {
   describe('constructor', () => {
     it('should properly parse record', () => {
-      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
       const record = {
         id: '1',
         createdAt: '2019-02-26T15:09:01Z',
@@ -19,7 +18,7 @@ describe('Issuance', () => {
         },
       }
 
-      const result = new Issuance(record, accountId)
+      const result = new Issuance(record)
 
       expect(result.id).to.equal('1')
       expect(result.amount).to.equal('100.000000')
