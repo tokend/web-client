@@ -97,31 +97,28 @@ describe('Issuances explorer module', () => {
 
     describe('watcher', () => {
       describe('shouldUpdate', () => {
-        it('should call initFirstPageLoader method if the passed value is true', (done) => {
+        it('should call initFirstPageLoader method if the passed value is true', async () => {
           sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 
           wrapper.setProps({ shouldUpdate: true })
 
-          wrapper.vm.$nextTick(_ => {
-            expect(wrapper.vm.initFirstPageLoader)
-              .to.have.been.calledOnce
+          await wrapper.vm.$nextTick()
 
-            wrapper.vm.initFirstPageLoader.restore()
-            done()
-          })
+          expect(wrapper.vm.initFirstPageLoader).to.have.been.calledOnce
+
+          wrapper.vm.initFirstPageLoader.restore()
         })
 
-        it('should not call initFirstPageLoader method if the passed value is false', (done) => {
+        it('should not call initFirstPageLoader method if the passed value is false', async () => {
           sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 
           wrapper.setProps({ shouldUpdate: false })
 
-          wrapper.vm.$nextTick(_ => {
-            expect(wrapper.vm.initFirstPageLoader)
-              .to.have.not.been.called
-            wrapper.vm.initFirstPageLoader.restore()
-            done()
-          })
+          await wrapper.vm.$nextTick()
+
+          expect(wrapper.vm.initFirstPageLoader).to.have.not.been.called
+
+          wrapper.vm.initFirstPageLoader.restore()
         })
       })
     })
