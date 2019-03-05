@@ -2,39 +2,49 @@
   <div class="coinpayments">
     <coinpayments-form
       :asset="asset"
+      :balance-details="balanceDetails"
     />
     <div class="coinpayments__deposit-list-wrp">
-      <deposit-list />
+      <deposit-list
+        :account-id="accountId"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import coinpaymentsForm from './components/coinpayments-form'
+import CoinpaymentsForm from './components/coinpayments-form'
 import DepositList from './components/coinpayments-deposit-list'
 
+import { Wallet } from '@tokend/js-sdk'
+import { initApi } from './_api'
+
 export default {
-  name: '',
+  name: 'coinpayments',
   components: {
-    coinpaymentsForm,
+    CoinpaymentsForm,
     DepositList,
   },
-  mixins: [],
   props: {
+    wallet: {
+      type: Wallet,
+      required: true,
+    },
+    /**
+     * @property config - the config for component to use
+     * @property config.horizonURL - the url of horizon server (without version)
+     */
+    config: {
+      type: Object,
+      required: true,
+    },
     asset: { type: Object, required: true },
+    balanceDetails: { type: Object, required: true },
+    accountId: { type: String, required: true },
   },
-  data () {
-    return {
-    }
-  },
-  computed: {
-  },
-  watch: {},
   created () {
+    initApi(this.wallet, this.config)
   },
-  destroyed () {
-  },
-  methods: {},
 }
 </script>
 

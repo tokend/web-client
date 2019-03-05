@@ -80,19 +80,6 @@
         <transfer :asset-to-transfer="currentAsset" />
       </template>
     </drawer>
-
-    <drawer :is-shown.sync="depositCoinPay">
-      <template slot="heading">
-        Deposit Coinpayments
-      </template>
-      <coinpayments
-        :asset="{
-          balanceId: '3kf4f4fo5o5oo',
-          asset: 'BTC',
-          amount: '1000000',
-        }"
-      />
-    </drawer>
   </div>
 </template>
 
@@ -122,11 +109,9 @@ export default {
     Loader,
     Drawer,
     SubmoduleImporter,
-    Coinpayments,
   },
   data: () => ({
     currentAsset: null,
-    depositCoinPay: false,
     isLoading: false,
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,

@@ -4,7 +4,7 @@
       class="deposit-list-item__tr"
       :class="{ 'deposit-list-item__tr--dark': index%2 }">
       <td class="deposit-list-item__timeout-ticker">
-        <timeout-ticker :timeout="+item.timeout" />
+        <timeout-ticker :timeout="timeLeft" />
       </td>
       <td class="deposit-list-item__amount">
         {{ { value: item.amount, currency: item.asset } | formatMoney }}
@@ -32,12 +32,11 @@
 import TimeoutTicker from './coinpayments-timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
 export default {
-  name: '',
+  name: 'deposit-list-item',
   components: {
     TimeoutTicker,
     KeyViewer,
   },
-  mixins: [],
   props: {
     item: { type: Object, required: true },
     index: { type: Number, required: true },
@@ -47,13 +46,6 @@ export default {
       isAddressViewerShown: false,
     }
   },
-  computed: {},
-  watch: {},
-  created () {
-  },
-  destroyed () {
-  },
-  methods: {},
 }
 </script>
 
@@ -61,7 +53,7 @@ export default {
   @import '~@scss/variables';
 
   .deposit-list-item {
-      td{
+      td {
         padding: 0.5rem 1rem;
       }
     }

@@ -23,10 +23,19 @@
         </div>
 
         <template v-for="item in assets">
+          <coinpayments
+            v-if="item === selectedAsset && item.isCoinpayments"
+            :asset="item"
+            :balance-details="balanceDetails"
+            :wallet="wallet"
+            :account-id="accountId"
+            :config="config"
+            :key="item.code"
+          />
           <address-loader
             @ready="enableForm()"
             :key="item.code"
-            v-if="item === selectedAsset"
+            v-if="item === selectedAsset && !item.isCoinpayments"
             :asset-code="selectedAsset.code"
             :external-system-type="selectedAsset.externalSystemType"
           />
@@ -62,8 +71,11 @@
 <script>
 import Loader from '@/vue/common/Loader'
 import AddressLoader from './DepositForm/AddressLoader'
+import Coinpayments from '@modules/coinpayments'
 
 import FormMixin from '@/vue/mixins/form.mixin'
+
+import config from '@/config'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { mapGetters } from 'vuex'
@@ -75,12 +87,16 @@ export default {
   components: {
     Loader,
     AddressLoader,
+    Coinpayments,
   },
   mixins: [FormMixin],
   props: {
   },
   data () {
     return {
+      config: {
+        horizonURL: config.HORIZON_SERVER,
+      },
       isLoaded: false,
       isLoadingFailed: false,
       assets: [],
@@ -90,7 +106,14 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.account,
+      vuexTypes.wallet,
     ]),
+    balanceDetails () {
+      return this.account.balances.find(item => {
+        return item.asset.id === this.selectedAsset.code
+      })
+    },
   },
   watch: {
     'selectedAsset.code' () {

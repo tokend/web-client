@@ -71,13 +71,14 @@ import {
   amountRange,
 } from '@validators'
 export default {
-  name: '',
+  name: 'coinpayments-form',
   components: {
     AddressViewer,
   },
   mixins: [FormMixin],
   props: {
     asset: { type: Object, required: true },
+    balanceDetails: { type: Object, required: true },
   },
   data () {
     return {
@@ -100,12 +101,6 @@ export default {
       },
     }
   },
-  computed: {},
-  watch: {},
-  created () {
-  },
-  destroyed () {
-  },
   methods: {
     ...mapActions('coinpayments', {
       loadDeposit: types.LOAD_DEPOSIT,
@@ -114,7 +109,12 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        this.depositDetails = await this.loadDeposit()
+        this.depositDetails = await this.loadDeposit(
+          {
+            amount: this.form.amount,
+            balance: this.balanceDetails.id,
+          }
+        )
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
         this.isFailed = true
