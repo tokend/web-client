@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Fees module
+- User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
 
 ### Changed
 - Now using new account endpoint for loading the fees
