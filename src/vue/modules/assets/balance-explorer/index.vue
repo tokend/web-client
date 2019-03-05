@@ -3,7 +3,7 @@
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
         <template slot="heading">
-          {{ 'balance-explorer.drawer-title' | globalize }}
+          {{ 'assets.drawer-title' | globalize }}
         </template>
         <asset-attributes-viewer
           :asset="selectedAsset"
@@ -22,12 +22,12 @@
 
     <template v-else-if="isLoadFailed">
       <p class="balance-explorer__error-msg">
-        {{ 'balance-explorer.loading-error-msg' | globalize }}
+        {{ 'assets.loading-error-msg' | globalize }}
       </p>
     </template>
 
     <template v-else>
-      <load-spinner message-id="balance-explorer.loading-msg" />
+      <load-spinner message-id="assets.balances-loading-msg" />
     </template>
   </div>
 </template>

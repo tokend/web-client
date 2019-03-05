@@ -1011,6 +1011,7 @@
     "assets": {
       "balances-loading-msg": "Loading your balances…",
       "assets-loading-msg": "Loading assets…",
+      "loading-error-msg": "There was an error while loading.",
       "balance-title": "Balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
