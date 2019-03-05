@@ -20,17 +20,14 @@
             <thead>
               <tr>
                 <!-- eslint-disable max-len -->
-                <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
-                  {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
+                <th :title="'incoming-withdrawal-requests.amount-header' | globalize">
+                  {{ 'incoming-withdrawal-requests.amount-header' | globalize }}
                 </th>
                 <th :title="'incoming-withdrawal-requests.request-state-header' | globalize">
                   {{ 'incoming-withdrawal-requests.request-state-header' | globalize }}
                 </th>
-                <th :title="'incoming-withdrawal-requests.created-header' | globalize">
-                  {{ 'incoming-withdrawal-requests.created-header' | globalize }}
-                </th>
-                <th :title="'incoming-withdrawal-requests.last-updated-header' | globalize">
-                  {{ 'incoming-withdrawal-requests.last-updated-header' | globalize }}
+                <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
+                  {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
                 </th>
                 <!-- eslint-enable max-len -->
               </tr>
@@ -41,8 +38,8 @@
                 v-for="(request, index) in requestsHistory"
                 :key="index"
               >
-                <td :title="request.requestor">
-                  {{ request.requestor }}
+                <td :title="request.amount | formatMoney">
+                  {{ request.amount | formatMoney }}
                 </td>
 
                 <td
@@ -79,11 +76,8 @@
                 </td>
                 <!-- eslint-enable max-len -->
 
-                <td :title="request.createdAt | formatCalendar">
-                  {{ request.createdAt | formatCalendar }}
-                </td>
-                <td :title="request.updatedAt | formatCalendar">
-                  {{ request.updatedAt | formatCalendar }}
+                <td :title="request.requestor">
+                  {{ request.requestor }}
                 </td>
                 <td>
                   <a

@@ -701,6 +701,7 @@
       "loading-error-msg": "There was an error while loading.",
       "requestor-header": "Requestor",
       "request-state-header": "Request state",
+      "amount-header": "Amount",
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
