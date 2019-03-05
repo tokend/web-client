@@ -17,6 +17,9 @@ for further information about branching and tagging conventions.
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
 
+### Fixed
+- Sidebar displaying in the Safari browser on the small screens
+
 ## [1.3.0] - 2019-03-01
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD
