@@ -584,7 +584,7 @@
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded"
     },
 
-    "issuances-explorer": {
+    "issuance-explorer": {
       "table": {
         "counterparty-th": "Counterparty",
         "amount-th": "Amount",

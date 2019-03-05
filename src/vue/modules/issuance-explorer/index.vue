@@ -1,20 +1,20 @@
 <template>
-  <div class="issuances-explorer">
+  <div class="issuance-explorer">
     <template v-if="isLoaded">
       <issuances-table :issuances="issuances" />
     </template>
 
     <template v-else-if="isLoadFailed">
-      <p class="issuances-explorer__error-msg">
-        {{ 'issuances-explorer.load-failed-msg' | globalize }}
+      <p class="issuance-explorer__error-msg">
+        {{ 'issuance-explorer.load-failed-msg' | globalize }}
       </p>
     </template>
 
     <template v-else>
-      <load-spinner message-id="issuances-explorer.loading-msg" />
+      <load-spinner message-id="issuance-explorer.loading-msg" />
     </template>
 
-    <div class="issuances-explorer__collection-loader-wrp">
+    <div class="issuance-explorer__collection-loader-wrp">
       <collection-loader
         v-show="isLoaded"
         :first-page-loader="firstPageLoader"
@@ -44,7 +44,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'issuances-explorer-module',
+  name: 'issuance-explorer-module',
   components: {
     LoadSpinner,
     IssuancesTable,
@@ -77,7 +77,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('issuances-explorer', {
+    ...mapGetters('issuance-explorer', {
       accountId: types.accountId,
       issuances: types.issuances,
     }),
@@ -99,12 +99,12 @@ export default {
     this.initFirstPageLoader()
   },
   methods: {
-    ...mapMutations('issuances-explorer', {
+    ...mapMutations('issuance-explorer', {
       setAccountId: types.SET_ACCOUNT_ID,
       setIssuances: types.SET_ISSUANCES,
       concatIssuances: types.CONCAT_ISSUANCES,
     }),
-    ...mapActions('issuances-explorer', {
+    ...mapActions('issuance-explorer', {
       loadIssuances: types.LOAD_ISSUANCES,
     }),
 
@@ -128,7 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.issuances-explorer__collection-loader-wrp {
+.issuance-explorer__collection-loader-wrp {
   margin-top: 1rem;
 }
 </style>

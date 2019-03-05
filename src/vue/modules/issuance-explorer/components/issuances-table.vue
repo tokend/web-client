@@ -6,20 +6,20 @@
           <thead>
             <tr>
               <!-- eslint-disable-next-line max-len -->
-              <th :title="'issuances-explorer.table.counterparty-th' | globalize">
-                {{ 'issuances-explorer.table.counterparty-th' | globalize }}
+              <th :title="'issuance-explorer.table.counterparty-th' | globalize">
+                {{ 'issuance-explorer.table.counterparty-th' | globalize }}
               </th>
-              <th :title="'issuances-explorer.table.amount-th' | globalize">
-                {{ 'issuances-explorer.table.amount-th' | globalize }}
+              <th :title="'issuance-explorer.table.amount-th' | globalize">
+                {{ 'issuance-explorer.table.amount-th' | globalize }}
               </th>
-              <th :title="'issuances-explorer.table.asset-code-th' | globalize">
-                {{ 'issuances-explorer.table.asset-code-th' | globalize }}
+              <th :title="'issuance-explorer.table.asset-code-th' | globalize">
+                {{ 'issuance-explorer.table.asset-code-th' | globalize }}
               </th>
-              <th :title="'issuances-explorer.table.date-th' | globalize">
-                {{ 'issuances-explorer.table.date-th' | globalize }}
+              <th :title="'issuance-explorer.table.date-th' | globalize">
+                {{ 'issuance-explorer.table.date-th' | globalize }}
               </th>
-              <th :title="'issuances-explorer.table.reference-th' | globalize">
-                {{ 'issuances-explorer.table.reference-th' | globalize }}
+              <th :title="'issuance-explorer.table.reference-th' | globalize">
+                {{ 'issuance-explorer.table.reference-th' | globalize }}
               </th>
             </tr>
           </thead>
@@ -54,8 +54,8 @@
     <template v-else>
       <no-data-message
         icon-name="trending-up"
-        title-id="issuances-explorer.table.no-issuances-title"
-        message-id="issuances-explorer.table.no-issuances-msg"
+        title-id="issuance-explorer.table.no-issuances-title"
+        message-id="issuance-explorer.table.no-issuances-msg"
       />
     </template>
   </div>

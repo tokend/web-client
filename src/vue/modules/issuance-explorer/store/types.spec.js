@@ -1,7 +1,7 @@
-import { issuancesExplorerModule } from './index'
+import { issuanceExplorerModule } from './index'
 import { types } from './types'
 
-describe('issuances explorer module types unit tests', () => {
+describe('issuance explorer module types unit tests', () => {
   const getModuleKeys = (module) => {
     return Object.keys({
       ...module.actions,
@@ -11,14 +11,14 @@ describe('issuances explorer module types unit tests', () => {
   }
 
   it('every entity in module should be mentioned in vuex-types', () => {
-    for (const key of getModuleKeys(issuancesExplorerModule)) {
+    for (const key of getModuleKeys(issuanceExplorerModule)) {
       expect(types).to.have.property(key)
     }
   })
 
   it('every key described in vuex-types should be a real vuex-entity', () => {
     const moduleKeys = [
-      ...getModuleKeys(issuancesExplorerModule),
+      ...getModuleKeys(issuanceExplorerModule),
     ]
 
     for (const key of Object.keys(types)) {

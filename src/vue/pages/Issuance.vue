@@ -45,7 +45,7 @@
       />
     </drawer>
 
-    <issuances-explorer-module
+    <issuance-explorer-module
       :wallet="wallet"
       :config="config"
       :should-update.sync="isIssuanceCreated"
@@ -57,7 +57,7 @@
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 
-import IssuancesExplorerModule from '@modules/issuances-explorer'
+import IssuanceExplorerModule from '@modules/issuance-explorer'
 
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
@@ -74,7 +74,7 @@ export default {
   components: {
     Drawer,
     TopBar,
-    IssuancesExplorerModule,
+    IssuanceExplorerModule,
     IssuanceForm,
     PreIssuanceForm,
   },

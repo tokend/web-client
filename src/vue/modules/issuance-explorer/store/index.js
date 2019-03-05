@@ -42,7 +42,7 @@ export const getters = {
   [types.issuances]: state => state.issuances.map(i => new Issuance(i)),
 }
 
-export const issuancesExplorerModule = {
+export const issuanceExplorerModule = {
   namespaced: true,
   state,
   getters,

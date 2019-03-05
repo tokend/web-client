@@ -7,7 +7,7 @@ import { Issuance } from '../wrappers/issuance'
 
 import * as Api from '../_api'
 
-describe('issuances-explorer.module', () => {
+describe('issuance-explorer.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
   const issuances = [
     {

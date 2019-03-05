@@ -9,7 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Added
-- Issuances explorer module
+- Issuance explorer module
 
 ## [1.3.0] - 2019-03-01
 

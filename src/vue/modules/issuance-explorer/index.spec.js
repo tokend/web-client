@@ -1,8 +1,8 @@
-import IssuancesExplorerModule from './index'
+import IssuanceExplorerModule from './index'
 
 import Vuex from 'vuex'
 
-import { issuancesExplorerModule } from './store/index'
+import { issuanceExplorerModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
@@ -14,7 +14,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Issuances explorer module', () => {
+describe('Issuance explorer module', () => {
   const props = {
     config: {
       horizonUrl: 'https://test.api.com',
@@ -32,7 +32,7 @@ describe('Issuances explorer module', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: { 'issuances-explorer': issuancesExplorerModule },
+      modules: { 'issuance-explorer': issuanceExplorerModule },
     })
   })
 
@@ -40,7 +40,7 @@ describe('Issuances explorer module', () => {
     it('calls initApi function', () => {
       sinon.stub(Api, 'initApi')
 
-      shallowMount(IssuancesExplorerModule, {
+      shallowMount(IssuanceExplorerModule, {
         localVue,
         store,
         propsData: props,
@@ -53,34 +53,34 @@ describe('Issuances explorer module', () => {
     })
 
     it('calls setAccountId method', () => {
-      sinon.stub(IssuancesExplorerModule.methods, 'setAccountId')
+      sinon.stub(IssuanceExplorerModule.methods, 'setAccountId')
 
-      shallowMount(IssuancesExplorerModule, {
+      shallowMount(IssuanceExplorerModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(IssuancesExplorerModule.methods.setAccountId
+      expect(IssuanceExplorerModule.methods.setAccountId
         .withArgs(props.wallet.accountId)
       ).to.have.been.calledOnce
 
-      IssuancesExplorerModule.methods.setAccountId.restore()
+      IssuanceExplorerModule.methods.setAccountId.restore()
     })
 
     it('calls initFirstPageLoader method', () => {
-      sinon.stub(IssuancesExplorerModule.methods, 'initFirstPageLoader')
+      sinon.stub(IssuanceExplorerModule.methods, 'initFirstPageLoader')
 
-      shallowMount(IssuancesExplorerModule, {
+      shallowMount(IssuanceExplorerModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(IssuancesExplorerModule.methods.initFirstPageLoader)
+      expect(IssuanceExplorerModule.methods.initFirstPageLoader)
         .to.have.been.calledOnce
 
-      IssuancesExplorerModule.methods.initFirstPageLoader.restore()
+      IssuanceExplorerModule.methods.initFirstPageLoader.restore()
     })
   })
 
@@ -88,7 +88,7 @@ describe('Issuances explorer module', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(IssuancesExplorerModule, {
+      wrapper = shallowMount(IssuanceExplorerModule, {
         store,
         localVue,
         propsData: props,
