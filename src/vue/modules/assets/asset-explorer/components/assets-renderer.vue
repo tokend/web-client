@@ -19,9 +19,17 @@
 
       <div class="assets-renderer__asset-list-wrp">
         <card-list-renderer
+          v-if="assets.length"
           :assets="assets"
           :config="config"
           @select="selectAsset"
+        />
+
+        <no-data-message
+          v-else
+          icon-name="trending-up"
+          title-id="assets.no-assets-title"
+          message-id="assets.no-assets-msg"
         />
       </div>
     </template>
@@ -51,6 +59,7 @@
 <script>
 import Drawer from '@/vue/common/Drawer'
 import LoadSpinner from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import CardListRenderer from '../../shared/components/card-list-renderer'
@@ -69,6 +78,7 @@ export default {
   components: {
     Drawer,
     LoadSpinner,
+    NoDataMessage,
     CollectionLoader,
     CardListRenderer,
     AssetAttributesViewer,

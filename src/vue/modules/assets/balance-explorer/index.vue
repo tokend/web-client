@@ -13,9 +13,17 @@
 
       <div class="balance-explorer__asset-list-wrp">
         <card-list-renderer
+          v-if="assets.length"
           :assets="assets"
           :config="config"
           @select="selectAsset"
+        />
+
+        <no-data-message
+          v-else
+          icon-name="trending-up"
+          title-id="assets.no-balances-title"
+          message-id="assets.no-balances-msg"
         />
       </div>
     </template>
@@ -35,6 +43,7 @@
 <script>
 import Drawer from '@/vue/common/Drawer'
 import LoadSpinner from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import CardListRenderer from '../shared/components/card-list-renderer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
@@ -52,6 +61,7 @@ export default {
   components: {
     Drawer,
     LoadSpinner,
+    NoDataMessage,
     CardListRenderer,
     AssetAttributesViewer,
   },

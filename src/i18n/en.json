@@ -595,11 +595,7 @@
     "assets-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-asset-title": "Create token",
-      "no-assets-title": "No tokens",
-      "no-assets-msg": "There are no available tokens",
-      "no-balances-title": "No balances",
-      "no-balances-msg": "You do not have any balances yet"
+      "create-asset-title": "Create token"
     },
 
     "asset-form": {
@@ -1012,6 +1008,10 @@
       "balances-loading-msg": "Loading your balances…",
       "assets-loading-msg": "Loading assets…",
       "loading-error-msg": "There was an error while loading.",
+      "no-assets-title": "No tokens",
+      "no-assets-msg": "There are no available tokens",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet",
       "balance-title": "Balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
