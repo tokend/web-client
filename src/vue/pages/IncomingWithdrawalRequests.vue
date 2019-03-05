@@ -140,6 +140,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import WithdrawalRequestDetails from './withdrawals/WithdrawalRequestDetails'
+import { base } from '@tokend/js-sdk'
 
 export default {
   name: 'incoming-withdrawal-requests',
@@ -213,6 +214,8 @@ export default {
     async rejectRequest () {
       this.isRequestRejected = true
       try {
+        const action = base.xdr.ReviewRequestOpAction.reject().value
+        await this._reviewWithdraw({ action }, this.selectedRequest)
         const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
         this.requestsHistory.splice(this.selectedIndex, 1,
           RecordWrapper.request(data)
@@ -223,6 +226,27 @@ export default {
         ErrorHandler.process(e)
       }
       this.isRequestRejected = false
+    },
+    _reviewWithdraw ({ action, reason = '' }, ...requests) {
+      const operations = requests.map(function (item) {
+        const opts = {
+          requestID: item.id,
+          requestHash: item.hash,
+          requestType: item.request_type_i || item.requestTypeI,
+          reviewDetails: {
+            tasksToAdd: 0,
+            tasksToRemove: item.pendingTasks || item.pending_tasks,
+            externalDetails: '{}',
+          },
+          action,
+          reason
+        }
+        return base.ReviewRequestBuilder.reviewWithdrawRequest({
+          ...opts,
+          requestDetails: '{}',
+        })
+      })
+      return Sdk.horizon.transactions.submitOperations(...operations)
     },
   },
 }

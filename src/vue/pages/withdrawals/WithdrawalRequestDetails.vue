@@ -43,6 +43,51 @@
               {{ requestorEmail }}
             </td>
           </tr>
+
+          <tr>
+            <td>
+              {{ 'withdrawal-request-details.requestor-id' | globalize }}
+            </td>
+            <td>
+              {{ request.requestor }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              {{ 'withdrawal-request-details.amount' | globalize }}
+            </td>
+            <td>
+              {{ request.amount | formatMoney }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              {{ 'withdrawal-request-details.fixed-fee' | globalize }}
+            </td>
+            <td>
+              {{ request.fixedFee | formatMoney }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              {{ 'withdrawal-request-details.percent-fee' | globalize }}
+            </td>
+            <td>
+              {{ request.percentFee | formatMoney }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              {{ 'withdrawal-request-details.total-fee' | globalize }}
+            </td>
+            <td>
+              {{ (+request.percentFee + +request.fixedFee) | formatMoney }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

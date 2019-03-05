@@ -764,7 +764,12 @@
       "loading-error-msg": "There was an error while loading.",
       "approve-btn": "Approve",
       "rejected-btn": "REJECT",
-      "requestor-email": "Requestor email"
+      "requestor-email": "Requestor email",
+      "requestor-id": "Requestor Id",
+      "amount": "Amount",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "total-fee": "Total fee"
     },
 
     "file-field": {
