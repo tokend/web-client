@@ -3,6 +3,12 @@ const mutations = {
   CLEAR_STATE: 'CLEAR_STATE',
   POP_STATE: 'POP_STATE',
 
+  // key-value
+  SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',
+  SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
+  SET_KV_ENTRY_UNVERIFIED_ROLE_ID: 'SET_KV_ENTRY_UNVERIFIED_ROLE_ID',
+  SET_KV_KYC_REQUIRED: 'SET_KV_KYC_REQUIRED',
+
   // account
   SET_ACCOUNT: 'SET_ACCOUNT',
   SET_ACCOUNT_BALANCES_DETAILS: 'SET_ACCOUNT_BALANCES_DETAILS',
@@ -15,11 +21,14 @@ const mutations = {
 
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
-  SET_KYC_APPROVED_DATA: 'SET_KYC_APPROVED_DATA',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
 }
 
 const actions = {
+  // key-value
+  LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
+  LOAD_KV_KYC_REQUIRED: 'LOAD_KV_KYC_REQUIRED',
+
   // account
   LOAD_ACCOUNT: 'LOAD_ACCOUNT',
   LOAD_ACCOUNT_BALANCES_DETAILS: 'LOAD_ACCOUNT_BALANCES_DETAILS',
@@ -41,22 +50,22 @@ const getters = {
   // root
   isLoggedIn: 'isLoggedIn',
 
+  // key-values
+  kvEntryGeneralRoleId: 'kvEntryGeneralRoleId',
+  kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
+  kvEntryUnverifiedRoleId: 'kvEntryUnverifiedRoleId',
+  kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
+
   // account
   account: 'account',
-  balancesDetails: 'balancesDetails',
   accountId: 'accountId',
-  accountIsBlocked: 'accountIsBlocked',
-  accountBlockReasons: 'accountBlockReasons',
-  accountType: 'accountType',
-  accountTypeI: 'accountTypeI',
-  accountThresholds: 'accountThresholds',
-  accountReferrer: 'accountReferrer',
-  accountReferrals: 'accountReferrals',
-  accountPoliciesTypeI: 'accountPoliciesTypeI',
-  accountPoliciesTypes: 'accountPoliciesTypes',
   accountBalances: 'accountBalances',
+  accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
-  accountKycBlobId: 'accountKycBlobId',
+
+  isAccountGeneral: 'isAccountGeneral',
+  isAccountCorporate: 'isAccountCorporate',
+  isAccountUnverified: 'isAccountUnverified',
 
   // wallet
   wallet: 'wallet',
@@ -79,9 +88,8 @@ const getters = {
   kycStateI: 'kycStateI',
   kycRequestId: 'kycRequestId',
   kycRequestRejectReason: 'kycRequestRejectReason',
-  kycAccountTypeToSet: 'kycAccountTypeToSet',
+  kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycLatestData: 'kycLatestData',
-  kycApprovedData: 'kycApprovedData',
 }
 
 export const vuexTypes = {

@@ -5,7 +5,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuelidate from 'vuelidate'
 
-import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
@@ -16,6 +16,8 @@ import { Bus } from '@/js/helpers/event-bus'
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
 Vue.config.silent = true
@@ -24,10 +26,10 @@ const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
 
-describe('IssuanceForm component', () => {
+describe('IssuanceForm', () => {
   const sampleIssuanceData = {
     form: {
-      asset: 'BTC',
+      asset: { code: 'BTC' },
       amount: 10,
       receiver: 'foo@bar.com',
       reference: 'ref',
@@ -58,8 +60,9 @@ describe('IssuanceForm component', () => {
     beforeEach(() => {
       sinon.stub(IssuanceForm, 'created').resolves()
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountTypeI)
-        .returns(ACCOUNT_TYPES.syndicate)
+
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       const store = new Vuex.Store({
         getters,
       })
@@ -73,7 +76,7 @@ describe('IssuanceForm component', () => {
 
     const expectedResults = {
       asset: ['required'],
-      amount: ['required', 'amountRange'],
+      amount: ['required', 'amountRange', 'maxDecimalDigitsCount'],
       receiver: ['required', 'emailOrAccountId'],
       reference: ['required', 'maxLength'],
     }
@@ -108,7 +111,6 @@ describe('IssuanceForm component', () => {
     let mockHelper
 
     let accountResource
-    let publicResource
     let transactionsResource
 
     let store
@@ -117,13 +119,12 @@ describe('IssuanceForm component', () => {
       mockHelper = new MockHelper()
 
       accountResource = mockHelper.getHorizonResourcePrototype('account')
-      publicResource = mockHelper.getHorizonResourcePrototype('public')
       transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.accountTypeI)
-        .returns(ACCOUNT_TYPES.syndicate)
+      sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
+
       store = new Vuex.Store({
         getters,
       })
@@ -139,75 +140,39 @@ describe('IssuanceForm component', () => {
       sinon.stub(wrapper.vm, 'isFormValid').returns(true)
     })
 
-    describe('computed property', () => {
-      describe('assetListValues', () => {
-        it('returns formatted owned assets for select field', () => {
-          expect(wrapper.vm.assetListValues)
-            .to.deep.equal([{
-              value: 'BTC', label: 'Bitcoin (BTC)',
-            }, {
-              value: 'ETH', label: 'Ethereum (ETH)',
-            }])
-        })
-      })
-
-      describe('availableAmount', () => {
-        it('returns available assets for issuance for the form asset', () => {
-          expect(wrapper.vm.availableAmount)
-            .to.deep.equal({
-              value: sampleIssuanceData.ownedAssets[0].availableForIssuance,
-              currency: sampleIssuanceData.ownedAssets[0].code,
-            })
-        })
-
-        it('returns empty value if the form asset is not set', () => {
-          wrapper.setData({ form: { asset: '' } })
-
-          expect(wrapper.vm.availableAmount).to.deep.equal({ value: 0 })
-        })
-      })
-    })
-
     describe('created hook', () => {
-      let loadAssetsSpy
-
       beforeEach(() => {
         IssuanceForm.created.restore()
-        loadAssetsSpy = sinon.stub(OwnedAssetsLoaderMixin.methods,
-          'loadOwnedAssets'
-        ).resolves()
       })
 
-      it('loads user owned assets', async () => {
-        await shallowMount(IssuanceForm, {
-          mixins: [OwnedAssetsLoaderMixin],
-          localVue,
-          store,
-        })
+      it('initializes asset selector', async () => {
+        const initAssetSelectorStub = sinon
+          .stub(IssuanceForm.methods, 'initAssetSelector')
+          .resolves()
 
-        expect(loadAssetsSpy.calledOnce).to.be.true
+        const wrp = await shallowMount(IssuanceForm, { localVue, store })
+
+        expect(initAssetSelectorStub).to.has.been.calledOnce
+        expect(wrp.vm.isLoaded).to.equal(true)
+
+        initAssetSelectorStub.restore()
       })
 
-      it('sets isLoaded property to true', async () => {
-        wrapper = await shallowMount(IssuanceForm, {
-          mixins: [OwnedAssetsLoaderMixin],
-          localVue,
-          store,
-        })
+      it('handles an occurred error without any feedback to the user', async () => {
+        const theError = new Error()
+        const initAssetSelectorStub = sinon
+          .stub(IssuanceForm.methods, 'initAssetSelector')
+          .throws(theError)
+        sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
-        expect(wrapper.vm.isLoaded).to.be.true
-      })
+        const wrp = await shallowMount(IssuanceForm, { localVue, store })
 
-      it('sets form asset property if owned assets are present', async () => {
-        wrapper = await shallowMount(IssuanceForm, {
-          mixins: [OwnedAssetsLoaderMixin],
-          localVue,
-          store,
-          data: () => ({ ownedAssets: sampleIssuanceData.ownedAssets }),
-        })
+        expect(wrp.vm.isLoaded).to.equal(false)
+        expect(ErrorHandler.processWithoutFeedback).to.has.been
+          .calledOnceWithExactly(theError)
 
-        expect(wrapper.vm.form.asset)
-          .to.equal(sampleIssuanceData.ownedAssets[0].code)
+        initAssetSelectorStub.restore()
+        ErrorHandler.processWithoutFeedback.restore()
       })
     })
 
@@ -234,7 +199,7 @@ describe('IssuanceForm component', () => {
           await wrapper.vm.submit()
 
           expect(getBalanceSpy
-            .withArgs(wrapper.vm.form.receiver, wrapper.vm.form.asset)
+            .withArgs(wrapper.vm.form.receiver, wrapper.vm.form.asset.code)
             .calledOnce
           ).to.be.true
         })
@@ -276,7 +241,7 @@ describe('IssuanceForm component', () => {
           balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV',
         }
         const receiver = sampleIssuanceData.form.receiver
-        const asset = sampleIssuanceData.form.asset
+        const asset = sampleIssuanceData.form.asset.code
 
         let getAccountIdSpy
         let fetchBalancesSpy
@@ -316,8 +281,8 @@ describe('IssuanceForm component', () => {
       describe('getReceiverAccountId', () => {
         it('loads account ID by email if receiver is a valid email', async () => {
           const receiver = 'foo@bar.com'
-          const spy = sinon.stub(publicResource, 'getAccountIdByEmail')
-            .resolves({ data: {} })
+          const spy = sinon.stub(wrapper.vm, 'getAccountIdByEmail')
+            .resolves('')
 
           await wrapper.vm.getReceiverAccountId(receiver)
 
@@ -336,5 +301,7 @@ describe('IssuanceForm component', () => {
         })
       })
     })
+
+    // TODO: initAssetSelector and reinitAssetSelector tests
   })
 })

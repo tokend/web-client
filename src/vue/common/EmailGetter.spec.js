@@ -2,10 +2,10 @@ import EmailGetter from './EmailGetter'
 
 import Vue from 'vue'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-
 import { MockHelper } from '@/test'
 
 import { Sdk } from '@/sdk'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -13,168 +13,125 @@ Vue.config.silent = true
 
 const localVue = createLocalVue()
 
-describe('EmailGetter component unit test', () => {
-  const ACCOUNT_ID = 'accountId'
-  const BALANCE_ID = 'balanceId'
-
-  let mockHelper
-  let balancesResource
-  let usersResource
-
-  let wrapper
-
-  beforeEach(() => {
-    mockHelper = new MockHelper()
-    balancesResource = mockHelper.getHorizonResourcePrototype('balances')
-    usersResource = mockHelper.getApiResourcePrototype('users')
-
-    sinon.stub(EmailGetter, 'created').resolves()
-    wrapper = shallowMount(EmailGetter, {
-      localVue,
-    })
-  })
-
-  afterEach(() => {
-    sinon.restore()
-  })
+describe('EmailGetter\'s', () => {
+  let sandbox
+  beforeEach(() => (sandbox = sinon.createSandbox()))
+  afterEach(() => sandbox.restore())
 
   describe('created hook', () => {
-    beforeEach(() => {
-      EmailGetter.created.restore()
-    })
+    it('calls init() method to initialize the component', async () => {
+      const initStub = sandbox.stub(EmailGetter.methods, 'init')
 
-    it('calls loadResult method if account ID is provided', async () => {
-      const spy = sinon.stub(EmailGetter.methods, 'loadResult')
+      shallowMount(EmailGetter, { localVue })
 
-      await shallowMount(EmailGetter, {
-        localVue,
-        propsData: {
-          accountId: ACCOUNT_ID,
-        },
-      })
-
-      expect(spy.calledOnce).to.be.true
-    })
-
-    it('calls loadResult method if balance ID is provided', async () => {
-      const spy = sinon.stub(EmailGetter.methods, 'loadResult')
-
-      await shallowMount(EmailGetter, {
-        localVue,
-        propsData: {
-          balanceId: BALANCE_ID,
-        },
-      })
-
-      expect(spy.calledOnce).to.be.true
-    })
-
-    it('set isLoadingFailed property to true if neither account ID nor balance ID are provided', async () => {
-      wrapper = await shallowMount(EmailGetter, {
-        localVue,
-      })
-
-      expect(wrapper.vm.isLoadingFailed).to.be.true
+      expect(initStub).to.has.been.called
     })
   })
 
   describe('method', () => {
-    describe('loadResult', () => {
+    let wrapper
+
+    beforeEach(async () => {
+      sandbox.stub(EmailGetter, 'created').resolves()
+      wrapper = await shallowMount(EmailGetter, { localVue })
+    })
+
+    describe('init()', () => {
       beforeEach(() => {
-        sinon.stub(Sdk, 'networkDetails').value({
-          masterAccountId: 'master',
+        sandbox.stub(wrapper.vm, 'loadEmail')
+        sandbox.stub(Sdk, 'networkDetails').value({
+          adminAccountId: 'MASTER_ACCOUNT_ID',
         })
       })
-      it('fetches user by account ID', async () => {
-        sinon.stub(wrapper.vm, 'getAccountId').resolves(ACCOUNT_ID)
-        const spy = sinon.stub(usersResource, 'get').resolves({ data: {} })
 
-        await wrapper.vm.loadResult()
+      it('does not fetch email if provided accountId is master', async () => {
+        wrapper.setProps({ accountId: 'MASTER_ACCOUNT_ID' })
 
-        expect(spy
-          .withArgs(ACCOUNT_ID)
-          .calledOnce
-        ).to.be.true
+        wrapper.vm.init()
+
+        expect(wrapper.vm.isMasterAccount).to.be.true
+        expect(wrapper.vm.loadEmail).to.has.not.been.called
       })
 
-      it('sets the result property to fetched user email', async () => {
-        const userResponse = {
-          data: {
-            email: 'foo@bar.com',
-          },
-        }
-        sinon.stub(wrapper.vm, 'getAccountId').resolves()
-        sinon.stub(usersResource, 'get').resolves(userResponse)
+      it('fetches email if account ID provided', async () => {
+        wrapper.setProps({ accountId: 'SOME_ACCOUNT_ID' })
 
-        await wrapper.vm.loadResult()
+        wrapper.vm.init()
 
-        expect(wrapper.vm.result).to.equal(userResponse.data.email)
+        expect(wrapper.vm.isMasterAccount).to.be.false
+        expect(wrapper.vm.loadEmail).to.has.been.called
       })
 
-      it('sets the result property to account ID (if it is provided) if an error was thrown', async () => {
-        wrapper.setProps({
-          accountId: ACCOUNT_ID,
-        })
-        sinon.stub(wrapper.vm, 'getAccountId').throws()
-        sinon.stub(console, 'error')
+      it('fetches email if balance ID is provided', async () => {
+        wrapper.setProps({ balanceId: 'SOME_BALANCE_ID' })
 
-        await wrapper.vm.loadResult()
+        wrapper.vm.init()
 
-        expect(wrapper.vm.result).to.equal(ACCOUNT_ID)
+        expect(wrapper.vm.isMasterAccount).to.be.false
+        expect(wrapper.vm.loadEmail).to.has.been.called
       })
 
-      it('sets the result property to balance ID (if account ID is not provided) if an error was thrown', async () => {
-        wrapper.setProps({
-          balanceId: BALANCE_ID,
-        })
-        sinon.stub(wrapper.vm, 'getAccountId').throws()
-        sinon.stub(console, 'error')
+      it('does not fetches anything if no account id or balance id provided', async () => {
+        wrapper.setProps({ accountId: '', balanceId: '' })
 
-        await wrapper.vm.loadResult()
+        wrapper.vm.init()
 
-        expect(wrapper.vm.result).to.equal(BALANCE_ID)
+        expect(wrapper.vm.isMasterAccount).to.be.false
+        expect(wrapper.vm.loadEmail).to.has.not.been.called
       })
     })
 
-    describe('getAccountId', () => {
-      it('returns account ID if it is provided', async () => {
-        wrapper.setProps({
-          accountId: ACCOUNT_ID,
-        })
+    describe('loadEmail()', () => {
+      it('fetches email by account ID and assigns it', async () => {
+        sandbox.stub(wrapper.vm, 'getEmailByAccountId')
+          .withArgs('SOME_ACCOUNT_ID')
+          .resolves('EMAIL')
+        sandbox.stub(wrapper.vm, 'getAccountId')
+          .resolves('SOME_ACCOUNT_ID')
 
-        const response = await wrapper.vm.getAccountId()
+        await wrapper.vm.loadEmail()
 
-        expect(response).to.equal(ACCOUNT_ID)
+        expect(wrapper.vm.email).to.equal('EMAIL')
       })
 
-      it('fetches account by balance ID (if it is provided, but account ID is not)', async () => {
-        wrapper.setProps({
-          balanceId: BALANCE_ID,
-        })
-        const spy = sinon.stub(balancesResource, 'getAccount')
-          .resolves({ data: {} })
+      it('handles the occurred error', async () => {
+        const theError = new Error()
+        sandbox.stub(wrapper.vm, 'getAccountId').throws(theError)
+        sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
-        await wrapper.vm.getAccountId()
+        await wrapper.vm.loadEmail()
 
-        expect(spy
-          .withArgs(BALANCE_ID)
-          .calledOnce
-        ).to.be.true
+        expect(wrapper.vm.email).to.equal('')
+        expect(ErrorHandler.processWithoutFeedback)
+          .to.has.been.calledOnceWithExactly(theError)
       })
+    })
 
-      it('returns account ID fetched by balance ID (if it is provided, but account ID is not)', async () => {
-        wrapper.setProps({
-          balanceId: BALANCE_ID,
-        })
-        sinon.stub(balancesResource, 'getAccount')
-          .resolves({ data: { accountId: ACCOUNT_ID } })
+    describe('getAccountId()', () => {
+      it('simply returns account ID if present', async () => {
+        wrapper.setProps({ accountId: 'SOME_ACCOUNT_ID' })
 
         const result = await wrapper.vm.getAccountId()
 
-        expect(result).to.equal(ACCOUNT_ID)
+        expect(result).to.equal('SOME_ACCOUNT_ID')
       })
 
-      it('returns empty string if neither account ID nor balance ID are provided', async () => {
+      it('fetches account id if balance id present but account id is not', async () => {
+        const balancesResource = new MockHelper()
+          .getHorizonResourcePrototype('balances')
+        sandbox.stub(balancesResource, 'getAccount')
+          .withArgs('SOME_BALANCE_ID')
+          .resolves({ data: { accountId: 'FETCHED_ACCOUNT_ID' } })
+        wrapper.setProps({ balanceId: 'SOME_BALANCE_ID' })
+
+        const result = await wrapper.vm.getAccountId()
+
+        expect(result).to.equal('FETCHED_ACCOUNT_ID')
+      })
+
+      it('returns empty string if neither balance id nor account are present', async () => {
+        wrapper.setProps({ balanceId: '', accountId: '' })
+
         const result = await wrapper.vm.getAccountId()
 
         expect(result).to.equal('')

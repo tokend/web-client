@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack/local.conf')
+const webpackConfig = require('./webpack/test.conf')
 
 module.exports = function (config) {
   // HACK: Chrome relies on this variable, so by overwriting it we can ensure
@@ -13,8 +13,8 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
-      }
+        flags: ['--no-sandbox'],
+      },
     },
     files: [
       'src/**/*.spec.js',
@@ -27,6 +27,6 @@ module.exports = function (config) {
 
     webpack: webpackConfig,
     frameworks: ['mocha', 'sinon', 'chai', 'sinon-chai'],
-    reporters: ['progress'],
+    reporters: ['spec'],
   })
 }

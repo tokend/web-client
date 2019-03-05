@@ -20,11 +20,9 @@
 </template>
 
 <script>
-import { KEY_CODES } from '@/js/const/key-codes.const'
-
 const EVENTS = {
-  closeDrawer: 'close-drawer',
-  updateDrawerShown: 'update:isShown',
+  onClose: 'on-close',
+  updateIsShown: 'update:isShown',
 }
 
 /**
@@ -43,23 +41,10 @@ export default {
   props: {
     isShown: { type: Boolean, default: true },
   },
-  created () {
-    document.addEventListener('keydown', this.onDocumentKeyDown)
-  },
-  destroyed () {
-    document.removeEventListener('keydown', this.onDocumentKeyDown)
-  },
   methods: {
-    onDocumentKeyDown () {
-      const keyCode = event.which || event.keyCode
-
-      if (keyCode === KEY_CODES.escape) {
-        this.closeSelf()
-      }
-    },
     closeSelf () {
-      this.$emit(EVENTS.updateDrawerShown, false)
-      this.$emit(EVENTS.closeDrawer)
+      this.$emit(EVENTS.updateIsShown, false)
+      this.$emit(EVENTS.onClose)
     },
   },
 }
@@ -139,7 +124,10 @@ export default {
   padding: 3rem;
   background-color: $col-drawer-bg;
   flex: 1;
+
+  // allows to scroll drawer content when it height more than drawer height
   overflow-y: auto;
+  height: 0;
 }
 
 .drawer-transition-enter-active {

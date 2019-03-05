@@ -1,0 +1,216 @@
+<template>
+  <div class="sale-overview">
+    <template v-if="isLoaded">
+      <div class="sale-overview__asset">
+        <asset-logo
+          :asset-code="asset.code"
+          :logo-url="asset.logoUrl(config.FILE_STORAGE)"
+        />
+        <div class="sale-overview__asset-info">
+          <p class="sale-overview__asset-code">
+            {{ asset.code }}
+          </p>
+          <p class="sale-overview__asset-name">
+            {{ asset.name }}
+          </p>
+        </div>
+      </div>
+
+      <p class="sale-overview__short-description">
+        {{ sale.shortDescription }}
+      </p>
+
+      <div class="app__table sale-overview__table">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                {{ 'sale-overview.name-title' | globalize }}
+              </td>
+              <td>
+                {{ sale.name }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ 'sale-overview.start-time-title' | globalize }}
+              </td>
+              <td>
+                {{ sale.startTime | formatCalendar }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ 'sale-overview.close-time-title' | globalize }}
+              </td>
+              <td>
+                {{ sale.endTime | formatCalendar }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ 'sale-overview.soft-cap-title' | globalize }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: sale.softCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ 'sale-overview.hard-cap-title' | globalize }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: sale.hardCap, currency: sale.defaultQuoteAsset } | formatMoney }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ 'sale-overview.asset-to-sell-title' | globalize({ asset: sale.baseAsset }) }}
+              </td>
+              <td>
+                <!-- eslint-disable-next-line max-len -->
+                {{ { value: sale.baseHardCap, currency: sale.baseAsset } | formatMoney }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                {{ 'sale-overview.video-about-sale-title' | globalize }}
+              </td>
+              <td>
+                <a
+                  v-if="sale.youtubeVideoUrl"
+                  class="sale-overview__video-btn"
+                  :href="sale.youtubeVideoUrl"
+                  target="_blank"
+                >
+                  {{ 'sale-overview.view-video-btn' | globalize }}
+                </a>
+                <p v-else>
+                  {{ 'sale-overview.no-video-msg' | globalize }}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
+
+    <template v-else-if="!isLoadingFailed">
+      <loader :message-id="'sale-overview.loading-msg'" />
+    </template>
+
+    <template v-else>
+      <p>
+        {{ 'sale-overview.loading-error-msg' | globalize }}
+      </p>
+    </template>
+  </div>
+</template>
+
+<script>
+import AssetLogo from '@/vue/common/assets/AssetLogo'
+import Loader from '@/vue/common/Loader'
+
+import { Sdk } from '@/sdk'
+
+import config from '@/config'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { SaleRecord } from '@/js/records/entities/sale.record'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+
+export default {
+  name: 'sale-overview',
+  components: {
+    AssetLogo,
+    Loader,
+  },
+  props: {
+    sale: {
+      type: SaleRecord,
+      required: true,
+    },
+  },
+  data: _ => ({
+    asset: {},
+    config,
+    isLoaded: false,
+    isLoadingFailed: false,
+  }),
+  async created () {
+    try {
+      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+      this.asset = new AssetRecord(data)
+      this.isLoaded = true
+    } catch (e) {
+      this.isLoadingFailed = true
+      ErrorHandler.processWithoutFeedback(e)
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import "~@scss/variables";
+
+.sale-overview__short-description {
+  margin-top: 4rem;
+  font-size: 1.4rem;
+  color: $col-text;
+}
+
+.sale-overview__table {
+  margin-top: 2rem;
+
+  tr td:last-child {
+    text-align: right;
+  }
+}
+
+.sale-overview__video-btn {
+  color: $col-link;
+  text-decoration: none;
+
+  &:visited {
+    color: $col-link;
+  }
+}
+
+.sale-overview__asset {
+  display: flex;
+  align-items: center;
+
+  .sale-overview__asset-logo {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%
+  }
+
+  .sale-overview__asset-info {
+    margin-left: 1.8rem;
+
+    .sale-overview__asset-code {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: $col-text;
+    }
+
+    .sale-overview__asset-name {
+      margin-top: .1rem;
+      font-size: 1.4rem;
+      line-height: 1.29;
+      color: $col-text;
+    }
+  }
+}
+</style>

@@ -16,7 +16,6 @@
 
 <script>
 import { formatMoney } from '@/vue/filters/formatMoney'
-
 import * as d3Array from 'd3-array'
 import * as d3Selection from 'd3-selection'
 import * as d3Scale from 'd3-scale'
@@ -24,12 +23,10 @@ import * as d3Axis from 'd3-axis'
 import * as d3Shape from 'd3-shape'
 import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
-
 // import * as d3 from 'd3'
 import moment from 'moment'
 import config from '@/config'
 import { chunk } from 'lodash'
-
 const d3 = Object.assign(
   {},
   d3Array,
@@ -40,7 +37,6 @@ const d3 = Object.assign(
   d3Transition,
   d3Ease
 )
-
 export default {
   name: 'chart-renderer',
   props: {
@@ -51,14 +47,13 @@ export default {
     precision: { type: Number, default: 0 },
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
+    isTicksShown: { type: Boolean, default: true },
   },
-
   data: () => ({
     defaultAsset: config.DEFAULT_QUOTE_ASSET,
     chartRenderingTime: 500,
     dataCount: 360,
   }),
-
   computed: {
     normalizedData () {
       return this.data.map(item => ({
@@ -76,28 +71,23 @@ export default {
       }
     },
   },
-
   watch: {
     data (data) {
       this.render()
     },
   },
-
   mounted (...args) {
     this.render()
     window.addEventListener('resize', this.render)
   },
-
   beforeDestroy () {
     window.removeEventListener('resize', this.render)
   },
-
   methods: {
     formatMoney,
     clear () {
       d3.select('svg.chart').remove()
     },
-
     getDimensions () {
       const parentElement = this.$el.parentElement
       return {
@@ -107,7 +97,6 @@ export default {
           : parentElement.clientHeight,
       }
     },
-
     getMaxAndMin () {
       const arr = this.data.map(item => item.value)
       const max = Math.max(...arr, ...this.requiredTicks)
@@ -116,7 +105,6 @@ export default {
         : Math.min(...arr)
       return { max, min }
     },
-
     addDomainPadding (domain) {
       let [min, max] = domain
       const diff = (max - min) || 0.0001
@@ -125,7 +113,6 @@ export default {
       max = max + padding
       return [min, max]
     },
-
     formatMoneyCustom (amount) {
       const curSym = ({ 'BTC': 'BTC' })[this.currency]
       const moneyFormats = {
@@ -133,21 +120,17 @@ export default {
       }
       return moneyFormats['en'](curSym, amount.toFixed(this.precision))
     },
-
     render () {
       this.clear()
-
       // Setup the data
       const data = chunk(this.normalizedData, this.barTicks).map(item => {
         const itemLength = item.length
         let defaultDate = 0
         let max = 0
-
         for (let i = 0; i < itemLength; i++) {
           defaultDate += Date.parse(item[i].time)
           if (item[i].value > max) max = item[i].value
         }
-
         return {
           time: new Date(defaultDate / itemLength),
           value: max,
@@ -155,18 +138,17 @@ export default {
       })
       const { max, min } = this.getMaxAndMin(data)
       if (!data[0] || !data[data.length - 1]) return
-
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time
-
       // Setup svg
       const className = 'chart'
-      const yAxisTickWidth = this.formatMoneyCustom(max).length * 9 + 5
+      const yAxisTickWidth = this.isTicksShown
+        ? this.formatMoneyCustom(max).length * 9 + 5
+        : 0
       const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
       const dimensions = this.getDimensions(this.$el)
       const width = dimensions.width // - margin.right - margin.left
       const height = dimensions.height - margin.top - margin.bottom
-
       const viewWidth = width + margin.left
       const viewHeight = height + margin.top + margin.bottom
       const svg = d3.select(this.$refs.chart)
@@ -176,52 +158,43 @@ export default {
         .attr('preserveAspectRatio', 'xMinYMin')
         .attr('class', className)
         .append('g')
-
       if (!this.hasValue) {
-        const y = d3.scaleLinear()
-          .range([height, 0])
-          .domain([0, 12])
-
-        const yAxisLine = d3.axisRight(y)
-          .tickValues([0, 5, 10])
-          .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
-          .tickSizeInner(width)
-          .tickSizeOuter(0)
-          .tickPadding(25)
-
-        svg.append('g')
-          .attr('class', `${className}__y-axis`)
-          .call(yAxisLine)
-          .selectAll('line')
-
+        if (this.isTicksShown) {
+          const y = d3.scaleLinear()
+            .range([height, 0])
+            .domain([0, 12])
+          const yAxisLine = d3.axisRight(y)
+            .tickValues([0, 5, 10])
+            .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
+            .tickSizeInner(width)
+            .tickSizeOuter(0)
+            .tickPadding(25)
+          svg.append('g')
+            .attr('class', `${className}__y-axis`)
+            .call(yAxisLine)
+            .selectAll('line')
+        }
         return
       }
-
       // Define domains
       const y = d3.scaleLinear()
         .range([height, 0])
         .domain(this.addDomainPadding([min, max]))
-
       const x = d3.scaleTime()
         .range([0, width])
         .domain([firstDate, lastDate])
-
       // Render the line and area
       const area = d3.area()
         .x((d) => x(d.time))
         .y0(y(min))
         .y1((d) => y(d.value))
-
       const line = d3.line()
         .x((d) => x(d.time))
         .y((d) => y(d.value))
-
       const path = svg.append('path')
         .attr('class', `${className}__line`)
         .attr('d', line(data))
-
       const totalLength = path.node().getTotalLength()
-
       path
         .attr('stroke-dasharray', totalLength + ' ' + totalLength)
         .attr('stroke-dashoffset', totalLength)
@@ -229,7 +202,6 @@ export default {
         .duration(this.chartRenderingTime)
         .ease(d3.easeLinear)
         .attr('stroke-dashoffset', 0)
-
       let defs = svg.append('defs')
       let lg = defs.append('linearGradient')
         .attr('id', 'area-gradient')
@@ -237,32 +209,26 @@ export default {
         .attr('x2', '0%')
         .attr('y1', '0%')
         .attr('y2', '100%')
-
       lg.append('stop')
         .attr('offset', '30%')
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.5)
-
       lg.append('stop')
         .attr('offset', '50%')
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.25)
-
       lg.append('stop')
         .attr('offset', '70%')
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.1)
-
       lg.append('stop')
         .attr('offset', '90%')
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.07)
-
       lg.append('stop')
         .attr('offset', '100%')
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.05)
-
       if (max !== min) {
         const chartAreaWithGradient = svg
           .append('path')
@@ -271,11 +237,9 @@ export default {
           .attr('d', area)
           .style('opacity', '0')
           .style('transition', '0.3s ease-out')
-
         setTimeout(() => {
           chartAreaWithGradient.style('opacity', '1')
         }, this.chartRenderingTime)
-
         svg.append('g')
           .attr('height', height)
           .selectAll('rect')
@@ -287,7 +251,6 @@ export default {
           .attr('height', (localData) => height - y(localData.value) - 9)
           .attr('x', (localData) => x(localData.time))
           .attr('y', (localData) => y(localData.value))
-
         const chartTipsPoints = svg.append('g')
           .attr('height', height)
           .attr('width', width)
@@ -304,29 +267,27 @@ export default {
           chartTipsPoints.style('opacity', '1')
         }, this.chartRenderingTime)
       }
-
       // Render x-axis
-      const yAxisLine = d3.axisRight(y)
-        .tickValues([
-          max,
-          max - ((max - min) * 0.3333),
-          max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
-          min,
-        ].concat(this.requiredTicks))
-        .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
-        .tickSizeInner(width)
-        .tickSizeOuter(0)
-        .tickPadding(25)
-
-      svg.append('g')
-        .attr('class', `${className}__y-axis`)
-        .call(yAxisLine)
-        .selectAll('line')
-
+      if (this.isTicksShown) {
+        const yAxisLine = d3.axisRight(y)
+          .tickValues([
+            max,
+            max - ((max - min) * 0.3333),
+            max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
+            min,
+          ].concat(this.requiredTicks))
+          .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
+          .tickSizeInner(width)
+          .tickSizeOuter(0)
+          .tickPadding(25)
+        svg.append('g')
+          .attr('class', `${className}__y-axis`)
+          .call(yAxisLine)
+          .selectAll('line')
+      }
       // Tip
       const tip = svg.append('g')
         .attr('class', `${className}__tip`)
-
       // Tip line
       const tipLine = tip.append('line')
         .attr('class', `${className}__tip-line`)
@@ -334,21 +295,17 @@ export default {
         .attr('y1', 10)
         .attr('x2', 0)
         .attr('y2', 0)
-
       // Tip circle
       const tipCircle = tip.append('circle')
         .attr('class', `${className}__tip-circle`)
         .attr('cx', 0)
         .attr('r', 5)
-
       // Tip text box
       const tipTextBox = tip.append('g')
-
       tipTextBox.append('polygon')
         .attr('points', '0,0 11.5,7 11.5,7 21,0') // width 21, height 7
         .style('fill', 'white')
         .attr('transform', 'translate(-11.5, 17)')
-
       tipTextBox.append('rect')
         .attr('class', `${className}__tip-text-box`)
         .attr('width', 150)
@@ -356,41 +313,34 @@ export default {
         .attr('transform', 'translate(-75, -38)')
         .attr('rx', 3)
         .attr('ry', 30)
-
       const tipPriceText = tipTextBox.append('text')
         .attr('class', `${className}__tip-text-price`)
         .attr('text-anchor', 'middle')
         .attr('y', -15)
-
       const tipPriceChangeText = tipTextBox.append('text')
         .attr('class', `${className}__tip-text-price-change`)
         .attr('text-anchor', 'middle')
         .attr('y', 5)
-
       const tipTimeTextDD = tip.append('text')
         .attr('class', `${className}__tip-text-time-dd`)
         .attr('text-anchor', 'middle')
         .attr('y', height + margin.bottom - 5)
-
       const tipTimeTextMM = tip.append('text')
         .attr('class', `${className}__tip-text-time-mm`)
         .attr('text-anchor', 'middle')
         .attr('y', height + margin.bottom + 8)
-
       // Tip motion capture area
       const motionCaptureArea = svg.append('rect')
         .attr('class', `${className}__tip-motion-capture-area`)
         .attr('width', width)
         .attr('height', height - 25)
         .attr('transform', 'translate(0, 25)')
-
       // Tip Mouse events
       for (const event of ['mouseenter', 'touchenter']) {
         motionCaptureArea.on(event, function () {
           tip.classed(`${className}__tip--show`, true)
         })
       }
-
       for (const event of ['mousemove', 'touchmove']) {
         motionCaptureArea.on(event, () => {
           tip.classed(`${className}__tip--hidden`, false)
@@ -402,7 +352,6 @@ export default {
           const nearestPoint = x0 - d0.time > d1.time - x0 ? d1 : d0
           // Change text of the tooltip
           tipPriceText.text(`${formatMoney(nearestPoint.value)} ${this.defaultAsset}`)
-
           switch (this.scale) {
             case 'year': {
               tipTimeTextDD.text(moment(nearestPoint.time).format('DD MMM'))
@@ -430,15 +379,12 @@ export default {
               break
             }
           }
-
           function getPrecision (number) {
             return number.toString().split('.')[0].length + 1
           }
-
           if (data[data.indexOf(nearestPoint) - 1]) {
             const prevValue = data[data.indexOf(nearestPoint) - 1].value
             const currentValue = nearestPoint.value
-
             if (prevValue > currentValue) {
               const val = ((prevValue - currentValue) / currentValue) * 100
               tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
@@ -451,7 +397,6 @@ export default {
           } else {
             tipPriceChangeText.text('+0%')
           }
-
           // Change X position of the tip
           tip.attr('transform', `translate(${x(nearestPoint.time)})`)
           tipTextBox.style('transform', `translateY(${y(nearestPoint.value) - 35}px)`)
@@ -462,18 +407,15 @@ export default {
             tipLine.attr('y1', y(nearestPoint.value))
             tipLine.attr('y2', height - 10)
           }
-
           // Change Y position of the circle
           tipCircle.attr('cy', y(nearestPoint.value))
         })
       }
-
       for (const event of ['mouseout', 'touchout']) {
         motionCaptureArea.on(event, function () {
           tip.classed(`${className}__tip--show`, false)
         })
       }
-
       tip.classed(`${className}__tip--hidden`, true)
     },
   },
@@ -482,11 +424,9 @@ export default {
 
 <style lang="scss">
   @import "~@scss/variables";
-
    .chart-renderer {
     position: relative;
   }
-
   .chart-renderer__wrapper {
     width: 100%;
     height: 100%;
@@ -496,7 +436,6 @@ export default {
     align-items: center;
     justify-content: center;
   }
-
   .chart-renderer__wrapper-message {
     background-color: $col-chart-message-background;
     padding: 1.6rem 2.8rem;
@@ -509,36 +448,29 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
   }
-
   .chart-renderer__chart,
   .chart-renderer__chart svg {
     transition: .2s;
-
     @media (min-width: 76.7rem) {
       min-height: 20rem;
     }
   }
-
   svg.chart {
     display: block;
     overflow: visible;
-
     * { font-family: inherit; }
     & > g { overflow: hidden; }
   }
-
   .chart__area {
     fill: $col-chart-fill;
     opacity: 0;
   }
-
   .chart__line {
     fill: none;
     stroke-width: .2rem;
     stroke: $col-chart-line;
     stroke-linecap: round;
   }
-
   .chart__x-axis {
     text {
       font-size: 1rem;
@@ -546,7 +478,6 @@ export default {
     }
     .domain { display: none; }
   }
-
   .chart__y-axis {
     text {
       font-size: 1.6rem;
@@ -559,11 +490,9 @@ export default {
     }
     .domain { display: none; }
   }
-
   .chart__tip {
     transition: opacity .2s;
     opacity: 0;
-
     &--show { opacity: 1; }
     &--hidden { opacity: 0 !important; }
   }
@@ -571,34 +500,28 @@ export default {
     stroke-width: .1rem;
     stroke: $col-chart-tip-line-inactive;
   }
-
   .chart__tip-circle {
     stroke-width: .5rem;
     stroke: $col-chart-tip-circle-border;
     fill: $col-chart-tip-circle;
   }
-
   .chart__tip-text-box { fill: $col-chart-tip-text-box }
   .chart__tip-text-price {
     font-size: 1.6rem;
     fill: $col-chart-tip-text-price;
     font-weight: 800;
   }
-
   .chart__tip-text-price-change {
     fill: $col-chart-tip-text-price;
     font-weight: 400;
   }
-
   .chart__tip-text-time-dd {
     font-size: 1.8rem;
     fill: $col-chart-tip-date-dd;
   }
-
   .chart__tip-text-time-mm {
     font-size: 1.2rem;
     fill: $col-chart-tip-date-mm;
   }
-
   .chart__tip-motion-capture-area { opacity: 0 }
 </style>

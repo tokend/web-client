@@ -11,6 +11,7 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { globalize } from '@/vue/filters/globalize'
 
 import safeGet from 'lodash/get'
+import isObject from 'lodash/isObject'
 
 export default {
   components: {
@@ -34,7 +35,7 @@ export default {
     * isFormValid checks if your form (or a part of it) meets
     * the validation rules, established for its fields.
     *
-    * @param {string} formPart - the string with the form part name.
+    * @param {string} [formPart] - the string with the form part name.
     *                 Works also for nested parts, such as `form.part1`.
     *
     * @returns {boolean} True if the form (or its part) meets
@@ -66,7 +67,7 @@ export default {
     *
     * @param {string} field - the string with the field name. Works also for
      *                nested fields, such as `form.email`.
-    * @param {Object} options - the interpolation options object for
+    * @param {Object} [options] - the interpolation options object for
      *                translation.
     *
     * @returns {string} the human-readable error message if the
@@ -93,9 +94,24 @@ export default {
       }
     },
     clearFields () {
-      Object.keys(this.form).forEach(key => {
-        this.form[key] = ''
-      })
+      this.clearFieldsWithOverriding({})
+    },
+    clearFieldsWithOverriding (overriddenFields) {
+      for (const [fieldName, fieldValue] of Object.entries(this.form)) {
+        if (overriddenFields[fieldName]) {
+          this.form[fieldName] = overriddenFields[fieldName]
+        } else if (typeof fieldValue === 'string') {
+          this.form[fieldName] = ''
+        } else if (typeof fieldValue === 'number') {
+          this.form[fieldValue] = 0
+        } else if (Array.isArray(fieldValue)) {
+          this.form[fieldName] = []
+        } else if (isObject(fieldValue)) {
+          this.form[fieldName] = {}
+        } else {
+          continue
+        }
+      }
       this.$v.$reset()
     },
     touchField (fieldName) {

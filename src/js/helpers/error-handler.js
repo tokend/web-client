@@ -2,12 +2,12 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 
-export class ErrorHandler {
-  static process (error) {
-    ErrorHandler.processWithoutFeedback(error)
+import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
-    const translationId = ErrorHandler._getTranslationId(error)
-    Bus.error(translationId)
+export class ErrorHandler {
+  static process (error, translationId = '') {
+    ErrorHandler.processWithoutFeedback(error)
+    Bus.error(translationId || ErrorHandler._getTranslationId(error))
   }
 
   static processWithoutFeedback (error) {
@@ -20,6 +20,9 @@ export class ErrorHandler {
     switch (error.constructor) {
       case errors.NetworkError:
         translationId = 'errors.network'
+        break
+      case errors.UserDoesntExistError:
+        translationId = 'errors.user-doesnt-exist'
         break
       case errors.TimeoutError:
         translationId = 'errors.timeout'
@@ -53,6 +56,13 @@ export class ErrorHandler {
         break
       case errors.UserExistsError:
         translationId = 'errors.user-exists'
+        break
+      case errors.TransactionError:
+        if (error.includesOpCode(OPERATION_ERROR_CODES.opAccountBlocked)) {
+          translationId = 'errors.account-blocked'
+        } else {
+          translationId = 'errors.transaction'
+        }
         break
       default:
         translationId = 'errors.default'

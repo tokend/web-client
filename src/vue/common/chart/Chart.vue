@@ -1,6 +1,7 @@
 <template>
   <div class="chart">
     <scale-tabs
+      v-if="showTabs"
       class="chart__tabs"
       :class="{ 'chart__tabs--hidden': !(isActualData && historyHasValue) }"
       v-model="scale"
@@ -12,6 +13,7 @@
       :scale="scale"
       :has-value="isActualData && historyHasValue"
       :is-loading="isLoading"
+      :is-ticks-shown="showTicks"
       :data="history"
       :precision="common.precision"
     />
@@ -37,6 +39,8 @@ export default {
     baseAsset: { type: String, required: true },
     quoteAsset: { type: String, default: '' },
     initialScale: { type: String, default: 'month' },
+    showTabs: { type: Boolean, default: true },
+    showTicks: { type: Boolean, default: true },
   },
   data: () => ({
     data: {},
@@ -116,15 +120,15 @@ export default {
 }
 
 .chart__tabs {
-  margin-bottom: 2.4rem;
+  margin-bottom: 6rem;
   display: flex;
   justify-content: flex-end;
   transition: all 0.25s;
+}
 
-  &--hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
+.chart__tabs--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 </style>

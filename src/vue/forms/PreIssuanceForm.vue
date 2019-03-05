@@ -24,18 +24,20 @@
         class="pre-issuance-form__issuance-details"
       >
         <h3>{{ 'issuance.pre-issuance-details-title' | globalize }}</h3>
-        <table class="app__table">
-          <thead>
-            <th>{{ 'issuance.asset-lbl' | globalize }}</th>
-            <th>{{ 'issuance.amount-lbl' | globalize }}</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ issuance.asset }}</td>
-              <td>{{ issuance.amount | formatMoney }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="app__table">
+          <table>
+            <thead>
+              <th>{{ 'issuance.asset-lbl' | globalize }}</th>
+              <th>{{ 'issuance.amount-lbl' | globalize }}</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ issuance.asset }}</td>
+                <td>{{ issuance.amount | formatMoney }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="app__form-actions">
         <form-confirmation
@@ -57,7 +59,7 @@
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
     <p>
-      {{ 'issuance.no-owned-tokens-msg' | globalize }}
+      {{ 'issuance.no-owned-assets-msg' | globalize }}
     </p>
   </div>
   <div v-else>
@@ -79,6 +81,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
 import { documentContainer } from '@validators'
+
+const EVENTS = {
+  close: 'close',
+}
 
 export default {
   name: 'pre-issuance-form',
@@ -119,9 +125,9 @@ export default {
           })
         await Sdk.horizon.transactions.submitOperations(operation)
         Bus.success('issuance.pre-issuance-uploaded-msg')
+        this.$emit(EVENTS.close)
         this.reset()
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
       this.enableForm()
@@ -131,7 +137,6 @@ export default {
         const extracted = await FileUtil.getText(file)
         this.parsePreIssuance(JSON.parse(extracted).issuances[0])
       } catch (e) {
-        console.error(e)
         Bus.error('file-field.file-corrupted-err')
       }
     },

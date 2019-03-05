@@ -32,9 +32,10 @@
     </p>
     <div class="account-type-selector">
       <router-link
-        :to="vueRoutes.verification.general"
+        :to="vueRoutes.verificationGeneral"
         class="account-type-selector__item"
-        :disabled="kycAccountType && kycAccountType !== ACCOUNT_TYPES.general"
+        :disabled="kycAccountRole &&
+          kycAccountRole !== kvEntryGeneralRoleId"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-general-title' | globalize }}
@@ -48,9 +49,10 @@
         </div>
       </router-link>
       <router-link
-        :to="vueRoutes.verification.corporate"
+        :to="vueRoutes.verificationCorporate"
         class="account-type-selector__item"
-        :disabled="kycAccountType && kycAccountType !== ACCOUNT_TYPES.syndicate"
+        :disabled="kycAccountRole &&
+          kycAccountRole !== kvEntryCorporateRoleId"
       >
         <p class="account-type-selector__item-title">
           {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -77,7 +79,7 @@ import { store, vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import config from '@/config'
 
 // The guard doesn't allow the user to visit a verification page
 // if he/she has already sent the verification request. It redirects
@@ -88,17 +90,20 @@ import { ACCOUNT_TYPES } from '@tokend/js-sdk'
 // the guard when routing from the child's path to the parent's one.
 // Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
 function verificationGuard (to, from, next) {
-  const kycAccountType = store.getters[vuexTypes.kycAccountTypeToSet]
-  switch (kycAccountType) {
-    case ACCOUNT_TYPES.syndicate:
-      to.name === vueRoutes.verification.corporate.name
+  const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
+  const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
+
+  switch (kycAccountRole) {
+    case kvEntryCorporateRoleId:
+      to.name === vueRoutes.verificationCorporate.name
         ? next()
-        : next(vueRoutes.verification.corporate)
+        : next(vueRoutes.verificationCorporate)
       break
-    case ACCOUNT_TYPES.general:
-      to.name === vueRoutes.verification.general.name
+    case kvEntryGeneralRoleId:
+      to.name === vueRoutes.verificationGeneral.name
         ? next()
-        : next(vueRoutes.verification.general)
+        : next(vueRoutes.verificationGeneral)
       break
     default:
       next()
@@ -111,13 +116,15 @@ export default {
   data: _ => ({
     vueRoutes,
     REQUEST_STATES_STR,
-    ACCOUNT_TYPES,
+    config,
   }),
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
-      kycAccountType: vuexTypes.kycAccountTypeToSet,
+      kycAccountRole: vuexTypes.kycAccountRoleToSet,
+      kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
   },
   beforeRouteEnter (to, from, next) {

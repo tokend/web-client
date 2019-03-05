@@ -1,37 +1,66 @@
 {
-  "id": "8",
-  "paging_token": "8",
-  "requestor": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",
-  "reviewer": "GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636",
-  "reference": "3b28a6c3766c6295adad976d349705ef49393fbfdebe4facb5862d2cdfa285d3",
-  "reject_reason": "",
-  "hash": "2ab87437a6872833e723ca853f0c0db84d40970a98e3b71a2b53e54ba20c28a5",
-  "details": {
-    "request_type_i": 9,
-    "request_type": "update_kyc",
-    "update_kyc": {
-      "account_to_update_kyc": "GCKKB3V2CFT54KFBPKCFDVIQGXGLXSFI4E7LPEWQ6YZ3EJOCYQFD2Z3A",
-      "account_type_to_set": {
-        "int": 2,
-        "string": "general"
-      },
-      "kyc_level": 0,
-      "kyc_data": {
-        "blob_id": "IE2Y72WTREFRVISICOHFWSJJ44AMWGLWOEJTX46L2AXWNQF7LCVA"
-      },
-      "all_tasks": 31,
-      "pending_tasks": 1,
-      "sequence_number": 0,
-      "external_details": [
-        {},
-        {
-          "rejector": "Some service"
-        }
-      ]
-    }
+  "links": {
+    "self": "/v3/change_role_requests?filter%5Brequestor%5D=GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR\u0026include=request_details\u0026page%5Bcursor%5D=9223372036854775807\u0026page%5Blimit%5D=1\u0026page%5Border%5D=desc",
+    "prev": "/v3/change_role_requests?filter%5Brequestor%5D=GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR\u0026include=request_details\u0026page%5Bcursor%5D=9223372036854775807\u0026page%5Blimit%5D=1\u0026page%5Border%5D=asc",
+    "next": "/v3/change_role_requests?filter%5Brequestor%5D=GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR\u0026include=request_details\u0026page%5Bcursor%5D=2\u0026page%5Blimit%5D=1\u0026page%5Border%5D=desc"
   },
-  "created_at": "2018-04-07T18:02:07Z",
-  "updated_at": "2018-05-27T08:14:38Z",
-  "request_state_i": 1,
-  "request_state": "pending"
+  "data": [{
+    "id": "2",
+    "type": "requests",
+    "attributes": {
+      "reference": "17eb70034b5b71092521d184c5e7b069d47de657e51aef2be11a00c115036943",
+      "reject_reason": "",
+      "hash": "de47d9e4824f785aabe139cc93e493a9665d6231a5c116b8b518979b3a1d8600",
+      "all_tasks": 1,
+      "pending_tasks": 1,
+      "external_details": {
+        "data": [{
+          "rejector": "Some service"
+        }]
+      },
+      "created_at": "2019-02-21T11:40:26Z",
+      "updated_at": "2019-02-21T11:40:26Z",
+      "state": "pending",
+      "state_i": 1
+    },
+    "relationships": {
+      "requestor": {
+        "data": {
+          "id": "GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR",
+          "type": "accounts"
+        }
+      },
+      "reviewer": {
+        "data": {
+          "id": "GA67BUDBYDGCVCL6EKPDAREG5IPLHSROF6QJX7MLS2BQJZJDO6FCZAKE",
+          "type": "accounts"
+        }
+      },
+      "request_details": {
+        "data": {
+          "id": "2",
+          "type": "request-details-change-role"
+        }
+      }
+    }
+  }],
+  "included": [{
+    "id": "2",
+    "type": "request-details-change-role",
+    "attributes": {
+      "account_role_to_set": 3,
+      "creator_details": {
+        "blob_id": "OOFBHZPK2Y2VUJRRTO2X6GKUXH6MO6GNKAIM4TYJFA3VZGZ2LB7A"
+      },
+      "sequence_number": 0
+    },
+    "relationships": {
+      "account_to_update_role": {
+        "data": {
+          "id": "GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR",
+          "type": "accounts"
+        }
+      }
+    }
+  }]
 }

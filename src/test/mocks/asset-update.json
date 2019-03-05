@@ -7,9 +7,9 @@
   "reject_reason": "",
   "hash": "04cb5cb9ff39b333bcd0b83245d97e0513a07ce6381a5adfc231dbbc0dbe301e",
   "details": {
-    "request_type_i": 1,
+    "request_type_i": 13,
     "request_type": "asset_update",
-    "asset_update": {
+    "update_asset": {
       "code": "ETH",
       "policies": [
         {

@@ -1,14 +1,22 @@
 import { MockWrapper } from './index'
 import { Sdk } from '../sdk'
+import { Api } from '../api'
 import { Wallet } from '@tokend/js-sdk'
 import mock from 'xhr-mock'
 
 let sdkInstance = null
+let apiInstance = null
 
 export class MockHelper {
   constructor () {
     Sdk.initSync('https://test.api.com')
+    Api.init({
+      horizonURL: 'https://test.api.com',
+    })
+
     sdkInstance = Sdk.getInstance()
+    apiInstance = Api.api
+
     mock.setup()
     mock.reset()
     this.defaultAccountId = 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J'
@@ -47,6 +55,7 @@ export class MockHelper {
 
   useMockWallet ({ walletId, accountId } = {}) {
     sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
+    apiInstance.useWallet(this.getMockWallet({ walletId, accountId }))
   }
 
   mockEndpoint (endpoint, response) {
@@ -66,5 +75,9 @@ export class MockHelper {
 
   get getDefaultBalanceId () {
     return this.defaultBalanceId
+  }
+
+  get apiInstance () {
+    return apiInstance
   }
 }

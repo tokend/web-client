@@ -66,11 +66,13 @@ describe('PreIssuanceForm component', () => {
   })
 
   describe('watcher', () => {
-    it('extracts pre-issuance request after changing preIssuanceDocument', () => {
+    it('extracts pre-issuance request after changing preIssuanceDocument', async () => {
       const spy = sinon.stub(wrapper.vm, 'extractPreIssuanceRequest')
         .resolves()
 
       wrapper.setData({ preIssuanceDocument: { file: {} } })
+
+      await localVue.nextTick()
 
       expect(spy.calledOnce).to.be.true
     })
@@ -174,7 +176,7 @@ describe('PreIssuanceForm component', () => {
 
     describe('parsePreIssuance', () => {
       const preIssuance = {
-        preEmission: '00000003504c54000000000005f5e10042c5f77f000000408e138ec30b5f7aaecfcb42436868c04430868ed4847184a583bff7473f1deac5c519980bd7210afe77df44eadce3c2deada7da57b38aded1379ad2051be88d030000001437743250577a7939527a324a4d3253466d416f7800000000',
+        preEmission: '000000036d6d6d0000000000003d090069569bf0000000408e03a1416c3c343843ab8a369c8d47249333375555ac097a61eaf4844d88a851de9d94ee5719150e0497a2246a6898b3a9d50a59129b8cb758ecaad0063fe6040000001c6542753656705a48775350354d7947477757394b6c36705a61653530000000027b7d000000000000',
         used: false,
       }
 
@@ -187,10 +189,11 @@ describe('PreIssuanceForm component', () => {
         expect(spy.calledOnce).to.be.true
       })
 
-      it('sets converted pre-issuance to issuance property', () => {
+      it('sets converted pre-issuance to issuance property if asset is defined', () => {
         wrapper.setData({
           issuance: null,
         })
+        sinon.stub(wrapper.vm, 'isAssetDefined').returns(true)
 
         wrapper.vm.parsePreIssuance(preIssuance)
 

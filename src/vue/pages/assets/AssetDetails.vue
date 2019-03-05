@@ -1,7 +1,7 @@
 <template>
   <div class="asset-details">
     <div class="asset-details__header">
-      <asset-logo
+      <asset-logo-dark
         :asset-code="asset.code"
         :logo-url="asset.logoUrl(config.FILE_STORAGE)"
       />
@@ -14,74 +14,93 @@
         </p>
       </div>
     </div>
-    <table class="app__table asset-details__table">
-      <tbody>
-        <tr v-if="asset.balance.value">
-          <td>
-            {{ 'asset-details.balance-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.balance | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.maximum-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.maxIssuanceAmount | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.issued-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.issued | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.available-title' | globalize }}
-          </td>
-          <td>
-            {{ asset.availableForIssuance | formatMoney }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'asset-details.terms-title' | globalize }}
-          </td>
-          <td>
-            <a
-              v-if="asset.termsKey"
-              class="asset-details__terms"
-              :href="assetTermsUrl"
-            >
-              {{ 'asset-details.download-terms-btn' | globalize }}
-            </a>
-            <p v-else>
-              {{ 'asset-details.no-terms-msg' | globalize }}
-            </p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="asset-details__buttons">
+    <div class="app__table asset-details__table">
+      <table>
+        <tbody>
+          <tr v-if="asset.balance.value">
+            <td>
+              {{ 'asset-details.balance-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.balance | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.maximum-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.maxIssuanceAmount | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.issued-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.issued | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.available-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.availableForIssuance | formatMoney }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.terms-title' | globalize }}
+            </td>
+            <td>
+              <a
+                v-if="asset.termsKey"
+                class="asset-details__terms"
+                :href="assetTermsUrl"
+              >
+                {{ 'asset-details.download-terms-btn' | globalize }}
+              </a>
+              <p v-else>
+                {{ 'asset-details.no-terms-msg' | globalize }}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      v-if="showActions"
+      class="asset-details__buttons"
+    >
       <button
         v-ripple
+        v-if="asset.owner !== accountId"
         class="asset-details__update-btn"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
-        {{ 'asset-details.add-balance-btn' | globalize }}
+        <template v-if="!isExistsInUserBalances">
+          {{ 'asset-details.add-balance-btn' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'asset-details.already-in-your-balance-btn' | globalize }}
+        </template>
+      </button>
+      <button
+        v-else
+        v-ripple
+        class="asset-details__update-btn"
+        @click="$emit(EVENTS.updateAsk)"
+      >
+        {{ 'asset-details.update-btn' | globalize }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import AssetLogo from '@/vue/common/assets/AssetLogo'
+import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
 import config from '@/config'
 
@@ -97,27 +116,33 @@ import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
+  updateAsk: 'update-ask',
 }
 
 export default {
   name: 'asset-details',
   components: {
-    AssetLogo,
+    AssetLogoDark,
   },
   props: {
     asset: { type: Object, required: true },
+    showActions: { type: Boolean, default: true },
   },
   data: _ => ({
     isBalanceCreating: false,
     config,
+    EVENTS,
   }),
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
+    },
+    isExistsInUserBalances () {
+      return !!this.balances.find(item => item.asset === this.asset.code)
     },
   },
   methods: {
@@ -128,7 +153,7 @@ export default {
       this.isBalanceCreating = true
       try {
         const operation = base.Operation.manageBalance({
-          destination: this.account.accountId,
+          destination: this.accountId,
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })

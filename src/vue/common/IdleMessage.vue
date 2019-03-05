@@ -1,7 +1,7 @@
 <template>
   <div class="idle-message">
     <drawer
-      @close-drawer="redirectToSignin"
+      @on-close="redirectToSignIn"
       :is-shown.sync="isDetailsDrawerShown"
     >
       <template slot="heading">
@@ -40,7 +40,7 @@ export default {
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
-    redirectToSignin () {
+    redirectToSignIn () {
       location.reload()
     },
   },

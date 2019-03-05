@@ -21,7 +21,7 @@
         "reject_reason": "",
         "hash": "d4f163744f7466a126c2166ceb89a109592e087e8900819d1d04eabe2ff86f71",
         "details": {
-          "request_type_i": 9,
+          "request_type_i": 8,
           "request_type": "update_kyc",
           "update_kyc": {
             "account_to_update_kyc": "GBPG46ENOWHGHIS2KPC2U253PZBJPWNMYYMHPIDGE7XYYM4PM4Y2QL2C",
@@ -55,7 +55,7 @@
         "reject_reason": "",
         "hash": "b392b44591e18c336d90be43caee7ccab790b92068f991f4129f7f1dc0e0c1f1",
         "details": {
-          "request_type_i": 9,
+          "request_type_i": 8,
           "request_type": "update_kyc",
           "update_kyc": {
             "account_to_update_kyc": "GCAZCVEXOIMS227QCQEJ6NYZNB5SO6SLMJ4EV3LIDFHHGWLPTL7XQM7D",
@@ -89,7 +89,7 @@
         "reject_reason": "",
         "hash": "551f921c7735eeb1231ff5a3f12bcfad8bcd456a79e5ec4293b5750ec6f02472",
         "details": {
-          "request_type_i": 9,
+          "request_type_i": 8,
           "request_type": "update_kyc",
           "update_kyc": {
             "account_to_update_kyc": "GCAZCVEXOIMS227QCQEJ6NYZNB5SO6SLMJ4EV3LIDFHHGWLPTL7XQM7D",
@@ -127,7 +127,7 @@
         "reject_reason": "",
         "hash": "9dfe099b40545901544549c0490b2250725245c2fe8aa3235c75c9d3a3e1128c",
         "details": {
-          "request_type_i": 9,
+          "request_type_i": 8,
           "request_type": "update_kyc",
           "update_kyc": {
             "account_to_update_kyc": "GBTX5K455ECALKWYCKIEUTKCV3GOBTF5M6IKFOBZQ6E7MHUIOTPYUUDE",

@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div v-if="accountTypeI !== ACCOUNT_TYPES.syndicate">
+    <div v-if="!isAccountCorporate">
       <p>
         {{ 'issuance.not-available' | globalize }}
       </p>
     </div>
     <div
       v-else-if="isLoaded && ownedAssets.length"
-      class="issuance-form">
+      class="issuance-form"
+    >
       <form
         novalidate
         class="app__form"
@@ -15,14 +16,11 @@
       >
         <div class="app__form-row">
           <div class="app__form-field">
-            <!--
-              :key is a hack to ensure that the component will be updated
-              after property change
-            -->
             <select-field
-              :key="form.asset"
               v-model="form.asset"
-              :values="assetListValues"
+              :values="ownedAssets"
+              name="issuance-asset"
+              key-as-value-text="nameAndCode"
               :label="'issuance.asset-lbl' | globalize"
               id="issuance-asset"
               @blur="touchField('form.asset')"
@@ -39,28 +37,31 @@
                 v-model="form.amount"
                 @blur="touchField('form.amount')"
                 id="issuance-amount"
+                name="issuance-amount"
                 :label="'issuance.amount-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
                   'form.amount',
-                  { from: MIN_AMOUNT, to: availableAmount.value }
+                  {
+                    from: MIN_AMOUNT,
+                    to: form.asset.availableForIssuance,
+                    maxDecimalDigitsCount: DECIMAL_POINTS
+                  }
                 )"
                 :disabled="formMixin.isDisabled"
               />
               <p
-                v-if="availableAmount.currency"
+                v-if="form.asset.code"
                 class="issuance-form__issuance-asset-code"
               >
-                {{ availableAmount.currency }}
+                {{ form.asset.code }}
               </p>
             </div>
             <p
-              v-if="availableAmount.value"
+              v-if="form.asset.availableForIssuance"
               class="app__form-field-description"
             >
-              {{
-                'issuance.available-for-issuance-hint'
-                  | globalize({ value: availableAmount })
-              }}
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'issuance.available-for-issuance-hint' | globalize({ value: form.asset.availableForIssuance }) }}
             </p>
           </div>
         </div>
@@ -71,6 +72,7 @@
               v-model="form.receiver"
               @blur="touchField('form.receiver')"
               id="issuance-receiver"
+              name="issuance-receiver"
               :label="'issuance.receiver-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.receiver')"
               :disabled="formMixin.isDisabled"
@@ -84,6 +86,7 @@
               v-model="form.reference"
               @blur="touchField('form.reference')"
               id="issuance-reference"
+              name="issuance-reference"
               :error-message="getFieldErrorMessage(
                 'form.reference',
                 { length: REFERENCE_MAX_LENGTH }
@@ -114,7 +117,7 @@
     </div>
     <div v-else-if="isLoaded && !ownedAssets.length">
       <p>
-        {{ 'issuance.no-owned-tokens-msg' | globalize }}
+        {{ 'issuance.no-owned-assets-msg' | globalize }}
       </p>
     </div>
     <div v-else>
@@ -125,6 +128,7 @@
 
 <script>
 import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
@@ -135,31 +139,42 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
-import { base, ACCOUNT_TYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
-import { required, amountRange, emailOrAccountId, email, maxLength } from '@validators'
+import {
+  required,
+  amountRange,
+  emailOrAccountId,
+  email,
+  maxLength,
+  maxDecimalDigitsCount,
+} from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 const REFERENCE_MAX_LENGTH = 255
+const EVENTS = {
+  close: 'close',
+}
 
 export default {
   name: 'issuance-form',
   components: {
     Loader,
   },
-  mixins: [OwnedAssetsLoaderMixin, FormMixin],
+  mixins: [IdentityGetterMixin, OwnedAssetsLoaderMixin, FormMixin],
   data: _ => ({
     form: {
-      asset: '',
+      asset: {},
       amount: '0',
       receiver: '',
       reference: '',
     },
+    config,
     isLoaded: false,
-    ACCOUNT_TYPES,
     MIN_AMOUNT: config.MIN_AMOUNT,
     REFERENCE_MAX_LENGTH,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
   }),
   validations () {
     return {
@@ -167,7 +182,11 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          amountRange: amountRange(
+            this.MIN_AMOUNT,
+            this.form.asset.availableForIssuance
+          ),
+          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
         receiver: { required, emailOrAccountId },
         reference: {
@@ -179,60 +198,47 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountTypeI,
+      vuexTypes.isAccountCorporate,
     ]),
-    assetListValues () {
-      return this.ownedAssets
-        .map(asset => ({
-          value: asset.code,
-          label: `${asset.details.name} (${asset.code})`,
-        }))
-    },
-    availableAmount () {
-      if (this.form.asset) {
-        const asset = this.ownedAssets
-          .find(asset => asset.code === this.form.asset)
-        return {
-          value: asset.availableForIssuance,
-          currency: asset.code,
-        }
-      }
-      return { value: 0 }
-    },
   },
   async created () {
-    await this.loadOwnedAssets()
-    this.isLoaded = true
-    if (this.ownedAssets.length > 0) {
-      this.form.asset = this.ownedAssets[0].code
+    try {
+      await this.initAssetSelector()
+      this.isLoaded = true
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error)
     }
   },
   methods: {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+
       try {
-        const receiverBalance =
-          await this.getReceiverBalance(this.form.receiver, this.form.asset)
+        const receiverBalance = await this.getReceiverBalance(
+          this.form.receiver,
+          this.form.asset.code
+        )
         if (receiverBalance) {
           const operation =
             base.CreateIssuanceRequestBuilder.createIssuanceRequest({
-              asset: this.form.asset,
+              asset: this.form.asset.code,
               amount: this.form.amount.toString(),
               receiver: receiverBalance.balanceId,
               reference: this.form.reference,
-              externalDetails: {},
+              creatorDetails: {},
             })
           await Sdk.horizon.transactions.submitOperations(operation)
-          Bus.success('issuance.tokens-issued-msg')
-          await this.loadOwnedAssets()
+          await this.reinitAssetSelector()
+          Bus.success('issuance.assets-issued-msg')
+          this.$emit(EVENTS.close)
         } else {
           Bus.error('issuance.balance-required-err')
         }
       } catch (e) {
-        console.error(e)
         ErrorHandler.process(e)
       }
+
       this.enableForm()
     },
     async getReceiverBalance (receiver, asset) {
@@ -244,17 +250,30 @@ export default {
     },
     async getReceiverAccountId (receiver) {
       if (email(receiver)) {
-        const { data } = await Sdk.horizon.public.getAccountIdByEmail(receiver)
-        return data.accountId
+        return this.getAccountIdByEmail(receiver)
       }
       return receiver
+    },
+    async initAssetSelector () {
+      await this.loadOwnedAssets()
+      if (this.ownedAssets.length) {
+        this.form.asset = this.ownedAssets[0]
+      }
+    },
+    async reinitAssetSelector () {
+      await this.loadOwnedAssets()
+      if (this.ownedAssets.length) {
+        const updatedAsset = this.ownedAssets
+          .find(item => item.code === this.form.asset.code)
+        this.form.asset = updatedAsset || this.assets[0]
+      }
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import "./app-form";
 
 .issuance-form__submit-btn {
   @include button-raised();

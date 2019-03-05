@@ -20,13 +20,11 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { formatNumber } from '@/vue/filters/formatNumber'
 import { formatInteger } from '@/vue/filters/formatInteger'
 import { formatPercent } from '@/vue/filters/formatPercent'
-import { formatFeeType } from '@/vue/filters/formatFeeType'
 import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
-import { formatFeeSubType } from '@/vue/filters/formatFeeSubType'
 import { abbreviate } from '@/vue/filters/abbreviate'
-import { IDLE } from './js/const/idle.const'
+import { cropAddress } from '@/vue/filters/cropAddress'
 
 i18next.init(i18nOptions)
 
@@ -44,17 +42,16 @@ Vue.filter('formatMoney', formatMoney)
 Vue.filter('formatNumber', formatNumber)
 Vue.filter('formatPercent', formatPercent)
 Vue.filter('formatInteger', formatInteger)
-Vue.filter('formatFeeType', formatFeeType)
 Vue.filter('formatCalendar', formatCalendar)
-Vue.filter('formatFeeSubType', formatFeeSubType)
 Vue.filter('formatOrderNumber', formatOrderNumber)
 Vue.filter('abbreviate', abbreviate)
+Vue.filter('cropAddress', cropAddress)
 
 const eventsHub = new Vue()
 
 Vue.use(IdleVue, {
   eventEmitter: eventsHub,
-  idleTime: IDLE.time,
+  idleTime: config.IDLE_TIMEOUT,
 })
 
 /* eslint-disable no-new */

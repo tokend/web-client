@@ -3,7 +3,9 @@
 $z-drawer: 10;
 $z-status-message: 11;
 
-$sidebar-hide-bp: 820px;
+$sidebar-hide-bp: 768px;
+$status-message-reposition-bp: 470px;
+
 $sidebar-width: 27.5rem;
 
 $content-padding-top: 3.7rem;
@@ -23,6 +25,7 @@ $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
 $_gray: #e2e3e3;
+$_silverChalice: #aeaeae;
 $_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
 $_thinBlue: #f6f8fb;
@@ -38,6 +41,7 @@ $_whiteSmoke: #f5f6f9;
 $_lightPurple: #837fa1;
 $_ghostWhite: #c4c8cb;
 $_thinPurple: #c1bfd0;
+$_alto: #e0e0e0;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -79,7 +83,9 @@ $col-text-page-heading: $col-heading;
 $col-text-auth-title-big: $_white;
 $col-text-auth-title-small: $_cornflowerBlue;
 $col-text-auth-tip-link: $_cornflowerBlue;
+$col-text-auth-version: rgba($_cornflowerBlue, 0.65);
 $col-text-status-message: $_white;
+$col-text-highlighted: $col-primary-lighten;
 
 // button colors:
 $col-button-raised: $col-primary-lighten;
@@ -96,6 +102,10 @@ $col-button-flat-accent-disabled-txt: $_lightGray;
 
 $col-button-back-icon: $col-primary-inactive;
 $col-button-back-icon-hover: $col-primary-lighten;
+
+$col-button-flat-light-bg: $_whiteSmoke;
+$col-button-flat-light-shadow: rgba(0, 0, 0, 0.15);
+$col-button-flat-light-text: $col-text;
 
 // block
 $col-block-bg: $_white;
@@ -145,9 +155,12 @@ $col-auth-titles-background-fallback: #332f5c;
 $col-table-background: $_white;
 $col-table-alt-row-background: $_whiteSmoke;
 $col-table-cell-text: $col-primary;
+$col-table-cell-text-inactive: rgba($col-primary, .3);
 $col-table-head-text: $_lightPurple;
 $col-table-row-selected: darken($_whiteSmoke, 10%);
+$col-table-row-disabled: $_alto;
 $col-table-shadow: rgba(0, 0, 0, 0.1);
+$col-table-scroll-side-shadow: rgba(0, 0, 0, 0.2);
 
 // loader colors:
 $col-loader-text: $col-primary;
@@ -210,6 +223,15 @@ $col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
 
+// sale card colors
+$col-sale-card-background: $_white;
+$col-sale-card-shadow: $col-block-shadow;
+$col-sale-card-header-background: $_athensGray;
+$col-sale-card-text-primary: $col-text;
+$col-sale-card-text-bold: $_cornflowerBlue;
+$col-sale-card-progress-bar-background: $_thinPurple;
+$col-sale-card-progress-bar-value: $_cornflowerBlue;
+
 // request colors
 $col-request-approved: $_cyan;
 $col-request-pending: $_orangePeel;
@@ -218,6 +240,10 @@ $col-request-rejected: $_lightRed;
 // asset logo
 $col-asset-logo-background: $_white;
 $col-asset-logo-text: $col-primary;
+
+// asset logo
+$col-asset-logo-dark-background: $_silverChalice;
+$col-asset-logo-dark-text: $_white;
 
 // terms colors
 $col-terms-title: $col-primary;
@@ -244,4 +270,20 @@ $col-ios-guide-step-number-bg: $col-primary;
 $col-ios-guide-step-number-text: $_white;
 $col-ios-guide-step-text: $col-primary;
 $col-ios-guide-substep-text: $col-secondary;
+
+// sale details colors
+$col-sale-details-title: $col-primary;
+$col-sale-details-subtitle: $col-secondary;
+$col-sale-details-text-primary: $col-text;
+$col-sale-details-text-secondary: $col-text-secondary;
+$col-sale-details-block: $col-block-bg;
+$col-sale-details-logo-bg: $_athensGray;
+$col-sale-details-progress-bar-bg: $_thinPurple;
+$col-sale-details-progress-bar-funded: $col-primary-lighten;
 // TODO: paste here variables that are ready to use during the refactor process
+
+// movement history colors:
+$col-incoming: $_green;
+$col-outgoing: $_lightRed;
+$col-locked: $_orangePeel;
+$col-unlocked: $_orangePeel;

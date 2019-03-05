@@ -39,8 +39,10 @@ import WarningBanner from '@/vue/common/WarningBanner'
 
 import {
   mapGetters,
+  mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -80,10 +82,17 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+    }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
+      Api.init({ horizonURL: config.HORIZON_SERVER })
+
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
+        Api.useWallet(this[vuexTypes.wallet])
+        await this.loadKvEntriesAccountRoleIds()
       }
     },
     detectIE () {
@@ -138,7 +147,7 @@ export default {
 
   @include respond-to-custom($sidebar-hide-bp) {
     width: 100vw;
-    padding: 0 $content-side-paddings-sm;
+    padding: 0 $content-side-paddings-sm 3rem;
   }
 }
 </style>
