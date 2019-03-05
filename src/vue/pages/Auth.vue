@@ -10,21 +10,37 @@
         v-html="$options.filters.globalize('auth-pages.big-title', { escapeValue: false })"
       />
       <!-- eslint-enable -->
+      <template v-if="buildVersion">
+        <p class="auth__version">
+          {{ buildVersion }}
+        </p>
+      </template>
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
       <router-view />
+      <section class="auth__footer-section">
+        <app-footer />
+      </section>
     </div>
   </div>
 </template>
 
 <script>
 import Logo from '../assets/Logo'
+import AppFooter from '@/vue/navigation/Footer'
+import config from '@/config'
 
 export default {
   name: 'auth',
   components: {
     Logo,
+    AppFooter,
+  },
+  data () {
+    return {
+      buildVersion: config.BUILD_VERSION,
+    }
   },
 }
 </script>
@@ -110,5 +126,19 @@ export default {
   @include respond-to-height(750px) {
     margin-bottom: 6.4rem;
   }
+}
+
+.auth__footer-section {
+  padding: 1.6rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.auth__version {
+  font-size: 1.2rem;
+  color: $col-text-auth-version;
+  margin: 1.2rem 0 0;
 }
 </style>

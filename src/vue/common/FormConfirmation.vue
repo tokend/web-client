@@ -17,7 +17,12 @@
           class="form-confirmation__ok-btn"
           @click.prevent="emitOk"
           :disabled="isPending || isDisabled">
-          {{ okButtonTextId | globalize }}
+          <template v-if="!isPending">
+            {{ okButtonTextId | globalize }}
+          </template>
+          <template v-else>
+            {{ 'form-confirmation.submit-processing' | globalize }}
+          </template>
         </button>
       </div>
     </div>

@@ -5,6 +5,10 @@ import account from './account.module'
 import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
+import keyValue from './key-value.module'
+
+import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
+import { feesModule } from '@/vue/modules/fees/store'
 
 import { assetExplorerModule } from '@modules/asset-explorer/store'
 
@@ -38,8 +42,11 @@ const store = new Vuex.Store({
     factors,
     wallet,
     kyc,
+    keyValue,
     // namespaced local modules (used by a specific set of components)
     'asset-explorer': assetExplorerModule,
+    'movements-history': movementsHistoryModule,
+    'fees': feesModule,
   },
   plugins: [sessionStoragePlugin],
 })

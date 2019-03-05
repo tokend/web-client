@@ -1,18 +1,15 @@
 <template>
-  <div>
+  <div class="issuance">
     <top-bar>
       <template slot="main">
         <router-link
-          v-ripple
           :to="{ name: 'app.issuance' }"
         >
           <span>{{ 'issuance.history-title' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
-        slot="extra"
-      >
+
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="issuance-btn"
@@ -20,6 +17,7 @@
         >
           {{ 'issuance.upload-pre-issuance-btn' | globalize }}
         </button>
+
         <button
           v-ripple
           class="issuance-btn"
@@ -29,21 +27,24 @@
         </button>
       </template>
     </top-bar>
+
     <drawer :is-shown.sync="isPreIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.upload-pre-issuance-btn' | globalize }}
       </template>
-      <pre-issuance-form @cancel="isPreIssuanceDrawerShown = false" />
+      <pre-issuance-form @close="closePreIssuanceDrawer" />
     </drawer>
+
     <drawer :is-shown.sync="isIssuanceDrawerShown">
       <template slot="heading">
         {{ 'issuance.issuance-form-heading' | globalize }}
       </template>
-      <issuance-form @cancel="isIssuanceDrawerShown = false" />
+      <issuance-form @close="closeIssuanceDrawer() || initFirstPageLoader()" />
     </drawer>
-    <div class="issuance" v-if="isLoaded">
+
+    <template v-if="isLoaded">
       <template v-if="issuanceHistory.length">
-        <div class="issuance-history__table">
+        <div class="issuance__table app__table app__table--with-shadow">
           <table class="app__table">
             <thead>
               <tr>
@@ -64,20 +65,25 @@
                 </th>
               </tr>
             </thead>
+
             <tbody>
               <tr v-for="issuance in issuanceHistory" :key="issuance.id">
                 <td>
                   <email-getter :account-id="issuance.counterparty" />
                 </td>
+
                 <td :title="issuance.amount | formatMoney">
                   {{ issuance.amount | formatMoney }}
                 </td>
+
                 <td :title="issuance.asset">
                   {{ issuance.asset }}
                 </td>
+
                 <td :title="issuance.date | formatCalendar">
                   {{ issuance.date | formatCalendar }}
                 </td>
+
                 <td :title="issuance.subject">
                   {{ issuance.subject }}
                 </td>
@@ -86,29 +92,27 @@
           </table>
         </div>
       </template>
+
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          :msg-title="'issuance.no-issuance-history-title' | globalize"
-          :msg-message="'issuance.no-issuance-history-msg' | globalize"
+          title-id="issuance.no-issuance-history-title"
+          message-id="issuance.no-issuance-history-msg"
         />
       </template>
-    </div>
-    <div v-else>
-      <loader
-        :message-id="'issuance.loading-msg'"
-      />
-    </div>
-    <div
+    </template>
+
+    <template v-else>
+      <loader message-id="issuance.loading-msg" />
+    </template>
+
+    <collection-loader
       v-show="isLoaded"
-      class="issuance-history__collection-loader"
-    >
-      <collection-loader
-        :first-page-loader="getHistory"
-        @first-page-load="setHistory"
-        @next-page-load="extendHistory"
-      />
-    </div>
+      class="issuance__collection-loader"
+      :first-page-loader="firstPageLoader"
+      @first-page-load="setHistory"
+      @next-page-load="extendHistory"
+    />
   </div>
 </template>
 
@@ -124,7 +128,7 @@ import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 
 import { Sdk } from '@/sdk'
-import { ACCOUNT_TYPES, OP_TYPES } from '@tokend/js-sdk'
+import { OP_TYPES } from '@tokend/js-sdk'
 
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
@@ -143,37 +147,63 @@ export default {
     IssuanceForm,
     PreIssuanceForm,
   },
+
   data: _ => ({
     issuanceHistory: [],
     isLoaded: false,
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
-    ACCOUNT_TYPES,
+    firstPageLoader: () => {},
   }),
+
   computed: {
-    ...mapGetters([
-      vuexTypes.account,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
+    }),
   },
+
+  created () {
+    this.initFirstPageLoader()
+  },
+
   methods: {
-    async getHistory () {
-      const response = await Sdk.horizon.operations.getPage({
-        account_id: this[vuexTypes.account].accountId,
-        operation_type: OP_TYPES.createIssuanceRequest,
-      })
-      return response
+    initFirstPageLoader () {
+      this.isLoaded = false
+      this.issuanceHistory = []
+      this.firstPageLoader = this.getFirstPageLoader(this.accountId)
     },
+
+    closeIssuanceDrawer () {
+      this.isIssuanceDrawerShown = false
+    },
+
+    closePreIssuanceDrawer () {
+      this.isPreIssuanceDrawerShown = false
+    },
+
+    getFirstPageLoader (accountId) {
+      return function () {
+        return Sdk.horizon.operations.getPage({
+          account_id: accountId,
+          operation_type: OP_TYPES.createIssuanceRequest,
+        })
+      }
+    },
+
     setHistory (data) {
-      this.issuanceHistory = data.map(issuance => new IssuanceRecord(
-        issuance, this[vuexTypes.account].accountId)
-      )
+      this.issuanceHistory = data
+        .map(issuance => new IssuanceRecord(issuance, this.accountId))
       this.isLoaded = true
     },
+
     extendHistory (data) {
       this.issuanceHistory = this.issuanceHistory
-        .concat(data.map(issuance => new IssuanceRecord(
-          issuance, this[vuexTypes.account].accountId)
-        ))
+        .concat(
+          data.map(issuance => new IssuanceRecord(
+            issuance, this.accountId
+          ))
+        )
     },
   },
 }
@@ -183,16 +213,15 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.issuance-history__table {
-  overflow-x: auto;
-  @include box-shadow();
+.issuance__table {
+  width: 100%;
 }
 
 .issuance-btn {
   @include button-raised;
 }
 
-.issuance-history__collection-loader {
+.issuance__collection-loader {
   margin-top: 1rem;
 }
 </style>

@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
-import { AccountHelper } from './account.helper'
 import { vuexTypes } from './types'
 import { Sdk } from '../sdk'
+import { Api } from '../api'
 import { AssetRecord } from '../js/records/entities/asset.record'
 
 export const state = {
@@ -21,7 +21,9 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
-    const response = await Sdk.horizon.account.get(accountId)
+    const response = await Api.getWithSignature(`accounts/${accountId}`, {
+      include: ['external_system_ids'],
+    })
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },
 
@@ -38,32 +40,23 @@ export const actions = {
 
 export const getters = {
   [vuexTypes.account]: state => state.account,
-  [vuexTypes.balancesDetails]: state => state.balancesDetails,
   [vuexTypes.accountId]: state => state.account.id,
-  [vuexTypes.accountIsBlocked]: state => state.account.isBlocked,
-  [vuexTypes.accountBlockReasons]: state => state.account.blockReasons,
-  [vuexTypes.accountType]: state => state.account.accountType,
-  [vuexTypes.accountTypeI]: state => state.account.accountTypeI,
-  [vuexTypes.accountThresholds]: state => state.account.thresholds,
-  [vuexTypes.accountReferrer]: state => state.account.referrer,
-  [vuexTypes.accountReferrals]: state => state.account.referrals,
-  [vuexTypes.accountPoliciesTypeI]: state => _get(
-    state.account, 'policies.accountPoliciesTypeI'
-  ),
-  [vuexTypes.accountPoliciesTypes]: state => _get(
-    state.account, 'policies.accountPoliciesTypes', []
-  ), // accountPoliciesTypes can be null if not present, so here we
-  // overwrite it for easier interface
-  // accountBalances: [], // TODO
-  [vuexTypes.accountDepositAddresses]: state =>
-    AccountHelper.groupExternalSystemAccounts(
-      state.account.externalSystemAccounts
-    ),
-  [vuexTypes.accountKycBlobId]: state => _get(
-    state.account,
-    'accountKyc.kycData.blobId'
-  ),
   [vuexTypes.accountBalances]: state => state.balancesDetails,
+  [vuexTypes.accountRoleId]: state => _get(
+    state.account, 'role.id'
+  ),
+  [vuexTypes.accountDepositAddresses]: state =>
+    state.account.externalSystemIds || {},
+
+  [vuexTypes.isAccountGeneral]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryGeneralRoleId],
+  [vuexTypes.isAccountCorporate]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryCorporateRoleId],
+  [vuexTypes.isAccountUnverified]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryUnverifiedRoleId],
 }
 
 export default {

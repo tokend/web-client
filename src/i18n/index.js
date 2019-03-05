@@ -1,28 +1,8 @@
 import moment from 'moment'
 import numeral from 'numeral'
 
-import i18next from 'i18next'
-
 import _isObject from 'lodash/isObject'
 import _merge from 'lodash/merge'
-
-import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
-
-const FEE_TYPE_TRANSLATION_CODES = Object.freeze({
-  [FEE_TYPES.paymentFee]: 'fee-types.payment',
-  [FEE_TYPES.offerFee]: 'fee-types.offer',
-  [FEE_TYPES.withdrawalFee]: 'fee-types.withdrawal',
-  [FEE_TYPES.issuanceFee]: 'fee-types.issuance',
-  [FEE_TYPES.investFee]: 'fee-types.invest',
-  [FEE_TYPES.capitalDeploymentFee]: 'fee-types.capital-deployment',
-  [FEE_TYPES.operationFee]: 'fee-types.operation',
-  [FEE_TYPES.payoutFee]: 'fee-types.payout',
-})
-
-const PAYMENT_FEE_SUBTYPE_TRANSLATION_CODES = Object.freeze({
-  [PAYMENT_FEE_SUBTYPES.outgoing]: 'fee-types.outgoing',
-  [PAYMENT_FEE_SUBTYPES.incoming]: 'fee-types.incoming',
-})
 
 const language = 'en'
 let i18n
@@ -72,9 +52,9 @@ export const i18nOptions = {
           if (!_isObject(param)) {
             return numeral(param)
               .format(formats.default)
-          } else if (formats[param.currency.toLowerCase()]) {
+          } else if (formats[(param.currency || '').toLowerCase()]) {
             return numeral(param.value)
-              .format(formats[param.currency.toLowerCase()])
+              .format(formats[(param.currency || '').toLowerCase()])
           } else {
             return numeral(param.value)
               .format(formats.default)
@@ -96,15 +76,6 @@ export const i18nOptions = {
           return numeral(param).format(
             i18n.config.number.formats.percent
           )
-        case 'fee_type':
-          const feeTypeTranslationId = FEE_TYPE_TRANSLATION_CODES[param]
-          return i18next.t(feeTypeTranslationId)
-        case 'fee_subtype':
-          const isPaymentFeeType = param.type === FEE_TYPES.paymentFee
-          const feeSubtypeTranslationId = isPaymentFeeType
-            ? PAYMENT_FEE_SUBTYPE_TRANSLATION_CODES[param.subtype]
-            : 'fee-types.incoming-outgoing'
-          return i18next.t(feeSubtypeTranslationId)
         default:
           console.warn(`Unknown format: ${format}, skipping..`)
           return param

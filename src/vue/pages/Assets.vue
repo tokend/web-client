@@ -15,24 +15,21 @@
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="account.accountTypeI === ACCOUNT_TYPES.syndicate"
-        slot="extra"
-      >
+      <template v-if="isAccountCorporate" slot="extra">
         <button
           v-ripple
           class="create-asset-btn"
           @click="isAssetDrawerShown = true"
         >
-          {{ 'assets-page.create-token-btn' | globalize }}
+          {{ 'assets-page.create-asset-title' | globalize }}
         </button>
       </template>
     </top-bar>
     <drawer :is-shown.sync="isAssetDrawerShown">
       <template slot="heading">
-        {{ 'assets-page.create-token-btn' | globalize }}
+        {{ 'assets-page.create-asset-title' | globalize }}
       </template>
-      <asset-form />
+      <asset-create-form @close="isAssetDrawerShown = false" />
     </drawer>
     <router-view />
   </div>
@@ -41,9 +38,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import AssetForm from '@/vue/forms/AssetForm'
-
-import { ACCOUNT_TYPES } from '@tokend/js-sdk'
+import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -55,16 +50,16 @@ export default {
   components: {
     TopBar,
     Drawer,
-    AssetForm,
+    AssetCreateForm,
   },
   data: _ => ({
-    ACCOUNT_TYPES,
     vueRoutes,
     isAssetDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 }

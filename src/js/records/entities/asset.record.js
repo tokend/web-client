@@ -7,11 +7,13 @@ export class AssetRecord {
 
     this.code = record.code
     this.owner = record.owner
+    this.assetType = record.assetType || record.type
     this.preissuedAssetSigner = record.preissuedAssetSigner
 
     this.availableForIssuance = record.availableForIssuance
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount
+    this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
 
     this.details = record.details
@@ -48,6 +50,7 @@ export class AssetRecord {
       return {
         value: balance.balance,
         currency: balance.asset,
+        id: balance.balanceId,
       }
     } else {
       return {}
@@ -63,6 +66,11 @@ export class AssetRecord {
     return this._policies().reduce((s, p) => s | p, 0)
   }
 
+  get nameAndCode () {
+    const name = this.name || this.code
+    return `${name} (${this.code})`
+  }
+
   get isBaseAsset () {
     return !!(this.policy & ASSET_POLICIES.baseAsset)
   }
@@ -73,10 +81,6 @@ export class AssetRecord {
 
   get isIssuanceManualReviewRequired () {
     return !!(this.policy & ASSET_POLICIES.issuanceManualReviewRequired)
-  }
-
-  get isRequiresKYC () {
-    return !!(this.policy & ASSET_POLICIES.requiresKyc)
   }
 
   get isStatsQuoteAsset () {

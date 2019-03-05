@@ -20,6 +20,7 @@ export default {
   components: {
     AssetExplorerModule,
   },
+
   data: _ => ({
     config: {
       horizonURL: config.HORIZON_SERVER,

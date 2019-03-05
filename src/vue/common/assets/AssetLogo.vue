@@ -42,5 +42,6 @@ export default {
   justify-content: center;
   background: $col-asset-logo-background;
   color: $col-asset-logo-text;
+  line-height: 1;
 }
 </style>

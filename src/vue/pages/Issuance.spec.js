@@ -4,15 +4,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 
-import { OP_TYPES } from '@tokend/js-sdk'
 import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-
-import { MockHelper } from '@/test'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -28,23 +25,16 @@ describe('Issuance component unit test', () => {
     participants: [],
   }]
 
-  let mockHelper
-  let operationsResource
-
   let getters
   let store
   let wrapper
 
   beforeEach(() => {
-    mockHelper = new MockHelper()
-    operationsResource = mockHelper.getHorizonResourcePrototype('operations')
-
     getters = {
       ...accountModule.getters,
     }
-    sinon.stub(getters, vuexTypes.account).returns({
-      accountId: mockHelper.getMockWallet().accountId,
-    })
+    sinon.stub(getters, vuexTypes.accountId).returns('ACCOUNT_ID')
+    sinon.stub(getters, vuexTypes.accountRoleId).returns(-1)
     store = new Vuex.Store({
       getters,
     })
@@ -60,24 +50,6 @@ describe('Issuance component unit test', () => {
   })
 
   describe('method', () => {
-    describe('getHistory', () => {
-      it('fetches issuance operations for provided account ID', async () => {
-        const spy = sinon.stub(operationsResource, 'getPage').resolves({
-          data: [{}],
-        })
-
-        await wrapper.vm.getHistory()
-
-        expect(spy
-          .withArgs({
-            account_id: mockHelper.getMockWallet().accountId,
-            operation_type: OP_TYPES.createIssuanceRequest,
-          })
-          .calledOnce
-        ).to.be.true
-      })
-    })
-
     describe('setHistory', () => {
       it('changes issuance history data', () => {
         wrapper.vm.setHistory(sampleData)

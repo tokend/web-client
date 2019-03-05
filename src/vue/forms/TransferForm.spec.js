@@ -132,50 +132,64 @@ describe('TransferForm component', () => {
   })
 
   describe('getCounterparty()', () => {
-    let usersApiResource
-
     beforeEach(() => {
-      usersApiResource = mockHelper.getHorizonResourcePrototype('public')
-      const expectedCounterpartyData = {
-        data: [{ accountId: mockHelper.getDefaultAccountId }],
-      }
-      sinon.stub(usersApiResource, 'getAccountIdByEmail').resolves(expectedCounterpartyData)
+      sinon.stub(wrapper.vm, 'getAccountIdByEmail').resolves(mockHelper.getDefaultAccountId)
     })
 
     it('check that handles email as argument', async () => {
       await wrapper.vm.getCounterparty('some@email.com')
 
-      expect(usersApiResource.getAccountIdByEmail.calledOnce).to.be.true
+      expect(wrapper.vm.getAccountIdByEmail.calledOnce).to.be.true
     })
 
     it('check that handles accountId as argument', async () => {
       await wrapper.vm.getCounterparty(mockHelper.getDefaultAccountId)
 
-      expect(usersApiResource.getAccountIdByEmail.called).to.be.false
+      expect(wrapper.vm.getAccountIdByEmail.called).to.be.false
     })
   })
 
   describe('updateView()', () => {
     beforeEach(() => {
-      sinon.stub(wrapper.vm, 'setTokenCode')
+      const mockedBalance = {
+        accountId: mockHelper.getDefaultAccountId,
+        asset: 'BTC',
+        balance: '1.000000',
+        balanceId: mockHelper.getDefaultBalanceId,
+        convertedBalance: '0.000000',
+        convertedLocked: '0.000000',
+        convertedToAsset: 'USD',
+        locked: '0.000000',
+        requireReview: false,
+      }
+      wrapper = shallowMount(TransferForm, {
+        store,
+        localVue,
+        computed: {
+          balance () {
+            return mockedBalance
+          },
+        },
+      })
+      sinon.stub(wrapper.vm, 'setToken')
     })
 
     it('do not reset form if third argument (clear) not passed', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {})
 
-      expect(wrapper.vm.setTokenCode.called).to.be.false
+      expect(wrapper.vm.setToken.called).to.be.false
     })
 
     it('do not reset form if third argument (clear) passed with value "false"', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {}, false)
 
-      expect(wrapper.vm.setTokenCode.called).to.be.false
+      expect(wrapper.vm.setToken.called).to.be.false
     })
 
     it('reset form if third argument (clear) passed with value "true"', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {}, true)
 
-      expect(wrapper.vm.setTokenCode.calledOnce).to.be.true
+      expect(wrapper.vm.setToken.calledOnce).to.be.true
     })
   })
 
@@ -191,9 +205,9 @@ describe('TransferForm component', () => {
     wrapper.vm.view.opts.destinationFeeAsset = 'BTC'
     wrapper.vm.view.opts.feeFromSource = false
     wrapper.vm.view.opts.subject = 'Some text'
-    wrapper.vm.form.tokenCode = 'BTC'
+    wrapper.vm.form.token = { code: 'BTC' }
 
-    sinon.stub(base.PaymentV2Builder, 'paymentV2').returns('some operation')
+    sinon.stub(base.PaymentBuilder, 'payment').returns('some operation')
 
     const operation = wrapper.vm.buildPaymentOperation()
 
@@ -220,8 +234,8 @@ describe('TransferForm component', () => {
     beforeEach(() => {
       const mockedBalance = {
         accountId: mockHelper.getDefaultAccountId,
-        asset: 'ETH',
-        balance: '0.000000',
+        asset: 'BTC',
+        balance: '1.000000',
         balanceId: mockHelper.getDefaultBalanceId,
         convertedBalance: '0.000000',
         convertedLocked: '0.000000',
@@ -252,7 +266,7 @@ describe('TransferForm component', () => {
       stubFeesWithValidResult()
 
       wrapper.vm.form = {
-        tokenCode: null,
+        token: {},
         amount: '',
         recipient: '',
         subject: '',
@@ -274,8 +288,8 @@ describe('TransferForm component', () => {
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
-        tokenCode: 'BTC',
-        amount: '10',
+        token: { code: 'BTC' },
+        amount: '1',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
         isPaidForRecipient: false,
@@ -296,8 +310,8 @@ describe('TransferForm component', () => {
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
-        tokenCode: 'BTC',
-        amount: '10',
+        token: { code: 'BTC' },
+        amount: '1',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
         isPaidForRecipient: false,
@@ -319,7 +333,7 @@ describe('TransferForm component', () => {
         .to.deep.equal(expectUserTransferableTokens)
     })
 
-    it('tokenCodes()', () => {
+    it('tokens()', () => {
       const expectUserTransferableTokens = [
         mockedAccountBalances[0],
         mockedAccountBalances[1],
@@ -334,48 +348,17 @@ describe('TransferForm component', () => {
         },
       })
 
-      expect(wrapper.vm.tokenCodes)
-        .to.deep.equal(['BTC', 'USD'])
+      expect(wrapper.vm.tokens)
+        .to.deep.equal([
+          mockedAccountBalances[0].assetDetails,
+          mockedAccountBalances[1].assetDetails,
+        ])
     })
 
     it('balance()', () => {
-      wrapper.vm.form.tokenCode = 'USD'
+      wrapper.vm.form.token = { code: 'USD' }
 
       expect(wrapper.vm.balance).to.equal(mockedAccountBalances[1])
-    })
-
-    describe('isLimitExceeded()', () => {
-      it('check than amount > than balance', () => {
-        wrapper = shallowMount(TransferForm, {
-          localVue,
-          store,
-          computed: {
-            balance () {
-              return mockedAccountBalances[0]
-            },
-          },
-        })
-
-        wrapper.vm.form.amount = '2'
-
-        expect(wrapper.vm.isLimitExceeded).to.be.true
-      })
-
-      it('check than amount < than balance', () => {
-        wrapper = shallowMount(TransferForm, {
-          localVue,
-          store,
-          computed: {
-            balance () {
-              return mockedAccountBalances[1]
-            },
-          },
-        })
-
-        wrapper.vm.form.amount = '1'
-
-        expect(wrapper.vm.isLimitExceeded).to.be.false
-      })
     })
   })
 

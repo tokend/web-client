@@ -1,0 +1,292 @@
+<template>
+  <div class="trade-top-bar">
+    <template v-if="isLoaded">
+      <top-bar>
+        <template slot="main">
+          <router-link
+            :to="{
+              name: vueRoutes.tradeExchange.name,
+              query: { base: assetPair.base, quote: assetPair.quote }
+            }"
+          >
+            <span>
+              {{ 'trade-top-bar.exchange-view' | globalize }}
+            </span>
+          </router-link>
+          <router-link
+            :to="{
+              name: vueRoutes.tradeUserOffers.name,
+              query: { base: assetPair.base, quote: assetPair.quote }
+            }"
+          >
+            <span>
+              {{ 'trade-top-bar.my-offers-view' | globalize }}
+            </span>
+          </router-link>
+        </template>
+        <template slot="extra">
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreateBuyOfferDrawerShown = true"
+          >
+            {{ 'trade-top-bar.create-buy-offer-button' | globalize }}
+          </button>
+          <button
+            v-ripple
+            class="app__button-raised"
+            @click="isCreateSellOfferDrawerShown = true"
+          >
+            {{ 'trade-top-bar.create-sell-offer-button' | globalize }}
+          </button>
+        </template>
+      </top-bar>
+
+      <div class="trade-asset-selector__wrapper">
+        <select-field
+          v-if="formattedPairs.length"
+          v-model="selectedPair"
+          :values="formattedPairs"
+          :key="selectedPair"
+          class="trade-asset-selector__field app__select app__select--no-border"
+        />
+        <no-data-message
+          v-else
+          :title-id="'trade-top-bar.no-pairs-message'"
+          :message-id="'trade-top-bar.here-will-pairs-list'"
+        />
+      </div>
+      <div class="trade-asset-selector__balances" v-if="formattedPairs.length">
+        <p class="trade-asset-selector__balances-value">
+          {{
+            // eslint-disable-next-line
+            { value: assetPairBalances.base, currency: assetPair.base } | formatMoney
+          }}
+          /
+          {{
+            // eslint-disable-next-line
+            { value: assetPairBalances.quote, currency: assetPair.quote } | formatMoney
+          }}
+        </p>
+        <p class="trade-asset-selector__balances-label">
+          {{ 'trade-top-bar.user-balances-label' | globalize }}
+        </p>
+      </div>
+
+      <drawer :is-shown.sync="isCreateBuyOfferDrawerShown">
+        <template slot="heading">
+          {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
+        </template>
+        <create-trade-offer-form
+          :asset-pair="assetPair"
+          @close-drawer="closeBuyOfferDrawer"
+        />
+      </drawer>
+      <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
+        <template slot="heading">
+          {{ 'trade-top-bar.create-sell-offer-form-title' | globalize }}
+        </template>
+        <create-trade-offer-form
+          :asset-pair="assetPair"
+          :is-buy="false"
+          @close-drawer="closeSellOfferDrawer"
+        />
+      </drawer>
+    </template>
+
+    <template v-else-if="!isLoadingFailed">
+      <loader message-id="trade-top-bar.loading-msg" />
+    </template>
+  </div>
+</template>
+
+<script>
+import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
+import TopBar from '@/vue/common/TopBar'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+
+import SelectField from '@/vue/fields/SelectField'
+import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
+
+import { Sdk } from '@/sdk'
+import { errors } from '@tokend/js-sdk'
+
+import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
+
+import { vuexTypes } from '@/vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+import { vueRoutes } from '@/vue-router/routes'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
+
+const EVENTS = {
+  reloadTradeData: 'reload-trade-data',
+}
+
+export default {
+  name: 'trade-top-bar',
+  components: {
+    SelectField,
+    CreateTradeOfferForm,
+    Drawer,
+    Loader,
+    TopBar,
+    NoDataMessage,
+  },
+  data: () => ({
+    assetPair: {
+      base: '',
+      quote: '',
+    },
+    isLoaded: false,
+    isLoadingFailed: false,
+    errors,
+    selectedPair: '',
+    formattedPairs: [],
+    isCreateBuyOfferDrawerShown: false,
+    isCreateSellOfferDrawerShown: false,
+    vueRoutes,
+  }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountBalances,
+    ]),
+    assetPairBalances () {
+      return {
+        base: (this.accountBalances
+          .find(i => i.asset === this.assetPair.base) || {}).balance,
+        quote: (this.accountBalances
+          .find(i => i.asset === this.assetPair.quote) || {}).balance,
+      }
+    },
+  },
+  watch: {
+    selectedPair (value) {
+      if (value) {
+        const baseAsset = value.split('/')[0]
+        const quoteAsset = value.split('/')[1]
+        this.assetPair.base = baseAsset
+        this.assetPair.quote = quoteAsset
+
+        this.$router.replace({
+          name: this.$route.name,
+          query: {
+            base: baseAsset,
+            quote: quoteAsset,
+          },
+        })
+      }
+    },
+  },
+  async created () {
+    try {
+      await this.loadBalances()
+      await this.loadTradablePairs()
+      this.isLoaded = true
+    } catch (error) {
+      this.isLoadingFailed = true
+      ErrorHandler.processWithoutFeedback(error)
+    }
+  },
+  methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
+    async loadTradablePairs () {
+      const { data } = await Sdk.horizon.assetPairs.getAll()
+      const tradablePairs = data
+        .map(assetPair => new AssetPairRecord(assetPair))
+        .filter(pair => pair.isTradable)
+      this.formattedPairs = tradablePairs.map(item => item.baseAndQuote)
+      this.setDefaultSelectedPair(tradablePairs)
+    },
+    setDefaultSelectedPair (pairs) {
+      const queryBase = this.$route.query.base
+      const queryQuote = this.$route.query.quote
+
+      // if the user comes on Trade page from another place with some base and
+      // quote query params inside URL, we check that they're correct
+      // (exists in system) and set the appropriate
+      if (this.isQueryParamsValid(pairs)) {
+        const pair = pairs.find((i) => {
+          return i.baseAssetCode === queryBase &&
+                  i.quoteAssetCode === queryQuote
+        })
+        this.selectedPair = pair.baseAndQuote
+      } else {
+        this.selectedPair = this.formattedPairs[0]
+        if (queryBase && queryQuote) {
+          // eslint-disable-next-line
+          Bus.error({
+            messageId: 'trade-top-bar.error-invalid-base-quote-query-in-link',
+            messageArgs: {
+              invalidBase: queryBase,
+              invalidQuote: queryQuote,
+              defaultPair: this.formattedPairs[0],
+            },
+          })
+        }
+      }
+    },
+    isQueryParamsValid (pairs) {
+      const queryBase = this.$route.query.base
+      const queryQuote = this.$route.query.quote
+
+      if (queryBase && queryQuote) {
+        return Boolean(pairs.find((i) => {
+          return i.baseAssetCode === queryBase &&
+            i.quoteAssetCode === queryQuote
+        }))
+      }
+      return false
+    },
+    closeBuyOfferDrawer () {
+      this.isCreateBuyOfferDrawerShown = false
+      this.$emit(EVENTS.reloadTradeData)
+      this.loadBalances()
+    },
+    closeSellOfferDrawer () {
+      this.isCreateSellOfferDrawerShown = false
+      this.$emit(EVENTS.reloadTradeData)
+      this.loadBalances()
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+@import "~@scss/mixins";
+@import "~@scss/variables";
+
+$custom-breakpoint: 450px;
+
+.trade-asset-selector__field {
+  display: inline-block;
+  width: auto;
+}
+
+.trade-asset-selector__balances {
+  margin-top: 2.4rem;
+}
+
+.trade-asset-selector__balances-value {
+  font-size: 2.8rem;
+  font-weight: 400;
+
+  @include respond-to-custom ($custom-breakpoint) {
+    font-size: 2.2rem;
+  }
+}
+
+.trade-asset-selector__balances-label {
+  font-size: 1.6rem;
+  color: $col-text-secondary;
+
+  @include respond-to-custom ($custom-breakpoint) {
+    font-size: 1.4rem;
+  }
+}
+</style>

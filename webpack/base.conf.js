@@ -27,7 +27,6 @@ module.exports = {
       '@': resolve('src'),
       '@validators': resolve('src/validators'),
       '@static': resolve('static'),
-      '@ui': resolve('src/vue/common/ui-components'),
       '@scss': resolve('src/scss'),
       '@modules': resolve('src/vue/modules'),
     },

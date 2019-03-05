@@ -7,7 +7,7 @@
   "reject_reason": "",
   "hash": "71e802e46a8a05deebf94c0859ffa746d4c07f6349d24e80bcf60e1701d60abc",
   "details": {
-    "request_type_i": 10,
+    "request_type_i": 9,
     "request_type": "update_sale_details",
     "two_step_withdrawal": null,
     "limits_update": null,
@@ -32,3 +32,4 @@
   "request_state_i": 3,
   "request_state": "approved"
 }
+

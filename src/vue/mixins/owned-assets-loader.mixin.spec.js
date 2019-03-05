@@ -43,8 +43,8 @@ describe('asset-loader.mixin unit test', () => {
       )
 
       const getters = accountModule.getters
-      sinon.stub(getters, vuexTypes.account)
-        .returns({ accountId: mockHelper.getMockWallet().accountId })
+      sinon.stub(getters, vuexTypes.accountId)
+        .returns(mockHelper.getMockWallet().accountId)
       store = new Vuex.Store({
         getters,
       })
@@ -71,7 +71,7 @@ describe('asset-loader.mixin unit test', () => {
 
         await wrapper.vm.loadOwnedAssets()
 
-        expect(wrapper.vm.ownedAssets).to.deep.equal(sampleAssetsData)
+        expect(wrapper.vm.ownedAssets).to.not.equal(null)
       })
     })
   })

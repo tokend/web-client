@@ -50,14 +50,12 @@
 const EVENTS = {
   input: 'input',
 }
-
 export default {
   name: 'chart-tabs',
   props: {
     value: { type: String, default: '' },
     isPending: { type: Boolean, default: false },
   },
-
   data: () => ({
     EVENTS,
     tabs: {
@@ -75,12 +73,6 @@ export default {
 <style lang="scss" scoped>
   @import "~@scss/variables";
   @import "~@scss/mixins";
-
-  .chart-tabs__prefix {
-    white-space: nowrap;
-    display: inline-block;
-    margin-right: 1rem;
-  }
 
   .chart-tabs__tab {
     @include button();
