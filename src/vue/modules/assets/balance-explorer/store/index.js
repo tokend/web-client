@@ -31,7 +31,7 @@ export const actions = {
     })
 
     commit(types.SET_ACCOUNT_BALANCES, account.balances)
-    commit(types.SET_ASSETS, account.balances)
+    commit(types.SET_ASSETS, account.balances.map(b => b.asset))
   },
 }
 
