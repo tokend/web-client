@@ -16,13 +16,13 @@
       </p>
       <p v-if="asset.balance" class="card-viewer__balance">
         {{
-          'asset-explorer.list-item-balance-line' | globalize({
+          'assets.list-item-balance-line' | globalize({
             value: assetBalance
           })
         }}
       </p>
       <p v-else class="card-viewer__balance card-viewer__no-balance">
-        {{ 'asset-explorer.no-balance-msg' | globalize }}
+        {{ 'assets.no-balance-msg' | globalize }}
       </p>
     </div>
   </a>

@@ -5,7 +5,7 @@
     :disabled="isPending"
     @click="submit"
   >
-    {{ 'asset-explorer.add-balance-btn' | globalize }}
+    {{ 'assets.add-balance-btn' | globalize }}
   </button>
 </template>
 
@@ -32,15 +32,15 @@ export default {
   methods: {
     ...mapActions('asset-explorer', {
       createBalance: types.CREATE_BALANCE,
-      loadBalances: types.LOAD_BALANCES,
+      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
     async submit () {
       this.isPending = true
       try {
         await this.createBalance(this.asset.code)
-        await this.loadBalances()
+        await this.loadAccountBalances()
 
-        Bus.success('asset-explorer.balance-added-msg')
+        Bus.success('assets.balance-added-msg')
       } catch (e) {
         this.isPending = false
         ErrorHandler.process(e)

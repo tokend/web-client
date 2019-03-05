@@ -1,65 +1,41 @@
 <template>
   <div class="asset-explorer">
-    <drawer :is-shown.sync="isDrawerShown">
-      <template slot="heading">
-        {{ 'asset-explorer.drawer-title' | globalize }}
-      </template>
-      <asset-attributes-viewer
-        :asset="selectedAsset"
-        :config="config"
-      />
+    <template v-if="isLoaded">
+      <assets-renderer :config="config" />
+    </template>
 
-      <template v-if="!selectedAsset.balance">
-        <div class="asset-explorer__add-balance-btn-wrp">
-          <add-balance-btn :asset="selectedAsset" />
-        </div>
-      </template>
-    </drawer>
+    <template v-else-if="isLoadFailed">
+      <p class="asset-explorer__error-msg">
+        {{ 'assets.loading-error-msg' | globalize }}
+      </p>
+    </template>
 
-    <div class="asset-explorer__asset-list-wrp">
-      <card-list-renderer
-        :assets="assets"
-        :config="config"
-        @select="selectAsset"
-      />
-    </div>
-
-    <div class="asset-explorer__collection-loader-wrp">
-      <collection-loader
-        :first-page-loader="loadAssetsPage"
-        :page-limit="ASSETS_PER_PAGE"
-        @first-page-load="setAssets"
-        @next-page-load="concatAssets"
-      />
-    </div>
+    <template v-else>
+      <load-spinner message-id="assets.balances-loading-msg" />
+    </template>
   </div>
 </template>
 
 <script>
-import Drawer from '@/vue/common/Drawer'
-import CollectionLoader from '@/vue/common/CollectionLoader'
+import LoadSpinner from '@/vue/common/Loader'
 
-import CardListRenderer from '../shared/components/card-list-renderer'
-import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
-import AddBalanceBtn from './components/add-balance-btn'
+import AssetsRenderer from './components/assets-renderer'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { types } from './store/types'
 
 import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
 
-const ASSETS_PER_PAGE = 12
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'asset-explorer',
   components: {
-    Drawer,
-    CollectionLoader,
-    CardListRenderer,
-    AssetAttributesViewer,
-    AddBalanceBtn,
+    LoadSpinner,
+    AssetsRenderer,
   },
+
   props: {
     wallet: {
       type: Wallet,
@@ -75,54 +51,37 @@ export default {
       required: true,
     },
   },
+
   data: _ => ({
-    isDrawerShown: false,
-    selectedAsset: {},
-    ASSETS_PER_PAGE,
+    isLoaded: false,
+    isLoadFailed: false,
   }),
-  computed: {
-    ...mapGetters('asset-explorer', {
-      assets: types.assets,
-    }),
-  },
+
   async created () {
     initApi(this.wallet, this.config)
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
   },
+
   methods: {
     ...mapMutations('asset-explorer', {
-      setAssets: types.SET_ASSETS,
-      concatAssets: types.CONCAT_ASSETS,
       setAccountId: types.SET_ACCOUNT_ID,
     }),
+
     ...mapActions('asset-explorer', {
-      loadAssets: types.LOAD_ASSETS,
-      loadBalances: types.LOAD_BALANCES,
+      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
-    loadAssetsPage () {
-      return this.loadAssets({
-        page: {
-          limit: ASSETS_PER_PAGE,
-        },
-      })
-    },
-    selectAsset (asset) {
-      this.selectedAsset = asset
-      this.isDrawerShown = true
+
+    async loadBalances () {
+      try {
+        await this.loadAccountBalances()
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback()
+      }
     },
   },
 }
 </script>
-
-<style scoped>
-.asset-explorer__collection-loader-wrp {
-  margin-top: 1.5rem;
-}
-
-.asset-explorer__add-balance-btn-wrp {
-  margin-top: 4.9rem;
-  display: flex;
-}
-</style>

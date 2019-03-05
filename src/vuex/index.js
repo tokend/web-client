@@ -10,6 +10,7 @@ import keyValue from './key-value.module'
 import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
 import { feesModule } from '@/vue/modules/fees/store'
 import { assetExplorerModule } from '@modules/assets/asset-explorer/store'
+import { balanceExplorerModule } from '@modules/assets/balance-explorer/store'
 
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
@@ -44,6 +45,7 @@ const store = new Vuex.Store({
     keyValue,
     // namespaced local modules (used by a specific set of components)
     'asset-explorer': assetExplorerModule,
+    'balance-explorer': balanceExplorerModule,
     'movements-history': movementsHistoryModule,
     'fees': feesModule,
   },

@@ -1,7 +1,10 @@
 <template>
   <div class="asset-attributes-viewer">
     <div class="asset-attributes-viewer__header">
-      <logo-viewer :asset="asset" :config="config" />
+      <logo-viewer
+        :asset="asset"
+        :config="config"
+        :dark-mode="true" />
 
       <div class="asset-attributes-viewer__info">
         <p class="asset-attributes-viewer__code">
@@ -16,26 +19,26 @@
       <table>
         <tbody>
           <tr v-if="asset.balance">
-            <td>{{ 'asset-explorer.balance-title' | globalize }}</td>
+            <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
               <!-- eslint-disable-next-line max-len -->
               {{ { value: asset.balance, currency: asset.code } | formatMoney }}
             </td>
           </tr>
           <tr>
-            <td>{{ 'asset-explorer.maximum-title' | globalize }}</td>
+            <td>{{ 'assets.maximum-title' | globalize }}</td>
             <td>{{ asset.maxIssuanceAmount | formatMoney }}</td>
           </tr>
           <tr>
-            <td>{{ 'asset-explorer.issued-title' | globalize }}</td>
+            <td>{{ 'assets.issued-title' | globalize }}</td>
             <td>{{ asset.issued | formatMoney }}</td>
           </tr>
           <tr>
-            <td>{{ 'asset-explorer.available-title' | globalize }}</td>
+            <td>{{ 'assets.available-title' | globalize }}</td>
             <td>{{ asset.availableForIssuance | formatMoney }}</td>
           </tr>
           <tr>
-            <td>{{ 'asset-explorer.terms-title' | globalize }}</td>
+            <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
               <terms-viewer :asset="asset" :config="config" />
             </td>

@@ -4,7 +4,11 @@
     :src="url"
     class="logo-viewer logo-viewer--image"
   >
-  <p class="logo-viewer logo-viewer--abbr" v-else>
+  <p
+    v-else
+    class="logo-viewer logo-viewer--abbr"
+    :class="{ 'logo-viewer--dark' : darkMode }"
+  >
     {{ asset.code | abbreviate }}
   </p>
 </template>
@@ -13,16 +17,11 @@
 import { Asset } from '../wrappers/asset'
 
 export default {
-  name: 'asset-logo',
+  name: 'logo-viewer',
   props: {
-    asset: {
-      type: Asset,
-      required: true,
-    },
-    config: {
-      type: Object,
-      required: true,
-    },
+    asset: { type: Asset, required: true },
+    config: { type: Object, required: true },
+    darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
@@ -51,6 +50,11 @@ export default {
     justify-content: center;
     background: $col-asset-logo-background;
     color: $col-asset-logo-text;
+  }
+
+  &--dark {
+    background: $col-asset-logo-dark-background;
+    color: $col-asset-logo-dark-text;
   }
 }
 </style>

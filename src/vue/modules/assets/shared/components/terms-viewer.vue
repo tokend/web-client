@@ -5,10 +5,10 @@
       :href="href"
       class="terms-viewer__link"
     >
-      {{ 'asset-explorer.download-terms-btn' | globalize }}
+      {{ 'assets.download-terms-btn' | globalize }}
     </a>
     <p v-else>
-      {{ 'asset-explorer.no-terms-msg' | globalize }}
+      {{ 'assets.no-terms-msg' | globalize }}
     </p>
   </div>
 </template>
@@ -19,14 +19,8 @@ import { Asset } from '../wrappers/asset'
 export default {
   name: 'terms-viewer',
   props: {
-    asset: {
-      type: Asset,
-      required: true,
-    },
-    config: {
-      type: Object,
-      required: true,
-    },
+    asset: { type: Asset, required: true },
+    config: { type: Object, required: true },
   },
   computed: {
     href () {
