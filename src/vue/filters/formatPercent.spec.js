@@ -13,7 +13,7 @@ describe('formatPercent filter test', () => {
     formatPercent('25.256')
 
     expect(spy
-      .withArgs('formats.percent', { value: '25.256' })
+      .withArgs('formats.percent', { value: '25.256' / 100 })
       .calledOnce
     )
       .to.be.true

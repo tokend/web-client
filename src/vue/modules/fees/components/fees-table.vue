@@ -46,8 +46,8 @@
               {{ { value: fee.fixed, currency: fee.asset } | formatMoney }}
             </td>
 
-            <td :title="(fee.percent / 100) | formatPercent">
-              {{ (fee.percent / 100) | formatPercent }}
+            <td :title="fee.percent | formatPercent">
+              {{ fee.percent | formatPercent }}
             </td>
 
             <td :title="fee.lowerBound | formatMoney">
