@@ -16,8 +16,8 @@
     "build": "node webpack/build.js",
     "test": "node --max-old-space-size=4096 node_modules/.bin/karma start",
     "test:watch": "node --max-old-space-size=4096 node_modules/.bin/karma start --no-single-run --auto-watch",
-    "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0"
-  },
+    "lint": "if [ -n \"$(git diff --cached CHANGELOG.md)\" ] ; then echo \"eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0\"; else  echo \"ERROR: No changes were made to CHANGELOG.md\"; return 1; fi"
+    },
   "dependencies": {
     "@mdi/font": "3.3.92",
     "@tokend/js-sdk": "1.3.0",
