@@ -9,8 +9,7 @@ import keyValue from './key-value.module'
 
 import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
 import { feesModule } from '@/vue/modules/fees/store'
-
-import { assetExplorerModule } from '@modules/asset-explorer/store'
+import { assetExplorerModule } from '@modules/assets/asset-explorer/store'
 
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'

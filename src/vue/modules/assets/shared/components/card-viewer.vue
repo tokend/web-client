@@ -1,19 +1,23 @@
 <template>
   <a class="card-viewer" v-on="$listeners">
     <div class="card-viewer__header">
-      <logo-viewer class="card-viewer__logo" :asset="asset" />
+      <logo-viewer
+        class="card-viewer__logo"
+        :asset="asset"
+        :config="config"
+      />
     </div>
     <div class="card-viewer__info">
       <p class="card-viewer__code">
         {{ asset.code }}
       </p>
       <p class="card-viewer__name">
-        {{ asset.name }}
+        {{ asset.name || asset.code }}
       </p>
-      <p v-if="balance" class="card-viewer__balance">
+      <p v-if="asset.balance" class="card-viewer__balance">
         {{
           'asset-explorer.list-item-balance-line' | globalize({
-            value: balance.available
+            value: assetBalance
           })
         }}
       </p>
@@ -29,9 +33,6 @@ import LogoViewer from './logo-viewer'
 
 import { Asset } from '../wrappers/asset'
 
-import { mapGetters } from 'vuex'
-import { types } from '../store/types'
-
 export default {
   name: 'card-viewer',
   components: { LogoViewer },
@@ -40,13 +41,17 @@ export default {
       type: Asset,
       required: true,
     },
+    config: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
-    ...mapGetters('asset-explorer', {
-      getBalanceByAssetCode: types.getBalanceByAssetCode,
-    }),
-    balance () {
-      return this.getBalanceByAssetCode(this.asset.code)
+    assetBalance () {
+      return {
+        value: this.asset.balance,
+        currency: this.asset.code,
+      }
     },
   },
 }

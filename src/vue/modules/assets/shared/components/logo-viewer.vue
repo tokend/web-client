@@ -11,7 +11,6 @@
 
 <script>
 import { Asset } from '../wrappers/asset'
-import { config } from '@/vue/modules/asset-explorer/_config'
 
 export default {
   name: 'asset-logo',
@@ -20,10 +19,14 @@ export default {
       type: Asset,
       required: true,
     },
+    config: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     url () {
-      return this.asset.logoUrl(config().storageURL)
+      return this.asset.logoUrl(this.config.storageURL)
     },
   },
 }

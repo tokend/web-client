@@ -1,17 +1,12 @@
 <template>
   <div class="card-list-renderer">
-    <drawer :is-shown.sync="isDrawerShown">
-      <template slot="heading">
-        {{ 'asset-explorer.drawer-title' | globalize }}
-      </template>
-      <asset-attributes-viewer :asset="selectedAsset" />
-    </drawer>
     <div class="card-list-renderer__inner">
       <template v-for="asset in assets">
         <card-viewer
           :asset="asset"
+          :config="config"
           :key="asset.code"
-          @click="selectAsset(asset)"
+          @click="$emit(EVENTS.select, asset)"
         />
       </template>
     </div>
@@ -19,31 +14,24 @@
 </template>
 
 <script>
-import Drawer from '@/vue/common/Drawer'
-
-import AssetAttributesViewer from './asset-attributes-viewer'
 import CardViewer from './card-viewer'
+
+const EVENTS = {
+  select: 'select',
+}
 
 export default {
   name: 'card-list-renderer',
   components: {
-    Drawer,
     CardViewer,
-    AssetAttributesViewer,
   },
   props: {
     assets: { type: Array, default: _ => [] },
+    config: { type: Object, required: true },
   },
   data: _ => ({
-    isDrawerShown: false,
-    selectedAsset: null,
+    EVENTS,
   }),
-  methods: {
-    selectAsset (asset) {
-      this.selectedAsset = asset
-      this.isDrawerShown = true
-    },
-  },
 }
 </script>
 

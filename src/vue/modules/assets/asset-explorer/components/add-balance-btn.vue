@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Asset } from '../wrappers/asset'
+import { Asset } from '../../shared/wrappers/asset'
 
 import { types } from '../store/types'
 import { mapActions } from 'vuex'
@@ -42,9 +42,9 @@ export default {
 
         Bus.success('asset-explorer.balance-added-msg')
       } catch (e) {
+        this.isPending = false
         ErrorHandler.process(e)
       }
-      this.isPending = false
     },
   },
 }

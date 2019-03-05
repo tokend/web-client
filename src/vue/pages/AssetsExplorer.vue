@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import AssetExplorerModule from '@modules/asset-explorer'
+import AssetExplorerModule from '@modules/assets/asset-explorer'
 
 import config from '../../config'
 

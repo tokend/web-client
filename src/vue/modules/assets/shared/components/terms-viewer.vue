@@ -15,7 +15,6 @@
 
 <script>
 import { Asset } from '../wrappers/asset'
-import { config } from '../_config'
 
 export default {
   name: 'terms-viewer',
@@ -24,10 +23,14 @@ export default {
       type: Asset,
       required: true,
     },
+    config: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     href () {
-      return this.asset.termsUrl(config().storageURL)
+      return this.asset.termsUrl(this.config.storageURL)
     },
   },
 }

@@ -1,5 +1,4 @@
-import { Balance } from '../wrappers/balance'
-import { Asset } from '../wrappers/asset'
+import { Asset } from '../../shared/wrappers/asset'
 
 import { api } from '../_api'
 import { types } from './types'
@@ -52,11 +51,11 @@ export const actions = {
 }
 
 export const getters = {
-  [types.assets]: state => state.assets.map(a => new Asset(a)),
+  [types.assets]: state => state.assets.map(asset => {
+    const balance = state.balances.find(b => b.asset.id === asset.id)
+    return new Asset(asset, balance ? balance.state.available : '')
+  }),
   [types.accountId]: state => state.accountId,
-  [types.getBalanceByAssetCode]: state => assetCode => state.balances
-    .map(b => new Balance(b))
-    .find(b => b.assetCode === assetCode),
 }
 
 export const assetExplorerModule = {
