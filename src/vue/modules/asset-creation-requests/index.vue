@@ -2,7 +2,22 @@
   <div class="asset-creation-requests">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
-        <asset-creation-request-drawer :request="selectedRequest" />
+        <template v-if="isUpdateMode">
+          <template slot="heading">
+            {{ 'asset-creation-requests.update-asset-title' | globalize }}
+          </template>
+          <asset-create-form :request="selectedRequest" />
+        </template>
+
+        <template v-else>
+          <template slot="heading">
+            {{ 'asset-creation-requests.details-title' | globalize }}
+          </template>
+          <asset-creation-request-viewer
+            :request="selectedRequest"
+            @update="isUpdateMode = true"
+          />
+        </template>
       </drawer>
 
       <asset-creation-requests-table
@@ -37,7 +52,8 @@ import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import AssetCreationRequestsTable from './components/asset-creation-requests-table'
-import AssetCreationRequestDrawer from './components/asset-creation-request-drawer'
+import AssetCreateForm from '@/vue/forms/AssetCreateForm'
+import AssetCreationRequestViewer from './components/asset-creation-request-viewer'
 
 import { initApi } from './_api'
 import { Wallet } from '@tokend/js-sdk'
@@ -54,7 +70,8 @@ export default {
     Drawer,
     CollectionLoader,
     AssetCreationRequestsTable,
-    AssetCreationRequestDrawer,
+    AssetCreateForm,
+    AssetCreationRequestViewer,
   },
 
   props: {
@@ -76,6 +93,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     isDrawerShown: false,
+    isUpdateMode: false,
     selectedRequest: {},
     firstPageLoader: () => {},
   }),
@@ -117,10 +135,6 @@ export default {
 
     initFirstPageLoader () {
       this.firstPageLoader = this.loadRequests
-    },
-
-    closeDetailsDrawer () {
-      this.isDrawerShown = false
     },
 
     showRequestDetails (request) {

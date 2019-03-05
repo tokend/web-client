@@ -32,6 +32,7 @@ export const actions = {
       filter: {
         requestor: getters[types.accountId],
       },
+      include: ['request_details'],
     })
   },
 }

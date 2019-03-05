@@ -1,5 +1,5 @@
 <template>
-  <div class="asset-creation-requests__table">
+  <div class="asset-creation-requests-table">
     <div
       v-if="requests.length"
       class="app__table app__table--with-shadow"
@@ -98,7 +98,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.asset-creation-requests__table {
+.asset-creation-requests-table {
   tr td:last-child {
     width: 3rem;
     text-align: right;
