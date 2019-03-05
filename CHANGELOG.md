@@ -10,6 +10,11 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Issuance explorer module
+- Fees module
+
+### Changed
+- Now using new account endpoint for loading the fees
+- Moved fees filters to the corresponding viewers
 
 ## [1.3.0] - 2019-03-01
 
