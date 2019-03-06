@@ -1063,7 +1063,7 @@
       "no-assets": "No assets found",
       "here-will-assets-list": "Here will be the list of your depositable assets"
     },
-    "coinpayments-form": {
+    "coinpayments": {
       "amount": "Amount",
       "request-cp": "Request the address",
       "no-address": "No available addresses to deposit yet. Please try again later.",
