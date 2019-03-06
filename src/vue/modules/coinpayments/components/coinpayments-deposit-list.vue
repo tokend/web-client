@@ -19,11 +19,11 @@
       />
     </div>
     <template v-if="!isLoaded">
-      <loader message-id="coinpayments-form.loading-msg" />
+      <loader message-id="coinpayments.loading-msg" />
     </template>
     <template v-if="isFailed">
       <p>
-        {{ 'coinpayments-form.load-failed-msg' | globalize }}
+        {{ 'coinpayments.load-failed-msg' | globalize }}
       </p>
     </template>
   </div>

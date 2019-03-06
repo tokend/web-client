@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="address-viewer__help">
-      {{ 'coinpayments-form.ready-cp' | globalize({
+      {{ 'coinpayments.ready-cp' | globalize({
         amount: formatMoney(depositDetails.amount),
         asset: asset.code
       }) }}

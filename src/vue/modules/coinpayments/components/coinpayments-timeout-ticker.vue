@@ -1,6 +1,6 @@
 <template>
   <div class="timeout-ticker">
-    {{ 'coinpayments-form.time-left' | globalize }}: {{ timeLeftFormatted }}
+    {{ 'coinpayments.time-left' | globalize }}: {{ timeLeftFormatted }}
   </div>
 </template>
 
