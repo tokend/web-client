@@ -13,6 +13,7 @@
               class="app__form-field"
               v-model.trim="form.amount"
               name="coinpayments-amount"
+              id="coinpayments-amount"
               @blur="touchField('form.amount')"
               :error-message="getFieldErrorMessage(
                 'form.amount',
