@@ -11,7 +11,7 @@
             :request="selectedRequest"
             :is-pending="isRequestRejected"
             @approve="approveRequest"
-            @reject="rejectRequest()"
+            @reject="rejectRequest"
           />
         </drawer>
 
@@ -186,7 +186,7 @@ export default {
       this.isDetailsDrawerShown = false
     },
 
-    async getFirstPageLoader (accountId) {
+    getFirstPageLoader (accountId) {
       return function () {
         return Sdk.horizon.request.getAllForWithdrawals({
           reviewer: accountId,
@@ -229,11 +229,13 @@ export default {
       this.isRequestRejected = false
     },
 
-    async rejectRequest () {
+    async rejectRequest (rejectReason) {
       this.isRequestRejected = true
       try {
-        const action = base.xdr.ReviewRequestOpAction.reject().value
-        await this._reviewWithdraw({ action }, this.selectedRequest)
+        const action = base.xdr.ReviewRequestOpAction.permanentReject().value
+        /* eslint-disable-next-line max-len */
+        await this._reviewWithdraw({ action, reason: rejectReason }, this.selectedRequest)
+        /* eslint-enable-next-line max-len */
         const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
         this.requestsHistory.splice(this.selectedIndex, 1,
           RecordWrapper.request(data)
@@ -258,7 +260,7 @@ export default {
             externalDetails: '{}',
           },
           action,
-          reason
+          reason,
         }
         return base.ReviewRequestBuilder.reviewWithdrawRequest({
           ...opts,

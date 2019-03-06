@@ -772,7 +772,9 @@
       "percent-fee": "Percent fee",
       "total-fee": "Total fee",
       "address": "Address",
-      "created": "Created"
+      "created": "Created",
+      "reject-reason": "Reason",
+      "message-text-default": "Please recheck the reason before confirmation"
     },
 
     "file-field": {

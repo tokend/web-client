@@ -13,16 +13,6 @@
     </div>
 
     <div
-      v-else-if="request.isRejected"
-      class="request-state request-state--rejected"
-    >
-      <p class="request-state__content">
-        <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.rejected-msg' | globalize({ reason: request.rejectReason }) }}
-      </p>
-    </div>
-
-    <div
       v-else-if="request.isPermanentlyRejected"
       class="request-state request-state--permanently-rejected"
     >
@@ -103,7 +93,7 @@
               {{ 'withdrawal-request-details.created' | globalize }}
             </td>
             <td>
-              {{ request.created_at | formatDate }}
+              {{ request.createdAt | formatDate }}
             </td>
           </tr>
         </tbody>
@@ -114,7 +104,7 @@
       <button
         v-ripple
         class="withdrawal-request-details__update-btn"
-        :disabled="isPending || !canBeApproved"
+        :disabled="isPending || !canBeApproved || isShowReasonField"
         @click="$emit(EVENTS.approve)"
       >
         {{ 'withdrawal-request-details.approve-btn' | globalize }}
@@ -123,11 +113,36 @@
       <button
         v-ripple
         class="withdrawal-request-details__cancel-btn"
-        :disabled="isPending || !canBeRejected"
-        @click="$emit(EVENTS.reject)"
+        :disabled="isPending || !canBeRejected || isShowReasonField"
+        @click="showReasonField"
       >
         {{ 'withdrawal-request-details.rejected-btn' | globalize }}
       </button>
+    </div>
+
+    <div
+      class="withdrawal-request-details__form-row"
+      v-if="isShowReasonField && !request.isPermanentlyRejected"
+    >
+      <div class="withdrawal-request-details__form-field">
+        <textarea-field
+          id="withdrawal-request-details-reject-reason"
+          name="withdrawal-request-details-reject-reason"
+          v-model="rejectReason"
+          :label="'withdrawal-request-details.reject-reason' | globalize"
+          :maxlength="formNoteMaxLength"
+        />
+      </div>
+    </div>
+
+    <div class="withdrawal-request-details__form-actions">
+      <form-confirmation
+        v-if="isShowReasonField && !request.isPermanentlyRejected"
+        :is-pending="isPending"
+        :message-id="'withdrawal-request-details.message-text-default'"
+        @cancel="showReasonField"
+        @ok="$emit(EVENTS.reject, rejectReason)"
+      />
     </div>
   </div>
   <div v-else>
@@ -147,6 +162,8 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { RequestRecord } from '../../../js/records/request-record'
 import Loader from '../../common/Loader'
 import { ErrorHandler } from '../../../js/helpers/error-handler'
+import TextareaField from '../../fields/TextareaField'
+import FormConfirmation from '../../common/FormConfirmation'
 
 const EVENTS = {
   approve: 'approve',
@@ -157,6 +174,8 @@ export default {
   name: 'withdrawal-request-details',
   components: {
     Loader,
+    TextareaField,
+    FormConfirmation,
   },
   mixins: [IdentityGetterMixin],
   props: {
@@ -172,7 +191,10 @@ export default {
   },
   data: _ => ({
     requestorEmail: '',
+    rejectReason: '',
     isLoaded: false,
+    formNoteMaxLength: 250,
+    isShowReasonField: false,
     config,
     ASSET_POLICIES,
     EVENTS,
@@ -199,6 +221,9 @@ export default {
       } catch (error) {
         ErrorHandler.process(error)
       }
+    },
+    showReasonField () {
+      this.isShowReasonField = !this.isShowReasonField
     },
   },
 }
@@ -271,5 +296,13 @@ export default {
     .withdrawal-details__info {
       margin-left: 1.8rem;
     }
+  }
+
+  .withdrawal-request-details__form-actions {
+    margin-top: 2rem;
+  }
+
+  .withdrawal-request-details__form-row {
+    margin-top: 2rem;
   }
 </style>
