@@ -16,7 +16,7 @@ export const mutations = {
     state.accountId = id
   },
   [types.SET_ACCOUNT_BALANCES] (state, balances) {
-    state.balances = balances || []
+    state.balances = balances
   },
   [types.SET_ASSETS] (state, assets) {
     state.assets = assets
