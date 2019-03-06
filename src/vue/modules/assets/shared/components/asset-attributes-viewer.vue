@@ -4,7 +4,8 @@
       <logo-viewer
         :asset="asset"
         :storage-url="storageUrl"
-        :dark-mode="true" />
+        :dark-mode="true"
+      />
 
       <div class="asset-attributes-viewer__info">
         <p class="asset-attributes-viewer__code">
@@ -21,8 +22,9 @@
           <tr v-if="asset.balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: asset.balance, currency: asset.code } | formatMoney }}
+              {{
+                { value: asset.balance, currency: asset.code } | formatMoney
+              }}
             </td>
           </tr>
           <tr>

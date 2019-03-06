@@ -6,8 +6,8 @@ import { types } from './types'
 const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
-  assets: [],
   accountId: '',
+  assets: [],
   balances: [],
 }
 
@@ -29,6 +29,7 @@ export const actions = {
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state', 'balances.asset'],
     })
+
     commit(types.SET_ACCOUNT_BALANCES, account.balances)
     commit(types.SET_ASSETS, account.balances.map(b => b.asset))
   },
