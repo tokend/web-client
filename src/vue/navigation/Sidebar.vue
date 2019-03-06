@@ -325,8 +325,10 @@ $content-item-right-padding: 2.4rem;
   padding: 4rem 2.4rem 5rem 4rem;
   padding: 4rem $content-item-right-padding 5rem $content-item-left-padding;
 
-  .sidebar__aside--closed & {
-    display: none;
+  @include respond-to-custom($sidebar-hide-bp) {
+    .sidebar__aside--closed & {
+      display: none;
+    }
   }
 }
 
@@ -340,8 +342,10 @@ $content-item-right-padding: 2.4rem;
 .sidebar__links-section {
   flex: 1;
 
-  .sidebar__aside--closed & {
-    display: none;
+  @include respond-to-custom($sidebar-hide-bp) {
+    .sidebar__aside--closed & {
+      display: none;
+    }
   }
 }
 
@@ -388,8 +392,10 @@ $content-item-right-padding: 2.4rem;
 .sidebar__footer-section {
   padding-top: 2rem;
 
-  .sidebar__aside--closed & {
-    display: none;
+  @include respond-to-custom($sidebar-hide-bp) {
+    .sidebar__aside--closed & {
+      display: none;
+    }
   }
 }
 </style>
