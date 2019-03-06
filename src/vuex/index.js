@@ -9,6 +9,8 @@ import keyValue from './key-value.module'
 
 import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
 import { loyaltyPointsModule } from '@/vue/modules/loyalty-points/store'
+import { loyaltyPointsInvoicesModule } from '@/vue/modules/loyalty-points-invoices/store'
+import { createInvoiceFormModule } from '@/vue/modules/create-invoice-form/store'
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
@@ -42,6 +44,8 @@ const store = new Vuex.Store({
     // namespaced local modules (used by a specific set of components)
     'movements-history': movementsHistoryModule,
     'loyalty-points': loyaltyPointsModule,
+    'loyalty-points-invoices': loyaltyPointsInvoicesModule,
+    'create-invoice-form': createInvoiceFormModule,
   },
   plugins: [sessionStoragePlugin],
 })

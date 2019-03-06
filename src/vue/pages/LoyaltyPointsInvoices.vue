@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loyalty-points-module
+    <loyalty-points-invoices-module
       :config="config"
       :wallet="wallet"
     />
@@ -9,14 +9,14 @@
 
 <script>
 import config from '@/config'
-import LoyaltyPointsModule from '@modules/loyalty-points'
+import loyaltyPointsInvoicesModule from '@modules/loyalty-points-invoices'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 
 export default {
-  name: 'loyaly-points-page',
+  name: 'loyalty-points-invoices-page',
   components: {
-    LoyaltyPointsModule,
+    loyaltyPointsInvoicesModule,
   },
   data: _ => ({
     config: {

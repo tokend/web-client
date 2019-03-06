@@ -427,15 +427,24 @@
     "create-invoice-module": {
       "create-invoice-btn": "Create invoice",
       "create-invoice-form-title": "Create invoice",
-      "statistics-page": "Statistics"
+      "statistics-page": "Statistics",
+      "invoices-page": "Invoices"
+    },
+
+    "loyalty-points-module": {
+      "create-invoice-form-title": "Create invoice"
     },
 
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
       "close": "Close",
       "price": "Price",
+      "asset": "Asset",
       "total-amount": "Total amount",
-      "create-invoice": "Create invoice"
+      "create-invoice": "Create invoice",
+      "no-pairs-message": "No pairs found",
+      "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
+      "loading-msg": "Loading..."
     },
 
     "movements-history": {

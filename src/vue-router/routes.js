@@ -30,6 +30,7 @@ export const vueRoutes = Object.freeze({
   assetCreationRequests: { name: 'app.asset-creation-requests' },
   saleCreationRequests: { name: 'app.sale-creation-requests' },
   preIssuanceUploadRequests: { name: 'app.pre-issuance-upload-requests' },
+  loyaltyPointsInvoices: { name: 'app.loyalty-points-invoices' },
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
   iosInstallationGuide: { name: 'ios-installation-guide' },

@@ -8,12 +8,11 @@
 import config from '@/config'
 
 export default {
-  name: 'loyaly-points',
+  name: 'statistics',
   data: _ => ({
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
-    isSendRequestFormShown: false,
   }),
 }
 </script>
