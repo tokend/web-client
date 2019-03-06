@@ -152,6 +152,19 @@
               {{ 'pages-names.requests' | globalize }}
             </span>
           </router-link>
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.healthcare"
+            tag="a"
+            v-if="config.featureFlags.healthcare"
+          >
+            <i class="sidebar__link-icon mdi mdi-file-document-box" />
+            <span>
+              {{ 'pages-names.healthcare' | globalize }}
+            </span>
+          </router-link>
         </nav>
         <nav class="sidebar__links-group">
           <p class="sidebar__links-group-title">

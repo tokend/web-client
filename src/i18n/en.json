@@ -260,7 +260,8 @@
       "downloads": "TokenD downloads",
       "terms": "Terms",
       "funds": "Funds",
-      "fund-details": "Fund details"
+      "fund-details": "Fund details",
+      "healthcare": "Healthcare"
     },
 
     "limits": {
@@ -1015,6 +1016,10 @@
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
+    },
+
+    "healthcare-page": {
+      "create-document": "Create document"
     }
   }
 }
