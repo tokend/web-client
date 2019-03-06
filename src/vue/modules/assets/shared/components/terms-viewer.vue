@@ -20,11 +20,11 @@ export default {
   name: 'terms-viewer',
   props: {
     asset: { type: Asset, required: true },
-    config: { type: Object, required: true },
+    storageUrl: { type: String, required: true },
   },
   computed: {
     href () {
-      return this.asset.termsUrl(this.config.storageURL)
+      return this.asset.termsUrl(this.storageUrl)
     },
   },
 }

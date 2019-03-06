@@ -2,28 +2,51 @@
   <div class="assets-renderer">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
-        <template slot="heading">
-          {{ 'assets.drawer-title' | globalize }}
-        </template>
-        <asset-attributes-viewer
-          :asset="selectedAsset"
-          :config="config"
-        />
+        <template v-if="isUpdateMode">
+          <template slot="heading">
+            {{ 'assets.update-drawer-title' | globalize }}
+          </template>
 
-        <template v-if="!selectedAsset.balance">
-          <div class="assets-renderer__add-balance-btn-wrp">
-            <add-balance-btn :asset="selectedAsset" />
+          <asset-update-form
+            :asset-record="selectedAsset"
+            @close="isDrawerShown = false"
+          />
+        </template>
+
+        <template v-else>
+          <template slot="heading">
+            {{ 'assets.details-drawer-title' | globalize }}
+          </template>
+
+          <asset-attributes-viewer
+            :asset="selectedAsset"
+            :storage-url="config.storageURL"
+          />
+
+          <div class="assets-renderer__actions">
+            <asset-actions-bar
+              :asset="selectedAsset"
+              @update-ask="isUpdateMode = true"
+              @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
+            />
           </div>
         </template>
       </drawer>
 
       <div class="assets-renderer__asset-list-wrp">
-        <card-list-renderer
+        <div
           v-if="assets.length"
-          :assets="assets"
-          :config="config"
-          @select="selectAsset"
-        />
+          class="assets-renderer__asset-list"
+        >
+          <template v-for="asset in assets">
+            <card-viewer
+              :asset="asset"
+              :storage-url="config.storageURL"
+              :key="asset.code"
+              @click="selectAsset(asset)"
+            />
+          </template>
+        </div>
 
         <no-data-message
           v-else
@@ -47,7 +70,7 @@
     <div class="assets-renderer__collection-loader-wrp">
       <collection-loader
         v-show="isLoaded && assets.length"
-        :first-page-loader="loadAssetsPage"
+        :first-page-loader="firstPageLoader"
         :page-limit="ASSETS_PER_PAGE"
         @first-page-load="setAssets"
         @next-page-load="concatAssets"
@@ -62,9 +85,10 @@ import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import CardListRenderer from '../../shared/components/card-list-renderer'
+import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
-import AddBalanceBtn from './add-balance-btn'
+import AssetActionsBar from './asset-actions-bar'
+import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -80,9 +104,10 @@ export default {
     LoadSpinner,
     NoDataMessage,
     CollectionLoader,
-    CardListRenderer,
+    CardViewer,
     AssetAttributesViewer,
-    AddBalanceBtn,
+    AssetActionsBar,
+    AssetUpdateForm,
   },
 
   props: {
@@ -96,7 +121,9 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isDrawerShown: false,
+    isUpdateMode: false,
     selectedAsset: {},
+    firstPageLoader: _ => {},
     ASSETS_PER_PAGE,
   }),
 
@@ -104,6 +131,10 @@ export default {
     ...mapGetters('asset-explorer', {
       assets: types.assets,
     }),
+  },
+
+  created () {
+    this.initFirstPageLoader()
   },
 
   methods: {
@@ -116,7 +147,12 @@ export default {
       loadAssets: types.LOAD_ASSETS,
     }),
 
+    initFirstPageLoader () {
+      this.firstPageLoader = _ => this.loadAssetsPage()
+    },
+
     async loadAssetsPage () {
+      this.isLoaded = false
       try {
         const response = await this.loadAssets({
           page: {
@@ -133,6 +169,7 @@ export default {
 
     selectAsset (asset) {
       this.selectedAsset = asset
+      this.isUpdateMode = false
       this.isDrawerShown = true
     },
   },
@@ -144,8 +181,14 @@ export default {
   margin-top: 1.5rem;
 }
 
-.assets-renderer__add-balance-btn-wrp {
+.assets-renderer__actions {
   margin-top: 4.9rem;
+}
+
+.assets-renderer__asset-list {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: -.75rem;
 }
 </style>

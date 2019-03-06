@@ -29,7 +29,6 @@ export const actions = {
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state', 'balances.asset'],
     })
-
     commit(types.SET_ACCOUNT_BALANCES, account.balances)
     commit(types.SET_ASSETS, account.balances.map(b => b.asset))
   },
@@ -39,7 +38,7 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.assets]: state => state.assets.map(asset => {
     const balance = state.balances.find(b => b.asset.id === asset.id) || ''
-    return new Asset(asset, balance)
+    return new Asset(asset, balance ? balance.state.available : '')
   }),
 }
 

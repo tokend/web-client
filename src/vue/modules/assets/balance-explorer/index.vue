@@ -2,22 +2,51 @@
   <div class="balance-explorer">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
-        <template slot="heading">
-          {{ 'assets.drawer-title' | globalize }}
+        <template v-if="isUpdateMode">
+          <template slot="heading">
+            {{ 'assets.update-drawer-title' | globalize }}
+          </template>
+
+          <asset-update-form
+            :asset-record="selectedAsset"
+            @close="isDrawerShown = false"
+          />
         </template>
-        <asset-attributes-viewer
-          :asset="selectedAsset"
-          :config="config"
-        />
+
+        <template v-else>
+          <template slot="heading">
+            {{ 'assets.details-drawer-title' | globalize }}
+          </template>
+          <asset-attributes-viewer
+            :asset="selectedAsset"
+            :storage-url="config.storageURL"
+          />
+
+          <button
+            v-if="selectedAsset.owner === wallet.accountId"
+            v-ripple
+            class="app__button-raised balance-explorer__update-btn"
+            @click="isUpdateMode = true"
+          >
+            {{ 'assets.update-btn' | globalize }}
+          </button>
+        </template>
       </drawer>
 
       <div class="balance-explorer__asset-list-wrp">
-        <card-list-renderer
+        <div
           v-if="assets.length"
-          :assets="assets"
-          :config="config"
-          @select="selectAsset"
-        />
+          class="balance-explorer__asset-list"
+        >
+          <template v-for="asset in assets">
+            <card-viewer
+              :asset="asset"
+              :storage-url="config.storageURL"
+              :key="asset.code"
+              @click="selectAsset(asset)"
+            />
+          </template>
+        </div>
 
         <no-data-message
           v-else
@@ -45,8 +74,9 @@ import Drawer from '@/vue/common/Drawer'
 import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import CardListRenderer from '../shared/components/card-list-renderer'
+import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
+import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
@@ -62,8 +92,9 @@ export default {
     Drawer,
     LoadSpinner,
     NoDataMessage,
-    CardListRenderer,
+    CardViewer,
     AssetAttributesViewer,
+    AssetUpdateForm,
   },
   props: {
     wallet: {
@@ -84,6 +115,7 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
     isDrawerShown: false,
+    isUpdateMode: false,
     selectedAsset: {},
   }),
   computed: {
@@ -119,8 +151,24 @@ export default {
 
     selectAsset (asset) {
       this.selectedAsset = asset
+      this.isUpdateMode = false
       this.isDrawerShown = true
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.balance-explorer__asset-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: -.75rem;
+}
+
+.balance-explorer__update-btn {
+  margin-top: 4.9rem;
+  max-width: 18rem;
+  width: 100%;
+}
+</style>

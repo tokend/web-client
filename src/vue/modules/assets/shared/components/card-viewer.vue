@@ -4,7 +4,7 @@
       <logo-viewer
         class="card-viewer__logo"
         :asset="asset"
-        :config="config"
+        :storage-url="storageUrl"
       />
     </div>
     <div class="card-viewer__info">
@@ -41,8 +41,8 @@ export default {
       type: Asset,
       required: true,
     },
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },

@@ -20,12 +20,12 @@ export default {
   name: 'logo-viewer',
   props: {
     asset: { type: Asset, required: true },
-    config: { type: Object, required: true },
+    storageUrl: { type: String, required: true },
     darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
-      return this.asset.logoUrl(this.config.storageURL)
+      return this.asset.logoUrl(this.storageUrl)
     },
   },
 }

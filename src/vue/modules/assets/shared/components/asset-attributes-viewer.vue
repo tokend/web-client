@@ -3,7 +3,7 @@
     <div class="asset-attributes-viewer__header">
       <logo-viewer
         :asset="asset"
-        :config="config"
+        :storage-url="storageUrl"
         :dark-mode="true" />
 
       <div class="asset-attributes-viewer__info">
@@ -38,9 +38,37 @@
             <td>{{ asset.availableForIssuance | formatMoney }}</td>
           </tr>
           <tr>
+            <td>
+              {{ 'assets.transferable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isTransferable">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'assets.withdrawable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isWithdrawable">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
-              <terms-viewer :asset="asset" :config="config" />
+              <terms-viewer :asset="asset" :storage-url="storageUrl" />
             </td>
           </tr>
         </tbody>
@@ -63,7 +91,7 @@ export default {
   },
   props: {
     asset: { type: Asset, required: true },
-    config: { type: Object, required: true },
+    storageUrl: { type: String, required: true },
   },
 }
 </script>

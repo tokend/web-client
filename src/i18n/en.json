@@ -1018,12 +1018,18 @@
       "available-title": "Available",
       "terms-title": "Terms",
       "add-balance-btn": "Add to my balances",
-      "drawer-title": "Token details",
+      "update-btn": "Update",
+      "details-drawer-title": "Token details",
+      "update-drawer-title": "Update token",
       "list-item-balance-line": "Balance: {{value, money}}",
       "no-balance-msg": "No balance",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
-      "balance-added-msg": "Added to your balances"
+      "balance-added-msg": "Added to your balances",
+      "transferable-title": "Transferable",
+      "withdrawable-title": "Withdrawable",
+      "present-msg": "Yes",
+      "absent-msg": "No"
     }
   }
 }

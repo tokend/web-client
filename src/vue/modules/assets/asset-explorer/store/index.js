@@ -56,6 +56,7 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.assets]: state => state.assets.map(asset => {
     const balance = state.balances.find(b => b.asset.id === asset.id)
+
     return new Asset(asset, balance ? balance.state.available : '')
   }),
 
