@@ -79,12 +79,13 @@ import {
   seed,
 } from '@validators'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
 import { vuexTypes } from '@/vuex'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'recovery-form',
@@ -109,11 +110,17 @@ export default {
       recoverySeed: { required, seed },
     },
   },
+  computed: {
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
+  },
   methods: {
     ...mapActions({
-      storeWallet: vuexTypes.STORE_WALLET,
+      loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
     async submit () {
       if (!this.isFormValid()) {
@@ -127,15 +134,18 @@ export default {
           this.form.password
         )
 
-        const newWallet = await Sdk.api.wallets.get(
-          this.form.email,
-          this.form.password
-        )
-        Sdk.sdk.useWallet(newWallet)
-        this.storeWallet(newWallet)
+        await this.loadWallet({
+          email: this.form.email,
+          password: this.form.password,
+        })
+        const accountId = this[vuexTypes.wallet].accountId
+        Sdk.sdk.useWallet(this[vuexTypes.wallet])
+        Api.useWallet(this[vuexTypes.wallet])
 
-        await this.loadAccount(newWallet._accountId)
+        await this.loadAccount(accountId)
+        await this.loadKvEntriesAccountRoleIds()
         await this.loadKyc()
+
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.app)
       } catch (e) {

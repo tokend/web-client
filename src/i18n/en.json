@@ -109,6 +109,7 @@
       "new-password": "New password",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
+      "recover": "Recover",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "wrong-email-or-password-err": "Wrong email or password",
