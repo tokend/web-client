@@ -10,10 +10,17 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Fees module
+- Asset explorer module
+- Balance explorer module
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
+- Now using specific fields in `AssetUpdateRequestRecord.fromAssetRecord` method for setting details 
+- Now using @tokend/js-sdk 1.3.1-x.0
+
+### Removed
+- `AssetsList` component
 
 ## [1.3.0] - 2019-03-01
 
