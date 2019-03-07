@@ -1019,7 +1019,14 @@
     },
 
     "healthcare-page": {
-      "create-document": "Create document"
+      "upload-document": "Upload document"
+    },
+
+    "document-upload-form": {
+      "document-lbl": "Document",
+      "file-type-note": "image/pdf (Max 5mb)",
+      "description": "Description",
+      "upload-btn": "Upload"
     }
   }
 }

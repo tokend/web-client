@@ -5,17 +5,28 @@
         <button
           v-ripple
           class="app__button-raised"
-          @click="isIssuanceDrawerShown = true"
+          @click="isDrawerShown = true"
         >
-          {{ 'healthcare-page.create-document' | globalize }}
+          {{ 'healthcare-page.upload-document' | globalize }}
         </button>
       </template>
     </top-bar>
+
+    <drawer :is-shown.sync="isDrawerShown">
+      <template slot="heading">
+        {{ 'healthcare-page.upload-document' | globalize }}
+      </template>
+
+      <document-upload-form-module @close="isDrawerShown = false" />
+    </drawer>
   </div>
 </template>
 
 <script>
 import TopBar from '@/vue/common/TopBar'
+import Drawer from '@/vue/common/Drawer'
+
+import DocumentUploadFormModule from '@modules/document-upload-form'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -26,9 +37,12 @@ export default {
   name: 'healthcare-page',
   components: {
     TopBar,
+    Drawer,
+    DocumentUploadFormModule,
   },
 
   data: _ => ({
+    isDrawerShown: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
