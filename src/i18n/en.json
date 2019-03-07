@@ -79,7 +79,8 @@
       "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. You have {{available, number}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
-      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
+      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits",
+      "field-error_ibanValidator": "Make sure the IBAN is correct"
     },
 
     "errors": {
@@ -404,6 +405,7 @@
       "can-not-load-assets": "There was an error while loading assets",
       "assets-loading-msg": "Loading the tokens…",
       "withdrawal": "Withdrawal",
+      "withdrawal-fiat": "Withdrawal fiat",
       "deposit": "Deposit",
       "send": "Send",
       "no-data-title": "No balance movements yet",
@@ -943,8 +945,31 @@
       "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
-    "withdrawal-form": {
+    "withdrawal-fiat-bank-module": {
+      "asset": "Asset",
+      "amount": "Amount ({{asset}})",
+      "user-name": "User full name",
+      "bank-name": "Bank name",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "iban": "International Bank Account Number (IBAN)",
+      "loading-msg": "Loading...",
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "total-amount-account": "Total fee",
       "withdrawal": "Withdrawal",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "withdraw-success": "Withdrawal request successfully created",
+      "fee-loading-msg": "Loading…",
+      "form-title": "Withdrawal fiat"
+    },
+
+    "withdrawal-form": {
+      "withdrawal-fiat-form-title": "Withdrawal fiat",
+      "withdrawal": "Withdrawal",
+      "withdrawal-fiat": "Withdrawal fiat",
       "asset": "Asset",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",

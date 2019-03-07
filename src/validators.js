@@ -1,5 +1,8 @@
 import WAValidator from 'wallet-address-validator'
 import moment from 'moment'
+// IBAN is an abbreviation for International Bank Account Number
+// https://www.npmjs.com/package/iban
+import iban from 'iban'
 
 import { base } from '@tokend/js-sdk'
 
@@ -60,6 +63,9 @@ export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
   } else {
     return true
   }
+}
+export const ibanValidator = value => {
+  return iban.isValid(value)
 }
 
 export * from 'vuelidate/lib/validators'
