@@ -406,6 +406,7 @@
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
+      "dividend": "Dividend",
       "no-data-title": "No balance movements yet",
       "no-data-msg": "Here will be your balance movements history"
     },
@@ -1015,6 +1016,24 @@
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
+    },
+
+    "dividend-form": {
+      "title": "Dividends",
+      "asset": "Asset",
+      "loading-msg": "Loading",
+      "loading-error-msg":"There was an error while loading.",
+      "submit-btn": "Submit",
+      "no-assets-heading": "No assets, no dividends",
+      "no-assets": "Your wallet doesn't contain any owned assets yet. You can discover some on the token list",
+      "discover-assets-btn": "Discover asset",
+      "can-not-load-assets": "There was an error while loading sales",
+      "dividend-btn": "Dividend",
+      "email": "Email",
+      "token-amount": "Token amount",
+      "supposed-dividend-amount": "Supposed dividend amount",
+      "failed-load-signers": "Failed to load signers. Try again later",
+      "dividend-success": "Dividend request successfully created"
     }
   }
 }
