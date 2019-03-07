@@ -12,10 +12,14 @@ for further information about branching and tagging conventions.
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
 - Displaying TokenD logo & load spinner while loading the page 
+- Healthcare page
+- Document upload form module
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
+- Renamed `DescriptionEditor` -> `MarkdownField`
+- Moved `MarkdownField` to the fields & included it to the form mixin components
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
