@@ -17,7 +17,11 @@
         {{ 'healthcare-page.upload-document' | globalize }}
       </template>
 
-      <document-upload-form-module @close="isDrawerShown = false" />
+      <document-upload-form-module
+        :wallet="wallet"
+        :config="config"
+        @submit="isDrawerShown = false"
+      />
     </drawer>
   </div>
 </template>
@@ -45,6 +49,7 @@ export default {
     isDrawerShown: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
+      storageURL: config.FILE_STORAGE,
     },
   }),
 
@@ -55,7 +60,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -6,8 +6,8 @@ import DateField from '../fields/DateField'
 import TextareaField from '@/vue/fields/TextareaField'
 import TickField from '@/vue/fields/TickField'
 import FileField from '@/vue/fields/FileField'
+import MarkdownField from '@/vue/fields/MarkdownField'
 import FormConfirmation from '@/vue/common/FormConfirmation'
-import DescriptionEditor from '@/vue/common/DescriptionEditor'
 
 import { globalize } from '@/vue/filters/globalize'
 
@@ -22,8 +22,8 @@ export default {
     TextareaField,
     TickField,
     FileField,
+    MarkdownField,
     FormConfirmation,
-    DescriptionEditor,
   },
   mixins: [validationMixin],
   data: _ => ({

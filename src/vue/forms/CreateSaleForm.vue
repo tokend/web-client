@@ -289,7 +289,7 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 {{ 'create-sale-form.full-description' | globalize }}
-                <description-editor
+                <markdown-field
                   v-model="form.fullDescription.description"
                 />
               </div>
@@ -335,7 +335,6 @@ import config from '@/config'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import FormStepper from '@/vue/common/FormStepper'
-import DescriptionEditor from '@/vue/common/DescriptionEditor'
 
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -386,7 +385,6 @@ export default {
   name: 'create-sale-form',
   components: {
     FormStepper,
-    DescriptionEditor,
     Loader,
   },
   mixins: [FormMixin],

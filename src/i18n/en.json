@@ -1023,10 +1023,11 @@
     },
 
     "document-upload-form": {
-      "document-lbl": "Document",
+      "document-lbl": "Select your document. You cannot upload the same file twice",
       "file-type-note": "image/pdf (Max 5mb)",
       "description": "Description",
-      "upload-btn": "Upload"
+      "upload-btn": "Upload",
+      "uploaded-msg": "Your document was successfully uploaded"
     }
   }
 }
