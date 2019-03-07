@@ -1,5 +1,6 @@
 const mutations = {
   SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
+  SET_DOCUMENT_ACCOUNT_ID: 'SET_DOCUMENT_ACCOUNT_ID',
 }
 
 const actions = {
@@ -10,6 +11,7 @@ const actions = {
 
 const getters = {
   accountId: 'accountId',
+  documentAccountId: 'documentAccountId',
 }
 
 export const types = {

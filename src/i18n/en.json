@@ -753,7 +753,7 @@
     },
 
     "file-field": {
-      "title": "Drop files here or click to browse",
+      "title": "Drop a file here or click to browse",
       "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
@@ -1027,7 +1027,8 @@
       "file-type-note": "image/pdf (Max 5mb)",
       "description": "Description",
       "upload-btn": "Upload",
-      "uploaded-msg": "Your document was successfully uploaded"
+      "uploaded-msg": "Your document was successfully uploaded",
+      "document-exists-error": "Such document already exists. Please select another one"
     }
   }
 }

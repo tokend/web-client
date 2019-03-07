@@ -15,16 +15,21 @@ const BLOB_TYPE = 'kyc_form'
 
 export const state = {
   accountId: '',
+  documentAccountId: '',
 }
 
 export const mutations = {
   [types.SET_ACCOUNT_ID] (state, accountId) {
     state.accountId = accountId
   },
+
+  [types.SET_DOCUMENT_ACCOUNT_ID] (state, documentAccountId) {
+    state.documentAccountId = documentAccountId
+  },
 }
 
 export const actions = {
-  async [types.CREATE_ACCOUNT] ({ getters }, destination) {
+  async [types.CREATE_ACCOUNT] ({ commit, getters }, destination) {
     const operation = base.CreateAccountBuilder.createAccount({
       destination,
       roleID: ACCOUNT_ROLE_ID,
@@ -38,13 +43,15 @@ export const actions = {
     })
 
     await api().postOperations(operation)
+
+    commit(types.SET_DOCUMENT_ACCOUNT_ID, destination)
   },
 
-  async [types.CREATE_CHANGE_ROLE_REQUEST] (_, accountId, blobId) {
+  async [types.CREATE_CHANGE_ROLE_REQUEST] ({ getters }, blobId) {
     const operation = base.CreateChangeRoleRequestBuilder
       .createChangeRoleRequest({
         requestID: CHANGE_ROLE_REQUEST_ID,
-        destinationAccount: accountId,
+        destinationAccount: getters[types.documentAccountId],
         accountRoleToSet: ACCOUNT_ROLE_TO_SET,
         creatorDetails: {
           blob_id: blobId,
@@ -72,6 +79,7 @@ export const actions = {
 
 export const getters = {
   [types.accountId]: state => state.accountId,
+  [types.documentAccountId]: state => state.documentAccountId,
 }
 
 export const uploadFormModule = {

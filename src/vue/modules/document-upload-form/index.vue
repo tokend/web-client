@@ -53,7 +53,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { Wallet, base } from '@tokend/js-sdk'
+import { Wallet, base, errors } from '@tokend/js-sdk'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { documentContainer, required } from '@validators'
@@ -119,6 +119,7 @@ export default {
   methods: {
     ...mapMutations('upload-form', {
       setAccountId: types.SET_ACCOUNT_ID,
+      setDocumentAccountId: types.SET_DOCUMENT_ACCOUNT_ID,
     }),
 
     ...mapActions('upload-form', {
@@ -129,26 +130,38 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
+
       this.isDocumentUploading = true
       this.disableForm()
-      try {
-        const documentHash = await this.getDocumentHash(this.form.document)
-        const accountId = this.getAccountIdFromHash(documentHash)
 
+      try {
+        const documentText = await FileUtil.getText(this.form.document.file)
+        const documentHash = await CryptoUtil.hashMessage(documentText)
+
+        const accountId = await this.deriveAccountId(documentText)
         await this.createAccount(accountId)
-        const documentId = await this.uploadDocument(this.form.document)
+
+        const documentId = await this.uploadDocument(
+          this.form.document,
+          this.wallet.accountId
+        )
+
         const blobId = await this.createBlob({
           id: documentId,
           hash: documentHash,
           description: this.form.description,
         })
 
-        await this.createChangeRoleRequest(accountId, blobId)
+        await this.createChangeRoleRequest(blobId)
 
         Bus.success('document-upload-form.uploaded-msg')
         this.$emit(EVENTS.submit)
       } catch (e) {
-        ErrorHandler.process(e)
+        if (e instanceof errors.BadRequestError) {
+          ErrorHandler.process(e, 'document-upload-form.document-exists-error')
+        } else {
+          ErrorHandler.process(e)
+        }
       }
 
       this.hideConfirmation()
@@ -156,20 +169,15 @@ export default {
       this.enableForm()
     },
 
-    async getDocumentHash (document) {
-      const fileText = await FileUtil.getText(document.file)
-      const fileHash = await CryptoUtil.getAccountHash(fileText)
-      return fileHash
-    },
+    async deriveAccountId (documentText) {
+      const hashBuffer = await CryptoUtil.sha256(documentText)
+      const keypair = base.Keypair.fromRawSeed(hashBuffer)
 
-    getAccountIdFromHash (hash) {
-      const keypair = base.Keypair.fromRawSeed(hash)
       return keypair.accountId()
     },
 
-    async uploadDocument (document) {
-      document = await DocumentUploader
-        .uploadSingleDocument(document, this.wallet.accountId)
+    async uploadDocument (document, accountId) {
+      await DocumentUploader.uploadSingleDocument(document, accountId)
       return document.key
     },
   },
@@ -183,5 +191,10 @@ export default {
 
 .document-upload-form__actions {
   margin-top: 4.9rem;
+
+  button {
+    max-width: 18rem;
+    width: 100%;
+  }
 }
 </style>
