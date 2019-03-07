@@ -58,7 +58,7 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { documentContainer, required } from '@validators'
 
-import { initApi, api } from './_api'
+import { initApi } from './_api'
 import { initConfig } from './_config'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -68,6 +68,9 @@ import { FileUtil } from '@/js/utils/file.util'
 import { CryptoUtil } from './utils/crypto.util'
 
 import { DocumentUploader } from './helpers/document-uploader'
+
+import { mapActions, mapMutations } from 'vuex'
+import { types } from './store/types'
 
 const EVENTS = {
   submit: 'submit',
@@ -110,9 +113,20 @@ export default {
   created () {
     initApi(this.wallet, this.config)
     initConfig(this.config)
+    this.setAccountId(this.wallet.accountId)
   },
 
   methods: {
+    ...mapMutations('upload-form', {
+      setAccountId: types.SET_ACCOUNT_ID,
+    }),
+
+    ...mapActions('upload-form', {
+      createAccount: types.CREATE_ACCOUNT,
+      createChangeRoleRequest: types.CREATE_CHANGE_ROLE_REQUEST,
+      createBlob: types.CREATE_BLOB,
+    }),
+
     async submit () {
       if (!this.isFormValid()) return
       this.isDocumentUploading = true
@@ -123,7 +137,7 @@ export default {
 
         await this.createAccount(accountId)
         const documentId = await this.uploadDocument(this.form.document)
-        const blobId = await this.createDetailsBlob(accountId, {
+        const blobId = await this.createBlob({
           id: documentId,
           hash: documentHash,
           description: this.form.description,
@@ -151,53 +165,6 @@ export default {
     getAccountIdFromHash (hash) {
       const keypair = base.Keypair.fromRawSeed(hash)
       return keypair.accountId()
-    },
-
-    async createAccount (accountId) {
-      const operation = base.CreateAccountBuilder.createAccount({
-        destination: accountId,
-        roleID: '1',
-        signersData: [{
-          roleID: '1',
-          publicKey: this.wallet.accountId,
-          weight: '1000',
-          identity: '1',
-          details: {},
-        }],
-      })
-
-      await api().postOperations(operation)
-    },
-
-    async createChangeRoleRequest (accountId, blobId) {
-      const operation = base.CreateChangeRoleRequestBuilder
-        .createChangeRoleRequest({
-          requestID: '0',
-          destinationAccount: accountId,
-          accountRoleToSet: '2',
-          creatorDetails: {
-            blob_id: blobId,
-          },
-          allTasks: 3,
-        })
-
-      await api().postOperations(operation)
-    },
-
-    async createDetailsBlob (accountId, details) {
-      const { data } = await api().postWithSignature(
-        `/accounts/${this.wallet.accountId}/blobs`,
-        {
-          data: {
-            type: 'kyc_form',
-            attributes: {
-              value: JSON.stringify(details),
-            },
-          },
-        }
-      )
-
-      return data.id
     },
 
     async uploadDocument (document) {

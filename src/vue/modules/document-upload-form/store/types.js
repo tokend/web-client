@@ -1,15 +1,15 @@
 const mutations = {
   SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
-  SET_ACCOUNT_FEES: 'SET_ACCOUNT_FEES',
 }
 
 const actions = {
-  LOAD_ACCOUNT_FEES: 'LOAD_ACCOUNT_FEES',
+  CREATE_ACCOUNT: 'CREATE_ACCOUNT',
+  CREATE_CHANGE_ROLE_REQUEST: 'CREATE_CHANGE_ROLE_REQUEST',
+  CREATE_BLOB: 'CREATE_BLOB',
 }
 
 const getters = {
   accountId: 'accountId',
-  fees: 'fees',
 }
 
 export const types = {

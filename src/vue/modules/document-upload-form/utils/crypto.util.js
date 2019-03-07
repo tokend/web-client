@@ -5,12 +5,12 @@ export class CryptoUtil {
     // hash the message
     const hashBuffer = new Uint8Array(await crypto.subtle.digest('SHA-256', msgBuffer))
 
-    const resultBuffer = new Uint8Array(16)
-    resultBuffer.forEach((item, index, buffer) => {
-      buffer[index] = hashBuffer ^ hashBuffer[16 + index]
-    })
+    // const resultBuffer = new Uint8Array(16)
+    // resultBuffer.forEach((item, index, buffer) => {
+    //   buffer[index] = hashBuffer[index] ^ hashBuffer[16 + index]
+    // })
 
-    return this.toHex(resultBuffer)
+    return hashBuffer
   }
 
   static toHex (arrayBuffer) {
