@@ -89,9 +89,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.movements-history__list-wrp {
-  overflow-x: auto;
-  width: 100%;
-}
+<style lang="scss">
 </style>
