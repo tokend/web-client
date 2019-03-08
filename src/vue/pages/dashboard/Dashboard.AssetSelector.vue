@@ -60,7 +60,7 @@
       <template v-if="!currentAsset">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
-          :message="'dashboard.here-will-be-the-tokens'| globalize"
+          :message="'dashboard.here-will-be-the-tokens' | globalize"
         />
       </template>
     </template>
