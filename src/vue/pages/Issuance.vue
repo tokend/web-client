@@ -96,8 +96,8 @@
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          title-id="issuance.no-issuance-history-title"
-          message-id="issuance.no-issuance-history-msg"
+          :title="'issuance.no-issuance-history-title' | globalize"
+          :message="'issuance.no-issuance-history-msg' | globalize"
         />
       </template>
     </template>

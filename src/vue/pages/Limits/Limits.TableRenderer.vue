@@ -136,8 +136,8 @@
   />
   <no-data-message
     v-else-if="!isLoading && isLoadingFailed"
-    :title-id="'limits-table-renderer.loading-failed'"
-    :message-id="'limits-table-renderer.loading-failed-message'"
+    :title="'limits-table-renderer.loading-failed' | globalize"
+    :message="'limits-table-renderer.loading-failed-message' | globalize"
     class="limits-table-renderer__no-data-message"
   >
     <button
