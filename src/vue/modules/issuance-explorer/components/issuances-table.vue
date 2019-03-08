@@ -54,8 +54,8 @@
     <template v-else>
       <no-data-message
         icon-name="trending-up"
-        title-id="issuance-explorer.table.no-issuances-title"
-        message-id="issuance-explorer.table.no-issuances-msg"
+        :title="'issuance-explorer.table.no-issuances-title' | globalize"
+        :message="'issuance-explorer.table.no-issuances-msg' | globalize"
       />
     </template>
   </div>
