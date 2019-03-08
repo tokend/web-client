@@ -626,7 +626,6 @@
       "advanced-step": "Advanced",
       "name-lbl": "Token name",
       "code-lbl": "Token code",
-      "is-fiat-lbl": "Fiat token",
       "max-issuance-amount-lbl": "Max issuance amount",
       "logo-lbl": "Token icon",
       "logo-note": "JPG or PNG, no less then 120x120 px",

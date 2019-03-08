@@ -56,17 +56,6 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
-          <tick-field
-            v-model="form.information.isFiat"
-            :disabled="formMixin.isDisabled"
-          >
-            {{ 'asset-form.is-fiat-lbl' | globalize }}
-          </tick-field>
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
           <file-field
             name="asset-update-logo"
             v-model="form.information.logo"
@@ -206,7 +195,6 @@ export default {
         name: '',
         logo: null,
         policies: [],
-        isFiat: false,
       },
       advanced: {
         terms: null,
@@ -253,7 +241,6 @@ export default {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
-          isFiat: this.form.information.isFiat,
         },
       }
     },
@@ -308,7 +295,6 @@ export default {
             ? new DocumentContainer(request.logo)
             : null,
           policies: request.policies,
-          isFiat: request.details.isFiat,
         },
         advanced: {
           terms: request.terms.key

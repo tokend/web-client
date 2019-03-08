@@ -101,6 +101,6 @@ export class AssetRecord {
   }
 
   get isFiat () {
-    return this.details.isFiat
+    return !!this.details.isFiat
   }
 }
