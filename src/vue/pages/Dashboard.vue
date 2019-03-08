@@ -55,7 +55,7 @@
     <drawer :is-shown.sync="showDrawer">
       <template v-if="createIssuanceFormIsShown">
         <template slot="heading">
-          {{ 'issuance.issuance-form-heading' | globalize }}
+          {{ 'dashboard.create-issuance-lbl' | globalize }}
         </template>
         <issuance-form @close="showDrawer = false" />
       </template>
