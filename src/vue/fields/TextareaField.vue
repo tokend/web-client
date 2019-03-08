@@ -157,4 +157,13 @@ export default {
   color: $field-color-text;
 }
 
+.text-field__err-mes {
+  position: absolute;
+  bottom: .8rem;
+  left: 1.6rem;
+  max-width: 70%;
+  font-size: 1.2rem;
+  color: $col-error;
+}
+
 </style>

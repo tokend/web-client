@@ -7,7 +7,7 @@ export class AssetRecord {
 
     this.code = record.code
     this.owner = record.owner
-    this.assetType = record.assetType
+    this.assetType = record.assetType || record.type
     this.preissuedAssetSigner = record.preissuedAssetSigner
 
     this.availableForIssuance = record.availableForIssuance

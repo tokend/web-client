@@ -3,9 +3,6 @@
     "number": {
       "formats": {
         "amounts": {
-          "usd": "$0,0.[00]",
-          "eur": "0,0.[00]€",
-          "gbp": "0,0.[00]£",
           "default": "0,0.[000000]"
         },
         "default": "0,0.[000000]",
@@ -41,9 +38,7 @@
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "order_number": "{{value, order_number}}",
-      "percent": "{{value, percent}}",
-      "fee_type": "{{value, fee_type}}",
-      "fee_subtype": "{{value, fee_subtype}}"
+      "percent": "{{value, percent}}"
     },
 
     "common": {
@@ -102,7 +97,8 @@
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
-      "account-blocked": "Your account is blocked"
+      "account-blocked": "Your account is blocked",
+      "user-doesnt-exist": "This user doesn't exist in system"
     },
 
     "auth-pages": {
@@ -110,6 +106,7 @@
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
+      "new-password": "New password",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
@@ -124,6 +121,7 @@
       "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
+      "recover": "Recover",
       "save-recovery-seed": "Save this seed to your offline device",
       "save-recovery-seed-details": "For security reasons, please put this seed in some secret place. You will need it to recover access in case if your account will be lost",
       "no-account-question": "Don't have an account?",
@@ -194,6 +192,10 @@
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
       "website-lbl": "Website"
+    },
+
+    "input-field": {
+      "caps-lock-warning": "Warning: Caps-Lock is ON"
     },
 
     "limits-documents-uploader-form": {
@@ -354,45 +356,57 @@
       "download-apps": "Downloads"
     },
 
-    "fee-types": {
-      "payment": "Payment",
-      "offer": "Offer",
-      "withdrawal": "Withdrawal",
-      "issuance": "Issuance",
-      "invest": "Invest",
-      "capital-deployment": "Capital deployment",
-      "operation": "Operation",
-      "payout": "Payout",
-      "incoming-outgoing": "Incoming & Outgoing",
-      "outgoing": "Outgoing",
-      "incoming": "Incoming"
+    "fees": {
+      "scopes": {
+        "account": "Your account",
+        "account-role": "Your account type",
+        "global": "Global"
+      },
+      "types": {
+        "payment": "Payment",
+        "offer": "Offer",
+        "withdrawal": "Withdrawal",
+        "issuance": "Issuance",
+        "invest": "Invest",
+        "capital-deployment": "Capital deployment",
+        "operation": "Operation",
+        "payout": "Payout"
+      },
+      "subtypes": {
+        "incoming-outgoing": "Incoming & Outgoing",
+        "outgoing": "Outgoing",
+        "incoming": "Incoming"
+      },
+      "table": {
+        "type-th": "Type",
+        "fixed-th": "Fixed",
+        "percent-th": "Percent",
+        "lower-bound-th": "Lower bound",
+        "upper-bound-th": "Upper bound",
+        "subtype-th": "Subtype"
+      },
+      "fees-loading-msg": "Loading your fees…",
+      "fees-loading-error-msg": "There was an error while loading your fees.",
+      "no-valuable-fees-title": "No valuable fees",
+      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
     },
 
-    "fee-table": {
-      "fee-type": "Fee type",
-      "fixed": "Fixed",
-      "percent": "Percent",
-      "lower-bound": "Lower bound",
-      "upper-bound": "Upper bound",
-      "subtype": "Subtype",
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "fee-page": {
+    "fees-page": {
       "asset-filter-prefix": "Asset:",
       "scope-filter-prefix": "Scope:",
       "scope-global": "Global",
       "scope-account": "Account",
-      "no-valuable-fees-title": "No valuable fees",
-      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
+      "balances-loading-msg": "Loading your balances…",
+      "balances-loading-error-msg": "There was an error while loading your balances.",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet"
     },
 
     "op-pages": {
       "filters-prefix": "Show:",
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
-      "loading-msg": "Loading",
+      "assets-loading-msg": "Loading the tokens…",
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
@@ -448,6 +462,7 @@
       "amount-th": "Amount",
       "date-th": "Date",
       "operation-th": "Operation",
+      "initializing-msg": "Initializing…",
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",
       "no-movements-title": "No movements history",
@@ -570,7 +585,7 @@
       "cancel-btn": "CANCEL",
       "upload-btn": "Upload",
       "not-available": "Issuance creation is available only for corporate users, complete verification to become one",
-      "pre-issuance-lbl": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
+      "pre-issuance-lbl": "Select file(s) with preissued asset. You cannot upload the same pre-issuance twice.",
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
       "pre-issuance-details-title": "Pre-issuance info",
@@ -586,7 +601,11 @@
       "balances-title": "My balances",
       "create-asset-title": "Create token",
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
+      "loading-error-msg": "There was an error while loading.",
+      "no-assets-title": "No tokens",
+      "no-assets-msg": "There are no available tokens",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet"
     },
 
     "assets-list": {
@@ -613,6 +632,7 @@
       "kyc-required-lbl": "Requires KYC",
       "additional-issuance-check": "I do not want to make additional issuance later",
       "preissued-asset-signer-lbl": "Preissued asset signer",
+      "use-my-account-id-btn": "Use mine",
       "initial-preissued-amount-lbl": "Initial preissued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
@@ -786,7 +806,9 @@
       "no-data-title": "No open orders",
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
       "buy-lbl": "Buy",
-      "sell-lbl": "Sell"
+      "sell-lbl": "Sell",
+      "your-buy-offer": "Your buy offer",
+      "your-sell-offer": "Your sell offer"
     },
 
     "trade-offers": {
@@ -842,7 +864,9 @@
       "user-balances-label": "Balances",
       "create-buy-offer-form-title": "Create buy order",
       "create-sell-offer-form-title": "Create sell order",
-      "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}"
+      "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}",
+      "no-pairs-message": "No pairs found",
+      "here-will-pairs-list": "Here will be the list of asset pairs"
     },
 
     "sale-details": {

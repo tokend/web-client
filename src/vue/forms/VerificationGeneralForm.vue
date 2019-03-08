@@ -22,6 +22,7 @@
                 v-model="form.personal.firstName"
                 @blur="touchField('form.personal.firstName')"
                 id="verification-general-first-name"
+                name="verification-general-first-name"
                 :label="'verification-form.first-name-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.personal.firstName')"
                 :disabled="formMixin.isDisabled"
@@ -36,6 +37,7 @@
                 v-model="form.personal.lastName"
                 @blur="touchField('form.personal.lastName')"
                 id="verification-general-last-name"
+                name="verification-general-last-name"
                 :label="'verification-form.last-name-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.personal.lastName')"
                 :disabled="formMixin.isDisabled"
@@ -48,6 +50,7 @@
               <!-- eslint-disable max-len -->
               <file-field
                 v-model="form.documents.idDocument"
+                name="verification-general-id-document"
                 :note="'verification-form.file-type-note' | globalize"
                 accept="image/*, .pdf"
                 :document-type="DOCUMENT_TYPES.kycIdDocument"
@@ -89,6 +92,7 @@
             <div class="app__form-field">
               <file-field
                 v-model="form.documents.verificationPhoto"
+                name="verification-general-verification-photo"
                 :note="'verification-form.file-type-note' | globalize"
                 accept="image/*, .pdf"
                 :document-type="DOCUMENT_TYPES.kycSelfie"
@@ -229,7 +233,9 @@ export default {
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
-        await this.loadKyc()
+        while (Object.keys(this.kycLatestData).length === 0) {
+          await this.loadKyc()
+        }
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
