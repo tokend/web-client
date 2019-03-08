@@ -802,7 +802,9 @@
       "no-data-title": "No open orders",
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
       "buy-lbl": "Buy",
-      "sell-lbl": "Sell"
+      "sell-lbl": "Sell",
+      "your-buy-offer": "Your buy offer",
+      "your-sell-offer": "Your sell offer"
     },
 
     "trade-offers": {
