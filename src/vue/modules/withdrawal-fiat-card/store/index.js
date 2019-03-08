@@ -76,7 +76,7 @@ export const getters = {
   [types.fees]: state => state.fees,
 }
 
-export const withdrawalFiatBankModule = {
+export const withdrawalFiatCardModule = {
   namespaced: true,
   state,
   getters,

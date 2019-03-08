@@ -2,7 +2,11 @@
   <div class="withdrawal-fiat-module">
     <tabs>
       <tab name="Card" id="withdrawal-fiat-card-tab">
-        Card component
+        <withdrawal-fiat-card
+          :config="config"
+          :wallet="wallet"
+          @withdrawn="withdrawn"
+        />
       </tab>
       <tab name="Bank" id="withdrawal-fiat-bank-tab">
         <withdrawal-fiat-bank
@@ -26,6 +30,7 @@ import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
 
 import WithdrawalFiatBank from '@modules/withdrawal-fiat-bank'
+import WithdrawalFiatCard from '@modules/withdrawal-fiat-card'
 
 const EVENTS = {
   withdrawn: 'withdrawn',
@@ -37,6 +42,7 @@ export default {
     Tabs,
     Tab,
     WithdrawalFiatBank,
+    WithdrawalFiatCard,
   },
   props: {
     wallet: {

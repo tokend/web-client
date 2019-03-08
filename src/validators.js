@@ -1,8 +1,8 @@
 import WAValidator from 'wallet-address-validator'
 import moment from 'moment'
 // IBAN is an abbreviation for International Bank Account Number
-// https://www.npmjs.com/package/iban
 import iban from 'iban'
+import cardValidator from 'card-validator'
 
 import { base } from '@tokend/js-sdk'
 
@@ -73,4 +73,41 @@ export * from 'vuelidate/lib/validators'
 export function validateEmail (email) {
   const reg = new RegExp('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')
   return reg.test(email)
+}
+
+export const creditCardNumber = value => {
+  /**
+   * {String} value
+   * {Object} [opts]
+   * @returns {Object}
+   */
+  return cardValidator.number(value).isValid
+}
+
+export const creaditCardExpirationDate = value => {
+  const DEFAULT_YEAR_AHEAD = 20
+
+  /**
+   * {String|Object} value
+   * {Integer} [maxElapsedYear]
+   * @returns {Object}
+   */
+  return cardValidator.expirationDate(
+    value,
+    DEFAULT_YEAR_AHEAD,
+  ).isValid
+}
+
+export const creditCardCVV3 = value => {
+  const DEFAULT_CVV_LENGTH = 3
+
+  /**
+   * {String} value
+   * {Integer} [maxLength]
+   * @returns {Object}
+   */
+  return cardValidator.cvv(
+    value,
+    DEFAULT_CVV_LENGTH,
+  ).isValid
 }
