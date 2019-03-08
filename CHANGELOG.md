@@ -27,6 +27,7 @@ for further information about branching and tagging conventions.
 - Scrolling to the top of asset-create-form, asset-update-form, create-sale-form after moving to the next step
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
+- Move no-data-message translate ids pass to the elements that use component
 
 ## [1.3.0] - 2019-03-01
 

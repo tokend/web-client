@@ -79,8 +79,8 @@
     <no-data-message
       v-else-if="isLoaded"
       icon-name="trending-up"
-      title-id="op-pages.no-data-title"
-      message-id="op-pages.no-data-msg"
+      :title="'op-pages.no-data-title' | globalize"
+      :message="'op-pages.no-data-msg' | globalize"
     />
 
     <loader v-else message-id="op-pages.assets-loading-msg" />

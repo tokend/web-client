@@ -52,8 +52,8 @@
     <template v-else-if="isSaleNotFound">
       <no-data-message
         icon-name="alert-circle"
-        :title-id="'sale-details.sale-not-found-title'"
-        :message-id="'sale-details.sale-not-found-desc'"
+        :title="'sale-details.sale-not-found-title' | globalize"
+        :message="'sale-details.sale-not-found-desc' | globalize"
       />
     </template>
 
