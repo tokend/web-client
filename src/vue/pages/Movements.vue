@@ -156,7 +156,7 @@ export default {
 
   methods: {
     ...mapActions({
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
     async initAssetSelector () {
@@ -167,7 +167,7 @@ export default {
     },
 
     async loadAssets () {
-      await this.loadAccount(this.accountId)
+      await this.loadBalances()
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))

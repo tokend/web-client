@@ -222,7 +222,7 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        while (Object.keys(this.kycLatestData).length === 0) {
+        while (this.kycState !== REQUEST_STATES_STR.pending) {
           await this.loadKyc()
         }
       } catch (e) {
