@@ -25,7 +25,7 @@
       />
     </template>
 
-    <template v-else-if="isLoaded">      
+    <template v-else-if="isLoaded">
       <no-data-message
         icon-name="trending-up"
         :title="'fees-page.no-balances-title' | globalize"
