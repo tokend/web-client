@@ -306,7 +306,6 @@ $content-item-right-padding: 2.4rem;
 
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 1;
-    width: $sidebar-width;
     background-color: $col-sidebar-background-media-small;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -315,7 +314,6 @@ $content-item-right-padding: 2.4rem;
     @include respond-to-custom($sidebar-hide-bp) {
       opacity: 0;
       width: 0;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       visibility: hidden;
     }
   }
@@ -327,6 +325,11 @@ $content-item-right-padding: 2.4rem;
   padding: 4rem 2.4rem 5rem 4rem;
   padding: 4rem $content-item-right-padding 5rem $content-item-left-padding;
 
+  @include respond-to-custom($sidebar-hide-bp) {
+    .sidebar__aside--closed & {
+      display: none;
+    }
+  }
 }
 
 .sidebar__logo {
@@ -338,6 +341,12 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__links-section {
   flex: 1;
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    .sidebar__aside--closed & {
+      display: none;
+    }
+  }
 }
 
 .sidebar__links-group {
@@ -382,5 +391,11 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__footer-section {
   padding-top: 2rem;
+
+  @include respond-to-custom($sidebar-hide-bp) {
+    .sidebar__aside--closed & {
+      display: none;
+    }
+  }
 }
 </style>
