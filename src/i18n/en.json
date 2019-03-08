@@ -967,9 +967,7 @@
     },
 
     "withdrawal-form": {
-      "withdrawal-fiat-form-title": "Withdrawal fiat",
       "withdrawal": "Withdrawal",
-      "withdrawal-fiat": "Withdrawal fiat",
       "asset": "Asset",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",

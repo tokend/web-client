@@ -2,16 +2,6 @@
   <div class="withdrawal">
     <template v-if="isLoaded">
       <template v-if="assets.length">
-        <button
-          v-ripple
-          type="button"
-          class="app__button-raised withdrawal__form-fiat-btn"
-          :disabled="formMixin.isDisabled"
-          form="withdrawal-form"
-          @click="fiatWithdrawalFormShown = true"
-        >
-          {{ 'withdrawal-form.withdrawal-fiat' | globalize }}
-        </button>
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           id="withdrawal-form"
@@ -242,7 +232,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
@@ -407,9 +396,5 @@ export default {
 .withdrawal__table-description {
   opacity: 0.6;
   font-size: 1.2rem;
-}
-
-.withdrawal__form-fiat-btn {
-  margin-bottom: 2.4rem;
 }
 </style>
