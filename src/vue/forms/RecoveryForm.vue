@@ -111,9 +111,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
+    ...mapGetters({
+      wallet: vuexTypes.wallet,
+    }),
   },
   methods: {
     ...mapActions({
@@ -134,17 +134,7 @@ export default {
           this.form.password
         )
 
-        await this.loadWallet({
-          email: this.form.email,
-          password: this.form.password,
-        })
-        const accountId = this[vuexTypes.wallet].accountId
-        Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        Api.useWallet(this[vuexTypes.wallet])
-
-        await this.loadAccount(accountId)
-        await this.loadKvEntriesAccountRoleIds()
-        await this.loadKyc()
+        await this.login()
 
         Bus.success('auth-pages.recovered')
         this.$router.push(vueRoutes.app)
@@ -159,6 +149,20 @@ export default {
         }
       }
       this.enableForm()
+    },
+
+    async login () {
+      await this.loadWallet({
+        email: this.form.email,
+        password: this.form.password,
+      })
+      const accountId = this.wallet.accountId
+      Sdk.sdk.useWallet(this.wallet)
+      Api.useWallet(this.wallet)
+
+      await this.loadAccount(accountId)
+      await this.loadKvEntriesAccountRoleIds()
+      await this.loadKyc()
     },
   },
 }
