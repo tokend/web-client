@@ -45,6 +45,18 @@
       <div class="app__form-row">
         <div class="app__form-field">
           <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.withdrawable"
+          >
+            {{ 'asset-form.withdrawable-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <tick-field
             v-model="form.information.isFiat"
             :disabled="formMixin.isDisabled"
           >

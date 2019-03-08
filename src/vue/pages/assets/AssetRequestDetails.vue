@@ -136,6 +136,20 @@
               </template>
             </td>
           </tr>
+          <tr>
+            <td>
+              {{ 'asset-request-details.withdrawable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="request.isWithdrawable">
+                {{ 'asset-request-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-request-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
           <template v-if="request.assetType !== undefined">
             <tr>
               <td>
