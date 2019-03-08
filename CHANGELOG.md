@@ -23,7 +23,7 @@ for further information about branching and tagging conventions.
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
-- Scrolling to the top of the form after moving to the next step
+- Scrolling to the top of asset-create-form, asset-update-form, create-sale-form after moving to the next step
 
 ## [1.3.0] - 2019-03-01
 
