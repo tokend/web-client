@@ -1027,13 +1027,16 @@
       "no-assets-heading": "No assets, no dividends",
       "no-assets": "Your wallet doesn't contain any owned assets yet. You can discover some on the token list",
       "discover-assets-btn": "Discover asset",
-      "can-not-load-assets": "There was an error while loading sales",
+      "can-not-load-assets": "There was an error while loading assets",
       "dividend-btn": "Dividend",
       "email": "Email",
       "token-amount": "Token amount",
       "supposed-dividend-amount": "Supposed dividend amount",
       "failed-load-signers": "Failed to load signers. Try again later",
-      "dividend-success": "Dividend request successfully created"
+      "dividend-success": "Dividend request successfully created",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "amount": "Amount ({{asset}})",
+      "asset-dividend-pay": "Asset in which dividends will be paid"
     }
   }
 }

@@ -83,7 +83,7 @@
       </template>
       <dividend-form-module
         :wallet="wallet"
-        :config="config"
+        :config="dividendConfig"
       />
     </drawer>
 
@@ -154,6 +154,11 @@ export default {
     isDividendDrawerShown: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
+    },
+    dividendConfig: {
+      decimalPoints: config.DECIMAL_POINTS,
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
     },
   }),
 
