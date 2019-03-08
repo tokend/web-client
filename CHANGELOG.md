@@ -12,7 +12,11 @@ for further information about branching and tagging conventions.
 - Issuance explorer module
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
-- Displaying TokenD logo & load spinner while loading the page 
+- Displaying TokenD logo & load spinner while loading the page
+- Cancel trade offers in the "My orders" tab on the "Trade" page
+- CapsLock warning for the input fields with "password" type
+- Displaying asset policies & asset type on the `AssetDetails` page
+- `record` getter to the `AssetRecord`
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -20,6 +24,9 @@ for further information about branching and tagging conventions.
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
+- Scrolling to the top of asset-create-form, asset-update-form, create-sale-form after moving to the next step
+- Loading balances instead of account on the movements page
+- Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 
 ## [1.3.0] - 2019-03-01
 
