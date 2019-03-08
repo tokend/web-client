@@ -121,6 +121,9 @@ export default {
   caret-color: $field-color-focused;
   color: $field-color-text;
   padding: $field-input-padding;
+
+  // will work only when field not in the focus
+  text-overflow: ellipsis;
   @include material-border($field-color-focused, $field-color-unfocused);
   @include text-font-sizes;
 
@@ -132,10 +135,6 @@ export default {
   &--autofill-white:not([readonly]) {
     -webkit-box-shadow: inset 0 0 0 5rem $col-block-bg;
   }
-}
-
-.input-field__input {
-  // HACK: do not merge these rulesets
 
   @mixin placeholder {
     color: $field-placeholer-color;
