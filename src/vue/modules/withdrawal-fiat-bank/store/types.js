@@ -15,7 +15,7 @@ const getters = {
   accountId: 'accountId',
   balances: 'balances',
   assets: 'assets',
-  withdrawableAssets: 'withdrawableAssets',
+  withdrawableFiatAssets: 'withdrawableFiatAssets',
   fees: 'fees',
 }
 

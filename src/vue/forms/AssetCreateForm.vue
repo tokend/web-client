@@ -99,6 +99,17 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <tick-field
+            v-model="form.information.isFiat"
+            :disabled="formMixin.isDisabled"
+          >
+            {{ 'asset-form.is-fiat-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
             name="asset-create-logo"
             v-model="form.information.logo"
@@ -293,6 +304,7 @@ export default {
         logo: null,
         policies: [],
         assetType: '',
+        isFiat: false,
       },
       advanced: {
         isPreissuanceDisabled: false,
@@ -385,6 +397,7 @@ export default {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
+          isFiat: this.form.information.isFiat,
         },
       }
     },

@@ -71,8 +71,9 @@ export const getters = {
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.assets]: state => state.assets,
   // TODO: add fiat checker
-  [types.withdrawableAssets]: state =>
-    state.assets.filter(item => item.isWithdrawable && item.balance.id),
+  [types.withdrawableFiatAssets]: state => state.assets.filter(
+    item => item.isWithdrawable && item.balance.id && item.isFiat
+  ),
   [types.fees]: state => state.fees,
 }
 

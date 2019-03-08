@@ -10,7 +10,7 @@
         <select-field
           name="withdrawal-fiat-bank-asset"
           v-model="form.asset"
-          :values="withdrawableAssets"
+          :values="withdrawableFiatAssets"
           key-as-value-text="nameAndCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
@@ -233,7 +233,7 @@ export default {
   }),
   computed: {
     ...mapGetters('withdrawal-fiat-bank', {
-      withdrawableAssets: types.withdrawableAssets,
+      withdrawableFiatAssets: types.withdrawableFiatAssets,
       balances: types.balances,
       calculatedFees: types.fees,
     }),
@@ -287,7 +287,7 @@ export default {
     this.isInitialized = true
     await this.loadAssets()
 
-    this.form.asset = this.withdrawableAssets[0]
+    this.form.asset = this.withdrawableFiatAssets[0]
   },
   methods: {
     ...mapMutations('withdrawal-fiat-bank', {
