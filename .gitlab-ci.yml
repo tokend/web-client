@@ -44,6 +44,9 @@ unit_test:
 publish dockerhub:                                                                                                                                                                                                 
   image: registry.gitlab.com/tokend/deployment/docker-build:latest
   stage: publish
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PWD                                                                                                                                                                  
   tags:
     - tokend
   only:
