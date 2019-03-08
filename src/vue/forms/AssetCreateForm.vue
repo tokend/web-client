@@ -158,7 +158,7 @@
               <button
                 v-ripple
                 type="button"
-                class="issuance-form__insert-account-id-btn"
+                class="app__button-flat issuance-form__insert-account-id-btn"
                 @click="form.advanced.preissuedAssetSigner = accountId"
               >
                 {{ 'asset-form.use-my-account-id-btn' | globalize }}
@@ -508,14 +508,10 @@ export default {
 
 .issuance-form__pre-issued-asset-signer-wrp {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .issuance-form__insert-account-id-btn {
-  margin-left: 1.6rem;
-  margin-top: 1.8rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: $col-link;
+  margin-left: .4rem;
 }
 </style>

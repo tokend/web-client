@@ -79,10 +79,13 @@ import {
   seed,
 } from '@validators'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
+import { vuexTypes } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'recovery-form',
@@ -107,7 +110,18 @@ export default {
       recoverySeed: { required, seed },
     },
   },
+  computed: {
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
+  },
   methods: {
+    ...mapActions({
+      loadWallet: vuexTypes.LOAD_WALLET,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+    }),
     async submit () {
       if (!this.isFormValid()) {
         return
@@ -119,8 +133,21 @@ export default {
           this.form.recoverySeed,
           this.form.password
         )
+
+        await this.loadWallet({
+          email: this.form.email,
+          password: this.form.password,
+        })
+        const accountId = this[vuexTypes.wallet].accountId
+        Sdk.sdk.useWallet(this[vuexTypes.wallet])
+        Api.useWallet(this[vuexTypes.wallet])
+
+        await this.loadAccount(accountId)
+        await this.loadKvEntriesAccountRoleIds()
+        await this.loadKyc()
+
         Bus.success('auth-pages.recovered')
-        this.$router.push(vueRoutes.login)
+        this.$router.push(vueRoutes.app)
       } catch (e) {
         switch (e.constructor) {
           case errors.NotFoundError:
