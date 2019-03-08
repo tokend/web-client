@@ -30,7 +30,7 @@
     "loglevel": "1.6.1",
     "moment": "2.23.0",
     "numeral": "2.0.6",
-    "qrcode.vue": "^1.6.1",
+    "qrcode.vue": "1.6.1",
     "vue": "2.5.21",
     "vue-flatpickr-component": "8.1.0",
     "vue-markdown": "2.2.4",
