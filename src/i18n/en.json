@@ -38,9 +38,7 @@
       "integer": "{{value, integer}}",
       "calendar": "{{value, calendar}}",
       "order_number": "{{value, order_number}}",
-      "percent": "{{value, percent}}",
-      "fee_type": "{{value, fee_type}}",
-      "fee_subtype": "{{value, fee_subtype}}"
+      "percent": "{{value, percent}}"
     },
 
     "common": {
@@ -354,38 +352,50 @@
       "download-apps": "Downloads"
     },
 
-    "fee-types": {
-      "payment": "Payment",
-      "offer": "Offer",
-      "withdrawal": "Withdrawal",
-      "issuance": "Issuance",
-      "invest": "Invest",
-      "capital-deployment": "Capital deployment",
-      "operation": "Operation",
-      "payout": "Payout",
-      "incoming-outgoing": "Incoming & Outgoing",
-      "outgoing": "Outgoing",
-      "incoming": "Incoming"
+    "fees": {
+      "scopes": {
+        "account": "Your account",
+        "account-role": "Your account type",
+        "global": "Global"
+      },
+      "types": {
+        "payment": "Payment",
+        "offer": "Offer",
+        "withdrawal": "Withdrawal",
+        "issuance": "Issuance",
+        "invest": "Invest",
+        "capital-deployment": "Capital deployment",
+        "operation": "Operation",
+        "payout": "Payout"
+      },
+      "subtypes": {
+        "incoming-outgoing": "Incoming & Outgoing",
+        "outgoing": "Outgoing",
+        "incoming": "Incoming"
+      },
+      "table": {
+        "type-th": "Type",
+        "fixed-th": "Fixed",
+        "percent-th": "Percent",
+        "lower-bound-th": "Lower bound",
+        "upper-bound-th": "Upper bound",
+        "subtype-th": "Subtype"
+      },
+      "fees-loading-msg": "Loading your fees…",
+      "fees-loading-error-msg": "There was an error while loading your fees.",
+      "no-valuable-fees-title": "No valuable fees",
+      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
     },
 
-    "fee-table": {
-      "fee-type": "Fee type",
-      "fixed": "Fixed",
-      "percent": "Percent",
-      "lower-bound": "Lower bound",
-      "upper-bound": "Upper bound",
-      "subtype": "Subtype",
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "fee-page": {
+    "fees-page": {
       "asset-filter-prefix": "Asset:",
       "scope-filter-prefix": "Scope:",
       "scope-global": "Global",
       "scope-account": "Account",
-      "no-valuable-fees-title": "No valuable fees",
-      "no-valuable-fees-msg": "You do not have any valuable {{asset}} fees yet"
+      "balances-loading-msg": "Loading your balances…",
+      "balances-loading-error-msg": "There was an error while loading your balances.",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet"
     },
 
     "op-pages": {
@@ -571,7 +581,7 @@
       "cancel-btn": "CANCEL",
       "upload-btn": "Upload",
       "not-available": "Issuance creation is available only for corporate users, complete verification to become one",
-      "pre-issuance-lbl": "Select file(s) with preissued asset. Note - you cannot upload the same preissuance twice).",
+      "pre-issuance-lbl": "Select file(s) with preissued asset. You cannot upload the same pre-issuance twice.",
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
       "pre-issuance-details-title": "Pre-issuance info",

@@ -1,6 +1,5 @@
 import _cloneDeep from 'lodash/cloneDeep'
 import i18next from 'i18next'
-import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 
 const mockEn = {
   'config': {
@@ -285,60 +284,6 @@ describe('the i18n is properly configured', () => {
       it(expected, () => {
         const result = i18next.t('withFormattedDate', { when: given })
         expect(result).to.equal(`The offer end date is ${expected}`)
-      })
-    }
-  })
-
-  describe('formats fee type', () => {
-    const feeTypes = {
-      [FEE_TYPES.paymentFee]: 'Payment',
-      [FEE_TYPES.offerFee]: 'Offer',
-      [FEE_TYPES.withdrawalFee]: 'Withdrawal',
-      [FEE_TYPES.issuanceFee]: 'Issuance',
-      [FEE_TYPES.investFee]: 'Invest',
-      [FEE_TYPES.capitalDeploymentFee]: 'Capital deployment',
-      [FEE_TYPES.operationFee]: 'Operation',
-      [FEE_TYPES.payoutFee]: 'Payout',
-    }
-
-    for (const [given, expected] of Object.entries(feeTypes)) {
-      it(`given = ${given}`, () => {
-        const result = i18next.t('withFormattedFeeType', { type: given })
-        expect(result).to.equal(`It's the ${expected} fee type`)
-      })
-    }
-  })
-
-  describe('formats fee subtype', () => {
-    const paymentFeeSubtypes = {
-      [PAYMENT_FEE_SUBTYPES.outgoing]: 'Outgoing',
-      [PAYMENT_FEE_SUBTYPES.incoming]: 'Incoming',
-    }
-    const otherFeeSubtypes = {
-      '0': 'Incoming & Outgoing',
-      '1': 'Incoming & Outgoing',
-    }
-
-    for (const [given, expected] of Object.entries(paymentFeeSubtypes)) {
-      it(`given (payment fee) = ${given}`, () => {
-        const result = i18next.t('withFormattedFeeSubtype',
-          { value: { type: FEE_TYPES.paymentFee, subtype: given } })
-        expect(result).to.equal(`It's the ${expected} fee subtype`)
-      })
-    }
-
-    for (const [given, expected] of Object.entries(otherFeeSubtypes)) {
-      it(`given (offer fee) = ${given}`, () => {
-        const result = i18next.t('withFormattedFeeSubtype', {
-          value: {
-            type: FEE_TYPES.offerFee,
-            subtype: given,
-          },
-          interpolation: {
-            escapeValue: false,
-          },
-        })
-        expect(result).to.equal(`It's the ${expected} fee subtype`)
       })
     }
   })
