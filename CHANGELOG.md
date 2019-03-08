@@ -21,6 +21,8 @@ for further information about branching and tagging conventions.
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
+- Loading balances instead of account on the movements page
+- Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 
 ## [1.3.0] - 2019-03-01
 
