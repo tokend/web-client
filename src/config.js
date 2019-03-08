@@ -1,5 +1,6 @@
 import { base } from '@tokend/js-sdk'
 import packageJson from '../package.json'
+import defaultScheme from '../schemes/vanilla'
 
 export default Object.assign(
   {
@@ -98,6 +99,12 @@ export default Object.assign(
      * The field being displayed on login screen.
      */
     BUILD_VERSION: 'dev: ' + packageJson.version,
+
+    /**
+     * Module scheme to use. The module scheme will be used to combine module
+     * set of the application.
+     */
+    MODULE_SCHEME: defaultScheme,
   },
   process.env,
   document.ENV

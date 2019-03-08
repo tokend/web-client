@@ -22,6 +22,11 @@ parser.addArgument(['--set-build-version'], {
   type: 'string',
   dest: 'setBuildVersion',
 })
+parser.addArgument(['--scheme-file-path'], {
+  metavar: 'FILE_PATH',
+  help: 'Path to the module file that contains module scheme to use',
+  dest: 'schemeFilePath',
+})
 const args = parser.parseArgs()
 
 let appEnv = {}
@@ -29,7 +34,7 @@ function makeEnvArgValue (val) { return `"${val}"` }
 if (args.envFile) {
   appEnv = {
     ...appEnv,
-    ...require(path.resolve(args.envFile))
+    ...require(path.resolve(args.envFile)),
   }
 }
 if (args.envArgs) {
@@ -38,12 +43,15 @@ if (args.envArgs) {
     ...args.envArgs
       .reduce((res, [key, val]) => ({
         ...res,
-        ...{ [key]: makeEnvArgValue(val) }
-      }), {})
+        ...{ [key]: makeEnvArgValue(val) },
+      }), {}),
   }
 }
 if (args.setBuildVersion) {
   appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
+}
+if (args.schemeFilePath) {
+  appEnv.MODULE_SCHEME = require(path.resolve(args.schemeFilePath))
 }
 
 /* eslint-disable-next-line no-console */
@@ -77,7 +85,7 @@ rm(path.join(path.resolve(__dirname, '../dist'), 'static'), err => {
       modules: false,
       children: false,
       chunks: false,
-      chunkModules: false
+      chunkModules: false,
     }) + '\n\n')
 
     if (stats.hasErrors()) {

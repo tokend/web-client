@@ -8,6 +8,9 @@
       "@/*": [
         "src/*"
       ],
+      "@root/*": [
+        "./*"
+      ],
       "@validators/*": [
         "src/validators/*"
       ],
