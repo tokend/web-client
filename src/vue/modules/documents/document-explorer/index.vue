@@ -6,10 +6,16 @@
         class="document-explorer__document-list"
       >
         <template v-for="document in documents">
-          <document-card-viewer
-            :document="document"
+          <router-link
+            class="document-explorer__router-link"
             :key="document.key"
-          />
+            :to="{
+              name: vueRoutes.documentManager.name,
+              params: { id: document.id } }
+            "
+          >
+            <document-card-viewer :document="document" />
+          </router-link>
         </template>
       </div>
 
@@ -38,14 +44,13 @@ import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import DocumentCardViewer from './components/document-card-viewer'
-
 import DocumentsLoaderMixin from './mixins/documents-loader.mixin'
 
 import { Wallet } from '@tokend/js-sdk'
-
 import { initApi } from './_api'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   shouldUpdate: 'update:shouldUpdate',
@@ -83,6 +88,8 @@ export default {
     documents: [],
     isLoaded: false,
     isLoadFailed: false,
+
+    vueRoutes,
   }),
 
   watch: {
@@ -122,5 +129,11 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: -1rem;
+}
+
+.document-explorer__router-link {
+  display: block;
+  text-decoration: none;
+  max-width: 100%;
 }
 </style>

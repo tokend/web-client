@@ -23,7 +23,7 @@ export default {
           account.id
         )
 
-        documents.push(new Document(changeRoleRequest, blob))
+        documents.push(new Document(account.id, changeRoleRequest, blob))
       }))
 
       return documents
