@@ -114,13 +114,6 @@ export const router = new Router({
           ],
         },
         {
-          path: '/movements',
-          name: vueRoutes.movements.name,
-          featureFlag: config.featureFlags.movements,
-          meta: { pageNameTranslationId: 'pages-names.movements' },
-          component: resolve => require(['@/vue/pages/Movements'], resolve),
-        },
-        {
           path: '/funds',
           name: vueRoutes.sales.name,
           featureFlag: config.featureFlags.sales,
@@ -238,6 +231,9 @@ export const router = new Router({
             },
           ],
         },
+        ...(
+          config.MODULE_SCHEME.pages.map(page => page.routerEntry)
+        ),
       ].filter(route => route.featureFlag !== false),
     },
   ],

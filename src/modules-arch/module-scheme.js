@@ -1,35 +1,44 @@
+import _cloneDeep from 'lodash/cloneDeep'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 export class ModuleScheme {
   constructor (scheme) {
     this._raw = scheme
+    this._pages = []
 
-    this._cache = this._createCache(this._raw)
+    // To validate the whole bunch of modules for compatibility
+    this._cache = []
+
+    this._init(this._raw)
   }
 
-  _createCache (scheme) {
-    const allModules = this._extractFlattenModules(scheme.modules)
-    const cache = this._filterUnique(allModules)
-    const isValidSet = this._isValidModules([...cache])
-    // eslint-disable-next-line no-console
-    console.log(cache, isValidSet)
-    return scheme
+  get pages () { return _cloneDeep(this._pages) }
+
+  async _init (scheme) {
+    try {
+      const cache = this._filterUnique(
+        this._flattenConstructors(scheme.pages),
+      )
+
+      this._pages = _cloneDeep(scheme.pages)
+      this._cache = cache
+    } catch (error) {
+      ErrorHandler.process(error)
+    }
   }
 
-  _filterUnique (modules) {
+  _filterUnique (...modules) {
     return [...new Set(modules)]
   }
 
-  _extractFlattenModules (modules = []) {
+  _flattenConstructors (modules = []) {
     const result = []
     for (const item of modules) {
-      result.push(item.instance)
+      result.push(item.constructor)
       if (item.submodules) {
-        result.push(...this._extractFlattenModules(item.submodules))
+        result.push(...this._flattenConstructors(item.submodules))
       }
     }
     return result
-  }
-
-  _isValidModules (modules = []) {
-    return modules.every(item => item.isCompatibleWithModules(modules))
   }
 }
