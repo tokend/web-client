@@ -22,4 +22,5 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
+[Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0
