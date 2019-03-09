@@ -36,6 +36,7 @@
           @ok="submit"
           @cancel="hideConfirmation"
         />
+
         <button
           v-else
           v-ripple
@@ -125,25 +126,7 @@ export default {
       this.disableForm()
 
       try {
-        const documentText = await FileUtil.getText(this.form.document.file)
-        const documentHash = await CryptoUtil.hashMessage(documentText)
-
-        const accountId = await this.deriveAccountId(documentText)
-        await this.createAccount(accountId)
-
-        const documentId = await this.uploadDocument(
-          this.form.document,
-          this.wallet.accountId
-        )
-
-        const blobId = await this.createBlob({
-          documentId,
-          documentHash,
-          description: this.form.description,
-        })
-
-        await this.createChangeRoleRequest(blobId)
-
+        await this.processDocumentUploading()
         Bus.success('document-upload-form.uploaded-msg')
         this.$emit(EVENTS.submit)
       } catch (e) {
@@ -159,10 +142,34 @@ export default {
       this.enableForm()
     },
 
-    async deriveAccountId (documentText) {
-      const hashBuffer = await CryptoUtil.sha256(documentText)
-      const keypair = base.Keypair.fromRawSeed(hashBuffer)
+    async processDocumentUploading () {
+      const docHashBuffer = await this.getDocHashBuffer(this.form.document)
+      const accountId = await this.getAccountIdFromDocHash(docHashBuffer)
+      await this.createAccount(accountId)
 
+      const documentId = await this.uploadDocument(
+        this.form.document,
+        this.wallet.accountId
+      )
+
+      const blobId = await this.createBlob({
+        documentId,
+        documentHash: CryptoUtil.convertHashBufferToHex(docHashBuffer),
+        description: this.form.description,
+      })
+
+      await this.createChangeRoleRequest(blobId)
+    },
+
+    async getDocHashBuffer (document) {
+      const docText = await FileUtil.getText(this.form.document.file)
+      const docHashBuffer = await CryptoUtil.sha256(docText)
+
+      return docHashBuffer
+    },
+
+    async getAccountIdFromDocHash (docHashBuffer) {
+      const keypair = base.Keypair.fromRawSeed(docHashBuffer)
       return keypair.accountId()
     },
   },

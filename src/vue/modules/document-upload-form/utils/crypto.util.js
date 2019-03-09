@@ -8,15 +8,10 @@ export class CryptoUtil {
     return new Uint8Array(hashBuffer)
   }
 
-  static toHex (arrayBuffer) {
+  static convertHashBufferToHex (hashBuffer) {
     return Array
-      .from(new Uint8Array(arrayBuffer))
+      .from(new Uint8Array(hashBuffer))
       .map(b => ('00' + b.toString(16)).slice(-2))
       .join('')
-  }
-
-  static async hashMessage (msg) {
-    const hashBuffer = await this.sha256(msg)
-    return this.toHex(hashBuffer)
   }
 }
