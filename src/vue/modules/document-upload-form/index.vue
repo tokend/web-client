@@ -20,7 +20,7 @@
 
       <div class="app__form-row document-upload-form__description">
         <div class="app__form-field">
-          <p>{{ 'document-upload-form.description' | globalize }}</p>
+          <p>{{ 'document-upload-form.description-lbl' | globalize }}</p>
           <markdown-field
             v-model="form.description"
             :disabled="formMixin.isDisabled"
@@ -52,6 +52,8 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import DocumentUploaderMixin from './mixins/document-uploader.mixin'
+import CreateAccountMixin from './mixins/create-account.mixin'
 
 import { Wallet, base, errors } from '@tokend/js-sdk'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -67,18 +69,18 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { FileUtil } from '@/js/utils/file.util'
 import { CryptoUtil } from './utils/crypto.util'
 
-import { DocumentUploader } from './helpers/document-uploader'
-
-import { mapActions, mapMutations } from 'vuex'
-import { types } from './store/types'
-
 const EVENTS = {
   submit: 'submit',
 }
 
 export default {
   name: 'document-upload-form-module',
-  mixins: [FormMixin],
+  mixins: [
+    FormMixin,
+    DocumentUploaderMixin,
+    CreateAccountMixin,
+  ],
+
   props: {
     /**
      * @property config - the config for component to use
@@ -113,21 +115,9 @@ export default {
   created () {
     initApi(this.wallet, this.config)
     initConfig(this.config)
-    this.setAccountId(this.wallet.accountId)
   },
 
   methods: {
-    ...mapMutations('upload-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-      setDocumentAccountId: types.SET_DOCUMENT_ACCOUNT_ID,
-    }),
-
-    ...mapActions('upload-form', {
-      createAccount: types.CREATE_ACCOUNT,
-      createChangeRoleRequest: types.CREATE_CHANGE_ROLE_REQUEST,
-      createBlob: types.CREATE_BLOB,
-    }),
-
     async submit () {
       if (!this.isFormValid()) return
 
@@ -147,8 +137,8 @@ export default {
         )
 
         const blobId = await this.createBlob({
-          id: documentId,
-          hash: documentHash,
+          documentId,
+          documentHash,
           description: this.form.description,
         })
 
@@ -174,11 +164,6 @@ export default {
       const keypair = base.Keypair.fromRawSeed(hashBuffer)
 
       return keypair.accountId()
-    },
-
-    async uploadDocument (document, accountId) {
-      await DocumentUploader.uploadSingleDocument(document, accountId)
-      return document.key
     },
   },
 }
