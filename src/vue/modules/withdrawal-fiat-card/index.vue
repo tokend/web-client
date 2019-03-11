@@ -137,6 +137,7 @@
         white-autofill
         class="app__form-field"
         v-model.trim="form.cardCVV3"
+        type="password"
         name="withdrawal-fiat-card-cvv3"
         :label="'withdrawal-fiat-card-module.card-cvv3' | globalize"
         :disabled="formMixin.isDisabled"
@@ -156,7 +157,7 @@
         :error-message="getFieldErrorMessage('form.cardHolder')"
       />
     </div>
-    <div class="app__form-actions withdrawal__action">
+    <div class="app__form-actions">
       <button
         v-ripple
         v-if="!formMixin.isConfirmationShown"
@@ -191,7 +192,6 @@ import { Wallet, base } from '@tokend/js-sdk'
 import { initApi, api } from './_api'
 import {
   required,
-  alpha,
   noMoreThanAvailableOnBalance,
   maxDecimalDigitsCount,
   creditCardNumber,
@@ -293,7 +293,6 @@ export default {
         },
         cardHolder: {
           required,
-          alpha,
         },
       },
     }

@@ -144,7 +144,7 @@
         :error-message="getFieldErrorMessage('form.iban')"
       />
     </div>
-    <div class="app__form-actions withdrawal__action">
+    <div class="app__form-actions">
       <button
         v-ripple
         v-if="!formMixin.isConfirmationShown"
