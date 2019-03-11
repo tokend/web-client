@@ -50,7 +50,7 @@ export default {
     },
 
     async createBlob (details) {
-      const endpoint = `/accounts/${this.wallet.accountId}/blobs`
+      const endpoint = `/accounts/${this.documentAccountId}/blobs`
       const { data } = await api().postWithSignature(endpoint, {
         data: {
           type: BLOB_TYPE,

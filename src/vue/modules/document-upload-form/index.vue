@@ -149,7 +149,7 @@ export default {
 
       const documentId = await this.uploadDocument(
         this.form.document,
-        this.wallet.accountId
+        accountId
       )
 
       const blobId = await this.createBlob({

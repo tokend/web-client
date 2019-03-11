@@ -14,6 +14,11 @@ export default {
             type,
             attributes: { content_type: mimeType },
           },
+          relationships: {
+            owner: {
+              data: { id: accountId },
+            },
+          },
         }
       )
 
