@@ -411,6 +411,7 @@
       "withdrawal": "Withdrawal",
       "withdrawal-fiat": "Withdrawal fiat",
       "deposit": "Deposit",
+      "deposit-fiat": "Deposit fiat",
       "send": "Send",
       "no-data-title": "No balance movements yet",
       "no-data-msg": "Here will be your balance movements history"
@@ -1034,6 +1035,60 @@
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…"
+    },
+
+    "deposit-fiat-module": {
+      "form-title": "Deposit fiat",
+      "tab-card-lbl": "Card",
+      "tab-bank-lbl": "Bank"
+    },
+
+    "deposit-fiat-card-module": {
+      "asset": "Asset",
+      "amount": "Amount ({{asset}})",
+      "card-number": "Card number",
+      "expiration-date": "Card expiration date (mm/yy)",
+      "card-cvv3": "Card CVV3",
+      "card-holder": "Card holder",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "loading-msg": "Loading...",
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "total-amount-account": "Total fee",
+      "deposit": "Deposit",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "deposit-success": "Deposit request successfully created",
+      "fee-loading-msg": "Loading…"
+    },
+
+    "deposit-fiat-bank-module": {
+      "asset": "Asset",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "beneficiary-title": "Beneficiary",
+      "beneficiary-iban": "International Bank Account Number (IBAN)",
+      "beneficiary-account": "Account No",
+      "beneficiary-receiver": "Receiver",
+      "institution-title": "Account with Institution",
+      "institution-bank": "Bank",
+      "institution-city": "City",
+      "institution-swift": "Swift code",
+      "intermediary-title": "Intermediary",
+      "intermediary-bank": "Bank",
+      "intermediary-city": "City",
+      "intermediary-account": "Account number",
+      "intermediary-swift": "Swift code",
+      "loading-msg": "Loading...",
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "total-amount-account": "Total fee",
+      "payment-details": "Details of payment",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "fee-loading-msg": "Loading…"
     },
 
     "email-getter": {
