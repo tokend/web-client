@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 - Displaying asset policies & asset type on the `AssetDetails` page
 - `record` getter to the `AssetRecord`
 - Added confirmation to cancel token creation request
+- Healthcare document type
 
 ### Changed
 - Now using new account endpoint for loading the fees

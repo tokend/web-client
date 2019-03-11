@@ -10,7 +10,7 @@
             :label="'document-upload-form.document-lbl' | globalize"
             :note="'document-upload-form.file-type-note' | globalize"
             accept="image/*, .pdf"
-            :document-type="DOCUMENT_TYPES.identity_card"
+            :document-type="DOCUMENT_TYPES.healthcareDocument"
             v-model="form.document"
             :disabled="formMixin.isDisabled"
             :error-message="getFieldErrorMessage('form.document')"
@@ -147,14 +147,18 @@ export default {
       const accountId = await this.getAccountIdFromDocHash(docHashBuffer)
       await this.createAccount(accountId)
 
-      const documentId = await this.uploadDocument(
+      const fileKey = await this.uploadDocument(
         this.form.document,
         accountId
       )
 
       const blobId = await this.createBlob({
-        documentId,
-        documentHash: CryptoUtil.convertHashBufferToHex(docHashBuffer),
+        file: {
+          key: fileKey,
+          hash: CryptoUtil.convertHashBufferToHex(docHashBuffer),
+          name: this.form.document.name,
+          mime_type: this.form.document.mimeType,
+        },
         description: this.form.description,
       })
 
