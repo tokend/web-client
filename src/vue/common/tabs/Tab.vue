@@ -1,7 +1,7 @@
 <template>
   <section
     v-show="isActive"
-    :aria-hidden="! isActive"
+    :aria-hidden="!isActive"
     class="app-tabs__panel"
     :id="hash"
     role="tabpanel"

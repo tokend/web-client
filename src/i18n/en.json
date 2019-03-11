@@ -81,9 +81,9 @@
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
       "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits",
       "field-error_ibanValidator": "Make sure the IBAN is correct",
-      "field-error_creditCardNumber": "Make sure the card number is correct",
-      "field-error_creaditCardExpirationDate": "Make sure the expiration date is correct",
-      "field-error_creditCardCVV3": "Make sure the CVV3 is correct"
+      "field-error_cardNumber": "Make sure the card number is correct",
+      "field-error_cardExpirationDate": "Make sure the expiration date is correct",
+      "field-error_cardCVV3": "Make sure the CVV3 is correct"
     },
 
     "errors": {
@@ -950,6 +950,10 @@
       "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
+    "withdrawal-fiat-module": {
+      "form-title": "Withdrawal fiat"
+    },
+
     "withdrawal-fiat-bank-module": {
       "asset": "Asset",
       "amount": "Amount ({{asset}})",
@@ -967,8 +971,7 @@
       "withdrawal": "Withdrawal",
       "failed-load-fees": "Failed to load fees. Try again later",
       "withdraw-success": "Withdrawal request successfully created",
-      "fee-loading-msg": "Loading…",
-      "form-title": "Withdrawal fiat"
+      "fee-loading-msg": "Loading…"
     },
 
     "withdrawal-fiat-card-module": {
@@ -989,8 +992,7 @@
       "withdrawal": "Withdrawal",
       "failed-load-fees": "Failed to load fees. Try again later",
       "withdraw-success": "Withdrawal request successfully created",
-      "fee-loading-msg": "Loading…",
-      "form-title": "Withdrawal fiat"
+      "fee-loading-msg": "Loading…"
     },
 
     "withdrawal-form": {

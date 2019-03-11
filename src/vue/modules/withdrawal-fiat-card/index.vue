@@ -194,12 +194,12 @@ import {
   required,
   noMoreThanAvailableOnBalance,
   maxDecimalDigitsCount,
-  creditCardNumber,
-  creaditCardExpirationDate,
-  creditCardCVV3,
+  cardNumber,
+  cardExpirationDate,
+  cardCVV3,
 } from '@validators'
 
-const EMPTY_FEE = '0.0000'
+const EMPTY_FEE = '0.000000'
 
 const EVENTS = {
   withdrawn: 'withdrawn',
@@ -281,15 +281,15 @@ export default {
         },
         cardNumber: {
           required,
-          creditCardNumber,
+          cardNumber,
         },
         cardExpirationDate: {
           required,
-          creaditCardExpirationDate,
+          cardExpirationDate,
         },
         cardCVV3: {
           required,
-          creditCardCVV3,
+          cardCVV3,
         },
         cardHolder: {
           required,
@@ -302,10 +302,11 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
-    this.isInitialized = true
     await this.loadAssets()
 
     this.form.asset = this.withdrawableFiatAssets[0]
+
+    this.isInitialized = true
   },
   methods: {
     ...mapMutations('withdrawal-fiat-card', {

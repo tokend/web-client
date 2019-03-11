@@ -189,7 +189,7 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
-const EMPTY_FEE = '0.0000'
+const EMPTY_FEE = '0.000000'
 
 export default {
   name: 'withdrawal-form',

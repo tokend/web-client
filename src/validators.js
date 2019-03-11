@@ -1,6 +1,5 @@
 import WAValidator from 'wallet-address-validator'
 import moment from 'moment'
-// IBAN is an abbreviation for International Bank Account Number
 import iban from 'iban'
 import cardValidator from 'card-validator'
 
@@ -75,7 +74,7 @@ export function validateEmail (email) {
   return reg.test(email)
 }
 
-export const creditCardNumber = value => {
+export const cardNumber = value => {
   /**
    * {String} value
    * {Object} [opts]
@@ -84,7 +83,7 @@ export const creditCardNumber = value => {
   return cardValidator.number(value).isValid
 }
 
-export const creaditCardExpirationDate = value => {
+export const cardExpirationDate = value => {
   const DEFAULT_YEAR_AHEAD = 20
 
   /**
@@ -98,7 +97,7 @@ export const creaditCardExpirationDate = value => {
   ).isValid
 }
 
-export const creditCardCVV3 = value => {
+export const cardCVV3 = value => {
   const DEFAULT_CVV_LENGTH = 3
 
   /**

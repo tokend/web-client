@@ -185,7 +185,7 @@ import {
   ibanValidator,
 } from '@validators'
 
-const EMPTY_FEE = '0.0000'
+const EMPTY_FEE = '0.000000'
 
 const EVENTS = {
   withdrawn: 'withdrawn',
@@ -284,10 +284,11 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
-    this.isInitialized = true
     await this.loadAssets()
 
     this.form.asset = this.withdrawableFiatAssets[0]
+
+    this.isInitialized = true
   },
   methods: {
     ...mapMutations('withdrawal-fiat-bank', {
