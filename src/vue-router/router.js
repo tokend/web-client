@@ -242,10 +242,18 @@ export const router = new Router({
           path: '/healthcare',
           name: vueRoutes.healthcare.name,
           featureFlag: config.featureFlags.healthcare,
+          redirect: vueRoutes.documentExplorer,
           meta: {
             pageNameTranslationId: 'pages-names.healthcare',
           },
           component: resolve => require(['@/vue/pages/Healthcare'], resolve),
+          children: [
+            {
+              path: '/healthcare/explore-documents',
+              name: vueRoutes.documentExplorer.name,
+              component: resolve => require(['@/vue/pages/DocumentExplorer'], resolve),
+            },
+          ],
         },
       ].filter(route => route.featureFlag !== false),
     },

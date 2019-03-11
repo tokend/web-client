@@ -1048,7 +1048,8 @@
     },
 
     "healthcare-page": {
-      "create-document": "Create document"
+      "create-document": "Create document",
+      "explore-documents-title": "Explore documents"
     }
   }
 }
