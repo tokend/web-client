@@ -28,6 +28,37 @@
       </section>
 
       <section class="sidebar__links-section">
+        <nav
+          v-for="[sectionName, menuItems] of Object.entries(sectionsToRender)"
+          :key="sectionName"
+          class="sidebar__links-group"
+        >
+          <p
+            v-if="sectionName !== DEFAULT_SECTION_NAME"
+            class="sidebar__links-group-title"
+          >
+            {{ sectionName | globalize }}
+          </p>
+
+          <router-link
+            v-for="item in menuItems"
+            :key="item.menuButtonTranslationId"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="item.routerEntry.path"
+            tag="a"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-${item.menuButtonMdiName}`"
+            />
+            <span>
+              {{ item.menuButtonTranslationId | globalize }}
+            </span>
+          </router-link>
+        </nav>
+
         <nav class="sidebar__links-group">
           <router-link
             v-ripple
@@ -54,20 +85,6 @@
             <i class="sidebar__link-icon mdi mdi-finance" />
             <span>
               {{ 'pages-names.trade' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.movements"
-            tag="a"
-            v-if="config.featureFlags.movements"
-          >
-            <i class="sidebar__link-icon mdi mdi-menu" />
-            <span>
-              {{ 'pages-names.movements' | globalize }}
             </span>
           </router-link>
 
@@ -190,6 +207,9 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import config from '@/config'
+import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+
+const DEFAULT_SECTION_NAME = 'default'
 
 export default {
   name: 'sidebar',
@@ -203,20 +223,63 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
+    DEFAULT_SECTION_NAME,
   }),
 
   computed: {
     ...mapGetters({
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
+    sectionsToRender () {
+      const sections = this.groupPagesBySections(SchemeRegistry.current.pages)
+      const filteredSections = this.filterUnrenderedSections(sections)
+      return filteredSections
+    },
   },
 
   methods: {
     openSidebar () {
       this.isOpened = true
     },
+
     closeSidebar () {
       this.isOpened = false
+    },
+
+    groupPagesBySections (pages) {
+      const result = { [DEFAULT_SECTION_NAME]: [] }
+
+      for (const item of pages) {
+        const translationId = item.menuSectionTranslationId
+        if (!translationId) {
+          result[DEFAULT_SECTION_NAME].push(item)
+        } else {
+          if (!result[translationId]) {
+            result[translationId] = []
+          }
+          result[translationId].push(item)
+        }
+      }
+
+      return result
+    },
+
+    filterUnrenderedSections (sections) {
+      const result = { ...sections }
+
+      for (const [key, value] of Object.entries(result)) {
+        const filteredValue = value
+          .filter(item => item.menuButtonTranslationId)
+          .filter(item => item.isCorporateOnly ? this.isAccountCorporate : true)
+
+        if (filteredValue.length) {
+          result[key] = filteredValue
+        } else {
+          delete result[key]
+        }
+      }
+
+      return result
     },
   },
 }
@@ -260,13 +323,13 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__burger-btn {
   position: absolute;
-  left: .5rem;
+  left: 0.5rem;
   top: 4.1rem;
   z-index: $z-sidebar-burger;
   width: 4rem;
   height: 4rem;
   margin-right: 0;
-  margin-left: .8rem;
+  margin-left: 0.8rem;
   border: none;
   outline: none;
   border-radius: 50%;
