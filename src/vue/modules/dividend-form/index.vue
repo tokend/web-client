@@ -27,26 +27,6 @@
           </div>
 
           <div class="app__form-row dividend__form-row">
-            <input-field
-              white-autofill
-              class="app__form-field"
-              v-model.trim="form.amount"
-              type="number"
-              name="dividend-amount"
-              :step="config.minAmount"
-              @blur="touchField('form.amount')"
-              :label="'dividend-form.amount' | globalize({
-                asset: form.ownedAsset.code
-              })"
-              :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage('form.amount', {
-                available: form.ownedAsset.balance.value,
-                maxDecimalDigitsCount: config.decimalPoints,
-              })"
-            />
-          </div>
-
-          <div class="app__form-row dividend__form-row">
             <div class="app__form-field">
               <select-field
                 name="dividend-asset"
@@ -63,6 +43,26 @@
                 {{ 'dividend-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}
               </p>
             </div>
+          </div>
+
+          <div class="app__form-row dividend__form-row">
+            <input-field
+              white-autofill
+              class="app__form-field"
+              v-model.trim="form.amount"
+              type="number"
+              name="dividend-amount"
+              :step="config.minAmount"
+              @blur="touchField('form.amount')"
+              :label="'dividend-form.amount' | globalize({
+                asset: form.asset.code
+              })"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage('form.amount', {
+                available: form.asset.balance.value,
+                maxDecimalDigitsCount: config.decimalPoints,
+              })"
+            />
           </div>
 
           <div class="app__form-row dividend__form-row">
@@ -83,9 +83,9 @@
               <tbody
                 class="dividend__fee-tbody"
                 :class="{ 'dividend__data--loading': isSignersLoadPending }"
-                v-if="tokenHolders.length && isSignersLoaded"
+                v-if="balanceHolders.length && isSignersLoaded"
               >
-                <tr v-for="holder in tokenHolders" :key="holder.id">
+                <tr v-for="holder in balanceHolders" :key="holder.id">
                   <td>
                     <email-getter :balance-id="holder.id" />
                   </td>
@@ -95,7 +95,7 @@
                   </td>
                   <td v-if="form.amount">
                     {{ getDividendAmount(holder) | formatMoney }}
-                    {{ form.ownedAsset.code }}
+                    {{ form.asset.code }}
                   </td>
                   <td v-else>
                     &mdash;
@@ -103,6 +103,11 @@
                 </tr>
               </tbody>
             </table>
+            <template v-if="!balanceHolders.length && isSignersLoaded">
+              <p class="dividend__fee-holders-not-found">
+                {{ 'dividend-form.asset-holders-not-found' | globalize }}
+              </p>
+            </template>
           </div>
 
           <div class="app__form-actions dividend__action">
@@ -111,7 +116,7 @@
               v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__button-raised"
-              :disabled="formMixin.isDisabled"
+              :disabled="formMixin.isDisabled || !balanceHolders.length"
               form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
@@ -152,17 +157,16 @@
 <script>
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
-import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { types } from './store/types'
 
-import { Wallet, PAYMENT_FEE_SUBTYPES, FEE_TYPES } from '@tokend/js-sdk'
+import { FEE_TYPES, PAYMENT_FEE_SUBTYPES, Wallet } from '@tokend/js-sdk'
 import { api, initApi } from './_api'
 import { AssetRecord } from './wrappers/asset.record'
 import required from 'vuelidate/src/validators/required'
@@ -170,7 +174,6 @@ import { amount, maxDecimalDigitsCount, noMoreThanAvailableOnBalance } from '../
 import * as base from '@tokend/js-sdk/lib/base/operations/payment_builder'
 import { Balance } from './wrappers/balance'
 import { MathUtil } from '../../../js/utils/math.util'
-import { Sdk } from '../../../sdk'
 
 const EVENTS = {
   operationSubmitted: 'operation-submitted',
@@ -185,7 +188,7 @@ export default {
     Loader,
     EmailGetter,
   },
-  mixins: [FormMixin, OwnedAssetsLoaderMixin],
+  mixins: [FormMixin],
   props: {
     wallet: {
       type: Wallet,
@@ -213,7 +216,8 @@ export default {
     },
     ownedAssets: [],
     assets: [],
-    tokenHolders: [],
+    balanceHolders: [],
+    ownedUserBalance: '',
     signersDebouncedRequest: null,
     isSignersLoadPending: false,
     isSignersLoaded: false,
@@ -237,7 +241,7 @@ export default {
           required,
           amount,
           noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
-            this.form.ownedAsset.balance.value
+            this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(
             this.config.decimalPoints
@@ -276,6 +280,9 @@ export default {
         }
         const operations = await this.getTransferOperations()
         await api().postOperations(...operations)
+        await this.loadBalances()
+        await this.getSigners()
+        await this.reinitAssetSelector()
         Bus.success('dividend-form.dividend-success')
         this.$emit(EVENTS.operationSubmitted)
       } catch (e) {
@@ -284,6 +291,7 @@ export default {
       this.enableForm()
     },
     async getSigners () {
+      this.isSignersLoaded = false
       try {
         const { data } = await api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/balances`, {
           filter: {
@@ -291,15 +299,33 @@ export default {
           },
           include: ['state'],
         })
-        const balances = data
+        this.balanceHolders = data
           .map(item => new Balance(item))
-        this.tokenHolders = balances
+        await this.addAccountIdField()
+        this.balanceHolders = this.balanceHolders
+          .filter(balance => this.deleteOwnedBalance(balance))
         this.isSignersLoaded = true
       } catch (e) {
         this.isSignersLoaded = false
         ErrorHandler.processWithoutFeedback(e)
       }
       this.isSignersLoadPending = false
+    },
+    async addAccountIdField () {
+      await Promise.all(
+        this.balanceHolders
+          .map(async item => {
+            item.accountId = await this.getAccountId(item.id)
+            return item
+          })
+      )
+    },
+    deleteOwnedBalance (balance) {
+      if (balance.accountId === this.accountId) {
+        this.ownedUserBalance = this.getFullBalanceHolder(balance)
+      } else {
+        return true
+      }
     },
     tryGetSigners () {
       this.isSignersLoadPending = true
@@ -315,6 +341,17 @@ export default {
         this.form.asset = this.assets[0]
       }
     },
+    async reinitAssetSelector () {
+      await this.loadAssets()
+      if (this.ownedAssets.length && this.assets.length) {
+        const updatedAsset = this.assets
+          .find(item => item.code === this.form.asset.code)
+        const updatedOwnedAsset = this.ownedAssets
+          .find(item => item.code === this.form.ownedAsset.code)
+        this.form.asset = updatedAsset || this.assets[0]
+        this.form.ownedAsset = updatedOwnedAsset || this.ownedAssets[0]
+      }
+    },
     async loadAssets () {
       const { data } = await api().get(`/${HORIZON_VERSION_PREFIX}/assets`, {})
       const assets = data
@@ -328,18 +365,29 @@ export default {
     },
     async getTransferOperations () {
       let operations = []
+      let balanceHolders = this.filterPositiveBalance()
       await Promise.all(
-        this.tokenHolders.map(async holder => {
+        balanceHolders.map(async holder => {
           const fees = await this.getFees(holder)
           const data = await this.buildPaymentOperation(holder, fees)
           operations.push(data)
         }))
       return operations
     },
-    buildPaymentOperation (holder, fees) {
+    filterPositiveBalance () {
+      return this.balanceHolders
+        .filter(holder =>
+          this.getFullBalanceHolder(holder) >= this.config.minAmount
+        )
+    },
+    getFullBalanceHolder (holder) {
+      return MathUtil
+        .add(+holder.available, +holder.locked)
+    },
+    async buildPaymentOperation (holder, fees) {
       return base.PaymentBuilder.payment({
         sourceBalanceId: this.balance().id,
-        destination: holder.id,
+        destination: holder.accountId,
         amount: this.getDividendAmount(holder),
         feeData: {
           sourceFee: {
@@ -371,7 +419,7 @@ export default {
         this.loadPaymentFee({
           asset: this.form.asset.code,
           amount: this.getDividendAmount(holder),
-          account: await this.getAccountId(holder.id),
+          account: holder.accountId,
           subtype: PAYMENT_FEE_SUBTYPES.incoming,
         }),
       ])
@@ -395,16 +443,24 @@ export default {
       }
     },
     getDividendAmount (holder) {
-      const countHolderBalanceValue = MathUtil
-        .add(+holder.available, +holder.locked)
+      const countHolderBalanceValue = this.getFullBalanceHolder(holder)
       const countAssetValue = MathUtil
-        .divide(countHolderBalanceValue, +this.form.ownedAsset.issued)
+        .divide(countHolderBalanceValue, this.countIssuedValue())
       return MathUtil
         .multiply(countAssetValue, this.form.amount)
+        .toString()
     },
-    async getAccountId (balanceId) {
-      const { data } = await Sdk.horizon.balances.getAccount(balanceId)
-      return data.accountId
+    countIssuedValue () {
+      if (+this.ownedUserBalance !== 0) {
+        return MathUtil
+          .subtract(+this.form.ownedAsset.issued, +this.ownedUserBalance)
+      } else {
+        return +this.form.ownedAsset.issued
+      }
+    },
+    async getAccountId (id) {
+      const { _rawResponse } = await api().get(`/balances/${id}/account`, {})
+      return _rawResponse.data.account_id
     },
   },
 }
@@ -464,5 +520,11 @@ export default {
   .dividend__table-description {
     opacity: 0.6;
     font-size: 1.2rem;
+  }
+
+  .dividend__fee-holders-not-found {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.4rem;
   }
 </style>

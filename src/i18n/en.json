@@ -1036,7 +1036,8 @@
       "dividend-success": "Dividend request successfully created",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",
-      "asset-dividend-pay": "Asset in which dividends will be paid"
+      "asset-dividend-pay": "Asset in which dividends will be paid",
+      "asset-holders-not-found": "Asset holders not found "
     }
   }
 }
