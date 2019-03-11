@@ -1,5 +1,5 @@
 <template>
-  <div class="healthcare-page">
+  <div class="documents-page">
     <top-bar>
       <template slot="extra">
         <button
@@ -7,14 +7,14 @@
           class="app__button-raised"
           @click="isDrawerShown = true"
         >
-          {{ 'healthcare-page.upload-document' | globalize }}
+          {{ 'documents-page.upload-document' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer :is-shown.sync="isDrawerShown">
       <template slot="heading">
-        {{ 'healthcare-page.upload-document' | globalize }}
+        {{ 'documents-page.upload-document' | globalize }}
       </template>
 
       <document-upload-form-module
@@ -38,7 +38,7 @@ import { vuexTypes } from '@/vuex'
 import config from '@/config'
 
 export default {
-  name: 'healthcare-page',
+  name: 'documents-page',
   components: {
     TopBar,
     Drawer,

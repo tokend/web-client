@@ -266,7 +266,7 @@
       "terms": "Terms",
       "funds": "Funds",
       "fund-details": "Fund details",
-      "healthcare": "Healthcare"
+      "documents": "Documents"
     },
 
     "limits": {
@@ -1047,7 +1047,7 @@
       "title": "Terms & conditions"
     },
 
-    "healthcare-page": {
+    "documents-page": {
       "upload-document": "Upload document"
     },
 

@@ -239,13 +239,13 @@ export const router = new Router({
           ],
         },
         {
-          path: '/healthcare',
-          name: vueRoutes.healthcare.name,
-          featureFlag: config.featureFlags.healthcare,
+          path: '/documents',
+          name: vueRoutes.documents.name,
+          featureFlag: config.featureFlags.documents,
           meta: {
-            pageNameTranslationId: 'pages-names.healthcare',
+            pageNameTranslationId: 'pages-names.documents',
           },
-          component: resolve => require(['@/vue/pages/Healthcare'], resolve),
+          component: resolve => require(['@/vue/pages/Documents'], resolve),
         },
       ].filter(route => route.featureFlag !== false),
     },
