@@ -63,8 +63,8 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="inbox"
-        title-id="sales.no-sales-title"
-        message-id="sales.no-sales-desc"
+        :title="'sales.no-sales-title' | globalize"
+        :message="'sales.no-sales-desc' | globalize"
       />
     </template>
 

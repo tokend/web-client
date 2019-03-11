@@ -159,6 +159,7 @@
     <div class="asset-request-details__buttons">
       <button
         v-ripple
+        v-if="!formMixin.isConfirmationShown"
         class="asset-request-details__update-btn"
         :disabled="isPending || !canBeUpdated"
         @click="$emit(EVENTS.update)"
@@ -168,17 +169,25 @@
 
       <button
         v-ripple
+        v-if="!formMixin.isConfirmationShown"
         class="asset-request-details__cancel-btn"
         :disabled="isPending || !canBeCanceled"
-        @click="$emit(EVENTS.cancel)"
+        @click="showConfirmation()"
       >
         {{ 'asset-request-details.cancel-btn' | globalize }}
       </button>
+      <form-confirmation
+        v-if="formMixin.isConfirmationShown"
+        message-id="asset-request-details.sure-want-cancel"
+        @ok="cancel"
+        @cancel="hideConfirmation"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import FormMixin from '@/vue/mixins/form.mixin'
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
@@ -203,6 +212,7 @@ export default {
   components: {
     AssetLogo,
   },
+  mixins: [FormMixin],
   props: {
     request: {
       type: [AssetCreateRequestRecord, AssetUpdateRequestRecord],
@@ -239,6 +249,10 @@ export default {
     ...mapActions({
       loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
     }),
+    cancel () {
+      this.hideConfirmation()
+      this.$emit(EVENTS.cancel)
+    },
   },
 }
 </script>

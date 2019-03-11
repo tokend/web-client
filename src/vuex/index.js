@@ -8,6 +8,7 @@ import kyc from './kyc.module'
 import keyValue from './key-value.module'
 
 import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
+import { issuanceExplorerModule } from '@/vue/modules/issuance-explorer/store'
 import { feesModule } from '@/vue/modules/fees/store'
 
 import { vuexTypes } from '@/vuex/types'
@@ -42,6 +43,7 @@ const store = new Vuex.Store({
     keyValue,
     // namespaced local modules (used by a specific set of components)
     'movements-history': movementsHistoryModule,
+    'issuance-explorer': issuanceExplorerModule,
     'fees': feesModule,
   },
   plugins: [sessionStoragePlugin],
