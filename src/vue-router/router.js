@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import {
-  store,
-  vuexTypes,
-} from '@/vuex'
+import { vuexTypes } from '@/vuex'
 import config from '@/config'
 
 import { resolveRedirect } from '@/vue-router/redirect'
@@ -13,7 +10,7 @@ import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 Vue.use(Router)
 
-export function buildRouter () {
+export function buildRouter (store) {
   return new Router({
     mode: 'history',
     routes: [
@@ -51,26 +48,26 @@ export function buildRouter () {
             path: '/sign-in',
             name: vueRoutes.login.name,
             component: resolve => require(['@/vue/pages/Login'], resolve),
-            beforeEnter: authPageGuard,
+            beforeEnter: buildAuthPageGuard(store),
           },
           {
             path: '/sign-up',
             name: vueRoutes.signup.name,
             component: resolve => require(['@/vue/pages/Signup'], resolve),
-            beforeEnter: authPageGuard,
+            beforeEnter: buildAuthPageGuard(store),
           },
           {
             path: '/verify/:paramsBase64',
             name: vueRoutes.verify.name,
             component: resolve => require(['@/vue/pages/Verify'], resolve),
-            beforeEnter: authPageGuard,
+            beforeEnter: buildAuthPageGuard(store),
             props: true,
           },
           {
             path: '/recovery',
             name: vueRoutes.recovery.name,
             component: resolve => require(['@/vue/pages/Recovery'], resolve),
-            beforeEnter: authPageGuard,
+            beforeEnter: buildAuthPageGuard(store),
           },
         ],
       },
@@ -79,16 +76,9 @@ export function buildRouter () {
         name: 'app',
         meta: { isNavigationRendered: true },
         component: resolve => require(['@/vue/AppContent'], resolve),
-        beforeEnter: inAppRouteGuard,
+        beforeEnter: buildInAppRouteGuard(store),
         redirect: vueRoutes.dashboard,
         children: [
-          {
-            path: '/fees',
-            name: vueRoutes.fees.name,
-            meta: { pageNameTranslationId: 'pages-names.fees' },
-            featureFlag: config.featureFlags.fees,
-            component: resolve => require(['@/vue/pages/Fees'], resolve),
-          },
           {
             path: '/trade',
             name: vueRoutes.trade.name,
@@ -132,13 +122,6 @@ export function buildRouter () {
                 props: true,
               },
             ],
-          },
-          {
-            path: '/issuance',
-            name: vueRoutes.issuance.name,
-            featureFlag: config.featureFlags.issuance,
-            meta: { pageNameTranslationId: 'pages-names.issuance' },
-            component: resolve => require(['@/vue/pages/Issuance'], resolve),
           },
           {
             path: '/limits',
@@ -238,19 +221,26 @@ export function buildRouter () {
 }
 
 // doesn't allow to visit auth page if user is already logged in
-function authPageGuard (to, from, next) {
-  const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+function buildAuthPageGuard (store) {
+  return function authPageGuard (to, from, next) {
+    const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
 
-  isLoggedIn
-    ? next(vueRoutes.app)
-    : next()
+    isLoggedIn
+      ? next(vueRoutes.app)
+      : next()
+  }
 }
 
 // doesn't allow to visit in-app page if user is not already logged in
-function inAppRouteGuard (to, from, next) {
-  const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+function buildInAppRouteGuard (store) {
+  return function inAppRouteGuard (to, from, next) {
+    const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
 
-  isLoggedIn
-    ? next()
-    : next({ name: vueRoutes.login.name, query: { redirectPath: to.fullPath } })
+    isLoggedIn
+      ? next()
+      : next({
+        name: vueRoutes.login.name,
+        query: { redirectPath: to.fullPath },
+      })
+  }
 }

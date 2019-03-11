@@ -64,20 +64,6 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.dashboard"
-            tag="a"
-            v-if="config.featureFlags.dashboard"
-          >
-            <i class="sidebar__link-icon mdi mdi-view-dashboard" />
-            <span>
-              {{ 'pages-names.dashboard' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
             :to="vueRoutes.trade"
             tag="a"
             v-if="config.featureFlags.trade"
@@ -85,20 +71,6 @@
             <i class="sidebar__link-icon mdi mdi-finance" />
             <span>
               {{ 'pages-names.trade' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.fees"
-            tag="a"
-            v-if="config.featureFlags.fees"
-          >
-            <i class="sidebar__link-icon mdi mdi-flash" />
-            <span>
-              {{ 'pages-names.fees' | globalize }}
             </span>
           </router-link>
 

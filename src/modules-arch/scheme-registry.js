@@ -10,7 +10,7 @@ export class SchemeRegistry {
     return _cloneDeep(currentScheme)
   }
 
-  static async useScheme (schemeName) {
+  static async useScheme (schemeName = '') {
     if (!SCHEME_IMPORTERS[schemeName]) {
       throw new Error(`SchemeRegistry: no such module scheme: ${schemeName}`)
     }

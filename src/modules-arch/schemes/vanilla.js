@@ -4,6 +4,10 @@ import { vueRoutes } from '@/vue-router/routes'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
+import { FeesPageModule } from '@/vue/pages/fees-page-module'
+import { FeesModule } from '@/vue/modules/fees/module'
+import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
+import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
 
 export default new ModuleScheme({
   pages: [
@@ -21,7 +25,7 @@ export default new ModuleScheme({
         submodules: [
           new MovementsHistoryModule(),
         ],
-      }
+      },
     ),
     new MovementsHistoryPageModule(
       {
@@ -37,8 +41,53 @@ export default new ModuleScheme({
         submodules: [
           new MovementsHistoryModule(),
         ],
-      }
+      },
     ),
+
+    // trade
+    // limits
+    // tokens
+
+    new IssuancePageModule(
+      {
+        routerEntry: {
+          path: '/issuance',
+          name: vueRoutes.issuance.name,
+          meta: { pageNameTranslationId: 'pages-names.issuance' },
+        },
+        menuButtonTranslationId: 'pages-names.issuance',
+        menuButtonMdiName: 'poll',
+      },
+      {
+        submodules: [
+          new IssuanceExplorerModule(),
+        ],
+      },
+    ),
+
+    // funds
+    // requests
+
+    // - my account
+    // settings
+
+    new FeesPageModule(
+      {
+        routerEntry: {
+          path: '/fees',
+          name: vueRoutes.fees.name,
+          meta: { pageNameTranslationId: 'pages-names.fees' },
+        },
+        menuButtonTranslationId: 'pages-names.fees',
+        menuButtonMdiName: 'flash',
+      },
+      {
+        submodules: [
+          new FeesModule(),
+        ],
+      },
+    ),
+
     // new MovementsHistoryPageModule(
     //   {
     //     routerEntry: {

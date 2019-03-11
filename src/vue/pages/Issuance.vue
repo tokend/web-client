@@ -2,14 +2,15 @@
   <div class="issuance-page">
     <top-bar>
       <template slot="main">
-        <router-link
-          :to="vueRoutes.issuance"
-        >
+        <router-link :to="vueRoutes.issuance">
           <span>{{ 'issuance-page.history-title' | globalize }}</span>
         </router-link>
       </template>
 
-      <template v-if="isAccountCorporate" slot="extra">
+      <template
+        v-if="isAccountCorporate"
+        slot="extra"
+      >
         <button
           v-ripple
           class="app__button-raised"
@@ -45,7 +46,9 @@
       />
     </drawer>
 
-    <issuance-explorer-module
+    <submodule-importer
+      :v-if="pageModule.hasSubmodule(IssuanceExplorerModule)"
+      :submodule="pageModule.getSubmodule(IssuanceExplorerModule)"
       :wallet="wallet"
       :config="config"
       :should-update.sync="isIssuanceCreated"
@@ -57,8 +60,6 @@
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 
-import IssuanceExplorerModule from '@modules/issuance-explorer'
-
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
 
@@ -69,14 +70,17 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
+
 export default {
   name: 'issuance-page',
   components: {
     Drawer,
     TopBar,
-    IssuanceExplorerModule,
     IssuanceForm,
     PreIssuanceForm,
+    SubmoduleImporter,
   },
 
   data: _ => ({
@@ -87,6 +91,7 @@ export default {
       horizonURL: config.HORIZON_SERVER,
     },
     vueRoutes,
+    IssuanceExplorerModule,
   }),
 
   computed: {
@@ -94,10 +99,12 @@ export default {
       isAccountCorporate: vuexTypes.isAccountCorporate,
       wallet: vuexTypes.wallet,
     }),
+    pageModule () {
+      return this.$route.meta.pageModule
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-
 </style>

@@ -7,14 +7,11 @@ import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
 
-import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
-import { issuanceExplorerModule } from '@/vue/modules/issuance-explorer/store'
-import { feesModule } from '@/vue/modules/fees/store'
-
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
 import _isEmpty from 'lodash/isEmpty'
+import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 Vue.use(Vuex)
 
@@ -22,8 +19,8 @@ export const rootModule = {
   actions: {},
   mutations: {
     // These mutations are being subscribed by plugins
-    [vuexTypes.POP_STATE] () {},
-    [vuexTypes.CLEAR_STATE] () {},
+    [vuexTypes.POP_STATE] () { },
+    [vuexTypes.CLEAR_STATE] () { },
   },
   getters: {
     [vuexTypes.isLoggedIn]: (_, getters) => !_isEmpty(
@@ -33,23 +30,32 @@ export const rootModule = {
   state: {},
 }
 
-const store = new Vuex.Store({
-  ...rootModule,
-  modules: {
-    account,
-    factors,
-    wallet,
-    kyc,
-    keyValue,
-    // namespaced local modules (used by a specific set of components)
-    'movements-history': movementsHistoryModule,
-    'issuance-explorer': issuanceExplorerModule,
-    'fees': feesModule,
-  },
-  plugins: [sessionStoragePlugin],
-})
+async function buildStore () {
+  const storeModules = (await Promise
+    .all(
+      SchemeRegistry.current.cache
+        .filter(item => item.importStoreModule)
+        .map(item => item.importStoreModule())
+    ))
+    .reduce((res, item) => ({ ...res, [item.name]: item }))
 
-store.commit(vuexTypes.POP_STATE)
+  const store = new Vuex.Store({
+    ...rootModule,
+    modules: {
+      account,
+      factors,
+      wallet,
+      kyc,
+      keyValue,
+      ...storeModules,
+    },
+    plugins: [sessionStoragePlugin],
+  })
 
-export { store }
+  store.commit(vuexTypes.POP_STATE)
+
+  return store
+}
+
+export { buildStore }
 export { vuexTypes } from './types'

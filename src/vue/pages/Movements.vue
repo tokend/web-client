@@ -69,10 +69,10 @@
       <transfer-form />
     </drawer>
 
-    <template v-if="pageModule.hasSubmodule(historyModule)">
+    <template v-if="pageModule.hasSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="asset.code"
-        :submodule="pageModule.getSubmoduleByConstructor(historyModule)"
+        :submodule="pageModule.getSubmodule(MovementsHistoryModule)"
         :asset-code="asset.code"
         :wallet="wallet"
         :config="config"
@@ -135,7 +135,7 @@ export default {
   },
 
   data: _ => ({
-    historyModule: MovementsHistoryModule,
+    MovementsHistoryModule,
     asset: {},
     assets: [],
     isLoaded: false,

@@ -43,7 +43,7 @@ export class ModuleDescriptor {
       submodules = [],
       incompatibles = [],
       importComponent = null,
-      importStoreModule = '',
+      importStoreModule = null,
     } = opts
 
     if (typeof importComponent !== 'function') {
@@ -51,9 +51,12 @@ export class ModuleDescriptor {
     }
 
     this._importComponent = importComponent
+    if (importStoreModule) {
+      this._importStoreModule = importStoreModule
+    }
+
     this._dependencies = _cloneDeep(dependencies)
     this._incompatibles = _cloneDeep(incompatibles)
-    this._importStoreModule = _cloneDeep(importStoreModule)
     this._allowedSubmodules = _cloneDeep(allowedSubmodules)
 
     this.validateSubmodules(submodules)
@@ -61,11 +64,11 @@ export class ModuleDescriptor {
   }
 
   get importComponent () { return this._importComponent }
+  get importStoreModule () { return this._importStoreModule }
   get dependencies () { return _cloneDeep(this._dependencies) }
   get allowedSubmodules () { return _cloneDeep(this._allowedSubmodules) }
   get submodules () { return _cloneDeep(this._submodules) }
   get incompatibles () { return _cloneDeep(this._incompatibles) }
-  get importStoreModule () { return _cloneDeep(this._importStoreModule) }
 
   /**
    * Checks all dependencies are present.
@@ -145,7 +148,7 @@ export class ModuleDescriptor {
    *
    * @param {ModuleDescriptor.constructor} submoduleConstructor
    */
-  getSubmoduleByConstructor (submoduleConstructor) {
+  getSubmodule (submoduleConstructor) {
     return this.submodules.find(item => {
       return item instanceof submoduleConstructor
     })

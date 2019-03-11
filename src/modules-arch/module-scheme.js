@@ -7,17 +7,16 @@ export class ModuleScheme {
     this._pages = _cloneDeep(scheme.pages)
 
     // To validate the whole bunch of modules for compatibility
-    this._cache = []
-
-    this._createCache()
+    this._cache = this._createCache()
     this._validateCache()
   }
 
   get pages () { return _cloneDeep(this._pages) }
+  get cache () { return _cloneDeep(this._cache) }
 
   _createCache () {
     const cache = this._flattenDeep(this._rawScheme.pages)
-    this._cache = cache
+    return cache
   }
 
   _validateCache () {

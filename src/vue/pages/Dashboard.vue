@@ -44,8 +44,10 @@
         </div>
         <div class="dashboard__activity">
           <submodule-importer
-            :submodule="pageModule.getSubmoduleByConstructor(historyModule)"
-            v-if="pageModule.hasSubmodule(historyModule) && currentAsset"
+            :submodule="pageModule.getSubmodule(MovementsHistoryModule)"
+            v-if="pageModule.hasSubmodule(MovementsHistoryModule) &&
+              currentAsset
+            "
             :asset-code="currentAsset"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
@@ -103,7 +105,7 @@ export default {
     showDrawer: false,
     scale: 'month',
     config,
-    historyModule: MovementsHistoryModule,
+    MovementsHistoryModule,
   }),
   computed: {
     ...mapGetters([
