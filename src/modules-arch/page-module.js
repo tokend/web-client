@@ -48,6 +48,9 @@ export class PageModule extends ModuleDescriptor {
 
     const entry = _cloneDeep(pageOpts.routerEntry)
     entry.component = this.importComponent
+    if (!entry.meta) {
+      entry.meta = {}
+    }
     entry.meta.pageModule = this
     this._routerEntry = entry
   }
