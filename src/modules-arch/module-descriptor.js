@@ -32,8 +32,9 @@ export class ModuleDescriptor {
    * lazy-loaded we have to define them in a way like _ => import('./path)
    * directly during the definition.
    *
-   * @param {String} [opts.storePath]
-   * Path to the entry point store-module of the module.
+   * @param {String} [opts.importStoreModule]
+   * Path to the entry point vuex-module of the module. Please provide
+   * function like _ => import('./path).
    */
   constructor (opts = {}) {
     const {
@@ -42,7 +43,7 @@ export class ModuleDescriptor {
       submodules = [],
       incompatibles = [],
       importComponent = null,
-      storePath = '',
+      importStoreModule = '',
     } = opts
 
     if (typeof importComponent !== 'function') {
@@ -52,7 +53,7 @@ export class ModuleDescriptor {
     this._importComponent = importComponent
     this._dependencies = _cloneDeep(dependencies)
     this._incompatibles = _cloneDeep(incompatibles)
-    this._storePath = _cloneDeep(storePath)
+    this._importStoreModule = _cloneDeep(importStoreModule)
     this._allowedSubmodules = _cloneDeep(allowedSubmodules)
 
     this.validateSubmodules(submodules)
@@ -64,7 +65,7 @@ export class ModuleDescriptor {
   get allowedSubmodules () { return _cloneDeep(this._allowedSubmodules) }
   get submodules () { return _cloneDeep(this._submodules) }
   get incompatibles () { return _cloneDeep(this._incompatibles) }
-  get storePath () { return _cloneDeep(this._storePath) }
+  get importStoreModule () { return _cloneDeep(this._importStoreModule) }
 
   /**
    * Checks all dependencies are present.
