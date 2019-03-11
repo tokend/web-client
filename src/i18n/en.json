@@ -982,8 +982,6 @@
       "form-title": "Withdrawal fiat",
       "amount": "Amount ({{asset}})",
       "card-number": "Card number",
-      "expiration-date": "Card expiration date (mm/yy)",
-      "card-cvv3": "Card CVV3",
       "card-holder": "Card holder",
       "balance": "Balance is {{amount}} {{asset}}.",
       "loading-msg": "Loading...",

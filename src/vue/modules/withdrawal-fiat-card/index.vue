@@ -127,31 +127,6 @@
       <input-field
         white-autofill
         class="app__form-field"
-        v-model.trim="form.cardExpirationDate"
-        name="withdrawal-fiat-card-expiration-date"
-        :label="'withdrawal-fiat-card-module.expiration-date' | globalize"
-        :disabled="formMixin.isDisabled"
-        @blur="touchField('form.cardExpirationDate')"
-        :error-message="getFieldErrorMessage('form.cardExpirationDate')"
-      />
-    </div>
-    <div class="app__form-row">
-      <input-field
-        white-autofill
-        class="app__form-field"
-        v-model.trim="form.cardCVV3"
-        type="password"
-        name="withdrawal-fiat-card-cvv3"
-        :label="'withdrawal-fiat-card-module.card-cvv3' | globalize"
-        :disabled="formMixin.isDisabled"
-        @blur="touchField('form.cardCVV3')"
-        :error-message="getFieldErrorMessage('form.cardCVV3')"
-      />
-    </div>
-    <div class="app__form-row">
-      <input-field
-        white-autofill
-        class="app__form-field"
         v-model.trim="form.cardHolder"
         name="withdrawal-fiat-card-holder"
         :label="'withdrawal-fiat-card-module.card-holder' | globalize"
@@ -198,8 +173,6 @@ import {
   noMoreThanAvailableOnBalance,
   maxDecimalDigitsCount,
   cardNumber,
-  cardExpirationDate,
-  cardCVV3,
 } from '@validators'
 
 const EMPTY_FEE = '0.000000'
@@ -244,8 +217,6 @@ export default {
       asset: null,
       amount: null,
       cardNumber: null,
-      cardExpirationDate: null,
-      cardCVV3: null,
       cardHolder: null,
     },
   }),
@@ -285,14 +256,6 @@ export default {
         cardNumber: {
           required,
           cardNumber,
-        },
-        cardExpirationDate: {
-          required,
-          cardExpirationDate,
-        },
-        cardCVV3: {
-          required,
-          cardCVV3,
         },
         cardHolder: {
           required,
@@ -371,8 +334,6 @@ export default {
         amount: this.form.amount,
         creatorDetails: {
           cardNumber: this.form.cardNumber,
-          cardExpirationDate: this.form.cardExpirationDate,
-          cardCVV3: this.form.cardCVV3,
           cardHolder: this.form.cardHolder,
         },
         fee: {
