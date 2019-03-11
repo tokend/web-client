@@ -286,3 +286,13 @@ $col-incoming: $_green;
 $col-outgoing: $_lightRed;
 $col-locked: $_orangePeel;
 $col-unlocked: $_orangePeel;
+
+// document card colors:
+$col-document-card-viewer-bg: $_white;
+$col-document-card-viewer-shadow: $col-block-shadow;
+$col-document-card-viewer-header-bg: $_athensGray;
+$col-document-card-viewer-text: $col-text;
+
+// document icon colors:
+$col-document-icon-background: $_white;
+$col-document-icon-text: $col-primary;

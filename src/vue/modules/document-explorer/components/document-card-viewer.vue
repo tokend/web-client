@@ -1,21 +1,30 @@
 <template>
   <div class="document-card-viewer">
     <div class="document-card-viewer__header">
-      <document-logo-viewer
+      <document-icon-viewer
         class="document-card-viewer__logo"
         :document="document"
       />
     </div>
     <div class="document-card-viewer__info">
-      <p class="document-card-viewer__name">
+      <p
+        class="document-card-viewer__name"
+        :title="document.name"
+      >
         {{ document.name }}
       </p>
 
-      <p class="document-card-viewer__type">
+      <p
+        class="document-card-viewer__type"
+        :title="document.mimeType"
+      >
         {{ document.mimeType }}
       </p>
 
-      <p class="document-card-viewer__created">
+      <p
+        class="document-card-viewer__created"
+        :title="document.createdAt"
+      >
         {{ document.createdAt | formatCalendar }}
       </p>
     </div>
@@ -23,14 +32,14 @@
 </template>
 
 <script>
-import DocumentLogoViewer from './document-logo-viewer'
+import DocumentIconViewer from './document-icon-viewer'
 
 import { Document } from '../wrappers/document'
 
 export default {
   name: 'document-card-viewer',
   components: {
-    DocumentLogoViewer,
+    DocumentIconViewer,
   },
   props: {
     document: { type: Document, required: true },
@@ -39,18 +48,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 @import "~@scss/mixins";
 
 .document-card-viewer {
   flex: 0 1 calc(25% - 2rem);
   cursor: pointer;
   border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-sale-card-shadow;
-  background-color: $col-sale-card-background;
+  box-shadow: 0 .5rem 1rem 0 $col-document-card-viewer-shadow;
+  background-color: $col-document-card-viewer-bg;
   margin: 1rem;
   text-decoration: none;
   color: inherit;
+  min-width: 0;
 
   @include respond-to-custom($large) {
     flex: 0 1 calc(33.3% - 2rem);
@@ -68,7 +78,11 @@ export default {
     border-radius: .4rem .4rem 0rem 0rem;
     height: 8.5rem;
     padding-top: 1.5rem;
-    background-color: $col-sale-card-header-background;
+    background-color: $col-document-card-viewer-header-bg;
+  }
+
+  &__logo {
+    margin: 0 auto;
   }
 
   &__info {
@@ -79,23 +93,22 @@ export default {
   &__name {
     font-size: 1.8rem;
     font-weight: bold;
-    color: $col-sale-card-text-primary;
+    color: $col-document-card-viewer-text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__type {
     margin-top: 0.5rem;
     font-size: 1.4rem;
-    color: $col-sale-card-text-primary;
+    color: $col-document-card-viewer-text;
   }
 
   &__created {
     margin-top: 1.6rem;
     font-size: 1.4rem;
-    color: $col-sale-card-text-primary;
-  }
-
-  &__logo {
-    margin: 0 auto;
+    color: $col-document-card-viewer-text;
   }
 }
 </style>

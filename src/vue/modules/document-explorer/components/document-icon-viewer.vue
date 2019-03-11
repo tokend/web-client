@@ -1,5 +1,5 @@
 <template>
-  <p class="document-logo-viewer">
+  <p class="document-icon-viewer">
     <i :class="iconClassName" />
   </p>
 </template>
@@ -8,7 +8,7 @@
 import { Document } from '../wrappers/document'
 
 export default {
-  name: 'document-logo-viewer',
+  name: 'document-icon-viewer',
   props: {
     document: { type: Document, required: true },
   },
@@ -20,7 +20,7 @@ export default {
       if (type.includes('image/')) {
         return 'mdi mdi-image'
       } else if (type.includes('/pdf')) {
-        return 'mdi mdi-pdf-box'
+        return 'mdi mdi-file-pdf-box'
       } else {
         return 'mdi mdi-file-document-box'
       }
@@ -30,11 +30,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
 
 // TODO: colors
-.document-logo-viewer {
+.document-icon-viewer {
   width: 5.3rem;
   height: 5.3rem;
   border-radius: 50%;
@@ -42,7 +41,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $col-asset-logo-background;
-  color: $col-asset-logo-text;
+  background: $col-document-icon-background;
+  color: $col-document-icon-text;
 }
 </style>
