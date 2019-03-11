@@ -1,5 +1,5 @@
 import { PageModule } from '@/modules-arch/page-module'
-import { MovementsHistoryModule } from '../modules/movements-history/module'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export class MovementsHistoryPageModule extends PageModule {
   constructor (pageOpts = {}, moduleOpts = {}) {
