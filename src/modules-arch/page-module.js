@@ -1,11 +1,11 @@
 import _cloneDeep from 'lodash/cloneDeep'
-import { ClientModule } from './client-module'
+import { ModuleDescriptor } from './module-descriptor'
 
-export class PageModule extends ClientModule {
+export class PageModule extends ModuleDescriptor {
   /**
    * @param {Object} pageOpts
    * @param {Object} routerEntry Vue router entry
-   * @param {Object} moduleOpts @link ClientModule
+   * @param {Object} moduleOpts @link ModuleDescriptor
    */
   constructor (pageOpts = {}, moduleOpts = {}) {
     super(moduleOpts)
@@ -22,7 +22,7 @@ export class PageModule extends ClientModule {
 
     const entry = _cloneDeep(pageOpts.routerEntry)
     entry.component = this.importComponent
-    entry.meta.module = this
+    entry.meta.pageModule = this
     this._routerEntry = entry
   }
 }

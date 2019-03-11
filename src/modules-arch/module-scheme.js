@@ -1,42 +1,38 @@
 import _cloneDeep from 'lodash/cloneDeep'
-import { ErrorHandler } from '@/js/helpers/error-handler'
+// import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export class ModuleScheme {
   constructor (scheme) {
-    this._raw = scheme
-    this._pages = []
+    this._rawScheme = scheme
+    this._pages = _cloneDeep(scheme.pages)
 
     // To validate the whole bunch of modules for compatibility
     this._cache = []
 
-    this._init(this._raw)
+    this._createCache()
+    this._validateCache()
   }
 
   get pages () { return _cloneDeep(this._pages) }
 
-  async _init (scheme) {
-    try {
-      const cache = this._filterUnique(
-        this._flattenConstructors(scheme.pages),
-      )
+  _createCache () {
+    const cache = this._flattenDeep(this._rawScheme.pages)
+    this._cache = cache
+  }
 
-      this._pages = _cloneDeep(scheme.pages)
-      this._cache = cache
-    } catch (error) {
-      ErrorHandler.process(error)
+  _validateCache () {
+    for (const item of this._cache) {
+      item.validateDependencies(this._cache)
+      item.validateCompatibility(this._cache)
     }
   }
 
-  _filterUnique (...modules) {
-    return [...new Set(modules)]
-  }
-
-  _flattenConstructors (modules = []) {
+  _flattenDeep (modules = []) {
     const result = []
     for (const item of modules) {
-      result.push(item.constructor)
+      result.push(item)
       if (item.submodules) {
-        result.push(...this._flattenConstructors(item.submodules))
+        result.push(...this._flattenDeep(item.submodules))
       }
     }
     return result
