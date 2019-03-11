@@ -33,14 +33,18 @@ export default {
 @import '~@scss/variables';
 
 .document-icon-viewer {
-  width: 5.3rem;
-  height: 5.3rem;
+  width: 6rem;
+  height: 6rem;
   border-radius: 50%;
-  font-size: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   background: $col-document-icon-background;
   color: $col-document-icon-text;
+
+  i {
+    font-size: 3.6rem;
+    display: inline-flex;
+  }
 }
 </style>

@@ -77,7 +77,7 @@ export default {
   &__header {
     border-radius: .4rem .4rem 0rem 0rem;
     height: 8.5rem;
-    padding-top: 1.5rem;
+    padding-top: 1.25rem;
     background-color: $col-document-card-viewer-header-bg;
   }
 
