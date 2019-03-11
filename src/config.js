@@ -1,6 +1,5 @@
 import { base } from '@tokend/js-sdk'
 import packageJson from '../package.json'
-import defaultScheme from '../schemes/vanilla'
 
 export default Object.assign(
   {
@@ -108,7 +107,7 @@ export default Object.assign(
      * plugin. Also would be fine if pageModule will be provided without using
      * of the router
      */
-    MODULE_SCHEME: defaultScheme,
+    MODULE_SCHEME_NAME: 'vanilla',
   },
   process.env,
   document.ENV

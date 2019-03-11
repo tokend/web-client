@@ -22,10 +22,10 @@ parser.addArgument(['--set-build-version'], {
   type: 'string',
   dest: 'setBuildVersion',
 })
-parser.addArgument(['--scheme-file'], {
+parser.addArgument(['--scheme-name'], {
   metavar: 'FILE_PATH',
   help: 'Path to the module file that contains module scheme to use',
-  dest: 'schemeFile',
+  dest: 'schemeName',
 })
 const args = parser.parseArgs()
 
@@ -50,8 +50,8 @@ if (args.envArgs) {
 if (args.setBuildVersion) {
   appEnv.BUILD_VERSION = makeEnvArgValue(args.setBuildVersion)
 }
-if (args.schemeFile) {
-  appEnv.MODULE_SCHEME = require(path.resolve(args.schemeFile))
+if (args.schemeName) {
+  appEnv.MODULE_SCHEME_NAME = makeEnvArgValue(args.schemeName)
 }
 
 /* eslint-disable-next-line no-console */

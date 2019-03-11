@@ -9,7 +9,7 @@ import log from 'loglevel'
 import config from './config'
 
 import { store } from '@/vuex'
-import { router } from '@/vue-router'
+import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
 import { i18nOptions } from '@/i18n'
@@ -24,33 +24,40 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
+import { SchemeRegistry } from './modules-arch/scheme-registry'
 
-i18next.init(i18nOptions)
+async function init () {
+  await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
 
-log.setDefaultLevel(config.LOG_LEVEL)
+  i18next.init(i18nOptions)
 
-Vue.config.productionTip = false
-Vue.use(Vuelidate)
-Vue.use(VueResource)
-Vue.directive('table-scroll-shadow', tableScrollShadow)
-Vue.directive('ripple', ripple)
-Vue.filter('globalize', globalize)
-Vue.filter('formatDate', formatDate)
-Vue.filter('formatDateDMY', formatDateDMY)
-Vue.filter('formatMoney', formatMoney)
-Vue.filter('formatNumber', formatNumber)
-Vue.filter('formatPercent', formatPercent)
-Vue.filter('formatInteger', formatInteger)
-Vue.filter('formatCalendar', formatCalendar)
-Vue.filter('formatOrderNumber', formatOrderNumber)
-Vue.filter('abbreviate', abbreviate)
-Vue.filter('cropAddress', cropAddress)
+  log.setDefaultLevel(config.LOG_LEVEL)
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>',
-})
+  Vue.config.productionTip = false
+  Vue.use(Vuelidate)
+  Vue.use(VueResource)
+  Vue.directive('table-scroll-shadow', tableScrollShadow)
+  Vue.directive('ripple', ripple)
+  Vue.filter('globalize', globalize)
+  Vue.filter('formatDate', formatDate)
+  Vue.filter('formatDateDMY', formatDateDMY)
+  Vue.filter('formatMoney', formatMoney)
+  Vue.filter('formatNumber', formatNumber)
+  Vue.filter('formatPercent', formatPercent)
+  Vue.filter('formatInteger', formatInteger)
+  Vue.filter('formatCalendar', formatCalendar)
+  Vue.filter('formatOrderNumber', formatOrderNumber)
+  Vue.filter('abbreviate', abbreviate)
+  Vue.filter('cropAddress', cropAddress)
+
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    router: buildRouter(),
+    store,
+    components: { App },
+    template: '<App/>',
+  })
+}
+
+init()
