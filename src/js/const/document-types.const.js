@@ -22,6 +22,7 @@ export const DOCUMENT_TYPES = Object.freeze({
   residence_permit: 'residence_permit',
   tokenTerms: 'token_terms',
   tokenLogo: 'asset_logo',
+  healthcareDocument: 'healthcare_document',
 })
 
 export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
