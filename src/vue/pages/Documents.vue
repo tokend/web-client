@@ -42,7 +42,7 @@
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
-import DocumentUploadFormModule from '@modules/document-upload-form'
+import DocumentUploadFormModule from '@modules/documents/document-upload-form'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import DocumentExplorerModule from '@modules/document-explorer'
+import DocumentExplorerModule from '@modules/documents/document-explorer'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
