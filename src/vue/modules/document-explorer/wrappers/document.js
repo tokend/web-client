@@ -3,7 +3,7 @@ import safeGet from 'lodash/get'
 export class Document {
   constructor (request, blob) {
     this.createdAt = request.createdAt
-    this.owner = safeGet(request, 'requestor.id')
+    this.owner = request.requestor
 
     const blobValue = JSON.parse(blob.value)
 

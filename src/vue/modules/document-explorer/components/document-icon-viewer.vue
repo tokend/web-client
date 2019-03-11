@@ -32,7 +32,6 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-// TODO: colors
 .document-icon-viewer {
   width: 5.3rem;
   height: 5.3rem;

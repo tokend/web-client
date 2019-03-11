@@ -42,12 +42,17 @@ import DocumentCardViewer from './components/document-card-viewer'
 // import { types } from './store/types'
 
 import { Document } from './wrappers/document'
+import { ChangeRoleRequest } from './wrappers/change-role-request'
 
 import { Wallet } from '@tokend/js-sdk'
 
 import { initApi, api } from './_api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+const EVENTS = {
+  shouldUpdate: 'update:shouldUpdate'
+}
 
 export default {
   name: 'document-explorer-module',
@@ -70,6 +75,10 @@ export default {
       type: Object,
       required: true,
     },
+    shouldUpdate: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: _ => ({
@@ -78,6 +87,15 @@ export default {
     isLoadFailed: false,
   }),
 
+  watch: {
+    shouldUpdate: async function (value) {
+      if (value) {
+        await this.loadDocuments()
+        this.$emit(EVENTS.shouldUpdate, false)
+      }
+    },
+  },
+
   async created () {
     initApi(this.wallet, this.config)
     await this.loadDocuments()
@@ -85,6 +103,8 @@ export default {
 
   methods: {
     async loadDocuments () {
+      this.isLoaded = false
+      this.documents = []
       try {
         const { data } = await api().getWithSignature(
           `/v3/public_key_entries/${this.wallet.accountId}`
@@ -119,11 +139,13 @@ export default {
         include: ['request_details'],
       })
 
+      const changeRoleRequest = new ChangeRoleRequest(data[0])
+
       const { data: blob } = await api().getWithSignature(
-        `/accounts/${accountId}/blobs/${data[0].requestDetails.creatorDetails.blobId}`
+        `/accounts/${accountId}/blobs/${changeRoleRequest.blobId}`
       )
 
-      return [blob, data[0]]
+      return [blob, changeRoleRequest]
     },
   },
 }

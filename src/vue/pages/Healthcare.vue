@@ -30,11 +30,11 @@
       <document-upload-form-module
         :wallet="wallet"
         :config="config"
-        @submit="isDrawerShown = false"
+        @submit="(isDrawerShown = false) || (isDocumentUploaded = true)"
       />
     </drawer>
 
-    <router-view />
+    <router-view :document-uploaded.sync="isDocumentUploaded" />
   </div>
 </template>
 
@@ -61,6 +61,7 @@ export default {
 
   data: _ => ({
     isDrawerShown: false,
+    isDocumentUploaded: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,
