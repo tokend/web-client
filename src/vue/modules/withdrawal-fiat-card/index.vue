@@ -38,7 +38,10 @@
         :step="config.minAmount"
         name="withdrawal-fiat-card-amount"
         @blur="touchField('form.amount')"
-        :error-message="getFieldErrorMessage('form.amount')"
+        :error-message="getFieldErrorMessage('form.amount', {
+          available: form.asset.balance.value,
+          maxDecimalDigitsCount: config.decimalPoints
+        })"
         :label="'withdrawal-fiat-card-module.amount' | globalize({
           asset: form.asset.code
         })"

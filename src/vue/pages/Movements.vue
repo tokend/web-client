@@ -72,7 +72,7 @@
 
     <drawer :is-shown.sync="fiatWithdrawalFormShown">
       <template slot="heading">
-        {{ 'withdrawal-fiat-bank-module.form-title' | globalize }}
+        {{ 'withdrawal-fiat-module.form-title' | globalize }}
       </template>
       <withdrawal-fiat-module
         :config="withdrawalFiatConfig"

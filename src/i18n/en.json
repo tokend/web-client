@@ -83,7 +83,8 @@
       "field-error_ibanValidator": "Make sure the IBAN is correct",
       "field-error_cardNumber": "Make sure the card number is correct",
       "field-error_cardExpirationDate": "Make sure the expiration date is correct",
-      "field-error_cardCVV3": "Make sure the CVV3 is correct"
+      "field-error_cardCVV3": "Make sure the CVV3 is correct",
+      "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct"
     },
 
     "errors": {
@@ -956,11 +957,13 @@
 
     "withdrawal-fiat-bank-module": {
       "asset": "Asset",
+      "form-title": "Withdrawal fiat",
       "amount": "Amount ({{asset}})",
       "user-name": "User full name",
       "bank-name": "Bank name",
       "balance": "Balance is {{amount}} {{asset}}.",
       "iban": "International Bank Account Number (IBAN)",
+      "bank-bic": "Bank BIC/SWIFT code",
       "loading-msg": "Loading...",
       "network-fee-hint": "External network fee",
       "network-fee-unknown": "Unknown",
@@ -976,6 +979,7 @@
 
     "withdrawal-fiat-card-module": {
       "asset": "Asset",
+      "form-title": "Withdrawal fiat",
       "amount": "Amount ({{asset}})",
       "card-number": "Card number",
       "expiration-date": "Card expiration date (mm/yy)",

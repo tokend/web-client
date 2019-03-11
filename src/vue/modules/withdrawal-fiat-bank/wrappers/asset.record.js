@@ -1,5 +1,6 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import _get from 'lodash/get'
+import config from '@/config'
 
 export class AssetRecord {
   constructor (record = {}, balances = []) {
@@ -8,6 +9,7 @@ export class AssetRecord {
     this.code = record.id
     this.details = record.details
     this.name = _get(record, 'details.name')
+    this.trailingDigitsCount = record.trailingDigits || config.DECIMAL_POINTS
 
     this.policies = this._policies()
     this.policy = this._policy()

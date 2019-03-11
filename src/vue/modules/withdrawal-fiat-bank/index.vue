@@ -38,7 +38,10 @@
         :step="config.minAmount"
         name="withdrawal-fiat-bank-amount"
         @blur="touchField('form.amount')"
-        :error-message="getFieldErrorMessage('form.amount')"
+        :error-message="getFieldErrorMessage('form.amount', {
+          available: form.asset.balance.value,
+          maxDecimalDigitsCount: config.decimalPoints
+        })"
         :label="'withdrawal-fiat-bank-module.amount' | globalize({
           asset: form.asset.code
         })"
@@ -136,6 +139,18 @@
       <input-field
         white-autofill
         class="app__form-field"
+        v-model.trim="form.bankBIC"
+        name="withdrawal-fiat-bank-bank-bic"
+        :label="'withdrawal-fiat-bank-module.bank-bic' | globalize"
+        :disabled="formMixin.isDisabled"
+        @blur="touchField('form.bankBIC')"
+        :error-message="getFieldErrorMessage('form.bankBIC')"
+      />
+    </div>
+    <div class="app__form-row">
+      <input-field
+        white-autofill
+        class="app__form-field"
         v-model.trim="form.iban"
         name="withdrawal-fiat-bank-iban"
         :label="'withdrawal-fiat-bank-module.iban' | globalize"
@@ -179,6 +194,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 import { initApi, api } from './_api'
 import {
   required,
+  bankBIC,
   noMoreThanAvailableOnBalance,
   maxDecimalDigitsCount,
   maxLength,
@@ -229,6 +245,7 @@ export default {
       userName: null,
       bankName: null,
       iban: null,
+      bankBIC: null,
     },
   }),
   computed: {
@@ -275,6 +292,10 @@ export default {
         iban: {
           required,
           ibanValidator,
+        },
+        bankBIC: {
+          required,
+          bankBIC,
         },
       },
     }
@@ -351,6 +372,7 @@ export default {
         creatorDetails: {
           userName: this.form.userName,
           bankName: this.form.bankName,
+          bankBIC: this.form.bankBIC,
           iban: this.form.iban,
         },
         fee: {
