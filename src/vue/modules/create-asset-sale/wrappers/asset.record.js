@@ -25,6 +25,9 @@ export class AssetRecord {
     this.logoName = _get(record, 'details.logo.name')
     this.logoType = _get(record, 'details.logo.type')
 
+    this.maturityDate = _get(record, 'details.maturityDate')
+    this.annualReturn = _get(record, 'details.annualReturn')
+
     this.terms = _get(record, 'details.terms')
     this.termsKey = _get(record, 'details.terms.key')
     this.termsName = _get(record, 'details.terms.name')

@@ -1015,6 +1015,40 @@
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
+    },
+    "create-asset-sale-form": {
+      "maturity-date": "Maturity Date",
+      "annual-return": "Annual return in percents",
+      "expected-revenue": "Expected revenue per year in percents",
+      "bond-creation": "Bond creation",
+      "property-purchase": "Property purchase",
+      "opportunity-name": "Opportunity Name",
+      "opportunity-code": "Opportunity Code",
+      "investor-requirements": "Investor Requirements",
+      "transferable-lbl": "Transferable",
+      "logo-note": "JPG or PNG, no less then 120x120 px",
+      "logo-lbl": "Token icon",
+      "next-btn": "Next",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "terms-lbl": "Upload terms",
+      "start-time": "Start time",
+      "close-time": "Close time",
+      "soft-cap": "Soft cap",
+      "hard-cap": "Hard cap",
+      "accept-investments-in": "Accept investments in:",
+      "upload-image" : "Upload the image users will see first in their searcher",
+      "cover-logo" : "Cover logo",
+      "short-description": "Short description",
+      "subject-lbl": "Add note (under {{length}} symbols)",
+      "full-description": "Full description",
+      "submit-btn": "Submit",
+      "asset-type-required-kyc": "Requires KYC",
+      "asset-type-not-required-kyc": "Doesn't require KYC",
+      "loading-msg": "Loading",
+      "information-step": "Opportunity information",
+      "provide-sale-information": "Provide opportunity information",
+      "add-blurb": "Add a blurb",
+      "successfully-submitted-msg": "Your request was successfully submitted"
     }
   }
 }

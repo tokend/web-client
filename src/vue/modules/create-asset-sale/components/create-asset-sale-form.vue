@@ -14,13 +14,28 @@
       >
         <div class="app__form-row">
           <div class="app__form-field">
+            <select-field
+              v-model="form.information.formType"
+              name="asset-create-form-type"
+              key-as-value-text="label"
+              :values="formTypes"
+              :disabled="formMixin.isDisabled"
+              @blur="touchField('form.information.formType')"
+              :error-message="getFieldErrorMessage(
+                'form.information.formType',
+              )"
+            />
+          </div>
+        </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
             <input-field
               white-autofill
               v-model="form.information.name"
               @blur="touchField('form.information.name')"
               id="asset-name"
               name="asset-create-name"
-              :label="'asset-form.name-lbl' | globalize"
+              :label="'create-asset-sale-form.opportunity-name' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.information.name',
                 { length: NAME_MAX_LENGTH }
@@ -30,7 +45,6 @@
             />
           </div>
         </div>
-
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
@@ -39,7 +53,7 @@
               @blur="touchField('form.information.code')"
               id="asset-code"
               name="asset-create-asset-code"
-              :label="'asset-form.code-lbl' | globalize"
+              :label="'create-asset-sale-form.opportunity-code' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.information.code',
                 { length: CODE_MAX_LENGTH }
@@ -49,26 +63,6 @@
             />
           </div>
         </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              type="number"
-              v-model="form.information.maxIssuanceAmount"
-              @blur="touchField('form.information.maxIssuanceAmount')"
-              id="asset-max-issuance-amount"
-              name="asset-create-max-issuance-amount"
-              :label="'asset-form.max-issuance-amount-lbl' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.information.maxIssuanceAmount',
-                { from: MIN_AMOUNT, to: MAX_AMOUNT }
-              )"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
@@ -76,7 +70,9 @@
               name="asset-create-asset-type"
               key-as-value-text="label"
               :values="assetTypes"
-              :label="'asset-form.asset-type' | globalize"
+              :label="
+                'create-asset-sale-form.investor-requirements' | globalize
+              "
               :disabled="formMixin.isDisabled"
               @blur="touchField('form.information.assetType')"
               :error-message="getFieldErrorMessage(
@@ -85,7 +81,6 @@
             />
           </div>
         </div>
-
         <div class="app__form-row">
           <div class="app__form-field">
             <tick-field
@@ -93,115 +88,36 @@
               :disabled="formMixin.isDisabled"
               :cb-value="ASSET_POLICIES.transferable"
             >
-              {{ 'asset-form.transferable-lbl' | globalize }}
+              {{ 'create-asset-sale-form.transferable-lbl' | globalize }}
             </tick-field>
           </div>
         </div>
-
         <div class="app__form-row">
           <div class="app__form-field">
             <file-field
               name="asset-create-logo"
               v-model="form.information.logo"
-              :note="'asset-form.logo-note' | globalize"
+              :note="'create-asset-sale-form.logo-note' | globalize"
               accept=".jpg, .png"
               :document-type="DOCUMENT_TYPES.assetLogo"
-              :label="'asset-form.logo-lbl' | globalize"
+              :label="'create-asset-sale-form.logo-lbl' | globalize"
               :disabled="formMixin.isDisabled"
             />
           </div>
         </div>
-
-        <div class="app__form-actions">
-          <button
-            v-ripple
-            type="submit"
-            class="create-asset-sale-form__btn"
-            :disabled="formMixin.isDisabled"
-          >
-            {{ 'asset-form.next-btn' | globalize }}
-          </button>
-        </div>
-      </form>
-      <form
-        v-if="currentStep === STEPS.advanced.number"
-        class="app__form create-asset-sale-form"
-        @submit.prevent="nextStep('form.information')"
-      >
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <tick-field
-              v-model="form.advanced.isPreissuanceDisabled"
-              :disabled="formMixin.isDisabled"
-            >
-              {{ 'asset-form.additional-issuance-check' | globalize }}
-            </tick-field>
-          </div>
-        </div>
-
-        <template v-if="!form.advanced.isPreissuanceDisabled">
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <div class="create-asset-sale-form__pre-issued-asset-signer-wrp">
-                <input-field
-                  white-autofill
-                  v-model="form.advanced.preissuedAssetSigner"
-                  @blur="touchField('form.advanced.preissuedAssetSigner')"
-                  id="asset-preissued-asset-signer"
-                  name="asset-create-preissued-asset-signer"
-                  :label="'asset-form.preissued-asset-signer-lbl' | globalize"
-                  :error-message="getFieldErrorMessage(
-                    'form.advanced.preissuedAssetSigner',
-                  )"
-                  :disabled="formMixin.isDisabled"
-                />
-                <button
-                  v-ripple
-                  type="button"
-                  class="app__button-flat
-                  create-asset-sale-form__insert-account-id-btn"
-                  @click="form.advanced.preissuedAssetSigner = accountId"
-                >
-                  {{ 'asset-form.use-my-account-id-btn' | globalize }}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                type="number"
-                v-model="form.advanced.initialPreissuedAmount"
-                @blur="touchField('form.advanced.initialPreissuedAmount')"
-                id="asset-initial-preissued-amount"
-                name="asset-create-initial-preissued-amount"
-                :label="'asset-form.initial-preissued-amount-lbl' | globalize"
-                :error-message="getFieldErrorMessage(
-                  'form.advanced.initialPreissuedAmount',
-                  { from: MIN_AMOUNT, to: form.information.maxIssuanceAmount }
-                )"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-        </template>
-
         <div class="app__form-row">
           <div class="app__form-field">
             <file-field
-              v-model="form.advanced.terms"
+              v-model="form.information.terms"
               name="asset-create-terms"
-              :note="'asset-form.terms-note' | globalize"
+              :note="'create-asset-sale-form.terms-note' | globalize"
               accept=".jpg, .png, .pdf"
               :document-type="DOCUMENT_TYPES.assetTerms"
-              :label="'asset-form.terms-lbl' | globalize"
+              :label="'create-asset-sale-form.terms-lbl' | globalize"
               :disabled="formMixin.isDisabled"
             />
           </div>
         </div>
-
         <div class="app__form-actions">
           <button
             v-ripple
@@ -209,7 +125,7 @@
             class="create-asset-sale-form__btn"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'asset-form.next-btn' | globalize }}
+            {{ 'create-asset-sale-form.next-btn' | globalize }}
           </button>
         </div>
       </form>
@@ -220,37 +136,7 @@
         class="app__form"
         @submit.prevent="nextStep('form.saleInformation')"
       >
-        <div class="app__form-row create-asset-sale-form__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.saleInformation.name"
-              @blur="touchField('form.saleInformation.name')"
-              id="sale-name"
-              name="create-sale-name"
-              :label="'create-sale-form.sale-name' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.saleInformation.name',{
-                  length: NAME_MAX_LENGTH
-                })"
-              :maxlength="NAME_MAX_LENGTH"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
-          <div class="app__form-field">
-            <select-field
-              :values="accountOwnedAssets"
-              name="create-sale-base-asset"
-              :disabled="formMixin.isDisabled"
-              v-model="form.saleInformation.baseAsset"
-              key-as-value-text="nameAndCode"
-              :label="'create-sale-form.base-asset' | globalize"
-            />
-          </div>
-        </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
             <date-field
               v-model="form.saleInformation.startTime"
@@ -260,7 +146,7 @@
               @input="touchField('form.saleInformation.startTime')"
               @blur="touchField('form.saleInformation.startTime')"
               id="sale-start-time"
-              :label="'create-sale-form.start-time' | globalize"
+              :label="'create-asset-sale-form.start-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.startTime', {
                   minDate: formatDate(moment().toString())
@@ -270,7 +156,7 @@
             />
           </div>
         </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
             <date-field
               v-model="form.saleInformation.endTime"
@@ -280,7 +166,7 @@
               @blur="touchField('form.saleInformation.endTime')"
               id="sale-end-time"
               name="create-sale-end-time"
-              :label="'create-sale-form.close-time' | globalize"
+              :label="'create-asset-sale-form.close-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
@@ -291,7 +177,31 @@
             />
           </div>
         </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div
+          class="app__form-row"
+          v-if="form.information.formType.value === FORM_TYPE.bondCreation"
+        >
+          <div class="app__form-field">
+            <date-field
+              v-model="form.saleInformation.maturityDate"
+              :enable-time="true"
+              :disable-before="moment().subtract(1, 'days').toString()"
+              @input="touchField('form.saleInformation.maturityDate')"
+              @blur="touchField('form.saleInformation.maturityDate')"
+              id="sale-end-time"
+              name="create-sale-end-time"
+              :label="'create-asset-sale-form.maturity-date' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.saleInformation.maturityDate', {
+                  minDate: form.saleInformation.endTime ||
+                    formatDate(moment().toString())
+                }
+              )"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+        <div class="app__form-row">
           <div class="app__form-field">
             <input-field
               white-autofill
@@ -300,8 +210,8 @@
               @blur="touchField('form.saleInformation.softCap')"
               id="soft-cap"
               name="create-sale-soft-cap"
-              :label="'create-sale-form.soft-cap' | globalize({
-                asset: config.DEFAULT_QUOTE_ASSET
+              :label="'create-asset-sale-form.soft-cap' | globalize({
+                asset: statsQuoteAsset.code
               })"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.softCap',
@@ -314,7 +224,7 @@
             />
           </div>
         </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
             <input-field
               white-autofill
@@ -323,8 +233,8 @@
               @blur="touchField('form.saleInformation.hardCap')"
               id="hard-cap"
               name="create-sale-hard-cap"
-              :label="'create-sale-form.hard-cap' | globalize({
-                asset: config.DEFAULT_QUOTE_ASSET
+              :label="'create-asset-sale-form.hard-cap' | globalize({
+                asset: statsQuoteAsset.code
               })"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.hardCap',
@@ -337,49 +247,37 @@
             />
           </div>
         </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
             <input-field
               white-autofill
-              v-model="form.saleInformation.requiredBaseAssetForHardCap"
-              @blur="touchField(
-                'form.saleInformation.requiredBaseAssetForHardCap'
-              )"
-              id="base-asset-for-hard-cap"
-              name="create-sale-base-asset-for-hard-cap"
               type="number"
-              :label="'create-sale-form.base-asset-hard-cap-to-sell' |
-                globalize({
-                  asset: form.saleInformation.baseAsset.code
-                })"
+              v-model="form.saleInformation.annualReturn"
+              @blur="touchField('form.saleInformation.annualReturn')"
+              id="hard-cap"
+              name="create-sale-hard-cap"
+              :label="
+                form.information.formType.value ===
+                  FORM_TYPE.bondCreation ?
+                    'create-asset-sale-form.annual-return' :
+                    'create-asset-sale-form.expected-revenue' | globalize
+              "
               :error-message="getFieldErrorMessage(
-                'form.saleInformation.requiredBaseAssetForHardCap',
+                'form.saleInformation.annualReturn',
                 {
-                  from:MIN_AMOUNT,
-                  to:availableForIssuance
+                  from:'0',
+                  to:MAX_AMOUNT
                 }
               )"
               :disabled="formMixin.isDisabled"
             />
           </div>
         </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
-          <div class="app__form-field">
-            <p class="create-asset-sale-form__price">
-              {{ 'create-sale-form.price' | globalize({
-                base: form.saleInformation.baseAsset.code,
-                quote: config.DEFAULT_QUOTE_ASSET
-              }) }}
-              <!-- eslint-disable-next-line max-len -->
-              {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
-            </p>
-          </div>
-        </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
-          {{ 'create-sale-form.accept-investments-in' | globalize }}
+        <div class="app__form-row">
+          {{ 'create-asset-sale-form.accept-investments-in' | globalize }}
         </div>
         <div
-          class="app__form-row create-asset-sale-form__form-row"
+          class="app__form-row"
           v-for="item in baseAssets"
           :key="item.code"
         >
@@ -404,7 +302,7 @@
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'create-sale-form.next-btn' | globalize }}
+            {{ 'create-asset-sale-form.next-btn' | globalize }}
           </button>
         </div>
       </form>
@@ -412,13 +310,13 @@
         novalidate
         v-if="currentStep === STEPS.shortBlurb.number"
         class="app__form"
-        @submit.prevent="nextStep('form.shortBlurb')"
+        @submit.prevent="isFormValid() && showConfirmation()"
       >
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
             <file-field
-              :label="'create-sale-form.upload-image' | globalize"
-              :note="'create-sale-form.upload-image' | globalize"
+              :label="'create-asset-sale-form.cover-logo' | globalize"
+              :note="'create-asset-sale-form.upload-image' | globalize"
               name="create-sale-sale-logo"
               accept=".jpg, .png"
               :document-type="DOCUMENT_TYPES.saleLogo"
@@ -430,15 +328,15 @@
             />
           </div>
         </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
-            {{ 'create-sale-form.short-description' | globalize }}
+            {{ 'create-asset-sale-form.short-description' | globalize }}
             <textarea-field
               id="sale-short-description"
               name="create-sale-short-description"
               v-model="form.shortBlurb.shortDescription"
               @blur="touchField('form.shortBlurb.shortDescription')"
-              :label="'transfer-form.subject-lbl' | globalize({
+              :label="'create-asset-sale-form.subject-lbl' | globalize({
                 length: DESCRIPTION_MAX_LENGTH
               })"
               :maxlength="DESCRIPTION_MAX_LENGTH"
@@ -450,54 +348,11 @@
             />
           </div>
         </div>
-        <div class="app__form-actions">
-          <button
-            v-ripple
-            type="submit"
-            class="app__button-raised"
-            :disabled="formMixin.isDisabled"
-          >
-            {{ 'create-sale-form.next-btn' | globalize }}
-          </button>
-        </div>
-      </form>
-      <form
-        novalidate
-        v-if="currentStep === STEPS.fullDescription.number"
-        class="app__form"
-        @submit.prevent="showConfirmation()"
-      >
-        <div class="app__form-row create-asset-sale-form__form-row">
+        <div class="app__form-row">
           <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.fullDescription.youtubeId"
-              id="youtube-id"
-              name="create-sale-youtube-id"
-              :label="'create-sale-form.insert-youtube-video' | globalize"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
-          <div class="app__form-field">
-            <iframe
-              v-if="form.fullDescription.youtubeId"
-              :src="`https://www.youtube.com/embed/${form.fullDescription.youtubeId}`"
-              class="create-asset-sale-form__iframe" />
-            <div v-else class="create-asset-sale-form__youtub-video">
-              <i class="mdi mdi-youtube create-asset-sale-form__video-icon" />
-              <span>
-                {{ 'create-sale-form.preview-you-video' | globalize }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="app__form-row create-asset-sale-form__form-row">
-          <div class="app__form-field">
-            {{ 'create-sale-form.full-description' | globalize }}
+            {{ 'create-asset-sale-form.full-description' | globalize }}
             <description-editor
-              v-model="form.fullDescription.description"
+              v-model="form.shortBlurb.description"
             />
           </div>
         </div>
@@ -509,7 +364,7 @@
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'create-sale-form.submit-btn' | globalize }}
+            {{ 'create-asset-sale-form.submit-btn' | globalize }}
           </button>
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
@@ -521,7 +376,7 @@
     </form-stepper>
     <loader
       v-else
-      message-id="asset-form.loading-msg" />
+      message-id="create-asset-sale-form.loading-msg" />
   </div>
 </template>
 
@@ -540,7 +395,7 @@ import { base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
 import { api } from '../_api'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
-import { DateUtil, MathUtil } from '@/js/utils'
+import { DateUtil } from '@/js/utils'
 import { mapGetters, mapActions } from 'vuex'
 import { types } from '../store/types'
 import {
@@ -554,26 +409,21 @@ import {
 import { formatDate } from '@/vue/filters/formatDate'
 import { globalize } from '@/vue/filters/globalize'
 
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'asset-form.information-step',
-  },
-  advanced: {
-    number: 2,
-    titleId: 'asset-form.advanced-step',
+    titleId: 'create-asset-sale-form.information-step',
   },
   saleInformation: {
-    number: 3,
-    titleId: 'create-sale-form.provide-sale-information',
+    number: 2,
+    titleId: 'create-asset-sale-form.provide-sale-information',
   },
   shortBlurb: {
-    number: 4,
-    titleId: 'create-sale-form.add-short-blurb',
-  },
-  fullDescription: {
-    number: 5,
-    titleId: 'create-sale-form.full-description',
+    number: 3,
+    titleId: 'create-asset-sale-form.add-blurb',
   },
 }
 
@@ -587,7 +437,13 @@ const EMPTY_DOCUMENT = {
   name: '',
   key: '',
 }
-
+const FORM_TYPE = {
+  bondCreation: '0',
+  propertyPurchase: '1',
+}
+const EVENTS = {
+  close: 'close',
+}
 export default {
   name: '',
   components: {
@@ -608,32 +464,25 @@ export default {
         information: {
           name: 'Test 123',
           code: 'TST1',
-          maxIssuanceAmount: '1234567',
           logo: null,
           policies: [1],
           assetType: '',
-        },
-        advanced: {
-          isPreissuanceDisabled: true,
-          preissuedAssetSigner: '',
-          initialPreissuedAmount: '',
+          formType: {},
           terms: null,
         },
         saleInformation: {
           name: 'Fund Name Alala',
-          baseAsset: 'TST1',
           startTime: '2019-03-29 12:00',
           endTime: '2019-05-29 12:00',
+          maturityDate: '2019-06-29 12:00',
           softCap: '123',
           hardCap: '1234',
-          requiredBaseAssetForHardCap: '12',
+          annualReturn: '1234',
           quoteAssets: [],
         },
         shortBlurb: {
           saleLogo: null,
           shortDescription: 'Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description',
-        },
-        fullDescription: {
           youtubeId: '',
           description: 'qeqwrqwerwqerw',
         },
@@ -644,6 +493,7 @@ export default {
       MIN_AMOUNT: config.MIN_AMOUNT,
       MAX_AMOUNT: config.MAX_AMOUNT,
       config,
+      FORM_TYPE,
       DOCUMENT_TYPES,
       ASSET_POLICIES,
       CODE_MAX_LENGTH,
@@ -663,37 +513,17 @@ export default {
             required,
             maxLength: maxLength(CODE_MAX_LENGTH),
           },
-          maxIssuanceAmount: {
-            required,
-            amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
-          },
           assetType: {
             required,
           },
-        },
-        advanced: {
-          preissuedAssetSigner: {
-            required: requiredUnless(function () {
-              return this.form.advanced.isPreissuanceDisabled
-            }),
-          },
-          initialPreissuedAmount: {
-            required: requiredUnless(function () {
-              return this.form.advanced.isPreissuanceDisabled
-            }),
-            amountRange: amountRange(
-              this.MIN_AMOUNT,
-              this.form.information.maxIssuanceAmount
-            ),
+          formType: {
+            required,
           },
         },
         saleInformation: {
           name: {
             required,
             maxLength: maxLength(NAME_MAX_LENGTH),
-          },
-          baseAsset: {
-            required,
           },
           startTime: {
             required,
@@ -702,6 +532,15 @@ export default {
           endTime: {
             required,
             minDate: minDate(this.form.saleInformation.startTime ||
+              moment().toString()),
+          },
+          maturityDate: {
+
+            required: requiredUnless(function () {
+              return this.form.information.formType.value ===
+                FORM_TYPE.bondCreation
+            }),
+            minDate: minDate(this.form.saleInformation.endTime ||
               moment().toString()),
           },
           softCap: {
@@ -713,10 +552,10 @@ export default {
             amountRange: amountRange(this.form.saleInformation.softCap,
               this.MAX_AMOUNT),
           },
-          requiredBaseAssetForHardCap: {
+          annualReturn: {
             required,
-            amountRange: amountRange(this.MIN_AMOUNT,
-              this.availableForIssuance),
+            amountRange: amountRange('0',
+              this.MAX_AMOUNT),
           },
           quoteAssets: {
             requiredAtLeastOne,
@@ -737,14 +576,26 @@ export default {
   computed: {
     ...mapGetters('create-asset-sale', [
     ]),
+    formTypes () {
+      return [
+        {
+          label: globalize('create-asset-sale-form.bond-creation'),
+          value: FORM_TYPE.bondCreation,
+        },
+        {
+          label: globalize('create-asset-sale-form.property-purchase'),
+          value: FORM_TYPE.propertyPurchase,
+        },
+      ]
+    },
     assetTypes () {
       return [
         {
-          label: globalize('asset-form.asset-type-not-required-kyc'),
+          label: globalize('create-asset-sale-form.asset-type-not-required-kyc'),
           value: '0',
         },
         {
-          label: globalize('asset-form.asset-type-required-kyc'),
+          label: globalize('create-asset-sale-form.asset-type-required-kyc'),
           value: String(this.kvAssetTypeKycRequired),
         },
       ]
@@ -752,19 +603,13 @@ export default {
     baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
     },
-    accountOwnedAssets () {
-      return ['accountOwnedAssets']
-    },
-    availableForIssuance () {
-      return 1234
-    },
-    price () {
-      return MathUtil.divide(this.form.saleInformation.hardCap,
-        this.form.saleInformation.requiredBaseAssetForHardCap)
+    statsQuoteAsset () {
+      return this.assets.find(item => item.isStatsQuoteAsset)
     },
   },
   watch: {},
   async created () {
+    this.form.information.formType = this.formTypes[0]
     this.assets = await this.loadAssets()
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
   },
@@ -784,7 +629,7 @@ export default {
       }
     },
     async submit () {
-      // if (!this.isFormValid()) return
+      if (!this.isFormValid()) return
       this.disableForm()
       try {
         await this.uploadDocuments()
@@ -793,7 +638,7 @@ export default {
           params: {
             type: BLOB_TYPES.fundOverview,
             attributes: {
-              value: JSON.stringify(this.form.fullDescription.description),
+              value: JSON.stringify(this.form.shortBlurb.description),
             },
           },
         })
@@ -803,37 +648,33 @@ export default {
           assetCreationOperation,
           saleCreationOperation
         )
-        // Bus.success('asset-form.asset-request-submitted-msg')
-
-        if (this.request) {
-          // this.$emit(EVENTS.requestUpdated)
-        }
-
-        // this.$emit(EVENTS.close)
+        // const saleCreationOperation = this.saleRequestOpts('123')
+        // console.log(assetCreationOperation)
+        // console.log(saleCreationOperation)
+        Bus.success('create-asset-sale-form.successfully-submitted-msg')
+        this.$emit(EVENTS.close)
       } catch (e) {
-        console.error(e)
         this.enableForm()
-        // ErrorHandler.process(e)
+        ErrorHandler.process(e)
       }
     },
     saleRequestOpts (saleDescriptionBlobId) {
       const operation = {
         requestID: this.isUpdateMode ? this.request.id : '0',
         baseAsset: this.form.information.code,
-        defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.statsQuoteAsset.code,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
         hardCap: this.form.saleInformation.hardCap,
         creatorDetails: {
-          name: this.form.saleInformation.name,
+          name: this.form.information.name,
           short_description: this.form.shortBlurb.shortDescription,
           description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
-          youtube_video_id: this.form.fullDescription.youtubeId,
+          youtube_video_id: this.form.shortBlurb.youtubeId,
         },
-        // eslint-disable-next-line
-        requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
+        requiredBaseAssetForHardCap: this.form.saleInformation.hardCap,
         quoteAssets: this.form.saleInformation.quoteAssets
           .map((item) => ({
             asset: item,
@@ -849,30 +690,27 @@ export default {
         ? this.request.id
         : ASSET_CREATION_REQUEST_ID
       const logo = this.form.information.logo
-      const terms = this.form.advanced.terms
-
-      const preissuedAssetSigner = this.form.advanced.isPreissuanceDisabled
-        ? config.NULL_ASSET_SIGNER
-        : this.form.advanced.preissuedAssetSigner
-
-      const initialPreissuedAmount = this.form.advanced.isPreissuanceDisabled
-        ? this.form.information.maxIssuanceAmount
-        : this.form.advanced.initialPreissuedAmount
+      const terms = this.form.information.terms
 
       const operation = {
         requestID: requestId,
         code: this.form.information.code,
         assetType: this.form.information.assetType.value,
-        preissuedAssetSigner: preissuedAssetSigner,
+        preissuedAssetSigner: this.accountId,
         trailingDigitsCount: config.DECIMAL_POINTS,
-        initialPreissuedAmount: initialPreissuedAmount,
-        maxIssuanceAmount: this.form.information.maxIssuanceAmount,
+        initialPreissuedAmount: this.form.saleInformation.hardCap,
+        maxIssuanceAmount: this.form.saleInformation.hardCap,
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
         creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
+          annualReturn: this.form.saleInformation.annualReturn,
         },
+      }
+      if (this.form.information.formType.value === FORM_TYPE.bondCreation) {
+        operation.maturityDate = DateUtil
+          .toTimestamp(this.form.saleInformation.maturityDate)
       }
       return base.ManageAssetBuilder.assetCreationRequest(operation)
     },
@@ -880,7 +718,7 @@ export default {
       const documents = [
         this.form.shortBlurb.saleLogo,
         this.form.information.logo,
-        this.form.advanced.terms,
+        this.form.information.terms,
       ]
       for (let document of documents) {
         if (document && !document.key) {
@@ -918,13 +756,8 @@ export default {
     margin-left: .4rem;
   }
 
-  .create-asset-sale-form__form-row {
-    margin-bottom: 2rem;
-  }
-
   .create-asset-sale-form__error-text {
     margin-bottom: 2rem;
-    margin-top: -1rem;
     color: $col-error;
   }
 
