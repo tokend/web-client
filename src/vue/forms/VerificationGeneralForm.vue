@@ -233,9 +233,9 @@ export default {
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
-        while (Object.keys(this.kycLatestData).length === 0) {
+        do {
           await this.loadKyc()
-        }
+        } while (this.kycState !== REQUEST_STATES_STR.pending)
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)

@@ -28,9 +28,10 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="trending-up"
-        title-id="fees-page.no-balances-title"
-        message-id="fees-page.no-balances-msg"
-        :message-id-keys="{ asset: asset.code }"
+        :title="'fees-page.no-balances-title' | globalize"
+        :message="'fees-page.no-balances-msg' | globalize({
+          asset: asset.code
+        })"
       />
     </template>
 

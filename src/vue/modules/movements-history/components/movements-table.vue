@@ -47,8 +47,8 @@
   </table>
   <no-data-message
     v-else
-    title-id="movements-history.no-movements-title"
-    message-id="movements-history.no-movements-msg"
+    :title="'movements-history.no-movements-title' | globalize"
+    :message="'movements-history.no-movements-msg' | globalize"
   />
 </template>
 

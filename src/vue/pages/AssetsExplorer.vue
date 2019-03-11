@@ -8,8 +8,8 @@
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          title-id="assets-page.no-assets-title"
-          message-id="assets-page.no-assets-msg"
+          :title="'assets-page.no-assets-title' | globalize"
+          :message="'assets-page.no-assets-msg' | globalize"
         />
       </template>
     </template>

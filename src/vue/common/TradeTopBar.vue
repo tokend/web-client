@@ -52,8 +52,8 @@
         />
         <no-data-message
           v-else
-          :title-id="'trade-top-bar.no-pairs-message'"
-          :message-id="'trade-top-bar.here-will-pairs-list'"
+          :title="'trade-top-bar.no-pairs-message' | globalize"
+          :message="'trade-top-bar.here-will-pairs-list' | globalize"
         />
       </div>
       <div class="trade-asset-selector__balances" v-if="formattedPairs.length">
