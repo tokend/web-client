@@ -952,7 +952,9 @@
     },
 
     "withdrawal-fiat-module": {
-      "form-title": "Withdrawal fiat"
+      "form-title": "Withdrawal fiat",
+      "tab-card-lbl": "Card",
+      "tab-bank-lbl": "Bank"
     },
 
     "withdrawal-fiat-bank-module": {
