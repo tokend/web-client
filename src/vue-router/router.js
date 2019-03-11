@@ -239,17 +239,17 @@ export const router = new Router({
           ],
         },
         {
-          path: '/healthcare',
-          name: vueRoutes.healthcare.name,
-          featureFlag: config.featureFlags.healthcare,
+          path: '/documents',
+          name: vueRoutes.documents.name,
+          featureFlag: config.featureFlags.documents,
           redirect: vueRoutes.documentExplorer,
           meta: {
-            pageNameTranslationId: 'pages-names.healthcare',
+            pageNameTranslationId: 'pages-names.documents',
           },
-          component: resolve => require(['@/vue/pages/Healthcare'], resolve),
+          component: resolve => require(['@/vue/pages/Documents'], resolve),
           children: [
             {
-              path: '/healthcare/explore-documents',
+              path: '/documents/explore',
               name: vueRoutes.documentExplorer.name,
               component: resolve => require(['@/vue/pages/DocumentExplorer'], resolve),
             },

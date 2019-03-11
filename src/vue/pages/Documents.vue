@@ -1,12 +1,12 @@
 <template>
-  <div class="healthcare-page">
+  <div class="documents-page">
     <top-bar>
       <template slot="main">
         <router-link
           :to="vueRoutes.documentExplorer"
         >
           <span>
-            {{ 'healthcare-page.explore-documents-title' | globalize }}
+            {{ 'documents-page.explore-documents-title' | globalize }}
           </span>
         </router-link>
       </template>
@@ -17,14 +17,14 @@
           class="app__button-raised"
           @click="isDrawerShown = true"
         >
-          {{ 'healthcare-page.upload-document' | globalize }}
+          {{ 'documents-page.upload-document' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer :is-shown.sync="isDrawerShown">
       <template slot="heading">
-        {{ 'healthcare-page.upload-document' | globalize }}
+        {{ 'documents-page.upload-document' | globalize }}
       </template>
 
       <document-upload-form-module
@@ -52,7 +52,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import config from '@/config'
 
 export default {
-  name: 'healthcare-page',
+  name: 'documents-page',
   components: {
     TopBar,
     Drawer,

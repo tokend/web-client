@@ -156,13 +156,13 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.healthcare"
+            :to="vueRoutes.documents"
             tag="a"
-            v-if="config.featureFlags.healthcare"
+            v-if="config.featureFlags.documents"
           >
             <i class="sidebar__link-icon mdi mdi-file-document-box" />
             <span>
-              {{ 'pages-names.healthcare' | globalize }}
+              {{ 'pages-names.documents' | globalize }}
             </span>
           </router-link>
         </nav>
