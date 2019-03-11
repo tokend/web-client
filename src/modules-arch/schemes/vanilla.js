@@ -250,31 +250,5 @@ export default new ModuleScheme({
         ],
       },
     ),
-
-    // new MovementsHistoryPageModule(
-    //   {
-    //     routerEntry: {
-    //       path: '/requests1',
-    //       name: vueRoutes.movements.name,
-    //       meta: { pageNameTranslationId: 'pages-names.requests' },
-    //     },
-    //     menuButtonTranslationId: 'pages-names.requests',
-    //     menuButtonMdiName: 'book-open-variant',
-    //     menuSectionTranslationId: 'sidebar.section-corporate',
-    //     isCorporateOnly: true,
-    //   },
-    // ),
-    // new MovementsHistoryPageModule(
-    //   {
-    //     routerEntry: {
-    //       path: '/settings1',
-    //       name: vueRoutes.movements.name,
-    //       meta: { pageNameTranslationId: 'pages-names.settings' },
-    //     },
-    //     menuButtonTranslationId: 'pages-names.settings',
-    //     menuButtonMdiName: 'account-settings',
-    //     menuSectionTranslationId: 'sidebar.section-account',
-    //   },
-    // ),
   ],
 })
