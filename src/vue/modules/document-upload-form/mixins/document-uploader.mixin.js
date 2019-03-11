@@ -1,28 +1,27 @@
 import Vue from 'vue'
 
-import { config } from '../_config'
 import { api } from '../_api'
+import { config } from '../_config'
+
+import _omit from 'lodash/omit'
 
 export default {
   methods: {
     async uploadDocument (document, accountId) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const { data: config } = await api().postWithSignature(
-        `/accounts/${accountId}/documents`,
-        {
-          data: {
-            type,
-            attributes: { content_type: mimeType },
-          },
+      const { data: config } = await api().postWithSignature('/documents', {
+        data: {
+          type,
+          attributes: { content_type: mimeType },
           relationships: {
             owner: {
               data: { id: accountId },
             },
           },
-        }
-      )
+        },
+      })
 
-      await this.uploadFile(file, config, mimeType)
+      await this.uploadFile(file, _omit(config, ['id', 'url', 'type']), mimeType)
       document.setKey(config.key)
 
       return document.key

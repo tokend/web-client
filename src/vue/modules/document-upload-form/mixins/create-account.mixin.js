@@ -50,12 +50,16 @@ export default {
     },
 
     async createBlob (details) {
-      const endpoint = `/accounts/${this.documentAccountId}/blobs`
-      const { data } = await api().postWithSignature(endpoint, {
+      const { data } = await api().postWithSignature('/blobs', {
         data: {
           type: BLOB_TYPE,
           attributes: {
             value: JSON.stringify(details),
+          },
+          relationships: {
+            owner: {
+              data: { id: this.documentAccountId },
+            },
           },
         },
       })
