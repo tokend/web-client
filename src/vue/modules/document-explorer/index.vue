@@ -16,8 +16,8 @@
       <no-data-message
         v-else
         icon-name="trending-up"
-        title-id="assets.no-balances-title"
-        message-id="assets.no-balances-msg"
+        :title="'document-explorer.no-documents-title' | globalize"
+        :message="'document-explorer.no-documents-msg' | globalize"
       />
     </template>
 
@@ -35,31 +35,30 @@
 
 <script>
 import LoadSpinner from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import DocumentCardViewer from './components/document-card-viewer'
 
-// import { mapActions, mapMutations, mapGetters } from 'vuex'
-// import { types } from './store/types'
-
-import { Document } from './wrappers/document'
-import { ChangeRoleRequest } from './wrappers/change-role-request'
+import DocumentsLoaderMixin from './mixins/documents-loader.mixin'
 
 import { Wallet } from '@tokend/js-sdk'
 
-import { initApi, api } from './_api'
+import { initApi } from './_api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
-  shouldUpdate: 'update:shouldUpdate'
+  shouldUpdate: 'update:shouldUpdate',
 }
 
 export default {
   name: 'document-explorer-module',
   components: {
     LoadSpinner,
+    NoDataMessage,
     DocumentCardViewer,
   },
+  mixins: [DocumentsLoaderMixin],
 
   props: {
     wallet: {
@@ -69,7 +68,6 @@ export default {
     /**
     * @property config - the config for component to use
     * @property config.horizonURL - the url of horizon server (without version)
-    * @property config.storageURL - the url of storage server
     */
     config: {
       type: Object,
@@ -105,47 +103,15 @@ export default {
     async loadDocuments () {
       this.isLoaded = false
       this.documents = []
+
       try {
-        const { data } = await api().getWithSignature(
-          `/v3/public_key_entries/${this.wallet.accountId}`
-        )
-
-        const accounts = data.accounts
-          .filter(item => item.id !== this.wallet.accountId)
-
-        await Promise.all(accounts.map(async item => {
-          const [blob, request] = await this.loadChangeRoleRequest(item.id)
-          this.documents.push(new Document(request, blob))
-        }))
-
+        const accounts = await this.loadPublicKeyEntries(this.wallet.accountId)
+        this.documents = await this.getDocumentsByAccountIds(accounts)
         this.isLoaded = true
       } catch (e) {
-        ErrorHandler.process(e)
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
       }
-    },
-
-    async loadChangeRoleRequest (accountId) {
-      const limit = 1
-      const order = 'desc'
-
-      const { data } = await api().getWithSignature(`/v3/change_role_requests`, {
-        filter: {
-          requestor: accountId,
-        },
-        page: {
-          limit,
-          order,
-        },
-        include: ['request_details'],
-      })
-
-      const changeRoleRequest = new ChangeRoleRequest(data[0])
-
-      const { data: blob } = await api().getWithSignature(
-        `/accounts/${accountId}/blobs/${changeRoleRequest.blobId}`
-      )
-
-      return [blob, changeRoleRequest]
     },
   },
 }

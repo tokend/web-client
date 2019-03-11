@@ -21,6 +21,8 @@ for further information about branching and tagging conventions.
 - `record` getter to the `AssetRecord`
 - Added confirmation to cancel token creation request
 - Healthcare document type
+- Document explorer page
+- Document explorer module
 
 ### Changed
 - Now using new account endpoint for loading the fees

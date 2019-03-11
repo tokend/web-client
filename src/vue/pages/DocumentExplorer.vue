@@ -37,7 +37,6 @@ export default {
     return {
       config: {
         horizonURL: config.HORIZON_SERVER,
-        storageURL: config.FILE_STORAGE,
       },
       shouldUpdate: this.documentUploaded,
     }
@@ -56,7 +55,7 @@ export default {
 
     documentUploaded: function (value) {
       this.shouldUpdate = value
-    }
+    },
   },
 }
 </script>
