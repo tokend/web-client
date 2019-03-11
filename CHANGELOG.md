@@ -12,16 +12,21 @@ for further information about branching and tagging conventions.
 - Issuance explorer module
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
-- Displaying TokenD logo & load spinner while loading the page
+- Displaying TokenD logo & load spinner while loading the page 
+- Healthcare page
+- Document upload form module
 - Cancel trade offers in the "My orders" tab on the "Trade" page
 - CapsLock warning for the input fields with "password" type
 - Displaying asset policies & asset type on the `AssetDetails` page
 - `record` getter to the `AssetRecord`
 - Added confirmation to cancel token creation request
+- Healthcare document type
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
+- Renamed `DescriptionEditor` -> `MarkdownField`
+- Moved `MarkdownField` to the fields & included it to the form mixin components
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
