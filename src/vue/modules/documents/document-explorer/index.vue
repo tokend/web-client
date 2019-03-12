@@ -132,8 +132,9 @@ export default {
 }
 
 .document-explorer__router-link {
+  flex: 0 1 calc(25% - 2rem);
   display: block;
   text-decoration: none;
-  max-width: 100%;
+  max-width: 30rem;
 }
 </style>

@@ -13,13 +13,13 @@
       >
     </a>
     <embed
-      v-if="isPdf"
+      v-else-if="isPdf"
       class="file-preview__pdf"
       type="application/pdf"
       :src="downloadLink"
     >
     <p v-else>
-      {{ 'document-manager.no-preview-msg' }}
+      {{ 'document-manager.no-preview-msg' | globalize }}
     </p>
   </div>
 </template>
