@@ -2,7 +2,9 @@
   <div class="sale-description-viewer">
     <template v-if="isLoaded">
       <template v-if="saleDescription">
-        <vue-markdown :source="saleDescription" />
+        <vue-markdown
+          class="sale-description-viewe__markdown"
+          :source="saleDescription" />
       </template>
 
       <template v-else>
@@ -81,4 +83,10 @@ export default {
   font-weight: bold;
   font-size: 1.6rem;
 }
+</style>
+
+<style>
+  .sale-description-viewe__markdown img {
+      max-width: 100%;
+  }
 </style>

@@ -32,7 +32,7 @@ export default Object.assign(
       trade: true,
       movements: true,
       issuance: true,
-      assets: true,
+      assets: false,
       requests: true,
       settings: true,
       limits: true,

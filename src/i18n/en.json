@@ -76,7 +76,7 @@
       "field-error_minDate": "Date should be after {{ minDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
-      "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. You have {{available, number}}",
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient opportunities on your balance. You have {{available, number}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
       "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
@@ -103,7 +103,7 @@
 
     "auth-pages": {
       "small-title": "Create, distribute and trade",
-      "big-title": "Start tokenizing <br> your assets <br> in minutes",
+      "big-title": "Start tokenizing <br> your real estate <br> in minutes",
       "email": "Email",
       "password": "Password",
       "new-password": "New password",
@@ -168,8 +168,8 @@
       "account-type-lbl": "Account type",
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
-      "account-type-general-description": "Deposit, widthdraw, buy, sell and transfer tokens",
-      "account-type-corporate-description": "Deposit, widthdraw, buy, sell, transfer and create tokens "
+      "account-type-general-description": "Deposit, widthdraw, buy, sell and transfer opportunities",
+      "account-type-corporate-description": "Deposit, widthdraw, buy, sell, transfer and create opportunities "
     },
 
     "verification-form": {
@@ -215,10 +215,10 @@
     },
 
     "document-types": {
-      "sale-logo": "Sale Logo",
-      "sale-document": "Sale Document",
-      "asset-terms": "Asset Terms",
-      "asset-logo": "Asset Logo",
+      "sale-logo": "Opportunity Logo",
+      "sale-document": "Opportunity Document",
+      "asset-terms": "Opportunity Terms",
+      "asset-logo": "Opportunity Logo",
       "kyc-id-document": "KYC ID Document",
       "kyc-proof-of-address": "KYC Proof Of Address",
       "kyc-selfie": "KYC Selfie",
@@ -236,8 +236,8 @@
       "driving-license": "Driving License",
       "identity-card": "Identity Card",
       "residence-permit": "Residence Permit",
-      "token-terms": "Token Terms",
-      "token-logo": "Token Logo"
+      "token-terms": "Opportunity Terms",
+      "token-logo": "Opportunity Logo"
     },
 
     "form-confirmation": {
@@ -250,7 +250,7 @@
     "pages-names": {
       "dashboard": "Dashboard",
       "limits": "Limits",
-      "tokens": "Tokens",
+      "tokens": "Opportunities",
       "requests": "Requests",
       "trade": "Trade",
       "settings": "Settings",
@@ -259,8 +259,8 @@
       "issuance": "Issuance",
       "downloads": "TokenD downloads",
       "terms": "Terms",
-      "funds": "Funds",
-      "fund-details": "Fund details"
+      "funds": "Opportunities",
+      "fund-details": "Opportunity details"
     },
 
     "limits": {
@@ -269,7 +269,7 @@
       "change-limits-bth": "Change limits",
       "requests-subheading": "Requests",
       "no-limits-list": "No limits list",
-      "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one asset to your balances"
+      "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one opportunity to your balances"
     },
 
     "limits-form": {
@@ -313,7 +313,7 @@
       "table-date-lbl": "Date",
       "table-request-type-lbl": "Request type",
       "table-state-lbl": "State",
-      "table-asset-lbl": "Asset",
+      "table-asset-lbl": "Opportunity",
       "upload-documents-btn": "Upload documents",
       "data-loading": "Fetching limits requests data...",
       "document-uploader-form-heading": "Upload documents",
@@ -388,7 +388,7 @@
     },
 
     "fees-page": {
-      "asset-filter-prefix": "Asset:",
+      "asset-filter-prefix": "Opportunity:",
       "scope-filter-prefix": "Scope:",
       "scope-global": "Global",
       "scope-account": "Account",
@@ -401,8 +401,8 @@
     "op-pages": {
       "filters-prefix": "Show:",
       "something-went-wrong": "Something went wrong",
-      "can-not-load-assets": "There was an error while loading assets",
-      "assets-loading-msg": "Loading the tokens…",
+      "can-not-load-assets": "There was an error while loading opportunities",
+      "assets-loading-msg": "Loading the opportunities…",
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
@@ -413,7 +413,7 @@
     "op-details": {
       "fixed-fee-lbl": "Fixed fee",
       "percent-fee-lbl": "Percent fee",
-      "asset-lbl": "Asset",
+      "asset-lbl": "Opportunity",
       "amount-lbl": "Amount",
       "base-amount-lbl": "Base amount",
       "quote-amount-lbl": "Quote amount",
@@ -422,12 +422,12 @@
       "source-fees-lbl": "Sender fees",
       "destination-fees-lbl": "Recipient fees",
       "subject-lbl": "Subject",
-      "fund-name-lbl": "Fund name",
-      "token-fund-val": "{{asset}} token fund",
-      "base-asset-lbl": "Base asset",
+      "fund-name-lbl": "Opportunity name",
+      "token-fund-val": "{{asset}} opportunity",
+      "base-asset-lbl": "Base opportunity",
       "fee-paid-lbl": "Fee paid",
       "price-lbl": "Price",
-      "destination-asset-lbl": "Destination asset",
+      "destination-asset-lbl": "Destination opportunity",
       "destination-amount-lbl": "Destination amount",
       "date-lbl": "Date",
       "counterparty-lbl": "Counterparty"
@@ -447,7 +447,7 @@
       "operations": {
         "create-issuance-request":  "Issuance/deposit requested",
         "create-withdraw-request": "Withdraw requested",
-        "check-sale-state": "Sale state updated",
+        "check-sale-state": "Opportunity state updated",
         "review-request":  "Request reviewed",
         "create-aml-alert-request": "AML alert",
         "manage-offer": "Offer",
@@ -466,10 +466,10 @@
       "amount-lbl": "Amount",
       "fixed-fee-lbl": "Fixed fee",
       "calculated-percent-fee-lbl": "Percent fee (calculated)",
-      "sale-id-lbl": "Sale ID",
-      "sale-state-lbl": "Sale state",
-      "sale-closed-msg": "Sale funded and closed",
-      "sale-canceled-msg": "Sale not funded and canceled",
+      "sale-id-lbl": "Opportunity ID",
+      "sale-state-lbl": "Opportunity state",
+      "sale-closed-msg": "Opportunity funded and closed",
+      "sale-canceled-msg": "Opportunity not funded and canceled",
       "reason-lbl": "Reason",
       "reference-lbl": "Reference",
       "source-fixed-fee-lbl": "Source fixed fee",
@@ -484,7 +484,7 @@
       "request-rejected-msg": "Request rejected",
       "request-approved-msg": "Request approved",
       "request-reviewed-msg": "Request reviewed",
-      "order-book-id-lbl": "Order book (sale) ID",
+      "order-book-id-lbl": "Order book (Opportunity) ID",
       "secondary-market-msg": "Secondary market",
       "base-amount-lbl": "Base amount",
       "quote-amount-lbl": "Quote amount",
@@ -514,8 +514,8 @@
       "counterparty": "Counterparty",
       "status": "Status",
       "no-transaction-history": "No transaction history",
-      "here-will-be-the-tokens": "Here will be the list of your assets",
-      "no-assets-in-your-wallet": "No assets in your wallet",
+      "here-will-be-the-tokens": "Here will be the list of your opportunities",
+      "no-assets-in-your-wallet": "No opportunities in your wallet",
       "here-will-transactions-list": "Here will be the list of your transactions"
     },
 
@@ -525,20 +525,20 @@
       "day": "Day",
       "hour": "Hour",
       "fetching-the-price-history": "Fetching the price history...",
-      "no-price-history-of-selected-token": "No price history of selected token yet"
+      "no-price-history-of-selected-token": "No price history of selected opportunities yet"
     },
 
     "transfer-form": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "no-assets-heading": "No assets, no transfers",
-      "no-assets": "Your wallet doesn't contain any transferable assets yet. You can discover some on the token list.",
-      "discover-assets-btn": "Discover assets",
+      "no-assets-heading": "No opportunities, no transfers",
+      "no-assets": "Your wallet doesn't contain any transferable opportunities yet. You can discover some on the opportunities list.",
+      "discover-assets-btn": "Discover opportunities",
       "form-heading": "Send",
-      "asset-lbl": "Asset",
+      "asset-lbl": "Opportunity",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount-lbl": "Amount",
-      "insufficient-funds": "Insufficient funds",
+      "insufficient-funds": "Insufficient opportunities",
       "recipient-lbl": "Recipient email or account ID",
       "subject-lbl": "Add note (under {{length}} symbols)",
       "sender-fees": "Sender fees",
@@ -570,26 +570,26 @@
       "counterparty-lbl": "Counterparty",
       "amount-lbl": "Amount",
       "issuance-form-heading": "Create issuance",
-      "asset-code-lbl": "Asset code",
+      "asset-code-lbl": "Opportunity code",
       "date-lbl": "Date",
       "reference-lbl": "Reference",
       "history-title": "History",
-      "asset-lbl": "Asset",
+      "asset-lbl": "Opportunity",
       "available-for-issuance-hint": "Available for issuance: {{value, money}}",
       "receiver-lbl": "Email or account ID",
       "issue-btn": "Issue",
       "cancel-btn": "CANCEL",
       "upload-btn": "Upload",
       "not-available": "Issuance creation is available only for corporate users, complete verification to become one",
-      "pre-issuance-lbl": "Select file(s) with preissued asset. You cannot upload the same pre-issuance twice.",
-      "file-type-note": "Pre-issuance asset file (.iss)",
-      "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
+      "pre-issuance-lbl": "Select file(s) with preissued opportunity. You cannot upload the same pre-issuance twice.",
+      "file-type-note": "Pre-issuance opportunity file (.iss)",
+      "no-owned-assets-msg": "Your wallet doesn't contain any issuable opportunities yet. Please create some and get back",
       "pre-issuance-details-title": "Pre-issuance info",
-      "assets-issued-msg": "Your tokens were successfully issued",
+      "assets-issued-msg": "Your opportunities were successfully issued",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
-      "balance-required-err": "The receiver doesn't have this token balance",
+      "balance-required-err": "The receiver doesn't have this opportunity balance",
       "wrong-receiver-err": "The account with such email or ID was not found",
-      "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you"
+      "pre-issuance-not-allowed-err": "You cannot upload the opportunity that is not owned by you"
     },
 
     "assets-page": {
@@ -601,12 +601,13 @@
       "no-assets-title": "No tokens",
       "no-assets-msg": "There are no available tokens",
       "no-balances-title": "No balances",
-      "no-balances-msg": "You do not have any balances yet"
+      "no-balances-msg": "You do not have any balances yet",
+      "new-opportunity": "New opportunity"
     },
 
     "assets-list": {
       "update-asset-title": "Update token",
-      "details-title": "Token details",
+      "details-title": "Opportunity details",
       "list-item-balance-line": "Balance: {{value, money}}",
       "no-balance-msg": "No balance"
     },
@@ -638,8 +639,8 @@
     },
 
     "requests-page": {
-      "asset-creation-title": "Token creation",
-      "sale-creation-title": "Fund creation",
+      "asset-creation-title": "Opportunity creation",
+      "sale-creation-title": "Opportunity creation",
       "pre-issuance-upload-title": "Pre-issuance upload"
     },
 
@@ -660,42 +661,42 @@
     },
 
     "asset-creation-requests": {
-      "update-asset-title": "Update token",
-      "details-title": "Token request details",
+      "update-asset-title": "Update opportunity",
+      "details-title": "Opportunity request details",
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "asset-code-header": "Token code",
+      "asset-code-header": "Opportunity code",
       "request-state-header": "Request state",
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
       "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your token creation requests",
+      "no-request-history-desc": "Here will be the list of your opportunity creation requests",
       "request-canceled-msg": "Your request was successfully cancelled"
     },
 
     "sale-creation-requests": {
-      "update-sale-title": "Update fund",
-      "details-title": "Fund request details",
+      "update-sale-title": "Update opportunity",
+      "details-title": "Opportunity request details",
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "sale-name-header": "Fund name",
-      "asset-code-header": "Token code",
+      "sale-name-header": "Opportunity name",
+      "asset-code-header": "Opportunity code",
       "request-state-header": "Request state",
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
-      "no-owned-assets-title": "No owned tokens",
-      "no-owned-assets-desc": "Unfortunately, you don't own any tokens yet",
+      "no-owned-assets-title": "No owned opportunities",
+      "no-owned-assets-desc": "Unfortunately, you don't own any opportunities yet",
       "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your fund creation requests",
+      "no-request-history-desc": "Here will be the list of your opportunity creation requests",
       "request-canceled-msg": "Your request was successfully cancelled"
     },
 
     "pre-issuance-requests": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "asset-code-header": "Token code",
+      "asset-code-header": "Opportunity code",
       "amount-header": "Amount",
       "request-state-header": "Request state",
       "created-header": "Created at",
@@ -733,8 +734,8 @@
       "absent-msg": "No",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "asset-create-request-type": "Asset create",
-      "asset-update-request-type": "Asset update",
+      "asset-create-request-type": "Opportunity create",
+      "asset-update-request-type": "Opportunity update",
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
       "expected-revenue": "Expected revenue per year"
@@ -743,16 +744,16 @@
     "sale-request-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "name-title": "Fund name",
+      "name-title": "Opportunity name",
       "start-time-title": "Start time",
       "close-time-title": "Close time",
       "soft-cap-title": "Soft cap",
       "hard-cap-title": "Hard cap",
       "sell-title": "{{asset}} to sell",
-      "video-about-sale-title": "Video about fund",
+      "video-about-sale-title": "Video about opportunity",
       "no-video-msg": "No video",
       "view-video-btn": "View",
-      "view-btn": "View the fund",
+      "view-btn": "View the opportunity",
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
     },
@@ -768,15 +769,16 @@
 
     "sales": {
       "loading-msg": "Loading",
-      "no-sales-title": "No funds found",
-      "no-sales-desc": "Unfortunately, there are no funds matching your criteria",
-      "create-sale": "Create fund",
-      "update-sale": "Update fund",
-      "overview-title": "Fund overview",
-      "asset-code-label": "Token code",
+      "no-sales-title": "No opportunities found",
+      "no-sales-desc": "Unfortunately, there are no opportunities matching your criteria",
+      "create-sale": "Create",
+      "update-sale": "Update opportunity",
+      "overview-title": "Opportunity overview",
+      "asset-code-label": "Opportunity code",
       "sale-live-state": "Live",
       "sale-upcoming-state": "Upcoming only",
-      "sale-all-state": "All"
+      "sale-all-state": "All",
+      "new-opportunity": "New opportunity"
     },
 
     "sale-card": {
@@ -802,8 +804,8 @@
       "table-id-lbl": "Order ID",
       "table-date-lbl": "Date",
       "table-offer-lbl": "Order",
-      "table-base-amount-lbl": "Base asset amount",
-      "table-price-lbl": "Price in quote asset",
+      "table-base-amount-lbl": "Base opportunity amount",
+      "table-price-lbl": "Price in quote opportunity",
       "loading-msg": "Loading…",
       "no-data-title": "No open orders",
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
@@ -833,7 +835,7 @@
       "submit-buy-btn": "Buy",
       "submit-sell-btn": "Sell",
       "cancel-offer-btn": "Cancel order",
-      "insufficient-funds": "Insufficient funds on your balance. You have {{amount}}"
+      "insufficient-funds": "Insufficient opportunities on your balance. You have {{amount}}"
     },
 
     "offer-manager": {
@@ -866,7 +868,7 @@
       "create-sell-offer-form-title": "Create sell order",
       "error-invalid-base-quote-query-in-link": "The link you followed by is invalid. The pair {{invalidBase}}/{{invalidQuote}} doesn't exist in the system, so we set the default – {{defaultPair}}",
       "no-pairs-message": "No pairs found",
-      "here-will-pairs-list": "Here will be the list of asset pairs"
+      "here-will-pairs-list": "Here will be the list of opportunity pairs"
     },
 
     "sale-details": {
@@ -874,9 +876,9 @@
       "loading-error-msg": "There was an error while loading.",
       "campaign-title": "Campaign",
       "invest": "Invest",
-      "overview-title": "Fund overview",
-      "sale-not-found-title": "Fund not found",
-      "sale-not-found-desc": "There are no funds with this ID",
+      "overview-title": "Opportunity overview",
+      "sale-not-found-title": "Opportunity not found",
+      "sale-not-found-desc": "There are no opportunities with this ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
       "investors": "### {{investors}}\ninvestors",
@@ -887,20 +889,20 @@
     "sale-overview": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "asset-title": "Token",
+      "asset-title": "Opportunity",
       "details-title": "Details",
       "start-time-title": "Start time",
       "close-time-title": "Close time",
       "soft-cap-title": "Soft cap",
       "hard-cap-title": "Hard cap",
       "asset-to-sell-title": "{{asset}} to sell",
-      "video-about-sale-title": "Video about fund",
+      "video-about-sale-title": "Video about opportunity",
       "no-video-msg": "No video",
       "view-video-btn": "View"
     },
 
     "invest-form": {
-      "asset-lbl": "Asset",
+      "asset-lbl": "Opportunity",
       "available-amount-hint": "Available: **{{amount, money}}**",
       "current-investment": "Current investment: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
@@ -908,27 +910,27 @@
       "loading-msg": "Loading...",
       "loading-error-msg": "There was an error while loading.",
       "insufficient-balance-title": "Insufficient balance",
-      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this fund",
+      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this opportunity",
       "converting-error-msg": "Converting error. Enter another amount, please",
       "invest-btn": "Invest",
       "update-offer-btn": "Update offer",
       "cancel-offer-btn": "CANCEL OFFER",
-      "sale-owner-msg": "Owners of the fund cannot invest themselves",
-      "closed-sale-msg": "Closed funds are not investable",
-      "upcoming-sale-msg": "Upcoming funds are not investable",
-      "canceled-sale-msg": "Cancelled funds are not investable",
-      "cap-exceeded-msg": "Investing amount has exceeded the fund cap **{{amount, money}}**",
+      "sale-owner-msg": "Owners of the opportunity cannot invest themselves",
+      "closed-sale-msg": "Closed opportunities are not investable",
+      "upcoming-sale-msg": "Upcoming opportunities are not investable",
+      "canceled-sale-msg": "Cancelled opportunities are not investable",
+      "cap-exceeded-msg": "Investing amount has exceeded the opportunity cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the fund succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled"
     },
 
     "create-sale-form": {
-      "create-sale-header": "Create fund",
-      "provide-sale-information": "Provide fund information",
+      "create-sale-header": "Create opportunity",
+      "provide-sale-information": "Provide opportunity information",
       "add-short-blurb": "Add a short blurb",
       "full-description": "Full description",
       "short-description": "Short description",
-      "sale-name": "Fund name",
+      "sale-name": "Opportunity name",
       "base-asset": "Base asset",
       "start-time": "Start time",
       "close-time": "Close time",
@@ -945,13 +947,13 @@
       "not-available": "One last moment",
       "preview-you-video": "Preview you video",
       "loading-msg": "Loading...",
-      "asset-not-available-yet": "Please create token before creating fund",
+      "asset-not-available-yet": "Please create opportunity before creating opportunity",
       "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
 
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
-      "asset": "Asset",
+      "asset": "Opportunity",
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",
       "network-fee-hint": "External network fee",
@@ -963,9 +965,9 @@
       "withdraw-success": "Withdrawal request successfully created",
       "failed-load-fees": "Failed to load fees. Try again later",
       "no-assets-heading": "Ops!",
-      "no-assets": "Your wallet doesn't contain any withdrawable assets yet. You can discover some on the token list.",
-      "discover-assets-btn": "Discover assets",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "no-assets": "Your wallet doesn't contain any withdrawable opportunities yet. You can discover some on the opportunity list.",
+      "discover-assets-btn": "Discover opportunities",
+      "can-not-load-assets": "There was an error while loading opportunities. Please try again later",
       "loading-msg": "Loading…",
       "fee-loading-msg": "Loading…"
     },
@@ -973,16 +975,16 @@
     "deposit-form": {
       "deposit": "Deposit",
       "asset": "Asset",
-      "how-to": "To make a deposit send some tokens to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
+      "how-to": "To make a deposit send some opportunities to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only-prefix": "Attention:",
-      "asset-only": "The address below accepts {{asset}} only! All the other tokens will be irretrievably lost.",
+      "asset-only": "The address below accepts {{asset}} only! All the other opportunities will be irretrievably lost.",
       "where-to": "{{asset}} address to deposit",
       "binding-address": "Please wait while we are trying to bind the address for you...",
       "no-address": "No available addresses to deposit yet. Please try again later.",
       "no-assets-heading": "Ops!",
-      "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the token list.",
-      "discover-assets-btn": "Discover assets",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "deposit-no-assets": "Your wallet doesn't contain any opportunities to deposit yet. You can discover some on the opportunity list.",
+      "discover-assets-btn": "Discover opportunities",
+      "can-not-load-assets": "There was an error while loading opportunities. Please try again later",
       "loading-msg": "Loading…"
     },
 
@@ -994,8 +996,8 @@
     "downloads-page": {
       "go-back-btn": "Go back",
       "title": "Downloads",
-      "mobile-apps-header": "All your tokens right on your phone",
-      "mobile-apps-desc": "To access your assets everywhere, get the TokenD app on your mobile device.",
+      "mobile-apps-header": "All your opportunities right on your phone",
+      "mobile-apps-desc": "To access your opportunities everywhere, get the TokenD app on your mobile device.",
       "config-header": "One important step",
       "config-desc": "Scan this QR code with your application to provide correct configuration for TokenD environment"
     },
@@ -1026,21 +1028,21 @@
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
       "expected-revenue": "Expected revenue per year in percents",
-      "bond-creation": "Bond creation",
-      "property-purchase": "Property purchase",
-      "opportunity-name": "Opportunity Name",
-      "opportunity-code": "Opportunity Code",
+      "bond-creation": "Bond",
+      "property-purchase": "Share",
+      "opportunity-name": "Opportunity name",
+      "opportunity-code": "Opportunity unique code",
       "investor-requirements": "Investor Requirements",
       "transferable-lbl": "Transferable",
       "logo-note": "JPG or PNG, no less then 120x120 px",
-      "logo-lbl": "Token icon",
+      "logo-lbl": "Opportunity icon",
       "next-btn": "Next",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "terms-lbl": "Upload terms",
       "start-time": "Start time",
       "close-time": "Close time",
-      "soft-cap": "Soft cap",
-      "hard-cap": "Hard cap",
+      "soft-cap": "Soft cap ({{asset}})",
+      "hard-cap": "Hard cap ({{asset}})",
       "accept-investments-in": "Accept investments in:",
       "upload-image" : "Upload the image users will see first in their searcher",
       "cover-logo" : "Cover logo",

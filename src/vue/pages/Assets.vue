@@ -19,29 +19,15 @@
         <button
           v-ripple
           class="create-asset-btn"
-          @click="isAssetDrawerShown = true"
-        >
-          {{ 'assets-page.create-asset-title' | globalize }}
-        </button>
-
-        <button
-          v-ripple
-          class="create-asset-btn"
           @click="isAssetSaleDrawerShown = true"
         >
-          {{ 'Asset-Sale' }}
+          {{ 'assets-page.new-opportunity' | globalize }}
         </button>
       </template>
     </top-bar>
-    <drawer :is-shown.sync="isAssetDrawerShown">
-      <template slot="heading">
-        {{ 'assets-page.create-asset-title' | globalize }}
-      </template>
-      <asset-create-form @close="isAssetDrawerShown = false" />
-    </drawer>
     <drawer :is-shown.sync="isAssetSaleDrawerShown">
       <template slot="heading">
-        {{ 'Asset Sale' }}
+        {{ 'assets-page.new-opportunity' | globalize }}
       </template>
       <asset-sale-module
         @close="isAssetSaleDrawerShown = false"
@@ -57,7 +43,6 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 
 import AssetSaleModule from '@modules/create-asset-sale'
 
@@ -73,7 +58,6 @@ export default {
   components: {
     TopBar,
     Drawer,
-    AssetCreateForm,
     AssetSaleModule,
   },
   data: _ => ({
@@ -81,7 +65,6 @@ export default {
       horizonURL: config.HORIZON_SERVER,
     },
     vueRoutes,
-    isAssetDrawerShown: false,
     isAssetSaleDrawerShown: false,
   }),
   computed: {

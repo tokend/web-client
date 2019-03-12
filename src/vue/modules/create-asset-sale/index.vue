@@ -2,6 +2,7 @@
   <div>
     <asset-sale-form
       :account-id="accountId"
+      @close="$emit(EVENTS.close)"
     />
   </div>
 </template>
@@ -9,12 +10,12 @@
 <script>
 import AssetSaleForm from './components/create-asset-sale-form'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
-// import { ErrorHandler } from '@/js/helpers/error-handler'
-// import { types } from './store/types'
-
 import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
+
+const EVENTS = {
+  close: 'close',
+}
 
 export default {
   name: 'asset-sale',
@@ -40,19 +41,10 @@ export default {
     },
   },
   data: _ => ({
+    EVENTS
   }),
-  computed: {
-    ...mapGetters('movements-history', {
-    }),
-  },
   async created () {
     initApi(this.wallet, this.config)
-  },
-  methods: {
-    ...mapMutations('movements-history', {
-    }),
-    ...mapActions('movements-history', {
-    }),
   },
 }
 </script>

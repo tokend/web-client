@@ -142,15 +142,12 @@
               v-model="form.saleInformation.startTime"
               name="create-sale-start-time"
               :enable-time="true"
-              :disable-before="moment().subtract(1, 'days').toString()"
               @input="touchField('form.saleInformation.startTime')"
               @blur="touchField('form.saleInformation.startTime')"
               id="sale-start-time"
               :label="'create-asset-sale-form.start-time' | globalize"
               :error-message="getFieldErrorMessage(
-                'form.saleInformation.startTime', {
-                  minDate: formatDate(moment().toString())
-                }
+                'form.saleInformation.startTime',
               )"
               :disabled="formMixin.isDisabled"
             />
@@ -170,30 +167,6 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
-                    formatDate(moment().toString())
-                }
-              )"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div
-          class="app__form-row"
-          v-if="form.information.formType.value === ASSET_SUBTYPE.bondCreation"
-        >
-          <div class="app__form-field">
-            <date-field
-              v-model="form.saleInformation.maturityDate"
-              :enable-time="true"
-              :disable-before="moment().subtract(1, 'days').toString()"
-              @input="touchField('form.saleInformation.maturityDate')"
-              @blur="touchField('form.saleInformation.maturityDate')"
-              id="sale-end-time"
-              name="create-sale-end-time"
-              :label="'create-asset-sale-form.maturity-date' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.saleInformation.maturityDate', {
-                  minDate: form.saleInformation.endTime ||
                     formatDate(moment().toString())
                 }
               )"
@@ -241,6 +214,30 @@
                 {
                   from:form.saleInformation.softCap,
                   to:MAX_AMOUNT
+                }
+              )"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+        <div
+          class="app__form-row"
+          v-if="form.information.formType.value === ASSET_SUBTYPE.bondCreation"
+        >
+          <div class="app__form-field">
+            <date-field
+              v-model="form.saleInformation.maturityDate"
+              :enable-time="true"
+              :disable-before="moment().subtract(1, 'days').toString()"
+              @input="touchField('form.saleInformation.maturityDate')"
+              @blur="touchField('form.saleInformation.maturityDate')"
+              id="sale-end-time"
+              name="create-sale-end-time"
+              :label="'create-asset-sale-form.maturity-date' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.saleInformation.maturityDate', {
+                  minDate: form.saleInformation.endTime ||
+                    formatDate(moment().toString())
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -518,13 +515,8 @@ export default {
           },
         },
         saleInformation: {
-          name: {
-            required,
-            maxLength: maxLength(NAME_MAX_LENGTH),
-          },
           startTime: {
             required,
-            minDate: minDate(moment().toString()),
           },
           endTime: {
             required,
@@ -581,7 +573,7 @@ export default {
         },
         {
           label: globalize('create-asset-sale-form.property-purchase'),
-          value: ASSET_SUBTYPE.propertyPurchase,
+          value: ASSET_SUBTYPE.share,
         },
       ]
     },
@@ -604,13 +596,10 @@ export default {
       return this.assets.find(item => item.isStatsQuoteAsset)
     },
   },
-  watch: {},
   async created () {
     this.form.information.formType = this.formTypes[0]
     this.assets = await this.loadAssets()
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
-  },
-  destroyed () {
   },
   methods: {
     moment,
