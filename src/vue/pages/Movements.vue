@@ -32,6 +32,14 @@
         <button
           v-ripple
           class="app__button-raised movements__button-raised"
+          @click="fiatWithdrawalFormShown = true"
+        >
+          <i class="mdi mdi-download movements__btn-icon" />
+          {{ 'op-pages.withdrawal-fiat' | globalize }}
+        </button>
+        <button
+          v-ripple
+          class="app__button-raised movements__button-raised"
           @click="isDepositDrawerShown = true"
         >
           <i class="mdi mdi-upload movements__btn-icon" />
@@ -62,6 +70,17 @@
       <deposit-form />
     </drawer>
 
+    <drawer :is-shown.sync="fiatWithdrawalFormShown">
+      <template slot="heading">
+        {{ 'withdrawal-fiat-module.form-title' | globalize }}
+      </template>
+      <withdrawal-fiat-module
+        :config="withdrawalFiatConfig"
+        :wallet="wallet"
+        @withdrawn="withdrawalFiatModuleWithdrawn"
+      />
+    </drawer>
+
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
@@ -73,7 +92,7 @@
       v-if="asset.code"
       :asset-code="asset.code"
       :wallet="wallet"
-      :config="config"
+      :config="movementsHistoryConfig"
     />
 
     <no-data-message
@@ -100,6 +119,7 @@ import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
 import MovementsHistoryModule from '@modules/movements-history'
+import WithdrawalFiatModule from '@modules/withdrawal-fiat'
 
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
@@ -121,6 +141,7 @@ export default {
     DepositForm,
     TransferForm,
     MovementsHistoryModule,
+    WithdrawalFiatModule,
   },
 
   data: _ => ({
@@ -131,8 +152,14 @@ export default {
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
-    config: {
+    fiatWithdrawalFormShown: false,
+    movementsHistoryConfig: {
       horizonURL: config.HORIZON_SERVER,
+    },
+    withdrawalFiatConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      decimalPoints: config.DECIMAL_POINTS,
+      minAmount: config.MIN_AMOUNT,
     },
   }),
 
@@ -172,6 +199,10 @@ export default {
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.balance.id)
+    },
+
+    withdrawalFiatModuleWithdrawn () {
+      this.fiatWithdrawalFormShown = false
     },
   },
 }

@@ -79,7 +79,12 @@
       "field-error_noMoreThanAvailableOnBalance": "Insufficient funds on your balance. You have {{available, number}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
-      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits"
+      "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits",
+      "field-error_ibanValidator": "Make sure the IBAN is correct",
+      "field-error_cardNumber": "Make sure the card number is correct",
+      "field-error_cardExpirationDate": "Make sure the expiration date is correct",
+      "field-error_cardCVV3": "Make sure the CVV3 is correct",
+      "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct"
     },
 
     "errors": {
@@ -404,6 +409,7 @@
       "can-not-load-assets": "There was an error while loading assets",
       "assets-loading-msg": "Loading the tokens…",
       "withdrawal": "Withdrawal",
+      "withdrawal-fiat": "Withdrawal fiat",
       "deposit": "Deposit",
       "send": "Send",
       "no-data-title": "No balance movements yet",
@@ -625,6 +631,7 @@
       "logo-lbl": "Token icon",
       "logo-note": "JPG or PNG, no less then 120x120 px",
       "transferable-lbl": "Transferable",
+      "withdrawable-lbl": "Withdrawable",
       "kyc-required-lbl": "Requires KYC",
       "additional-issuance-check": "I do not want to make additional issuance later",
       "preissued-asset-signer-lbl": "Preissued asset signer",
@@ -725,6 +732,7 @@
       "no-terms-msg": "No terms",
       "download-terms-btn": "Download terms",
       "transferable-title": "Transferable",
+      "withdrawable-title": "Withdrawable",
       "requires-kyc-title": "Requires KYC",
       "present-msg": "Yes",
       "absent-msg": "No",
@@ -941,6 +949,54 @@
       "loading-msg": "Loading...",
       "asset-not-available-yet": "Please create token before creating fund",
       "can-not-load-assets": "There was an error while loading assets. Please try again later"
+    },
+
+    "withdrawal-fiat-module": {
+      "form-title": "Withdrawal fiat",
+      "tab-card-lbl": "Card",
+      "tab-bank-lbl": "Bank"
+    },
+
+    "withdrawal-fiat-bank-module": {
+      "asset": "Asset",
+      "form-title": "Withdrawal fiat",
+      "amount": "Amount ({{asset}})",
+      "user-name": "User full name",
+      "bank-name": "Bank name",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "iban": "International Bank Account Number (IBAN)",
+      "bank-bic": "Bank BIC/SWIFT code",
+      "loading-msg": "Loading...",
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "total-amount-account": "Total fee",
+      "withdrawal": "Withdrawal",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "withdraw-success": "Withdrawal request successfully created",
+      "fee-loading-msg": "Loading…"
+    },
+
+    "withdrawal-fiat-card-module": {
+      "asset": "Asset",
+      "form-title": "Withdrawal fiat",
+      "amount": "Amount ({{asset}})",
+      "card-number": "Card number",
+      "card-holder": "Card holder",
+      "balance": "Balance is {{amount}} {{asset}}.",
+      "loading-msg": "Loading...",
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "destination-address": "Destination {{asset}} address",
+      "total-amount-account": "Total fee",
+      "withdrawal": "Withdrawal",
+      "failed-load-fees": "Failed to load fees. Try again later",
+      "withdraw-success": "Withdrawal request successfully created",
+      "fee-loading-msg": "Loading…"
     },
 
     "withdrawal-form": {
