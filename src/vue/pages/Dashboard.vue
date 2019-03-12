@@ -44,8 +44,8 @@
         </div>
         <div class="dashboard__activity">
           <submodule-importer
-            :submodule="pageModule.getSubmodule(MovementsHistoryModule)"
-            v-if="pageModule.hasSubmodule(MovementsHistoryModule) &&
+            :submodule="getModule().getSubmodule(MovementsHistoryModule)"
+            v-if="getModule().hasSubmodule(MovementsHistoryModule) &&
               currentAsset
             "
             :asset-code="currentAsset"
@@ -113,9 +113,6 @@ export default {
       vuexTypes.accountBalances,
       vuexTypes.wallet,
     ]),
-    pageModule () {
-      return this.$route.meta.pageModule
-    },
   },
   watch: {
     showDrawer (status) {

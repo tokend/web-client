@@ -48,10 +48,6 @@ export class PageModuleDescriptor extends ModuleDescriptor {
 
     const entry = opts.routerEntry
     entry.component = this.importComponent
-    if (!entry.meta) {
-      entry.meta = {}
-    }
-    entry.meta.pageModule = this
     return entry
   }
 }

@@ -47,8 +47,8 @@
     </drawer>
 
     <submodule-importer
-      :v-if="pageModule.hasSubmodule(IssuanceExplorerModule)"
-      :submodule="pageModule.getSubmodule(IssuanceExplorerModule)"
+      :v-if="getModule().hasSubmodule(IssuanceExplorerModule)"
+      :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
       :wallet="wallet"
       :config="config"
       :should-update.sync="isIssuanceCreated"
@@ -99,9 +99,6 @@ export default {
       isAccountCorporate: vuexTypes.isAccountCorporate,
       wallet: vuexTypes.wallet,
     }),
-    pageModule () {
-      return this.$route.meta.pageModule
-    },
   },
 }
 </script>

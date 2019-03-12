@@ -18,8 +18,8 @@
       </top-bar>
 
       <submodule-importer
-        v-if="asset.code && pageModule.hasSubmodule(FeesModule)"
-        :submodule="pageModule.getSubmodule(FeesModule)"
+        v-if="asset.code && getModule().hasSubmodule(FeesModule)"
+        :submodule="getModule().getSubmodule(FeesModule)"
         :asset-code="asset.code"
         :wallet="wallet"
         :config="config"
@@ -89,9 +89,6 @@ export default {
       balances: vuexTypes.accountBalances,
       wallet: vuexTypes.wallet,
     }),
-    pageModule () {
-      return this.$route.meta.pageModule
-    },
   },
 
   async created () {

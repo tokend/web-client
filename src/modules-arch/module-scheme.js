@@ -1,4 +1,5 @@
 import { PageModuleDescriptor } from './page-module-descriptor'
+import { SchemeRegistry } from './scheme-registry'
 
 /**
  * Represents module set to be used by the application.
@@ -23,6 +24,13 @@ export class ModuleScheme {
 
   get pages () { return this._pages }
   get cache () { return this._cache }
+
+  install (Vue) {
+    Vue.prototype.getModule = function () {
+      return SchemeRegistry.current.cache
+        .find(item => item.createdComponentUid === this._uid)
+    }
+  }
 
   _validateRawScheme (scheme) {
     if (!scheme.pages) {

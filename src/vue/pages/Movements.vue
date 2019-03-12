@@ -69,10 +69,10 @@
       <transfer-form />
     </drawer>
 
-    <template v-if="pageModule.hasSubmodule(MovementsHistoryModule)">
+    <template v-if="getModule().hasSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="asset.code"
-        :submodule="pageModule.getSubmodule(MovementsHistoryModule)"
+        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
         :asset-code="asset.code"
         :wallet="wallet"
         :config="config"
@@ -154,9 +154,6 @@ export default {
       balances: vuexTypes.accountBalances,
       accountId: vuexTypes.accountId,
     }),
-    pageModule () {
-      return this.$route.meta.pageModule
-    },
   },
 
   async created () {

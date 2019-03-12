@@ -28,6 +28,7 @@ import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
+  Vue.use(SchemeRegistry.current)
 
   i18next.init(i18nOptions)
 
