@@ -1,5 +1,4 @@
 import _cloneDeep from 'lodash/cloneDeep'
-// import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export class ModuleScheme {
   constructor (scheme) {

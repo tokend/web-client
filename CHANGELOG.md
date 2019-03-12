@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - `record` getter to the `AssetRecord`
 - Added confirmation to cancel token creation request
 - CLI config passing
+- Added module enabling/disabling
 
 ### Changed
 - Now using new account endpoint for loading the fees
