@@ -41,7 +41,7 @@ export default {
   name: 'chart-renderer',
   props: {
     data: { type: Array, default: () => [] },
-    currency: { type: String, default: 'BTC' },
+    currency: { type: String, default: '' },
     scale: { type: String, default: 'hour' },
     requiredTicks: { type: Array, default: () => [] },
     precision: { type: Number, default: 0 },
@@ -49,11 +49,12 @@ export default {
     isLoading: { type: Boolean, default: false },
     isTicksShown: { type: Boolean, default: true },
   },
-  data: () => ({
-    defaultAsset: config.DEFAULT_QUOTE_ASSET,
-    chartRenderingTime: 500,
-    dataCount: 360,
-  }),
+  data () {
+    return {
+      defaultAsset: this.currency || config.DEFAULT_QUOTE_ASSET,
+      chartRenderingTime: 500,
+    }
+  },
   computed: {
     normalizedData () {
       return this.data.map(item => ({
@@ -61,14 +62,15 @@ export default {
         value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
     },
-    barTicks () {
-      switch (this.scale) {
-        case 'year': return this.dataCount / 24
-        case 'month': return this.dataCount / 30
-        case 'day': return this.dataCount / 24
-        case 'hour': return this.dataCount / 30
-        default: return this.dataCount / 30
+    itemsPerTick () {
+      const ticksCount = {
+        year: 24,
+        month: 30,
+        day: 30,
+        hour: 30,
       }
+
+      return Math.round(this.data.length / ticksCount[this.scale])
     },
   },
   watch: {
@@ -123,7 +125,7 @@ export default {
     render () {
       this.clear()
       // Setup the data
-      const data = chunk(this.normalizedData, this.barTicks).map(item => {
+      const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
         const itemLength = item.length
         let defaultDate = 0
         let max = 0

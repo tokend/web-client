@@ -55,3 +55,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.loyalty-points-statistics__withdrawals,
+.loyalty-points-statistics__volumes {
+  display: flex;
+}
+
+.loyalty-points-statistics__volumes {
+  margin-top: 4rem;
+}
+</style>
