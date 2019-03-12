@@ -18,7 +18,7 @@
       </top-bar>
 
       <submodule-importer
-        v-if="asset.code && getModule().hasSubmodule(FeesModule)"
+        v-if="asset.code && getModule().canRenderSubmodule(FeesModule)"
         :submodule="getModule().getSubmodule(FeesModule)"
         :asset-code="asset.code"
         :wallet="wallet"

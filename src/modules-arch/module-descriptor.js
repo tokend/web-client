@@ -1,3 +1,6 @@
+import { store } from '@/vuex/index'
+import { vuexTypes } from '@/vuex/types'
+
 /**
  * Describes the module. Its dependencies, incompatible modules,
  * allowed submodules, component and store module importers.
@@ -17,7 +20,7 @@ export class ModuleDescriptor {
    * lazy-loaded we have to define them in a way like _ => import('./path)
    * directly during the definition.
    *
-   * @param {String} [opts.importStoreModule]
+   * @param {String} [opts.importStore]
    * Path to the entry point vuex-module of the module. Please provide
    * function like _ => import('./path).
    *
@@ -51,7 +54,7 @@ export class ModuleDescriptor {
       submodules = [],
       incompatibles = [],
       importComponent = null,
-      importStoreModule = null,
+      importStore = null,
     } = opts
 
     if (typeof importComponent !== 'function') {
@@ -60,8 +63,8 @@ export class ModuleDescriptor {
 
     this._importComponent = this._rememberUidAfterImport(importComponent)
 
-    if (importStoreModule) {
-      this._importStoreModule = importStoreModule
+    if (importStore) {
+      this._importStore = importStore
     }
 
     this._dependencies = dependencies
@@ -74,12 +77,16 @@ export class ModuleDescriptor {
   }
 
   get importComponent () { return this._importComponent }
-  get importStoreModule () { return this._importStoreModule }
+  get importStore () { return this._importStore }
   get dependencies () { return this._dependencies }
   get allowedSubmodules () { return this._allowedSubmodules }
   get submodules () { return this._submodules }
   get incompatibles () { return this._incompatibles }
-  get isCorporateOnly () { return this._isCorporateOnly }
+  get isAccessible () {
+    return this._isCorporateOnly
+      ? store.getters[vuexTypes.isAccountCorporate]
+      : true
+  }
   get createdComponentUid () { return this._createdComponentUid }
   get createdComponent () { return this._createdComponent }
   get isComponentCreated () { return this._createdComponentUid >= 0 }
@@ -175,7 +182,23 @@ export class ModuleDescriptor {
   }
 
   /**
-   * Checks whether module with the provided constructor is registered
+   * Checks whether submodule with the provided constructor is registered and
+   * can be rendered for the current account
+   *
+   * @param {ModuleDescriptor.constructor} submoduleConstructor
+   */
+  canRenderSubmodule (submoduleConstructor) {
+    const submodule = this.getSubmodule(submoduleConstructor)
+
+    if (!submodule) {
+      return false
+    }
+
+    return submodule.isAccessible
+  }
+
+  /**
+   * Checks whether submodule with the provided constructor is registered
    *
    * @param {ModuleDescriptor.constructor} submoduleConstructor
    */

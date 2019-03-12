@@ -26,7 +26,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
  *
  * Usage:
  * <submodule-importer
- *   v-if="pageModule.hasSubmodule(TheSubmodule)
+ *   v-if="pageModule.canRenderSubmodule(TheSubmodule)
  *   :submodule="pageModule.getSubmodule(TheSubmodule)"
  *   :someSubmoduleAttr="..."
  *   :anotherSubmoduleAttr="..."
@@ -34,7 +34,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
  *
  * If you want loader while the component being imported:
  * <submodule-importer
- *   v-if="pageModule.hasSubmodule(TheSubmodule)
+ *   v-if="pageModule.canRenderSubmodule(TheSubmodule)
  *   :submodule="pageModule.getSubmodule(TheSubmodule)"
  *   :someSubmoduleAttr="..."
  *   :anotherSubmoduleAttr="..."

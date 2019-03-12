@@ -69,7 +69,7 @@
       <transfer-form />
     </drawer>
 
-    <template v-if="getModule().hasSubmodule(MovementsHistoryModule)">
+    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="asset.code"
         :submodule="getModule().getSubmodule(MovementsHistoryModule)"

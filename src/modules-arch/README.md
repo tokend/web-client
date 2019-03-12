@@ -12,7 +12,7 @@ export class History extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
       importComponent: _ => import('.../history/component.vue'),
-      importStoreModule: _ => import('.../history/store/index.js'),
+      importStore: _ => import('.../history/store/index.js'),
     })
   }
 }
@@ -27,7 +27,7 @@ export class SendTransfer extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
       importComponent: _ => import('.../send-transfer/component.vue'),
-      importStoreModule: _ => import('.../send-transfer/store/index.js'),
+      importStore: _ => import('.../send-transfer/store/index.js'),
       dependencies: [
         History,
         // Scheme will throw an error if any dependency absent in the
@@ -184,8 +184,8 @@ init ()
 
 <template>
   <submodule-importer
-    v-if="pageModule.hasSubmodule(History)"
-    :submodule="pageModule.getSubmodule(History)"
+    v-if="getModule().canRenderSubmodule(History)"
+    :submodule="getModule().getSubmodule(History)"
     :asset-code="assetCode"
     :config="{ horizonURL: config.HORIZON_SERVER }"
     :wallet="wallet"
@@ -205,12 +205,6 @@ export default {
     return {
       History
     }
-  },
-
-  computed: {
-    pageModule () {
-      return this.$route.meta.pageModule
-    },
   },
 }
 </script>

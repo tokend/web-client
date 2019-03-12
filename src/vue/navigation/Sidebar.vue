@@ -140,7 +140,7 @@ export default {
       for (const [key, value] of Object.entries(result)) {
         const filteredValue = value
           .filter(item => item.menuButtonTranslationId)
-          .filter(item => item.isCorporateOnly ? this.isAccountCorporate : true)
+          .filter(item => item.isAccessible)
 
         if (filteredValue.length) {
           result[key] = filteredValue

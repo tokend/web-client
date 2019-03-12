@@ -42,12 +42,14 @@
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
         </div>
-        <div class="dashboard__activity">
+        <div
+          class="dashboard__activity"
+          v-if="getModule().canRenderSubmodule(MovementsHistoryModule) &&
+            currentAsset
+          "
+        >
           <submodule-importer
             :submodule="getModule().getSubmodule(MovementsHistoryModule)"
-            v-if="getModule().hasSubmodule(MovementsHistoryModule) &&
-              currentAsset
-            "
             :asset-code="currentAsset"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"

@@ -185,6 +185,7 @@ export default new ModuleScheme({
             },
           ],
         },
+        isCorporateOnly: true,
         menuButtonTranslationId: 'pages-names.requests',
         menuButtonMdiName: 'book-open-variant',
       },

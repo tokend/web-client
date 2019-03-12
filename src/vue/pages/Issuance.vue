@@ -47,7 +47,7 @@
     </drawer>
 
     <submodule-importer
-      :v-if="getModule().hasSubmodule(IssuanceExplorerModule)"
+      :v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
       :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
       :wallet="wallet"
       :config="config"

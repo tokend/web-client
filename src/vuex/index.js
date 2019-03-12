@@ -30,16 +30,17 @@ export const rootModule = {
   state: {},
 }
 
+let store = {}
 async function buildStore () {
-  const storeModules = (await Promise
+  const stores = (await Promise
     .all(
       SchemeRegistry.current.cache
-        .filter(item => item.importStoreModule)
-        .map(item => item.importStoreModule())
+        .filter(item => item.importStore)
+        .map(item => item.importStore())
     ))
     .reduce((res, item) => ({ ...res, [item.name]: item }))
 
-  const store = new Vuex.Store({
+  store = new Vuex.Store({
     ...rootModule,
     modules: {
       account,
@@ -47,7 +48,7 @@ async function buildStore () {
       wallet,
       kyc,
       keyValue,
-      ...storeModules,
+      ...stores,
     },
     plugins: [sessionStoragePlugin],
   })
@@ -57,5 +58,5 @@ async function buildStore () {
   return store
 }
 
-export { buildStore }
+export { buildStore, store }
 export { vuexTypes } from './types'
