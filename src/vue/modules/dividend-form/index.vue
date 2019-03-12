@@ -124,7 +124,7 @@
             <form-confirmation
               v-if="formMixin.isConfirmationShown"
               :is-pending="isDividendSubmitting"
-              @ok="submit()"
+              @ok="submit"
               @cancel="hideConfirmation()"
             />
           </div>
@@ -171,7 +171,7 @@ import {
   maxDecimalDigitsCount,
   noMoreThanAvailableOnBalance,
   required,
-} from '../../../validators'
+} from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
 
 const EVENTS = {
