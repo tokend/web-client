@@ -1,9 +1,9 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 
 export class SaleDetailsPageModule extends PageModuleDescriptor {
-  constructor (pageOpts = {}, moduleOpts = {}) {
-    super(pageOpts, {
-      ...moduleOpts,
+  constructor (opts = {}) {
+    super({
+      ...opts,
       importComponent: _ => import('@/vue/pages/SaleDetails'),
     })
   }

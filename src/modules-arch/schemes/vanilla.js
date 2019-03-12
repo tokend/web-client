@@ -27,8 +27,6 @@ export default new ModuleScheme({
         },
         menuButtonTranslationId: 'pages-names.dashboard',
         menuButtonMdiName: 'view-dashboard',
-      },
-      {
         submodules: [
           new MovementsHistoryModule(),
         ],
@@ -43,8 +41,6 @@ export default new ModuleScheme({
         },
         menuButtonTranslationId: 'pages-names.movements',
         menuButtonMdiName: 'menu',
-      },
-      {
         submodules: [
           new MovementsHistoryModule(),
         ],
@@ -126,8 +122,6 @@ export default new ModuleScheme({
         },
         menuButtonTranslationId: 'pages-names.issuance',
         menuButtonMdiName: 'poll',
-      },
-      {
         submodules: [
           new IssuanceExplorerModule(),
         ],
@@ -243,8 +237,6 @@ export default new ModuleScheme({
         },
         menuButtonTranslationId: 'pages-names.fees',
         menuButtonMdiName: 'flash',
-      },
-      {
         submodules: [
           new FeesModule(),
         ],

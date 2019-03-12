@@ -2,9 +2,9 @@ import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { FeesModule } from '@/vue/modules/fees/module'
 
 export class FeesPageModule extends PageModuleDescriptor {
-  constructor (pageOpts = {}, moduleOpts = {}) {
-    super(pageOpts, {
-      ...moduleOpts,
+  constructor (opts = {}) {
+    super({
+      ...opts,
       importComponent: _ => import('@/vue/pages/Fees'),
       allowedSubmodules: [
         FeesModule,
