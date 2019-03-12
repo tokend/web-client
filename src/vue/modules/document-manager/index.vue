@@ -10,7 +10,7 @@
         </div>
         <div class="document-manager__state-checker-wrp">
           <state-checker
-            :file-key="metadata.fileKey"
+            :download-link="downloadLink"
             :file-hash="metadata.fileHash"
             :file-mime-type="metadata.fileMimeType"
           />

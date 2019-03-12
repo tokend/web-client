@@ -1074,6 +1074,7 @@
       "document-not-allowed-msg": "Such document doesn't exist in the system or you don't have permissions to read it",
       "document-not-found-msg": "Such document doesn't exist in the system or you don't have permissions to read it",
       "document-not-verified-msg": "Document is not verified",
+      "verifying-doc-msg": "Verifying document",
       "invalid-hash-msg":  "The hash of the document was not properly saved",
       "hash-mismatch-msg": "The document has been changed",
       "document-verified-title": "Document is verified",

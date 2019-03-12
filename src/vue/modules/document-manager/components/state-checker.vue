@@ -31,6 +31,7 @@
       </div>
     </div>
   </div>
+  <load-spinner v-else message-id="document-manager.verifying-doc-msg" />
 </template>
 
 <script>
@@ -38,15 +39,18 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { CryptoUtil } from '../helpers/crypto.util'
 import { FileUtil } from '@/js/utils/file.util'
 
-import { api } from '../_api'
 import Vue from 'vue'
+import LoadSpinner from '@/vue/common/Loader'
 
 const LENGTH_SHA256_HEX_ENCODED = 64
 
 export default {
   name: 'state-checker',
+  components: {
+    LoadSpinner,
+  },
   props: {
-    fileKey: { type: String, required: true },
+    downloadLink: { type: String, required: true },
     fileHash: { type: String, required: true },
     fileMimeType: { type: String, required: true },
   },
@@ -77,8 +81,7 @@ export default {
       }
 
       try {
-        const key = this.fileKey
-        const blob = await this.getFileBlob(key)
+        const blob = await this.getFileBlob()
         const hash = await this.getFileHash(blob)
 
         this.isVerified = hash === this.fileHash
@@ -88,9 +91,8 @@ export default {
 
       this.isVerifying = false
     },
-    async getFileBlob (fileKey) {
-      const { data: { url } } = await api().getWithSignature(`/documents/${fileKey}`)
-      const { body: fileStr } = await Vue.http.get(url)
+    async getFileBlob () {
+      const { body: fileStr } = await Vue.http.get(this.downloadLink)
 
       return new Blob([fileStr], { type: this.fileMimeType })
     },
