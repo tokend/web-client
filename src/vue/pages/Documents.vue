@@ -1,6 +1,16 @@
 <template>
   <div class="documents-page">
     <top-bar>
+      <template slot="main">
+        <router-link
+          :to="vueRoutes.documentExplorer"
+        >
+          <span>
+            {{ 'documents-page.explore-documents-title' | globalize }}
+          </span>
+        </router-link>
+      </template>
+
       <template slot="extra">
         <button
           v-ripple
@@ -20,9 +30,11 @@
       <document-upload-form-module
         :wallet="wallet"
         :config="config"
-        @submit="isDrawerShown = false"
+        @submit="(isDrawerShown = false) || (isDocumentUploaded = true)"
       />
     </drawer>
+
+    <router-view :document-uploaded.sync="isDocumentUploaded" />
   </div>
 </template>
 
@@ -30,10 +42,12 @@
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
-import DocumentUploadFormModule from '@modules/document-upload-form'
+import DocumentUploadFormModule from '@modules/documents/document-upload-form'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
+import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 
@@ -47,10 +61,12 @@ export default {
 
   data: _ => ({
     isDrawerShown: false,
+    isDocumentUploaded: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,
     },
+    vueRoutes,
   }),
 
   computed: {

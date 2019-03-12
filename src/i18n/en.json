@@ -1048,6 +1048,7 @@
     },
 
     "documents-page": {
+      "explore-documents-title": "Explore documents",
       "upload-document": "Upload document"
     },
 
@@ -1058,6 +1059,13 @@
       "upload-btn": "Upload",
       "uploaded-msg": "Your document was successfully uploaded",
       "document-exists-error": "Such document already exists. Please select another one"
+    },
+
+    "document-explorer": {
+      "loading-msg": "Loading your documents…",
+      "loading-error-msg": "There was an error while loading.",
+      "no-documents-title": "No documents yet",
+      "no-documents-msg": "You do not have any documents yet"
     }
   }
 }
