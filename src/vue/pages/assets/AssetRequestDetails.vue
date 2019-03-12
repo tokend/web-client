@@ -103,6 +103,27 @@
             </td>
           </tr>
 
+          <tr v-if="request.details.annualReturn">
+            <td v-if="ASSET_SUBTYPE.bondCreation === request.details.subtype">
+              {{ 'asset-request-details.annual-return' | globalize }}
+            </td>
+            <td v-else>
+              {{ 'asset-request-details.expected-revenue' | globalize }}
+            </td>
+            <td>
+              {{ request.details.annualReturn }}%
+            </td>
+          </tr>
+          <tr v-if="request.details.maturityDate">
+            <td>
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'asset-request-details.maturity-date' | globalize }}
+            </td>
+            <td>
+              <!-- eslint-disable-next-line max-len -->
+              {{ +request.details.maturityDate | formatCalendar }}
+            </td>
+          </tr>
           <tr>
             <td>
               {{ 'asset-request-details.terms-title' | globalize }}
@@ -182,6 +203,7 @@
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
@@ -220,6 +242,7 @@ export default {
     EVENTS,
     REQUEST_STATES,
     REQUEST_TYPES,
+    ASSET_SUBTYPE,
   }),
   computed: {
     ...mapGetters({

@@ -714,7 +714,10 @@
       "add-balance-btn": "Add to my balances",
       "already-in-your-balance-btn": "Already in your balances",
       "update-btn": "Update",
-      "balance-added-msg": "Added to your balances"
+      "balance-added-msg": "Added to your balances",
+      "maturity-date": "Maturity Date",
+      "annual-return": "Annual return in percents",
+      "expected-revenue": "Expected revenue per year"
     },
 
     "asset-request-details": {
@@ -731,7 +734,10 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
       "asset-create-request-type": "Asset create",
-      "asset-update-request-type": "Asset update"
+      "asset-update-request-type": "Asset update",
+      "maturity-date": "Maturity Date",
+      "annual-return": "Annual return in percents",
+      "expected-revenue": "Expected revenue per year"
     },
 
     "sale-request-details": {

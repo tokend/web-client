@@ -66,6 +66,25 @@
               </p>
             </td>
           </tr>
+          <tr v-if="asset.maturityDate">
+            <td>
+              {{ 'asset-details.maturity-date' | globalize }}
+            </td>
+            <td>
+              {{ +asset.maturityDate | formatCalendar }}
+            </td>
+          </tr>
+          <tr v-if="asset.annualReturn">
+            <td v-if="ASSET_SUBTYPE.bondCreation === asset.subtype">
+              {{ 'asset-details.annual-return' | globalize }}
+            </td>
+            <td v-else>
+              {{ 'asset-details.expected-revenue' | globalize }}
+            </td>
+            <td>
+              {{ +asset.annualReturn }}%
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -111,6 +130,7 @@ import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -132,6 +152,7 @@ export default {
     isBalanceCreating: false,
     config,
     EVENTS,
+    ASSET_SUBTYPE,
   }),
   computed: {
     ...mapGetters({

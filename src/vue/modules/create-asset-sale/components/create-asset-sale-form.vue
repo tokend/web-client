@@ -179,7 +179,7 @@
         </div>
         <div
           class="app__form-row"
-          v-if="form.information.formType.value === FORM_TYPE.bondCreation"
+          v-if="form.information.formType.value === ASSET_SUBTYPE.bondCreation"
         >
           <div class="app__form-field">
             <date-field
@@ -258,7 +258,7 @@
               name="create-sale-hard-cap"
               :label="
                 form.information.formType.value ===
-                  FORM_TYPE.bondCreation ?
+                  ASSET_SUBTYPE.bondCreation ?
                     'create-asset-sale-form.annual-return' :
                     'create-asset-sale-form.expected-revenue' | globalize
               "
@@ -394,6 +394,7 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
 import { api } from '../_api'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
 import { DateUtil } from '@/js/utils'
 import { mapGetters, mapActions } from 'vuex'
@@ -437,10 +438,6 @@ const EMPTY_DOCUMENT = {
   name: '',
   key: '',
 }
-const FORM_TYPE = {
-  bondCreation: '0',
-  propertyPurchase: '1',
-}
 const EVENTS = {
   close: 'close',
 }
@@ -462,29 +459,29 @@ export default {
     return {
       form: {
         information: {
-          name: 'Test 123',
-          code: 'TST1',
+          name: '',
+          code: '',
           logo: null,
-          policies: [1],
+          policies: [],
           assetType: '',
           formType: {},
           terms: null,
         },
         saleInformation: {
-          name: 'Fund Name Alala',
-          startTime: '2019-03-29 12:00',
-          endTime: '2019-05-29 12:00',
-          maturityDate: '2019-06-29 12:00',
-          softCap: '123',
-          hardCap: '1234',
-          annualReturn: '1234',
+          name: '',
+          startTime: '',
+          endTime: '',
+          maturityDate: '',
+          softCap: '',
+          hardCap: '',
+          annualReturn: '',
           quoteAssets: [],
         },
         shortBlurb: {
           saleLogo: null,
-          shortDescription: 'Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description Short description',
+          shortDescription: '',
           youtubeId: '',
-          description: 'qeqwrqwerwqerw',
+          description: '',
         },
       },
       currentStep: 1,
@@ -493,7 +490,7 @@ export default {
       MIN_AMOUNT: config.MIN_AMOUNT,
       MAX_AMOUNT: config.MAX_AMOUNT,
       config,
-      FORM_TYPE,
+      ASSET_SUBTYPE,
       DOCUMENT_TYPES,
       ASSET_POLICIES,
       CODE_MAX_LENGTH,
@@ -538,7 +535,7 @@ export default {
 
             required: requiredUnless(function () {
               return this.form.information.formType.value ===
-                FORM_TYPE.bondCreation
+                ASSET_SUBTYPE.bondCreation
             }),
             minDate: minDate(this.form.saleInformation.endTime ||
               moment().toString()),
@@ -580,11 +577,11 @@ export default {
       return [
         {
           label: globalize('create-asset-sale-form.bond-creation'),
-          value: FORM_TYPE.bondCreation,
+          value: ASSET_SUBTYPE.bondCreation,
         },
         {
           label: globalize('create-asset-sale-form.property-purchase'),
-          value: FORM_TYPE.propertyPurchase,
+          value: ASSET_SUBTYPE.propertyPurchase,
         },
       ]
     },
@@ -633,7 +630,7 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const blobIdthis = this.getBlobId({
+        const blobId = await this.getBlobId({
           accountId: this.accountId,
           params: {
             type: BLOB_TYPES.fundOverview,
@@ -643,14 +640,11 @@ export default {
           },
         })
         const assetCreationOperation = this.assetRequestOpts()
-        const saleCreationOperation = this.saleRequestOpts(blobIdthis)
+        const saleCreationOperation = this.saleRequestOpts(blobId)
         await api().postOperations(
           assetCreationOperation,
           saleCreationOperation
         )
-        // const saleCreationOperation = this.saleRequestOpts('123')
-        // console.log(assetCreationOperation)
-        // console.log(saleCreationOperation)
         Bus.success('create-asset-sale-form.successfully-submitted-msg')
         this.$emit(EVENTS.close)
       } catch (e) {
@@ -706,11 +700,12 @@ export default {
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
           annualReturn: this.form.saleInformation.annualReturn,
+          subtype: this.form.information.formType.value,
         },
       }
-      if (this.form.information.formType.value === FORM_TYPE.bondCreation) {
-        operation.maturityDate = DateUtil
-          .toTimestamp(this.form.saleInformation.maturityDate)
+      if (this.form.information.formType.value === ASSET_SUBTYPE.bondCreation) {
+        operation.creatorDetails.maturityDate = DateUtil
+          .toMs(this.form.saleInformation.maturityDate)
       }
       return base.ManageAssetBuilder.assetCreationRequest(operation)
     },
