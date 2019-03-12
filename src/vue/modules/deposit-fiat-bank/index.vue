@@ -9,7 +9,7 @@
           key-as-value-text="nameAndCode"
           :label="'deposit-fiat-bank-module.asset' | globalize"
         />
-        <div class="deposit-fiat-card__form-field-description">
+        <div class="deposit-fiat-bank__form-field-description">
           <p>
             {{
               'deposit-fiat-bank-module.balance' | globalize({
@@ -21,11 +21,11 @@
         </div>
       </div>
     </div>
-    <div class="app__form-row deposit-fiat-card__form-row">
-      <table class="deposit-fiat-card__fee-table">
+    <div class="app__form-row deposit-fiat-bank__form-row">
+      <table class="deposit-fiat-bank__fee-table">
         <tbody
-          class="deposit-fiat-card__fee-tbody"
-          :class="{ 'deposit-fiat-card__data--loading': isFeesLoadPending }"
+          class="deposit-fiat-bank__fee-tbody"
+          :class="{ 'deposit-fiat-bank__data--loading': isFeesLoadPending }"
         >
           <tr>
             <td>
@@ -65,7 +65,7 @@
               </template>
             </td>
           </tr>
-          <tr class="deposit-fiat-card__total-fee-row">
+          <tr class="deposit-fiat-bank__total-fee-row">
             <td>
               {{
                 'deposit-fiat-bank-module.total-amount-account' | globalize
@@ -115,16 +115,12 @@
         :readonly="true"
       />
     </div>
-    <div class="deposit-fiat-bank-module__spacer" />
-    <h3 class="app__form-subheading">
-      {{ 'deposit-fiat-bank-module.institution-title' | globalize }}
-    </h3>
     <div class="app__form-row">
       <input-field
         white-autofill
         class="app__form-field"
-        v-model.trim="form.institutionAccount.bankName"
-        :label="'deposit-fiat-bank-module.institution-bank' | globalize"
+        v-model.trim="form.beneficiary.bankName"
+        :label="'deposit-fiat-bank-module.beneficiary-bank' | globalize"
         :readonly="true"
       />
     </div>
@@ -132,8 +128,8 @@
       <input-field
         white-autofill
         class="app__form-field"
-        v-model.trim="form.institutionAccount.city"
-        :label="'deposit-fiat-bank-module.institution-city' | globalize"
+        v-model.trim="form.beneficiary.city"
+        :label="'deposit-fiat-bank-module.beneficiary-city' | globalize"
         :readonly="true"
       />
     </div>
@@ -141,8 +137,8 @@
       <input-field
         white-autofill
         class="app__form-field"
-        v-model.trim="form.institutionAccount.swiftCode"
-        :label="'deposit-fiat-bank-module.institution-swift' | globalize"
+        v-model.trim="form.beneficiary.swiftCode"
+        :label="'deposit-fiat-bank-module.beneficiary-swift' | globalize"
         :readonly="true"
       />
     </div>
@@ -256,8 +252,6 @@ export default {
         iban: 'DE89370400440532013000',
         accountNumber: '370400440532013000',
         receiver: 'Ivan Petrov, 37000, Urkaine, area. Kharkivska, c. Kharkiv, st. Pushkinskaya, build. 91/2',
-      },
-      institutionAccount: {
         bankName: 'JSC UNIVERSAL BANK',
         city: 'KYIV, UKRAINE',
         swiftCode: 'CTBAAU2S',
@@ -344,7 +338,31 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/vue/forms/_app-form';
+
 .deposit-fiat-bank-module__spacer {
   margin-top: 4rem;
+}
+
+.deposit-fiat-bank__fee-table {
+  width: 100%;
+  font-size: 1.2rem;
+
+  tr {
+    height: 2rem;
+  }
+
+  td:last-child {
+    text-align: right;
+  }
+}
+
+.deposit-fiat-bank__fee-tbody {
+  color: $col-text-secondary;
+}
+
+.deposit-fiat-bank__total-fee-row {
+  color: $col-text;
+  font-weight: 600;
 }
 </style>
