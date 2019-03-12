@@ -1,7 +1,12 @@
 import _cloneDeep from 'lodash/cloneDeep'
 import { ModuleDescriptor } from './module-descriptor'
 
-export class PageModule extends ModuleDescriptor {
+/**
+ * Describes the module that represents a page. Extends ModuleDescriptor but
+ * have some specific fields for rendering buttons and sections in the sidebar
+ * menu.
+ */
+export class PageModuleDescriptor extends ModuleDescriptor {
   /**
    * @param {Object} pageOpts
    * @param {Object} pageOpts.routerEntry
@@ -26,13 +31,12 @@ export class PageModule extends ModuleDescriptor {
    */
   constructor (pageOpts = {}, moduleOpts = {}) {
     super(moduleOpts)
-    this._routerEntry = {}
     this._menuButtonTranslationId = pageOpts.menuButtonTranslationId || ''
     this._menuButtonMdiName = pageOpts.menuButtonMdiName || ''
     this._menuSectionTranslationId = pageOpts.menuSectionTranslationId || ''
     this._isCorporateOnly = pageOpts.isCorporateOnly || false
 
-    this._parseRouterEntry(pageOpts)
+    this._routerEntry = this._parseRouterEntry(pageOpts)
   }
 
   get routerEntry () { return _cloneDeep(this._routerEntry) }
@@ -52,6 +56,6 @@ export class PageModule extends ModuleDescriptor {
       entry.meta = {}
     }
     entry.meta.pageModule = this
-    this._routerEntry = entry
+    return entry
   }
 }

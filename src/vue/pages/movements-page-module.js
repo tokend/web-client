@@ -1,7 +1,7 @@
-import { PageModule } from '@/modules-arch/page-module'
+import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
-export class MovementsHistoryPageModule extends PageModule {
+export class MovementsHistoryPageModule extends PageModuleDescriptor {
   constructor (pageOpts = {}, moduleOpts = {}) {
     super(pageOpts, {
       ...moduleOpts,

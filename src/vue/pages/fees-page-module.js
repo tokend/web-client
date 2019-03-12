@@ -1,7 +1,7 @@
-import { PageModule } from '@/modules-arch/page-module'
+import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { FeesModule } from '@/vue/modules/fees/module'
 
-export class FeesPageModule extends PageModule {
+export class FeesPageModule extends PageModuleDescriptor {
   constructor (pageOpts = {}, moduleOpts = {}) {
     super(pageOpts, {
       ...moduleOpts,

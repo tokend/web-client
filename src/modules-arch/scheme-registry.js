@@ -5,6 +5,10 @@ const SCHEME_IMPORTERS = {
   vanilla: _ => import('@/modules-arch/schemes/vanilla'),
 }
 
+/**
+ * Switches the ModuleScheme and returns the current one. For global access to
+ * the current scheme within the application.
+ */
 export class SchemeRegistry {
   static get current () {
     return _cloneDeep(currentScheme)

@@ -1,6 +1,6 @@
-import { PageModule } from '@/modules-arch/page-module'
+import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 
-export class SalesPageModule extends PageModule {
+export class SalesPageModule extends PageModuleDescriptor {
   constructor (pageOpts = {}, moduleOpts = {}) {
     super(pageOpts, {
       ...moduleOpts,

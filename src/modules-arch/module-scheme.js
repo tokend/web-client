@@ -1,6 +1,15 @@
 import _cloneDeep from 'lodash/cloneDeep'
 
+/**
+ * Represents module set to be used by the application.
+ */
 export class ModuleScheme {
+  /**
+   * Build the scheme
+   *
+   * @param {Object} scheme
+   * @param {PageModuleDescriptor[]} scheme.pages
+   */
   constructor (scheme) {
     this._rawScheme = scheme
     this._pages = _cloneDeep(scheme.pages)

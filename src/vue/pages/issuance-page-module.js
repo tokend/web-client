@@ -1,7 +1,7 @@
-import { PageModule } from '@/modules-arch/page-module'
+import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
 
-export class IssuancePageModule extends PageModule {
+export class IssuancePageModule extends PageModuleDescriptor {
   constructor (pageOpts = {}, moduleOpts = {}) {
     super(pageOpts, {
       ...moduleOpts,

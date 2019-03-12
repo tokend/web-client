@@ -1,7 +1,8 @@
 import _cloneDeep from 'lodash/cloneDeep'
 
 /**
- * The ModuleDescriptor is the class to wrap descriptions of the modules.
+ * Describes the module. Its dependencies, incompatible modules,
+ * allowed submodules, component and store module importers.
  */
 export class ModuleDescriptor {
   /**

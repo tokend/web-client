@@ -24,7 +24,7 @@ import { formatDateDMY } from '@/vue/filters/formatDateDMY'
 import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
-import { SchemeRegistry } from './modules-arch/scheme-registry'
+import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
