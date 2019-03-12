@@ -1074,6 +1074,8 @@
       "document-not-allowed-msg": "Such document doesn't exist in the system or you don't have permissions to read it",
       "document-not-found-msg": "Such document doesn't exist in the system or you don't have permissions to read it",
       "document-not-verified-msg": "Document is not verified",
+      "document-info-title": "Document information",
+      "file-preview-title": "Preview",
       "verifying-doc-msg": "Verifying document",
       "invalid-hash-msg":  "The hash of the document was not properly saved",
       "hash-mismatch-msg": "The document has been changed",
@@ -1093,7 +1095,8 @@
       "file-name-lbl": "File name:",
       "file-key-lbl": "File key:",
       "file-hash-lbl": "Hash:",
-      "file-mime-lbl": "MIME type:"
+      "file-mime-lbl": "MIME type:",
+      "no-preview-msg": "No preview available"
     },
 
     "document-signers-manager": {

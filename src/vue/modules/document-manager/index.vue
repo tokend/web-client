@@ -1,7 +1,10 @@
 <template>
   <div class="document-manager">
     <div class="document-manager__inner" v-if="metadata && downloadLink">
-      <div class="document-manager__viewer-wrp">
+      <div class="document-manager__document-info-wrp">
+        <div class="document-manager__header">
+          <h2>{{ 'document-manager.document-info-title' | globalize }}</h2>
+        </div>
         <div class="document-manager__file-attributes-wrp">
           <file-attributes-viewer
             :metadata="metadata"
@@ -19,12 +22,26 @@
           <description-viewer :description="metadata.description" />
         </div>
       </div>
-      <div class="document-manager__signers-manager-wrp">
-        <signers-manager-module
-          :config="config"
-          :wallet="wallet"
-          :source-account-id="attachedAccountId"
-        />
+
+      <!--TODO: rename-->
+      <div class="document-manager__right-section-wrp">
+        <div class="document-manager__file-preview-wrp">
+          <div class="document-manager__header">
+            <h2>{{ 'document-manager.file-preview-title' | globalize }}</h2>
+          </div>
+
+          <file-preview
+            :download-link="downloadLink"
+            :mime-type="metadata.fileMimeType"
+          />
+        </div>
+        <div class="document-manager__signers-manager-wrp">
+          <signers-manager-module
+            :config="config"
+            :wallet="wallet"
+            :source-account-id="attachedAccountId"
+          />
+        </div>
       </div>
     </div>
 
@@ -51,6 +68,7 @@
 import DescriptionViewer from './components/description-viewer'
 import FileAttributesViewer from './components/file-attributes-viewer'
 import StateChecker from './components/state-checker'
+import FilePreview from './components/file-preview'
 
 import SignersManagerModule from './modules/signers-manager'
 
@@ -71,6 +89,7 @@ export default {
     DescriptionViewer,
     FileAttributesViewer,
     StateChecker,
+    FilePreview,
 
     SignersManagerModule,
 
@@ -174,14 +193,22 @@ export default {
     justify-content: space-between;
   }
 
-  &__viewer-wrp {
+  &__document-info-wrp {
     width: 100%;
     max-width: 55rem;
     margin-right: 10rem;
   }
 
-  &__signers-manager-wrp {
+  &__header {
+    margin-bottom: 3rem;
+  }
+
+  &__right-section-wrp {
     width: 100%;
+  }
+
+  &__file-preview-wrp {
+    margin-bottom: 3rem;
   }
 
   &__file-attributes-wrp { margin-bottom: 1.5rem }
