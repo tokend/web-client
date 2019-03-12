@@ -48,6 +48,7 @@ export default {
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
     isTicksShown: { type: Boolean, default: true },
+    id: { type: String, required: true },
   },
   data () {
     return {
@@ -88,7 +89,7 @@ export default {
   methods: {
     formatMoney,
     clear () {
-      d3.select('svg.chart').remove()
+      d3.select(`svg#${this.id}`).remove()
     },
     getDimensions () {
       const parentElement = this.$el.parentElement
@@ -145,7 +146,7 @@ export default {
       // Setup svg
       const className = 'chart'
       const yAxisTickWidth = this.isTicksShown
-        ? this.formatMoneyCustom(max).length * 9 + 5
+        ? this.formatMoneyCustom(max).length * 9 - 5
         : 0
       const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
       const dimensions = this.getDimensions(this.$el)
@@ -159,6 +160,7 @@ export default {
         .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
         .attr('preserveAspectRatio', 'xMinYMin')
         .attr('class', className)
+        .attr('id', this.id)
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {

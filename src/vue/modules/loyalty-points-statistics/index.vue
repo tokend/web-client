@@ -1,13 +1,35 @@
 <template>
   <div class="loyalty-points-statistics">
     <div class="loyalty-points-statistics__withdrawals">
-      <withdrawals-viewer />
-      <withdrawal-requests-viewer />
+      <div class="loyalty-points-statistics_viewer">
+        <h3 class="loyalty-points-statistics_viewer-title">
+          Withdrawals
+        </h3>
+        <withdrawals-viewer />
+      </div>
+
+      <div class="loyalty-points-statistics_viewer">
+        <h3 class="loyalty-points-statistics_viewer-title">
+          Withdrawal requests
+        </h3>
+        <withdrawal-requests-viewer />
+      </div>
     </div>
 
     <div class="loyalty-points-statistics__volumes">
-      <incoming-volume-viewer />
-      <summary-volume-viewer />
+      <div class="loyalty-points-statistics_viewer">
+        <h3 class="loyalty-points-statistics_viewer-title">
+          Withdrawal's incoming volume
+        </h3>
+        <incoming-volume-viewer />
+      </div>
+
+      <div class="loyalty-points-statistics_viewer">
+        <h3 class="loyalty-points-statistics_viewer-title">
+          Withdrawal's summary volume
+        </h3>
+        <summary-volume-viewer />
+      </div>
     </div>
   </div>
 </template>
@@ -57,12 +79,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@scss/mixins";
+
 .loyalty-points-statistics__withdrawals,
 .loyalty-points-statistics__volumes {
   display: flex;
+  flex-wrap: wrap;
+  margin: -2rem;
+}
+
+.loyalty-points-statistics_viewer {
+  margin: 2rem;
+  flex: 0 1 calc(50% - 4rem);
+  min-height: 100%;
+
+  @include respond-to-custom($x-medium) {
+    flex: 0 1 calc(100% - 4rem);
+  }
 }
 
 .loyalty-points-statistics__volumes {
-  margin-top: 4rem;
+  margin-top: 2rem;
+}
+
+.loyalty-points-statistics_viewer-title {
+  margin-bottom: 3.2rem;
+  font-size: 2.2rem;
+  text-align: center;
 }
 </style>
