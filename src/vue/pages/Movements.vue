@@ -126,7 +126,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import config from '../../config'
-import DividendFormModule from '../modules/dividend-form/index'
+import DividendFormModule from '@modules/dividend-form/index'
 
 export default {
   name: 'movements-page',

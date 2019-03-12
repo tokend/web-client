@@ -1,5 +1,12 @@
-$movements-table-cell-width: 10rem;
-$movements-table-cell-width-expand-btn-wrp: 6.7rem;
-$movements-table-cell-width-direction: 1.25rem;
+$_cornflowerBlue: #7b6eff;
+$_lightPurple: #837fa1;
+$_eastBay: #3a4180;
 
-$movements-table-cell-side-padding: 1.5rem;
+
+// status colors:
+
+$col-info: $_cornflowerBlue;
+
+// global colors
+$col-text-secondary: $_lightPurple;
+$col-text: $_eastBay;
