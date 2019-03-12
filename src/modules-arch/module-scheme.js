@@ -1,4 +1,5 @@
 import _cloneDeep from 'lodash/cloneDeep'
+import { PageModuleDescriptor } from './page-module-descriptor'
 
 /**
  * Represents module set to be used by the application.
@@ -11,6 +12,8 @@ export class ModuleScheme {
    * @param {PageModuleDescriptor[]} scheme.pages
    */
   constructor (scheme) {
+    this._validateRawScheme(scheme)
+
     this._rawScheme = scheme
     this._pages = _cloneDeep(scheme.pages)
 
@@ -21,6 +24,20 @@ export class ModuleScheme {
 
   get pages () { return _cloneDeep(this._pages) }
   get cache () { return _cloneDeep(this._cache) }
+
+  _validateRawScheme (scheme) {
+    if (!scheme.pages) {
+      throw new Error('ModuleScheme: no scheme.pages provided!')
+    }
+
+    if (!Array.isArray(scheme.pages)) {
+      throw new Error('ModuleScheme: scheme.pages should be an Array!')
+    }
+
+    if (!scheme.pages.every(item => item instanceof PageModuleDescriptor)) {
+      throw new Error('ModuleScheme: scheme.pages should contain only PageModuleDescriptor instances!')
+    }
+  }
 
   _createCache () {
     const cache = this._flattenDeep(this._rawScheme.pages)
