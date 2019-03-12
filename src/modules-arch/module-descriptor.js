@@ -10,6 +10,19 @@ export class ModuleDescriptor {
    *
    * @param {Object} opts
    *
+   * @param {Function} opts.importComponent
+   * Path to the entry point vue-component of the module. Please provide
+   * function like _ => import('./path).
+   *
+   * Neither require() nor import() work with variables. So you cannot do
+   * anything like require(SomeModule.componentPath). To make the components
+   * lazy-loaded we have to define them in a way like _ => import('./path)
+   * directly during the definition.
+   *
+   * @param {String} [opts.importStoreModule]
+   * Path to the entry point vuex-module of the module. Please provide
+   * function like _ => import('./path).
+   *
    * @param {ModuleDescriptor.constructor[]} [opts.dependencies]
    * Constructors of modules the module depends on.
    *
@@ -24,18 +37,10 @@ export class ModuleDescriptor {
    * @param {ModuleDescriptor.constructor[]} [opts.incompatibles]
    * Constructors of modules that cannot be used simultaneously with the module.
    *
-   * @param {Function} [opts.importComponent]
-   * Path to the entry point vue-component of the module. Please provide
-   * function like _ => import('./path).
    *
-   * Neither require() nor import() work with variables. So you cannot do
-   * anything like require(SomeModule.componentPath). To make the components
-   * lazy-loaded we have to define them in a way like _ => import('./path)
-   * directly during the definition.
+   * @param {Boolean} [opts.isCorporateOnly]
+   * If `true` the component will be accessible only by corporate accounts
    *
-   * @param {String} [opts.importStoreModule]
-   * Path to the entry point vuex-module of the module. Please provide
-   * function like _ => import('./path).
    */
   constructor (opts = {}) {
     const {
@@ -59,6 +64,7 @@ export class ModuleDescriptor {
     this._dependencies = _cloneDeep(dependencies)
     this._incompatibles = _cloneDeep(incompatibles)
     this._allowedSubmodules = _cloneDeep(allowedSubmodules)
+    this._isCorporateOnly = opts.isCorporateOnly || false
 
     this.validateSubmodules(submodules)
     this._submodules = _cloneDeep(submodules)
@@ -70,6 +76,7 @@ export class ModuleDescriptor {
   get allowedSubmodules () { return _cloneDeep(this._allowedSubmodules) }
   get submodules () { return _cloneDeep(this._submodules) }
   get incompatibles () { return _cloneDeep(this._incompatibles) }
+  get isCorporateOnly () { return this._isCorporateOnly }
 
   /**
    * Checks all dependencies are present.

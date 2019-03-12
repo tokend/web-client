@@ -25,10 +25,7 @@ export class PageModuleDescriptor extends ModuleDescriptor {
    * All the menu items with the same value of menuSectionTranslationId will be
    * rendered as a group in the Sidebar. If the argument is omitted, the menu
    * item will be rendered in default section with no label.
-   *
-   * @param {Boolean} [isCorporateOnly]
-   * If `true` only corporate accounts can access the page
-   *
+
    * @param {Object} moduleOpts @link ModuleDescriptor
    */
   constructor (opts = {}) {
@@ -36,7 +33,6 @@ export class PageModuleDescriptor extends ModuleDescriptor {
     this._menuButtonTranslationId = opts.menuButtonTranslationId || ''
     this._menuButtonMdiName = opts.menuButtonMdiName || ''
     this._menuSectionTranslationId = opts.menuSectionTranslationId || ''
-    this._isCorporateOnly = opts.isCorporateOnly || false
 
     this._routerEntry = this._parseRouterEntry(opts)
   }
@@ -45,7 +41,6 @@ export class PageModuleDescriptor extends ModuleDescriptor {
   get menuButtonTranslationId () { return this._menuButtonTranslationId }
   get menuButtonMdiName () { return this._menuButtonMdiName }
   get menuSectionTranslationId () { return this._menuSectionTranslationId }
-  get isCorporateOnly () { return this._isCorporateOnly }
 
   _parseRouterEntry (opts = {}) {
     if (!opts.routerEntry) {
