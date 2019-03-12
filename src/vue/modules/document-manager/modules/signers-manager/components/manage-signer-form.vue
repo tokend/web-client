@@ -71,7 +71,7 @@ import { Bus as GlobalBus } from '@/js/helpers/event-bus'
 import { Bus as LocalBus } from '../event-bus'
 
 import { base } from '@tokend/js-sdk'
-import { api } from '../../document-manager/_api'
+import { api } from '../../../_api'
 import { required, email } from '@validators'
 
 import { Signer } from '../wrappers/signer'
@@ -210,5 +210,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/vue/forms/_app-form";
+@import "../../../../../forms/app-form";
 </style>

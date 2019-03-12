@@ -1,21 +1,30 @@
 <template>
-  <div class="document-viewer">
-    <div class="document-viewer__content-wrp" v-if="metadata && downloadLink">
-      <div class="document-viewer__file-attributes-wrp">
-        <file-attributes-viewer
-          :metadata="metadata"
-          :download-link="downloadLink"
-        />
+  <div class="document-manager">
+    <div class="document-manager__inner" v-if="metadata && downloadLink">
+      <div class="document-manager__viewer-wrp">
+        <div class="document-manager__file-attributes-wrp">
+          <file-attributes-viewer
+            :metadata="metadata"
+            :download-link="downloadLink"
+          />
+        </div>
+        <div class="document-manager__state-checker-wrp">
+          <state-checker
+            :file-key="metadata.fileKey"
+            :file-hash="metadata.fileHash"
+            :file-mime-type="metadata.fileMimeType"
+          />
+        </div>
+        <div class="document-manager__description-viewer-wrp">
+          <description-viewer :description="metadata.description" />
+        </div>
       </div>
-      <div class="document-viewer__state-checker-wrp">
-        <state-checker
-          :file-key="metadata.fileKey"
-          :file-hash="metadata.fileHash"
-          :file-mime-type="metadata.fileMimeType"
+      <div class="document-manager__signers-manager-wrp">
+        <signers-manager-module
+          :config="config"
+          :wallet="wallet"
+          :source-account-id="attachedAccountId"
         />
-      </div>
-      <div class="document-viewer__description-viewer-wrp">
-        <description-viewer :description="metadata.description" />
       </div>
     </div>
 
@@ -24,7 +33,7 @@
       message-id="document-manager.loading-msg"
     />
 
-    <p v-else class="document-viewer__loading-failed-msg">
+    <p v-else class="document-manager__loading-failed-msg">
       <template v-if="isUnauthorized">
         {{ 'document-manager.document-not-allowed-msg' | globalize }}
       </template>
@@ -43,6 +52,8 @@ import DescriptionViewer from './components/description-viewer'
 import FileAttributesViewer from './components/file-attributes-viewer'
 import StateChecker from './components/state-checker'
 
+import SignersManagerModule from './modules/signers-manager'
+
 import LoadSpinner from '@/vue/common/Loader'
 
 import { Wallet } from '@tokend/js-sdk'
@@ -60,6 +71,8 @@ export default {
     DescriptionViewer,
     FileAttributesViewer,
     StateChecker,
+
+    SignersManagerModule,
 
     LoadSpinner,
   },
@@ -155,8 +168,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.document-viewer {
-  &__content-wrp { max-width: 55rem }
+.document-manager {
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__viewer-wrp {
+    width: 100%;
+    max-width: 55rem;
+    margin-right: 10rem;
+  }
+
+  &__signers-manager-wrp {
+    width: 100%;
+  }
+
   &__file-attributes-wrp { margin-bottom: 1.5rem }
   &__state-checker-wrp { margin-bottom: 3rem }
 }

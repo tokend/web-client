@@ -3,7 +3,7 @@
     <signer-list-manager
       :signers="signers"
       :wallet="wallet"
-      :source-account-id="attachedAccountId"
+      :source-account-id="sourceAccountId"
     />
     <div class="signers-manager__collection-loader-wrp">
       <collection-loader
@@ -47,7 +47,7 @@ export default {
       type: Wallet,
       required: true,
     },
-    attachedAccountId: {
+    sourceAccountId: {
       type: String,
       required: true,
     },
@@ -77,7 +77,7 @@ export default {
       loadSigners: types.LOAD_SIGNERS,
     }),
     loadSignersPage () {
-      return this.loadSigners(this.attachedAccountId)
+      return this.loadSigners(this.sourceAccountId)
     },
     rerenderList () {
       this.collectionLoaderKey++
