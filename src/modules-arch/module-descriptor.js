@@ -41,6 +41,10 @@ export class ModuleDescriptor {
    *
    */
   constructor (opts = {}) {
+    // will be assigned automatically while the component renders
+    this._createdComponentUid = -1
+    this._createdComponent = {}
+
     const {
       dependencies = [],
       allowedSubmodules = [],
@@ -54,7 +58,8 @@ export class ModuleDescriptor {
       throw new Error(`${this.constructor.name}: no importComponent provided`)
     }
 
-    this._importComponent = importComponent
+    this._importComponent = this._rememberUidAfterImport(importComponent)
+
     if (importStoreModule) {
       this._importStoreModule = importStoreModule
     }
@@ -75,7 +80,37 @@ export class ModuleDescriptor {
   get submodules () { return this._submodules }
   get incompatibles () { return this._incompatibles }
   get isCorporateOnly () { return this._isCorporateOnly }
-  get componentUid () { return this._componentUid }
+  get createdComponentUid () { return this._createdComponentUid }
+  get createdComponent () { return this._createdComponent }
+  get isComponentCreated () { return this._createdComponentUid >= 0 }
+
+  _rememberUidAfterImport (importFn) {
+    return async _ => {
+      if (this.isComponentCreated) {
+        return importFn()
+      }
+
+      const imported = await importFn()
+      const componentDefinition = Object.values(imported)
+        .find(item => item.render)
+
+      if (!componentDefinition) {
+        throw new Error(`${this.constructor.name}: cannot find imported component definition`)
+      }
+
+      if (!componentDefinition.beforeCreate) {
+        componentDefinition.beforeCreate = []
+      }
+
+      const self = this
+      componentDefinition.beforeCreate.push(function () {
+        self._createdComponentUid = this._uid
+        self._createdComponent = this
+      })
+
+      return imported
+    }
+  }
 
   /**
    * Checks all dependencies are present.
