@@ -30,6 +30,7 @@ export const vueRoutes = Object.freeze({
   preIssuanceUploadRequests: { name: 'app.pre-issuance-upload-requests' },
   documents: { name: 'app.documents' },
   documentExplorer: { name: 'app.document-explorer' },
+  documentManager: { name: 'documents.manager' },
   terms: { name: 'terms' },
   downloads: { name: 'downloads' },
   iosInstallationGuide: { name: 'ios-installation-guide' },

@@ -52,7 +52,6 @@ export default {
 @import "~@scss/mixins";
 
 .document-card-viewer {
-  flex: 0 1 calc(25% - 2rem);
   cursor: pointer;
   border-radius: .4rem;
   box-shadow: 0 .5rem 1rem 0 $col-document-card-viewer-shadow;

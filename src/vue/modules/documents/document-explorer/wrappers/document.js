@@ -1,7 +1,9 @@
 import safeGet from 'lodash/get'
 
 export class Document {
-  constructor (request, blob) {
+  constructor (id, request, blob) {
+    this.id = id
+
     this.createdAt = request.createdAt
     this.owner = request.requestor
 
