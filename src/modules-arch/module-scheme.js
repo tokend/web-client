@@ -1,4 +1,3 @@
-import _cloneDeep from 'lodash/cloneDeep'
 import { PageModuleDescriptor } from './page-module-descriptor'
 
 /**
@@ -15,15 +14,15 @@ export class ModuleScheme {
     this._validateRawScheme(scheme)
 
     this._rawScheme = scheme
-    this._pages = _cloneDeep(scheme.pages)
+    this._pages = scheme.pages
 
     // To validate the whole bunch of modules for compatibility
     this._cache = this._createCache()
     this._validateCache()
   }
 
-  get pages () { return _cloneDeep(this._pages) }
-  get cache () { return _cloneDeep(this._cache) }
+  get pages () { return this._pages }
+  get cache () { return this._cache }
 
   _validateRawScheme (scheme) {
     if (!scheme.pages) {

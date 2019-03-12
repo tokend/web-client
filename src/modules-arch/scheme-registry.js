@@ -1,5 +1,3 @@
-import _cloneDeep from 'lodash/cloneDeep'
-
 let currentScheme = {}
 const SCHEME_IMPORTERS = {
   vanilla: _ => import('@/modules-arch/schemes/vanilla'),
@@ -11,7 +9,7 @@ const SCHEME_IMPORTERS = {
  */
 export class SchemeRegistry {
   static get current () {
-    return _cloneDeep(currentScheme)
+    return currentScheme
   }
 
   static async useScheme (schemeName = '') {

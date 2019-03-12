@@ -1,4 +1,3 @@
-import _cloneDeep from 'lodash/cloneDeep'
 import { ModuleDescriptor } from './module-descriptor'
 
 /**
@@ -37,7 +36,7 @@ export class PageModuleDescriptor extends ModuleDescriptor {
     this._routerEntry = this._parseRouterEntry(opts)
   }
 
-  get routerEntry () { return _cloneDeep(this._routerEntry) }
+  get routerEntry () { return this._routerEntry }
   get menuButtonTranslationId () { return this._menuButtonTranslationId }
   get menuButtonMdiName () { return this._menuButtonMdiName }
   get menuSectionTranslationId () { return this._menuSectionTranslationId }
@@ -47,7 +46,7 @@ export class PageModuleDescriptor extends ModuleDescriptor {
       throw new Error(`${this.constructor.name}: no opts.routerEntry provided!`)
     }
 
-    const entry = _cloneDeep(opts.routerEntry)
+    const entry = opts.routerEntry
     entry.component = this.importComponent
     if (!entry.meta) {
       entry.meta = {}

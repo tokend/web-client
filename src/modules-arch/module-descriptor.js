@@ -1,5 +1,3 @@
-import _cloneDeep from 'lodash/cloneDeep'
-
 /**
  * Describes the module. Its dependencies, incompatible modules,
  * allowed submodules, component and store module importers.
@@ -61,22 +59,23 @@ export class ModuleDescriptor {
       this._importStoreModule = importStoreModule
     }
 
-    this._dependencies = _cloneDeep(dependencies)
-    this._incompatibles = _cloneDeep(incompatibles)
-    this._allowedSubmodules = _cloneDeep(allowedSubmodules)
+    this._dependencies = dependencies
+    this._incompatibles = incompatibles
+    this._allowedSubmodules = allowedSubmodules
     this._isCorporateOnly = opts.isCorporateOnly || false
 
     this.validateSubmodules(submodules)
-    this._submodules = _cloneDeep(submodules)
+    this._submodules = submodules
   }
 
   get importComponent () { return this._importComponent }
   get importStoreModule () { return this._importStoreModule }
-  get dependencies () { return _cloneDeep(this._dependencies) }
-  get allowedSubmodules () { return _cloneDeep(this._allowedSubmodules) }
-  get submodules () { return _cloneDeep(this._submodules) }
-  get incompatibles () { return _cloneDeep(this._incompatibles) }
+  get dependencies () { return this._dependencies }
+  get allowedSubmodules () { return this._allowedSubmodules }
+  get submodules () { return this._submodules }
+  get incompatibles () { return this._incompatibles }
   get isCorporateOnly () { return this._isCorporateOnly }
+  get componentUid () { return this._componentUid }
 
   /**
    * Checks all dependencies are present.
