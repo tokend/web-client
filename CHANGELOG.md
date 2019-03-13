@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - No data messages for `AssetsExplore` & `Balances` pages
 - "Use mine" button for pre-issued asset signer field on the `AssetCreateForm`
 - Message about no assets pairs exists in the system
+- Loyalty points statistics module
 
 ### Fixed
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
@@ -32,6 +33,7 @@ for further information about branching and tagging conventions.
 - Trade chart displaying
 - Buttons position on Verify page
 - Drop down text overflow
+- Line chart displaying
 
 ### Added
 - Added assetType in to asset.record
