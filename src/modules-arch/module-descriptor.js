@@ -55,6 +55,7 @@ export class ModuleDescriptor {
       incompatibles = [],
       importComponentFn = null,
       importStoreFn = null,
+      isCorporateOnly = false,
     } = opts
 
     if (typeof importComponentFn !== 'function') {
@@ -70,7 +71,7 @@ export class ModuleDescriptor {
     this._dependencies = dependencies
     this._incompatibles = incompatibles
     this._allowedSubmodules = allowedSubmodules
-    this._isCorporateOnly = opts.isCorporateOnly || false
+    this._isCorporateOnly = isCorporateOnly
 
     this.validateSubmodules(submodules)
     this._submodules = submodules
