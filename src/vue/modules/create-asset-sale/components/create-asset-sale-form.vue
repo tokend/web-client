@@ -368,7 +368,7 @@
 import FormStepper from '@/vue/common/FormStepper'
 import FormMixin from '@/vue/mixins/form.mixin'
 import Loader from '@/vue/common/Loader'
-import DescriptionEditor from './DescriptionEditor'
+import DescriptionEditor from './description-editor'
 
 import config from '@/config'
 import moment from 'moment'
@@ -427,7 +427,7 @@ const EVENTS = {
   close: 'close',
 }
 export default {
-  name: '',
+  name: 'create-asset-sale-form',
   components: {
     FormStepper,
     Loader,
