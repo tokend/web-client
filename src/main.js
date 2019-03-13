@@ -12,7 +12,7 @@ import { buildStore } from '@/vuex'
 import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
-import { i18nOptions } from '@/i18n'
+import { i18nOptions, mergeIntoI18nOptions } from '@/i18n'
 import { globalize } from '@/vue/filters/globalize'
 import { formatDate } from '@/vue/filters/formatDate'
 import { formatMoney } from '@/vue/filters/formatMoney'
@@ -29,6 +29,8 @@ import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
   Vue.use(SchemeRegistry.current)
+  const enLocaleJson = await SchemeRegistry.current.importEnLocaleFile()
+  mergeIntoI18nOptions(enLocaleJson)
 
   i18next.init(i18nOptions)
 

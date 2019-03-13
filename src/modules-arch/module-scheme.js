@@ -9,6 +9,9 @@ export class ModuleScheme {
    * Build the scheme
    *
    * @param {Object} scheme
+   * @param {Function} scheme.importEnLocaleFile
+   * Example: _ => import('./path').
+   *
    * @param {PageModuleDescriptor[]} scheme.pages
    */
   constructor (scheme) {
@@ -16,6 +19,7 @@ export class ModuleScheme {
 
     this._rawScheme = scheme
     this._pages = scheme.pages
+    this._importEnLocaleFile = scheme.importEnLocaleFile
 
     // To validate the whole bunch of modules for compatibility
     this._cache = this._createCache()
@@ -24,6 +28,7 @@ export class ModuleScheme {
 
   get pages () { return this._pages }
   get cache () { return this._cache }
+  get importEnLocaleFile () { return this._importEnLocaleFile }
 
   install (Vue) {
     Vue.prototype.getModule = function () {

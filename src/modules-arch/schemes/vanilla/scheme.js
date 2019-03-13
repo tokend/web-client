@@ -17,6 +17,8 @@ import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 
 export default new ModuleScheme({
+  importStylesFn: _ => import('@/scss/app.scss'),
+  importEnLocaleFile: _ => import('@/modules-arch/schemes/vanilla/en.json'),
   pages: [
     new DashboardPageModule(
       {
