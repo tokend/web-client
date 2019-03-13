@@ -9,6 +9,10 @@ export class ModuleScheme {
    * Build the scheme
    *
    * @param {Object} scheme
+   * @param {String} scheme.sidebarLabel
+   * Label that should be displayed in the sidebar. To make easier
+   * distinguishing of the current scheme.
+   *
    * @param {Function} scheme.importEnLocaleFile
    * Example: _ => import('./path').
    *
@@ -18,6 +22,7 @@ export class ModuleScheme {
     this._validateRawScheme(scheme)
 
     this._rawScheme = scheme
+    this._sidebarLabel = scheme.sidebarLabel
     this._pages = scheme.pages
     this._importEnLocaleFile = scheme.importEnLocaleFile
 
@@ -26,6 +31,7 @@ export class ModuleScheme {
     this._validateCache()
   }
 
+  get sidebarLabel () { return this._sidebarLabel }
   get pages () { return this._pages }
   get cache () { return this._cache }
   get importEnLocaleFile () { return this._importEnLocaleFile }

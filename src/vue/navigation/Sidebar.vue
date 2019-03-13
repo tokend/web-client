@@ -27,6 +27,12 @@
         </router-link>
       </section>
 
+      <section class="sidebar__scheme-label-section">
+        <p class="sidebar__scheme-label">
+          {{ schemeLabel }}
+        </p>
+      </section>
+
       <section class="sidebar__links-section">
         <nav
           v-for="[sectionName, menuItems] of Object.entries(sectionsToRender)"
@@ -104,6 +110,9 @@ export default {
       const sections = this.groupPagesBySections(SchemeRegistry.current.pages)
       const filteredSections = this.filterUnrenderedSections(sections)
       return filteredSections
+    },
+    schemeLabel () {
+      return SchemeRegistry.current.sidebarLabel
     },
   },
 
@@ -253,10 +262,7 @@ $content-item-right-padding: 2.4rem;
 }
 
 .sidebar__logo-section {
-  padding-top: 4rem;
-  padding-bottom: 5rem;
-  padding: 4rem 2.4rem 5rem 4rem;
-  padding: 4rem $content-item-right-padding 5rem $content-item-left-padding;
+  padding: 4rem $content-item-right-padding 0 $content-item-left-padding;
 
   @include respond-to-custom($sidebar-hide-bp) {
     .sidebar__aside--closed & {
@@ -272,7 +278,20 @@ $content-item-right-padding: 2.4rem;
   display: block;
 }
 
+.sidebar__scheme-label-section {
+  padding: 1.6rem $content-item-right-padding 0 $content-item-left-padding;
+}
+
+.sidebar__scheme-label {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: .08rem;
+  color: $col-sidebar-scheme-label;
+}
+
 .sidebar__links-section {
+  margin-top: 3.6rem;
   flex: 1;
 
   @include respond-to-custom($sidebar-hide-bp) {
