@@ -107,4 +107,8 @@ export class AssetRecord {
     return !!(this.policy & ASSET_POLICIES.withdrawable) ||
       !!(this.policy & ASSET_POLICIES.withdrawableV2)
   }
+
+  get isFiat () {
+    return !!this.details.isFiat
+  }
 }

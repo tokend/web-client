@@ -10,6 +10,12 @@ import keyValue from './key-value.module'
 import { movementsHistoryModule } from '@/vue/modules/movements-history/store'
 import { createAssetSaleModule } from '@/vue/modules/create-asset-sale/store'
 import { feesModule } from '@/vue/modules/fees/store'
+import { dividendFormModule } from '@/vue/modules/dividend-form/store'
+import { withdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/store'
+import { withdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/store'
+import { withdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/store'
+import { depositFiatBankModule } from '@/vue/modules/deposit-fiat-bank/store'
+import { depositFiatCardModule } from '@/vue/modules/deposit-fiat-card/store'
 
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
@@ -45,6 +51,12 @@ const store = new Vuex.Store({
     'movements-history': movementsHistoryModule,
     'create-asset-sale': createAssetSaleModule,
     'fees': feesModule,
+    'dividend-form': dividendFormModule,
+    'withdrawal-fiat': withdrawalFiatModule,
+    'withdrawal-fiat-bank': withdrawalFiatBankModule,
+    'withdrawal-fiat-card': withdrawalFiatCardModule,
+    'deposit-fiat-bank': depositFiatBankModule,
+    'deposit-fiat-card': depositFiatCardModule,
   },
   plugins: [sessionStoragePlugin],
 })

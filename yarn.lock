@@ -1836,6 +1836,13 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000926, caniuse-lite@^1.0.30000929:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000932.tgz#d01763e9ce77810962ca7391ff827b5949ce4272"
   integrity sha512-4bghJFItvzz8m0T3lLZbacmEY9X1Z2AtIzTr7s7byqZIOumASfr4ynDx7rtm0J85nDmx8vsgR6vnaSoeU8Oh0A==
 
+card-validator@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/card-validator/-/card-validator-6.1.0.tgz#d36bfc9ff8ee0c69e02d676b2b27f7b6d2dae92d"
+  integrity sha512-YAeCZvHFXj7zxYSjfQEOmL5c19+Bfpdi1hl9BIeAE7a56V3jPO9CbIVwSPPL4yoVPVjfE4Osp44c05UeELhu4A==
+  dependencies:
+    credit-card-type "^8.0.0"
+
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
@@ -2375,6 +2382,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+credit-card-type@^8.0.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/credit-card-type/-/credit-card-type-8.1.0.tgz#141ffe6ea6516d6c62357dfd5278e512da06fc43"
+  integrity sha512-Z2dBLgH04EYiGkOM7phfLFqRPJK42LRTdivOYIZRVQLBZiGswWhw3dbtFhszZQrlGF8vXtAEfm+seAWn4bETLQ==
 
 cross-spawn@^3.0.0:
   version "3.0.1"
@@ -4775,6 +4787,11 @@ i18next@13.1.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-13.1.0.tgz#d8656bbc53216ffcd428364fbfb75f75647846a5"
   integrity sha512-BuDhYRFReCXJiUJ8GdC2m0wXw4vC/BS6e7UJO+wTrkE3K+92VmJn5p/wxqEE+pdffquh9GYYAMfK9rUlb48pcg==
+
+iban@0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/iban/-/iban-0.0.12.tgz#557d4b29b27a5a985e399eaf36f73512c98ec8b6"
+  integrity sha512-j+beWwI28a0tOzb2pTEVPwVl3dpWEuVI7EawGb6bUQD1j2GilGnETTnwIPzQZd1sQQuO4ET0giYt7fQkJ6bB3A==
 
 iconv-lite@0.4, iconv-lite@^0.4.17, iconv-lite@^0.4.24, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
   version "0.4.24"
