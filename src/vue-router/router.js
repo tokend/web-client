@@ -77,7 +77,9 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/AppContent'], resolve),
         beforeEnter: buildInAppRouteGuard(store),
         redirect: vueRoutes.dashboard,
-        children: SchemeRegistry.current.pages.map(page => page.routerEntry),
+        children: SchemeRegistry.current.pages
+          .filter(page => page.isAccessible)
+          .map(page => page.routerEntry),
       },
     ],
     scrollBehavior: _ => ({ x: 0, y: 0 }),

@@ -12,24 +12,30 @@
           :scale="scale"
         />
         <div class="dashboard__actions">
-          <button
-            v-if="isAccountCorporate"
-            class="app__button-raised dashboard__action"
-            @click="createIssuanceFormIsShown = true"
-          >
-            <i class="mdi mdi-plus dashboard__plus-icon" />
-            {{ 'dashboard.create-issuance-lbl' | globalize }}
-          </button>
-          <button
-            v-if="currentAsset"
-            class="app__button-raised dashboard__action"
-            @click="transferFormIsShown = true"
-          >
-            <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
-            {{
-              'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
-            }}
-          </button>
+          <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)">
+            <button
+              class="app__button-raised dashboard__action"
+              @click="createIssuanceFormIsShown = true"
+            >
+              <i class="mdi mdi-plus dashboard__plus-icon" />
+              {{ 'dashboard.create-issuance-lbl' | globalize }}
+            </button>
+          </template>
+
+          <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
+            <button
+              v-if="currentAsset"
+              class="app__button-raised dashboard__action"
+              @click="transferFormIsShown = true"
+            >
+              <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
+              {{
+                'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
+              }}
+            </button>
+          </template>
         </div>
       </div>
       <template v-if="currentAsset">
@@ -88,6 +94,9 @@ import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+
 export default {
   name: 'dashboard',
   components: {
@@ -108,6 +117,8 @@ export default {
     scale: 'month',
     config,
     MovementsHistoryModule,
+    IssuanceDrawerPseudoModule,
+    TransferDrawerPseudoModule,
   }),
   computed: {
     ...mapGetters([
