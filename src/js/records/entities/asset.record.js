@@ -41,7 +41,11 @@ export class AssetRecord {
   }
 
   logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+    if (this.details.logoUrl) {
+      return this.details.logoUrl
+    } else {
+      return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+    }
   }
 
   termsUrl (storageUrl) {

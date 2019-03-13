@@ -1,4 +1,4 @@
 export const ASSET_SUBTYPE = {
-  bondCreation: 'bond',
+  bond: 'bond',
   share: 'share',
 }

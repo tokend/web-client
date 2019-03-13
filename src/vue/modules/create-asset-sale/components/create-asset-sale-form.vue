@@ -95,19 +95,6 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <file-field
-              name="asset-create-logo"
-              v-model="form.information.logo"
-              :note="'create-asset-sale-form.logo-note' | globalize"
-              accept=".jpg, .png"
-              :document-type="DOCUMENT_TYPES.assetLogo"
-              :label="'create-asset-sale-form.logo-lbl' | globalize"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <file-field
               v-model="form.information.terms"
               name="asset-create-terms"
               :note="'create-asset-sale-form.terms-note' | globalize"
@@ -222,7 +209,7 @@
         </div>
         <div
           class="app__form-row"
-          v-if="form.information.formType.value === ASSET_SUBTYPE.bondCreation"
+          v-if="form.information.formType.value === ASSET_SUBTYPE.bond"
         >
           <div class="app__form-field">
             <date-field
@@ -255,7 +242,7 @@
               name="create-sale-hard-cap"
               :label="
                 form.information.formType.value ===
-                  ASSET_SUBTYPE.bondCreation ?
+                  ASSET_SUBTYPE.bond ?
                     'create-asset-sale-form.annual-return' :
                     'create-asset-sale-form.expected-revenue' | globalize
               "
@@ -392,9 +379,10 @@ import { base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
 import { api } from '../_api'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
+import { IMG_URL } from '@/js/const/img-urls.const'
 
 import { DateUtil } from '@/js/utils'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { types } from '../store/types'
 import {
   required,
@@ -458,7 +446,6 @@ export default {
         information: {
           name: '',
           code: '',
-          logo: null,
           policies: [],
           assetType: '',
           formType: {},
@@ -524,13 +511,13 @@ export default {
               moment().toString()),
           },
           maturityDate: {
-
             required: requiredUnless(function () {
               return this.form.information.formType.value ===
                 ASSET_SUBTYPE.bondCreation
             }),
-            minDate: minDate(this.form.saleInformation.endTime ||
-              moment().toString()),
+            minDate: minDate(
+              this.form.information.formType.value === ASSET_SUBTYPE.bond
+                ? this.form.saleInformation.endTime : 0),
           },
           softCap: {
             required,
@@ -563,13 +550,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('create-asset-sale', [
-    ]),
     formTypes () {
       return [
         {
           label: globalize('create-asset-sale-form.bond-creation'),
-          value: ASSET_SUBTYPE.bondCreation,
+          value: ASSET_SUBTYPE.bond,
         },
         {
           label: globalize('create-asset-sale-form.property-purchase'),
@@ -672,7 +657,6 @@ export default {
       const requestId = this.request
         ? this.request.id
         : ASSET_CREATION_REQUEST_ID
-      const logo = this.form.information.logo
       const terms = this.form.information.terms
 
       const operation = {
@@ -686,22 +670,24 @@ export default {
         policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
         creatorDetails: {
           name: this.form.information.name,
-          logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
+          logo: EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
           annualReturn: this.form.saleInformation.annualReturn,
           subtype: this.form.information.formType.value,
         },
       }
-      if (this.form.information.formType.value === ASSET_SUBTYPE.bondCreation) {
+      if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
         operation.creatorDetails.maturityDate = DateUtil
           .toMs(this.form.saleInformation.maturityDate)
+        operation.creatorDetails.logoUrl = IMG_URL.bondLogo
+      } else {
+        operation.creatorDetails.logoUrl = IMG_URL.shareLogo
       }
       return base.ManageAssetBuilder.assetCreationRequest(operation)
     },
     async uploadDocuments () {
       const documents = [
         this.form.shortBlurb.saleLogo,
-        this.form.information.logo,
         this.form.information.terms,
       ]
       for (let document of documents) {

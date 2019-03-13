@@ -41,7 +41,7 @@ export default {
     },
   },
   data: _ => ({
-    EVENTS
+    EVENTS,
   }),
   async created () {
     initApi(this.wallet, this.config)

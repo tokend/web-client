@@ -104,7 +104,7 @@
           </tr>
 
           <tr v-if="request.details.annualReturn">
-            <td v-if="ASSET_SUBTYPE.bondCreation === request.details.subtype">
+            <td v-if="ASSET_SUBTYPE.bond === request.details.subtype">
               {{ 'asset-request-details.annual-return' | globalize }}
             </td>
             <td v-else>

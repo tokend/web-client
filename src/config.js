@@ -33,7 +33,7 @@ export default Object.assign(
       movements: true,
       issuance: true,
       assets: false,
-      requests: true,
+      requests: false,
       settings: true,
       limits: true,
       sales: true,
