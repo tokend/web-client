@@ -3,15 +3,15 @@
     <div class="loyalty-points-statistics__withdrawals">
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{ 'loyalty-points.statistics.withdrawals-title' | globalize }}
+          {{ 'loyalty-points-statistics.withdrawals-title' | globalize }}
         </h3>
-        <withdrawals-viewer />
+        <withdrawals-statistics-viewer />
       </div>
 
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
           {{
-            'loyalty-points.statistics.withdrawal-requests-title' | globalize
+            'loyalty-points-statistics.withdrawal-requests-title' | globalize
           }}
         </h3>
         <withdrawal-requests-viewer />
@@ -21,14 +21,14 @@
     <div class="loyalty-points-statistics__volumes">
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{ 'loyalty-points.statistics.incoming-volume-title' | globalize }}
+          {{ 'loyalty-points-statistics.incoming-volume-title' | globalize }}
         </h3>
         <incoming-volume-viewer />
       </div>
 
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{ 'loyalty-points.statistics.summary-volume-title' | globalize }}
+          {{ 'loyalty-points-statistics.summary-volume-title' | globalize }}
         </h3>
         <summary-volume-viewer />
       </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import WithdrawalsViewer from './components/viewers/withdrawals-viewer'
+import WithdrawalsStatisticsViewer from './components/viewers/withdrawals-statistics-viewer'
 import WithdrawalRequestsViewer from './components/viewers/withdrawal-requests-viewer'
 import IncomingVolumeViewer from './components/viewers/incoming-volume-viewer'
 import SummaryVolumeViewer from './components/viewers/summary-volume-viewer'
@@ -49,7 +49,7 @@ import { Wallet } from '@tokend/js-sdk'
 export default {
   name: 'loyalty-points-statistics-module',
   components: {
-    WithdrawalsViewer,
+    WithdrawalsStatisticsViewer,
     WithdrawalRequestsViewer,
     IncomingVolumeViewer,
     SummaryVolumeViewer,
@@ -69,10 +69,6 @@ export default {
       required: true,
     },
   },
-
-  data: _ => ({
-    isLoaded: false,
-  }),
 
   async created () {
     initApi(this.wallet, this.config)
@@ -105,7 +101,7 @@ export default {
 }
 
 .loyalty-points-statistics_viewer-title {
-  margin-bottom: 3.2rem;
+  margin-bottom: 1.6rem;
   font-size: 2.2rem;
   text-align: center;
 }

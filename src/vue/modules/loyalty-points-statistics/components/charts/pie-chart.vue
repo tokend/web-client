@@ -160,7 +160,7 @@ export default {
         .enter()
         .append('polyline')
         .attr('points', item => {
-          const linePosition = (SCALE_COEFF - 0.05) * this.radius
+          const linePosition = (SCALE_COEFF - 0.025) * this.radius
           let pos = this.outerArc.centroid(item)
 
           pos[0] = linePosition * this.getMidAngleDirectionSign(item)
@@ -214,19 +214,17 @@ export default {
     filter: drop-shadow(0rem 0.3rem 0.3rem $col-pie-chart-shadow);
   }
 
-  &__lines polyline {
-    opacity: 0.3;
+  .pie-chart__lines polyline {
     stroke-width: 0.2rem;
     stroke: $col-pie-chart-stroke;
     fill: none;
   }
 
-  &__label {
+  .pie-chart__label {
     font-size: 1.6rem;
-    font-style: italic;
+    fill: $col-pie-chart-text;
 
     tspan {
-      font-style: normal;
       font-weight: bold;
     }
   }

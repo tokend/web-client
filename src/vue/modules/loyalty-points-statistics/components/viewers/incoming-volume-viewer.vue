@@ -7,14 +7,14 @@
       :currency="point"
     />
 
-    <load-spinner
-      v-else-if="!isLoadFailed"
-      message-id="loyalty-points.statistics.loading-msg"
-    />
-
-    <p v-else>
-      {{ 'loyalty-points.statistics.loading-error-msg' | globalize }}
+    <p v-else-if="isLoadFailed">
+      {{ 'incoming-volume-viewer.loading-error-msg' | globalize }}
     </p>
+
+    <load-spinner
+      v-else
+      message-id="incoming-volume-viewer.loading-msg"
+    />
   </div>
 </template>
 

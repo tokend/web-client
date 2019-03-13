@@ -33,7 +33,7 @@ for further information about branching and tagging conventions.
 - Trade chart displaying
 - Buttons position on Verify page
 - Drop down text overflow
-- Line chart displaying
+- Chart line displaying
 
 ### Added
 - Added assetType in to asset.record

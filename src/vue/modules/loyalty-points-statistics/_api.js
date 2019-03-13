@@ -5,7 +5,7 @@ let _api = null
 /**
  * @param {Wallet} wallet - wallet to sign the requests
  * @param {Object} config
- * @param {Wallet} config.horizonURL - the url of the horizon server
+ * @param {String} config.horizonURL - the url of the horizon server
  * (without version prefix)
  */
 export function initApi (wallet, config) {

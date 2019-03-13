@@ -1,19 +1,19 @@
 <template>
-  <div class="withdrawals-viewer">
+  <div class="withdrawals-statistics-viewer">
     <line-chart
       v-if="isLoaded"
       id="withdrawals-chart"
       :data="withdrawals"
     />
 
-    <load-spinner
-      v-else-if="!isLoadFailed"
-      message-id="loyalty-points.statistics.loading-msg"
-    />
-
-    <p v-else>
-      {{ 'loyalty-points.statistics.loading-error-msg' | globalize }}
+    <p v-else-if="isLoadFailed">
+      {{ 'withdrawals-statistics-viewer.loading-error-msg' | globalize }}
     </p>
+
+    <load-spinner
+      v-else
+      message-id="withdrawals-statistics-viewer.loading-msg"
+    />
   </div>
 </template>
 
@@ -26,7 +26,7 @@ import withdrawalsMock from '../../mocks/withdrawals'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'withdrawals-viewer',
+  name: 'withdrawals-statistics-viewer',
   components: {
     LineChart,
     LoadSpinner,

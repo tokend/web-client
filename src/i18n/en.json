@@ -432,17 +432,36 @@
     },
 
     "loyalty-points": {
-      "create-invoice-form-title": "Create invoice",
-      "statistics": {
-        "loading-msg": "Loading…",
-        "loading-error-msg": "There was an error while loading.",
-        "withdrawals-title": "Withdrawals",
-        "withdrawal-requests-title": "Withdrawal requests",
-        "incoming-volume-title": "Withdrawal's incoming volume",
-        "summary-volume-title": "Withdrawal's summary volume",
-        "approved-request-label": "Approved",
-        "rejected-request-label": "Rejected"
-      }
+      "create-invoice-form-title": "Create invoice"
+    },
+
+    "loyalty-points-statistics": {
+      "withdrawals-title": "Withdrawals",
+      "withdrawal-requests-title": "Withdrawal requests",
+      "incoming-volume-title": "Withdrawal's incoming volume",
+      "summary-volume-title": "Withdrawal's summary volume"
+    },
+
+    "incoming-volume-viewer": {
+      "loading-msg": "Loading incoming withdrawal's volume",
+      "loading-error-msg": "There was an error while loading."
+    },
+
+    "summary-volume-viewer": {
+      "loading-msg": "Loading summary withdrawal's volume…",
+      "loading-error-msg": "There was an error while loading."
+    },
+
+    "withdrawals-statistics-viewer": {
+      "loading-msg": "Loading withdrawals statistics…",
+      "loading-error-msg": "There was an error while loading."
+    },
+
+    "withdrawal-requests-viewer": {
+      "loading-msg": "Loading withdrawal requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "approved-request-label": "Approved",
+      "rejected-request-label": "Rejected"
     },
 
     "create-invoice-form": {

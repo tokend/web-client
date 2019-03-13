@@ -6,14 +6,14 @@
       :data="requestsStatistics"
     />
 
-    <load-spinner
-      v-else-if="!isLoadFailed"
-      message-id="loyalty-points.statistics.loading-msg"
-    />
-
-    <p v-else>
-      {{ 'loyalty-points.statistics.loading-error-msg' | globalize }}
+    <p v-else-if="isLoadFailed">
+      {{ 'withdrawal-requests-viewer.loading-error-msg' | globalize }}
     </p>
+
+    <load-spinner
+      v-else
+      message-id="withdrawal-requests-viewer.loading-msg"
+    />
   </div>
 </template>
 
@@ -28,7 +28,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { globalize } from '@/vue/filters/globalize'
 
-const COLORS = {
+const PIE_CHART_COLORS = {
   green: '#33a494',
   red: '#ef5350',
 }
@@ -53,18 +53,18 @@ export default {
       // translate them before passing.
       return [
         {
-          label: globalize('loyalty-points.statistics.approved-request-label'),
+          label: globalize('withdrawal-requests-viewer.approved-request-label'),
           value: this.withdrawalRequests
             .filter(item => item.isApproved)
             .length,
-          color: COLORS.green,
+          color: PIE_CHART_COLORS.green,
         },
         {
-          label: globalize('loyalty-points.statistics.rejected-request-label'),
+          label: globalize('withdrawal-requests-viewer.rejected-request-label'),
           value: this.withdrawalRequests
             .filter(item => item.isRejected)
             .length,
-          color: COLORS.red,
+          color: PIE_CHART_COLORS.red,
         },
       ]
     },
