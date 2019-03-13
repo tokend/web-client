@@ -70,7 +70,7 @@ export default {
 
   methods: {
     async loadComponent () {
-      const { default: component } = await this.submodule.importComponent()
+      const { default: component } = await this.submodule.importComponentFn()
       this.component = component
     },
   },

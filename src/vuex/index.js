@@ -35,8 +35,8 @@ async function buildStore () {
   const stores = (await Promise
     .all(
       SchemeRegistry.current.cache
-        .filter(item => item.importStore)
-        .map(item => item.importStore())
+        .filter(item => item.importStoreFn)
+        .map(item => item.importStoreFn())
     ))
     .reduce((res, item) => ({ ...res, [item.name]: item }))
 

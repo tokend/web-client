@@ -5,7 +5,7 @@ export class FeesPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Fees'),
+      importComponentFn: _ => import('@/vue/pages/Fees'),
       allowedSubmodules: [
         FeesModule,
       ],

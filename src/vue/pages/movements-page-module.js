@@ -5,7 +5,7 @@ export class MovementsHistoryPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Movements'),
+      importComponentFn: _ => import('@/vue/pages/Movements'),
       allowedSubmodules: [
         MovementsHistoryModule,
       ],

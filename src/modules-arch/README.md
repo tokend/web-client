@@ -11,8 +11,8 @@ import { ModuleDescriptor } from '.../module-descriptor.js'
 export class History extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
-      importComponent: _ => import('.../history/component.vue'),
-      importStore: _ => import('.../history/store/index.js'),
+      importComponentFn: _ => import('.../history/component.vue'),
+      importStoreFn: _ => import('.../history/store/index.js'),
     })
   }
 }
@@ -26,8 +26,8 @@ import { History } from '.../history-module.js'
 export class SendTransfer extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
-      importComponent: _ => import('.../send-transfer/component.vue'),
-      importStore: _ => import('.../send-transfer/store/index.js'),
+      importComponentFn: _ => import('.../send-transfer/component.vue'),
+      importStoreFn: _ => import('.../send-transfer/store/index.js'),
       dependencies: [
         History,
         // Scheme will throw an error if any dependency absent in the
@@ -49,7 +49,7 @@ import { History } from '.../history-module.js'
 export class DashboardPage extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
-      importComponent: _ => import('.../pages/dashboard.vue'),
+      importComponentFn: _ => import('.../pages/dashboard.vue'),
       allowedSubmodules: [
         History,
         SendTransfer,
@@ -69,7 +69,7 @@ import { History } from '.../history-module.js'
 export class MovementsPage extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
-      importComponent: _ => import('.../pages/movements.vue'),
+      importComponentFn: _ => import('.../pages/movements.vue'),
       allowedSubmodules: [
         History,
         // Scheme will throw an error if any submodule that doesn’t exist in

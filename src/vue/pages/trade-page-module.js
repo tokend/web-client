@@ -4,7 +4,7 @@ export class TradePageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Trade'),
+      importComponentFn: _ => import('@/vue/pages/Trade'),
     })
   }
 }

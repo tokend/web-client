@@ -5,7 +5,7 @@ export class DashboardPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Dashboard'),
+      importComponentFn: _ => import('@/vue/pages/Dashboard'),
       allowedSubmodules: [
         MovementsHistoryModule,
       ],

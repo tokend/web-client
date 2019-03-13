@@ -4,7 +4,7 @@ export class SettingsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Settings'),
+      importComponentFn: _ => import('@/vue/pages/Settings'),
     })
   }
 }

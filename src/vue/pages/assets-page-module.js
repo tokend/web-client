@@ -4,7 +4,7 @@ export class AssetsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Assets'),
+      importComponentFn: _ => import('@/vue/pages/Assets'),
     })
   }
 }

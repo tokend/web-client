@@ -4,7 +4,7 @@ export class RequestsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Requests'),
+      importComponentFn: _ => import('@/vue/pages/Requests'),
     })
   }
 }

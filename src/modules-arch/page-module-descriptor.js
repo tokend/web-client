@@ -47,7 +47,7 @@ export class PageModuleDescriptor extends ModuleDescriptor {
     }
 
     const entry = opts.routerEntry
-    entry.component = this.importComponent
+    entry.component = this.importComponentFn
     return entry
   }
 }

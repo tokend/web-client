@@ -11,18 +11,18 @@ export class ModuleDescriptor {
    *
    * @param {Object} opts
    *
-   * @param {Function} opts.importComponent
-   * Path to the entry point vue-component of the module. Please provide
-   * function like _ => import('./path).
+   * @param {Function} opts.importComponentFn
+   * Path to the entry point vue-component of the module.
+   * Example: _ => import('./path).
    *
    * Neither require() nor import() work with variables. So you cannot do
    * anything like require(SomeModule.componentPath). To make the components
    * lazy-loaded we have to define them in a way like _ => import('./path)
    * directly during the definition.
    *
-   * @param {String} [opts.importStore]
-   * Path to the entry point vuex-module of the module. Please provide
-   * function like _ => import('./path).
+   * @param {String} [opts.importStoreFn]
+   * Path to the entry point vuex-module of the module.
+   * Example: _ => import('./path).
    *
    * @param {ModuleDescriptor.constructor[]} [opts.dependencies]
    * Constructors of modules the module depends on.
@@ -53,18 +53,18 @@ export class ModuleDescriptor {
       allowedSubmodules = [],
       submodules = [],
       incompatibles = [],
-      importComponent = null,
-      importStore = null,
+      importComponentFn = null,
+      importStoreFn = null,
     } = opts
 
-    if (typeof importComponent !== 'function') {
-      throw new Error(`${this.constructor.name}: no importComponent provided`)
+    if (typeof importComponentFn !== 'function') {
+      throw new Error(`${this.constructor.name}: no importComponentFn provided`)
     }
 
-    this._importComponent = this._rememberUidAfterImport(importComponent)
+    this._importComponentFn = this._rememberUidAfterImport(importComponentFn)
 
-    if (importStore) {
-      this._importStore = importStore
+    if (importStoreFn) {
+      this._importStoreFn = importStoreFn
     }
 
     this._dependencies = dependencies
@@ -76,8 +76,8 @@ export class ModuleDescriptor {
     this._submodules = submodules
   }
 
-  get importComponent () { return this._importComponent }
-  get importStore () { return this._importStore }
+  get importComponentFn () { return this._importComponentFn }
+  get importStoreFn () { return this._importStoreFn }
   get dependencies () { return this._dependencies }
   get allowedSubmodules () { return this._allowedSubmodules }
   get submodules () { return this._submodules }

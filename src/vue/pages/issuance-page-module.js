@@ -5,7 +5,7 @@ export class IssuancePageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponent: _ => import('@/vue/pages/Issuance'),
+      importComponentFn: _ => import('@/vue/pages/Issuance'),
       allowedSubmodules: [
         IssuanceExplorerModule,
       ],
