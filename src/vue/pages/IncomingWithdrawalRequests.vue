@@ -39,7 +39,7 @@
                 :key="index"
               >
                 <td :title="request.requestor">
-                  {{ request.requestor }}
+                  <email-getter :account-id="request.requestor" />
                 </td>
 
                 <td :title="request.amount | formatMoney">
@@ -137,12 +137,13 @@ import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import WithdrawalRequestDetails from './withdrawals/WithdrawalRequestDetails'
+import WithdrawalRequestDetails from '@/vue/pages/withdrawals/WithdrawalRequestDetails'
 import { base } from '@tokend/js-sdk'
 import { Api } from '../../api'
 import {
   WithdrawalDetailsRequestRecord,
 } from '@/js/records/requests/withdrawal-details.record'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 const HORIZON_VERSION_PREFIX = 'v3'
 
@@ -154,6 +155,7 @@ export default {
     NoDataMessage,
     CollectionLoader,
     WithdrawalRequestDetails,
+    EmailGetter,
   },
 
   data: _ => ({

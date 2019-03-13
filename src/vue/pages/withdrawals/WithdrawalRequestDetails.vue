@@ -177,12 +177,12 @@ import config from '@/config'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import TextareaField from '../../fields/TextareaField'
-import FormConfirmation from '../../common/FormConfirmation'
+import TextareaField from '@/vue/fields/TextareaField'
+import FormConfirmation from '@/vue/common/FormConfirmation'
 import {
   WithdrawalDetailsRequestRecord,
 } from '@/js/records/requests/withdrawal-details.record'
-import EmailGetter from '../../common/EmailGetter'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 const EVENTS = {
   approve: 'approve',
