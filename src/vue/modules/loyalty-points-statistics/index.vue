@@ -3,14 +3,16 @@
     <div class="loyalty-points-statistics__withdrawals">
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          Withdrawals
+          {{ 'loyalty-points.statistics.withdrawals-title' | globalize }}
         </h3>
         <withdrawals-viewer />
       </div>
 
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          Withdrawal requests
+          {{
+            'loyalty-points.statistics.withdrawal-requests-title' | globalize
+          }}
         </h3>
         <withdrawal-requests-viewer />
       </div>
@@ -19,14 +21,14 @@
     <div class="loyalty-points-statistics__volumes">
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          Withdrawal's incoming volume
+          {{ 'loyalty-points.statistics.incoming-volume-title' | globalize }}
         </h3>
         <incoming-volume-viewer />
       </div>
 
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          Withdrawal's summary volume
+          {{ 'loyalty-points.statistics.summary-volume-title' | globalize }}
         </h3>
         <summary-volume-viewer />
       </div>

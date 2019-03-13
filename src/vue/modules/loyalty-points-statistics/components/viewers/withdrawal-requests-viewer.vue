@@ -12,6 +12,8 @@ import withdrawalRequestsMock from '../../mocks/withdrawal-requests'
 import { WithdrawalRequest } from '../../wrappers/withdrawal-request'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { globalize } from '@/vue/filters/globalize'
+
 export default {
   name: 'withdrawal-requests-viewer',
   components: {
@@ -28,16 +30,18 @@ export default {
     pieData () {
       return [
         {
-          label: 'Approved',
+          label: globalize('loyalty-points.statistics.approved-request-label'),
           value: this.withdrawalRequests
             .filter(item => item.isApproved)
             .length,
+          color: '#33a494',
         },
         {
-          label: 'Rejected',
+          label: globalize('loyalty-points.statistics.rejected-request-label'),
           value: this.withdrawalRequests
             .filter(item => item.isRejected)
             .length,
+          color: '#ef5350',
         },
       ]
     },

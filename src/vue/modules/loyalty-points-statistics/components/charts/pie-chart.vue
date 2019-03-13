@@ -37,10 +37,6 @@ export default {
   }),
 
   computed: {
-    color () {
-      return d3.scaleOrdinal().range(['#33a494', '#ef5350', '#7b6eff'])
-    },
-
     floatFormat () {
       return d3.format('.4r')
     },
@@ -118,7 +114,7 @@ export default {
         .selectAll('path')
         .data(pie)
         .enter().append('path')
-        .attr('fill', item => this.color(item.data.label))
+        .attr('fill', item => item.data.color)
         .attr('d', this.innerArc)
     },
 
@@ -177,7 +173,7 @@ export default {
         this.svg.append('circle')
           .attr('class', 'pie-chart__tool-circle')
           .attr('r', this.radius * 0.35)
-          .style('fill', this.color(item.data.label))
+          .style('fill', item.data.color)
           .style('fill-opacity', 0.35)
       })
 
