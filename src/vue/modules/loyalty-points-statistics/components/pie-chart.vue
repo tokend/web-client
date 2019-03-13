@@ -7,9 +7,18 @@
 </template>
 
 <script>
-import * as d3 from 'd3'
+import * as d3Selection from 'd3-selection'
+import * as d3Scale from 'd3-scale'
+import * as d3Shape from 'd3-shape'
+import * as d3Format from 'd3-format'
 
-import species from './species'
+const d3 = Object.assign(
+  {},
+  d3Selection,
+  d3Shape,
+  d3Scale,
+  d3Format,
+)
 
 export default {
   name: 'pie-chart',
@@ -29,7 +38,7 @@ export default {
 
   computed: {
     color () {
-      return d3.scaleOrdinal().range(['green', 'red', 'blue'])
+      return d3.scaleOrdinal().range(['#33A494', '#ef5350', '#7b6eff'])
     },
 
     floatFormat () {
@@ -45,44 +54,43 @@ export default {
     },
 
     totalValue () {
-      return this.data.reduce((sum, item) => sum + item.value, 0)
-    },
-  },
-
-  mounted () {
-    this.width = this.$el.parentElement.clientWidth - 1
-    this.height = this.width / 2
-    this.render()
-  },
-
-  methods: {
-    render () {
-      this.data = species
-      d3.select(this.$refs.chart)
-        .datum(this.data)
-        .call(this.chartRenderer)
+      return this.data.reduce((sum, item) => sum + Number(item.value), 0)
     },
 
-    chartRenderer (selection) {
-      selection.each(data => {
-        this.buildPieChart(data, selection)
-      })
-    },
-
-    buildPieChart (data, selection) {
-      const pie = d3.pie()
-        .value(d => this.floatFormat(d.value))
-        .sort(null)
-
-      const arc = d3.arc()
+    innerArc () {
+      return d3.arc()
         .outerRadius(this.radius * 0.8)
         .innerRadius(this.radius * 0.4)
         .cornerRadius(this.cornerRadius)
         .padAngle(this.padAngle)
+    },
 
-      const outerArc = d3.arc()
+    outerArc () {
+      return d3.arc()
         .outerRadius(this.radius * 0.9)
         .innerRadius(this.radius * 0.9)
+    },
+  },
+
+  mounted () {
+    this.setDimensions()
+    this.render()
+  },
+
+  methods: {
+    setDimensions () {
+      this.width = this.$el.parentElement.clientWidth - 1
+      this.height = this.width / 2
+    },
+
+    render () {
+      d3.select(this.$refs.chart)
+        .call(this.chartRenderer)
+    },
+
+    chartRenderer (selection) {
+      const pie = d3.pie()
+        .value(item => this.floatFormat(item.value))
 
       this.svg = selection.append('svg')
         .attr('width', this.width)
@@ -90,99 +98,124 @@ export default {
         .append('g')
         .attr('transform', `translate(${this.width / 2},${this.height / 2})`)
 
-      this.svg.append('g').attr('class', 'slices')
-      this.svg.append('g').attr('class', 'labelName')
-      this.svg.append('g').attr('class', 'lines')
-
-      this.renderSlices(data, pie, arc)
-      this.renderLabel(pie, outerArc)
-      this.renderLines(pie, arc, outerArc)
-
-      d3.selectAll('.labelName text, .slices path').call(this.renderToolTip)
+      this.renderPieParts(pie)
     },
 
-    renderSlices (data, pie, arc) {
-      this.svg.select('.slices')
-        .datum(data).selectAll('path')
+    renderPieParts (pie) {
+      this.renderSlices(pie)
+      this.renderLabel(pie)
+      this.renderLines(pie)
+
+      d3.selectAll('.pie-chart__label text, .pie-chart__slices path')
+        .call(this.renderToolTip)
+    },
+
+    renderSlices (pie) {
+      this.svg.append('g').attr('class', 'pie-chart__slices')
+
+      this.svg.select('.pie-chart__slices')
+        .datum(this.data)
+        .selectAll('path')
         .data(pie)
         .enter().append('path')
-        .attr('fill', d => this.color(d.data.label))
-        .attr('d', arc)
+        .attr('fill', item => this.color(item.data.label))
+        .attr('d', this.innerArc)
     },
 
-    renderLabel (pie, outerArc) {
-      this.svg.select('.labelName').selectAll('text')
+    renderLabel (pie) {
+      this.svg.append('g').attr('class', 'pie-chart__label')
+
+      this.svg.select('.pie-chart__label')
+        .datum(this.data)
+        .selectAll('text')
         .data(pie)
-        .enter().append('text')
+        .enter()
+        .append('text')
         .attr('dy', '.35em')
-        .html((d) => d.data.label + ': <tspan>' + d.data.value + '</tspan>')
-        .attr('transform', d => {
-          let pos = outerArc.centroid(d)
+        .html(item => `${item.data.label}: <tspan>${item.data.value}</tspan>`)
+        .attr('transform', item => {
+          let pos = this.outerArc.centroid(item)
 
-          pos[0] = this.radius * 0.85 * (this.midAngle(d) < Math.PI ? 1 : -1)
-          return 'translate(' + pos + ')'
+          pos[0] = this.radius * 0.85 * this.getMidAngleDirectionSign(item)
+          return `translate(${pos})`
         })
-        .style('text-anchor', d => (this.midAngle(d)) < Math.PI ? 'start' : 'end')
+        .style('text-anchor', item => {
+          return this.getMidAngleDirectionSign(item) > 0 ? 'start' : 'end'
+        })
     },
 
-    renderLines (pie, arc, outerArc) {
-      this.svg.select('.lines')
+    renderLines (pie) {
+      this.svg.append('g').attr('class', 'pie-chart__lines')
+
+      this.svg.select('.pie-chart__lines')
+        .datum(this.data)
         .selectAll('polyline')
         .data(pie)
-        .enter().append('polyline')
-        .attr('points', d => {
-          let pos = outerArc.centroid(d)
-          pos[0] = this.radius * 0.8 * (this.midAngle(d) < Math.PI ? 1 : -1)
-          return [arc.centroid(d), outerArc.centroid(d), pos]
-        })
-    },
+        .enter()
+        .append('polyline')
+        .attr('points', item => {
+          let pos = this.outerArc.centroid(item)
+          pos[0] = 0.8 * this.radius * this.getMidAngleDirectionSign(item)
 
-    midAngle (d) {
-      return d.startAngle + (d.endAngle - d.startAngle) / 2
+          return [
+            this.innerArc.centroid(item),
+            this.outerArc.centroid(item),
+            pos,
+          ]
+        })
     },
 
     renderToolTip (selection) {
-      selection.on('mouseenter', data => {
+      selection.on('mouseenter', item => {
         this.svg.append('text')
-          .attr('class', 'toolCircle')
+          .attr('class', 'pie-chart__tool-circle')
           .attr('dy', 10)
-          .html(this.percentFormat(data.data.value / this.totalValue))
+          .html(this.percentFormat(item.data.value / this.totalValue))
           .style('font-size', '2.4rem')
           .style('text-anchor', 'middle')
 
         this.svg.append('circle')
-          .attr('class', 'toolCircle')
+          .attr('class', 'pie-chart__tool-circle')
           .attr('r', this.radius * 0.35)
-          .style('fill', this.color(data.data.label))
+          .style('fill', this.color(item.data.label))
           .style('fill-opacity', 0.35)
       })
 
-      selection.on('mouseout', () => d3.selectAll('.toolCircle').remove())
+      selection.on('mouseout', () => {
+        d3.selectAll('.pie-chart__tool-circle').remove()
+      })
+    },
+
+    getMidAngleDirectionSign (item) {
+      const midAngle = item.startAngle + (item.endAngle - item.startAngle) / 2
+      return midAngle < Math.PI ? 1 : -1
     },
   },
 }
 </script>
 
 <style lang="scss">
-svg {
-  -webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.3) );
-  filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.25) );
-}
+.pie-chart {
+  svg {
+    -webkit-filter: drop-shadow(0rem 0.3rem 0.3rem rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0rem 0.3rem 0.3rem rgba(0, 0, 0, 0.25));
+  }
 
-polyline{
-  opacity: .3;
-  stroke: black;
-  stroke-width: .2rem;
-  fill: none;
-}
+  &__lines polyline {
+    opacity: 0.3;
+    stroke: black;
+    stroke-width: 0.2rem;
+    fill: none;
+  }
 
-.labelName tspan {
-  font-style: normal;
-  font-weight: bold;
-}
+  &__label {
+    font-size: 1.6rem;
+    font-style: italic;
 
-.labelName {
-  font-size: 1.6rem;
-  font-style: italic;
+    tspan {
+      font-style: normal;
+      font-weight: bold;
+    }
+  }
 }
 </style>

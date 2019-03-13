@@ -7,13 +7,14 @@
       :stroke-width="20"
     /> -->
 
-    <pie-chart id="requests-chart" />
+    <pie-chart id="requests-chart" :data="species" />
   </div>
 </template>
 
 <script>
 // import DonutChart from '../donut-chart'
 import PieChart from '../pie-chart'
+import species from '../species'
 
 export default {
   name: 'withdrawal-requests-viewer',
@@ -24,6 +25,7 @@ export default {
 
   data: _ => ({
     percent: 75,
+    species,
   }),
 }
 </script>
