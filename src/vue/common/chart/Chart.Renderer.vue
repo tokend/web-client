@@ -95,9 +95,9 @@ export default {
       const parentElement = this.$el.parentElement
       return {
         width: parentElement.clientWidth,
-        height: parentElement.clientHeight < 250
+        height: parentElement.clientWidth < 500
           ? 250
-          : parentElement.clientHeight,
+          : parentElement.clientWidth / 2.5,
       }
     },
     getMaxAndMin () {
