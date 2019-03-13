@@ -4,7 +4,8 @@
       <template v-if="saleDescription">
         <vue-markdown
           class="sale-description-viewe__markdown"
-          :source="saleDescription" />
+          :source="saleDescription"
+        />
       </template>
 
       <template v-else>
@@ -86,7 +87,7 @@ export default {
 </style>
 
 <style>
-  .sale-description-viewe__markdown img {
-      max-width: 100%;
-  }
+.sale-description-viewe__markdown img {
+  max-width: 100%;
+}
 </style>

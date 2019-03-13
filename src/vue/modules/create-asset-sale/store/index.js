@@ -1,14 +1,6 @@
 import { types } from './types'
 import { api } from '../_api'
 import { AssetRecord } from '../wrappers/asset.record'
-//
-// const HORIZON_VERSION_PREFIX = 'v3'
-
-export const state = {
-}
-
-export const mutations = {
-}
 
 export const actions = {
   async [types.LOAD_KV_KYC_REQUIRED] ({ commit, getters }) {
@@ -28,13 +20,7 @@ export const actions = {
   },
 }
 
-export const getters = {
-}
-
 export const createAssetSaleModule = {
   namespaced: true,
-  state,
-  getters,
   actions,
-  mutations,
 }
