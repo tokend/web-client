@@ -115,6 +115,9 @@ export class ModuleDescriptor {
       }
 
       const self = this
+      // We have to keep context of this and context of componentDefinition
+      // at the same time. Please do not use arrow functions here
+
       componentDefinition.beforeCreate.push(function () {
         self._createdComponentUid = this._uid
         self._createdComponent = this
