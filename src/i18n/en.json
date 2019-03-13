@@ -1058,7 +1058,14 @@
       "description-lbl": "Description",
       "upload-btn": "Upload",
       "uploaded-msg": "Your document was successfully uploaded",
-      "document-exists-error": "Such document already exists. Please select another one"
+      "document-exists-error": "Such document already exists. Please select another one",
+      "submit-steps": {
+        "calculating-hash": "Calculating file hash...",
+        "creating-account": "Checking if such document exists in the system...",
+        "uploading-file": "Uploading document to the storage...",
+        "creating-blob": "Saving document metadata to the storage...",
+        "creating-change-role-request": "Anchoring document metadata to the blockchain..."
+      }
     },
 
     "document-explorer": {

@@ -32,20 +32,42 @@
       <div class="app__form-actions document-upload-form__actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
-          :is-pending="isDocumentUploading"
           @ok="submit"
           @cancel="hideConfirmation"
         />
 
-        <button
-          v-else
-          v-ripple
-          type="submit"
-          class="app__button-raised"
-          :disabled="formMixin.isDisabled"
-        >
-          {{ 'document-upload-form.upload-btn' | globalize }}
-        </button>
+        <template v-else>
+          <button
+            v-ripple
+            type="submit"
+            class="app__button-raised"
+            :disabled="formMixin.isDisabled"
+          >
+            {{ 'document-upload-form.upload-btn' | globalize }}
+          </button>
+          <p class="document-upload-form__upload-state-msg">
+            <template v-if="uploadState.isCalculatingHash">
+              <!--eslint-disable-next-line-->
+              {{ 'document-upload-form.submit-steps.calculating-hash' | globalize }}
+            </template>
+            <template v-else-if="uploadState.isCreatingAccount">
+              <!--eslint-disable-next-line-->
+              {{ 'document-upload-form.submit-steps.creating-account' | globalize }}
+            </template>
+            <template v-else-if="uploadState.isUploadingFile">
+              <!--eslint-disable-next-line-->
+              {{ 'document-upload-form.submit-steps.uploading-file' | globalize }}
+            </template>
+            <template v-else-if="uploadState.isCreatingBlob">
+              <!--eslint-disable-next-line-->
+              {{ 'document-upload-form.submit-steps.creating-blob' | globalize }}
+            </template>
+            <template v-else-if="uploadState.isCreatingChangeRoleRequest">
+              <!--eslint-disable-next-line-->
+              {{ 'document-upload-form.submit-steps.creating-change-role-request' | globalize }}
+            </template>
+          </p>
+        </template>
       </div>
     </form>
   </div>
@@ -103,7 +125,15 @@ export default {
       document: null,
       description: '',
     },
-    isDocumentUploading: false,
+
+    isPending: false,
+    uploadState: {
+      isCalculatingHash: false,
+      isCreatingAccount: false,
+      isUploadingFile: false,
+      isCreatingBlob: false,
+      isCreatingChangeRoleRequest: false,
+    },
     DOCUMENT_TYPES,
   }),
   validations: {
@@ -122,7 +152,7 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
 
-      this.isDocumentUploading = true
+      this.hideConfirmation()
       this.disableForm()
 
       try {
@@ -137,21 +167,29 @@ export default {
         }
       }
 
-      this.hideConfirmation()
-      this.isDocumentUploading = false
       this.enableForm()
+      this.resetUploadState()
     },
 
     async processDocumentUploading () {
+      this.uploadState.isCalculatingHash = true
       const docHashBuffer = await this.getDocHashBuffer(this.form.document)
-      const accountId = await this.getAccountIdFromDocHash(docHashBuffer)
-      await this.createAccount(accountId)
+      this.uploadState.isCalculatingHash = false
 
+      const accountId = await this.getAccountIdFromDocHash(docHashBuffer)
+
+      this.uploadState.isCreatingAccount = true
+      await this.createAccount(accountId)
+      this.uploadState.isCreatingAccount = false
+
+      this.uploadState.isUploadingFile = true
       const fileKey = await this.uploadDocument(
         this.form.document,
         accountId
       )
+      this.uploadState.isUploadingFile = false
 
+      this.uploadState.isCreatingBlob = true
       const blobId = await this.createBlob({
         file: {
           key: fileKey,
@@ -161,8 +199,11 @@ export default {
         },
         description: this.form.description,
       })
+      this.uploadState.isCreatingBlob = false
 
+      this.uploadState.isCreatingChangeRoleRequest = true
       await this.createChangeRoleRequest(blobId)
+      this.uploadState.isCreatingChangeRoleRequest = false
     },
 
     async getDocHashBuffer (document) {
@@ -176,6 +217,16 @@ export default {
       const keypair = base.Keypair.fromRawSeed(docHashBuffer)
       return keypair.accountId()
     },
+
+    resetUploadState () {
+      this.uploadState = {
+        isCalculatingHash: false,
+        isCreatingAccount: false,
+        isUploadingFile: false,
+        isCreatingBlob: false,
+        isCreatingChangeRoleRequest: false,
+      }
+    },
   },
 }
 </script>
@@ -186,11 +237,17 @@ export default {
 }
 
 .document-upload-form__actions {
+  display: flex;
+  align-items: center;
   margin-top: 4.9rem;
 
   button {
     max-width: 18rem;
     width: 100%;
   }
+}
+
+.document-upload-form__upload-state-msg {
+  margin-left: 2rem;
 }
 </style>
