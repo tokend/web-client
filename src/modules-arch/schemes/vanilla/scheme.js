@@ -15,6 +15,9 @@ import { SalesPageModule } from '@/vue/pages/sales-page-module'
 import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
+import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
+import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 
 export default new ModuleScheme({
   importStylesFn: _ => import('@/scss/app.scss'),
@@ -167,29 +170,32 @@ export default new ModuleScheme({
         routerEntry: {
           path: '/requests',
           name: vueRoutes.requests.name,
-          redirect: vueRoutes.assetCreationRequests,
           meta: { pageNameTranslationId: 'pages-names.requests' },
-          children: [
-            {
-              path: '/requests/token-creation',
-              name: vueRoutes.assetCreationRequests.name,
-              component: _ => import('@/vue/pages/AssetCreationRequests'),
-            },
-            {
-              path: '/requests/fund-creation',
-              name: vueRoutes.saleCreationRequests.name,
-              component: _ => import('@/vue/pages/SaleCreationRequests'),
-            },
-            {
-              path: '/requests/pre-issuance-upload',
-              name: vueRoutes.preIssuanceUploadRequests.name,
-              component: _ => import('@/vue/pages/PreIssuanceRequests'),
-            },
-          ],
         },
         isCorporateOnly: true,
         menuButtonTranslationId: 'pages-names.requests',
         menuButtonMdiName: 'book-open-variant',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new AssetCreationRequestsPageModule({
+            routerEntry: {
+              path: '/requests/token-creation',
+              name: vueRoutes.assetCreationRequests.name,
+            },
+          }),
+          new SaleCreationRequestsPageModule({
+            routerEntry: {
+              path: '/requests/fund-creation',
+              name: vueRoutes.saleCreationRequests.name,
+            },
+          }),
+          new PreIssuanceRequestsPageModule({
+            routerEntry: {
+              path: '/requests/pre-issuance-upload',
+              name: vueRoutes.preIssuanceUploadRequests.name,
+            },
+          }),
+        ],
       },
     ),
 
