@@ -1,31 +1,64 @@
 <template>
   <div class="withdrawal-requests-viewer">
-    <!-- <donut-chart
-      :percent="percent"
-      foreground-color="#7b6eff"
-      background-color="#c1bfd0"
-      :stroke-width="20"
-    /> -->
-
-    <pie-chart id="requests-chart" :data="species" />
+    <pie-chart id="requests-chart" :data="pieData" />
   </div>
 </template>
 
 <script>
-// import DonutChart from '../donut-chart'
-import PieChart from '../pie-chart'
-import species from '../species'
+import PieChart from '../charts/pie-chart'
+
+import withdrawalRequestsMock from '../../mocks/withdrawal-requests'
+
+import { WithdrawalRequest } from '../../wrappers/withdrawal-request'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'withdrawal-requests-viewer',
   components: {
-    // DonutChart,
     PieChart,
   },
 
   data: _ => ({
-    percent: 75,
-    species,
+    isLoaded: false,
+    isLoadFailed: false,
+    withdrawalRequests: [],
   }),
+
+  computed: {
+    pieData () {
+      return [
+        {
+          label: 'Approved',
+          value: this.withdrawalRequests
+            .filter(item => item.isApproved)
+            .length,
+        },
+        {
+          label: 'Rejected',
+          value: this.withdrawalRequests
+            .filter(item => item.isRejected)
+            .length,
+        },
+      ]
+    },
+  },
+
+  created () {
+    this.loadWithdrawalRequests()
+  },
+
+  methods: {
+    loadWithdrawalRequests () {
+      try {
+        const { data } = withdrawalRequestsMock
+        this.withdrawalRequests = data
+          .map(item => new WithdrawalRequest(item))
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+  },
 }
 </script>

@@ -38,7 +38,7 @@ export default {
 
   computed: {
     color () {
-      return d3.scaleOrdinal().range(['#33A494', '#ef5350', '#7b6eff'])
+      return d3.scaleOrdinal().range(['#33a494', '#ef5350', '#7b6eff'])
     },
 
     floatFormat () {
@@ -136,7 +136,7 @@ export default {
         .attr('transform', item => {
           let pos = this.outerArc.centroid(item)
 
-          pos[0] = this.radius * 0.85 * this.getMidAngleDirectionSign(item)
+          pos[0] = this.radius * 0.9 * this.getMidAngleDirectionSign(item)
           return `translate(${pos})`
         })
         .style('text-anchor', item => {
@@ -155,7 +155,7 @@ export default {
         .append('polyline')
         .attr('points', item => {
           let pos = this.outerArc.centroid(item)
-          pos[0] = 0.8 * this.radius * this.getMidAngleDirectionSign(item)
+          pos[0] = 0.85 * this.radius * this.getMidAngleDirectionSign(item)
 
           return [
             this.innerArc.centroid(item),

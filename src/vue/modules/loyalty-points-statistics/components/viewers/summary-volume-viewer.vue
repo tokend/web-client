@@ -1,75 +1,51 @@
 <template>
   <div class="summary-volume-viewer">
-    <scale-tabs
-      class="summary-volume-viewer__tabs"
-      :class="{ 'summary-volume-viewer__tabs--hidden': !isActualData }"
-      v-model="scale"
-      :is-pending="isLoading"
-    />
-    <chart-renderer
+    <line-chart
+      v-if="isLoaded"
       class="summary-volume-viewer__renderer"
       id="summary-volume-chart"
-      :scale="scale"
-      :has-value="isActualData"
-      :is-loading="isLoading"
-      :data="history"
-      currency="PET"
+      :data="summaryVolumes"
+      :currency="point"
     />
   </div>
 </template>
 
 <script>
-import ChartRenderer from '@/vue/common/chart/Chart.Renderer'
-import ScaleTabs from '@/vue/common/chart/Chart.Tabs'
+import LineChart from '../charts/line-chart'
 
-import summaryVolumes from '../../mocks/summary-volume'
+import summaryVolumesMock from '../../mocks/summary-volume'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+const DEFAULT_POINT = 'PET'
 
 export default {
   name: 'summary-volume-viewer',
   components: {
-    ChartRenderer,
-    ScaleTabs,
+    LineChart,
   },
 
   data: _ => ({
-    data: {},
-    isActualData: false,
-    isLoading: false,
-    scale: 'month',
+    summaryVolumes: {},
+    isLoaded: false,
+    point: DEFAULT_POINT,
   }),
 
-  computed: {
-    history () {
-      return this.data[this.scale] || []
-    },
-  },
-
   created () {
-    this.loadData()
+    this.loadIncomingVolumes()
   },
 
   methods: {
-    loadData () {
-      this.isLoading = true
-      this.isActualData = true
-      this.data = summaryVolumes
-      this.isLoading = false
+    loadIncomingVolumes () {
+      try {
+        const { data } = summaryVolumesMock
+        this.summaryVolumes = data
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.summary-volume-viewer__tabs {
-  margin-bottom: 6rem;
-  display: flex;
-  justify-content: flex-end;
-  transition: all 0.25s;
-}
-
-.summary-volume-viewer__tabs--hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-</style>

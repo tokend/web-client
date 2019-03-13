@@ -1,76 +1,46 @@
 <template>
   <div class="withdrawals-viewer">
-    <scale-tabs
-      class="withdrawals-viewer__tabs"
-      :class="{ 'withdrawals-viewer__tabs--hidden': !isActualData }"
-      v-model="scale"
-      :is-pending="isLoading"
-    />
-
-    <chart-renderer
-      class="withdrawals-viewer__renderer"
+    <line-chart
+      v-if="isLoaded"
       id="withdrawals-chart"
-      :scale="scale"
-      :has-value="isActualData"
-      :is-loading="isLoading"
-      :data="history"
-      currency=" "
+      :data="withdrawals"
     />
   </div>
 </template>
 
 <script>
-import ChartRenderer from '@/vue/common/chart/Chart.Renderer'
-import ScaleTabs from '@/vue/common/chart/Chart.Tabs'
+import LineChart from '../charts/line-chart'
 
-import withdrawals from '../../mocks/withdrawals'
+import withdrawalsMock from '../../mocks/withdrawals'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'withdrawals-viewer',
   components: {
-    ChartRenderer,
-    ScaleTabs,
+    LineChart,
   },
 
   data: _ => ({
-    data: {},
-    isActualData: false,
-    isLoading: false,
-    scale: 'month',
+    withdrawals: {},
+    isLoaded: false,
   }),
 
-  computed: {
-    history () {
-      return this.data[this.scale] || []
-    },
-  },
-
   created () {
-    this.loadData()
+    this.loadIncomingVolumes()
   },
 
   methods: {
-    loadData () {
-      this.isLoading = true
-      this.isActualData = true
-      this.data = withdrawals
-      this.isLoading = false
+    loadIncomingVolumes () {
+      try {
+        const { data } = withdrawalsMock
+        this.withdrawals = data
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.withdrawals-viewer__tabs {
-  margin-bottom: 6rem;
-  display: flex;
-  justify-content: flex-end;
-  transition: all 0.25s;
-}
-
-.withdrawals-viewer__tabs--hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-</style>

@@ -1,75 +1,51 @@
 <template>
   <div class="incoming-volume-viewer">
-    <scale-tabs
-      class="incoming-volume-viewer__tabs"
-      :class="{ 'incoming-volume-viewer__tabs--hidden': !isActualData }"
-      v-model="scale"
-      :is-pending="isLoading"
-    />
-    <chart-renderer
+    <line-chart
+      v-if="isLoaded"
       class="incoming-volume-viewer__renderer"
       id="incoming-volume-chart"
-      :scale="scale"
-      :has-value="isActualData"
-      :is-loading="isLoading"
-      :data="history"
-      currency="PET"
+      :data="incomingVolumes"
+      :currency="point"
     />
   </div>
 </template>
 
 <script>
-import ChartRenderer from '@/vue/common/chart/Chart.Renderer'
-import ScaleTabs from '@/vue/common/chart/Chart.Tabs'
+import LineChart from '../charts/line-chart'
 
-import incomingVolumes from '../../mocks/incoming-volume'
+import incomingVolumesMock from '../../mocks/incoming-volume'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+const DEFAULT_POINT = 'PET'
 
 export default {
   name: 'incoming-volume-viewer',
   components: {
-    ChartRenderer,
-    ScaleTabs,
+    LineChart,
   },
 
   data: _ => ({
-    data: {},
-    isActualData: false,
-    isLoading: false,
-    scale: 'month',
+    incomingVolumes: {},
+    isLoaded: false,
+    point: DEFAULT_POINT,
   }),
 
-  computed: {
-    history () {
-      return this.data[this.scale] || []
-    },
-  },
-
   created () {
-    this.loadData()
+    this.loadIncomingVolumes()
   },
 
   methods: {
-    loadData () {
-      this.isLoading = true
-      this.isActualData = true
-      this.data = incomingVolumes
-      this.isLoading = false
+    loadIncomingVolumes () {
+      try {
+        const { data } = incomingVolumesMock
+        this.incomingVolumes = data
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.incoming-volume-viewer__tabs {
-  margin-bottom: 6rem;
-  display: flex;
-  justify-content: flex-end;
-  transition: all 0.25s;
-}
-
-.incoming-volume-viewer__tabs--hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-</style>
