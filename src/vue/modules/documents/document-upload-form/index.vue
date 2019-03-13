@@ -66,6 +66,14 @@
               <!--eslint-disable-next-line-->
               {{ 'document-upload-form.submit-steps.creating-change-role-request' | globalize }}
             </template>
+            <template v-if="isPending">
+              <div class="document-upload-form__progress-bar-wrp">
+                <progress-bar
+                  :total-steps="Object.values(uploadState).length"
+                  :completed-steps="completedSteps"
+                />
+              </div>
+            </template>
           </p>
         </template>
       </div>
@@ -77,6 +85,8 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import DocumentUploaderMixin from './mixins/document-uploader.mixin'
 import CreateAccountMixin from './mixins/create-account.mixin'
+
+import ProgressBar from './progress-bar'
 
 import { Wallet, base, errors } from '@tokend/js-sdk'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -98,6 +108,9 @@ const EVENTS = {
 
 export default {
   name: 'document-upload-form-module',
+  components: {
+    ProgressBar,
+  },
   mixins: [
     FormMixin,
     DocumentUploaderMixin,
@@ -143,6 +156,36 @@ export default {
     },
   },
 
+  computed: {
+    completedSteps () {
+      if (!this.isPending) {
+        return 0
+      }
+
+      if (this.uploadState.isCalculatingHash) {
+        return 0
+      }
+
+      if (this.uploadState.isCreatingAccount) {
+        return 1
+      }
+
+      if (this.uploadState.isUploadingFile) {
+        return 2
+      }
+
+      if (this.uploadState.isCreatingBlob) {
+        return 3
+      }
+
+      if (this.uploadState.isCreatingChangeRoleRequest) {
+        return 4
+      }
+
+      return 0
+    },
+  },
+
   created () {
     initApi(this.wallet, this.config)
     initConfig(this.config)
@@ -154,6 +197,7 @@ export default {
 
       this.hideConfirmation()
       this.disableForm()
+      this.isPending = true
 
       try {
         await this.processDocumentUploading()
@@ -167,6 +211,7 @@ export default {
         }
       }
 
+      this.isPending = false
       this.enableForm()
       this.resetUploadState()
     },
@@ -249,5 +294,10 @@ export default {
 
 .document-upload-form__upload-state-msg {
   margin-left: 2rem;
+  width: 100%;
+}
+.document-upload-form__progress-bar-wrp {
+  margin-top: 1rem;
+  width: 100%;
 }
 </style>
