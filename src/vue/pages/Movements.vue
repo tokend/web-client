@@ -21,30 +21,41 @@
         class="movements__actions"
         slot="extra"
       >
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isWithdrawalDrawerShown = true"
-        >
-          <i class="mdi mdi-download movements__btn-icon" />
-          {{ 'op-pages.withdrawal' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isDepositDrawerShown = true"
-        >
-          <i class="mdi mdi-upload movements__btn-icon" />
-          {{ 'op-pages.deposit' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isTransferDrawerShown = true"
-        >
-          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
-          {{ 'op-pages.send' | globalize }}
-        </button>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isWithdrawalDrawerShown = true"
+          >
+            <i class="mdi mdi-download movements__btn-icon" />
+            {{ 'op-pages.withdrawal' | globalize }}
+          </button>
+        </template>
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isDepositDrawerShown = true"
+          >
+            <i class="mdi mdi-upload movements__btn-icon" />
+            {{ 'op-pages.deposit' | globalize }}
+          </button>
+        </template>
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isTransferDrawerShown = true"
+          >
+            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+            {{ 'op-pages.send' | globalize }}
+          </button>
+        </template>
       </div>
     </top-bar>
 
@@ -120,6 +131,10 @@ import config from '../../config'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
+import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+
 export default {
   name: 'movements-page',
   components: {
@@ -146,6 +161,9 @@ export default {
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
+    WithdrawalDrawerPseudoModule,
+    DepositDrawerPseudoModule,
+    TransferDrawerPseudoModule,
   }),
 
   computed: {

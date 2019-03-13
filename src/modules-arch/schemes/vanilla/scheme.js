@@ -25,6 +25,10 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
+import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 
 export default new ModuleScheme({
   importStylesFn: _ => import('@/scss/app.scss'),
@@ -41,6 +45,10 @@ export default new ModuleScheme({
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
+          new IssuanceDrawerPseudoModule({
+            isCorporateOnly: true,
+          }),
+          new TransferDrawerPseudoModule(),
         ],
       },
     ),
@@ -55,6 +63,9 @@ export default new ModuleScheme({
         menuButtonMdiName: 'menu',
         submodules: [
           new MovementsHistoryModule(),
+          new WithdrawalDrawerPseudoModule(),
+          new DepositDrawerPseudoModule(),
+          new TransferDrawerPseudoModule(),
         ],
       },
     ),
