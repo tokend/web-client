@@ -1,8 +1,15 @@
+## What is it
+Here we provide some guide of how to use our modularity system. Since the client
+come up with bunch of ready-to-try use cases it’s a bit hard to keep all of them
+rendered at the same time and keep this mess clean and understandable. To make
+the use cases easy demonstrable and switchable we created a simple modularity
+feature.
+
 ## Usage
-Imagine You got the Dashboard and Movements pages. Both of them has History
+Imagine You got Dashboard and Movements pages. Both of them has History
 module but Dashboard also has SendTransfer module.
 
-1. Create descriptions of the HistoryList and SendTransfer
+1. Create descriptions of History and SendTransfer
 
 ```js
 // history-module.js
@@ -38,7 +45,7 @@ export class SendTransfer extends ModuleDescriptor {
 }
 ```
 
-2. Create page module descriptions of the Dashboard and Movements pages
+2. Create page module descriptions of Dashboard and Movements pages
 
 ```js
 // dashboard-page-module.js
@@ -80,12 +87,13 @@ export class MovementsPage extends PageModuleDescriptor {
 }
 ```
 
-3. Add them to the scheme you wanna use. For the current example we gonna make
+3. Add them to a scheme you wanna use. For the current example we gonna make
 `payments` scheme.
 
 You do not need to change router, vuex/store and sidebar files anymore. All the
 pages provided to the scheme are inserted in the needed places automatically.
-The order in the ModuleScheme matters, also it has some render-specific keys:
+The order in the ModuleScheme matters, also it has some render-specific keys,
+for example:
 - menuButtonMdiName - Icon of the button to be rendered in the Sidebar
 - menuButtonTranslationId - Translation ID of the button to be used
 - menuSectionTranslationId - Translation ID of the section. All the buttons with
