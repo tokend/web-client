@@ -1131,7 +1131,7 @@
     "dividend-form": {
       "title": "Dividends",
       "asset": "Asset",
-      "loading-msg": "Loading",
+      "loading-msg": "Loading...",
       "loading-error-msg":"There was an error while loading",
       "submit-btn": "Submit",
       "no-assets-heading": "No assets, no dividends",
@@ -1146,7 +1146,8 @@
       "balance": "Balance is {{amount}} {{asset}}.",
       "amount": "Amount ({{asset}})",
       "asset-dividend-pay": "Asset in which dividends will be paid",
-      "asset-holders-not-found": "Asset holders not found "
+      "asset-holders-not-found": "Asset holders not found",
+      "asset-holders": "Asset holders"
     }
   }
 }

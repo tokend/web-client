@@ -61,50 +61,61 @@
             />
           </div>
 
-          <div class="app__form-row dividend__form-row">
-            <table class="dividend__fee-table">
-              <thead class="dividend__fee-thead">
-                <tr>
-                  <td>
-                    {{ 'dividend-form.email' | globalize }}
-                  </td>
-                  <td>
-                    {{ 'dividend-form.token-amount' | globalize }}
-                  </td>
-                  <td>
-                    {{ 'dividend-form.supposed-dividend-amount' | globalize }}
-                  </td>
-                </tr>
-              </thead>
-              <tbody
-                class="dividend__fee-tbody"
-                :class="{ 'dividend__data--loading': isSignersLoadPending }"
-                v-if="balanceHolders.length && isSignersLoaded"
-              >
-                <tr v-for="holder in balanceHolders" :key="holder.id">
-                  <td>
-                    <email-getter :balance-id="holder.id" />
-                  </td>
-                  <td>
-                    {{ holder.available | formatMoney }}
-                    {{ form.ownedAsset.code }}
-                  </td>
-                  <td v-if="form.amount">
-                    {{ getDividendAmount(holder) | formatMoney }}
-                    {{ form.asset.code }}
-                  </td>
-                  <td v-else>
-                    &mdash;
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <template v-if="balanceHolders.length && isSignersLoaded">
+            <h3 class="app__form-subheading">
+              {{ 'dividend-form.asset-holders' | globalize }}
+            </h3>
+            <div class="app__form-row dividend__form-row">
+              <table class="dividend__fee-table">
+                <thead class="dividend__fee-thead">
+                  <tr>
+                    <td>
+                      {{ 'dividend-form.email' | globalize }}
+                    </td>
+                    <td>
+                      {{ 'dividend-form.token-amount' | globalize }}
+                    </td>
+                    <td>
+                      {{ 'dividend-form.supposed-dividend-amount' | globalize }}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody
+                  class="dividend__fee-tbody"
+                  :class="{ 'dividend__data--loading': isSignersLoadPending }"
+                >
+                  <tr v-for="holder in balanceHolders" :key="holder.id">
+                    <td>
+                      <email-getter :balance-id="holder.id" />
+                    </td>
+                    <td>
+                      {{ holder.available | formatMoney }}
+                      {{ form.ownedAsset.code }}
+                    </td>
+                    <td v-if="form.amount">
+                      {{ getDividendAmount(holder) | formatMoney }}
+                      {{ form.asset.code }}
+                    </td>
+                    <td v-else>
+                      &mdash;
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
 
-          <template v-if="!balanceHolders.length && isSignersLoaded">
+          <template v-else-if="!balanceHolders.length && isSignersLoaded">
             <p class="dividend__fee-holders-not-found">
               {{ 'dividend-form.asset-holders-not-found' | globalize }}
             </p>
+          </template>
+
+          <template v-else-if="!isSignersLoaded">
+            <loader
+              message-id="dividend-form.loading-msg"
+              class="dividend__fee-holders-loading"
+            />
           </template>
 
           <div class="app__form-actions dividend__action">
@@ -113,7 +124,10 @@
               v-if="!formMixin.isConfirmationShown"
               type="submit"
               class="app__button-raised"
-              :disabled="formMixin.isDisabled || !balanceHolders.length"
+              :disabled="formMixin.isDisabled ||
+                !balanceHolders.length ||
+                !isSignersLoaded
+              "
               form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
@@ -348,7 +362,11 @@ export default {
     },
     getFullBalanceHolder (holder) {
       return MathUtil
-        .add(+holder.available, +holder.locked)
+        .add(
+          +holder.available,
+          +holder.locked,
+          MathUtil.roundingModes.ROUND_FLOOR
+        )
     },
     buildPaymentOperation (holder, fees) {
       return base.PaymentBuilder.payment({
@@ -397,15 +415,27 @@ export default {
     getDividendAmount (holder) {
       const countHolderBalanceValue = this.getFullBalanceHolder(holder)
       const countAssetValue = MathUtil
-        .divide(countHolderBalanceValue, this.countIssuedValue())
+        .divide(
+          countHolderBalanceValue,
+          this.countIssuedValue(),
+          MathUtil.roundingModes.ROUND_FLOOR
+        )
       return MathUtil
-        .multiply(countAssetValue, this.form.amount)
+        .multiply(
+          countAssetValue,
+          this.form.amount,
+          MathUtil.roundingModes.ROUND_FLOOR
+        )
         .toString()
     },
     countIssuedValue () {
       if (+this.ownedUserBalance !== 0) {
         return MathUtil
-          .subtract(+this.form.ownedAsset.issued, +this.ownedUserBalance)
+          .subtract(
+            +this.form.ownedAsset.issued,
+            +this.ownedUserBalance,
+            MathUtil.roundingModes.ROUND_FLOOR
+          )
       } else {
         return +this.form.ownedAsset.issued
       }
@@ -472,7 +502,12 @@ export default {
 
   .dividend__fee-holders-not-found {
     text-align: center;
-    margin-top: 2rem;
-    font-size: 1.4rem;
+    margin-top: 4rem;
+    margin-bottom: 6.4rem;
+    font-size: 1.8rem;
+  }
+
+  .dividend__fee-holders-loading {
+    justify-content: center;
   }
 </style>
