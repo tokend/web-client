@@ -102,10 +102,6 @@ export default Object.assign(
     /**
      * Module scheme to use. The module scheme will be used to combine module
      * set of the application.
-     *
-     * TODO: move out of the config and find a way to install the scheme as
-     * plugin. Also would be fine if pageModule will be provided without using
-     * of the router
      */
     MODULE_SCHEME_NAME: 'vanilla',
   },
