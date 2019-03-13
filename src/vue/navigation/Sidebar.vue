@@ -27,147 +27,40 @@
         </router-link>
       </section>
 
+      <section class="sidebar__scheme-label-section">
+        <p class="sidebar__scheme-label">
+          {{ schemeLabel }}
+        </p>
+      </section>
+
       <section class="sidebar__links-section">
-        <nav class="sidebar__links-group">
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.dashboard"
-            tag="a"
-            v-if="config.featureFlags.dashboard"
+        <nav
+          v-for="[sectionName, menuItems] of Object.entries(sectionsToRender)"
+          :key="sectionName"
+          class="sidebar__links-group"
+        >
+          <p
+            v-if="sectionName !== DEFAULT_SECTION_NAME"
+            class="sidebar__links-group-title"
           >
-            <i class="sidebar__link-icon mdi mdi-view-dashboard" />
-            <span>
-              {{ 'pages-names.dashboard' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.trade"
-            tag="a"
-            v-if="config.featureFlags.trade"
-          >
-            <i class="sidebar__link-icon mdi mdi-finance" />
-            <span>
-              {{ 'pages-names.trade' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.movements"
-            tag="a"
-            v-if="config.featureFlags.movements"
-          >
-            <i class="sidebar__link-icon mdi mdi-menu" />
-            <span>
-              {{ 'pages-names.movements' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.fees"
-            tag="a"
-            v-if="config.featureFlags.fees"
-          >
-            <i class="sidebar__link-icon mdi mdi-flash" />
-            <span>
-              {{ 'pages-names.fees' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.limits"
-            tag="a"
-            v-if="config.featureFlags.limits"
-          >
-            <i class="sidebar__link-icon mdi mdi-poll-box" />
-            <span>
-              {{ 'pages-names.limits' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.assets"
-            tag="a"
-            v-if="config.featureFlags.assets"
-          >
-            <i class="sidebar__link-icon mdi mdi-coins" />
-            <span>
-              {{ 'pages-names.tokens' | globalize }}
-            </span>
-          </router-link>
-
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.issuance"
-            tag="a"
-            v-if="config.featureFlags.issuance"
-          >
-            <i class="sidebar__link-icon mdi mdi-poll" />
-            <span>
-              {{ 'pages-names.issuance' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.sales"
-            tag="a"
-            v-if="config.featureFlags.sales"
-          >
-            <i class="sidebar__link-icon mdi mdi-trending-up" />
-            <span>
-              {{ 'pages-names.funds' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.requests"
-            tag="a"
-            v-if="config.featureFlags.requests && isAccountCorporate"
-          >
-            <i class="sidebar__link-icon mdi mdi-book-open-variant" />
-            <span>
-              {{ 'pages-names.requests' | globalize }}
-            </span>
-          </router-link>
-        </nav>
-        <nav class="sidebar__links-group">
-          <p class="sidebar__links-group-title">
-            {{ 'sidebar.section-account' | globalize }}
+            {{ sectionName | globalize }}
           </p>
+
           <router-link
+            v-for="item in menuItems"
+            :key="item.menuButtonTranslationId"
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.settings"
+            :to="item.routerEntry.path"
             tag="a"
-            v-if="config.featureFlags.settings"
           >
-            <i class="sidebar__link-icon mdi mdi-account-settings" />
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-${item.menuButtonMdiName}`"
+            />
             <span>
-              {{ 'pages-names.settings' | globalize }}
+              {{ item.menuButtonTranslationId | globalize }}
             </span>
           </router-link>
         </nav>
@@ -190,6 +83,9 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 import config from '@/config'
+import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+
+const DEFAULT_SECTION_NAME = 'default'
 
 export default {
   name: 'sidebar',
@@ -203,20 +99,66 @@ export default {
     isOpened: false,
     config,
     vueRoutes,
+    DEFAULT_SECTION_NAME,
   }),
 
   computed: {
     ...mapGetters({
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
+    sectionsToRender () {
+      const sections = this.groupPagesBySections(SchemeRegistry.current.pages)
+      const filteredSections = this.filterUnrenderedSections(sections)
+      return filteredSections
+    },
+    schemeLabel () {
+      return SchemeRegistry.current.sidebarLabel
+    },
   },
 
   methods: {
     openSidebar () {
       this.isOpened = true
     },
+
     closeSidebar () {
       this.isOpened = false
+    },
+
+    groupPagesBySections (pages) {
+      const result = { [DEFAULT_SECTION_NAME]: [] }
+
+      for (const item of pages) {
+        const translationId = item.menuSectionTranslationId
+        if (!translationId) {
+          result[DEFAULT_SECTION_NAME].push(item)
+        } else {
+          if (!result[translationId]) {
+            result[translationId] = []
+          }
+          result[translationId].push(item)
+        }
+      }
+
+      return result
+    },
+
+    filterUnrenderedSections (sections) {
+      const result = { ...sections }
+
+      for (const [key, value] of Object.entries(result)) {
+        const filteredValue = value
+          .filter(item => item.menuButtonTranslationId)
+          .filter(item => item.isAccessible)
+
+        if (filteredValue.length) {
+          result[key] = filteredValue
+        } else {
+          delete result[key]
+        }
+      }
+
+      return result
     },
   },
 }
@@ -260,13 +202,13 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__burger-btn {
   position: absolute;
-  left: .5rem;
+  left: 0.5rem;
   top: 4.1rem;
   z-index: $z-sidebar-burger;
   width: 4rem;
   height: 4rem;
   margin-right: 0;
-  margin-left: .8rem;
+  margin-left: 0.8rem;
   border: none;
   outline: none;
   border-radius: 50%;
@@ -320,10 +262,7 @@ $content-item-right-padding: 2.4rem;
 }
 
 .sidebar__logo-section {
-  padding-top: 4rem;
-  padding-bottom: 5rem;
-  padding: 4rem 2.4rem 5rem 4rem;
-  padding: 4rem $content-item-right-padding 5rem $content-item-left-padding;
+  padding: 4rem $content-item-right-padding 0 $content-item-left-padding;
 
   @include respond-to-custom($sidebar-hide-bp) {
     .sidebar__aside--closed & {
@@ -339,7 +278,20 @@ $content-item-right-padding: 2.4rem;
   display: block;
 }
 
+.sidebar__scheme-label-section {
+  padding: 1.6rem $content-item-right-padding 0 $content-item-left-padding;
+}
+
+.sidebar__scheme-label {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: .08rem;
+  color: $col-sidebar-scheme-label;
+}
+
 .sidebar__links-section {
+  margin-top: 3.6rem;
   flex: 1;
 
   @include respond-to-custom($sidebar-hide-bp) {
