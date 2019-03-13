@@ -58,7 +58,7 @@ export class ModuleDescriptor {
     } = opts
 
     if (typeof importComponentFn !== 'function') {
-      throw new Error(`${this.constructor.name}: no importComponentFn provided`)
+      throw new Error(`${this.constructor.name}: importComponentFn should be a function, not ${typeof importComponentFn}`)
     }
 
     this._importComponentFn = this._rememberUidAfterImport(importComponentFn)
