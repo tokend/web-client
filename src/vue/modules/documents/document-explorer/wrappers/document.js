@@ -4,8 +4,8 @@ export class Document {
   constructor (id, request, blob) {
     this.id = id
 
-    this.createdAt = request.createdAt
-    this.owner = request.requestor
+    this.createdAt = safeGet(request, 'createdAt')
+    this.owner = safeGet(request, 'requestor')
 
     const blobValue = JSON.parse(blob.value)
 

@@ -18,6 +18,11 @@ export default {
 
       await Promise.all(accounts.map(async account => {
         const changeRoleRequest = await this.getChangeRoleRequest(account.id)
+        if (!changeRoleRequest) {
+          // The doc is broken and we should skip it
+          return
+        }
+
         const blob = await this.getBlobById(
           changeRoleRequest.blobId,
           account.id
@@ -44,6 +49,10 @@ export default {
         },
         include: ['request_details'],
       })
+
+      if (!data[0]) {
+        return null
+      }
 
       return new ChangeRoleRequest(data[0])
     },
