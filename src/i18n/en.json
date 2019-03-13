@@ -1103,7 +1103,10 @@
       "file-key-lbl": "File key:",
       "file-hash-lbl": "Hash:",
       "file-mime-lbl": "MIME type:",
-      "no-preview-msg": "No preview available"
+      "no-preview-msg": "No preview available",
+      "edit-description-lbl": "Edit description",
+      "update-description-lbl": "Update",
+      "cancel-update-description-lbl": "Cancel"
     },
 
     "document-signers-manager": {

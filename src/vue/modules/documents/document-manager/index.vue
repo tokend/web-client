@@ -1,6 +1,6 @@
 <template>
   <div class="document-manager">
-    <div class="document-manager__inner" v-if="metadata && downloadLink">
+    <div v-if="downloadLink && !isLoading" class="document-manager__inner">
       <div class="document-manager__document-info-wrp">
         <div class="document-manager__header">
           <h2>{{ 'document-manager.document-info-title' | globalize }}</h2>
@@ -19,7 +19,11 @@
           />
         </div>
         <div class="document-manager__description-viewer-wrp">
-          <description-viewer :description="metadata.description" />
+          <description-viewer
+            :metadata="metadata"
+            :document-account-id="attachedAccountId"
+            @update="loadDocument"
+          />
         </div>
       </div>
 
