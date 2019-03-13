@@ -22,6 +22,9 @@ import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/veirification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
+import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
+import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
+import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 
 export default new ModuleScheme({
   importStylesFn: _ => import('@/scss/app.scss'),
@@ -241,6 +244,11 @@ export default new ModuleScheme({
               path: '/settings/security',
               name: vueRoutes.security.name,
             },
+            submodules: [
+              new ChangePasswordPseudoModule(),
+              new ShowAccountIdPseudoModule(),
+              new ShowSeedPseudoModule(),
+            ],
           }),
         ],
       }
