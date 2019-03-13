@@ -122,6 +122,7 @@
       <dividend-form-module
         :wallet="wallet"
         :config="dividendConfig"
+        @transferred="dividendModuleTransferred"
       />
     </drawer>
 
@@ -263,6 +264,9 @@ export default {
     depositFiatModuleDeposited () {
       this.fiatDepositFormShown = false
       this.historyState++
+    },
+    dividendModuleTransferred () {
+      this.isDividendDrawerShown = false
     },
   },
 }

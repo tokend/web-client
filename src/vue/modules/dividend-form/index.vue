@@ -17,9 +17,7 @@
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset' | globalize"
               />
-            </div>
-            <div class="dividend__form-field-description">
-              <p>
+              <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.ownedAsset.balance.value, asset: form.ownedAsset.code }) }}
               </p>
@@ -36,9 +34,7 @@
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset-dividend-pay' | globalize"
               />
-            </div>
-            <div class="dividend__form-field-description">
-              <p>
+              <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}
               </p>
@@ -103,12 +99,13 @@
                 </tr>
               </tbody>
             </table>
-            <template v-if="!balanceHolders.length && isSignersLoaded">
-              <p class="dividend__fee-holders-not-found">
-                {{ 'dividend-form.asset-holders-not-found' | globalize }}
-              </p>
-            </template>
           </div>
+
+          <template v-if="!balanceHolders.length && isSignersLoaded">
+            <p class="dividend__fee-holders-not-found">
+              {{ 'dividend-form.asset-holders-not-found' | globalize }}
+            </p>
+          </template>
 
           <div class="app__form-actions dividend__action">
             <button
@@ -175,7 +172,7 @@ import {
 import { MathUtil } from '@/js/utils/math.util'
 
 const EVENTS = {
-  operationSubmitted: 'operation-submitted',
+  transferred: 'transferred',
 }
 
 export default {
@@ -280,11 +277,8 @@ export default {
         }
         const operations = await this.getTransferOperations()
         await api().postOperations(...operations)
-        await this.loadBalances()
-        await this.getSigners()
-        await this.reinitAssetSelector()
         Bus.success('dividend-form.dividend-success')
-        this.$emit(EVENTS.operationSubmitted)
+        this.$emit(EVENTS.transferred)
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -334,17 +328,6 @@ export default {
         this.signersDebouncedRequest = debounce(() => this.getSigners(), 300)
       }
       return this.signersDebouncedRequest()
-    },
-    async reinitAssetSelector () {
-      await this.loadAssets()
-      if (this.ownedAssets.length && this.assets.length) {
-        const updatedAsset = this.assets
-          .find(item => item.code === this.form.asset.code)
-        const updatedOwnedAsset = this.ownedAssets
-          .find(item => item.code === this.form.ownedAsset.code)
-        this.form.asset = updatedAsset || this.assets[0]
-        this.form.ownedAsset = updatedOwnedAsset || this.ownedAssets[0]
-      }
     },
     async getTransferOperations () {
       let operations = []
@@ -431,7 +414,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   @import "/scss/variables";
 
   .dividend__fees-container {
