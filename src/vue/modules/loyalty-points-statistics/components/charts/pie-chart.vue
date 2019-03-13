@@ -207,16 +207,17 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@scss/variables";
+
 .pie-chart {
   svg {
-    -webkit-filter: drop-shadow(0rem 0.3rem 0.3rem rgba(0, 0, 0, 0.3));
-    filter: drop-shadow(0rem 0.3rem 0.3rem rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0rem 0.3rem 0.3rem $col-pie-chart-shadow);
   }
 
   &__lines polyline {
     opacity: 0.3;
-    stroke: black;
     stroke-width: 0.2rem;
+    stroke: $col-pie-chart-stroke;
     fill: none;
   }
 
