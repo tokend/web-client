@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import DocumentManagerModule from '@modules/document-manager'
+import DocumentManagerModule from '@modules/documents/document-manager'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'

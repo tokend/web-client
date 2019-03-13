@@ -210,5 +210,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../../forms/app-form";
+@import "~@/vue/forms/_app-form";
 </style>
