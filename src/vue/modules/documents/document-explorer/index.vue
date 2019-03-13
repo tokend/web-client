@@ -132,7 +132,7 @@ export default {
 }
 
 .document-explorer__router-link {
-  flex: 0 1 calc(25% - 2rem);
+  width: 100%;
   display: block;
   text-decoration: none;
   max-width: 30rem;

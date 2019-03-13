@@ -3,6 +3,7 @@ import { Document } from '../wrappers/document'
 import { ChangeRoleRequest } from '../wrappers/change-role-request'
 
 import { api } from '../_api'
+import moment from 'moment'
 
 export default {
   methods: {
@@ -32,6 +33,12 @@ export default {
       }))
 
       return documents
+        .slice()
+        .sort(
+          (a, b) => moment(a.createdAt).isBefore(moment(b.createdAt))
+            ? 1
+            : -1
+        )
     },
 
     async getChangeRoleRequest (accountId) {

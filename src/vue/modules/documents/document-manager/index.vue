@@ -187,16 +187,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@scss/mixins";
+
 .document-manager {
   &__inner {
     display: flex;
     justify-content: space-between;
+
+    @include respond-to(xmedium) {
+      flex-direction: column;
+    }
   }
 
   &__document-info-wrp {
-    width: 100%;
+    width: 50%;
     max-width: 55rem;
     margin-right: 10rem;
+
+    @include respond-to(xmedium) {
+      flex-direction: column;
+      margin-right: 0;
+      margin-bottom: 5rem;
+      max-width: 100%;
+      width: 100%;
+    }
   }
 
   &__header {
@@ -204,11 +218,19 @@ export default {
   }
 
   &__right-section-wrp {
-    width: 100%;
+    width: 50%;
+
+    @include respond-to(xmedium) {
+      width: 100%;
+    }
   }
 
   &__file-preview-wrp {
     margin-bottom: 3rem;
+
+    @include respond-to(xmedium) {
+      display: none;
+    }
   }
 
   &__file-attributes-wrp { margin-bottom: 1.5rem }
