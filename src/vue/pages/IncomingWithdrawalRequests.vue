@@ -130,10 +130,6 @@ import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import { Sdk } from '@/sdk'
-
-import { RecordWrapper } from '@/js/records'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -142,6 +138,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import WithdrawalRequestDetails from './withdrawals/WithdrawalRequestDetails'
 import { base } from '@tokend/js-sdk'
+import { Api } from '../../api'
+import { WithdrawalDetailsRequestRecord } from '@/js/records/requests/withdrawal-details.record'
+
+const HORIZON_VERSION_PREFIX = 'v3'
 
 export default {
   name: 'incoming-withdrawal-requests',
@@ -171,7 +171,7 @@ export default {
     },
   },
 
-  async created () {
+  created () {
     this.initFirstPageLoader()
   },
 
@@ -188,22 +188,25 @@ export default {
 
     getFirstPageLoader (accountId) {
       return function () {
-        return Sdk.horizon.request.getAllForWithdrawals({
-          reviewer: accountId,
+        return Api.api.getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_withdraw_requests`, {
+          filter: {
+            reviewer: accountId,
+          },
+          include: ['request_details'],
         })
       }
     },
 
     setHistory (data) {
       this.requestsHistory =
-          data.map(request => RecordWrapper.request(request))
+          data.map(request => new WithdrawalDetailsRequestRecord(request))
 
       this.isHistoryLoaded = true
     },
 
     extendHistory (data) {
       this.requestsHistory = this.requestsHistory.concat(
-        data.map(request => RecordWrapper.request(request))
+        data.map(request => new WithdrawalDetailsRequestRecord(request))
       )
     },
 
@@ -217,10 +220,7 @@ export default {
       try {
         const action = base.xdr.ReviewRequestOpAction.approve().value
         await this._reviewWithdraw({ action }, this.selectedRequest)
-        const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
-        this.requestsHistory.splice(this.selectedIndex, 1,
-          RecordWrapper.request(data)
-        )
+        await this.rewriteWithdrawalRequest()
 
         Bus.success('incoming-withdrawal-requests.request-approved-msg')
       } catch (e) {
@@ -236,10 +236,7 @@ export default {
         /* eslint-disable-next-line max-len */
         await this._reviewWithdraw({ action, reason: rejectReason }, this.selectedRequest)
         /* eslint-enable-next-line max-len */
-        const { data } = await Sdk.horizon.request.get(this.selectedRequest.id)
-        this.requestsHistory.splice(this.selectedIndex, 1,
-          RecordWrapper.request(data)
-        )
+        await this.rewriteWithdrawalRequest()
 
         Bus.success('incoming-withdrawal-requests.request-rejected-msg')
       } catch (e) {
@@ -248,7 +245,7 @@ export default {
       this.isRequestRejected = false
     },
 
-    _reviewWithdraw ({ action, reason = '' }, ...requests) {
+    async _reviewWithdraw ({ action, reason = '' }, ...requests) {
       const operations = requests.map(function (item) {
         const opts = {
           requestID: item.id,
@@ -267,7 +264,19 @@ export default {
           requestDetails: JSON.stringify(opts),
         })
       })
-      return Sdk.horizon.transactions.submitOperations(...operations)
+      await Api.api.postOperations(...operations)
+    },
+    async rewriteWithdrawalRequest () {
+      const { data } = await Api.api
+        .getWithSignature(`/${HORIZON_VERSION_PREFIX}/requests/${this.selectedRequest.id}`, {
+          filter: {
+            reviewer: this.accountId,
+          },
+          include: ['request_details'],
+        })
+      this.requestsHistory.splice(this.selectedIndex, 1,
+        new WithdrawalDetailsRequestRecord(data)
+      )
     },
   },
 }

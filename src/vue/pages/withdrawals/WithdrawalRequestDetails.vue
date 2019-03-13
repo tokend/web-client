@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="isLoaded"
     class="withdrawal-request-details"
   >
     <div
@@ -30,7 +29,7 @@
               {{ 'withdrawal-request-details.requestor-email' | globalize }}
             </td>
             <td>
-              {{ requestorEmail }}
+              <email-getter :account-id="request.requestor" />
             </td>
           </tr>
 
@@ -145,9 +144,6 @@
       />
     </div>
   </div>
-  <div v-else>
-    <loader :message-id="'issuance.loading-msg'" />
-  </div>
 </template>
 
 <script>
@@ -159,11 +155,12 @@ import config from '@/config'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import { RequestRecord } from '../../../js/records/request-record'
-import Loader from '../../common/Loader'
-import { ErrorHandler } from '../../../js/helpers/error-handler'
 import TextareaField from '../../fields/TextareaField'
 import FormConfirmation from '../../common/FormConfirmation'
+import {
+  WithdrawalDetailsRequestRecord,
+} from '@/js/records/requests/withdrawal-details.record'
+import EmailGetter from '../../common/EmailGetter'
 
 const EVENTS = {
   approve: 'approve',
@@ -173,14 +170,14 @@ const EVENTS = {
 export default {
   name: 'withdrawal-request-details',
   components: {
-    Loader,
     TextareaField,
     FormConfirmation,
+    EmailGetter,
   },
   mixins: [IdentityGetterMixin],
   props: {
     request: {
-      type: [RequestRecord],
+      type: [WithdrawalDetailsRequestRecord],
       required: true,
     },
     isPending: {
@@ -190,9 +187,7 @@ export default {
     },
   },
   data: _ => ({
-    requestorEmail: '',
     rejectReason: '',
-    isLoaded: false,
     formNoteMaxLength: 250,
     isShowReasonField: false,
     config,
@@ -209,19 +204,7 @@ export default {
       return this.request.isPending
     },
   },
-  async created () {
-    await this.getRequestorEmail()
-    this.isLoaded = true
-  },
   methods: {
-    async getRequestorEmail () {
-      try {
-        /* eslint-disable-next-line max-len */
-        this.requestorEmail = await this.getEmailByAccountId(this.request.requestor)
-      } catch (error) {
-        ErrorHandler.process(error)
-      }
-    },
     showReasonField () {
       this.isShowReasonField = !this.isShowReasonField
     },

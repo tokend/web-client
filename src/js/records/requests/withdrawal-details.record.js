@@ -1,12 +1,30 @@
-import { RequestRecord } from '../request-record'
 import _get from 'lodash/get'
+import { REQUEST_STATES } from '../../const/request-states.const'
 
-export class WithdrawalDetailsRequestRecord extends RequestRecord {
-  constructor (record) {
-    super(record)
-    this.amount = _get(record, 'details.createWithdraw.amount')
-    this.fixedFee = _get(record, 'details.createWithdraw.fixed_fee')
-    this.percentFee = _get(record, 'details.createWithdraw.percent_fee')
-    this.address = _get(record, 'details.createWithdraw.externalDetails.address')
+export class WithdrawalDetailsRequestRecord {
+  constructor (record = {}) {
+    this.id = record.id || '0'
+    this.requestor = record.requestor.id
+    this.rejectReason = record.rejectReason
+    this.hash = record.hash
+    this.createdAt = record.createdAt
+    this.updatedAt = record.updatedAt
+    this.state = record.state
+    this.stateI = record.stateI
+
+    this.amount = _get(record, 'requestDetails.amount')
+    this.fixedFee = _get(record, 'requestDetails.fee.fixed')
+    this.percentFee = _get(record, 'requestDetails.fee.calculatedPercent')
+    this.address = _get(record, 'requestDetails.externalDetails.address')
+  }
+
+  get isPending () {
+    return this.stateI === REQUEST_STATES.pending
+  }
+  get isApproved () {
+    return this.stateI === REQUEST_STATES.approved
+  }
+  get isPermanentlyRejected () {
+    return this.stateI === REQUEST_STATES.permanentlyRejected
   }
 }
