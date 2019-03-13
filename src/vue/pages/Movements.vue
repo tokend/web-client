@@ -61,6 +61,14 @@
           <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
           {{ 'op-pages.send' | globalize }}
         </button>
+        <button
+          v-ripple
+          class="app__button-raised movements__button-raised"
+          @click="isDividendDrawerShown = true"
+        >
+          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+          {{ 'op-pages.dividend' | globalize }}
+        </button>
       </div>
     </top-bar>
 
@@ -107,6 +115,17 @@
       <transfer-form />
     </drawer>
 
+    <drawer :is-shown.sync="isDividendDrawerShown">
+      <template slot="heading">
+        {{ 'dividend-form.title' | globalize }}
+      </template>
+      <dividend-form-module
+        :wallet="wallet"
+        :config="dividendConfig"
+        @transferred="dividendModuleTransferred"
+      />
+    </drawer>
+
     <movements-history-module
       v-if="asset.code"
       :asset-code="asset.code"
@@ -149,10 +168,12 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import config from '../../config'
+import DividendFormModule from '@modules/dividend-form/index'
 
 export default {
   name: 'movements-page',
   components: {
+    DividendFormModule,
     SelectField,
     TopBar,
     Drawer,
@@ -174,6 +195,7 @@ export default {
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
+    isDividendDrawerShown: false,
     fiatWithdrawalFormShown: false,
     fiatDepositFormShown: false,
     movementsHistoryConfig: {
@@ -187,6 +209,11 @@ export default {
     depositFiatConfig: {
       horizonURL: config.HORIZON_SERVER,
       decimalPoints: config.DECIMAL_POINTS,
+    },
+    dividendConfig: {
+      decimalPoints: config.DECIMAL_POINTS,
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
     },
     historyState: 0,
   }),
@@ -237,6 +264,9 @@ export default {
     depositFiatModuleDeposited () {
       this.fiatDepositFormShown = false
       this.historyState++
+    },
+    dividendModuleTransferred () {
+      this.isDividendDrawerShown = false
     },
   },
 }
