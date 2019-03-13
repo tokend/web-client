@@ -762,11 +762,11 @@
 
     "withdrawal-request-details": {
       "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
+      "loading-error-msg": "There was an error while loading",
       "approve-btn": "Approve",
       "rejected-btn": "REJECT",
       "requestor-email": "Requestor email",
-      "requestor-id": "Requestor Id",
+      "requestor-id": "Requestor id",
       "amount": "Amount",
       "fixed-fee": "Fixed fee",
       "percent-fee": "Percent fee",
