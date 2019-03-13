@@ -100,7 +100,10 @@ export default {
   }),
   computed: {
     showActions () {
-      return this.signerToManage.publicKey !== this.signerWhoManages.publicKey
+      return (
+        this.signerToManage.publicKey !== this.signerWhoManages.publicKey
+      ) &&
+      this.signerWhoManages.isAllowedToManageSigners
     },
   },
   async created () {
@@ -118,9 +121,7 @@ $avatar-margin-right: 1.8rem;
 
 .signer-list-item {
   border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-signer-list-item-shadow;
-  background-color: $col-signer-list-item-bg;
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem 0;
 }
 
 .signer-list-item__inner {

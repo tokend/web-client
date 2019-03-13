@@ -33,6 +33,7 @@
         :signer-to-manage="selectedSigner"
         :signer-who-manages="signerWhoManages"
         :source-account-id="sourceAccountId"
+        @close="closeForm"
       />
     </drawer>
   </div>
@@ -81,6 +82,10 @@ export default {
     openAddForm () {
       this.selectedSigner = null
       this.isDrawerShown = true
+    },
+    closeForm () {
+      this.selectedSigner = null
+      this.isDrawerShown = false
     },
     selectSigner (signer) {
       this.selectedSigner = signer

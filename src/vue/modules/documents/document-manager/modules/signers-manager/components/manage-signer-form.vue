@@ -171,6 +171,7 @@ export default {
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-added-msg')
+        this.$emit('close')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -192,6 +193,7 @@ export default {
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-updated-msg')
+        this.$emit('close')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -207,6 +209,7 @@ export default {
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-deleted-msg')
+        this.$emit('close')
       } catch (e) {
         ErrorHandler.process(e)
       }
