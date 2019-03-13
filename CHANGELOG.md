@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 - Added confirmation to cancel token creation request
 - CLI config passing
 - Added module enabling/disabling
+- Added module schemes
 
 ### Changed
 - Now using new account endpoint for loading the fees
