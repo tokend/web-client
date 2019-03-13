@@ -62,7 +62,7 @@ export class ModuleDescriptor {
       throw new Error(`${this.constructor.name}: importComponentFn should be a function, not ${typeof importComponentFn}`)
     }
 
-    this._importComponentFn = this._rememberUidAfterImport(importComponentFn)
+    this._importComponentFn = this._wrapWithUidRememberer(importComponentFn)
 
     if (importStoreFn) {
       this._importStoreFn = importStoreFn
@@ -92,7 +92,7 @@ export class ModuleDescriptor {
   get createdComponent () { return this._createdComponent }
   get isComponentCreated () { return this._createdComponentUid >= 0 }
 
-  _rememberUidAfterImport (importFn) {
+  _wrapWithUidRememberer (importFn) {
     return async _ => {
       if (this.isComponentCreated) {
         return importFn()
