@@ -20,23 +20,37 @@ const d3 = Object.assign(
   d3Format,
 )
 
+const SCALE_COEFF = 0.9
+
 export default {
   name: 'pie-chart',
 
   props: {
+    // sector rounding
     cornerRadius: { type: Number, default: 5 },
+    // distance between sectors
     padAngle: { type: Number, default: 0.1 },
+    // size of central hole
+    innerRadius: { type: Number, default: 0.4 },
+    // [{ label, value, color }]
     data: { type: Array, default: _ => [] },
     id: { type: String, required: true },
   },
 
   data: _ => ({
     svg: {},
-    width: 0,
-    height: 0,
   }),
 
   computed: {
+    dimensions () {
+      const parentWidth = this.$el.parentElement.clientWidth - 1
+
+      return {
+        width: parentWidth,
+        height: parentWidth / 2,
+      }
+    },
+
     floatFormat () {
       return d3.format('.4r')
     },
@@ -46,7 +60,7 @@ export default {
     },
 
     radius () {
-      return Math.min(this.width, this.height) / 2
+      return Math.min(this.dimensions.width, this.dimensions.height) / 2
     },
 
     totalValue () {
@@ -55,30 +69,24 @@ export default {
 
     innerArc () {
       return d3.arc()
-        .outerRadius(this.radius * 0.8)
-        .innerRadius(this.radius * 0.4)
+        .outerRadius(this.radius * (SCALE_COEFF - 0.1))
+        .innerRadius(this.radius * this.innerRadius)
         .cornerRadius(this.cornerRadius)
         .padAngle(this.padAngle)
     },
 
     outerArc () {
       return d3.arc()
-        .outerRadius(this.radius * 0.9)
-        .innerRadius(this.radius * 0.9)
+        .outerRadius(this.radius * SCALE_COEFF)
+        .innerRadius(this.radius * SCALE_COEFF)
     },
   },
 
   mounted () {
-    this.setDimensions()
     this.render()
   },
 
   methods: {
-    setDimensions () {
-      this.width = this.$el.parentElement.clientWidth - 1
-      this.height = this.width / 2
-    },
-
     render () {
       d3.select(this.$refs.chart)
         .call(this.chartRenderer)
@@ -87,12 +95,13 @@ export default {
     chartRenderer (selection) {
       const pie = d3.pie()
         .value(item => this.floatFormat(item.value))
+      const { width, height } = this.dimensions
 
       this.svg = selection.append('svg')
-        .attr('width', this.width)
-        .attr('height', this.height)
+        .attr('width', width)
+        .attr('height', height)
         .append('g')
-        .attr('transform', `translate(${this.width / 2},${this.height / 2})`)
+        .attr('transform', `translate(${width / 2}, ${height / 2})`)
 
       this.renderPieParts(pie)
     },
@@ -130,9 +139,10 @@ export default {
         .attr('dy', '.35em')
         .html(item => `${item.data.label}: <tspan>${item.data.value}</tspan>`)
         .attr('transform', item => {
+          const labelPosition = SCALE_COEFF * this.radius
           let pos = this.outerArc.centroid(item)
 
-          pos[0] = this.radius * 0.9 * this.getMidAngleDirectionSign(item)
+          pos[0] = labelPosition * this.getMidAngleDirectionSign(item)
           return `translate(${pos})`
         })
         .style('text-anchor', item => {
@@ -150,8 +160,10 @@ export default {
         .enter()
         .append('polyline')
         .attr('points', item => {
+          const linePosition = (SCALE_COEFF - 0.05) * this.radius
           let pos = this.outerArc.centroid(item)
-          pos[0] = 0.85 * this.radius * this.getMidAngleDirectionSign(item)
+
+          pos[0] = linePosition * this.getMidAngleDirectionSign(item)
 
           return [
             this.innerArc.centroid(item),
@@ -162,19 +174,23 @@ export default {
     },
 
     renderToolTip (selection) {
+      const tipMarginTop = 10
+      const tipFontSize = '2.4rem'
+      const tipOpacity = 0.35
+
       selection.on('mouseenter', item => {
         this.svg.append('text')
           .attr('class', 'pie-chart__tool-circle')
-          .attr('dy', 10)
+          .attr('dy', tipMarginTop)
           .html(this.percentFormat(item.data.value / this.totalValue))
-          .style('font-size', '2.4rem')
+          .style('font-size', tipFontSize)
           .style('text-anchor', 'middle')
 
         this.svg.append('circle')
           .attr('class', 'pie-chart__tool-circle')
-          .attr('r', this.radius * 0.35)
+          .attr('r', this.radius * this.innerRadius * SCALE_COEFF)
           .style('fill', item.data.color)
-          .style('fill-opacity', 0.35)
+          .style('fill-opacity', tipOpacity)
       })
 
       selection.on('mouseout', () => {
