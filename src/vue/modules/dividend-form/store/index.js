@@ -68,10 +68,10 @@ export const actions = {
    * @param {Object} opts
    * @param {String} opts.assetCode - asset code
    * @param {String} opts.subtype - subtype fee
-   * @param {String} opts.accountId - accountId
+   * @param {String} opts.accountId - account id
    * @param {String} opts.amount - amount to calculate fee
    */
-  async [types.LOAD_FEES] ({ commit }, opts) {
+  async [types.LOAD_FEES] (opts) {
     const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${opts.accountId}/calculated_fees`
     const { data: fees } = await api().getWithSignature(endpoint, {
       asset: opts.assetCode,
@@ -84,9 +84,9 @@ export const actions = {
   /**
    *
    * @param {Object} opts
-   * @param {String} opts.acountId - account id
+   * @param {String} opts.accountId - account id
    */
-  async [types.LOAD_ACCOUNT_ID] ({ commit }, opts) {
+  async [types.LOAD_ACCOUNT_ID] (opts) {
     const endpoint = `/balances/${opts.accountId}/account`
     const { _rawResponse: account } = await api().getWithSignature(endpoint, {})
 
