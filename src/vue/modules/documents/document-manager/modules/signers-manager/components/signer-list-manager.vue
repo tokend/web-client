@@ -2,7 +2,11 @@
   <div class="signer-list-manager">
     <div class="signer-list-manager__header">
       <h2>{{ 'document-signers-manager.signer-list-title' | globalize }}</h2>
-      <button class="app__button-raised" @click="openAddForm">
+      <button
+        class="app__button-raised"
+        v-if="signerWhoManages.isAllowedToManageSigners"
+        @click="openAddForm"
+      >
         {{ 'document-signers-manager.add-new-signer-lbl' | globalize }}
       </button>
     </div>

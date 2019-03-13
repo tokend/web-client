@@ -86,7 +86,6 @@ const ROLE_IDS = Object.freeze({
 const DEFAULT_SIGNER_ATTRS = Object.freeze({
   weight: 1000,
   identity: 1,
-  details: {},
 })
 
 export default {
@@ -164,6 +163,10 @@ export default {
           publicKey,
           roleID: this.roleIDToSet,
           source: this.sourceAccountId,
+          details: {
+            isAllowedToManageSigners: this.form.isAllowedToManageSigners,
+            isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
+          },
         })
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
@@ -181,6 +184,10 @@ export default {
           roleID: '2', // this.roleIDToSet,
           publicKey: this.signerToManage.publicKey,
           source: this.sourceAccountId,
+          details: {
+            isAllowedToManageSigners: this.form.isAllowedToManageSigners,
+            isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
+          },
         })
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()

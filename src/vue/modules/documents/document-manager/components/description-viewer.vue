@@ -24,7 +24,11 @@
       </div>
     </template>
     <template v-else>
-      <button @click="setUpdateMode" :disabled="formMixin.isDisabled">
+      <button
+        v-if="signer.isAllowedToUpdateMetadata"
+        @click="setUpdateMode"
+        :disabled="formMixin.isDisabled"
+      >
         {{ 'document-manager.edit-description-lbl' | globalize }}
         <i class="mdi mdi-pencil" />
       </button>
@@ -42,6 +46,8 @@ import MarkdownField from '@/vue/fields/MarkdownField'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { Metadata } from '../wrappers/metadata'
+import { Signer } from '../wrappers/signer'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { base } from '@tokend/js-sdk'
@@ -60,6 +66,10 @@ export default {
   },
   mixins: [FormMixin],
   props: {
+    signer: {
+      type: Signer,
+      required: true,
+    },
     documentAccountId: {
       type: String,
       required: true,
@@ -86,11 +96,14 @@ export default {
   },
   methods: {
     setUpdateMode () {
-      this.form.description = this.metadata.description
+      if (!this.signer.isAllowedToUpdateMetadata) {
+        return
+      }
+      this.form.description = this.descriptionToShow
       this.isUpdateMode = true
     },
     unsetUpdateMode () {
-      this.form.description = this.metadata.description
+      this.form.description = this.descriptionToShow
       this.isUpdateMode = false
     },
     async updateDescription () {

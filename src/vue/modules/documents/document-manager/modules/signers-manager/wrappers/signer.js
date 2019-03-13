@@ -1,3 +1,5 @@
+import safeGet from 'lodash/get'
+
 class Rule {
   constructor (rawRule) {
     this.action = rawRule.action
@@ -19,10 +21,10 @@ export class Signer {
   }
 
   get isAllowedToManageSigners () {
-    return true // this._rules.includes(r => true) // TODO
+    return safeGet(this.details, 'isAllowedToManageSigners')
   }
 
   get isAllowedToUpdateMetadata () {
-    return true // this._rules.includes(r => true) // TODO
+    return safeGet(this.details, 'isAllowedToUpdateMetadata')
   }
 }

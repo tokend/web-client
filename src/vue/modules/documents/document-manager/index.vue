@@ -1,6 +1,9 @@
 <template>
   <div class="document-manager">
-    <div v-if="downloadLink && !isLoading" class="document-manager__inner">
+    <div
+      v-if="signer && downloadLink && !isLoading"
+      class="document-manager__inner"
+    >
       <div class="document-manager__document-info-wrp">
         <div class="document-manager__header">
           <h2>{{ 'document-manager.document-info-title' | globalize }}</h2>
@@ -21,6 +24,7 @@
         <div class="document-manager__description-viewer-wrp">
           <description-viewer
             :metadata="metadata"
+            :signer="signer"
             :document-account-id="attachedAccountId"
             @update="loadDocument"
           />
@@ -81,6 +85,7 @@ import LoadSpinner from '@/vue/common/Loader'
 import { Wallet } from '@tokend/js-sdk'
 import { initApi, api } from './_api'
 import { Metadata } from './wrappers/metadata'
+import { Signer } from './wrappers/signer'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -127,9 +132,24 @@ export default {
   }),
   async created () {
     initApi(this.wallet, this.config)
-    await this.loadDocument()
+    await Promise.all([
+      this.loadDocument(),
+      this.loadSigner(),
+    ])
   },
   methods: {
+    async loadSigner () {
+      const endpoint = `/v3/accounts/${this.attachedAccountId}/signers`
+      const { data: signers } = await api().getWithSignature(endpoint, {
+        page: {
+          limit: 100,
+        },
+      })
+
+      this.signer = signers
+        .map(s => new Signer(s))
+        .find(s => s.publicKey === this.wallet.accountId)
+    },
     async loadDocument () {
       this.isLoading = true
       try {
