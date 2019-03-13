@@ -21,21 +21,37 @@
         class="movements__actions"
         slot="extra"
       >
-        <button
+        <!-- <button
           v-ripple
           class="app__button-raised movements__button-raised"
           @click="isWithdrawalDrawerShown = true"
         >
           <i class="mdi mdi-download movements__btn-icon" />
           {{ 'op-pages.withdrawal' | globalize }}
-        </button>
+        </button> -->
         <button
+          v-ripple
+          class="app__button-raised movements__button-raised"
+          @click="fiatWithdrawalFormShown = true"
+        >
+          <i class="mdi mdi-download movements__btn-icon" />
+          {{ 'op-pages.withdrawal-fiat' | globalize }}
+        </button>
+        <!-- <button
           v-ripple
           class="app__button-raised movements__button-raised"
           @click="isDepositDrawerShown = true"
         >
           <i class="mdi mdi-upload movements__btn-icon" />
           {{ 'op-pages.deposit' | globalize }}
+        </button> -->
+        <button
+          v-ripple
+          class="app__button-raised movements__button-raised"
+          @click="fiatDepositFormShown = true"
+        >
+          <i class="mdi mdi-upload movements__btn-icon" />
+          {{ 'op-pages.deposit-fiat' | globalize }}
         </button>
         <button
           v-ripple
@@ -70,6 +86,28 @@
       <deposit-form />
     </drawer>
 
+    <drawer :is-shown.sync="fiatWithdrawalFormShown">
+      <template slot="heading">
+        {{ 'withdrawal-fiat-module.form-title' | globalize }}
+      </template>
+      <withdrawal-fiat-module
+        :config="withdrawalFiatConfig"
+        :wallet="wallet"
+        @withdrawn="withdrawalFiatModuleWithdrawn"
+      />
+    </drawer>
+
+    <drawer :is-shown.sync="fiatDepositFormShown">
+      <template slot="heading">
+        {{ 'deposit-fiat-module.form-title' | globalize }}
+      </template>
+      <deposit-fiat-module
+        :config="depositFiatConfig"
+        :wallet="wallet"
+        @deposited="depositFiatModuleDeposited"
+      />
+    </drawer>
+
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
@@ -91,7 +129,8 @@
       v-if="asset.code"
       :asset-code="asset.code"
       :wallet="wallet"
-      :config="config"
+      :config="movementsHistoryConfig"
+      :key="`movements-history-state-${historyState}`"
     />
 
     <no-data-message
@@ -118,6 +157,8 @@ import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
 import MovementsHistoryModule from '@modules/movements-history'
+import WithdrawalFiatModule from '@modules/withdrawal-fiat'
+import DepositFiatModule from '@modules/deposit-fiat'
 
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
@@ -141,6 +182,8 @@ export default {
     DepositForm,
     TransferForm,
     MovementsHistoryModule,
+    WithdrawalFiatModule,
+    DepositFiatModule,
   },
 
   data: _ => ({
@@ -152,14 +195,26 @@ export default {
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
     isDividendDrawerShown: false,
-    config: {
+    fiatWithdrawalFormShown: false,
+    fiatDepositFormShown: false,
+    movementsHistoryConfig: {
       horizonURL: config.HORIZON_SERVER,
+    },
+    withdrawalFiatConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      decimalPoints: config.DECIMAL_POINTS,
+      minAmount: config.MIN_AMOUNT,
+    },
+    depositFiatConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      decimalPoints: config.DECIMAL_POINTS,
     },
     dividendConfig: {
       decimalPoints: config.DECIMAL_POINTS,
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
     },
+    historyState: 0,
   }),
 
   computed: {
@@ -198,6 +253,16 @@ export default {
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.balance.id)
+    },
+
+    withdrawalFiatModuleWithdrawn () {
+      this.fiatWithdrawalFormShown = false
+      this.historyState++
+    },
+
+    depositFiatModuleDeposited () {
+      this.fiatDepositFormShown = false
+      this.historyState++
     },
   },
 }
