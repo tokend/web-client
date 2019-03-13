@@ -18,6 +18,10 @@ import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { VerificationPageModule } from '@/vue/pages/verification-page-module'
+import { VerificationGeneralPageModule } from '@/vue/pages/veirification-general-page-module'
+import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
+import { SecurityPageModule } from '@/vue/pages/security-page-module'
 
 export default new ModuleScheme({
   importStylesFn: _ => import('@/scss/app.scss'),
@@ -205,35 +209,40 @@ export default new ModuleScheme({
           path: '/settings',
           name: vueRoutes.settings.name,
           meta: { pageNameTranslationId: 'pages-names.settings' },
-          redirect: vueRoutes.verification,
-          children: [
-            {
-              path: '/settings/verification',
-              name: vueRoutes.verification.name,
-              component: _ => import('@/vue/pages/Verification'),
-              children: [
-                {
-                  path: '/settings/verification/general',
-                  name: vueRoutes.verificationGeneral.name,
-                  component: _ => import('@/vue/forms/VerificationGeneralForm'),
-                },
-                {
-                  path: '/settings/verification/corporate',
-                  name: vueRoutes.verificationCorporate.name,
-                  component: _ => import('@/vue/forms/VerificationCorporateForm'),
-                },
-              ],
-            },
-            {
-              path: '/settings/security',
-              name: vueRoutes.security.name,
-              component: _ => import('@/vue/pages/Security'),
-            },
-          ],
         },
         menuButtonTranslationId: 'pages-names.settings',
         menuButtonMdiName: 'account-settings',
         menuSectionTranslationId: 'sidebar.section-account',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new VerificationPageModule({
+            routerEntry: {
+              path: '/settings/verification',
+              name: vueRoutes.verification.name,
+            },
+            submodules: [
+              new VerificationGeneralPageModule({
+                routerEntry: {
+                  path: '/settings/verification/general',
+                  name: vueRoutes.verificationGeneral.name,
+                },
+              }),
+              new VerificationCorporatePageModule({
+                routerEntry: {
+                  path: '/settings/verification/corporate',
+                  name: vueRoutes.verificationCorporate.name,
+                },
+              }),
+            ],
+          }),
+
+          new SecurityPageModule({
+            routerEntry: {
+              path: '/settings/security',
+              name: vueRoutes.security.name,
+            },
+          }),
+        ],
       }
     ),
 
