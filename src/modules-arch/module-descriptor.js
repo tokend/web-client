@@ -100,7 +100,11 @@ export class ModuleDescriptor {
 
       const imported = await importFn()
       const componentDefinition = Object.values(imported)
-        .find(item => item.render)
+        .find(item => (item.render || item.template) &&
+          item.beforeCreate &&
+          item.beforeDestroy &&
+          item.staticRenderFns
+        )
 
       if (!componentDefinition) {
         throw new Error(`${this.constructor.name}: cannot find imported component definition`)
