@@ -7,7 +7,16 @@
       class="request-state request-state--approved"
     >
       <p class="request-state__content">
-        {{ 'request-messages.approved-msg' | globalize }}
+        {{ 'withdrawal-request-details.approved-msg' | globalize }}
+      </p>
+    </div>
+
+    <div
+      v-else-if="request.isPending"
+      class="request-state request-state--pending"
+    >
+      <p class="request-state__content">
+        {{ 'withdrawal-request-details.pending-msg' | globalize }}
       </p>
     </div>
 
@@ -17,13 +26,22 @@
     >
       <p class="request-state__content">
         <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
+        {{ 'withdrawal-request-details.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
 
     <div class="app__table withdrawal-request-details__table">
       <table>
         <tbody>
+          <tr>
+            <td>
+              {{ 'withdrawal-request-details.request-id' | globalize }}
+            </td>
+            <td>
+              {{ request.id }}
+            </td>
+          </tr>
+
           <tr>
             <td>
               {{ 'withdrawal-request-details.requestor-email' | globalize }}
@@ -57,6 +75,7 @@
             </td>
             <td>
               {{ request.amount | formatMoney }}
+              {{ request.asset }}
             </td>
           </tr>
 
@@ -66,6 +85,7 @@
             </td>
             <td>
               {{ request.fixedFee | formatMoney }}
+              {{ request.asset }}
             </td>
           </tr>
 
@@ -75,6 +95,7 @@
             </td>
             <td>
               {{ request.percentFee | formatMoney }}
+              {{ request.asset }}
             </td>
           </tr>
 
@@ -84,6 +105,7 @@
             </td>
             <td>
               {{ (+request.percentFee + +request.fixedFee) | formatMoney }}
+              {{ request.asset }}
             </td>
           </tr>
 

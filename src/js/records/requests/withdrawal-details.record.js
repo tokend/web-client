@@ -15,7 +15,8 @@ export class WithdrawalDetailsRequestRecord {
     this.amount = _get(record, 'requestDetails.amount')
     this.fixedFee = _get(record, 'requestDetails.fee.fixed')
     this.percentFee = _get(record, 'requestDetails.fee.calculatedPercent')
-    this.address = _get(record, 'requestDetails.externalDetails.address')
+    this.address = _get(record, 'requestDetails.creatorDetails.address')
+    this.balanceId = _get(record, 'requestDetails.balance.id')
   }
 
   get isPending () {

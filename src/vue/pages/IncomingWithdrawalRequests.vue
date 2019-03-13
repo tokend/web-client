@@ -44,6 +44,7 @@
 
                 <td :title="request.amount | formatMoney">
                   {{ request.amount | formatMoney }}
+                  {{ request.asset }}
                 </td>
 
                 <td
@@ -139,7 +140,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import WithdrawalRequestDetails from './withdrawals/WithdrawalRequestDetails'
 import { base } from '@tokend/js-sdk'
 import { Api } from '../../api'
-import { WithdrawalDetailsRequestRecord } from '@/js/records/requests/withdrawal-details.record'
+import {
+  WithdrawalDetailsRequestRecord,
+} from '@/js/records/requests/withdrawal-details.record'
 
 const HORIZON_VERSION_PREFIX = 'v3'
 
@@ -188,7 +191,8 @@ export default {
 
     getFirstPageLoader (accountId) {
       return function () {
-        return Api.api.getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_withdraw_requests`, {
+        const endpoint = `/${HORIZON_VERSION_PREFIX}/create_withdraw_requests`
+        return Api.api.getWithSignature(endpoint, {
           filter: {
             reviewer: accountId,
           },
@@ -197,17 +201,35 @@ export default {
       }
     },
 
-    setHistory (data) {
-      this.requestsHistory =
-          data.map(request => new WithdrawalDetailsRequestRecord(request))
-
+    async setHistory (data) {
+      this.requestsHistory = await Promise.all(
+        data
+          .map(request => new WithdrawalDetailsRequestRecord(request))
+          .map(async request => {
+            request.asset = await this.getAssetFromBalanceId(request)
+            return request
+          })
+      )
       this.isHistoryLoaded = true
     },
 
-    extendHistory (data) {
+    async extendHistory (data) {
       this.requestsHistory = this.requestsHistory.concat(
-        data.map(request => new WithdrawalDetailsRequestRecord(request))
+        await Promise.all(
+          data
+            .map(request => new WithdrawalDetailsRequestRecord(request))
+            .map(async request => {
+              request.asset = await this.getAssetFromBalanceId(request)
+              return request
+            })
+        )
       )
+    },
+
+    async getAssetFromBalanceId (request) {
+      const { _rawResponse: token } = await Api.api
+        .get(`balances/${request.balanceId}/asset`)
+      return token.data.code
     },
 
     showRequestDetails (index) {
@@ -267,16 +289,19 @@ export default {
       await Api.api.postOperations(...operations)
     },
     async rewriteWithdrawalRequest () {
-      const { data } = await Api.api
-        .getWithSignature(`/${HORIZON_VERSION_PREFIX}/requests/${this.selectedRequest.id}`, {
-          filter: {
-            reviewer: this.accountId,
-          },
-          include: ['request_details'],
-        })
-      this.requestsHistory.splice(this.selectedIndex, 1,
-        new WithdrawalDetailsRequestRecord(data)
-      )
+      /* eslint-disable-next-line max-len */
+      const endpoint = `/${HORIZON_VERSION_PREFIX}/requests/${this.selectedRequest.id}`
+      /* eslint-enable-next-line max-len */
+      const { data } = await Api.api.getWithSignature(endpoint, {
+        filter: {
+          reviewer: this.accountId,
+        },
+        include: ['request_details'],
+      })
+      let withdraw = new WithdrawalDetailsRequestRecord(data)
+      withdraw.asset = await this.getAssetFromBalanceId(withdraw)
+
+      this.requestsHistory.splice(this.selectedIndex, 1, withdraw)
     },
   },
 }
