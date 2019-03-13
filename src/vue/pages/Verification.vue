@@ -89,7 +89,7 @@ import config from '@/config'
 // Placed in the component hooks because Vue router doesn't call
 // the guard when routing from the child's path to the parent's one.
 // Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
-async function verificationGuard (to, from, next) {
+function verificationGuard (to, from, next) {
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
   const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
@@ -128,10 +128,10 @@ export default {
     }),
   },
   async beforeRouteEnter (to, from, next) {
-    await verificationGuard(to, from, next)
+    verificationGuard(to, from, next)
   },
   async beforeRouteUpdate (to, from, next) {
-    await verificationGuard(to, from, next)
+    verificationGuard(to, from, next)
   },
 }
 </script>
