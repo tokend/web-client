@@ -2,16 +2,25 @@
   <div class="summary-volume-viewer">
     <line-chart
       v-if="isLoaded"
-      class="summary-volume-viewer__renderer"
       id="summary-volume-chart"
       :data="summaryVolumes"
       :currency="point"
     />
+
+    <load-spinner
+      v-else-if="!isLoadFailed"
+      message-id="loyalty-points.statistics.loading-msg"
+    />
+
+    <p v-else>
+      {{ 'loyalty-points.statistics.loading-error-msg' | globalize }}
+    </p>
   </div>
 </template>
 
 <script>
 import LineChart from '../charts/line-chart'
+import LoadSpinner from '@/vue/common/Loader'
 
 import summaryVolumesMock from '../../mocks/summary-volume'
 
@@ -23,21 +32,24 @@ export default {
   name: 'summary-volume-viewer',
   components: {
     LineChart,
+    LoadSpinner,
   },
 
   data: _ => ({
     summaryVolumes: {},
     isLoaded: false,
+    isLoadFailed: false,
     point: DEFAULT_POINT,
   }),
 
   created () {
-    this.loadIncomingVolumes()
+    this.loadSummaryVolumes()
   },
 
   methods: {
-    loadIncomingVolumes () {
+    loadSummaryVolumes () {
       try {
+        // TODO: load summary volumes from the API
         const { data } = summaryVolumesMock
         this.summaryVolumes = data
         this.isLoaded = true

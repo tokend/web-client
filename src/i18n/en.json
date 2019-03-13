@@ -434,6 +434,8 @@
     "loyalty-points": {
       "create-invoice-form-title": "Create invoice",
       "statistics": {
+        "loading-msg": "Loading…",
+        "loading-error-msg": "There was an error while loading.",
         "withdrawals-title": "Withdrawals",
         "withdrawal-requests-title": "Withdrawal requests",
         "incoming-volume-title": "Withdrawal's incoming volume",
