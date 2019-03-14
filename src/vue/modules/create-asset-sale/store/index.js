@@ -21,6 +21,7 @@ export const actions = {
 }
 
 export const createAssetSaleModule = {
+  name: 'create-asset-sale',
   namespaced: true,
   actions,
 }

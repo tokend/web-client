@@ -233,9 +233,9 @@ export default {
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
-        while (Object.keys(this.kycLatestData).length === 0) {
+        do {
           await this.loadKyc()
-        }
+        } while (this.kycState !== REQUEST_STATES_STR.pending)
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
@@ -292,7 +292,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import '~@/vue/forms/app-form';
 
 .verification-general-form {
   margin-top: 4rem;

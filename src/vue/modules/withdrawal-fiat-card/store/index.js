@@ -77,6 +77,7 @@ export const getters = {
 }
 
 export const withdrawalFiatCardModule = {
+  name: 'withdrawal-fiat-card',
   namespaced: true,
   state,
   getters,

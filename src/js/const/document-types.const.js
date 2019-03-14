@@ -22,6 +22,7 @@ export const DOCUMENT_TYPES = Object.freeze({
   residence_permit: 'residence_permit',
   tokenTerms: 'token_terms',
   tokenLogo: 'asset_logo',
+  healthcareDocument: 'healthcare_document',
 })
 
 export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
@@ -38,7 +39,7 @@ export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
   [DOCUMENT_TYPES.kycProofOfInvestor]: 'document-types.kyc-proof-of-investor',
   [DOCUMENT_TYPES.kycShareholdersCertificate]: 'document-types.kyc-shareholders-certificate',
   [DOCUMENT_TYPES.kycAnnualReport]: 'document-types.kyc-annual-report',
-  [DOCUMENT_TYPES.kycMemorandium]: 'document-types.kyc-memorandium',
+  [DOCUMENT_TYPES.kycMemorandium]: 'document-types.kyc-memorandum',
   [DOCUMENT_TYPES.kycSignatoriesAuthorization]: 'document-types.kyc-signatories-authorization',
   [DOCUMENT_TYPES.kycOrganizationChart]: 'document-types.kyc-organization-chart',
   [DOCUMENT_TYPES.kycBusinessModel]: 'document-types.kyc-business-model',

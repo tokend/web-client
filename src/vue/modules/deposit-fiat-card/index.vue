@@ -39,7 +39,6 @@
         name="deposit-fiat-card-amount"
         @blur="touchField('form.amount')"
         :error-message="getFieldErrorMessage('form.amount', {
-          available: form.asset.balance.value,
           maxDecimalDigitsCount: form.asset.trailingDigitsCount
         })"
         :label="'deposit-fiat-card-module.amount' | globalize({
@@ -203,7 +202,6 @@ import { initApi, api } from './_api'
 import { MathUtil } from '@/js/utils'
 import {
   required,
-  noMoreThanAvailableOnBalance,
   maxDecimalDigitsCount,
   cardNumber,
   cardExpirationDate,
@@ -299,9 +297,6 @@ export default {
         asset: { required },
         amount: {
           required,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
-            this.form.asset.balance.value
-          ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(
             this.config.decimalPoints
           ),

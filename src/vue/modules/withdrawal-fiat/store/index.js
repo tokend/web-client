@@ -36,6 +36,7 @@ export const getters = {
 }
 
 export const withdrawalFiatModule = {
+  name: 'withdrawal-fiat',
   namespaced: true,
   state,
   getters,

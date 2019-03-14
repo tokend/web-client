@@ -1,11 +1,18 @@
 <template>
-  <div class="description-editor">
+  <div class="markdown-field">
     <markdown-editor
       @input="onInput"
       :value="value"
       :sanitize="true"
       ref="markdownEditor"
-      :configs="configs" />
+      :configs="configs"
+    />
+    <div
+      class="markdown-field__err-mes"
+      v-if="errorMessage"
+    >
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
@@ -17,10 +24,11 @@ const EVENT = {
 }
 
 export default {
-  name: 'description-editor',
+  name: 'markdown-field',
   components: { MarkdownEditor },
   props: {
     value: { type: [String, Number], default: '' },
+    errorMessage: { type: String, default: undefined },
   },
 
   data () {
@@ -71,16 +79,22 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~simplemde/dist/simplemde.min.css';
-  @import '~@scss/variables';
+@import '~simplemde/dist/simplemde.min.css';
+@import 'scss/variables';
 
-  .description-editor {
-    width: 100%;
-    textarea {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+.markdown-field {
+  width: 100%;
+  textarea {
+    opacity: 0;
+    width: 0;
+    height: 0;
   }
+}
 
+.markdown-field__err-mes {
+  color: $field-color-error;
+  margin-top: $field-error-margin-top;
+  font-size: $field-error-font-size;
+  line-height: $field-error-line-height;
+}
 </style>

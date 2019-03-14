@@ -1,10 +1,11 @@
 FROM node:11
 
+ARG BUILD_VERSION
 WORKDIR /build
 COPY . .
 RUN true \
  && yarn install \
- && yarn build \
+ && yarn build --set-build-version $BUILD_VERSION \
  && true
 
 FROM nginx:latest

@@ -127,10 +127,10 @@ export default {
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
   },
-  beforeRouteEnter (to, from, next) {
+  async beforeRouteEnter (to, from, next) {
     verificationGuard(to, from, next)
   },
-  beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate (to, from, next) {
     verificationGuard(to, from, next)
   },
 }
