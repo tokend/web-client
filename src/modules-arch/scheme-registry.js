@@ -1,3 +1,5 @@
+import { ModuleScheme } from './module-scheme'
+
 let currentScheme = {}
 const SCHEME_IMPORTERS = {
   vanilla: _ => import('@/modules-arch/schemes/vanilla/scheme'),
@@ -18,6 +20,6 @@ export class SchemeRegistry {
     }
 
     const { default: scheme } = await SCHEME_IMPORTERS[schemeName]()
-    currentScheme = scheme
+    currentScheme = new ModuleScheme(scheme)
   }
 }

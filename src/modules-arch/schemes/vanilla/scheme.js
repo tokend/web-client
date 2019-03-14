@@ -1,4 +1,3 @@
-import { ModuleScheme } from '@/modules-arch/module-scheme'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
@@ -30,7 +29,7 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 
-export default new ModuleScheme({
+export default {
   importEnLocaleFile: _ => import('@/modules-arch/schemes/vanilla/en.json'),
   pages: [
     new DashboardPageModule(
@@ -279,4 +278,4 @@ export default new ModuleScheme({
       },
     ),
   ],
-})
+}
