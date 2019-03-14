@@ -12,7 +12,7 @@ for further information about branching and tagging conventions.
 - Issuance explorer module
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
-- Displaying TokenD logo & load spinner while loading the page 
+- Displaying TokenD logo & load spinner while loading the page
 - Documents page
 - Document upload form module
 - Cancel trade offers in the "My orders" tab on the "Trade" page
@@ -20,6 +20,9 @@ for further information about branching and tagging conventions.
 - Displaying asset policies & asset type on the `AssetDetails` page
 - `record` getter to the `AssetRecord`
 - Added confirmation to cancel token creation request
+- CLI config passing
+- Added module enabling/disabling
+- Added module schemes
 - Healthcare document type
 - Document explorer page
 - Document explorer module

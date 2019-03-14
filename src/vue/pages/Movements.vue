@@ -21,30 +21,41 @@
         class="movements__actions"
         slot="extra"
       >
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isWithdrawalDrawerShown = true"
-        >
-          <i class="mdi mdi-download movements__btn-icon" />
-          {{ 'op-pages.withdrawal' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isDepositDrawerShown = true"
-        >
-          <i class="mdi mdi-upload movements__btn-icon" />
-          {{ 'op-pages.deposit' | globalize }}
-        </button>
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isTransferDrawerShown = true"
-        >
-          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
-          {{ 'op-pages.send' | globalize }}
-        </button>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isWithdrawalDrawerShown = true"
+          >
+            <i class="mdi mdi-download movements__btn-icon" />
+            {{ 'op-pages.withdrawal' | globalize }}
+          </button>
+        </template>
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isDepositDrawerShown = true"
+          >
+            <i class="mdi mdi-upload movements__btn-icon" />
+            {{ 'op-pages.deposit' | globalize }}
+          </button>
+        </template>
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isTransferDrawerShown = true"
+          >
+            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+            {{ 'op-pages.send' | globalize }}
+          </button>
+        </template>
       </div>
     </top-bar>
 
@@ -69,21 +80,32 @@
       <transfer-form />
     </drawer>
 
-    <movements-history-module
-      v-if="asset.code"
-      :asset-code="asset.code"
-      :wallet="wallet"
-      :config="config"
-    />
+    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
+      <submodule-importer
+        v-if="asset.code"
+        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
+        :asset-code="asset.code"
+        :wallet="wallet"
+        :config="config"
+      >
+        <loader
+          slot="loader"
+          message-id="op-pages.assets-loading-msg"
+        />
+      </submodule-importer>
 
-    <no-data-message
-      v-else-if="isLoaded"
-      icon-name="trending-up"
-      :title="'op-pages.no-data-title' | globalize"
-      :message="'op-pages.no-data-msg' | globalize"
-    />
+      <no-data-message
+        v-else-if="isLoaded"
+        icon-name="trending-up"
+        :title="'op-pages.no-data-title' | globalize"
+        :message="'op-pages.no-data-msg' | globalize"
+      />
 
-    <loader v-else message-id="op-pages.assets-loading-msg" />
+      <loader
+        v-else
+        message-id="op-pages.assets-loading-msg"
+      />
+    </template>
   </div>
 </template>
 
@@ -99,8 +121,6 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
-import MovementsHistoryModule from '@modules/movements-history'
-
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -108,6 +128,12 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import config from '../../config'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
+import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 
 export default {
   name: 'movements-page',
@@ -120,10 +146,11 @@ export default {
     WithdrawalForm,
     DepositForm,
     TransferForm,
-    MovementsHistoryModule,
+    SubmoduleImporter,
   },
 
   data: _ => ({
+    MovementsHistoryModule,
     asset: {},
     assets: [],
     isLoaded: false,
@@ -134,6 +161,9 @@ export default {
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
+    WithdrawalDrawerPseudoModule,
+    DepositDrawerPseudoModule,
+    TransferDrawerPseudoModule,
   }),
 
   computed: {

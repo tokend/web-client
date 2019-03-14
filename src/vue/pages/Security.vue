@@ -34,43 +34,49 @@
       </template>
     </drawer>
 
-    <div class="security-page__row">
-      <p class="security-page__row-title">
-        {{ 'security-page.password-title' | globalize }}
-      </p>
-      <a
-        class="security-page__row-action"
-        @click="showDrawer(VIEW_MODES.changePassword)"
-      >
-        {{ 'security-page.change-password-btn' | globalize }}
-      </a>
-    </div>
-    <hr>
+    <template v-if="getModule().canRenderSubmodule(ChangePasswordPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.password-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.changePassword)"
+        >
+          {{ 'security-page.change-password-btn' | globalize }}
+        </a>
+      </div>
+      <hr>
+    </template>
 
-    <div class="security-page__row">
-      <p class="security-page__row-title">
-        {{ 'security-page.account-id-title' | globalize }}
-      </p>
-      <a
-        class="security-page__row-action"
-        @click="showDrawer(VIEW_MODES.viewAccountId)"
-      >
-        {{ 'security-page.view-account-id-btn' | globalize }}
-      </a>
-    </div>
-    <hr>
+    <template v-if="getModule().canRenderSubmodule(ShowAccountIdPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.account-id-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.viewAccountId)"
+        >
+          {{ 'security-page.view-account-id-btn' | globalize }}
+        </a>
+      </div>
+      <hr>
+    </template>
 
-    <div class="security-page__row">
-      <p class="security-page__row-title">
-        {{ 'security-page.secret-seed-title' | globalize }}
-      </p>
-      <a
-        class="security-page__row-action"
-        @click="showDrawer(VIEW_MODES.viewSecretSeed)"
-      >
-        {{ 'security-page.view-secret-seed-btn' | globalize }}
-      </a>
-    </div>
+    <template v-if="getModule().canRenderSubmodule(ShowSeedPseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.secret-seed-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.viewSecretSeed)"
+        >
+          {{ 'security-page.view-secret-seed-btn' | globalize }}
+        </a>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -84,6 +90,10 @@ import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
 
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+
+import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
+import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
+import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 
 const VIEW_MODES = {
   changePassword: 'changePassword',
@@ -104,6 +114,9 @@ export default {
     isDrawerShown: false,
     viewMode: VIEW_MODES.default,
     VIEW_MODES,
+    ShowAccountIdPseudoModule,
+    ShowSeedPseudoModule,
+    ChangePasswordPseudoModule,
   }),
 
   computed: {
@@ -150,7 +163,7 @@ export default {
 
   hr {
     margin: 0 2.4rem;
-    border: $col-block-line solid .05rem;
+    border: $col-block-line solid 0.05rem;
   }
 }
 
