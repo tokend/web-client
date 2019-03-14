@@ -257,7 +257,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import '~@/vue/forms/app-form';
 
 .verification-corporate-form {
   margin-top: 4rem;

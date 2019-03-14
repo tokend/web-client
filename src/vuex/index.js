@@ -14,7 +14,6 @@ import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
 import _isEmpty from 'lodash/isEmpty'
-import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 Vue.use(Vuex)
 
@@ -33,16 +32,8 @@ export const rootModule = {
   state: {},
 }
 
-let store = {}
-async function buildStore () {
-  const stores = (await Promise
-    .all(
-      SchemeRegistry.current.cache
-        .filter(item => item.importStoreFn)
-        .map(item => item.importStoreFn())
-    ))
-    .reduce((res, item) => ({ ...res, [item.name]: item }))
-
+let store
+function buildStore (storeModules = []) {
   store = new Vuex.Store({
     ...rootModule,
     modules: {
@@ -51,7 +42,7 @@ async function buildStore () {
       wallet,
       kyc,
       keyValue,
-      ...stores,
+      ...storeModules,
     },
     plugins: [sessionStoragePlugin],
   })
@@ -60,6 +51,19 @@ async function buildStore () {
 
   return store
 }
+buildStore()
 
-export { buildStore, store }
+async function extendStoreWithScheme (scheme = []) {
+  const storeModules = (await Promise
+    .all(
+      scheme.cache
+        .filter(item => item.importStoreFn)
+        .map(item => item.importStoreFn())
+    ))
+    .reduce((res, item) => ({ ...res, [item.name]: item }))
+
+  return buildStore(storeModules)
+}
+
+export { extendStoreWithScheme, store }
 export { vuexTypes } from './types'

@@ -15,6 +15,20 @@ import { SalesPageModule } from '@/vue/pages/sales-page-module'
 import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
+import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
+import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { VerificationPageModule } from '@/vue/pages/verification-page-module'
+import { VerificationGeneralPageModule } from '@/vue/pages/veirification-general-page-module'
+import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
+import { SecurityPageModule } from '@/vue/pages/security-page-module'
+import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
+import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
+import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
+import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 
 export default new ModuleScheme({
   importStylesFn: _ => import('@/scss/app.scss'),
@@ -31,6 +45,10 @@ export default new ModuleScheme({
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
+          new IssuanceDrawerPseudoModule({
+            isCorporateOnly: true,
+          }),
+          new TransferDrawerPseudoModule(),
         ],
       },
     ),
@@ -45,6 +63,9 @@ export default new ModuleScheme({
         menuButtonMdiName: 'menu',
         submodules: [
           new MovementsHistoryModule(),
+          new WithdrawalDrawerPseudoModule(),
+          new DepositDrawerPseudoModule(),
+          new TransferDrawerPseudoModule(),
         ],
       },
     ),
@@ -167,29 +188,32 @@ export default new ModuleScheme({
         routerEntry: {
           path: '/requests',
           name: vueRoutes.requests.name,
-          redirect: vueRoutes.assetCreationRequests,
           meta: { pageNameTranslationId: 'pages-names.requests' },
-          children: [
-            {
-              path: '/requests/token-creation',
-              name: vueRoutes.assetCreationRequests.name,
-              component: _ => import('@/vue/pages/AssetCreationRequests'),
-            },
-            {
-              path: '/requests/fund-creation',
-              name: vueRoutes.saleCreationRequests.name,
-              component: _ => import('@/vue/pages/SaleCreationRequests'),
-            },
-            {
-              path: '/requests/pre-issuance-upload',
-              name: vueRoutes.preIssuanceUploadRequests.name,
-              component: _ => import('@/vue/pages/PreIssuanceRequests'),
-            },
-          ],
         },
         isCorporateOnly: true,
         menuButtonTranslationId: 'pages-names.requests',
         menuButtonMdiName: 'book-open-variant',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new AssetCreationRequestsPageModule({
+            routerEntry: {
+              path: '/requests/token-creation',
+              name: vueRoutes.assetCreationRequests.name,
+            },
+          }),
+          new SaleCreationRequestsPageModule({
+            routerEntry: {
+              path: '/requests/fund-creation',
+              name: vueRoutes.saleCreationRequests.name,
+            },
+          }),
+          new PreIssuanceRequestsPageModule({
+            routerEntry: {
+              path: '/requests/pre-issuance-upload',
+              name: vueRoutes.preIssuanceUploadRequests.name,
+            },
+          }),
+        ],
       },
     ),
 
@@ -199,35 +223,45 @@ export default new ModuleScheme({
           path: '/settings',
           name: vueRoutes.settings.name,
           meta: { pageNameTranslationId: 'pages-names.settings' },
-          redirect: vueRoutes.verification,
-          children: [
-            {
-              path: '/settings/verification',
-              name: vueRoutes.verification.name,
-              component: _ => import('@/vue/pages/Verification'),
-              children: [
-                {
-                  path: '/settings/verification/general',
-                  name: vueRoutes.verificationGeneral.name,
-                  component: _ => import('@/vue/forms/VerificationGeneralForm'),
-                },
-                {
-                  path: '/settings/verification/corporate',
-                  name: vueRoutes.verificationCorporate.name,
-                  component: _ => import('@/vue/forms/VerificationCorporateForm'),
-                },
-              ],
-            },
-            {
-              path: '/settings/security',
-              name: vueRoutes.security.name,
-              component: _ => import('@/vue/pages/Security'),
-            },
-          ],
         },
         menuButtonTranslationId: 'pages-names.settings',
         menuButtonMdiName: 'account-settings',
         menuSectionTranslationId: 'sidebar.section-account',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new VerificationPageModule({
+            routerEntry: {
+              path: '/settings/verification',
+              name: vueRoutes.verification.name,
+            },
+            submodules: [
+              new VerificationGeneralPageModule({
+                routerEntry: {
+                  path: '/settings/verification/general',
+                  name: vueRoutes.verificationGeneral.name,
+                },
+              }),
+              new VerificationCorporatePageModule({
+                routerEntry: {
+                  path: '/settings/verification/corporate',
+                  name: vueRoutes.verificationCorporate.name,
+                },
+              }),
+            ],
+          }),
+
+          new SecurityPageModule({
+            routerEntry: {
+              path: '/settings/security',
+              name: vueRoutes.security.name,
+            },
+            submodules: [
+              new ChangePasswordPseudoModule(),
+              new ShowAccountIdPseudoModule(),
+              new ShowSeedPseudoModule(),
+            ],
+          }),
+        ],
       }
     ),
 

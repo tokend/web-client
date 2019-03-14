@@ -8,7 +8,7 @@ import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
 
-import { buildStore } from '@/vuex'
+import { extendStoreWithScheme } from '@/vuex'
 import { buildRouter } from '@/vue-router'
 import { tableScrollShadow } from '@/vue/directives/tableScrollShadow'
 import { ripple } from '@/vue/directives/ripple'
@@ -53,7 +53,7 @@ async function init () {
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
 
-  const store = await buildStore()
+  const store = await extendStoreWithScheme(SchemeRegistry.current)
   const router = buildRouter(store)
 
   /* eslint-disable no-new */

@@ -292,7 +292,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import '~@/vue/forms/app-form';
 
 .verification-general-form {
   margin-top: 4rem;

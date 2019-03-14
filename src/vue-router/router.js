@@ -77,7 +77,6 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/AppContent'], resolve),
         beforeEnter: buildInAppRouteGuard(store),
         redirect: vueRoutes.dashboard,
-        children: SchemeRegistry.current.pages.map(page => page.routerEntry),
         // {
         //   path: '/documents',
         //   name: vueRoutes.documents.name,
@@ -103,6 +102,9 @@ export function buildRouter (store) {
         //     },
         //   ].filter(route => route.featureFlag !== false),
         // },
+        children: SchemeRegistry.current.pages
+          .filter(page => page.isAccessible)
+          .map(page => page.routerEntry),
       },
     ],
     scrollBehavior: _ => ({ x: 0, y: 0 }),
