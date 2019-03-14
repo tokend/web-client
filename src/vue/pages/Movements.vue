@@ -21,14 +21,19 @@
         class="movements__actions"
         slot="extra"
       >
-        <!-- <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isWithdrawalDrawerShown = true"
-        >
-          <i class="mdi mdi-download movements__btn-icon" />
-          {{ 'op-pages.withdrawal' | globalize }}
-        </button> -->
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isWithdrawalDrawerShown = true"
+          >
+            <i class="mdi mdi-download movements__btn-icon" />
+            {{ 'op-pages.withdrawal' | globalize }}
+          </button>
+        </template>
+
+        <!-- TODO: modularize -->
         <button
           v-ripple
           class="app__button-raised movements__button-raised"
@@ -37,14 +42,20 @@
           <i class="mdi mdi-download movements__btn-icon" />
           {{ 'op-pages.withdrawal-fiat' | globalize }}
         </button>
-        <!-- <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isDepositDrawerShown = true"
-        >
-          <i class="mdi mdi-upload movements__btn-icon" />
-          {{ 'op-pages.deposit' | globalize }}
-        </button> -->
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isDepositDrawerShown = true"
+          >
+            <i class="mdi mdi-upload movements__btn-icon" />
+            {{ 'op-pages.deposit' | globalize }}
+          </button>
+        </template>
+
+        <!-- TODO: modularize -->
         <button
           v-ripple
           class="app__button-raised movements__button-raised"
@@ -53,14 +64,20 @@
           <i class="mdi mdi-upload movements__btn-icon" />
           {{ 'op-pages.deposit-fiat' | globalize }}
         </button>
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isTransferDrawerShown = true"
-        >
-          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
-          {{ 'op-pages.send' | globalize }}
-        </button>
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isTransferDrawerShown = true"
+          >
+            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+            {{ 'op-pages.send' | globalize }}
+          </button>
+        </template>
+
+        <!-- TODO: modularize -->
         <button
           v-ripple
           class="app__button-raised movements__button-raised"
@@ -79,13 +96,6 @@
       <withdrawal-form />
     </drawer>
 
-    <drawer :is-shown.sync="isDepositDrawerShown">
-      <template slot="heading">
-        {{ 'deposit-form.deposit' | globalize }}
-      </template>
-      <deposit-form />
-    </drawer>
-
     <drawer :is-shown.sync="fiatWithdrawalFormShown">
       <template slot="heading">
         {{ 'withdrawal-fiat-module.form-title' | globalize }}
@@ -95,6 +105,13 @@
         :wallet="wallet"
         @withdrawn="withdrawalFiatModuleWithdrawn"
       />
+    </drawer>
+
+    <drawer :is-shown.sync="isDepositDrawerShown">
+      <template slot="heading">
+        {{ 'deposit-form.deposit' | globalize }}
+      </template>
+      <deposit-form />
     </drawer>
 
     <drawer :is-shown.sync="fiatDepositFormShown">
@@ -126,22 +143,33 @@
       />
     </drawer>
 
-    <movements-history-module
-      v-if="asset.code"
-      :asset-code="asset.code"
-      :wallet="wallet"
-      :config="movementsHistoryConfig"
-      :key="`movements-history-state-${historyState}`"
-    />
+    <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
+      <submodule-importer
+        v-if="asset.code"
+        :submodule="getModule().getSubmodule(MovementsHistoryModule)"
+        :asset-code="asset.code"
+        :wallet="wallet"
+        :config="movementsHistoryConfig"
+        :key="`movements-history-state-${historyState}`"
+      >
+        <loader
+          slot="loader"
+          message-id="op-pages.assets-loading-msg"
+        />
+      </submodule-importer>
 
-    <no-data-message
-      v-else-if="isLoaded"
-      icon-name="trending-up"
-      title-id="op-pages.no-data-title"
-      message-id="op-pages.no-data-msg"
-    />
+      <no-data-message
+        v-else-if="isLoaded"
+        icon-name="trending-up"
+        :title="'op-pages.no-data-title' | globalize"
+        :message="'op-pages.no-data-msg' | globalize"
+      />
 
-    <loader v-else message-id="op-pages.assets-loading-msg" />
+      <loader
+        v-else
+        message-id="op-pages.assets-loading-msg"
+      />
+    </template>
   </div>
 </template>
 
@@ -157,9 +185,9 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
-import MovementsHistoryModule from '@modules/movements-history'
 import WithdrawalFiatModule from '@modules/withdrawal-fiat'
 import DepositFiatModule from '@modules/deposit-fiat'
+import DividendFormModule from '@modules/dividend-form/index'
 
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
@@ -167,13 +195,17 @@ import { vuexTypes } from '@/vuex/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import config from '../../config'
-import DividendFormModule from '@modules/dividend-form/index'
+import config from '@/config'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
+import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 
 export default {
   name: 'movements-page',
   components: {
-    DividendFormModule,
     SelectField,
     TopBar,
     Drawer,
@@ -182,12 +214,14 @@ export default {
     WithdrawalForm,
     DepositForm,
     TransferForm,
-    MovementsHistoryModule,
+    SubmoduleImporter,
     WithdrawalFiatModule,
     DepositFiatModule,
+    DividendFormModule,
   },
 
   data: _ => ({
+    MovementsHistoryModule,
     asset: {},
     assets: [],
     isLoaded: false,
@@ -216,6 +250,9 @@ export default {
       minAmount: config.MIN_AMOUNT,
     },
     historyState: 0,
+    WithdrawalDrawerPseudoModule,
+    DepositDrawerPseudoModule,
+    TransferDrawerPseudoModule,
   }),
 
   computed: {
@@ -238,7 +275,7 @@ export default {
 
   methods: {
     ...mapActions({
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
     async initAssetSelector () {
@@ -249,7 +286,7 @@ export default {
     },
 
     async loadAssets () {
-      await this.loadAccount(this.accountId)
+      await this.loadBalances()
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))

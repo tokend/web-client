@@ -36,7 +36,7 @@
     </top-bar>
     <drawer :is-shown.sync="isAssetSaleDrawerShown">
       <template slot="heading">
-        {{ 'sales.new-opportunity' | globalize }}
+        {{ 'sales.new-sale' | globalize }}
       </template>
       <asset-sale-module
         @close="isAssetSaleDrawerShown = false"
@@ -70,8 +70,8 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="inbox"
-        title-id="sales.no-sales-title"
-        message-id="sales.no-sales-desc"
+        :title="'sales.no-sales-title' | globalize"
+        :message="'sales.no-sales-desc' | globalize"
       />
     </template>
 

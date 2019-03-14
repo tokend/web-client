@@ -29,4 +29,5 @@ export const DOCUMENT_POLICIES = Object.freeze({
   [DOCUMENT_TYPES.residence_permit]: POLICIES.private,
   [DOCUMENT_TYPES.tokenTerms]: POLICIES.public,
   [DOCUMENT_TYPES.tokenLogo]: POLICIES.public,
+  [DOCUMENT_TYPES.healthcareDocument]: POLICIES.private,
 })

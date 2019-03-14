@@ -21,13 +21,13 @@
           class="create-asset-btn"
           @click="isAssetSaleDrawerShown = true"
         >
-          {{ 'assets-page.new-opportunity' | globalize }}
+          {{ 'assets-page.new-asset' | globalize }}
         </button>
       </template>
     </top-bar>
     <drawer :is-shown.sync="isAssetSaleDrawerShown">
       <template slot="heading">
-        {{ 'assets-page.new-opportunity' | globalize }}
+        {{ 'assets-page.new-asset' | globalize }}
       </template>
       <asset-sale-module
         @close="isAssetSaleDrawerShown = false"

@@ -222,7 +222,7 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        while (Object.keys(this.kycLatestData).length === 0) {
+        while (this.kycState !== REQUEST_STATES_STR.pending) {
           await this.loadKyc()
         }
       } catch (e) {
@@ -257,7 +257,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import '~@/vue/forms/app-form';
 
 .verification-corporate-form {
   margin-top: 4rem;

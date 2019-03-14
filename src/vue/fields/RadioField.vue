@@ -76,7 +76,8 @@ export default {
         left: .3rem;
         width: .7rem;
         height: .7rem;
-        background-color: $col-radio-field-border;
+        // TODO: missing color
+        background-color:  black; // $col-radio-field-border;
         border-radius: 50%;
       }
     }
@@ -85,8 +86,10 @@ export default {
   .radio-field__input-custom {
     width: 1.5rem;
     height: 1.5rem;
-    background-color: $col-radio-field-background;
-    border: .1rem solid $col-radio-field-border;
+    // TODO: missing color
+    background-color: black; // $col-radio-field-background;
+    // TODO: missing color
+    border: .1rem solid black; // $col-radio-field-border;
     border-radius: 50%;
     margin-right: .8rem;
   }

@@ -159,8 +159,8 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="alert-circle"
-        :title-id="'invest-form.insufficient-balance-title'"
-        :message-id="'invest-form.insufficient-balance-desc'"
+        :title="'invest-form.insufficient-balance-title' | globalize"
+        :message="'invest-form.insufficient-balance-desc' | globalize"
       />
     </template>
 

@@ -38,6 +38,7 @@ export default Object.assign(
       limits: true,
       sales: true,
       saleDetails: true,
+      documents: true,
     },
 
     /**
@@ -98,6 +99,12 @@ export default Object.assign(
      * The field being displayed on login screen.
      */
     BUILD_VERSION: 'dev: ' + packageJson.version,
+
+    /**
+     * Module scheme to use. The module scheme will be used to combine module
+     * set of the application.
+     */
+    MODULE_SCHEME_NAME: 'vanilla',
   },
   process.env,
   document.ENV
