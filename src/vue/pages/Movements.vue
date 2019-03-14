@@ -35,7 +35,7 @@
           @click="fiatWithdrawalFormShown = true"
         >
           <i class="mdi mdi-download movements__btn-icon" />
-          {{ 'op-pages.withdrawal-fiat' | globalize }}
+          {{ 'op-pages.withdrawal' | globalize }}
         </button>
         <!-- <button
           v-ripple
@@ -51,7 +51,7 @@
           @click="fiatDepositFormShown = true"
         >
           <i class="mdi mdi-upload movements__btn-icon" />
-          {{ 'op-pages.deposit-fiat' | globalize }}
+          {{ 'op-pages.deposit' | globalize }}
         </button>
         <button
           v-ripple
@@ -66,7 +66,7 @@
           class="app__button-raised movements__button-raised"
           @click="isDividendDrawerShown = true"
         >
-          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+          <i class="mdi mdi-rotate-315 mdi-transfer movements__btn-icon" />
           {{ 'op-pages.dividend' | globalize }}
         </button>
       </div>

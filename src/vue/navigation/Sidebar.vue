@@ -47,13 +47,13 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
-            :to="vueRoutes.trade"
+            :to="vueRoutes.sales"
             tag="a"
-            v-if="config.featureFlags.trade"
+            v-if="config.featureFlags.sales"
           >
-            <i class="sidebar__link-icon mdi mdi-finance" />
+            <i class="sidebar__link-icon mdi mdi-trending-up" />
             <span>
-              {{ 'pages-names.trade' | globalize }}
+              {{ 'pages-names.funds' | globalize }}
             </span>
           </router-link>
 
@@ -68,6 +68,20 @@
             <i class="sidebar__link-icon mdi mdi-menu" />
             <span>
               {{ 'pages-names.movements' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            :to="vueRoutes.trade"
+            tag="a"
+            v-if="config.featureFlags.trade"
+          >
+            <i class="sidebar__link-icon mdi mdi-finance" />
+            <span>
+              {{ 'pages-names.trade' | globalize }}
             </span>
           </router-link>
 
@@ -126,19 +140,7 @@
               {{ 'pages-names.issuance' | globalize }}
             </span>
           </router-link>
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.sales"
-            tag="a"
-            v-if="config.featureFlags.sales"
-          >
-            <i class="sidebar__link-icon mdi mdi-trending-up" />
-            <span>
-              {{ 'pages-names.funds' | globalize }}
-            </span>
-          </router-link>
+
           <router-link
             v-ripple
             class="sidebar__link"
