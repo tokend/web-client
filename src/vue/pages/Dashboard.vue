@@ -42,9 +42,14 @@
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
         </div>
-        <div class="dashboard__activity">
-          <movements-history-module
-            v-if="currentAsset"
+        <div
+          class="dashboard__activity"
+          v-if="getModule().canRenderSubmodule(MovementsHistoryModule) &&
+            currentAsset
+          "
+        >
+          <submodule-importer
+            :submodule="getModule().getSubmodule(MovementsHistoryModule)"
             :asset-code="currentAsset"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
@@ -70,8 +75,6 @@
 </template>
 
 <script>
-import MovementsHistoryModule from '@modules/movements-history'
-
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
@@ -82,6 +85,8 @@ import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 export default {
   name: 'dashboard',
@@ -89,10 +94,10 @@ export default {
     AssetSelector,
     IssuanceForm,
     Transfer,
-    MovementsHistoryModule,
     Chart,
     Loader,
     Drawer,
+    SubmoduleImporter,
   },
   data: () => ({
     currentAsset: null,
@@ -102,6 +107,7 @@ export default {
     showDrawer: false,
     scale: 'month',
     config,
+    MovementsHistoryModule,
   }),
   computed: {
     ...mapGetters([
@@ -187,7 +193,7 @@ export default {
 
 .dashboard__action {
   &:not(:first-child) {
-    margin-left: .8rem;
+    margin-left: 0.8rem;
   }
 }
 

@@ -43,6 +43,7 @@ export const getters = {
 }
 
 export const issuanceExplorerModule = {
+  name: 'issuance-explorer',
   namespaced: true,
   state,
   getters,
