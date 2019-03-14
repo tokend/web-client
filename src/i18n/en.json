@@ -1107,12 +1107,16 @@
       "no-preview-msg": "No preview available",
       "edit-description-lbl": "Edit description",
       "update-description-lbl": "Update",
-      "cancel-update-description-lbl": "Cancel"
+      "cancel-update-description-lbl": "Cancel",
+      "unknown-author": "Unknown",
+      "add-comment-lbl": "Add comment",
+      "submit-lbl": "Submit",
+      "cancel-lbl": "Cancel"
     },
 
     "document-signers-manager": {
       "loading-msg": "Please wait while we're loading list of viewers",
-      "can-update-meta-msg": "Can update metadata",
+      "can-update-meta-msg": "Can leave comments",
       "cant-update-meta-msg": "Can not update metadata",
       "can-manage-signers-msg": "Can manage access",
       "cant-manage-signers-msg": "Can not manage access",

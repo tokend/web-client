@@ -16,7 +16,7 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field v-model="form.isAllowedToManageSigners">
+        <tick-field v-model="form.isAllowedToUpdateMetadata">
           <!--eslint-disable-next-line-->
           {{ 'document-signers-manager.can-update-meta-msg' | globalize }}
         </tick-field>
@@ -24,7 +24,7 @@
     </div>
     <div class="app__form-row">
       <div class="app__form-field">
-        <tick-field v-model="form.isAllowedToUpdateMetadata">
+        <tick-field v-model="form.isAllowedToManageSigners">
           <!--eslint-disable-next-line-->
           {{ 'document-signers-manager.can-manage-signers-msg' | globalize }}
         </tick-field>

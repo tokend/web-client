@@ -245,6 +245,7 @@ export default {
           mime_type: this.form.document.mimeType,
         },
         description: this.form.description,
+        uploader_account_id: this.wallet.accountId,
       })
       this.uploadState.isCreatingBlob = false
 

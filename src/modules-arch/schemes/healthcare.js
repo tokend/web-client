@@ -10,6 +10,9 @@ import { DocumentManagerPageModule } from '@/vue/pages/document-manager-page-mod
 
 export default {
   sidebarLabel: 'healthcare',
+  importEnLocaleFile () {
+    return import('@/modules-arch/schemes/healthcare.en.json')
+  },
   pages: [
     new DocumentsPageModule({
       routerEntry: {
