@@ -31,7 +31,7 @@
         </div>
         <div class="document-manager__document-uploader-viewer-wrp">
           <document-uploader-viewer
-            :uploader-account-id="metadata.uploaderAccountId"
+            :metadata="metadata"
           />
         </div>
         <div class="document-manager__file-attributes-wrp">

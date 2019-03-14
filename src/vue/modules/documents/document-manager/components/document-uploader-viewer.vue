@@ -1,14 +1,24 @@
 <template>
   <div class="document-uploader-viewer" v-if="uploaderEmail">
+    <p class="document-uploader-viewer__organization">
+      <span class="document-uploader-viewer__lbl">
+        {{ 'document-uploader-viewer.date-lbl' | globalize }}
+      </span>
+      {{ metadata.createdAt | formatCalendar }}
+    </p>
     <p class="document-uploader-viewer__uploader">
-      <span class="document-uploader-viewer__uploader-lbl">
+      <span class="document-uploader-viewer__lbl">
         {{ 'document-uploader-viewer.uploaded-by-lbl' | globalize }}
       </span>
-      <span class="document-uploader-viewer__uploader-email">
-        {{ uploaderEmail }}
-      </span>
+      {{ uploaderEmail }}
     </p>
-    <p class="document-uploader-viewer__organization">
+    <p
+      class="document-uploader-viewer__organization"
+      v-if="uploaderOrganizationTranslationId"
+    >
+      <span class="document-uploader-viewer__lbl">
+        {{ 'document-uploader-viewer.organization-lbl' | globalize }}
+      </span>
       {{ uploaderOrganizationTranslationId | globalize }}
     </p>
   </div>
@@ -16,13 +26,14 @@
 
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
+import { Metadata } from '../wrappers/metadata'
 
 export default {
   name: 'document-uploader-viewer',
   mixins: [IdentityGetterMixin],
   props: {
-    uploaderAccountId: {
-      type: String,
+    metadata: {
+      type: Metadata,
       required: true,
     },
   },
@@ -41,11 +52,12 @@ export default {
       ) {
         return 'document-uploader-viewer.clinic-3-name'
       }
-      return 'document-uploader-viewer.no-organization-msg'
+      return ''
     },
   },
   async created () {
-    this.uploaderEmail = await this.getEmailByAccountId(this.uploaderAccountId)
+    this.uploaderEmail = await this
+      .getEmailByAccountId(this.metadata.uploaderAccountId)
   },
 }
 </script>
@@ -56,8 +68,7 @@ export default {
 .document-uploader-viewer__uploader {
   line-height: 2rem;
 }
-.document-uploader-viewer__uploader-lbl,
-.document-uploader-viewer__organization {
+.document-uploader-viewer__lbl {
   color: $col-document-uploader-text-unlighten;
   font-style: italic;
 }

@@ -8,8 +8,10 @@
       "clinic-1-name":  "True life care clinic",
       "clinic-2-name": "Angelwalk Hospital",
       "clinic-3-name":  "Willow Green Hospital",
-      "no-organization-msg": "No organization",
-      "uploaded-by-lbl": "Uploaded by:"
+      "no-organization-msg": "no organization",
+      "uploaded-by-lbl": "Owner:",
+      "organization-lbl": "Organization:",
+      "date-lbl": "Uploaded:"
     }
   }
 }
