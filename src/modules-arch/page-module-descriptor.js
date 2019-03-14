@@ -65,6 +65,10 @@ export class PageModuleDescriptor extends ModuleDescriptor {
       .filter(item => item.isAccessible)
       .map(item => item.routerEntry)
 
+    if (!children.length) {
+      return
+    }
+
     // We rewrite the children field intentionally to prevent mixing of default
     // children property of the vue-router-entry and enforce migrating to the
     // new module architecture.
