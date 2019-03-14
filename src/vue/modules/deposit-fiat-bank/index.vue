@@ -193,6 +193,11 @@
       </div>
     </div>
   </div>
+  <no-data-message
+    :title-id="'deposit-fiat-bank-module.no-assets'"
+    :message-id="'deposit-fiat-bank-module.here-will-assets-list'"
+    v-else-if="!form.asset && isInitialized"
+  />
   <loader v-else message-id="deposit-fiat-bank-module.loading-msg" />
 </template>
 
@@ -208,6 +213,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils'
 
 import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 const EVENTS = {
   deposited: 'deposited',
@@ -227,7 +233,10 @@ for legal entities:
 
 export default {
   name: 'deposit-fiat-bank-module',
-  components: { Loader },
+  components: {
+    Loader,
+    NoDataMessage,
+  },
   mixins: [FormMixin],
   props: {
     wallet: {

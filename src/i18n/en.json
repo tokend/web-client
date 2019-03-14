@@ -986,7 +986,9 @@
       "withdrawal": "Withdrawal",
       "failed-load-fees": "Failed to load fees. Try again later",
       "withdraw-success": "Withdrawal request successfully created",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "no-assets": "No assets found",
+      "here-will-assets-list": "Here will be the list of your withdrawable assets"
     },
 
     "withdrawal-fiat-card-module": {
@@ -1006,7 +1008,9 @@
       "withdrawal": "Withdrawal",
       "failed-load-fees": "Failed to load fees. Try again later",
       "withdraw-success": "Withdrawal request successfully created",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "no-assets": "No assets found",
+      "here-will-assets-list": "Here will be the list of your withdrawable assets"
     },
 
     "withdrawal-form": {
@@ -1070,7 +1074,9 @@
       "deposit": "Deposit",
       "failed-load-fees": "Failed to load fees. Try again later",
       "deposit-success": "Deposit request successfully created",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "no-assets": "No assets found",
+      "here-will-assets-list": "Here will be the list of your depositable assets"
     },
 
     "deposit-fiat-bank-module": {
@@ -1096,7 +1102,9 @@
       "total-amount-account": "Total fee",
       "payment-details": "Details of payment",
       "failed-load-fees": "Failed to load fees. Try again later",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "no-assets": "No assets found",
+      "here-will-assets-list": "Here will be the list of your depositable assets"
     },
 
     "email-getter": {

@@ -154,11 +154,17 @@
       />
     </div>
   </form>
+  <no-data-message
+    :title-id="'withdrawal-fiat-bank-module.no-assets'"
+    :message-id="'withdrawal-fiat-bank-module.here-will-assets-list'"
+    v-else-if="!form.asset && isInitialized"
+  />
   <loader v-else message-id="withdrawal-fiat-card-module.loading-msg" />
 </template>
 
 <script>
 import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -185,6 +191,7 @@ export default {
   name: 'withdrawal-fiat-card-module',
   components: {
     Loader,
+    NoDataMessage,
   },
   mixins: [FormMixin],
   props: {
