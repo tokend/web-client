@@ -6,10 +6,6 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
-
-// import { documentSignersManager } from
-// '@/vue/modules/documents/document-manager/modules/signers-manager/store'
-// 'document-signers-manager': documentSignersManager,
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 

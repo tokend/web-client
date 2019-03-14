@@ -43,28 +43,6 @@
             v-if="sectionName !== DEFAULT_SECTION_NAME"
             class="sidebar__links-group-title"
           >
-            <!-- <i class="sidebar__link-icon mdi mdi-book-open-variant" />
-            <span>
-              {{ 'pages-names.requests' | globalize }}
-            </span>
-          </router-link>
-          <router-link
-            v-ripple
-            class="sidebar__link"
-            @click.native="closeSidebar"
-            :to="vueRoutes.documents"
-            tag="a"
-            v-if="config.featureFlags.documents"
-          >
-            <i class="sidebar__link-icon mdi mdi-file-document-box" />
-            <span>
-              {{ 'pages-names.documents' | globalize }}
-            </span>
-          </router-link>
-        </nav>
-        <nav class="sidebar__links-group">
-          <p class="sidebar__links-group-title">
-            {{ 'sidebar.section-account' | globalize }} -->
             {{ sectionName | globalize }}
           </p>
 

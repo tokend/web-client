@@ -81,31 +81,6 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/AppContent'], resolve),
         beforeEnter: buildInAppRouteGuard(store),
         redirect: userRoutes[0],
-        // {
-        //   path: '/documents',
-        //   name: vueRoutes.documents.name,
-        //   featureFlag: config.featureFlags.documents,
-        //   redirect: vueRoutes.documentExplorer,
-        //   meta: {
-        //     pageNameTranslationId: 'pages-names.documents',
-        //   },
-        //   component: resolve => require(['@/vue/pages/Documents'], resolve),
-        //   children: [
-        //     {
-        //       path: '/documents/explore',
-        //       name: vueRoutes.documentExplorer.name,
-        //       component: resolve =>
-        //         require(['@/vue/pages/DocumentExplorer'], resolve),
-        //     },
-        //     {
-        //       path: '/documents/:id',
-        //       name: vueRoutes.documentManager.name,
-        //       component: resolve =>
-        //         require(['@/vue/pages/DocumentManager'], resolve),
-        //       props: true,
-        //     },
-        //   ].filter(route => route.featureFlag !== false),
-        // },
         children: userRoutes,
       },
     ],

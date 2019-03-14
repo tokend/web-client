@@ -30,7 +30,6 @@ import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/with
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 
 export default {
-  importEnLocaleFile: _ => import('@/modules-arch/schemes/vanilla/en.json'),
   pages: [
     new DashboardPageModule(
       {

@@ -2,7 +2,7 @@ import { ModuleScheme } from './module-scheme'
 
 let currentScheme = {}
 const SCHEME_IMPORTERS = {
-  vanilla: _ => import('@/modules-arch/schemes/vanilla/scheme'),
+  vanilla: _ => import('@/modules-arch/schemes/vanilla'),
 }
 
 /**
