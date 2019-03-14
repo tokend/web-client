@@ -25,7 +25,7 @@
     <span class="input-field__label">
       {{ label }}
 
-      <template v-if="isCapsLockState">
+      <template v-if="isCapsLockOn">
         ({{ 'input-field.caps-lock-warning' | globalize }})
       </template>
     </span>
@@ -55,7 +55,7 @@ export default {
   },
 
   data: () => ({
-    isCapsLockState: false,
+    isCapsLockOn: false,
   }),
 
   computed: {
@@ -89,7 +89,7 @@ export default {
         document.removeEventListener('keydown', this.detectCapsLock)
         document.removeEventListener('keyup', this.detectCapsLock)
 
-        if (!this.value) this.isCapsLockState = false
+        if (!this.value) this.isCapsLockOn = false
       }
     },
     detectCapsLock (event) {
@@ -98,7 +98,7 @@ export default {
        *
        * @return {Boolean}
        */
-      this.isCapsLockState = event.getModifierState('CapsLock')
+      this.isCapsLockOn = event.getModifierState('CapsLock')
     },
   },
 }
