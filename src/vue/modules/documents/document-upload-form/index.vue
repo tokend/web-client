@@ -102,6 +102,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { FileUtil } from '@/js/utils/file.util'
 import { CryptoUtil } from './utils/crypto.util'
 
+import { vueRoutes } from '@/vue-router/routes'
+
 const EVENTS = {
   submit: 'submit',
 }
@@ -249,6 +251,10 @@ export default {
       this.uploadState.isCreatingChangeRoleRequest = true
       await this.createChangeRoleRequest(blobId)
       this.uploadState.isCreatingChangeRoleRequest = false
+
+      this.$router.push({
+        name: vueRoutes.documentExplorer.name,
+      })
     },
 
     async getDocHashBuffer (document) {

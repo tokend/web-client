@@ -26,7 +26,10 @@ export default {
           publicKey: this.wallet.accountId,
           weight: SIGNER_WEIGHT,
           identity: SIGNER_IDENTITY,
-          details: {},
+          details: {
+            isAllowedToManageSigners: true,
+            isAllowedToUpdateMetadata: true,
+          },
         }],
       })
 

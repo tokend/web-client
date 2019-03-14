@@ -54,14 +54,12 @@ export default {
 }
 
 .file-preview__pdf {
-  width: 30rem;
+  width: 100%;
   height: 40rem;
 }
 
 .file-preview__img {
-  max-height: 40rem;
-  max-width: 30rem;
-
+  width: 100%;
   object-fit: cover;
 }
 </style>

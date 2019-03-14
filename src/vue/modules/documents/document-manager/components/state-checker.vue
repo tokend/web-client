@@ -16,7 +16,7 @@
 
         <template v-else>
           <h3 class="state-checker__heading">
-            {{ 'document-manager.document-not-verified-title' }}
+            {{ 'document-manager.document-not-verified-title' | globalize }}
           </h3>
 
           <p class="state-checker__msg">

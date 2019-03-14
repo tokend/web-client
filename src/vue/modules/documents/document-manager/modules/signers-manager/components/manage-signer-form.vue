@@ -86,7 +86,6 @@ const ROLE_IDS = Object.freeze({
 const DEFAULT_SIGNER_ATTRS = Object.freeze({
   weight: 1000,
   identity: 1,
-  details: {},
 })
 
 export default {
@@ -164,10 +163,15 @@ export default {
           publicKey,
           roleID: this.roleIDToSet,
           source: this.sourceAccountId,
+          details: {
+            isAllowedToManageSigners: this.form.isAllowedToManageSigners,
+            isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
+          },
         })
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-added-msg')
+        this.$emit('close')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -181,10 +185,15 @@ export default {
           roleID: '2', // this.roleIDToSet,
           publicKey: this.signerToManage.publicKey,
           source: this.sourceAccountId,
+          details: {
+            isAllowedToManageSigners: this.form.isAllowedToManageSigners,
+            isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
+          },
         })
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-updated-msg')
+        this.$emit('close')
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -200,6 +209,7 @@ export default {
         await api().postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-deleted-msg')
+        this.$emit('close')
       } catch (e) {
         ErrorHandler.process(e)
       }

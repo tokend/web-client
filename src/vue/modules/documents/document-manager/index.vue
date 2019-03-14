@@ -1,6 +1,30 @@
 <template>
   <div class="document-manager">
-    <div class="document-manager__inner" v-if="metadata && downloadLink">
+    <div
+      v-if="signer && downloadLink && !isLoading"
+      class="document-manager__inner"
+    >
+      <!--TODO: rename-->
+      <div class="document-manager__right-section-wrp">
+        <div class="document-manager__file-preview-wrp">
+          <div class="document-manager__header">
+            <h2>{{ 'document-manager.file-preview-title' | globalize }}</h2>
+          </div>
+
+          <file-preview
+            :download-link="downloadLink"
+            :mime-type="metadata.fileMimeType"
+          />
+        </div>
+        <div class="document-manager__signers-manager-wrp">
+          <signers-manager-module
+            :config="config"
+            :wallet="wallet"
+            :source-account-id="attachedAccountId"
+          />
+        </div>
+      </div>
+
       <div class="document-manager__document-info-wrp">
         <div class="document-manager__header">
           <h2>{{ 'document-manager.document-info-title' | globalize }}</h2>
@@ -19,27 +43,11 @@
           />
         </div>
         <div class="document-manager__description-viewer-wrp">
-          <description-viewer :description="metadata.description" />
-        </div>
-      </div>
-
-      <!--TODO: rename-->
-      <div class="document-manager__right-section-wrp">
-        <div class="document-manager__file-preview-wrp">
-          <div class="document-manager__header">
-            <h2>{{ 'document-manager.file-preview-title' | globalize }}</h2>
-          </div>
-
-          <file-preview
-            :download-link="downloadLink"
-            :mime-type="metadata.fileMimeType"
-          />
-        </div>
-        <div class="document-manager__signers-manager-wrp">
-          <signers-manager-module
-            :config="config"
-            :wallet="wallet"
-            :source-account-id="attachedAccountId"
+          <description-viewer
+            :metadata="metadata"
+            :signer="signer"
+            :document-account-id="attachedAccountId"
+            @update="loadDocument"
           />
         </div>
       </div>
@@ -77,6 +85,7 @@ import LoadSpinner from '@/vue/common/Loader'
 import { Wallet } from '@tokend/js-sdk'
 import { initApi, api } from './_api'
 import { Metadata } from './wrappers/metadata'
+import { Signer } from './wrappers/signer'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -114,6 +123,7 @@ export default {
     },
   },
   data: _ => ({
+    signer: null,
     metadata: null,
     downloadLink: null,
 
@@ -123,9 +133,24 @@ export default {
   }),
   async created () {
     initApi(this.wallet, this.config)
-    await this.loadDocument()
+    await Promise.all([
+      this.loadDocument(),
+      this.loadSigner(),
+    ])
   },
   methods: {
+    async loadSigner () {
+      const endpoint = `/v3/accounts/${this.attachedAccountId}/signers`
+      const { data: signers } = await api().getWithSignature(endpoint, {
+        page: {
+          limit: 100,
+        },
+      })
+
+      this.signer = signers
+        .map(s => new Signer(s))
+        .find(s => s.publicKey === this.wallet.accountId)
+    },
     async loadDocument () {
       this.isLoading = true
       try {
@@ -192,7 +217,6 @@ export default {
 .document-manager {
   &__inner {
     display: flex;
-    justify-content: space-between;
 
     @include respond-to(xmedium) {
       flex-direction: column;
@@ -202,7 +226,9 @@ export default {
   &__document-info-wrp {
     width: 50%;
     max-width: 55rem;
-    margin-right: 10rem;
+    margin-left: 2.5rem;
+    padding-left: 2.5rem;
+    border-left: 1px solid #aaa;
 
     @include respond-to(xmedium) {
       flex-direction: column;
@@ -219,6 +245,7 @@ export default {
 
   &__right-section-wrp {
     width: 50%;
+    max-width: 40rem;
 
     @include respond-to(xmedium) {
       width: 100%;
