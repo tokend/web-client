@@ -274,10 +274,10 @@ export default {
         const opts = {
           requestID: item.id,
           requestHash: item.hash,
-          requestType: item.request_type_i || item.requestTypeI,
+          requestType: item.requestTypeI,
           reviewDetails: {
             tasksToAdd: 0,
-            tasksToRemove: item.pendingTasks || item.pending_tasks,
+            tasksToRemove: item.pendingTasks,
             externalDetails: '{}',
           },
           action,

@@ -11,6 +11,7 @@ export class WithdrawalDetailsRequestRecord {
     this.updatedAt = record.updatedAt
     this.state = record.state
     this.stateI = record.stateI
+    this.pendingTasks = record.pendingTasks
 
     this.amount = _get(record, 'requestDetails.amount')
     this.fixedFee = _get(record, 'requestDetails.fee.fixed')
