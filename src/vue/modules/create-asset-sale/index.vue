@@ -12,21 +12,21 @@
         class="app__form create-opportunity"
         @submit.prevent="nextStep('form.information')"
       >
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <select-field
-              v-model="form.information.formType"
-              :is-value-translatable="true"
-              name="asset-create-form-type"
-              key-as-value-text="label"
-              :values="formTypes"
-              :disabled="formMixin.isDisabled"
-              @blur="touchField('form.information.formType')"
-              :error-message="getFieldErrorMessage(
-                'form.information.formType',
-              )"
-            />
-          </div>
+        <div class="create-opportunity__cards">
+          <opportunity-card
+            v-for="item in formTypes"
+            :key="item.value"
+            :is-select="form.information.formType.value === item.value"
+            :title="item.label | globalize"
+            :label="item.description | globalize"
+            @click="selectFormType(item)"
+          />
+          <opportunity-card
+            :disabled="true"
+            :is-select="false"
+            :title="'create-opportunity.loan' | globalize"
+            :label="'create-opportunity.loan-description'| globalize"
+          />
         </div>
         <div class="app__form-row">
           <div class="app__form-field">
@@ -64,7 +64,8 @@
               :error-message="getFieldErrorMessage(
                 'form.information.maturityDate', {
                   minDate: form.saleInformation.endTime ||
-                    formatDate(moment().toString())
+                    formatDate(moment().toString()),
+                  maxDate: form.information.maturityDate
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -134,12 +135,17 @@
               v-model="form.saleInformation.startTime"
               name="create-sale-start-time"
               :enable-time="true"
+              :disable-after="form.information.maturityDate
+                ? moment(form.information.maturityDate)
+                  .subtract(1, 'days').toString() : ''"
               @input="touchField('form.saleInformation.startTime')"
               @blur="touchField('form.saleInformation.startTime')"
               id="sale-start-time"
               :label="'create-opportunity.start-time' | globalize"
               :error-message="getFieldErrorMessage(
-                'form.saleInformation.startTime',
+                'form.saleInformation.startTime', {
+                  maxDate: form.information.maturityDate
+                }
               )"
               :disabled="formMixin.isDisabled"
             />
@@ -151,6 +157,8 @@
               v-model="form.saleInformation.endTime"
               :enable-time="true"
               :disable-before="moment().subtract(1, 'days').toString()"
+              :disable-after="moment(form.information.maturityDate)
+                .subtract(1, 'days').toString()"
               @input="touchField('form.saleInformation.endTime')"
               @blur="touchField('form.saleInformation.endTime')"
               id="sale-end-time"
@@ -356,6 +364,7 @@
 import FormStepper from '@/vue/common/FormStepper'
 import FormMixin from '@/vue/mixins/form.mixin'
 import Loader from '@/vue/common/Loader'
+import OpportunityCard from './components/opportunity-card'
 
 import moment from 'moment'
 
@@ -415,6 +424,7 @@ export default {
   components: {
     FormStepper,
     Loader,
+    OpportunityCard,
   },
   mixins: [FormMixin],
   props: {
@@ -487,22 +497,28 @@ export default {
   },
   validations () {
     let maturityDate = {}
+    let startTime = {
+      required,
+    }
+    let endTime = {
+      required,
+      minDate: minDate(this.form.saleInformation.startTime ||
+        moment().toString()),
+    }
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
         minDate: minDate(moment().toString()),
       }
+      startTime.maxDate = maxDate(this.form.information.maturityDate)
+      endTime.maxDate = maxDate(this.form.information.maturityDate)
     }
-
     return {
       form: {
         information: {
           name: {
             required,
             maxLength: maxLength(NAME_MAX_LENGTH),
-          },
-          formType: {
-            required,
           },
           maturityDate: maturityDate,
           annualReturn: {
@@ -512,15 +528,8 @@ export default {
           },
         },
         saleInformation: {
-          startTime: {
-            required,
-          },
-          endTime: {
-            required,
-            minDate: minDate(this.form.saleInformation.startTime ||
-                moment().toString()),
-            maxDate: maxDate(this.form.information.maturityDate),
-          },
+          startTime: startTime,
+          endTime: endTime,
           softCap: {
             required,
             amountRange: amountRange(this.minAmount, this.maxAmount),
@@ -555,10 +564,12 @@ export default {
         {
           label: 'create-opportunity.bond-creation',
           value: ASSET_SUBTYPE.bond,
+          description: 'create-opportunity.bond-description',
         },
         {
           label: 'create-opportunity.property-purchase',
           value: ASSET_SUBTYPE.share,
+          description: 'create-opportunity.revenue-description',
         },
       ]
     },
@@ -719,6 +730,10 @@ export default {
       }
       return ref
     },
+    selectFormType (formType) {
+      this.form.information.maturityDate = ''
+      this.form.information.formType = formType
+    },
   },
 }
 </script>
@@ -753,5 +768,10 @@ export default {
 
   .create-opportunity__price {
     font-size: 1.4rem;
+  }
+
+  .create-opportunity__cards {
+    width: 100%;
+    display: flex;
   }
 </style>
