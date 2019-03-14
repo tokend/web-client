@@ -2,15 +2,6 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <div class="sales__asset-filter">
-          <input-field
-            name="sales-filter-base-asset"
-            :disabled="!isLoaded"
-            v-model="filters.baseAsset"
-            :label="'sales.asset-code-label' | globalize"
-          />
-        </div>
-
         <div class="sales__state-filter">
           <select-field
             :is-value-translatable="true"
@@ -102,7 +93,6 @@ import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
@@ -138,7 +128,6 @@ export default {
     CollectionLoader,
     NoDataMessage,
     SelectField,
-    InputField,
     SaleOverview,
     SaleCard,
     AssetSaleModule,
