@@ -3,6 +3,13 @@
     "auth-pages": {
       "small-title": "Data integrity verification solution",
       "big-title": "Secure Healthcare Records Using Blockchain"
+    },
+    "document-uploader-viewer": {
+      "clinic-1-name":  "True life care clinic",
+      "clinic-2-name": "Angelwalk Hospital",
+      "clinic-3-name":  "Willow Green Hospital",
+      "no-organization-msg": "No organization",
+      "uploaded-by-lbl": "Uploaded by:"
     }
   }
 }

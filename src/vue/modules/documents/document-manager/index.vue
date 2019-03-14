@@ -29,6 +29,11 @@
         <div class="document-manager__header">
           <h2>{{ 'document-manager.document-info-title' | globalize }}</h2>
         </div>
+        <div class="document-manager__document-uploader-viewer-wrp">
+          <document-uploader-viewer
+            :uploader-account-id="metadata.uploaderAccountId"
+          />
+        </div>
         <div class="document-manager__file-attributes-wrp">
           <file-attributes-viewer
             :metadata="metadata"
@@ -77,6 +82,7 @@ import DescriptionViewer from './components/description-viewer'
 import FileAttributesViewer from './components/file-attributes-viewer'
 import StateChecker from './components/state-checker'
 import FilePreview from './components/file-preview'
+import DocumentUploaderViewer from './components/document-uploader-viewer'
 
 import SignersManagerModule from './modules/signers-manager'
 
@@ -99,6 +105,7 @@ export default {
     FileAttributesViewer,
     StateChecker,
     FilePreview,
+    DocumentUploaderViewer,
 
     SignersManagerModule,
 
@@ -250,6 +257,10 @@ export default {
     @include respond-to(xmedium) {
       width: 100%;
     }
+  }
+
+  &__document-uploader-viewer-wrp {
+    margin-bottom: 3rem;
   }
 
   &__file-preview-wrp {

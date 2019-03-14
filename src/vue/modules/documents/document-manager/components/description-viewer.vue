@@ -141,6 +141,7 @@ export default {
           mime_type: this.metadata.fileMimeType,
         },
         description: this.form.description,
+        uploader_account_id: this.metadata.uploaderAccountId,
       }
 
       const { data } = await api().postWithSignature('/blobs', {
