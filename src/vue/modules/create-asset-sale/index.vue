@@ -388,7 +388,6 @@ import { mapActions } from 'vuex'
 import { types } from './store/types'
 import {
   required,
-  requiredUnless,
   amountRange,
   maxLength,
   requiredAtLeastOne,
@@ -505,6 +504,14 @@ export default {
     }
   },
   validations () {
+    let maturityDate = {}
+    if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
+      maturityDate = {
+        required,
+        minDate: minDate(this.form.saleInformation.endTime),
+      }
+    }
+
     return {
       form: {
         information: {
@@ -532,15 +539,7 @@ export default {
             minDate: minDate(this.form.saleInformation.startTime ||
                 moment().toString()),
           },
-          maturityDate: {
-            required: requiredUnless(function () {
-              return this.form.information.formType.value ===
-                  ASSET_SUBTYPE.bondCreation
-            }),
-            minDate: minDate(
-              this.form.information.formType.value === ASSET_SUBTYPE.bond
-                ? this.form.saleInformation.endTime : 0),
-          },
+          maturityDate: maturityDate,
           softCap: {
             required,
             amountRange: amountRange(this.minAmount, this.maxAmount),
