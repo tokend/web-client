@@ -60,7 +60,7 @@ async function extendStoreWithScheme (scheme = []) {
         .filter(item => item.importStoreFn)
         .map(item => item.importStoreFn())
     ))
-    .reduce((res, item) => ({ ...res, [item.name]: item }))
+    .reduce((res, item) => ({ ...res, [item.name]: item }), [])
 
   return buildStore(storeModules)
 }
