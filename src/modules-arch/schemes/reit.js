@@ -31,7 +31,6 @@ import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-asset-sale/module'
 
 export default {
-  sidebarLabel: 'REIT',
   importEnLocaleFile () {
     return import('@/modules-arch/schemes/reit-en.json')
   },
