@@ -23,7 +23,24 @@
         </div>
       </template>
 
-      <template v-if="isAccountCorporate" slot="extra">
+      <template
+        v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)"
+        slot="extra"
+      >
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isCreateSaleDrawerShown = true"
+        >
+          <i class="mdi mdi-plus sales__btn-icon" />
+          {{ 'sales.create-sale' | globalize }}
+        </button>
+      </template>
+
+      <template
+        v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)"
+        slot="extra"
+      >
         <button
           v-ripple
           class="app__button-raised"
@@ -34,20 +51,33 @@
         </button>
       </template>
     </top-bar>
-    <drawer :is-shown.sync="isAssetSaleDrawerShown">
-      <template slot="heading">
-        {{ 'sales.new-sale' | globalize }}
-      </template>
-      <asset-sale-module
-        @close="isAssetSaleDrawerShown = false"
-        :config="config"
-        :wallet="wallet"
-        :account-id="accountId"
-        :min-amount="MIN_AMOUNT"
-        :max-amount="MAX_AMOUNT"
-        :decimal-pints="DECIMAL_POINTS"
-      />
-    </drawer>
+
+    <template v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)">
+      <drawer :is-shown.sync="isCreateSaleDrawerShown">
+        <template slot="heading">
+          {{ 'sales.create-sale' | globalize }}
+        </template>
+        <create-sale-form @close="isCreateSaleDrawerShown = false" />
+      </drawer>
+    </template>
+
+    <template v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)">
+      <drawer :is-shown.sync="isAssetSaleDrawerShown">
+        <template slot="heading">
+          {{ 'sales.new-sale' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateAssetSaleModule)"
+          @close="isAssetSaleDrawerShown = false"
+          :config="config"
+          :wallet="wallet"
+          :account-id="accountId"
+          :min-amount="MIN_AMOUNT"
+          :max-amount="MAX_AMOUNT"
+          :decimal-pints="DECIMAL_POINTS"
+        />
+      </drawer>
+    </template>
 
     <template v-if="filteredSales.length">
       <div class="sales__sale-cards">
@@ -106,13 +136,17 @@ import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
-import AssetSaleModule from '@modules/create-asset-sale'
 
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module.js'
+import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { CreateAssetSaleModule } from '@/vue/modules/create-asset-sale/module'
 
 const SALE_STATES = {
   live: {
@@ -141,7 +175,8 @@ export default {
     InputField,
     SaleOverview,
     SaleCard,
-    AssetSaleModule,
+    CreateSaleForm,
+    SubmoduleImporter,
   },
 
   data: _ => ({
@@ -151,6 +186,7 @@ export default {
       state: SALE_STATES.live,
     },
     isLoaded: false,
+    isCreateSaleDrawerShown: false,
     isAssetSaleDrawerShown: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
@@ -161,6 +197,8 @@ export default {
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
+    CreateSalePseudoModule,
+    CreateAssetSaleModule,
   }),
 
   computed: {
@@ -234,7 +272,7 @@ export default {
 }
 
 .sales__asset-filter {
-  margin-top: -.6rem;
+  margin-top: -0.6rem;
 }
 
 .sales__state-filter {
