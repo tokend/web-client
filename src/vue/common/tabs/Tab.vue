@@ -43,6 +43,6 @@ export default {
 
 <style lang="scss">
   .app-tabs__panel {
-    padding: 1.6rem;
+    padding: 3.2rem 0 0;
   }
 </style>

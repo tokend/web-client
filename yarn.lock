@@ -1843,7 +1843,7 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000926, caniuse-lite@^1.0.30000929:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000932.tgz#d01763e9ce77810962ca7391ff827b5949ce4272"
   integrity sha512-4bghJFItvzz8m0T3lLZbacmEY9X1Z2AtIzTr7s7byqZIOumASfr4ynDx7rtm0J85nDmx8vsgR6vnaSoeU8Oh0A==
 
-card-validator@^6.1.0:
+card-validator@6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/card-validator/-/card-validator-6.1.0.tgz#d36bfc9ff8ee0c69e02d676b2b27f7b6d2dae92d"
   integrity sha512-YAeCZvHFXj7zxYSjfQEOmL5c19+Bfpdi1hl9BIeAE7a56V3jPO9CbIVwSPPL4yoVPVjfE4Osp44c05UeELhu4A==

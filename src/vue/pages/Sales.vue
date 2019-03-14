@@ -44,7 +44,10 @@
     </top-bar>
 
     <template v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)">
-      <drawer :is-shown.sync="isCreateSaleDrawerShown">
+      <drawer
+        :is-shown.sync="isCreateSaleDrawerShown"
+        :close-by-click-outside="false"
+      >
         <template slot="heading">
           {{ 'sales.create-sale' | globalize }}
         </template>
@@ -53,7 +56,11 @@
     </template>
 
     <template v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)">
-      <drawer :is-shown.sync="isAssetSaleDrawerShown">
+      <drawer
+        :is-shown.sync="isAssetSaleDrawerShown"
+        :close-by-click-outside="false"
+        class="sales__drawer"
+      >
         <template slot="heading">
           {{ 'sales.new-sale' | globalize }}
         </template>
@@ -292,5 +299,11 @@ export default {
 
 .sales__loader {
   margin-top: 1rem;
+}
+
+.sales__drawer {
+  & .drawer__pane{
+    width: 50%;
+  }
 }
 </style>

@@ -37,6 +37,9 @@ export const amountRange = (from, to) => value =>
 export const minDate = (minDate) => value => {
   return moment(value).isAfter(moment(minDate))
 }
+export const maxDate = (maxDate) => value => {
+  return moment(value).isBefore(moment(maxDate))
+}
 export const address = (asset) => value => {
   switch (asset) {
     case ASSETS.btc:
