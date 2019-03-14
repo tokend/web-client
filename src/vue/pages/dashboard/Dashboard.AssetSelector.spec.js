@@ -11,7 +11,6 @@ import { vuexTypes } from '@/vuex'
 import { MockHelper } from '@/test'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 Vue.config.silent = true
@@ -205,21 +204,6 @@ describe('Dashboard.AssetSelector component', () => {
         expect(wrapper.vm.currentAssetBalanceDetails).to.deep.equal({})
       })
     })
-
-    describe('imgUrl()', () => {
-      it('returns path to image when logoKey is exists', () => {
-        wrapper.vm.currentAsset = 'BTC'
-
-        expect(wrapper.vm.imgUrl).to.equal(`${config.FILE_STORAGE}/some-key`)
-      })
-
-      it('returns empty string when logoKey is not exists', () => {
-        wrapper.vm.currentAsset = 'USD'
-
-        expect(wrapper.vm.imgUrl).to.equal('')
-      })
-    })
-
     it('tokensList()', () => {
       wrapper.vm.tokens = mockedTokens
       const sortedTokens = mockedTokens

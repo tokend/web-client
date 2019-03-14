@@ -27,19 +27,26 @@
         <button
           v-ripple
           class="app__button-raised"
-          @click="isCreateSaleDrawerShown = true"
+          @click="isAssetSaleDrawerShown = true"
         >
           <i class="mdi mdi-plus sales__btn-icon" />
           {{ 'sales.create-sale' | globalize }}
         </button>
       </template>
     </top-bar>
-
-    <drawer :is-shown.sync="isCreateSaleDrawerShown">
+    <drawer :is-shown.sync="isAssetSaleDrawerShown">
       <template slot="heading">
-        {{ 'sales.create-sale' | globalize }}
+        {{ 'sales.new-opportunity' | globalize }}
       </template>
-      <create-sale-form @close="isCreateSaleDrawerShown = false" />
+      <asset-sale-module
+        @close="isAssetSaleDrawerShown = false"
+        :config="config"
+        :wallet="wallet"
+        :account-id="accountId"
+        :min-amount="MIN_AMOUNT"
+        :max-amount="MAX_AMOUNT"
+        :decimal-pints="DECIMAL_POINTS"
+      />
     </drawer>
 
     <template v-if="filteredSales.length">
@@ -87,6 +94,8 @@
 </template>
 
 <script>
+import config from '@/config'
+
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 import Loader from '@/vue/common/Loader'
@@ -95,9 +104,9 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InputField from '@/vue/fields/InputField'
 import SelectField from '@/vue/fields/SelectField'
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
+import AssetSaleModule from '@modules/create-asset-sale'
 
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -130,9 +139,9 @@ export default {
     NoDataMessage,
     SelectField,
     InputField,
-    CreateSaleForm,
     SaleOverview,
     SaleCard,
+    AssetSaleModule,
   },
 
   data: _ => ({
@@ -142,16 +151,24 @@ export default {
       state: SALE_STATES.live,
     },
     isLoaded: false,
-    isCreateSaleDrawerShown: false,
+    isAssetSaleDrawerShown: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
     SALE_STATES,
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
   }),
 
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
       isAccountCorporate: vuexTypes.isAccountCorporate,
+      wallet: vuexTypes.wallet,
     }),
     saleAssets () {
       return this.saleRecords
