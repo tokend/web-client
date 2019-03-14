@@ -29,8 +29,11 @@ import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
   Vue.use(SchemeRegistry.current)
-  const enLocaleJson = await SchemeRegistry.current.importEnLocaleFile()
-  mergeIntoI18nOptions(enLocaleJson)
+
+  if (SchemeRegistry.current.importEnLocaleFile) {
+    const enLocaleJson = await SchemeRegistry.current.importEnLocaleFile()
+    mergeIntoI18nOptions(enLocaleJson)
+  }
 
   i18next.init(i18nOptions)
 

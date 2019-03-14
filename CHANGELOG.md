@@ -13,6 +13,8 @@ for further information about branching and tagging conventions.
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
 - Displaying TokenD logo & load spinner while loading the page
+- Documents page
+- Document upload form module
 - Cancel trade offers in the "My orders" tab on the "Trade" page
 - CapsLock warning for the input fields with "password" type
 - Displaying asset policies & asset type on the `AssetDetails` page
@@ -21,10 +23,15 @@ for further information about branching and tagging conventions.
 - CLI config passing
 - Added module enabling/disabling
 - Added module schemes
+- Healthcare document type
+- Document explorer page
+- Document explorer module
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
+- Renamed `DescriptionEditor` -> `MarkdownField`
+- Moved `MarkdownField` to the fields & included it to the form mixin components
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens

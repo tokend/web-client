@@ -10,6 +10,10 @@ import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 Vue.use(Router)
 
 export function buildRouter (store) {
+  const userRoutes = SchemeRegistry.current.pages
+    .filter(page => page.isAccessible)
+    .map(page => page.routerEntry)
+
   return new Router({
     mode: 'history',
     routes: [
@@ -76,10 +80,8 @@ export function buildRouter (store) {
         meta: { isNavigationRendered: true },
         component: resolve => require(['@/vue/AppContent'], resolve),
         beforeEnter: buildInAppRouteGuard(store),
-        redirect: vueRoutes.dashboard,
-        children: SchemeRegistry.current.pages
-          .filter(page => page.isAccessible)
-          .map(page => page.routerEntry),
+        redirect: userRoutes[0],
+        children: userRoutes,
       },
     ],
     scrollBehavior: _ => ({ x: 0, y: 0 }),

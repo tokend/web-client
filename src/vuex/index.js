@@ -6,7 +6,6 @@ import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
-
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
@@ -57,7 +56,7 @@ async function extendStoreWithScheme (scheme = []) {
         .filter(item => item.importStoreFn)
         .map(item => item.importStoreFn())
     ))
-    .reduce((res, item) => ({ ...res, [item.name]: item }))
+    .reduce((res, item) => ({ ...res, [item.name]: item }), [])
 
   return buildStore(storeModules)
 }

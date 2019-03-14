@@ -287,3 +287,24 @@ $col-incoming: $_green;
 $col-outgoing: $_lightRed;
 $col-locked: $_orangePeel;
 $col-unlocked: $_orangePeel;
+
+// document card colors:
+$col-document-card-viewer-bg: $_white;
+$col-document-card-viewer-shadow: $col-block-shadow;
+$col-document-card-viewer-header-bg: $_athensGray;
+$col-document-card-viewer-text: $col-text;
+
+// document icon colors:
+$col-document-icon-background: $_white;
+$col-document-icon-text: $col-primary;
+
+// document-upload-form-colors:
+$col-document-upload-progress-bar-bg: $_gray;
+$col-document-upload-progress-bar-value: $_cornflowerBlue;
+
+// document signer list colors:
+$col-signer-list-item-bg: $_white;
+$col-signer-list-item-shadow: $col-block-shadow;
+$col-signer-list-item-avatar-bg: $_eastBay;
+$col-signer-list-item-avatar-text: $_white;
+$col-signer-list-item-rule-text: $_lightPurple;

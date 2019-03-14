@@ -38,6 +38,7 @@ export default Object.assign(
       limits: true,
       sales: true,
       saleDetails: true,
+      documents: true,
     },
 
     /**

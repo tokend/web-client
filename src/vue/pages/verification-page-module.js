@@ -1,6 +1,6 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { VerificationCorporatePageModule } from './verification-corporate-page-module'
-import { VerificationGeneralPageModule } from './veirification-general-page-module'
+import { VerificationGeneralPageModule } from './verification-general-page-module'
 
 export class VerificationPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
