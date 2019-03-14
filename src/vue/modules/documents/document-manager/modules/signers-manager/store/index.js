@@ -29,6 +29,7 @@ const getters = {
 }
 
 export const documentSignersManager = {
+  name: 'document-signers-manager',
   namespaced: true,
   mutations,
   actions,
