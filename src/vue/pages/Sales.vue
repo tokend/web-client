@@ -53,7 +53,10 @@
     </template>
 
     <template v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)">
-      <drawer :is-shown.sync="isAssetSaleDrawerShown">
+      <drawer
+        :is-shown.sync="isAssetSaleDrawerShown"
+        class="sales__drawer"
+      >
         <template slot="heading">
           {{ 'sales.new-sale' | globalize }}
         </template>
@@ -292,5 +295,11 @@ export default {
 
 .sales__loader {
   margin-top: 1rem;
+}
+
+.sales__drawer {
+  & .drawer__pane{
+    width: 50%;
+  }
 }
 </style>
