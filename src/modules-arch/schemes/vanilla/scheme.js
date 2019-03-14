@@ -19,7 +19,7 @@ import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requ
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
-import { VerificationGeneralPageModule } from '@/vue/pages/veirification-general-page-module'
+import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
@@ -31,7 +31,6 @@ import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/with
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 
 export default new ModuleScheme({
-  importStylesFn: _ => import('@/scss/app.scss'),
   importEnLocaleFile: _ => import('@/modules-arch/schemes/vanilla/en.json'),
   pages: [
     new DashboardPageModule(
