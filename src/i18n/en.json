@@ -69,6 +69,7 @@
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_minDate": "Date should be after {{ minDate }}",
+      "field-error_maxDate": "Date should be before {{ maxDate }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
       "field-error_noMoreThanAvailableOnBalance": "Insufficient balance. You have {{available, number}}",
@@ -1126,7 +1127,7 @@
       "asset-type-not-required-kyc": "Doesn't require KYC",
       "loading-msg": "Loading",
       "information-step": "Opportunity information",
-      "provide-sale-information": "Provide opportunity information",
+      "provide-sale-information": "Opportunity...",
       "add-blurb": "Add a blurb",
       "successfully-submitted-msg": "Your request was successfully submitted"
     },

@@ -46,52 +46,55 @@
             />
           </div>
         </div>
+
+        <div
+          class="app__form-row"
+          v-if="form.information.formType.value === ASSET_SUBTYPE.bond"
+        >
+          <div class="app__form-field">
+            <date-field
+              v-model="form.information.maturityDate"
+              :enable-time="true"
+              :disable-before="moment().subtract(1, 'days').toString()"
+              @input="touchField('form.information.maturityDate')"
+              @blur="touchField('form.information.maturityDate')"
+              id="sale-end-time"
+              name="create-sale-end-time"
+              :label="'create-opportunity.maturity-date' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.information.maturityDate', {
+                  minDate: form.saleInformation.endTime ||
+                    formatDate(moment().toString())
+                }
+              )"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
               white-autofill
-              v-model="form.information.code"
-              @blur="touchField('form.information.code')"
-              id="asset-code"
-              name="asset-create-asset-code"
-              :label="'create-opportunity.opportunity-code' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.information.code',
-                { length: CODE_MAX_LENGTH }
-              )"
-              :maxlength="CODE_MAX_LENGTH"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <select-field
-              v-model="form.information.assetType"
-              :is-value-translatable="true"
-              name="asset-create-asset-type"
-              key-as-value-text="label"
-              :values="assetTypes"
+              type="number"
+              v-model="form.information.annualReturn"
+              @blur="touchField('form.information.annualReturn')"
+              id="hard-cap"
+              name="create-sale-hard-cap"
               :label="
-                'create-opportunity.investor-requirements' | globalize
+                form.information.formType.value ===
+                  ASSET_SUBTYPE.bond ?
+                    'create-opportunity.annual-return' :
+                    'create-opportunity.expected-revenue' | globalize
               "
-              :disabled="formMixin.isDisabled"
-              @blur="touchField('form.information.assetType')"
               :error-message="getFieldErrorMessage(
-                'form.information.assetType',
+                'form.information.annualReturn',
+                {
+                  from:'0',
+                  to:maxAmount
+                }
               )"
-            />
-          </div>
-        </div>
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <tick-field
-              v-model="form.information.policies"
               :disabled="formMixin.isDisabled"
-              :cb-value="ASSET_POLICIES.transferable"
-            >
-              {{ 'create-opportunity.transferable-lbl' | globalize }}
-            </tick-field>
+            />
           </div>
         </div>
         <div class="app__form-row">
@@ -156,7 +159,8 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
-                    formatDate(moment().toString())
+                    formatDate(moment().toString()),
+                  maxDate: form.information.maturityDate
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -209,54 +213,34 @@
             />
           </div>
         </div>
-        <div
-          class="app__form-row"
-          v-if="form.information.formType.value === ASSET_SUBTYPE.bond"
-        >
+        <div class="app__form-row">
           <div class="app__form-field">
-            <date-field
-              v-model="form.saleInformation.maturityDate"
-              :enable-time="true"
-              :disable-before="moment().subtract(1, 'days').toString()"
-              @input="touchField('form.saleInformation.maturityDate')"
-              @blur="touchField('form.saleInformation.maturityDate')"
-              id="sale-end-time"
-              name="create-sale-end-time"
-              :label="'create-opportunity.maturity-date' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.saleInformation.maturityDate', {
-                  minDate: form.saleInformation.endTime ||
-                    formatDate(moment().toString())
-                }
-              )"
+            <select-field
+              v-model="form.saleInformation.assetType"
+              :is-value-translatable="true"
+              name="asset-create-asset-type"
+              key-as-value-text="label"
+              :values="assetTypes"
+              :label="
+                'create-opportunity.investor-requirements' | globalize
+              "
               :disabled="formMixin.isDisabled"
+              @blur="touchField('form.saleInformation.assetType')"
+              :error-message="getFieldErrorMessage(
+                'form.saleInformation.assetType',
+              )"
             />
           </div>
         </div>
         <div class="app__form-row">
           <div class="app__form-field">
-            <input-field
-              white-autofill
-              type="number"
-              v-model="form.saleInformation.annualReturn"
-              @blur="touchField('form.saleInformation.annualReturn')"
-              id="hard-cap"
-              name="create-sale-hard-cap"
-              :label="
-                form.information.formType.value ===
-                  ASSET_SUBTYPE.bond ?
-                    'create-opportunity.annual-return' :
-                    'create-opportunity.expected-revenue' | globalize
-              "
-              :error-message="getFieldErrorMessage(
-                'form.saleInformation.annualReturn',
-                {
-                  from:'0',
-                  to:maxAmount
-                }
-              )"
+            <tick-field
+              v-model="form.saleInformation.policies"
               :disabled="formMixin.isDisabled"
-            />
+              :cb-value="ASSET_POLICIES.transferable"
+            >
+              {{ 'create-opportunity.transferable-lbl' | globalize }}
+            </tick-field>
           </div>
         </div>
         <div class="app__form-row">
@@ -391,6 +375,7 @@ import {
   maxLength,
   requiredAtLeastOne,
   minDate,
+  maxDate,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
 
@@ -412,7 +397,7 @@ const STEPS = {
   },
 }
 
-const CODE_MAX_LENGTH = 16
+const CODE_LENGTH = 5
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
 const DEFAULT_SALE_TYPE = '0'
@@ -468,8 +453,6 @@ export default {
         information: {
           name: '',
           code: '',
-          policies: [],
-          assetType: '',
           formType: {},
           terms: null,
         },
@@ -481,6 +464,8 @@ export default {
           hardCap: '',
           annualReturn: '',
           quoteAssets: [],
+          assetType: '',
+          policies: [],
         },
         shortBlurb: {
           saleLogo: null,
@@ -496,7 +481,6 @@ export default {
       ASSET_SUBTYPE,
       DOCUMENT_TYPES,
       ASSET_POLICIES,
-      CODE_MAX_LENGTH,
       NAME_MAX_LENGTH,
       DESCRIPTION_MAX_LENGTH,
     }
@@ -506,7 +490,7 @@ export default {
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
-        minDate: minDate(this.form.saleInformation.endTime),
+        minDate: minDate(moment().toString()),
       }
     }
 
@@ -517,15 +501,14 @@ export default {
             required,
             maxLength: maxLength(NAME_MAX_LENGTH),
           },
-          code: {
-            required,
-            maxLength: maxLength(CODE_MAX_LENGTH),
-          },
-          assetType: {
-            required,
-          },
           formType: {
             required,
+          },
+          maturityDate: maturityDate,
+          annualReturn: {
+            required,
+            amountRange: amountRange('0',
+              this.maxAmount),
           },
         },
         saleInformation: {
@@ -536,8 +519,8 @@ export default {
             required,
             minDate: minDate(this.form.saleInformation.startTime ||
                 moment().toString()),
+            maxDate: maxDate(this.form.information.maturityDate),
           },
-          maturityDate: maturityDate,
           softCap: {
             required,
             amountRange: amountRange(this.minAmount, this.maxAmount),
@@ -547,13 +530,11 @@ export default {
             amountRange: amountRange(this.form.saleInformation.softCap,
               this.maxAmount),
           },
-          annualReturn: {
-            required,
-            amountRange: amountRange('0',
-              this.maxAmount),
-          },
           quoteAssets: {
             requiredAtLeastOne,
+          },
+          assetType: {
+            required,
           },
         },
         shortBlurb: {
@@ -604,6 +585,7 @@ export default {
     initApi(this.wallet, this.config)
     this.form.information.formType = this.formTypes[0]
     this.assets = await this.loadAssets()
+    this.form.information.code = this.generateRandomReferece(CODE_LENGTH)
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
   },
   methods: {
@@ -691,23 +673,24 @@ export default {
       const operation = {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.information.assetType.value,
+        assetType: this.form.saleInformation.assetType.value,
         preissuedAssetSigner: this.accountId,
         trailingDigitsCount: this.decimalPints,
         initialPreissuedAmount: this.form.saleInformation.hardCap,
         maxIssuanceAmount: this.form.saleInformation.hardCap,
-        policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
+        policies: this.form.saleInformation.policies
+          .reduce((a, b) => (a | b), 0),
         creatorDetails: {
           name: this.form.information.name,
           logo: EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
-          annualReturn: this.form.saleInformation.annualReturn,
+          annualReturn: this.form.information.annualReturn,
           subtype: this.form.information.formType.value,
         },
       }
       if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
         operation.creatorDetails.maturityDate = DateUtil
-          .toMs(this.form.saleInformation.maturityDate)
+          .toMs(this.form.information.maturityDate)
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
       } else {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.shareLogo
@@ -727,6 +710,14 @@ export default {
           document.setKey(documentKey)
         }
       }
+    },
+    generateRandomReferece (length) {
+      let ref = ''
+      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+      for (let i = 0; i < length; i++) {
+        ref += possible.charAt(Math.floor(Math.random() * possible.length))
+      }
+      return ref
     },
   },
 }
