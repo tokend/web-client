@@ -80,15 +80,16 @@
           </button>
         </template>
 
-        <!-- TODO: modularize -->
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="isDividendDrawerShown = true"
-        >
-          <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
-          {{ 'op-pages.dividend' | globalize }}
-        </button>
+        <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isDividendDrawerShown = true"
+          >
+            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+            {{ 'op-pages.dividend' | globalize }}
+          </button>
+        </template>
       </div>
     </top-bar>
 
@@ -141,16 +142,19 @@
       <transfer-form />
     </drawer>
 
-    <drawer :is-shown.sync="isDividendDrawerShown">
-      <template slot="heading">
-        {{ 'dividend-form.title' | globalize }}
-      </template>
-      <dividend-form-module
-        :wallet="wallet"
-        :config="dividendConfig"
-        @transferred="dividendModuleTransferred"
-      />
-    </drawer>
+    <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
+      <drawer :is-shown.sync="isDividendDrawerShown">
+        <template slot="heading">
+          {{ 'dividend-form.title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(DividendFormModule)"
+          :wallet="wallet"
+          :config="dividendConfig"
+          @transferred="dividendModuleTransferred"
+        />
+      </drawer>
+    </template>
 
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
@@ -194,8 +198,6 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
-import DividendFormModule from '@modules/dividend-form/index'
-
 import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -210,6 +212,7 @@ import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
+import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 
 export default {
   name: 'movements-page',
@@ -223,7 +226,6 @@ export default {
     DepositForm,
     TransferForm,
     SubmoduleImporter,
-    DividendFormModule,
   },
 
   data: _ => ({
@@ -261,6 +263,7 @@ export default {
     TransferDrawerPseudoModule,
     DepositFiatModule,
     WithdrawalFiatModule,
+    DividendFormModule,
   }),
 
   computed: {
