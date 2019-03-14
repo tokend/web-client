@@ -31,7 +31,6 @@ import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-asset-sale/module'
 
 export default {
-  sidebarLabel: 'REIT',
   importEnLocaleFile () {
     return import('@/modules-arch/schemes/reit-en.json')
   },
@@ -54,6 +53,24 @@ export default {
         ],
       },
     ),
+
+    new SalesPageModule(
+      {
+        routerEntry: {
+          path: '/opportunities',
+          name: vueRoutes.sales.name,
+          meta: { pageNameTranslationId: 'pages-names.funds' },
+        },
+        menuButtonTranslationId: 'pages-names.funds',
+        menuButtonMdiName: 'trending-up',
+        submodules: [
+          new CreateAssetSaleModule({
+            isCorporateOnly: true,
+          }),
+        ],
+      },
+    ),
+
     new MovementsHistoryPageModule(
       {
         routerEntry: {
@@ -133,23 +150,6 @@ export default {
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
-        ],
-      },
-    ),
-
-    new SalesPageModule(
-      {
-        routerEntry: {
-          path: '/funds',
-          name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
-        },
-        menuButtonTranslationId: 'pages-names.funds',
-        menuButtonMdiName: 'trending-up',
-        submodules: [
-          new CreateAssetSaleModule({
-            isCorporateOnly: true,
-          }),
         ],
       },
     ),
