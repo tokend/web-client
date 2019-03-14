@@ -1,5 +1,5 @@
 <template>
-  <div class="create-asset-sale-form">
+  <div class="create-opportunity">
     <form-stepper
       :steps="STEPS"
       :current-step.sync="currentStep"
@@ -9,7 +9,7 @@
       <form
         novalidate
         v-if="currentStep === STEPS.information.number"
-        class="app__form create-asset-sale-form"
+        class="app__form create-opportunity"
         @submit.prevent="nextStep('form.information')"
       >
         <div class="app__form-row">
@@ -36,7 +36,7 @@
               @blur="touchField('form.information.name')"
               id="asset-name"
               name="asset-create-name"
-              :label="'create-asset-sale-form.opportunity-name' | globalize"
+              :label="'create-opportunity.opportunity-name' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.information.name',
                 { length: NAME_MAX_LENGTH }
@@ -54,7 +54,7 @@
               @blur="touchField('form.information.code')"
               id="asset-code"
               name="asset-create-asset-code"
-              :label="'create-asset-sale-form.opportunity-code' | globalize"
+              :label="'create-opportunity.opportunity-code' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.information.code',
                 { length: CODE_MAX_LENGTH }
@@ -73,7 +73,7 @@
               key-as-value-text="label"
               :values="assetTypes"
               :label="
-                'create-asset-sale-form.investor-requirements' | globalize
+                'create-opportunity.investor-requirements' | globalize
               "
               :disabled="formMixin.isDisabled"
               @blur="touchField('form.information.assetType')"
@@ -90,7 +90,7 @@
               :disabled="formMixin.isDisabled"
               :cb-value="ASSET_POLICIES.transferable"
             >
-              {{ 'create-asset-sale-form.transferable-lbl' | globalize }}
+              {{ 'create-opportunity.transferable-lbl' | globalize }}
             </tick-field>
           </div>
         </div>
@@ -99,10 +99,10 @@
             <file-field
               v-model="form.information.terms"
               name="asset-create-terms"
-              :note="'create-asset-sale-form.terms-note' | globalize"
+              :note="'create-opportunity.terms-note' | globalize"
               accept=".jpg, .png, .pdf"
               :document-type="DOCUMENT_TYPES.assetTerms"
-              :label="'create-asset-sale-form.terms-lbl' | globalize"
+              :label="'create-opportunity.terms-lbl' | globalize"
               :disabled="formMixin.isDisabled"
             />
           </div>
@@ -111,10 +111,10 @@
           <button
             v-ripple
             type="submit"
-            class="create-asset-sale-form__btn"
+            class="create-opportunity__btn"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'create-asset-sale-form.next-btn' | globalize }}
+            {{ 'create-opportunity.next-btn' | globalize }}
           </button>
         </div>
       </form>
@@ -134,7 +134,7 @@
               @input="touchField('form.saleInformation.startTime')"
               @blur="touchField('form.saleInformation.startTime')"
               id="sale-start-time"
-              :label="'create-asset-sale-form.start-time' | globalize"
+              :label="'create-opportunity.start-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.startTime',
               )"
@@ -152,7 +152,7 @@
               @blur="touchField('form.saleInformation.endTime')"
               id="sale-end-time"
               name="create-sale-end-time"
-              :label="'create-asset-sale-form.close-time' | globalize"
+              :label="'create-opportunity.close-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
@@ -172,7 +172,7 @@
               @blur="touchField('form.saleInformation.softCap')"
               id="soft-cap"
               name="create-sale-soft-cap"
-              :label="'create-asset-sale-form.soft-cap' | globalize({
+              :label="'create-opportunity.soft-cap' | globalize({
                 asset: statsQuoteAsset.code
               })"
               :error-message="getFieldErrorMessage(
@@ -195,7 +195,7 @@
               @blur="touchField('form.saleInformation.hardCap')"
               id="hard-cap"
               name="create-sale-hard-cap"
-              :label="'create-asset-sale-form.hard-cap' | globalize({
+              :label="'create-opportunity.hard-cap' | globalize({
                 asset: statsQuoteAsset.code
               })"
               :error-message="getFieldErrorMessage(
@@ -222,7 +222,7 @@
               @blur="touchField('form.saleInformation.maturityDate')"
               id="sale-end-time"
               name="create-sale-end-time"
-              :label="'create-asset-sale-form.maturity-date' | globalize"
+              :label="'create-opportunity.maturity-date' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.maturityDate', {
                   minDate: form.saleInformation.endTime ||
@@ -245,8 +245,8 @@
               :label="
                 form.information.formType.value ===
                   ASSET_SUBTYPE.bond ?
-                    'create-asset-sale-form.annual-return' :
-                    'create-asset-sale-form.expected-revenue' | globalize
+                    'create-opportunity.annual-return' :
+                    'create-opportunity.expected-revenue' | globalize
               "
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.annualReturn',
@@ -260,7 +260,7 @@
           </div>
         </div>
         <div class="app__form-row">
-          {{ 'create-asset-sale-form.accept-investments-in' | globalize }}
+          {{ 'create-opportunity.accept-investments-in' | globalize }}
         </div>
         <div
           class="app__form-row"
@@ -278,7 +278,7 @@
             </tick-field>
           </div>
         </div>
-        <div class="create-asset-sale-form__error-text">
+        <div class="create-opportunity__error-text">
           {{ getFieldErrorMessage('form.saleInformation.quoteAssets') }}
         </div>
         <div class="app__form-actions">
@@ -288,7 +288,7 @@
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'create-asset-sale-form.next-btn' | globalize }}
+            {{ 'create-opportunity.next-btn' | globalize }}
           </button>
         </div>
       </form>
@@ -301,8 +301,8 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <file-field
-              :label="'create-asset-sale-form.cover-logo' | globalize"
-              :note="'create-asset-sale-form.upload-image' | globalize"
+              :label="'create-opportunity.cover-logo' | globalize"
+              :note="'create-opportunity.upload-image' | globalize"
               name="create-sale-sale-logo"
               accept=".jpg, .png"
               :document-type="DOCUMENT_TYPES.saleLogo"
@@ -316,13 +316,13 @@
         </div>
         <div class="app__form-row">
           <div class="app__form-field">
-            {{ 'create-asset-sale-form.short-description' | globalize }}
+            {{ 'create-opportunity.short-description' | globalize }}
             <textarea-field
               id="sale-short-description"
               name="create-sale-short-description"
               v-model="form.shortBlurb.shortDescription"
               @blur="touchField('form.shortBlurb.shortDescription')"
-              :label="'create-asset-sale-form.subject-lbl' | globalize({
+              :label="'create-opportunity.subject-lbl' | globalize({
                 length: DESCRIPTION_MAX_LENGTH
               })"
               :maxlength="DESCRIPTION_MAX_LENGTH"
@@ -336,8 +336,8 @@
         </div>
         <div class="app__form-row">
           <div class="app__form-field">
-            {{ 'create-asset-sale-form.full-description' | globalize }}
-            <description-editor
+            {{ 'create-opportunity.full-description' | globalize }}
+            <markdown-field
               v-model="form.shortBlurb.description"
             />
           </div>
@@ -350,7 +350,7 @@
             class="app__button-raised"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'create-asset-sale-form.submit-btn' | globalize }}
+            {{ 'create-opportunity.submit-btn' | globalize }}
           </button>
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
@@ -363,7 +363,7 @@
     </form-stepper>
     <loader
       v-else
-      message-id="create-asset-sale-form.loading-msg"
+      message-id="create-opportunity.loading-msg"
     />
   </div>
 </template>
@@ -372,7 +372,6 @@
 import FormStepper from '@/vue/common/FormStepper'
 import FormMixin from '@/vue/mixins/form.mixin'
 import Loader from '@/vue/common/Loader'
-import DescriptionEditor from '@/vue/common/DescriptionEditor'
 
 import moment from 'moment'
 
@@ -401,15 +400,15 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'create-asset-sale-form.information-step',
+    titleId: 'create-opportunity.information-step',
   },
   saleInformation: {
     number: 2,
-    titleId: 'create-asset-sale-form.provide-sale-information',
+    titleId: 'create-opportunity.provide-sale-information',
   },
   shortBlurb: {
     number: 3,
-    titleId: 'create-asset-sale-form.add-blurb',
+    titleId: 'create-opportunity.add-blurb',
   },
 }
 
@@ -427,11 +426,10 @@ const EVENTS = {
   close: 'close',
 }
 export default {
-  name: 'create-asset-sale-form',
+  name: 'create-opportunity',
   components: {
     FormStepper,
     Loader,
-    DescriptionEditor,
   },
   mixins: [FormMixin],
   props: {
@@ -574,11 +572,11 @@ export default {
     formTypes () {
       return [
         {
-          label: 'create-asset-sale-form.bond-creation',
+          label: 'create-opportunity.bond-creation',
           value: ASSET_SUBTYPE.bond,
         },
         {
-          label: 'create-asset-sale-form.property-purchase',
+          label: 'create-opportunity.property-purchase',
           value: ASSET_SUBTYPE.share,
         },
       ]
@@ -586,11 +584,11 @@ export default {
     assetTypes () {
       return [
         {
-          label: 'create-asset-sale-form.asset-type-not-required-kyc',
+          label: 'create-opportunity.asset-type-not-required-kyc',
           value: '0',
         },
         {
-          label: 'create-asset-sale-form.asset-type-required-kyc',
+          label: 'create-opportunity.asset-type-required-kyc',
           value: String(this.kvAssetTypeKycRequired),
         },
       ]
@@ -646,7 +644,7 @@ export default {
           assetCreationOperation,
           saleCreationOperation
         )
-        Bus.success('create-asset-sale-form.successfully-submitted-msg')
+        Bus.success('create-opportunity.successfully-submitted-msg')
         this.$emit(EVENTS.close)
         this.isSubmitting = false
       } catch (e) {
@@ -737,32 +735,32 @@ export default {
 <style lang="scss" scoped>
   @import '@/vue/forms/_app-form';
 
-  .create-asset-sale-form__btn {
+  .create-opportunity__btn {
     @include button-raised();
 
     margin-bottom: 2rem;
     width: 14.4rem;
   }
 
-  .create-asset-sale-form__kyc-required-row {
+  .create-opportunity__kyc-required-row {
     margin-top: 2.1rem;
   }
 
-  .create-asset-sale-form__pre-issued-asset-signer-wrp {
+  .create-opportunity__pre-issued-asset-signer-wrp {
     display: flex;
     align-items: center;
   }
 
-  .create-asset-sale-form__insert-account-id-btn {
+  .create-opportunity__insert-account-id-btn {
     margin-left: .4rem;
   }
 
-  .create-asset-sale-form__error-text {
+  .create-opportunity__error-text {
     margin-bottom: 2rem;
     color: $col-error;
   }
 
-  .create-asset-sale-form__price {
+  .create-opportunity__price {
     font-size: 1.4rem;
   }
 </style>

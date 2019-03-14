@@ -51,6 +51,48 @@
           </tr>
           <tr>
             <td>
+              {{ 'asset-details.transferable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isTransferable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.withdrawable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isWithdrawable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.requires-kyc-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'asset-details.terms-title' | globalize }}
             </td>
             <td>
@@ -158,6 +200,7 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)

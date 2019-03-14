@@ -108,6 +108,7 @@ export const getters = {
 }
 
 export const dividendFormModule = {
+  name: 'dividend-form',
   namespaced: true,
   state,
   getters,
