@@ -1136,7 +1136,7 @@
       "loading-msg": "Loading...",
       "loading-error-msg": "There was an error while loading",
       "submit-btn": "Submit",
-      "no-assets-heading": "No assets, no dividends",
+      "no-assets-heading": "Nothing to dividend yet",
       "no-assets": "Your wallet doesn't contain any owned assets yet. You can discover some on the token list",
       "discover-assets-btn": "Discover asset",
       "dividend-btn": "Dividend",
