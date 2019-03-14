@@ -33,15 +33,16 @@
           </button>
         </template>
 
-        <!-- TODO: modularize -->
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="fiatWithdrawalFormShown = true"
-        >
-          <i class="mdi mdi-download movements__btn-icon" />
-          {{ 'op-pages.withdrawal-fiat' | globalize }}
-        </button>
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="fiatWithdrawalFormShown = true"
+          >
+            <i class="mdi mdi-download movements__btn-icon" />
+            {{ 'op-pages.withdrawal-fiat' | globalize }}
+          </button>
+        </template>
 
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
@@ -98,16 +99,19 @@
       <withdrawal-form />
     </drawer>
 
-    <drawer :is-shown.sync="fiatWithdrawalFormShown">
-      <template slot="heading">
-        {{ 'withdrawal-fiat-module.form-title' | globalize }}
-      </template>
-      <withdrawal-fiat-module
-        :config="withdrawalFiatConfig"
-        :wallet="wallet"
-        @withdrawn="withdrawalFiatModuleWithdrawn"
-      />
-    </drawer>
+    <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
+      <drawer :is-shown.sync="fiatWithdrawalFormShown">
+        <template slot="heading">
+          {{ 'withdrawal-fiat-module.form-title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(WithdrawalFiatModule)"
+          :config="withdrawalFiatConfig"
+          :wallet="wallet"
+          @withdrawn="withdrawalFiatModuleWithdrawn"
+        />
+      </drawer>
+    </template>
 
     <drawer :is-shown.sync="isDepositDrawerShown">
       <template slot="heading">
@@ -190,7 +194,6 @@ import WithdrawalForm from '@/vue/forms/WithdrawalForm'
 import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
-import WithdrawalFiatModule from '@modules/withdrawal-fiat'
 import DividendFormModule from '@modules/dividend-form/index'
 
 import { Sdk } from '@/sdk'
@@ -202,10 +205,11 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import config from '@/config'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
-import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
+import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
 
 export default {
   name: 'movements-page',
@@ -219,7 +223,6 @@ export default {
     DepositForm,
     TransferForm,
     SubmoduleImporter,
-    WithdrawalFiatModule,
     DividendFormModule,
   },
 
@@ -257,6 +260,7 @@ export default {
     DepositDrawerPseudoModule,
     TransferDrawerPseudoModule,
     DepositFiatModule,
+    WithdrawalFiatModule,
   }),
 
   computed: {

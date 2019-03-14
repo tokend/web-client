@@ -4,6 +4,7 @@ import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/with
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '../modules/deposit-fiat/module'
+import { WithdrawalFiatModule } from '../modules/withdrawal-fiat/module'
 
 export class MovementsHistoryPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -13,9 +14,10 @@ export class MovementsHistoryPageModule extends PageModuleDescriptor {
       allowedSubmodules: [
         MovementsHistoryModule,
         WithdrawalDrawerPseudoModule,
+        WithdrawalFiatModule,
         DepositDrawerPseudoModule,
-        TransferDrawerPseudoModule,
         DepositFiatModule,
+        TransferDrawerPseudoModule,
       ],
     })
   }
