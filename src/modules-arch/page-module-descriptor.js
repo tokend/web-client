@@ -68,9 +68,7 @@ export class PageModuleDescriptor extends ModuleDescriptor {
     // We rewrite the children field intentionally to prevent mixing of default
     // children property of the vue-router-entry and enforce migrating to the
     // new module architecture.
-    if (children.length) {
-      this.routerEntry.children = children
-    }
+    this.routerEntry.children = children
 
     if (this.isAutoRedirectToFirstChild) {
       if (!this.routerEntry.children.length) {
