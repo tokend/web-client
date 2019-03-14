@@ -629,11 +629,15 @@ export default {
       try {
         await this.uploadDocuments()
         const blobId = await this.getBlobId({
-          accountId: this.accountId,
-          params: {
-            type: BLOB_TYPES.fundOverview,
-            attributes: {
-              value: JSON.stringify(this.form.shortBlurb.description),
+          type: BLOB_TYPES.fundOverview,
+          attributes: {
+            value: JSON.stringify(this.form.shortBlurb.description),
+          },
+          relationships: {
+            owner: {
+              data: {
+                id: this.accountId,
+              },
             },
           },
         })
@@ -647,6 +651,7 @@ export default {
         this.$emit(EVENTS.close)
         this.isSubmitting = false
       } catch (e) {
+        this.isSubmitting = false
         this.enableForm()
         ErrorHandler.process(e)
       }

@@ -13,8 +13,8 @@ export const actions = {
   },
   async [types.LOAD_BLOB_ID] ({ commit }, data) {
     const response = await api()
-      .postWithSignature(`accounts/${data.accountId}/blobs`, {
-        data: data.params,
+      .postWithSignature(`/blobs`, {
+        data: data,
       })
     return response.data.id
   },
