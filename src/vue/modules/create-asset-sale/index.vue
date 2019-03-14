@@ -62,7 +62,8 @@
               name="create-sale-end-time"
               :label="'create-opportunity.maturity-date' | globalize"
               :error-message="getFieldErrorMessage(
-                'form.information.maturityDate', {
+                'form.information.maturityDate',
+                {
                   minDate: form.saleInformation.endTime ||
                     formatDate(moment().toString()),
                   maxDate: form.information.maturityDate

@@ -44,7 +44,10 @@
     </top-bar>
 
     <template v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)">
-      <drawer :is-shown.sync="isCreateSaleDrawerShown">
+      <drawer
+        :is-shown.sync="isCreateSaleDrawerShown"
+        :close-by-click-outside="false"
+      >
         <template slot="heading">
           {{ 'sales.create-sale' | globalize }}
         </template>
@@ -55,6 +58,7 @@
     <template v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)">
       <drawer
         :is-shown.sync="isAssetSaleDrawerShown"
+        :close-by-click-outside="false"
         class="sales__drawer"
       >
         <template slot="heading">
