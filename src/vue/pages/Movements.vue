@@ -55,15 +55,17 @@
           </button>
         </template>
 
-        <!-- TODO: modularize -->
-        <button
-          v-ripple
-          class="app__button-raised movements__button-raised"
-          @click="fiatDepositFormShown = true"
-        >
-          <i class="mdi mdi-upload movements__btn-icon" />
-          {{ 'op-pages.deposit-fiat' | globalize }}
-        </button>
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="fiatDepositFormShown = true"
+          >
+            <i class="mdi mdi-upload movements__btn-icon" />
+            {{ 'op-pages.deposit-fiat' | globalize }}
+          </button>
+        </template>
 
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
@@ -114,16 +116,19 @@
       <deposit-form />
     </drawer>
 
-    <drawer :is-shown.sync="fiatDepositFormShown">
-      <template slot="heading">
-        {{ 'deposit-fiat-module.form-title' | globalize }}
-      </template>
-      <deposit-fiat-module
-        :config="depositFiatConfig"
-        :wallet="wallet"
-        @deposited="depositFiatModuleDeposited"
-      />
-    </drawer>
+    <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
+      <drawer :is-shown.sync="fiatDepositFormShown">
+        <template slot="heading">
+          {{ 'deposit-fiat-module.form-title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(DepositFiatModule)"
+          :config="depositFiatConfig"
+          :wallet="wallet"
+          @deposited="depositFiatModuleDeposited"
+        />
+      </drawer>
+    </template>
 
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
@@ -186,7 +191,6 @@ import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
 import WithdrawalFiatModule from '@modules/withdrawal-fiat'
-import DepositFiatModule from '@modules/deposit-fiat'
 import DividendFormModule from '@modules/dividend-form/index'
 
 import { Sdk } from '@/sdk'
@@ -196,9 +200,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import config from '@/config'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
@@ -216,7 +220,6 @@ export default {
     TransferForm,
     SubmoduleImporter,
     WithdrawalFiatModule,
-    DepositFiatModule,
     DividendFormModule,
   },
 
@@ -253,6 +256,7 @@ export default {
     WithdrawalDrawerPseudoModule,
     DepositDrawerPseudoModule,
     TransferDrawerPseudoModule,
+    DepositFiatModule,
   }),
 
   computed: {

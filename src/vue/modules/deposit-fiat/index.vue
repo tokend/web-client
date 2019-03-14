@@ -1,26 +1,33 @@
 <template>
   <div class="deposit-fiat-module">
     <tabs>
-      <tab
-        :name="'deposit-fiat-module.tab-card-lbl' | globalize"
-        id="deposit-fiat-card-tab"
-      >
-        <deposit-fiat-card
-          :config="config"
-          :wallet="wallet"
-          @deposited="deposited"
-        />
-      </tab>
-      <tab
-        :name="'deposit-fiat-module.tab-bank-lbl' | globalize"
-        id="deposit-fiat-bank-tab"
-      >
-        <deposit-fiat-bank
-          :config="config"
-          :wallet="wallet"
-          @deposited="deposited"
-        />
-      </tab>
+      <template v-if="getModule().canRenderSubmodule(DepositFiatCardModule)">
+        <tab
+          :name="'deposit-fiat-module.tab-card-lbl' | globalize"
+          id="deposit-fiat-card-tab"
+        >
+          <submodule-importer
+            :submodule="getModule().getSubmodule(DepositFiatCardModule)"
+            :config="config"
+            :wallet="wallet"
+            @deposited="deposited"
+          />
+        </tab>
+      </template>
+
+      <template v-if="getModule().canRenderSubmodule(DepositFiatBankModule)">
+        <tab
+          :name="'deposit-fiat-module.tab-bank-lbl' | globalize"
+          id="deposit-fiat-bank-tab"
+        >
+          <submodule-importer
+            :submodule="getModule().getSubmodule(DepositFiatBankModule)"
+            :config="config"
+            :wallet="wallet"
+            @deposited="deposited"
+          />
+        </tab>
+      </template>
     </tabs>
   </div>
 </template>
@@ -31,8 +38,9 @@ import { Wallet } from '@tokend/js-sdk'
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
 
-import DepositFiatBank from '@modules/deposit-fiat-bank'
-import DepositFiatCard from '@modules/deposit-fiat-card'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { DepositFiatBankModule } from '@modules/deposit-fiat-bank/module'
+import { DepositFiatCardModule } from '@modules/deposit-fiat-card/module'
 
 const EVENTS = {
   deposited: 'deposited',
@@ -43,8 +51,7 @@ export default {
   components: {
     Tabs,
     Tab,
-    DepositFiatBank,
-    DepositFiatCard,
+    SubmoduleImporter,
   },
   props: {
     wallet: {
@@ -60,6 +67,12 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data () {
+    return {
+      DepositFiatBankModule,
+      DepositFiatCardModule,
+    }
   },
   methods: {
     deposited () {

@@ -77,6 +77,7 @@ export const getters = {
 }
 
 export const depositFiatCardModule = {
+  name: 'deposit-fiat-card',
   namespaced: true,
   state,
   getters,
