@@ -7,24 +7,6 @@ import wallet from './wallet.module'
 import kyc from './kyc.module'
 import keyValue from './key-value.module'
 
-// TODO: modularize
-// import { createAssetSaleModule } from '@/vue/modules/create-asset-sale/store'
-// import { dividendFormModule } from '@/vue/modules/dividend-form/store'
-// import { withdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/store'
-// import { withdrawalFiatBankModule } from
-//   '@/vue/modules/withdrawal-fiat-bank/store'`
-// import { withdrawalFiatCardModule } from
-//   '@/vue/modules/withdrawal-fiat-card/store'
-// import { depositFiatBankModule } from '@/vue/modules/deposit-fiat-bank/store'
-// import { depositFiatCardModule } from '@/vue/modules/deposit-fiat-card/store'
-// 'create-asset-sale': createAssetSaleModule,
-// 'dividend-form': dividendFormModule,
-// 'withdrawal-fiat': withdrawalFiatModule,
-// 'withdrawal-fiat-bank': withdrawalFiatBankModule,
-// 'withdrawal-fiat-card': withdrawalFiatCardModule,
-// 'deposit-fiat-bank': depositFiatBankModule,
-// 'deposit-fiat-card': depositFiatCardModule,
-
 import { vuexTypes } from '@/vuex/types'
 import { sessionStoragePlugin } from './plugins/session-storage'
 
