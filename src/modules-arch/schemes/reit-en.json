@@ -359,9 +359,9 @@
       "can-not-load-assets": "There was an error while loading opportunities",
       "assets-loading-msg": "Loading the opportunities…",
       "withdrawal": "Withdrawal",
-      "withdrawal-fiat": "Withdrawal fiat",
+      "withdrawal-fiat": "Withdrawal",
       "deposit": "Deposit",
-      "deposit-fiat": "Deposit fiat",
+      "deposit-fiat": "Deposit",
       "send": "Send",
       "dividend": "Dividend",
       "no-data-title": "No balance movements yet",
@@ -899,13 +899,13 @@
       "can-not-load-assets": "There was an error while loading assets. Please try again later"
     },
     "withdrawal-fiat-module": {
-      "form-title": "Withdrawal fiat",
+      "form-title": "Withdrawal",
       "tab-card-lbl": "Card",
       "tab-bank-lbl": "Bank"
     },
     "withdrawal-fiat-bank-module": {
       "asset": "Asset",
-      "form-title": "Withdrawal fiat",
+      "form-title": "Withdrawal",
       "amount": "Amount ({{asset}})",
       "user-name": "User full name",
       "bank-name": "Bank name",
@@ -926,7 +926,7 @@
     },
     "withdrawal-fiat-card-module": {
       "asset": "Asset",
-      "form-title": "Withdrawal fiat",
+      "form-title": "Withdrawal",
       "amount": "Amount ({{asset}})",
       "card-number": "Card number",
       "card-holder": "Card holder",
@@ -979,7 +979,7 @@
       "loading-msg": "Loading…"
     },
     "deposit-fiat-module": {
-      "form-title": "Deposit fiat",
+      "form-title": "Deposit",
       "tab-card-lbl": "Card",
       "tab-bank-lbl": "Bank"
     },
