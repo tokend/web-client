@@ -16,6 +16,8 @@ import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
 import { AssetCreationRequestsModule } from '@/vue/modules/requests/asset-creation-requests/module'
+import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
+import { AssetUpdateRequestsModule } from '@/vue/modules/requests/asset-update-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
@@ -200,6 +202,15 @@ export default {
             },
             submodules: [
               new AssetCreationRequestsModule(),
+            ],
+          }),
+          new AssetUpdateRequestsPageModule({
+            routerEntry: {
+              path: '/requests/token-update',
+              name: vueRoutes.assetUpdateRequests.name,
+            },
+            submodules: [
+              new AssetUpdateRequestsModule(),
             ],
           }),
           new SaleCreationRequestsPageModule({

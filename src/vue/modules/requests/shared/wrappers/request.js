@@ -10,6 +10,8 @@ export class Request {
     this.state = record.state
     this.stateI = record.stateI
     this.rejectReason = record.rejectReason
+
+    this.reference = record.reference
   }
 
   get isApproved () {

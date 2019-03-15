@@ -173,7 +173,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    request: { type: AssetUpdateRequestRecord, default: null },
+    request: { type: Object, default: null },
     assetRecord: { type: AssetRecord, default: null },
   },
 
@@ -182,7 +182,7 @@ export default {
       information: {
         name: '',
         logo: null,
-        policies: [],
+        policies: 0,
       },
       advanced: {
         terms: null,
@@ -224,7 +224,7 @@ export default {
       return {
         requestID: requestId,
         code: this.updateRequest.assetCode,
-        policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
+        policies: this.form.information.policies,
         creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
@@ -282,7 +282,7 @@ export default {
           logo: request.logo.key
             ? new DocumentContainer(request.logo)
             : null,
-          policies: request.policies,
+          policies: request.policy,
         },
         advanced: {
           terms: request.terms.key

@@ -4,21 +4,13 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import saveGet from 'lodash/get'
 
-export class AssetCreationRequest extends Request {
+export class AssetUpdateRequest extends Request {
   constructor (record) {
     super(record)
 
-    this.assetCode = saveGet(record, 'requestDetails.asset')
+    this.assetCode = saveGet(record, 'requestDetails.asset.id')
     this.assetType = saveGet(record, 'requestDetails.type')
     this.assetName = saveGet(record, 'requestDetails.creatorDetails.name')
-
-    this.initialPreissuedAmount = saveGet(
-      record, 'requestDetails.initialPreissuedAmount'
-    )
-    this.maxIssuanceAmount = saveGet(record, 'requestDetails.maxIssuanceAmount')
-    this.preissuedAssetSigner = saveGet(
-      record, 'requestDetails.preIssuanceAssetSigner'
-    )
 
     this.policy = saveGet(record, 'requestDetails.policies')
 

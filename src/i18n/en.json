@@ -661,6 +661,7 @@
 
     "requests-page": {
       "asset-creation-title": "Token creation",
+      "asset-update-title": "Token update",
       "sale-creation-title": "Fund creation",
       "pre-issuance-upload-title": "Pre-issuance upload"
     },
@@ -683,8 +684,8 @@
 
     "asset-creation-requests": {
       "update-asset-title": "Update token",
-      "details-title": "Token request details",
-      "loading-msg": "Loading",
+      "details-title": "Token creation request",
+      "loading-msg": "Loading your requests…",
       "loading-error-msg": "There was an error while loading.",
       "asset-code-header": "Token code",
       "request-state-header": "Request state",
@@ -698,12 +699,36 @@
       "initial-preissued-amount-title": "Initial preissued amount",
       "terms-title": "Terms",
       "no-terms-msg": "No terms",
-      "cancellation-msg": "Are you sure to cancel the request?",
       "download-terms-btn": "Download terms",
       "transferable-title": "Transferable",
       "requires-kyc-title": "Requires KYC",
       "yes-msg": "Yes",
       "no-msg": "No",
+      "cancellation-msg": "Are you sure to cancel the request?",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL"
+    },
+
+    "asset-update-requests": {
+      "update-asset-title": "Update token",
+      "details-title": "Token update request",
+      "loading-msg": "Loading your requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "asset-code-header": "Token code",
+      "request-state-header": "Request state",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your token update requests",
+      "request-canceled-msg": "Your request was successfully cancelled",
+      "terms-title": "Terms",
+      "no-terms-msg": "No terms",
+      "download-terms-btn": "Download terms",
+      "transferable-title": "Transferable",
+      "yes-msg": "Yes",
+      "no-msg": "No",
+      "cancellation-msg": "Are you sure to cancel the request?",
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
     },

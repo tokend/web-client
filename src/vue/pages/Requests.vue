@@ -10,6 +10,13 @@
         </router-link>
 
         <router-link
+          v-if="getModule().canRenderSubmodule(AssetUpdateRequestsPageModule)"
+          :to="vueRoutes.assetUpdateRequests"
+        >
+          <span>{{ 'requests-page.asset-update-title' | globalize }}</span>
+        </router-link>
+
+        <router-link
           v-if="getModule().canRenderSubmodule(SaleCreationRequestsPageModule)"
           :to="vueRoutes.saleCreationRequests"
         >
@@ -32,8 +39,11 @@
 
 <script>
 import TopBar from '@/vue/common/TopBar'
+
 import { vueRoutes } from '@/vue-router/routes'
+
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 
@@ -45,6 +55,7 @@ export default {
   data: _ => ({
     vueRoutes,
     AssetCreationRequestsPageModule,
+    AssetUpdateRequestsPageModule,
     SaleCreationRequestsPageModule,
     PreIssuanceRequestsPageModule,
   }),
