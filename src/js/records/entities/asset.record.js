@@ -115,4 +115,8 @@ export class AssetRecord {
   get isFiat () {
     return !!this.details.isFiat
   }
+
+  get isRequiresKYC () {
+    return this.assetType
+  }
 }

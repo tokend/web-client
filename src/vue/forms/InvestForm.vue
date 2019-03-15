@@ -1,6 +1,7 @@
 <template>
   <div class="invest-form">
-    <template v-if="isLoaded && quoteAssetBalances.length">
+    <!-- eslint-disable-next-line -->
+    <template v-if="isLoaded && quoteAssetBalances.length && isAllowedAccountType">
       <form
         novalidate
         class="app__form"
@@ -157,7 +158,7 @@
       </form>
     </template>
 
-    <template v-else-if="isLoaded">
+    <template v-else-if="isLoaded && isAllowedAccountType">
       <no-data-message
         icon-name="alert-circle"
         :title="'invest-form.insufficient-balance-title' | globalize"
@@ -165,10 +166,18 @@
       />
     </template>
 
-    <template v-else-if="isLoadingFailed">
+    <template v-else-if="isLoadingFailed && isAllowedAccountType">
       <p>
         {{ 'invest-form.loading-error-msg' | globalize }}
       </p>
+    </template>
+
+    <template v-else-if="!isAllowedAccountType">
+      <no-data-message
+        icon-name="alert-circle"
+        :title="'invest-form.requires-kyc-title' | globalize"
+        :message="'invest-form.requires-kyc-desc' | globalize"
+      />
     </template>
 
     <template v-else>
@@ -192,6 +201,7 @@ import { Sdk } from '@/sdk'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { required, amountRange } from '@validators'
 
@@ -229,6 +239,7 @@ export default {
       amount: '',
     },
     offers: [],
+    saleBaseAsset: null,
     isLoaded: false,
     isLoadingFailed: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -253,6 +264,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
       balances: vuexTypes.accountBalances,
     }),
 
@@ -315,11 +327,20 @@ export default {
       }
     },
 
+    isAllowedAccountType () {
+      if (this.saleBaseAsset) {
+        return !(this.saleBaseAsset.isRequiresKYC && this.isAccountUnverified)
+      } else {
+        return true
+      }
+    },
+
     canUpdateOffer () {
       return this.sale.owner !== this.accountId &&
         !this.sale.isUpcoming &&
         !this.sale.isClosed &&
-        !this.sale.isCanceled
+        !this.sale.isCanceled &&
+        this.isAllowedAccountType
     },
 
     canSubmit () {
@@ -341,6 +362,7 @@ export default {
 
   async created () {
     try {
+      await this.loadSaleBaseToken()
       await this.loadBalances()
       await this.loadOffers()
 
@@ -359,6 +381,12 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
+    async loadSaleBaseToken () {
+      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+
+      this.saleBaseAsset = new AssetRecord(data)
+    },
 
     async loadOffers () {
       const { data } = await Sdk.horizon.account.getOffers(this.accountId, {

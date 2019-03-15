@@ -133,7 +133,9 @@
       "closed-sale-msg": "Closed opportunities are not investable",
       "upcoming-sale-msg": "Upcoming opportunities are not investable",
       "canceled-sale-msg": "Cancelled opportunities are not investable",
-      "cap-exceeded-msg": "Investing amount has exceeded the opportunity cap **{{amount, money}}**"
+      "cap-exceeded-msg": "Investing amount has exceeded the opportunity cap **{{amount, money}}**",
+      "requires-kyc-title": "KYC required",
+      "requires-kyc-desc": "Investments in this opportunity requires KYC"
     },
     "create-sale-form": {
       "create-sale-header": "Create opportunity",
