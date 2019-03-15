@@ -99,7 +99,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('asset-creation-requests-module', {
+    ...mapGetters('asset-creation-requests', {
       requests: types.assetCreationRequests,
     }),
   },
@@ -111,13 +111,13 @@ export default {
   },
 
   methods: {
-    ...mapMutations('asset-creation-requests-module', {
+    ...mapMutations('asset-creation-requests', {
       setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_ASSET_CREATION_REQUESTS,
       concatRequests: types.CONCAT_ASSET_CREATION_REQUESTS,
     }),
 
-    ...mapActions('asset-creation-requests-module', {
+    ...mapActions('asset-creation-requests', {
       loadAssetCreationRequests: types.LOAD_ASSET_CREATION_REQUESTS,
     }),
 

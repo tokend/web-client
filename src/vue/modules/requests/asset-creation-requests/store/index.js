@@ -44,6 +44,7 @@ export const getters = {
 }
 
 export const assetCreationRequestsModule = {
+  name: 'asset-creation-requests',
   namespaced: true,
   state,
   getters,

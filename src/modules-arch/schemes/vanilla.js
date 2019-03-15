@@ -15,6 +15,7 @@ import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { AssetCreationRequestsModule } from '@/vue/modules/requests/asset-creation-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
@@ -197,6 +198,9 @@ export default {
               path: '/requests/token-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
+            submodules: [
+              new AssetCreationRequestsModule(),
+            ],
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
