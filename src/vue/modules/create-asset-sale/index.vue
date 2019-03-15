@@ -47,6 +47,25 @@
           </div>
         </div>
 
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.information.code"
+              @blur="touchField('form.information.code')"
+              id="asset-code"
+              name="asset-create-asset-code"
+              :label="'create-opportunity.opportunity-code' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.information.code',
+                { length: CODE_MAX_LENGTH }
+              )"
+              :maxlength="CODE_MAX_LENGTH"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
         <div
           class="app__form-row"
           v-if="form.information.formType.value === ASSET_SUBTYPE.bond"
@@ -406,8 +425,7 @@ const STEPS = {
     titleId: 'create-opportunity.add-blurb',
   },
 }
-
-const CODE_LENGTH = 5
+const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 const DESCRIPTION_MAX_LENGTH = 255
 const DEFAULT_SALE_TYPE = '0'
@@ -489,6 +507,7 @@ export default {
       currentStep: 1,
       STEPS,
       kvAssetTypeKycRequired: '',
+      CODE_MAX_LENGTH,
       ASSET_SUBTYPE,
       DOCUMENT_TYPES,
       ASSET_POLICIES,
@@ -520,6 +539,10 @@ export default {
           name: {
             required,
             maxLength: maxLength(NAME_MAX_LENGTH),
+          },
+          code: {
+            required,
+            maxLength: maxLength(CODE_MAX_LENGTH),
           },
           maturityDate: maturityDate,
           annualReturn: {
@@ -597,7 +620,6 @@ export default {
     initApi(this.wallet, this.config)
     this.form.information.formType = this.formTypes[0]
     this.assets = await this.loadAssets()
-    this.form.information.code = this.generateRandomReferece(CODE_LENGTH)
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
   },
   methods: {
@@ -722,14 +744,6 @@ export default {
           document.setKey(documentKey)
         }
       }
-    },
-    generateRandomReferece (length) {
-      let ref = ''
-      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-      for (let i = 0; i < length; i++) {
-        ref += possible.charAt(Math.floor(Math.random() * possible.length))
-      }
-      return ref
     },
     selectFormType (formType) {
       this.form.information.maturityDate = ''
