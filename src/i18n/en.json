@@ -693,7 +693,19 @@
       "details-btn": "Details",
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your token creation requests",
-      "request-canceled-msg": "Your request was successfully cancelled"
+      "request-canceled-msg": "Your request was successfully cancelled",
+      "max-issuance-amount-title": "Max issuance amount",
+      "initial-preissued-amount-title": "Initial preissued amount",
+      "terms-title": "Terms",
+      "no-terms-msg": "No terms",
+      "cancellation-msg": "Are you sure to cancel the request?",
+      "download-terms-btn": "Download terms",
+      "transferable-title": "Transferable",
+      "requires-kyc-title": "Requires KYC",
+      "yes-msg": "Yes",
+      "no-msg": "No",
+      "update-btn": "Update",
+      "cancel-btn": "CANCEL"
     },
 
     "sale-creation-requests": {
@@ -742,24 +754,6 @@
       "already-in-your-balance-btn": "Already in your balances",
       "update-btn": "Update",
       "balance-added-msg": "Added to your balances"
-    },
-
-    "asset-request-details": {
-      "request-type-title": "Request type",
-      "max-issuance-amount-title": "Max issuance amount",
-      "initial-preissued-amount-title": "Initial preissued amount",
-      "terms-title": "Terms",
-      "no-terms-msg": "No terms",
-      "sure-want-cancel": "Are you sure you want to cancel?",
-      "download-terms-btn": "Download terms",
-      "transferable-title": "Transferable",
-      "requires-kyc-title": "Requires KYC",
-      "present-msg": "Yes",
-      "absent-msg": "No",
-      "update-btn": "Update",
-      "cancel-btn": "CANCEL",
-      "asset-create-request-type": "Asset create",
-      "asset-update-request-type": "Asset update"
     },
 
     "sale-request-details": {
