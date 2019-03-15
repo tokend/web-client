@@ -1,7 +1,10 @@
 <template>
   <transition name="drawer-transition">
     <div class="drawer" v-if="isShown">
-      <div class="drawer__backdrop" @click="closeSelf" />
+      <div
+        class="drawer__backdrop"
+        @click="closeByClickOutside ? closeSelf : ''"
+      />
       <div class="drawer__pane">
         <div class="drawer__head">
           <h2 class="drawer__heading">
@@ -35,6 +38,7 @@
 export default {
   props: {
     isShown: { type: Boolean, default: true },
+    closeByClickOutside: { type: Boolean, default: true },
   },
   methods: {
     closeSelf () {

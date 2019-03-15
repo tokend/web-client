@@ -62,10 +62,12 @@
     </div>
 
     <template v-else-if="!isLoading && !isLoadingFailed && !requests.length">
+      <!-- eslint-disable max-len -->
       <no-data-message
-        :title-id="'limits-requests-table-renderer.no-requests-history'"
-        :message-id="'limits-requests-table-renderer.here-will-requests-list'"
+        :title="'limits-requests-table-renderer.no-requests-history' | globalize"
+        :message="'limits-requests-table-renderer.here-will-requests-list' | globalize"
       />
+      <!-- eslint-enable max-len -->
     </template>
 
     <template v-else-if="isLoading && !isLoadingFailed">
@@ -73,10 +75,12 @@
     </template>
 
     <template v-else-if="!isLoading && isLoadingFailed">
+      <!-- eslint-disable max-len -->
       <no-data-message
-        :title-id="'limits-requests-table-renderer.loading-failed'"
-        :message-id="'limits-requests-table-renderer.loading-failed-message'"
+        :title="'limits-requests-table-renderer.loading-failed' | globalize"
+        :message="'limits-requests-table-renderer.loading-failed-message' | globalize"
       >
+        <!-- eslint-enable max-len -->
         <button
           class="app__button-raised
                 limits-requests-list-renderer__reload-requests-btn"

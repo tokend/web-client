@@ -33,7 +33,7 @@
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 import DepositListItem from './coinpayments-deposit-list-item'
-import { IssuanceRecord } from '@/js/records/operations/issuance.record'
+import { IssuanceRecord } from '../wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions } from 'vuex'
 import { types } from '../store/types'

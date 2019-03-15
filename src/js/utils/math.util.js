@@ -91,4 +91,8 @@ export class MathUtil {
   static round (n) {
     return Math.round(n)
   }
+
+  static get roundingModes () {
+    return ROUNDING_MODES
+  }
 }

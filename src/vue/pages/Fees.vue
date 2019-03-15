@@ -1,129 +1,48 @@
 <template>
-  <div class="fees">
-    <template v-if="isLoaded">
+  <div class="fees-page">
+    <template v-if="isLoaded && assets.length">
       <top-bar>
         <template slot="main">
-          <div class="fees__filters">
-            <template v-if="assets.length">
-              <div class="fees__filter">
-                <span class="fees__filters-prefix">
-                  {{ 'fee-page.asset-filter-prefix' | globalize }}
-                </span>
-                <select-field
-                  v-model="filters.asset"
-                  :values="assets"
-                  :disabled="!isFeesLoaded"
-                  key-as-value-text="nameAndCode"
-                  class="fees__assets-select app__select app__select--no-border"
-                />
-              </div>
-            </template>
-
-            <div class="fees__filter">
-              <span class="fees__filters-prefix">
-                {{ 'fee-page.scope-filter-prefix' | globalize }}
-              </span>
-              <select-field
-                :is-value-translatable="true"
-                v-model="filters.scope"
-                :disabled="!isFeesLoaded"
-                :values="Object.values(FEE_SCOPES)"
-                class="app__select app__select--no-border"
-              />
-            </div>
+          <div class="fees-page__filter">
+            <span class="fees-page__filter-prefix">
+              {{ 'fees-page.asset-filter-prefix' | globalize }}
+            </span>
+            <select-field
+              v-model="asset"
+              :values="assets"
+              key-as-value-text="nameAndCode"
+              class="app__select app__select--no-border"
+            />
           </div>
         </template>
       </top-bar>
 
-      <template v-if="valuableAssetFees.length">
-        <div class="app__table app__table--with-shadow">
-          <table>
-            <thead>
-              <tr>
-                <th :title="'fee-table.fee-type' | globalize">
-                  {{ 'fee-table.fee-type' | globalize }}
-                </th>
-                <th :title="'fee-table.subtype' | globalize">
-                  {{ 'fee-table.subtype' | globalize }}
-                </th>
-                <th :title="'fee-table.fixed' | globalize">
-                  {{ 'fee-table.fixed' | globalize }}
-                </th>
-                <th :title="'fee-table.percent' | globalize">
-                  {{ 'fee-table.percent' | globalize }}
-                </th>
-                <th :title="'fee-table.lower-bound' | globalize">
-                  {{ 'fee-table.lower-bound' | globalize }}
-                </th>
-                <th :title="'fee-table.upper-bound' | globalize">
-                  {{ 'fee-table.upper-bound' | globalize }}
-                </th>
-              </tr>
-            </thead>
+      <submodule-importer
+        v-if="asset.code && getModule().canRenderSubmodule(FeesModule)"
+        :submodule="getModule().getSubmodule(FeesModule)"
+        :asset-code="asset.code"
+        :wallet="wallet"
+        :config="config"
+      />
+    </template>
 
-            <tbody>
-              <tr
-                v-for="(fee, i) in valuableAssetFees"
-                :key="i"
-              >
-                <td :title="fee.feeType | formatFeeType">
-                  {{ fee.feeType | formatFeeType }}
-                </td>
-
-                <!-- eslint-disable max-len -->
-                <td :title="{ type: fee.feeType, subtype: fee.subtype } | formatFeeSubType">
-                  {{ { type: fee.feeType, subtype: fee.subtype } | formatFeeSubType }}
-                </td>
-
-                <td :title="{ value: fee.fixed, currency: fee.asset } | formatMoney">
-                  {{ { value: fee.fixed, currency: fee.asset } | formatMoney }}
-                </td>
-
-                <!-- eslint-enable max-len -->
-                <td :title="fee.percent | formatPercent">
-                  {{ (fee.percent / 100) | formatPercent }}
-                </td>
-
-                <td :title="fee.lowerBound | formatMoney">
-                  {{ fee.lowerBound | formatMoney }}
-                </td>
-
-                <td :title="fee.upperBound | formatMoney">
-                  {{ fee.upperBound | formatMoney }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </template>
-
-      <template v-else-if="isFeesLoaded">
-        <no-data-message
-          icon-name="trending-up"
-          title-id="fee-page.no-valuable-fees-title"
-          message-id="fee-page.no-valuable-fees-msg"
-          :message-id-keys="{ asset: filters.asset.code }"
-        />
-      </template>
-
-      <template v-else-if="!isLoadingFailed">
-        <loader message-id="fee-table.loading-msg" />
-      </template>
-
-      <template v-else>
-        <p>
-          {{ 'fee-table.loading-error-msg' | globalize }}
-        </p>
-      </template>
+    <template v-else-if="isLoaded">
+      <no-data-message
+        icon-name="trending-up"
+        :title="'fees-page.no-balances-title' | globalize"
+        :message="'fees-page.no-balances-msg' | globalize({
+          asset: asset.code
+        })"
+      />
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader message-id="fee-table.loading-msg" />
+      <loader message-id="fees-page.balances-loading-msg" />
     </template>
 
     <template v-else>
       <p>
-        {{ 'fee-table.loading-error-msg' | globalize }}
+        {{ 'fees-page.balances-loading-error-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -135,77 +54,46 @@ import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import { Sdk } from '@/sdk'
-
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 
-const FEE_SCOPES = {
-  global: 'fee-page.scope-global',
-  account: 'fee-page.scope-account',
-}
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { FeesModule } from '@/vue/modules/fees/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
+import config from '@/config'
 
 export default {
-  name: 'fees',
+  name: 'fees-page',
   components: {
     SelectField,
     Loader,
     TopBar,
     NoDataMessage,
+    SubmoduleImporter,
   },
+
   data: _ => ({
-    fees: {},
     isLoaded: false,
-    isFeesLoaded: false,
     isLoadingFailed: false,
-    filters: {
-      asset: {},
-      scope: FEE_SCOPES.account,
-    },
     assets: [],
-    FEE_SCOPES,
+    asset: {},
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
+    FeesModule,
   }),
+
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
-      accountId: vuexTypes.accountId,
+      wallet: vuexTypes.wallet,
     }),
-
-    valuableAssetFees () {
-      const selectedAsset = (this.filters.asset.code || '').toLowerCase()
-      return this.fees[selectedAsset]
-        ? this.fees[selectedAsset]
-          .filter(fee => Number(fee.fixed) || Number(fee.percent))
-        : []
-    },
-
-    feeRequestOpts () {
-      let opts = {}
-
-      switch (this.filters.scope) {
-        case FEE_SCOPES.account:
-          opts.account_id = this.accountId
-          break
-      }
-
-      return opts
-    },
-  },
-
-  watch: {
-    'filters.scope': async function () {
-      this.fees = []
-      this.isFeesLoaded = false
-      this.isLoadingFailed = false
-      await this.loadFees()
-    },
   },
 
   async created () {
     try {
       await this.initAssetSelector()
-      await this.loadFees()
       this.isLoaded = true
     } catch (error) {
       this.isLoadingFailed = true
@@ -221,7 +109,7 @@ export default {
     async initAssetSelector () {
       await this.loadAssets()
       if (this.assets.length) {
-        this.filters.asset = this.assets[0]
+        this.asset = this.assets[0]
       }
     },
 
@@ -230,18 +118,6 @@ export default {
       this.assets = this.balances
         .map(item => item.assetDetails)
     },
-
-    async loadFees () {
-      try {
-        const { data: { fees: fees = {} } } =
-          await Sdk.horizon.fees.getAll(this.feeRequestOpts)
-        this.fees = fees
-        this.isFeesLoaded = true
-      } catch (e) {
-        this.isLoadingFailed = true
-        ErrorHandler.processWithoutFeedback(e)
-      }
-    },
   },
 }
 </script>
@@ -249,31 +125,17 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.fees {
+.fees-page {
   width: 100%;
 }
 
-.fees__filters {
-  margin: -0.8rem;
-}
-
-.fees__filter {
+.fees-page__filter {
   display: inline-flex;
   align-items: center;
-  margin: 0.8rem;
 }
 
-.fees__filters-prefix {
+.fees-page__filter-prefix {
   margin-right: 1.5rem;
   line-height: 1;
-}
-
-.fees__assets {
-  margin-bottom: 2.1rem;
-}
-
-.fees__assets-select {
-  display: inline-block;
-  width: auto;
 }
 </style>
