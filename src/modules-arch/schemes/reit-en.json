@@ -64,9 +64,6 @@
       "asset-lbl": "Opportunity",
       "insufficient-funds": "Insufficient opportunities"
     },
-    "assets-page": {
-      "new-asset": "New opportunity"
-    },
     "assets-list": {
       "details-title": "Opportunity details"
     },

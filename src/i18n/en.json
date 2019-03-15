@@ -108,7 +108,6 @@
       "new-password": "New password",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
-      "recover": "Recover",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "wrong-email-or-password-err": "Wrong email or password",
@@ -563,7 +562,7 @@
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "upload-btn": "Upload",
-      "pre-issuance-lbl": "Select file(s) with preissued asset. You cannot upload the same pre-issuance twice.",
+      "pre-issuance-lbl": "Select file(s) with pre-issued asset. You cannot upload the same pre-issuance twice.",
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
       "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you",
@@ -593,7 +592,7 @@
       "no-assets-msg": "There are no available tokens",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
-      "new-asset": "New token"
+      "create-asset-button": "Create token"
     },
     "assets-list": {
       "update-asset-title": "Update token",
@@ -618,9 +617,9 @@
       "withdrawable-lbl": "Withdrawable",
       "kyc-required-lbl": "Requires KYC",
       "additional-issuance-check": "I do not want to make additional issuance later",
-      "preissued-asset-signer-lbl": "Preissued asset signer",
+      "preissued-asset-signer-lbl": "Pre-issued asset signer",
       "use-my-account-id-btn": "Use mine",
-      "initial-preissued-amount-lbl": "Initial preissued amount",
+      "initial-preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "asset-request-submitted-msg": "Your request was successfully submitted",
@@ -711,7 +710,7 @@
     "asset-request-details": {
       "request-type-title": "Request type",
       "max-issuance-amount-title": "Max issuance amount",
-      "initial-preissued-amount-title": "Initial preissued amount",
+      "initial-preissued-amount-title": "Initial pre-issued amount",
       "terms-title": "Terms",
       "no-terms-msg": "No terms",
       "sure-want-cancel": "Are you sure you want to cancel?",

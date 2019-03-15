@@ -19,22 +19,17 @@
         <button
           v-ripple
           class="create-asset-btn"
-          @click="isAssetSaleDrawerShown = true"
+          @click="isAssetDrawerShown = true"
         >
-          {{ 'assets-page.new-asset' | globalize }}
+          {{ 'assets-page.create-asset-button' | globalize }}
         </button>
       </template>
     </top-bar>
-    <drawer :is-shown.sync="isAssetSaleDrawerShown">
+    <drawer :is-shown.sync="isAssetDrawerShown">
       <template slot="heading">
-        {{ 'assets-page.new-asset' | globalize }}
+        {{ 'assets-page.create-asset-title' | globalize }}
       </template>
-      <asset-sale-module
-        @close="isAssetSaleDrawerShown = false"
-        :config="config"
-        :wallet="wallet"
-        :account-id="accountId"
-      />
+      <asset-create-form @close="isAssetDrawerShown = false" />
     </drawer>
     <router-view />
   </div>
@@ -43,36 +38,28 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-
-import AssetSaleModule from '@modules/create-opportunity'
+import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import config from '@/config'
-
 export default {
   name: 'assets',
   components: {
     TopBar,
     Drawer,
-    AssetSaleModule,
+    AssetCreateForm,
   },
   data: _ => ({
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
     vueRoutes,
-    isAssetSaleDrawerShown: false,
+    isAssetDrawerShown: false,
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      accountId: vuexTypes.accountId,
       isAccountCorporate: vuexTypes.isAccountCorporate,
-      wallet: vuexTypes.wallet,
     }),
   },
 }
