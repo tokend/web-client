@@ -251,6 +251,7 @@ export default {
     depositFiatConfig: {
       horizonURL: config.HORIZON_SERVER,
       decimalPoints: config.DECIMAL_POINTS,
+      minAmount: config.MIN_AMOUNT,
     },
     dividendConfig: {
       decimalPoints: config.DECIMAL_POINTS,
