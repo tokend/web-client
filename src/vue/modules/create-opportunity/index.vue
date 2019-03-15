@@ -135,7 +135,7 @@
           <button
             v-ripple
             type="submit"
-            class="create-opportunity__btn"
+            class="create-opportunity__btn app__button-raised"
             :disabled="formMixin.isDisabled"
           >
             {{ 'create-opportunity.next-btn' | globalize }}
@@ -391,6 +391,7 @@ import moment from 'moment'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { Wallet, base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
+import { AssetRecord } from './wrappers/asset.record'
 import { api, initApi } from './_api'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.const'
@@ -619,13 +620,14 @@ export default {
   async created () {
     initApi(this.wallet, this.config)
     this.form.information.formType = this.formTypes[0]
-    this.assets = await this.loadAssets()
+    const response = await this.loadAssets()
+    this.assets = response.map(item => new AssetRecord(item))
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
   },
   methods: {
     moment,
     formatDate,
-    ...mapActions('create-asset-sale', {
+    ...mapActions('create-opportunity', {
       loadKvAssetTypeKycRequired: types.LOAD_KV_KYC_REQUIRED,
       getBlobId: types.LOAD_BLOB_ID,
       loadAssets: types.LOAD_ASSETS,
@@ -662,12 +664,11 @@ export default {
         )
         Bus.success('create-opportunity.successfully-submitted-msg')
         this.$emit(EVENTS.close)
-        this.isSubmitting = false
       } catch (e) {
-        this.isSubmitting = false
         this.enableForm()
         ErrorHandler.process(e)
       }
+      this.isSubmitting = false
       this.hideConfirmation()
       this.enableForm()
     },
@@ -757,8 +758,6 @@ export default {
   @import '@/vue/forms/_app-form';
 
   .create-opportunity__btn {
-    @include button-raised();
-
     margin-bottom: 2rem;
     width: 14.4rem;
   }
