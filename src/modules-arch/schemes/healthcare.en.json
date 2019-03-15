@@ -12,6 +12,11 @@
       "uploaded-by-lbl": "Owner:",
       "organization-lbl": "Organization:",
       "date-lbl": "Uploaded:"
+    },
+    "passport": {
+      "account-unverified": "Patient account",
+      "account-general": "Patient account",
+      "account-corporate": "Doctor account"
     }
   }
 }
