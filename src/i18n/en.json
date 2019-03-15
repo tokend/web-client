@@ -752,14 +752,14 @@
     },
 
     "pre-issuance-requests": {
-      "loading-msg": "Loading",
+      "loading-msg": "Loading your requests…",
       "loading-error-msg": "There was an error while loading.",
       "asset-code-header": "Token code",
       "amount-header": "Amount",
       "request-state-header": "Request state",
-      "created-header": "Created at",
+      "created-header": "Created",
       "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
+      "no-request-history-desc": "Here will be the list of your pre-issuance requests"
     },
 
     "asset-details": {

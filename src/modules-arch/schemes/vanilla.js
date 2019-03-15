@@ -20,6 +20,7 @@ import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests
 import { AssetUpdateRequestsModule } from '@/vue/modules/requests/asset-update-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -224,6 +225,9 @@ export default {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
             },
+            submodules: [
+              new PreIssuanceRequestsModule(),
+            ],
           }),
         ],
       },
