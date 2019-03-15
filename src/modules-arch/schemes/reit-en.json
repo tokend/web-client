@@ -119,7 +119,8 @@
     "sale-details": {
       "overview-title": "Opportunity overview",
       "sale-not-found-title": "Opportunity not found",
-      "sale-not-found-desc": "There are no opportunities with this ID"
+      "sale-not-found-desc": "There are no opportunities with this ID",
+      "opportunities-list": "Opportunities list"
     },
     "sale-overview": {
       "asset-title": "Opportunity",
