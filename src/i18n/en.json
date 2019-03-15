@@ -108,6 +108,7 @@
       "new-password": "New password",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
+      "recover": "Recover",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "wrong-email-or-password-err": "Wrong email or password",
@@ -562,7 +563,7 @@
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "upload-btn": "Upload",
-      "pre-issuance-lbl": "Select file(s) with pre-issued asset. You cannot upload the same pre-issuance twice.",
+      "pre-issuance-lbl": "Select file(s) with preissued asset. You cannot upload the same pre-issuance twice.",
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
       "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you",
@@ -1211,12 +1212,17 @@
       "no-preview-msg": "No preview available",
       "edit-description-lbl": "Edit description",
       "update-description-lbl": "Update",
-      "cancel-update-description-lbl": "Cancel"
+      "cancel-update-description-lbl": "Cancel",
+      "unknown-author": "Unknown",
+      "add-comment-lbl": "Add comment",
+      "submit-lbl": "Submit",
+      "cancel-lbl": "Cancel"
     },
+
     "document-signers-manager": {
       "loading-msg": "Please wait while we're loading list of viewers",
-      "can-update-meta-msg": "Can update metadata",
-      "cant-update-meta-msg": "Can not update metadata",
+      "can-update-meta-msg": "Can leave comments",
+      "cant-update-meta-msg": "Can not leave comments",
       "can-manage-signers-msg": "Can manage access",
       "cant-manage-signers-msg": "Can not manage access",
       "you-lbl": "(you)",

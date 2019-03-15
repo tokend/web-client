@@ -29,6 +29,11 @@
         <div class="document-manager__header">
           <h2>{{ 'document-manager.document-info-title' | globalize }}</h2>
         </div>
+        <div class="document-manager__document-uploader-viewer-wrp">
+          <document-uploader-viewer
+            :metadata="metadata"
+          />
+        </div>
         <div class="document-manager__file-attributes-wrp">
           <file-attributes-viewer
             :metadata="metadata"
@@ -49,6 +54,20 @@
             :document-account-id="attachedAccountId"
             @update="loadDocument"
           />
+        </div>
+        <div
+          class="document-manager__add-comment-form-wrp"
+          v-if="signer.isAllowedToUpdateMetadata"
+        >
+          <add-comment-form
+            :document-account-id="attachedAccountId"
+            :metadata="metadata"
+            :wallet="wallet"
+            @comment-add="loadDocument"
+          />
+        </div>
+        <div class="document-manager__comment-list-viewer-wrp">
+          <comment-list-viewer :comments="comments" />
         </div>
       </div>
     </div>
@@ -77,6 +96,9 @@ import DescriptionViewer from './components/description-viewer'
 import FileAttributesViewer from './components/file-attributes-viewer'
 import StateChecker from './components/state-checker'
 import FilePreview from './components/file-preview'
+import DocumentUploaderViewer from './components/document-uploader-viewer'
+import CommentListViewer from './components/comment-list-viewer'
+import AddCommentForm from './components/add-comment-form'
 
 import SignersManagerModule from './modules/signers-manager'
 
@@ -84,8 +106,10 @@ import LoadSpinner from '@/vue/common/Loader'
 
 import { Wallet } from '@tokend/js-sdk'
 import { initApi, api } from './_api'
+
 import { Metadata } from './wrappers/metadata'
 import { Signer } from './wrappers/signer'
+import { ChangeRoleRequest } from './wrappers/change-role-request'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -99,6 +123,9 @@ export default {
     FileAttributesViewer,
     StateChecker,
     FilePreview,
+    DocumentUploaderViewer,
+    CommentListViewer,
+    AddCommentForm,
 
     SignersManagerModule,
 
@@ -126,6 +153,7 @@ export default {
     signer: null,
     metadata: null,
     downloadLink: null,
+    comments: [],
 
     isLoading: false,
     isUnauthorized: false,
@@ -151,10 +179,47 @@ export default {
         .map(s => new Signer(s))
         .find(s => s.publicKey === this.wallet.accountId)
     },
+    async getMetadataHistory () {
+      const { data: changeRoleRequests } = await api().getWithSignature(`/v3/change_role_requests`, {
+        include: ['request_details'],
+        filter: {
+          state: REQUEST_STATES.approved,
+          requestor: this.attachedAccountId,
+        },
+        page: {
+          order: 'desc',
+          limit: 50,
+        },
+      })
+
+      const comments = await Promise.all(
+        changeRoleRequests
+          .map(r => new ChangeRoleRequest(r))
+          .map(request => {
+            return {
+              blobId: request.blobId,
+              createdAt: request.createdAt,
+            }
+          })
+          .map(async ({ createdAt, blobId }) => {
+            const blob = await this.getBlob(blobId)
+            return new Metadata(blob, createdAt)
+          })
+      )
+
+      if (!comments[0]) {
+        throw new errors.NotFoundError()
+      }
+
+      return comments
+    },
     async loadDocument () {
       this.isLoading = true
       try {
-        this.metadata = await this.getMetadata()
+        const metadataHistory = await this.getMetadataHistory()
+        this.metadata = metadataHistory.pop()
+        this.comments = metadataHistory
+
         this.downloadLink = await this.getDownloadLink(this.metadata.fileKey)
       } catch (e) {
         switch (e.constructor) {
@@ -170,38 +235,12 @@ export default {
       }
       this.isLoading = false
     },
-    async getMetadata () {
-      const blobId = await this.getBlobId()
-      const blob = await this.getBlob(blobId)
-
-      const rawMetadata = JSON.parse(blob)
-
-      return new Metadata(rawMetadata)
-    },
-    async getBlobId () {
-      const { data: changeRoleRequests } = await api().getWithSignature(`/v3/change_role_requests`, {
-        include: ['request_details'],
-        filter: {
-          state: REQUEST_STATES.approved,
-          requestor: this.attachedAccountId,
-        },
-        page: {
-          order: 'desc',
-        },
-      })
-
-      if (!changeRoleRequests[0]) {
-        throw new errors.NotFoundError()
-      }
-
-      return changeRoleRequests[0].requestDetails.creatorDetails.blobId
-    },
     async getBlob (blobId) {
       // TODO: legacy endpoint, new one currently has problems with sign check
       const endpoint = `/accounts/${this.attachedAccountId}/blobs/${blobId}`
       const { data } = await api().getWithSignature(endpoint)
 
-      return data.value
+      return JSON.parse(data.value)
     },
     async getDownloadLink (fileKey) {
       const { data: { url } } = await api().getWithSignature(`/documents/${fileKey}`)
@@ -252,6 +291,10 @@ export default {
     }
   }
 
+  &__document-uploader-viewer-wrp {
+    margin-bottom: 3rem;
+  }
+
   &__file-preview-wrp {
     margin-bottom: 3rem;
 
@@ -262,5 +305,7 @@ export default {
 
   &__file-attributes-wrp { margin-bottom: 1.5rem }
   &__state-checker-wrp { margin-bottom: 3rem }
+  &__comment-list-viewer-wrp { margin-top: 3rem }
+  &__add-comment-form-wrp { margin-top: 5rem }
 }
 </style>
