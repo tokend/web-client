@@ -44,7 +44,7 @@
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
-import AssetSaleModule from '@modules/create-asset-sale'
+import AssetSaleModule from '@modules/create-opportunity'
 
 import { vueRoutes } from '@/vue-router/routes'
 

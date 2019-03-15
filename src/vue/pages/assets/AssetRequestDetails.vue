@@ -116,11 +116,9 @@
           </tr>
           <tr v-if="request.details.maturityDate">
             <td>
-              <!-- eslint-disable-next-line max-len -->
               {{ 'asset-request-details.maturity-date' | globalize }}
             </td>
             <td>
-              <!-- eslint-disable-next-line max-len -->
               {{ +request.details.maturityDate | formatCalendar }}
             </td>
           </tr>

@@ -143,7 +143,7 @@ import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sal
 import CreateSaleForm from '@/vue/forms/CreateSaleForm'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { CreateAssetSaleModule } from '@/vue/modules/create-asset-sale/module'
+import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
 
 const SALE_STATES = {
   live: {
