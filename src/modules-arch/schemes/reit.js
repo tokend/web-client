@@ -157,14 +157,14 @@ export default {
     new SaleDetailsPageModule(
       {
         routerEntry: {
-          path: '/funds/:id',
+          path: '/opportunities/:id',
           name: vueRoutes.saleDetails.name,
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
           children: [
             {
-              path: '/funds/:id/campaign',
+              path: '/opportunities/:id/campaign',
               name: vueRoutes.saleCampaign.name,
               component: _ => import('@/vue/pages/sale-details/SaleCampaignViewer'),
               props: true,
