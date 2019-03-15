@@ -59,9 +59,8 @@
       </template>
       <template v-if="!currentAsset">
         <no-data-message
-          icon-name="toll"
-          :title-id="'dashboard.no-assets-in-your-wallet'"
-          :message-id="'dashboard.here-will-be-the-tokens'"
+          :title="'dashboard.no-assets-in-your-wallet' | globalize"
+          :message="'dashboard.here-will-be-the-tokens' | globalize"
         />
       </template>
     </template>

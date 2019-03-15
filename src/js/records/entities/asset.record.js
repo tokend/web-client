@@ -66,6 +66,10 @@ export class AssetRecord {
     return this._policies().reduce((s, p) => s | p, 0)
   }
 
+  get record () {
+    return this._record
+  }
+
   get nameAndCode () {
     const name = this.name || this.code
     return `${name} (${this.code})`
