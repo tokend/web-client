@@ -14,7 +14,8 @@
     },
     "pages-names": {
       "tokens": "Opportunities",
-      "funds": "Opportunities"
+      "funds": "Opportunities",
+      "fund-details": "Opportunity details"
     },
     "limits": {
       "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one opportunity to your balances"
