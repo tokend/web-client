@@ -84,7 +84,8 @@
         <div class="app__form-actions invest-form__actions">
           <template v-if="formMixin.isConfirmationShown">
             <form-confirmation
-              @ok="hideConfirmation() || submit()"
+              @ok="submit"
+              :is-pending="isSubmitting"
               @cancel="hideConfirmation"
             />
           </template>
@@ -104,7 +105,7 @@
                 v-ripple
                 type="button"
                 @click="cancelOffer"
-                class="app__button invest-form__cancel-btn"
+                class="app__button-flat"
                 :disabled="formMixin.isDisabled || !canUpdateOffer"
               >
                 {{ 'invest-form.cancel-offer-btn' | globalize }}
@@ -234,6 +235,7 @@ export default {
     convertedAmount: 0,
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
+    isSubmitting: false,
   }),
 
   validations () {
@@ -398,6 +400,7 @@ export default {
       if (!this.isFormValid()) return
 
       this.disableForm()
+      this.isSubmitting = true
 
       try {
         const baseBalance = this.balances
@@ -418,9 +421,12 @@ export default {
         })
         this.$emit(EVENTS.submitted)
       } catch (e) {
-        this.enableForm()
         ErrorHandler.process(e)
       }
+
+      this.enableForm()
+      this.isSubmitting = false
+      this.hideConfirmation()
     },
 
     async createBalance (assetCode) {
