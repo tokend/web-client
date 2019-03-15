@@ -19,6 +19,7 @@ import { AssetCreationRequestsModule } from '@/vue/modules/requests/asset-creati
 import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
 import { AssetUpdateRequestsModule } from '@/vue/modules/requests/asset-update-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
+import { SaleCreationRequestsModule } from '@/vue/modules/requests/sale-creation-requests/module'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
@@ -219,6 +220,9 @@ export default {
               path: '/requests/fund-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
+            submodules: [
+              new SaleCreationRequestsModule(),
+            ],
           }),
           new PreIssuanceRequestsPageModule({
             routerEntry: {
