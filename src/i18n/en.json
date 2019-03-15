@@ -1117,7 +1117,7 @@
     "document-signers-manager": {
       "loading-msg": "Please wait while we're loading list of viewers",
       "can-update-meta-msg": "Can leave comments",
-      "cant-update-meta-msg": "Can not update metadata",
+      "cant-update-meta-msg": "Can not leave comments",
       "can-manage-signers-msg": "Can manage access",
       "cant-manage-signers-msg": "Can not manage access",
       "you-lbl": "(you)",
