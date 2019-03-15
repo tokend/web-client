@@ -189,7 +189,7 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
-const EMPTY_FEE = '0.0000'
+const EMPTY_FEE = '0.000000'
 
 export default {
   name: 'withdrawal-form',
@@ -198,25 +198,23 @@ export default {
     Loader,
   },
   mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-      },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+  }),
   validations () {
     return {
       form: {

@@ -2,6 +2,7 @@ import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
 export class DashboardPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -12,6 +13,7 @@ export class DashboardPageModule extends PageModuleDescriptor {
         MovementsHistoryModule,
         IssuanceDrawerPseudoModule,
         TransferDrawerPseudoModule,
+        DashboardChartPseudoModule,
       ],
     })
   }

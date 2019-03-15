@@ -33,6 +33,17 @@
           </button>
         </template>
 
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="fiatWithdrawalFormShown = true"
+          >
+            <i class="mdi mdi-upload movements__btn-icon" />
+            {{ 'op-pages.withdrawal' | globalize }}
+          </button>
+        </template>
+
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
           <button
@@ -46,14 +57,37 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="fiatDepositFormShown = true"
+          >
+            <i class="mdi mdi-download movements__btn-icon" />
+            {{ 'op-pages.deposit' | globalize }}
+          </button>
+        </template>
+
+        <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements__button-raised"
             @click="isTransferDrawerShown = true"
           >
-            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+            <i class="mdi mdi-rotate-315 mdi-transfer movements__btn-icon" />
             {{ 'op-pages.send' | globalize }}
+          </button>
+        </template>
+
+        <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isDividendDrawerShown = true"
+          >
+            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
+            {{ 'op-pages.dividend' | globalize }}
           </button>
         </template>
       </div>
@@ -66,12 +100,40 @@
       <withdrawal-form />
     </drawer>
 
+    <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
+      <drawer :is-shown.sync="fiatWithdrawalFormShown">
+        <template slot="heading">
+          {{ 'withdrawal-fiat-module.form-title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(WithdrawalFiatModule)"
+          :config="withdrawalFiatConfig"
+          :wallet="wallet"
+          @withdrawn="withdrawalFiatModuleWithdrawn"
+        />
+      </drawer>
+    </template>
+
     <drawer :is-shown.sync="isDepositDrawerShown">
       <template slot="heading">
         {{ 'deposit-form.deposit' | globalize }}
       </template>
       <deposit-form />
     </drawer>
+
+    <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
+      <drawer :is-shown.sync="fiatDepositFormShown">
+        <template slot="heading">
+          {{ 'deposit-fiat-module.form-title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(DepositFiatModule)"
+          :config="depositFiatConfig"
+          :wallet="wallet"
+          @deposited="depositFiatModuleDeposited"
+        />
+      </drawer>
+    </template>
 
     <drawer :is-shown.sync="isTransferDrawerShown">
       <template slot="heading">
@@ -80,13 +142,28 @@
       <transfer-form />
     </drawer>
 
+    <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
+      <drawer :is-shown.sync="isDividendDrawerShown">
+        <template slot="heading">
+          {{ 'dividend-form.title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(DividendFormModule)"
+          :wallet="wallet"
+          :config="dividendConfig"
+          @transferred="dividendModuleTransferred"
+        />
+      </drawer>
+    </template>
+
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="asset.code"
         :submodule="getModule().getSubmodule(MovementsHistoryModule)"
         :asset-code="asset.code"
         :wallet="wallet"
-        :config="config"
+        :config="movementsHistoryConfig"
+        :key="`movements-history-state-${historyState}`"
       >
         <loader
           slot="loader"
@@ -127,13 +204,15 @@ import { vuexTypes } from '@/vuex/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import config from '../../config'
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import config from '@/config'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
+import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
+import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 
 export default {
   name: 'movements-page',
@@ -158,12 +237,34 @@ export default {
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
-    config: {
+    isDividendDrawerShown: false,
+    fiatWithdrawalFormShown: false,
+    fiatDepositFormShown: false,
+    movementsHistoryConfig: {
       horizonURL: config.HORIZON_SERVER,
     },
+    withdrawalFiatConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      decimalPoints: config.DECIMAL_POINTS,
+      minAmount: config.MIN_AMOUNT,
+    },
+    depositFiatConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      decimalPoints: config.DECIMAL_POINTS,
+      minAmount: config.MIN_AMOUNT,
+    },
+    dividendConfig: {
+      decimalPoints: config.DECIMAL_POINTS,
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
+    },
+    historyState: 0,
     WithdrawalDrawerPseudoModule,
     DepositDrawerPseudoModule,
     TransferDrawerPseudoModule,
+    DepositFiatModule,
+    WithdrawalFiatModule,
+    DividendFormModule,
   }),
 
   computed: {
@@ -202,6 +303,19 @@ export default {
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.balance.id)
+    },
+
+    withdrawalFiatModuleWithdrawn () {
+      this.fiatWithdrawalFormShown = false
+      this.historyState++
+    },
+
+    depositFiatModuleDeposited () {
+      this.fiatDepositFormShown = false
+      this.historyState++
+    },
+    dividendModuleTransferred () {
+      this.isDividendDrawerShown = false
     },
   },
 }

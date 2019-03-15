@@ -78,7 +78,13 @@ export class PageModuleDescriptor extends ModuleDescriptor {
       if (!this.routerEntry.children.length) {
         throw new Error(`${this.constructor.name}: no children pages provided but isAutoRedirectToFirstChild is on!`)
       }
-      this.routerEntry.redirect = this.routerEntry.children[0].path
+      this.routerEntry.redirect = to => {
+        return {
+          path: this.routerEntry.children[0].path,
+          params: to.params,
+          query: to.query,
+        }
+      }
     }
   }
 }
