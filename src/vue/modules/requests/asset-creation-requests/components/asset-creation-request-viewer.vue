@@ -1,112 +1,32 @@
 <template>
   <div class="asset-creation-request-viewer">
-    <div class="asset-details">
-      <asset-logo
-        :asset-code="request.assetCode"
-        :logo-url="request.logoUrl(config.FILE_STORAGE)"
-      />
-      <div class="asset-details__info">
-        <p class="asset-details__code">
-          {{ request.assetCode }}
-        </p>
-        <p class="asset-details__name">
-          {{ request.assetName }}
-        </p>
-      </div>
-    </div>
+    <asset-name-viewer
+      :config="config()"
+      :request="request"
+    />
 
-    <div
-      v-if="request.isApproved"
-      class="request-state request-state--approved"
-    >
-      <p class="request-state__content">
-        {{ 'request-messages.approved-msg' | globalize }}
-      </p>
-    </div>
-
-    <div
-      v-else-if="request.isPending"
-      class="request-state request-state--pending"
-    >
-      <p class="request-state__content">
-        {{ 'request-messages.pending-msg' | globalize }}
-      </p>
-    </div>
-
-    <div
-      v-else-if="request.isRejected"
-      class="request-state request-state--rejected"
-    >
-      <p class="request-state__content">
-        <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.rejected-msg' | globalize({ reason: request.rejectReason }) }}
-      </p>
-    </div>
-
-    <div
-      v-else-if="request.isCanceled"
-      class="request-state request-state--canceled"
-    >
-      <p class="request-state__content">
-        {{ 'request-messages.canceled-msg' | globalize() }}
-      </p>
-    </div>
-
-    <div
-      v-else-if="request.isPermanentlyRejected"
-      class="request-state request-state--permanently-rejected"
-    >
-      <p class="request-state__content">
-        <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
-      </p>
-    </div>
+    <request-message-viewer
+      class="asset-creation-request-viewer__state-message"
+      :request="request"
+    />
 
     <div class="app__table asset-request-details__table">
       <table>
         <tbody>
           <tr>
-            <td>
-              {{ 'asset-request-details.request-type-title' | globalize }}
-            </td>
-
-            <!-- eslint-disable max-len -->
-            <td>
-              <template v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
-                {{ 'asset-request-details.asset-create-request-type' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'asset-request-details.asset-update-request-type' | globalize }}
-              </template>
-            </td>
-            <!-- eslint-enable max-len -->
-          </tr>
-
-          <tr v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'asset-request-details.max-issuance-amount-title' | globalize }}
-            </td>
-            <td>
-              {{ request.maxIssuanceAmount | formatMoney }}
-            </td>
-          </tr>
-
-          <tr v-if="request.requestTypeI === REQUEST_TYPES.createAsset">
-            <td>
-              <!-- eslint-disable-next-line max-len -->
-              {{ 'asset-request-details.initial-preissued-amount-title' | globalize }}
-            </td>
-            <td>
-              {{ request.initialPreissuedAmount | formatMoney }}
-            </td>
+            <!-- eslint-disable-next-line max-len -->
+            <td>{{ 'asset-request-details.max-issuance-amount-title' | globalize }}</td>
+            <td>{{ request.maxIssuanceAmount | formatMoney }}</td>
           </tr>
 
           <tr>
-            <td>
-              {{ 'asset-request-details.terms-title' | globalize }}
-            </td>
+            <!-- eslint-disable-next-line max-len -->
+            <td>{{ 'asset-request-details.initial-preissued-amount-title' | globalize }}</td>
+            <td>{{ request.initialPreissuedAmount | formatMoney }}</td>
+          </tr>
+
+          <tr>
+            <td>{{ 'asset-request-details.terms-title' | globalize }}</td>
             <td>
               <a
                 v-if="request.termsKey"
@@ -123,9 +43,8 @@
           </tr>
 
           <tr>
-            <td>
-              {{ 'asset-request-details.transferable-title' | globalize }}
-            </td>
+            <!-- eslint-disable-next-line max-len -->
+            <td>{{ 'asset-request-details.transferable-title' | globalize }}</td>
             <td>
               <template v-if="request.isTransferable">
                 {{ 'asset-request-details.present-msg' | globalize }}
@@ -136,11 +55,10 @@
               </template>
             </td>
           </tr>
-          <template v-if="request.assetType !== undefined">
+          <template v-if="request.assetType">
             <tr>
-              <td>
-                {{ 'asset-request-details.requires-kyc-title' | globalize }}
-              </td>
+              <!-- eslint-disable-next-line max-len -->
+              <td>{{ 'asset-request-details.requires-kyc-title' | globalize }}</td>
               <td>
                 <template v-if="request.assetType === kvAssetTypeKycRequired">
                   {{ 'asset-request-details.present-msg' | globalize }}
@@ -179,15 +97,14 @@
 </template>
 
 <script>
-import AssetLogo from '@/vue/common/assets/AssetLogo'
+import AssetNameViewer from '../../shared/components/asset-name-viewer'
+import RequestMessageViewer from '../../shared/components/request-message-viewer'
 
-import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
-
-import { REQUEST_STATES } from '@/js/const/request-states.const'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { AssetCreationRequest } from '../wrappers/asset-creation-request'
 
-import config from '@/config'
+import { config } from '../_config'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -200,8 +117,10 @@ const EVENTS = {
 export default {
   name: 'asset-creation-request-viewer',
   components: {
-    AssetLogo,
+    AssetNameViewer,
+    RequestMessageViewer,
   },
+
   props: {
     request: {
       type: AssetCreationRequest,
@@ -213,27 +132,31 @@ export default {
       default: false,
     },
   },
+
   data: _ => ({
     config,
     ASSET_POLICIES,
     EVENTS,
-    REQUEST_STATES,
-    REQUEST_TYPES,
   }),
+
   computed: {
     ...mapGetters({
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
+
     assetTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
+
     canBeUpdated () {
       return this.request.isRejected || this.request.isPending
     },
+
     canBeCanceled () {
       return this.request.isPending
     },
   },
+
   methods: {
     ...mapActions({
       loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
@@ -264,29 +187,8 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.request-state {
-  min-height: 6.4rem;
-  width: 100%;
+.asset-creation-request-viewer__state-message {
   margin-top: 2rem;
-  display: none;
-
-  .request-state__content {
-    padding: 2.4rem;
-    font-size: 1.3rem;
-    font-weight: normal;
-    color: $col-primary-txt;
-  }
-
-  @mixin apply-theme ($col-msg-background) {
-    background-color: $col-msg-background;
-    display: block;
-  }
-
-  &--approved { @include apply-theme($col-request-approved) }
-  &--pending { @include apply-theme($col-request-pending) }
-  &--rejected, &--canceled, &--permanently-rejected {
-    @include apply-theme($col-request-rejected)
-  }
 }
 
 .asset-request-details__table {
@@ -328,33 +230,5 @@ export default {
 
   margin-bottom: 2rem;
   font-weight: normal;
-}
-
-.asset-details {
-  display: flex;
-  align-items: center;
-
-  .asset-details__logo {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%
-  }
-
-  .asset-details__info {
-    margin-left: 1.8rem;
-
-    .asset-details__code {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: $col-primary;
-    }
-
-    .asset-details__name {
-      margin-top: .1rem;
-      font-size: 1.4rem;
-      line-height: 1.29;
-      color: $col-primary;
-    }
-  }
 }
 </style>

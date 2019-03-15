@@ -26,15 +26,11 @@
       />
     </template>
 
-    <template v-else-if="!isLoadingFailed">
-      <loader message-id="asset-creation-requests.loading-msg" />
-    </template>
+    <p v-else-if="isLoadingFailed">
+      {{ 'asset-creation-requests.loading-error-msg' | globalize }}
+    </p>
 
-    <template v-else>
-      <p>
-        {{ 'asset-creation-requests.loading-error-msg' | globalize }}
-      </p>
-    </template>
+    <loader v-else message-id="asset-creation-requests.loading-msg" />
 
     <collection-loader
       class="asset-creation-requests__loader"
@@ -56,6 +52,7 @@ import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 import AssetCreationRequestViewer from './components/asset-creation-request-viewer'
 
 import { initApi } from './_api'
+import { initConfig } from './_config'
 import { Wallet } from '@tokend/js-sdk'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
@@ -82,6 +79,7 @@ export default {
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
+     * @property config.storageURL - the url of storage server
      */
     config: {
       type: Object,
@@ -106,6 +104,8 @@ export default {
 
   created () {
     initApi(this.wallet, this.config)
+    initConfig(this.config)
+
     this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
@@ -138,6 +138,7 @@ export default {
     },
 
     showRequestDetails (request) {
+      this.isUpdateMode = false
       this.selectedRequest = request
       this.isDrawerShown = true
     },

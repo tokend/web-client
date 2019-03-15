@@ -28,6 +28,7 @@ export default {
     AssetCreationRequestsModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
+      storageURL: config.FILE_STORAGE,
     },
   }),
 

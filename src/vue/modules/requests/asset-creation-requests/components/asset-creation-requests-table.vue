@@ -47,7 +47,7 @@
 
             <td>
               <a
-                class="request-details-btn"
+                class="asset-creation-requests-table__details-btn"
                 @click="$emit(EVENTS.select, request)"
               >
                 {{ 'asset-creation-requests.details-btn' | globalize }}
@@ -69,7 +69,7 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import RequestStateViewer from './request-state-viewer'
+import RequestStateViewer from '../../shared/components/request-state-viewer'
 
 const EVENTS = {
   select: 'select',
@@ -105,7 +105,7 @@ export default {
   }
 }
 
-.request-details-btn {
+.asset-creation-requests-table__details-btn {
   font-size: 1.2rem;
   color: $col-primary-lighten;
   cursor: pointer;

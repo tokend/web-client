@@ -1,43 +1,38 @@
-import { REQUEST_STATES } from '@/js/const/request-states.const'
+import { Request } from '../../shared/wrappers/request'
+
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
-import _get from 'lodash/get'
+import saveGet from 'lodash/get'
 
-export class AssetCreationRequest {
+export class AssetCreationRequest extends Request {
   constructor (record) {
-    this.id = record.id
+    super(record)
+
     this.assetCode = record.reference
 
-    this.createdAt = record.createdAt
-    this.updatedAt = record.updatedAt
+    this.assetCode = saveGet(record, 'requestDetails.asset')
+    this.assetType = saveGet(record, 'requestDetails.type')
+    this.assetName = saveGet(record, 'requestDetails.creatorDetails.name')
 
-    this.state = record.state
-    this.stateI = record.stateI
-    this.rejectReason = record.rejectReason
-
-    this.assetCode = _get(record, 'requestDetails.asset')
-    this.assetType = _get(record, 'requestDetails.type')
-    this.assetName = _get(record, 'requestDetails.creatorDetails.name')
-
-    this.initialPreissuedAmount = _get(
+    this.initialPreissuedAmount = saveGet(
       record, 'requestDetails.initialPreissuedAmount'
     )
-    this.maxIssuanceAmount = _get(record, 'requestDetails.maxIssuanceAmount')
-    this.preIssuanceAssetSigner = _get(
+    this.maxIssuanceAmount = saveGet(record, 'requestDetails.maxIssuanceAmount')
+    this.preIssuanceAssetSigner = saveGet(
       record, 'requestDetails.preIssuanceAssetSigner'
     )
 
-    this.policies = _get(record, 'requestDetails.policies')
+    this.policies = saveGet(record, 'requestDetails.policies')
 
-    this.terms = _get(record, 'requestDetails.creatorDetails.terms')
-    this.termsKey = _get(record, 'requestDetails.creatorDetails.terms.key')
-    this.termsName = _get(record, 'requestDetails.creatorDetails.terms.name')
-    this.termsType = _get(record, 'requestDetails.creatorDetails.terms.type')
+    this.terms = saveGet(record, 'requestDetails.creatorDetails.terms')
+    this.termsKey = saveGet(record, 'requestDetails.creatorDetails.terms.key')
+    this.termsName = saveGet(record, 'requestDetails.creatorDetails.terms.name')
+    this.termsType = saveGet(record, 'requestDetails.creatorDetails.terms.type')
 
-    this.logo = _get(record, 'requestDetails.creatorDetails.logo')
-    this.logoKey = _get(record, 'requestDetails.creatorDetails.logo.key')
-    this.logoName = _get(record, 'requestDetails.creatorDetails.logo.name')
-    this.logoType = _get(record, 'requestDetails.creatorDetails.logo.type')
+    this.logo = saveGet(record, 'requestDetails.creatorDetails.logo')
+    this.logoKey = saveGet(record, 'requestDetails.creatorDetails.logo.key')
+    this.logoName = saveGet(record, 'requestDetails.creatorDetails.logo.name')
+    this.logoType = saveGet(record, 'requestDetails.creatorDetails.logo.type')
   }
 
   logoUrl (storageUrl) {
@@ -54,25 +49,5 @@ export class AssetCreationRequest {
 
   get isWithdrawable () {
     return Boolean(this.policies & ASSET_POLICIES.withdrawable)
-  }
-
-  get isApproved () {
-    return this.stateI === REQUEST_STATES.approved
-  }
-
-  get isPending () {
-    return this.stateI === REQUEST_STATES.pending
-  }
-
-  get isRejected () {
-    return this.stateI === REQUEST_STATES.rejected
-  }
-
-  get isPermanentlyRejected () {
-    return this.stateI === REQUEST_STATES.permanentlyRejected
-  }
-
-  get isCanceled () {
-    return this.stateI === REQUEST_STATES.canceled
   }
 }
