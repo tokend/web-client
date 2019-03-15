@@ -40,7 +40,9 @@
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
+          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+            getModule().getSubmodule(DashboardChartPseudoModule)
+          "
           class="dashboard__chart"
         >
           <submodule-importer
