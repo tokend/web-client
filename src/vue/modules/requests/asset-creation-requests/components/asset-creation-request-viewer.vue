@@ -55,21 +55,20 @@
               </template>
             </td>
           </tr>
-          <template v-if="request.assetType">
-            <tr>
-              <!-- eslint-disable-next-line max-len -->
-              <td>{{ 'asset-request-details.requires-kyc-title' | globalize }}</td>
-              <td>
-                <template v-if="request.assetType === kvAssetTypeKycRequired">
-                  {{ 'asset-request-details.present-msg' | globalize }}
-                </template>
+          <tr>
+            <td>
+              {{ 'asset-request-details.requires-kyc-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="request.assetType === kycRequiredAssetType">
+                {{ 'asset-request-details.present-msg' | globalize }}
+              </template>
 
-                <template v-else>
-                  {{ 'asset-request-details.absent-msg' | globalize }}
-                </template>
-              </td>
-            </tr>
-          </template>
+              <template v-else>
+                {{ 'asset-request-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -77,21 +76,32 @@
     <div class="asset-request-details__buttons">
       <button
         v-ripple
+        v-if="!formMixin.isConfirmationShown"
         class="asset-request-details__update-btn"
-        :disabled="isPending || !canBeUpdated"
-        @click="$emit(EVENTS.update)"
+        :disabled="isRequestCancelling || !canBeUpdated"
+        @click="$emit(EVENTS.updateAsk)"
       >
         {{ 'asset-request-details.update-btn' | globalize }}
       </button>
 
       <button
         v-ripple
+        v-if="!formMixin.isConfirmationShown"
         class="asset-request-details__cancel-btn"
-        :disabled="isPending || !canBeCanceled"
-        @click="$emit(EVENTS.cancel)"
+        :disabled="isRequestCancelling || !canBeCanceled"
+        @click="showConfirmation"
       >
         {{ 'asset-request-details.cancel-btn' | globalize }}
       </button>
+
+      <form-confirmation
+        v-if="formMixin.isConfirmationShown"
+        message-id="asset-request-details.sure-want-cancel"
+        ok-button-text-id="asset-request-details.present-msg"
+        cancel-button-text-id="asset-request-details.absent-msg"
+        @ok="cancelRequest"
+        @cancel="hideConfirmation"
+      />
     </div>
   </div>
 </template>
@@ -100,17 +110,22 @@
 import AssetNameViewer from '../../shared/components/asset-name-viewer'
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 
+import FormMixin from '@/vue/mixins/form.mixin'
+
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { AssetCreationRequest } from '../wrappers/asset-creation-request'
 
 import { config } from '../_config'
 
-import { mapGetters, mapActions } from 'vuex'
-import { vuexTypes } from '@/vuex'
+import { mapActions } from 'vuex'
+import { types } from '../store/types'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
-  update: 'update',
+  updateAsk: 'update-ask',
   cancel: 'cancel',
 }
 
@@ -120,30 +135,21 @@ export default {
     AssetNameViewer,
     RequestMessageViewer,
   },
+  mixins: [FormMixin],
 
   props: {
-    request: {
-      type: AssetCreationRequest,
-      required: true,
-    },
-    isPending: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+    request: { type: AssetCreationRequest, required: true },
+    kycRequiredAssetType: { type: Number, required: true },
   },
 
   data: _ => ({
+    isRequestCancelling: false,
     config,
     ASSET_POLICIES,
     EVENTS,
   }),
 
   computed: {
-    ...mapGetters({
-      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
-    }),
-
     assetTermsUrl () {
       return this.request.termsUrl(config.FILE_STORAGE)
     },
@@ -158,27 +164,22 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
+    ...mapActions('asset-creation-requests', {
+      cancelAssetCreationRequest: types.CANCEL_ASSET_CREATION_REQUEST,
     }),
-    // async cancelRequest () {
-    //   this.isRequestCancelling = true
-    //   try {
-    //     const operation = base.ManageAssetBuilder.cancelAssetRequest({
-    //       requestID: this.selectedRequest.id,
-    //     })
-    //     await api.postOperations(operation)
-    //     // const { data } =
-    // await Sdk.horizon.request.get(this.selectedRequest.id)
-    //     // this.requestsHistory.splice(this.selectedIndex, 1,
-    //     //   RecordWrapper.request(data)
-    //     // )
-    //     Bus.success('asset-creation-requests.request-canceled-msg')
-    //   } catch (e) {
-    //     ErrorHandler.process(e)
-    //   }
-    //   this.isRequestCancelling = false
-    // },
+
+    async cancelRequest () {
+      this.hideConfirmation()
+      this.isRequestCancelling = true
+      try {
+        await this.cancelAssetCreationRequest(this.request.id)
+        Bus.success('asset-creation-requests.request-canceled-msg')
+        this.$emit(EVENTS.cancel)
+      } catch (e) {
+        this.isRequestCancelling = false
+        ErrorHandler.process(e)
+      }
+    },
   },
 }
 </script>

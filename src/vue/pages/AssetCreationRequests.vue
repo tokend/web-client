@@ -5,6 +5,7 @@
       :submodule="getModule().getSubmodule(AssetCreationRequestsModule)"
       :wallet="wallet"
       :config="config"
+      :kyc-required-asset-type="kvAssetTypeKycRequired"
     />
   </div>
 </template>
@@ -35,6 +36,7 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }

@@ -1,5 +1,7 @@
 import { AssetCreationRequest } from '../wrappers/asset-creation-request'
 
+import { base } from '@tokend/js-sdk'
+
 import { types } from './types'
 import { api } from '../_api'
 
@@ -34,6 +36,13 @@ export const actions = {
       },
       include: ['request_details'],
     })
+  },
+
+  async [types.CANCEL_ASSET_CREATION_REQUEST] (_, requestId) {
+    const operation = base.ManageAssetBuilder.cancelAssetRequest({
+      requestID: requestId,
+    })
+    await api().postOperations(operation)
   },
 }
 

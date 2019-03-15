@@ -237,8 +237,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { AssetCreateRequestRecord } from '@/js/records/requests/asset-create.record'
-
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
@@ -281,7 +279,7 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    request: { type: AssetCreateRequestRecord, default: null },
+    request: { type: Object, default: null },
   },
 
   data: _ => ({
@@ -291,7 +289,7 @@ export default {
         code: '',
         maxIssuanceAmount: '',
         logo: null,
-        policies: [],
+        policies: 0,
         assetType: '',
       },
       advanced: {
@@ -380,7 +378,7 @@ export default {
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.form.information.maxIssuanceAmount,
-        policies: this.form.information.policies.reduce((a, b) => (a | b), 0),
+        policies: this.form.information.policies,
         creatorDetails: {
           name: this.form.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
@@ -427,7 +425,7 @@ export default {
           logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)
             : null,
-          policies: this.request.policies,
+          policies: this.request.policy,
         },
         advanced: {
           isPreissuanceDisabled: isPreissuanceDisabled,

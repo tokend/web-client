@@ -6,6 +6,7 @@ const mutations = {
 
 const actions = {
   LOAD_ASSET_CREATION_REQUESTS: 'LOAD_ASSET_CREATION_REQUESTS',
+  CANCEL_ASSET_CREATION_REQUEST: 'CANCEL_ASSET_CREATION_REQUEST',
 }
 
 const getters = {

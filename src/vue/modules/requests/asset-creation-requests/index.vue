@@ -6,7 +6,11 @@
           <template slot="heading">
             {{ 'asset-creation-requests.update-asset-title' | globalize }}
           </template>
-          <asset-create-form :request="selectedRequest" />
+          <asset-create-form
+            :request="selectedRequest"
+            @close="isDrawerShown = false"
+            @request-updated="initFirstPageLoader"
+          />
         </template>
 
         <template v-else>
@@ -15,7 +19,9 @@
           </template>
           <asset-creation-request-viewer
             :request="selectedRequest"
-            @update="isUpdateMode = true"
+            :kyc-required-asset-type="kycRequiredAssetType"
+            @update-ask="isUpdateMode = true"
+            @cancel="(isDrawerShown = false) || initFirstPageLoader()"
           />
         </template>
       </drawer>
@@ -30,7 +36,7 @@
       {{ 'asset-creation-requests.loading-error-msg' | globalize }}
     </p>
 
-    <loader v-else message-id="asset-creation-requests.loading-msg" />
+    <load-spinner v-else message-id="asset-creation-requests.loading-msg" />
 
     <collection-loader
       class="asset-creation-requests__loader"
@@ -43,16 +49,17 @@
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
+import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import AssetCreationRequestsTable from './components/asset-creation-requests-table'
 import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 import AssetCreationRequestViewer from './components/asset-creation-request-viewer'
+import AssetCreationRequestsTable from './components/asset-creation-requests-table'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
+
 import { Wallet } from '@tokend/js-sdk'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
@@ -63,7 +70,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'asset-creation-requests-module',
   components: {
-    Loader,
+    LoadSpinner,
     Drawer,
     CollectionLoader,
     AssetCreationRequestsTable,
@@ -83,6 +90,10 @@ export default {
      */
     config: {
       type: Object,
+      required: true,
+    },
+    kycRequiredAssetType: {
+      type: Number,
       required: true,
     },
   },
@@ -134,7 +145,7 @@ export default {
     },
 
     initFirstPageLoader () {
-      this.firstPageLoader = this.loadRequests
+      this.firstPageLoader = _ => this.loadRequests()
     },
 
     showRequestDetails (request) {

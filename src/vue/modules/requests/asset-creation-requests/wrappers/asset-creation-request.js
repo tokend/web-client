@@ -18,21 +18,17 @@ export class AssetCreationRequest extends Request {
       record, 'requestDetails.initialPreissuedAmount'
     )
     this.maxIssuanceAmount = saveGet(record, 'requestDetails.maxIssuanceAmount')
-    this.preIssuanceAssetSigner = saveGet(
+    this.preissuedAssetSigner = saveGet(
       record, 'requestDetails.preIssuanceAssetSigner'
     )
 
-    this.policies = saveGet(record, 'requestDetails.policies')
+    this.policy = saveGet(record, 'requestDetails.policies')
 
     this.terms = saveGet(record, 'requestDetails.creatorDetails.terms')
     this.termsKey = saveGet(record, 'requestDetails.creatorDetails.terms.key')
-    this.termsName = saveGet(record, 'requestDetails.creatorDetails.terms.name')
-    this.termsType = saveGet(record, 'requestDetails.creatorDetails.terms.type')
 
     this.logo = saveGet(record, 'requestDetails.creatorDetails.logo')
     this.logoKey = saveGet(record, 'requestDetails.creatorDetails.logo.key')
-    this.logoName = saveGet(record, 'requestDetails.creatorDetails.logo.name')
-    this.logoType = saveGet(record, 'requestDetails.creatorDetails.logo.type')
   }
 
   logoUrl (storageUrl) {
@@ -44,10 +40,10 @@ export class AssetCreationRequest extends Request {
   }
 
   get isTransferable () {
-    return !!(this.policies & ASSET_POLICIES.transferable)
+    return Boolean(this.policy & ASSET_POLICIES.transferable)
   }
 
   get isWithdrawable () {
-    return Boolean(this.policies & ASSET_POLICIES.withdrawable)
+    return Boolean(this.policy & ASSET_POLICIES.withdrawable)
   }
 }
