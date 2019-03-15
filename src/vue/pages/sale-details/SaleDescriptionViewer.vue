@@ -3,7 +3,7 @@
     <template v-if="isLoaded">
       <template v-if="saleDescription">
         <vue-markdown
-          class="sale-description-viewe__markdown"
+          class="sale-description-viewer__markdown"
           :source="saleDescription"
         />
       </template>
@@ -86,8 +86,49 @@ export default {
 }
 </style>
 
-<style>
-.sale-description-viewe__markdown img {
-  max-width: 100%;
+<style lang="scss">
+@import "~@scss/variables";
+
+.sale-description-viewer__markdown {
+  img {
+    max-width: 100%;
+    margin: 0.8rem 0;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.4rem;
+    margin-top: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  p {
+    margin-bottom: 0.8rem;
+  }
+
+  ul {
+    list-style-type: disc !important;
+    padding-left: 1.6rem;
+  }
+
+  li {
+    list-style-type: disc !important;
+    margin-bottom: 0.8rem;
+  }
+
+  a {
+    color: $col-secondary;
+  }
 }
 </style>
