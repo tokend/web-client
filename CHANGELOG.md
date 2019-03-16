@@ -28,12 +28,18 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Asset creation requests module
+- Asset update requests page & module
+- Sale creation requests module
+- Pre-issuance requests module
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
+- Now using overall policy instead of policies array in asset forms
+- Now using object type for checking request prop in asset & sale forms
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
