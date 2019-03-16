@@ -145,7 +145,7 @@ export default {
     },
     imgUrl () {
       const balance = this.balances.find(i => i.asset === this.currentAsset)
-      return balance.assetDetails.logoUrl(config.FILE_STORAGE) || ''
+      return balance.assetDetails.logoUrl(config.FILE_STORAGE)
     },
   },
   async created () {
@@ -250,7 +250,7 @@ $custom-breakpoint-medium: 870px;
   }
 
   img {
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .asset-selector__asset-code-abbr {

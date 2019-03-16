@@ -3,8 +3,17 @@
     <template v-if="sale">
       <top-bar>
         <template slot="main">
+          <!--
+            HACK: we don't need any active-class here, so empty "active-class"
+            attr prevents adding any active-class
+           -->
+          <router-link :to="{ ...vueRoutes.sales }" active-class>
+            <span>
+              {{ 'sale-details.opportunities-list' | globalize }}
+            </span>
+          </router-link>
+
           <router-link
-            v-ripple
             :to="{ ...vueRoutes.saleCampaign, params: { id: id } }"
           >
             <span>

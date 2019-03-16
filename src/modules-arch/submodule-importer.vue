@@ -3,6 +3,7 @@
     <component
       :is="component"
       v-bind="$attrs"
+      v-on="$listeners"
     />
   </keep-alive>
   <div

@@ -21,6 +21,9 @@
           {{ metadata.fileName }}
         </a>
         <p class="file-attributes-viewer__attribute">
+          {{ metadata.fileKey }}
+        </p>
+        <p class="file-attributes-viewer__attribute">
           {{ metadata.fileMimeType }}
         </p>
       </div>
@@ -60,8 +63,10 @@ export default {
 }
 
 .file-attributes-viewer__attribute {
-  display: flex;
   line-height: 2.5rem;
+  max-width: 30rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .file-attributes-viewer__file-icon-wrp {

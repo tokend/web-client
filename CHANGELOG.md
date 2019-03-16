@@ -26,6 +26,8 @@ for further information about branching and tagging conventions.
 - Healthcare document type
 - Document explorer page
 - Document explorer module
+- Withdrawal fiat by the bank information form module
+- Withdrawal fiat by the card information form module
 
 ### Changed
 - Now using new account endpoint for loading the fees

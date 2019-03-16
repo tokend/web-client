@@ -40,10 +40,13 @@
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
+          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+            getModule().getSubmodule(DashboardChartPseudoModule)
+          "
           class="dashboard__chart"
         >
-          <chart
+          <submodule-importer
+            :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
             :base-asset="currentAsset"
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
@@ -84,7 +87,6 @@
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
-import Chart from '@/vue/common/chart/Chart'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -96,6 +98,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
 export default {
   name: 'dashboard',
@@ -103,7 +106,6 @@ export default {
     AssetSelector,
     IssuanceForm,
     Transfer,
-    Chart,
     Loader,
     Drawer,
     SubmoduleImporter,
@@ -119,6 +121,7 @@ export default {
     MovementsHistoryModule,
     IssuanceDrawerPseudoModule,
     TransferDrawerPseudoModule,
+    DashboardChartPseudoModule,
   }),
   computed: {
     ...mapGetters([

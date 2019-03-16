@@ -223,6 +223,13 @@ $col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
 
+// tabs colors:
+$col-tabs-txt: $col-primary;
+$col-tabs-disabled-txt: $col-primary-inactive;
+$col-tabs-indicator: $col-secondary;
+$col-tabs-default-border-bottom: rgba($col-tabs-indicator, .1);
+$col-tabs-hover-bg: rgba($col-secondary, .05);
+
 // sale card colors
 $col-sale-card-background: $_white;
 $col-sale-card-shadow: $col-block-shadow;
