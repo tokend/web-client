@@ -661,10 +661,10 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
-"@tokend/js-sdk@1.3.1":
-  version "1.3.1-x.1"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.1-x.1.tgz#181a3ac52a0fa12785b121e7a216329d0c51d911"
-  integrity sha512-atPSQrpXZc/snJe5nk4FXa7CJRAN4vA/GR4kRClGVb+Z2UN2EqJmi3K7cn9nmY/Im8pEbjPtKtjBxECQU7zeIw==
+"@tokend/js-sdk@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.0.tgz#c377099adb0526bfd7cd7660ac81115d5d89e245"
+  integrity sha512-vQuId/miSkKqYYxLBV70TP7RW8y2qNZAs3U2zs+MuWmgMu3L8ET0MWNOAWPY0qSue4uTX5GOTcXC04tWycRlYQ==
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
