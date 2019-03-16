@@ -2,23 +2,23 @@ import { Request } from '../../shared/wrappers/request'
 
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
-import saveGet from 'lodash/get'
+import safeGet from 'lodash/get'
 
 export class AssetUpdateRequest extends Request {
   constructor (record) {
     super(record)
 
-    this.assetCode = saveGet(record, 'requestDetails.asset.id')
-    this.assetType = saveGet(record, 'requestDetails.type')
-    this.assetName = saveGet(record, 'requestDetails.creatorDetails.name')
+    this.assetCode = safeGet(record, 'requestDetails.asset.id')
+    this.assetType = safeGet(record, 'requestDetails.type')
+    this.assetName = safeGet(record, 'requestDetails.creatorDetails.name')
 
-    this.policy = saveGet(record, 'requestDetails.policies')
+    this.policy = safeGet(record, 'requestDetails.policies')
 
-    this.terms = saveGet(record, 'requestDetails.creatorDetails.terms')
-    this.termsKey = saveGet(record, 'requestDetails.creatorDetails.terms.key')
+    this.terms = safeGet(record, 'requestDetails.creatorDetails.terms')
+    this.termsKey = safeGet(record, 'requestDetails.creatorDetails.terms.key')
 
-    this.logo = saveGet(record, 'requestDetails.creatorDetails.logo')
-    this.logoKey = saveGet(record, 'requestDetails.creatorDetails.logo.key')
+    this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
+    this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
   }
 
   logoUrl (storageUrl) {

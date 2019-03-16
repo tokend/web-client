@@ -1,11 +1,17 @@
-import saveGet from 'lodash/get'
+import safeGet from 'lodash/get'
 
 export class Asset {
   constructor (record) {
-    this.code = saveGet(record, 'requestDetails.asset.id')
-    this.name = saveGet(record, 'requestDetails.creatorDetails.name')
+    this.code = record.id
+    this.owner = safeGet(record, 'owner.id')
 
-    this.logoKey = saveGet(record, 'requestDetails.creatorDetails.logo.key')
+    this.name = safeGet(record, 'details.name')
+    this.logoKey = safeGet(record, 'details.logo.key')
+  }
+
+  get nameAndCode () {
+    const name = this.name || this.code
+    return `${name} (${this.code})`
   }
 
   logoUrl (storageUrl) {

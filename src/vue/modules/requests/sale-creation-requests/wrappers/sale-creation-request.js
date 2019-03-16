@@ -1,41 +1,41 @@
 import { Request } from '../../shared/wrappers/request'
 
-import saveGet from 'lodash/get'
+import safeGet from 'lodash/get'
 
 export class SaleCreationRequest extends Request {
   constructor (record) {
     super(record)
 
-    this.id = saveGet(record, 'requestDetails.id')
-    this.name = saveGet(record, 'requestDetails.creatorDetails.name')
+    this.id = safeGet(record, 'requestDetails.id')
+    this.name = safeGet(record, 'requestDetails.creatorDetails.name')
 
-    this.baseAsset = saveGet(record, 'requestDetails.baseAsset.id')
-    this.defaultQuoteAsset = saveGet(
+    this.baseAsset = safeGet(record, 'requestDetails.baseAsset.id')
+    this.defaultQuoteAsset = safeGet(
       record, 'requestDetails.defaultQuoteAsset.id'
     )
-    this.baseAssetForHardCap = saveGet(
+    this.baseAssetForHardCap = safeGet(
       record, 'requestDetails.baseAssetForHardCap'
     )
     this.quoteAssets = this._getQuoteAssets(record)
 
-    this.startTime = saveGet(record, 'requestDetails.startTime')
-    this.endTime = saveGet(record, 'requestDetails.endTime')
+    this.startTime = safeGet(record, 'requestDetails.startTime')
+    this.endTime = safeGet(record, 'requestDetails.endTime')
 
-    this.softCap = saveGet(record, 'requestDetails.softCap')
-    this.hardCap = saveGet(record, 'requestDetails.hardCap')
+    this.softCap = safeGet(record, 'requestDetails.softCap')
+    this.hardCap = safeGet(record, 'requestDetails.hardCap')
 
-    this.description = saveGet(
+    this.description = safeGet(
       record, 'requestDetails.creatorDetails.description'
     )
-    this.shortDescription = saveGet(
-      record, 'requestDetails.requestDetails.shortDescription'
+    this.shortDescription = safeGet(
+      record, 'requestDetails.creatorDetails.shortDescription'
     )
 
-    this.logo = saveGet(record, 'requestDetails.creatorDetails.logo')
-    this.logoKey = saveGet(record, 'requestDetails.creatorDetails.logo.key')
+    this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
+    this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
 
-    this.youtubeVideoId = saveGet(
-      record, 'requestDetails.requestDetails.youtubeVideoId'
+    this.youtubeVideoId = safeGet(
+      record, 'requestDetails.creatorDetails.youtubeVideoId'
     )
   }
 
@@ -52,7 +52,7 @@ export class SaleCreationRequest extends Request {
   }
 
   _getQuoteAssets (record) {
-    return saveGet(record, 'requestDetails.quoteAssets', [])
+    return safeGet(record, 'requestDetails.quoteAssets', [])
       .map(asset => asset.id)
   }
 }

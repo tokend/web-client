@@ -11,7 +11,7 @@ const HORIZON_VERSION_PREFIX = 'v3'
 export const state = {
   accountId: '',
   saleCreationRequests: [],
-  accountOwnedAssets: [],
+  balancesAssets: [],
 }
 
 export const mutations = {
@@ -25,19 +25,20 @@ export const mutations = {
     state.saleCreationRequests = state.saleCreationRequests
       .concat(saleCreationRequests)
   },
-  [types.SET_ACCOUNT_OWNED_ASSETS] (state, accountOwnedAssets) {
-    state.accountOwnedAssets = accountOwnedAssets
+  [types.SET_BALANCES_ASSETS] (state, balancesAssets) {
+    state.balancesAssets = balancesAssets
   },
 }
 
 export const actions = {
-  [types.LOAD_SALE_CREATION_REQUESTS] ({ getters }) {
+  [types.LOAD_SALE_CREATION_REQUESTS] ({ getters }, baseAssetCode) {
     return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_sale_requests`, {
       page: {
         order: 'desc',
       },
       filter: {
         requestor: getters[types.accountId],
+        'request_details.base_asset': baseAssetCode,
       },
       include: ['request_details', 'request_details.default_quote_asset'],
     })
@@ -49,7 +50,7 @@ export const actions = {
       include: ['balances.state', 'balances.asset'],
     })
 
-    commit(types.SET_ACCOUNT_OWNED_ASSETS, account.balances.map(b => b.asset))
+    commit(types.SET_BALANCES_ASSETS, account.balances.map(b => b.asset))
   },
 
   async [types.CANCEL_SALE_CREATION_REQUEST] (_, requestId) {
@@ -64,8 +65,9 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.saleCreationRequests]: state => state.saleCreationRequests
     .map(r => new SaleCreationRequest(r)),
-  [types.accountOwnedAssets]: state => state.accountOwnedAssets
-    .map(a => new Asset(a)),
+  [types.accountOwnedAssets]: state => state.balancesAssets
+    .map(a => new Asset(a))
+    .filter(a => a.owner === state.accountId),
 }
 
 export const saleCreationRequestsModule = {

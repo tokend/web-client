@@ -1,16 +1,16 @@
 <template>
-  <div class="asset-name-viewer">
+  <div class="asset-summary-viewer">
     <asset-logo-viewer
-      class="asset-name-viewer__logo"
+      class="asset-summary-viewer__logo"
       :asset-code="asset.code || request.assetCode"
       :logo-url="assetLogoUrl"
     />
 
-    <div class="asset-name-viewer__info">
-      <p class="asset-name-viewer__code">
+    <div class="asset-summary-viewer__info">
+      <p class="asset-summary-viewer__code">
         {{ asset.code || request.assetCode }}
       </p>
-      <p class="asset-name-viewer__name">
+      <p class="asset-summary-viewer__name">
         {{ asset.name || request.assetName }}
       </p>
     </div>
@@ -21,20 +21,20 @@
 import AssetLogoViewer from '../../shared/components/asset-logo-viewer'
 
 export default {
-  name: 'asset-name-viwer',
+  name: 'asset-summary-viewer',
   components: {
     AssetLogoViewer,
   },
 
   props: {
     config: { type: Object, required: true },
-    request: { type: Object, default: null },
-    asset: { type: Object, default: null },
+    request: { type: Object, default: _ => ({}) },
+    asset: { type: Object, default: _ => ({}) },
   },
 
   computed: {
     assetLogoUrl () {
-      const asset = this.asset || this.request
+      const asset = this.asset.logoUrl ? this.asset : this.request
       return asset.logoUrl(this.config.storageURL)
     },
   },
@@ -44,26 +44,26 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.asset-name-viewer {
+.asset-summary-viewer {
   display: flex;
   align-items: center;
 
-  .asset-name-viewer__logo {
+  .asset-summary-viewer__logo {
     width: 5rem;
     height: 5rem;
     border-radius: 50%
   }
 
-  .asset-name-viewer__info {
+  .asset-summary-viewer__info {
     margin-left: 1.8rem;
 
-    .asset-name-viewer__code {
+    .asset-summary-viewer__code {
       font-size: 1.8rem;
       font-weight: bold;
       color: $col-primary;
     }
 
-    .asset-name-viewer__name {
+    .asset-summary-viewer__name {
       margin-top: .1rem;
       font-size: 1.4rem;
       line-height: 1.29;

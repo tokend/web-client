@@ -1,6 +1,6 @@
 <template>
   <div class="asset-update-request-viewer">
-    <asset-name-viewer
+    <asset-summary-viewer
       :config="config()"
       :request="request"
     />
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import AssetNameViewer from '../../shared/components/asset-name-viewer'
+import AssetSummaryViewer from '../../shared/components/asset-summary-viewer'
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 import AssetUpdateRequestAttributesViewer from './asset-update-request-attributes-viewer'
 import AssetUpdateRequestActionsBar from './asset-update-request-actions-bar'
@@ -42,7 +42,7 @@ const EVENTS = {
 export default {
   name: 'asset-update-request-viewer',
   components: {
-    AssetNameViewer,
+    AssetSummaryViewer,
     RequestMessageViewer,
     AssetUpdateRequestAttributesViewer,
     AssetUpdateRequestActionsBar,

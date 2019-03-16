@@ -7,11 +7,8 @@ export class Request {
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
 
-    this.state = record.state
     this.stateI = record.stateI
     this.rejectReason = record.rejectReason
-
-    this.reference = record.reference
   }
 
   get isApproved () {

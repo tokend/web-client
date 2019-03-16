@@ -110,10 +110,6 @@ export default {
 
 .sale-creation-request-actions-bar {
   display: flex;
-
-  button + button {
-    margin-left: auto;
-  }
 }
 
 .sale-request-details__view-btn {

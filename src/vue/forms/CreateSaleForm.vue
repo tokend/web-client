@@ -355,7 +355,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
@@ -390,8 +389,9 @@ export default {
   mixins: [FormMixin],
   props: {
     request: {
-      type: SaleRequestRecord,
-      default: _ => (new SaleRequestRecord()) },
+      type: Object,
+      default: _ => ({}),
+    },
   },
   data () {
     return {

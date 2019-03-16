@@ -1,7 +1,21 @@
 <template>
   <div class="sale-creation-requests">
     <template v-if="isLoaded">
-      <sale-creation-requests-loader v-if="assets.length" />
+      <template v-if="filters.baseAsset.code">
+        <!-- eslint-disable max-len -->
+        <select-field
+          v-model="filters.baseAsset"
+          :values="ownedAssets"
+          key-as-value-text="nameAndCode"
+          class="sale-creation-requests__asset-list app__select app__select--no-border"
+        />
+        <!-- eslint-enable max-len -->
+
+        <sale-creation-requests-renderer
+          class="sale-creation-requests__renderer"
+          :base-asset="filters.baseAsset"
+        />
+      </template>
 
       <no-data-message
         v-else
@@ -22,8 +36,9 @@
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import LoadSpinner from '@/vue/common/Loader'
+import SelectField from '@/vue/fields/SelectField'
 
-import SaleCreationRequestsLoader from './components/sale-creation-requests-loader'
+import SaleCreationRequestsRenderer from './components/sale-creation-requests-renderer'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
@@ -40,7 +55,8 @@ export default {
   components: {
     NoDataMessage,
     LoadSpinner,
-    SaleCreationRequestsLoader,
+    SelectField,
+    SaleCreationRequestsRenderer,
   },
 
   props: {
@@ -60,13 +76,16 @@ export default {
   },
 
   data: _ => ({
+    filters: {
+      baseAsset: {},
+    },
     isLoaded: false,
     isLoadingFailed: false,
   }),
 
   computed: {
     ...mapGetters('sale-creation-requests', {
-      assets: types.accountOwnedAssets,
+      ownedAssets: types.accountOwnedAssets,
     }),
   },
 
@@ -75,7 +94,7 @@ export default {
     initConfig(this.config)
 
     this.setAccountId(this.wallet.accountId)
-    await this.loadBalances()
+    await this.initAssetSelector()
   },
 
   methods: {
@@ -86,6 +105,14 @@ export default {
     ...mapActions('sale-creation-requests', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
+
+    async initAssetSelector () {
+      await this.loadBalances()
+
+      if (this.ownedAssets.length) {
+        this.filters.baseAsset = this.ownedAssets[0]
+      }
+    },
 
     async loadBalances () {
       this.isLoaded = false
@@ -103,7 +130,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sale-creation-requests__loader {
-  margin-top: 1rem;
+.sale-creation-requests__asset-list {
+  width: fit-content;
+}
+
+.sale-creation-requests__renderer {
+  margin-top: 2.1rem;
 }
 </style>

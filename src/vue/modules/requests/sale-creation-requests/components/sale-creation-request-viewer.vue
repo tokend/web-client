@@ -1,8 +1,8 @@
 <template>
   <div class="sale-creation-request-viewer">
-    <asset-name-viewer
+    <asset-summary-viewer
       :config="config()"
-      :asset="asset"
+      :asset="baseAsset"
     />
 
     <request-message-viewer
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import AssetNameViewer from '../../shared/components/asset-name-viewer'
+import AssetSummaryViewer from '../../shared/components/asset-summary-viewer'
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 import SaleCreationRequestAttributesViewer from './sale-creation-request-attributes-viewer'
 import SaleCreationRequestActionsBar from './sale-creation-request-actions-bar'
@@ -43,7 +43,7 @@ const EVENTS = {
 export default {
   name: 'sale-creation-request-viewer',
   components: {
-    AssetNameViewer,
+    AssetSummaryViewer,
     RequestMessageViewer,
     SaleCreationRequestAttributesViewer,
     SaleCreationRequestActionsBar,
@@ -51,7 +51,7 @@ export default {
 
   props: {
     request: { type: SaleCreationRequest, required: true },
-    asset: { type: Asset, required: true },
+    baseAsset: { type: Asset, required: true },
   },
 
   data: _ => ({
