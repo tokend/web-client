@@ -105,6 +105,11 @@ export default Object.assign(
      * set of the application.
      */
     MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Link to iOS application manifest file.
+     */
+    IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
   },
   process.env,
   document.ENV

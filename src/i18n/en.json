@@ -1080,7 +1080,7 @@
       "how-to-install-header": "How to install TokenD wallet app on iOS",
       "apple-policy-desc": "Unfortunately, Apple AppStore has a strict and unreliable policy regarding cryptocurrency-related apps. Because of this, we are unable to provide stable application updates through AppStore.",
       "steps-desc": "In order to install TokenD iOS wallet app follow the next steps:",
-      "download-step": "[Download](itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist) the application with your device.",
+      "download-step": "[Download]({{manifestLink}}) the application with your device.",
       "install-step": "Close browser and wait until the app is downloaded and installed.",
       "first-launch-step": "On the first attempt to launch the app, you will see a message show on the first image below. Close that dialog and perform next steps (illustrated below for iOS 12). Please make sure you’re connected to the internet.",
       "system-preferences-substep": "Open “System Preferences”",
