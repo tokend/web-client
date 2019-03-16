@@ -735,8 +735,8 @@
 
     "sale-creation-requests": {
       "update-sale-title": "Update fund",
-      "details-title": "Fund request details",
-      "loading-msg": "Loading",
+      "details-title": "Fund creation request",
+      "loading-msg": "Loading your requests…",
       "loading-error-msg": "There was an error while loading.",
       "sale-name-header": "Fund name",
       "asset-code-header": "Token code",
@@ -746,7 +746,7 @@
       "details-btn": "Details",
       "no-owned-assets-title": "No owned tokens",
       "no-owned-assets-desc": "Unfortunately, you don't own any tokens yet",
-      "no-request-history-title": "No request history",
+      "no-request-history-title": "No fund requests",
       "no-request-history-desc": "Here will be the list of your fund creation requests",
       "request-canceled-msg": "Your request was successfully cancelled"
     },

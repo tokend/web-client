@@ -1,33 +1,13 @@
 <template>
   <div class="sale-creation-requests">
     <template v-if="isLoaded">
-      <drawer :is-shown.sync="isDrawerShown">
-        <template v-if="isUpdateMode">
-          <template slot="heading">
-            {{ 'sale-creation-requests.update-sale-title' | globalize }}
-          </template>
-          <create-sale-form
-            :request="selectedRequest"
-            @close="isDrawerShown = false"
-            @request-updated="initFirstPageLoader"
-          />
-        </template>
+      <sale-creation-requests-loader v-if="assets.length" />
 
-        <template v-else>
-          <template slot="heading">
-            {{ 'sale-creation-requests.details-title' | globalize }}
-          </template>
-          <sale-creation-request-viewer
-            :request="selectedRequest"
-            @update-ask="isUpdateMode = true"
-            @cancel="(isDrawerShown = false) || initFirstPageLoader()"
-          />
-        </template>
-      </drawer>
-
-      <sale-creation-requests-table
-        :requests="requests"
-        @select="showRequestDetails"
+      <no-data-message
+        v-else
+        icon-name="trending-up"
+        :title="'sale-creation-requests.no-owned-assets-title' | globalize"
+        :message="'sale-creation-requests.no-owned-assets-desc' | globalize"
       />
     </template>
 
@@ -36,32 +16,21 @@
     </p>
 
     <load-spinner v-else message-id="sale-creation-requests.loading-msg" />
-
-    <collection-loader
-      class="sale-creation-requests__loader"
-      v-show="requests.length && isLoaded"
-      :first-page-loader="firstPageLoader"
-      @first-page-load="setRequests"
-      @next-page-load="concatRequests"
-    />
   </div>
 </template>
 
 <script>
+import NoDataMessage from '@/vue/common/NoDataMessage'
 import LoadSpinner from '@/vue/common/Loader'
-import Drawer from '@/vue/common/Drawer'
-import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
-import SaleCreationRequestViewer from './components/sale-creation-request-viewer'
-import SaleCreationRequestsTable from './components/sale-creation-requests-table'
+import SaleCreationRequestsLoader from './components/sale-creation-requests-loader'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
 
 import { Wallet } from '@tokend/js-sdk'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -69,12 +38,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'sale-creation-requests-module',
   components: {
+    NoDataMessage,
     LoadSpinner,
-    Drawer,
-    CollectionLoader,
-    SaleCreationRequestsTable,
-    CreateSaleForm,
-    SaleCreationRequestViewer,
+    SaleCreationRequestsLoader,
   },
 
   props: {
@@ -96,57 +62,41 @@ export default {
   data: _ => ({
     isLoaded: false,
     isLoadingFailed: false,
-    isDrawerShown: false,
-    isUpdateMode: false,
-    selectedRequest: {},
-    firstPageLoader: () => {},
   }),
 
   computed: {
     ...mapGetters('sale-creation-requests', {
-      requests: types.saleCreationRequests,
+      assets: types.accountOwnedAssets,
     }),
   },
 
-  created () {
+  async created () {
     initApi(this.wallet, this.config)
     initConfig(this.config)
 
     this.setAccountId(this.wallet.accountId)
-    this.initFirstPageLoader()
+    await this.loadBalances()
   },
 
   methods: {
     ...mapMutations('sale-creation-requests', {
       setAccountId: types.SET_ACCOUNT_ID,
-      setRequests: types.SET_SALE_CREATION_REQUESTS,
-      concatRequests: types.CONCAT_SALE_CREATION_REQUESTS,
     }),
 
     ...mapActions('sale-creation-requests', {
-      loadAssetCreationRequests: types.LOAD_SALE_CREATION_REQUESTS,
+      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
 
-    async loadRequests () {
+    async loadBalances () {
       this.isLoaded = false
       try {
-        const response = await this.loadAssetCreationRequests()
+        const response = await this.loadAccountBalances()
         this.isLoaded = true
         return response
       } catch (e) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
-    },
-
-    initFirstPageLoader () {
-      this.firstPageLoader = _ => this.loadRequests()
-    },
-
-    showRequestDetails (request) {
-      this.isUpdateMode = false
-      this.selectedRequest = request
-      this.isDrawerShown = true
     },
   },
 }

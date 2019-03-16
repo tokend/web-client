@@ -53,7 +53,7 @@ export const actions = {
   },
 
   async [types.CANCEL_SALE_CREATION_REQUEST] (_, requestId) {
-    const operation = base.ManageAssetBuilder.cancelSaleRequest({
+    const operation = base.SaleRequestBuilder.cancelSaleCreationRequest({
       requestID: requestId,
     })
     await api().postOperations(operation)

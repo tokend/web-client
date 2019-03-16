@@ -11,6 +11,9 @@
             <th :title="'sale-creation-requests.sale-name-header' | globalize">
               {{ 'sale-creation-requests.sale-name-header' | globalize }}
             </th>
+            <th :title="'sale-creation-requests.asset-code-header' | globalize">
+              {{ 'sale-creation-requests.asset-code-header' | globalize }}
+            </th>
             <th :title="'sale-creation-requests.request-state-header' | globalize">
               {{ 'sale-creation-requests.request-state-header' | globalize }}
             </th>
@@ -31,6 +34,10 @@
           >
             <td :title="request.name">
               {{ request.name }}
+            </td>
+
+            <td :title="request.baseAsset">
+              {{ request.baseAsset }}
             </td>
 
             <td>

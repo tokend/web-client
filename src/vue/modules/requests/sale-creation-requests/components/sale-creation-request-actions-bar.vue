@@ -1,5 +1,18 @@
 <template>
   <div class="sale-creation-request-actions-bar">
+    <!--
+      Currently, we cannot definitely identify the sale by its request,
+      therefore we temporarily disable view button.
+    -->
+    <button
+      v-ripple
+      v-if="!formMixin.isConfirmationShown"
+      class="sale-creation-request-actions-bar__view-btn app__button-raised"
+      :disabled="true"
+    >
+      {{ 'sale-creation-requests.view-btn' | globalize }}
+    </button>
+
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
@@ -72,7 +85,7 @@ export default {
 
   methods: {
     ...mapActions('sale-creation-requests', {
-      cancelSaleCreationRequest: types.CANCEL_ASSET_CREATION_REQUEST,
+      cancelSaleCreationRequest: types.CANCEL_SALE_CREATION_REQUEST,
     }),
 
     async cancelRequest () {
@@ -93,6 +106,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@scss/variables";
+
 .sale-creation-request-actions-bar {
   display: flex;
 
@@ -101,13 +116,23 @@ export default {
   }
 }
 
+.sale-request-details__view-btn {
+  max-width: 14.4rem;
+  width: 100%;
+}
+
 .sale-creation-request-actions-bar__update-btn {
-  margin-bottom: 2rem;
-  width: 18rem;
+  margin-left: 1.2rem;
+  max-width: 14.4rem;
+  width: 100%;
+  font-weight: bold;
+  color: $col-button-flat-light-text;
+  box-shadow: 0 .5rem 1.5rem 0 $col-button-flat-light-shadow;
+  background-color: $col-button-flat-light-bg;;
 }
 
 .sale-creation-request-actions-bar__cancel-btn {
-  margin-bottom: 2rem;
   font-weight: normal;
+  margin-left: auto;
 }
 </style>

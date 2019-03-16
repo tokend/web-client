@@ -2,16 +2,16 @@
   <div class="asset-name-viewer">
     <asset-logo-viewer
       class="asset-name-viewer__logo"
-      :asset-code="request.assetCode"
-      :logo-url="request.logoUrl(config.storageURL)"
+      :asset-code="asset.code || request.assetCode"
+      :logo-url="assetLogoUrl"
     />
 
     <div class="asset-name-viewer__info">
       <p class="asset-name-viewer__code">
-        {{ request.assetCode }}
+        {{ asset.code || request.assetCode }}
       </p>
       <p class="asset-name-viewer__name">
-        {{ request.assetName }}
+        {{ asset.name || request.assetName }}
       </p>
     </div>
   </div>
@@ -28,7 +28,15 @@ export default {
 
   props: {
     config: { type: Object, required: true },
-    request: { type: Object, required: true },
+    request: { type: Object, default: null },
+    asset: { type: Object, default: null },
+  },
+
+  computed: {
+    assetLogoUrl () {
+      const asset = this.asset || this.request
+      return asset.logoUrl(this.config.storageURL)
+    },
   },
 }
 </script>

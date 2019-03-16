@@ -2,7 +2,7 @@
   <div class="sale-creation-request-viewer">
     <asset-name-viewer
       :config="config()"
-      :request="request"
+      :asset="asset"
     />
 
     <request-message-viewer
@@ -13,7 +13,6 @@
     <sale-creation-request-attributes-viewer
       class="sale-creation-request-viewer__table"
       :request="request"
-      :kyc-required-sale-type="kycRequiredSaleType"
     />
 
     <sale-creation-request-actions-bar
@@ -32,6 +31,7 @@ import SaleCreationRequestAttributesViewer from './sale-creation-request-attribu
 import SaleCreationRequestActionsBar from './sale-creation-request-actions-bar'
 
 import { SaleCreationRequest } from '../wrappers/sale-creation-request'
+import { Asset } from '../wrappers/asset'
 
 import { config } from '../_config'
 
@@ -51,7 +51,7 @@ export default {
 
   props: {
     request: { type: SaleCreationRequest, required: true },
-    kycRequiredSaleType: { type: Number, required: true },
+    asset: { type: Asset, required: true },
   },
 
   data: _ => ({
