@@ -384,7 +384,7 @@ export default {
           },
           sourcePaysForDest: false,
         },
-        subject: '',
+        subject: `Dividend for ${this.form.asset.code}`,
         asset: this.form.asset.code,
       })
     },
