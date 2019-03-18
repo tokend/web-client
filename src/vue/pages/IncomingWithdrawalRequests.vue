@@ -9,17 +9,17 @@
 
           <withdrawal-request-details
             :request="selectedRequest"
-            :is-pending="isRequestRejected"
+            :is-pending="isPending"
             @approve="approveRequest"
             @reject="rejectRequest"
           />
         </drawer>
 
-        <div class="app__table incoming-withdrawal-requests__table">
+        <!-- eslint-disable max-len -->
+        <div class="app__table app__table--with-shadow incoming-withdrawal-requests__table">
           <table>
             <thead>
               <tr>
-                <!-- eslint-disable max-len -->
                 <th :title="'incoming-withdrawal-requests.requestor-header' | globalize">
                   {{ 'incoming-withdrawal-requests.requestor-header' | globalize }}
                 </th>
@@ -42,48 +42,48 @@
                   <email-getter :account-id="request.requestor" />
                 </td>
 
-                <td :title="request.amount | formatMoney">
+                <td :title="request.asset && (request.amount | formatMoney)">
                   {{ request.amount | formatMoney }}
                   {{ request.asset }}
                 </td>
 
+                <!-- eslint-disable max-len -->
                 <td
                   v-if="request.isApproved"
-                  class="request-state request-state--approved"
-                  :title="'request-states.request-approved-state' | globalize"
+                  class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--approved"
+                  :title="'incoming-withdrawal-requests.request-approved-state' | globalize"
                 >
-                  {{ 'request-states.approved-state' | globalize }}
+                  {{ 'incoming-withdrawal-requests.approved-state' | globalize }}
                 </td>
 
                 <td
                   v-if="request.isPending"
-                  class="request-state request-state--pending"
-                  :title="'request-states.request-pending-state' | globalize"
+                  class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--pending"
+                  :title="'incoming-withdrawal-requests.request-pending-state' | globalize"
                 >
-                  {{ 'request-states.pending-state' | globalize }}
+                  {{ 'incoming-withdrawal-requests.pending-state' | globalize }}
                 </td>
 
                 <td
                   v-if="request.isRejected"
-                  class="request-state request-state--rejected"
-                  :title="'request-states.request-rejected-state' | globalize"
+                  class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--rejected"
+                  :title="'incoming-withdrawal-requests.request-rejected-state' | globalize"
                 >
-                  {{ 'request-states.rejected-state' | globalize }}
+                  {{ 'incoming-withdrawal-requests.rejected-state' | globalize }}
                 </td>
-                <!-- eslint-disable max-len -->
 
                 <td
                   v-if="request.isPermanentlyRejected"
-                  class="request-state request-state--permanently-rejected"
-                  :title="'request-states.request-permanently-rejected-state' | globalize"
+                  class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--permanently-rejected"
+                  :title="'incoming-withdrawal-requests.request-permanently-rejected-state' | globalize"
                 >
-                  {{ 'request-states.permanently-rejected-state' | globalize }}
+                  {{ 'incoming-withdrawal-requests.permanently-rejected-state' | globalize }}
                 </td>
                 <!-- eslint-enable max-len -->
 
                 <td>
                   <a
-                    class="request-details-btn"
+                    class="incoming-withdrawal-requests__request-details-btn"
                     @click="showRequestDetails(index)"
                   >
                     {{ 'incoming-withdrawal-requests.details-btn' | globalize }}
@@ -139,7 +139,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import WithdrawalRequestDetails from '@/vue/pages/withdrawals/WithdrawalRequestDetails'
 import { base } from '@tokend/js-sdk'
-import { Api } from '../../api'
+import { Api } from '@/api'
 import {
   WithdrawalDetailsRequestRecord,
 } from '@/js/records/requests/withdrawal-details.record'
@@ -162,7 +162,7 @@ export default {
     requestsHistory: [],
     isHistoryLoaded: false,
     isLoadingFailed: false,
-    isRequestRejected: false,
+    isPending: false,
     isDetailsDrawerShown: false,
     selectedIndex: -1,
     firstPageLoader: () => {},
@@ -204,27 +204,24 @@ export default {
     },
 
     async setHistory (data) {
-      this.requestsHistory = await Promise.all(
+      this.requestsHistory = await this.changeRequestHistoryRequest(data)
+      this.isHistoryLoaded = true
+    },
+
+    async extendHistory (data) {
+      this.requestsHistory = await this.requestsHistory.concat(
+        await this.changeRequestHistoryRequest(data)
+      )
+    },
+
+    async changeRequestHistoryRequest (data) {
+      return Promise.all(
         data
           .map(request => new WithdrawalDetailsRequestRecord(request))
           .map(async request => {
             request.asset = await this.getAssetFromBalanceId(request)
             return request
           })
-      )
-      this.isHistoryLoaded = true
-    },
-
-    async extendHistory (data) {
-      this.requestsHistory = this.requestsHistory.concat(
-        await Promise.all(
-          data
-            .map(request => new WithdrawalDetailsRequestRecord(request))
-            .map(async request => {
-              request.asset = await this.getAssetFromBalanceId(request)
-              return request
-            })
-        )
       )
     },
 
@@ -240,36 +237,37 @@ export default {
     },
 
     async approveRequest () {
-      this.isRequestRejected = true
+      this.isPending = true
       try {
         const action = base.xdr.ReviewRequestOpAction.approve().value
-        await this._reviewWithdraw({ action }, this.selectedRequest)
+        await this.reviewWithdraw({ action }, this.selectedRequest)
         await this.rewriteWithdrawalRequest()
 
         Bus.success('incoming-withdrawal-requests.request-approved-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.isRequestRejected = false
+      this.isPending = false
     },
 
     async rejectRequest (rejectReason) {
-      this.isRequestRejected = true
+      this.isPending = true
       try {
         const action = base.xdr.ReviewRequestOpAction.permanentReject().value
-        /* eslint-disable-next-line max-len */
-        await this._reviewWithdraw({ action, reason: rejectReason }, this.selectedRequest)
-        /* eslint-enable-next-line max-len */
+        await this.reviewWithdraw(
+          { action, reason: rejectReason },
+          this.selectedRequest
+        )
         await this.rewriteWithdrawalRequest()
 
         Bus.success('incoming-withdrawal-requests.request-rejected-msg')
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.isRequestRejected = false
+      this.isPending = false
     },
 
-    async _reviewWithdraw ({ action, reason = '' }, ...requests) {
+    async reviewWithdraw ({ action, reason = '' }, ...requests) {
       const operations = requests.map(function (item) {
         const opts = {
           requestID: item.id,
@@ -278,14 +276,14 @@ export default {
           reviewDetails: {
             tasksToAdd: 0,
             tasksToRemove: item.pendingTasks,
-            externalDetails: '{}',
+            externalDetails: {},
           },
           action,
           reason,
         }
         return base.ReviewRequestBuilder.reviewWithdrawRequest({
           ...opts,
-          requestDetails: JSON.stringify(opts),
+          requestDetails: opts.reviewDetails,
         })
       })
       await Api.api.postOperations(...operations)
@@ -293,7 +291,6 @@ export default {
     async rewriteWithdrawalRequest () {
       /* eslint-disable-next-line max-len */
       const endpoint = `/${HORIZON_VERSION_PREFIX}/requests/${this.selectedRequest.id}`
-      /* eslint-enable-next-line max-len */
       const { data } = await Api.api.getWithSignature(endpoint, {
         filter: {
           reviewer: this.accountId,
@@ -309,9 +306,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "~@scss/variables";
-  @import "~@scss/mixins";
 
   .incoming-withdrawal-requests__asset-list {
     width: fit-content;
@@ -319,7 +315,6 @@ export default {
 
   .incoming-withdrawal-requests__table {
     margin-top: 2.1rem;
-    @include box-shadow();
 
     tr td:last-child {
       width: 3rem;
@@ -327,13 +322,13 @@ export default {
     }
   }
 
-  .request-details-btn {
+  .incoming-withdrawal-requests__request-details-btn {
     font-size: 1.2rem;
     color: $col-primary-lighten;
     cursor: pointer;
   }
 
-  .request-state {
+  .incoming-withdrawal-requests__request-state {
     padding-left: 3rem;
     position: relative;
 

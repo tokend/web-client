@@ -2,33 +2,45 @@
   <div
     class="withdrawal-request-details"
   >
+    <!-- eslint-disable max-len -->
+
     <div
       v-if="request.isApproved"
-      class="request-state request-state--approved"
+      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--approved"
     >
-      <p class="request-state__content">
+      <p class="incoming-withdrawal-requests__request-state__content">
         {{ 'withdrawal-request-details.approved-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPending"
-      class="request-state request-state--pending"
+      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--pending"
     >
-      <p class="request-state__content">
+      <p class="incoming-withdrawal-requests__request-state__content">
         {{ 'withdrawal-request-details.pending-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPermanentlyRejected"
-      class="request-state request-state--permanently-rejected"
+      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--permanently-rejected"
     >
-      <p class="request-state__content">
+      <p class="incoming-withdrawal-requests__request-state__content">
         <!-- eslint-disable-next-line max-len -->
         {{ 'withdrawal-request-details.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
+
+    <div
+      v-else-if="request.isRejected"
+      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--rejected"
+    >
+      <p class="incoming-withdrawal-requests__request-state__content">
+        {{ 'withdrawal-request-details.rejected-msg' | globalize({ reason: request.rejectReason }) }}
+      </p>
+    </div>
+    <!-- eslint-enable max-len -->
 
     <div class="app__table withdrawal-request-details__table">
       <table>
@@ -169,10 +181,6 @@
 </template>
 
 <script>
-import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
-
-import { REQUEST_STATES } from '@/js/const/request-states.const'
-
 import config from '@/config'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
@@ -213,10 +221,7 @@ export default {
     formNoteMaxLength: 250,
     isShowReasonField: false,
     config,
-    ASSET_POLICIES,
     EVENTS,
-    REQUEST_STATES,
-    REQUEST_TYPES,
   }),
   computed: {
     canBeApproved () {
@@ -234,17 +239,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "~@scss/variables";
   @import "~@scss/mixins";
 
-  .request-state {
+  .incoming-withdrawal-requests__request-state {
     min-height: 6.4rem;
     width: 100%;
     margin-top: 2rem;
     display: none;
 
-    .request-state__content {
+    .incoming-withdrawal-requests__request-state__content {
       padding: 2.4rem;
       font-size: 1.3rem;
       font-weight: normal;
@@ -258,7 +263,7 @@ export default {
 
     &--approved { @include apply-theme($col-request-approved) }
     &--pending { @include apply-theme($col-request-pending) }
-    &--rejected, &--canceled, &--permanently-rejected {
+    &--rejected, &--permanently-rejected {
       @include apply-theme($col-request-rejected)
     }
   }

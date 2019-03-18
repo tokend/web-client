@@ -1,10 +1,10 @@
 import _get from 'lodash/get'
-import { REQUEST_STATES } from '../../const/request-states.const'
+import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 export class WithdrawalDetailsRequestRecord {
   constructor (record = {}) {
     this.id = record.id || '0'
-    this.requestor = record.requestor.id
+    this.requestor = _get(record, 'requestor.id')
     this.rejectReason = record.rejectReason
     this.hash = record.hash
     this.createdAt = record.createdAt
@@ -28,5 +28,8 @@ export class WithdrawalDetailsRequestRecord {
   }
   get isPermanentlyRejected () {
     return this.stateI === REQUEST_STATES.permanentlyRejected
+  }
+  get isRejected () {
+    return this.stateI === REQUEST_STATES.rejected
   }
 }

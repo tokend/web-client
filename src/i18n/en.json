@@ -778,7 +778,12 @@
       "request-id": "Request id",
       "approved-msg": "This request was approved",
       "pending-msg": "This request is pending. Please approve or reject it",
-      "permanently-rejected-msg": "This request was rejected permanently with reason: {{reason}}"
+      "rejected-msg": "This request was rejected with reason: {{reason}}",
+      "permanently-rejected-msg": "This request was rejected permanently with reason: {{reason}}",
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "permanently-rejected-state": "Permanently rejected"
     },
 
     "file-field": {
