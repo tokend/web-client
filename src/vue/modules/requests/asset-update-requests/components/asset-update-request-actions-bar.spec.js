@@ -1,14 +1,14 @@
-import AssetCreationRequestActionsBar from './asset-creation-request-actions-bar'
+import AssetUpdateRequestActionsBar from './asset-update-request-actions-bar'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { AssetCreationRequest } from '../wrappers/asset-creation-request'
+import { AssetUpdateRequest } from '../wrappers/asset-update-request'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import Vuex from 'vuex'
 
-import { assetCreationRequestsModule } from '../store/index'
+import { assetUpdateRequestsModule } from '../store/index'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -16,20 +16,20 @@ import { Bus } from '@/js/helpers/event-bus'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Asset creation request actions bar', () => {
+describe('Asset update request actions bar', () => {
   const requestId = '1'
   const props = {
-    request: new AssetCreationRequest({ id: requestId }),
+    request: new AssetUpdateRequest({ id: requestId }),
   }
 
   let wrapper
 
   beforeEach(() => {
     const store = new Vuex.Store({
-      modules: { 'asset-creation-requests': assetCreationRequestsModule },
+      modules: { 'asset-update-requests': assetUpdateRequestsModule },
     })
 
-    wrapper = shallowMount(AssetCreationRequestActionsBar, {
+    wrapper = shallowMount(AssetUpdateRequestActionsBar, {
       localVue,
       store,
       mixins: [FormMixin],
@@ -41,7 +41,7 @@ describe('Asset creation request actions bar', () => {
     describe('canBeUpdated', () => {
       it('returns true for rejected request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.rejected,
           }),
         })
@@ -51,7 +51,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns true for pending request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.pending,
           }),
         })
@@ -61,7 +61,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for canceled request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.canceled,
           }),
         })
@@ -71,7 +71,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for permanently rejected request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.permanentlyRejected,
           }),
         })
@@ -81,7 +81,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for approved request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.approved,
           }),
         })
@@ -93,7 +93,7 @@ describe('Asset creation request actions bar', () => {
     describe('canBeCanceled', () => {
       it('returns true for pending request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.pending,
           }),
         })
@@ -103,7 +103,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for rejected request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.rejected,
           }),
         })
@@ -113,7 +113,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for canceled request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.canceled,
           }),
         })
@@ -123,7 +123,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for permanently rejected request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.permanentlyRejected,
           }),
         })
@@ -133,7 +133,7 @@ describe('Asset creation request actions bar', () => {
 
       it('returns false for approved request', () => {
         wrapper.setProps({
-          request: new AssetCreationRequest({
+          request: new AssetUpdateRequest({
             stateI: REQUEST_STATES.approved,
           }),
         })
@@ -149,14 +149,14 @@ describe('Asset creation request actions bar', () => {
         sinon.stub(wrapper.vm, 'hideConfirmation')
         sinon.stub(Bus, 'success')
         sinon.stub(ErrorHandler, 'process')
-        sinon.stub(wrapper.vm, 'cancelAssetCreationRequest').resolves()
+        sinon.stub(wrapper.vm, 'cancelAssetUpdateRequest').resolves()
       })
 
       afterEach(() => {
         wrapper.vm.hideConfirmation.restore()
         Bus.success.restore()
         ErrorHandler.process.restore()
-        wrapper.vm.cancelAssetCreationRequest.restore()
+        wrapper.vm.cancelAssetUpdateRequest.restore()
       })
 
       it('calls hideConfirmation method', async () => {
@@ -171,10 +171,10 @@ describe('Asset creation request actions bar', () => {
         expect(wrapper.vm.isRequestCanceling).to.be.true
       })
 
-      it('calls cancelAssetCreationRequest method with correct request ID', async () => {
+      it('calls cancelAssetUpdateRequest method with correct request ID', async () => {
         await wrapper.vm.cancelRequest()
 
-        expect(wrapper.vm.cancelAssetCreationRequest)
+        expect(wrapper.vm.cancelAssetUpdateRequest)
           .to.have.been.calledOnceWithExactly(requestId)
       })
 
@@ -193,8 +193,8 @@ describe('Asset creation request actions bar', () => {
       })
 
       it('calls ErrorHandler.process if an error was thrown', async () => {
-        wrapper.vm.cancelAssetCreationRequest.restore()
-        sinon.stub(wrapper.vm, 'cancelAssetCreationRequest').rejects()
+        wrapper.vm.cancelAssetUpdateRequest.restore()
+        sinon.stub(wrapper.vm, 'cancelAssetUpdateRequest').rejects()
 
         await wrapper.vm.cancelRequest()
 
@@ -202,8 +202,8 @@ describe('Asset creation request actions bar', () => {
       })
 
       it('sets isRequestCanceling to false if an error was thrown', async () => {
-        wrapper.vm.cancelAssetCreationRequest.restore()
-        sinon.stub(wrapper.vm, 'cancelAssetCreationRequest').rejects()
+        wrapper.vm.cancelAssetUpdateRequest.restore()
+        sinon.stub(wrapper.vm, 'cancelAssetUpdateRequest').rejects()
 
         await wrapper.vm.cancelRequest()
 

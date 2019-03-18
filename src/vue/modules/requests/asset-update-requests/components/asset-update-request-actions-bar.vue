@@ -4,7 +4,7 @@
       v-ripple
       v-if="!formMixin.isConfirmationShown"
       class="asset-update-request-actions-bar__update-btn app__button-raised"
-      :disabled="isRequestCancelling || !canBeUpdated"
+      :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateAsk)"
     >
       {{ 'asset-update-requests.update-btn' | globalize }}
@@ -14,7 +14,7 @@
       v-ripple
       v-if="!formMixin.isConfirmationShown"
       class="asset-update-request-actions-bar__cancel-btn app__button-flat"
-      :disabled="isRequestCancelling || !canBeCanceled"
+      :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
       {{ 'asset-update-requests.cancel-btn' | globalize }}
@@ -56,7 +56,7 @@ export default {
   },
 
   data: _ => ({
-    isRequestCancelling: false,
+    isRequestCanceling: false,
     EVENTS,
   }),
 
@@ -77,14 +77,14 @@ export default {
 
     async cancelRequest () {
       this.hideConfirmation()
-      this.isRequestCancelling = true
+      this.isRequestCanceling = true
 
       try {
         await this.cancelAssetUpdateRequest(this.request.id)
         Bus.success('asset-update-requests.request-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
-        this.isRequestCancelling = false
+        this.isRequestCanceling = false
         ErrorHandler.process(e)
       }
     },
