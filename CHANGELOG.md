@@ -32,6 +32,7 @@ for further information about branching and tagging conventions.
 - Asset update requests page & module
 - Sale creation requests module
 - Pre-issuance requests module
+- LOAD_KV_ENTRIES action to key-values vuex module
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -40,6 +41,8 @@ for further information about branching and tagging conventions.
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Now using overall policy instead of policies array in asset forms
 - Now using object type for checking request prop in asset & sale forms
+- Now loading all the key-values entries instead of loading only account role ones
+- Now using `request.id` check instead of `isUpdateMode` in create sale form
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -47,6 +50,14 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+
+### Removed
+- `AssetRequestDetails` component
+- `SaleRequestDetails` component
+- `PreIssuanceCreateRequestRecord` wrapper
+- `SaleRequestRecord` wrapper
+- Update sale details JSON mock
+- Sale create request JSON mock
 
 ## [1.3.0] - 2019-03-01
 
