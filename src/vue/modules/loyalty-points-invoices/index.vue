@@ -36,7 +36,7 @@
     </div>
     <drawer :is-shown.sync="isInvoiceRequestFormShown">
       <template slot="heading">
-        {{ 'loyalty-points-module.create-invoice-form-title' | globalize }}
+        {{ 'loyalty-points.create-invoice-form-title' | globalize }}
       </template>
       <create-invoice-form-module
         :config="config"
