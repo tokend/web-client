@@ -17,7 +17,7 @@
       v-ripple
       v-if="!formMixin.isConfirmationShown"
       class="sale-creation-request-actions-bar__update-btn app__button-raised"
-      :disabled="isRequestCancelling || !canBeUpdated"
+      :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateAsk)"
     >
       {{ 'sale-creation-requests.update-btn' | globalize }}
@@ -27,7 +27,7 @@
       v-ripple
       v-if="!formMixin.isConfirmationShown"
       class="sale-creation-request-actions-bar__cancel-btn app__button-flat"
-      :disabled="isRequestCancelling || !canBeCanceled"
+      :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
       {{ 'sale-creation-requests.cancel-btn' | globalize }}
@@ -69,7 +69,7 @@ export default {
   },
 
   data: _ => ({
-    isRequestCancelling: false,
+    isRequestCanceling: false,
     EVENTS,
   }),
 
@@ -90,14 +90,14 @@ export default {
 
     async cancelRequest () {
       this.hideConfirmation()
-      this.isRequestCancelling = true
+      this.isRequestCanceling = true
 
       try {
         await this.cancelSaleCreationRequest(this.request.id)
         Bus.success('sale-creation-requests.request-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
-        this.isRequestCancelling = false
+        this.isRequestCanceling = false
         ErrorHandler.process(e)
       }
     },

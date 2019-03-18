@@ -6,7 +6,6 @@ export class SaleCreationRequest extends Request {
   constructor (record) {
     super(record)
 
-    this.id = safeGet(record, 'requestDetails.id')
     this.name = safeGet(record, 'requestDetails.creatorDetails.name')
 
     this.baseAsset = safeGet(record, 'requestDetails.baseAsset.id')
@@ -21,8 +20,8 @@ export class SaleCreationRequest extends Request {
     this.startTime = safeGet(record, 'requestDetails.startTime')
     this.endTime = safeGet(record, 'requestDetails.endTime')
 
-    this.softCap = safeGet(record, 'requestDetails.softCap')
-    this.hardCap = safeGet(record, 'requestDetails.hardCap')
+    this.softCap = safeGet(record, 'requestDetails.defaultQuoteAsset.softCap')
+    this.hardCap = safeGet(record, 'requestDetails.defaultQuoteAsset.hardCap')
 
     this.description = safeGet(
       record, 'requestDetails.creatorDetails.description'
