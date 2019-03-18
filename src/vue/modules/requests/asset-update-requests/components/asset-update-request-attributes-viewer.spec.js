@@ -9,16 +9,12 @@ import * as Config from '../_config'
 const localVue = createLocalVue()
 
 describe('Asset update request attributes viewer', () => {
-  const props = {
-    request: new AssetUpdateRequest({}),
-  }
-
   let wrapper
 
   beforeEach(() => {
     wrapper = shallowMount(AssetUpdateRequestAttributesViewer, {
       localVue,
-      propsData: props,
+      propsData: { request: new AssetUpdateRequest({}) },
     })
   })
 

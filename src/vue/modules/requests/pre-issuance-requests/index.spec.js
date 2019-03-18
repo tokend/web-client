@@ -116,13 +116,12 @@ describe('Pre issuance requests module', () => {
         })
 
         it('returns the response of loadPreIssuanceRequests method', async () => {
-          const response = { data: {} }
           sinon.stub(wrapper.vm, 'loadPreIssuanceRequests')
-            .resolves(response)
+            .resolves({ data: {} })
 
           const result = await wrapper.vm.loadRequests()
 
-          expect(result).to.equal(response)
+          expect(result).to.deep.equal({ data: {} })
 
           wrapper.vm.loadPreIssuanceRequests.restore()
         })

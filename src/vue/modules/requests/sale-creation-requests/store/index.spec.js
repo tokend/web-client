@@ -9,39 +9,16 @@ import { Asset } from '../wrappers/asset'
 import * as Api from '../_api'
 
 describe('sale-creation-requests.module', () => {
-  const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-  const requests = [
-    {
-      id: '1',
-      stateI: 1,
-    },
-    {
-      id: '2',
-      stateI: 3,
-    },
-  ]
-  const assets = [
-    {
-      id: 'USD',
-      owner: {
-        id: accountId,
-      },
-    },
-    {
-      id: 'BTC',
-    },
-  ]
-
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
         accountId: '',
       }
 
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
+      mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
 
       expect(state).to.deep.equal({
-        accountId,
+        accountId: 'SOME_ACCOUNT_ID',
       })
     })
 
@@ -50,22 +27,39 @@ describe('sale-creation-requests.module', () => {
         saleCreationRequests: [],
       }
 
-      mutations[types.SET_SALE_CREATION_REQUESTS](state, requests)
+      mutations[types.SET_SALE_CREATION_REQUESTS](state, [
+        { id: '1' },
+        { id: '2' },
+      ])
 
       expect(state).to.deep.equal({
-        saleCreationRequests: requests,
+        saleCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+        ],
       })
     })
 
     it('CONCAT_SALE_CREATION_REQUESTS should properly modify state', () => {
       const state = {
-        saleCreationRequests: requests,
+        saleCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+        ],
       }
 
-      mutations[types.CONCAT_SALE_CREATION_REQUESTS](state, requests)
+      mutations[types.CONCAT_SALE_CREATION_REQUESTS](state, [
+        { id: '3' },
+        { id: '4' },
+      ])
 
       expect(state).to.deep.equal({
-        saleCreationRequests: requests.concat(requests),
+        saleCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+          { id: '3' },
+          { id: '4' },
+        ],
       })
     })
 
@@ -74,10 +68,16 @@ describe('sale-creation-requests.module', () => {
         balancesAssets: [],
       }
 
-      mutations[types.SET_BALANCES_ASSETS](state, assets)
+      mutations[types.SET_BALANCES_ASSETS](state, [
+        { id: 'USD' },
+        { id: 'BTC' },
+      ])
 
       expect(state).to.deep.equal({
-        balancesAssets: assets,
+        balancesAssets: [
+          { id: 'USD' },
+          { id: 'BTC' },
+        ],
       })
     })
   })
@@ -126,25 +126,15 @@ describe('sale-creation-requests.module', () => {
     })
 
     describe('LOAD_ACCOUNT_BALANCES', () => {
-      const balancesResponse = {
-        data: {
-          balances: [
-            {
-              asset: {
-                id: 'USD',
-              },
-            },
-            {
-              asset: {
-                id: 'BTC',
-              },
-            },
-          ],
-        },
-      }
-
       beforeEach(() => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves(balancesResponse)
+        sinon.stub(Api.api(), 'getWithSignature').resolves({
+          data: {
+            balances: [
+              { asset: { id: 'USD' } },
+              { asset: { id: 'BTC' } },
+            ],
+          },
+        })
       })
 
       afterEach(() => {
@@ -153,13 +143,13 @@ describe('sale-creation-requests.module', () => {
 
       it('calls Api.getWithSignature method with provided params', async () => {
         await actions[types.LOAD_ACCOUNT_BALANCES]({
-          getters: { accountId },
+          getters: { accountId: 'SOME_ACCOUNT_ID' },
           commit: () => {},
         })
 
         expect(Api.api().getWithSignature)
           .to.have.been.calledOnceWithExactly(
-            `/v3/accounts/${accountId}`,
+            `/v3/accounts/SOME_ACCOUNT_ID`,
             { include: ['balances.state', 'balances.asset'] },
           )
       })
@@ -167,7 +157,7 @@ describe('sale-creation-requests.module', () => {
       it('commits proper set of mutations', async () => {
         const store = {
           state: {},
-          getters: { accountId },
+          getters: { accountId: 'SOME_ACCOUNT_ID' },
           commit: sinon.stub(),
           dispatch: sinon.stub(),
         }
@@ -188,72 +178,83 @@ describe('sale-creation-requests.module', () => {
     })
 
     describe('CANCEL_SALE_CREATION_REQUEST', () => {
-      const operation = {
-        id: '1',
-      }
-
       beforeEach(() => {
-        sinon.stub(base.SaleRequestBuilder, 'cancelSaleCreationRequest')
-          .returns(operation)
         sinon.stub(Api.api(), 'postOperations').resolves()
       })
 
       afterEach(() => {
-        base.SaleRequestBuilder.cancelSaleCreationRequest.restore()
         Api.api().postOperations.restore()
       })
 
       it('calls base.SaleRequestBuilder.cancelSaleCreationRequest with provided params', async () => {
-        const requestId = '1'
+        sinon.stub(base.SaleRequestBuilder, 'cancelSaleCreationRequest')
 
-        await actions[types.CANCEL_SALE_CREATION_REQUEST]({}, requestId)
+        await actions[types.CANCEL_SALE_CREATION_REQUEST]({}, '1')
 
         expect(base.SaleRequestBuilder.cancelSaleCreationRequest)
           .to.have.been.calledOnceWithExactly({
-            requestID: requestId,
+            requestID: '1',
           })
+
+        base.SaleRequestBuilder.cancelSaleCreationRequest.restore()
       })
 
       it('calls api().postOperations with correct params', async () => {
-        await actions[types.CANCEL_SALE_CREATION_REQUEST]({}, '')
+        await actions[types.CANCEL_SALE_CREATION_REQUEST]({}, '1')
 
-        expect(Api.api().postOperations)
-          .to.have.been.calledOnceWithExactly(operation)
+        expect(Api.api().postOperations).to.have.been.calledOnce
       })
     })
   })
 
   describe('getters', () => {
     it('accountId', () => {
-      const state = { accountId }
+      const state = { accountId: 'SOME_ACCOUNT_ID' }
 
       expect(getters[types.accountId](state))
-        .to.equal(accountId)
+        .to.equal('SOME_ACCOUNT_ID')
     })
 
     it('saleCreationRequests', () => {
-      const state = { saleCreationRequests: requests }
+      const state = {
+        saleCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+        ],
+      }
 
       expect(getters[types.saleCreationRequests](state))
-        .to.deep.equal(requests.map(r => new SaleCreationRequest(r)))
+        .to.deep.equal([
+          new SaleCreationRequest({ id: '1' }),
+          new SaleCreationRequest({ id: '2' }),
+        ])
     })
 
     it('accountOwnedAssets', () => {
       const state = {
-        balancesAssets: assets,
-        accountId,
-      }
-      const expectedAssets = [
-        new Asset({
-          id: 'USD',
-          owner: {
-            id: accountId,
+        accountId: 'SOME_ACCOUNT_ID',
+        balancesAssets: [
+          {
+            id: 'USD',
+            owner: {
+              id: 'SOME_ACCOUNT_ID',
+            },
           },
-        }),
-      ]
+          {
+            id: 'BTC',
+          },
+        ],
+      }
 
       expect(getters[types.accountOwnedAssets](state))
-        .to.deep.equal(expectedAssets)
+        .to.deep.equal([
+          new Asset({
+            id: 'USD',
+            owner: {
+              id: 'SOME_ACCOUNT_ID',
+            },
+          }),
+        ])
     })
   })
 })

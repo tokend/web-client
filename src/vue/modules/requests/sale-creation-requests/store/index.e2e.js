@@ -12,7 +12,6 @@ import { Asset } from '../wrappers/asset'
 Vue.use(Vuex)
 
 describe('sale creation requests module end-to-end test', () => {
-  const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
   const config = {
     horizonURL: 'https://test.api.com',
   }
@@ -22,19 +21,6 @@ describe('sale creation requests module end-to-end test', () => {
     'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
     '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
   )
-  const balances = [
-    {
-      asset: {
-        id: 'USD',
-        owner: { id: accountId },
-      },
-    },
-    {
-      asset: {
-        id: 'BTC',
-      },
-    },
-  ]
 
   let store
 
@@ -42,9 +28,26 @@ describe('sale creation requests module end-to-end test', () => {
     store = new Vuex.Store(saleCreationRequestsModule)
 
     Api.initApi(wallet, config)
-    sinon.stub(Api.api(), 'getWithSignature').resolves({ data: { balances } })
+    sinon.stub(Api.api(), 'getWithSignature').resolves({
+      data: {
+        balances: [
+          {
+            asset: {
+              id: 'USD',
+              owner: { id: 'SOME_ACCOUNT_ID' },
+            },
+          },
+          {
+            asset:
+            {
+              id: 'BTC',
+            },
+          },
+        ],
+      },
+    })
 
-    store.commit(types.SET_ACCOUNT_ID, accountId)
+    store.commit(types.SET_ACCOUNT_ID, 'SOME_ACCOUNT_ID')
     await store.dispatch(types.LOAD_ACCOUNT_BALANCES)
   })
 
@@ -53,14 +56,12 @@ describe('sale creation requests module end-to-end test', () => {
   })
 
   it('accountOwnedAssets', () => {
-    const expectedAssets = [
-      new Asset({
-        id: 'USD',
-        owner: { id: accountId },
-      }),
-    ]
-
     expect(store.getters[types.accountOwnedAssets])
-      .to.deep.equal(expectedAssets)
+      .to.deep.equal([
+        new Asset({
+          id: 'USD',
+          owner: { id: 'SOME_ACCOUNT_ID' },
+        }),
+      ])
   })
 })

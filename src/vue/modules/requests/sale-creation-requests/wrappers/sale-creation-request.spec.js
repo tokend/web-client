@@ -20,7 +20,7 @@ describe('Sale creation request', () => {
             shortDescription: 'Some info',
             youtubeVideoId: 'YOUTUBE_VIDEO_ID',
             logo: {
-              key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+              key: 'SALE_LOGO_KEY',
             },
           },
         },
@@ -44,9 +44,9 @@ describe('Sale creation request', () => {
       expect(result.shortDescription).to.equal('Some info')
 
       expect(result.logo).to.deep.equal({
-        key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+        key: 'SALE_LOGO_KEY',
       })
-      expect(result.logoKey).to.equal('dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55')
+      expect(result.logoKey).to.equal('SALE_LOGO_KEY')
 
       expect(result.youtubeVideoId).to.equal('YOUTUBE_VIDEO_ID')
     })
@@ -59,14 +59,14 @@ describe('Sale creation request', () => {
           requestDetails: {
             creatorDetails: {
               logo: {
-                key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+                key: 'SALE_LOGO_KEY',
               },
             },
           },
         })
 
         expect(request.logoUrl('https://storage.com'))
-          .to.equal('https://storage.com/dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55')
+          .to.equal('https://storage.com/SALE_LOGO_KEY')
       })
 
       it('returns empty string if logo key is absent', () => {

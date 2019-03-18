@@ -14,9 +14,6 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Sale creation requests renderer', () => {
-  const props = {
-    baseAsset: new Asset({ id: 'USD' }),
-  }
   let store
 
   beforeEach(() => {
@@ -47,7 +44,6 @@ describe('Sale creation requests renderer', () => {
     beforeEach(() => {
       wrapper = shallowMount(SaleCreationRequestsRenderer, {
         store,
-        propsData: props,
         localVue,
       })
     })
@@ -57,8 +53,7 @@ describe('Sale creation requests renderer', () => {
         it('should call initFirstPageLoader method if the value has been changed', async () => {
           sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
 
-          wrapper.setProps({ baseAsset: 'USD' })
-
+          wrapper.setProps({ baseAsset: new Asset({ id: 'USD' }) })
           await wrapper.vm.$nextTick()
 
           expect(wrapper.vm.initFirstPageLoader).to.have.been.calledOnce
@@ -70,6 +65,12 @@ describe('Sale creation requests renderer', () => {
 
     describe('method', () => {
       describe('loadRequests', () => {
+        beforeEach(() => {
+          wrapper.setProps({
+            baseAsset: new Asset({ id: 'USD' }),
+          })
+        })
+
         it('calls loadSaleCreationRequests method with correct params', async () => {
           sinon.stub(wrapper.vm, 'loadSaleCreationRequests').resolves()
 
@@ -92,13 +93,12 @@ describe('Sale creation requests renderer', () => {
         })
 
         it('returns the response of loadSaleCreationRequests method', async () => {
-          const response = { data: {} }
           sinon.stub(wrapper.vm, 'loadSaleCreationRequests')
-            .resolves(response)
+            .resolves({ data: {} })
 
           const result = await wrapper.vm.loadRequests()
 
-          expect(result).to.deep.equal(response)
+          expect(result).to.deep.equal({ data: {} })
 
           wrapper.vm.loadSaleCreationRequests.restore()
         })
@@ -155,16 +155,13 @@ describe('Sale creation requests renderer', () => {
         })
 
         it('sets selectedRequest property to passed param', () => {
-          const request = {
-            id: '1',
-          }
           wrapper.setData({
             selectedRequest: {},
           })
 
-          wrapper.vm.showRequestDetails(request)
+          wrapper.vm.showRequestDetails({ id: '1' })
 
-          expect(wrapper.vm.selectedRequest).to.deep.equal(request)
+          expect(wrapper.vm.selectedRequest).to.deep.equal({ id: '1' })
         })
 
         it('sets isDrawerShown property to true', () => {

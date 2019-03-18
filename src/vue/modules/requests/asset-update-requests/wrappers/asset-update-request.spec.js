@@ -14,10 +14,10 @@ describe('Asset update request', () => {
           creatorDetails: {
             name: 'Dollar',
             terms: {
-              key: 'dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz',
+              key: 'ASSET_TERMS_KEY',
             },
             logo: {
-              key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+              key: 'ASSET_LOGO_KEY',
             },
           },
         },
@@ -32,14 +32,14 @@ describe('Asset update request', () => {
       expect(result.policy).to.equal(3)
 
       expect(result.terms).to.deep.equal({
-        key: 'dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz',
+        key: 'ASSET_TERMS_KEY',
       })
-      expect(result.termsKey).to.equal('dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz')
+      expect(result.termsKey).to.equal('ASSET_TERMS_KEY')
 
       expect(result.logo).to.deep.equal({
-        key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+        key: 'ASSET_LOGO_KEY',
       })
-      expect(result.logoKey).to.equal('dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55')
+      expect(result.logoKey).to.equal('ASSET_LOGO_KEY')
     })
   })
 
@@ -51,12 +51,12 @@ describe('Asset update request', () => {
           requestDetails: {
             creatorDetails: {
               logo: {
-                key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+                key: 'ASSET_LOGO_KEY',
               },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55'
+        const expectedUrl = 'https://storage.com/ASSET_LOGO_KEY'
 
         expect(request.logoUrl(storageUrl)).to.equal(expectedUrl)
       })
@@ -76,12 +76,12 @@ describe('Asset update request', () => {
           requestDetails: {
             creatorDetails: {
               terms: {
-                key: 'dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz',
+                key: 'ASSET_TERMS_KEY',
               },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz'
+        const expectedUrl = 'https://storage.com/ASSET_TERMS_KEY'
 
         expect(request.termsUrl(storageUrl)).to.equal(expectedUrl)
       })

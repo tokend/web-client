@@ -95,8 +95,8 @@ describe('Sale creation requests module', () => {
       ).to.have.been.calledOnce
     })
 
-    it('calls initAssetSelector method', () => {
-      shallowMount(SaleCreationRequestsModule, {
+    it('calls initAssetSelector method', async () => {
+      await shallowMount(SaleCreationRequestsModule, {
         localVue,
         store,
         propsData: props,
@@ -147,13 +147,12 @@ describe('Sale creation requests module', () => {
         })
 
         it('returns the response of loadAccountBalances method', async () => {
-          const response = { data: {} }
           sinon.stub(wrapper.vm, 'loadAccountBalances')
-            .resolves(response)
+            .resolves({ data: {} })
 
           const result = await wrapper.vm.loadBalances()
 
-          expect(result).to.equal(response)
+          expect(result).to.deep.equal({ data: {} })
 
           wrapper.vm.loadAccountBalances.restore()
         })

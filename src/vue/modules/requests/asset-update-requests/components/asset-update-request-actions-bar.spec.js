@@ -17,11 +17,6 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Asset update request actions bar', () => {
-  const requestId = '1'
-  const props = {
-    request: new AssetUpdateRequest({ id: requestId }),
-  }
-
   let wrapper
 
   beforeEach(() => {
@@ -33,7 +28,7 @@ describe('Asset update request actions bar', () => {
       localVue,
       store,
       mixins: [FormMixin],
-      propsData: props,
+      propsData: { request: new AssetUpdateRequest({}) },
     })
   })
 
@@ -59,30 +54,10 @@ describe('Asset update request actions bar', () => {
         expect(wrapper.vm.canBeUpdated).to.be.true
       })
 
-      it('returns false for canceled request', () => {
+      it('returns false for non-rejected and non-pending request', () => {
         wrapper.setProps({
           request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.canceled,
-          }),
-        })
-
-        expect(wrapper.vm.canBeUpdated).to.be.false
-      })
-
-      it('returns false for permanently rejected request', () => {
-        wrapper.setProps({
-          request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.permanentlyRejected,
-          }),
-        })
-
-        expect(wrapper.vm.canBeUpdated).to.be.false
-      })
-
-      it('returns false for approved request', () => {
-        wrapper.setProps({
-          request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.approved,
+            stateI: 0,
           }),
         })
 
@@ -101,40 +76,10 @@ describe('Asset update request actions bar', () => {
         expect(wrapper.vm.canBeCanceled).to.be.true
       })
 
-      it('returns false for rejected request', () => {
+      it('returns false for non-pending request', () => {
         wrapper.setProps({
           request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.rejected,
-          }),
-        })
-
-        expect(wrapper.vm.canBeCanceled).to.be.false
-      })
-
-      it('returns false for canceled request', () => {
-        wrapper.setProps({
-          request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.canceled,
-          }),
-        })
-
-        expect(wrapper.vm.canBeCanceled).to.be.false
-      })
-
-      it('returns false for permanently rejected request', () => {
-        wrapper.setProps({
-          request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.permanentlyRejected,
-          }),
-        })
-
-        expect(wrapper.vm.canBeCanceled).to.be.false
-      })
-
-      it('returns false for approved request', () => {
-        wrapper.setProps({
-          request: new AssetUpdateRequest({
-            stateI: REQUEST_STATES.approved,
+            stateI: 0,
           }),
         })
 
@@ -172,10 +117,13 @@ describe('Asset update request actions bar', () => {
       })
 
       it('calls cancelAssetUpdateRequest method with correct request ID', async () => {
+        wrapper.setProps({
+          request: new AssetUpdateRequest({ id: '1' }),
+        })
         await wrapper.vm.cancelRequest()
 
         expect(wrapper.vm.cancelAssetUpdateRequest)
-          .to.have.been.calledOnceWithExactly(requestId)
+          .to.have.been.calledOnceWithExactly('1')
       })
 
       it('calls Bus.success if the request was canceled', async () => {

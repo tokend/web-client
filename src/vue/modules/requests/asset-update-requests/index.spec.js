@@ -135,13 +135,12 @@ describe('Asset update requests module', () => {
         })
 
         it('returns the response of loadAssetUpdateRequests method', async () => {
-          const response = { data: {} }
           sinon.stub(wrapper.vm, 'loadAssetUpdateRequests')
-            .resolves(response)
+            .resolves({ data: {} })
 
           const result = await wrapper.vm.loadRequests()
 
-          expect(result).to.equal(response)
+          expect(result).to.deep.equal({ data: {} })
 
           wrapper.vm.loadAssetUpdateRequests.restore()
         })
@@ -198,16 +197,13 @@ describe('Asset update requests module', () => {
         })
 
         it('sets selectedRequest property to passed param', () => {
-          const request = {
-            id: '1',
-          }
           wrapper.setData({
             selectedRequest: {},
           })
 
-          wrapper.vm.showRequestDetails(request)
+          wrapper.vm.showRequestDetails({ id: '1' })
 
-          expect(wrapper.vm.selectedRequest).to.deep.equal(request)
+          expect(wrapper.vm.selectedRequest).to.deep.equal({ id: '1' })
         })
 
         it('sets isDrawerShown property to true', () => {

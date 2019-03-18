@@ -8,28 +8,16 @@ import { AssetCreationRequest } from '../wrappers/asset-creation-request'
 import * as Api from '../_api'
 
 describe('asset-creation-requests.module', () => {
-  const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-  const requests = [
-    {
-      id: '1',
-      stateI: 1,
-    },
-    {
-      id: '2',
-      stateI: 3,
-    },
-  ]
-
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
         accountId: '',
       }
 
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
+      mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
 
       expect(state).to.deep.equal({
-        accountId,
+        accountId: 'SOME_ACCOUNT_ID',
       })
     })
 
@@ -37,23 +25,42 @@ describe('asset-creation-requests.module', () => {
       const state = {
         assetCreationRequests: [],
       }
+      const requests = [
+        { id: '1' },
+        { id: '2' },
+      ]
 
       mutations[types.SET_ASSET_CREATION_REQUESTS](state, requests)
 
       expect(state).to.deep.equal({
-        assetCreationRequests: requests,
+        assetCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+        ],
       })
     })
 
     it('CONCAT_ASSET_CREATION_REQUESTS should properly modify state', () => {
       const state = {
-        assetCreationRequests: requests,
+        assetCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+        ],
       }
+      const requests = [
+        { id: '3' },
+        { id: '4' },
+      ]
 
       mutations[types.CONCAT_ASSET_CREATION_REQUESTS](state, requests)
 
       expect(state).to.deep.equal({
-        assetCreationRequests: requests.concat(requests),
+        assetCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+          { id: '3' },
+          { id: '4' },
+        ],
       })
     })
   })
@@ -75,26 +82,24 @@ describe('asset-creation-requests.module', () => {
 
     describe('LOAD_ASSET_CREATION_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        const expectedParams = {
-          page: {
-            order: 'desc',
-          },
-          filter: {
-            requestor: accountId,
-          },
-          include: ['request_details'],
-        }
-
         sinon.stub(Api.api(), 'getWithSignature').resolves()
 
         await actions[types.LOAD_ASSET_CREATION_REQUESTS]({
-          getters: { accountId },
+          getters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
         expect(Api.api().getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_asset_requests',
-            expectedParams
+            {
+              page: {
+                order: 'desc',
+              },
+              filter: {
+                requestor: 'SOME_ACCOUNT_ID',
+              },
+              include: ['request_details'],
+            }
           )
 
         Api.api().getWithSignature.restore()
@@ -102,54 +107,56 @@ describe('asset-creation-requests.module', () => {
     })
 
     describe('CANCEL_ASSET_CREATION_REQUEST', () => {
-      const operation = {
-        id: '1',
-      }
-
       beforeEach(() => {
-        sinon.stub(base.ManageAssetBuilder, 'cancelAssetRequest')
-          .returns(operation)
         sinon.stub(Api.api(), 'postOperations').resolves()
       })
 
       afterEach(() => {
-        base.ManageAssetBuilder.cancelAssetRequest.restore()
         Api.api().postOperations.restore()
       })
 
       it('calls base.ManageAssetBuilder.cancelAssetRequest with provided params', async () => {
-        const requestId = '1'
+        sinon.stub(base.ManageAssetBuilder, 'cancelAssetRequest')
 
-        await actions[types.CANCEL_ASSET_CREATION_REQUEST]({}, requestId)
+        await actions[types.CANCEL_ASSET_CREATION_REQUEST]({}, '1')
 
         expect(base.ManageAssetBuilder.cancelAssetRequest)
           .to.have.been.calledOnceWithExactly({
-            requestID: requestId,
+            requestID: '1',
           })
+
+        base.ManageAssetBuilder.cancelAssetRequest.restore()
       })
 
       it('calls api().postOperations with correct params', async () => {
-        await actions[types.CANCEL_ASSET_CREATION_REQUEST]({}, '')
+        await actions[types.CANCEL_ASSET_CREATION_REQUEST]({}, '1')
 
-        expect(Api.api().postOperations)
-          .to.have.been.calledOnceWithExactly(operation)
+        expect(Api.api().postOperations).to.have.been.calledOnce
       })
     })
   })
 
   describe('getters', () => {
     it('accountId', () => {
-      const state = { accountId }
+      const state = { accountId: 'SOME_ACCOUNT_ID' }
 
       expect(getters[types.accountId](state))
-        .to.equal(accountId)
+        .to.equal('SOME_ACCOUNT_ID')
     })
 
     it('assetCreationRequests', () => {
-      const state = { assetCreationRequests: requests }
+      const state = {
+        assetCreationRequests: [
+          { id: '1' },
+          { id: '2' },
+        ],
+      }
 
       expect(getters[types.assetCreationRequests](state))
-        .to.deep.equal(requests.map(r => new AssetCreationRequest(r)))
+        .to.deep.equal([
+          new AssetCreationRequest({ id: '1' }),
+          new AssetCreationRequest({ id: '2' }),
+        ])
     })
   })
 })

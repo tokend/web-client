@@ -56,12 +56,12 @@ describe('Asset creation request', () => {
           requestDetails: {
             creatorDetails: {
               logo: {
-                key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
+                key: 'ASSET_LOGO_KEY',
               },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55'
+        const expectedUrl = 'https://storage.com/ASSET_LOGO_KEY'
 
         expect(request.logoUrl(storageUrl)).to.equal(expectedUrl)
       })
@@ -81,12 +81,12 @@ describe('Asset creation request', () => {
           requestDetails: {
             creatorDetails: {
               terms: {
-                key: 'dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz',
+                key: 'ASSET_TERMS_KEY',
               },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz'
+        const expectedUrl = 'https://storage.com/ASSET_TERMS_KEY'
 
         expect(request.termsUrl(storageUrl)).to.equal(expectedUrl)
       })
