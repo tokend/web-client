@@ -16,7 +16,7 @@
         </drawer>
 
         <!-- eslint-disable max-len -->
-        <div class="app__table app__table--with-shadow incoming-withdrawal-requests__table">
+        <div class="app__table incoming-withdrawal-requests__table">
           <table>
             <thead>
               <tr>
@@ -42,7 +42,7 @@
                   <email-getter :account-id="request.requestor" />
                 </td>
 
-                <td :title="request.asset && (request.amount | formatMoney)">
+                <td :title="request.amount | formatMoney">
                   {{ request.amount | formatMoney }}
                   {{ request.asset }}
                 </td>
@@ -283,7 +283,7 @@ export default {
         }
         return base.ReviewRequestBuilder.reviewWithdrawRequest({
           ...opts,
-          requestDetails: opts.reviewDetails,
+          requestDetails: JSON.stringify(opts.reviewDetails),
         })
       })
       await Api.api.postOperations(...operations)
@@ -320,41 +320,41 @@ export default {
       width: 3rem;
       text-align: right;
     }
+
+    .incoming-withdrawal-requests__request-state {
+      padding-left: 3rem;
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        width: 0.6rem;
+        height: 0.6rem;
+        top: 1.7rem;
+        transform: translateY(-50%);
+        left: 1.6rem;
+        border-radius: 100%;
+      }
+
+      &--approved:before {
+        background-color: $col-success;
+      }
+
+      &--pending:before {
+        background-color: $col-warning;
+      }
+
+      &--rejected:before,
+      &--permanently-rejected:before {
+        background-color: $col-error;
+      }
+    }
   }
 
   .incoming-withdrawal-requests__request-details-btn {
     font-size: 1.2rem;
     color: $col-primary-lighten;
     cursor: pointer;
-  }
-
-  .incoming-withdrawal-requests__request-state {
-    padding-left: 3rem;
-    position: relative;
-
-    &:before {
-      content: "";
-      position: absolute;
-      width: 0.6rem;
-      height: 0.6rem;
-      top: 1.7rem;
-      transform: translateY(-50%);
-      left: 1.6rem;
-      border-radius: 100%;
-    }
-
-    &--approved:before {
-      background-color: $col-success;
-    }
-
-    &--pending:before {
-      background-color: $col-warning;
-    }
-
-    &--rejected:before,
-    &--permanently-rejected:before {
-      background-color: $col-error;
-    }
   }
 
   .incoming-withdrawal-requests__loader {

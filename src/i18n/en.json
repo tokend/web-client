@@ -708,7 +708,11 @@
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
       "request-rejected-msg": "Your request was successfully rejected",
-      "request-approved-msg": "Your request was successfully approved"
+      "request-approved-msg": "Your request was successfully approved",
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "permanently-rejected-state": "Permanently rejected"
     },
 
     "asset-details": {

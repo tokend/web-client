@@ -6,27 +6,27 @@
 
     <div
       v-if="request.isApproved"
-      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--approved"
+      class="withdrawal-requests-details__request-state withdrawal-requests-details__request-state--approved"
     >
-      <p class="incoming-withdrawal-requests__request-state__content">
+      <p class="withdrawal-requests-details__request-state__content">
         {{ 'withdrawal-request-details.approved-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPending"
-      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--pending"
+      class="withdrawal-requests-details__request-state withdrawal-requests-details__request-state--pending"
     >
-      <p class="incoming-withdrawal-requests__request-state__content">
+      <p class="withdrawal-requests-details__request-state__content">
         {{ 'withdrawal-request-details.pending-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPermanentlyRejected"
-      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--permanently-rejected"
+      class="withdrawal-requests-details__request-state withdrawal-requests-details__request-state--permanently-rejected"
     >
-      <p class="incoming-withdrawal-requests__request-state__content">
+      <p class="withdrawal-requests-details__request-state__content">
         <!-- eslint-disable-next-line max-len -->
         {{ 'withdrawal-request-details.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
@@ -34,9 +34,9 @@
 
     <div
       v-else-if="request.isRejected"
-      class="incoming-withdrawal-requests__request-state incoming-withdrawal-requests__request-state--rejected"
+      class="withdrawal-requests-details__request-state withdrawal-requests-details__request-state--rejected"
     >
-      <p class="incoming-withdrawal-requests__request-state__content">
+      <p class="withdrawal-requests-details__request-state__content">
         {{ 'withdrawal-request-details.rejected-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
@@ -243,13 +243,13 @@ export default {
   @import "~@scss/variables";
   @import "~@scss/mixins";
 
-  .incoming-withdrawal-requests__request-state {
+  .withdrawal-requests-details__request-state {
     min-height: 6.4rem;
     width: 100%;
     margin-top: 2rem;
     display: none;
 
-    .incoming-withdrawal-requests__request-state__content {
+    .withdrawal-requests-details__request-state__content {
       padding: 2.4rem;
       font-size: 1.3rem;
       font-weight: normal;
