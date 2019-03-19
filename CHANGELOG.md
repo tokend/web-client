@@ -10,6 +10,11 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Show destination address holder email in the Withdrawal creation form
+- Loyalty points statistics module
+
+### Fixed
+- Chart line displaying
+- Loading balances instead of account on withdrawal form
 
 ## [1.0.0-rc.7] - 2019-02-27
 ### Added
@@ -22,7 +27,6 @@ for further information about branching and tagging conventions.
 - No data messages for `AssetsExplore` & `Balances` pages
 - "Use mine" button for pre-issued asset signer field on the `AssetCreateForm`
 - Message about no assets pairs exists in the system
-- Loyalty points statistics module
 
 ### Fixed
 - Fixed bug with displaying isRequiresKYC in AssetRequestDetails
@@ -37,7 +41,6 @@ for further information about branching and tagging conventions.
 - Trade chart displaying
 - Buttons position on Verify page
 - Drop down text overflow
-- Chart line displaying
 
 ### Added
 - Added assetType in to asset.record
