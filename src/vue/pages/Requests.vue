@@ -15,6 +15,12 @@
             {{ 'requests-page.pre-issuance-upload-title' | globalize }}
           </span>
         </router-link>
+
+        <router-link :to="vueRoutes.incomingWithdrawalRequests">
+          <span>
+            {{ 'requests-page.incoming-withdrawal-title' | globalize }}
+          </span>
+        </router-link>
       </template>
     </top-bar>
     <router-view />

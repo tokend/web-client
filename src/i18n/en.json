@@ -684,7 +684,8 @@
     "requests-page": {
       "asset-creation-title": "Token creation",
       "sale-creation-title": "Fund creation",
-      "pre-issuance-upload-title": "Pre-issuance upload"
+      "pre-issuance-upload-title": "Pre-issuance upload",
+      "incoming-withdrawal-title": "Incoming withdrawal"
     },
 
     "request-states": {
@@ -747,6 +748,26 @@
       "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
     },
 
+    "incoming-withdrawal-requests": {
+      "details-title": "Incoming withdrawal request details",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "requestor-header": "Requestor",
+      "request-state-header": "Request state",
+      "amount-header": "Amount",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "details-btn": "Details",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
+      "request-rejected-msg": "Your request was successfully rejected",
+      "request-approved-msg": "Your request was successfully approved",
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "permanently-rejected-state": "Permanently rejected"
+    },
+
     "asset-details": {
       "balance-title": "Balance",
       "maximum-title": "Maximum",
@@ -794,6 +815,32 @@
       "view-btn": "View the fund",
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
+    },
+
+    "withdrawal-request-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading",
+      "approve-btn": "Approve",
+      "rejected-btn": "REJECT",
+      "requestor-email": "Requestor email",
+      "requestor-id": "Requestor id",
+      "amount": "Amount",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "total-fee": "Total fee",
+      "address": "Address",
+      "created": "Created",
+      "reject-reason": "Reason",
+      "message-text-default": "Please recheck the reason before confirmation",
+      "request-id": "Request id",
+      "approved-msg": "This request was approved",
+      "pending-msg": "This request is pending. Please approve or reject it",
+      "rejected-msg": "This request was rejected with reason: {{reason}}",
+      "permanently-rejected-msg": "This request was rejected permanently with reason: {{reason}}",
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "permanently-rejected-state": "Permanently rejected"
     },
 
     "file-field": {
@@ -1006,7 +1053,9 @@
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "reviewer-email": "Reviewer email:",
+      "comment": "Comment"
     },
 
     "deposit-form": {
