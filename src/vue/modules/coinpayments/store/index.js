@@ -7,13 +7,19 @@ export const actions = {
     const { data: response } = await api().postWithSignature(endpoint, params)
     return response.extras
   },
-  async [types.LOAD_PENDING_ISSUANCES] ({ commit }, accountId) {
+  async [types.LOAD_PENDING_ISSUANCES] ({ commit }, balanceId) {
     const params = {
-      asset: '',
-      order: 'desc',
+      filter: {
+        state: 1,
+        'request_details.receiver': balanceId,
+      },
+      page: {
+        order: 'desc',
+      },
+      include: ['request_details'],
     }
-    const endpoint = `/operations/accounts/${accountId}/payments`
-    const { data: response } = await api().getWithSignature(endpoint, params)
+    const endpoint = `/v3/create_issuance_requests`
+    const response = await api().getWithSignature(endpoint, params)
     return response
   },
 }
