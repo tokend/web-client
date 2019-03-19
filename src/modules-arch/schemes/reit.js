@@ -28,7 +28,7 @@ import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
 import { WithdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/module'
 import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/module'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
-import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
+import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 
 export default {
   importEnLocaleFile () {
@@ -64,7 +64,7 @@ export default {
         menuButtonTranslationId: 'pages-names.funds',
         menuButtonMdiName: 'trending-up',
         submodules: [
-          new CreateAssetSaleModule({
+          new CreateOpportunityModule({
             isCorporateOnly: true,
           }),
         ],

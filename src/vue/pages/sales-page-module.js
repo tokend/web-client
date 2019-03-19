@@ -1,6 +1,6 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
-import { CreateAssetSaleModule } from '../modules/create-opportunity/module'
+import { CreateOpportunityModule } from '../modules/create-opportunity/module'
 
 export class SalesPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -9,7 +9,7 @@ export class SalesPageModule extends PageModuleDescriptor {
       importComponentFn: _ => import('@/vue/pages/Sales'),
       allowedSubmodules: [
         CreateSalePseudoModule,
-        CreateAssetSaleModule,
+        CreateOpportunityModule,
       ],
     })
   }
