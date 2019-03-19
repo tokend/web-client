@@ -75,6 +75,20 @@
             v-ripple
             class="sidebar__link"
             @click.native="closeSidebar"
+            :to="vueRoutes.loyaltyPoints"
+            tag="a"
+            v-if="config.featureFlags.loyaltyPoints"
+          >
+            <i class="sidebar__link-icon mdi mdi-menu" />
+            <span>
+              {{ 'pages-names.loyalty-points' | globalize }}
+            </span>
+          </router-link>
+
+          <router-link
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
             :to="vueRoutes.fees"
             tag="a"
             v-if="config.featureFlags.fees"

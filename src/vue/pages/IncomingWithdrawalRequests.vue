@@ -16,7 +16,11 @@
         </drawer>
 
         <!-- eslint-disable max-len -->
-        <div class="app__table incoming-withdrawal-requests__table">
+        <div
+          class="app__table
+                 app__table--with-shadow
+                 incoming-withdrawal-requests__table"
+        >
           <table>
             <thead>
               <tr>

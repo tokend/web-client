@@ -41,19 +41,21 @@ export default {
   name: 'chart-renderer',
   props: {
     data: { type: Array, default: () => [] },
-    currency: { type: String, default: 'BTC' },
+    currency: { type: String, default: '' },
     scale: { type: String, default: 'hour' },
     requiredTicks: { type: Array, default: () => [] },
     precision: { type: Number, default: 0 },
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
     isTicksShown: { type: Boolean, default: true },
+    id: { type: String, required: true },
   },
-  data: () => ({
-    defaultAsset: config.DEFAULT_QUOTE_ASSET,
-    chartRenderingTime: 500,
-    dataCount: 360,
-  }),
+  data () {
+    return {
+      defaultAsset: this.currency || config.DEFAULT_QUOTE_ASSET,
+      chartRenderingTime: 500,
+    }
+  },
   computed: {
     normalizedData () {
       return this.data.map(item => ({
@@ -61,14 +63,15 @@ export default {
         value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
     },
-    barTicks () {
-      switch (this.scale) {
-        case 'year': return this.dataCount / 24
-        case 'month': return this.dataCount / 30
-        case 'day': return this.dataCount / 24
-        case 'hour': return this.dataCount / 30
-        default: return this.dataCount / 30
+    itemsPerTick () {
+      const ticksCount = {
+        year: 24,
+        month: 30,
+        day: 30,
+        hour: 30,
       }
+
+      return Math.round(this.data.length / ticksCount[this.scale])
     },
   },
   watch: {
@@ -86,15 +89,15 @@ export default {
   methods: {
     formatMoney,
     clear () {
-      d3.select('svg.chart').remove()
+      d3.select(`svg#${this.id}`).remove()
     },
     getDimensions () {
       const parentElement = this.$el.parentElement
       return {
         width: parentElement.clientWidth,
-        height: parentElement.clientHeight < 250
+        height: parentElement.clientWidth < 500
           ? 250
-          : parentElement.clientHeight,
+          : parentElement.clientWidth / 2.5,
       }
     },
     getMaxAndMin () {
@@ -123,7 +126,7 @@ export default {
     render () {
       this.clear()
       // Setup the data
-      const data = chunk(this.normalizedData, this.barTicks).map(item => {
+      const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
         const itemLength = item.length
         let defaultDate = 0
         let max = 0
@@ -143,7 +146,7 @@ export default {
       // Setup svg
       const className = 'chart'
       const yAxisTickWidth = this.isTicksShown
-        ? this.formatMoneyCustom(max).length * 9 + 5
+        ? this.formatMoneyCustom(max).length * 9 - 5
         : 0
       const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
       const dimensions = this.getDimensions(this.$el)
@@ -157,6 +160,7 @@ export default {
         .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
         .attr('preserveAspectRatio', 'xMinYMin')
         .attr('class', className)
+        .attr('id', this.id)
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {
