@@ -60,6 +60,19 @@ export default {
           path: '/opportunities',
           name: vueRoutes.sales.name,
           meta: { pageNameTranslationId: 'pages-names.funds' },
+          redirect: vueRoutes.salesAll,
+          children: [
+            {
+              path: '/opportunities/all',
+              name: vueRoutes.salesAll.name,
+              component: _ => import('@/vue/pages/sales/SalesAll'),
+            },
+            {
+              path: '/opportunities/my',
+              name: vueRoutes.salesUser.name,
+              component: _ => import('@/vue/pages/sales/SalesOwned'),
+            },
+          ],
         },
         menuButtonTranslationId: 'pages-names.funds',
         menuButtonMdiName: 'trending-up',
