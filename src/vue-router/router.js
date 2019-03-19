@@ -204,6 +204,11 @@ export const router = new Router({
               name: vueRoutes.preIssuanceUploadRequests.name,
               component: resolve => require(['@/vue/pages/PreIssuanceRequests'], resolve),
             },
+            {
+              path: '/requests/incoming-withdrawal',
+              name: vueRoutes.incomingWithdrawalRequests.name,
+              component: resolve => require(['@/vue/pages/IncomingWithdrawalRequests'], resolve),
+            },
           ],
         },
         {
