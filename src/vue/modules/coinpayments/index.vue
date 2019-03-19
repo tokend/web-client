@@ -6,7 +6,7 @@
     />
     <div class="coinpayments__deposit-list-wrp">
       <deposit-list
-        :account-id="accountId"
+        :balance-id="balanceDetails.id"
       />
     </div>
   </div>

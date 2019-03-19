@@ -4,7 +4,7 @@
       class="deposit-list-item__tr"
       :class="{ 'deposit-list-item__tr--dark': index%2 }">
       <td class="deposit-list-item__timeout-ticker">
-        <timeout-ticker :timeout="timeLeft" />
+        <timeout-ticker :timeout="item.timeLeft" />
       </td>
       <td class="deposit-list-item__amount">
         {{ { value: item.amount, currency: item.asset } | formatMoney }}
@@ -12,7 +12,8 @@
       <td class="deposit-list-item__btn">
         <button
           class="app__button-icon"
-          @click="isAddressViewerShown = !isAddressViewerShown">
+          @click="isAddressViewerShown = !isAddressViewerShown"
+        >
           <i class="mdi mdi-view-dashboard" />
         </button>
       </td>

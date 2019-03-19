@@ -46,7 +46,7 @@ export default {
     Loader,
   },
   props: {
-    accountId: { type: String, required: true },
+    balanceId: { type: String, required: true },
   },
   data () {
     return {
@@ -75,7 +75,7 @@ export default {
     async loadFirstPage () {
       this.isLoaded = false
       try {
-        const response = await this.loadPendingIssuances(this.accountId)
+        const response = await this.loadPendingIssuances(this.balanceId)
         this.isLoaded = true
         return response
       } catch (e) {
