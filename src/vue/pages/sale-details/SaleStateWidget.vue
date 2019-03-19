@@ -8,12 +8,12 @@
       <sale-overview :sale="sale" />
     </drawer>
 
-    <chart
+    <!-- <chart
       :base-asset="sale.baseAsset"
       :quote-asset="sale.defaultQuoteAsset"
       :show-tabs="false"
       :show-ticks="false"
-    />
+    /> -->
 
     <p class="sale-state-widget__invested">
       <!-- eslint-disable-next-line max-len -->
@@ -60,7 +60,7 @@
 import VueMarkdown from 'vue-markdown'
 
 import Drawer from '@/vue/common/Drawer'
-import Chart from '@/vue/common/chart/Chart'
+// import Chart from '@/vue/common/chart/Chart'
 
 import SaleOverview from './SaleOverview'
 
@@ -71,7 +71,7 @@ export default {
   components: {
     Drawer,
     VueMarkdown,
-    Chart,
+    // Chart,
     SaleOverview,
   },
 

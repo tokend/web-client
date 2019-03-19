@@ -33,12 +33,13 @@ export default Object.assign(
       movements: true,
       loyaltyPoints: true,
       issuance: true,
-      assets: true,
-      requests: true,
+      assets: false,
+      requests: false,
       settings: true,
       limits: true,
       sales: true,
       saleDetails: true,
+      documents: true,
     },
 
     /**
@@ -99,6 +100,17 @@ export default Object.assign(
      * The field being displayed on login screen.
      */
     BUILD_VERSION: 'dev: ' + packageJson.version,
+
+    /**
+     * Module scheme to use. The module scheme will be used to combine module
+     * set of the application.
+     */
+    MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Link to iOS application manifest file.
+     */
+    IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
   },
   process.env,
   document.ENV

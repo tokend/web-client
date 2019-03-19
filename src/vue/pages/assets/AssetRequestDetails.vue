@@ -103,6 +103,25 @@
             </td>
           </tr>
 
+          <tr v-if="request.details.annualReturn">
+            <td v-if="ASSET_SUBTYPE.bond === request.details.subtype">
+              {{ 'asset-request-details.annual-return' | globalize }}
+            </td>
+            <td v-else>
+              {{ 'asset-request-details.expected-revenue' | globalize }}
+            </td>
+            <td>
+              {{ request.details.annualReturn }}%
+            </td>
+          </tr>
+          <tr v-if="request.details.maturityDate">
+            <td>
+              {{ 'asset-request-details.maturity-date' | globalize }}
+            </td>
+            <td>
+              {{ +request.details.maturityDate | formatCalendar }}
+            </td>
+          </tr>
           <tr>
             <td>
               {{ 'asset-request-details.terms-title' | globalize }}
@@ -174,6 +193,7 @@
     <div class="asset-request-details__buttons">
       <button
         v-ripple
+        v-if="!formMixin.isConfirmationShown"
         class="asset-request-details__update-btn"
         :disabled="isPending || !canBeUpdated"
         @click="$emit(EVENTS.update)"
@@ -183,20 +203,29 @@
 
       <button
         v-ripple
+        v-if="!formMixin.isConfirmationShown"
         class="asset-request-details__cancel-btn"
         :disabled="isPending || !canBeCanceled"
-        @click="$emit(EVENTS.cancel)"
+        @click="showConfirmation()"
       >
         {{ 'asset-request-details.cancel-btn' | globalize }}
       </button>
+      <form-confirmation
+        v-if="formMixin.isConfirmationShown"
+        message-id="asset-request-details.sure-want-cancel"
+        @ok="cancel"
+        @cancel="hideConfirmation"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import FormMixin from '@/vue/mixins/form.mixin'
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
@@ -218,6 +247,7 @@ export default {
   components: {
     AssetLogo,
   },
+  mixins: [FormMixin],
   props: {
     request: {
       type: [AssetCreateRequestRecord, AssetUpdateRequestRecord],
@@ -235,6 +265,7 @@ export default {
     EVENTS,
     REQUEST_STATES,
     REQUEST_TYPES,
+    ASSET_SUBTYPE,
   }),
   computed: {
     ...mapGetters({
@@ -254,6 +285,10 @@ export default {
     ...mapActions({
       loadKvAssetTypeKycRequired: vuexTypes.LOAD_KV_KYC_REQUIRED,
     }),
+    cancel () {
+      this.hideConfirmation()
+      this.$emit(EVENTS.cancel)
+    },
   },
 }
 </script>

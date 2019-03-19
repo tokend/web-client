@@ -58,6 +58,7 @@ export default {
   background-color: $col-sale-details-block;
   border-radius: .4rem;
   margin: 1.6rem;
+  overflow: auto;
 
   @include respond-to($x-medium) {
     flex-basis: 55%;
