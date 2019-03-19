@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     assetCode (value) {
-      this.firstPageLoader = () => this.loadMovementsFirstPage(this.assetCode)
+      this.initFirstPageLoader()
     },
   },
   async created () {
@@ -103,6 +103,7 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
+    this.initFirstPageLoader()
     this.isInitialized = true
 
     // if (this.pollConfig) {
@@ -119,6 +120,9 @@ export default {
       loadMovements: types.LOAD_MOVEMENTS,
       loadBalances: types.LOAD_BALANCES,
     }),
+    initFirstPageLoader () {
+      this.firstPageLoader = () => this.loadMovementsFirstPage(this.assetCode)
+    },
     async loadMovementsFirstPage (assetCode) {
       this.isMovementsLoaded = false
       try {

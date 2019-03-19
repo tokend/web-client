@@ -218,7 +218,6 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
-    this.isInitialized = true
     this.setDefaultFormValues()
 
     try {
@@ -226,6 +225,8 @@ export default {
     } catch (error) {
       ErrorHandler.process(error)
     }
+
+    this.isInitialized = true
   },
   methods: {
     ...mapMutations('create-invoice-form', {
