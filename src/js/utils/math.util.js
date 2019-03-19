@@ -14,6 +14,7 @@ const ROUNDING_MODES = Object.freeze({
 
 const ONE = 1000000
 const DECIMAL_PLACES = 6
+const MAX_ALLOWED_PERCENT = 100
 
 export class MathUtil {
   static multiply (a, b, ROUND_TYPE = ROUNDING_MODES.ROUND_UP) {
@@ -75,6 +76,15 @@ export class MathUtil {
     const result = one.plus(two)
     return result
       .toFixed(DECIMAL_PLACES)
+  }
+
+  static percent (a, percent, ROUND_TYPE = ROUNDING_MODES.ROUND_UP) {
+    if (percent > MAX_ALLOWED_PERCENT) {
+      throw new Error(`${percent} can not be more than ${MAX_ALLOWED_PERCENT}`)
+    }
+    const value = new BigNumber(a)
+    const percentValue = MathUtil.divide(percent, MAX_ALLOWED_PERCENT)
+    return MathUtil.multiply(value, percentValue)
   }
 
   static _isValidParams (op, a, b, c = 0) {

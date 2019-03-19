@@ -90,6 +90,19 @@
             {{ 'op-pages.dividend' | globalize }}
           </button>
         </template>
+
+        <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isReedemDrawerShown = true"
+          >
+            <i
+              class="mdi mdi-wallet-giftcard movements__btn-icon"
+            />
+            {{ 'op-pages.redeem' | globalize }}
+          </button>
+        </template>
       </div>
     </top-bar>
 
@@ -156,6 +169,20 @@
       </drawer>
     </template>
 
+    <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
+      <drawer :is-shown.sync="isReedemDrawerShown">
+        <template slot="heading">
+          {{ 'redeem-form.title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(RedeemFormModule)"
+          :wallet="wallet"
+          :config="redeemConfig"
+          @redeemed="redeemModuleSubmitted"
+        />
+      </drawer>
+    </template>
+
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
         v-if="asset.code"
@@ -213,6 +240,7 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
+import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 
 export default {
   name: 'movements-page',
@@ -238,6 +266,7 @@ export default {
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
     isDividendDrawerShown: false,
+    isReedemDrawerShown: false,
     fiatWithdrawalFormShown: false,
     fiatDepositFormShown: false,
     movementsHistoryConfig: {
@@ -258,6 +287,11 @@ export default {
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
     },
+    redeemConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
+      maxAmount: config.MAX_AMOUNT,
+    },
     historyState: 0,
     WithdrawalDrawerPseudoModule,
     DepositDrawerPseudoModule,
@@ -265,6 +299,7 @@ export default {
     DepositFiatModule,
     WithdrawalFiatModule,
     DividendFormModule,
+    RedeemFormModule,
   }),
 
   computed: {
@@ -316,6 +351,9 @@ export default {
     },
     dividendModuleTransferred () {
       this.isDividendDrawerShown = false
+    },
+    redeemModuleSubmitted () {
+      this.isReedemDrawerShown = false
     },
   },
 }

@@ -28,6 +28,7 @@ import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
 import { WithdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/module'
 import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/module'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
+import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
 
 export default {
@@ -96,6 +97,7 @@ export default {
           }),
           new TransferDrawerPseudoModule(),
           new DividendFormModule(),
+          new RedeemFormModule(),
         ],
       },
     ),

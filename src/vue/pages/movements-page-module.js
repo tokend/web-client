@@ -3,9 +3,10 @@ import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { DepositFiatModule } from '../modules/deposit-fiat/module'
-import { WithdrawalFiatModule } from '../modules/withdrawal-fiat/module'
-import { DividendFormModule } from '../modules/dividend-form/module'
+import { DepositFiatModule } from '@modules/deposit-fiat/module'
+import { WithdrawalFiatModule } from '@modules/withdrawal-fiat/module'
+import { DividendFormModule } from '@modules/dividend-form/module'
+import { RedeemFormModule } from '@modules/redeem-form/module'
 
 export class MovementsHistoryPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -20,6 +21,7 @@ export class MovementsHistoryPageModule extends PageModuleDescriptor {
         DepositFiatModule,
         TransferDrawerPseudoModule,
         DividendFormModule,
+        RedeemFormModule,
       ],
     })
   }
