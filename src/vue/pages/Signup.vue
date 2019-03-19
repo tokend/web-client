@@ -3,7 +3,7 @@
     <h2 class="auth-page__title">
       {{
         recoveryKeypair
-          ? 'auth-pages.save-recovery-seed'
+          ? 'auth-pages.save-recovery-seed-warning'
           : 'auth-pages.get-started'
           | globalize
       }}
@@ -30,6 +30,15 @@
         <div class="signup__seed-wrp">
           <p class="signup__seed-explanations">
             {{ 'auth-pages.save-recovery-seed-details' | globalize }}
+            <b>
+              {{ 'auth-pages.save-recovery-seed-details-bold' | globalize }}
+            </b>
+          </p>
+          <p class="signup__seed-explanations">
+            <b>
+              {{ 'auth-pages.save-recovery-seed-charge-bold' | globalize }}
+            </b>
+            {{ 'auth-pages.save-recovery-seed-charge' | globalize }}
           </p>
 
           <key-viewer
@@ -37,18 +46,19 @@
             :label="'auth-pages.recovery-seed' | globalize"
           />
 
-          <checkbox-field
-            :disabled="isCheckboxDisable"
+          <tick-field
+            :value="false"
             :title="'auth-pages.save-recovery-seed-confirmation' | globalize"
             :required="true"
-            :is-sending-enabled.sync="isSendingEnabled"
+            :disabled="isCheckboxDisable"
+            @input="showAccessButton"
           />
 
           <div class="signup__actions">
             <button
               v-ripple
               @click="submit"
-              :disabled="!isSendingEnabled"
+              :disabled="isSendingDisabled"
               class="auth-page__submit-btn"
             >
               {{ 'auth-pages.continue' | globalize }}
@@ -64,7 +74,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import SignupForm from '../forms/SignupForm'
 import KeyViewer from '../common/KeyViewer'
-import CheckboxField from '@/vue/fields/CheckboxField'
+import TickField from '@/vue/fields/TickField'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -79,7 +89,7 @@ export default {
   components: {
     SignupForm,
     KeyViewer,
-    CheckboxField,
+    TickField,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -87,7 +97,7 @@ export default {
     password: null,
     email: null,
     isCheckboxDisable: false,
-    isSendingEnabled: false,
+    isSendingDisabled: true,
     vueRoutes,
   }),
   computed: {
@@ -102,6 +112,9 @@ export default {
       loadKyc: vuexTypes.LOAD_KYC,
       loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
+    showAccessButton (value) {
+      this.isSendingDisabled = !value
+    },
     handleChildFormSubmit (form) {
       this.email = form.email
       this.password = form.password
@@ -148,13 +161,13 @@ export default {
 <style lang="scss" scoped>
 @import './auth-page';
 
-.signup__seed-wrp {
-  max-width: 51rem;
+.signup__seed-explanations {
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
 }
 
-.signup__seed-explanations {
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
+.signup__seed-explanations:last-of-type {
+  margin-bottom: 3rem;
 }
 
 .signup__actions {
