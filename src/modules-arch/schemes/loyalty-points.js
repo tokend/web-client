@@ -2,6 +2,9 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
+import { LoyaltyPointsPageModule } from '@/vue/pages/loyalty-points-page-module'
+import { LoyaltyPointsInvoicesPageModule } from '@/vue/pages/loyalty-points-invoices-page'
+import { LoyaltyPointsStatisticsPageModule } from '@/vue/pages/loyalty-points-statistics-page'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
 import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
@@ -57,6 +60,33 @@ export default {
           new WithdrawalDrawerPseudoModule(),
           new DepositDrawerPseudoModule(),
           new TransferDrawerPseudoModule(),
+        ],
+      },
+    ),
+
+    new LoyaltyPointsPageModule(
+      {
+        routerEntry: {
+          path: '/loyalty-points',
+          name: vueRoutes.loyaltyPoints.name,
+          meta: { pageNameTranslationId: 'pages-names.loyalty-points' },
+        },
+        menuButtonTranslationId: 'pages-names.loyalty-points',
+        menuButtonMdiName: 'menu',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new LoyaltyPointsInvoicesPageModule({
+            routerEntry: {
+              path: '/loyalty-points/invoices',
+              name: vueRoutes.loyaltyPointsInvoices.name,
+            },
+          }),
+          new LoyaltyPointsStatisticsPageModule({
+            routerEntry: {
+              path: '/loyalty-points/statistics',
+              name: vueRoutes.loyaltyPointsStatistics.name,
+            },
+          }),
         ],
       },
     ),
