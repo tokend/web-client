@@ -274,22 +274,44 @@
         <div class="app__form-row">
           {{ 'create-opportunity.accept-investments-in' | globalize }}
         </div>
-        <div
-          class="app__form-row"
-          v-for="item in baseAssets"
-          :key="item.code"
-        >
-          <div class="app__form-field">
-            <tick-field
-              :name="`create-sale-tick-${item.code}`"
-              v-model="form.saleInformation.quoteAssets"
-              :disabled="formMixin.isDisabled"
-              :cb-value="item.code"
-            >
-              {{ item.nameAndCode }}
-            </tick-field>
+        <template v-if="form.information.formType.value !== ASSET_SUBTYPE.bond">
+          <div
+            class="app__form-row"
+            v-for="item in baseAssets"
+            :key="item.code"
+          >
+            <div class="app__form-field">
+              <tick-field
+                :name="`create-sale-tick-${item.code}`"
+                v-model="form.saleInformation.quoteAssets"
+                :disabled="formMixin.isDisabled"
+                :cb-value="item.code"
+              >
+                {{ item.nameAndCode }}
+              </tick-field>
+            </div>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div
+            class="app__form-row"
+            v-for="item in baseAssets"
+            :key="item.code"
+          >
+            <div class="app__form-field">
+              <radio-field
+                :key="`radio-field-${item.code}`"
+                :name="`create-sale-radio-asset-code`"
+                v-model="form.saleInformation.quoteAssets"
+                :active="form.saleInformation.quoteAssets"
+                :cb-value="item.code"
+                :disabled="formMixin.isDisabled"
+              >
+                {{ item.nameAndCode }}
+              </radio-field>
+            </div>
+          </div>
+        </template>
         <div class="create-opportunity__error-text">
           {{ getFieldErrorMessage('form.saleInformation.quoteAssets') }}
         </div>
@@ -693,12 +715,8 @@ export default {
           youtube_video_id: this.form.shortBlurb.youtubeId,
         },
         requiredBaseAssetForHardCap: this.form.saleInformation.hardCap,
-        quoteAssets: this.form.saleInformation.quoteAssets
-          .map((item) => ({
-            asset: item,
-            price: '1',
-          })),
-        saleEnumType: SALE_TYPES.fixedPrice,
+        quoteAssets: this.formatSaleQuoteAssets(),
+        saleEnumType: SALE_TYPES.basicSale,
         saleType: DEFAULT_SALE_TYPE,
       }
       return base.SaleRequestBuilder.createSaleCreationRequest(operation)
@@ -748,6 +766,20 @@ export default {
           )
           document.setKey(documentKey)
         }
+      }
+    },
+    formatSaleQuoteAssets () {
+      if (Array.isArray(this.form.saleInformation.quoteAssets)) {
+        return this.form.saleInformation.quoteAssets
+          .map((item) => ({
+            asset: item,
+            price: '1',
+          }))
+      } else {
+        return [{
+          asset: this.form.saleInformation.quoteAssets,
+          price: '1',
+        }]
       }
     },
     selectFormType (formType) {
