@@ -4,13 +4,13 @@
       <template slot="main">
         <router-link :to="vueRoutes.loyaltyPointsInvoices">
           <span>
-            {{ 'create-invoice-module.invoices-page' | globalize }}
+            {{ 'loyalty-points.invoices-page' | globalize }}
           </span>
         </router-link>
 
         <router-link :to="vueRoutes.loyaltyPointsStatistics">
           <span>
-            {{ 'create-invoice-module.statistics-page' | globalize }}
+            {{ 'loyalty-points.statistics-page' | globalize }}
           </span>
         </router-link>
       </template>
@@ -23,7 +23,7 @@
           class="app__button-raised movements__button-raised"
           @click="isInvoiceRequestFormShown = true"
         >
-          {{ 'create-invoice-module.create-invoice-btn' | globalize }}
+          {{ 'loyalty-points.create-invoice-btn' | globalize }}
         </button>
       </div>
     </top-bar>
@@ -31,7 +31,7 @@
 
     <drawer :is-shown.sync="isInvoiceRequestFormShown">
       <template slot="heading">
-        {{ 'create-invoice-module.create-invoice-form-title' | globalize }}
+        {{ 'loyalty-points.create-invoice-form-title' | globalize }}
       </template>
       <create-invoice-form
         :config="config"

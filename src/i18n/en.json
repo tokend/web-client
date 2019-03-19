@@ -417,58 +417,6 @@
       "counterparty-lbl": "Counterparty"
     },
 
-    "create-invoice-module": {
-      "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
-      "statistics-page": "Statistics",
-      "invoices-page": "Invoices"
-    },
-
-    "loyalty-points": {
-      "create-invoice-form-title": "Create invoice"
-    },
-
-    "loyalty-points-statistics": {
-      "withdrawals-title": "Withdrawals",
-      "withdrawal-requests-title": "Withdrawal requests",
-      "incoming-volume-title": "Withdrawal's incoming volume",
-      "summary-volume-title": "Withdrawal's summary volume"
-    },
-
-    "incoming-volume-viewer": {
-      "loading-msg": "Loading incoming withdrawal's volume",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "summary-volume-viewer": {
-      "loading-msg": "Loading summary withdrawal's volume…",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "withdrawals-statistics-viewer": {
-      "loading-msg": "Loading withdrawals statistics…",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "withdrawal-requests-viewer": {
-      "loading-msg": "Loading withdrawal requests…",
-      "loading-error-msg": "There was an error while loading.",
-      "approved-request-label": "Approved",
-      "rejected-request-label": "Rejected"
-    },
-
-    "create-invoice-form": {
-      "amount-lbl": "Amount {{asset}}",
-      "close": "Close",
-      "price": "Price",
-      "asset": "Asset",
-      "total-amount": "Total amount",
-      "create-invoice": "Create invoice",
-      "no-pairs-message": "No pairs found",
-      "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
-      "loading-msg": "Loading..."
-    },
-
     "movements-history": {
       "effects": {
         "funded": "Funded",

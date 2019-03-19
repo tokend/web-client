@@ -29,6 +29,9 @@ import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
 export default {
+  importEnLocaleFile () {
+    return import('@/modules-arch/schemes/loyalty-points.en.json')
+  },
   pages: [
     new DashboardPageModule(
       {

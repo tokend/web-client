@@ -24,7 +24,7 @@
     </div>
     <div class="loyalty-points-invoices-module__history">
       <h2 class="loyalty-points-invoices-module__history-title">
-        History
+        {{ 'loyalty-points-invoices.history-title' | globalize }}
       </h2>
       <movements-history-module
         v-if="defaultAssetCode"
