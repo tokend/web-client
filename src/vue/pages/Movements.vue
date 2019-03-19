@@ -45,7 +45,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements__button-raised"
@@ -116,12 +116,16 @@
       </drawer>
     </template>
 
-    <drawer :is-shown.sync="isDepositDrawerShown">
-      <template slot="heading">
-        {{ 'deposit-form.deposit' | globalize }}
-      </template>
-      <deposit-form />
-    </drawer>
+    <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
+      <drawer :is-shown.sync="isDepositDrawerShown">
+        <template slot="heading">
+          {{ 'deposit-form.deposit' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
+        />
+      </drawer>
+    </template>
 
     <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
       <drawer :is-shown.sync="fiatDepositFormShown">
@@ -197,7 +201,6 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
 
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
-import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
 
 import { Sdk } from '@/sdk'
@@ -210,7 +213,7 @@ import config from '@/config'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
@@ -225,7 +228,6 @@ export default {
     Loader,
     NoDataMessage,
     WithdrawalForm,
-    DepositForm,
     TransferForm,
     SubmoduleImporter,
   },
@@ -262,7 +264,7 @@ export default {
     },
     historyState: 0,
     WithdrawalDrawerPseudoModule,
-    DepositDrawerPseudoModule,
+    DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     DepositFiatModule,
     WithdrawalFiatModule,

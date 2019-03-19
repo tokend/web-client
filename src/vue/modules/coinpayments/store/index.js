@@ -19,6 +19,7 @@ export const actions = {
 }
 
 export const coinpaymentsModule = {
+  name: 'coinpayments',
   namespaced: true,
   actions,
 }

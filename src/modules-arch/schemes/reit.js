@@ -30,9 +30,9 @@ import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/mod
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
-import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 
 export default {
   importEnLocaleFile () {
@@ -89,7 +89,7 @@ export default {
               },
             },
           }),
-          new CreateAssetSaleModule({
+          new CreateOpportunityModule({
             isCorporateOnly: true,
           }),
         ],
