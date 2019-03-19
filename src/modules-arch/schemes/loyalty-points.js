@@ -3,15 +3,18 @@ import { vueRoutes } from '@/vue-router/routes'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { LoyaltyPointsPageModule } from '@/vue/pages/loyalty-points-page-module'
+import { LoyaltyPointsInvoicesModule } from '@/vue/modules/loyalty-points/loyalty-points-invoices/module'
 import { LoyaltyPointsInvoicesPageModule } from '@/vue/pages/loyalty-points-invoices-page'
+import { LoyaltyPointsStatisticsModule } from '@/vue/modules/loyalty-points/loyalty-points-statistics/module'
 import { LoyaltyPointsStatisticsPageModule } from '@/vue/pages/loyalty-points-statistics-page'
+import { CreateInvoiceFormModule } from '@/vue/modules/loyalty-points/create-invoice-form/module'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
 import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
-import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -80,13 +83,20 @@ export default {
               path: '/loyalty-points/invoices',
               name: vueRoutes.loyaltyPointsInvoices.name,
             },
+            submodules: [
+              new LoyaltyPointsInvoicesModule(),
+            ],
           }),
           new LoyaltyPointsStatisticsPageModule({
             routerEntry: {
               path: '/loyalty-points/statistics',
               name: vueRoutes.loyaltyPointsStatistics.name,
             },
+            submodules: [
+              new LoyaltyPointsStatisticsModule(),
+            ],
           }),
+          new CreateInvoiceFormModule(),
         ],
       },
     ),
@@ -125,6 +135,7 @@ export default {
           name: vueRoutes.issuance.name,
           meta: { pageNameTranslationId: 'pages-names.issuance' },
         },
+        isCorporateOnly: true,
         menuButtonTranslationId: 'pages-names.issuance',
         menuButtonMdiName: 'poll',
         submodules: [
@@ -145,10 +156,10 @@ export default {
         menuButtonMdiName: 'book-open-variant',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new PreIssuanceRequestsPageModule({
+          new IncomingWithdrawalRequestsPageModule({
             routerEntry: {
-              path: '/requests/pre-issuance-upload',
-              name: vueRoutes.preIssuanceUploadRequests.name,
+              path: '/requests/incoming-withdrawal',
+              name: vueRoutes.incomingWithdrawalRequests.name,
             },
           }),
         ],

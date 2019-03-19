@@ -54,7 +54,7 @@ import { types } from './store/types'
 import Drawer from '@/vue/common/Drawer'
 import { vueRoutes } from '@/vue-router/routes'
 
-import CreateInvoiceFormModule from '@modules/create-invoice-form'
+import CreateInvoiceFormModule from '@modules/loyalty-points/create-invoice-form'
 import MovementsHistoryModule from '@modules/movements-history'
 
 import { initApi } from './_api'

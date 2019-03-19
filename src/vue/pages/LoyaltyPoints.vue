@@ -46,7 +46,7 @@
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
-import CreateInvoiceForm from '@modules/create-invoice-form'
+import CreateInvoiceForm from '@modules/loyalty-points/create-invoice-form'
 
 import { vueRoutes } from '@/vue-router/routes'
 

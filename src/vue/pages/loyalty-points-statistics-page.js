@@ -1,5 +1,5 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
-import { LoyaltyPointsStatisticsModule } from '@/vue/modules/loyalty-points-statistics/module'
+import { LoyaltyPointsStatisticsModule } from '@modules/loyalty-points/loyalty-points-statistics/module'
 
 export class LoyaltyPointsStatisticsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {

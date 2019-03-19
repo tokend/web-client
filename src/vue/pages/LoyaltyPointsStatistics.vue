@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import LoyaltyPointsStatisticsModule from '@modules/loyalty-points-statistics'
+import LoyaltyPointsStatisticsModule from '@modules/loyalty-points/loyalty-points-statistics'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'

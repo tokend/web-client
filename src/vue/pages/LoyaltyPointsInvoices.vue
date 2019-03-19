@@ -9,7 +9,7 @@
 
 <script>
 import config from '@/config'
-import LoyaltyPointsInvoicesModule from '@modules/loyalty-points-invoices'
+import LoyaltyPointsInvoicesModule from '@modules/loyalty-points/loyalty-points-invoices'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 
