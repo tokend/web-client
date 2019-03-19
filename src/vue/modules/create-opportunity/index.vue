@@ -548,8 +548,10 @@ export default {
           maturityDate: maturityDate,
           annualReturn: {
             required,
-            amountRange: amountRange('0',
-              this.maxAmount),
+            amountRange: amountRange(
+              '0',
+              this.maxAmount
+            ),
           },
         },
         saleInformation: {
@@ -561,8 +563,10 @@ export default {
           },
           hardCap: {
             required,
-            amountRange: amountRange(this.form.saleInformation.softCap,
-              this.maxAmount),
+            amountRange: amountRange(
+              this.form.saleInformation.softCap,
+              this.maxAmount
+            ),
           },
           quoteAssets: {
             requiredAtLeastOne,
@@ -754,38 +758,38 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-  @import '@/vue/forms/_app-form';
+<style lang="scss">
+@import '@/vue/forms/_app-form';
 
-  .create-opportunity__btn {
-    margin-bottom: 2rem;
-    width: 14.4rem;
-  }
+.create-opportunity__btn {
+  margin-bottom: 2rem;
+  width: 14.4rem;
+}
 
-  .create-opportunity__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.create-opportunity__kyc-required-row {
+  margin-top: 2.1rem;
+}
 
-  .create-opportunity__pre-issued-asset-signer-wrp {
-    display: flex;
-    align-items: center;
-  }
+.create-opportunity__pre-issued-asset-signer-wrp {
+  display: flex;
+  align-items: center;
+}
 
-  .create-opportunity__insert-account-id-btn {
-    margin-left: .4rem;
-  }
+.create-opportunity__insert-account-id-btn {
+  margin-left: .4rem;
+}
 
-  .create-opportunity__error-text {
-    margin-bottom: 2rem;
-    color: $col-error;
-  }
+.create-opportunity__error-text {
+  margin-bottom: 2rem;
+  color: $col-error;
+}
 
-  .create-opportunity__price {
-    font-size: 1.4rem;
-  }
+.create-opportunity__price {
+  font-size: 1.4rem;
+}
 
-  .create-opportunity__cards {
-    width: 100%;
-    display: flex;
-  }
+.create-opportunity__cards {
+  width: 100%;
+  display: flex;
+}
 </style>
