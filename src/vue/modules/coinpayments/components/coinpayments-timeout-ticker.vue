@@ -1,6 +1,11 @@
 <template>
   <div class="timeout-ticker">
-    {{ 'coinpayments.time-left' | globalize }}: {{ timeLeftFormatted }}
+    <template v-if="+timeout > 0">
+      {{ 'coinpayments.time-left' | globalize }}: {{ timeLeftFormatted }}
+    </template>
+    <template v-else>
+      {{ 'coinpayments.time-over' | globalize }}
+    </template>
   </div>
 </template>
 

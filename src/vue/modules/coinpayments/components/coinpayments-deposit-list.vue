@@ -33,7 +33,7 @@
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 import DepositListItem from './coinpayments-deposit-list-item'
-import { IssuanceRecord } from '@/js/records/operations/issuance.record'
+import { IssuanceRecord } from '../wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -46,7 +46,7 @@ export default {
     Loader,
   },
   props: {
-    accountId: { type: String, required: true },
+    balanceId: { type: String, required: true },
   },
   data () {
     return {
@@ -75,7 +75,7 @@ export default {
     async loadFirstPage () {
       this.isLoaded = false
       try {
-        const response = await this.loadPendingIssuances(this.accountId)
+        const response = await this.loadPendingIssuances(this.balanceId)
         this.isLoaded = true
         return response
       } catch (e) {
