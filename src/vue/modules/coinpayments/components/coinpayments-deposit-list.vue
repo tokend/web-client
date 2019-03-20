@@ -92,5 +92,6 @@ export default {
   .deposit-list__table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
   }
 </style>
