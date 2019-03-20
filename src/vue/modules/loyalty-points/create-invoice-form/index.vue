@@ -87,23 +87,10 @@
           </div>
         </div>
 
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.reference"
-              @blur="touchField('form.reference')"
-              name="create-invoice-reference"
-              :label="'Reference'"
-              :error-message="getFieldErrorMessage('form.reference')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
         <div class="app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
+            :is-pending="isFormSubmitting"
             @ok="submit"
             @cancel="hideConfirmation"
           />
@@ -140,10 +127,16 @@
           v-ripple
           type="button"
           class="create-invoice-form__close-btn app__button-raised"
-          :disabled="formMixin.isDisabled"
+          :disabled="!isPaymentConfirmed"
           @click="closeForm"
         >
-          {{ 'create-invoice-form.close' | globalize }}
+          <template v-if="isPaymentConfirmed">
+            {{ 'create-invoice-form.close' | globalize }}
+          </template>
+
+          <template v-else>
+            {{ 'create-invoice-form.waiting-for-payment' | globalize }}
+          </template>
         </button>
       </div>
     </template>
@@ -177,12 +170,14 @@ import { Sdk } from '@/sdk'
 import QrCode from 'vue-qr'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
   close: 'close',
 }
 
 const QR_CODE_BASE = `tokend://loyaltypay?url=`
+const POLL_INTERVAL = 5000
 
 export default {
   name: 'create-invoice-form',
@@ -218,10 +213,16 @@ export default {
     MINIMAL_NUMBER_INPUT_STEP: config.MINIMAL_NUMBER_INPUT_STEP,
     isInitialized: false,
     form: {
-      reference: '',
       amount: '',
+      merchant: '',
+      asset: '',
+      account: '',
+      system: '',
     },
     generatedQRCode: '',
+    isFormSubmitting: false,
+    isPaymentConfirmed: false,
+    pollIntervalId: 0,
   }),
   validations () {
     return {
@@ -234,9 +235,6 @@ export default {
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
-        reference: {
-          required,
-        },
       },
     }
   },
@@ -245,10 +243,19 @@ export default {
       types.accountId,
       types.balances,
       types.assetPairs,
+      types.movements,
     ]),
 
     currentBalance () {
       return this.balances.find(item => item.assetCode === this.form.asset)
+    },
+
+    reference () {
+      return btoa(JSON.stringify({
+        asset: this.form.asset,
+        amount: this.form.amount,
+        date: new Date().toISOString(),
+      }))
     },
   },
   async created () {
@@ -266,6 +273,9 @@ export default {
 
     this.isInitialized = true
   },
+  destroyed () {
+    clearInterval(this.pollIntervalId)
+  },
   methods: {
     ...mapMutations('create-invoice-form', {
       setAccountId: types.SET_ACCOUNT_ID,
@@ -273,6 +283,7 @@ export default {
     ...mapActions('create-invoice-form', {
       loadAssetPairs: types.LOAD_ASSET_PAIRS,
       loadBalances: types.LOAD_BALANCES,
+      loadMovements: types.LOAD_MOVEMENTS,
     }),
     calculateRate (rate, amount) {
       return MathUtil.multiply(rate, amount)
@@ -282,9 +293,12 @@ export default {
       this.showConfirmation()
     },
     async submit () {
+      this.isFormSubmitting = true
+
       try {
         const data = JSON.stringify({
           ...this.form,
+          reference: this.reference,
           accept: this.formatAcceptableAssetsToUpload(),
         })
         const { data: blob } = await Sdk.api.blobs.create(
@@ -294,10 +308,13 @@ export default {
 
         const blobUrl = `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${blob.id}`
         this.generatedQRCode = QR_CODE_BASE + encodeURIComponent(blobUrl)
+
+        this.initPolling()
       } catch (error) {
         ErrorHandler.process(error)
       }
 
+      this.isFormSubmitting = false
       this.hideConfirmation()
     },
     formatAcceptableAssetsToUpload () {
@@ -314,8 +331,27 @@ export default {
       this.form.merchant = 'Pets shop, Sumska 46'
       this.form.asset = 'PET1'
       this.form.account = this.accountId
-      this.form.system = document.location.origin
+      this.form.system = config.HORIZON_SERVER
       this.form.amount = this.amount
+    },
+    initPolling () {
+      this.pollIntervalId = setInterval(this.checkForPayment, POLL_INTERVAL)
+    },
+    async checkForPayment () {
+      try {
+        await this.loadMovements(this.form.asset)
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+
+      const payment = this.movements
+        .find(m => m.reference === this.reference)
+
+      if (payment) {
+        clearInterval(this.pollIntervalId)
+        this.isPaymentConfirmed = true
+        Bus.success('create-invoice-form.payment-successfull-msg')
+      }
     },
   },
 }

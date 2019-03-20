@@ -44,6 +44,7 @@
       "amount-lbl": "Amount {{asset}}",
       "balance": "Balance: {{balance, money}}",
       "close": "Close",
+      "waiting-for-payment": "Waiting for payment…",
       "acceptable-asset-pairs-title": "Acceptable asset pairs",
       "qr-code-description": "Use loyalty app to scan this QR code and pay for the invoice",
       "price": "Price",
@@ -52,7 +53,8 @@
       "create-invoice": "Create invoice",
       "no-pairs-message": "No pairs found",
       "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
-      "loading-msg": "Loading..."
+      "loading-msg": "Loading...",
+      "payment-successfull-msg": "Payment successfull"
     }
   }
 }
