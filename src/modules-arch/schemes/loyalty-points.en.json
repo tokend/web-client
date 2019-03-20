@@ -42,7 +42,10 @@
 
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
+      "balance": "Balance: {{balance, money}}",
       "close": "Close",
+      "acceptable-asset-pairs-title": "Acceptable asset pairs",
+      "qr-code-description": "Use loyalty app to scan the QR code and pay for this invoice",
       "price": "Price",
       "asset": "Asset",
       "total-amount": "Total amount",

@@ -691,7 +691,7 @@
     },
 
     "incoming-withdrawal-requests": {
-      "details-title": "Incoming withdrawal request details",
+      "details-title": "Incoming withdrawal request",
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "requestor-header": "Requestor",
@@ -699,7 +699,7 @@
       "amount-header": "Amount",
       "created-header": "Created",
       "last-updated-header": "Last updated",
-      "details-btn": "Details",
+      "review-btn": "Review",
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
       "request-rejected-msg": "Your request was successfully rejected",
@@ -1027,7 +1027,7 @@
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
       "asset": "Token",
-      "balance": "Balance is {{amount}} {{asset}}.",
+      "balance": "Balance: {{balance, money}}",
       "amount": "Amount ({{asset}})",
       "network-fee-hint": "External network fee",
       "network-fee-unknown": "Unknown",
@@ -1043,8 +1043,9 @@
       "can-not-load-assets": "There was an error while loading tokens. Please try again later",
       "loading-msg": "Loading…",
       "fee-loading-msg": "Loading…",
-      "reviewer-email": "Reviewer email:",
-      "comment": "Comment"
+      "reviewer": "Reviewer:",
+      "comment": "Comment",
+      "withdraw-btn": "Withdraw"
     },
     "deposit-form": {
       "deposit": "Deposit",

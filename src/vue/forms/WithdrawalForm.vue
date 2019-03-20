@@ -19,17 +19,25 @@
               />
               <div class="withdrawal__form-field-description">
                 <p>
-                  <!-- eslint-disable-next-line max-len -->
-                  {{ 'withdrawal-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}
+                  {{
+                    'withdrawal-form.balance' | globalize({
+                      balance: {
+                        value: form.asset.balance.value,
+                        currency: form.asset.code
+                      }
+                    })
+                  }}
+                </p>
+              </div>
+
+              <div class="withdrawal__form-field-description">
+                <p>
+                  <span>{{ 'withdrawal-form.reviewer' | globalize }}</span>
+                  <email-getter :account-id="form.asset.owner" />
                 </p>
               </div>
             </div>
           </div>
-
-          <p v-if="selectedAssetOwnerEmail">
-            {{ 'withdrawal-form.reviewer-email' | globalize }}
-            {{ selectedAssetOwnerEmail }}
-          </p>
 
           <div class="app__form-row withdrawal__form-row">
             <input-field
@@ -55,19 +63,6 @@
               <input-field
                 white-autofill
                 class="app__form-field"
-                v-model.trim="form.comment"
-                name="withdrawal-address"
-                @blur="touchField('form.address')"
-                :error-message="getFieldErrorMessage('form.address')"
-                :label="'withdrawal-form.comment' | globalize"
-                :monospaced="true"
-                :disabled="formMixin.isDisabled"
-              />
-            </template>
-            <template v-else>
-              <input-field
-                white-autofill
-                class="app__form-field"
                 v-model.trim="form.address"
                 name="withdrawal-address"
                 @blur="touchField('form.address')"
@@ -75,7 +70,19 @@
                 :label="'withdrawal-form.destination-address' | globalize({
                   asset: form.asset.code
                 })"
-                :monospaced="true"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
+
+            <template v-else>
+              <input-field
+                white-autofill
+                class="app__form-field"
+                v-model.trim="form.comment"
+                name="withdrawal-address"
+                @blur="touchField('form.address')"
+                :error-message="getFieldErrorMessage('form.address')"
+                :label="'withdrawal-form.comment' | globalize"
                 :disabled="formMixin.isDisabled"
               />
             </template>
@@ -150,7 +157,7 @@
               :disabled="formMixin.isDisabled"
               form="withdrawal-form"
             >
-              {{ 'withdrawal-form.withdrawal' | globalize }}
+              {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
             <form-confirmation
               v-if="formMixin.isConfirmationShown"
@@ -189,9 +196,8 @@
 import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
-import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
-import IdentityGetterMixin from '@/vue/mixins/identity-getter'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
@@ -216,10 +222,10 @@ const EMPTY_FEE = '0.000000'
 export default {
   name: 'withdrawal-form',
   components: {
-    FormConfirmation,
     Loader,
+    EmailGetter,
   },
-  mixins: [FormMixin, IdentityGetterMixin],
+  mixins: [FormMixin],
   data () {
     return {
       isLoaded: false,
@@ -238,7 +244,6 @@ export default {
       isFeesLoadPending: false,
       isFeesLoadFailed: false,
       DECIMAL_POINTS: config.DECIMAL_POINTS,
-      selectedAssetOwnerEmail: '',
     }
   },
   validations () {
@@ -256,7 +261,7 @@ export default {
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
-        address: this.isMasterAccount ? {} : addressRules,
+        address: this.isMasterAccount ? addressRules : {},
       },
     }
   },
@@ -280,7 +285,6 @@ export default {
     },
     'form.asset.code' () {
       this.tryGetFees()
-      this.loadOwner()
     },
   },
   async created () {
@@ -337,16 +341,6 @@ export default {
         this.feesDebouncedRequest = debounce(() => this.getFees(), 300)
       }
       return this.feesDebouncedRequest()
-    },
-    async loadOwner () {
-      const ownerId = this.form.asset.owner
-      try {
-        const email = await this.getEmailByAccountId(ownerId)
-        this.selectedAssetOwnerEmail = email
-      } catch (e) {
-        this.selectedAssetOwnerEmail = ''
-        ErrorHandler.processWithoutFeedback(e)
-      }
     },
     composeOptions () {
       const creatorDetails = {}
@@ -412,7 +406,7 @@ export default {
 }
 
 .withdrawal__form-field-description {
-  margin-top: 0.4rem;
+  margin-top: 0.7rem;
   opacity: 0.7;
 }
 

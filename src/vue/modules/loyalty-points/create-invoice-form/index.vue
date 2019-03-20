@@ -18,50 +18,73 @@
                 'form.amount',
                 {
                   from: MIN_AMOUNT,
-                  to: MAX_AMOUNT,
+                  to: currentBalance.amount,
                   maxDecimalDigitsCount: DECIMAL_POINTS
                 }
               )"
               :disabled="amount || formMixin.isDisabled"
             />
+
+            <div
+              v-if="currentBalance"
+              class="create-invoice-form__field-description"
+            >
+              <p>
+                {{
+                  'create-invoice-form.balance' | globalize({
+                    balance: {
+                      value: currentBalance.amount,
+                      currency: currentBalance.assetCode
+                    }
+                  })
+                }}
+              </p>
+            </div>
           </div>
         </div>
-        <div
-          class="create-invoice-form__table
-                app__table
-                app__table--with-shadow"
-        >
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  {{ 'create-invoice-form.asset' | globalize }}
-                </th>
-                <th>
-                  {{ 'create-invoice-form.price' | globalize }}
-                </th>
-                <th>
-                  {{ 'create-invoice-form.total-amount' | globalize }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, i) in assetPairs"
-                :key="`create-invoice-table-row-${i}`"
-              >
-                <td>
-                  {{ item.quoteAsset.id }}
-                </td>
-                <td>
-                  {{ item.price | formatNumber }}
-                </td>
-                <td>
-                  {{ calculateRate(item.price, form.amount) | formatNumber }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="create-invoice-form__asset-pairs">
+          <h3>
+            {{ 'create-invoice-form.acceptable-asset-pairs-title' | globalize }}
+          </h3>
+
+          <div
+            class="app__table
+                   app__table--with-shadow
+                   create-invoice-form__table"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    {{ 'create-invoice-form.asset' | globalize }}
+                  </th>
+                  <th>
+                    {{ 'create-invoice-form.price' | globalize }}
+                  </th>
+                  <th>
+                    {{ 'create-invoice-form.total-amount' | globalize }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, i) in assetPairs"
+                  :key="`create-invoice-table-row-${i}`"
+                >
+                  <td>
+                    {{ item.quoteAsset.id }}
+                  </td>
+                  <td>
+                    {{ item.price | formatNumber }}
+                  </td>
+                  <td>
+                    {{ calculateRate(item.price, form.amount) | formatNumber }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div class="app__form-row">
@@ -95,14 +118,23 @@
           </button>
         </div>
       </form>
-      <div v-else>
-        <qr-code
-          :text="generatedQRCode"
-          :margin="0"
-          :size="375"
-          :color-light="'#f2f2f4'"
-          :color-dark="'#262626'"
-        />
+      <div
+        v-else
+        class="create-invoice-form__payment"
+      >
+        <p class="create-invoice-form__qr-code-description">
+          {{ 'create-invoice-form.qr-code-description' | globalize }}
+        </p>
+
+        <div class="create-invoice-form__qr-code">
+          <qr-code
+            :text="generatedQRCode"
+            :margin="0"
+            :size="250"
+            :color-light="'#f2f2f4'"
+            :color-dark="'#262626'"
+          />
+        </div>
 
         <button
           v-ripple
@@ -117,8 +149,8 @@
     </template>
     <no-data-message
       v-else
-      :title-id="'create-invoice-form.no-pairs-message'"
-      :message-id="'create-invoice-form.here-will-pairs-list'"
+      :title="'create-invoice-form.no-pairs-message' | globalize"
+      :message="'create-invoice-form.here-will-pairs-list' | globalize"
     />
   </div>
   <loader
@@ -149,6 +181,8 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 const EVENTS = {
   close: 'close',
 }
+
+const QR_CODE_BASE = `tokend://loyaltypay?url=`
 
 export default {
   name: 'create-invoice-form',
@@ -196,7 +230,7 @@ export default {
           required,
           amountRange: amountRange(
             this.MIN_AMOUNT,
-            this.MAX_AMOUNT
+            this.currentBalance.amount
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
@@ -212,6 +246,10 @@ export default {
       types.balances,
       types.assetPairs,
     ]),
+
+    currentBalance () {
+      return this.balances.find(item => item.assetCode === this.form.asset)
+    },
   },
   async created () {
     initApi(this.wallet, this.config)
@@ -253,7 +291,9 @@ export default {
           Sdk.api.blobs.types.bravo,
           data
         )
-        this.generatedQRCode = blob.id
+
+        const blobUrl = `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${blob.id}`
+        this.generatedQRCode = QR_CODE_BASE + encodeURIComponent(blobUrl)
       } catch (error) {
         ErrorHandler.process(error)
       }
@@ -284,11 +324,29 @@ export default {
 <style lang='scss' scoped>
 @import '@/vue/forms/_app-form';
 
-.create-invoice-form__table {
+.create-invoice-form__field-description {
+  margin-top: 0.7rem;
+  opacity: 0.7;
+}
+
+.create-invoice-form__asset-pairs {
   margin-top: 2.4rem;
+
+  .create-invoice-form__table {
+    margin-top: 1rem;
+  }
 }
 
 .create-invoice-form__close-btn {
+  margin-top: 4rem;
+}
+
+.create-invoice-form__qr-code-description {
+  font-size: 1.6rem;
+}
+
+.create-invoice-form__qr-code {
   margin-top: 2.4rem;
+  text-align: center;
 }
 </style>
