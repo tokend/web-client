@@ -30,6 +30,7 @@ for further information about branching and tagging conventions.
 - Withdrawal fiat by the card information form module
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
+- Pre-issuance drawer pseudo module
 
 ### Changed
 - Now using new account endpoint for loading the fees

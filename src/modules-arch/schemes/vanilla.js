@@ -26,6 +26,7 @@ import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-ac
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
@@ -148,6 +149,12 @@ export default {
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
+          new IssuanceDrawerPseudoModule({
+            isCorporateOnly: true,
+          }),
+          new PreIssuanceDrawerPseudoModule({
+            isCorporateOnly: true,
+          }),
         ],
       },
     ),
