@@ -2,16 +2,27 @@ import { globalize } from '@/vue/filters/globalize'
 
 export const tooltip = (() => {
   const COLOR_BLUE = '#3a4180'
-  const COLOR_WHITE = '#FFF'
+  const COLOR_BLACK = '#000'
   const MARGIN_SIZE = 8
+  const DIRECTIONS = {
+    top: 'top',
+    right: 'right',
+    bottom: 'bottom',
+    left: 'left',
+  }
   let tooltipText
   let tooltipWrapper
+  let tooltipArrow
   let targetWidth
   let targetHeight
   let twRect
   let target
   let targetRect
+  let tooltipArrowRect
   let position
+  let currentPosition
+  let bgColor
+  let textColor
   // let resizeHandler = null
 
   function alignTooltip (e) {
@@ -22,27 +33,30 @@ export const tooltip = (() => {
     let rectHeight = tooltipWrapper.offsetHeight + MARGIN_SIZE
     let spaceToBottom = window.innerHeight -
       tooltipWrapper.offsetTop + tooltipWrapper.offsetHeight
-
     // check if there is enough space for tw on left side
-    if (twRect.width > targetRect.left) {
+
+    if (twRect.width > targetRect.left && position !== DIRECTIONS.right) {
       tooltipWrapper.style.top = targetRect.height + MARGIN_SIZE + 'px'
       tooltipWrapper.style.left = (0 - targetRect.left) + (2 * MARGIN_SIZE) + 'px'
+      currentPosition = DIRECTIONS.bottom
     }
     // check if there is enough space for tw on right side
-    if (twRect.width > spaceToRight &&
-      (position !== 'top' && position !== 'bottom')) {
+    if (twRect.width > spaceToRight && position !== DIRECTIONS.left) {
       tooltipWrapper.style.top = targetRect.height + MARGIN_SIZE + 'px'
       tooltipWrapper.style.right = (0 - targetRect.right) + (2 * MARGIN_SIZE) + 'px'
+      currentPosition = DIRECTIONS.bottom
     }
 
     // check if there is enough space for tw on top side
-    if (rectHeight > targetRect.top && position === 'top') {
+    if (rectHeight > targetRect.top) {
       tooltipWrapper.style.bottom = -rectHeight + 'px'
+      currentPosition = DIRECTIONS.bottom
     }
 
     // check if there is enough space for tw on bottom side
-    if (rectHeight < spaceToBottom && position === 'bottom') {
+    if (rectHeight > spaceToBottom) {
       tooltipWrapper.style.top = -rectHeight + 'px'
+      currentPosition = DIRECTIONS.top
     }
 
     // check if tw overflows left side
@@ -66,25 +80,27 @@ export const tooltip = (() => {
   function getPositionStyle (twRect) {
     let positionStyle
     switch (position) {
-      case 'top':
+      case DIRECTIONS.top:
+        currentPosition = DIRECTIONS.top
         positionStyle = {
           bottom: targetHeight + MARGIN_SIZE,
         }
         break
-      case 'right':
+      case DIRECTIONS.right:
+        currentPosition = DIRECTIONS.right
         positionStyle = {
-          top: '0',
           right: 0 - twRect.width - MARGIN_SIZE,
         }
         break
-      case 'left':
+      case DIRECTIONS.left:
+        currentPosition = DIRECTIONS.left
         positionStyle = {
-          top: '0',
           left: 0 - twRect.width - MARGIN_SIZE,
         }
         break
-      case 'bottom':
+      case DIRECTIONS.bottom:
       default:
+        currentPosition = DIRECTIONS.bottom
         positionStyle = {
           top: targetHeight + MARGIN_SIZE,
         }
@@ -99,60 +115,84 @@ export const tooltip = (() => {
     targetWidth = targetRect.width
     targetHeight = targetRect.height
     position = binding.value.position
-
+    bgColor = binding.value.bgColor || COLOR_BLACK
+    textColor = binding.value.textColor || COLOR_BLUE
     tooltipWrapper = document.createElement('div')
     tooltipText = document.createElement('div')
-    const tri = document.createElement('div')
-
+    tooltipArrow = document.createElement('div')
     tooltipWrapper.appendChild(tooltipText)
-    tooltipWrapper.appendChild(tri)
+    tooltipWrapper.appendChild(tooltipArrow)
     target.appendChild(tooltipWrapper)
 
     tooltipWrapper.className = 'tooltip-wrapper'
     tooltipWrapper.style.position = 'absolute'
     tooltipWrapper.style.width = (binding.value.width || targetWidth) + 'px'
 
+    tooltipText.innerText = globalize(binding.value.text)
+    tooltipText.style.color = binding.value.txtColor
+    tooltipText.style.fontSize = '1.4rem'
+    tooltipText.style.color = textColor
+
     twRect = tooltipWrapper.getBoundingClientRect()
     const positionStyle = getPositionStyle(twRect)
 
-    tooltipWrapper.style.overflow = 'hidden'
     tooltipWrapper.style.pointerEvents = 'none'
     tooltipWrapper.style.top = positionStyle.top + 'px'
     tooltipWrapper.style.right = positionStyle.right + 'px'
     tooltipWrapper.style.bottom = positionStyle.bottom + 'px'
     tooltipWrapper.style.left = positionStyle.left + 'px'
-    tooltipWrapper.style.backgroundColor = binding.value.bgcolor || COLOR_WHITE
+    tooltipWrapper.style.backgroundColor = bgColor
     tooltipWrapper.style.display = 'flex'
     tooltipWrapper.style.justifyContent = 'center'
     tooltipWrapper.style.alignItems = 'center'
     tooltipWrapper.style.padding = '8px'
     tooltipWrapper.style.border = `1px solid ${COLOR_BLUE}`
     tooltipWrapper.style.zIndex = '120'
-    tooltipWrapper.style.transition = `all 500ms ease-in-out`
-    tooltipWrapper.style.opacity = '0'
-    tooltipWrapper.style.borderRadius = '8px'
-
-    tooltipText.innerText = globalize(binding.value.text)
-    tooltipText.style.color = binding.value.txtColor
-    tooltipText.style.fontSize = '1.4rem'
-    // tooltipText.style.wordBreak = 'break-all'
-    tooltipText.style.color = binding.value.textColor || COLOR_BLUE
-
-    tri.style.borderLeft = tri.style.borderRight = '4px solid transparent'
-    tri.style.borderBottom = '4px solid #2f2f2f'
-    tri.style.borderTop = '0'
-    tri.style.borderRadius = '0'
-    tri.style.position = 'absolute'
-
-    alignTooltip(target)
+    tooltipWrapper.style.transition = `all 350ms ease-in-out`
+    tooltipWrapper.style.borderRadius = '4px'
 
     if (target.style.position !== 'relative') {
       target.style.position = 'relative'
     }
 
-    setTimeout(() => {
-      tooltipWrapper.style.opacity = '1'
-    }, 0)
+    alignTooltip(target)
+    tooltipWrapper.addEventListener('transitionend', function initRenderArrow () {
+      renderArrow()
+      tooltipWrapper.removeEventListener('transitionend', initRenderArrow)
+    })
+  }
+
+  function renderArrow () {
+    tooltipArrow.style.borderLeft = tooltipArrow.style.borderRight = '8px solid transparent'
+    tooltipArrow.style.borderBottom = `8px solid ${bgColor}`
+    tooltipArrow.style.borderTop = '0'
+    tooltipArrow.style.borderRadius = '0'
+    tooltipArrow.style.position = 'absolute'
+
+    const twRect = tooltipWrapper.getBoundingClientRect()
+    const startPointX = targetRect.left - twRect.left
+    tooltipArrowRect = tooltipArrow.getBoundingClientRect()
+    switch (currentPosition) {
+      case DIRECTIONS.top:
+        tooltipArrow.style.bottom = '-8px'
+        tooltipArrow.style.transform = 'rotate(180deg)'
+        tooltipArrow.style.left = startPointX + (targetRect.width / 2) -
+          (tooltipArrowRect.width / 2) + 'px'
+        break
+      case DIRECTIONS.bottom:
+        tooltipArrow.style.top = '-8px'
+        tooltipArrow.style.left = startPointX + (targetRect.width / 2) -
+          (tooltipArrowRect.width / 2) + 'px'
+        break
+      case DIRECTIONS.left:
+        tooltipArrow.style.right = '-12px'
+        tooltipArrow.style.transform = 'rotate(90deg)'
+        break
+      case DIRECTIONS.right:
+        tooltipArrow.style.left = '-12px'
+        tooltipArrow.style.transform = 'rotate(-90deg)'
+        break
+    }
   }
 
   return {
@@ -163,13 +203,8 @@ export const tooltip = (() => {
         // window.addEventListener('resize', resizeHandler)
       })
 
-      // el.addEventListener('mousemove', (e) => {
-      //   console.log(e.pageX)
-      //   console.log(e.pageY)
-      // })
-
       el.addEventListener('mouseout', (e) => {
-        // tooltipWrapper.parentNode.removeChild(tooltipWrapper)
+        tooltipWrapper.parentNode.removeChild(tooltipWrapper)
         // window.removeEventListener('resize', resizeHandler)
       })
     },
