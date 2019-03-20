@@ -167,6 +167,7 @@
         <router-link
           :to="vueRoutes.movements"
           tag="button"
+          type="button"
           class="app__button-raised invest-form__discover-tokens-btn"
         >
           {{ 'invest-form.deposit-btn' | globalize }}
