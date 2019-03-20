@@ -1,15 +1,15 @@
 <template>
-  <tbody class="deposit-list-item">
+  <tbody class="deposit-table-row">
     <tr
-      class="deposit-list-item__tr"
-      :class="{ 'deposit-list-item__tr--dark': index%2 }">
-      <td class="deposit-list-item__timeout-ticker">
+      class="deposit-table-row__tr"
+      :class="{ 'deposit-table-row__tr--dark': index%2 }">
+      <td class="deposit-table-row__timeout-ticker">
         <timeout-ticker :timeout="item.timeLeft" />
       </td>
-      <td class="deposit-list-item__amount">
+      <td class="deposit-table-row__amount">
         {{ { value: item.amount, currency: item.asset } | formatMoney }}
       </td>
-      <td class="deposit-list-item__btn">
+      <td class="deposit-table-row__btn">
         <button
           class="app__button-icon"
           @click="isAddressViewerShown = !isAddressViewerShown"
@@ -18,10 +18,10 @@
         </button>
       </td>
     </tr>
-    <tr class="deposit-list-item__key-viewer-wrp" v-if="isAddressViewerShown">
+    <tr class="deposit-table-row__key-viewer-wrp" v-if="isAddressViewerShown">
       <td colspan="3">
         <key-viewer
-          class="deposit-list-item__key-viewer"
+          class="deposit-table-row__key-viewer"
           :value="item.address"
         />
       </td>
@@ -33,7 +33,7 @@
 import TimeoutTicker from './coinpayments-timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
 export default {
-  name: 'deposit-list-item',
+  name: 'deposit-table-row',
   components: {
     TimeoutTicker,
     KeyViewer,
@@ -53,7 +53,7 @@ export default {
 <style lang="scss" scoped>
   @import '~@scss/variables';
 
-  .deposit-list-item {
+  .deposit-table-row {
     width: 100%;
     max-width: 100%;
     overflow: auto;
@@ -62,32 +62,32 @@ export default {
       }
     }
 
-  .deposit-list-item__tr{
+  .deposit-table-row__tr{
     &:hover{
       background: $col-table-row-selected;
     }
   }
 
-  .deposit-list-item__tr--dark {
+  .deposit-table-row__tr--dark {
     background: $col-table-alt-row-background;
   }
 
-  .deposit-list-item__amount {
+  .deposit-table-row__amount {
     max-width: 24rem;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
   }
 
-  .deposit-list-item__key-viewer {
+  .deposit-table-row__key-viewer {
     padding: 2rem 1rem;
   }
 
-  .deposit-list-item__btn {
+  .deposit-table-row__btn {
     width: 6.4rem;
   }
 
-  .deposit-list-item__key-viewer-wrp {
+  .deposit-table-row__key-viewer-wrp {
     width: 100%;
     max-width: 100%;
     overflow: hidden;

@@ -30,7 +30,7 @@ import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/with
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
-import { CoinpaymentsModule } from '@/vue/modules/coinpayments/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments/module'
 
 export default {
   pages: [
@@ -66,7 +66,7 @@ export default {
           new MovementsHistoryModule(),
           new WithdrawalDrawerPseudoModule(),
           new DepositFormPseudoModule({
-            submodules: [new CoinpaymentsModule()],
+            submodules: [new CoinpaymentsDepositModule()],
           }),
           new TransferDrawerPseudoModule(),
         ],
