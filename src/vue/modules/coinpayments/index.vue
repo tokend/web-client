@@ -5,7 +5,7 @@
       :balance-details="balanceDetails"
     />
     <div class="coinpayments__deposit-list-wrp">
-      <deposit-list
+      <deposit-table
         :balance-id="balanceDetails.id"
       />
     </div>
@@ -14,7 +14,7 @@
 
 <script>
 import CoinpaymentsForm from './components/coinpayments-form'
-import DepositList from './components/coinpayments-deposit-list'
+import DepositTable from './components/coinpayments-deposit-table'
 
 import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
@@ -23,7 +23,7 @@ export default {
   name: 'coinpayments',
   components: {
     CoinpaymentsForm,
-    DepositList,
+    DepositTable,
   },
   props: {
     wallet: {

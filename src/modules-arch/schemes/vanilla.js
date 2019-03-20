@@ -32,7 +32,7 @@ import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sal
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
-import { CoinpaymentsModule } from '@/vue/modules/coinpayments/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments/module'
 
 export default {
   pages: [
@@ -68,7 +68,7 @@ export default {
           new MovementsHistoryModule(),
           new WithdrawalDrawerPseudoModule(),
           new DepositFormPseudoModule({
-            submodules: [new CoinpaymentsModule()],
+            submodules: [new CoinpaymentsDepositModule()],
           }),
           new TransferDrawerPseudoModule(),
         ],

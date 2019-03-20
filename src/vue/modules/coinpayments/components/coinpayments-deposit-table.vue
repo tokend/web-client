@@ -1,8 +1,8 @@
 <template>
-  <div class="deposit-list">
+  <div class="deposit-table">
     <template v-if="isLoaded && !isFailed">
-      <table class="deposit-list__table">
-        <deposit-list-item
+      <table class="deposit-table__table">
+        <deposit-table-row
           v-for="(item, index) in list"
           :item="item"
           :index="index+1"
@@ -10,7 +10,7 @@
         />
       </table>
     </template>
-    <div class="deposit-list__collection-loader-wrp">
+    <div class="deposit-table__collection-loader-wrp">
       <collection-loader
         v-show="list.length"
         :first-page-loader="firstPageLoader"
@@ -19,11 +19,11 @@
       />
     </div>
     <template v-if="!isLoaded">
-      <loader message-id="coinpayments.loading-msg" />
+      <loader message-id="coinpayments-deposit.loading-msg" />
     </template>
     <template v-if="isFailed">
       <p>
-        {{ 'coinpayments.load-failed-msg' | globalize }}
+        {{ 'coinpayments-deposit.load-failed-msg' | globalize }}
       </p>
     </template>
   </div>
@@ -32,16 +32,16 @@
 <script>
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
-import DepositListItem from './coinpayments-deposit-list-item'
+import DepositTableRow from './coinpayments-deposit-table-row'
 import { IssuanceRecord } from '../wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
 
 export default {
-  name: 'deposit-list',
+  name: 'deposit-table',
   components: {
-    DepositListItem,
+    DepositTableRow,
     CollectionLoader,
     Loader,
   },
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .deposit-list__table {
+  .deposit-table__table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;

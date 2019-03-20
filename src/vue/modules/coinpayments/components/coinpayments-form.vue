@@ -19,7 +19,7 @@
                 'form.amount',
                 { from: MIN_AMOUNT, to: MAX_AMOUNT }
               )"
-              :label="'coinpayments.amount' | globalize"
+              :label="'coinpayments-deposit.amount-lbl' | globalize"
               :monospaced="true"
               :disabled="formMixin.isDisabled"
             />
@@ -33,7 +33,7 @@
               :disabled="formMixin.isDisabled"
               form="coinpayments-form"
             >
-              {{ 'coinpayments.request-cp' | globalize }}
+              {{ 'coinpayments-deposit.request-address-lbl' | globalize }}
             </button>
             <form-confirmation
               v-if="formMixin.isConfirmationShown"
@@ -51,7 +51,7 @@
     </template>
     <template v-else>
       <p class="">
-        {{ 'coinpayments.no-address' | globalize }}
+        {{ 'coinpayments-deposit.no-address-msg' | globalize }}
       </p>
     </template>
   </div>

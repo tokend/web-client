@@ -1,14 +1,13 @@
 <template>
   <div>
-    <p class="address-viewer__help">
-      {{ 'coinpayments.ready-cp' | globalize({
-        amount: formatMoney(depositDetails.amount),
-        asset: asset.code
+    <p class="address-viewer__help-msg">
+      {{ 'coinpayments-deposit.address-ready-msg' | globalize({
+        amount: depositDetails.amount,
+        money: asset.code
       }) }}
     </p>
     <key-viewer :value="depositDetails.address" />
     <timeout-ticker
-      class="deposit__timeout-ticker"
       :timeout="+depositDetails.timeout"
     />
   </div>
@@ -17,8 +16,6 @@
 <script>
 import KeyViewer from '@/vue/common/KeyViewer'
 import TimeoutTicker from './coinpayments-timeout-ticker'
-
-import { formatMoney } from '@/vue/filters/formatMoney'
 
 export default {
   name: 'address-viewer',
@@ -30,14 +27,11 @@ export default {
     depositDetails: { type: Object, required: true },
     asset: { type: Object, required: true },
   },
-  methods: {
-    formatMoney,
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  .address-viewer__help {
+  .address-viewer__help-msg {
     margin-bottom: 2rem;
   }
 </style>

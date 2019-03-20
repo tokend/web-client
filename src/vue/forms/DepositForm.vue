@@ -23,17 +23,18 @@
         </div>
 
         <template v-for="item in assets">
-          <submodule-importer
-            v-if="getModule().canRenderSubmodule(CoinpaymentsModule) &&
-              item === selectedAsset && item.isCoinpayments"
-            :submodule="getModule().getSubmodule(CoinpaymentsModule)"
-            :asset="item"
-            :balance-details="balanceDetails"
-            :wallet="wallet"
-            :account-id="accountId"
-            :config="config"
-            :key="item.code"
-          />
+          <template v-if="item === selectedAsset && item.isCoinpayments">
+            <submodule-importer
+              v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)"
+              :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
+              :asset="item"
+              :balance-details="balanceDetails"
+              :wallet="wallet"
+              :account-id="accountId"
+              :config="config"
+              :key="item.code"
+            />
+          </template>
           <address-loader
             @ready="enableForm()"
             :key="item.code"
@@ -80,7 +81,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { CoinpaymentsModule } from '@/vue/modules/coinpayments/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments/module'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -97,7 +98,7 @@ export default {
   },
   data () {
     return {
-      CoinpaymentsModule,
+      CoinpaymentsDepositModule,
       config: {
         horizonURL: config.HORIZON_SERVER,
       },
