@@ -157,7 +157,7 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    async setCurrentAsset (value) {
+    setCurrentAsset (value) {
       if (value) {
         this.currentAsset = value.code
       } else {
