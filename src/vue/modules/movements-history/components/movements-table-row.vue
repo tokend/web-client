@@ -118,6 +118,8 @@ export default {
           return 'movements-history.effects.charged-from-locked'
         case ParticularBalanceChangeEffect:
           return 'movements-history.effects.matched'
+        default:
+          return 'movements-history.effects.unknown'
       }
     },
     operationTypeTranslationId (operationDetails) {
@@ -136,6 +138,8 @@ export default {
           return 'movements-history.operations.payment'
         case ReviewRequestOp:
           return 'movements-history.operations.review-request'
+        default:
+          return 'movements-history.operations.unknown'
       }
     },
     movementAmount (movement) {

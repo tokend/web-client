@@ -424,7 +424,8 @@
         "unlocked": "Unlocked",
         "withdrawn": "Withdrawn",
         "charged-from-locked": "Charged from locked",
-        "matched": "Matched"
+        "matched": "Matched",
+        "unknown": "Unknown type"
       },
       "operations": {
         "create-issuance-request": "Issuance/deposit requested",
@@ -433,7 +434,8 @@
         "review-request": "Request reviewed",
         "create-aml-alert-request": "AML alert",
         "manage-offer": "Offer",
-        "payment": "Payment"
+        "payment": "Payment",
+        "unknown": "Unknown type"
       },
       "fee-th": "Fee",
       "type-th": "Type",

@@ -135,7 +135,7 @@ export class Movement {
       case OPERATION_DETAILS_TYPES.createWithdrawalRequest:
         return new CreateWithdrawRequestOp(details)
       default:
-        throw new Error(`Unknown type: ${details.type}`)
+        return {}
     }
   }
 
@@ -158,7 +158,7 @@ export class Movement {
       case EFFECT_TYPES.chargedFromLocked:
         return new ChargedFromLockedEffect(effect)
       default:
-        throw new Error(`Unknown type: ${effect.type}`)
+        return {}
     }
   }
 }
