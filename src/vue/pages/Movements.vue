@@ -303,6 +303,9 @@ export default {
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.balance.id)
+        .sort(
+          (firstAsset, secondAsset) => secondAsset.isFiat - firstAsset.isFiat
+        )
     },
 
     withdrawalFiatModuleWithdrawn () {
