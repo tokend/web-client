@@ -31,6 +31,10 @@ for further information about branching and tagging conventions.
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
 - Pre-issuance drawer pseudo module
+- Avatar field on verification forms
+- Application logo URL for module scheme
+- Displaying user avatar in passport
+- Loyalty points merchant & reconcillation schemes
 
 ### Changed
 - Now using new account endpoint for loading the fees
