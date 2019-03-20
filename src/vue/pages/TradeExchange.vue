@@ -170,17 +170,7 @@ export default {
           quote_asset: this.assetPair.quote,
           is_buy: false,
         })
-        this.sellOffersList = response.data.sort((a, b) => {
-          let firstSortParam = parseFloat(a.price)
-          let secondSortParam = parseFloat(b.price)
-          if (firstSortParam > secondSortParam) {
-            return 1
-          }
-          if (firstSortParam < secondSortParam) {
-            return -1
-          }
-          return 0
-        })
+        this.sellOffersList = this.sortOffersList(response.data, 'bids')
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
