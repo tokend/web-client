@@ -86,7 +86,6 @@ export class MathUtil {
    * @param {ROUND_TYPE} [ROUND_TYPE]
    * @returns percentage of the passed value
    */
-
   static percentOfValue (value, percent, ROUND_TYPE = ROUNDING_MODES.ROUND_UP) {
     const number = new BigNumber(value)
     const percentValue = MathUtil.divide(percent, MAX_ALLOWED_PERCENT)
