@@ -54,6 +54,8 @@ export default {
   }
 
   .coinpayments__deposit-list-wrp {
+    width: 100%;
+    max-width: 100%;
     margin-top: 5rem;
   }
 </style>

@@ -1,11 +1,18 @@
 import { types } from './types'
 import { api } from '../_api'
 
+const HORIZON_VERSION_PREFIX = 'v3'
+
 export const actions = {
   async [types.LOAD_DEPOSIT] ({ commit }, params) {
     const endpoint = `/integrations/coinpayments/deposit`
-    const { data: response } = await api().postWithSignature(endpoint, params)
-    return response.extras
+    const response = await api().postWithSignature(endpoint, {
+      data: {
+        type: 'coinpayments_deposit',
+        attributes: params,
+      },
+    })
+    return response.data
   },
   async [types.LOAD_PENDING_ISSUANCES] ({ commit }, balanceId) {
     const params = {
@@ -18,7 +25,7 @@ export const actions = {
       },
       include: ['request_details'],
     }
-    const endpoint = `/v3/create_issuance_requests`
+    const endpoint = `/${HORIZON_VERSION_PREFIX}/create_issuance_requests`
     const response = await api().getWithSignature(endpoint, params)
     return response
   },

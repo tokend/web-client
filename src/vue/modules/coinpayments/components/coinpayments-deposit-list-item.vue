@@ -54,6 +54,9 @@ export default {
   @import '~@scss/variables';
 
   .deposit-list-item {
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
       td {
         padding: 0.5rem 1rem;
       }
@@ -77,10 +80,16 @@ export default {
   }
 
   .deposit-list-item__key-viewer {
-    padding: 2rem;
+    padding: 2rem 1rem;
   }
 
   .deposit-list-item__btn {
-    width: 3.5rem;
+    width: 6.4rem;
+  }
+
+  .deposit-list-item__key-viewer-wrp {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
 </style>

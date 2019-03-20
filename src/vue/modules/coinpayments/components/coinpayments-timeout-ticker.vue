@@ -16,7 +16,7 @@ export default {
   name: 'timeout-ticker',
   props: {
     timeout: {
-      type: Number, // ms
+      type: Number,
       required: true,
     },
   },
