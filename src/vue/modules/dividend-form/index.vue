@@ -184,6 +184,7 @@ import {
   required,
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
+import { globalize } from '@/vue/filters/globalize'
 
 const EVENTS = {
   transferred: 'transferred',
@@ -384,7 +385,10 @@ export default {
           },
           sourcePaysForDest: false,
         },
-        subject: `Dividend for ${this.form.asset.code}`,
+        subject: globalize(
+          'dividend-form.subject-msg',
+          { asset: this.form.asset.code }
+        ),
         asset: this.form.asset.code,
       })
     },

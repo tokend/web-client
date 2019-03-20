@@ -1152,7 +1152,8 @@
       "amount": "Amount ({{asset}})",
       "asset-dividend-pay": "Asset in which dividends will be paid",
       "asset-holders-not-found": "Asset holders not found",
-      "asset-holders": "Asset holders"
+      "asset-holders": "Asset holders",
+      "subject-msg": "Dividend for {{asset}}"
     },
     "documents-page": {
       "explore-documents-title": "Explore documents",
