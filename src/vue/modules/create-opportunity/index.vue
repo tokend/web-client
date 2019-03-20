@@ -686,7 +686,7 @@ export default {
   },
   watch: {
     'form.information.formType.value' () {
-      this.checkDefaultAssetSubtype()
+      this.assignDefaultAssetSubtype()
     },
   },
   async created () {
@@ -695,7 +695,7 @@ export default {
     const response = await this.loadAssets()
     this.assets = response.map(item => new AssetRecord(item))
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
-    this.checkDefaultAssetSubtype()
+    this.assignDefaultAssetSubtype()
     this.isInitialized = true
   },
   methods: {
@@ -854,7 +854,7 @@ export default {
       this.form.information.maturityDate = ''
       this.form.information.formType = formType
     },
-    checkDefaultAssetSubtype () {
+    assignDefaultAssetSubtype () {
       if (this.isBond) {
         this.form.saleInformation.quoteAssets = this.baseAssets[0].code
       } else {
