@@ -10,7 +10,7 @@
       <button
         type="button"
         class="clipboard-field__button"
-        :id="`clipboard-btn-${value}`"
+        :id="`clipboard-btn-${id || value}`"
         :data-clipboard-target="`#clipboard-target-${value}`"
       >
         <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
@@ -26,9 +26,12 @@ export default {
   props: {
     value: { type: String, default: '' },
     label: { type: String, default: '' },
+    id: { type: String, default: '' },
   },
   mounted () {
-    const btn = document.querySelector(`#clipboard-btn-${this.value}`)
+    const btn = document.querySelector(
+      `#clipboard-btn-${this.id || this.value}`
+    )
     if (!btn) return
     this.clipboard = new Clipboard(btn)
   },
@@ -58,6 +61,7 @@ export default {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   color: $field-color-text;
   padding: $field-input-padding;
   @include text-font-sizes;

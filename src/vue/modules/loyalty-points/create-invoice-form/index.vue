@@ -123,6 +123,13 @@
           />
         </div>
 
+        <clipboard-field
+          class="create-invoice-form__invoice-url"
+          id="invoice-url"
+          :value="generatedInvoiceUrl"
+          :label="'create-invoice-form.invoice-url' | globalize"
+        />
+
         <button
           v-ripple
           type="button"
@@ -168,6 +175,7 @@ import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
 import { Sdk } from '@/sdk'
 import QrCode from 'vue-qr'
+import ClipboardField from '@/vue/fields/ClipboardField'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
@@ -176,7 +184,8 @@ const EVENTS = {
   close: 'close',
 }
 
-const QR_CODE_BASE = `tokend://loyaltypay?url=`
+const QR_CODE_BASE = 'tokend://loyaltypay?url='
+const INVOICE_URL_BASE = 'https://go.tokend.io/loyaltypay?url='
 const POLL_INTERVAL = 5000
 
 export default {
@@ -185,6 +194,7 @@ export default {
     QrCode,
     NoDataMessage,
     Loader,
+    ClipboardField,
   },
   mixins: [FormMixin],
   props: {
@@ -220,6 +230,7 @@ export default {
       system: '',
     },
     generatedQRCode: '',
+    generatedInvoiceUrl: '',
     isFormSubmitting: false,
     isPaymentConfirmed: false,
     pollIntervalId: 0,
@@ -306,8 +317,11 @@ export default {
           data
         )
 
-        const blobUrl = `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${blob.id}`
-        this.generatedQRCode = QR_CODE_BASE + encodeURIComponent(blobUrl)
+        const encodedBlobUrl = encodeURIComponent(
+          `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${blob.id}`
+        )
+        this.generatedQRCode = QR_CODE_BASE + encodedBlobUrl
+        this.generatedInvoiceUrl = INVOICE_URL_BASE + encodedBlobUrl
 
         this.initPolling()
       } catch (error) {
@@ -384,5 +398,9 @@ export default {
 .create-invoice-form__qr-code {
   margin-top: 2.4rem;
   text-align: center;
+}
+
+.create-invoice-form__invoice-url {
+  margin-top: 3rem;
 }
 </style>

@@ -5,7 +5,8 @@ const SCHEME_IMPORTERS = {
   vanilla: _ => import('@/modules-arch/schemes/vanilla'),
   healthcare: _ => import('@/modules-arch/schemes/healthcare'),
   reit: _ => import('@/modules-arch/schemes/reit'),
-  loyaltyPoints: _ => import('@/modules-arch/schemes/loyalty-points'),
+  loyaltyPointsMerchant: _ => import('@/modules-arch/schemes/loyalty-points-merchant'),
+  loyaltyPointsReconcillation: _ => import('@/modules-arch/schemes/loyalty-points-reconcillation'),
 }
 
 /**

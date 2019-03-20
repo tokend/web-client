@@ -32,7 +32,7 @@
     </top-bar>
 
     <drawer
-      :v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
       :is-shown.sync="isPreIssuanceDrawerShown"
     >
       <template slot="heading">
@@ -46,7 +46,7 @@
     </drawer>
 
     <drawer
-      :v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
       :is-shown.sync="isIssuanceDrawerShown"
     >
       <template slot="heading">
@@ -61,7 +61,7 @@
     </drawer>
 
     <submodule-importer
-      :v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
       :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
       :wallet="wallet"
       :config="config"

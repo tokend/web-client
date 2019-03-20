@@ -1,8 +1,16 @@
 {
   "translations": {
+    "passport": {
+      "account-unverified": "User",
+      "account-general": "User",
+      "account-corporate": "Partner"
+    },
+
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
       "create-invoice-form-title": "Create invoice",
+      "create-issuance-btn": "Create issuance",
+      "create-issuance-form-title": "Create issuance",
       "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
@@ -46,7 +54,7 @@
       "close": "Close",
       "waiting-for-payment": "Waiting for payment…",
       "acceptable-asset-pairs-title": "Acceptable asset pairs",
-      "qr-code-description": "Use loyalty app to scan this QR code and pay for the invoice",
+      "qr-code-description": "Use your loyalty app to perform the payment",
       "price": "Price",
       "asset": "Asset",
       "total-amount": "Total amount",
@@ -54,6 +62,7 @@
       "no-pairs-message": "No pairs found",
       "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
       "loading-msg": "Loading...",
+      "invoice-url": "Invoice URL",
       "payment-successfull-msg": "Payment successfull"
     }
   }
