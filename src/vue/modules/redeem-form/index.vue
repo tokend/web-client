@@ -121,9 +121,9 @@ export default {
   data: _ => ({
     isInitialized: false,
     form: {
-      asset: null,
-      quoteAsset: null,
-      totalAmount: null,
+      asset: {},
+      quoteAsset: {},
+      totalAmount: '',
     },
     selectedSale: null,
     isRedeemProcessing: false,
