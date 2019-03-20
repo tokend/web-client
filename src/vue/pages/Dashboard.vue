@@ -143,6 +143,9 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
+    async currentAsset () {
+      await this.loadBalances()
+    },
   },
   async created () {
     this.isLoading = true
@@ -154,7 +157,7 @@ export default {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    setCurrentAsset (value) {
+    async setCurrentAsset (value) {
       if (value) {
         this.currentAsset = value.code
       } else {
