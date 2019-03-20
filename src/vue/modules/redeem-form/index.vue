@@ -20,7 +20,7 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              v-if="selectedSale"
+              v-if="selectedSale.defaultQuoteAsset"
               :label="'redeem-form.invested-in' | globalize"
               v-model="selectedSale.defaultQuoteAsset.id"
               name="redeem-invested-in"
@@ -125,18 +125,16 @@ export default {
       quoteAsset: {},
       totalAmount: '',
     },
-    selectedSale: null,
+    selectedSale: {},
     isRedeemProcessing: false,
   }),
   computed: {
     ...mapGetters('redeem-form', {
       balances: types.balances,
       assets: types.assets,
+      assetsInBalance: types.assetsInBalance,
+      selectedAssetBalance: types.selectedAssetBalance,
     }),
-    assetsInBalance () {
-      const balancesCodes = this.balances.map(i => i.assetCode)
-      return this.assets.filter(a => balancesCodes.includes(a.code))
-    },
   },
   watch: {
     async 'form.asset' (asset) {
@@ -178,15 +176,12 @@ export default {
       this.$emit(EVENTS.closeDrawer)
     },
     getCreateOfferOpts () {
-      const balance = this.balances
-        .find(b => b.assetCode === this.form.asset.code).value
-
       return {
         pair: {
           base: this.form.asset.code,
           quote: this.form.quoteAsset.id,
         },
-        baseAmount: balance,
+        baseAmount: this.selectedAssetBalance(this.form.asset.code),
         quoteAmount: this.form.totalAmount,
         price: this.form.asset.details.redeemPrice,
         isBuy: false,
@@ -196,10 +191,10 @@ export default {
       this.form.asset = this.assetsInBalance[0]
     },
     calculateRedeemPrice (sale) {
-      const balance = this.balances
-        .find(b => b.assetCode === this.form.asset.code).value
-
-      return MathUtil.multiply(this.form.asset.details.redeemPrice, balance)
+      return MathUtil.multiply(
+        this.form.asset.details.redeemPrice,
+        this.selectedAssetBalance(this.form.asset.code)
+      )
     },
     redeemed () {
       this.$emit(EVENTS.redeemed)

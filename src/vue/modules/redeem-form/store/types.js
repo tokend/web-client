@@ -14,6 +14,8 @@ const getters = {
   accountId: 'accountId',
   balances: 'balances',
   assets: 'assets',
+  assetsInBalance: 'assetsInBalance',
+  selectedAssetBalance: 'selectedAssetBalance',
 }
 
 export const types = {

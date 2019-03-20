@@ -66,8 +66,14 @@ export const getters = {
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.assets]: state => state.assets
     .map(a => new AssetRecord(a))
-    // TODO:
     .filter(a => a.isAllowedToRedeem && a.owner.id !== state.accountId),
+  [types.assetsInBalance]: (state, getters) => {
+    const balancesCodes = getters[types.balances].map(i => i.assetCode)
+    return getters[types.assets].filter(a => balancesCodes.includes(a.code))
+  },
+  [types.selectedAssetBalance]: (state, getters) => assetCode => {
+    return getters[types.balances].find(b => b.assetCode === assetCode).value
+  },
 }
 
 export const RedeemFormModule = {
