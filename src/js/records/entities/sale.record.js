@@ -120,6 +120,10 @@ export class SaleRecord {
     return moment(this.endTime).diff(moment(), 'days')
   }
 
+  get daysAfterTheEnd () {
+    return Math.abs(this.daysToGo)
+  }
+
   get startsIn () {
     return moment(this.startTime).diff(moment().startOf('day'), 'days')
   }

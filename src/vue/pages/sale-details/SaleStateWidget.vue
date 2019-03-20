@@ -39,13 +39,23 @@
       })"
     />
 
-    <vue-markdown
-      class="sale-state-widget__days-to-go"
-      :source="'sale-details.days-to-go' | globalize({
-        days: sale.daysToGo
-      })"
-    />
+    <template v-if="sale.daysToGo < 0">
+      <vue-markdown
+        class="sale-state-widget__days-to-go"
+        :source="'sale-details.days-after-the-end' | globalize({
+          days: sale.daysAfterTheEnd
+        })"
+      />
+    </template>
 
+    <template v-else>
+      <vue-markdown
+        class="sale-state-widget__days-to-go"
+        :source="'sale-details.days-to-go' | globalize({
+          days: sale.daysToGo
+        })"
+      />
+    </template>
     <button
       v-ripple
       class="app__button-raised sale-state-widget__overview-btn"

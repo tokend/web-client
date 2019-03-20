@@ -39,9 +39,16 @@
       </p>
 
       <p class="sale-card__days-to-launch">
-        <!-- eslint-disable max-len -->
-        {{ 'sale-card.days-to-launch' | globalize({ days: sale.daysToGo }) }}
-        <!-- eslint-enable max-len -->
+        <template v-if="sale.daysToGo < 0">
+          {{ 'sale-card.days-after-the-end' | globalize({
+            days: sale.daysAfterTheEnd
+          })
+          }}
+        </template>
+
+        <template v-else>
+          {{ 'sale-card.days-to-launch' | globalize({ days: sale.daysToGo }) }}
+        </template>
       </p>
 
       <vue-markdown

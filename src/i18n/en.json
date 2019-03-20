@@ -769,6 +769,7 @@
       "funded": "{{funded, percent}} funded",
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
+      "days-after-the-end": "Closed {{days}} days ago",
       "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
     },
     "trade-history": {
@@ -860,7 +861,8 @@
       "funded": "{{funded, percent}} funded",
       "investors": "### {{investors}}\ninvestors",
       "days-to-go": "### {{days}}\ndays to go",
-      "view-details-btn": "View details"
+      "view-details-btn": "View details",
+      "days-after-the-end": "### {{days}}\ndays after closed"
     },
     "sale-overview": {
       "loading-msg": "Loading",
