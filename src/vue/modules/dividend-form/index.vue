@@ -207,6 +207,8 @@ export default {
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
      * @property config.horizonURL - the url of horizon server (without version)
+     * @property [config.defaultAssetCode] - prefills the asset-selector with
+     *           this asset code
      */
     config: {
       type: Object,
@@ -265,8 +267,13 @@ export default {
     await this.loadBalances()
     await this.loadAssets()
 
-    this.form.ownedAsset = this.ownedAssets[0]
     this.form.asset = this.assets[0]
+
+    if (this.config.defaultAssetCode) {
+      this.setDefaultAssetCodeAsSelected()
+    } else {
+      this.form.ownedAsset = this.ownedAssets[0]
+    }
 
     this.isInitialized = true
   },
@@ -439,6 +446,14 @@ export default {
       } else {
         return +this.form.ownedAsset.issued
       }
+    },
+    setDefaultAssetCodeAsSelected () {
+      if (!this.config.defaultAssetCode) {
+        throw new Error('The "defaultAssetCode" property is not defined in the module config!')
+      }
+
+      this.form.ownedAsset = this.ownedAssets
+        .find(item => item.code === this.config.defaultAssetCode)
     },
   },
 }
