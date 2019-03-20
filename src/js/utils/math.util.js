@@ -78,13 +78,19 @@ export class MathUtil {
       .toFixed(DECIMAL_PLACES)
   }
 
-  static percent (a, percent, ROUND_TYPE = ROUNDING_MODES.ROUND_UP) {
-    if (percent > MAX_ALLOWED_PERCENT) {
-      throw new Error(`${percent} can not be more than ${MAX_ALLOWED_PERCENT}`)
-    }
-    const value = new BigNumber(a)
+  /**
+   * Example: value = 200, percent = 15. Return - 30
+   *
+   * @param {Number|String} value
+   * @param {Number|String} percent
+   * @param {ROUND_TYPE} [ROUND_TYPE]
+   * @returns percentage of the passed value
+   */
+
+  static percentOfValue (value, percent, ROUND_TYPE = ROUNDING_MODES.ROUND_UP) {
+    const number = new BigNumber(value)
     const percentValue = MathUtil.divide(percent, MAX_ALLOWED_PERCENT)
-    return MathUtil.multiply(value, percentValue)
+    return MathUtil.multiply(number, percentValue)
   }
 
   static _isValidParams (op, a, b, c = 0) {

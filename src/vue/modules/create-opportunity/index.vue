@@ -811,7 +811,7 @@ export default {
           this.form.information.maxIssuanceAmount
         )
         operation.creatorDetails.redeemPrice = MathUtil.add(
-          MathUtil.percent(
+          MathUtil.percentOfValue(
             saleFixedPrice,
             this.form.saleInformation.annualReturn
           ),
