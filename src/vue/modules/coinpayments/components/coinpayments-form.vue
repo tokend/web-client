@@ -71,6 +71,9 @@ import {
   required,
   amountRange,
 } from '@validators'
+
+const TRANSACTION_TIME_MARGIN = 600 // seconds
+
 export default {
   name: 'coinpayments-form',
   components: {
@@ -113,9 +116,12 @@ export default {
         this.depositDetails = await this.loadDeposit(
           {
             amount: this.form.amount,
-            balance: this.balanceDetails.id,
+            receiver: this.balanceDetails.id,
           }
         )
+        this.depositDetails.code = this.asset.code
+        this.depositDetails.timeout = +this.depositDetails.timeout -
+          TRANSACTION_TIME_MARGIN
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
         this.isFailed = true

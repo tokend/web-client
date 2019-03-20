@@ -1,6 +1,8 @@
 import _get from 'lodash/get'
 import moment from 'moment'
 
+const TRANSACTION_TIME_MARGIN = 600 // seconds
+
 export class IssuanceRecord {
   constructor (record, detailsOrAccountId) {
     this.id = record.id
@@ -15,10 +17,9 @@ export class IssuanceRecord {
   }
 
   _calculateTimeout () {
-    const margin = 600 // seconds
     const now = moment()
     const createdAt = moment(this.date)
     const diff = now.diff(createdAt) / 1000
-    return this.timeout - diff - margin
+    return this.timeout - diff - TRANSACTION_TIME_MARGIN
   }
 }
