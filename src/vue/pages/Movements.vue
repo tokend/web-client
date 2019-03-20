@@ -29,7 +29,7 @@
             @click="isWithdrawalDrawerShown = true"
           >
             <i class="mdi mdi-download movements__btn-icon" />
-            {{ 'op-pages.withdrawal' | globalize }}
+            {{ 'op-pages.withdraw' | globalize }}
           </button>
         </template>
 
@@ -40,7 +40,7 @@
             @click="fiatWithdrawalFormShown = true"
           >
             <i class="mdi mdi-upload movements__btn-icon" />
-            {{ 'op-pages.withdrawal' | globalize }}
+            {{ 'op-pages.withdraw' | globalize }}
           </button>
         </template>
 

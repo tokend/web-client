@@ -262,11 +262,12 @@ export default {
     },
 
     reference () {
-      return btoa(JSON.stringify({
-        asset: this.form.asset,
-        amount: this.form.amount,
-        date: new Date().toISOString(),
-      }))
+      return 'TEST2'
+      // return btoa(JSON.stringify({
+      //   asset: this.form.asset,
+      //   amount: this.form.amount,
+      //   date: new Date().toISOString(),
+      // }))
     },
   },
   async created () {

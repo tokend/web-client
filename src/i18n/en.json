@@ -388,7 +388,7 @@
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
       "assets-loading-msg": "Loading the assets…",
-      "withdrawal": "Withdrawal",
+      "withdraw": "Withdraw",
       "deposit": "Deposit",
       "send": "Send",
       "dividend": "Dividend",

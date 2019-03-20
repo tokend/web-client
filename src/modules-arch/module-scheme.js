@@ -13,6 +13,9 @@ export class ModuleScheme {
    * Label that should be displayed in the sidebar. To make easier
    * distinguishing of the current scheme.
    *
+   * @param {String} scheme.appLogoUrl
+   * URL of the image that should be displayed as an application logo
+   *
    * @param {Function} scheme.importEnLocaleFile
    * Example: _ => import('./path').
    *
@@ -23,6 +26,7 @@ export class ModuleScheme {
 
     this._rawScheme = scheme
     this._sidebarLabel = scheme.sidebarLabel
+    this._appLogoUrl = scheme.appLogoUrl
     this._pages = scheme.pages
     this._importEnLocaleFile = scheme.importEnLocaleFile
 
@@ -32,6 +36,7 @@ export class ModuleScheme {
   }
 
   get sidebarLabel () { return this._sidebarLabel }
+  get appLogoUrl () { return this._appLogoUrl }
   get pages () { return this._pages }
   get cache () { return this._cache }
   get importEnLocaleFile () { return this._importEnLocaleFile }

@@ -11,6 +11,7 @@ export default {
   importEnLocaleFile () {
     return import('@/modules-arch/schemes/loyalty-points-merchant.en.json')
   },
+  appLogoUrl: '/static/pet-shop.png',
   pages: [
     new LoyaltyPointsPageModule(
       {
