@@ -11,41 +11,11 @@
       "create-invoice-form-title": "Create invoice",
       "create-issuance-btn": "Create issuance",
       "create-issuance-form-title": "Create issuance",
-      "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
 
     "loyalty-points-invoices": {
       "history-title": "History"
-    },
-
-    "loyalty-points-statistics": {
-      "withdrawals-title": "Withdrawals",
-      "withdrawal-requests-title": "Withdrawal requests",
-      "incoming-volume-title": "Withdrawal's incoming volume",
-      "summary-volume-title": "Withdrawal's summary volume"
-    },
-
-    "incoming-volume-viewer": {
-      "loading-msg": "Loading incoming withdrawal's volume",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "summary-volume-viewer": {
-      "loading-msg": "Loading summary withdrawal's volume…",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "withdrawals-statistics-viewer": {
-      "loading-msg": "Loading withdrawals statistics…",
-      "loading-error-msg": "There was an error while loading."
-    },
-
-    "withdrawal-requests-viewer": {
-      "loading-msg": "Loading withdrawal requests…",
-      "loading-error-msg": "There was an error while loading.",
-      "approved-request-label": "Approved",
-      "rejected-request-label": "Rejected"
     },
 
     "create-invoice-form": {

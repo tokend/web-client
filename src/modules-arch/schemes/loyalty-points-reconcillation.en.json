@@ -6,64 +6,31 @@
       "account-corporate": "Partner"
     },
 
-    "loyalty-points": {
-      "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
-      "create-issuance-btn": "Create issuance",
-      "create-issuance-form-title": "Create issuance",
-      "statistics-page": "Statistics",
-      "invoices-page": "Invoices"
-    },
-
-    "loyalty-points-invoices": {
-      "history-title": "History"
-    },
-
     "loyalty-points-statistics": {
-      "withdrawals-title": "Withdrawals",
-      "withdrawal-requests-title": "Withdrawal requests",
-      "incoming-volume-title": "Withdrawal's incoming volume",
-      "summary-volume-title": "Withdrawal's summary volume"
+      "payable-receivable-title": "Payable / Receivable",
+      "receivable-distribution-title": "Receivable distribution",
+      "receivable-overtime-title": "Receivable overtime",
+      "payable-overtime-title": "Payable overtime"
     },
 
-    "incoming-volume-viewer": {
-      "loading-msg": "Loading incoming withdrawal's volume",
+    "payable-overtime-viewer": {
+      "loading-msg": "Loading payable overtime statistics…",
       "loading-error-msg": "There was an error while loading."
     },
 
-    "summary-volume-viewer": {
-      "loading-msg": "Loading summary withdrawal's volume…",
+    "receivable-overtime-viewer": {
+      "loading-msg": "Loading payable overtime statistics…",
       "loading-error-msg": "There was an error while loading."
     },
 
-    "withdrawals-statistics-viewer": {
-      "loading-msg": "Loading withdrawals statistics…",
+    "payable-receivable-viewer": {
+      "loading-msg": "Loading payable / receivable statistics…",
       "loading-error-msg": "There was an error while loading."
     },
 
-    "withdrawal-requests-viewer": {
-      "loading-msg": "Loading withdrawal requests…",
-      "loading-error-msg": "There was an error while loading.",
-      "approved-request-label": "Approved",
-      "rejected-request-label": "Rejected"
-    },
-
-    "create-invoice-form": {
-      "amount-lbl": "Amount {{asset}}",
-      "balance": "Balance: {{balance, money}}",
-      "close": "Close",
-      "waiting-for-payment": "Waiting for payment…",
-      "acceptable-asset-pairs-title": "Acceptable asset pairs",
-      "qr-code-description": "Use your loyalty app to perform the payment",
-      "price": "Price",
-      "asset": "Asset",
-      "total-amount": "Total amount",
-      "create-invoice": "Create invoice",
-      "no-pairs-message": "No pairs found",
-      "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
-      "loading-msg": "Loading...",
-      "invoice-url": "Invoice URL",
-      "payment-successfull-msg": "Payment successfull"
+    "receivable-distribution-viewer": {
+      "loading-msg": "Loading receivable distribution…",
+      "loading-error-msg": "There was an error while loading."
     }
   }
 }

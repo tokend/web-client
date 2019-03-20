@@ -1,46 +1,47 @@
 <template>
   <div class="loyalty-points-statistics">
-    <div class="loyalty-points-statistics__withdrawals">
+    <div class="loyalty-points-statistics__overall">
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{ 'loyalty-points-statistics.withdrawals-title' | globalize }}
+          {{ 'loyalty-points-statistics.payable-receivable-title' | globalize }}
         </h3>
-        <withdrawals-statistics-viewer />
+        <payable-receivable-viewer />
       </div>
 
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{
-            'loyalty-points-statistics.withdrawal-requests-title' | globalize
-          }}
+          <!-- eslint-disable-next-line max-len -->
+          {{ 'loyalty-points-statistics.receivable-distribution-title' | globalize }}
         </h3>
-        <withdrawal-requests-viewer />
+        <receivable-distribution-viewer />
       </div>
     </div>
 
-    <div class="loyalty-points-statistics__volumes">
+    <div class="loyalty-points-statistics__overtimes">
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{ 'loyalty-points-statistics.incoming-volume-title' | globalize }}
+          {{
+            'loyalty-points-statistics.receivable-overtime-title' | globalize
+          }}
         </h3>
-        <incoming-volume-viewer />
+        <receivable-overtime-viewer />
       </div>
 
       <div class="loyalty-points-statistics_viewer">
         <h3 class="loyalty-points-statistics_viewer-title">
-          {{ 'loyalty-points-statistics.summary-volume-title' | globalize }}
+          {{ 'loyalty-points-statistics.payable-overtime-title' | globalize }}
         </h3>
-        <summary-volume-viewer />
+        <payable-overtime-viewer />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import WithdrawalsStatisticsViewer from './components/viewers/withdrawals-statistics-viewer'
-import WithdrawalRequestsViewer from './components/viewers/withdrawal-requests-viewer'
-import IncomingVolumeViewer from './components/viewers/incoming-volume-viewer'
-import SummaryVolumeViewer from './components/viewers/summary-volume-viewer'
+import PayableReceivableViewer from './components/viewers/payable-receivable-viewer'
+import ReceivableDistributionViewer from './components/viewers/receivable-distribution-viewer'
+import ReceivableOvertimeViewer from './components/viewers/receivable-overtime-viewer'
+import PayableOvertimeViewer from './components/viewers/payable-overtime-viewer'
 
 import { initApi } from './_api'
 
@@ -49,10 +50,10 @@ import { Wallet } from '@tokend/js-sdk'
 export default {
   name: 'loyalty-points-statistics-module',
   components: {
-    WithdrawalsStatisticsViewer,
-    WithdrawalRequestsViewer,
-    IncomingVolumeViewer,
-    SummaryVolumeViewer,
+    PayableReceivableViewer,
+    ReceivableDistributionViewer,
+    ReceivableOvertimeViewer,
+    PayableOvertimeViewer,
   },
 
   props: {
@@ -79,8 +80,8 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/mixins";
 
-.loyalty-points-statistics__withdrawals,
-.loyalty-points-statistics__volumes {
+.loyalty-points-statistics__overall,
+.loyalty-points-statistics__overtimes {
   display: flex;
   flex-wrap: wrap;
   margin: -2rem;
@@ -96,7 +97,7 @@ export default {
   }
 }
 
-.loyalty-points-statistics__volumes {
+.loyalty-points-statistics__overtimes {
   margin-top: 2rem;
 }
 

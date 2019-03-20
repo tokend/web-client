@@ -1,19 +1,19 @@
 <template>
-  <div class="summary-volume-viewer">
+  <div class="receivable-overtime-viewer">
     <line-chart
       v-if="isLoaded"
-      id="summary-volume-chart"
-      :data="summaryVolumes"
+      id="receivable-overtime-chart"
+      :data="receivableOvertime"
       :currency="point"
     />
 
     <p v-else-if="isLoadFailed">
-      {{ 'summary-volume-viewer.loading-error-msg' | globalize }}
+      {{ 'receivable-overtime-viewer.loading-error-msg' | globalize }}
     </p>
 
     <load-spinner
       v-else
-      message-id="summary-volume-viewer.loading-msg"
+      message-id="receivable-overtime-viewer.loading-msg"
     />
   </div>
 </template>
@@ -22,36 +22,36 @@
 import LineChart from '../charts/line-chart'
 import LoadSpinner from '@/vue/common/Loader'
 
-import summaryVolumesMock from '../../mocks/summary-volume'
+import receivableOvertimeMock from '../../mocks/receivable-overtime'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const DEFAULT_POINT = 'PET'
 
 export default {
-  name: 'summary-volume-viewer',
+  name: 'receivable-overtime-viewer',
   components: {
     LineChart,
     LoadSpinner,
   },
 
   data: _ => ({
-    summaryVolumes: {},
+    receivableOvertime: {},
     isLoaded: false,
     isLoadFailed: false,
     point: DEFAULT_POINT,
   }),
 
   created () {
-    this.loadSummaryVolumes()
+    this.loadReceivableOvertime()
   },
 
   methods: {
-    loadSummaryVolumes () {
+    loadReceivableOvertime () {
       try {
-        // TODO: load summary volumes from the API
-        const { data } = summaryVolumesMock
-        this.summaryVolumes = data
+        // TODO: load receivable overtime from the API
+        const { data } = receivableOvertimeMock
+        this.receivableOvertime = data
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
