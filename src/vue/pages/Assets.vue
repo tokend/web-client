@@ -21,7 +21,7 @@
           class="create-asset-btn"
           @click="isAssetDrawerShown = true"
         >
-          {{ 'assets-page.create-asset-title' | globalize }}
+          {{ 'assets-page.create-asset-button' | globalize }}
         </button>
       </template>
     </top-bar>

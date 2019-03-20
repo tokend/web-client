@@ -51,6 +51,48 @@
           </tr>
           <tr>
             <td>
+              {{ 'asset-details.transferable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isTransferable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.withdrawable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isWithdrawable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.requires-kyc-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'asset-details.terms-title' | globalize }}
             </td>
             <td>
@@ -64,6 +106,25 @@
               <p v-else>
                 {{ 'asset-details.no-terms-msg' | globalize }}
               </p>
+            </td>
+          </tr>
+          <tr v-if="asset.maturityDate">
+            <td>
+              {{ 'asset-details.maturity-date' | globalize }}
+            </td>
+            <td>
+              {{ +asset.maturityDate | formatCalendar }}
+            </td>
+          </tr>
+          <tr v-if="asset.annualReturn">
+            <td v-if="ASSET_SUBTYPE.bond === asset.subtype">
+              {{ 'asset-details.annual-return' | globalize }}
+            </td>
+            <td v-else>
+              {{ 'asset-details.expected-revenue' | globalize }}
+            </td>
+            <td>
+              {{ +asset.annualReturn }}%
             </td>
           </tr>
         </tbody>
@@ -111,6 +172,7 @@ import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -132,11 +194,13 @@ export default {
     isBalanceCreating: false,
     config,
     EVENTS,
+    ASSET_SUBTYPE,
   }),
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
