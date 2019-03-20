@@ -55,8 +55,6 @@
 </template>
 
 <script>
-import config from '@/config'
-
 import Drawer from '@/vue/common/Drawer'
 import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
@@ -89,7 +87,7 @@ const SALE_STATES = {
 }
 
 export default {
-  name: 'all-oprtunities',
+  name: 'all-sales',
   components: {
     Drawer,
     Loader,
@@ -116,9 +114,6 @@ export default {
     isDetailsDrawerShown: false,
     selectedSale: null,
     SALE_STATES,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
     vueRoutes,
   }),
 
