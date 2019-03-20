@@ -80,17 +80,6 @@
           </button>
         </template>
 
-        <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
-          <button
-            v-ripple
-            class="app__button-raised movements__button-raised"
-            @click="isDividendDrawerShown = true"
-          >
-            <i class="mdi mdi-rotate-315 mdi-send movements__btn-icon" />
-            {{ 'op-pages.dividend' | globalize }}
-          </button>
-        </template>
-
         <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
           <button
             v-ripple
@@ -154,20 +143,6 @@
       </template>
       <transfer-form />
     </drawer>
-
-    <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
-      <drawer :is-shown.sync="isDividendDrawerShown">
-        <template slot="heading">
-          {{ 'dividend-form.title' | globalize }}
-        </template>
-        <submodule-importer
-          :submodule="getModule().getSubmodule(DividendFormModule)"
-          :wallet="wallet"
-          :config="dividendConfig"
-          @transferred="dividendModuleTransferred"
-        />
-      </drawer>
-    </template>
 
     <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
       <drawer :is-shown.sync="isReedemDrawerShown">
@@ -239,7 +214,6 @@ import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
-import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 
 export default {
@@ -265,7 +239,6 @@ export default {
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
-    isDividendDrawerShown: false,
     isReedemDrawerShown: false,
     fiatWithdrawalFormShown: false,
     fiatDepositFormShown: false,
@@ -282,11 +255,6 @@ export default {
       decimalPoints: config.DECIMAL_POINTS,
       minAmount: config.MIN_AMOUNT,
     },
-    dividendConfig: {
-      decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
-      minAmount: config.MIN_AMOUNT,
-    },
     redeemConfig: {
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
@@ -298,7 +266,6 @@ export default {
     TransferDrawerPseudoModule,
     DepositFiatModule,
     WithdrawalFiatModule,
-    DividendFormModule,
     RedeemFormModule,
   }),
 
@@ -348,9 +315,6 @@ export default {
     depositFiatModuleDeposited () {
       this.fiatDepositFormShown = false
       this.historyState++
-    },
-    dividendModuleTransferred () {
-      this.isDividendDrawerShown = false
     },
     redeemModuleSubmitted () {
       this.isReedemDrawerShown = false

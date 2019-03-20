@@ -5,7 +5,6 @@ import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '@modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@modules/withdrawal-fiat/module'
-import { DividendFormModule } from '@modules/dividend-form/module'
 import { RedeemFormModule } from '@modules/redeem-form/module'
 
 export class MovementsHistoryPageModule extends PageModuleDescriptor {
@@ -20,7 +19,6 @@ export class MovementsHistoryPageModule extends PageModuleDescriptor {
         DepositDrawerPseudoModule,
         DepositFiatModule,
         TransferDrawerPseudoModule,
-        DividendFormModule,
         RedeemFormModule,
       ],
     })
