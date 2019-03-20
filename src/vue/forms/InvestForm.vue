@@ -163,7 +163,15 @@
         icon-name="alert-circle"
         :title="'invest-form.insufficient-balance-title' | globalize"
         :message="'invest-form.insufficient-balance-desc' | globalize"
-      />
+      >
+        <router-link
+          :to="vueRoutes.movements"
+          tag="button"
+          class="app__button-raised invest-form__discover-tokens-btn"
+        >
+          {{ 'invest-form.deposit-btn' | globalize }}
+        </router-link>
+      </no-data-message>
     </template>
 
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
@@ -207,6 +215,7 @@ import { required, amountRange } from '@validators'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { vueRoutes } from '@/vue-router/routes'
 
 import _throttle from 'lodash/throttle'
 
@@ -247,6 +256,7 @@ export default {
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
     isSubmitting: false,
+    vueRoutes,
   }),
 
   validations () {
@@ -583,5 +593,9 @@ export default {
     filter: grayscale(100%);
     cursor: default;
   }
+}
+
+.invest-form__discover-tokens-btn {
+  margin: 2rem auto 0;
 }
 </style>
