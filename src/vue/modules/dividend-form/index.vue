@@ -272,7 +272,7 @@ export default {
     if (this.config.defaultAssetCode) {
       this.setDefaultAssetCodeAsSelected()
     } else {
-    this.form.ownedAsset = this.ownedAssets[0]
+      this.form.ownedAsset = this.ownedAssets[0]
     }
 
     this.isInitialized = true
