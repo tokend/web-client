@@ -389,6 +389,7 @@
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
+      "redeem": "Redeem",
       "no-data-title": "No balance movements yet",
       "no-data-msg": "Here will be your balance movements history"
     },
@@ -836,6 +837,16 @@
       "success-cancelling": "Order successfully cancelled",
       "error-operation-cross-self": "Current order crosses your existing order"
     },
+    "redeem-form": {
+      "title": "Redeem",
+      "opportunity-uniq-code": "Opportunity uniq code",
+      "invested-in": "Indested in",
+      "total": "Total",
+      "submit-sell-btn": "Sell",
+      "no-investments": "You have no investments",
+      "here-will-investments-list": "Here will be the list of your investments that you can redeem",
+      "loading-msg": "Loading..."
+    },
     "offer-creation-form": {
       "price-per-asset": "Price per {{asset}}",
       "amount": "Amount {{asset}}",
@@ -1148,6 +1159,7 @@
       "close-time": "Close time",
       "soft-cap": "Soft cap ({{asset}})",
       "hard-cap": "Hard cap ({{asset}})",
+      "max-issuance-amount": "Issuance amount",
       "accept-investments-in": "Accept investments in:",
       "upload-image": "Upload the image users will see first in their searcher",
       "cover-logo": "Cover logo",

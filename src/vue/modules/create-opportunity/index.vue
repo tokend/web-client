@@ -1,5 +1,5 @@
 <template>
-  <div class="create-opportunity">
+  <div class="create-opportunity" v-if="isInitialized">
     <form-stepper
       :steps="STEPS"
       :current-step.sync="currentStep"
@@ -97,10 +97,10 @@
             <input-field
               white-autofill
               type="number"
-              v-model="form.information.annualReturn"
-              @blur="touchField('form.information.annualReturn')"
-              id="hard-cap"
-              name="create-sale-hard-cap"
+              v-model="form.saleInformation.annualReturn"
+              @blur="touchField('form.saleInformation.annualReturn')"
+              id="anual-return"
+              name="create-sale-anual-return"
               :label="
                 form.information.formType.value ===
                   ASSET_SUBTYPE.bond ?
@@ -108,10 +108,31 @@
                     'create-opportunity.expected-revenue' | globalize
               "
               :error-message="getFieldErrorMessage(
-                'form.information.annualReturn',
+                'form.saleInformation.annualReturn',
                 {
                   from:'0',
                   to:maxAmount
+                }
+              )"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              type="number"
+              v-model="form.information.maxIssuanceAmount"
+              @blur="touchField('form.information.maxIssuanceAmount')"
+              id="max-issuance-amount"
+              name="create-sale-max-issuance-amount"
+              :label="'create-opportunity.max-issuance-amount' | globalize"
+              :error-message="getFieldErrorMessage(
+                'form.information.maxIssuanceAmount',
+                {
+                  from: minAmount,
+                  to: maxAmount
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -205,7 +226,9 @@
               id="soft-cap"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
-                asset: statsQuoteAsset.code
+                asset: isBond
+                  ? form.saleInformation.quoteAssets
+                  : statsQuoteAsset.code
               })"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.softCap',
@@ -228,7 +251,9 @@
               id="hard-cap"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({
-                asset: statsQuoteAsset.code
+                asset: isBond
+                  ? form.saleInformation.quoteAssets
+                  : statsQuoteAsset.code
               })"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.hardCap',
@@ -301,7 +326,7 @@
             <div class="app__form-field">
               <radio-field
                 :key="`radio-field-${item.code}`"
-                :name="`create-sale-radio-asset-code`"
+                name="create-sale-radio-asset-code"
                 v-model="form.saleInformation.quoteAssets"
                 :active="form.saleInformation.quoteAssets"
                 :cb-value="item.code"
@@ -420,6 +445,7 @@ import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.
 
 import { DateUtil } from '@/js/utils'
 import { mapActions } from 'vuex'
+import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
 import {
   required,
@@ -505,6 +531,7 @@ export default {
         information: {
           name: '',
           code: '',
+          maxIssuanceAmount: '',
           formType: {},
           terms: null,
         },
@@ -526,6 +553,7 @@ export default {
           description: '',
         },
       },
+      isInitialized: false,
       isSubmitting: false,
       currentStep: 1,
       STEPS,
@@ -568,10 +596,12 @@ export default {
             maxLength: maxLength(CODE_MAX_LENGTH),
           },
           maturityDate: maturityDate,
-          annualReturn: {
+          maxIssuanceAmount: {
             required,
-            amountRange: amountRange('0',
-              this.maxAmount),
+            amountRange: amountRange(
+              this.minAmount,
+              this.maxAmount
+            ),
           },
         },
         saleInformation: {
@@ -579,18 +609,30 @@ export default {
           endTime: endTime,
           softCap: {
             required,
-            amountRange: amountRange(this.minAmount, this.maxAmount),
+            amountRange: amountRange(
+              this.minAmount,
+              this.form.information.maxIssuanceAmount
+            ),
           },
           hardCap: {
             required,
-            amountRange: amountRange(this.form.saleInformation.softCap,
-              this.maxAmount),
+            amountRange: amountRange(
+              this.form.saleInformation.softCap,
+              this.maxAmount
+            ),
           },
           quoteAssets: {
             requiredAtLeastOne,
           },
           assetType: {
             required,
+          },
+          annualReturn: {
+            required,
+            amountRange: amountRange(
+              '0',
+              '100'
+            ),
           },
         },
         shortBlurb: {
@@ -638,6 +680,14 @@ export default {
     statsQuoteAsset () {
       return this.assets.find(item => item.isStatsQuoteAsset)
     },
+    isBond () {
+      return this.form.information.formType.value === ASSET_SUBTYPE.bond
+    },
+  },
+  watch: {
+    'form.information.formType.value' () {
+      this.assignDefaultAssetSubtype()
+    },
   },
   async created () {
     initApi(this.wallet, this.config)
@@ -645,6 +695,8 @@ export default {
     const response = await this.loadAssets()
     this.assets = response.map(item => new AssetRecord(item))
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
+    this.assignDefaultAssetSubtype()
+    this.isInitialized = true
   },
   methods: {
     moment,
@@ -709,11 +761,15 @@ export default {
           description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
           youtube_video_id: this.form.shortBlurb.youtubeId,
+          annualReturn: this.form.saleInformation.annualReturn,
         },
-        requiredBaseAssetForHardCap: this.form.saleInformation.hardCap,
+        requiredBaseAssetForHardCap: this.form.information.maxIssuanceAmount,
         quoteAssets: this.formatSaleQuoteAssets(),
         saleEnumType: SALE_TYPES.basicSale,
         saleType: DEFAULT_SALE_TYPE,
+      }
+      if (this.isBond) {
+        operation.defaultQuoteAsset = this.form.saleInformation.quoteAssets
       }
       return base.SaleRequestBuilder.createSaleCreationRequest(operation)
     },
@@ -729,22 +785,38 @@ export default {
         assetType: this.form.saleInformation.assetType.value,
         preissuedAssetSigner: this.accountId,
         trailingDigitsCount: this.decimalPints,
-        initialPreissuedAmount: this.form.saleInformation.hardCap,
-        maxIssuanceAmount: this.form.saleInformation.hardCap,
+        initialPreissuedAmount: this.form.information.maxIssuanceAmount,
+        maxIssuanceAmount: this.form.information.maxIssuanceAmount,
         policies: this.form.saleInformation.policies
           .reduce((a, b) => (a | b), 0),
         creatorDetails: {
           name: this.form.information.name,
           logo: EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
-          annualReturn: this.form.information.annualReturn,
+          annualReturn: this.form.saleInformation.annualReturn,
           subtype: this.form.information.formType.value,
         },
       }
-      if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
+      if (this.isBond) {
         operation.creatorDetails.maturityDate = DateUtil
           .toMs(this.form.information.maturityDate)
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
+        operation.creatorDetails.investmentToken = {
+          asset: this.form.saleInformation.quoteAssets,
+          price: '1',
+        }
+
+        const saleFixedPrice = MathUtil.divide(
+          this.form.saleInformation.hardCap,
+          this.form.information.maxIssuanceAmount
+        )
+        operation.creatorDetails.redeemPrice = MathUtil.add(
+          MathUtil.percentOfValue(
+            saleFixedPrice,
+            this.form.saleInformation.annualReturn
+          ),
+          saleFixedPrice
+        )
       } else {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.shareLogo
       }
@@ -782,42 +854,49 @@ export default {
       this.form.information.maturityDate = ''
       this.form.information.formType = formType
     },
+    assignDefaultAssetSubtype () {
+      if (this.isBond) {
+        this.form.saleInformation.quoteAssets = this.baseAssets[0].code
+      } else {
+        this.form.saleInformation.quoteAssets = []
+      }
+    },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-  @import '@/vue/forms/_app-form';
+<style lang="scss">
+@import '@/vue/forms/_app-form';
 
-  .create-opportunity__btn {
-    margin-bottom: 2rem;
-    width: 14.4rem;
-  }
+.create-opportunity__btn {
+  margin-bottom: 2rem;
+  width: 14.4rem;
+}
 
-  .create-opportunity__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.create-opportunity__kyc-required-row {
+  margin-top: 2.1rem;
+}
 
-  .create-opportunity__pre-issued-asset-signer-wrp {
-    display: flex;
-    align-items: center;
-  }
+.create-opportunity__pre-issued-asset-signer-wrp {
+  display: flex;
+  align-items: center;
+}
 
-  .create-opportunity__insert-account-id-btn {
-    margin-left: .4rem;
-  }
+.create-opportunity__insert-account-id-btn {
+  margin-left: .4rem;
+}
 
-  .create-opportunity__error-text {
-    margin-bottom: 2rem;
-    color: $col-error;
-  }
+.create-opportunity__error-text {
+  margin-bottom: 2rem;
+  color: $col-error;
+}
 
-  .create-opportunity__price {
-    font-size: 1.4rem;
-  }
+.create-opportunity__price {
+  font-size: 1.4rem;
+}
 
-  .create-opportunity__cards {
-    width: 100%;
-    display: flex;
-  }
+.create-opportunity__cards {
+  width: 100%;
+  display: flex;
+}
 </style>

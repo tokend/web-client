@@ -79,6 +79,19 @@
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
+
+        <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
+          <button
+            v-ripple
+            class="app__button-raised movements__button-raised"
+            @click="isReedemDrawerShown = true"
+          >
+            <i
+              class="mdi mdi-wallet-giftcard movements__btn-icon"
+            />
+            {{ 'op-pages.redeem' | globalize }}
+          </button>
+        </template>
       </div>
     </top-bar>
 
@@ -130,6 +143,20 @@
       </template>
       <transfer-form />
     </drawer>
+
+    <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
+      <drawer :is-shown.sync="isReedemDrawerShown">
+        <template slot="heading">
+          {{ 'redeem-form.title' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(RedeemFormModule)"
+          :wallet="wallet"
+          :config="redeemConfig"
+          @redeemed="redeemModuleSubmitted"
+        />
+      </drawer>
+    </template>
 
     <template v-if="getModule().canRenderSubmodule(MovementsHistoryModule)">
       <submodule-importer
@@ -187,6 +214,7 @@ import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
+import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 
 export default {
   name: 'movements-page',
@@ -211,6 +239,7 @@ export default {
     isWithdrawalDrawerShown: false,
     isDepositDrawerShown: false,
     isTransferDrawerShown: false,
+    isReedemDrawerShown: false,
     fiatWithdrawalFormShown: false,
     fiatDepositFormShown: false,
     movementsHistoryConfig: {
@@ -226,12 +255,18 @@ export default {
       decimalPoints: config.DECIMAL_POINTS,
       minAmount: config.MIN_AMOUNT,
     },
+    redeemConfig: {
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
+      maxAmount: config.MAX_AMOUNT,
+    },
     historyState: 0,
     WithdrawalDrawerPseudoModule,
     DepositDrawerPseudoModule,
     TransferDrawerPseudoModule,
     DepositFiatModule,
     WithdrawalFiatModule,
+    RedeemFormModule,
   }),
 
   computed: {
@@ -280,6 +315,9 @@ export default {
     depositFiatModuleDeposited () {
       this.fiatDepositFormShown = false
       this.historyState++
+    },
+    redeemModuleSubmitted () {
+      this.isReedemDrawerShown = false
     },
   },
 }
