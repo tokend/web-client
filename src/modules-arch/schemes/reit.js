@@ -10,7 +10,7 @@ import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
 import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { LimitsPageModule } from '@/vue/pages/limits-page-module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
-import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
+import { OpportunityDetailsPageModule } from '@/vue/pages/opportunity-details-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
@@ -95,7 +95,6 @@ export default {
             ],
           }),
           new TransferDrawerPseudoModule(),
-          new DividendFormModule(),
         ],
       },
     ),
@@ -154,7 +153,7 @@ export default {
       },
     ),
 
-    new SaleDetailsPageModule(
+    new OpportunityDetailsPageModule(
       {
         routerEntry: {
           path: '/opportunities/:id',
@@ -171,6 +170,9 @@ export default {
             },
           ],
         },
+        submodules: [
+          new DividendFormModule(),
+        ],
       },
     ),
 

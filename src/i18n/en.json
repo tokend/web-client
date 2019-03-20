@@ -389,7 +389,6 @@
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
-      "dividend": "Dividend",
       "no-data-title": "No balance movements yet",
       "no-data-msg": "Here will be your balance movements history"
     },
