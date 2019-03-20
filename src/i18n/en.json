@@ -433,6 +433,7 @@
         "check-sale-state": "Sale state updated",
         "review-request": "Request reviewed",
         "create-aml-alert-request": "AML alert",
+        "manage-asset-pair": "Pair updated",
         "manage-offer": "Offer",
         "payment": "Payment",
         "unknown": "Unknown type"
@@ -479,7 +480,17 @@
       "offer-deleted-msg": "Offer deleted or matched",
       "offer-direction-lbl": "Offer direction",
       "offer-buy-asset-msg": "Buy {{asset}}",
-      "offer-sell-asset-msg": "Sell {{asset}}"
+      "offer-sell-asset-msg": "Sell {{asset}}",
+      "asset-pair-lbl": "Asset pair",
+      "asset-pair-value": "{{base}}/{{quote}}",
+      "physical-price-lbl":  "Physical price",
+      "current-price-lbl": "Current price",
+      "tradeable-lbl":  "Can be traded on secondary market",
+      "not-tradeable-lbl": "Can not be traded on secondary market",
+      "restricted-on-ph-price-lbl":  "Is restricted on physical price",
+      "not-restricted-on-ph-price-lbl": "Is not restricted on physical price",
+      "restricted-on-cur-price-lbl":  "Is restricted on current price",
+      "not-restricted-on-cur-price-lbl": "Is not restricted on current price"
     },
     "dashboard": {
       "data-loading": "Fetching dashboard data...",

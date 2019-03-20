@@ -3,6 +3,8 @@ import { CreateWithdrawRequestOp } from './operation-details/create-withdrawal-r
 import { CreateIssuanceRequestOp } from './operation-details/create-issuance-request'
 import { CheckSaleStateOp } from './operation-details/check-sale-state'
 import { ReviewRequestOp } from './operation-details/review-request'
+import { ManageAssetPairOp } from '@/vue/modules/movements-history/wrappers/operation-details/manage-asset-pair'
+
 import { ManageOfferOp } from './operation-details/manage-offer'
 import { PaymentOp } from './operation-details/payment'
 
@@ -24,6 +26,7 @@ const OPERATION_DETAILS_TYPES = Object.freeze({
   reviewRequest: 'operations-review-request',
   checkSaleState: 'operations-check-sale-state',
   createAmlAlert: 'operations-create-aml-alert',
+  manageAssetPair: 'operations-manage-asset-pair',
   createIssuanceRequest: 'operations-create-issuance-request',
   createWithdrawalRequest: 'operations-create-withdrawal-request',
 })
@@ -128,6 +131,8 @@ export class Movement {
         return new ReviewRequestOp(details)
       case OPERATION_DETAILS_TYPES.checkSaleState:
         return new CheckSaleStateOp(details)
+      case OPERATION_DETAILS_TYPES.manageAssetPair:
+        return new ManageAssetPairOp(details)
       case OPERATION_DETAILS_TYPES.createAmlAlert:
         return new CreateAMLAlertRequestOp(details)
       case OPERATION_DETAILS_TYPES.createIssuanceRequest:

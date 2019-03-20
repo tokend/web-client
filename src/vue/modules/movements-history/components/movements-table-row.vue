@@ -83,6 +83,7 @@ import {
 } from '../wrappers/effect'
 
 import { CreateAMLAlertRequestOp } from '../wrappers/operation-details/create-aml-alert-request'
+import { ManageAssetPairOp } from '../wrappers/operation-details/manage-asset-pair'
 import { CheckSaleStateOp } from '../wrappers/operation-details/check-sale-state'
 import { CreateIssuanceRequestOp } from '../wrappers/operation-details/create-issuance-request'
 import { CreateWithdrawRequestOp } from '../wrappers/operation-details/create-withdrawal-request'
@@ -138,6 +139,8 @@ export default {
           return 'movements-history.operations.payment'
         case ReviewRequestOp:
           return 'movements-history.operations.review-request'
+        case ManageAssetPairOp:
+          return 'movements-history.operations.manage-asset-pair'
         default:
           return 'movements-history.operations.unknown'
       }
