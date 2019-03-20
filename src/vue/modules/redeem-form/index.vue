@@ -2,14 +2,14 @@
   <div>
     <div
       class="redeem-form-module"
-      v-if="isInitialized && assetsInTheBalance.length"
+      v-if="isInitialized && assetsInBalance.length"
     >
       <form @submit.prevent="showConfirmation">
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
               v-model="form.asset"
-              :values="assetsInTheBalance"
+              :values="assetsInBalance"
               key-as-value-text="nameAndCode"
               class="app__select"
               :label="'redeem-form.opportunity-uniq-code' | globalize"
@@ -68,7 +68,7 @@
     <no-data-message
       :title="'redeem-form.no-investments' | globalize"
       :message="'redeem-form.here-will-investments-list' | globalize"
-      v-else-if="!assetsInTheBalance.length && isInitialized"
+      v-else-if="!assetsInBalance.length && isInitialized"
     />
     <loader v-else message-id="redeem-form.loading-msg" />
   </div>
@@ -133,7 +133,7 @@ export default {
       balances: types.balances,
       assets: types.assets,
     }),
-    assetsInTheBalance () {
+    assetsInBalance () {
       const balancesCodes = this.balances.map(i => i.assetCode)
       return this.assets.filter(a => balancesCodes.includes(a.code))
     },
@@ -193,7 +193,7 @@ export default {
       }
     },
     setDefaultAsset () {
-      this.form.asset = this.assetsInTheBalance[0]
+      this.form.asset = this.assetsInBalance[0]
     },
     calculateRedeemPrice (sale) {
       const balance = this.balances
