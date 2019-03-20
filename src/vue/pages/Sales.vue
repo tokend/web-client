@@ -4,7 +4,7 @@
       <template slot="main">
         <router-link
           :to="{
-            name: vueRoutes.salesAll.name,
+            name: vueRoutes.allSales.name,
           }"
         >
           <span>

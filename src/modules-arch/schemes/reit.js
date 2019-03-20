@@ -29,6 +29,8 @@ import { WithdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/mod
 import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/module'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
+import { SalesListPageModule } from '@/vue/pages/sales/sales-list-page-module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/sales-list-owned-module'
 
 export default {
   importEnLocaleFile () {
@@ -60,23 +62,31 @@ export default {
           path: '/opportunities',
           name: vueRoutes.sales.name,
           meta: { pageNameTranslationId: 'pages-names.funds' },
-          redirect: vueRoutes.salesAll,
-          children: [
-            {
-              path: '/opportunities/all',
-              name: vueRoutes.salesAll.name,
-              component: _ => import('@/vue/pages/sales/SalesAll'),
-            },
-            {
-              path: '/opportunities/my',
-              name: vueRoutes.salesUser.name,
-              component: _ => import('@/vue/pages/sales/SalesOwned'),
-            },
-          ],
         },
         menuButtonTranslationId: 'pages-names.funds',
         menuButtonMdiName: 'trending-up',
+        isAutoRedirectToFirstChild: true,
         submodules: [
+          new SalesListPageModule({
+            routerEntry: {
+              path: '/opportunities/all',
+              name: vueRoutes.allSales.name,
+              props: {
+                default: true,
+                isUserSales: false,
+              },
+            },
+          }),
+          new SalesListOwnedPageModule({
+            routerEntry: {
+              path: '/opportunities/my',
+              name: vueRoutes.salesUser.name,
+              props: {
+                default: true,
+                isUserSales: true,
+              },
+            },
+          }),
           new CreateAssetSaleModule({
             isCorporateOnly: true,
           }),

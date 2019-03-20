@@ -30,6 +30,8 @@ import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/with
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+import { SalesListPageModule } from '@/vue/pages/sales/sales-list-page-module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/sales-list-owned-module'
 
 export default {
   pages: [
@@ -157,23 +159,31 @@ export default {
           path: '/funds',
           name: vueRoutes.sales.name,
           meta: { pageNameTranslationId: 'pages-names.funds' },
-          redirect: vueRoutes.salesAll,
-          children: [
-            {
-              path: '/funds/all',
-              name: vueRoutes.salesAll.name,
-              component: _ => import('@/vue/pages/sales/SalesAll'),
-            },
-            {
-              path: '/funds/my',
-              name: vueRoutes.salesUser.name,
-              component: _ => import('@/vue/pages/sales/SalesOwned'),
-            },
-          ],
         },
         menuButtonTranslationId: 'pages-names.funds',
         menuButtonMdiName: 'trending-up',
+        isAutoRedirectToFirstChild: true,
         submodules: [
+          new SalesListPageModule({
+            routerEntry: {
+              path: '/funds/all',
+              name: vueRoutes.allSales.name,
+              props: {
+                default: true,
+                isUserSales: false,
+              },
+            },
+          }),
+          new SalesListOwnedPageModule({
+            routerEntry: {
+              path: '/funds/my',
+              name: vueRoutes.salesUser.name,
+              props: {
+                default: true,
+                isUserSales: true,
+              },
+            },
+          }),
           new CreateSalePseudoModule({
             isCorporateOnly: true,
           }),

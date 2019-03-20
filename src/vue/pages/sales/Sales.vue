@@ -1,0 +1,200 @@
+<template>
+  <div class="all-sales">
+    <div class="sales__state-filter">
+      <select-field
+        :is-value-translatable="true"
+        :disabled="!isLoaded"
+        v-model="filters.state"
+        :values="Object.values(SALE_STATES)"
+        key-as-value-text="labelTranslationId"
+        class="sales-asset-selector__field app__select app__select--no-border"
+      />
+    </div>
+    <template v-if="filteredSales.length">
+      <div class="sales__sale-cards">
+        <drawer :is-shown.sync="isDetailsDrawerShown">
+          <template slot="heading">
+            {{ 'sales.overview-title' | globalize }}
+          </template>
+          <sale-overview :sale="selectedSale" />
+        </drawer>
+
+        <sale-card
+          class="sales__sale-card"
+          v-for="sale in filteredSales"
+          :key="sale.id"
+          :sale="sale"
+        />
+      </div>
+    </template>
+
+    <template v-else-if="isLoaded">
+      <no-data-message
+        icon-name="inbox"
+        :title="'sales.no-sales-title' | globalize"
+        :message="'sales.no-sales-desc' | globalize"
+      />
+    </template>
+
+    <template v-else>
+      <loader :message-id="'sales.loading-msg'" />
+    </template>
+
+    <!--
+    v-show is a hack to hide `More` button if there are no sales,
+    matching the filtering criteria (when no data message is shown).
+  -->
+    <collection-loader
+      v-show="filteredSales.length"
+      class="sales__loader"
+      :first-page-loader="recordsLoader"
+      @first-page-load="setRecords"
+      @next-page-load="extendRecords"
+    />
+  </div>
+</template>
+
+<script>
+import config from '@/config'
+
+import Drawer from '@/vue/common/Drawer'
+import Loader from '@/vue/common/Loader'
+import CollectionLoader from '@/vue/common/CollectionLoader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import SelectField from '@/vue/fields/SelectField'
+
+import SaleOverview from '@/vue/pages/sales/SaleOverview'
+import SaleCard from '@/vue/pages/sales/SaleCard'
+
+import { Sdk } from '@/sdk'
+import { vueRoutes } from '@/vue-router/routes'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
+import { SaleRecord } from '@/js/records/entities/sale.record'
+
+const SALE_STATES = {
+  live: {
+    labelTranslationId: 'sales.sale-live-state',
+    value: 'live',
+  },
+  upcoming: {
+    labelTranslationId: 'sales.sale-upcoming-state',
+    value: 'upcoming',
+  },
+  all: {
+    labelTranslationId: 'sales.sale-all-state',
+    value: 'all',
+  },
+}
+
+export default {
+  name: 'all-oprtunities',
+  components: {
+    Drawer,
+    Loader,
+    CollectionLoader,
+    NoDataMessage,
+    SaleOverview,
+    SaleCard,
+    SelectField,
+  },
+  props: {
+    isUserSales: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data: _ => ({
+    saleRecords: [],
+    filters: {
+      baseAsset: '',
+      state: SALE_STATES.live,
+    },
+    isLoaded: false,
+    isDetailsDrawerShown: false,
+    selectedSale: null,
+    SALE_STATES,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
+    vueRoutes,
+  }),
+
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
+
+    // A workaround for filtering sales by base asset, since sales.getPage
+    // method loads all the existing sales.
+    filteredSales () {
+      if (this.isUserSales) {
+        return this.filteredSalesOwned
+      } else {
+        return this.filteredAllSales
+      }
+    },
+
+    filteredAllSales () {
+      if (this.filters.baseAsset === '') {
+        return this.saleRecords
+      } else {
+        return this.saleRecords
+          .filter(sale => {
+            return sale.baseAsset.toLowerCase()
+              .includes(this.filters.baseAsset.toLowerCase())
+          })
+      }
+    },
+
+    filteredSalesOwned () {
+      return this.saleRecords
+        .filter(sale => {
+          return sale.owner === this.accountId
+        })
+    },
+
+    recordsLoader () {
+      const saleState = this.filters.state.value
+      const opts = {
+        open_only: saleState === SALE_STATES.upcoming.value ||
+          saleState === SALE_STATES.live.value,
+        upcoming: saleState === SALE_STATES.upcoming.value,
+      }
+      if (this.isUserSales) {
+        opts.owner = this.accountId
+      }
+      return function () {
+        return Sdk.horizon.sales.getPage(opts)
+      }
+    },
+  },
+
+  watch: {
+    'recordsLoader': function () {
+      this.saleRecords = []
+      this.isLoaded = false
+    },
+    isUserSales () {
+      this.recordsLoader()
+    },
+  },
+
+  methods: {
+    setRecords (data) {
+      this.saleRecords = data.map(sale => new SaleRecord(sale))
+      this.isLoaded = true
+    },
+
+    extendRecords (data) {
+      this.saleRecords = this.saleRecords
+        .concat(data.map(sale => new SaleRecord(sale)))
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+</style>
