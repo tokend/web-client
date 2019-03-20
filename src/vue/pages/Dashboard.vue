@@ -116,7 +116,7 @@ export default {
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
-    scale: 'month',
+    scale: 'day',
     config,
     MovementsHistoryModule,
     IssuanceDrawerPseudoModule,
