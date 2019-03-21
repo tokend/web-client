@@ -7,11 +7,13 @@
         :key="`pet-${item.name}`"
         @click="openInvoiceForm(item)"
       >
-        <div class="loyalty-points-invoices-module__card-header">
-          <div class="loyalty-points-invoices-module__card-logo">
-            <img v-if="item.logo.url" :src="item.logo.url">
+        <div class="loyalty-points-invoices-module__card-img-wrp">
+          <img
+            class="loyalty-points-invoices-module__card-img"
+            v-if="item.logo.url"
+            :src="item.logo.url"
+          >
           </div>
-        </div>
         <div class="loyalty-points-invoices-module__card-body">
           <p class="loyalty-points-invoices-module__card-name">
             {{ item.name }}
@@ -159,25 +161,22 @@ export default {
   margin: 0.75rem;
 }
 
-.loyalty-points-invoices-module__card-header {
-  border-radius: .4rem .4rem 0rem 0rem;
-  height: 8.5rem;
+.loyalty-points-invoices-module__card-img-wrp {
+  border-radius: 0.4rem 0.4rem 0rem 0rem;
+  padding-top: calc(9 / 16 * 100%);
   background-color: $col-invoices-card-header-background;
-  padding-top: 1.5rem;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
-.loyalty-points-invoices-module__card-logo {
-  width: 5rem;
-  height: 5rem;
-  overflow: hidden;
-  border-radius: 50%;
-
-  & > img {
+.loyalty-points-invoices-module__card-img {
     width: 100%;
     height: 100%;
-  }
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .loyalty-points-invoices-module__card-body {
@@ -185,13 +184,18 @@ export default {
 }
 
 .loyalty-points-invoices-module__card-name,
-.loyalty-points-invoices-module__card-price, {
-  font-size: 1.8rem;
+.loyalty-points-invoices-module__card-price {
   text-align: center;
 }
 
+.loyalty-points-invoices-module__card-name {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
 .loyalty-points-invoices-module__card-price {
-  margin-top: 1.6rem;
+  margin-top: 0.8rem;
+  font-size: 1.8rem;
 }
 
 .loyalty-points-invoices-module__history {
@@ -201,5 +205,4 @@ export default {
 .loyalty-points-invoices-module__history-title {
   margin-bottom: 0.8rem;
 }
-
 </style>
