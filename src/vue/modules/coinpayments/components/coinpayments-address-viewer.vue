@@ -22,7 +22,6 @@ export default {
     TimeoutTicker,
   },
   props: {
-    depositDetails: { type: Object, required: true },
     assetCode: { type: String, required: true },
     address: { type: String, required: true },
     amount: { type: [String, Number], required: true },
