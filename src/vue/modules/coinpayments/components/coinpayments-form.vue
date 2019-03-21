@@ -45,12 +45,15 @@
       </template>
       <address-viewer
         v-else
-        :asset="asset"
+        :asset-code="asset.code"
+        :amount="depositDetails.amount"
+        :address="depositDetails.address"
+        :end-time="depositDetails.endTime"
         :deposit-details="depositDetails"
       />
     </template>
     <template v-else>
-      <p class="">
+      <p>
         {{ 'coinpayments-deposit.no-address-msg' | globalize }}
       </p>
     </template>
@@ -64,15 +67,14 @@ import config from '@/config'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { mapActions } from 'vuex'
-import { types } from '../store/types'
+import { api } from '../_api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
   amountRange,
 } from '@validators'
 
-const TRANSACTION_TIME_MARGIN = 600 // seconds
+const TRANSACTION_TIME_MARGIN = 600000 // millisecond
 
 export default {
   name: 'coinpayments-form',
@@ -106,9 +108,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions('coinpayments', {
-      loadDeposit: types.LOAD_DEPOSIT,
-    }),
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
@@ -119,14 +118,23 @@ export default {
             receiver: this.balanceDetails.id,
           }
         )
-        this.depositDetails.code = this.asset.code
-        this.depositDetails.timeout = +this.depositDetails.timeout -
-          TRANSACTION_TIME_MARGIN
+        this.depositDetails.endTime = +new Date() +
+          (this.depositDetails.timeout * 1000) - TRANSACTION_TIME_MARGIN
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
         this.isFailed = true
       }
       this.enableForm()
+    },
+    async loadDeposit (params) {
+      const endpoint = `/integrations/coinpayments/deposit`
+      const response = await api().postWithSignature(endpoint, {
+        data: {
+          type: 'coinpayments_deposit',
+          attributes: params,
+        },
+      })
+      return response.data
     },
   },
 }

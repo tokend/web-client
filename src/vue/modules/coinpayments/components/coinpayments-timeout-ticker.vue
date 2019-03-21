@@ -1,6 +1,6 @@
 <template>
   <div class="timeout-ticker">
-    <template v-if="+timeout > 0">
+    <template v-if="secondsLeft > 0">
       {{ 'coinpayments-deposit.time-left-msg' | globalize }}:
       {{ timeLeftFormatted }}
     </template>
@@ -16,20 +16,17 @@ import moment from 'moment'
 export default {
   name: 'timeout-ticker',
   props: {
-    timeout: {
-      type: Number,
-      required: true,
-    },
+    endTime: { type: Number, required: true }, // timeStamp
   },
   data: _ => ({
-    timeLeft: null,
+    secondsLeft: null,
     intervalId: null,
     moment,
   }),
   computed: {
     timeLeftFormatted () {
       const timeLeft = moment
-        .duration(this.timeLeft, 'seconds')
+        .duration(this.secondsLeft, 'seconds')
         .asMilliseconds()
 
       if (timeLeft <= 0) {
@@ -42,7 +39,7 @@ export default {
     },
   },
   created () {
-    this.timeLeft = this.timeout
+    this.secondsLeft = (this.endTime - +new Date()) / 1000
     this.startTicker()
   },
   beforeDestroy () {
@@ -51,7 +48,7 @@ export default {
   methods: {
     startTicker () {
       this.intervalId = setInterval(() => {
-        this.timeLeft--
+        this.secondsLeft--
       }, 1000)
     },
   },
