@@ -41,6 +41,7 @@ for further information about branching and tagging conventions.
 - Moved fees filters to the corresponding viewers
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
+- Use @tokend/js-sdk@1.3.1-x.2
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
