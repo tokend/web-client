@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- For sales that were ended show highlighted text like a "Closed [days] ago"
 
 ### Changed
 - Now using new account endpoint for loading the fees
