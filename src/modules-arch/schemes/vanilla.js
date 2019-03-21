@@ -30,8 +30,8 @@ import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/with
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
-import { SalesListPageModule } from '@/vue/pages/sales/sales-list-page-module'
-import { SalesListOwnedPageModule } from '@/vue/pages/sales/sales-list-owned-module'
+import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 
 export default {
   pages: [

@@ -29,8 +29,8 @@ import { WithdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/mod
 import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/module'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
-import { SalesListPageModule } from '@/vue/pages/sales/sales-list-page-module'
-import { SalesListOwnedPageModule } from '@/vue/pages/sales/sales-list-owned-module'
+import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 
 export default {
   importEnLocaleFile () {
