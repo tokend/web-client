@@ -2,11 +2,11 @@
   <div class="coinpayments">
     <coinpayments-form
       :asset="asset"
-      :balance-details="balanceDetails"
+      :balance-id="balanceId"
     />
     <div class="coinpayments__deposit-list-wrp">
       <deposit-table
-        :balance-id="balanceDetails.id"
+        :balance-id="balanceId"
       />
     </div>
   </div>
@@ -39,7 +39,7 @@ export default {
       required: true,
     },
     asset: { type: Object, required: true },
-    balanceDetails: { type: Object, required: true },
+    balanceId: { type: String, required: true },
     accountId: { type: String, required: true },
   },
   created () {
