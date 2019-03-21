@@ -33,7 +33,7 @@
       "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
       "loading-msg": "Loading...",
       "invoice-url": "Invoice URL",
-      "payment-successfull-msg": "Payment successfull"
+      "payment-successful-msg": "Payment successful"
     }
   }
 }

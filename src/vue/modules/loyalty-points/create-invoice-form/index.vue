@@ -1,7 +1,10 @@
 <template>
   <div v-if="isInitialized">
     <template v-if="assetPairs.length">
-      <form @submit.prevent="tryToSubmit" v-if="!generatedQRCode">
+      <form
+        @submit.prevent="tryToSubmit"
+        v-if="!generatedQRCode"
+      >
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
@@ -105,6 +108,7 @@
           </button>
         </div>
       </form>
+
       <div
         v-else
         class="create-invoice-form__payment"
@@ -147,6 +151,7 @@
         </button>
       </div>
     </template>
+
     <no-data-message
       v-else
       :title="'create-invoice-form.no-pairs-message' | globalize"
@@ -262,24 +267,25 @@ export default {
     },
 
     reference () {
-      return 'TEST2'
-      // return btoa(JSON.stringify({
-      //   asset: this.form.asset,
-      //   amount: this.form.amount,
-      //   date: new Date().toISOString(),
-      // }))
+      return btoa(JSON.stringify({
+        asset: this.form.asset,
+        amount: this.form.amount,
+        date: new Date().toISOString(),
+      }))
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
-    await this.loadBalances()
-    this.setDefaultFormValues()
-
     try {
+      initApi(this.wallet, this.config)
+
+      this.setAccountId(this.wallet.accountId)
+      await this.loadBalances()
+      this.setDefaultFormValues()
+
       await this.loadAssetPairs({ asset: this.form.asset })
     } catch (error) {
+      // TODO: replace with processWithoutFeedback
+      // some text message instead the form should be introduce in this case
       ErrorHandler.process(error)
     }
 
@@ -292,18 +298,22 @@ export default {
     ...mapMutations('create-invoice-form', {
       setAccountId: types.SET_ACCOUNT_ID,
     }),
+
     ...mapActions('create-invoice-form', {
       loadAssetPairs: types.LOAD_ASSET_PAIRS,
       loadBalances: types.LOAD_BALANCES,
       loadMovements: types.LOAD_MOVEMENTS,
     }),
+
     calculateRate (rate, amount) {
       return MathUtil.multiply(rate, amount)
     },
+
     tryToSubmit () {
       if (!this.isFormValid()) return false
       this.showConfirmation()
     },
+
     async submit () {
       this.isFormSubmitting = true
 
@@ -311,7 +321,7 @@ export default {
         const data = JSON.stringify({
           ...this.form,
           reference: this.reference,
-          accept: this.formatAcceptableAssetsToUpload(),
+          accept: this.mapAcceptableAssets(),
         })
         const { data: blob } = await Sdk.api.blobs.create(
           Sdk.api.blobs.types.bravo,
@@ -332,16 +342,19 @@ export default {
       this.isFormSubmitting = false
       this.hideConfirmation()
     },
-    formatAcceptableAssetsToUpload () {
+
+    mapAcceptableAssets () {
       return this.assetPairs.map(item => ({
         asset: item.quoteAsset.id,
         system: item.system || 'some string',
         amount: this.calculateRate(item.price, this.form.amount),
       }))
     },
+
     closeForm () {
       this.$emit(EVENTS.close)
     },
+
     setDefaultFormValues () {
       this.form.merchant = 'Pets shop, Sumska 46'
       this.form.asset = 'PET1'
@@ -365,7 +378,7 @@ export default {
       if (payment) {
         clearInterval(this.pollIntervalId)
         this.isPaymentConfirmed = true
-        Bus.success('create-invoice-form.payment-successfull-msg')
+        Bus.success('create-invoice-form.payment-successful-msg')
       }
     },
   },
@@ -373,7 +386,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '@/vue/forms/_app-form';
+@import "@/vue/forms/_app-form";
 
 .create-invoice-form__field-description {
   margin-top: 0.7rem;
