@@ -49,12 +49,27 @@ export const actions = {
       filter: {
         asset: opts.asset,
       },
+      include: [
+        'quote_asset',
+      ],
+    })
+
+    pairs.unshift({
+      id: 'PET:PET',
+      price: '1.000000',
+      policies: { 'value': 0, 'flags': null },
+      baseAsset: { 'type': 'assets', 'id': 'PET' },
+      quoteAsset: { 'type': 'assets', 'id': 'PET' },
     })
 
     commit(types.SET_ASSET_PAIRS, pairs)
   },
 
   async [types.LOAD_MOVEMENTS] ({ getters, commit }, assetCode) {
+    if (!getters[types.balances].length) {
+      await actions[types.LOAD_BALANCES]({ getters, commit })
+    }
+
     const balance = getters[types.getBalanceByAssetCode](assetCode)
 
     if (!balance) {

@@ -20,29 +20,12 @@
               :error-message="getFieldErrorMessage(
                 'form.amount',
                 {
-                  from: MIN_AMOUNT,
-                  to: currentBalance.amount,
+                  minValue: MIN_AMOUNT,
                   maxDecimalDigitsCount: DECIMAL_POINTS
                 }
               )"
               :disabled="amount || formMixin.isDisabled"
             />
-
-            <div
-              v-if="currentBalance"
-              class="create-invoice-form__field-description"
-            >
-              <p>
-                {{
-                  'create-invoice-form.balance' | globalize({
-                    balance: {
-                      value: currentBalance.amount,
-                      currency: currentBalance.assetCode
-                    }
-                  })
-                }}
-              </p>
-            </div>
           </div>
         </div>
 
@@ -172,7 +155,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import {
   required,
-  amountRange,
+  minValue,
   maxDecimalDigitsCount,
 } from '@validators'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
@@ -184,6 +167,7 @@ import ClipboardField from '@/vue/fields/ClipboardField'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
+import _get from 'lodash/get'
 
 const EVENTS = {
   close: 'close',
@@ -245,10 +229,7 @@ export default {
       form: {
         amount: {
           required,
-          amountRange: amountRange(
-            this.MIN_AMOUNT,
-            this.currentBalance.amount
-          ),
+          minValue: minValue(this.MIN_AMOUNT),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
       },
@@ -257,21 +238,12 @@ export default {
   computed: {
     ...mapGetters('create-invoice-form', [
       types.accountId,
-      types.balances,
       types.assetPairs,
       types.movements,
     ]),
 
-    currentBalance () {
-      return this.balances.find(item => item.assetCode === this.form.asset)
-    },
-
     reference () {
-      return btoa(JSON.stringify({
-        asset: this.form.asset,
-        amount: this.form.amount,
-        date: new Date().toISOString(),
-      }))
+      return btoa(Math.random())
     },
   },
   async created () {
@@ -279,7 +251,6 @@ export default {
       initApi(this.wallet, this.config)
 
       this.setAccountId(this.wallet.accountId)
-      await this.loadBalances()
       this.setDefaultFormValues()
 
       await this.loadAssetPairs({ asset: this.form.asset })
@@ -301,7 +272,6 @@ export default {
 
     ...mapActions('create-invoice-form', {
       loadAssetPairs: types.LOAD_ASSET_PAIRS,
-      loadBalances: types.LOAD_BALANCES,
       loadMovements: types.LOAD_MOVEMENTS,
     }),
 
@@ -346,7 +316,7 @@ export default {
     mapAcceptableAssets () {
       return this.assetPairs.map(item => ({
         asset: item.quoteAsset.id,
-        system: item.system || 'some string',
+        system: _get(item, 'quoteAsset.details.system', this.config.horizonURL),
         amount: this.calculateRate(item.price, this.form.amount),
       }))
     },
@@ -394,7 +364,7 @@ export default {
 }
 
 .create-invoice-form__asset-pairs {
-  margin-top: 2.4rem;
+  margin-top: 4rem;
 
   .create-invoice-form__table {
     margin-top: 1rem;

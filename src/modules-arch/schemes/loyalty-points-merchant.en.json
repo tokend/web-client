@@ -23,7 +23,7 @@
       "balance": "Balance: {{balance, money}}",
       "close": "Close",
       "waiting-for-payment": "Waiting for payment…",
-      "acceptable-asset-pairs-title": "Acceptable asset pairs",
+      "acceptable-asset-pairs-title": "Acceptable points",
       "qr-code-description": "Use your loyalty app to perform the payment",
       "price": "Price",
       "asset": "Asset",

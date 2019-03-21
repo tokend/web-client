@@ -13,7 +13,7 @@
             v-if="item.logo.url"
             :src="item.logo.url"
           >
-          </div>
+        </div>
         <div class="loyalty-points-invoices-module__card-body">
           <p class="loyalty-points-invoices-module__card-name">
             {{ item.name }}
@@ -33,7 +33,6 @@
         :asset-code="defaultAssetCode"
         :wallet="wallet"
         :config="config"
-        :poll-config="movementsPollingConfig"
       />
     </div>
     <drawer :is-shown.sync="isInvoiceRequestFormShown">
@@ -109,17 +108,16 @@ export default {
   },
   data: _ => ({
     PETS: PETS,
-    isInitialized: false,
     vueRoutes,
     isInvoiceRequestFormShown: false,
     defaultAssetCode: 'PET',
+    selectedItem: {},
   }),
   async created () {
     initApi(this.wallet, this.config)
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
-    this.isInitialized = true
   },
   methods: {
     ...mapMutations('loyalty-points-invoices', {
@@ -131,8 +129,6 @@ export default {
     openInvoiceForm (item) {
       this.isInvoiceRequestFormShown = true
       this.selectedItem = item
-    },
-    movementsPolled () {
     },
   },
 }
@@ -166,8 +162,8 @@ export default {
 }
 
 .loyalty-points-invoices-module__card-img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   position: absolute;
   top: 0;
