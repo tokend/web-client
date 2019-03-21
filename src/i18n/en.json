@@ -848,6 +848,18 @@
       "here-will-investments-list": "Here will be the list of your investments that you can redeem",
       "loading-msg": "Loading..."
     },
+    "buy-back-form": {
+      "title": "Redeem",
+      "opportunity-uniq-code": "Opportunity uniq code",
+      "invested-in": "Indested in",
+      "total": "Total ({{asset}})",
+      "amount": "Amount ({{asset}})",
+      "submit-buy-btn": "Buy",
+      "no-investments": "You have no investments",
+      "here-will-investments-list": "Here will be the list of your investments that you can redeem",
+      "loading-msg": "Loading...",
+      "issued-tokens": "Issued {{value}}"
+    },
     "offer-creation-form": {
       "price-per-asset": "Price per {{asset}}",
       "amount": "Amount {{asset}}",
@@ -903,7 +915,8 @@
       "days-to-go": "### {{days}}\ndays to go",
       "view-details-btn": "View details",
       "opportunities-list": "Opportunities list",
-      "dividend-form-title": "Dividends"
+      "dividend-form-title": "Dividends",
+      "buy-back-form-title": "Buy back"
     },
     "sale-overview": {
       "loading-msg": "Loading",

@@ -1,10 +1,10 @@
 <template>
   <div>
     <div
-      class="redeem-form-module"
+      class="buy-back-form-module"
       v-if="isInitialized && assetsInBalance.length"
     >
-      <form @submit.prevent="showConfirmation">
+      <form @submit.prevent="isFormValid() && showConfirmation()">
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
@@ -12,18 +12,25 @@
               :values="assetsInBalance"
               key-as-value-text="nameAndCode"
               class="app__select"
-              :label="'redeem-form.opportunity-uniq-code' | globalize"
+              :label="'buy-back-form.opportunity-uniq-code' | globalize"
             />
           </div>
         </div>
+        <p class="app__form-field-description">
+          {{
+            'buy-back-form.issued-tokens' | globalize({
+              value: allowedToBuy(form.asset.code)
+            })
+          }}
+        </p>
 
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
               v-if="selectedSale.defaultQuoteAsset"
-              :label="'redeem-form.invested-in' | globalize"
+              :label="'buy-back-form.invested-in' | globalize"
               v-model="selectedSale.defaultQuoteAsset.id"
-              name="redeem-invested-in"
+              name="but-back-invested-in"
               :readonly="true"
             />
           </div>
@@ -32,10 +39,43 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              :label="'redeem-form.total' | globalize"
+              :label="'buy-back-form.amount' | globalize({
+                asset: form.asset.code
+              })"
+              v-model="form.amount"
+              name="but-back-amount"
+              type="number"
+              :step="config.minAmount"
+              autocomplite="off"
+              @blur="touchField('form.amount')"
+              :error-message="getFieldErrorMessage(
+                'form.amount',
+                {
+                  quantity: config.decimalPoints,
+                  maxValue: allowedToBuy(form.asset.code),
+                  minValue: 0
+                }
+              )"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              :label="'buy-back-form.total' | globalize({
+                asset: form.quoteAsset.id
+              })"
               v-model="form.totalAmount"
-              name="redeem-total"
+              name="but-back-total"
               :readonly="true"
+              @blur="touchField('form.totalAmount')"
+              :error-message="getFieldErrorMessage(
+                'form.totalAmount',
+                {
+                  minValue: 0
+                }
+              )"
             />
           </div>
         </div>
@@ -44,7 +84,7 @@
           <form-confirmation
             @cancel="hideConfirmation"
             @ok="submit"
-            :is-pending="isRedeemProcessing"
+            :is-pending="isBuyBackProcessing"
             class="app__form-confirmation"
           />
         </template>
@@ -58,7 +98,7 @@
               :disabled="formMixin.isDisabled"
             >
               <template>
-                {{ 'redeem-form.submit-sell-btn' | globalize }}
+                {{ 'buy-back-form.submit-buy-btn' | globalize }}
               </template>
             </button>
           </div>
@@ -66,11 +106,11 @@
       </form>
     </div>
     <no-data-message
-      :title="'redeem-form.no-investments' | globalize"
-      :message="'redeem-form.here-will-investments-list' | globalize"
+      :title="'buy-back-form.no-investments' | globalize"
+      :message="'buy-back-form.here-will-investments-list' | globalize"
       v-else-if="!assetsInBalance.length && isInitialized"
     />
-    <loader v-else message-id="redeem-form.loading-msg" />
+    <loader v-else message-id="buy-back-form.loading-msg" />
   </div>
 </template>
 
@@ -90,12 +130,19 @@ import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 
 import { MathUtil } from '@/js/utils/math.util'
 
+import {
+  required,
+  maxValue,
+  minValue,
+  maxDecimalPoints,
+} from '@validators'
+
 const EVENTS = {
-  redeemed: 'redeemed',
+  transferred: 'transferred',
 }
 
 export default {
-  name: 'redeem-form',
+  name: 'buy-back-form',
   components: {
     FormConfirmation,
     NoDataMessage,
@@ -111,29 +158,47 @@ export default {
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
-     * @property config.maxAmount - max allowed amount
+     * @property config.decimalPoints - default max allowed points after dot
+     * @property [config.defaultAssetCode] - prefills the asset-selector with
+     *           this asset code
      */
     config: {
       type: Object,
       required: true,
     },
   },
+  validations () {
+    return {
+      form: {
+        amount: {
+          required,
+          maxDecimalPoints: maxDecimalPoints(this.config.decimalPoints),
+          maxValue: maxValue(this.allowedToBuy(this.form.asset.code)),
+          minValue: minValue(0),
+        },
+        totalAmount: {
+          minValue: minValue(this.config.minAmount),
+        },
+      },
+    }
+  },
   data: _ => ({
     isInitialized: false,
     form: {
       asset: {},
       quoteAsset: {},
+      amount: '',
       totalAmount: '',
     },
     selectedSale: {},
-    isRedeemProcessing: false,
+    isBuyBackProcessing: false,
   }),
   computed: {
-    ...mapGetters('redeem-form', {
+    ...mapGetters('buy-back-form', {
       balances: types.balances,
       assets: types.assets,
       assetsInBalance: types.assetsInBalance,
-      selectedAssetBalance: types.selectedAssetBalance,
+      allowedToBuy: types.allowedToBuy,
     }),
   },
   watch: {
@@ -144,7 +209,11 @@ export default {
       this.enableForm()
     },
     selectedSale (sale) {
-      this.form.totalAmount = this.calculateRedeemPrice(sale)
+      this.form.amount = this.allowedToBuy(this.form.asset.code)
+      this.form.totalAmount = this.calculatedBuyBackPrice()
+    },
+    'form.amount' (value) {
+      this.form.totalAmount = this.calculatedBuyBackPrice(value)
     },
   },
   async created () {
@@ -157,23 +226,23 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('redeem-form', {
+    ...mapMutations('buy-back-form', {
       setAccountId: types.SET_ACCOUNT_ID,
     }),
-    ...mapActions('redeem-form', {
+    ...mapActions('buy-back-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
       loadSaleByBaseAsset: types.LOAD_SALE_BY_BASE_ASSET,
     }),
     async submit () {
       this.disableForm()
-      this.isRedeemProcessing = true
+      this.isBuyBackProcessing = true
       // TODO: move it to the store action
       await this.createOffer(this.getCreateOfferOpts())
-      this.isRedeemProcessing = false
+      this.isBuyBackProcessing = false
       this.enableForm()
       this.hideConfirmation()
-      this.$emit(EVENTS.redeemed)
+      this.$emit(EVENTS.transferred)
     },
     getCreateOfferOpts () {
       return {
@@ -181,20 +250,35 @@ export default {
           base: this.form.asset.code,
           quote: this.form.quoteAsset.id,
         },
-        baseAmount: this.selectedAssetBalance(this.form.asset.code),
+        baseAmount: this.form.amount,
         quoteAmount: this.form.totalAmount,
         price: this.form.asset.details.redeemPrice,
-        isBuy: false,
+        isBuy: true,
       }
     },
     setDefaultAsset () {
-      this.form.asset = this.assetsInBalance[0]
+      if (this.config.defaultAssetCode) {
+        this.setDefaultAssetCodeAsSelected()
+      } else {
+        this.form.asset = this.assetsInBalance[0]
+      }
     },
-    calculateRedeemPrice (sale) {
+    calculatedBuyBackPrice (value) {
       return MathUtil.multiply(
-        this.form.asset.details.redeemPrice,
-        this.selectedAssetBalance(this.form.asset.code)
+        this.form.asset.details.redeemPrice || 0,
+        value || this.allowedToBuy(this.form.asset.code)
       )
+    },
+    setDefaultAssetCodeAsSelected () {
+      if (!this.config.defaultAssetCode) {
+        throw new Error('The "defaultAssetCode" property is not defined in the module config!')
+      }
+
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === this.config.defaultAssetCode)
+    },
+    redeemed () {
+      this.$emit(EVENTS.redeemed)
     },
   },
 }
