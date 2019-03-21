@@ -28,7 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Opportunities(Funds) tabs in the "Opportunities(Funds)" page
+- `All opportunities(All sales)` and `My opportunities(My sales)` tabs on the `Opportunities(Funds)` page
 
 ### Changed
 - Now using new account endpoint for loading the fees
