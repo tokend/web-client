@@ -7,33 +7,53 @@
             {{ 'loyalty-points.invoices-page' | globalize }}
           </span>
         </router-link>
-
-        <router-link :to="vueRoutes.loyaltyPointsStatistics">
-          <span>
-            {{ 'loyalty-points.statistics-page' | globalize }}
-          </span>
-        </router-link>
       </template>
-      <div
-        class="movements__actions"
-        slot="extra"
-      >
+      <template slot="extra">
         <button
+          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
           v-ripple
-          class="app__button-raised movements__button-raised"
+          class="app__button-raised"
+          @click="isIssuanceDrawerShown = true"
+        >
+          {{ 'loyalty-points.create-issuance-btn' | globalize }}
+        </button>
+
+        <button
+          v-if="getModule().canRenderSubmodule(CreateInvoiceFormModule)"
+          v-ripple
+          class="app__button-raised"
           @click="isInvoiceRequestFormShown = true"
         >
           {{ 'loyalty-points.create-invoice-btn' | globalize }}
         </button>
-      </div>
+      </template>
     </top-bar>
     <router-view />
 
-    <drawer :is-shown.sync="isInvoiceRequestFormShown">
+    <drawer
+      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      :is-shown.sync="isIssuanceDrawerShown"
+    >
+      <template slot="heading">
+        {{ 'loyalty-points.create-issuance-form-title' | globalize }}
+      </template>
+
+      <submodule-importer
+        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
+        @close="isIssuanceDrawerShown = false"
+      />
+    </drawer>
+
+    <drawer
+      v-if="getModule().canRenderSubmodule(CreateInvoiceFormModule)"
+      :is-shown.sync="isInvoiceRequestFormShown"
+    >
       <template slot="heading">
         {{ 'loyalty-points.create-invoice-form-title' | globalize }}
       </template>
-      <create-invoice-form
+
+      <submodule-importer
+        :submodule="getModule().getSubmodule(CreateInvoiceFormModule)"
         :config="config"
         :wallet="wallet"
         @close="isInvoiceRequestFormShown = false"
@@ -46,7 +66,9 @@
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
-import CreateInvoiceForm from '@modules/loyalty-points/create-invoice-form'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { CreateInvoiceFormModule } from '@modules/loyalty-points/create-invoice-form/module'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -58,16 +80,19 @@ import config from '@/config'
 export default {
   name: 'loyaly-points-page',
   components: {
-    CreateInvoiceForm,
     TopBar,
     Drawer,
+    SubmoduleImporter,
   },
   data: _ => ({
     vueRoutes,
+    isIssuanceDrawerShown: false,
     isInvoiceRequestFormShown: false,
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
+    IssuanceDrawerPseudoModule,
+    CreateInvoiceFormModule,
   }),
   computed: {
     ...mapGetters({

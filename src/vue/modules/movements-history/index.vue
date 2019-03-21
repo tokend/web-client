@@ -12,10 +12,7 @@
         </p>
       </template>
       <template v-else>
-        <load-spinner
-          message-id="movements-history.loading-movements-msg"
-          :position-center="true"
-        />
+        <load-spinner message-id="movements-history.loading-movements-msg" />
       </template>
 
       <div class="movements-history__collection-loader-wrp">
@@ -71,34 +68,22 @@ export default {
       type: String,
       default: '',
     },
-    /**
-     * Polling config
-     *
-     * {Object} pollConfig - config
-     * {Number} pollConfig.interval - polling interval (ms)
-     * [Function] pollConfig.callback - polling callback
-     */
-    pollConfig: {
-      type: Object,
-      required: false,
-      default: null,
-    },
   },
   data: _ => ({
     isInitialized: false,
     isMovementsLoaded: false,
     isMovementsLoadFailed: false,
-    firstPageLoader: () => {},
   }),
   computed: {
     ...mapGetters('movements-history', {
       balances: types.balances,
       movements: types.movements,
     }),
-  },
-  watch: {
-    assetCode (value) {
-      this.initFirstPageLoader()
+    firstPageLoader () {
+      const assetCode = this.assetCode // HACK: passing this.assetCode directly
+      // to function will lead to losing reactivity
+
+      return _ => this.loadMovementsFirstPage(assetCode)
     },
   },
   async created () {
@@ -106,12 +91,7 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
-    this.initFirstPageLoader()
     this.isInitialized = true
-
-    // if (this.pollConfig) {
-    //   this.initPolling()
-    // }
   },
   methods: {
     ...mapMutations('movements-history', {
@@ -123,9 +103,6 @@ export default {
       loadMovements: types.LOAD_MOVEMENTS,
       loadBalances: types.LOAD_BALANCES,
     }),
-    initFirstPageLoader () {
-      this.firstPageLoader = () => this.loadMovementsFirstPage(this.assetCode)
-    },
     async loadMovementsFirstPage (assetCode) {
       this.isMovementsLoaded = false
       try {
@@ -136,15 +113,6 @@ export default {
         ErrorHandler.processWithoutFeedback(e)
         this.isMovementsLoadFailed = true
       }
-    },
-    async initPolling () {
-      setTimeout(async () => {
-        this.firstPageLoader = () => this.loadMovementsFirstPage(this.assetCode)
-        await this.initPolling()
-        if (this.pollConfig.callback) {
-          this.pollConfig.callback(this.movements)
-        }
-      }, this.pollConfig.interval)
     },
   },
 }

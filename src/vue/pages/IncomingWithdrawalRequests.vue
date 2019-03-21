@@ -87,10 +87,10 @@
 
                 <td>
                   <a
-                    class="incoming-withdrawal-requests__request-details-btn"
+                    class="incoming-withdrawal-requests__review-btn"
                     @click="showRequestDetails(index)"
                   >
-                    {{ 'incoming-withdrawal-requests.details-btn' | globalize }}
+                    {{ 'incoming-withdrawal-requests.review-btn' | globalize }}
                   </a>
                 </td>
               </tr>
@@ -355,7 +355,7 @@ export default {
     }
   }
 
-  .incoming-withdrawal-requests__request-details-btn {
+  .incoming-withdrawal-requests__review-btn {
     font-size: 1.2rem;
     color: $col-primary-lighten;
     cursor: pointer;

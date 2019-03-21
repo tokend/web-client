@@ -175,7 +175,9 @@
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
+      "avatar-lbl": "Avatar",
       "id-document-lbl": "ID document",
+      "image-type-note": "image (Max 5mb)",
       "file-type-note": "image/pdf (Max 5mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
@@ -216,6 +218,7 @@
       "kyc-id-document": "KYC ID Document",
       "kyc-proof-of-address": "KYC Proof Of Address",
       "kyc-selfie": "KYC Selfie",
+      "kyc-avatar": "KYC Avatar",
       "kyc-tax-returns": "KYC Tax Returns",
       "kyc-origination-certificate": "KYC Origination Certificate",
       "kyc-investment-presentation": "KYC Investment Presentation",
@@ -254,6 +257,7 @@
       "funds": "Funds",
       "fund-details": "Fund details",
       "loyalty-points": "Loyalty points",
+      "statistics": "Statistics",
       "documents": "Documents"
     },
     "limits": {
@@ -387,7 +391,7 @@
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
       "assets-loading-msg": "Loading the assets…",
-      "withdrawal": "Withdrawal",
+      "withdraw": "Withdraw",
       "deposit": "Deposit",
       "send": "Send",
       "dividend": "Dividend",
@@ -451,7 +455,6 @@
     },
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
-      "reference-lbl": "Reference",
       "close": "Close",
       "price": "Price",
       "asset": "Asset",
@@ -734,7 +737,7 @@
       "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
     },
     "incoming-withdrawal-requests": {
-      "details-title": "Incoming withdrawal request details",
+      "details-title": "Incoming withdrawal request",
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "requestor-header": "Requestor",
@@ -742,7 +745,7 @@
       "amount-header": "Amount",
       "created-header": "Created",
       "last-updated-header": "Last updated",
-      "details-btn": "Details",
+      "review-btn": "Review",
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
       "request-rejected-msg": "Your request was successfully rejected",
@@ -1067,7 +1070,7 @@
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
       "asset": "Token",
-      "balance": "Balance is {{amount}} {{asset}}.",
+      "balance": "Balance: {{balance, money}}",
       "amount": "Amount ({{asset}})",
       "network-fee-hint": "External network fee",
       "network-fee-unknown": "Unknown",
@@ -1083,8 +1086,9 @@
       "can-not-load-assets": "There was an error while loading tokens. Please try again later",
       "loading-msg": "Loading…",
       "fee-loading-msg": "Loading…",
-      "reviewer-email": "Reviewer email:",
-      "comment": "Comment"
+      "reviewer": "Reviewer:",
+      "comment": "Comment",
+      "withdraw-btn": "Withdraw"
     },
     "deposit-form": {
       "deposit": "Deposit",
