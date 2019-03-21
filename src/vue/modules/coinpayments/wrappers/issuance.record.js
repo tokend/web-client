@@ -1,4 +1,5 @@
 import _get from 'lodash/get'
+import moment from 'moment'
 
 const TRANSACTION_TIME_MARGIN = 600 // seconds
 
@@ -16,7 +17,6 @@ export class IssuanceRecord {
   }
 
   _calculateEndTime () {
-    return +new Date(this.date) + (this.timeout * 1000) -
-      TRANSACTION_TIME_MARGIN
+    return moment(this.date).unix() + this.timeout - TRANSACTION_TIME_MARGIN
   }
 }

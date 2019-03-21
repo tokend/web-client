@@ -39,7 +39,7 @@ export default {
     },
   },
   created () {
-    this.secondsLeft = (this.endTime - +new Date()) / 1000
+    this.secondsLeft = (this.endTime - moment().unix())
     this.startTicker()
   },
   beforeDestroy () {
