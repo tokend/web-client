@@ -2,21 +2,18 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
+import { LoyaltyPointsPageModule } from '@/vue/pages/loyalty-points-page-module'
+import { LoyaltyPointsInvoicesModule } from '@/vue/modules/loyalty-points/loyalty-points-invoices/module'
+import { LoyaltyPointsInvoicesPageModule } from '@/vue/pages/loyalty-points-invoices-page'
+import { LoyaltyPointsStatisticsModule } from '@/vue/modules/loyalty-points/loyalty-points-statistics/module'
+import { LoyaltyPointsStatisticsPageModule } from '@/vue/pages/loyalty-points-statistics-page'
+import { CreateInvoiceFormModule } from '@/vue/modules/loyalty-points/create-invoice-form/module'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
-import { FeesPageModule } from '@/vue/pages/fees-page-module'
-import { FeesModule } from '@/vue/modules/fees/module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
 import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
-import { TradePageModule } from '@/vue/pages/trade-page-module'
-import { LimitsPageModule } from '@/vue/pages/limits-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
-import { SalesPageModule } from '@/vue/pages/sales-page-module'
-import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
-import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
-import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
-import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
@@ -29,10 +26,12 @@ import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuan
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
-import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
 export default {
+  importEnLocaleFile () {
+    return import('@/modules-arch/schemes/loyalty-points.en.json')
+  },
   pages: [
     new DashboardPageModule(
       {
@@ -71,42 +70,37 @@ export default {
       },
     ),
 
-    new TradePageModule(
+    new LoyaltyPointsPageModule(
       {
         routerEntry: {
-          path: '/trade',
-          name: vueRoutes.trade.name,
-          meta: { pageNameTranslationId: 'pages-names.trade' },
-          redirect: vueRoutes.tradeExchange,
-          children: [
-            // Carefully: have some issues because of is-loading prop provided
-            // to children from parent component. Leave it lke that for now
-            {
-              path: '/trade/exchange',
-              name: vueRoutes.tradeExchange.name,
-              component: _ => import('@/vue/pages/TradeExchange'),
-            },
-            {
-              path: '/trade/my-orders',
-              name: vueRoutes.tradeUserOffers.name,
-              component: _ => import('@/vue/pages/TradeUserOffers'),
-            },
-          ],
+          path: '/loyalty-points',
+          name: vueRoutes.loyaltyPoints.name,
+          meta: { pageNameTranslationId: 'pages-names.loyalty-points' },
         },
-        menuButtonTranslationId: 'pages-names.trade',
-        menuButtonMdiName: 'finance',
-      },
-    ),
-
-    new LimitsPageModule(
-      {
-        routerEntry: {
-          path: '/limits',
-          name: vueRoutes.limits.name,
-          meta: { pageNameTranslationId: 'pages-names.limits' },
-        },
-        menuButtonTranslationId: 'pages-names.limits',
-        menuButtonMdiName: 'poll-box',
+        menuButtonTranslationId: 'pages-names.loyalty-points',
+        menuButtonMdiName: 'menu',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new LoyaltyPointsInvoicesPageModule({
+            routerEntry: {
+              path: '/loyalty-points/invoices',
+              name: vueRoutes.loyaltyPointsInvoices.name,
+            },
+            submodules: [
+              new LoyaltyPointsInvoicesModule(),
+            ],
+          }),
+          new LoyaltyPointsStatisticsPageModule({
+            routerEntry: {
+              path: '/loyalty-points/statistics',
+              name: vueRoutes.loyaltyPointsStatistics.name,
+            },
+            submodules: [
+              new LoyaltyPointsStatisticsModule(),
+            ],
+          }),
+          new CreateInvoiceFormModule(),
+        ],
       },
     ),
 
@@ -144,48 +138,12 @@ export default {
           name: vueRoutes.issuance.name,
           meta: { pageNameTranslationId: 'pages-names.issuance' },
         },
+        isCorporateOnly: true,
         menuButtonTranslationId: 'pages-names.issuance',
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
         ],
-      },
-    ),
-
-    new SalesPageModule(
-      {
-        routerEntry: {
-          path: '/funds',
-          name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
-        },
-        menuButtonTranslationId: 'pages-names.funds',
-        menuButtonMdiName: 'trending-up',
-        submodules: [
-          new CreateSalePseudoModule({
-            isCorporateOnly: true,
-          }),
-        ],
-      },
-    ),
-
-    new SaleDetailsPageModule(
-      {
-        routerEntry: {
-          path: '/funds/:id',
-          name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.fund-details' },
-          redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
-          props: true,
-          children: [
-            {
-              path: '/funds/:id/campaign',
-              name: vueRoutes.saleCampaign.name,
-              component: _ => import('@/vue/pages/sale-details/SaleCampaignViewer'),
-              props: true,
-            },
-          ],
-        },
       },
     ),
 
@@ -201,24 +159,6 @@ export default {
         menuButtonMdiName: 'book-open-variant',
         isAutoRedirectToFirstChild: true,
         submodules: [
-          new AssetCreationRequestsPageModule({
-            routerEntry: {
-              path: '/requests/token-creation',
-              name: vueRoutes.assetCreationRequests.name,
-            },
-          }),
-          new SaleCreationRequestsPageModule({
-            routerEntry: {
-              path: '/requests/fund-creation',
-              name: vueRoutes.saleCreationRequests.name,
-            },
-          }),
-          new PreIssuanceRequestsPageModule({
-            routerEntry: {
-              path: '/requests/pre-issuance-upload',
-              name: vueRoutes.preIssuanceUploadRequests.name,
-            },
-          }),
           new IncomingWithdrawalRequestsPageModule({
             routerEntry: {
               path: '/requests/incoming-withdrawal',
@@ -275,21 +215,6 @@ export default {
           }),
         ],
       }
-    ),
-
-    new FeesPageModule(
-      {
-        routerEntry: {
-          path: '/fees',
-          name: vueRoutes.fees.name,
-          meta: { pageNameTranslationId: 'pages-names.fees' },
-        },
-        menuButtonTranslationId: 'pages-names.fees',
-        menuButtonMdiName: 'flash',
-        submodules: [
-          new FeesModule(),
-        ],
-      },
     ),
   ],
 }

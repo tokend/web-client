@@ -1,5 +1,5 @@
 <template>
-  <div class="statistics-page">
+  <div class="loyalty-points-statistics-page">
     <loyalty-points-statistics-module
       :config="config"
       :wallet="wallet"
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import LoyaltyPointsStatisticsModule from '@modules/loyalty-points-statistics'
+import LoyaltyPointsStatisticsModule from '@modules/loyalty-points/loyalty-points-statistics'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -16,7 +16,7 @@ import { vuexTypes } from '@/vuex/types'
 import config from '@/config'
 
 export default {
-  name: 'statistics-page',
+  name: 'loyalty-points-statistics-page',
   components: {
     LoyaltyPointsStatisticsModule,
   },

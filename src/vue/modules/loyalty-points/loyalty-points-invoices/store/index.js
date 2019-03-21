@@ -36,6 +36,7 @@ export const getters = {
 }
 
 export const loyaltyPointsInvoicesModule = {
+  name: 'loyalty-points-invoices',
   namespaced: true,
   state,
   getters,

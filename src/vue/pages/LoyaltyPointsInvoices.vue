@@ -9,14 +9,14 @@
 
 <script>
 import config from '@/config'
-import loyaltyPointsInvoicesModule from '@modules/loyalty-points-invoices'
+import LoyaltyPointsInvoicesModule from '@modules/loyalty-points/loyalty-points-invoices'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 
 export default {
   name: 'loyalty-points-invoices-page',
   components: {
-    loyaltyPointsInvoicesModule,
+    LoyaltyPointsInvoicesModule,
   },
   data: _ => ({
     config: {

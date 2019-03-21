@@ -8,6 +8,7 @@ const HORIZON_VERSION_PREFIX = 'v3'
 export const state = {
   accountId: '',
   balances: [],
+  assetPairs: [],
 }
 
 export const mutations = {
@@ -16,6 +17,9 @@ export const mutations = {
   },
   [types.SET_BALANCES] (state, balances) {
     state.balances = balances
+  },
+  [types.SET_ASSET_PAIRS] (state, assetPairs) {
+    state.assetPairs = assetPairs
   },
 }
 
@@ -28,14 +32,32 @@ export const actions = {
 
     commit(types.SET_BALANCES, account.balances)
   },
+  /**
+   * Load pairs by passed asset
+   *
+   * @param {Object} opts
+   * @param {String} opts.asset - asset code
+   */
+  async [types.LOAD_ASSET_PAIRS] ({ commit, getters }, opts) {
+    const endpoint = `/${HORIZON_VERSION_PREFIX}/asset_pairs`
+    const { data: pairs } = await api().getWithSignature(endpoint, {
+      filter: {
+        asset: opts.asset,
+      },
+    })
+
+    commit(types.SET_ASSET_PAIRS, pairs)
+  },
 }
 
 export const getters = {
   [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
+  [types.assetPairs]: state => state.assetPairs,
 }
 
-export const loyaltyPointsModule = {
+export const createInvoiceFormModule = {
+  name: 'create-invoice-form',
   namespaced: true,
   state,
   getters,

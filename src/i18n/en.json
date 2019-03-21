@@ -416,49 +416,42 @@
       "date-lbl": "Date",
       "counterparty-lbl": "Counterparty"
     },
-
-    "create-invoice-module": {
+    "loyalty-points": {
       "create-invoice-btn": "Create invoice",
       "create-invoice-form-title": "Create invoice",
       "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
-
-    "loyalty-points": {
-      "create-invoice-form-title": "Create invoice"
+    "loyalty-points-invoices": {
+      "history-title": "History"
     },
-
     "loyalty-points-statistics": {
       "withdrawals-title": "Withdrawals",
       "withdrawal-requests-title": "Withdrawal requests",
       "incoming-volume-title": "Withdrawal's incoming volume",
       "summary-volume-title": "Withdrawal's summary volume"
     },
-
     "incoming-volume-viewer": {
       "loading-msg": "Loading incoming withdrawal's volume",
       "loading-error-msg": "There was an error while loading."
     },
-
     "summary-volume-viewer": {
       "loading-msg": "Loading summary withdrawal's volume…",
       "loading-error-msg": "There was an error while loading."
     },
-
     "withdrawals-statistics-viewer": {
       "loading-msg": "Loading withdrawals statistics…",
       "loading-error-msg": "There was an error while loading."
     },
-
     "withdrawal-requests-viewer": {
       "loading-msg": "Loading withdrawal requests…",
       "loading-error-msg": "There was an error while loading.",
       "approved-request-label": "Approved",
       "rejected-request-label": "Rejected"
     },
-
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
+      "reference-lbl": "Reference",
       "close": "Close",
       "price": "Price",
       "asset": "Asset",
@@ -468,7 +461,6 @@
       "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
       "loading-msg": "Loading..."
     },
-
     "movements-history": {
       "effects": {
         "funded": "Funded",
@@ -741,7 +733,6 @@
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
     },
-
     "incoming-withdrawal-requests": {
       "details-title": "Incoming withdrawal request details",
       "loading-msg": "Loading",
@@ -761,7 +752,6 @@
       "pending-state": "Pending",
       "permanently-rejected-state": "Permanently rejected"
     },
-
     "asset-details": {
       "balance-title": "Balance",
       "maximum-title": "Maximum",
@@ -820,7 +810,6 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
     },
-
     "withdrawal-request-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading",
@@ -846,7 +835,6 @@
       "pending-state": "Pending",
       "permanently-rejected-state": "Permanently rejected"
     },
-
     "file-field": {
       "title": "Drop a file here or click to browse",
       "selected-file": "Selected file: {{name}}",
@@ -1322,7 +1310,6 @@
       "submit-lbl": "Submit",
       "cancel-lbl": "Cancel"
     },
-
     "document-signers-manager": {
       "loading-msg": "Please wait while we're loading list of viewers",
       "can-update-meta-msg": "Can leave comments",

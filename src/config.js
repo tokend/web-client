@@ -105,7 +105,7 @@ export default Object.assign(
      * Module scheme to use. The module scheme will be used to combine module
      * set of the application.
      */
-    MODULE_SCHEME_NAME: 'vanilla',
+    MODULE_SCHEME_NAME: 'loyaltyPoints',
 
     /**
      * Link to iOS application manifest file.

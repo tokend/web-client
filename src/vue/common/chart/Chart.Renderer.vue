@@ -70,8 +70,7 @@ export default {
         day: 30,
         hour: 30,
       }
-
-      return Math.round(this.data.length / ticksCount[this.scale])
+      return Math.ceil(this.data.length / ticksCount[this.scale])
     },
   },
   watch: {

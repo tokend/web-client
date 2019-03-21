@@ -24,7 +24,7 @@
     </div>
     <div class="loyalty-points-invoices-module__history">
       <h2 class="loyalty-points-invoices-module__history-title">
-        History
+        {{ 'loyalty-points-invoices.history-title' | globalize }}
       </h2>
       <movements-history-module
         v-if="defaultAssetCode"
@@ -54,7 +54,7 @@ import { types } from './store/types'
 import Drawer from '@/vue/common/Drawer'
 import { vueRoutes } from '@/vue-router/routes'
 
-import CreateInvoiceFormModule from '@modules/create-invoice-form'
+import CreateInvoiceFormModule from '@modules/loyalty-points/create-invoice-form'
 import MovementsHistoryModule from '@modules/movements-history'
 
 import { initApi } from './_api'
