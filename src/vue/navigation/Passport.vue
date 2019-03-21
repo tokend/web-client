@@ -61,20 +61,18 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 export default {
   name: 'passport',
-  mixins: [VerificationFormMixin],
 
   data: () => ({
     isDropdownOpen: false,
     destructClickOutsideHandler: () => {},
-    ticker: 45000,
+    timeUpdateAccountDetails: 45000,
   }),
 
   computed: {
@@ -84,6 +82,7 @@ export default {
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountGeneral: vuexTypes.isAccountGeneral,
+      accountId: vuexTypes.accountId,
     }),
 
     accountRoleTranslationId () {
@@ -100,11 +99,16 @@ export default {
   async created () {
     setInterval(() => {
       this.loadKycData()
-    }, this.ticker)
+    }, this.timeUpdateAccountDetails)
     this.loadKycData()
   },
 
   methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
+
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
