@@ -151,12 +151,6 @@ export default {
   margin-top: -0.6rem;
 }
 
-.sales-asset-selector__field {
-  display: inline-block;
-  width: auto;
-  margin-bottom: 1.6rem;
-}
-
 .sales__state-filter {
   margin-top: 1rem;
 }
