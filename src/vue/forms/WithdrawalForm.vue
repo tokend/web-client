@@ -59,7 +59,7 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <template v-if="isMasterAccount">
+            <template v-if="isMasterAssetOwner">
               <input-field
                 white-autofill
                 class="app__form-field"
@@ -261,7 +261,7 @@ export default {
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
         },
-        address: this.isMasterAccount ? addressRules : {},
+        address: this.isMasterAssetOwner ? addressRules : {},
       },
     }
   },
@@ -270,7 +270,7 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
-    isMasterAccount () {
+    isMasterAssetOwner () {
       return this.form.asset.owner === Sdk.networkDetails.adminAccountId
     },
   },
@@ -345,7 +345,7 @@ export default {
     composeOptions () {
       const creatorDetails = {}
 
-      if (this.isMasterAccount) {
+      if (this.isMasterAssetOwner) {
         creatorDetails.comment = this.form.comment
       } else {
         creatorDetails.address = this.form.address

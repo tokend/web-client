@@ -1,6 +1,6 @@
 <template>
   <div class="passport">
-    <a @click="toggleDropdown">
+    <button @click="toggleDropdown">
       <img
         v-if="avatarLogoUrl"
         class="passport__avatar passport__avatar-image"
@@ -12,7 +12,7 @@
       >
         {{ email | abbreviate }}
       </p>
-    </a>
+    </button>
 
     <div class="passport__account-details-wrp">
       <button
@@ -78,7 +78,7 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
-    destructClickOutsideHandler: () => {},
+    destructClickOutsideHandler: () => { },
   }),
 
   computed: {
@@ -274,7 +274,7 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__dropdown-status-icon {
   &:before {
-    transition: .2s ease-out;
+    transition: 0.2s ease-out;
   }
 }
 </style>
