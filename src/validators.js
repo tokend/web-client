@@ -1,5 +1,7 @@
 import WAValidator from 'wallet-address-validator'
 import moment from 'moment'
+import iban from 'iban'
+import cardValidator from 'card-validator'
 
 import { base } from '@tokend/js-sdk'
 
@@ -35,6 +37,9 @@ export const amountRange = (from, to) => value =>
 export const minDate = (minDate) => value => {
   return moment(value).isAfter(moment(minDate))
 }
+export const maxDate = (maxDate) => value => {
+  return moment(value).isBefore(moment(maxDate))
+}
 export const address = (asset) => value => {
   switch (asset) {
     case ASSETS.btc:
@@ -61,6 +66,9 @@ export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
     return true
   }
 }
+export const ibanValidator = value => {
+  return iban.isValid(value)
+}
 
 export * from 'vuelidate/lib/validators'
 
@@ -68,3 +76,44 @@ export function validateEmail (email) {
   const reg = new RegExp('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')
   return reg.test(email)
 }
+
+export const cardNumber = value => {
+  /**
+   * {String} value
+   * {Object} [opts]
+   * @returns {Object}
+   */
+  return cardValidator.number(value).isValid
+}
+
+export const cardExpirationDate = value => {
+  const DEFAULT_YEAR_AHEAD = 20
+
+  /**
+   * {String|Object} value
+   * {Integer} [maxElapsedYear]
+   * @returns {Object}
+   */
+  return cardValidator.expirationDate(
+    value,
+    DEFAULT_YEAR_AHEAD,
+  ).isValid
+}
+
+export const cardCVV3 = value => {
+  const DEFAULT_CVV_LENGTH = 3
+
+  /**
+   * {String} value
+   * {Integer} [maxLength]
+   * @returns {Object}
+   */
+  return cardValidator.cvv(
+    value,
+    DEFAULT_CVV_LENGTH,
+  ).isValid
+}
+
+export const bankBIC = value =>
+  /^([A-Z]{6}[A-Z2-9][A-NP-Z1-9])(X{3}|[A-WY-Z0-9][A-Z0-9]{2})?$/
+    .test(value.toUpperCase())

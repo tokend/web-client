@@ -101,7 +101,10 @@ export default {
     }),
     assetRecords () {
       return this.assets
-        .map(asset => new AssetRecord(asset, this.accountBalances))
+        .map(asset => new AssetRecord(
+          asset.record || asset,
+          this.accountBalances
+        ))
     },
   },
   methods: {

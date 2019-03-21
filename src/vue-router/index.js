@@ -1,1 +1,1 @@
-export { router } from './router.js'
+export { buildRouter } from './router.js'

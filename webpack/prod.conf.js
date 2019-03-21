@@ -9,10 +9,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-let env = process.env.CONFIG_PATH
-  ? require(path.resolve(process.env.CONFIG_PATH))
-  : {}
-
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   module: {
@@ -21,10 +17,10 @@ const webpackConfig = merge(baseWebpackConfig, {
         test: /\.css?$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
-      }
-    ]
+          'css-loader',
+        ],
+      },
+    ],
   },
   // The TokenD production is actually a demo without real users and assets, so
   // we will leave the source maps to simplify the debugging process
@@ -37,19 +33,19 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      'process.env': JSON.parse(process.env.APP_ENV_JSON),
     }),
     // extracts CSS into separate files
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].css'
+      chunkFilename: '[id].css',
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: {
-        safe: true
-      }
+        safe: true,
+      },
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -63,13 +59,13 @@ const webpackConfig = merge(baseWebpackConfig, {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
-        removeAttributeQuotes: true
+        removeAttributeQuotes: true,
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via
       // CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'dependency',
     }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -78,9 +74,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       {
         from: path.resolve(__dirname, '../static'),
         to: 'static',
-        ignore: ['.*']
-      }
-    ])
+        ignore: ['.*'],
+      },
+    ]),
   ],
   optimization: {
     splitChunks: {
@@ -95,16 +91,16 @@ const webpackConfig = merge(baseWebpackConfig, {
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          priority: -10
+          priority: -10,
         },
         default: {
           minChunks: 2,
           priority: -20,
-          reuseExistingChunk: true
-        }
-      }
-    }
-  }
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
 })
 
 module.exports = webpackConfig

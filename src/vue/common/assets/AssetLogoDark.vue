@@ -28,7 +28,6 @@ export default {
 .asset-logo-dark {
   width: 5.3rem;
   height: 5.3rem;
-  border-radius: 50%;
 }
 
 .asset-logo-dark__image {

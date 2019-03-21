@@ -120,6 +120,7 @@ $col-drawer-head-text: $_eastBay;
 $col-sidebar-background: $_athensGray;
 $col-sidebar-background-media-small: $_thinGray;
 $col-sidebar-text: $col-primary-inactive;
+$col-sidebar-scheme-label: rgba($col-primary-inactive, 0.5);
 $col-sidebar-burger-icon-color: $_white;
 $col-sidebar-active-elem-text: $col-primary;
 $col-sidebar-active-elem-background: $_thinGray;
@@ -222,6 +223,13 @@ $col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
 
+// tabs colors:
+$col-tabs-txt: $col-primary;
+$col-tabs-disabled-txt: $col-primary-inactive;
+$col-tabs-indicator: $col-secondary;
+$col-tabs-default-border-bottom: rgba($col-tabs-indicator, .1);
+$col-tabs-hover-bg: rgba($col-secondary, .05);
+
 // sale card colors
 $col-sale-card-background: $_white;
 $col-sale-card-shadow: $col-block-shadow;
@@ -270,6 +278,10 @@ $col-ios-guide-step-number-text: $_white;
 $col-ios-guide-step-text: $col-primary;
 $col-ios-guide-substep-text: $col-secondary;
 
+// radio field colors
+$col-radio-field-border: $col-primary;
+$col-radio-field-background: $_white;
+
 // sale details colors
 $col-sale-details-title: $col-primary;
 $col-sale-details-subtitle: $col-secondary;
@@ -286,3 +298,32 @@ $col-incoming: $_green;
 $col-outgoing: $_lightRed;
 $col-locked: $_orangePeel;
 $col-unlocked: $_orangePeel;
+
+// document card colors:
+$col-document-card-viewer-bg: $_white;
+$col-document-card-viewer-shadow: $col-block-shadow;
+$col-document-card-viewer-header-bg: $_athensGray;
+$col-document-card-viewer-text: $col-text;
+
+// document icon colors:
+$col-document-icon-background: $_white;
+$col-document-icon-text: $col-primary;
+
+// document-upload-form-colors:
+$col-document-upload-progress-bar-bg: $_gray;
+$col-document-upload-progress-bar-value: $_cornflowerBlue;
+
+// document signer list colors:
+$col-signer-list-item-bg: $_white;
+$col-signer-list-item-shadow: $col-block-shadow;
+$col-signer-list-item-avatar-bg: $_eastBay;
+$col-signer-list-item-avatar-text: $_white;
+$col-signer-list-item-rule-text: $_lightPurple;
+
+// document-uploader-viewer
+$col-document-uploader-text-unlighten: $_lightPurple;
+
+// comment-viewer
+$col-border-comment-viewer-header: $_eastBay;
+$col-comment-content-gradient-from: $_eastBay;
+$col-comment-content-gradient-to: $_gray;
