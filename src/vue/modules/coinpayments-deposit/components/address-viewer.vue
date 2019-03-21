@@ -26,7 +26,7 @@ export default {
     assetCode: { type: String, required: true },
     address: { type: String, required: true },
     amount: { type: [String, Number], required: true },
-    endTime: { type: [Number], required: true }, // timeStamp
+    endTime: { type: [Number], required: true }, // unix timeStamp
   },
 }
 </script>

@@ -49,7 +49,6 @@
         :amount="depositDetails.amount"
         :address="depositDetails.address"
         :end-time="depositDetails.endTime"
-        :deposit-details="depositDetails"
       />
     </template>
     <template v-else>
