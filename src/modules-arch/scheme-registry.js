@@ -6,7 +6,7 @@ const SCHEME_IMPORTERS = {
   healthcare: _ => import('@/modules-arch/schemes/healthcare'),
   reit: _ => import('@/modules-arch/schemes/reit'),
   loyaltyPointsMerchant: _ => import('@/modules-arch/schemes/loyalty-points-merchant'),
-  loyaltyPointsReconcillation: _ => import('@/modules-arch/schemes/loyalty-points-reconcillation'),
+  loyaltyPointsReconciliation: _ => import('@/modules-arch/schemes/loyalty-points-reconciliation'),
 }
 
 /**

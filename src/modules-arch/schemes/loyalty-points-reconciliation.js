@@ -13,7 +13,7 @@ import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit
 
 export default {
   importEnLocaleFile () {
-    return import('@/modules-arch/schemes/loyalty-points-reconcillation.en.json')
+    return import('@/modules-arch/schemes/loyalty-points-reconciliation.en.json')
   },
   pages: [
     new MovementsHistoryPageModule(
