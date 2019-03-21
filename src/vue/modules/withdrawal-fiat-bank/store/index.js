@@ -46,6 +46,7 @@ export const actions = {
       response = await response.fetchNext()
       assets = [...assets, ...response.data]
     }
+
     commit(
       types.SET_ASSETS,
       assets.map(item => new AssetRecord(item, getters[types.balances]))
