@@ -40,10 +40,8 @@
 
       <p class="sale-card__days-to-launch">
         <template v-if="sale.daysToGo < 0">
-          {{ 'sale-card.days-after-the-end' | globalize({
-            days: sale.daysAfterTheEnd
-          })
-          }}
+          <!-- eslint-disable-next-line -->
+          {{ 'sale-card.days-after-the-end' | globalize({ days: sale.daysAfterEnd }) }}
         </template>
 
         <template v-else>

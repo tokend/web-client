@@ -43,7 +43,7 @@
       <vue-markdown
         class="sale-state-widget__days-to-go"
         :source="'sale-details.days-after-the-end' | globalize({
-          days: sale.daysAfterTheEnd
+          days: sale.daysAfterEnd
         })"
       />
     </template>

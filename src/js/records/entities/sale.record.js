@@ -120,7 +120,7 @@ export class SaleRecord {
     return moment(this.endTime).diff(moment(), 'days')
   }
 
-  get daysAfterTheEnd () {
+  get daysAfterEnd () {
     return Math.abs(this.daysToGo)
   }
 
