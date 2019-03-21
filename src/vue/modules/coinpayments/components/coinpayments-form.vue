@@ -65,6 +65,8 @@ import AddressViewer from './coinpayments-address-viewer'
 
 import config from '@/config'
 
+import moment from 'moment'
+
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { api } from '../_api'
@@ -74,7 +76,7 @@ import {
   amountRange,
 } from '@validators'
 
-const TRANSACTION_TIME_MARGIN = 600000 // millisecond
+const TRANSACTION_TIME_MARGIN = 600 // seconds
 
 export default {
   name: 'coinpayments-form',
@@ -118,8 +120,8 @@ export default {
             receiver: this.balanceId,
           }
         )
-        this.depositDetails.endTime = +new Date() +
-          (this.depositDetails.timeout * 1000) - TRANSACTION_TIME_MARGIN
+        this.depositDetails.endTime = moment().unix() +
+          this.depositDetails.timeout - TRANSACTION_TIME_MARGIN
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
         this.isFailed = true
