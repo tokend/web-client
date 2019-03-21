@@ -5,7 +5,7 @@
       :balance-id="balanceId"
     />
     <div class="coinpayments__deposit-list-wrp">
-      <deposit-table
+      <pending-issuances-table
         v-if="!isLoading"
         :pending-issuances="pendingIssuances"
       />
@@ -31,7 +31,7 @@
 
 <script>
 import CoinpaymentsForm from './components/coinpayments-form'
-import DepositTable from './components/coinpayments-deposit-table'
+import PendingIssuancesTable from './components/pending-issuances-table'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 
@@ -46,7 +46,7 @@ export default {
   name: 'coinpayments',
   components: {
     CoinpaymentsForm,
-    DepositTable,
+    PendingIssuancesTable,
     CollectionLoader,
     Loader,
   },

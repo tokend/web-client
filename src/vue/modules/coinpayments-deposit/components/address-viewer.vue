@@ -2,8 +2,9 @@
   <div>
     <p class="address-viewer__help-msg">
       {{ 'coinpayments-deposit.address-ready-msg' | globalize({
-        amount: amount,
-        money: assetCode
+        amount: {
+          value: amount, currency: assetCode
+        }
       }) }}
     </p>
     <key-viewer :value="address" />
@@ -13,7 +14,7 @@
 
 <script>
 import KeyViewer from '@/vue/common/KeyViewer'
-import TimeoutTicker from './coinpayments-timeout-ticker'
+import TimeoutTicker from './timeout-ticker'
 
 export default {
   name: 'address-viewer',

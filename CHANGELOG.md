@@ -27,7 +27,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Add coinpayments module
+- Add coinpayments-deposit module
 
 ### Changed
 - Now using new account endpoint for loading the fees

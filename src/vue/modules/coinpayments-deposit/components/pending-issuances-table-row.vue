@@ -22,7 +22,7 @@
       <td colspan="3">
         <key-viewer
           class="deposit-table-row__key-viewer"
-          :value="item.address"
+          :value="address"
         />
       </td>
     </tr>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import TimeoutTicker from './coinpayments-timeout-ticker'
+import TimeoutTicker from './timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
 export default {
   name: 'deposit-table-row',
