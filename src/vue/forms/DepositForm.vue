@@ -28,7 +28,7 @@
               v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)"
               :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
               :asset="item"
-              :balance-id="balanceDetails.id"
+              :balance-id="balanceId"
               :wallet="wallet"
               :account-id="accountId"
               :config="config"
@@ -81,7 +81,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -114,17 +114,18 @@ export default {
       vuexTypes.account,
       vuexTypes.wallet,
     ]),
-    balanceDetails () {
+    balanceId () {
       return this.account.balances.find(item => {
         return item.asset.id === this.selectedAsset.code
-      })
+      }).id
     },
   },
   watch: {
     'selectedAsset.code' () {
-      this.disableForm()
-      if (this.selectedAsset.isCoinpayments) {
-        this.enableForm()
+      // Transferred to the disabled state before receiving the address,
+      // in order to avoid a large number of requests
+      if (!this.selectedAsset.isCoinpayments) {
+        this.disableForm()
       }
     },
   },

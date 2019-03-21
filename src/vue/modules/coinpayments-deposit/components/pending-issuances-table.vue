@@ -1,6 +1,6 @@
 <template>
   <table class="deposit-table">
-    <deposit-table-row
+    <pending-issuances-table-row
       v-for="(item, index) in pendingIssuances"
       :end-time="item.endTime"
       :amount="item.amount"
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import DepositTableRow from './coinpayments-deposit-table-row'
+import PendingIssuancesTableRow from './pending-issuances-table-row'
 
 export default {
   name: 'deposit-table',
   components: {
-    DepositTableRow,
+    PendingIssuancesTableRow,
   },
   props: {
     pendingIssuances: { type: Array, required: true },

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import AddressViewer from './coinpayments-address-viewer'
+import AddressViewer from './address-viewer'
 
 import config from '@/config'
 

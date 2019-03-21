@@ -34,6 +34,7 @@ for further information about branching and tagging conventions.
 - Asset loading via the loop where was `filter[limit]=100`
 - Correct base/quote price calculating for Opportunities
 - Add coinpayments module
+- Add coinpayments-deposit module
 
 ### Changed
 - Now using new account endpoint for loading the fees

@@ -1129,7 +1129,7 @@
       "time-over-msg": "Time over",
       "loading-msg": "Please wait while we loading your data.",
       "load-failed-msg": "Failed to load account data. Please try again later",
-      "address-ready-msg": "Please send {{amount, money}} {{money}} to the address provided below. Note that any other token sent to this address will be irretrievably lost."
+      "address-ready-msg": "Please send {{amount, money}} to the address provided below. Note that any other token sent to this address will be irretrievably lost."
     },
     "email-getter": {
       "loading-msg": "Loading…",
