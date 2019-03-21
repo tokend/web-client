@@ -114,5 +114,14 @@ export default {
         ErrorHandler.process(error)
       }
     },
+    async updateOffer (opts) {
+      try {
+        await this.cancelOffer(opts.canceling)
+        await this.createOffer(opts.creating)
+        Bus.success('offer-manager.success-updating')
+      } catch (error) {
+        ErrorHandler.process(error)
+      }
+    },
   },
 }

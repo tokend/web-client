@@ -8,24 +8,6 @@
         />
       </div>
 
-      <div class="trade-exchange__history">
-        <trade-history-renderer
-          :asset-pair="assetPair"
-          :trade-history="tradeHistory"
-          :is-loading="isTradeHistoryLoading"
-        />
-        <div class="trade-exchange__history-collection-loader">
-          <collection-loader
-            :key="`collection-loader-${assetPair.base}-${assetPair.quote}`"
-            v-show="tradeHistory.length && !isTradeHistoryLoading"
-            :first-page-loader="loadTradeHistory"
-            :page-limit="recordsToShow"
-            @first-page-load="setTradeHistory"
-            @next-page-load="extendTradeHistory"
-          />
-        </div>
-      </div>
-
       <div class="trade-exchange__offers">
         <h2 class="app__table-title">
           {{ 'trade-exchange.offers-section-title' | globalize }}
@@ -50,6 +32,24 @@
           />
         </div>
       </div>
+
+      <div class="trade-exchange__history">
+        <trade-history-renderer
+          :asset-pair="assetPair"
+          :trade-history="tradeHistory"
+          :is-loading="isTradeHistoryLoading"
+        />
+        <div class="trade-exchange__history-collection-loader">
+          <collection-loader
+            :key="`collection-loader-${assetPair.base}-${assetPair.quote}`"
+            v-show="tradeHistory.length && !isTradeHistoryLoading"
+            :first-page-loader="loadTradeHistory"
+            :page-limit="recordsToShow"
+            @first-page-load="setTradeHistory"
+            @next-page-load="extendTradeHistory"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@ import config from '@/config'
 import { Sdk } from '@/sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
@@ -88,6 +88,9 @@ export default {
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
   }),
   computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
     assetPair () {
       return {
         base: this.$route.query.base,
@@ -152,7 +155,7 @@ export default {
     },
     async loadTradeBuyOffers () {
       try {
-        const response = await Sdk.horizon.orderBook.getAll({
+        const response = await Sdk.horizon.account.getOffers(this.accountId, {
           base_asset: this.assetPair.base,
           quote_asset: this.assetPair.quote,
           is_buy: true,
@@ -165,7 +168,7 @@ export default {
     },
     async loadTradeSellOffers () {
       try {
-        const response = await Sdk.horizon.orderBook.getAll({
+        const response = await Sdk.horizon.account.getOffers(this.accountId, {
           base_asset: this.assetPair.base,
           quote_asset: this.assetPair.quote,
           is_buy: false,
@@ -221,7 +224,7 @@ $custom-breakpoint: 985px;
   }
 }
 
-.trade-exchange__offers {
+.trade-exchange__history {
   margin-top: 4.8rem;
 }
 

@@ -3,15 +3,22 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model="offer.price"
+          v-model="form.price"
           :label="
             'submit-trade-offers-form.price-label' | globalize({
               asset: assetPair.quote
             })
           "
+          :error-message="getFieldErrorMessage(
+            'form.price', {
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+              available: offerQuoteAssetBalance.balance
+            }
+          )"
           name="submit-trade-offers-offer-price"
           :white-autofill="true"
-          readonly
+          @blur="touchField('form.price')"
         />
       </div>
     </div>
@@ -19,15 +26,23 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="offer.baseAmount"
+          v-model.trim="form.baseAmount"
           :label="
             'submit-trade-offers-form.want-label' | globalize({
               asset: assetPair.base
             })
           "
+          :error-message="getFieldErrorMessage(
+            'form.baseAmount',
+            {
+              available: offerQuoteAssetBalance.balance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
           name="submit-trade-offers-offer-base-amount"
           :white-autofill="true"
-          readonly
+          @blur="touchField('form.baseAmount')"
         />
       </div>
     </div>
@@ -35,7 +50,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="offer.quoteAmount"
+          v-model.trim="totalValue"
           :label="
             'submit-trade-offers-form.offer-label' | globalize({
               asset: assetPair.quote
@@ -43,7 +58,7 @@
           "
           name="submit-trade-offers-offer-quote-amount"
           :white-autofill="true"
-          readonly
+          :readonly="true"
         />
       </div>
     </div>
@@ -76,7 +91,7 @@
             class="app__form-submit-btn"
             :disabled="!isEnoughOnBalance || formMixin.isDisabled"
           >
-            <template v-if="offer.ownerId === accountId">
+            <template v-if="isOwnerOrder">
               {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
             </template>
             <template v-else>
@@ -88,6 +103,37 @@
               </template>
             </template>
           </button>
+          <div class="app__button-tooltip">
+            <button
+              v-ripple
+              type="button"
+              @click="updateOrder"
+              class="app__form-submit-btn"
+              :disabled="!isEnoughOnBalance
+                || formMixin.isDisabled
+                || !isOwnerOrder"
+            >
+              <template v-if="!isShownToolTip">
+                {{ 'submit-trade-offers-form.update-order' | globalize }}
+              </template>
+              <template v-else-if="isOfferSubmitting">
+                {{ 'form-confirmation.submit-processing' | globalize }}
+              </template>
+              <template v-else>
+                {{ 'form-confirmation.button-text-ok' | globalize }}
+              </template>
+            </button>
+            <transition name="fade">
+              <div
+                v-if="isShownToolTip"
+                class="app__tool-tip"
+              >
+                <span>
+                  {{ 'submit-trade-offers-form.cancel-order' | globalize }}
+                </span>
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
     </template>
@@ -101,6 +147,16 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { formatNumber } from '@/vue/filters/formatNumber'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import { MathUtil } from '@/js/utils/math.util'
+
+import {
+  required,
+  amountRange,
+  minValue,
+  noMoreThanAvailableOnBalance,
+  decimal,
+} from '@validators'
+import config from '@/config'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -116,8 +172,33 @@ export default {
     offer: { type: Object, require: true, default: () => ({}) },
   },
   data: () => ({
+    config,
     isOfferSubmitting: false,
+    form: {},
+    isShownToolTip: false,
   }),
+  validations () {
+    return {
+      form: {
+        price: {
+          required,
+          decimal,
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+        },
+        baseAmount: {
+          required,
+          decimal,
+          minValue: minValue(config.MIN_AMOUNT),
+          noMoreThanAvailableOnBalance: this.offer.isBuy
+            ? true
+            : noMoreThanAvailableOnBalance(
+              this.offerBaseAssetBalance.balance
+            ),
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+        },
+      },
+    }
+  },
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
@@ -131,11 +212,23 @@ export default {
       return this.accountBalances
         .find(item => item.asset === this.offer.quoteAssetCode)
     },
+    formQuoteAmount () {
+      return MathUtil.multiply(this.form.price, this.form.baseAmount)
+    },
+    totalValue () {
+      return +this.formQuoteAmount ? this.formQuoteAmount : ''
+    },
     isEnoughOnBalance () {
       return this.isBuy
         ? +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
         : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
     },
+    isOwnerOrder () {
+      return this.offer.ownerId === this.accountId
+    },
+  },
+  created () {
+    this.form = Object.assign({}, this.offer)
   },
   methods: {
     formatNumber,
@@ -154,17 +247,20 @@ export default {
       this.$emit(EVENTS.closeDrawer)
       this.hideConfirmation()
     },
-    getCreateOfferOpts () {
-      return {
-        pair: {
-          base: this.offer.baseAssetCode,
-          quote: this.offer.quoteAssetCode,
-        },
-        baseAmount: this.offer.baseAmount,
-        quoteAmount: this.offer.quoteAmount,
-        price: this.offer.price,
-        isBuy: !this.offer.isBuy,
+    async updateOrder () {
+      if (!this.isFormValid()) return
+      if (!this.isShownToolTip) {
+        this.isShownToolTip = true
+        return
       }
+      this.disableForm()
+      this.isOfferSubmitting = true
+      await this.updateOffer(
+        this.getUpdateOfferOpts()
+      )
+      this.isOfferSubmitting = false
+      this.enableForm()
+      this.$emit(EVENTS.closeDrawer)
     },
     getCancelOfferOpts () {
       return {
@@ -172,6 +268,38 @@ export default {
         baseBalance: this.offerBaseAssetBalance.balanceId,
         quoteBalance: this.offerQuoteAssetBalance.balanceId,
         offerId: this.offer.offerId,
+      }
+    },
+    getCreateOfferOpts () {
+      return {
+        pair: {
+          base: this.form.baseAssetCode,
+          quote: this.form.quoteAssetCode,
+        },
+        baseAmount: this.from.baseAmount,
+        quoteAmount: this.from.quoteAmount,
+        price: this.form.price,
+        isBuy: !this.from.isBuy,
+      }
+    },
+    getUpdateOfferOpts () {
+      return {
+        creating: {
+          pair: {
+            base: this.form.baseAssetCode,
+            quote: this.form.quoteAssetCode,
+          },
+          baseAmount: this.form.baseAmount,
+          quoteAmount: this.form.quoteAmount,
+          price: this.form.price,
+          isBuy: this.form.isBuy,
+        },
+        canceling: {
+          price: this.offer.price,
+          baseBalance: this.offerBaseAssetBalance.balanceId,
+          quoteBalance: this.offerQuoteAssetBalance.balanceId,
+          offerId: this.offer.offerId,
+        },
       }
     },
   },
@@ -187,5 +315,21 @@ export default {
     & > .app__form-actions {
       margin-top: 1.6rem;
     }
+  }
+
+  .app__button-tooltip {
+    margin-left: 1.2rem;
+  }
+
+  .app__tool-tip {
+    padding: 1rem .5rem;
+    margin-top: 1rem;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
   }
 </style>

@@ -817,12 +817,15 @@
       "submit-buy-btn": "Buy",
       "submit-sell-btn": "Sell",
       "cancel-offer-btn": "Cancel order",
-      "insufficient-funds": "Insufficient balance. You have {{amount}}"
+      "insufficient-funds": "Insufficient balance. You have {{amount}}",
+      "update-order": "Update order",
+      "cancel-order": "The order will be cancel"
     },
     "offer-manager": {
       "success-creating": "Order successfully created",
       "success-cancelling": "Order successfully cancelled",
-      "error-operation-cross-self": "Current order crosses your existing order"
+      "error-operation-cross-self": "Current order crosses your existing order",
+      "success-updating": "Order successfully updated"
     },
     "offer-creation-form": {
       "price-per-asset": "Price per {{asset}}",
