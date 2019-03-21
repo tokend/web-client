@@ -357,7 +357,7 @@ export default {
 
     setDefaultFormValues () {
       this.form.merchant = 'Pets shop, Sumska 46'
-      this.form.asset = 'PET1'
+      this.form.asset = 'PET'
       this.form.account = this.accountId
       this.form.system = config.HORIZON_SERVER
       this.form.amount = this.amount

@@ -112,12 +112,7 @@ export default {
     isInitialized: false,
     vueRoutes,
     isInvoiceRequestFormShown: false,
-    defaultAssetCode: 'PET1',
-    selectedItem: {},
-    movementsPollingConfig: {
-      interval: 5000,
-      callback: () => this.movementsPolled(),
-    },
+    defaultAssetCode: 'PET',
   }),
   async created () {
     initApi(this.wallet, this.config)
