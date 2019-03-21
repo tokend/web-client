@@ -2,9 +2,9 @@
   <tbody class="deposit-table-row">
     <tr
       class="deposit-table-row__tr"
-      :class="{ 'deposit-table-row__tr--dark': index%2 }">
+    >
       <td class="deposit-table-row__timeout-ticker">
-        <timeout-ticker :timeout="item.timeLeft" />
+        <timeout-ticker :end-time="item.endTime" />
       </td>
       <td class="deposit-table-row__amount">
         {{ { value: item.amount, currency: item.asset } | formatMoney }}
@@ -40,7 +40,6 @@ export default {
   },
   props: {
     item: { type: Object, required: true },
-    index: { type: Number, required: true },
   },
   data () {
     return {
@@ -50,7 +49,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '~@scss/variables';
 
   .deposit-table-row {
@@ -66,10 +65,6 @@ export default {
     &:hover{
       background: $col-table-row-selected;
     }
-  }
-
-  .deposit-table-row__tr--dark {
-    background: $col-table-alt-row-background;
   }
 
   .deposit-table-row__amount {

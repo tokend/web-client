@@ -1,31 +1,30 @@
 <template>
   <div class="deposit-table">
-    <template v-if="isLoaded && !isFailed">
+    <template v-if="!isLoading">
       <table class="deposit-table__table">
         <deposit-table-row
-          v-for="(item, index) in list"
+          v-for="(item, index) in depositList"
           :item="item"
-          :index="index+1"
           :key="index"
         />
       </table>
     </template>
+    <template v-else-if="isFailed">
+      <p>
+        {{ 'coinpayments-deposit.load-failed-msg' | globalize }}
+      </p>
+    </template>
+    <template v-else>
+      <loader message-id="coinpayments-deposit.loading-msg" />
+    </template>
     <div class="deposit-table__collection-loader-wrp">
       <collection-loader
-        v-show="list.length"
+        v-show="depositList.length"
         :first-page-loader="firstPageLoader"
         @first-page-load="setPendingIssuances"
         @next-page-load="concatPendingIssuances"
       />
     </div>
-    <template v-if="!isLoaded">
-      <loader message-id="coinpayments-deposit.loading-msg" />
-    </template>
-    <template v-if="isFailed">
-      <p>
-        {{ 'coinpayments-deposit.load-failed-msg' | globalize }}
-      </p>
-    </template>
   </div>
 </template>
 
@@ -33,10 +32,11 @@
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 import DepositTableRow from './coinpayments-deposit-table-row'
+import { api } from '../_api'
 import { IssuanceRecord } from '../wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { mapActions } from 'vuex'
-import { types } from '../store/types'
+
+const HORIZON_VERSION_PREFIX = 'v3'
 
 export default {
   name: 'deposit-table',
@@ -50,9 +50,9 @@ export default {
   },
   data () {
     return {
-      isLoaded: false,
+      isLoading: true,
       isFailed: false,
-      list: [],
+      depositList: [],
     }
   },
   computed: {
@@ -61,37 +61,53 @@ export default {
     },
   },
   methods: {
-    ...mapActions('coinpayments', {
-      loadPendingIssuances: types.LOAD_PENDING_ISSUANCES,
-    }),
     setPendingIssuances (records) {
-      this.list = records.map(item => new IssuanceRecord(item))
+      this.depositList = records.map(item => new IssuanceRecord(item))
     },
     concatPendingIssuances (records) {
-      this.list = this.list.concat(records
+      this.depositList = this.depositList.concat(records
         .map(item => new IssuanceRecord(item))
       )
     },
     async loadFirstPage () {
-      this.isLoaded = false
       try {
         const response = await this.loadPendingIssuances(this.balanceId)
-        this.isLoaded = true
+        this.isLoading = false
         return response
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
-        this.isLoaded = true
         this.isFailed = true
       }
+    },
+    async loadPendingIssuances (balanceId) {
+      const params = {
+        filter: {
+          state: 1,
+          'request_details.receiver': balanceId,
+        },
+        page: {
+          order: 'desc',
+        },
+        include: ['request_details'],
+      }
+      const endpoint = `/${HORIZON_VERSION_PREFIX}/create_issuance_requests`
+      const response = await api().getWithSignature(endpoint, params)
+      return response
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  @import '~@scss/variables';
   .deposit-table__table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
+    tbody:nth-child(odd){
+      tr:first-child {
+        background: $col-table-alt-row-background;
+      }
+    }
   }
 </style>

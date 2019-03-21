@@ -6,9 +6,6 @@ import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount } from '@vue/test-utils'
 
-import { types } from '../store/types'
-import { coinpaymentsModule } from '../store/index'
-
 Vue.config.silent = true
 
 const localVue = createLocalVue()
@@ -16,14 +13,6 @@ localVue.use(Vuelidate)
 localVue.use(Vuex)
 
 describe('CoinpaymentsForm', () => {
-  const depositDetails = {
-    address: 'ADRESS',
-    amount: '123',
-    asset: 'BTC',
-    confirms_needed: '2',
-    timeout: +new Date() + 9000,
-    txn_id: '9379992',
-  }
   const sampleCoinpaymentsFormData = {
     form: {
       amount: 10,
@@ -39,18 +28,10 @@ describe('CoinpaymentsForm', () => {
     let wrapper
 
     beforeEach(() => {
-      const actions = coinpaymentsModule.actions
-
-      sinon.stub(actions, types.LOAD_DEPOSIT).returns(depositDetails)
-
-      const store = new Vuex.Store({
-        actions,
-      })
       wrapper = mount(CoinpaymentsForm, {
         localVue,
         data: () => Object.assign({}, sampleCoinpaymentsFormData),
         sync: false,
-        store,
       })
     })
 

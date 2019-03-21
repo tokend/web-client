@@ -2,14 +2,12 @@
   <div>
     <p class="address-viewer__help-msg">
       {{ 'coinpayments-deposit.address-ready-msg' | globalize({
-        amount: depositDetails.amount,
-        money: asset.code
+        amount: amount,
+        money: assetCode
       }) }}
     </p>
-    <key-viewer :value="depositDetails.address" />
-    <timeout-ticker
-      :timeout="+depositDetails.timeout"
-    />
+    <key-viewer :value="address" />
+    <timeout-ticker :end-time="endTime" />
   </div>
 </template>
 
@@ -25,7 +23,10 @@ export default {
   },
   props: {
     depositDetails: { type: Object, required: true },
-    asset: { type: Object, required: true },
+    assetCode: { type: String, required: true },
+    address: { type: String, required: true },
+    amount: { type: [String, Number], required: true },
+    endTime: { type: [Number], required: true }, // timeStamp
   },
 }
 </script>
