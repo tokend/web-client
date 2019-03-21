@@ -121,7 +121,11 @@ export class SaleRecord {
   }
 
   get daysAfterEnd () {
-    return Math.abs(this.daysToGo)
+    if (this.daysToGo >= 0) {
+      return 0
+    } else {
+      return Math.abs(this.daysToGo)
+    }
   }
 
   get startsIn () {

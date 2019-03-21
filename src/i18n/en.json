@@ -769,7 +769,7 @@
       "funded": "{{funded, percent}} funded",
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
-      "days-after-the-end": "Closed {{days}} days ago",
+      "days-after-end": "Closed {{days}} days ago",
       "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
     },
     "trade-history": {
@@ -859,10 +859,10 @@
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
-      "investors": "### {{investors}}\ninvestors",
-      "days-to-go": "### {{days}}\ndays to go",
+      "investors": "investors",
+      "days-to-go": "days to go",
       "view-details-btn": "View details",
-      "days-after-the-end": "### {{days}}\ndays after closed"
+      "days-after-end": "days after closed"
     },
     "sale-overview": {
       "loading-msg": "Loading",

@@ -39,9 +39,9 @@
       </p>
 
       <p class="sale-card__days-to-launch">
-        <template v-if="sale.daysToGo < 0">
+        <template v-if="sale.daysAfterEnd > 0">
           <!-- eslint-disable-next-line -->
-          {{ 'sale-card.days-after-the-end' | globalize({ days: sale.daysAfterEnd }) }}
+          {{ 'sale-card.days-after-end' | globalize({ days: sale.daysAfterEnd }) }}
         </template>
 
         <template v-else>
