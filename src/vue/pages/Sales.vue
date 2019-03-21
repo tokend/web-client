@@ -162,6 +162,12 @@ export default {
   margin: -1rem;
 }
 
+.sales-asset-selector__field {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 1.6rem;
+}
+
 .sales__sale-card {
   flex: 0 1 calc(25% - 2rem);
 
