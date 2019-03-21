@@ -71,7 +71,7 @@ const PETS = [
     },
   },
   {
-    name: 'Svinka (not Pepa)',
+    name: 'Cavy',
     price: '8.641',
     logo: {
       url: 'https://goo.gl/VmXDiv',
