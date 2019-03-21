@@ -177,7 +177,7 @@ export default {
           new SalesListOwnedPageModule({
             routerEntry: {
               path: '/funds/my',
-              name: vueRoutes.salesUser.name,
+              name: vueRoutes.userOwnedSales.name,
               props: {
                 default: true,
                 isUserSales: true,

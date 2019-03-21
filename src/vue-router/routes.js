@@ -9,7 +9,7 @@ export const vueRoutes = Object.freeze({
   saleDetails: { name: 'app.sale-details' },
   saleCampaign: { name: 'app.sale-campaign' },
   allSales: { name: 'app.all-sales' },
-  salesUser: { name: 'app.sales-user' },
+  userOwnedSales: { name: 'app.sales-user' },
   signup: { name: 'signup' },
   recovery: { name: 'recovery' },
   settings: { name: 'app.settings' },

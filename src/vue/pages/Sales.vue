@@ -11,9 +11,10 @@
             {{ 'sales.all-sales' | globalize }}
           </span>
         </router-link>
+
         <router-link
           :to="{
-            name: vueRoutes.salesUser.name,
+            name: vueRoutes.userOwnedSales.name,
           }"
         >
           <span>
