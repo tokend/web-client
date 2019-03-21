@@ -1,6 +1,6 @@
 module.exports = {
   NODE_ENV: '"default"',
-  HORIZON_SERVER: '"https://api.loyalty.tokend.io"',
-  FILE_STORAGE: '"https://s3-eu-west-1.amazonaws.com/loyalty-identity-storage-confident-mahavira"',
-  NETWORK_PASSPHRASE: '"Loyalty Network!"',
+  HORIZON_SERVER: '"http://localhost:8000/_/api/"',
+  FILE_STORAGE: '"http://localhost:8000/_/storage/api"',
+  NETWORK_PASSPHRASE: '"TokenD Developer Network"',
 }
