@@ -143,8 +143,8 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    async currentAsset () {
-      await this.loadBalances()
+    currentAsset () {
+      this.loadBalances()
     },
   },
   async created () {
