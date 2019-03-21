@@ -142,6 +142,11 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+/*
+ * TODO: break this section down. children modules should know anything
+ * about parent styles
+ */
+
 .sales__btn-icon {
   display: flex;
   font-size: 1.8rem;
