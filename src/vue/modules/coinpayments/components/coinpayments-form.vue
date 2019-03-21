@@ -84,7 +84,7 @@ export default {
   mixins: [FormMixin],
   props: {
     asset: { type: Object, required: true },
-    balanceDetails: { type: Object, required: true },
+    balanceId: { type: String, required: true },
   },
   data () {
     return {
@@ -115,7 +115,7 @@ export default {
         this.depositDetails = await this.loadDeposit(
           {
             amount: this.form.amount,
-            receiver: this.balanceDetails.id,
+            receiver: this.balanceId,
           }
         )
         this.depositDetails.endTime = +new Date() +

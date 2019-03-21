@@ -28,7 +28,7 @@
               v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)"
               :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
               :asset="item"
-              :balance-details="balanceDetails"
+              :balance-id="balanceDetails.id"
               :wallet="wallet"
               :account-id="accountId"
               :config="config"
