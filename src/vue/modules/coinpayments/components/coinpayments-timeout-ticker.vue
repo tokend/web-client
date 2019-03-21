@@ -16,7 +16,7 @@ import moment from 'moment'
 export default {
   name: 'timeout-ticker',
   props: {
-    endTime: { type: Number, required: true }, // timeStamp
+    endTime: { type: Number, required: true }, // unix timeStamp
   },
   data: _ => ({
     secondsLeft: null,

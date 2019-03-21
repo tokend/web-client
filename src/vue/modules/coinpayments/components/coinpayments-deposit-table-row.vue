@@ -4,10 +4,10 @@
       class="deposit-table-row__tr"
     >
       <td class="deposit-table-row__timeout-ticker">
-        <timeout-ticker :end-time="item.endTime" />
+        <timeout-ticker :end-time="endTime" />
       </td>
       <td class="deposit-table-row__amount">
-        {{ { value: item.amount, currency: item.asset } | formatMoney }}
+        {{ { value: amount, currency: asset } | formatMoney }}
       </td>
       <td class="deposit-table-row__btn">
         <button
@@ -39,7 +39,10 @@ export default {
     KeyViewer,
   },
   props: {
-    item: { type: Object, required: true },
+    endTime: { type: Number, required: true }, // unix timeStamp
+    amount: { type: [String, Number], required: true },
+    asset: { type: String, required: true },
+    address: { type: String, required: true },
   },
   data () {
     return {
