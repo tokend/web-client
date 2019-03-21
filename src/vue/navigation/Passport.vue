@@ -64,13 +64,17 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters, mapMutations } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 
 export default {
   name: 'passport',
+  mixins: [VerificationFormMixin],
 
   data: () => ({
     isDropdownOpen: false,
     destructClickOutsideHandler: () => {},
+    ticker: 45000,
   }),
 
   computed: {
@@ -93,10 +97,26 @@ export default {
     },
   },
 
+  async created () {
+    setInterval(() => {
+      this.loadKycData()
+    }, this.ticker)
+    this.loadKycData()
+  },
+
   methods: {
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
+
+    async loadKycData () {
+      try {
+        await this.loadAccount(this.accountId)
+        await this.loadKyc()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
 
     toggleDropdown () {
       if (this.isDropdownOpen) {
