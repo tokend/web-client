@@ -28,7 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Added verification label translate for reit
+- Verification label in selected field for reit
 
 ### Changed
 - Now using new account endpoint for loading the fees
