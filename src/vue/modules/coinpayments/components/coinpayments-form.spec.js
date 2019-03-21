@@ -13,13 +13,6 @@ localVue.use(Vuelidate)
 localVue.use(Vuex)
 
 describe('CoinpaymentsForm', () => {
-  const sampleCoinpaymentsFormData = {
-    form: {
-      amount: 10,
-    },
-    isFailed: false,
-  }
-
   afterEach(() => {
     sinon.restore()
   })
@@ -30,8 +23,6 @@ describe('CoinpaymentsForm', () => {
     beforeEach(() => {
       wrapper = mount(CoinpaymentsForm, {
         localVue,
-        data: () => Object.assign({}, sampleCoinpaymentsFormData),
-        sync: false,
       })
     })
 
