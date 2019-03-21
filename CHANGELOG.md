@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Asset loading via the loop where was `filter[limit]=100`
 
 ### Changed
 - Now using new account endpoint for loading the fees

@@ -40,11 +40,12 @@ export const actions = {
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
     const endpoint = `/${HORIZON_VERSION_PREFIX}/assets`
-    let { data: assets } = await api().getWithSignature(endpoint, {
-      page: {
-        limit: 100,
-      },
-    })
+    let response = await api().getWithSignature(endpoint)
+    let assets = response.data
+    while (response.data.length) {
+      response = await response.fetchNext()
+      assets = [...assets, ...response.data]
+    }
 
     commit(
       types.SET_ASSETS,
