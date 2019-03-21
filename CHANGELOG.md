@@ -42,6 +42,14 @@ for further information about branching and tagging conventions.
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
 
+## [1.3.1-rc.0] - 2019-03-20
+
+### Changed
+- Do not throw an error if movement has an unknown effect or operation details
+
+### Fixed 
+- Not handling 'manage-asset-pair' operation details
+
 ## [1.3.0] - 2019-03-01
 
 [Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD

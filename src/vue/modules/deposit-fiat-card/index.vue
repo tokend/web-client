@@ -180,8 +180,8 @@
     </div>
   </form>
   <no-data-message
-    :title-id="'deposit-fiat-card-module.no-assets'"
-    :message-id="'deposit-fiat-card-module.here-will-assets-list'"
+    :title="'deposit-fiat-card-module.no-assets' | globalize"
+    :message="'deposit-fiat-card-module.here-will-assets-list' | globalize"
     v-else-if="!form.asset && isInitialized"
   />
   <loader v-else message-id="deposit-fiat-card-module.loading-msg" />
