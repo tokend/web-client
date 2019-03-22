@@ -40,6 +40,7 @@ for further information about branching and tagging conventions.
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Moved redeem offer creation from the global mixin to the local store
+- Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens

@@ -126,9 +126,6 @@ export const actions = {
       isBuy: opts.isBuy,
       baseBalance: getters.assetDetails(opts.pair.base).balanceId,
       quoteBalance: getters.assetDetails(opts.pair.quote).balanceId,
-      // For this operation, back-end creates a "calculated fee", that
-      // calculates as amount * percent fee. We can ignore the fixed fee
-      // because of this is a back-end business
       fee: fee.calculatedPercent,
     }
     const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
