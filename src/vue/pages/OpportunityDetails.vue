@@ -27,6 +27,7 @@
             <template v-if="token.details.subtype === ASSET_SUBTYPE.bond">
               <button
                 v-ripple
+                :disabled="!isOpportunityClosed"
                 class="app__button-raised opportunity-details__invest-btn"
                 @click="isBuyBackDrawerShown = true"
               >
@@ -36,6 +37,7 @@
             <template v-else-if="token.details.subtype === ASSET_SUBTYPE.share">
               <button
                 v-ripple
+                :disabled="!isOpportunityClosed"
                 class="app__button-raised opportunity-details__invest-btn"
                 @click="isDividendDrawerShown = true"
               >
@@ -81,6 +83,20 @@
         </drawer>
       </template>
 
+      <template v-if="getModule().canRenderSubmodule(BuyBackFormModule)">
+        <drawer :is-shown.sync="isBuyBackDrawerShown">
+          <template slot="heading">
+            {{ 'opportunity-details.buy-back-form-title' | globalize }}
+          </template>
+          <submodule-importer
+            :submodule="getModule().getSubmodule(BuyBackFormModule)"
+            :wallet="wallet"
+            :config="buyBackConfig"
+            @submitted="buyBackModuleSubmitted"
+          />
+        </drawer>
+      </template>
+
       <div class="opportunity-details__title">
         <h2 class="opportunity-details__name">
           {{ `${opportunity.name} (${opportunity.baseAsset})` }}
@@ -122,6 +138,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InvestForm from '@/vue/forms/InvestForm'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
+import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
@@ -165,7 +182,14 @@ export default {
     vueRoutes,
     ASSET_SUBTYPE,
     DividendFormModule,
+    BuyBackFormModule,
     dividendConfig: {
+      decimalPoints: config.DECIMAL_POINTS,
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
+      defaultAssetCode: null,
+    },
+    buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
@@ -181,12 +205,16 @@ export default {
     isOpportunityOwner () {
       return this.opportunity.owner === this.accountId
     },
+    isOpportunityClosed () {
+      return this.opportunity.isClosed
+    },
   },
 
   async created () {
     await this.loadOpportunity(this.id)
     await this.loadToken(this.opportunity.baseAsset)
     this.setDefaultDividendAssetCode()
+    this.setDefaultBuyBackAssetCode()
   },
 
   methods: {
@@ -222,8 +250,16 @@ export default {
       this.dividendConfig.defaultAssetCode = this.opportunity.baseAsset
     },
 
+    setDefaultBuyBackAssetCode () {
+      this.buyBackConfig.defaultAssetCode = this.opportunity.baseAsset
+    },
+
     dividendModuleTransferred () {
       this.isDividendDrawerShown = false
+    },
+
+    buyBackModuleSubmitted () {
+      this.isBuyBackDrawerShown = false
     },
 
     hideInvestDrawer () {

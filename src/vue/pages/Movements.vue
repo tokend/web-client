@@ -321,6 +321,7 @@ export default {
     },
     redeemModuleSubmitted () {
       this.isReedemDrawerShown = false
+      this.historyState++
     },
   },
 }
