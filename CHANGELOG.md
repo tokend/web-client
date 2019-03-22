@@ -50,6 +50,7 @@ for further information about branching and tagging conventions.
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
+- Fees displaying on the Movements page
 
 ## [1.3.1-rc.0] - 2019-03-20
 
