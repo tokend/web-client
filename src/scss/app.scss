@@ -261,6 +261,10 @@ h4 {
 
 .app__button-raised {
   @include button-raised();
+
+  &--danger {
+    background-color: $col-error;
+  }
 }
 
 .app__card {
