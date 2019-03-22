@@ -39,6 +39,7 @@ for further information about branching and tagging conventions.
 - Moved fees filters to the corresponding viewers
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
+- Moved redeem offer creation from the global mixin to the local store
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
