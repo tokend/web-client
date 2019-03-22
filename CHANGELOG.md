@@ -46,6 +46,7 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Fix get Account Id By Email
 
 ## [1.3.1-rc.0] - 2019-03-20
 
