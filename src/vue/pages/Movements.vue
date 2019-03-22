@@ -99,7 +99,9 @@
       <template slot="heading">
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
-      <withdrawal-form />
+      <withdrawal-form
+        @operation-submitted="initAssetSelector()"
+      />
     </drawer>
 
     <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
@@ -141,7 +143,9 @@
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
       </template>
-      <transfer-form />
+      <transfer-form
+        @operation-submitted="initAssetSelector()"
+      />
     </drawer>
 
     <template v-if="getModule().canRenderSubmodule(RedeemFormModule)">
