@@ -31,7 +31,7 @@ for further information about branching and tagging conventions.
 - Subject info `Dividend for <token-name>` for every payment operation in dividends
 - `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
 - For sales that were ended show highlighted text like a "Closed [days] ago"
-- Reword label create opportunity label "KYC Required" => "Verification required"
+- Reword create opportunity label "KYC Required" => "Verification required"
 
 ### Changed
 - Now using new account endpoint for loading the fees
