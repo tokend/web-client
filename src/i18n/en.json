@@ -776,7 +776,9 @@
       "sale-live-state": "Live",
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
-      "new-sale": "New sale"
+      "new-sale": "New sale",
+      "all-sales": "All sales",
+      "my-sales": "My sales"
     },
     "sale-card": {
       "funded": "{{funded, percent}} funded",
@@ -1210,7 +1212,8 @@
       "amount": "Amount ({{asset}})",
       "asset-dividend-pay": "Asset in which dividends will be paid",
       "asset-holders-not-found": "Asset holders not found",
-      "asset-holders": "Asset holders"
+      "asset-holders": "Asset holders",
+      "subject-msg": "Dividend for {{asset}}"
     },
     "documents-page": {
       "explore-documents-title": "Explore documents",
