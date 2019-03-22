@@ -682,7 +682,7 @@ export default {
     isBond () {
       return this.form.information.formType.value === ASSET_SUBTYPE.bond
     },
-    saleFixedPrice () {
+    salePriceRatioStatsQuoteAsset () {
       return MathUtil.divide(
         this.form.saleInformation.hardCap,
         this.form.information.maxIssuanceAmount
@@ -809,15 +809,15 @@ export default {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
         operation.creatorDetails.investmentToken = {
           asset: this.form.saleInformation.quoteAssets,
-          price: this.saleFixedPrice,
+          price: this.salePriceRatioStatsQuoteAsset,
         }
 
         operation.creatorDetails.redeemPrice = MathUtil.add(
           MathUtil.percentOfValue(
-            this.saleFixedPrice,
+            this.salePriceRatioStatsQuoteAsset,
             this.form.saleInformation.annualReturn
           ),
-          this.saleFixedPrice
+          this.salePriceRatioStatsQuoteAsset
         )
       } else {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.shareLogo
@@ -839,17 +839,17 @@ export default {
       }
     },
     formatSaleQuoteAssets () {
-      if (!this.isBond) {
-        return this.form.saleInformation.quoteAssets
-          .map((item) => ({
-            asset: item,
-            price: this.calculatePriceForBaseAsset(item),
-          }))
-      } else {
+      if (this.isBond) {
         return [{
           asset: this.form.saleInformation.quoteAssets,
-          price: this.saleFixedPrice,
+          price: this.salePriceRatioStatsQuoteAsset,
         }]
+      } else {
+        return this.form.saleInformation.quoteAssets
+          .map(asset => ({
+            asset: asset,
+            price: this.calculatePriceForBaseAsset(asset),
+          }))
       }
     },
     selectFormType (formType) {
@@ -865,7 +865,7 @@ export default {
     },
     calculatePriceForBaseAsset (asset) {
       if (asset === this.statsQuoteAsset.code) {
-        return this.saleFixedPrice
+        return this.salePriceRatioStatsQuoteAsset
       } else {
         const assetPrice = this.pairs.find(item =>
           item.baseAsset.id === asset &&
@@ -873,7 +873,7 @@ export default {
         ).price || '1'
 
         return MathUtil.divide(
-          this.saleFixedPrice,
+          this.salePriceRatioStatsQuoteAsset,
           assetPrice
         )
       }
