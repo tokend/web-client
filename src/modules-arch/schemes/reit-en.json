@@ -162,6 +162,10 @@
     "downloads-page": {
       "mobile-apps-header": "All your opportunities right on your phone",
       "mobile-apps-desc": "To access your opportunities everywhere, get the TokenD app on your mobile device."
+    },
+    "create-opportunity": {
+      "asset-type-required-kyc": "Verification required",
+      "asset-type-not-required-kyc": "Verification doesn't required"
     }
   }
 }
