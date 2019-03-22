@@ -14,7 +14,7 @@
       >
         <div class="create-opportunity__cards">
           <opportunity-card
-            v-for="item in formTypes"
+            v-for="item in FORM_TYPES"
             :key="item.value"
             :is-select="form.information.formType.value === item.value"
             :title="item.label | globalize"
@@ -420,11 +420,11 @@
         </div>
       </form>
     </form-stepper>
+  </div>
     <loader
       v-else
       message-id="create-opportunity.loading-msg"
     />
-  </div>
 </template>
 
 <script>
