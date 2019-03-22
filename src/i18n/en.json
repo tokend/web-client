@@ -776,7 +776,9 @@
       "sale-live-state": "Live",
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
-      "new-sale": "New sale"
+      "new-sale": "New sale",
+      "all-sales": "All sales",
+      "my-sales": "My sales"
     },
     "sale-card": {
       "funded": "{{funded, percent}} funded",
