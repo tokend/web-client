@@ -10,8 +10,8 @@
       <div class="app__form-row">
         <div class="app__form-field">
           <file-field
-            :label="'issuance.pre-issuance-lbl' | globalize"
-            :note="'issuance.file-type-note' | globalize"
+            :label="'pre-issuance-form.pre-issuance-lbl' | globalize"
+            :note="'pre-issuance-form.file-type-note' | globalize"
             accept=".iss"
             v-model="preIssuanceDocument"
             :disabled="formMixin.isDisabled"
@@ -23,12 +23,14 @@
         v-if="issuance"
         class="pre-issuance-form__issuance-details"
       >
-        <h3>{{ 'issuance.pre-issuance-details-title' | globalize }}</h3>
+        <h3>
+          {{ 'pre-issuance-form.pre-issuance-details-title' | globalize }}
+        </h3>
         <div class="app__table">
           <table>
             <thead>
-              <th>{{ 'issuance.asset-lbl' | globalize }}</th>
-              <th>{{ 'issuance.amount-lbl' | globalize }}</th>
+              <th>{{ 'pre-issuance-form.asset-lbl' | globalize }}</th>
+              <th>{{ 'pre-issuance-form.amount-lbl' | globalize }}</th>
             </thead>
             <tbody>
               <tr>
@@ -52,18 +54,18 @@
           class="pre-issuance-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'issuance.upload-btn' | globalize }}
+          {{ 'pre-issuance-form.upload-btn' | globalize }}
         </button>
       </div>
     </form>
   </div>
   <div v-else-if="isLoaded && !ownedAssets.length">
     <p>
-      {{ 'issuance.no-owned-assets-msg' | globalize }}
+      {{ 'pre-issuance-form.no-owned-assets-msg' | globalize }}
     </p>
   </div>
   <div v-else>
-    <loader :message-id="'issuance.loading-msg'" />
+    <loader :message-id="'pre-issuance-form.loading-msg'" />
   </div>
 </template>
 
@@ -124,7 +126,7 @@ export default {
             request: this.issuance.xdr,
           })
         await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('issuance.pre-issuance-uploaded-msg')
+        Bus.success('pre-issuance-form.pre-issuance-uploaded-msg')
         this.$emit(EVENTS.close)
         this.reset()
       } catch (e) {
@@ -148,7 +150,7 @@ export default {
       result.isUsed = preIssuance.used
 
       if (!this.isAssetDefined(result.asset)) {
-        Bus.error('issuance.pre-issuance-not-allowed-err')
+        Bus.error('pre-issuance-form.pre-issuance-not-allowed-err')
         this.issuance = null
         this.disableForm()
         return

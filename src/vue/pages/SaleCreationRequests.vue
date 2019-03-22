@@ -138,11 +138,13 @@
         </template>
 
         <template v-else>
+          <!-- eslint-disable max-len -->
           <no-data-message
             icon-name="trending-up"
-            title-id="sale-creation-requests.no-request-history-title"
-            message-id="sale-creation-requests.no-request-history-desc"
+            :title="'sale-creation-requests.no-request-history-title' | globalize"
+            :message="'sale-creation-requests.no-request-history-desc' | globalize"
           />
+          <!-- eslint-enable max-len -->
         </template>
       </template>
 
@@ -169,8 +171,8 @@
     <template v-else-if="isAssetsLoaded">
       <no-data-message
         icon-name="trending-up"
-        title-id="sale-creation-requests.no-owned-assets-title"
-        message-id="sale-creation-requests.no-owned-assets-desc"
+        :title="'sale-creation-requests.no-owned-assets-title' | globalize"
+        :message="'sale-creation-requests.no-owned-assets-desc' | globalize"
       />
     </template>
 

@@ -103,6 +103,25 @@
             </td>
           </tr>
 
+          <tr v-if="request.details.annualReturn">
+            <td v-if="ASSET_SUBTYPE.bond === request.details.subtype">
+              {{ 'asset-request-details.annual-return' | globalize }}
+            </td>
+            <td v-else>
+              {{ 'asset-request-details.expected-revenue' | globalize }}
+            </td>
+            <td>
+              {{ request.details.annualReturn }}%
+            </td>
+          </tr>
+          <tr v-if="request.details.maturityDate">
+            <td>
+              {{ 'asset-request-details.maturity-date' | globalize }}
+            </td>
+            <td>
+              {{ +request.details.maturityDate | formatCalendar }}
+            </td>
+          </tr>
           <tr>
             <td>
               {{ 'asset-request-details.terms-title' | globalize }}
@@ -128,6 +147,20 @@
             </td>
             <td>
               <template v-if="request.isTransferable">
+                {{ 'asset-request-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-request-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-request-details.withdrawable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="request.isWithdrawable">
                 {{ 'asset-request-details.present-msg' | globalize }}
               </template>
 
@@ -191,6 +224,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 
 import { ASSET_POLICIES, REQUEST_TYPES } from '@tokend/js-sdk'
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
@@ -230,6 +264,7 @@ export default {
     EVENTS,
     REQUEST_STATES,
     REQUEST_TYPES,
+    ASSET_SUBTYPE,
   }),
   computed: {
     ...mapGetters({

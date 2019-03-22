@@ -94,8 +94,8 @@
       <template v-else>
         <no-data-message
           icon-name="trending-up"
-          title-id="pre-issuance-requests.no-request-history-title"
-          message-id="pre-issuance-requests.no-request-history-desc"
+          :title="'pre-issuance-requests.no-request-history-title' | globalize"
+          :message="'pre-issuance-requests.no-request-history-desc' | globalize"
         />
       </template>
     </template>
