@@ -517,9 +517,11 @@ export default {
         isBuy: true,
         amount: MathUtil.divide(
           this.form.amount,
+          // TODO: remove DEFAULT_QUOTE_PRICE
           this.sale.quoteAssetPrices[this.form.asset.code] ||
             DEFAULT_QUOTE_PRICE
         ),
+        // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||
           DEFAULT_QUOTE_PRICE,
         fee: offerFee,
