@@ -389,7 +389,7 @@
       "withdrawal": "Withdrawal",
       "deposit": "Deposit",
       "send": "Send",
-      "dividend": "Dividend",
+      "redeem": "Redeem",
       "no-data-title": "No balance movements yet",
       "no-data-msg": "Here will be your balance movements history"
     },
@@ -424,7 +424,8 @@
         "unlocked": "Unlocked",
         "withdrawn": "Withdrawn",
         "charged-from-locked": "Charged from locked",
-        "matched": "Matched"
+        "matched": "Matched",
+        "unknown": "Unknown type"
       },
       "operations": {
         "create-issuance-request": "Issuance/deposit requested",
@@ -432,8 +433,10 @@
         "check-sale-state": "Sale state updated",
         "review-request": "Request reviewed",
         "create-aml-alert-request": "AML alert",
+        "manage-asset-pair": "Pair updated",
         "manage-offer": "Offer",
-        "payment": "Payment"
+        "payment": "Payment",
+        "unknown": "Unknown type"
       },
       "fee-th": "Fee",
       "type-th": "Type",
@@ -477,7 +480,17 @@
       "offer-deleted-msg": "Offer deleted or matched",
       "offer-direction-lbl": "Offer direction",
       "offer-buy-asset-msg": "Buy {{asset}}",
-      "offer-sell-asset-msg": "Sell {{asset}}"
+      "offer-sell-asset-msg": "Sell {{asset}}",
+      "asset-pair-lbl": "Asset pair",
+      "asset-pair-value": "{{base}}/{{quote}}",
+      "physical-price-lbl":  "Physical price",
+      "current-price-lbl": "Current price",
+      "tradeable-lbl":  "Can be traded on secondary market",
+      "not-tradeable-lbl": "Can not be traded on secondary market",
+      "restricted-on-ph-price-lbl":  "Is restricted on physical price",
+      "not-restricted-on-ph-price-lbl": "Is not restricted on physical price",
+      "restricted-on-cur-price-lbl":  "Is restricted on current price",
+      "not-restricted-on-cur-price-lbl": "Is not restricted on current price"
     },
     "dashboard": {
       "data-loading": "Fetching dashboard data...",
@@ -485,7 +498,7 @@
       "loading-error-msg": "There was an error while loading.",
       "transaction-details": "Transaction details",
       "close": "Close",
-      "activity": "Activity",
+      "activity": "Movements",
       "date": "Date",
       "transaction-type": "Transaction type",
       "create-issuance-lbl": "Create issuance",
@@ -825,6 +838,16 @@
       "success-cancelling": "Order successfully cancelled",
       "error-operation-cross-self": "Current order crosses your existing order"
     },
+    "redeem-form": {
+      "title": "Redeem",
+      "opportunity-uniq-code": "Opportunity uniq code",
+      "invested-in": "Indested in",
+      "total": "Total",
+      "submit-sell-btn": "Sell",
+      "no-investments": "You have no investments",
+      "here-will-investments-list": "Here will be the list of your investments that you can redeem",
+      "loading-msg": "Loading..."
+    },
     "offer-creation-form": {
       "price-per-asset": "Price per {{asset}}",
       "amount": "Amount {{asset}}",
@@ -864,6 +887,24 @@
       "view-details-btn": "View details",
       "days-after-end": "days after closed"
     },
+    "opportunity-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "campaign-title": "Campaign",
+      "invest": "Invest",
+      "dividend": "Dividend",
+      "buy-back": "Buy back",
+      "overview-title": "Opportunity overview",
+      "opportunity-not-found-title": "Opportunity not found",
+      "opportunity-not-found-desc": "There are no opportunities with this ID",
+      "no-description-msg": "No description provided",
+      "funded": "{{funded, percent}} funded",
+      "investors": "### {{investors}}\ninvestors",
+      "days-to-go": "### {{days}}\ndays to go",
+      "view-details-btn": "View details",
+      "opportunities-list": "Opportunities list",
+      "dividend-form-title": "Dividends"
+    },
     "sale-overview": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
@@ -898,7 +939,8 @@
       "canceled-sale-msg": "Cancelled sales are not investable",
       "cap-exceeded-msg": "Investing amount has exceeded the sale cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the fund succeeds",
-      "offer-canceled-msg": "Your offer was successfully cancelled"
+      "offer-canceled-msg": "Your offer was successfully cancelled",
+      "deposit-btn": "Deposit"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
@@ -1120,6 +1162,7 @@
       "close-time": "Close time",
       "soft-cap": "Soft cap ({{asset}})",
       "hard-cap": "Hard cap ({{asset}})",
+      "max-issuance-amount": "Issuance amount",
       "accept-investments-in": "Accept investments in:",
       "upload-image": "Upload the image users will see first in their searcher",
       "cover-logo": "Cover logo",
@@ -1154,7 +1197,8 @@
       "amount": "Amount ({{asset}})",
       "asset-dividend-pay": "Asset in which dividends will be paid",
       "asset-holders-not-found": "Asset holders not found",
-      "asset-holders": "Asset holders"
+      "asset-holders": "Asset holders",
+      "subject-msg": "Dividend for {{asset}}"
     },
     "documents-page": {
       "explore-documents-title": "Explore documents",

@@ -6,6 +6,7 @@ import DateField from '../fields/DateField'
 import TextareaField from '@/vue/fields/TextareaField'
 import TickField from '@/vue/fields/TickField'
 import FileField from '@/vue/fields/FileField'
+import RadioField from '@/vue/fields/RadioField'
 import MarkdownField from '@/vue/fields/MarkdownField'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 
@@ -22,6 +23,7 @@ export default {
     TextareaField,
     TickField,
     FileField,
+    RadioField,
     MarkdownField,
     FormConfirmation,
   },
