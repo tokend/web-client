@@ -853,14 +853,14 @@
     "buy-back-form": {
       "title": "Redeem",
       "opportunity-uniq-code": "Opportunity uniq code",
-      "invested-in": "Indested in",
-      "total": "Total ({{asset}})",
-      "amount": "Amount ({{asset}})",
-      "submit-buy-btn": "Buy",
+      "quote-asset-lbl": "Indested in",
+      "total-lbl": "Total ({{asset}})",
+      "amount-lbl": "Amount ({{asset}})",
+      "submit-btn": "Buy",
       "no-investments": "You have no investments",
       "here-will-investments-list": "Here will be the list of your investments that you can redeem",
       "loading-msg": "Loading...",
-      "issued-tokens": "Issued {{value}}"
+      "issued-tokens-msg": "Issued {{value}}"
     },
     "offer-creation-form": {
       "price-per-asset": "Price per {{asset}}",

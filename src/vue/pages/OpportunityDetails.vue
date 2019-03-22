@@ -92,7 +92,7 @@
             :submodule="getModule().getSubmodule(BuyBackFormModule)"
             :wallet="wallet"
             :config="buyBackConfig"
-            @transferred="buyBackModuleTransferred"
+            @submitted="buyBackModuleSubmitted"
           />
         </drawer>
       </template>
@@ -258,7 +258,7 @@ export default {
       this.isDividendDrawerShown = false
     },
 
-    buyBackModuleTransferred () {
+    buyBackModuleSubmitted () {
       this.isBuyBackDrawerShown = false
     },
 

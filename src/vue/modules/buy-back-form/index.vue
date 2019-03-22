@@ -18,7 +18,7 @@
         </div>
         <p class="app__form-field-description">
           {{
-            'buy-back-form.issued-tokens' | globalize({
+            'buy-back-form.issued-tokens-msg' | globalize({
               value: allowedToBuy(form.asset.code)
             })
           }}
@@ -28,9 +28,9 @@
           <div class="app__form-field">
             <input-field
               v-if="selectedSale.defaultQuoteAsset"
-              :label="'buy-back-form.invested-in' | globalize"
+              :label="'buy-back-form.quote-asset-lbl' | globalize"
               v-model="selectedSale.defaultQuoteAsset.id"
-              name="but-back-invested-in"
+              name="buy-back-quote-asset"
               :readonly="true"
             />
           </div>
@@ -39,14 +39,14 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              :label="'buy-back-form.amount' | globalize({
+              :label="'buy-back-form.amount-lbl' | globalize({
                 asset: form.asset.code
               })"
               v-model="form.amount"
-              name="but-back-amount"
+              name="buy-back-amount"
               type="number"
               :step="config.minAmount"
-              autocomplite="off"
+              autocomplete="off"
               @blur="touchField('form.amount')"
               :error-message="getFieldErrorMessage(
                 'form.amount',
@@ -63,11 +63,11 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              :label="'buy-back-form.total' | globalize({
+              :label="'buy-back-form.total-lbl' | globalize({
                 asset: form.quoteAsset.id
               })"
               v-model="form.totalAmount"
-              name="but-back-total"
+              name="buy-back-total"
               :readonly="true"
               @blur="touchField('form.totalAmount')"
               :error-message="getFieldErrorMessage(
@@ -84,7 +84,7 @@
           <form-confirmation
             @cancel="hideConfirmation"
             @ok="submit"
-            :is-pending="isBuyBackProcessing"
+            :is-pending="isSubmitting"
             class="app__form-confirmation"
           />
         </template>
@@ -98,7 +98,7 @@
               :disabled="formMixin.isDisabled"
             >
               <template>
-                {{ 'buy-back-form.submit-buy-btn' | globalize }}
+                {{ 'buy-back-form.submit-btn' | globalize }}
               </template>
             </button>
           </div>
@@ -138,7 +138,7 @@ import {
 } from '@validators'
 
 const EVENTS = {
-  transferred: 'transferred',
+  submitted: 'submitted',
 }
 
 export default {
@@ -191,7 +191,7 @@ export default {
       totalAmount: '',
     },
     selectedSale: {},
-    isBuyBackProcessing: false,
+    isSubmitting: false,
   }),
   computed: {
     ...mapGetters('buy-back-form', {
@@ -210,10 +210,10 @@ export default {
     },
     selectedSale (sale) {
       this.form.amount = this.allowedToBuy(this.form.asset.code)
-      this.form.totalAmount = this.calculatedBuyBackPrice()
+      this.form.totalAmount = this.calculateTotalAmount()
     },
     'form.amount' (value) {
-      this.form.totalAmount = this.calculatedBuyBackPrice(value)
+      this.form.totalAmount = this.calculateTotalAmount(value)
     },
   },
   async created () {
@@ -236,13 +236,13 @@ export default {
     }),
     async submit () {
       this.disableForm()
-      this.isBuyBackProcessing = true
+      this.isSubmitting = true
       // TODO: move it to the store action
       await this.createOffer(this.getCreateOfferOpts())
-      this.isBuyBackProcessing = false
+      this.isSubmitting = false
       this.enableForm()
       this.hideConfirmation()
-      this.$emit(EVENTS.transferred)
+      this.$emit(EVENTS.submitted)
     },
     getCreateOfferOpts () {
       return {
@@ -263,7 +263,7 @@ export default {
         this.form.asset = this.assetsInBalance[0]
       }
     },
-    calculatedBuyBackPrice (value) {
+    calculateTotalAmount (value) {
       return MathUtil.multiply(
         this.form.asset.details.redeemPrice || 0,
         value || this.allowedToBuy(this.form.asset.code)
@@ -276,9 +276,6 @@ export default {
 
       this.form.asset = this.assetsInBalance
         .find(item => item.code === this.config.defaultAssetCode)
-    },
-    redeemed () {
-      this.$emit(EVENTS.redeemed)
     },
   },
 }
