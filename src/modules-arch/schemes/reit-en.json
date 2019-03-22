@@ -111,7 +111,9 @@
       "update-sale": "Update opportunity",
       "overview-title": "Opportunity overview",
       "asset-code-label": "Opportunity code",
-      "new-sale": "New opportunity"
+      "new-sale": "New opportunity",
+      "all-sales": "All opportunities",
+      "my-sales": "My opportunities"
     },
     "trade-open-offers": {
       "table-base-amount-lbl": "Base opportunity amount",

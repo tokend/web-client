@@ -29,6 +29,7 @@ for further information about branching and tagging conventions.
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
 - Subject info `Dividend for <token-name>` for every payment operation in dividends
+- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
 - For sales that were ended show highlighted text like a "Closed [days] ago"
 
 ### Changed

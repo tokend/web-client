@@ -30,6 +30,8 @@ import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/mod
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
+import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 
 export default {
   importEnLocaleFile () {
@@ -64,7 +66,28 @@ export default {
         },
         menuButtonTranslationId: 'pages-names.funds',
         menuButtonMdiName: 'trending-up',
+        isAutoRedirectToFirstChild: true,
         submodules: [
+          new SalesListPageModule({
+            routerEntry: {
+              path: '/opportunities/all',
+              name: vueRoutes.allSales.name,
+              props: {
+                default: true,
+                isUserSales: false,
+              },
+            },
+          }),
+          new SalesListOwnedPageModule({
+            routerEntry: {
+              path: '/opportunities/my',
+              name: vueRoutes.userOwnedSales.name,
+              props: {
+                default: true,
+                isUserSales: true,
+              },
+            },
+          }),
           new CreateAssetSaleModule({
             isCorporateOnly: true,
           }),
