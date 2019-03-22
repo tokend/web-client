@@ -12,7 +12,7 @@
               :values="assetsInBalance"
               key-as-value-text="nameAndCode"
               class="app__select"
-              :label="'buy-back-form.opportunity-uniq-code' | globalize"
+              :label="'buy-back-form.opportunity-uniq-code-lbl' | globalize"
             />
           </div>
         </div>

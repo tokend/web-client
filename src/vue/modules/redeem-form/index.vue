@@ -12,7 +12,7 @@
               :values="assetsInBalance"
               key-as-value-text="nameAndCode"
               class="app__select"
-              :label="'redeem-form.opportunity-uniq-code' | globalize"
+              :label="'redeem-form.opportunity-uniq-code-lbl' | globalize"
             />
           </div>
         </div>
@@ -21,9 +21,9 @@
           <div class="app__form-field">
             <input-field
               v-if="selectedSale.defaultQuoteAsset"
-              :label="'redeem-form.invested-in' | globalize"
+              :label="'redeem-form.quote-asset-lbl' | globalize"
               v-model="selectedSale.defaultQuoteAsset.id"
-              name="redeem-invested-in"
+              name="redeem-quote-asset"
               :readonly="true"
             />
           </div>
@@ -32,7 +32,7 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              :label="'redeem-form.total' | globalize"
+              :label="'redeem-form.total-lbl' | globalize"
               v-model="form.totalAmount"
               name="redeem-total"
               :readonly="true"
