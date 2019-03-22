@@ -51,6 +51,7 @@ for further information about branching and tagging conventions.
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
 - Correct dividends subject
+- Fees displaying on the Movements page
 
 ## [1.3.1-rc.0] - 2019-03-20
 
