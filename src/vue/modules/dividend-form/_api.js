@@ -25,3 +25,17 @@ export function api () {
 
   return _api
 }
+
+/**
+ * @param {Response} response - response from API
+ *
+ * @returns {Array} - data from API response
+ */
+export async function loadingDataViaLoop (response) {
+  let data = response.data
+  while (response.data.length) {
+    response = await response.fetchNext()
+    data = [...data, ...response.data]
+  }
+  return data
+}

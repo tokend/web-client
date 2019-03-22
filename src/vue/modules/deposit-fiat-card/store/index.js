@@ -2,7 +2,7 @@ import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api, loadingDataViaLoop } from '../_api'
 import { AssetRecord } from '../wrappers/asset.record'
 
 const HORIZON_VERSION_PREFIX = 'v3'
@@ -41,11 +41,7 @@ export const actions = {
   async [types.LOAD_ASSETS] ({ commit, getters }) {
     const endpoint = `/${HORIZON_VERSION_PREFIX}/assets`
     let response = await api().getWithSignature(endpoint)
-    let assets = response.data
-    while (response.data.length) {
-      response = await response.fetchNext()
-      assets = [...assets, ...response.data]
-    }
+    let assets = await loadingDataViaLoop(response)
 
     commit(
       types.SET_ASSETS,
