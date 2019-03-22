@@ -14,7 +14,7 @@
       >
         <div class="create-opportunity__cards">
           <opportunity-card
-            v-for="item in formTypes"
+            v-for="item in FORM_TYPES"
             :key="item.value"
             :is-select="form.information.formType.value === item.value"
             :title="item.label | globalize"
@@ -420,11 +420,11 @@
         </div>
       </form>
     </form-stepper>
-    <loader
-      v-else
-      message-id="create-opportunity.loading-msg"
-    />
   </div>
+  <loader
+    v-else
+    message-id="create-opportunity.loading-msg"
+  />
 </template>
 
 <script>
@@ -438,13 +438,12 @@ import moment from 'moment'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { Wallet, base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
-import { AssetRecord } from './wrappers/asset.record'
 import { api, initApi } from './_api'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.const'
 
 import { DateUtil } from '@/js/utils'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
 import {
@@ -487,6 +486,19 @@ const EMPTY_DOCUMENT = {
 const EVENTS = {
   close: 'close',
 }
+const FORM_TYPES = [
+  {
+    label: 'create-opportunity.bond-creation',
+    value: ASSET_SUBTYPE.bond,
+    description: 'create-opportunity.bond-description',
+  },
+  {
+    label: 'create-opportunity.property-purchase',
+    value: ASSET_SUBTYPE.share,
+    description: 'create-opportunity.revenue-description',
+  },
+]
+
 export default {
   name: 'create-opportunity',
   components: {
@@ -558,6 +570,7 @@ export default {
       currentStep: 1,
       STEPS,
       kvAssetTypeKycRequired: '',
+      FORM_TYPES,
       CODE_MAX_LENGTH,
       ASSET_SUBTYPE,
       DOCUMENT_TYPES,
@@ -648,20 +661,12 @@ export default {
     }
   },
   computed: {
-    formTypes () {
-      return [
-        {
-          label: 'create-opportunity.bond-creation',
-          value: ASSET_SUBTYPE.bond,
-          description: 'create-opportunity.bond-description',
-        },
-        {
-          label: 'create-opportunity.property-purchase',
-          value: ASSET_SUBTYPE.share,
-          description: 'create-opportunity.revenue-description',
-        },
-      ]
-    },
+    ...mapGetters('create-opportunity', {
+      assets: types.assets,
+      pairs: types.pairs,
+      baseAssets: types.baseAssets,
+      statsQuoteAsset: types.statsQuoteAsset,
+    }),
     assetTypes () {
       return [
         {
@@ -674,14 +679,14 @@ export default {
         },
       ]
     },
-    baseAssets () {
-      return this.assets.filter(item => item.isBaseAsset)
-    },
-    statsQuoteAsset () {
-      return this.assets.find(item => item.isStatsQuoteAsset)
-    },
     isBond () {
       return this.form.information.formType.value === ASSET_SUBTYPE.bond
+    },
+    salePriceRatioStatsQuoteAsset () {
+      return MathUtil.divide(
+        this.form.saleInformation.hardCap,
+        this.form.information.maxIssuanceAmount
+      )
     },
   },
   watch: {
@@ -691,9 +696,9 @@ export default {
   },
   async created () {
     initApi(this.wallet, this.config)
-    this.form.information.formType = this.formTypes[0]
-    const response = await this.loadAssets()
-    this.assets = response.map(item => new AssetRecord(item))
+    this.form.information.formType = this.FORM_TYPES[0]
+    await this.loadAssets()
+    await this.loadBaseAssetsPairs()
     this.kvAssetTypeKycRequired = await this.loadKvAssetTypeKycRequired()
     this.assignDefaultAssetSubtype()
     this.isInitialized = true
@@ -705,6 +710,7 @@ export default {
       loadKvAssetTypeKycRequired: types.LOAD_KV_KYC_REQUIRED,
       getBlobId: types.LOAD_BLOB_ID,
       loadAssets: types.LOAD_ASSETS,
+      loadBaseAssetsPairs: types.LOAD_BASE_ASSETS_PAIRS_BY_STATS_QUOTE_ASSET,
     }),
     nextStep (formStep) {
       if (this.isFormValid(formStep)) {
@@ -803,19 +809,15 @@ export default {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
         operation.creatorDetails.investmentToken = {
           asset: this.form.saleInformation.quoteAssets,
-          price: '1',
+          price: this.salePriceRatioStatsQuoteAsset,
         }
 
-        const saleFixedPrice = MathUtil.divide(
-          this.form.saleInformation.hardCap,
-          this.form.information.maxIssuanceAmount
-        )
         operation.creatorDetails.redeemPrice = MathUtil.add(
           MathUtil.percentOfValue(
-            saleFixedPrice,
+            this.salePriceRatioStatsQuoteAsset,
             this.form.saleInformation.annualReturn
           ),
-          saleFixedPrice
+          this.salePriceRatioStatsQuoteAsset
         )
       } else {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.shareLogo
@@ -837,17 +839,17 @@ export default {
       }
     },
     formatSaleQuoteAssets () {
-      if (Array.isArray(this.form.saleInformation.quoteAssets)) {
-        return this.form.saleInformation.quoteAssets
-          .map((item) => ({
-            asset: item,
-            price: '1',
-          }))
-      } else {
+      if (this.isBond) {
         return [{
           asset: this.form.saleInformation.quoteAssets,
-          price: '1',
+          price: this.salePriceRatioStatsQuoteAsset,
         }]
+      } else {
+        return this.form.saleInformation.quoteAssets
+          .map(asset => ({
+            asset: asset,
+            price: this.calculatePriceForBaseAsset(asset),
+          }))
       }
     },
     selectFormType (formType) {
@@ -855,10 +857,25 @@ export default {
       this.form.information.formType = formType
     },
     assignDefaultAssetSubtype () {
-      if (this.isBond) {
+      if (this.isBond && this.baseAssets.length) {
         this.form.saleInformation.quoteAssets = this.baseAssets[0].code
       } else {
         this.form.saleInformation.quoteAssets = []
+      }
+    },
+    calculatePriceForBaseAsset (asset) {
+      if (asset === this.statsQuoteAsset.code) {
+        return this.salePriceRatioStatsQuoteAsset
+      } else {
+        const assetPrice = this.pairs.find(item =>
+          item.baseAsset.id === asset &&
+          item.quoteAsset.id === this.statsQuoteAsset.code
+        ).price || '1'
+
+        return MathUtil.divide(
+          this.salePriceRatioStatsQuoteAsset,
+          assetPrice
+        )
       }
     },
   },

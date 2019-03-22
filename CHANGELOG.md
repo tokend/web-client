@@ -33,6 +33,7 @@ for further information about branching and tagging conventions.
 - For sales that were ended show highlighted text like a "Closed [days] ago"
 - Reword create opportunity label "KYC Required" => "Verification required"
 - Asset loading via the loop where was `filter[limit]=100`
+- Correct base/quote price calculating for Opportunities
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -46,6 +47,9 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
+- Loader displaying in the Opportunity create form
+- Calculated redeem price displaying for old tokens
 
 ## [1.3.1-rc.0] - 2019-03-20
 
