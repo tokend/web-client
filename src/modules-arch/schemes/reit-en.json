@@ -18,7 +18,8 @@
     "pages-names": {
       "tokens": "Opportunities",
       "funds": "Opportunities",
-      "fund-details": "Opportunity details"
+      "fund-details": "Opportunity details",
+      "movements": "Activity"
     },
     "limits": {
       "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one opportunity to your balances"
@@ -31,7 +32,9 @@
     },
     "op-pages": {
       "can-not-load-assets": "There was an error while loading opportunities",
-      "assets-loading-msg": "Loading the opportunities…"
+      "assets-loading-msg": "Loading the opportunities…",
+      "no-data-title": "No balance activity yet",
+      "no-data-msg": "Here will be your balance activity history"
     },
     "op-details": {
       "asset-lbl": "Opportunity",
@@ -48,11 +51,15 @@
       "sale-state-lbl": "Opportunity state",
       "sale-closed-msg": "Opportunity funded and closed",
       "sale-canceled-msg": "Opportunity not funded and canceled",
-      "order-book-id-lbl": "Order book (Opportunity) ID"
+      "order-book-id-lbl": "Order book (Opportunity) ID",
+      "movements-load-failed-msg": "Failed to load account activity. Please try again later",
+      "loading-movements-msg": "Please wait while we loading your activity",
+      "no-movements-title": "No activity history"
     },
     "dashboard": {
       "here-will-be-the-tokens": "Here will be the list of your opportunities",
-      "no-assets-in-your-wallet": "No opportunities in your wallet"
+      "no-assets-in-your-wallet": "No opportunities in your wallet",
+      "activity": "Activity"
     },
     "chart": {
       "no-price-history-of-selected-token": "No price history of selected opportunities yet"
@@ -115,12 +122,6 @@
     },
     "trade-top-bar": {
       "here-will-pairs-list": "Here will be the list of opportunity pairs"
-    },
-    "sale-details": {
-      "overview-title": "Opportunity overview",
-      "sale-not-found-title": "Opportunity not found",
-      "sale-not-found-desc": "There are no opportunities with this ID",
-      "opportunities-list": "Opportunities list"
     },
     "sale-overview": {
       "asset-title": "Opportunity",
