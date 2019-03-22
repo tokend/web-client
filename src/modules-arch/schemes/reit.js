@@ -28,6 +28,7 @@ import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
 import { WithdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/module'
 import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/module'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
+import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
@@ -197,6 +198,7 @@ export default {
         },
         submodules: [
           new DividendFormModule(),
+          new BuyBackFormModule(),
         ],
       },
     ),

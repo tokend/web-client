@@ -217,6 +217,7 @@ import { required, amountRange } from '@validators'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
+import { MathUtil } from '@/js/utils'
 
 import _throttle from 'lodash/throttle'
 
@@ -514,7 +515,13 @@ export default {
         quoteBalance: this.balances
           .find(balance => balance.asset === this.form.asset.code).balanceId,
         isBuy: true,
-        amount: this.form.amount,
+        amount: MathUtil.divide(
+          this.form.amount,
+          // TODO: remove DEFAULT_QUOTE_PRICE
+          this.sale.quoteAssetPrices[this.form.asset.code] ||
+            DEFAULT_QUOTE_PRICE
+        ),
+        // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||
           DEFAULT_QUOTE_PRICE,
         fee: offerFee,
