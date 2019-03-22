@@ -29,7 +29,9 @@ for further information about branching and tagging conventions.
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
 - Subject info `Dividend for <token-name>` for every payment operation in dividends
-- Verification label in selected field for reit
+- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
+- For sales that were ended show highlighted text like a "Closed [days] ago"
+- Reword label create opportunity label "KYC Required" => "Verification required"
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -49,7 +51,7 @@ for further information about branching and tagging conventions.
 ### Changed
 - Do not throw an error if movement has an unknown effect or operation details
 
-### Fixed 
+### Fixed
 - Not handling 'manage-asset-pair' operation details
 
 ## [1.3.0] - 2019-03-01
