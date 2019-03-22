@@ -192,7 +192,7 @@ export default {
     },
     calculateRedeemPrice (sale) {
       return MathUtil.multiply(
-        this.form.asset.details.redeemPrice,
+        this.form.asset.details.redeemPrice || '0',
         this.selectedAssetBalance(this.form.asset.code)
       )
     },
