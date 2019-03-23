@@ -34,6 +34,7 @@ for further information about branching and tagging conventions.
 - Reword create opportunity label "KYC Required" => "Verification required"
 - Asset loading via the loop where was `filter[limit]=100`
 - Correct base/quote price calculating for Opportunities
+- Custom validation rules for sale's "Soft cap" and "Hard cap" values
 
 ### Changed
 - Now using new account endpoint for loading the fees
