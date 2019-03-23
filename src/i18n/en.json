@@ -80,7 +80,9 @@
       "field-error_cardNumber": "Make sure the card number is correct",
       "field-error_cardExpirationDate": "Make sure the expiration date is correct",
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
-      "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct"
+      "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
+      "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
