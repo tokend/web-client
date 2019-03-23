@@ -1,4 +1,5 @@
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
+import _get from 'lodash/get'
 
 export class AssetRecord {
   constructor (record = {}) {
@@ -6,6 +7,7 @@ export class AssetRecord {
 
     this.code = record.id
     this.details = record.details
+    this.name = _get(record, 'details.name')
     this.owner = record.owner
     this.issued = record.issued
 

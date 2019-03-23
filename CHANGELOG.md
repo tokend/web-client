@@ -54,6 +54,7 @@ for further information about branching and tagging conventions.
 - Correct dividends subject
 - Fees displaying on the Movements page
 - "Soft cap" validation in the "Opportunity create" form
+- Asset name displaying
 
 ## [1.3.1-rc.0] - 2019-03-20
 
