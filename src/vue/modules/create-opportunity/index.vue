@@ -700,8 +700,8 @@ export default {
       this.assignDefaultQuoteAsset()
     },
     'form.saleInformation.defaultQuoteAsset' () {
-      this.form.saleInformation.softCap = '0'
-      this.form.saleInformation.hardCap = '0'
+      this.form.saleInformation.softCap = ''
+      this.form.saleInformation.hardCap = ''
     },
   },
   async created () {
