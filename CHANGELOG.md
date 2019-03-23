@@ -34,6 +34,7 @@ for further information about branching and tagging conventions.
 - Reword create opportunity label "KYC Required" => "Verification required"
 - Asset loading via the loop where was `filter[limit]=100`
 - Correct base/quote price calculating for Opportunities
+- Custom validation rules for sale's "Soft cap" and "Hard cap" values
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -51,6 +52,9 @@ for further information about branching and tagging conventions.
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
 - Amount validation in the Withdrawal form
+- Correct dividends subject
+- Fees displaying on the Movements page
+- "Soft cap" validation in the "Opportunity create" form
 
 ## [1.3.1-rc.0] - 2019-03-20
 
