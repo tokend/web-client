@@ -276,8 +276,7 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.softCap',
                 {
-                  from:minAmount,
-                  to:maxAmount
+                  hardCap: form.saleInformation.hardCap || '0'
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -299,8 +298,7 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.hardCap',
                 {
-                  from:form.saleInformation.softCap,
-                  to:maxAmount
+                  softCap: form.saleInformation.softCap || '0'
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -448,6 +446,8 @@ import {
   amountRange,
   maxLength,
   requiredAtLeastOne,
+  softCapMoreThanHardCap,
+  hardCapLessThanSoftCap,
   minDate,
   maxDate,
 } from '@validators'
@@ -624,14 +624,14 @@ export default {
           endTime: endTime,
           softCap: {
             required,
-            amountRange: amountRange(
+            softCapMoreThanHardCap: softCapMoreThanHardCap(
               this.minAmount,
-              this.form.information.maxIssuanceAmount
+              this.form.saleInformation.hardCap
             ),
           },
           hardCap: {
             required,
-            amountRange: amountRange(
+            hardCapLessThanSoftCap: hardCapLessThanSoftCap(
               this.form.saleInformation.softCap,
               this.maxAmount
             ),
