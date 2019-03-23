@@ -70,9 +70,9 @@ export default {
     *  />
     *
     * @param {string} field - the string with the field name. Works also for
-     *                nested fields, such as `form.email`.
+    *                 nested fields, such as `form.email`.
     * @param {Object} [options] - the interpolation options object for
-     *                translation.
+    *                 translation.
     *
     * @returns {string} the human-readable error message if the
      *                  field is invalid, empty string - otherwise.
