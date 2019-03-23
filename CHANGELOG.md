@@ -57,6 +57,7 @@ for further information about branching and tagging conventions.
 - Fees displaying on the Movements page
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
+- Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 
 ## [1.3.1-rc.0] - 2019-03-20
 
