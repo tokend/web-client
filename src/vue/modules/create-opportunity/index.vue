@@ -578,7 +578,7 @@ export default {
       NAME_MAX_LENGTH,
       DESCRIPTION_MAX_LENGTH,
       MIN_ALLOWED_PERCENT,
-      MAX_ALLOWED_PERCENT
+      MAX_ALLOWED_PERCENT,
     }
   },
   validations () {
