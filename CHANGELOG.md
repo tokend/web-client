@@ -35,12 +35,14 @@ for further information about branching and tagging conventions.
 - Asset loading via the loop where was `filter[limit]=100`
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
+- Custom Movements TopBar for REIT scheme
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
+- Moved TopBar to the module
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -54,6 +56,7 @@ for further information about branching and tagging conventions.
 - Correct dividends subject
 - Fees displaying on the Movements page
 - "Soft cap" validation in the "Opportunity create" form
+- Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 
 ## [1.3.1-rc.0] - 2019-03-20

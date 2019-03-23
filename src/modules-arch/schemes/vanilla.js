@@ -1,12 +1,12 @@
 import { vueRoutes } from '@/vue-router/routes'
 
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
 import { FeesPageModule } from '@/vue/pages/fees-page-module'
-import { FeesModule } from '@/vue/modules/fees/module'
+import { FeesModule } from '@modules/fees/module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
-import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
+import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
 import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { LimitsPageModule } from '@/vue/pages/limits-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
@@ -26,12 +26,13 @@ import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
+import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
 
 export default {
   pages: [
@@ -65,9 +66,13 @@ export default {
         menuButtonMdiName: 'menu',
         submodules: [
           new MovementsHistoryModule(),
-          new WithdrawalDrawerPseudoModule(),
-          new DepositDrawerPseudoModule(),
-          new TransferDrawerPseudoModule(),
+          new MovementsTopBarModule({
+            submodules: [
+              new WithdrawalDrawerPseudoModule(),
+              new DepositDrawerPseudoModule(),
+              new TransferDrawerPseudoModule(),
+            ],
+          }),
         ],
       },
     ),

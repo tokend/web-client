@@ -1,10 +1,12 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk'
+import _get from 'lodash/get'
 
 export class AssetRecord {
   constructor (record = {}) {
     this._record = record
 
     this.code = record.id
+    this.name = _get(record, 'details.name')
 
     this.policies = this._policies()
     this.policy = this._policy()
