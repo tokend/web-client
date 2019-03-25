@@ -41,7 +41,7 @@ export class AssetRecord {
   }
 
   logoUrl (storageUrl) {
-    if (this.details.logoUrl) {
+    if (_get(this.details, 'logoUrl')) {
       return this.details.logoUrl
     } else {
       return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''

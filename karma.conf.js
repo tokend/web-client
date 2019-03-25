@@ -17,6 +17,7 @@ module.exports = function (config) {
       },
     },
     files: [
+      'test/global-setup.js',
       'src/**/*.spec.js',
       'src/**/*.e2e.js',
     ],
