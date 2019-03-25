@@ -42,7 +42,7 @@ export default {
   props: {
     data: { type: Array, default: () => [] },
     currency: { type: String, default: '' },
-    scale: { type: String, default: 'hour' },
+    scale: { type: String, default: 'day' },
     requiredTicks: { type: Array, default: () => [] },
     precision: { type: Number, default: 0 },
     hasValue: { type: Boolean, default: true },

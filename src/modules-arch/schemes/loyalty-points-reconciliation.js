@@ -1,6 +1,7 @@
 import { vueRoutes } from '@/vue-router/routes'
 
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
@@ -31,9 +32,13 @@ export default {
         menuButtonMdiName: 'menu',
         submodules: [
           new MovementsHistoryModule(),
-          new WithdrawalDrawerPseudoModule(),
-          new DepositDrawerPseudoModule(),
-          new TransferDrawerPseudoModule(),
+          new MovementsTopBarModule({
+            submodules: [
+              new WithdrawalDrawerPseudoModule(),
+              new DepositDrawerPseudoModule(),
+              new TransferDrawerPseudoModule(),
+            ],
+          }),
         ],
       },
     ),

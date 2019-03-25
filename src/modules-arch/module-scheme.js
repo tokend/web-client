@@ -41,13 +41,6 @@ export class ModuleScheme {
   get cache () { return this._cache }
   get importEnLocaleFile () { return this._importEnLocaleFile }
 
-  install (Vue) {
-    Vue.prototype.getModule = function () {
-      return SchemeRegistry.current.cache
-        .find(item => item.createdComponentUid === this._uid)
-    }
-  }
-
   _validateRawScheme (scheme) {
     if (!scheme.pages) {
       throw new Error('ModuleScheme: no scheme.pages provided!')
@@ -68,9 +61,9 @@ export class ModuleScheme {
   }
 
   _validateCache () {
-    for (const item of this._cache) {
-      item.validateDependencies(this._cache)
-      item.validateCompatibility(this._cache)
+    for (const item of this.cache) {
+      item.validateDependencies(this.cache)
+      item.validateCompatibility(this.cache)
     }
   }
 
@@ -83,5 +76,17 @@ export class ModuleScheme {
       }
     }
     return result
+  }
+
+  install (Vue) {
+    Vue.prototype.getModule = function () {
+      return SchemeRegistry.current.cache
+        .find(item => item.createdComponentUid === this._uid)
+    }
+  }
+
+  findModuleByPath (path) {
+    return this.cache
+      .find(item => item.routerEntry && item.routerEntry.path === path)
   }
 }

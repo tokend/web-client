@@ -179,8 +179,8 @@
     </div>
   </form>
   <no-data-message
-    :title-id="'withdrawal-fiat-bank-module.no-assets'"
-    :message-id="'withdrawal-fiat-bank-module.here-will-assets-list'"
+    :title="'withdrawal-fiat-bank-module.no-assets' | globalize"
+    :message="'withdrawal-fiat-bank-module.here-will-assets-list' | globalize"
     v-else-if="!form.asset && isInitialized"
   />
   <loader v-else message-id="withdrawal-fiat-bank-module.loading-msg" />
