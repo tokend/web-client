@@ -3,7 +3,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
-import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
 import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
 import { LoyaltyPointsStatisticsModule } from '@/vue/modules/loyalty-points/loyalty-points-statistics/module'
@@ -40,33 +39,6 @@ export default {
             ],
           }),
         ],
-      },
-    ),
-
-    new TradePageModule(
-      {
-        routerEntry: {
-          path: '/trade',
-          name: vueRoutes.trade.name,
-          meta: { pageNameTranslationId: 'pages-names.trade' },
-          redirect: vueRoutes.tradeExchange,
-          children: [
-            // Carefully: have some issues because of is-loading prop provided
-            // to children from parent component. Leave it like that for now
-            {
-              path: '/trade/exchange',
-              name: vueRoutes.tradeExchange.name,
-              component: _ => import('@/vue/pages/TradeExchange'),
-            },
-            {
-              path: '/trade/my-orders',
-              name: vueRoutes.tradeUserOffers.name,
-              component: _ => import('@/vue/pages/TradeUserOffers'),
-            },
-          ],
-        },
-        menuButtonTranslationId: 'pages-names.trade',
-        menuButtonMdiName: 'finance',
       },
     ),
 
