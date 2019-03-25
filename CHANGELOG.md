@@ -58,6 +58,7 @@ for further information about branching and tagging conventions.
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- Invalid start date for sales that are already started
 
 ## [1.3.1-rc.0] - 2019-03-20
 
