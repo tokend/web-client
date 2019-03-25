@@ -79,4 +79,9 @@ export class ModuleScheme {
     }
     return result
   }
+
+  findModuleByPath (path) {
+    return this.cache
+      .find(item => item.routerEntry && item.routerEntry.path === path)
+  }
 }
