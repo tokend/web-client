@@ -69,7 +69,7 @@ import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -103,7 +103,13 @@ export default {
         ))
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     selectAsset (asset) {
       this.selectedAsset = asset
       this.isUpdateMode = false

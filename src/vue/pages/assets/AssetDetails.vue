@@ -209,6 +209,9 @@ export default {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,

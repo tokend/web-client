@@ -251,6 +251,7 @@ export default {
   },
   async created () {
     try {
+      await this.loadBalances()
       await this.initAssetSelector()
       this.isLoaded = true
     } catch (error) {
@@ -261,6 +262,7 @@ export default {
   methods: {
     ...mapActions({
       loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
       if (!this.isFormValid()) return
