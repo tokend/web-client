@@ -214,6 +214,9 @@ export default {
         this.isAccountUnverified
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
