@@ -94,7 +94,7 @@
                 class="withdrawal__fee-tbody"
                 :class="{ 'withdrawal__data--loading': isFeesLoadPending }"
               >
-                <tr>
+                <tr v-if="form.asset.externalSystemType">
                   <td>
                     {{ 'withdrawal-form.network-fee-hint' | globalize }}
                   </td>
