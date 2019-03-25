@@ -36,25 +36,7 @@ describe('Asset creation request', () => {
 
       it('returns false if the request does not have approved state', () => {
         const request = new Request({
-          stateI: 0,
-        })
-
-        expect(request.isApproved).to.be.false
-      })
-    })
-
-    describe('isApproved', () => {
-      it('returns true if the request has approved state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.approved,
-        })
-
-        expect(request.isApproved).to.be.true
-      })
-
-      it('returns false if the request does not have approved state', () => {
-        const request = new Request({
-          stateI: 0,
+          stateI: REQUEST_STATES.pending,
         })
 
         expect(request.isApproved).to.be.false
@@ -72,7 +54,7 @@ describe('Asset creation request', () => {
 
       it('returns false if the request does not have pending state', () => {
         const request = new Request({
-          stateI: 0,
+          stateI: REQUEST_STATES.approved,
         })
 
         expect(request.isPending).to.be.false
@@ -90,7 +72,7 @@ describe('Asset creation request', () => {
 
       it('returns false if the request does not have rejected state', () => {
         const request = new Request({
-          stateI: 0,
+          stateI: REQUEST_STATES.approved,
         })
 
         expect(request.isRejected).to.be.false
@@ -108,7 +90,7 @@ describe('Asset creation request', () => {
 
       it('returns false if the request does not have permanently rejected state', () => {
         const request = new Request({
-          stateI: 0,
+          stateI: REQUEST_STATES.pending,
         })
 
         expect(request.isPermanentlyRejected).to.be.false
@@ -126,7 +108,7 @@ describe('Asset creation request', () => {
 
       it('returns false if the request does not have canceled state', () => {
         const request = new Request({
-          stateI: 0,
+          stateI: REQUEST_STATES.approved,
         })
 
         expect(request.isCanceled).to.be.false

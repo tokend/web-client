@@ -1,8 +1,8 @@
-import AssetCreationRequestsModule from './index'
+import CreateAssetRequestsModule from './index'
 
 import Vuex from 'vuex'
 
-import { assetCreationRequestsModule } from './store/index'
+import { createAssetRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
@@ -34,7 +34,7 @@ describe('Asset creation requests module', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: { 'asset-creation-requests': assetCreationRequestsModule },
+      modules: { 'create-asset-requests': createAssetRequestsModule },
     })
   })
 
@@ -42,7 +42,7 @@ describe('Asset creation requests module', () => {
     it('calls initApi function', () => {
       sinon.stub(Api, 'initApi')
 
-      shallowMount(AssetCreationRequestsModule, {
+      shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: props,
@@ -57,7 +57,7 @@ describe('Asset creation requests module', () => {
     it('calls initConfig function', () => {
       sinon.stub(Config, 'initConfig')
 
-      shallowMount(AssetCreationRequestsModule, {
+      shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: props,
@@ -70,34 +70,34 @@ describe('Asset creation requests module', () => {
     })
 
     it('calls setAccountId method', () => {
-      sinon.stub(AssetCreationRequestsModule.methods, 'setAccountId')
+      sinon.stub(CreateAssetRequestsModule.methods, 'setAccountId')
 
-      shallowMount(AssetCreationRequestsModule, {
+      shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(AssetCreationRequestsModule.methods.setAccountId
+      expect(CreateAssetRequestsModule.methods.setAccountId
         .withArgs(props.wallet.accountId)
       ).to.have.been.calledOnce
 
-      AssetCreationRequestsModule.methods.setAccountId.restore()
+      CreateAssetRequestsModule.methods.setAccountId.restore()
     })
 
     it('calls initFirstPageLoader method', () => {
-      sinon.stub(AssetCreationRequestsModule.methods, 'initFirstPageLoader')
+      sinon.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
 
-      shallowMount(AssetCreationRequestsModule, {
+      shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(AssetCreationRequestsModule.methods.initFirstPageLoader)
+      expect(CreateAssetRequestsModule.methods.initFirstPageLoader)
         .to.have.been.calledOnce
 
-      AssetCreationRequestsModule.methods.initFirstPageLoader.restore()
+      CreateAssetRequestsModule.methods.initFirstPageLoader.restore()
     })
   })
 
@@ -105,7 +105,7 @@ describe('Asset creation requests module', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(AssetCreationRequestsModule, {
+      wrapper = shallowMount(CreateAssetRequestsModule, {
         store,
         localVue,
         propsData: props,
@@ -114,39 +114,39 @@ describe('Asset creation requests module', () => {
 
     describe('method', () => {
       describe('loadRequests', () => {
-        it('calls loadAssetCreationRequests method', async () => {
-          sinon.stub(wrapper.vm, 'loadAssetCreationRequests').resolves()
+        it('calls loadCreateAssetRequests method', async () => {
+          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').resolves()
 
           await wrapper.vm.loadRequests()
 
-          expect(wrapper.vm.loadAssetCreationRequests).to.have.been.calledOnce
+          expect(wrapper.vm.loadCreateAssetRequests).to.have.been.calledOnce
 
-          wrapper.vm.loadAssetCreationRequests.restore()
+          wrapper.vm.loadCreateAssetRequests.restore()
         })
 
         it('sets isLoaded property to true if loading was succeded', async () => {
-          sinon.stub(wrapper.vm, 'loadAssetCreationRequests').resolves()
+          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').resolves()
 
           await wrapper.vm.loadRequests()
 
           expect(wrapper.vm.isLoaded).to.be.true
 
-          wrapper.vm.loadAssetCreationRequests.restore()
+          wrapper.vm.loadCreateAssetRequests.restore()
         })
 
-        it('returns the response of loadAssetCreationRequests method', async () => {
-          sinon.stub(wrapper.vm, 'loadAssetCreationRequests')
+        it('returns the response of loadCreateAssetRequests method', async () => {
+          sinon.stub(wrapper.vm, 'loadCreateAssetRequests')
             .resolves({ data: {} })
 
           const result = await wrapper.vm.loadRequests()
 
           expect(result).to.deep.equal({ data: {} })
 
-          wrapper.vm.loadAssetCreationRequests.restore()
+          wrapper.vm.loadCreateAssetRequests.restore()
         })
 
         it('calls ErrorHandler.processWithoutFeedback if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadAssetCreationRequests').rejects()
+          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').rejects()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadRequests()
@@ -154,19 +154,19 @@ describe('Asset creation requests module', () => {
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
 
-          wrapper.vm.loadAssetCreationRequests.restore()
+          wrapper.vm.loadCreateAssetRequests.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
 
         it('set isLoadingFailed property to true if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadAssetCreationRequests').rejects()
+          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').rejects()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadRequests()
 
           expect(wrapper.vm.isLoadingFailed).to.be.true
 
-          wrapper.vm.loadAssetCreationRequests.restore()
+          wrapper.vm.loadCreateAssetRequests.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
       })

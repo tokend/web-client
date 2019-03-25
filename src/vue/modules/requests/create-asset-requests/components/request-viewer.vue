@@ -1,23 +1,23 @@
 <template>
-  <div class="asset-creation-request-viewer">
+  <div class="request-viewer">
     <asset-summary-viewer
       :config="config()"
       :request="request"
     />
 
     <request-message-viewer
-      class="asset-creation-request-viewer__state-message"
+      class="request-viewer__state-message"
       :request="request"
     />
 
-    <asset-creation-request-attributes-viewer
-      class="asset-creation-request-viewer__table"
+    <request-attributes-viewer
+      class="request-viewer__table"
       :request="request"
       :kyc-required-asset-type="kycRequiredAssetType"
     />
 
-    <asset-creation-request-actions-bar
-      class="asset-creation-request-viewer__actions"
+    <actions-bar
+      class="request-viewer__actions"
       :request="request"
       @update-ask="$emit(EVENTS.updateAsk)"
       @cancel="$emit(EVENTS.cancel)"
@@ -28,10 +28,10 @@
 <script>
 import AssetSummaryViewer from '../../shared/components/asset-summary-viewer'
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
-import AssetCreationRequestAttributesViewer from './asset-creation-request-attributes-viewer'
-import AssetCreationRequestActionsBar from './asset-creation-request-actions-bar'
+import RequestAttributesViewer from './request-attributes-viewer'
+import ActionsBar from './actions-bar'
 
-import { AssetCreationRequest } from '../wrappers/asset-creation-request'
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { config } from '../_config'
 
@@ -41,16 +41,16 @@ const EVENTS = {
 }
 
 export default {
-  name: 'asset-creation-request-viewer',
+  name: 'request-viewer',
   components: {
     AssetSummaryViewer,
     RequestMessageViewer,
-    AssetCreationRequestAttributesViewer,
-    AssetCreationRequestActionsBar,
+    RequestAttributesViewer,
+    ActionsBar,
   },
 
   props: {
-    request: { type: AssetCreationRequest, required: true },
+    request: { type: CreateAssetRequest, required: true },
     kycRequiredAssetType: { type: Number, required: true },
   },
 
@@ -62,15 +62,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.asset-creation-request-viewer__state-message {
+.request-viewer__state-message {
   margin-top: 2rem;
 }
 
-.asset-creation-request-viewer__table {
+.request-viewer__table {
   margin-top: 2rem;
 }
 
-.asset-creation-request-viewer__actions {
+.request-viewer__actions {
   margin-top: 4.9rem;
 }
 </style>

@@ -1,5 +1,5 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
-import { AssetCreationRequestsModule } from '@/vue/modules/requests/asset-creation-requests/module'
+import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-requests/module'
 
 export class AssetCreationRequestsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -7,7 +7,7 @@ export class AssetCreationRequestsPageModule extends PageModuleDescriptor {
       ...opts,
       importComponentFn: _ => import('@/vue/pages/AssetCreationRequests'),
       allowedSubmodules: [
-        AssetCreationRequestsModule,
+        CreateAssetRequestsModule,
       ],
     })
   }

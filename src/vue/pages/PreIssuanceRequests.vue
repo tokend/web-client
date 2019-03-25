@@ -19,7 +19,7 @@ import { vuexTypes } from '@/vuex'
 import config from '@/config'
 
 export default {
-  name: 'asset-creation-requests-page',
+  name: 'pre-issuance-requests-page',
   components: {
     SubmoduleImporter,
   },

@@ -3,11 +3,11 @@ import { types } from './types'
 
 import { Wallet, base } from '@tokend/js-sdk'
 
-import { AssetCreationRequest } from '../wrappers/asset-creation-request'
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import * as Api from '../_api'
 
-describe('asset-creation-requests.module', () => {
+describe('create-asset-requests.module', () => {
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
@@ -21,28 +21,28 @@ describe('asset-creation-requests.module', () => {
       })
     })
 
-    it('SET_ASSET_CREATION_REQUESTS should properly modify state', () => {
+    it('SET_REQUESTS should properly modify state', () => {
       const state = {
-        assetCreationRequests: [],
+        requests: [],
       }
       const requests = [
         { id: '1' },
         { id: '2' },
       ]
 
-      mutations[types.SET_ASSET_CREATION_REQUESTS](state, requests)
+      mutations[types.SET_REQUESTS](state, requests)
 
       expect(state).to.deep.equal({
-        assetCreationRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
         ],
       })
     })
 
-    it('CONCAT_ASSET_CREATION_REQUESTS should properly modify state', () => {
+    it('CONCAT_REQUESTS should properly modify state', () => {
       const state = {
-        assetCreationRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
         ],
@@ -52,10 +52,10 @@ describe('asset-creation-requests.module', () => {
         { id: '4' },
       ]
 
-      mutations[types.CONCAT_ASSET_CREATION_REQUESTS](state, requests)
+      mutations[types.CONCAT_REQUESTS](state, requests)
 
       expect(state).to.deep.equal({
-        assetCreationRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
           { id: '3' },
@@ -80,11 +80,11 @@ describe('asset-creation-requests.module', () => {
       Api.initApi(wallet, config)
     })
 
-    describe('LOAD_ASSET_CREATION_REQUESTS', () => {
+    describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
         sinon.stub(Api.api(), 'getWithSignature').resolves()
 
-        await actions[types.LOAD_ASSET_CREATION_REQUESTS]({
+        await actions[types.LOAD_REQUESTS]({
           getters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
@@ -144,18 +144,18 @@ describe('asset-creation-requests.module', () => {
         .to.equal('SOME_ACCOUNT_ID')
     })
 
-    it('assetCreationRequests', () => {
+    it('requests', () => {
       const state = {
-        assetCreationRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
         ],
       }
 
-      expect(getters[types.assetCreationRequests](state))
+      expect(getters[types.requests](state))
         .to.deep.equal([
-          new AssetCreationRequest({ id: '1' }),
-          new AssetCreationRequest({ id: '2' }),
+          new CreateAssetRequest({ id: '1' }),
+          new CreateAssetRequest({ id: '2' }),
         ])
     })
   })

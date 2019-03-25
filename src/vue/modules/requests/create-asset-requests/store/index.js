@@ -1,4 +1,4 @@
-import { AssetCreationRequest } from '../wrappers/asset-creation-request'
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { base } from '@tokend/js-sdk'
 
@@ -9,24 +9,23 @@ const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
   accountId: '',
-  assetCreationRequests: [],
+  requests: [],
 }
 
 export const mutations = {
   [types.SET_ACCOUNT_ID] (state, accountId) {
     state.accountId = accountId
   },
-  [types.SET_ASSET_CREATION_REQUESTS] (state, assetCreationRequests) {
-    state.assetCreationRequests = assetCreationRequests
+  [types.SET_REQUESTS] (state, requests) {
+    state.requests = requests
   },
-  [types.CONCAT_ASSET_CREATION_REQUESTS] (state, assetCreationRequests) {
-    state.assetCreationRequests = state.assetCreationRequests
-      .concat(assetCreationRequests)
+  [types.CONCAT_REQUESTS] (state, requests) {
+    state.requests = state.requests.concat(requests)
   },
 }
 
 export const actions = {
-  [types.LOAD_ASSET_CREATION_REQUESTS] ({ getters }) {
+  [types.LOAD_REQUESTS] ({ getters }) {
     return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_asset_requests`, {
       page: {
         order: 'desc',
@@ -48,12 +47,12 @@ export const actions = {
 
 export const getters = {
   [types.accountId]: state => state.accountId,
-  [types.assetCreationRequests]: state => state.assetCreationRequests
-    .map(r => new AssetCreationRequest(r)),
+  [types.requests]: state => state.requests
+    .map(r => new CreateAssetRequest(r)),
 }
 
-export const assetCreationRequestsModule = {
-  name: 'asset-creation-requests',
+export const createAssetRequestsModule = {
+  name: 'create-asset-requests',
   namespaced: true,
   state,
   getters,

@@ -1,7 +1,7 @@
-import { AssetCreationRequest } from './asset-creation-request'
+import { CreateAssetRequest } from './create-asset-request'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
-describe('Asset creation request', () => {
+describe('Create asset request', () => {
   describe('constructor', () => {
     it('should properly parse record', () => {
       const record = {
@@ -24,7 +24,7 @@ describe('Asset creation request', () => {
         },
       }
 
-      const result = new AssetCreationRequest(record)
+      const result = new CreateAssetRequest(record)
 
       expect(result.assetCode).to.equal('USD')
       expect(result.assetType).to.equal(0)
@@ -52,7 +52,7 @@ describe('Asset creation request', () => {
     describe('logoUrl', () => {
       it('returns storage logo URL if logo key is present', () => {
         const storageUrl = 'https://storage.com'
-        const request = new AssetCreationRequest({
+        const request = new CreateAssetRequest({
           requestDetails: {
             creatorDetails: {
               logo: {
@@ -68,7 +68,7 @@ describe('Asset creation request', () => {
 
       it('returns empty string if logo key is absent', () => {
         const storageUrl = 'https://storage.com'
-        const request = new AssetCreationRequest({})
+        const request = new CreateAssetRequest({})
 
         expect(request.logoUrl(storageUrl)).to.equal('')
       })
@@ -77,7 +77,7 @@ describe('Asset creation request', () => {
     describe('termsUrl', () => {
       it('returns storage terms URL if logo key is present', () => {
         const storageUrl = 'https://storage.com'
-        const request = new AssetCreationRequest({
+        const request = new CreateAssetRequest({
           requestDetails: {
             creatorDetails: {
               terms: {
@@ -93,7 +93,7 @@ describe('Asset creation request', () => {
 
       it('returns empty string if logo key is absent', () => {
         const storageUrl = 'https://storage.com'
-        const request = new AssetCreationRequest({})
+        const request = new CreateAssetRequest({})
 
         expect(request.termsUrl(storageUrl)).to.equal('')
       })
@@ -103,7 +103,7 @@ describe('Asset creation request', () => {
   describe('getters', () => {
     describe('isTransferable', () => {
       it('returns true if the request has transferable policy', () => {
-        const request = new AssetCreationRequest({
+        const request = new CreateAssetRequest({
           requestDetails: {
             policies: ASSET_POLICIES.transferable,
           },
@@ -113,7 +113,7 @@ describe('Asset creation request', () => {
       })
 
       it('returns false if the request does not have transferable policy', () => {
-        const request = new AssetCreationRequest({
+        const request = new CreateAssetRequest({
           requestDetails: {
             policies: 0,
           },
@@ -125,7 +125,7 @@ describe('Asset creation request', () => {
 
     describe('isWithdrawable', () => {
       it('returns true if the request has withdrawable policy', () => {
-        const request = new AssetCreationRequest({
+        const request = new CreateAssetRequest({
           requestDetails: {
             policies: ASSET_POLICIES.withdrawable,
           },
@@ -135,7 +135,7 @@ describe('Asset creation request', () => {
       })
 
       it('returns false if the request does not have withdrawable policy', () => {
-        const request = new AssetCreationRequest({
+        const request = new CreateAssetRequest({
           requestDetails: {
             policies: 0,
           },

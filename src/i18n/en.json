@@ -646,7 +646,7 @@
       "canceled-msg": "Your request was cancelled",
       "permanently-rejected-msg": "Your request was rejected permanently with reason: {{reason}}"
     },
-    "asset-creation-requests": {
+    "create-asset-requests": {
       "update-asset-title": "Update token",
       "details-title": "Token creation request",
       "loading-msg": "Loading your requests…",

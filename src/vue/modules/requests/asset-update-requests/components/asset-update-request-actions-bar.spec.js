@@ -54,10 +54,10 @@ describe('Asset update request actions bar', () => {
         expect(wrapper.vm.canBeUpdated).to.be.true
       })
 
-      it('returns false for non-rejected and non-pending request', () => {
+      it('returns false for approved request', () => {
         wrapper.setProps({
           request: new AssetUpdateRequest({
-            stateI: 0,
+            stateI: REQUEST_STATES.approved,
           }),
         })
 
@@ -76,10 +76,20 @@ describe('Asset update request actions bar', () => {
         expect(wrapper.vm.canBeCanceled).to.be.true
       })
 
-      it('returns false for non-pending request', () => {
+      it('returns false for approved request', () => {
         wrapper.setProps({
           request: new AssetUpdateRequest({
-            stateI: 0,
+            stateI: REQUEST_STATES.approved,
+          }),
+        })
+
+        expect(wrapper.vm.canBeCanceled).to.be.false
+      })
+
+      it('returns false for rejected request', () => {
+        wrapper.setProps({
+          request: new AssetUpdateRequest({
+            stateI: REQUEST_STATES.rejected,
           }),
         })
 
@@ -126,13 +136,13 @@ describe('Asset update request actions bar', () => {
           .to.have.been.calledOnceWithExactly('1')
       })
 
-      it('calls Bus.success if the request was canceled', async () => {
+      it('calls Bus.success if cancelAssetUpdateRequest did not throw an error', async () => {
         await wrapper.vm.cancelRequest()
 
         expect(Bus.success).to.have.been.calledOnce
       })
 
-      it('emits cancel event if the request was canceled', async () => {
+      it('emits cancel event cancelAssetUpdateRequest did not throw an error', async () => {
         const cancelEvent = 'cancel'
 
         await wrapper.vm.cancelRequest()

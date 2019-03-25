@@ -4,7 +4,7 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import safeGet from 'lodash/get'
 
-export class AssetCreationRequest extends Request {
+export class CreateAssetRequest extends Request {
   constructor (record) {
     super(record)
 

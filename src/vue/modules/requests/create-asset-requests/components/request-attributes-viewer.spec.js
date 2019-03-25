@@ -1,8 +1,8 @@
-import AssetCreationRequestAttributesViewer from './asset-creation-request-attributes-viewer'
+import RequestAttributesViewer from './request-attributes-viewer'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { AssetCreationRequest } from '../wrappers/asset-creation-request'
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import * as Config from '../_config'
 
@@ -12,9 +12,9 @@ describe('Asset creation request attributes viewer', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = shallowMount(AssetCreationRequestAttributesViewer, {
+    wrapper = shallowMount(RequestAttributesViewer, {
       localVue,
-      propsData: { request: new AssetCreationRequest({}) },
+      propsData: { request: new CreateAssetRequest({}) },
     })
   })
 
@@ -28,10 +28,10 @@ describe('Asset creation request attributes viewer', () => {
 
     describe('assetTermsUrl', () => {
       it('returns request.termsUrl', () => {
-        const expectedTermsUrl = 'https://test.com/terms'
-        sinon.stub(wrapper.vm.request, 'termsUrl').returns(expectedTermsUrl)
+        const expectedUrl = 'https://test.com/terms'
+        sinon.stub(wrapper.vm.request, 'termsUrl').returns(expectedUrl)
 
-        expect(wrapper.vm.assetTermsUrl).to.equal(expectedTermsUrl)
+        expect(wrapper.vm.assetTermsUrl).to.equal(expectedUrl)
 
         wrapper.vm.request.termsUrl.restore()
       })

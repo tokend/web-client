@@ -1,4 +1,4 @@
-import { assetCreationRequestsModule } from './index'
+import { createAssetRequestsModule } from './index'
 import { types } from './types'
 
 describe('asset creation requests module types unit tests', () => {
@@ -11,14 +11,14 @@ describe('asset creation requests module types unit tests', () => {
   }
 
   it('every entity in module should be mentioned in vuex-types', () => {
-    for (const key of getModuleKeys(assetCreationRequestsModule)) {
+    for (const key of getModuleKeys(createAssetRequestsModule)) {
       expect(types).to.have.property(key)
     }
   })
 
   it('every key described in vuex-types should be a real vuex-entity', () => {
     const moduleKeys = [
-      ...getModuleKeys(assetCreationRequestsModule),
+      ...getModuleKeys(createAssetRequestsModule),
     ]
 
     for (const key of Object.keys(types)) {

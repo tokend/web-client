@@ -1,30 +1,30 @@
 <template>
-  <div class="asset-creation-request-actions-bar">
+  <div class="actions-bar">
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="asset-creation-request-actions-bar__update-btn app__button-raised"
+      class="actions-bar__update-btn app__button-raised"
       :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateAsk)"
     >
-      {{ 'asset-creation-requests.update-btn' | globalize }}
+      {{ 'create-asset-requests.update-btn' | globalize }}
     </button>
 
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="asset-creation-request-actions-bar__cancel-btn app__button-flat"
+      class="actions-bar__cancel-btn app__button-flat"
       :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
-      {{ 'asset-creation-requests.cancel-btn' | globalize }}
+      {{ 'create-asset-requests.cancel-btn' | globalize }}
     </button>
 
     <form-confirmation
       v-if="formMixin.isConfirmationShown"
-      message-id="asset-creation-requests.cancellation-msg"
-      ok-button-text-id="asset-creation-requests.yes-msg"
-      cancel-button-text-id="asset-creation-requests.no-msg"
+      message-id="create-asset-requests.cancellation-msg"
+      ok-button-text-id="create-asset-requests.yes-msg"
+      cancel-button-text-id="create-asset-requests.no-msg"
       @ok="cancelRequest"
       @cancel="hideConfirmation"
     />
@@ -34,7 +34,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { AssetCreationRequest } from '../wrappers/asset-creation-request'
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -48,11 +48,11 @@ const EVENTS = {
 }
 
 export default {
-  name: 'asset-creation-request-actions-bar',
+  name: 'actions-bar',
   mixins: [FormMixin],
 
   props: {
-    request: { type: AssetCreationRequest, required: true },
+    request: { type: CreateAssetRequest, required: true },
   },
 
   data: _ => ({
@@ -71,8 +71,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('asset-creation-requests', {
-      cancelAssetCreationRequest: types.CANCEL_ASSET_CREATION_REQUEST,
+    ...mapActions('create-asset-requests', {
+      cancelCreateAssetRequest: types.CANCEL_ASSET_CREATION_REQUEST,
     }),
 
     async cancelRequest () {
@@ -80,8 +80,8 @@ export default {
       this.isRequestCanceling = true
 
       try {
-        await this.cancelAssetCreationRequest(this.request.id)
-        Bus.success('asset-creation-requests.request-canceled-msg')
+        await this.cancelCreateAssetRequest(this.request.id)
+        Bus.success('create-asset-requests.request-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
         this.isRequestCanceling = false
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.asset-creation-request-actions-bar {
+.actions-bar {
   display: flex;
 
   button + button {
@@ -101,12 +101,12 @@ export default {
   }
 }
 
-.asset-creation-request-actions-bar__update-btn {
+.actions-bar__update-btn {
   margin-bottom: 2rem;
   width: 18rem;
 }
 
-.asset-creation-request-actions-bar__cancel-btn {
+.actions-bar__cancel-btn {
   margin-bottom: 2rem;
   font-weight: normal;
 }

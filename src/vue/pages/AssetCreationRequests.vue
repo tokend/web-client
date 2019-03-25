@@ -1,8 +1,8 @@
 <template>
   <div class="asset-creation-requests-page">
     <submodule-importer
-      v-if="getModule().canRenderSubmodule(AssetCreationRequestsModule)"
-      :submodule="getModule().getSubmodule(AssetCreationRequestsModule)"
+      v-if="getModule().canRenderSubmodule(CreateAssetRequestsModule)"
+      :submodule="getModule().getSubmodule(CreateAssetRequestsModule)"
       :wallet="wallet"
       :config="config"
       :kyc-required-asset-type="kvAssetTypeKycRequired"
@@ -12,7 +12,7 @@
 
 <script>
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { AssetCreationRequestsModule } from '@/vue/modules/requests/asset-creation-requests/module'
+import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-requests/module'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -26,7 +26,7 @@ export default {
   },
 
   data: _ => ({
-    AssetCreationRequestsModule,
+    CreateAssetRequestsModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,

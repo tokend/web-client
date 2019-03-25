@@ -1,5 +1,5 @@
 <template>
-  <div class="asset-creation-requests-table">
+  <div class="requests-table">
     <div
       v-if="requests.length"
       class="app__table app__table--with-shadow"
@@ -8,17 +8,17 @@
         <thead>
           <tr>
             <!-- eslint-disable max-len -->
-            <th :title="'asset-creation-requests.asset-code-header' | globalize">
-              {{ 'asset-creation-requests.asset-code-header' | globalize }}
+            <th :title="'create-asset-requests.asset-code-header' | globalize">
+              {{ 'create-asset-requests.asset-code-header' | globalize }}
             </th>
-            <th :title="'asset-creation-requests.request-state-header' | globalize">
-              {{ 'asset-creation-requests.request-state-header' | globalize }}
+            <th :title="'create-asset-requests.request-state-header' | globalize">
+              {{ 'create-asset-requests.request-state-header' | globalize }}
             </th>
-            <th :title="'asset-creation-requests.created-header' | globalize">
-              {{ 'asset-creation-requests.created-header' | globalize }}
+            <th :title="'create-asset-requests.created-header' | globalize">
+              {{ 'create-asset-requests.created-header' | globalize }}
             </th>
-            <th :title="'asset-creation-requests.last-updated-header' | globalize">
-              {{ 'asset-creation-requests.last-updated-header' | globalize }}
+            <th :title="'create-asset-requests.last-updated-header' | globalize">
+              {{ 'create-asset-requests.last-updated-header' | globalize }}
             </th>
             <!-- eslint-enable max-len -->
           </tr>
@@ -47,10 +47,10 @@
 
             <td>
               <a
-                class="asset-creation-requests-table__details-btn"
+                class="requests-table__details-btn"
                 @click="$emit(EVENTS.select, request)"
               >
-                {{ 'asset-creation-requests.details-btn' | globalize }}
+                {{ 'create-asset-requests.details-btn' | globalize }}
               </a>
             </td>
           </tr>
@@ -61,8 +61,8 @@
     <no-data-message
       v-else
       icon-name="trending-up"
-      :title="'asset-creation-requests.no-request-history-title' | globalize"
-      :message="'asset-creation-requests.no-request-history-desc' | globalize"
+      :title="'create-asset-requests.no-request-history-title' | globalize"
+      :message="'create-asset-requests.no-request-history-desc' | globalize"
     />
   </div>
 </template>
@@ -76,7 +76,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'asset-creation-requests-table',
+  name: 'requests-table',
   components: {
     NoDataMessage,
     RequestStateViewer,
@@ -98,14 +98,14 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.asset-creation-requests-table {
+.requests-table {
   tr td:last-child {
     width: 3rem;
     text-align: right;
   }
 }
 
-.asset-creation-requests-table__details-btn {
+.requests-table__details-btn {
   font-size: 1.2rem;
   color: $col-primary-lighten;
   cursor: pointer;

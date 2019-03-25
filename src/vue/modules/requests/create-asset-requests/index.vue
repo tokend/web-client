@@ -1,10 +1,10 @@
 <template>
-  <div class="asset-creation-requests">
+  <div class="create-asset-requests">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
-            {{ 'asset-creation-requests.update-asset-title' | globalize }}
+            {{ 'create-asset-requests.update-asset-title' | globalize }}
           </template>
           <asset-create-form
             :request="selectedRequest"
@@ -15,9 +15,9 @@
 
         <template v-else>
           <template slot="heading">
-            {{ 'asset-creation-requests.details-title' | globalize }}
+            {{ 'create-asset-requests.details-title' | globalize }}
           </template>
-          <asset-creation-request-viewer
+          <request-viewer
             :request="selectedRequest"
             :kyc-required-asset-type="kycRequiredAssetType"
             @update-ask="isUpdateMode = true"
@@ -26,20 +26,20 @@
         </template>
       </drawer>
 
-      <asset-creation-requests-table
+      <requests-table
         :requests="requests"
         @select="showRequestDetails"
       />
     </template>
 
     <p v-else-if="isLoadingFailed">
-      {{ 'asset-creation-requests.loading-error-msg' | globalize }}
+      {{ 'create-asset-requests.loading-error-msg' | globalize }}
     </p>
 
-    <load-spinner v-else message-id="asset-creation-requests.loading-msg" />
+    <load-spinner v-else message-id="create-asset-requests.loading-msg" />
 
     <collection-loader
-      class="asset-creation-requests__loader"
+      class="create-asset-requests__loader"
       v-show="requests.length && isLoaded"
       :first-page-loader="firstPageLoader"
       @first-page-load="setRequests"
@@ -54,8 +54,8 @@ import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import AssetCreateForm from '@/vue/forms/AssetCreateForm'
-import AssetCreationRequestViewer from './components/asset-creation-request-viewer'
-import AssetCreationRequestsTable from './components/asset-creation-requests-table'
+import RequestViewer from './components/request-viewer'
+import RequestsTable from './components/requests-table'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
@@ -68,14 +68,14 @@ import { types } from './store/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'asset-creation-requests-module',
+  name: 'create-asset-requests-module',
   components: {
     LoadSpinner,
     Drawer,
     CollectionLoader,
-    AssetCreationRequestsTable,
+    RequestsTable,
+    RequestViewer,
     AssetCreateForm,
-    AssetCreationRequestViewer,
   },
 
   props: {
@@ -108,8 +108,8 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('asset-creation-requests', {
-      requests: types.assetCreationRequests,
+    ...mapGetters('create-asset-requests', {
+      requests: types.requests,
     }),
   },
 
@@ -122,20 +122,20 @@ export default {
   },
 
   methods: {
-    ...mapMutations('asset-creation-requests', {
+    ...mapMutations('create-asset-requests', {
       setAccountId: types.SET_ACCOUNT_ID,
-      setRequests: types.SET_ASSET_CREATION_REQUESTS,
-      concatRequests: types.CONCAT_ASSET_CREATION_REQUESTS,
+      setRequests: types.SET_REQUESTS,
+      concatRequests: types.CONCAT_REQUESTS,
     }),
 
-    ...mapActions('asset-creation-requests', {
-      loadAssetCreationRequests: types.LOAD_ASSET_CREATION_REQUESTS,
+    ...mapActions('create-asset-requests', {
+      loadCreateAssetRequests: types.LOAD_REQUESTS,
     }),
 
     async loadRequests () {
       this.isLoaded = false
       try {
-        const response = await this.loadAssetCreationRequests()
+        const response = await this.loadCreateAssetRequests()
         this.isLoaded = true
         return response
       } catch (e) {
@@ -158,7 +158,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.asset-creation-requests__loader {
+.create-asset-requests__loader {
   margin-top: 1rem;
 }
 </style>
