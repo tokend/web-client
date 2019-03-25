@@ -1,47 +1,31 @@
 <template>
-  <div class="idle-message">
-    <drawer
-      @close-drawer="redirectToSignin"
-      :is-shown.sync="isDetailsDrawerShown"
-    >
-      <template slot="heading">
-        {{ 'idle-message.form-heading' | globalize }}
-      </template>
-      <div>
-        <h2 class="idle-message__text">
-          {{ 'idle-message.notification-message' | globalize }}
-        </h2>
+  <div class="idle-message-wrapper">
+    <div class="idle-message">
+      <p class="idle-message__text">
+        {{ "idle-message.notification-message" | globalize }}
+      </p>
+      <div class="idle-message__btn-wrp">
+        <button class="idle-message__btn" @click="closeSelf">
+          {{ "idle-message.close-lbl" | globalize }}
+        </button>
       </div>
-    </drawer>
+    </div>
   </div>
 </template>
 
 <script>
-import Drawer from '@/vue/common/Drawer'
-import { vuexTypes } from '@/vuex'
-import { mapMutations } from 'vuex'
+const EVENTS = {
+  updateIsShown: 'update:isShown',
+}
 
 export default {
   name: 'idle-message',
-  components: {
-    Drawer,
+  props: {
+    isLoggedout: { type: Boolean, default: false },
   },
-
-  data: _ => ({
-    isDetailsDrawerShown: false,
-  }),
-
-  onIdle () {
-    this.isDetailsDrawerShown = true
-    this.clearState()
-  },
-
   methods: {
-    ...mapMutations({
-      clearState: vuexTypes.CLEAR_STATE,
-    }),
-    redirectToSignin () {
-      location.reload()
+    closeSelf () {
+      this.$emit(EVENTS.updateIsShown, false)
     },
   },
 }
@@ -51,19 +35,65 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+.idle-message-wrapper {
+  display: inline-block;
+  margin-left: 50px;
+  margin-right: -30px; //hack
+
+  @include respond-to($x-small) {
+    display: block;
+    margin: 0 auto 2rem;
+  }
+}
+
 .idle-message {
+  display: flex;
   position: relative;
-  z-index: $z-idle-message;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25.4rem;
+  height: 14.7rem;
+  padding: 3.2rem;
+  background-color: $col-block-bg;
+  text-decoration: none;
+
+  @include box-shadow();
+
+  &[disabled] {
+    opacity: 0.7;
+    cursor: default;
+    box-shadow: none;
+    filter: grayscale(100%);
+  }
+  @include respond-to($x-small) {
+    width: 100%
+  }
 }
 
 .idle-message__text {
-  max-width: 70%;
-  margin-top: 5rem;
-  line-height: 4rem;
-
-  @include respond-to($x-small) {
-    max-width: 100%;
-    margin-top: 3rem;
-  }
+  margin-top: .8rem;
+  margin-bottom: 1rem;
+  color: $col-secondary;
+  font-size: 1.5rem;
+  text-align: center;
 }
+
+.idle-message__btn-wrp {
+  text-align: center;
+}
+
+.idle-message__btn {
+  background: transparent;
+  border: .1rem solid $col-info;
+  border-radius: .5rem;
+  font-size: 1.8rem;
+  padding: .5rem 2rem;
+  color: $col-info;
+  cursor: pointer;
+  transition: .2s;
+
+  &:hover { opacity: .75 }
+}
+
 </style>
