@@ -17,9 +17,9 @@ import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
 import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-requests/module'
 import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
-import { AssetUpdateRequestsModule } from '@/vue/modules/requests/asset-update-requests/module'
+import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
-import { SaleCreationRequestsModule } from '@/vue/modules/requests/sale-creation-requests/module'
+import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
 import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
@@ -220,7 +220,7 @@ export default {
               name: vueRoutes.assetUpdateRequests.name,
             },
             submodules: [
-              new AssetUpdateRequestsModule(),
+              new UpdateAssetRequestsModule(),
             ],
           }),
           new SaleCreationRequestsPageModule({
@@ -229,7 +229,7 @@ export default {
               name: vueRoutes.saleCreationRequests.name,
             },
             submodules: [
-              new SaleCreationRequestsModule(),
+              new CreateSaleRequestsModule(),
             ],
           }),
           new PreIssuanceRequestsPageModule({

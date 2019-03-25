@@ -1,8 +1,8 @@
 <template>
   <div class="sale-creation-requests-page">
     <submodule-importer
-      v-if="getModule().canRenderSubmodule(SaleCreationRequestsModule)"
-      :submodule="getModule().getSubmodule(SaleCreationRequestsModule)"
+      v-if="getModule().canRenderSubmodule(CreateSaleRequestsModule)"
+      :submodule="getModule().getSubmodule(CreateSaleRequestsModule)"
       :wallet="wallet"
       :config="config"
     />
@@ -11,7 +11,7 @@
 
 <script>
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { SaleCreationRequestsModule } from '@/vue/modules/requests/sale-creation-requests/module'
+import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -25,7 +25,7 @@ export default {
   },
 
   data: _ => ({
-    SaleCreationRequestsModule,
+    CreateSaleRequestsModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,

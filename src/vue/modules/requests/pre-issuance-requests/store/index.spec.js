@@ -7,7 +7,7 @@ import { PreIssuanceRequest } from '../wrappers/pre-issuance-request'
 
 import * as Api from '../_api'
 
-describe('asset-update-requests.module', () => {
+describe('pre-issuance-requests.module', () => {
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
@@ -21,28 +21,28 @@ describe('asset-update-requests.module', () => {
       })
     })
 
-    it('SET_PRE_ISSUANCE_REQUESTS should properly modify state', () => {
+    it('SET_REQUESTS should properly modify state', () => {
       const state = {
-        preIssuanceRequests: [],
+        requests: [],
       }
       const requests = [
         { id: '1' },
         { id: '2' },
       ]
 
-      mutations[types.SET_PRE_ISSUANCE_REQUESTS](state, requests)
+      mutations[types.SET_REQUESTS](state, requests)
 
       expect(state).to.deep.equal({
-        preIssuanceRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
         ],
       })
     })
 
-    it('CONCAT_PRE_ISSUANCE_REQUESTS should properly modify state', () => {
+    it('CONCAT_REQUESTS should properly modify state', () => {
       const state = {
-        preIssuanceRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
         ],
@@ -52,10 +52,10 @@ describe('asset-update-requests.module', () => {
         { id: '4' },
       ]
 
-      mutations[types.CONCAT_PRE_ISSUANCE_REQUESTS](state, requests)
+      mutations[types.CONCAT_REQUESTS](state, requests)
 
       expect(state).to.deep.equal({
-        preIssuanceRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
           { id: '3' },
@@ -80,11 +80,11 @@ describe('asset-update-requests.module', () => {
       Api.initApi(wallet, config)
     })
 
-    describe('LOAD_PRE_ISSUANCE_REQUESTS', () => {
+    describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
         sinon.stub(Api.api(), 'getWithSignature').resolves()
 
-        await actions[types.LOAD_PRE_ISSUANCE_REQUESTS]({
+        await actions[types.LOAD_REQUESTS]({
           getters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
@@ -115,15 +115,15 @@ describe('asset-update-requests.module', () => {
         .to.equal('SOME_ACCOUNT_ID')
     })
 
-    it('preIssuanceRequests', () => {
+    it('requests', () => {
       const state = {
-        preIssuanceRequests: [
+        requests: [
           { id: '1' },
           { id: '2' },
         ],
       }
 
-      expect(getters[types.preIssuanceRequests](state))
+      expect(getters[types.requests](state))
         .to.deep.equal([
           new PreIssuanceRequest({ id: '1' }),
           new PreIssuanceRequest({ id: '2' }),

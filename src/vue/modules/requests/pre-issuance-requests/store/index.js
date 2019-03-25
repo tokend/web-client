@@ -7,24 +7,24 @@ const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
   accountId: '',
-  preIssuanceRequests: [],
+  requests: [],
 }
 
 export const mutations = {
   [types.SET_ACCOUNT_ID] (state, accountId) {
     state.accountId = accountId
   },
-  [types.SET_PRE_ISSUANCE_REQUESTS] (state, preIssuanceRequests) {
-    state.preIssuanceRequests = preIssuanceRequests
+  [types.SET_REQUESTS] (state, requests) {
+    state.requests = requests
   },
-  [types.CONCAT_PRE_ISSUANCE_REQUESTS] (state, preIssuanceRequests) {
-    state.preIssuanceRequests = state.preIssuanceRequests
-      .concat(preIssuanceRequests)
+  [types.CONCAT_REQUESTS] (state, requests) {
+    state.requests = state.requests
+      .concat(requests)
   },
 }
 
 export const actions = {
-  [types.LOAD_PRE_ISSUANCE_REQUESTS] ({ getters }) {
+  [types.LOAD_REQUESTS] ({ getters }) {
     const endpoint = `/${HORIZON_VERSION_PREFIX}/create_pre_issuance_requests`
     return api().getWithSignature(endpoint, {
       page: {
@@ -40,7 +40,7 @@ export const actions = {
 
 export const getters = {
   [types.accountId]: state => state.accountId,
-  [types.preIssuanceRequests]: state => state.preIssuanceRequests
+  [types.requests]: state => state.requests
     .map(r => new PreIssuanceRequest(r)),
 }
 

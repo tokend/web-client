@@ -672,7 +672,7 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
     },
-    "asset-update-requests": {
+    "update-asset-requests": {
       "update-asset-title": "Update token",
       "details-title": "Token update request",
       "loading-msg": "Loading your requests…",
@@ -695,13 +695,13 @@
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
     },
-    "sale-creation-requests": {
+    "create-sale-requests": {
       "update-sale-title": "Update fund",
       "details-title": "Fund creation request",
       "loading-msg": "Loading your requests…",
       "loading-error-msg": "There was an error while loading.",
       "sale-name-header": "Sale name",
-      "asset-code-header": "Sale code",
+      "asset-code-header": "Asset code",
       "request-state-header": "Request state",
       "created-header": "Created",
       "last-updated-header": "Last updated",

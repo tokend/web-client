@@ -3,11 +3,11 @@ import { types } from './types'
 
 import { Wallet, base } from '@tokend/js-sdk'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
 import * as Api from '../_api'
 
-describe('create-asset-requests.module', () => {
+describe('asset-update-requests.module', () => {
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
@@ -90,7 +90,7 @@ describe('create-asset-requests.module', () => {
 
         expect(Api.api().getWithSignature)
           .to.have.been.calledOnceWithExactly(
-            '/v3/create_asset_requests',
+            '/v3/update_asset_requests',
             {
               page: {
                 order: 'desc',
@@ -106,7 +106,7 @@ describe('create-asset-requests.module', () => {
       })
     })
 
-    describe('CANCEL_ASSET_CREATION_REQUEST', () => {
+    describe('CANCEL_REQUEST', () => {
       beforeEach(() => {
         sinon.stub(Api.api(), 'postOperations').resolves()
       })
@@ -154,8 +154,8 @@ describe('create-asset-requests.module', () => {
 
       expect(getters[types.requests](state))
         .to.deep.equal([
-          new CreateAssetRequest({ id: '1' }),
-          new CreateAssetRequest({ id: '2' }),
+          new UpdateAssetRequest({ id: '1' }),
+          new UpdateAssetRequest({ id: '2' }),
         ])
     })
   })

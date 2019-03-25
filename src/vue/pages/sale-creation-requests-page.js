@@ -1,5 +1,5 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
-import { SaleCreationRequestsModule } from '@/vue/modules/requests/sale-creation-requests/module'
+import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 
 export class SaleCreationRequestsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -7,7 +7,7 @@ export class SaleCreationRequestsPageModule extends PageModuleDescriptor {
       ...opts,
       importComponentFn: _ => import('@/vue/pages/SaleCreationRequests'),
       allowedSubmodules: [
-        SaleCreationRequestsModule,
+        CreateSaleRequestsModule,
       ],
     })
   }

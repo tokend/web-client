@@ -1,103 +1,40 @@
-import CreateAssetRequestsModule from './index'
+import RequestsRenderer from './requests-renderer'
 
 import Vuex from 'vuex'
 
-import { createAssetRequestsModule } from './store/index'
+import { createSaleRequestsModule } from '../store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import * as Api from './_api'
-import * as Config from './_config'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { Asset } from '../wrappers/asset'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Create asset requests module', () => {
-  const props = {
-    config: {
-      horizonURL: 'https://test.api.com',
-      storageURL: 'https://test.storage.com',
-    },
-    wallet: new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ),
-  }
-
+describe('Create sale requests renderer', () => {
   let store
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: { 'create-asset-requests': createAssetRequestsModule },
+      modules: { 'create-sale-requests': createSaleRequestsModule },
     })
   })
 
   describe('created hook', () => {
-    it('calls initApi function', () => {
-      sinon.stub(Api, 'initApi')
-
-      shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly(props.wallet, props.config)
-
-      Api.initApi.restore()
-    })
-
-    it('calls initConfig function', () => {
-      sinon.stub(Config, 'initConfig')
-
-      shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly(props.config)
-
-      Config.initConfig.restore()
-    })
-
-    it('calls setAccountId method', () => {
-      sinon.stub(CreateAssetRequestsModule.methods, 'setAccountId')
-
-      shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(CreateAssetRequestsModule.methods.setAccountId
-        .withArgs(props.wallet.accountId)
-      ).to.have.been.calledOnce
-
-      CreateAssetRequestsModule.methods.setAccountId.restore()
-    })
-
     it('calls initFirstPageLoader method', () => {
-      sinon.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
+      sinon.stub(RequestsRenderer.methods, 'initFirstPageLoader')
 
-      shallowMount(CreateAssetRequestsModule, {
+      shallowMount(RequestsRenderer, {
         localVue,
         store,
-        propsData: props,
       })
 
-      expect(CreateAssetRequestsModule.methods.initFirstPageLoader)
+      expect(RequestsRenderer.methods.initFirstPageLoader)
         .to.have.been.calledOnce
 
-      CreateAssetRequestsModule.methods.initFirstPageLoader.restore()
+      RequestsRenderer.methods.initFirstPageLoader.restore()
     })
   })
 
@@ -105,50 +42,71 @@ describe('Create asset requests module', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(CreateAssetRequestsModule, {
+      wrapper = shallowMount(RequestsRenderer, {
         store,
         localVue,
-        propsData: props,
+      })
+    })
+
+    describe('watcher', () => {
+      describe('baseAsset', () => {
+        it('should call initFirstPageLoader method if the value has been changed', async () => {
+          sinon.stub(wrapper.vm, 'initFirstPageLoader').resolves()
+
+          wrapper.setProps({ baseAsset: new Asset({ id: 'USD' }) })
+          await wrapper.vm.$nextTick()
+
+          expect(wrapper.vm.initFirstPageLoader).to.have.been.calledOnce
+
+          wrapper.vm.initFirstPageLoader.restore()
+        })
       })
     })
 
     describe('method', () => {
       describe('loadRequests', () => {
-        it('calls loadCreateAssetRequests method', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').resolves()
+        beforeEach(() => {
+          wrapper.setProps({
+            baseAsset: new Asset({ id: 'USD' }),
+          })
+        })
+
+        it('calls loadCreateSaleRequests method with correct params', async () => {
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').resolves()
 
           await wrapper.vm.loadRequests()
 
-          expect(wrapper.vm.loadCreateAssetRequests).to.have.been.calledOnce
+          expect(wrapper.vm.loadCreateSaleRequests)
+            .to.have.been.calledOnceWithExactly('USD')
 
-          wrapper.vm.loadCreateAssetRequests.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
         it('sets isLoaded property to true if loading was succeded', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').resolves()
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').resolves()
 
           await wrapper.vm.loadRequests()
 
           expect(wrapper.vm.isLoaded).to.be.true
 
-          wrapper.vm.loadCreateAssetRequests.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
-        it('returns the response of loadCreateAssetRequests method', async () => {
+        it('returns the response of loadCreateSaleRequests method', async () => {
           const responseStub = { data: {} }
 
-          sinon.stub(wrapper.vm, 'loadCreateAssetRequests')
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests')
             .resolves(responseStub)
 
           const result = await wrapper.vm.loadRequests()
 
           expect(result).to.equal(responseStub)
 
-          wrapper.vm.loadCreateAssetRequests.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
         it('calls ErrorHandler.processWithoutFeedback if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').rejects()
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadRequests()
@@ -156,19 +114,19 @@ describe('Create asset requests module', () => {
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
 
-          wrapper.vm.loadCreateAssetRequests.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
 
         it('set isLoadingFailed property to true if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateAssetRequests').rejects()
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadRequests()
 
           expect(wrapper.vm.isLoadingFailed).to.be.true
 
-          wrapper.vm.loadCreateAssetRequests.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
       })

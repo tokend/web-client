@@ -1,8 +1,8 @@
 <template>
   <div class="asset-update-requests-page">
     <submodule-importer
-      v-if="getModule().canRenderSubmodule(AssetUpdateRequestsModule)"
-      :submodule="getModule().getSubmodule(AssetUpdateRequestsModule)"
+      v-if="getModule().canRenderSubmodule(UpdateAssetRequestsModule)"
+      :submodule="getModule().getSubmodule(UpdateAssetRequestsModule)"
       :wallet="wallet"
       :config="config"
     />
@@ -11,7 +11,7 @@
 
 <script>
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { AssetUpdateRequestsModule } from '@/vue/modules/requests/asset-update-requests/module'
+import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -25,7 +25,7 @@ export default {
   },
 
   data: _ => ({
-    AssetUpdateRequestsModule,
+    UpdateAssetRequestsModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,

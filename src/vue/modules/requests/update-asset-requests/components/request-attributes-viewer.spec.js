@@ -2,19 +2,19 @@ import RequestAttributesViewer from './request-attributes-viewer'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
 import * as Config from '../_config'
 
 const localVue = createLocalVue()
 
-describe('Create asset request attributes viewer', () => {
+describe('Asset update request attributes viewer', () => {
   let wrapper
 
   beforeEach(() => {
     wrapper = shallowMount(RequestAttributesViewer, {
       localVue,
-      propsData: { request: new CreateAssetRequest({}) },
+      propsData: { request: new UpdateAssetRequest({}) },
     })
   })
 

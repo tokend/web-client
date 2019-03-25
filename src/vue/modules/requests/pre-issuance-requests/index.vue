@@ -1,7 +1,7 @@
 <template>
   <div class="pre-issuance-requests">
     <template v-if="isLoaded">
-      <pre-issuance-requests-table :requests="requests" />
+      <requests-table :requests="requests" />
     </template>
 
     <p v-else-if="isLoadingFailed">
@@ -24,7 +24,7 @@
 import LoadSpinner from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import PreIssuanceRequestsTable from './components/pre-issuance-requests-table'
+import RequestsTable from './components/requests-table'
 
 import { initApi } from './_api'
 
@@ -40,7 +40,7 @@ export default {
   components: {
     LoadSpinner,
     CollectionLoader,
-    PreIssuanceRequestsTable,
+    RequestsTable,
   },
 
   props: {
@@ -66,7 +66,7 @@ export default {
 
   computed: {
     ...mapGetters('pre-issuance-requests', {
-      requests: types.preIssuanceRequests,
+      requests: types.requests,
     }),
   },
 
@@ -80,12 +80,12 @@ export default {
   methods: {
     ...mapMutations('pre-issuance-requests', {
       setAccountId: types.SET_ACCOUNT_ID,
-      setRequests: types.SET_PRE_ISSUANCE_REQUESTS,
-      concatRequests: types.CONCAT_PRE_ISSUANCE_REQUESTS,
+      setRequests: types.SET_REQUESTS,
+      concatRequests: types.CONCAT_REQUESTS,
     }),
 
     ...mapActions('pre-issuance-requests', {
-      loadPreIssuanceRequests: types.LOAD_PRE_ISSUANCE_REQUESTS,
+      loadPreIssuanceRequests: types.LOAD_REQUESTS,
     }),
 
     async loadRequests () {

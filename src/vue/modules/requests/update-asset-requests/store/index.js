@@ -1,4 +1,4 @@
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
 import { base } from '@tokend/js-sdk'
 
@@ -20,13 +20,14 @@ export const mutations = {
     state.requests = requests
   },
   [types.CONCAT_REQUESTS] (state, requests) {
-    state.requests = state.requests.concat(requests)
+    state.requests = state.requests
+      .concat(requests)
   },
 }
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_asset_requests`, {
+    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/update_asset_requests`, {
       page: {
         order: 'desc',
       },
@@ -48,11 +49,11 @@ export const actions = {
 export const getters = {
   [types.accountId]: state => state.accountId,
   [types.requests]: state => state.requests
-    .map(r => new CreateAssetRequest(r)),
+    .map(r => new UpdateAssetRequest(r)),
 }
 
-export const createAssetRequestsModule = {
-  name: 'create-asset-requests',
+export const updateAssetRequestsModule = {
+  name: 'update-asset-requests',
   namespaced: true,
   state,
   getters,

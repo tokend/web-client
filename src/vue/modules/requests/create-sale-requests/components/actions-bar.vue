@@ -1,5 +1,18 @@
 <template>
   <div class="actions-bar">
+    <!--
+      Currently, we cannot definitely identify the sale by its request,
+      therefore we temporarily disable view button.
+    -->
+    <button
+      v-ripple
+      v-if="!formMixin.isConfirmationShown"
+      class="actions-bar__view-btn app__button-raised"
+      :disabled="true"
+    >
+      {{ 'create-sale-requests.view-btn' | globalize }}
+    </button>
+
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
@@ -7,7 +20,7 @@
       :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateAsk)"
     >
-      {{ 'create-asset-requests.update-btn' | globalize }}
+      {{ 'create-sale-requests.update-btn' | globalize }}
     </button>
 
     <button
@@ -17,14 +30,14 @@
       :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
-      {{ 'create-asset-requests.cancel-btn' | globalize }}
+      {{ 'create-sale-requests.cancel-btn' | globalize }}
     </button>
 
     <form-confirmation
       v-if="formMixin.isConfirmationShown"
-      message-id="create-asset-requests.cancellation-msg"
-      ok-button-text-id="create-asset-requests.yes-msg"
-      cancel-button-text-id="create-asset-requests.no-msg"
+      message-id="create-sale-requests.cancellation-msg"
+      ok-button-text-id="create-sale-requests.yes-msg"
+      cancel-button-text-id="create-sale-requests.no-msg"
       @ok="cancelRequest"
       @cancel="hideConfirmation"
     />
@@ -34,7 +47,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -52,7 +65,7 @@ export default {
   mixins: [FormMixin],
 
   props: {
-    request: { type: CreateAssetRequest, required: true },
+    request: { type: CreateSaleRequest, required: true },
   },
 
   data: _ => ({
@@ -71,8 +84,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('create-asset-requests', {
-      cancelCreateAssetRequest: types.CANCEL_REQUEST,
+    ...mapActions('create-sale-requests', {
+      cancelCreateSaleRequest: types.CANCEL_REQUEST,
     }),
 
     async cancelRequest () {
@@ -80,8 +93,8 @@ export default {
       this.isRequestCanceling = true
 
       try {
-        await this.cancelCreateAssetRequest(this.request.id)
-        Bus.success('create-asset-requests.request-canceled-msg')
+        await this.cancelCreateSaleRequest(this.request.id)
+        Bus.success('create-sale-requests.request-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
         this.isRequestCanceling = false
@@ -93,21 +106,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@scss/variables";
+
 .actions-bar {
   display: flex;
+}
 
-  button + button {
-    margin-left: auto;
-  }
+.sale-request-details__view-btn {
+  max-width: 14.4rem;
+  width: 100%;
 }
 
 .actions-bar__update-btn {
-  margin-bottom: 2rem;
-  width: 18rem;
+  margin-left: 1.2rem;
+  max-width: 14.4rem;
+  width: 100%;
+  font-weight: bold;
+  color: $col-button-flat-light-text;
+  box-shadow: 0 .5rem 1.5rem 0 $col-button-flat-light-shadow;
+  background-color: $col-button-flat-light-bg;;
 }
 
 .actions-bar__cancel-btn {
-  margin-bottom: 2rem;
   font-weight: normal;
+  margin-left: auto;
 }
 </style>
