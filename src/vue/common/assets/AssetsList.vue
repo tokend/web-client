@@ -36,19 +36,27 @@
           />
         </div>
         <div class="asset-card__info">
-          <p class="asset-card__code">
+          <p
+            class="asset-card__code"
+            :title="asset.code"
+          >
             {{ asset.code }}
           </p>
-          <p class="asset-card__name">
+          <p
+            class="asset-card__name"
+            :title="asset.name || asset.code"
+          >
             {{ asset.name || asset.code }}
           </p>
+          <!-- eslint-disable max-len -->
           <p
             v-if="asset.balance.value"
             class="asset-card__balance"
+            :title="'assets-list.list-item-balance-line' | globalize({ value: asset.balance })"
           >
-            <!-- eslint-disable-next-line max-len -->
             {{ 'assets-list.list-item-balance-line' | globalize({ value: asset.balance }) }}
           </p>
+          <!-- eslint-enable max-len -->
           <p
             v-else
             class="asset-card__balance asset-card__no-balance"
@@ -136,6 +144,7 @@ export default {
   box-shadow: 0 .5rem 1rem 0 $col-field-shadow;
   background-color: $col-asset-card-background;
   margin: .75rem;
+  min-width: 0;
 
   @include respond-to($medium) {
     flex: 0 1 calc(33% - 1.5rem);
@@ -179,6 +188,12 @@ export default {
   font-size: 1.2rem;
   line-height: 1.5;
   color: $col-asset-card-text-primary;
+}
+
+.asset-card__code, .asset-card__name, .asset-card__balance {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .asset-card__no-balance {
