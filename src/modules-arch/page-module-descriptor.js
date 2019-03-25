@@ -62,7 +62,6 @@ export class PageModuleDescriptor extends ModuleDescriptor {
   _tryPopulateRouterEntryWithChildren () {
     const children = this.submodules
       .filter(item => item instanceof PageModuleDescriptor)
-      .filter(item => item.isAccessible)
       .map(item => item.routerEntry)
 
     if (!children.length) {

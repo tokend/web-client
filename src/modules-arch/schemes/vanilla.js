@@ -55,6 +55,7 @@ export default {
         ],
       },
     ),
+
     new MovementsHistoryPageModule(
       {
         routerEntry: {
@@ -233,18 +234,21 @@ export default {
               path: '/requests/token-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
+            isCorporateOnly: true,
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
               path: '/requests/fund-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
+            isCorporateOnly: true,
           }),
           new PreIssuanceRequestsPageModule({
             routerEntry: {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
             },
+            isCorporateOnly: true,
           }),
         ],
       },
