@@ -116,7 +116,7 @@ export default {
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
-    scale: 'month',
+    scale: 'day',
     config,
     MovementsHistoryModule,
     IssuanceDrawerPseudoModule,
@@ -142,6 +142,9 @@ export default {
     },
     transferFormIsShown (status) {
       this.showDrawer = status
+    },
+    currentAsset () {
+      this.loadBalances()
     },
   },
   async created () {

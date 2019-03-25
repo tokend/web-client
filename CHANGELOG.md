@@ -12,7 +12,7 @@ for further information about branching and tagging conventions.
 - Issuance explorer module
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
-- Displaying TokenD logo & load spinner while loading the page
+- Displaying TokenD logo & load spinner while loading the pages
 - Documents page
 - Document upload form module
 - Cancel trade offers in the "My orders" tab on the "Trade" page
@@ -28,11 +28,19 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Asset creation requests module
-- Asset update requests page & module
-- Sale creation requests module
+- Create asset requests module
+- Update asset requests page & module
+- Create sale requests module
 - Pre-issuance requests module
 - LOAD_KV_ENTRIES action to key-values vuex module
+- Subject info `Dividend for <token-name>` for every payment operation in dividends
+- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
+- For sales that were ended show highlighted text like a "Closed [days] ago"
+- Reword create opportunity label "KYC Required" => "Verification required"
+- Asset loading via the loop where was `filter[limit]=100`
+- Correct base/quote price calculating for Opportunities
+- Custom validation rules for sale's "Soft cap" and "Hard cap" values
+- Custom Movements TopBar for REIT scheme
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -43,6 +51,7 @@ for further information about branching and tagging conventions.
 - Now using object type for checking request prop in asset & sale forms
 - Now loading all the key-values entries instead of loading only account role ones
 - Now using `request.id` check instead of `isUpdateMode` in create sale form
+- Moved TopBar to the module
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -50,6 +59,22 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
+- Loader displaying in the Opportunity create form
+- Calculated redeem price displaying for old tokens
+- Correct dividends subject
+- Fees displaying on the Movements page
+- "Soft cap" validation in the "Opportunity create" form
+- Asset name displaying
+- Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+
+## [1.3.1-rc.0] - 2019-03-20
+
+### Changed
+- Do not throw an error if movement has an unknown effect or operation details
+
+### Fixed
+- Not handling 'manage-asset-pair' operation details
 
 ### Removed
 - `AssetRequestDetails` component
