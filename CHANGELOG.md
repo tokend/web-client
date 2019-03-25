@@ -58,6 +58,7 @@ for further information about branching and tagging conventions.
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- Don't allow unverified users to add an asset with KYC required type to their balances
 
 ## [1.3.1-rc.0] - 2019-03-20
 
