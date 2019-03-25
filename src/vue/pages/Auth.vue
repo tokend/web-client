@@ -18,7 +18,14 @@
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
+
+      <idle-message
+        v-if="isLoggedout"
+        :is-shown.sync="isLoggedout"
+      />
+
       <router-view />
+
       <section class="auth__footer-section">
         <app-footer />
       </section>
@@ -28,6 +35,7 @@
 
 <script>
 import Logo from '../assets/Logo'
+import IdleMessage from '@/vue/common/IdleMessage'
 import AppFooter from '@/vue/navigation/Footer'
 import config from '@/config'
 
@@ -35,12 +43,25 @@ export default {
   name: 'auth',
   components: {
     Logo,
+    IdleMessage,
     AppFooter,
   },
   data () {
     return {
       buildVersion: config.BUILD_VERSION,
+      isLoggedout: false,
     }
+  },
+  created () {
+    this.showIdleNotification()
+  },
+  methods: {
+    showIdleNotification () {
+      const routeQuery = this.$route.query || ''
+      if (routeQuery.redirectPath.includes('isIdle=true')) {
+        this.isLoggedout = true
+      }
+    },
   },
 }
 </script>

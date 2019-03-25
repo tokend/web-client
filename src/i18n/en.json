@@ -102,8 +102,8 @@
     },
 
     "idle-message": {
-      "form-heading": "Log out",
-      "notification-message": "You have been logged out due to long inactivity!"
+      "notification-message": "You have been logged out due to long inactivity!",
+      "close-lbl": "Close"
     },
 
     "auth-pages": {
