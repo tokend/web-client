@@ -14,7 +14,7 @@
                 v-model="form.ownedAsset"
                 :values="ownedAssets"
                 key-as-value-text="nameAndCode"
-                :disabled="formMixin.isDisabled"
+                disabled
                 :label="'dividend-form.asset' | globalize"
               />
               <p class="app__form-field-description">

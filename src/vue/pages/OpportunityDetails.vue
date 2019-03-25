@@ -236,6 +236,7 @@ export default {
       try {
         const { data } = await Sdk.horizon.assets.get(assetCode)
         this.token = new AssetRecord(data)
+        this.dividendConfig.defaultAssetCode = this.token.code
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
