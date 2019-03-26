@@ -2,16 +2,30 @@ import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import _get from 'lodash/get'
 
 export class AssetRecord {
-  constructor (record = {}) {
+  constructor (record = {}, balances = []) {
     this._record = record
 
     this.code = record.id
     this.name = _get(record, 'details.name')
     this.details = record.details
-    this.owner = record.owner
 
     this.policies = this._policies()
     this.policy = this._policy()
+
+    this.balance = this._getBalance(balances)
+  }
+
+  _getBalance (balances) {
+    const balance = balances.find(balance => balance.asset.id === this.code)
+    if (balance) {
+      return {
+        value: balance.state.available,
+        currency: balance.asset,
+        id: balance.id,
+      }
+    } else {
+      return {}
+    }
   }
 
   _policies () {
@@ -28,7 +42,11 @@ export class AssetRecord {
     return `${name} (${this.code})`
   }
 
-  get isAllowedToRedeem () {
-    return this.details.subtype === ASSET_SUBTYPE.bond
+  get isBond () {
+    return !this.details.isFiat && this.details.subtype === ASSET_SUBTYPE.bond
+  }
+
+  get isFiat () {
+    return !!this.details.isFiat && this.details.subtype === undefined
   }
 }

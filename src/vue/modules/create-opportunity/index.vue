@@ -110,8 +110,8 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.annualReturn',
                 {
-                  from:'0',
-                  to:maxAmount
+                  from:MIN_ALLOWED_PERCENT,
+                  to:MAX_ALLOWED_PERCENT
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -171,6 +171,51 @@
         @submit.prevent="nextStep('form.saleInformation')"
       >
         <div class="app__form-row">
+          {{ 'create-opportunity.accept-investments-in' | globalize }}
+        </div>
+        <template v-if="form.information.formType.value !== ASSET_SUBTYPE.bond">
+          <div
+            class="app__form-row"
+            v-for="item in baseAssets"
+            :key="item.code"
+          >
+            <div class="app__form-field">
+              <tick-field
+                :name="`create-sale-tick-${item.code}`"
+                v-model="form.saleInformation.quoteAssets"
+                :disabled="formMixin.isDisabled"
+                :cb-value="item.code"
+              >
+                {{ item.nameAndCode }}
+              </tick-field>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div
+            class="app__form-row"
+            v-for="item in baseAssets"
+            :key="item.code"
+          >
+            <div class="app__form-field">
+              <radio-field
+                :key="`radio-field-${item.code}`"
+                name="create-sale-radio-asset-code"
+                v-model="form.saleInformation.quoteAssets"
+                :active="form.saleInformation.quoteAssets"
+                :cb-value="item.code"
+                :disabled="formMixin.isDisabled"
+              >
+                {{ item.nameAndCode }}
+              </radio-field>
+            </div>
+          </div>
+        </template>
+        <div class="create-opportunity__error-text">
+          {{ getFieldErrorMessage('form.saleInformation.quoteAssets') }}
+        </div>
+
+        <div class="app__form-row">
           <div class="app__form-field">
             <date-field
               v-model="form.saleInformation.startTime"
@@ -226,15 +271,12 @@
               id="soft-cap"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
-                asset: isBond
-                  ? form.saleInformation.quoteAssets
-                  : statsQuoteAsset.code
+                asset: form.saleInformation.defaultQuoteAsset
               })"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.softCap',
                 {
-                  from:minAmount,
-                  to:maxAmount
+                  hardCap: form.saleInformation.hardCap || '0'
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -251,15 +293,12 @@
               id="hard-cap"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({
-                asset: isBond
-                  ? form.saleInformation.quoteAssets
-                  : statsQuoteAsset.code
+                asset: form.saleInformation.defaultQuoteAsset
               })"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.hardCap',
                 {
-                  from:form.saleInformation.softCap,
-                  to:maxAmount
+                  softCap: form.saleInformation.softCap || '0'
                 }
               )"
               :disabled="formMixin.isDisabled"
@@ -295,50 +334,6 @@
               {{ 'create-opportunity.transferable-lbl' | globalize }}
             </tick-field>
           </div>
-        </div>
-        <div class="app__form-row">
-          {{ 'create-opportunity.accept-investments-in' | globalize }}
-        </div>
-        <template v-if="form.information.formType.value !== ASSET_SUBTYPE.bond">
-          <div
-            class="app__form-row"
-            v-for="item in baseAssets"
-            :key="item.code"
-          >
-            <div class="app__form-field">
-              <tick-field
-                :name="`create-sale-tick-${item.code}`"
-                v-model="form.saleInformation.quoteAssets"
-                :disabled="formMixin.isDisabled"
-                :cb-value="item.code"
-              >
-                {{ item.nameAndCode }}
-              </tick-field>
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <div
-            class="app__form-row"
-            v-for="item in baseAssets"
-            :key="item.code"
-          >
-            <div class="app__form-field">
-              <radio-field
-                :key="`radio-field-${item.code}`"
-                name="create-sale-radio-asset-code"
-                v-model="form.saleInformation.quoteAssets"
-                :active="form.saleInformation.quoteAssets"
-                :cb-value="item.code"
-                :disabled="formMixin.isDisabled"
-              >
-                {{ item.nameAndCode }}
-              </radio-field>
-            </div>
-          </div>
-        </template>
-        <div class="create-opportunity__error-text">
-          {{ getFieldErrorMessage('form.saleInformation.quoteAssets') }}
         </div>
         <div class="app__form-actions">
           <button
@@ -451,6 +446,8 @@ import {
   amountRange,
   maxLength,
   requiredAtLeastOne,
+  softCapMoreThanHardCap,
+  hardCapLessThanSoftCap,
   minDate,
   maxDate,
 } from '@validators'
@@ -475,6 +472,8 @@ const STEPS = {
 }
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
+const MIN_ALLOWED_PERCENT = 0
+const MAX_ALLOWED_PERCENT = 100
 const DESCRIPTION_MAX_LENGTH = 255
 const DEFAULT_SALE_TYPE = '0'
 const ASSET_CREATION_REQUEST_ID = '0'
@@ -557,6 +556,7 @@ export default {
           quoteAssets: [],
           assetType: '',
           policies: [],
+          defaultQuoteAsset: '',
         },
         shortBlurb: {
           saleLogo: null,
@@ -577,6 +577,8 @@ export default {
       ASSET_POLICIES,
       NAME_MAX_LENGTH,
       DESCRIPTION_MAX_LENGTH,
+      MIN_ALLOWED_PERCENT,
+      MAX_ALLOWED_PERCENT,
     }
   },
   validations () {
@@ -622,14 +624,14 @@ export default {
           endTime: endTime,
           softCap: {
             required,
-            amountRange: amountRange(
+            softCapMoreThanHardCap: softCapMoreThanHardCap(
               this.minAmount,
-              this.form.information.maxIssuanceAmount
+              this.form.saleInformation.hardCap
             ),
           },
           hardCap: {
             required,
-            amountRange: amountRange(
+            hardCapLessThanSoftCap: hardCapLessThanSoftCap(
               this.form.saleInformation.softCap,
               this.maxAmount
             ),
@@ -692,6 +694,14 @@ export default {
   watch: {
     'form.information.formType.value' () {
       this.assignDefaultAssetSubtype()
+      this.assignDefaultQuoteAsset()
+    },
+    'form.saleInformation.quoteAssets' () {
+      this.assignDefaultQuoteAsset()
+    },
+    'form.saleInformation.defaultQuoteAsset' () {
+      this.form.saleInformation.softCap = ''
+      this.form.saleInformation.hardCap = ''
     },
   },
   async created () {
@@ -756,7 +766,7 @@ export default {
       const operation = {
         requestID: this.isUpdateMode ? this.request.id : '0',
         baseAsset: this.form.information.code,
-        defaultQuoteAsset: this.statsQuoteAsset.code,
+        defaultQuoteAsset: this.form.saleInformation.defaultQuoteAsset,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
@@ -845,11 +855,18 @@ export default {
           price: this.salePriceRatioStatsQuoteAsset,
         }]
       } else {
-        return this.form.saleInformation.quoteAssets
-          .map(asset => ({
-            asset: asset,
-            price: this.calculatePriceForBaseAsset(asset),
-          }))
+        if (this.form.saleInformation.quoteAssets.length > 1) {
+          return this.form.saleInformation.quoteAssets
+            .map(asset => ({
+              asset: asset,
+              price: this.calculatePriceForBaseAsset(asset),
+            }))
+        } else {
+          return [{
+            asset: this.form.saleInformation.quoteAssets[0],
+            price: this.salePriceRatioStatsQuoteAsset,
+          }]
+        }
       }
     },
     selectFormType (formType) {
@@ -861,6 +878,21 @@ export default {
         this.form.saleInformation.quoteAssets = this.baseAssets[0].code
       } else {
         this.form.saleInformation.quoteAssets = []
+      }
+    },
+    assignDefaultQuoteAsset () {
+      const quoteAssets = this.form.saleInformation.quoteAssets
+      if (!this.isBond) {
+        if (quoteAssets.length > 1) {
+          // eslint-disable-next-line max-len
+          this.form.saleInformation.defaultQuoteAsset = this.statsQuoteAsset.code
+        } else {
+          // eslint-disable-next-line max-len
+          this.form.saleInformation.defaultQuoteAsset = quoteAssets[0] || this.statsQuoteAsset.code
+        }
+      } else {
+        // eslint-disable-next-line max-len
+        this.form.saleInformation.defaultQuoteAsset = this.form.saleInformation.quoteAssets
       }
     },
     calculatePriceForBaseAsset (asset) {

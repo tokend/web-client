@@ -1,12 +1,12 @@
 import { vueRoutes } from '@/vue-router/routes'
 
-import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import { MovementsHistoryModule } from '@modules/movements-history/module'
 import { MovementsHistoryPageModule } from '@/vue/pages/movements-page-module'
 import { DashboardPageModule } from '@/vue/pages/dashboard-page-module'
 import { FeesPageModule } from '@/vue/pages/fees-page-module'
-import { FeesModule } from '@/vue/modules/fees/module'
+import { FeesModule } from '@modules/fees/module'
 import { IssuancePageModule } from '@/vue/pages/issuance-page-module'
-import { IssuanceExplorerModule } from '@/vue/modules/issuance-explorer/module'
+import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
 import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { LimitsPageModule } from '@/vue/pages/limits-page-module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
@@ -21,18 +21,19 @@ import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
-import { DepositFiatCardModule } from '@/vue/modules/deposit-fiat-card/module'
-import { DepositFiatBankModule } from '@/vue/modules/deposit-fiat-bank/module'
-import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
-import { WithdrawalFiatCardModule } from '@/vue/modules/withdrawal-fiat-card/module'
-import { WithdrawalFiatBankModule } from '@/vue/modules/withdrawal-fiat-bank/module'
-import { DividendFormModule } from '@/vue/modules/dividend-form/module'
-import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
-import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
+import { DividendFormModule } from '@modules/dividend-form/module'
+import { BuyBackFormModule } from '@modules/buy-back-form/module'
+import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
-import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
+import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
+import { DepositFiatModule } from '@modules/deposit-fiat/module'
+import { DepositFiatCardModule } from '@modules/deposit-fiat-card/module'
+import { DepositFiatBankModule } from '@modules/deposit-fiat-bank/module'
+import { WithdrawalFiatModule } from '@modules/withdrawal-fiat/module'
+import { WithdrawalFiatCardModule } from '@modules/withdrawal-fiat-card/module'
+import { WithdrawalFiatBankModule } from '@modules/withdrawal-fiat-bank/module'
+import { RedeemFormModule } from '@modules/redeem-form/module'
 
 export default {
   importEnLocaleFile () {
@@ -107,20 +108,24 @@ export default {
         menuButtonMdiName: 'menu',
         submodules: [
           new MovementsHistoryModule(),
-          new WithdrawalFiatModule({
+          new MovementsTopBarReitModule({
             submodules: [
-              new WithdrawalFiatCardModule(),
-              new WithdrawalFiatBankModule(),
+              new WithdrawalFiatModule({
+                submodules: [
+                  new WithdrawalFiatCardModule(),
+                  new WithdrawalFiatBankModule(),
+                ],
+              }),
+              new DepositFiatModule({
+                submodules: [
+                  new DepositFiatCardModule(),
+                  new DepositFiatBankModule(),
+                ],
+              }),
+              new TransferDrawerPseudoModule(),
+              new RedeemFormModule(),
             ],
           }),
-          new DepositFiatModule({
-            submodules: [
-              new DepositFiatCardModule(),
-              new DepositFiatBankModule(),
-            ],
-          }),
-          new TransferDrawerPseudoModule(),
-          new RedeemFormModule(),
         ],
       },
     ),
