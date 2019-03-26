@@ -188,6 +188,7 @@ export default {
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
+      oneBaseAsset: true,
     },
     buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
