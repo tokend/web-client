@@ -65,7 +65,7 @@
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_requiredAtLeastOne": "Choose at least one of the options",
       "field-error_amount": "Amount must be a number, greater than 0",
-      "field-error_maxValue": "Value should be less then {{maxValue, number}}",
+      "field-error_maxValue": "Value should be less than {{maxValue, number}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
       "field-error_minDate": "Date should be after {{ minDate }}",
@@ -80,7 +80,9 @@
       "field-error_cardNumber": "Make sure the card number is correct",
       "field-error_cardExpirationDate": "Make sure the expiration date is correct",
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
-      "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct"
+      "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
+      "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -625,7 +627,7 @@
       "code-lbl": "Token code",
       "max-issuance-amount-lbl": "Max issuance amount",
       "logo-lbl": "Token icon",
-      "logo-note": "JPG or PNG, no less then 120x120 px",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
       "transferable-lbl": "Transferable",
       "withdrawable-lbl": "Withdrawable",
       "kyc-required-lbl": "Requires KYC",
@@ -776,12 +778,15 @@
       "sale-live-state": "Live",
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
-      "new-sale": "New sale"
+      "new-sale": "New sale",
+      "all-sales": "All sales",
+      "my-sales": "My sales"
     },
     "sale-card": {
       "funded": "{{funded, percent}} funded",
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
+      "days-after-end": "Closed {{days}} days ago",
       "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
     },
     "trade-history": {
@@ -839,13 +844,25 @@
     },
     "redeem-form": {
       "title": "Redeem",
-      "opportunity-uniq-code": "Opportunity uniq code",
-      "invested-in": "Indested in",
-      "total": "Total",
+      "opportunity-uniq-code-lbl": "Opportunity uniq code",
+      "quote-asset-lbl": "Invested in",
+      "total-lbl": "Total",
       "submit-sell-btn": "Sell",
       "no-investments": "You have no investments",
       "here-will-investments-list": "Here will be the list of your investments that you can redeem",
       "loading-msg": "Loading..."
+    },
+    "buy-back-form": {
+      "title": "Buy back",
+      "opportunity-uniq-code-lbl": "Opportunity uniq code",
+      "quote-asset-lbl": "Invested in",
+      "total-lbl": "Total ({{asset}})",
+      "amount-lbl": "Amount ({{asset}})",
+      "submit-btn": "Buy",
+      "no-investments": "You have no investments",
+      "here-will-investments-list": "Here will be the list of your investments that you can redeem",
+      "loading-msg": "Loading...",
+      "issued-tokens-msg": "Issued {{value}}"
     },
     "offer-creation-form": {
       "price-per-asset": "Price per {{asset}}",
@@ -881,9 +898,10 @@
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
-      "investors": "### {{investors}}\ninvestors",
-      "days-to-go": "### {{days}}\ndays to go",
-      "view-details-btn": "View details"
+      "investors": "investors",
+      "days-to-go": "days to go",
+      "view-details-btn": "View details",
+      "days-after-end": "days after closed"
     },
     "opportunity-details": {
       "loading-msg": "Loading",
@@ -901,7 +919,8 @@
       "days-to-go": "### {{days}}\ndays to go",
       "view-details-btn": "View details",
       "opportunities-list": "Opportunities list",
-      "dividend-form-title": "Dividends"
+      "dividend-form-title": "Dividends",
+      "buy-back-form-title": "Buy back"
     },
     "sale-overview": {
       "loading-msg": "Loading",
@@ -1151,7 +1170,7 @@
       "opportunity-code": "Opportunity unique code",
       "investor-requirements": "Investor Requirements",
       "transferable-lbl": "Transferable",
-      "logo-note": "JPG or PNG, no less then 120x120 px",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
       "logo-lbl": "Opportunity icon",
       "next-btn": "Next",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
@@ -1195,7 +1214,8 @@
       "amount": "Amount ({{asset}})",
       "asset-dividend-pay": "Asset in which dividends will be paid",
       "asset-holders-not-found": "Asset holders not found",
-      "asset-holders": "Asset holders"
+      "asset-holders": "Asset holders",
+      "subject-msg": "Dividend for {{asset}}"
     },
     "documents-page": {
       "explore-documents-title": "Explore documents",

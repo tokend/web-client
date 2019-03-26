@@ -15,6 +15,7 @@ export class AssetRecord {
     this.maxIssuanceAmount = record.maxIssuanceAmount
     this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
+    this.trailingDigitsCount = record.trailingDigitsCount
 
     this.details = record.details
     this.name = _get(record, 'details.name')
