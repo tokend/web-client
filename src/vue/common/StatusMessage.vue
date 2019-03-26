@@ -13,15 +13,21 @@
             })
           }}
         </p>
-        <div class="status-message__btn-wrp">
-          <button class="status-message__btn" @click="isShown = false">
-            {{
-              "status-message.close-lbl" | globalize({
-                context: messageType
-              })
-            }}
-          </button>
-        </div>
+      </div>
+      <div
+        class="status-message__btn-wrp"
+        :class="`status-message__btn-wrp--${messageType}`"
+      >
+        <button
+          @click="isShown = false"
+          :class="`status-message__btn status-message__btn--${messageType}`"
+        >
+          {{
+            "status-message.close-lbl" | globalize({
+              context: messageType
+            })
+          }}
+        </button>
       </div>
     </div>
   </transition>
@@ -98,7 +104,6 @@ export default {
     $col-msg-shadow;
   border-radius: .3rem;
   font-size: 1.6rem;
-  padding: 1.5rem 2rem;
   position: fixed;
   right: 4rem;
   top: 4rem;
@@ -106,6 +111,7 @@ export default {
   max-width: 42rem;
   min-width: 32rem;
   text-align: center;
+  opacity: .8;
   @include respond-to($tablet) {
     min-width: auto;
   }
@@ -116,82 +122,112 @@ export default {
     padding: 2rem;
   }
 
-  @mixin apply-theme ($col-msg-background, $col-msg-text) {
-    background: $col-msg-background;
+  @mixin apply-theme ($col-bg, $col-bg-secondary, $col-msg) {
+    background: $col-bg;
+    background: linear-gradient($col-bg, $col-bg-secondary 25%);
 
-    .status-message__text,
-    .status-message__btn {
-      color: $col-msg-text;
-    }
-    .status-message__btn {
-      border: .1rem solid $col-msg-text;
+    .status-message__text {
+      color: $col-msg;
     }
   }
 
-  &--warning { @include apply-theme($col-warning, $col-text-msg-warning) }
-  &--success { @include apply-theme($col-success, $col-text-msg-success) }
-  &--error { @include apply-theme($col-error, $col-text-msg-error) }
-  &--info { @include apply-theme($col-info, $col-text-msg-info) }
+  &--warning {
+    @include apply-theme($col-warning, $col-warning-secondary, $col-msg-warning)
+  }
+  &--success {
+    @include apply-theme($col-success,$col-success-secondary,  $col-msg-success)
+  }
+  &--error {
+    @include apply-theme($col-error,$col-error-secondary,  $col-msg-error)
+  }
+  &--info {
+    @include apply-theme($col-info,$col-info-secondary,  $col-msg-info)
+  }
 }
 
   .status-message__content {
     position: relative;
     border-color: transparent;
     padding: 2rem 2rem 0.5rem;
-    border-left: 1px solid #fff;
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: 0;
-      height: 1px;
-      width: 75px;
-      background-color: #fff;
-    }
-
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      right: 0;
-      height: 50%;
-      width: 1px;
-      background-color: #fff;
-    }
 
     p {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
     }
   }
 
 .status-message__text {
-  margin-bottom: 2.5rem;
+  margin: 2rem;
 }
 
 .status-message__btn-wrp {
+  padding: .8rem;
   text-align: center;
+  background-color: $col-msg-info;
+
+  @mixin apply-theme ($col-bg, $col-border) {
+    background-color: $col-bg;
+    border: 0.01rem solid $col-border;
+  }
+
+  &--warning {
+     @include apply-theme($col-msg-warning, $col-warning-secondary)
+  }
+  &--success {
+     @include apply-theme($col-msg-success, $col-success-secondary)
+  }
+  &--error {
+     @include apply-theme($col-msg-error, $col-error-secondary)
+  }
+  &--info {
+     @include apply-theme($col-msg-info, $col-info-secondary)
+  }
 }
 
 .status-message__btn {
-  background: rgba(0, 0, 0, 0.05);
   border-radius: .5rem;
+  border-width: .1rem;
+  border-style: solid;
   font-size: 1.6rem;
   padding: 1rem 2.9rem;
   cursor: pointer;
   transition: .2s;
 
   &:hover {
-    background: transparent;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    opacity: .75;
+  }
+
+  @mixin apply-theme ($col-main, $col-secondary) {
+    background-color: $col-main;
+    color: $col-secondary;
+    border-color: $col-secondary;
+
+    &:hover {
+      color: $col-main;
+      border-color: $col-secondary;
+      background-color: $col-secondary;
+
+    }
+  }
+
+  &--warning {
+     @include apply-theme($col-msg-warning, $col-warning-secondary)
+  }
+  &--success {
+     @include apply-theme($col-msg-success, $col-success-secondary)
+  }
+  &--error {
+     @include apply-theme($col-msg-error, $col-error-secondary)
+  }
+  &--info {
+     @include apply-theme($col-msg-info, $col-info-secondary)
   }
 }
+
 .toggle-enter-active, .toggle-leave-active {
   transition: all 0.2s linear;
 }
 .toggle-enter, .toggle-leave-to {
-  transform: rotateY(90deg);
+  transform: rotateX(90deg);
   opacity: 0;
 }
 </style>
