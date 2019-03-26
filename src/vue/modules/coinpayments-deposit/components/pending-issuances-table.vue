@@ -1,5 +1,5 @@
 <template>
-  <table class="deposit-table">
+  <table class="pending-issuances-table">
     <pending-issuances-table-row
       v-for="(item, index) in pendingIssuances"
       :end-time="item.endTime"
@@ -15,7 +15,7 @@
 import PendingIssuancesTableRow from './pending-issuances-table-row'
 
 export default {
-  name: 'deposit-table',
+  name: 'pending-issuances-table',
   components: {
     PendingIssuancesTableRow,
   },
@@ -27,7 +27,8 @@ export default {
 
 <style lang="scss">
   @import '~@scss/variables';
-  .deposit-table {
+
+  .pending-issuances-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;

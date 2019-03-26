@@ -1,15 +1,15 @@
 <template>
-  <tbody class="deposit-table-row">
+  <tbody class="pending-issuances-table-row">
     <tr
-      class="deposit-table-row__tr"
+      class="pending-issuances-table-row__tr"
     >
-      <td class="deposit-table-row__timeout-ticker">
+      <td>
         <timeout-ticker :end-time="endTime" />
       </td>
-      <td class="deposit-table-row__amount">
+      <td class="pending-issuances-table-row__amount">
         {{ { value: amount, currency: asset } | formatMoney }}
       </td>
-      <td class="deposit-table-row__btn">
+      <td class="pending-issuances-table-row__btn">
         <button
           class="app__button-icon"
           @click="isAddressViewerShown = !isAddressViewerShown"
@@ -18,10 +18,13 @@
         </button>
       </td>
     </tr>
-    <tr class="deposit-table-row__key-viewer-wrp" v-if="isAddressViewerShown">
+    <tr
+      class="pending-issuances-table-row__key-viewer-wrp"
+      v-if="isAddressViewerShown"
+    >
       <td colspan="3">
         <key-viewer
-          class="deposit-table-row__key-viewer"
+          class="pending-issuances-table-row__key-viewer"
           :value="address"
         />
       </td>
@@ -33,7 +36,7 @@
 import TimeoutTicker from './timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
 export default {
-  name: 'deposit-table-row',
+  name: 'pending-issuances-table-row',
   components: {
     TimeoutTicker,
     KeyViewer,
@@ -55,7 +58,7 @@ export default {
 <style lang="scss">
   @import '~@scss/variables';
 
-  .deposit-table-row {
+  .pending-issuances-table-row {
     width: 100%;
     max-width: 100%;
     overflow: auto;
@@ -64,28 +67,28 @@ export default {
       }
     }
 
-  .deposit-table-row__tr{
+  .pending-issuances-table-row__tr{
     &:hover{
       background: $col-table-row-selected;
     }
   }
 
-  .deposit-table-row__amount {
+  .pending-issuances-table-row__amount {
     max-width: 24rem;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
   }
 
-  .deposit-table-row__key-viewer {
+  .pending-issuances-table-row__key-viewer {
     padding: 2rem 1rem;
   }
 
-  .deposit-table-row__btn {
+  .pending-issuances-table-row__btn {
     width: 6.4rem;
   }
 
-  .deposit-table-row__key-viewer-wrp {
+  .pending-issuances-table-row__key-viewer-wrp {
     width: 100%;
     max-width: 100%;
     overflow: hidden;

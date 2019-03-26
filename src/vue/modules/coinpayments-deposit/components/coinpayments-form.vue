@@ -1,5 +1,5 @@
 <template>
-  <div class="coinpaymants-form">
+  <div class="coinpayments-form">
     <template v-if="!isFailed">
       <template v-if="!depositDetails">
         <form
