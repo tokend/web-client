@@ -50,6 +50,7 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Fix get Account Id By Email
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
