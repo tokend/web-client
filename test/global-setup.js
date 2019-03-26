@@ -1,12 +1,11 @@
-let errorSpy
+let thrownErrors = []
 
-beforeEach(() => {
-  errorSpy = sinon.stub(console, 'error')
-})
+console.error = e => {
+  thrownErrors.push(e)
+}
 
 afterEach(() => {
-  if (errorSpy.called) throw new Error(errorSpy.args[0])
-  try {
-    errorSpy.restore()
-  } catch {}
+  if (thrownErrors.length) {
+    throw thrownErrors[0]
+  }
 })
