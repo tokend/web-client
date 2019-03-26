@@ -39,7 +39,6 @@ export default {
     },
   },
   created () {
-    this.secondsLeft = (this.endTime - moment().unix())
     this.startTicker()
   },
   beforeDestroy () {
@@ -47,8 +46,9 @@ export default {
   },
   methods: {
     startTicker () {
+      this.secondsLeft = (this.endTime - moment().unix())
       this.intervalId = setInterval(() => {
-        this.secondsLeft--
+        this.secondsLeft = this.endTime - moment().unix()
       }, 1000)
     },
   },

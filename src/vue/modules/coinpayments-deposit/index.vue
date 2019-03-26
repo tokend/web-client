@@ -1,10 +1,10 @@
 <template>
-  <div class="coinpayments">
+  <div class="coinpayments-deposit">
     <coinpayments-form
       :asset="asset"
       :balance-id="balanceId"
     />
-    <div class="coinpayments__deposit-list-wrp">
+    <div class="coinpayments-deposit__pending-issuances-table-wrp">
       <pending-issuances-table
         v-if="!isLoading"
         :pending-issuances="pendingIssuances"
@@ -17,14 +17,12 @@
       <template v-else>
         <loader message-id="coinpayments-deposit.loading-msg" />
       </template>
-      <div class="deposit-table__collection-loader-wrp">
-        <collection-loader
-          v-show="pendingIssuances.length"
-          :first-page-loader="firstPageLoader"
-          @first-page-load="setPendingIssuances"
-          @next-page-load="concatPendingIssuances"
-        />
-      </div>
+      <collection-loader
+        v-show="pendingIssuances.length"
+        :first-page-loader="firstPageLoader"
+        @first-page-load="setPendingIssuances"
+        @next-page-load="concatPendingIssuances"
+      />
     </div>
   </div>
 </template>
@@ -43,7 +41,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 const HORIZON_VERSION_PREFIX = 'v3'
 
 export default {
-  name: 'coinpayments',
+  name: 'coinpayments-deposit',
   components: {
     CoinpaymentsForm,
     PendingIssuancesTable,
@@ -121,11 +119,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .coinpayments__address-viewer-wrp {
-    margin-top: 5rem;
-  }
-
-  .coinpayments__deposit-list-wrp {
+  .coinpayments-deposit__pending-issuances-table-wrp {
     width: 100%;
     max-width: 100%;
     margin-top: 5rem;
