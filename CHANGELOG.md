@@ -36,6 +36,7 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
+- Add coinpayments-deposit module
 
 ### Changed
 - Now using new account endpoint for loading the fees
