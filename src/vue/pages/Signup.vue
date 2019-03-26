@@ -28,37 +28,38 @@
 
       <template v-else>
         <div class="signup__seed-wrp">
-          <p class="signup__seed-explanations">
-            {{ 'auth-pages.save-recovery-seed-details' | globalize }}
-            <b>
-              {{ 'auth-pages.save-recovery-seed-details-bold' | globalize }}
-            </b>
-          </p>
-          <p class="signup__seed-explanations">
-            <b>
-              {{ 'auth-pages.save-recovery-seed-charge-bold' | globalize }}
-            </b>
-            {{ 'auth-pages.save-recovery-seed-charge' | globalize }}
-          </p>
+          <div class="signup__explanations">
+            <p class="signup__explanation-paragraph">
+              Seed is used to recover account in case of password loss. If you
+              lose your password and seed, you will <b>never</b> access your
+              account.
+            </p>
+            <p class="signup__explanation-paragraph">
+              <b>We do not know your seed</b> and it will never be shown again!
+            </p>
+          </div>
 
           <key-viewer
             :value="recoveryKeypair.secret()"
             :label="'auth-pages.recovery-seed' | globalize"
           />
 
-          <tick-field
-            :value="false"
-            :title="'auth-pages.save-recovery-seed-confirmation' | globalize"
-            :required="true"
-            :disabled="isCheckboxDisable"
-            @input="showAccessButton"
-          />
+          <div class="signup__tick-field-wrapper">
+            <tick-field
+              v-model="isSeedCopied"
+              :value="false"
+              :required="true"
+              :disabled="formMixin.isDisabled"
+            >
+              {{ 'auth-pages.save-recovery-seed-confirmation' | globalize }}
+            </tick-field>
+          </div>
 
           <div class="signup__actions">
             <button
               v-ripple
               @click="submit"
-              :disabled="isSendingDisabled"
+              :disabled="!isSeedCopied"
               class="auth-page__submit-btn"
             >
               {{ 'auth-pages.continue' | globalize }}
@@ -96,9 +97,8 @@ export default {
     recoveryKeypair: null,
     password: null,
     email: null,
-    isCheckboxDisable: false,
-    isSendingDisabled: true,
     vueRoutes,
+    isSeedCopied: false,
   }),
   computed: {
     ...mapGetters({
@@ -112,9 +112,6 @@ export default {
       loadKyc: vuexTypes.LOAD_KYC,
       loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
     }),
-    showAccessButton (value) {
-      this.isSendingDisabled = !value
-    },
     handleChildFormSubmit (form) {
       this.email = form.email
       this.password = form.password
@@ -158,21 +155,21 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import './auth-page';
 
-.signup__seed-explanations {
+.signup__explanations {
+  margin-bottom: 3rem;
+}
+.signup__explanation-paragraph {
   margin-bottom: 1rem;
   font-size: 1.6rem;
 }
-
-.signup__seed-explanations:last-of-type {
-  margin-bottom: 3rem;
-}
-
 .signup__actions {
   margin-top: 2rem;
   text-align: center;
 }
-
+.signup__tick-field-wrapper {
+  padding-top: 2.2rem;
+}
 </style>

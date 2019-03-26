@@ -42,7 +42,7 @@ export default {
 
 .clipboard-field {
   padding: 1rem 1.2rem 0;
-  box-shadow: inset 0px 2px 5px #d8d8d8;
+  box-shadow: inset 0px 0.2rem 0.4rem $col-tick-field-shadow;
   display: flex;
   align-items: center;
   width: 100%;
@@ -60,9 +60,12 @@ export default {
   overflow: auto;
   color: $field-color-text;
   padding: $field-input-padding;
-  @include text-font-sizes;
-  font-size: 1.4rem !important;
+  @include value-font-sizes;
   font-family: monospace;
+
+  @include respond-to($x-medium) {
+    font-size: 1.1rem;
+  }
 }
 
 .clipboard-field__label {
@@ -77,6 +80,7 @@ export default {
 
 .clipboard-field__button {
   @include button-icon();
+  margin-top: -1rem;
   padding: 0;
   min-width: 4.5rem;
   min-height: 4.5rem;

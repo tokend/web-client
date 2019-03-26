@@ -16,12 +16,15 @@
     <label
       class="tick-field__label"
       :for="id"
+      :title="title"
     >
-      {{ title }}
+      <slot />
     </label>
 
     <span
       class="tick-field__tick"
+      :for="id"
+      :title="title"
     >
       <!-- css art -->
     </span>
@@ -132,7 +135,6 @@ export default {
   position: relative;
   display: flex;
   width: fit-content;
-  padding-top: 1.5rem;
   z-index: 0; // HACK: fix cut of transforms on some browsers (chrome)
 }
 
