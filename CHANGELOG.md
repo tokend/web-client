@@ -53,6 +53,7 @@ for further information about branching and tagging conventions.
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
+- Amount validation in the Withdrawal form
 - Correct dividends subject
 - Fees displaying on the Movements page
 - "Soft cap" validation in the "Opportunity create" form
