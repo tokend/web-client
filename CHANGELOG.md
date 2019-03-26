@@ -19,7 +19,7 @@ for further information about branching and tagging conventions.
 - CapsLock warning for the input fields with "password" type
 - Displaying asset policies & asset type on the `AssetDetails` page
 - `record` getter to the `AssetRecord`
-- Added confirmation to cancel token creation request
+- Added confirmation to cancel asset creation request
 - CLI config passing
 - Added module enabling/disabling
 - Added module schemes
@@ -28,8 +28,8 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Subject info `Dividend for <token-name>` for every payment operation in dividends
-- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
+- Subject info `Dividend for <asset-name>` for every payment operation in dividends
+- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Sales)` page
 - For sales that were ended show highlighted text like a "Closed [days] ago"
 - Reword create opportunity label "KYC Required" => "Verification required"
 - Asset loading via the loop where was `filter[limit]=100`
@@ -43,6 +43,7 @@ for further information about branching and tagging conventions.
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Moved TopBar to the module
+- Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -52,7 +53,7 @@ for further information about branching and tagging conventions.
 - Move no-data-message translate ids pass to the elements that use component
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form
-- Calculated redeem price displaying for old tokens
+- Calculated redeem price displaying for old assets
 - Amount validation in the Withdrawal form
 - Correct dividends subject
 - Fees displaying on the Movements page

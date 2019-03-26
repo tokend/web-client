@@ -41,7 +41,7 @@
           {{ 'deposit-form.deposit-no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          to="/assets"
           tag="button"
           class="app__button-raised deposit__discover-asset-btn">
           {{ 'deposit-form.discover-assets-btn' | globalize }}

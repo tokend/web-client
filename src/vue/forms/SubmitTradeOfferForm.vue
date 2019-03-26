@@ -61,7 +61,7 @@
         <!-- TODO: make it via tooltip message -->
         <p v-if="!isEnoughOnBalance" class="app__form-field-description">
           {{
-            'submit-trade-offers-form.insufficient-funds' | globalize({
+            'submit-trade-offers-form.insufficient-sales' | globalize({
               amount: formatNumber(isBuy
                 ? offerBaseAssetBalance.balance
                 : offerQuoteAssetBalance.balance)

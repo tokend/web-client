@@ -22,7 +22,7 @@ export class FundedEffect extends BalanceChangedEffect {}
 /**
  * @class LockedEffect
  *
- * Represents effect that is triggered when funds on balance were moved from
+ * Represents effect that is triggered when sales on balance were moved from
  * `available` to `locked`
  */
 export class LockedEffect extends BalanceChangedEffect {}
@@ -30,7 +30,7 @@ export class LockedEffect extends BalanceChangedEffect {}
 /**
  * @class IssuedEffect
  *
- * Represents effect that is triggered when balance become funded by issuing
+ * ё
  * costs that wasn't in circulation before
  */
 export class IssuedEffect extends BalanceChangedEffect {}
@@ -38,7 +38,7 @@ export class IssuedEffect extends BalanceChangedEffect {}
 /**
  * @class ChargedEffect
  *
- * Represents effect that is triggered when funds from balance were charged to
+ * Represents effect that is triggered when sales from balance were charged to
  * another balance in system
  */
 export class ChargedEffect extends BalanceChangedEffect {}
@@ -46,7 +46,7 @@ export class ChargedEffect extends BalanceChangedEffect {}
 /**
  * @class UnlockedEffect
  *
- * Represents effect that is triggered when funds on balance were moved from
+ * Represents effect that is triggered when sales on balance were moved from
  * `locked` to `available`
  */
 export class UnlockedEffect extends BalanceChangedEffect {}
@@ -54,7 +54,7 @@ export class UnlockedEffect extends BalanceChangedEffect {}
 /**
  * @class WithdrawnEffect
  *
- * Represents effect that is triggered when funds from balance were charged and
+ * Represents effect that is triggered when sales from balance were charged and
  * destroyed in the system
  */
 export class WithdrawnEffect extends BalanceChangedEffect {}

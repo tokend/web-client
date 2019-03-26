@@ -8,17 +8,15 @@
       "sale-logo": "Opportunity Logo",
       "sale-document": "Opportunity Document",
       "asset-terms": "Opportunity Terms",
-      "asset-logo": "Opportunity Logo",
-      "token-terms": "Opportunity Terms",
-      "token-logo": "Opportunity Logo"
+      "asset-logo": "Opportunity Logo"
     },
     "auth-pages": {
       "big-title": "Start tokenizing <br> your real estate <br> in minutes"
     },
     "pages-names": {
-      "tokens": "Opportunities",
-      "funds": "Opportunities",
-      "fund-details": "Opportunity details",
+      "assets": "Opportunities",
+      "sales": "Opportunities",
+      "sale-details": "Opportunity details",
       "movements": "Activity"
     },
     "limits": {
@@ -38,8 +36,8 @@
     },
     "op-details": {
       "asset-lbl": "Opportunity",
-      "fund-name-lbl": "Opportunity name",
-      "token-fund-val": "{{asset}} opportunity",
+      "sale-name-lbl": "Opportunity name",
+      "asset-sale-val": "{{asset}} opportunity",
       "base-asset-lbl": "Base opportunity",
       "destination-asset-lbl": "Destination opportunity"
     },
@@ -57,19 +55,19 @@
       "no-movements-title": "No activity history"
     },
     "dashboard": {
-      "here-will-be-the-tokens": "Here will be the list of your opportunities",
+      "here-will-be-the-assets": "Here will be the list of your opportunities",
       "no-assets-in-your-wallet": "No opportunities in your wallet",
       "activity": "Activity"
     },
     "chart": {
-      "no-price-history-of-selected-token": "No price history of selected opportunities yet"
+      "no-price-history-of-selected-asset": "No price history of selected opportunities yet"
     },
     "transfer-form": {
       "no-assets-heading": "No opportunities, no transfers",
       "no-assets": "Your wallet doesn't contain any transferable opportunities yet. You can discover some on the opportunities list.",
       "discover-assets-btn": "Discover opportunities",
       "asset-lbl": "Opportunity",
-      "insufficient-funds": "Insufficient opportunities"
+      "insufficient-sales": "Insufficient opportunities"
     },
     "assets-list": {
       "details-title": "Opportunity details"
@@ -120,7 +118,7 @@
       "table-price-lbl": "Price in quote opportunity"
     },
     "submit-trade-offers-form": {
-      "insufficient-funds": "Insufficient opportunities on your balance. You have {{amount}}"
+      "insufficient-sales": "Insufficient opportunities on your balance. You have {{amount}}"
     },
     "trade-top-bar": {
       "here-will-pairs-list": "Here will be the list of opportunity pairs"

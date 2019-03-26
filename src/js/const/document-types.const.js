@@ -1,8 +1,6 @@
 export const DOCUMENT_TYPES = Object.freeze({
   saleLogo: 'sale_logo',
   saleDocument: 'sale_document',
-  assetTerms: 'asset_terms',
-  assetLogo: 'asset_logo',
   kycIdDocument: 'kyc_id_document',
   kycProofOfAddress: 'kyc_poa',
   kycSelfie: 'kyc_selfie',
@@ -20,8 +18,8 @@ export const DOCUMENT_TYPES = Object.freeze({
   driving_license: 'driving_license',
   identity_card: 'identity_card',
   residence_permit: 'residence_permit',
-  tokenTerms: 'token_terms',
-  tokenLogo: 'asset_logo',
+  assetTerms: 'asset_terms',
+  assetLogo: 'asset_logo',
   healthcareDocument: 'healthcare_document',
 })
 
@@ -47,6 +45,6 @@ export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
   [DOCUMENT_TYPES.driving_license]: 'document-types.driving-license',
   [DOCUMENT_TYPES.identity_card]: 'document-types.identity-card',
   [DOCUMENT_TYPES.residence_permit]: 'document-types.residence-permit',
-  [DOCUMENT_TYPES.tokenTerms]: 'document-types.token-terms',
-  [DOCUMENT_TYPES.tokenLogo]: 'document-types.token-logo',
+  [DOCUMENT_TYPES.assetTerms]: 'document-types.asset-terms',
+  [DOCUMENT_TYPES.assetLogo]: 'document-types.asset-logo',
 })

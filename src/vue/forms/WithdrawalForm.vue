@@ -149,7 +149,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          to="/assets"
           tag="button"
           class="app__button-raised withdrawal__action"
         >

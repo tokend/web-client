@@ -120,26 +120,26 @@ export default {
     new AssetsPageModule(
       {
         routerEntry: {
-          path: '/tokens',
+          path: '/assets',
           name: vueRoutes.assets.name,
           redirect: vueRoutes.assetsExplore,
           children: [
             // These guys cannot be used as independent modules too
             {
-              path: '/tokens/explore',
+              path: '/assets/explore',
               name: vueRoutes.assetsExplore.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              meta: { pageNameTranslationId: 'pages-names.assets' },
               component: _ => import('@/vue/pages/AssetsExplorer'),
             },
             {
-              path: '/tokens/balances',
+              path: '/assets/balances',
               name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              meta: { pageNameTranslationId: 'pages-names.assets' },
               component: _ => import('@/vue/pages/Balances'),
             },
           ],
         },
-        menuButtonTranslationId: 'pages-names.tokens',
+        menuButtonTranslationId: 'pages-names.assets',
         menuButtonMdiName: 'coins',
       },
     ),
@@ -162,17 +162,17 @@ export default {
     new SalesPageModule(
       {
         routerEntry: {
-          path: '/funds',
+          path: '/sales',
           name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
+          meta: { pageNameTranslationId: 'pages-names.sales' },
         },
-        menuButtonTranslationId: 'pages-names.funds',
+        menuButtonTranslationId: 'pages-names.sales',
         menuButtonMdiName: 'trending-up',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new SalesListPageModule({
             routerEntry: {
-              path: '/funds/all',
+              path: '/sales/all',
               name: vueRoutes.allSales.name,
               props: {
                 default: true,
@@ -182,7 +182,7 @@ export default {
           }),
           new SalesListOwnedPageModule({
             routerEntry: {
-              path: '/funds/my',
+              path: '/sales/my',
               name: vueRoutes.userOwnedSales.name,
               props: {
                 default: true,
@@ -200,14 +200,14 @@ export default {
     new SaleDetailsPageModule(
       {
         routerEntry: {
-          path: '/funds/:id',
+          path: '/sales/:id',
           name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          meta: { pageNameTranslationId: 'pages-names.sale-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
           children: [
             {
-              path: '/funds/:id/campaign',
+              path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,
               component: _ => import('@/vue/pages/sale-details/SaleCampaignViewer'),
               props: true,
@@ -231,14 +231,14 @@ export default {
         submodules: [
           new AssetCreationRequestsPageModule({
             routerEntry: {
-              path: '/requests/token-creation',
+              path: '/requests/asset-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
             isCorporateOnly: true,
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
-              path: '/requests/fund-creation',
+              path: '/requests/sale-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
             isCorporateOnly: true,

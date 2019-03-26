@@ -529,7 +529,7 @@ export default {
       try {
         await this.uploadDocuments()
         const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.fundOverview,
+          BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
         await Sdk.horizon.transactions.submitOperations(

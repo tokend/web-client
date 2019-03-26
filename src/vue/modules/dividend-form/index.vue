@@ -73,7 +73,7 @@
                       {{ 'dividend-form.email' | globalize }}
                     </td>
                     <td>
-                      {{ 'dividend-form.token-amount' | globalize }}
+                      {{ 'dividend-form.asset-amount' | globalize }}
                     </td>
                     <td>
                       {{ 'dividend-form.supposed-dividend-amount' | globalize }}
@@ -149,7 +149,7 @@
           {{ 'dividend-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          to="/assets"
           tag="button"
           class="app__button-raised dividend__action"
         >
