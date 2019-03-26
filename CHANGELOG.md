@@ -33,7 +33,6 @@ for further information about branching and tagging conventions.
 - Reword create opportunity label "KYC Required" => "Verification required"
 - Asset loading via the loop where was `filter[limit]=100`
 - Correct base/quote price calculating for Opportunities
-- Add coinpayments module
 - Add coinpayments-deposit module
 
 ### Changed
