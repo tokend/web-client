@@ -33,6 +33,8 @@ import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
 import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
+import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
 
 export default {
   importEnLocaleFile () {
@@ -187,18 +189,20 @@ export default {
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
-          children: [
-            {
-              path: '/opportunities/:id/campaign',
-              name: vueRoutes.saleCampaign.name,
-              component: _ => import('@/vue/pages/sale-details/SaleCampaignViewer'),
-              props: true,
-            },
-          ],
         },
         submodules: [
           new DividendFormModule(),
           new BuyBackFormModule(),
+          new SaleCampaignViewerPageModule({
+            routerEntry: {
+              path: '/opportunities/:id/campaign',
+              name: vueRoutes.saleCampaign.name,
+              props: true,
+            },
+            submodules: [
+              new SaleStateWidgetModule(),
+            ],
+          }),
         ],
       },
     ),

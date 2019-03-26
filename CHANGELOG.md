@@ -33,6 +33,7 @@ for further information about branching and tagging conventions.
 - For sales that were ended show highlighted text like a "Closed [days] ago"
 - Reword create opportunity label "KYC Required" => "Verification required"
 - Asset loading via the loop where was `filter[limit]=100`
+- Chart module on the `SaleDetails` page only for vanilla
 
 ### Changed
 - Now using new account endpoint for loading the fees

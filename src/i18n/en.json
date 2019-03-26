@@ -899,7 +899,8 @@
       "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
-      "days-after-end": "days after closed"
+      "days-after-end": "days after closed",
+      "opportunities-list": "Sales list"
     },
     "opportunity-details": {
       "loading-msg": "Loading",
