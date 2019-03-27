@@ -102,11 +102,22 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+$media-xsmall-height: 375px;
+$media-small-height: 460px;
+
 .asset-attributes-viewer__table-wrp {
   margin-top: 4rem;
 
   table tr td:last-child {
     text-align: right;
+  }
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
+
+  @include respond-to-height($media-xsmall-height) {
+    margin-top: 0.8rem;
   }
 }
 

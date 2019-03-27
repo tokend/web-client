@@ -159,16 +159,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@scss/mixins";
+
+$asset-card-margin: 0.75rem;
+
+$media-small-height: 460px;
+
 .balance-explorer__asset-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: -.75rem;
+  margin: -$asset-card-margin;
 }
 
 .balance-explorer__update-btn {
   margin-top: 4.9rem;
   max-width: 18rem;
   width: 100%;
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
 }
 </style>

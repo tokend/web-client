@@ -176,19 +176,29 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "~@scss/mixins";
+
+$asset-card-margin: 0.75rem;
+
+$media-small-height: 460px;
+
 .assets-renderer__collection-loader-wrp {
   margin-top: 1.5rem;
 }
 
 .assets-renderer__actions {
   margin-top: 4.9rem;
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
 }
 
 .assets-renderer__asset-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: -.75rem;
+  margin: -$asset-card-margin;
 }
 </style>
