@@ -55,12 +55,24 @@ export default {
     isLoading: false,
   }),
 
+  watch: {
+    accountId: async function () {
+      await this.init()
+    },
+
+    balanceId: async function () {
+      await this.init()
+    },
+  },
+
   async created () {
     await this.init()
   },
 
   methods: {
     async init () {
+      this.isMasterAccount = false
+
       if (this.accountId === Sdk.networkDetails.adminAccountId) {
         this.isMasterAccount = true
         return

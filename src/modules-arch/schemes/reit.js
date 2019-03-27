@@ -23,7 +23,7 @@ import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuan
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DividendFormModule } from '@modules/dividend-form/module'
 import { BuyBackFormModule } from '@modules/buy-back-form/module'
-import { CreateAssetSaleModule } from '@modules/create-opportunity/module'
+import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import { MovementsTopBarReitModule } from '@modules/movements-top-bar-reit/module'
@@ -90,7 +90,7 @@ export default {
               },
             },
           }),
-          new CreateAssetSaleModule({
+          new CreateOpportunityModule({
             isCorporateOnly: true,
           }),
         ],

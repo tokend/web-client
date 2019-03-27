@@ -38,7 +38,7 @@
       </template>
 
       <template
-        v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)"
+        v-if="getModule().canRenderSubmodule(CreateOpportunityModule)"
         slot="extra"
       >
         <button
@@ -64,7 +64,7 @@
       </drawer>
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(CreateAssetSaleModule)">
+    <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
       <drawer
         :is-shown.sync="isAssetSaleDrawerShown"
         :close-by-click-outside="false"
@@ -74,7 +74,7 @@
           {{ 'sales.new-sale' | globalize }}
         </template>
         <submodule-importer
-          :submodule="getModule().getSubmodule(CreateAssetSaleModule)"
+          :submodule="getModule().getSubmodule(CreateOpportunityModule)"
           @close="isAssetSaleDrawerShown = false"
           :config="config"
           :wallet="wallet"
@@ -103,7 +103,7 @@ import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sal
 import CreateSaleForm from '@/vue/forms/CreateSaleForm'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { CreateAssetSaleModule } from '@/vue/modules/create-opportunity/module'
+import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 
 export default {
   name: 'sales',
@@ -125,8 +125,8 @@ export default {
       horizonURL: config.HORIZON_SERVER,
     },
     CreateSalePseudoModule,
-    CreateAssetSaleModule,
     vueRoutes,
+    CreateOpportunityModule,
   }),
 
   computed: {

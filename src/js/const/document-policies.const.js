@@ -13,6 +13,7 @@ export const DOCUMENT_POLICIES = Object.freeze({
   [DOCUMENT_TYPES.kycIdDocument]: POLICIES.private,
   [DOCUMENT_TYPES.kycProofOfAddress]: POLICIES.private,
   [DOCUMENT_TYPES.kycSelfie]: POLICIES.private,
+  [DOCUMENT_TYPES.kycAvatar]: POLICIES.public,
   [DOCUMENT_TYPES.kycTaxReturns]: POLICIES.private,
   [DOCUMENT_TYPES.kycOriginationCertificate]: POLICIES.private,
   [DOCUMENT_TYPES.kycInvestmentPresentation]: POLICIES.private,

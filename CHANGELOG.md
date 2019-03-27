@@ -28,6 +28,13 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Show destination address holder email in the Withdrawal creation form
+- Loyalty points statistics module
+- Pre-issuance drawer pseudo module
+- Avatar field on verification forms
+- Application logo URL for module scheme
+- Displaying user avatar in passport
+- Loyalty points merchant & reconcillation schemes
 - Subject info `Dividend for <token-name>` for every payment operation in dividends
 - `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
 - For sales that were ended show highlighted text like a "Closed [days] ago"
@@ -36,13 +43,16 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
+- Add coinpayments-deposit module
 
 ### Changed
 - Now using new account endpoint for loading the fees
 - Moved fees filters to the corresponding viewers
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
+- Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- Rename fee "Subtype" table header to "Destination" one
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -50,15 +60,21 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Chart line displaying
+- Loading balances instead of account on withdrawal form
+- Fix get Account Id By Email
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
+- Amount validation in the Withdrawal form
 - Correct dividends subject
 - Fees displaying on the Movements page
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 - Displaying long strings (asset name, sale short description) inside card components
+- "Tokens" page responsive design
+- Do not allow unverified users to add an asset with KYC required type to their balances
 
 ## [1.3.1-rc.0] - 2019-03-20
 
@@ -70,5 +86,6 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...HEAD
+[1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0
