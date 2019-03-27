@@ -24,7 +24,7 @@ export const mutations = {
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
     const response = await Api.getWithSignature(`${HORIZON_VERSION_PREFIX}/accounts/${accountId}`, {
-      include: ['external_system_ids'],
+      include: ['external_system_ids', 'balances'],
     })
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },

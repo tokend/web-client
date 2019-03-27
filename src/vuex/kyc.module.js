@@ -2,6 +2,7 @@ import { vuexTypes } from './types'
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
+import safeGet from 'lodash/get'
 
 const HORIZON_VERSION_PREFIX = 'v3'
 
@@ -95,6 +96,10 @@ export const getters = {
   [vuexTypes.kycAccountRoleToSet]: state => state.request.accountRoleToSet,
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
+  [vuexTypes.kycAvatarKey]: state => safeGet(
+    JSON.parse(state.latestData),
+    'documents.kyc_avatar.key'
+  ),
 }
 
 export default {
