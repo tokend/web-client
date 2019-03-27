@@ -73,6 +73,9 @@ for further information about branching and tagging conventions.
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 - "Tokens" page responsive design
 
+### Removed
+- Remove `globalize` from asset create form `assetTypes` computed property
+
 ## [1.3.1-rc.0] - 2019-03-20
 
 ### Changed
