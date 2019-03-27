@@ -17,12 +17,12 @@ module.exports = function (config) {
       },
     },
     files: [
-      'test/global-setup.js',
+      'test/console-setup.js',
       'src/**/*.spec.js',
       'src/**/*.e2e.js',
     ],
     preprocessors: {
-      'test/global-setup.js': ['webpack'],
+      'test/console-setup.js': ['webpack'],
       'src/**/*.spec.js': [ 'webpack' ],
       'src/**/*.e2e.js': [ 'webpack' ],
     },
