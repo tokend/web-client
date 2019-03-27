@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
 
 ### Changed
 - Now using new account endpoint for loading the fees
