@@ -52,6 +52,7 @@ for further information about branching and tagging conventions.
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- One request to fetch all the account roles instead of fetching it one-by-one `key-value.module.js`
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
