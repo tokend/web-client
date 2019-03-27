@@ -24,8 +24,7 @@
 
 <script>
 const EVENTS = {
-  closeDrawer: 'close-drawer',
-  updateDrawerShown: 'update:isShown',
+  updateIsShown: 'update:isShown',
 }
 
 /**
@@ -47,8 +46,7 @@ export default {
   },
   methods: {
     closeSelf () {
-      this.$emit(EVENTS.updateDrawerShown, false)
-      this.$emit(EVENTS.closeDrawer)
+      this.$emit(EVENTS.updateIsShown, false)
     },
   },
 }
