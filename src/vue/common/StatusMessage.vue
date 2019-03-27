@@ -119,7 +119,7 @@ export default {
   @include respond-to-custom($status-message-reposition-bp) {
     right: $content-side-paddings-sm;
     left: $content-side-paddings-sm;
-    padding: 2rem;
+    opacity: 1;
   }
 
   @mixin apply-theme ($col-bg, $col-bg-secondary, $col-msg) {
