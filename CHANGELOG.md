@@ -36,7 +36,8 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
-- Failing a test if console method was called during test execution
+- Watcher for console calls that shows the error message if the console
+method was called at least once through tests execution
 
 ### Changed
 - Now using new account endpoint for loading the fees
