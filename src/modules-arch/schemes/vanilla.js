@@ -32,9 +32,10 @@ import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sal
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 
 export default {
   pages: [
@@ -72,7 +73,9 @@ export default {
           new MovementsTopBarModule({
             submodules: [
               new WithdrawalDrawerPseudoModule(),
-              new DepositDrawerPseudoModule(),
+              new DepositFormPseudoModule({
+                submodules: [new CoinpaymentsDepositModule()],
+              }),
               new TransferDrawerPseudoModule(),
             ],
           }),

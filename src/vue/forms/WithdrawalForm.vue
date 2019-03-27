@@ -50,10 +50,12 @@
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
+              :step="selectedAssetStep"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
                 available: form.asset.balance.value,
                 maxDecimalDigitsCount: DECIMAL_POINTS,
+                minValue: selectedAssetStep
               })"
             />
           </div>
@@ -199,6 +201,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
@@ -210,6 +213,7 @@ import {
   required,
   noMoreThanAvailableOnBalance,
   address,
+  minValue,
   maxDecimalDigitsCount,
 } from '@validators'
 
@@ -260,6 +264,7 @@ export default {
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          minValue: minValue(this.selectedAssetStep),
         },
         address: this.isMasterAssetOwner ? addressRules : {},
       },
@@ -270,8 +275,14 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
+
     isMasterAssetOwner () {
       return this.form.asset.owner === Sdk.networkDetails.adminAccountId
+    },
+
+    selectedAssetStep () {
+      // eslint-disable-next-line
+      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
     },
   },
   watch: {

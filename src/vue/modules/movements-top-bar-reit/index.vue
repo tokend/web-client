@@ -142,7 +142,7 @@ import TransferForm from '@/vue/forms/TransferForm'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
@@ -193,7 +193,7 @@ export default {
     depositFiatConfig: {},
     redeemConfig: {},
     WithdrawalDrawerPseudoModule,
-    DepositDrawerPseudoModule,
+    DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     DepositFiatModule,
     WithdrawalFiatModule,

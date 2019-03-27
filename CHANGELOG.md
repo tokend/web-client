@@ -43,6 +43,7 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
+- Add coinpayments-deposit module
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -60,14 +61,17 @@ for further information about branching and tagging conventions.
 - Move no-data-message translate ids pass to the elements that use component
 - Chart line displaying
 - Loading balances instead of account on withdrawal form
+- Fix get Account Id By Email
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form
 - Calculated redeem price displaying for old tokens
+- Amount validation in the Withdrawal form
 - Correct dividends subject
 - Fees displaying on the Movements page
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- "Tokens" page responsive design
 
 ## [1.3.1-rc.0] - 2019-03-20
 
@@ -79,5 +83,6 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...HEAD
+[1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0
