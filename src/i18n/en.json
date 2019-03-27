@@ -371,7 +371,7 @@
         "percent-th": "Percent",
         "lower-bound-th": "Lower bound",
         "upper-bound-th": "Upper bound",
-        "subtype-th": "Subtype"
+        "direction-th": "Direction"
       },
       "fees-loading-msg": "Loading your fees…",
       "fees-loading-error-msg": "There was an error while loading your fees.",
