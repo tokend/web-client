@@ -17,6 +17,7 @@ import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -25,6 +26,7 @@ import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-ac
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
@@ -158,6 +160,12 @@ export default {
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
+          new IssuanceDrawerPseudoModule({
+            isCorporateOnly: true,
+          }),
+          new PreIssuanceDrawerPseudoModule({
+            isCorporateOnly: true,
+          }),
         ],
       },
     ),
@@ -252,6 +260,12 @@ export default {
               name: vueRoutes.preIssuanceUploadRequests.name,
             },
             isCorporateOnly: true,
+          }),
+          new IncomingWithdrawalRequestsPageModule({
+            routerEntry: {
+              path: '/requests/incoming-withdrawal',
+              name: vueRoutes.incomingWithdrawalRequests.name,
+            },
           }),
         ],
       },

@@ -28,6 +28,13 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Show destination address holder email in the Withdrawal creation form
+- Loyalty points statistics module
+- Pre-issuance drawer pseudo module
+- Avatar field on verification forms
+- Application logo URL for module scheme
+- Displaying user avatar in passport
+- Loyalty points merchant & reconcillation schemes
 - Subject info `Dividend for <token-name>` for every payment operation in dividends
 - `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
 - For sales that were ended show highlighted text like a "Closed [days] ago"
@@ -43,6 +50,7 @@ for further information about branching and tagging conventions.
 - Moved fees filters to the corresponding viewers
 - Renamed `DescriptionEditor` -> `MarkdownField`
 - Moved `MarkdownField` to the fields & included it to the form mixin components
+- Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
 
 ### Fixed
@@ -51,6 +59,8 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Chart line displaying
+- Loading balances instead of account on withdrawal form
 - Fix get Account Id By Email
 - Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
 - Loader displaying in the Opportunity create form

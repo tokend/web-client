@@ -29,7 +29,7 @@
             @click="isWithdrawalDrawerShown = true"
           >
             <i class="mdi mdi-download movements-top-bar__btn-icon" />
-            {{ 'op-pages.withdrawal' | globalize }}
+            {{ 'op-pages.withdraw' | globalize }}
           </button>
         </template>
 
@@ -116,7 +116,7 @@ export default {
     Drawer,
     WithdrawalForm,
     TransferForm,
-    SubmoduleImporter
+    SubmoduleImporter,
   },
   props: {
     wallet: {
