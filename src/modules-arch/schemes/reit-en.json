@@ -111,7 +111,9 @@
       "update-sale": "Update opportunity",
       "overview-title": "Opportunity overview",
       "asset-code-label": "Opportunity code",
-      "new-sale": "New opportunity"
+      "new-sale": "New opportunity",
+      "all-sales": "All opportunities",
+      "my-sales": "My opportunities"
     },
     "trade-open-offers": {
       "table-base-amount-lbl": "Base opportunity amount",
@@ -160,6 +162,10 @@
     "downloads-page": {
       "mobile-apps-header": "All your opportunities right on your phone",
       "mobile-apps-desc": "To access your opportunities everywhere, get the TokenD app on your mobile device."
+    },
+    "create-opportunity": {
+      "asset-type-required-kyc": "Verification required",
+      "asset-type-not-required-kyc": "Verification doesn't required"
     }
   }
 }

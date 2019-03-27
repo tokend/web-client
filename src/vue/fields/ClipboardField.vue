@@ -4,14 +4,17 @@
       <label class="clipboard-field__label">
         {{ label }}
       </label>
-      <span class="clipboard-field__value" :id="`clipboard-target-${value}`">
+      <span
+        class="clipboard-field__value"
+        :id="`clipboard-target-${_uid}`"
+      >
         {{ value }}
       </span>
       <button
         type="button"
         class="clipboard-field__button"
-        :id="`clipboard-btn-${value}`"
-        :data-clipboard-target="`#clipboard-target-${value}`"
+        :id="`clipboard-btn-${_uid}`"
+        :data-clipboard-target="`#clipboard-target-${_uid}`"
       >
         <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
       </button>
@@ -28,7 +31,9 @@ export default {
     label: { type: String, default: '' },
   },
   mounted () {
-    const btn = document.querySelector(`#clipboard-btn-${this.value}`)
+    const btn = document.querySelector(
+      `#clipboard-btn-${this._uid}`
+    )
     if (!btn) return
     this.clipboard = new Clipboard(btn)
   },
@@ -36,12 +41,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './scss/variables';
-@import '~@scss/variables';
-@import '~@scss/mixins';
+@import "./scss/variables";
+@import "~@scss/variables";
+@import "~@scss/mixins";
 
 .clipboard-field {
-  border-bottom: .1rem solid $col-primary;
+  border-bottom: 0.1rem solid $col-primary;
   display: flex;
   align-items: center;
   width: 100%;
@@ -58,13 +63,14 @@ export default {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   color: $field-color-text;
   padding: $field-input-padding;
   @include text-font-sizes;
 }
 
 .clipboard-field__label {
-  font-size: .8rem;
+  font-size: 0.8rem;
   position: absolute;
   left: 0;
   top: 0;
@@ -85,7 +91,7 @@ export default {
 
 .clipboard-field__copy-icon {
   font-size: 2.4rem;
-  padding-top: .4rem;
+  padding-top: 0.4rem;
   color: $col-primary-lighten;
 }
 </style>

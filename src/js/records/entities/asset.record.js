@@ -15,10 +15,12 @@ export class AssetRecord {
     this.maxIssuanceAmount = record.maxIssuanceAmount
     this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
+    this.trailingDigitsCount = record.trailingDigitsCount
 
     this.details = record.details
     this.name = _get(record, 'details.name')
     this.externalSystemType = _get(record, 'details.externalSystemType')
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
 
     this.logo = _get(record, 'details.logo')
     this.logoKey = _get(record, 'details.logo.key')

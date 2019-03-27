@@ -12,7 +12,7 @@
               :values="assetsInBalance"
               key-as-value-text="nameAndCode"
               class="app__select"
-              :label="'redeem-form.opportunity-uniq-code' | globalize"
+              :label="'redeem-form.opportunity-uniq-code-lbl' | globalize"
             />
           </div>
         </div>
@@ -21,9 +21,9 @@
           <div class="app__form-field">
             <input-field
               v-if="selectedSale.defaultQuoteAsset"
-              :label="'redeem-form.invested-in' | globalize"
+              :label="'redeem-form.quote-asset-lbl' | globalize"
               v-model="selectedSale.defaultQuoteAsset.id"
-              name="redeem-invested-in"
+              name="redeem-quote-asset"
               :readonly="true"
             />
           </div>
@@ -32,7 +32,7 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              :label="'redeem-form.total' | globalize"
+              :label="'redeem-form.total-lbl' | globalize"
               v-model="form.totalAmount"
               name="redeem-total"
               :readonly="true"
@@ -112,6 +112,8 @@ export default {
      * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
      * @property config.maxAmount - max allowed amount
+     * @property [config.defaultAssetCode] - prefills the asset-selector with
+     *           this asset code
      */
     config: {
       type: Object,
@@ -173,7 +175,7 @@ export default {
       this.isRedeemProcessing = false
       this.enableForm()
       this.hideConfirmation()
-      this.$emit(EVENTS.closeDrawer)
+      this.$emit(EVENTS.redeemed)
     },
     getCreateOfferOpts () {
       return {
@@ -188,16 +190,25 @@ export default {
       }
     },
     setDefaultAsset () {
-      this.form.asset = this.assetsInBalance[0]
+      if (this.config.defaultAssetCode) {
+        this.setDefaultAssetCodeAsSelected()
+      } else {
+        this.form.asset = this.assetsInBalance[0]
+      }
+    },
+    setDefaultAssetCodeAsSelected () {
+      if (!this.config.defaultAssetCode) {
+        throw new Error('The "defaultAssetCode" property is not defined in the module config!')
+      }
+
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === this.config.defaultAssetCode)
     },
     calculateRedeemPrice (sale) {
       return MathUtil.multiply(
-        this.form.asset.details.redeemPrice,
+        this.form.asset.details.redeemPrice || '0',
         this.selectedAssetBalance(this.form.asset.code)
       )
-    },
-    redeemed () {
-      this.$emit(EVENTS.redeemed)
     },
   },
 }
