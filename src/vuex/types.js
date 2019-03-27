@@ -91,6 +91,7 @@ const getters = {
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycLatestData: 'kycLatestData',
+  kycAvatarKey: 'kycAvatarKey',
 }
 
 export const vuexTypes = {

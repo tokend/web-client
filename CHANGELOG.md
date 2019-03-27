@@ -33,6 +33,22 @@ for further information about branching and tagging conventions.
 - Sale creation requests module
 - Pre-issuance requests module
 - LOAD_KV_ENTRIES action to key-values vuex module
+- Show destination address holder email in the Withdrawal creation form
+- Loyalty points statistics module
+- Pre-issuance drawer pseudo module
+- Avatar field on verification forms
+- Application logo URL for module scheme
+- Displaying user avatar in passport
+- Loyalty points merchant & reconcillation schemes
+- Subject info `Dividend for <token-name>` for every payment operation in dividends
+- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
+- For sales that were ended show highlighted text like a "Closed [days] ago"
+- Reword create opportunity label "KYC Required" => "Verification required"
+- Asset loading via the loop where was `filter[limit]=100`
+- Correct base/quote price calculating for Opportunities
+- Custom validation rules for sale's "Soft cap" and "Hard cap" values
+- Custom Movements TopBar for REIT scheme
+- Add coinpayments-deposit module
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -43,6 +59,8 @@ for further information about branching and tagging conventions.
 - Now using object type for checking request prop in asset & sale forms
 - Now loading all the key-values entries instead of loading only account role ones
 - Now using `request.id` check instead of `isUpdateMode` in create sale form
+- Use @tokend/js-sdk@1.3.1-x.2
+- Moved TopBar to the module
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -50,6 +68,27 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Chart line displaying
+- Loading balances instead of account on withdrawal form
+- Fix get Account Id By Email
+- Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
+- Loader displaying in the Opportunity create form
+- Calculated redeem price displaying for old tokens
+- Amount validation in the Withdrawal form
+- Correct dividends subject
+- Fees displaying on the Movements page
+- "Soft cap" validation in the "Opportunity create" form
+- Asset name displaying
+- Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- "Tokens" page responsive design
+
+## [1.3.1-rc.0] - 2019-03-20
+
+### Changed
+- Do not throw an error if movement has an unknown effect or operation details
+
+### Fixed
+- Not handling 'manage-asset-pair' operation details
 
 ### Removed
 - `AssetRequestDetails` component
@@ -61,5 +100,6 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...HEAD
+[1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

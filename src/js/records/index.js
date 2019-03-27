@@ -3,6 +3,7 @@ import { REQUEST_TYPES } from '@tokend/js-sdk'
 import { RequestRecord } from './request-record'
 import { AssetCreateRequestRecord } from './requests/asset-create.record'
 import { AssetUpdateRequestRecord } from './requests/asset-update.record'
+import { WithdrawalDetailsRequestRecord } from './requests/withdrawal-details.record'
 
 export class RecordWrapper {
   static request (record, details) {
@@ -13,6 +14,7 @@ export class RecordWrapper {
         return new AssetUpdateRequestRecord(...arguments)
       case REQUEST_TYPES.createAmlAlert:
       case REQUEST_TYPES.createWithdraw:
+        return new WithdrawalDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.updateLimit:
       case REQUEST_TYPES.createIssuance:
       default:

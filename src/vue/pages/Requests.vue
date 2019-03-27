@@ -31,6 +31,17 @@
             {{ 'requests-page.pre-issuance-upload-title' | globalize }}
           </span>
         </router-link>
+
+        <!-- eslint-disable max-len -->
+        <router-link
+          v-if="getModule().canRenderSubmodule(IncomingWithdrawalRequestsPageModule)"
+          :to="vueRoutes.incomingWithdrawalRequests"
+        >
+          <span>
+            {{ 'requests-page.incoming-withdrawal-title' | globalize }}
+          </span>
+        </router-link>
+        <!-- eslint-enable max-len -->
       </template>
     </top-bar>
     <router-view />
@@ -46,6 +57,7 @@ import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requ
 import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 
 export default {
   name: 'requests',
@@ -58,6 +70,7 @@ export default {
     AssetUpdateRequestsPageModule,
     SaleCreationRequestsPageModule,
     PreIssuanceRequestsPageModule,
+    IncomingWithdrawalRequestsPageModule,
   }),
 }
 </script>

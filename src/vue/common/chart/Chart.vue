@@ -10,6 +10,7 @@
     />
     <chart-renderer
       class="chart__renderer"
+      id="chart"
       :scale="scale"
       :has-value="isActualData && historyHasValue"
       :is-loading="isLoading"
@@ -38,7 +39,7 @@ export default {
   props: {
     baseAsset: { type: String, required: true },
     quoteAsset: { type: String, default: '' },
-    initialScale: { type: String, default: 'month' },
+    initialScale: { type: String, default: 'day' },
     showTabs: { type: Boolean, default: true },
     showTicks: { type: Boolean, default: true },
   },
@@ -46,7 +47,7 @@ export default {
     data: {},
     isActualData: false,
     isLoading: false,
-    scale: 'month',
+    scale: 'day',
     common: {
       precision: config.DECIMAL_POINTS,
       defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,

@@ -3,6 +3,7 @@ import { AssetCreationRequestsPageModule } from './asset-creation-requests-page'
 import { AssetUpdateRequestsPageModule } from './asset-update-requests-page'
 import { SaleCreationRequestsPageModule } from './sale-creation-requests-page'
 import { PreIssuanceRequestsPageModule } from './pre-issuance-requests-page'
+import { IncomingWithdrawalRequestsPageModule } from './incoming-withdrawal-requests-page'
 
 export class RequestsPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
@@ -14,6 +15,7 @@ export class RequestsPageModule extends PageModuleDescriptor {
         AssetUpdateRequestsPageModule,
         SaleCreationRequestsPageModule,
         PreIssuanceRequestsPageModule,
+        IncomingWithdrawalRequestsPageModule,
       ],
     })
   }
