@@ -248,8 +248,19 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+$media-xsmall-height: 375px;
+$media-small-height: 460px;
+
 .asset-details__table {
   margin-top: 4rem;
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
+
+  @include respond-to-height($media-xsmall-height) {
+    margin-top: 0.8rem;
+  }
 
   tr td:last-child {
     text-align: right;
@@ -273,12 +284,15 @@ export default {
   button + button {
     margin-left: auto;
   }
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
 }
 
 .asset-details__update-btn {
   @include button-raised();
 
-  margin-bottom: 2rem;
   width: 18rem;
 }
 
