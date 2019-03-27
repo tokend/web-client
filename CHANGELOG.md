@@ -12,7 +12,7 @@ for further information about branching and tagging conventions.
 - Issuance explorer module
 - Fees module
 - User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
-- Displaying TokenD logo & load spinner while loading the page
+- Displaying TokenD logo & load spinner while loading the pages
 - Documents page
 - Document upload form module
 - Cancel trade offers in the "My orders" tab on the "Trade" page
@@ -28,11 +28,6 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Asset creation requests module
-- Asset update requests page & module
-- Sale creation requests module
-- Pre-issuance requests module
-- LOAD_KV_ENTRIES action to key-values vuex module
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
 - Pre-issuance drawer pseudo module
@@ -40,6 +35,11 @@ for further information about branching and tagging conventions.
 - Application logo URL for module scheme
 - Displaying user avatar in passport
 - Loyalty points merchant & reconcillation schemes
+- Create asset requests module
+- Update asset requests page & module
+- Create sale requests module
+- Pre-issuance requests module
+- LOAD_KV_ENTRIES action to key-values vuex module
 - Subject info `Dividend for <token-name>` for every payment operation in dividends
 - `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
 - For sales that were ended show highlighted text like a "Closed [days] ago"
