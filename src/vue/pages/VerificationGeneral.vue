@@ -233,13 +233,20 @@ export default {
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
-        do {
-          await this.loadKyc()
-        } while (this.kycState !== REQUEST_STATES_STR.pending)
+        this.tryLoadKyc()
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    declareLoadKyc () {
+    /* eslint-disable-next-line promise/avoid-new */
+      return new Promise(resolve => setTimeout(resolve(this.myFunc()), 5000))
+    },
+
+    async tryLoadKyc () {
+      await this.declareLoadKyc()
     },
 
     async uploadDocuments () {
@@ -248,6 +255,13 @@ export default {
           document = await DocumentUploader.uploadSingleDocument(document)
         }
       }
+    },
+
+    myFunc () {
+      do {
+        // await this.loadKyc()
+        console.error('++')
+      } while (this.kycState !== REQUEST_STATES_STR.pending)
     },
 
     createKycData () {

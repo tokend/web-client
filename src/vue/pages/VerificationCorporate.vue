@@ -222,13 +222,27 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        while (this.kycState !== REQUEST_STATES_STR.pending) {
-          await this.loadKyc()
-        }
+        this.tryLoadKyc()
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    tryLoadKyc () {
+    /* eslint-disable-next-line promise/avoid-new */
+      return new Promise(resolve => setTimeout(resolve(this.myFunc()), 5000))
+    },
+
+    // async tryLoadKyc () {
+    //   await this.declareLoadKyc()
+    // },
+
+    myFunc () {
+      do {
+        // await this.loadKyc()
+        // await console.error('++')
+      } while (this.kycState !== REQUEST_STATES_STR.pending)
     },
 
     createKycData () {
@@ -252,6 +266,10 @@ export default {
         website: kycData.homepage,
       }
     },
+    // timeout (ms) {
+    //   /* eslint-disable-next-line promise/avoid-new */
+    //   return new Promise(resolve => setTimeout(resolve, ms))
+    // },
   },
 }
 </script>
