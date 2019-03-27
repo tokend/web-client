@@ -4,6 +4,8 @@ import { Sdk } from '../sdk'
 import { Api } from '../api'
 import { AssetRecord } from '../js/records/entities/asset.record'
 
+const HORIZON_VERSION_PREFIX = 'v3'
+
 export const state = {
   account: {},
   balancesDetails: [],
@@ -21,7 +23,7 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
-    const response = await Api.getWithSignature(`accounts/${accountId}`, {
+    const response = await Api.getWithSignature(`${HORIZON_VERSION_PREFIX}/accounts/${accountId}`, {
       include: ['external_system_ids'],
     })
     commit(vuexTypes.SET_ACCOUNT, response.data)

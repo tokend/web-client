@@ -3,6 +3,8 @@ import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 
+const HORIZON_VERSION_PREFIX = 'v3'
+
 /**
  * @module
  *
@@ -50,7 +52,7 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await Api.getWithSignature(`change_role_requests`, {
+    const response = await Api.getWithSignature(`${HORIZON_VERSION_PREFIX}/change_role_requests`, {
       filter: {
         requestor,
       },
