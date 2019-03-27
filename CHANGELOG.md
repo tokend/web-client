@@ -60,6 +60,9 @@ for further information about branching and tagging conventions.
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 
+### Removed
+- Horizon version prefix from `src/api.js`
+
 ## [1.3.1-rc.0] - 2019-03-20
 
 ### Changed
