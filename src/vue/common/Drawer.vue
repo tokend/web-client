@@ -21,7 +21,6 @@
 
 <script>
 const EVENTS = {
-  onClose: 'on-close',
   updateIsShown: 'update:isShown',
 }
 
@@ -44,7 +43,6 @@ export default {
   methods: {
     closeSelf () {
       this.$emit(EVENTS.updateIsShown, false)
-      this.$emit(EVENTS.onClose)
     },
   },
 }
