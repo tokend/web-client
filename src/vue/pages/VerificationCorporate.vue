@@ -222,7 +222,7 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        this.delayLoadKyc()
+        await this.delayLoadKyc()
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
