@@ -23,26 +23,6 @@ export default Object.assign(
     SKIP_EMAIL_CONFIRMATION_STEP: false,
 
     /**
-     * Disables certain features of the application. Set a property to false to
-     * restrict usage of the feature by all users of the system
-     */
-    featureFlags: {
-      dashboard: true,
-      fees: true,
-      trade: true,
-      movements: true,
-      loyaltyPoints: true,
-      issuance: true,
-      assets: false,
-      requests: false,
-      settings: true,
-      limits: true,
-      sales: true,
-      saleDetails: true,
-      documents: true,
-    },
-
-    /**
      * Sets the logging level, for more options visit
      * https://www.npmjs.com/package/loglevel#documentation
      */

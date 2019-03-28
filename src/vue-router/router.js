@@ -108,7 +108,10 @@ function buildAuthPageGuard (store) {
 function buildInAppRouteGuard ({ store, scheme }) {
   return function inAppRouteGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
-    const isAccessible = scheme.findModuleByPath(to.path).isAccessible
+    // TODO fix, when all component in project changes to submodules
+    const isAccessible = scheme.findModuleByPath(to.path)
+      ? scheme.findModuleByPath(to.path).isAccessible
+      : true
 
     isLoggedIn && isAccessible
       ? next()
