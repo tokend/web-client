@@ -31,10 +31,10 @@
 
         <tr>
           <td>
-            {{ 'withdrawal-request-details.address' | globalize }}
+            {{ 'withdrawal-request-details.comment' | globalize }}
           </td>
           <td>
-            {{ request.address }}
+            {{ request.comment }}
           </td>
         </tr>
 

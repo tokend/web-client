@@ -9,7 +9,9 @@ describe('Asset creation request', () => {
         createdAt: '2019-03-18T10:22:00Z',
         updatedAt: '2019-03-19T15:25:00Z',
         stateI: 3,
-        typeI: 4,
+        xdrType: {
+          value: 4,
+        },
         rejectReason: 'Some reason',
       }
 

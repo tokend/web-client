@@ -357,9 +357,9 @@ export default {
       const creatorDetails = {}
 
       if (this.isMasterAssetOwner) {
-        creatorDetails.comment = this.form.comment
-      } else {
         creatorDetails.address = this.form.address
+      } else {
+        creatorDetails.comment = this.form.comment
       }
 
       return {

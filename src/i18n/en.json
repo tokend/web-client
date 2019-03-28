@@ -854,7 +854,7 @@
       "fixed-fee": "Fixed fee",
       "percent-fee": "Percent fee",
       "total-fee": "Total fee",
-      "address": "Address",
+      "comment": "Comment",
       "created": "Created",
       "reject-reason": "Reason",
       "message-text-default": "Please recheck the reason before confirmation",
