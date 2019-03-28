@@ -1,5 +1,5 @@
 <template>
-  <div class="actions-bar">
+  <div class="request-actions">
     <!--
       Currently, we cannot definitely identify the sale by its request,
       therefore we temporarily disable view button.
@@ -7,7 +7,7 @@
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="actions-bar__view-btn app__button-raised"
+      class="request-actions__view-btn app__button-raised"
       :disabled="true"
     >
       {{ 'create-sale-requests.view-btn' | globalize }}
@@ -16,7 +16,7 @@
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="actions-bar__update-btn app__button-raised"
+      class="request-actions__update-btn app__button-raised"
       :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateAsk)"
     >
@@ -26,7 +26,7 @@
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="actions-bar__cancel-btn app__button-flat"
+      class="request-actions__cancel-btn app__button-flat"
       :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
@@ -61,7 +61,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'actions-bar',
+  name: 'request-actions',
   mixins: [FormMixin],
 
   props: {
@@ -108,7 +108,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.actions-bar {
+.request-actions {
   display: flex;
 }
 
@@ -117,7 +117,7 @@ export default {
   width: 100%;
 }
 
-.actions-bar__update-btn {
+.request-actions__update-btn {
   margin-left: 1.2rem;
   max-width: 14.4rem;
   width: 100%;
@@ -127,7 +127,7 @@ export default {
   background-color: $col-button-flat-light-bg;;
 }
 
-.actions-bar__cancel-btn {
+.request-actions__cancel-btn {
   font-weight: normal;
   margin-left: auto;
 }

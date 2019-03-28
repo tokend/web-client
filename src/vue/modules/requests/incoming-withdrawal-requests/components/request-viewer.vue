@@ -10,7 +10,7 @@
       :request="request"
     />
 
-    <actions-bar
+    <request-actions
       class="request-viewer__actions"
       :request="request"
       @request-updated="$emit(EVENTS.requestUpdated)"
@@ -21,11 +21,9 @@
 <script>
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 import RequestAttributesViewer from './request-attributes-viewer'
-import ActionsBar from './actions-bar'
+import RequestActions from './request-actions'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
-
-import { config } from '../_config'
 
 const EVENTS = {
   requestUpdated: 'request-updated',
@@ -36,7 +34,7 @@ export default {
   components: {
     RequestMessageViewer,
     RequestAttributesViewer,
-    ActionsBar,
+    RequestActions,
   },
 
   props: {
@@ -44,7 +42,6 @@ export default {
   },
 
   data: _ => ({
-    config,
     EVENTS,
   }),
 }

@@ -3,12 +3,13 @@
     <table>
       <tbody>
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.request-id' | globalize }}
-          </td>
-          <td>
-            {{ request.id }}
-          </td>
+          <td>{{ 'withdrawal-request-details.request-id' | globalize }}</td>
+          <td>{{ request.id }}</td>
+        </tr>
+
+        <tr>
+          <td>{{ 'withdrawal-request-details.created' | globalize }}</td>
+          <td>{{ request.createdAt | formatCalendar }}</td>
         </tr>
 
         <tr>
@@ -21,70 +22,33 @@
         </tr>
 
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.requestor-id' | globalize }}
-          </td>
-          <td>
-            {{ request.requestor }}
-          </td>
+          <td>{{ 'withdrawal-request-details.requestor-id' | globalize }}</td>
+          <td>{{ request.requestor }}</td>
         </tr>
 
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.comment' | globalize }}
-          </td>
-          <td>
-            {{ request.comment }}
-          </td>
+          <td>{{ 'withdrawal-request-details.comment' | globalize }}</td>
+          <td>{{ request.comment }}</td>
         </tr>
 
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.amount' | globalize }}
-          </td>
-          <td>
-            {{ request.amount | formatMoney }}
-            {{ request.asset }}
-          </td>
+          <td>{{ 'withdrawal-request-details.amount' | globalize }}</td>
+          <td>{{ request.amount | formatMoney }}  </td>
         </tr>
 
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.fixed-fee' | globalize }}
-          </td>
-          <td>
-            {{ request.fixedFee | formatMoney }}
-            {{ request.asset }}
-          </td>
+          <td>{{ 'withdrawal-request-details.fixed-fee' | globalize }}</td>
+          <td>{{ request.fixedFee | formatMoney }}</td>
         </tr>
 
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.percent-fee' | globalize }}
-          </td>
-          <td>
-            {{ request.percentFee | formatMoney }}
-            {{ request.asset }}
-          </td>
+          <td>{{ 'withdrawal-request-details.percent-fee' | globalize }}</td>
+          <td>{{ request.percentFee | formatMoney }}</td>
         </tr>
 
         <tr>
-          <td>
-            {{ 'withdrawal-request-details.total-fee' | globalize }}
-          </td>
-          <td>
-            {{ (+request.percentFee + +request.fixedFee) | formatMoney }}
-            {{ request.asset }}
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            {{ 'withdrawal-request-details.created' | globalize }}
-          </td>
-          <td>
-            {{ request.createdAt | formatCalendar }}
-          </td>
+          <td>{{ 'withdrawal-request-details.total-fee' | globalize }}</td>
+          <td>{{ request.totalFee | formatMoney }}</td>
         </tr>
       </tbody>
     </table>
@@ -96,8 +60,6 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 
-import { config } from '../_config'
-
 export default {
   name: 'request-attributes-viewer',
   components: {
@@ -105,12 +67,6 @@ export default {
   },
   props: {
     request: { type: IncomingWithdrawalRequest, required: true },
-  },
-
-  computed: {
-    assetTermsUrl () {
-      return this.request.termsUrl(config().storageURL)
-    },
   },
 }
 </script>

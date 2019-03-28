@@ -32,7 +32,6 @@
 
             <td :title="request.amount | formatMoney">
               {{ request.amount | formatMoney }}
-              {{ request.asset }}
             </td>
 
             <td>
@@ -79,10 +78,7 @@ export default {
   },
 
   props: {
-    requests: {
-      type: Array,
-      required: true,
-    },
+    requests: { type: Array, required: true },
   },
 
   data: _ => ({

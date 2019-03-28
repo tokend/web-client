@@ -1,10 +1,11 @@
 <template>
-  <div
-    v-if="isShown"
+  <form
+    novalidate
     class="reject-request-form"
+    @submit.prevent="isFormValid() && showConfirmation()"
   >
-    <div class="reject-request-form-row">
-      <div class="reject-request-form-field">
+    <div class="reject-request-form__row">
+      <div class="reject-request-form__field">
         <textarea-field
           id="withdrawal-request-reject-reason"
           name="withdrawal-request-reject-reason"
@@ -12,6 +13,7 @@
           @blur="touchField('form.rejectReason')"
           :label="'withdrawal-request-details.reject-reason' | globalize"
           :maxlength="REJECT_REASON_MAX_LENGTH"
+          :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
             'form.rejectReason', {
               length: REJECT_REASON_MAX_LENGTH
@@ -21,15 +23,38 @@
       </div>
     </div>
 
-    <div class="reject-request-form-actions">
-      <form-confirmation
-        :is-pending="isRequestProcessing"
-        :message-id="'withdrawal-request-details.message-text-default'"
-        @cancel="$emit(EVENTS.updateIsShown, false)"
-        @ok="rejectRequest"
-      />
+    <div class="reject-request-form__actions">
+      <template v-if="formMixin.isConfirmationShown">
+        <form-confirmation
+          :is-pending="isRequestRejecting"
+          message-id="incoming-withdrawal-requests.rejecting-msg"
+          ok-button-text-id="incoming-withdrawal-requests.yes-msg"
+          cancel-button-text-id="incoming-withdrawal-requests.no-msg"
+          @ok="rejectRequest"
+          @cancel="hideConfirmation"
+        />
+      </template>
+
+      <template v-else>
+        <button
+          v-ripple
+          type="submit"
+          class="reject-request-form__reject-btn app__button-raised"
+        >
+          {{ 'incoming-withdrawal-requests.reject-btn' | globalize }}
+        </button>
+
+        <button
+          v-ripple
+          type="button"
+          class="reject-request-form__cancel-btn app__button-flat"
+          @click="$emit(EVENTS.close)"
+        >
+          {{ 'incoming-withdrawal-requests.cancel-btn' | globalize }}
+        </button>
+      </template>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -47,7 +72,7 @@ import { required, maxLength } from '@validators'
 
 const EVENTS = {
   requestRejected: 'request-rejected',
-  updateIsShown: 'update:isShown',
+  close: 'close',
 }
 
 const REJECT_REASON_MAX_LENGTH = 250
@@ -58,14 +83,13 @@ export default {
 
   props: {
     request: { type: IncomingWithdrawalRequest, required: true },
-    isShown: { type: Boolean, default: false },
   },
 
   data: _ => ({
     form: {
       rejectReason: '',
     },
-    isRequestProcessing: false,
+    isRequestRejecting: false,
     EVENTS,
     REJECT_REASON_MAX_LENGTH,
   }),
@@ -85,10 +109,7 @@ export default {
     }),
 
     async rejectRequest () {
-      if (!this.isFormValid()) return
-
-      this.isRequestProcessing = true
-
+      this.isRequestRejecting = true
       try {
         await this.rejectWithdrawalRequest({
           request: this.request,
@@ -97,17 +118,26 @@ export default {
         Bus.success('incoming-withdrawal-requests.request-rejected-msg')
         this.$emit(EVENTS.requestRejected)
       } catch (e) {
+        this.isRequestRejecting = false
         ErrorHandler.process(e)
       }
-
-      this.isRequestProcessing = false
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.reject-request-form-row, .reject-request-form-actions {
+.reject-request-form__actions {
   margin-top: 2rem;
+  display: flex;
+
+  .reject-request-form__reject-btn {
+    max-width: 18rem;
+    width: 100%;
+  }
+
+  button + button {
+    margin-left: auto;
+  }
 }
 </style>

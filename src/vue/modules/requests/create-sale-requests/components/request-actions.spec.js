@@ -1,4 +1,4 @@
-import ActionsBar from './actions-bar'
+import RequestActions from './request-actions'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -16,7 +16,7 @@ import { Bus } from '@/js/helpers/event-bus'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Create sale request actions bar', () => {
+describe('Create sale request actions', () => {
   let wrapper
 
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('Create sale request actions bar', () => {
       modules: { 'create-sale-requests': createSaleRequestsModule },
     })
 
-    wrapper = shallowMount(ActionsBar, {
+    wrapper = shallowMount(RequestActions, {
       localVue,
       store,
       mixins: [FormMixin],

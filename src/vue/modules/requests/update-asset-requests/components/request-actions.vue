@@ -1,30 +1,30 @@
 <template>
-  <div class="actions-bar">
+  <div class="request-actions">
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="actions-bar__update-btn app__button-raised"
+      class="request-actions__update-btn app__button-raised"
       :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateAsk)"
     >
-      {{ 'create-asset-requests.update-btn' | globalize }}
+      {{ 'update-asset-requests.update-btn' | globalize }}
     </button>
 
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="actions-bar__cancel-btn app__button-flat"
+      class="request-actions__cancel-btn app__button-flat"
       :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
-      {{ 'create-asset-requests.cancel-btn' | globalize }}
+      {{ 'update-asset-requests.cancel-btn' | globalize }}
     </button>
 
     <form-confirmation
       v-if="formMixin.isConfirmationShown"
-      message-id="create-asset-requests.cancellation-msg"
-      ok-button-text-id="create-asset-requests.yes-msg"
-      cancel-button-text-id="create-asset-requests.no-msg"
+      message-id="update-asset-requests.cancellation-msg"
+      ok-button-text-id="update-asset-requests.yes-msg"
+      cancel-button-text-id="update-asset-requests.no-msg"
       @ok="cancelRequest"
       @cancel="hideConfirmation"
     />
@@ -34,7 +34,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -48,11 +48,11 @@ const EVENTS = {
 }
 
 export default {
-  name: 'actions-bar',
+  name: 'request-actions',
   mixins: [FormMixin],
 
   props: {
-    request: { type: CreateAssetRequest, required: true },
+    request: { type: UpdateAssetRequest, required: true },
   },
 
   data: _ => ({
@@ -71,8 +71,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('create-asset-requests', {
-      cancelCreateAssetRequest: types.CANCEL_REQUEST,
+    ...mapActions('update-asset-requests', {
+      cancelUpdateAssetRequest: types.CANCEL_REQUEST,
     }),
 
     async cancelRequest () {
@@ -80,8 +80,8 @@ export default {
       this.isRequestCanceling = true
 
       try {
-        await this.cancelCreateAssetRequest(this.request.id)
-        Bus.success('create-asset-requests.request-canceled-msg')
+        await this.cancelUpdateAssetRequest(this.request.id)
+        Bus.success('update-asset-requests.request-canceled-msg')
         this.$emit(EVENTS.cancel)
       } catch (e) {
         this.isRequestCanceling = false
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.actions-bar {
+.request-actions {
   display: flex;
 
   button + button {
@@ -101,12 +101,12 @@ export default {
   }
 }
 
-.actions-bar__update-btn {
+.request-actions__update-btn {
   margin-bottom: 2rem;
   width: 18rem;
 }
 
-.actions-bar__cancel-btn {
+.request-actions__cancel-btn {
   margin-bottom: 2rem;
   font-weight: normal;
 }

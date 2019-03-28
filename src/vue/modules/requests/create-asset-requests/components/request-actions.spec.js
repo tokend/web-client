@@ -1,14 +1,14 @@
-import ActionsBar from './actions-bar'
+import RequestActions from './request-actions'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { UpdateAssetRequest } from '../wrappers/update-asset-request'
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import Vuex from 'vuex'
 
-import { updateAssetRequestsModule } from '../store/index'
+import { createAssetRequestsModule } from '../store/index'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -16,19 +16,19 @@ import { Bus } from '@/js/helpers/event-bus'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('Update asset request actions bar', () => {
+describe('Asset creation request actions', () => {
   let wrapper
 
   beforeEach(() => {
     const store = new Vuex.Store({
-      modules: { 'update-asset-requests': updateAssetRequestsModule },
+      modules: { 'create-asset-requests': createAssetRequestsModule },
     })
 
-    wrapper = shallowMount(ActionsBar, {
+    wrapper = shallowMount(RequestActions, {
       localVue,
       store,
       mixins: [FormMixin],
-      propsData: { request: new UpdateAssetRequest({}) },
+      propsData: { request: new CreateAssetRequest({}) },
     })
   })
 
@@ -36,7 +36,7 @@ describe('Update asset request actions bar', () => {
     describe('canBeUpdated', () => {
       it('returns true for rejected request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
+          request: new CreateAssetRequest({
             stateI: REQUEST_STATES.rejected,
           }),
         })
@@ -46,7 +46,7 @@ describe('Update asset request actions bar', () => {
 
       it('returns true for pending request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
+          request: new CreateAssetRequest({
             stateI: REQUEST_STATES.pending,
           }),
         })
@@ -56,7 +56,7 @@ describe('Update asset request actions bar', () => {
 
       it('returns false for approved request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
+          request: new CreateAssetRequest({
             stateI: REQUEST_STATES.approved,
           }),
         })
@@ -68,7 +68,7 @@ describe('Update asset request actions bar', () => {
     describe('canBeCanceled', () => {
       it('returns true for pending request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
+          request: new CreateAssetRequest({
             stateI: REQUEST_STATES.pending,
           }),
         })
@@ -78,7 +78,7 @@ describe('Update asset request actions bar', () => {
 
       it('returns false for approved request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
+          request: new CreateAssetRequest({
             stateI: REQUEST_STATES.approved,
           }),
         })
@@ -88,7 +88,7 @@ describe('Update asset request actions bar', () => {
 
       it('returns false for rejected request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
+          request: new CreateAssetRequest({
             stateI: REQUEST_STATES.rejected,
           }),
         })
@@ -104,14 +104,14 @@ describe('Update asset request actions bar', () => {
         sinon.stub(wrapper.vm, 'hideConfirmation')
         sinon.stub(Bus, 'success')
         sinon.stub(ErrorHandler, 'process')
-        sinon.stub(wrapper.vm, 'cancelUpdateAssetRequest').resolves()
+        sinon.stub(wrapper.vm, 'cancelCreateAssetRequest').resolves()
       })
 
       afterEach(() => {
         wrapper.vm.hideConfirmation.restore()
         Bus.success.restore()
         ErrorHandler.process.restore()
-        wrapper.vm.cancelUpdateAssetRequest.restore()
+        wrapper.vm.cancelCreateAssetRequest.restore()
       })
 
       it('calls hideConfirmation method', async () => {
@@ -126,23 +126,23 @@ describe('Update asset request actions bar', () => {
         expect(wrapper.vm.isRequestCanceling).to.be.true
       })
 
-      it('calls cancelUpdateAssetRequest method with correct request ID', async () => {
+      it('calls cancelCreateAssetRequest method with correct request ID', async () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({ id: '1' }),
+          request: new CreateAssetRequest({ id: '1' }),
         })
         await wrapper.vm.cancelRequest()
 
-        expect(wrapper.vm.cancelUpdateAssetRequest)
+        expect(wrapper.vm.cancelCreateAssetRequest)
           .to.have.been.calledOnceWithExactly('1')
       })
 
-      it('calls Bus.success if cancelUpdateAssetRequest did not throw an error', async () => {
+      it('calls Bus.success if cancelCreateAssetRequest did not throw an error', async () => {
         await wrapper.vm.cancelRequest()
 
         expect(Bus.success).to.have.been.calledOnce
       })
 
-      it('emits cancel event cancelUpdateAssetRequest did not throw an error', async () => {
+      it('emits cancel event cancelCreateAssetRequest did not throw an error', async () => {
         const cancelEvent = 'cancel'
 
         await wrapper.vm.cancelRequest()
@@ -151,8 +151,8 @@ describe('Update asset request actions bar', () => {
       })
 
       it('calls ErrorHandler.process if an error was thrown', async () => {
-        wrapper.vm.cancelUpdateAssetRequest.restore()
-        sinon.stub(wrapper.vm, 'cancelUpdateAssetRequest').rejects()
+        wrapper.vm.cancelCreateAssetRequest.restore()
+        sinon.stub(wrapper.vm, 'cancelCreateAssetRequest').rejects()
 
         await wrapper.vm.cancelRequest()
 
@@ -160,8 +160,8 @@ describe('Update asset request actions bar', () => {
       })
 
       it('sets isRequestCanceling to false if an error was thrown', async () => {
-        wrapper.vm.cancelUpdateAssetRequest.restore()
-        sinon.stub(wrapper.vm, 'cancelUpdateAssetRequest').rejects()
+        wrapper.vm.cancelCreateAssetRequest.restore()
+        sinon.stub(wrapper.vm, 'cancelCreateAssetRequest').rejects()
 
         await wrapper.vm.cancelRequest()
 

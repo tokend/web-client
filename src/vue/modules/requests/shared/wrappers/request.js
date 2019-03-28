@@ -8,6 +8,10 @@ export class Request {
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
 
+    this.requestor = safeGet(record, 'requestor.id')
+    this.hash = record.hash
+    this.pendingTasks = record.pendingTasks
+
     this.stateI = record.stateI
     this.typeI = safeGet(record, 'xdrType.value')
     this.rejectReason = record.rejectReason

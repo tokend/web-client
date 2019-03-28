@@ -13,6 +13,11 @@ describe('Asset creation request', () => {
           value: 4,
         },
         rejectReason: 'Some reason',
+        requestor: {
+          id: 'REQUESTOR_ACCOUNT_ID',
+        },
+        hash: 'REQUEST_HASH',
+        pendingTasks: 2048,
       }
 
       const result = new Request(record)
@@ -21,6 +26,10 @@ describe('Asset creation request', () => {
 
       expect(result.createdAt).to.equal('2019-03-18T10:22:00Z')
       expect(result.updatedAt).to.equal('2019-03-19T15:25:00Z')
+
+      expect(result.requestor).to.equal('REQUESTOR_ACCOUNT_ID')
+      expect(result.hash).to.equal('REQUEST_HASH')
+      expect(result.pendingTasks).to.equal(2048)
 
       expect(result.stateI).to.equal(3)
       expect(result.typeI).to.equal(4)

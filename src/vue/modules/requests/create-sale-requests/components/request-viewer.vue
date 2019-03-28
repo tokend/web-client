@@ -15,7 +15,7 @@
       :request="request"
     />
 
-    <actions-bar
+    <request-actions
       class="request-viewer__actions"
       :request="request"
       @update-ask="$emit(EVENTS.updateAsk)"
@@ -28,7 +28,7 @@
 import AssetSummaryViewer from '../../shared/components/asset-summary-viewer'
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 import RequestAttributesViewer from './request-attributes-viewer'
-import ActionsBar from './actions-bar'
+import RequestActions from './request-actions'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { Asset } from '../wrappers/asset'
@@ -46,7 +46,7 @@ export default {
     AssetSummaryViewer,
     RequestMessageViewer,
     RequestAttributesViewer,
-    ActionsBar,
+    RequestActions,
   },
 
   props: {

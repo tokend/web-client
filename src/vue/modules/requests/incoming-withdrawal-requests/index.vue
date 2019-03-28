@@ -45,7 +45,6 @@ import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 
 import { initApi } from './_api'
-import { initConfig } from './_config'
 
 import { Wallet } from '@tokend/js-sdk'
 
@@ -96,7 +95,6 @@ export default {
 
   created () {
     initApi(this.wallet, this.config)
-    initConfig(this.config)
 
     this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
