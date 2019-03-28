@@ -222,26 +222,23 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        this.tryLoadKyc()
+        this.delayLoadKyc()
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
     },
 
-    tryLoadKyc () {
+    delayLoadKyc () {
     /* eslint-disable-next-line promise/avoid-new */
-      return new Promise(resolve => setTimeout(resolve(this.myFunc()), 5000))
+      return new Promise(resolve => setTimeout(resolve(this.declareLoadKyc()),
+        5000)
+      )
     },
 
-    // async tryLoadKyc () {
-    //   await this.declareLoadKyc()
-    // },
-
-    myFunc () {
+    declareLoadKyc () {
       do {
-        // await this.loadKyc()
-        // await console.error('++')
+        this.loadKyc()
       } while (this.kycState !== REQUEST_STATES_STR.pending)
     },
 
