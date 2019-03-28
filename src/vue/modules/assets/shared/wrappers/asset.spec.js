@@ -7,6 +7,7 @@ describe('Asset', () => {
     it('should properly parse record', () => {
       const record = {
         id: 'USD',
+        type: 0,
         issued: '100.000000',
         maxIssuanceAmount: '3000.000000',
         availableForIssuance: '2900.000000',
@@ -35,6 +36,7 @@ describe('Asset', () => {
       const result = new Asset(record, balance)
 
       expect(result.code).to.equal('USD')
+      expect(result.type).to.equal(0)
       expect(result.name).to.equal('American Dollar')
 
       expect(result.issued).to.equal('100.000000')

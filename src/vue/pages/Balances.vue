@@ -3,6 +3,7 @@
     <balance-explorer-module
       :config="config"
       :wallet="wallet"
+      :kyc-required-asset-type="kycRequiredAssetType"
     />
   </div>
 </template>
@@ -30,6 +31,7 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      kycRequiredAssetType: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }

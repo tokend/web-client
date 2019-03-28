@@ -5,6 +5,7 @@ export class Asset {
   constructor (record, balance) {
     this.code = record.id
     this.name = safeGet(record, 'details.name')
+    this.type = record.type
 
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount

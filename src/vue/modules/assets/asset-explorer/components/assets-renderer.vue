@@ -21,11 +21,14 @@
           <asset-attributes-viewer
             :asset="selectedAsset"
             :storage-url="config.storageURL"
+            :kyc-required-asset-type="kycRequiredAssetType"
           />
 
           <div class="assets-renderer__actions">
             <asset-actions-bar
               :asset="selectedAsset"
+              :is-account-unverified="isAccountUnverified"
+              :kyc-required-asset-type="kycRequiredAssetType"
               @update-ask="isUpdateMode = true"
               @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
             />
@@ -113,6 +116,14 @@ export default {
   props: {
     config: {
       type: Object,
+      required: true,
+    },
+    isAccountUnverified: {
+      type: Boolean,
+      required: true,
+    },
+    kycRequiredAssetType: {
+      type: Number,
       required: true,
     },
   },

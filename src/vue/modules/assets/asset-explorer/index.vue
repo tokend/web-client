@@ -1,7 +1,11 @@
 <template>
   <div class="asset-explorer">
     <template v-if="isLoaded">
-      <assets-renderer :config="config" />
+      <assets-renderer
+        :config="config"
+        :is-account-unverified="isAccountUnverified"
+        :kyc-required-asset-type="kycRequiredAssetType"
+      />
     </template>
 
     <template v-else-if="isLoadFailed">
@@ -48,6 +52,14 @@ export default {
     */
     config: {
       type: Object,
+      required: true,
+    },
+    isAccountUnverified: {
+      type: Boolean,
+      required: true,
+    },
+    kycRequiredAssetType: {
+      type: Number,
       required: true,
     },
   },

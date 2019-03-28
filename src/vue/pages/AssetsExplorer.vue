@@ -3,6 +3,8 @@
     <asset-explorer-module
       :config="config"
       :wallet="wallet"
+      :kyc-required-asset-type="kycRequiredAssetType"
+      :is-account-unverified="isAccountUnverified"
     />
   </div>
 </template>
@@ -30,6 +32,8 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
+      kycRequiredAssetType: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }

@@ -39,6 +39,8 @@ export default {
   name: 'asset-actions-bar',
   props: {
     asset: { type: Asset, required: true },
+    kycRequiredAssetType: { type: Number, required: true },
+    isAccountUnverified: { type: Boolean, required: true },
   },
   data: _ => ({
     isPending: false,
@@ -48,6 +50,10 @@ export default {
     ...mapGetters('asset-explorer', {
       accountId: types.accountId,
     }),
+    isBalanceCreationAllowed () {
+      return this.asset.type === this.kycRequiredAssetType &&
+        this.isAccountUnverified
+    },
   },
   methods: {
     ...mapActions('asset-explorer', {
@@ -55,6 +61,11 @@ export default {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
     async addBalance () {
+      if (this.isBalanceCreationAllowed) {
+        Bus.error('assets.verification-required-err')
+        return
+      }
+
       this.isPending = true
       try {
         await this.createBalance(this.asset.code)

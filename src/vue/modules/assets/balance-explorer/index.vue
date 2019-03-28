@@ -20,6 +20,7 @@
           <asset-attributes-viewer
             :asset="selectedAsset"
             :storage-url="config.storageURL"
+            :kyc-required-asset-type="kycRequiredAssetType"
           />
 
           <button
@@ -108,6 +109,10 @@ export default {
     */
     config: {
       type: Object,
+      required: true,
+    },
+    kycRequiredAssetType: {
+      type: Number,
       required: true,
     },
   },
