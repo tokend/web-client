@@ -1,5 +1,5 @@
 <template>
-  <div class="asset-explorer">
+  <div class="balance-explorer">
     <balance-explorer-module
       :config="config"
       :wallet="wallet"

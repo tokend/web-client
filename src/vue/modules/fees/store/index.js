@@ -36,6 +36,7 @@ export const getters = {
 }
 
 export const feesModule = {
+  name: 'fees',
   namespaced: true,
   state,
   getters,

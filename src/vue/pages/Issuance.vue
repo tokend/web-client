@@ -1,227 +1,120 @@
 <template>
-  <div class="issuance">
+  <div class="issuance-page">
     <top-bar>
       <template slot="main">
-        <router-link
-          :to="{ name: 'app.issuance' }"
-        >
-          <span>{{ 'issuance.history-title' | globalize }}</span>
+        <router-link :to="vueRoutes.issuance">
+          <span>{{ 'issuance-page.history-title' | globalize }}</span>
         </router-link>
       </template>
 
-      <template v-if="isAccountCorporate" slot="extra">
+      <template
+        v-if="isAccountCorporate"
+        slot="extra"
+      >
         <button
+          v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
           v-ripple
-          class="issuance-btn"
+          class="app__button-raised"
           @click="isPreIssuanceDrawerShown = true"
         >
-          {{ 'issuance.upload-pre-issuance-btn' | globalize }}
+          {{ 'issuance-page.upload-pre-issuance' | globalize }}
         </button>
 
         <button
+          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
           v-ripple
-          class="issuance-btn"
+          class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
         >
-          {{ 'issuance.create-issuance-btn' | globalize }}
+          {{ 'issuance-page.create-issuance' | globalize }}
         </button>
       </template>
     </top-bar>
 
-    <drawer :is-shown.sync="isPreIssuanceDrawerShown">
+    <drawer
+      v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+      :is-shown.sync="isPreIssuanceDrawerShown"
+    >
       <template slot="heading">
-        {{ 'issuance.upload-pre-issuance-btn' | globalize }}
+        {{ 'issuance-page.upload-pre-issuance' | globalize }}
       </template>
-      <pre-issuance-form @close="closePreIssuanceDrawer" />
+
+      <submodule-importer
+        :submodule="getModule().getSubmodule(PreIssuanceDrawerPseudoModule)"
+        @close="isPreIssuanceDrawerShown = false"
+      />
     </drawer>
 
-    <drawer :is-shown.sync="isIssuanceDrawerShown">
+    <drawer
+      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      :is-shown.sync="isIssuanceDrawerShown"
+    >
       <template slot="heading">
-        {{ 'issuance.issuance-form-heading' | globalize }}
+        {{ 'issuance-page.create-issuance' | globalize }}
       </template>
-      <issuance-form @close="closeIssuanceDrawer() || initFirstPageLoader()" />
+
+      <submodule-importer
+        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
+        @submit="isIssuanceCreated = true"
+        @close="isIssuanceDrawerShown = false"
+      />
     </drawer>
 
-    <template v-if="isLoaded">
-      <template v-if="issuanceHistory.length">
-        <div class="issuance__table app__table app__table--with-shadow">
-          <table class="app__table">
-            <thead>
-              <tr>
-                <th :title="'issuance.counterparty-lbl' | globalize">
-                  {{ 'issuance.counterparty-lbl' | globalize }}
-                </th>
-                <th :title="'issuance.amount-lbl' | globalize">
-                  {{ 'issuance.amount-lbl' | globalize }}
-                </th>
-                <th :title="'issuance.asset-code-lbl' | globalize">
-                  {{ 'issuance.asset-code-lbl' | globalize }}
-                </th>
-                <th :title="'issuance.date-lbl' | globalize">
-                  {{ 'issuance.date-lbl' | globalize }}
-                </th>
-                <th :title="'issuance.reference-lbl' | globalize">
-                  {{ 'issuance.reference-lbl' | globalize }}
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr v-for="issuance in issuanceHistory" :key="issuance.id">
-                <td>
-                  <email-getter :account-id="issuance.counterparty" />
-                </td>
-
-                <td :title="issuance.amount | formatMoney">
-                  {{ issuance.amount | formatMoney }}
-                </td>
-
-                <td :title="issuance.asset">
-                  {{ issuance.asset }}
-                </td>
-
-                <td :title="issuance.date | formatCalendar">
-                  {{ issuance.date | formatCalendar }}
-                </td>
-
-                <td :title="issuance.subject">
-                  {{ issuance.subject }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </template>
-
-      <template v-else>
-        <no-data-message
-          icon-name="trending-up"
-          title-id="issuance.no-issuance-history-title"
-          message-id="issuance.no-issuance-history-msg"
-        />
-      </template>
-    </template>
-
-    <template v-else>
-      <loader message-id="issuance.loading-msg" />
-    </template>
-
-    <collection-loader
-      v-show="isLoaded"
-      class="issuance__collection-loader"
-      :first-page-loader="firstPageLoader"
-      @first-page-load="setHistory"
-      @next-page-load="extendHistory"
+    <submodule-importer
+      v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
+      :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
+      :wallet="wallet"
+      :config="config"
+      :should-update.sync="isIssuanceCreated"
     />
   </div>
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
-import EmailGetter from '@/vue/common/EmailGetter'
-import CollectionLoader from '@/vue/common/CollectionLoader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
-
-import IssuanceForm from '@/vue/forms/IssuanceForm'
-import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
-
-import { Sdk } from '@/sdk'
-import { OP_TYPES } from '@tokend/js-sdk'
-
-import { IssuanceRecord } from '@/js/records/operations/issuance.record'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { vueRoutes } from '@/vue-router/routes'
+
+import config from '@/config'
+
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
+
 export default {
-  name: 'issuance',
+  name: 'issuance-page',
   components: {
-    Loader,
     Drawer,
     TopBar,
-    NoDataMessage,
-    EmailGetter,
-    CollectionLoader,
-    IssuanceForm,
-    PreIssuanceForm,
+    SubmoduleImporter,
   },
 
   data: _ => ({
-    issuanceHistory: [],
-    isLoaded: false,
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
-    firstPageLoader: () => {},
+    isIssuanceCreated: false,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
+    vueRoutes,
+    IssuanceExplorerModule,
+    IssuanceDrawerPseudoModule,
+    PreIssuanceDrawerPseudoModule,
   }),
 
   computed: {
     ...mapGetters({
-      accountId: vuexTypes.accountId,
       isAccountCorporate: vuexTypes.isAccountCorporate,
+      wallet: vuexTypes.wallet,
     }),
-  },
-
-  created () {
-    this.initFirstPageLoader()
-  },
-
-  methods: {
-    initFirstPageLoader () {
-      this.isLoaded = false
-      this.issuanceHistory = []
-      this.firstPageLoader = this.getFirstPageLoader(this.accountId)
-    },
-
-    closeIssuanceDrawer () {
-      this.isIssuanceDrawerShown = false
-    },
-
-    closePreIssuanceDrawer () {
-      this.isPreIssuanceDrawerShown = false
-    },
-
-    getFirstPageLoader (accountId) {
-      return function () {
-        return Sdk.horizon.operations.getPage({
-          account_id: accountId,
-          operation_type: OP_TYPES.createIssuanceRequest,
-        })
-      }
-    },
-
-    setHistory (data) {
-      this.issuanceHistory = data
-        .map(issuance => new IssuanceRecord(issuance, this.accountId))
-      this.isLoaded = true
-    },
-
-    extendHistory (data) {
-      this.issuanceHistory = this.issuanceHistory
-        .concat(
-          data.map(issuance => new IssuanceRecord(
-            issuance, this.accountId
-          ))
-        )
-    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
-
-.issuance__table {
-  width: 100%;
-}
-
-.issuance-btn {
-  @include button-raised;
-}
-
-.issuance__collection-loader {
-  margin-top: 1rem;
-}
 </style>

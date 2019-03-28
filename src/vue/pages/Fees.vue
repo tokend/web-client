@@ -17,8 +17,9 @@
         </template>
       </top-bar>
 
-      <fees-module
-        v-if="asset.code"
+      <submodule-importer
+        v-if="asset.code && getModule().canRenderSubmodule(FeesModule)"
+        :submodule="getModule().getSubmodule(FeesModule)"
         :asset-code="asset.code"
         :wallet="wallet"
         :config="config"
@@ -28,9 +29,10 @@
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="trending-up"
-        title-id="fees-page.no-balances-title"
-        message-id="fees-page.no-balances-msg"
-        :message-id-keys="{ asset: asset.code }"
+        :title="'fees-page.no-balances-title' | globalize"
+        :message="'fees-page.no-balances-msg' | globalize({
+          asset: asset.code
+        })"
       />
     </template>
 
@@ -52,12 +54,12 @@ import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import FeesModule from '@modules/fees'
-
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { FeesModule } from '@/vue/modules/fees/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import config from '@/config'
 
@@ -68,7 +70,7 @@ export default {
     Loader,
     TopBar,
     NoDataMessage,
-    FeesModule,
+    SubmoduleImporter,
   },
 
   data: _ => ({
@@ -79,6 +81,7 @@ export default {
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
+    FeesModule,
   }),
 
   computed: {

@@ -5,6 +5,7 @@
       :asset-pair="assetPair"
       :is-loading="isOpenOffersLoading"
       :open-offers="openOffers"
+      @reload-offers="loadOffersHistory"
     />
   </div>
 </template>

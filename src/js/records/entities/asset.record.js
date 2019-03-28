@@ -15,15 +15,21 @@ export class AssetRecord {
     this.maxIssuanceAmount = record.maxIssuanceAmount
     this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
+    this.trailingDigitsCount = record.trailingDigitsCount
 
     this.details = record.details
     this.name = _get(record, 'details.name')
     this.externalSystemType = _get(record, 'details.externalSystemType')
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
 
     this.logo = _get(record, 'details.logo')
     this.logoKey = _get(record, 'details.logo.key')
     this.logoName = _get(record, 'details.logo.name')
     this.logoType = _get(record, 'details.logo.type')
+
+    this.maturityDate = _get(record, 'details.maturityDate')
+    this.annualReturn = _get(record, 'details.annualReturn')
+    this.subtype = _get(record, 'details.subtype')
 
     this.terms = _get(record, 'details.terms')
     this.termsKey = _get(record, 'details.terms.key')
@@ -37,7 +43,11 @@ export class AssetRecord {
   }
 
   logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+    if (this.details.logoUrl) {
+      return this.details.logoUrl
+    } else {
+      return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+    }
   }
 
   termsUrl (storageUrl) {
@@ -64,6 +74,10 @@ export class AssetRecord {
 
   _policy () {
     return this._policies().reduce((s, p) => s | p, 0)
+  }
+
+  get record () {
+    return this._record
   }
 
   get nameAndCode () {
@@ -98,5 +112,13 @@ export class AssetRecord {
   get isWithdrawable () {
     return !!(this.policy & ASSET_POLICIES.withdrawable) ||
       !!(this.policy & ASSET_POLICIES.withdrawableV2)
+  }
+
+  get isFiat () {
+    return !!this.details.isFiat
+  }
+
+  get isRequiresKYC () {
+    return this.assetType
   }
 }

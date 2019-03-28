@@ -2,28 +2,31 @@
   <div class="sales">
     <top-bar>
       <template slot="main">
-        <div class="sales__asset-filter">
-          <input-field
-            name="sales-filter-base-asset"
-            :disabled="!isLoaded"
-            v-model="filters.baseAsset"
-            :label="'sales.asset-code-label' | globalize"
-          />
-        </div>
+        <router-link
+          :to="{
+            name: vueRoutes.allSales.name,
+          }"
+        >
+          <span>
+            {{ 'sales.all-sales' | globalize }}
+          </span>
+        </router-link>
 
-        <div class="sales__state-filter">
-          <select-field
-            :is-value-translatable="true"
-            :disabled="!isLoaded"
-            v-model="filters.state"
-            :values="Object.values(SALE_STATES)"
-            key-as-value-text="labelTranslationId"
-            class="app__select app__select--no-border"
-          />
-        </div>
+        <router-link
+          :to="{
+            name: vueRoutes.userOwnedSales.name,
+          }"
+        >
+          <span>
+            {{ 'sales.my-sales' | globalize }}
+          </span>
+        </router-link>
       </template>
 
-      <template v-if="isAccountCorporate" slot="extra">
+      <template
+        v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)"
+        slot="extra"
+      >
         <button
           v-ripple
           class="app__button-raised"
@@ -33,175 +36,104 @@
           {{ 'sales.create-sale' | globalize }}
         </button>
       </template>
+
+      <template
+        v-if="getModule().canRenderSubmodule(CreateOpportunityModule)"
+        slot="extra"
+      >
+        <button
+          v-ripple
+          class="app__button-raised"
+          @click="isAssetSaleDrawerShown = true"
+        >
+          <i class="mdi mdi-plus sales__btn-icon" />
+          {{ 'sales.create-sale' | globalize }}
+        </button>
+      </template>
     </top-bar>
 
-    <drawer :is-shown.sync="isCreateSaleDrawerShown">
-      <template slot="heading">
-        {{ 'sales.create-sale' | globalize }}
-      </template>
-      <create-sale-form @close="isCreateSaleDrawerShown = false" />
-    </drawer>
+    <template v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)">
+      <drawer
+        :is-shown.sync="isCreateSaleDrawerShown"
+        :close-by-click-outside="false"
+      >
+        <template slot="heading">
+          {{ 'sales.create-sale' | globalize }}
+        </template>
+        <create-sale-form @close="isCreateSaleDrawerShown = false" />
+      </drawer>
+    </template>
 
-    <template v-if="filteredSales.length">
-      <div class="sales__sale-cards">
-        <drawer :is-shown.sync="isDetailsDrawerShown">
-          <template slot="heading">
-            {{ 'sales.overview-title' | globalize }}
-          </template>
-          <sale-overview :sale="selectedSale" />
-        </drawer>
-
-        <sale-card
-          class="sales__sale-card"
-          v-for="sale in filteredSales"
-          :key="sale.id"
-          :sale="sale"
+    <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
+      <drawer
+        :is-shown.sync="isAssetSaleDrawerShown"
+        :close-by-click-outside="false"
+        class="sales__drawer"
+      >
+        <template slot="heading">
+          {{ 'sales.new-sale' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateOpportunityModule)"
+          @close="isAssetSaleDrawerShown = false"
+          :config="config"
+          :wallet="wallet"
+          :account-id="accountId"
+          :min-amount="MIN_AMOUNT"
+          :max-amount="MAX_AMOUNT"
+          :decimal-pints="DECIMAL_POINTS"
         />
-      </div>
+      </drawer>
     </template>
-
-    <template v-else-if="isLoaded">
-      <no-data-message
-        icon-name="inbox"
-        title-id="sales.no-sales-title"
-        message-id="sales.no-sales-desc"
-      />
-    </template>
-
-    <template v-else>
-      <loader :message-id="'sales.loading-msg'" />
-    </template>
-
-    <!--
-      v-show is a hack to hide `More` button if there are no sales,
-      matching the filtering criteria (when no data message is shown).
-    -->
-    <collection-loader
-      v-show="filteredSales.length"
-      class="sales__loader"
-      :first-page-loader="recordsLoader"
-      @first-page-load="setRecords"
-      @next-page-load="extendRecords"
-    />
+    <router-view />
   </div>
 </template>
 
 <script>
+import config from '@/config'
+
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import Loader from '@/vue/common/Loader'
-import CollectionLoader from '@/vue/common/CollectionLoader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import InputField from '@/vue/fields/InputField'
-import SelectField from '@/vue/fields/SelectField'
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
-import SaleOverview from '@/vue/pages/sales/SaleOverview'
-import SaleCard from '@/vue/pages/sales/SaleCard'
-
-import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { vueRoutes } from '@/vue-router/routes'
 
-import { SaleRecord } from '@/js/records/entities/sale.record'
+import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module.js'
+import CreateSaleForm from '@/vue/forms/CreateSaleForm'
 
-const SALE_STATES = {
-  live: {
-    labelTranslationId: 'sales.sale-live-state',
-    value: 'live',
-  },
-  upcoming: {
-    labelTranslationId: 'sales.sale-upcoming-state',
-    value: 'upcoming',
-  },
-  all: {
-    labelTranslationId: 'sales.sale-all-state',
-    value: 'all',
-  },
-}
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
 
 export default {
   name: 'sales',
   components: {
     TopBar,
     Drawer,
-    Loader,
-    CollectionLoader,
-    NoDataMessage,
-    SelectField,
-    InputField,
     CreateSaleForm,
-    SaleOverview,
-    SaleCard,
+    SubmoduleImporter,
   },
 
   data: _ => ({
-    saleRecords: [],
-    filters: {
-      baseAsset: '',
-      state: SALE_STATES.live,
-    },
-    isLoaded: false,
     isCreateSaleDrawerShown: false,
+    isAssetSaleDrawerShown: false,
     isDetailsDrawerShown: false,
-    selectedSale: null,
-    SALE_STATES,
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+    },
+    CreateSalePseudoModule,
+    vueRoutes,
+    CreateOpportunityModule,
   }),
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
-      isAccountCorporate: vuexTypes.isAccountCorporate,
+      accountId: vuexTypes.accountId,
+      wallet: vuexTypes.wallet,
     }),
-    saleAssets () {
-      return this.saleRecords
-        .map(sale => sale.baseAsset)
-        .filter((asset, i, self) => self.indexOf(asset) === i)
-    },
-
-    // A workaround for filtering sales by base asset, since sales.getPage
-    // method loads all the existing sales.
-    filteredSales () {
-      if (this.filters.baseAsset === '') {
-        return this.saleRecords
-      } else {
-        return this.saleRecords
-          .filter(sale => {
-            return sale.baseAsset.toLowerCase()
-              .includes(this.filters.baseAsset.toLowerCase())
-          })
-      }
-    },
-
-    recordsLoader () {
-      const saleState = this.filters.state.value
-      return function () {
-        return Sdk.horizon.sales.getPage({
-          open_only: saleState === SALE_STATES.upcoming.value ||
-            saleState === SALE_STATES.live.value,
-          upcoming: saleState === SALE_STATES.upcoming.value,
-        })
-      }
-    },
-  },
-
-  watch: {
-    'recordsLoader': function () {
-      this.saleRecords = []
-      this.isLoaded = false
-    },
-  },
-
-  methods: {
-    setRecords (data) {
-      this.saleRecords = data.map(sale => new SaleRecord(sale))
-      this.isLoaded = true
-    },
-
-    extendRecords (data) {
-      this.saleRecords = this.saleRecords
-        .concat(data.map(sale => new SaleRecord(sale)))
-    },
   },
 }
 </script>
@@ -210,6 +142,11 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+/*
+ * TODO: break this section down. children modules should know anything
+ * about parent styles
+ */
+
 .sales__btn-icon {
   display: flex;
   font-size: 1.8rem;
@@ -217,7 +154,7 @@ export default {
 }
 
 .sales__asset-filter {
-  margin-top: -.6rem;
+  margin-top: -0.6rem;
 }
 
 .sales__state-filter {
@@ -228,6 +165,12 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: -1rem;
+}
+
+.sales-asset-selector__field {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 1.6rem;
 }
 
 .sales__sale-card {
@@ -248,5 +191,11 @@ export default {
 
 .sales__loader {
   margin-top: 1rem;
+}
+
+.sales__drawer {
+  & .drawer__pane{
+    width: 50%;
+  }
 }
 </style>
