@@ -223,6 +223,10 @@ $col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
 
+// loyalty points invoices card colors
+$col-invoices-card-background: $_white;
+$col-invoices-card-header-background: $_athensGray;
+
 // tabs colors:
 $col-tabs-txt: $col-primary;
 $col-tabs-disabled-txt: $col-primary-inactive;
@@ -278,6 +282,10 @@ $col-ios-guide-step-number-text: $_white;
 $col-ios-guide-step-text: $col-primary;
 $col-ios-guide-substep-text: $col-secondary;
 
+// radio field colors
+$col-radio-field-border: $col-primary;
+$col-radio-field-background: $_white;
+
 // sale details colors
 $col-sale-details-title: $col-primary;
 $col-sale-details-subtitle: $col-secondary;
@@ -294,6 +302,11 @@ $col-incoming: $_green;
 $col-outgoing: $_lightRed;
 $col-locked: $_orangePeel;
 $col-unlocked: $_orangePeel;
+
+// pie chart colors
+$col-pie-chart-shadow: rgba(0, 0, 0, 0.25);
+$col-pie-chart-stroke: rgba($col-text, 0.5);
+$col-pie-chart-text: $col-text;
 
 // document card colors:
 $col-document-card-viewer-bg: $_white;
