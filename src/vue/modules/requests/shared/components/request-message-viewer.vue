@@ -5,7 +5,12 @@
       class="request-message-viewer--approved"
     >
       <p class="request-message-viewer__content">
-        {{ 'request-messages.approved-msg' | globalize }}
+        <template v-if="direction === REQUEST_DIRECTIONS.incoming">
+          {{ 'request-messages.approved-incoming-msg' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'request-messages.approved-outgoing-msg' | globalize }}
+        </template>
       </p>
     </div>
 
@@ -14,7 +19,12 @@
       class="request-message-viewer--pending"
     >
       <p class="request-message-viewer__content">
-        {{ 'request-messages.pending-msg' | globalize }}
+        <template v-if="direction === REQUEST_DIRECTIONS.incoming">
+          {{ 'request-messages.pending-incoming-msg' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'request-messages.pending-outgoing-msg' | globalize }}
+        </template>
       </p>
     </div>
 
@@ -23,8 +33,14 @@
       class="request-message-viewer--rejected"
     >
       <p class="request-message-viewer__content">
-        <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.rejected-msg' | globalize({ reason: request.rejectReason }) }}
+        <!-- eslint-disable max-len -->
+        <template v-if="direction === REQUEST_DIRECTIONS.incoming">
+          {{ 'request-messages.rejected-incoming-msg' | globalize({ reason: request.rejectReason }) }}
+        </template>
+        <template v-else>
+          {{ 'request-messages.rejected-outgoing-msg' | globalize({ reason: request.rejectReason }) }}
+        </template>
+        <!-- eslint-enable max-len -->
       </p>
     </div>
 
@@ -33,7 +49,12 @@
       class="request-message-viewer--canceled"
     >
       <p class="request-message-viewer__content">
-        {{ 'request-messages.canceled-msg' | globalize() }}
+        <template v-if="direction === REQUEST_DIRECTIONS.incoming">
+          {{ 'request-messages.canceled-incoming-msg' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'request-messages.canceled-outgoing-msg' | globalize }}
+        </template>
       </p>
     </div>
 
@@ -42,8 +63,14 @@
       class="request-message-viewer--permanently-rejected"
     >
       <p class="request-message-viewer__content">
-        <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
+        <!-- eslint-disable max-len -->
+        <template v-if="direction === REQUEST_DIRECTIONS.incoming">
+          {{ 'request-messages.permanently-rejected-incoming-msg' | globalize({ reason: request.rejectReason }) }}
+        </template>
+        <template v-else>
+          {{ 'request-messages.permanently-rejected-outgoing-msg' | globalize({ reason: request.rejectReason }) }}
+        </template>
+        <!-- eslint-enable max-len -->
       </p>
     </div>
   </div>
@@ -52,11 +79,20 @@
 <script>
 import { Request } from '../wrappers/request'
 
+const REQUEST_DIRECTIONS = {
+  incoming: 'incoming',
+  outgoing: 'outgoing',
+}
+
 export default {
   name: 'request-message-viewer',
   props: {
     request: { type: Request, required: true },
+    direction: { type: String, default: REQUEST_DIRECTIONS.outgoing },
   },
+  data: _ => ({
+    REQUEST_DIRECTIONS,
+  }),
 }
 </script>
 

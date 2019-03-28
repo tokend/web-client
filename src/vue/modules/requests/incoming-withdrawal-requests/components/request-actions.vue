@@ -27,7 +27,7 @@
           :disabled="!canBeApproved"
           @click="showConfirmation"
         >
-          {{ 'withdrawal-request-details.approve-btn' | globalize }}
+          {{ 'incoming-withdrawal-requests.approve-btn' | globalize }}
         </button>
 
         <button
@@ -36,7 +36,7 @@
           :disabled="!canBeRejected"
           @click="isRejectFormShown = true"
         >
-          {{ 'withdrawal-request-details.reject-btn' | globalize }}
+          {{ 'incoming-withdrawal-requests.reject-btn' | globalize }}
         </button>
       </template>
     </div>

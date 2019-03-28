@@ -17,6 +17,9 @@
             <th :title="'incoming-withdrawal-requests.request-state-header' | globalize">
               {{ 'incoming-withdrawal-requests.request-state-header' | globalize }}
             </th>
+            <th :title="'incoming-withdrawal-requests.created-header' | globalize">
+              {{ 'incoming-withdrawal-requests.created-header' | globalize }}
+            </th>
             <!-- eslint-enable max-len -->
           </tr>
         </thead>
@@ -36,6 +39,10 @@
 
             <td>
               <request-state-viewer :request="request" />
+            </td>
+
+            <td :title="request.createdAt | formatCalendar">
+              {{ request.createdAt | formatCalendar }}
             </td>
 
             <td>

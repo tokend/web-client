@@ -3,18 +3,18 @@
     <table>
       <tbody>
         <tr>
-          <td>{{ 'withdrawal-request-details.request-id' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.request-id' | globalize }}</td>
           <td>{{ request.id }}</td>
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.created' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.created' | globalize }}</td>
           <td>{{ request.createdAt | formatCalendar }}</td>
         </tr>
 
         <tr>
           <td>
-            {{ 'withdrawal-request-details.requestor-email' | globalize }}
+            {{ 'incoming-withdrawal-requests.requestor-email' | globalize }}
           </td>
           <td>
             <email-getter :account-id="request.requestor" />
@@ -22,32 +22,32 @@
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.requestor-id' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.requestor-id' | globalize }}</td>
           <td>{{ request.requestor }}</td>
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.comment' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.comment' | globalize }}</td>
           <td>{{ request.comment }}</td>
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.amount' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.amount' | globalize }}</td>
           <td>{{ request.amount | formatMoney }}  </td>
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.fixed-fee' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.fixed-fee' | globalize }}</td>
           <td>{{ request.fixedFee | formatMoney }}</td>
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.percent-fee' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.percent-fee' | globalize }}</td>
           <td>{{ request.percentFee | formatMoney }}</td>
         </tr>
 
         <tr>
-          <td>{{ 'withdrawal-request-details.total-fee' | globalize }}</td>
+          <td>{{ 'incoming-withdrawal-requests.total-fee' | globalize }}</td>
           <td>{{ request.totalFee | formatMoney }}</td>
         </tr>
       </tbody>

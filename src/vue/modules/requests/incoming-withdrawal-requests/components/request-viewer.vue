@@ -3,6 +3,7 @@
     <request-message-viewer
       class="request-viewer__state-message"
       :request="request"
+      direction="incoming"
     />
 
     <request-attributes-viewer

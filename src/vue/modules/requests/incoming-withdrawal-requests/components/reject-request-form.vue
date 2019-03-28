@@ -11,7 +11,7 @@
           name="withdrawal-request-reject-reason"
           v-model="form.rejectReason"
           @blur="touchField('form.rejectReason')"
-          :label="'withdrawal-request-details.reject-reason' | globalize"
+          :label="'incoming-withdrawal-requests.reject-reason' | globalize"
           :maxlength="REJECT_REASON_MAX_LENGTH"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
@@ -41,7 +41,7 @@
           type="submit"
           class="reject-request-form__reject-btn app__button-raised"
         >
-          {{ 'incoming-withdrawal-requests.reject-btn' | globalize }}
+          {{ 'incoming-withdrawal-requests.reject-action-btn' | globalize }}
         </button>
 
         <button
