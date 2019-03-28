@@ -1,15 +1,19 @@
 <template>
   <div class="balance-explorer">
-    <balance-explorer-module
-      :config="config"
-      :wallet="wallet"
-      :kyc-required-asset-type="kycRequiredAssetType"
-    />
+    <template v-if="getModule().canRenderSubmodule(BalanceExplorerModule)">
+      <submodule-importer
+        :submodule="getModule().getSubmodule(BalanceExplorerModule)"
+        :config="config"
+        :wallet="wallet"
+        :kyc-required-asset-type="kycRequiredAssetType"
+      />
+    </template>
   </div>
 </template>
 
 <script>
-import BalanceExplorerModule from '@modules/assets/balance-explorer'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { BalanceExplorerModule } from '@modules/assets/balance-explorer/module'
 
 import config from '../../config'
 
@@ -19,10 +23,11 @@ import { vuexTypes } from '@/vuex'
 export default {
   name: 'balances',
   components: {
-    BalanceExplorerModule,
+    SubmoduleImporter,
   },
 
   data: _ => ({
+    BalanceExplorerModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,

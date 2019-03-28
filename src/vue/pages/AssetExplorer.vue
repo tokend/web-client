@@ -1,16 +1,20 @@
 <template>
   <div class="asset-explorer">
-    <asset-explorer-module
-      :config="config"
-      :wallet="wallet"
-      :kyc-required-asset-type="kycRequiredAssetType"
-      :is-account-unverified="isAccountUnverified"
-    />
+    <template v-if="getModule().canRenderSubmodule(AssetExplorerModule)">
+      <submodule-importer
+        :submodule="getModule().getSubmodule(AssetExplorerModule)"
+        :config="config"
+        :wallet="wallet"
+        :kyc-required-asset-type="kycRequiredAssetType"
+        :is-account-unverified="isAccountUnverified"
+      />
+    </template>
   </div>
 </template>
 
 <script>
-import AssetExplorerModule from '@modules/assets/asset-explorer'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { AssetExplorerModule } from '@modules/assets/asset-explorer/module'
 
 import config from '../../config'
 
@@ -20,10 +24,11 @@ import { vuexTypes } from '@/vuex'
 export default {
   name: 'assets-explorer',
   components: {
-    AssetExplorerModule,
+    SubmoduleImporter,
   },
 
   data: _ => ({
+    AssetExplorerModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,

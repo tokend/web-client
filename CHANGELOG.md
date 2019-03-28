@@ -47,6 +47,7 @@ for further information about branching and tagging conventions.
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
 - Add coinpayments-deposit module
+- LOAD_KV_ENTRIES action to key-values vuex module
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -58,6 +59,7 @@ for further information about branching and tagging conventions.
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
 - Rename fee "Subtype" table header to "Destination" one
+- Now loading all the key-values entries instead of loading only account role ones
 
 ### Removed
 - `AssetsList` component

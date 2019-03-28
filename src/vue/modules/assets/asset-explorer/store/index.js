@@ -64,6 +64,7 @@ export const getters = {
 
 export const assetExplorerModule = {
   namespaced: true,
+  name: 'asset-explorer',
   mutations,
   actions,
   getters,

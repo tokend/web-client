@@ -649,7 +649,8 @@
     "assets-page": {
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
-      "create-asset-title": "Create token"
+      "create-asset-title": "Create token",
+      "create-asset-button": "Create token"
     },
     "assets-list": {
       "update-asset-title": "Update token",
@@ -1273,7 +1274,19 @@
       "balance-added-msg": "Added to your balances",
       "verification-required-err": "You need to verify your account to add this token to your balances",
       "update-btn": "Update",
-      "no-terms-msg": "No terms"
+      "no-terms-msg": "No terms",
+      "balance-title": "Balance",
+      "maximum-title": "Maximum",
+      "issued-title": "Issued",
+      "available-title": "Available",
+      "transferable-title": "Transferable",
+      "withdrawable-title": "Withdrawable",
+      "verification-required-title": "Requires verification",
+      "present-msg": "Yes",
+      "absent-msg": "No",
+      "terms-title": "Terms",
+      "download-terms-btn": "Download terms",
+      "already-in-your-balance-btn": "Already in your balances"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

@@ -54,8 +54,8 @@
         <no-data-message
           v-else
           icon-name="trending-up"
-          title-id="assets.no-assets-title"
-          message-id="assets.no-assets-msg"
+          :title="'assets.no-assets-title' | globalize"
+          :message="'assets.no-assets-msg' | globalize"
         />
       </div>
     </template>

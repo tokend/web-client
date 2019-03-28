@@ -45,6 +45,7 @@ export const getters = {
 
 export const balanceExplorerModule = {
   namespaced: true,
+  name: 'balance-explorer',
   mutations,
   actions,
   getters,

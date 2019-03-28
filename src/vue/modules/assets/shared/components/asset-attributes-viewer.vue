@@ -12,7 +12,7 @@
           {{ asset.code }}
         </p>
         <p class="asset-attributes-viewer__name">
-          {{ asset.name }}
+          {{ asset.name || asset.code }}
         </p>
       </div>
     </div>
