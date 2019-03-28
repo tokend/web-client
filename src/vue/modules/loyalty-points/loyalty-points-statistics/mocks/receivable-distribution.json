@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "partner": "Pet shop",
+      "amount": "3668.65"
+    },
+    {
+      "partner": "Gas station",
+      "amount": "2235.365"
+    },
+    {
+      "partner": "Boots shop",
+      "amount": "1442.36"
+    },
+    {
+      "partner": "Universal bank",
+      "amount": "856.42"
+    },
+    {
+      "partner": "Hat shop",
+      "amount": "698.63"
+    }
+  ]
+}

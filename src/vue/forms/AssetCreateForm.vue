@@ -99,6 +99,18 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.withdrawable"
+          >
+            {{ 'asset-form.withdrawable-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
             name="asset-create-logo"
             v-model="form.information.logo"
@@ -158,7 +170,7 @@
               <button
                 v-ripple
                 type="button"
-                class="issuance-form__insert-account-id-btn"
+                class="app__button-flat issuance-form__insert-account-id-btn"
                 @click="form.advanced.preissuedAssetSigner = accountId"
               >
                 {{ 'asset-form.use-my-account-id-btn' | globalize }}
@@ -446,6 +458,7 @@ export default {
 
     next (formStep) {
       if (this.isFormValid(formStep)) {
+        this.$el.parentElement.scrollTop = 0
         this.currentStep++
       }
     },
@@ -507,14 +520,10 @@ export default {
 
 .issuance-form__pre-issued-asset-signer-wrp {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .issuance-form__insert-account-id-btn {
-  margin-left: 1.6rem;
-  margin-top: 1.8rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: $col-link;
+  margin-left: .4rem;
 }
 </style>
