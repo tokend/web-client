@@ -9,6 +9,7 @@ describe('Asset creation request', () => {
         createdAt: '2019-03-18T10:22:00Z',
         updatedAt: '2019-03-19T15:25:00Z',
         stateI: 3,
+        typeI: 4,
         rejectReason: 'Some reason',
       }
 
@@ -20,6 +21,7 @@ describe('Asset creation request', () => {
       expect(result.updatedAt).to.equal('2019-03-19T15:25:00Z')
 
       expect(result.stateI).to.equal(3)
+      expect(result.typeI).to.equal(4)
       expect(result.rejectReason).to.equal('Some reason')
     })
   })

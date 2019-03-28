@@ -1,4 +1,5 @@
 import { REQUEST_STATES } from '@/js/const/request-states.const'
+import safeGet from 'lodash/get'
 
 export class Request {
   constructor (record) {
@@ -8,6 +9,7 @@ export class Request {
     this.updatedAt = record.updatedAt
 
     this.stateI = record.stateI
+    this.typeI = safeGet(record, 'xdrType.value')
     this.rejectReason = record.rejectReason
   }
 
