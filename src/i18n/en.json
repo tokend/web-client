@@ -371,7 +371,7 @@
         "percent-th": "Percent",
         "lower-bound-th": "Lower bound",
         "upper-bound-th": "Upper bound",
-        "subtype-th": "Subtype"
+        "direction-th": "Direction"
       },
       "fees-loading-msg": "Loading your fees…",
       "fees-loading-error-msg": "There was an error while loading your fees.",
@@ -840,7 +840,8 @@
       "balance-added-msg": "Added to your balances",
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
-      "expected-revenue": "Expected revenue per year"
+      "expected-revenue": "Expected revenue per year",
+      "verification-required-err": "You need to verify your account to add this token to your balances"
     },
     "withdrawal-request-details": {
       "loading-msg": "Loading",

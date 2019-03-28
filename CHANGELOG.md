@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
 - Pre-issuance drawer pseudo module
@@ -61,6 +62,7 @@ for further information about branching and tagging conventions.
 - Now using `request.id` check instead of `isUpdateMode` in create sale form
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- Rename fee "Subtype" table header to "Destination" one
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -81,6 +83,7 @@ for further information about branching and tagging conventions.
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 - "Tokens" page responsive design
+- Do not allow unverified users to add an asset with KYC required type to their balances
 
 ## [1.3.1-rc.0] - 2019-03-20
 
