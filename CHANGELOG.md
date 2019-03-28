@@ -92,6 +92,7 @@ method was called at least once through tests execution
 - Converting account role to string while creating change role request
 - Fix bug with cancel order
 - Fix bug with import mapActions in SubmitTradeOfferForm
+- Fixed upload kyc form without avatar
 
 ### Removed
 - Removed feature flags from config

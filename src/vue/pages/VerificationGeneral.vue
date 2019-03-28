@@ -154,6 +154,7 @@
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
+import _get from 'lodash/get'
 
 import { Sdk } from '@/sdk'
 
@@ -168,6 +169,12 @@ import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { required, documentContainer } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 
 export default {
   name: 'verification-general-form',
@@ -259,7 +266,7 @@ export default {
 
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
-        if (!document.key) {
+        if (document && !document.key) {
           document = await DocumentUploader.uploadSingleDocument(document)
         }
       }
@@ -270,8 +277,9 @@ export default {
         first_name: this.form.personal.firstName,
         last_name: this.form.personal.lastName,
         documents: {
-          [DOCUMENT_TYPES.kycAvatar]:
-            this.form.documents.avatar.getDetailsForSave(),
+          [DOCUMENT_TYPES.kycAvatar]: this.form.documents.avatar
+            ? this.form.documents.avatar.getDetailsForSave()
+            : EMPTY_DOCUMENT,
           [DOCUMENT_TYPES.kycIdDocument]:
             this.form.documents.idDocument.getDetailsForSave(),
           [DOCUMENT_TYPES.kycSelfie]:
@@ -287,25 +295,25 @@ export default {
           lastName: kycData.last_name,
         },
         documents: {
-          avatar: kycData.documents[DOCUMENT_TYPES.kycAvatar]
-            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycAvatar])
-            : {},
-          idDocument: kycData.documents[DOCUMENT_TYPES.kycIdDocument]
-            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycIdDocument])
-            : {},
-          verificationPhoto: kycData.documents[DOCUMENT_TYPES.kycSelfie]
-            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycSelfie])
-            : {},
+          avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
+            ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+            : null,
+          idDocument: _get(
+            kycData,
+            `documents.${DOCUMENT_TYPES.kycIdDocument}.key`
+          )
+            ? new DocumentContainer(
+              kycData.documents[DOCUMENT_TYPES.kycIdDocument]
+            )
+            : null,
+          verificationPhoto: _get(
+            kycData,
+            `documents.${DOCUMENT_TYPES.kycSelfie}.key`
+          )
+            ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycSelfie])
+            : null,
         },
       }
-    },
-
-    wrapDocument (document) {
-      return new DocumentContainer({
-        mimeType: document.mime_type,
-        name: document.name,
-        key: document.key,
-      })
     },
   },
 }
