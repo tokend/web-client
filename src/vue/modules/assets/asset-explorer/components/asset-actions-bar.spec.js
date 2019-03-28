@@ -45,9 +45,26 @@ describe('Asset explorer module', () => {
 
       afterEach(() => {
         wrapper.vm.createBalance.restore()
-        wrapper.vm.loadAccountBalances.restore()
         Bus.success.restore()
         ErrorHandler.process.restore()
+      })
+
+      it('calls Bus.error if balance creation is not allowed', async () => {
+        const kycRequiredAssetType = 'KYC_REQUIRED'
+        wrapper.setProps({
+          kycRequiredAssetType,
+          asset: new Asset({
+            type: kycRequiredAssetType,
+          }),
+          isAccountUnverified: true,
+        })
+        sinon.stub(Bus, 'error')
+
+        await wrapper.vm.addBalance()
+
+        expect(Bus.error).to.have.been.calledOnce
+
+        Bus.error.restore()
       })
 
       it('calls createBalance method with correct params', async () => {
@@ -57,6 +74,8 @@ describe('Asset explorer module', () => {
 
         expect(wrapper.vm.createBalance)
           .to.have.been.calledOnceWithExactly('USD')
+
+        wrapper.vm.loadAccountBalances.restore()
       })
 
       it('calls loadAccountBalances method', async () => {
@@ -66,6 +85,8 @@ describe('Asset explorer module', () => {
 
         expect(wrapper.vm.loadAccountBalances)
           .to.have.been.calledOnce
+
+        wrapper.vm.loadAccountBalances.restore()
       })
 
       it('sets isPending property to true if operation was succeded', async () => {
@@ -74,6 +95,8 @@ describe('Asset explorer module', () => {
         await wrapper.vm.addBalance()
 
         expect(wrapper.vm.isPending).to.be.true
+
+        wrapper.vm.loadAccountBalances.restore()
       })
 
       it('emits proper event if operation was succeded', async () => {
@@ -83,6 +106,8 @@ describe('Asset explorer module', () => {
         await wrapper.vm.addBalance()
 
         expect(wrapper.emitted()[balanceAddedEvent]).to.exist
+
+        wrapper.vm.loadAccountBalances.restore()
       })
 
       it('calls Bus.success method if operation was succeded', async () => {
@@ -91,6 +116,8 @@ describe('Asset explorer module', () => {
         await wrapper.vm.addBalance()
 
         expect(Bus.success).to.have.been.calledOnce
+
+        wrapper.vm.loadAccountBalances.restore()
       })
 
       it('handles the error if operation was failed', async () => {
@@ -100,6 +127,8 @@ describe('Asset explorer module', () => {
 
         expect(wrapper.vm.isPending).to.be.false
         expect(ErrorHandler.process).to.have.been.calledOnce
+
+        wrapper.vm.loadAccountBalances.restore()
       })
     })
   })
