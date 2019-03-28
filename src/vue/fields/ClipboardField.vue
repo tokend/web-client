@@ -41,7 +41,6 @@ export default {
 @import '~@scss/mixins';
 
 .clipboard-field {
-  padding: 1rem 1.2rem 0;
   box-shadow: inset 0px 0.2rem 0.4rem $col-tick-field-shadow;
   display: flex;
   align-items: center;
@@ -59,7 +58,7 @@ export default {
   width: 100%;
   overflow: auto;
   color: $field-color-text;
-  padding: $field-input-padding;
+  padding: 2.7rem 0 0.6rem 1.2rem;
   @include value-font-sizes;
   font-family: monospace;
 
@@ -71,8 +70,8 @@ export default {
 .clipboard-field__label {
   font-size: .8rem;
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 1.2rem;
+  top: 1rem;
   pointer-events: none;
   color: $field-color-unfocused;
   @include label-font-sizes;
@@ -80,15 +79,11 @@ export default {
 
 .clipboard-field__button {
   @include button-icon();
-  margin-top: -1rem;
-  padding: 0;
   min-width: 4.5rem;
-  min-height: 4.5rem;
 }
 
 .clipboard-field__copy-icon {
   font-size: 2.4rem;
-  padding-top: .4rem;
   color: $col-primary-lighten;
 }
 </style>

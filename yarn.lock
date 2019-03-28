@@ -7568,7 +7568,7 @@ qjobs@^1.1.4:
   resolved "https://registry.yarnpkg.com/qjobs/-/qjobs-1.2.0.tgz#c45e9c61800bd087ef88d7e256423bdd49e5d071"
   integrity sha512-8YOJEHtxpySA3fFDyCRxA+UUV+fA+rTWnuWvylOK/NCjhY+b4ocCtmu8TtsWb+mYeU+GCHf/S66KZF/AsteKHg==
 
-qrcode.vue@^1.6.1:
+qrcode.vue@1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/qrcode.vue/-/qrcode.vue-1.6.1.tgz#0cdc6e032befb9711c8c55ef1fd7696ccf0d5147"
   integrity sha512-Qo0zpAQVTdRZsmquppZShMQOaxg/JhzTsoQtlIxTTgwHr2oVg4mhCah41MtBYi67O00D342dzgU4YyECSK04FA==
