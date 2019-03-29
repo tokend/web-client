@@ -6,10 +6,12 @@
           v-if="movement.effect instanceof BalanceChangedEffect"
           :effect="movement.effect"
           :asset-code="movement.assetCode"
+          :is-locked="movement.isLocked"
         />
         <particular-balance-changed-effect-viewer
           v-else-if="movement.effect instanceof ParticularBalanceChangeEffect"
           :effect="movement.effect"
+          :is-outgoing="movement.isOutgoing"
         />
         <manage-offer-op-viewer
           v-if="movement.operationDetails instanceof ManageOfferOp"
