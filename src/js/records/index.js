@@ -11,6 +11,7 @@ import { SaleRequestRecord } from './requests/sale-create.record'
 import {
   UpdateSaleDetailsRequestRecord,
 } from './requests/update-sale-details.record'
+import { WithdrawalDetailsRequestRecord } from './requests/withdrawal-details.record'
 
 export class RecordWrapper {
   static request (record, details) {
@@ -27,6 +28,7 @@ export class RecordWrapper {
         return new UpdateSaleDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.createAmlAlert:
       case REQUEST_TYPES.createWithdraw:
+        return new WithdrawalDetailsRequestRecord(...arguments)
       case REQUEST_TYPES.updateLimit:
       case REQUEST_TYPES.createIssuance:
       default:

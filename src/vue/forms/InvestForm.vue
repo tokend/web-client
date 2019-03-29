@@ -163,7 +163,16 @@
         icon-name="alert-circle"
         :title="'invest-form.insufficient-balance-title' | globalize"
         :message="'invest-form.insufficient-balance-desc' | globalize"
-      />
+      >
+        <router-link
+          :to="vueRoutes.movements"
+          tag="button"
+          type="button"
+          class="app__button-raised invest-form__discover-tokens-btn"
+        >
+          {{ 'invest-form.deposit-btn' | globalize }}
+        </router-link>
+      </no-data-message>
     </template>
 
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
@@ -207,6 +216,8 @@ import { required, amountRange } from '@validators'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { vueRoutes } from '@/vue-router/routes'
+import { MathUtil } from '@/js/utils'
 
 import _throttle from 'lodash/throttle'
 
@@ -247,6 +258,7 @@ export default {
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
     isSubmitting: false,
+    vueRoutes,
   }),
 
   validations () {
@@ -503,7 +515,13 @@ export default {
         quoteBalance: this.balances
           .find(balance => balance.asset === this.form.asset.code).balanceId,
         isBuy: true,
-        amount: this.form.amount,
+        amount: MathUtil.divide(
+          this.form.amount,
+          // TODO: remove DEFAULT_QUOTE_PRICE
+          this.sale.quoteAssetPrices[this.form.asset.code] ||
+            DEFAULT_QUOTE_PRICE
+        ),
+        // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||
           DEFAULT_QUOTE_PRICE,
         fee: offerFee,
@@ -583,5 +601,9 @@ export default {
     filter: grayscale(100%);
     cursor: default;
   }
+}
+
+.invest-form__discover-tokens-btn {
+  margin: 2rem auto 0;
 }
 </style>

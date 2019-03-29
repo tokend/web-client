@@ -32,20 +32,24 @@
       />
     </div>
 
-    <vue-markdown
-      class="sale-state-widget__investors"
-      :source="'sale-details.investors' | globalize({
-        investors: sale.investors
-      })"
-    />
+    <div class="sale-state-widget__investors">
+      <h3>{{ sale.investors }}</h3>
+      <p>{{ 'sale-details.investors' | globalize }}</p>
+    </div>
 
-    <vue-markdown
-      class="sale-state-widget__days-to-go"
-      :source="'sale-details.days-to-go' | globalize({
-        days: sale.daysToGo
-      })"
-    />
+    <template v-if="sale.daysAfterEnd > 0">
+      <div class="sale-state-widget__days-after-end">
+        <h3>{{ sale.daysAfterEnd }}</h3>
+        <p>{{ 'sale-details.days-after-end' | globalize }}</p>
+      </div>
+    </template>
 
+    <template v-else>
+      <div class="sale-state-widget__days-to-go">
+        <h3>{{ sale.daysToGo }}</h3>
+        <p>{{ 'sale-details.days-to-go' | globalize }}</p>
+      </div>
+    </template>
     <button
       v-ripple
       class="app__button-raised sale-state-widget__overview-btn"
@@ -57,8 +61,6 @@
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown'
-
 import Drawer from '@/vue/common/Drawer'
 // import Chart from '@/vue/common/chart/Chart'
 
@@ -70,7 +72,6 @@ export default {
   name: 'sale-state-widget',
   components: {
     Drawer,
-    VueMarkdown,
     // Chart,
     SaleOverview,
   },
@@ -110,7 +111,9 @@ export default {
   color: $col-sale-details-text-secondary;
 }
 
-.sale-state-widget__investors, .sale-state-widget__days-to-go {
+.sale-state-widget__investors,
+.sale-state-widget__days-to-go,
+.sale-state-widget__days-after-end{
   h3 {
     font-size: 2.4rem;
     font-weight: normal;
@@ -127,7 +130,8 @@ export default {
   margin-top: 2.4rem;
 }
 
-.sale-state-widget__days-to-go {
+.sale-state-widget__days-to-go,
+.sale-state-widget__days-after-end {
   margin-top: 1.6rem;
 }
 

@@ -1,7 +1,7 @@
 import { ModuleDescriptor } from '@/modules-arch/module-descriptor'
 import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
 
-export class CreateAssetSaleModule extends ModuleDescriptor {
+export class CreateOpportunityModule extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
       importComponentFn: _ => import('@/vue/modules/create-opportunity'),
