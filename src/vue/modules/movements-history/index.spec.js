@@ -135,7 +135,7 @@ describe('Movements history module', () => {
             wrapper.vm.loadMovements.restore()
           })
 
-        it('handles the error if loading was failed', async () => {
+        it('calls ErrorHandler.processWithoutFeedback', async () => {
           sinon.stub(wrapper.vm, 'loadMovements')
             .throws()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
@@ -144,6 +144,19 @@ describe('Movements history module', () => {
 
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
+          expect(wrapper.vm.isMovementsLoadFailed).to.be.true
+
+          wrapper.vm.loadMovements.restore()
+          ErrorHandler.processWithoutFeedback.restore()
+        })
+
+        it('sets isMovementsLoadFailed to true', async () => {
+          sinon.stub(wrapper.vm, 'loadMovements')
+            .throws()
+          sinon.stub(ErrorHandler, 'processWithoutFeedback')
+
+          await wrapper.vm.loadMovementsFirstPage()
+
           expect(wrapper.vm.isMovementsLoadFailed).to.be.true
 
           wrapper.vm.loadMovements.restore()
