@@ -57,6 +57,7 @@ describe('movements-history.module', () => {
             id: 'BTC',
             type: 'assets',
           },
+          type: 'operations-payment',
         },
       ]
       const state = {
@@ -82,6 +83,7 @@ describe('movements-history.module', () => {
             id: 'BTC',
             type: 'assets',
           },
+          type: 'operations-payment',
         },
       ]
       const state = {
@@ -208,6 +210,7 @@ describe('movements-history.module', () => {
             id: 'BTC',
             type: 'assets',
           },
+          type: 'operations-payment',
         },
       ]
       const state = { movements }
