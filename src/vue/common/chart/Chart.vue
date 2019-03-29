@@ -51,7 +51,7 @@ export default {
       precision: config.DECIMAL_POINTS,
       defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
     },
-    intervalID: 0,
+    intervalID: -1,
     timeUpdateChartData: 10000,
   }),
   computed: {
@@ -76,23 +76,24 @@ export default {
   },
   watch: {
     async lockedAssets (value) {
-      clearInterval(this.intervalID)
-      this.loadChartData()
+      this.createIntervalForLoadPrices()
+      await this.loadPrices()
     },
   },
   async beforeDestroy () {
     clearInterval(this.intervalID)
   },
   async created () {
-    this.loadChartData()
+    this.createIntervalForLoadPrices()
+    await this.loadPrices()
     this.scale = this.initialScale
   },
   methods: {
-    async loadChartData () {
+    async createIntervalForLoadPrices () {
+      clearInterval(this.intervalID)
       this.intervalID = setInterval(async () => {
         await this.loadPrices()
       }, this.timeUpdateChartData)
-      await this.loadPrices()
     },
     async loadPrices () {
       this.isLoading = true
