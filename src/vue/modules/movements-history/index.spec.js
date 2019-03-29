@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Wallet } from '@tokend/js-sdk'
 
-import * as Api from './_api'
+import * as ApiImporter from './_api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -36,7 +36,7 @@ describe('Movements history module', () => {
 
   describe('created hook', () => {
     it('calls initApi function', () => {
-      sinon.stub(Api, 'initApi')
+      sinon.stub(ApiImporter, 'initApi')
 
       shallowMount(MovementsHistoryModule, {
         localVue,
@@ -44,10 +44,10 @@ describe('Movements history module', () => {
         propsData: props,
       })
 
-      expect(Api.initApi.withArgs(props.wallet, props.config))
+      expect(ApiImporter.initApi.withArgs(props.wallet, props.config))
         .to.have.been.calledOnce
 
-      Api.initApi.restore()
+      ApiImporter.initApi.restore()
     })
 
     it('calls setAccountId method', () => {

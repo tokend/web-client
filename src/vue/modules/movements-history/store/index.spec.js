@@ -6,7 +6,7 @@ import { Wallet } from '@tokend/js-sdk'
 import { Movement } from '../wrappers/movement'
 import { Balance } from '../wrappers/balance'
 
-import * as Api from '../_api'
+import * as ApiImporter from '../_api'
 import accountBalancesJSON from '@/test/mocks/account-balances'
 
 describe('movements-history.module', () => {
@@ -107,7 +107,7 @@ describe('movements-history.module', () => {
         dispatch: sinon.stub(),
       }
 
-      Api.initApi(wallet, config)
+      ApiImporter.initApi(wallet, config)
     })
 
     describe('LOAD_MOVEMENTS', () => {
@@ -124,7 +124,7 @@ describe('movements-history.module', () => {
           include: ['effect', 'operation.details'],
         }
 
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(ApiImporter.api(), 'getWithSignature').resolves()
 
         await actions[types.LOAD_MOVEMENTS](
           {
@@ -139,18 +139,18 @@ describe('movements-history.module', () => {
           assetCode
         )
 
-        expect(Api.api().getWithSignature)
+        expect(ApiImporter.api().getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/history',
             expectedParams
           )
 
-        Api.api().getWithSignature.restore()
+        ApiImporter.api().getWithSignature.restore()
       })
     })
     describe('LOAD_BALANCES', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature')
+        sinon.stub(ApiImporter.api(), 'getWithSignature')
           .resolves({
             data: {
               balances: accountBalancesJSON,
@@ -168,7 +168,7 @@ describe('movements-history.module', () => {
           .deep
           .equal(Object.entries(expectedMutations))
 
-        Api.api().getWithSignature.restore()
+        ApiImporter.api().getWithSignature.restore()
       })
     })
   })
