@@ -8,13 +8,17 @@ export class ChangeRoleRequestRecord {
     this.requestor = _get(record, 'requestor.id')
     this.reviewer = _get(record, 'reviewer.id')
     this.reference = record.reference
-    this.rejectReason = record.rejectReason
+    this.rejectReason = record.rejectReason ||
+      _get(record, 'requestDetails.creatorDetails.reason')
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
     this.state = record.state
     this.stateI = record.stateI
 
+    this.previousAccountRole = _get(
+      record, 'requestDetails.creatorDetails.previousAccountRole'
+    )
     this.requestType = _get(record, 'requestDetails.type')
 
     this.allTasks = record.allTasks

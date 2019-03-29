@@ -16,6 +16,7 @@ import safeGet from 'lodash/get'
  */
 
 export const state = {
+  isAccountRoleReset: false,
   request: {},
   latestData: '{}', // JSON string
 }
@@ -27,6 +28,10 @@ export const mutations = {
 
   [vuexTypes.SET_KYC_LATEST_DATA] (state, data) {
     state.latestData = data
+  },
+
+  [vuexTypes.SET_ACCOUNT_ROLE_RESET] (state, isReset) {
+    state.isAccountRoleReset = isReset
   },
 }
 
@@ -66,10 +71,12 @@ export const actions = {
       return
     }
 
-    commit(
-      vuexTypes.SET_KYC_LATEST_REQUEST,
-      new ChangeRoleRequestRecord(response.data[0])
-    )
+    const request = new ChangeRoleRequestRecord(response.data[0])
+    const unverifiedRoleId = rootGetters[vuexTypes.kvEntryUnverifiedRoleId]
+    const isAccountRoleReset = request.accountRoleToSet === unverifiedRoleId
+
+    commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, isAccountRoleReset)
+    commit(vuexTypes.SET_KYC_LATEST_REQUEST, request)
   },
 
   async [vuexTypes.LOAD_KYC_DATA] ({
@@ -91,13 +98,18 @@ export const getters = {
   [vuexTypes.kycState]: state => state.request.state,
   [vuexTypes.kycStateI]: state => state.request.stateI,
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
-  [vuexTypes.kycAccountRoleToSet]: state => state.request.accountRoleToSet,
+  [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReset
+    ? undefined
+    : state.request.accountRoleToSet,
+  [vuexTypes.kycPreviousAccountRole]: state =>
+    state.request.previousAccountRole,
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycAvatarKey]: state => safeGet(
     JSON.parse(state.latestData),
     'documents.kyc_avatar.key'
   ),
+  [vuexTypes.isAccountRoleReset]: state => state.isAccountRoleReset,
 }
 
 export default {

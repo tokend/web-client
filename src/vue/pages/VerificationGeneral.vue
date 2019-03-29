@@ -212,9 +212,19 @@ export default {
   computed: {
     ...mapGetters({
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+      isAccountRoleReset: vuexTypes.isAccountRoleReset,
+      previousAccountRole: vuexTypes.kycPreviousAccountRole,
     }),
     verificationCode () {
       return this.accountId.slice(1, 6)
+    },
+    isFormEditable () {
+      return this.isAccountRoleReset ||
+        this.kycState === REQUEST_STATES_STR.rejected
+    },
+    isFormAutocompleted () {
+      return (this.previousAccountRole === this.kvEntryGeneralRoleId) ||
+        (!this.isAccountRoleReset && this.kycState)
     },
   },
 
@@ -228,11 +238,12 @@ export default {
       ErrorHandler.processWithoutFeedback(e)
     }
 
-    if (this.kycState) {
+    if (this.isFormAutocompleted) {
       this.form = this.parseKycData(this.kycLatestData)
-      if (this.kycState !== REQUEST_STATES_STR.rejected) {
-        this.disableForm()
-      }
+    }
+
+    if (!this.isFormEditable) {
+      this.disableForm()
     }
   },
 

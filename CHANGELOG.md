@@ -45,6 +45,10 @@ for further information about branching and tagging conventions.
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
 - Add coinpayments-deposit module
+- `isAccountRoleReset` state field to the KYC vuex module
+- Checking for previous account role & resetting reason when loading 
+KYC request
+- Checking for reset account role on verification pages
 
 ### Changed
 - Now using new account endpoint for loading the fees

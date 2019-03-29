@@ -22,6 +22,7 @@ const mutations = {
   // kyc
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
+  SET_ACCOUNT_ROLE_RESET: 'SET_ACCOUNT_ROLE_RESET',
 }
 
 const actions = {
@@ -89,8 +90,10 @@ const getters = {
   kycRequestId: 'kycRequestId',
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycAccountRoleToSet: 'kycAccountRoleToSet',
+  kycPreviousAccountRole: 'kycPreviousAccountRole',
   kycLatestData: 'kycLatestData',
   kycAvatarKey: 'kycAvatarKey',
+  isAccountRoleReset: 'isAccountRoleReset',
 }
 
 export const vuexTypes = {
