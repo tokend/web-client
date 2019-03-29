@@ -10,32 +10,9 @@ import * as ApiImporter from '../_api'
 import accountBalancesJSON from '@/test/mocks/account-balances'
 
 describe('movements-history.module', () => {
-  const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-  const balances = [
-    {
-      id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
-      asset: {
-        id: 'BTC',
-        type: 'assets',
-      },
-    },
-  ]
-  const movements = [
-    {
-      id: '176093659138',
-      balance: {
-        id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
-        type: 'balances',
-      },
-      asset: {
-        id: 'BTC',
-        type: 'assets',
-      },
-    },
-  ]
-
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
+      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
       const state = {
         accountId: '',
       }
@@ -48,6 +25,15 @@ describe('movements-history.module', () => {
     })
 
     it('SET_BALANCES should properly modify state', () => {
+      const balances = [
+        {
+          id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
+          asset: {
+            id: 'BTC',
+            type: 'assets',
+          },
+        },
+      ]
       const state = {
         balances: [],
       }
@@ -60,6 +46,19 @@ describe('movements-history.module', () => {
     })
 
     it('SET_MOVEMENTS should properly modify state', () => {
+      const movements = [
+        {
+          id: '176093659138',
+          balance: {
+            id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
+            type: 'balances',
+          },
+          asset: {
+            id: 'BTC',
+            type: 'assets',
+          },
+        },
+      ]
       const state = {
         movements: [],
       }
@@ -72,6 +71,19 @@ describe('movements-history.module', () => {
     })
 
     it('CONCAT_MOVEMENTS should properly modify state', () => {
+      const movements = [
+        {
+          id: '176093659138',
+          balance: {
+            id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
+            type: 'balances',
+          },
+          asset: {
+            id: 'BTC',
+            type: 'assets',
+          },
+        },
+      ]
       const state = {
         movements,
       }
@@ -85,6 +97,7 @@ describe('movements-history.module', () => {
   })
 
   describe('actions', () => {
+    const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
     const wallet = new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
@@ -112,6 +125,7 @@ describe('movements-history.module', () => {
 
     describe('LOAD_MOVEMENTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
+        const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
         const assetCode = 'BTC'
         const expectedParams = {
           page: {
@@ -175,6 +189,7 @@ describe('movements-history.module', () => {
 
   describe('getters', () => {
     it('accountId', () => {
+      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
       const state = { accountId }
 
       expect(getters[types.accountId](state))
@@ -182,12 +197,34 @@ describe('movements-history.module', () => {
     })
 
     it('movements', () => {
+      const movements = [
+        {
+          id: '176093659138',
+          balance: {
+            id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
+            type: 'balances',
+          },
+          asset: {
+            id: 'BTC',
+            type: 'assets',
+          },
+        },
+      ]
       const state = { movements }
 
       expect(getters[types.movements](state))
         .to.deep.equal(movements.map(m => new Movement(m)))
     })
     it('balances', () => {
+      const balances = [
+        {
+          id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
+          asset: {
+            id: 'BTC',
+            type: 'assets',
+          },
+        },
+      ]
       const state = { balances }
 
       expect(getters[types.balances](state))
