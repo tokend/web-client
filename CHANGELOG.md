@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - `UserDoesntExistError`, when user's account is not found
 - `IdentityGetterMixin` for getting user's email by their account ID & vice versa
 - Loading account roles from the key-value storage
+- Test JIRA
 
 ### Fixed
 - `RecordWrapper.request`, `RequestRecord` according to the new request types
