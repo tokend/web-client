@@ -3,11 +3,11 @@ import { types } from './types'
 
 import { Wallet, base } from '@tokend/js-sdk'
 
-import { CreateAssetRequest } from '../wrappers/create-asset-request'
+import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 
 import * as Api from '../_api'
 
-describe('create-asset-requests.module', () => {
+describe('incoming-withdrawals-requests.module', () => {
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
@@ -90,15 +90,15 @@ describe('create-asset-requests.module', () => {
 
         expect(Api.api().getWithSignature)
           .to.have.been.calledOnceWithExactly(
-            '/v3/create_asset_requests',
+            '/v3/create_withdraw_requests',
             {
               page: {
                 order: 'desc',
               },
               filter: {
-                requestor: 'SOME_ACCOUNT_ID',
+                reviewer: 'SOME_ACCOUNT_ID',
               },
-              include: ['request_details'],
+              include: ['request_details', 'request_details.balance'],
             }
           )
 
@@ -106,30 +106,88 @@ describe('create-asset-requests.module', () => {
       })
     })
 
-    describe('CANCEL_REQUEST', () => {
+    describe('APPROVE_REQUEST', () => {
       beforeEach(() => {
         sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(base.ReviewRequestBuilder, 'reviewWithdrawRequest')
       })
 
       afterEach(() => {
         Api.api().postOperations.restore()
+        base.ReviewRequestBuilder.reviewWithdrawRequest.restore()
       })
 
-      it('calls base.ManageAssetBuilder.cancelAssetRequest with provided params', async () => {
-        sinon.stub(base.ManageAssetBuilder, 'cancelAssetRequest')
+      it('calls base.ReviewRequestBuilder.reviewWithdrawRequest with provided params', async () => {
+        await actions[types.APPROVE_REQUEST]({}, {
+          id: 'REQUEST_ID',
+          hash: 'REQUEST_HASH',
+          typeI: 1,
+          pendingTasks: 1024,
+        })
 
-        await actions[types.CANCEL_REQUEST]({}, '1')
-
-        expect(base.ManageAssetBuilder.cancelAssetRequest)
+        expect(base.ReviewRequestBuilder.reviewWithdrawRequest)
           .to.have.been.calledOnceWithExactly({
-            requestID: '1',
+            requestID: 'REQUEST_ID',
+            requestHash: 'REQUEST_HASH',
+            requestType: 1,
+            reviewDetails: {
+              tasksToAdd: 0,
+              tasksToRemove: 1024,
+              externalDetails: {},
+            },
+            requestDetails: '{"tasksToAdd":0,"tasksToRemove":1024,"externalDetails":{}}',
+            action: base.xdr.ReviewRequestOpAction.approve().value,
+            reason: '',
           })
-
-        base.ManageAssetBuilder.cancelAssetRequest.restore()
       })
 
-      it('calls api().postOperations with correct params', async () => {
-        await actions[types.CANCEL_REQUEST]({}, '1')
+      it('calls api().postOperations', async () => {
+        await actions[types.APPROVE_REQUEST]({}, {})
+
+        expect(Api.api().postOperations).to.have.been.calledOnce
+      })
+    })
+
+    describe('REJECT_REQUEST', () => {
+      beforeEach(() => {
+        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(base.ReviewRequestBuilder, 'reviewWithdrawRequest')
+      })
+
+      afterEach(() => {
+        Api.api().postOperations.restore()
+        base.ReviewRequestBuilder.reviewWithdrawRequest.restore()
+      })
+
+      it('calls base.ReviewRequestBuilder.reviewWithdrawRequest with provided params', async () => {
+        await actions[types.REJECT_REQUEST]({}, {
+          request: {
+            id: 'REQUEST_ID',
+            hash: 'REQUEST_HASH',
+            typeI: 1,
+            pendingTasks: 1024,
+          },
+          reason: 'Some reason',
+        })
+
+        expect(base.ReviewRequestBuilder.reviewWithdrawRequest)
+          .to.have.been.calledOnceWithExactly({
+            requestID: 'REQUEST_ID',
+            requestHash: 'REQUEST_HASH',
+            requestType: 1,
+            reviewDetails: {
+              tasksToAdd: 0,
+              tasksToRemove: 1024,
+              externalDetails: {},
+            },
+            requestDetails: '{"tasksToAdd":0,"tasksToRemove":1024,"externalDetails":{}}',
+            action: base.xdr.ReviewRequestOpAction.permanentReject().value,
+            reason: 'Some reason',
+          })
+      })
+
+      it('calls api().postOperations', async () => {
+        await actions[types.REJECT_REQUEST]({}, { request: {}, reason: '' })
 
         expect(Api.api().postOperations).to.have.been.calledOnce
       })
@@ -154,8 +212,8 @@ describe('create-asset-requests.module', () => {
 
       expect(getters[types.requests](state))
         .to.deep.equal([
-          new CreateAssetRequest({ id: '1' }),
-          new CreateAssetRequest({ id: '2' }),
+          new IncomingWithdrawalRequest({ id: '1' }),
+          new IncomingWithdrawalRequest({ id: '2' }),
         ])
     })
   })

@@ -29,7 +29,6 @@ export default {
     IncomingWithdrawalRequestsModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
     },
   }),
 

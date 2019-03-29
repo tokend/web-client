@@ -24,7 +24,7 @@
         <button
           v-ripple
           class="request-actions__approve-btn app__button-raised"
-          :disabled="!canBeApproved"
+          :disabled="!canBeReviewed"
           @click="showConfirmation"
         >
           {{ 'incoming-withdrawal-requests.approve-btn' | globalize }}
@@ -33,7 +33,7 @@
         <button
           v-ripple
           class="request-actions__reject-btn app__button-flat"
-          :disabled="!canBeRejected"
+          :disabled="!canBeReviewed"
           @click="isRejectFormShown = true"
         >
           {{ 'incoming-withdrawal-requests.reject-btn' | globalize }}
@@ -77,11 +77,7 @@ export default {
   }),
 
   computed: {
-    canBeApproved () {
-      return this.request.isRejected || this.request.isPending
-    },
-
-    canBeRejected () {
+    canBeReviewed () {
       return this.request.isPending
     },
   },

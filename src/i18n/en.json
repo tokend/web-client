@@ -825,7 +825,7 @@
       "comment": "Comment",
       "amount": "Amount",
       "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
+      "calculated-percent-fee": "Calculated percent fee",
       "total-fee": "Total fee",
       "approve-btn": "Approve",
       "reject-btn": "REJECT",

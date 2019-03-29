@@ -42,8 +42,11 @@
         </tr>
 
         <tr>
-          <td>{{ 'incoming-withdrawal-requests.percent-fee' | globalize }}</td>
-          <td>{{ request.percentFee | formatMoney }}</td>
+          <td>
+            <!-- eslint-disable-next-line max-len -->
+            {{ 'incoming-withdrawal-requests.calculated-percent-fee' | globalize }}
+          </td>
+          <td>{{ request.calculatedPercentFee | formatMoney }}</td>
         </tr>
 
         <tr>

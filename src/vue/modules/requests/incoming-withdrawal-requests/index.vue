@@ -71,7 +71,6 @@ export default {
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
      */
     config: {
       type: Object,
