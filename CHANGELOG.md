@@ -49,6 +49,7 @@ method was called at least once through tests execution
 - Add coinpayments-deposit module
 - Added movements history modules unit tests
 - Allow requesting limits change for all of the account types
+- Update chart tickers
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -86,9 +87,21 @@ method was called at least once through tests execution
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
 - Pending status updating in the "Change Limits" form
+- Show only base asset on dividend payout
+- Fixed bug with check isAccessible in router
+- Console errors in movements unit tests
+- Sorting of order book
+- Converting account role to string while creating change role request
+- Fix bug with cancel order
+- Fix bug with import mapActions in SubmitTradeOfferForm
+- Invalid start date for sales that are already started
+
+### Removed
+- Removed feature flags from config
+- Remove `globalize` from asset create form `assetTypes` computed property
+- Converting account role to string in `ChangeRoleRequestRecord`
 
 ## [1.3.1-rc.0] - 2019-03-20
-
 ### Changed
 - Do not throw an error if movement has an unknown effect or operation details
 

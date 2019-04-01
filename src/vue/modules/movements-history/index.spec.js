@@ -35,9 +35,19 @@ describe('Movements history module', () => {
   })
 
   describe('created hook', () => {
-    it('calls initApi function', () => {
+    beforeEach(() => {
       sinon.stub(ApiImporter, 'initApi')
+      sinon.stub(MovementsHistoryModule.methods, 'setAccountId')
+      sinon.stub(MovementsHistoryModule.methods, 'loadBalances').resolves()
+    })
 
+    afterEach(() => {
+      ApiImporter.initApi.restore()
+      MovementsHistoryModule.methods.setAccountId.restore()
+      MovementsHistoryModule.methods.loadBalances.restore()
+    })
+
+    it('calls initApi function', () => {
       shallowMount(MovementsHistoryModule, {
         localVue,
         store,
@@ -46,13 +56,9 @@ describe('Movements history module', () => {
 
       expect(ApiImporter.initApi.withArgs(props.wallet, props.config))
         .to.have.been.calledOnce
-
-      ApiImporter.initApi.restore()
     })
 
     it('calls setAccountId method', () => {
-      sinon.stub(MovementsHistoryModule.methods, 'setAccountId')
-
       shallowMount(MovementsHistoryModule, {
         localVue,
         store,
@@ -61,32 +67,21 @@ describe('Movements history module', () => {
 
       expect(MovementsHistoryModule.methods.setAccountId)
         .to.have.been.calledOnceWithExactly(props.wallet.accountId)
-
-      MovementsHistoryModule.methods.setAccountId.restore()
     })
 
     it('calls loadBalances action', () => {
-      const loadBalancesSpy = sinon
-        .stub(MovementsHistoryModule.methods, 'loadBalances')
-        .resolves()
-
       shallowMount(MovementsHistoryModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(loadBalancesSpy)
+      expect(MovementsHistoryModule.methods.loadBalances)
         .to.have.been.calledOnce
-
-      MovementsHistoryModule.methods.loadBalances.restore()
     })
 
     it('sets isInitialized property to true if actions in Created were succeded',
       async () => {
-        sinon
-          .stub(MovementsHistoryModule.methods, 'loadBalances')
-          .resolves()
         const wrapper = await shallowMount(MovementsHistoryModule, {
           store,
           localVue,
@@ -101,11 +96,17 @@ describe('Movements history module', () => {
     let wrapper
 
     beforeEach(() => {
+      sinon.stub(MovementsHistoryModule, 'created').resolves()
+
       wrapper = shallowMount(MovementsHistoryModule, {
         store,
         localVue,
         propsData: props,
       })
+    })
+
+    afterEach(() => {
+      MovementsHistoryModule.created.restore()
     })
 
     describe('method', () => {
