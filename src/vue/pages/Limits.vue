@@ -127,7 +127,6 @@ export default {
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
-      isAccountCorporate: vuexTypes.isAccountCorporate,
       accountId: vuexTypes.accountId,
     }),
     accountBalancesAssetsCodes () {
