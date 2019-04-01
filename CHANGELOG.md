@@ -90,6 +90,8 @@ method was called at least once through tests execution
 - Console errors in movements unit tests
 - Sorting of order book
 - Converting account role to string while creating change role request
+- Fix bug with cancel order
+- Fix bug with import mapActions in SubmitTradeOfferForm
 
 ### Removed
 - Removed feature flags from config
