@@ -151,6 +151,7 @@
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
+import _get from 'lodash/get'
 
 import { Api } from '@/api'
 
@@ -168,6 +169,12 @@ import { vuexTypes } from '@/vuex'
 import { required, url, integer, minValue } from '@validators'
 
 const MIN_TEAM_SIZE = 1
+
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 
 export default {
   name: 'verification-corporate-form',
@@ -265,7 +272,7 @@ export default {
 
     async uploadAvatar () {
       let document = this.form.avatar
-      if (!document.key) {
+      if (document && !document.key) {
         document = await DocumentUploader.uploadSingleDocument(document)
       }
     },
@@ -279,8 +286,9 @@ export default {
         team_size: this.form.teamSize,
         homepage: this.form.website,
         documents: {
-          [DOCUMENT_TYPES.kycAvatar]:
-            this.form.avatar.getDetailsForSave(),
+          [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
+            ? this.form.avatar.getDetailsForSave()
+            : EMPTY_DOCUMENT,
         },
       }
     },
@@ -289,22 +297,14 @@ export default {
       return {
         name: kycData.name,
         company: kycData.company,
-        avatar: kycData.documents[DOCUMENT_TYPES.kycAvatar]
-          ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycAvatar])
-          : {},
+        avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
+          ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+          : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
         teamSize: kycData.team_size,
         website: kycData.homepage,
       }
-    },
-
-    wrapDocument (document) {
-      return new DocumentContainer({
-        mimeType: document.mime_type,
-        name: document.name,
-        key: document.key,
-      })
     },
   },
 }

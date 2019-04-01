@@ -102,6 +102,7 @@ KYC request
 - Fix bug with import mapActions in SubmitTradeOfferForm
 - Invalid start date for sales that are already started
 - Converting account role ID to number
+- Fixed upload kyc form without avatar
 
 ### Removed
 - Removed feature flags from config
