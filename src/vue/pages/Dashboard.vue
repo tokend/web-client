@@ -77,7 +77,10 @@
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>
-        <transfer :asset-to-transfer="currentAsset" />
+        <transfer
+          @operation-submitted="updateBalances()"
+          :asset-to-transfer="currentAsset"
+        />
       </template>
     </drawer>
   </div>
@@ -165,6 +168,9 @@ export default {
         this.currentAsset =
           keys.find(a => a === 'ETH') || keys[0] || ''
       }
+    },
+    async updateBalances () {
+      await this.loadBalances()
     },
   },
 }
