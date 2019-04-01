@@ -41,13 +41,21 @@ export default {
       type: String,
       required: true,
     },
+    isLocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     amount () {
-      return {
-        currency: this.assetCode,
-        value: this.effect.amount,
+      const currency = this.assetCode
+      let value = this.effect.amount
+
+      if (this.isLocked) {
+        value = -value
       }
+
+      return { currency, value }
     },
     fixedFee () {
       return {

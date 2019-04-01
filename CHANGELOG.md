@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
 - Pre-issuance drawer pseudo module
@@ -43,7 +44,10 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
+- Watcher for console calls that shows the error message if the console
+method was called at least once through tests execution
 - Add coinpayments-deposit module
+- Added movements history modules unit tests
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -52,6 +56,10 @@ for further information about branching and tagging conventions.
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- One request to fetch all the account roles instead of fetching it one-by-one `key-value.module.js`
+- Rename fee "Subtype" table header to "Destination" one
+- Now display negative amount on balance effect viewers
+- Renamed operation state "Sale state updated" -> "Sale closed"
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -71,7 +79,11 @@ for further information about branching and tagging conventions.
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- Displaying long strings (asset name, sale short description) inside card components
 - "Tokens" page responsive design
+- Do not allow unverified users to add an asset with KYC required type to their balances
+- Added loading balances to components using balances
+- Fixed bug with updating balance in AddressLoader
 
 ### Removed
 - Remove `globalize` from asset create form `assetTypes` computed property
