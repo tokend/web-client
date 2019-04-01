@@ -201,6 +201,7 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
@@ -208,12 +209,24 @@ export default {
     isExistsInUserBalances () {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
+    isBalanceCreationAllowed () {
+      return this.asset.assetType === this.kvAssetTypeKycRequired &&
+        this.isAccountUnverified
+    },
+  },
+  async created () {
+    await this.loadBalances()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
+      if (this.isBalanceCreationAllowed) {
+        Bus.error('asset-details.verification-required-err')
+        return
+      }
+
       this.isBalanceCreating = true
       try {
         const operation = base.Operation.manageBalance({

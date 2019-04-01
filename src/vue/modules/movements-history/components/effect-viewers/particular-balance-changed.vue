@@ -36,13 +36,21 @@ export default {
       type: ParticularBalanceChangeEffect,
       required: true,
     },
+    isOutgoing: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     amount () {
-      return {
-        value: this.effect.amount,
-        currency: this.effect.assetCode,
+      const currency = this.effect.assetCode
+      let value = this.effect.amount
+
+      if (this.isOutgoing) {
+        value = -value
       }
+
+      return { currency, value }
     },
     fixedFee () {
       return {

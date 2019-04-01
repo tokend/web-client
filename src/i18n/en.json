@@ -371,7 +371,7 @@
         "percent-th": "Percent",
         "lower-bound-th": "Lower bound",
         "upper-bound-th": "Upper bound",
-        "subtype-th": "Subtype"
+        "direction-th": "Direction"
       },
       "fees-loading-msg": "Loading your fees…",
       "fees-loading-error-msg": "There was an error while loading your fees.",
@@ -481,7 +481,7 @@
       "operations": {
         "create-issuance-request": "Issuance/deposit requested",
         "create-withdraw-request": "Withdraw requested",
-        "check-sale-state": "Sale state updated",
+        "check-sale-state": "Sale closed",
         "review-request": "Request reviewed",
         "create-aml-alert-request": "AML alert",
         "manage-asset-pair": "Pair updated",
@@ -789,7 +789,8 @@
       "balance-added-msg": "Added to your balances",
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
-      "expected-revenue": "Expected revenue per year"
+      "expected-revenue": "Expected revenue per year",
+      "verification-required-err": "You need to verify your account to add this token to your balances"
     },
     "asset-request-details": {
       "request-type-title": "Request type",
@@ -881,7 +882,10 @@
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
       "days-after-end": "Closed {{days}} days ago",
-      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
+      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**",
+      "days-to-end": "{{days}} days to close",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "trade-history": {
       "title": "Trade history",
@@ -995,7 +999,10 @@
       "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
-      "days-after-end": "days after closed"
+      "days-after-end": "days after closed",
+      "days-to-end": "days to closed",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "opportunity-details": {
       "loading-msg": "Loading",
