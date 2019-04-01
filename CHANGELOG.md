@@ -53,6 +53,7 @@ method was called at least once through tests execution
 - Checking for previous account role & resetting reason when loading 
 KYC request
 - Checking for reset account role on verification pages
+- `resetReason` field to the `ChangeRoleRequestRecord`
 
 ### Changed
 - Now using new account endpoint for loading the fees
