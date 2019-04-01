@@ -225,7 +225,7 @@ export default {
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
-        : this.kycState
+        : !!this.kycState
     },
   },
 
