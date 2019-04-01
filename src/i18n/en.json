@@ -990,7 +990,8 @@
     "sale-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "campaign-title": "Campaign",
+      "campaign-tab": "Campaign",
+      "all-sales-tab": "All sales",
       "invest": "Invest",
       "overview-title": "Sale overview",
       "sale-not-found-title": "Sale not found",

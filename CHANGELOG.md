@@ -9,105 +9,93 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Added
-- Issuance explorer module
-- Fees module
-- User-friendly data displaying in the input fields. If the data does not fit in a field, then three dots are added at the end
-- Displaying TokenD logo & load spinner while loading the page
-- Documents page
-- Document upload form module
-- Cancel trade offers in the "My orders" tab on the "Trade" page
-- CapsLock warning for the input fields with "password" type
-- Displaying asset policies & asset type on the `AssetDetails` page
-- `record` getter to the `AssetRecord`
-- Added confirmation to cancel token creation request
-- CLI config passing
-- Added module enabling/disabling
-- Added module schemes
-- Healthcare document type
-- Document explorer page
-- Document explorer module
-- Withdrawal fiat by the bank information form module
-- Withdrawal fiat by the card information form module
-- Updating of account details
-- Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
-- Show destination address holder email in the Withdrawal creation form
-- Loyalty points statistics module
-- Pre-issuance drawer pseudo module
-- Avatar field on verification forms
-- Application logo URL for module scheme
-- Displaying user avatar in passport
-- Loyalty points merchant & reconcillation schemes
-- Subject info `Dividend for <token-name>` for every payment operation in dividends
-- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
-- For sales that were ended show highlighted text like a "Closed [days] ago"
-- Reword create opportunity label "KYC Required" => "Verification required"
-- Asset loading via the loop where was `filter[limit]=100`
-- Correct base/quote price calculating for Opportunities
-- Custom validation rules for sale's "Soft cap" and "Hard cap" values
-- Custom Movements TopBar for REIT scheme
+ Modularized:
+  - Issuance explorer page
+  - Fees page
+  - TopBar component
+- Improvements of `<input-field>`:
+  - Added ellipsis of overflowed text to
+  - Added "CapsLock enabled" warning for fields with "password" type
+- CLI arguments support
+- Module-descriptors schemes (see `src/modules-arch/README.md`)
+- TokenD loading spinner at application initialization
+- Trade offers cancellation in "My orders" tab on "Trade" page
+- Displaying of asset policies and asset type to asset details drawer
+- Confirmation before token creation request canceling
+- Experimental features reference and note to README.md
+- Polling tickers:
+  - Charts now poll prices
+  - Passport now poll account and KYC
+- `<noscript>` with message for users with JavaScript switched off or
+  browsers that don’t support JavaScript
+- Client withdrawable requests:
+  - Show withdrawal reviewer’s email address in withdrawal form
+  - Added "Incoming withdrawal" tab to "Requests" page
+- User avatar upload. Both general and corporate users can upload avatars
+- For sales that were ended show highlighted "Closed X days ago" text
+- Custom validation rules for sale’s "Soft cap" and "Hard cap" values
 - Watcher for console calls that shows the error message if the console
-method was called at least once through tests execution
-- Add coinpayments-deposit module
-- Added movements history modules unit tests
-- Allow requesting limits change for all of the account types
-- Update chart tickers
-- `isAccountRoleReseted` state field to the KYC vuex module
-- Checking for previous account role & resetting reason when loading 
-KYC request
-- Checking for reset account role on verification pages
-- `resetReason` field to the `ChangeRoleRequestRecord`
+  method was called at least once through tests execution
+- Account reset support:
+  - `isAccountRoleReseted` state field to the KYC vuex module
+  - Checking for previous account role & resetting reason when loading
+    KYC request
+  - Checking for reset account role on verification pages
+  - `resetReason` field to the `ChangeRoleRequestRecord`
+- Coinpayments-deposit module (client-side integration with Coinpayments)
+- Movements history modules unit tests
+- Allow requesting of limits change for all account types
+- `record` getter to the `AssetRecord`
 
 ### Changed
-- Now using new account endpoint for loading the fees
-- Moved fees filters to the corresponding viewers
-- Renamed `DescriptionEditor` -> `MarkdownField`
-- Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
-- Moved TopBar to the module
-- One request to fetch all the account roles instead of fetching it one-by-one `key-value.module.js`
-- Rename fee "Subtype" table header to "Destination" one
-- Now display negative amount on balance effect viewers
+- Renamed `DescriptionEditor` => `MarkdownField`. Also moved to the fields
+  directory & included it to the form mixin components
+- Now using new account endpoint for loading fees
+- Moved fees filters out of global scope to the corresponding viewer components
+- One request to fetch all the account roles instead of fetching then one-by-one
+- Rename fee "Subtype" table header to "Destination"
 - Renamed operation state "Sale state updated" -> "Sale closed"
-
-### Fixed
-- Sidebar displaying in the Safari browser on the small screens
-- Scrolling to the top of asset-create-form, asset-update-form, create-sale-form after moving to the next step
-- Loading balances instead of account on the movements page
-- Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
-- Move no-data-message translate ids pass to the elements that use component
-- Chart line displaying
-- Loading balances instead of account on withdrawal form
-- Fix get Account Id By Email
-- Investment in the sale. We could not invest the full amount before, because the amount was calculated not according to the base asset, but by quote
-- Loader displaying in the Opportunity create form
-- Calculated redeem price displaying for old tokens
-- Amount validation in the Withdrawal form
-- Correct dividends subject
-- Fees displaying on the Movements page
-- "Soft cap" validation in the "Opportunity create" form
-- Asset name displaying
-- Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
-- Displaying long strings (asset name, sale short description) inside card components
-- "Tokens" page responsive design
-- Do not allow unverified users to add an asset with KYC required type to their balances
-- Added loading balances to components using balances
-- Fixed bug with updating balance in AddressLoader
-- Pending status updating in the "Change Limits" form
-- Show only base asset on dividend payout
-- Fixed bug with check isAccessible in router
-- Console errors in movements unit tests
-- Sorting of order book
-- Converting account role to string while creating change role request
-- Fix bug with cancel order
-- Fix bug with import mapActions in SubmitTradeOfferForm
-- Invalid start date for sales that are already started
-- Converting account role ID to number
-- Fixed upload kyc form without avatar
+- Asset loading via the loop instead of fetching by `filter[limit]=100`
 
 ### Removed
 - Removed feature flags from config
-- Remove `globalize` from asset create form `assetTypes` computed property
+- Remove `globalize` from asset creating form’s `assetTypes` computed property
 - Converting account role to string in `ChangeRoleRequestRecord`
+
+### Fixed
+- Now display negative amount on balance effect viewers
+- Sidebar displaying in the Safari browser on small screens
+- Scrolling to the top of asset-create-form, asset-update-form, create-sale-form
+  after moving to the next step
+- Loading balances instead of account on "Movements" page
+- Checking for KYC state, not for KYC latest data while loading KYC in the
+  verification forms
+- Replace translation IDs of no-data-message component with non-translatable
+  analogues (should accept already translated strings now)
+- Loading balances instead of account on withdrawal form
+- Sale investment total amount calculation
+- Amount validation in "Withdrawal" forms
+- Asset name displaying on some screens
+- Displaying long strings (asset name, sale short description) inside card-like
+  components
+- "Tokens" page responsive design
+- Do not allow unverified users to add an asset with "KYC required" type to
+  their balances
+- Added loading balances to some components that show current balance hints
+- Pending status updating in the "Change Limits" form
+- Sorting of order book (now descending for asks)
+- Converting account role to string while creating change role request
+- Invalid start date for sales that are already started
+- Fixed a bug with unconverted account role ID to number before KYC submitting
+- Fixed upload kyc form without avatar
+- Fixed some strings displaying on "Movements"
+- Fixed console errors causing in "Movements" page unit tests
+- Fixed `getAccountIdByEmail`’s email fetching bug of identity-getter.js
+- Fixed a bug with impossible order cancelling if user had insufficient balance
+- Fixed a bug with import `mapActions` in `SubmitTradeOfferForm`
+- Fixed a bug with chart line displaying
+- Fixed a bug with balance updating in `AddressLoader`
 
 ## [1.3.1-rc.0] - 2019-03-20
 ### Changed
