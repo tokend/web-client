@@ -149,14 +149,14 @@ export default {
     },
   },
   async created () {
-    await this.loadTokens()
+    await this.loadAssets()
     await this.loadBalances()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    async loadTokens () {
+    async loadAssets () {
       try {
         const response = await Sdk.horizon.assets.getAll()
         this.assets = response.data.map(asset => new AssetRecord(asset))
