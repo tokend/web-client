@@ -79,7 +79,7 @@ describe('Asset', () => {
       })
     })
 
-    describe('isWithDrawable', () => {
+    describe('isWithdrawable', () => {
       it('returns proper value', () => {
         const withdrawableAsset = new Asset({
           policies: {
@@ -102,24 +102,24 @@ describe('Asset', () => {
     describe('logoUrl', () => {
       it('returns proper asset logo URL', () => {
         const storageUrl = 'https://storage.com'
-        const key = 'fooEq112ewq134qweq41weqweqwe'
+        const key = 'logo-key'
 
         const asset = new Asset({ details: { logo: { key } } })
 
         expect(asset.logoUrl(storageUrl))
-          .to.equal('https://storage.com/fooEq112ewq134qweq41weqweqwe')
+          .to.equal('https://storage.com/logo-key')
       })
     })
 
     describe('termsUrl', () => {
       it('returns proper asset terms URL', () => {
         const storageUrl = 'https://storage.com'
-        const key = 'barEq112ewq134qweq41weqweqwe'
+        const key = 'terms-key'
 
         const asset = new Asset({ details: { terms: { key } } })
 
         expect(asset.termsUrl(storageUrl))
-          .to.equal('https://storage.com/barEq112ewq134qweq41weqweqwe')
+          .to.equal('https://storage.com/terms-key')
       })
     })
   })

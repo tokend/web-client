@@ -25,7 +25,7 @@
           />
 
           <div class="assets-renderer__actions">
-            <asset-actions-bar
+            <asset-actions
               :asset="selectedAsset"
               :is-account-unverified="isAccountUnverified"
               :kyc-required-asset-type="kycRequiredAssetType"
@@ -90,7 +90,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
-import AssetActionsBar from './asset-actions-bar'
+import AssetActions from './asset-actions'
 import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex'
@@ -109,7 +109,7 @@ export default {
     CollectionLoader,
     CardViewer,
     AssetAttributesViewer,
-    AssetActionsBar,
+    AssetActions,
     AssetUpdateForm,
   },
 

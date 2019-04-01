@@ -13,15 +13,11 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Assets renderer', () => {
-  const props = {
-    config: {
-      horizonUrl: 'https://test.api.com',
-    },
-  }
-
+  let sandbox
   let store
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
     store = new Vuex.Store({
       modules: { 'asset-explorer': assetExplorerModule },
     })
@@ -29,12 +25,12 @@ describe('Assets renderer', () => {
 
   describe('created hook', () => {
     it('calls initFirstPageLoader function', () => {
-      sinon.stub(AssetsRenderer.methods, 'initFirstPageLoader')
+      sandbox.stub(AssetsRenderer.methods, 'initFirstPageLoader')
 
       shallowMount(AssetsRenderer, {
         localVue,
         store,
-        propsData: props,
+        propsData: { config: {} },
       })
 
       expect(AssetsRenderer.methods.initFirstPageLoader)
@@ -51,14 +47,14 @@ describe('Assets renderer', () => {
       wrapper = shallowMount(AssetsRenderer, {
         store,
         localVue,
-        propsData: props,
+        propsData: { config: {} },
       })
     })
 
     describe('method', () => {
       describe('loadAssetsPage', () => {
-        it('calls loadAssets method with proper params', async () => {
-          sinon.stub(wrapper.vm, 'loadAssets').resolves()
+        it('calls loadAssets method with proper params and sets isLoaded property to true if loading was succeded', async () => {
+          sandbox.stub(wrapper.vm, 'loadAssets').resolves()
 
           await wrapper.vm.loadAssetsPage()
 
@@ -68,23 +64,12 @@ describe('Assets renderer', () => {
                 limit: 12,
               },
             })
-
-          wrapper.vm.loadAssets.restore()
-        })
-
-        it('sets isLoaded property to true if loading was succeded', async () => {
-          sinon.stub(wrapper.vm, 'loadAssets').resolves()
-
-          await wrapper.vm.loadAssetsPage()
-
           expect(wrapper.vm.isLoaded).to.be.true
-
-          wrapper.vm.loadAssets.restore()
         })
 
         it('handles the error if loading was failed', async () => {
-          sinon.stub(wrapper.vm, 'loadAssets').throws()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
+          sandbox.stub(wrapper.vm, 'loadAssets').throws()
+          sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadAssetsPage()
 
@@ -98,35 +83,18 @@ describe('Assets renderer', () => {
       })
 
       describe('selectAsset', () => {
-        it('sets selectedAsset property to passed param', () => {
-          const asset = new Asset({ id: 'USD' }, '1.000000')
-
-          wrapper.vm.selectAsset(asset)
-
-          expect(wrapper.vm.selectedAsset).to.deep.equal(asset)
-        })
-
-        it('sets isUpdateMode property to false', () => {
+        it('sets selectedAsset property to passed param, isUpdateMode property to false, and isDrawerShown property to true', () => {
           const asset = new Asset({ id: 'USD' }, '1.000000')
 
           wrapper.setData({
             isUpdateMode: true,
-          })
-
-          wrapper.vm.selectAsset(asset)
-
-          expect(wrapper.vm.isUpdateMode).to.be.false
-        })
-
-        it('sets isDrawerShown property to true', () => {
-          const asset = new Asset({ id: 'USD' }, '1.000000')
-
-          wrapper.setData({
             isDrawerShown: false,
           })
 
           wrapper.vm.selectAsset(asset)
 
+          expect(wrapper.vm.selectedAsset).to.deep.equal(asset)
+          expect(wrapper.vm.isUpdateMode).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })

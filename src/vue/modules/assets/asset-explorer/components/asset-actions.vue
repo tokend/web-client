@@ -1,9 +1,9 @@
 <template>
-  <div class="asset-actions-bar">
+  <div class="asset-actions">
     <button
       v-if="!asset.balance"
       v-ripple
-      class="app__button-raised asset-actions-bar__btn"
+      class="app__button-raised asset-actions__btn"
       :disabled="isPending"
       @click="addBalance"
     >
@@ -13,7 +13,7 @@
     <button
       v-else-if="asset.owner === accountId"
       v-ripple
-      class="app__button-raised asset-actions-bar__btn"
+      class="app__button-raised asset-actions__btn"
       @click="$emit(EVENTS.updateAsk)"
     >
       {{ 'assets.update-btn' | globalize }}
@@ -36,7 +36,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'asset-actions-bar',
+  name: 'asset-actions',
   props: {
     asset: { type: Asset, required: true },
     kycRequiredAssetType: { type: Number, required: true },
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.asset-actions-bar__btn {
+.asset-actions__btn {
   max-width: 18rem;
   width: 100%;
 }
