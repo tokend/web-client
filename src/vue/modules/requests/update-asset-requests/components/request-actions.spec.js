@@ -17,9 +17,11 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Update asset request actions', () => {
+  let sandbox
   let wrapper
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
     const store = new Vuex.Store({
       modules: { 'update-asset-requests': updateAssetRequestsModule },
     })
@@ -32,67 +34,69 @@ describe('Update asset request actions', () => {
     })
   })
 
+  afterEach(() => {
+    sandbox.restore()
+  })
+
   describe('computed property', () => {
     describe('canBeUpdated', () => {
-      it('returns true for rejected request', () => {
+      it('returns true only for rejected and pending requests', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
-            stateI: REQUEST_STATES.rejected,
-          }),
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.rejected }),
         })
-
         expect(wrapper.vm.canBeUpdated).to.be.true
-      })
 
-      it('returns true for pending request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
-            stateI: REQUEST_STATES.pending,
-          }),
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.pending }),
         })
-
         expect(wrapper.vm.canBeUpdated).to.be.true
-      })
 
-      it('returns false for approved request', () => {
+        wrapper.setProps({
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.approved }),
+        })
+        expect(wrapper.vm.canBeUpdated).to.be.false
+
+        wrapper.setProps({
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.canceled }),
+        })
+        expect(wrapper.vm.canBeUpdated).to.be.false
+
         wrapper.setProps({
           request: new UpdateAssetRequest({
-            stateI: REQUEST_STATES.approved,
+            stateI: REQUEST_STATES.permanentlyRejected,
           }),
         })
-
         expect(wrapper.vm.canBeUpdated).to.be.false
       })
     })
 
     describe('canBeCanceled', () => {
-      it('returns true for pending request', () => {
+      it('returns true only for pending request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
-            stateI: REQUEST_STATES.pending,
-          }),
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.pending }),
         })
-
         expect(wrapper.vm.canBeCanceled).to.be.true
-      })
 
-      it('returns false for approved request', () => {
         wrapper.setProps({
-          request: new UpdateAssetRequest({
-            stateI: REQUEST_STATES.approved,
-          }),
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.rejected }),
         })
-
         expect(wrapper.vm.canBeCanceled).to.be.false
-      })
 
-      it('returns false for rejected request', () => {
+        wrapper.setProps({
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.approved }),
+        })
+        expect(wrapper.vm.canBeCanceled).to.be.false
+
+        wrapper.setProps({
+          request: new UpdateAssetRequest({ stateI: REQUEST_STATES.canceled }),
+        })
+        expect(wrapper.vm.canBeCanceled).to.be.false
+
         wrapper.setProps({
           request: new UpdateAssetRequest({
-            stateI: REQUEST_STATES.rejected,
+            stateI: REQUEST_STATES.permanentlyRejected,
           }),
         })
-
         expect(wrapper.vm.canBeCanceled).to.be.false
       })
     })
@@ -100,71 +104,33 @@ describe('Update asset request actions', () => {
 
   describe('methods', () => {
     describe('cancelRequest', () => {
-      beforeEach(() => {
-        sinon.stub(wrapper.vm, 'hideConfirmation')
-        sinon.stub(Bus, 'success')
-        sinon.stub(ErrorHandler, 'process')
-        sinon.stub(wrapper.vm, 'cancelUpdateAssetRequest').resolves()
-      })
-
-      afterEach(() => {
-        wrapper.vm.hideConfirmation.restore()
-        Bus.success.restore()
-        ErrorHandler.process.restore()
-        wrapper.vm.cancelUpdateAssetRequest.restore()
-      })
-
-      it('calls hideConfirmation method', async () => {
-        await wrapper.vm.cancelRequest()
-
-        expect(wrapper.vm.hideConfirmation).to.have.been.calledOnce
-      })
-
-      it('sets isRequestCanceling property to true', async () => {
-        await wrapper.vm.cancelRequest()
-
-        expect(wrapper.vm.isRequestCanceling).to.be.true
-      })
-
-      it('calls cancelUpdateAssetRequest method with correct request ID', async () => {
+      it('calls proper set of methods and emits proper event if request cancellation succeded', async () => {
         wrapper.setProps({
           request: new UpdateAssetRequest({ id: '1' }),
         })
+        sandbox.stub(wrapper.vm, 'hideConfirmation')
+        sandbox.stub(wrapper.vm, 'cancelUpdateAssetRequest').resolves()
+        sandbox.stub(Bus, 'success')
+
         await wrapper.vm.cancelRequest()
+
+        expect(wrapper.vm.hideConfirmation).to.have.been.calledOnce
+        expect(wrapper.vm.isRequestCanceling).to.be.true
 
         expect(wrapper.vm.cancelUpdateAssetRequest)
           .to.have.been.calledOnceWithExactly('1')
-      })
-
-      it('calls Bus.success if cancelUpdateAssetRequest did not throw an error', async () => {
-        await wrapper.vm.cancelRequest()
 
         expect(Bus.success).to.have.been.calledOnce
+        expect(wrapper.emitted()['cancel']).to.exist
       })
 
-      it('emits cancel event cancelUpdateAssetRequest did not throw an error', async () => {
-        const cancelEvent = 'cancel'
-
-        await wrapper.vm.cancelRequest()
-
-        expect(wrapper.emitted()[cancelEvent]).to.exist
-      })
-
-      it('calls ErrorHandler.process if an error was thrown', async () => {
-        wrapper.vm.cancelUpdateAssetRequest.restore()
-        sinon.stub(wrapper.vm, 'cancelUpdateAssetRequest').rejects()
+      it('calls ErrorHandler.process and sets isRequestCanceling to false if an error was thrown', async () => {
+        sandbox.stub(wrapper.vm, 'cancelUpdateAssetRequest').rejects()
+        sandbox.stub(ErrorHandler, 'process')
 
         await wrapper.vm.cancelRequest()
 
         expect(ErrorHandler.process).to.have.been.calledOnce
-      })
-
-      it('sets isRequestCanceling to false if an error was thrown', async () => {
-        wrapper.vm.cancelUpdateAssetRequest.restore()
-        sinon.stub(wrapper.vm, 'cancelUpdateAssetRequest').rejects()
-
-        await wrapper.vm.cancelRequest()
-
         expect(wrapper.vm.isRequestCanceling).to.be.false
       })
     })

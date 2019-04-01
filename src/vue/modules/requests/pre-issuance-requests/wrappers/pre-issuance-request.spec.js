@@ -1,6 +1,6 @@
 import { PreIssuanceRequest } from './pre-issuance-request'
 
-describe('Pre issuance request', () => {
+describe('Pre-issuance request', () => {
   describe('constructor', () => {
     it('should properly parse record', () => {
       const record = {

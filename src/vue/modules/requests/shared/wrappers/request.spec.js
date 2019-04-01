@@ -39,91 +39,98 @@ describe('Asset creation request', () => {
 
   describe('getters', () => {
     describe('isApproved', () => {
-      it('returns true if the request has approved state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.approved,
-        })
-
+      it('returns true only if the request has approved state', () => {
+        let request = new Request({ stateI: REQUEST_STATES.approved })
         expect(request.isApproved).to.be.true
-      })
 
-      it('returns false if the request does not have approved state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.pending,
-        })
+        request = new Request({ stateI: REQUEST_STATES.pending })
+        expect(request.isApproved).to.be.false
 
+        request = new Request({ stateI: REQUEST_STATES.rejected })
+        expect(request.isApproved).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.canceled })
+        expect(request.isApproved).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.permanentlyRejected })
         expect(request.isApproved).to.be.false
       })
     })
 
     describe('isPending', () => {
-      it('returns true if the request has pending state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.pending,
-        })
-
+      it('returns true only if the request has pending state', () => {
+        let request = new Request({ stateI: REQUEST_STATES.pending })
         expect(request.isPending).to.be.true
-      })
 
-      it('returns false if the request does not have pending state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.approved,
-        })
+        request = new Request({ stateI: REQUEST_STATES.approved })
+        expect(request.isPending).to.be.false
 
+        request = new Request({ stateI: REQUEST_STATES.rejected })
+        expect(request.isPending).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.canceled })
+        expect(request.isPending).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.permanentlyRejected })
         expect(request.isPending).to.be.false
       })
     })
 
     describe('isRejected', () => {
-      it('returns true if the request has rejected state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.rejected,
-        })
-
+      it('returns true only if the request has rejected state', () => {
+        let request = new Request({ stateI: REQUEST_STATES.rejected })
         expect(request.isRejected).to.be.true
-      })
 
-      it('returns false if the request does not have rejected state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.approved,
-        })
+        request = new Request({ stateI: REQUEST_STATES.approved })
+        expect(request.isRejected).to.be.false
 
+        request = new Request({ stateI: REQUEST_STATES.pending })
+        expect(request.isRejected).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.canceled })
+        expect(request.isRejected).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.permanentlyRejected })
         expect(request.isRejected).to.be.false
       })
     })
 
     describe('isPermanentlyRejected', () => {
-      it('returns true if the request has permanently rejected state', () => {
-        const request = new Request({
+      it('returns true only if the request has permanently rejected state', () => {
+        let request = new Request({
           stateI: REQUEST_STATES.permanentlyRejected,
         })
-
         expect(request.isPermanentlyRejected).to.be.true
-      })
 
-      it('returns false if the request does not have permanently rejected state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.pending,
-        })
+        request = new Request({ stateI: REQUEST_STATES.approved })
+        expect(request.isPermanentlyRejected).to.be.false
 
+        request = new Request({ stateI: REQUEST_STATES.pending })
+        expect(request.isPermanentlyRejected).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.canceled })
+        expect(request.isPermanentlyRejected).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.rejected })
         expect(request.isPermanentlyRejected).to.be.false
       })
     })
 
     describe('isCanceled', () => {
-      it('returns true if the request has canceled state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.canceled,
-        })
-
+      it('returns true only if the request has canceled state', () => {
+        let request = new Request({ stateI: REQUEST_STATES.canceled })
         expect(request.isCanceled).to.be.true
-      })
 
-      it('returns false if the request does not have canceled state', () => {
-        const request = new Request({
-          stateI: REQUEST_STATES.approved,
-        })
+        request = new Request({ stateI: REQUEST_STATES.approved })
+        expect(request.isCanceled).to.be.false
 
+        request = new Request({ stateI: REQUEST_STATES.pending })
+        expect(request.isCanceled).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.rejected })
+        expect(request.isCanceled).to.be.false
+
+        request = new Request({ stateI: REQUEST_STATES.permanentlyRejected })
         expect(request.isCanceled).to.be.false
       })
     })

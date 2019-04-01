@@ -8,7 +8,7 @@ import * as Config from '../_config'
 
 const localVue = createLocalVue()
 
-describe('Asset update request attributes viewer', () => {
+describe('Update asset request attributes viewer', () => {
   let wrapper
 
   beforeEach(() => {
