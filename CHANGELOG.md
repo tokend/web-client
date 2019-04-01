@@ -47,6 +47,7 @@ for further information about branching and tagging conventions.
 - Watcher for console calls that shows the error message if the console
 method was called at least once through tests execution
 - Add coinpayments-deposit module
+- Added movements history modules unit tests
 
 ### Changed
 - Now using new account endpoint for loading the fees
