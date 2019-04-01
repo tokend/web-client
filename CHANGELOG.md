@@ -48,6 +48,7 @@ for further information about branching and tagging conventions.
 method was called at least once through tests execution
 - Add coinpayments-deposit module
 - Added movements history modules unit tests
+- Allow requesting limits change for all of the account types
 
 ### Changed
 - Now using new account endpoint for loading the fees
