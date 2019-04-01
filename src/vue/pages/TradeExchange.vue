@@ -157,7 +157,7 @@ export default {
           quote_asset: this.assetPair.quote,
           is_buy: true,
         })
-        this.buyOffersList = response.data
+        this.buyOffersList = this.sortOffersList(response.data, 'ask')
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
@@ -170,7 +170,7 @@ export default {
           quote_asset: this.assetPair.quote,
           is_buy: false,
         })
-        this.sellOffersList = response.data
+        this.sellOffersList = this.sortOffersList(response.data, 'bids')
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
@@ -183,6 +183,17 @@ export default {
     async reloadTrades () {
       await this.loadData()
       await this.loadBalances()
+    },
+    sortOffersList (list, type) {
+      return list.sort((a, b) => {
+        if (parseFloat(a.price) > parseFloat(b.price)) {
+          return (type === 'ask') ? -1 : 1
+        } else if (parseFloat(a.price) < parseFloat(b.price)) {
+          return (type === 'ask') ? 1 : -1
+        } else {
+          return 0
+        }
+      })
     },
   },
 }

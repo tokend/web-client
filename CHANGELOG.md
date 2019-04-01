@@ -91,14 +91,14 @@ KYC request
 - Fixed bug with updating balance in AddressLoader
 - Show only base asset on dividend payout
 - Fixed bug with check isAccessible in router
-- Console errors in movements unit tests 
+- Console errors in movements unit tests
+- Sorting of order book
 
 ### Removed
 - Removed feature flags from config
 - Remove `globalize` from asset create form `assetTypes` computed property
 
 ## [1.3.1-rc.0] - 2019-03-20
-
 ### Changed
 - Do not throw an error if movement has an unknown effect or operation details
 
