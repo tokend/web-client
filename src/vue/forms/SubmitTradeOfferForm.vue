@@ -60,7 +60,7 @@
       <div class="submit-trade-offer-form__actions">
         <!-- TODO: make it via tooltip message -->
         <p
-          v-if="!isEnoughOnBalance && offer.ownerId !== accountId"
+          v-if="!isEnoughOnBalance && !isOwner"
           class="app__form-field-description"
         >
           {{
@@ -73,16 +73,14 @@
         </p>
         <div class="app__form-actions">
           <button
-            v-if="offer.ownerId === accountId"
+            v-if="isOwner"
             :disabled="formMixin.isDisabled"
             v-ripple
             type="button"
             @click="showConfirmation"
             class="app__form-submit-btn"
           >
-            <template v-if="offer.ownerId === accountId">
-              {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
-            </template>
+            {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
           </button>
           <button
             v-ripple
@@ -110,8 +108,8 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { formatNumber } from '@/vue/filters/formatNumber'
-import { vuexTypes, mapActions } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -147,6 +145,9 @@ export default {
         ? +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
         : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
     },
+    isOwner () {
+      return this.offer.ownerId === this.accountId
+    },
   },
   async created () {
     await this.loadBalances()
@@ -160,7 +161,7 @@ export default {
       this.disableForm()
       this.isOfferSubmitting = true
 
-      if (this.offer.ownerId === this.accountId) {
+      if (this.isOwner) {
         await this.cancelOffer(this.getCancelOfferOpts())
       } else {
         await this.createOffer(this.getCreateOfferOpts())

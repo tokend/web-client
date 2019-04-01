@@ -88,6 +88,8 @@ method was called at least once through tests execution
 - Show only base asset on dividend payout
 - Fixed bug with check isAccessible in router
 - Console errors in movements unit tests 
+- Fix bug with cancel order
+- Fix bug with importing mapActions in SubmitTradeOfferForm
 
 ### Removed
 - Removed feature flags from config
