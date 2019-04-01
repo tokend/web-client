@@ -44,7 +44,11 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
+- Watcher for console calls that shows the error message if the console
+method was called at least once through tests execution
 - Add coinpayments-deposit module
+- Added movements history modules unit tests
+- Update chart tickers
 - `isAccountRoleReset` state field to the KYC vuex module
 - Checking for previous account role & resetting reason when loading 
 KYC request
@@ -57,6 +61,7 @@ KYC request
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- One request to fetch all the account roles instead of fetching it one-by-one `key-value.module.js`
 - Rename fee "Subtype" table header to "Destination" one
 - Now display negative amount on balance effect viewers
 - Renamed operation state "Sale state updated" -> "Sale closed"
@@ -79,8 +84,18 @@ KYC request
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- Displaying long strings (asset name, sale short description) inside card components
 - "Tokens" page responsive design
 - Do not allow unverified users to add an asset with KYC required type to their balances
+- Added loading balances to components using balances
+- Fixed bug with updating balance in AddressLoader
+- Show only base asset on dividend payout
+- Fixed bug with check isAccessible in router
+- Console errors in movements unit tests 
+
+### Removed
+- Removed feature flags from config
+- Remove `globalize` from asset create form `assetTypes` computed property
 
 ## [1.3.1-rc.0] - 2019-03-20
 
