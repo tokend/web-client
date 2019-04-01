@@ -116,7 +116,7 @@ export default {
     Drawer,
     WithdrawalForm,
     TransferForm,
-    SubmoduleImporter
+    SubmoduleImporter,
   },
   props: {
     wallet: {

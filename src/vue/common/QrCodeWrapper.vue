@@ -13,7 +13,7 @@
 import QrCode from 'qrcode.vue'
 
 export default {
-  name: 'qrcode-wrapper',
+  name: 'qr-code-wrapper',
   components: {
     QrCode,
   },

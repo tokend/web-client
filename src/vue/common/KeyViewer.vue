@@ -4,8 +4,8 @@
       <qr-code-wrapper
         :value="value"
         :size="250"
-        :background="'#f6f8fb'"
-        :foreground="'#262626'"
+        background="#f6f8fb"
+        foreground="#262626"
       />
     </div>
     <div
