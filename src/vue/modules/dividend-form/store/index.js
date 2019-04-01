@@ -99,7 +99,7 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.assets]: state => state.assets.filter(
-    item => item.balance.id && item.isTransferable
+    item => item.balance.id && item.isTransferable && item.isBaseAsset
   ),
   [types.ownedAssets]: state => state.assets.filter(item =>
     item.owner === state.accountId && item.isShareSubtype

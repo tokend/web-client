@@ -84,6 +84,7 @@ method was called at least once through tests execution
 - Do not allow unverified users to add an asset with KYC required type to their balances
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
+- Show only base asset on dividend payout
 
 ### Removed
 - Remove `globalize` from asset create form `assetTypes` computed property
