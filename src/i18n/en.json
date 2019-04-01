@@ -788,7 +788,7 @@
       "days-to-launch": "{{days}} days to launch",
       "days-after-end": "Closed {{days}} days ago",
       "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**",
-      "days-to-end": "{{days}} days to closed",
+      "days-to-end": "{{days}} days to close",
       "closed": "Closed",
       "canceled": "Canceled"
     },
@@ -908,7 +908,6 @@
       "days-to-end": "days to closed",
       "closed": "Closed",
       "canceled": "Canceled"
-
     },
     "opportunity-details": {
       "loading-msg": "Loading",
