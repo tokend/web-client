@@ -161,5 +161,6 @@ export default {
   margin-top: .4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
+  word-wrap: break-word;
 }
 </style>

@@ -145,7 +145,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { formatNumber } from '@/vue/filters/formatNumber'
-import { vuexTypes } from '@/vuex'
+import { vuexTypes, mapActions } from '@/vuex'
 import { mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 
@@ -227,10 +227,14 @@ export default {
       return this.offer.ownerId === this.accountId
     },
   },
-  created () {
+  async created () {
+    await this.loadBalances()
     this.form = Object.assign({}, this.offer)
   },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     formatNumber,
     async submit () {
       this.disableForm()

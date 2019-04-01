@@ -42,6 +42,20 @@
 
         <div class="app__form-row">
           <div class="app__form-field">
+            <file-field
+              v-model="form.avatar"
+              name="verification-corporate-avatar"
+              :note="'verification-form.image-type-note' | globalize"
+              accept="image/*"
+              :document-type="DOCUMENT_TYPES.kycAvatar"
+              :label="'verification-form.avatar-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
             <input-field
               white-autofill
               v-model="form.headquarters"
@@ -142,8 +156,11 @@ import { Api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
+import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -163,6 +180,7 @@ export default {
     form: {
       name: '',
       company: '',
+      avatar: null,
       headquarters: '',
       industry: '',
       teamSize: '0',
@@ -171,6 +189,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     MIN_TEAM_SIZE,
+    DOCUMENT_TYPES,
   }),
 
   validations: {
@@ -216,6 +235,7 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
+        await this.uploadAvatar()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
         const operation = this.createKycOperation(
           kycBlobId,
@@ -231,6 +251,13 @@ export default {
       }
     },
 
+    async uploadAvatar () {
+      let document = this.form.avatar
+      if (!document.key) {
+        document = await DocumentUploader.uploadSingleDocument(document)
+      }
+    },
+
     createKycData () {
       return {
         name: this.form.name,
@@ -239,6 +266,10 @@ export default {
         industry: this.form.industry,
         team_size: this.form.teamSize,
         homepage: this.form.website,
+        documents: {
+          [DOCUMENT_TYPES.kycAvatar]:
+            this.form.avatar.getDetailsForSave(),
+        },
       }
     },
 
@@ -246,11 +277,22 @@ export default {
       return {
         name: kycData.name,
         company: kycData.company,
+        avatar: kycData.documents[DOCUMENT_TYPES.kycAvatar]
+          ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+          : {},
         headquarters: kycData.headquarters,
         industry: kycData.industry,
         teamSize: kycData.team_size,
         website: kycData.homepage,
       }
+    },
+
+    wrapDocument (document) {
+      return new DocumentContainer({
+        mimeType: document.mime_type,
+        name: document.name,
+        key: document.key,
+      })
     },
   },
 }

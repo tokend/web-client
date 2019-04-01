@@ -12,6 +12,7 @@
         slot="extra"
       >
         <button
+          v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
           v-ripple
           class="app__button-raised"
           @click="isPreIssuanceDrawerShown = true"
@@ -20,6 +21,7 @@
         </button>
 
         <button
+          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
           v-ripple
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
@@ -29,25 +31,37 @@
       </template>
     </top-bar>
 
-    <drawer :is-shown.sync="isPreIssuanceDrawerShown">
+    <drawer
+      v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+      :is-shown.sync="isPreIssuanceDrawerShown"
+    >
       <template slot="heading">
         {{ 'issuance-page.upload-pre-issuance' | globalize }}
       </template>
-      <pre-issuance-form @close="isPreIssuanceDrawerShown = false" />
+
+      <submodule-importer
+        :submodule="getModule().getSubmodule(PreIssuanceDrawerPseudoModule)"
+        @close="isPreIssuanceDrawerShown = false"
+      />
     </drawer>
 
-    <drawer :is-shown.sync="isIssuanceDrawerShown">
+    <drawer
+      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      :is-shown.sync="isIssuanceDrawerShown"
+    >
       <template slot="heading">
         {{ 'issuance-page.create-issuance' | globalize }}
       </template>
-      <issuance-form
+
+      <submodule-importer
+        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
         @submit="isIssuanceCreated = true"
         @close="isIssuanceDrawerShown = false"
       />
     </drawer>
 
     <submodule-importer
-      :v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
       :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
       :wallet="wallet"
       :config="config"
@@ -60,9 +74,6 @@
 import Drawer from '@/vue/common/Drawer'
 import TopBar from '@/vue/common/TopBar'
 
-import IssuanceForm from '@/vue/forms/IssuanceForm'
-import PreIssuanceForm from '@/vue/forms/PreIssuanceForm'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -72,14 +83,14 @@ import config from '@/config'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 
 export default {
   name: 'issuance-page',
   components: {
     Drawer,
     TopBar,
-    IssuanceForm,
-    PreIssuanceForm,
     SubmoduleImporter,
   },
 
@@ -92,6 +103,8 @@ export default {
     },
     vueRoutes,
     IssuanceExplorerModule,
+    IssuanceDrawerPseudoModule,
+    PreIssuanceDrawerPseudoModule,
   }),
 
   computed: {

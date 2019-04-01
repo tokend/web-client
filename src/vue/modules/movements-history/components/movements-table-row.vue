@@ -158,8 +158,8 @@ export default {
     movementFee (movement) {
       let currency = movement.assetCode
       let value = MathUtil.add(
-        movement.fixedFee,
-        movement.calculatedPercentFee
+        movement.effect.fixedFee,
+        movement.effect.calculatedPercentFee
       )
 
       return { currency, value }
