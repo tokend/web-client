@@ -77,6 +77,8 @@ method was called at least once through tests execution
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
 - "Tokens" page responsive design
 - Do not allow unverified users to add an asset with KYC required type to their balances
+- Added loading balances to components using balances
+- Fixed bug with updating balance in AddressLoader
 
 ## [1.3.1-rc.0] - 2019-03-20
 
