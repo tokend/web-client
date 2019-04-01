@@ -28,7 +28,6 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
-- Sorting of order book
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -42,6 +41,7 @@ for further information about branching and tagging conventions.
 - Loading balances instead of account on the movements page
 - Checking for KYC state, not for KYC latest data while loading KYC on the verification forms
 - Move no-data-message translate ids pass to the elements that use component
+- Sorting of order book
 
 ## [1.3.0] - 2019-03-01
 
