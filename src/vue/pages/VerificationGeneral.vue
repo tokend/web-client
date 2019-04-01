@@ -277,6 +277,7 @@ export default {
         first_name: this.form.personal.firstName,
         last_name: this.form.personal.lastName,
         documents: {
+          // avatar is not required, it may not exist in old kyc data
           [DOCUMENT_TYPES.kycAvatar]: this.form.documents.avatar
             ? this.form.documents.avatar.getDetailsForSave()
             : EMPTY_DOCUMENT,
