@@ -3,13 +3,11 @@
     <top-bar>
       <template slot="main">
         <router-link
-          v-ripple
           :to="vueRoutes.assetsExplore"
         >
           <span>{{ 'assets-page.explore-title' | globalize }}</span>
         </router-link>
         <router-link
-          v-ripple
           :to="vueRoutes.balances"
         >
           <span>{{ 'assets-page.balances-title' | globalize }}</span>

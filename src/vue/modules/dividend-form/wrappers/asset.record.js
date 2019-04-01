@@ -1,4 +1,5 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk'
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import _get from 'lodash/get'
 
 export class AssetRecord {
@@ -8,6 +9,7 @@ export class AssetRecord {
     this.code = record.id
     this.owner = record.owner.id
     this.name = _get(record, 'details.name')
+    this.details = record.details
 
     this.issued = record.issued
 
@@ -46,5 +48,13 @@ export class AssetRecord {
 
   get isTransferable () {
     return !!(this.policy & ASSET_POLICIES.transferable)
+  }
+
+  get isBaseAsset () {
+    return !!(this.policy & ASSET_POLICIES.baseAsset)
+  }
+
+  get isShareSubtype () {
+    return this.details.subtype === ASSET_SUBTYPE.share
   }
 }

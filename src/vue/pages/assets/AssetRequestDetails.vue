@@ -155,6 +155,7 @@
               </template>
             </td>
           </tr>
+
           <tr>
             <td>
               {{ 'asset-request-details.withdrawable-title' | globalize }}

@@ -4,14 +4,12 @@
       <template slot="main">
         <router-link
           v-if="getModule().canRenderSubmodule(VerificationPageModule)"
-          v-ripple
           :to="vueRoutes.verification"
         >
           <span>{{ verificationTabId | globalize }}</span>
         </router-link>
         <router-link
           v-if="getModule().canRenderSubmodule(SecurityPageModule)"
-          v-ripple
           :to="vueRoutes.security"
         >
           <span>{{ 'settings-page.security-tab' | globalize }}</span>
