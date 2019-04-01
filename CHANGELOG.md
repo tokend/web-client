@@ -56,6 +56,8 @@ method was called at least once through tests execution
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
 - Rename fee "Subtype" table header to "Destination" one
+- Now display negative amount on balance effect viewers
+- Renamed operation state "Sale state updated" -> "Sale closed"
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
