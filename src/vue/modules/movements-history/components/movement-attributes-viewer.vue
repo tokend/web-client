@@ -6,13 +6,13 @@
           v-if="movement.effect instanceof BalanceChangedEffect"
           :effect="movement.effect"
           :asset-code="movement.assetCode"
+          :is-locked="movement.isLocked"
         />
-
         <particular-balance-changed-effect-viewer
           v-else-if="movement.effect instanceof ParticularBalanceChangeEffect"
           :effect="movement.effect"
+          :is-outgoing="movement.isOutgoing"
         />
-
         <manage-offer-op-viewer
           v-if="movement.operationDetails instanceof ManageOfferOp"
           :operation-details="movement.operationDetails"
@@ -27,6 +27,10 @@
         />
         <check-sale-state-op-viewer
           v-if="movement.operationDetails instanceof CheckSaleStateOp"
+          :operation-details="movement.operationDetails"
+        />
+        <manage-asset-pair-op-viewer
+          v-if="movement.operationDetails instanceof ManageAssetPairOp"
           :operation-details="movement.operationDetails"
         />
         <create-aml-alert-request-op-viewer
@@ -57,6 +61,7 @@ import { PaymentOp } from '../wrappers/operation-details/payment'
 import { ManageOfferOp } from '../wrappers/operation-details/manage-offer'
 import { ReviewRequestOp } from '../wrappers/operation-details/review-request'
 import { CheckSaleStateOp } from '../wrappers/operation-details/check-sale-state'
+import { ManageAssetPairOp } from '../wrappers/operation-details/manage-asset-pair'
 import { CreateAMLAlertRequestOp } from '../wrappers/operation-details/create-aml-alert-request'
 import { CreateIssuanceRequestOp } from '../wrappers/operation-details/create-issuance-request'
 import { CreateWithdrawRequestOp } from '../wrappers/operation-details/create-withdrawal-request'
@@ -68,9 +73,11 @@ import PaymentOpViewer from './operation-viewers/payment'
 import ManageOfferOpViewer from './operation-viewers/manage-offer'
 import ReviewRequestOpViewer from './operation-viewers/review-request'
 import CheckSaleStateOpViewer from './operation-viewers/check-sale-state'
+import ManageAssetPairOpViewer from './operation-viewers/manage-asset-pair'
 import CreateAmlAlertRequestOpViewer from './operation-viewers/create-aml-alert-request'
 import CreateIssuanceRequestOpViewer from './operation-viewers/create-issuance-request'
 import CreateWithdrawalRequestOpViewer from './operation-viewers/create-withdrawal-request'
+
 export default {
   name: 'movement-attributes-viewer',
   components: {
@@ -81,6 +88,7 @@ export default {
     ManageOfferOpViewer,
     ReviewRequestOpViewer,
     CheckSaleStateOpViewer,
+    ManageAssetPairOpViewer,
     CreateAmlAlertRequestOpViewer,
     CreateIssuanceRequestOpViewer,
     CreateWithdrawalRequestOpViewer,
@@ -99,6 +107,7 @@ export default {
     ManageOfferOp,
     ReviewRequestOp,
     CheckSaleStateOp,
+    ManageAssetPairOp,
     CreateAMLAlertRequestOp,
     CreateIssuanceRequestOp,
     CreateWithdrawRequestOp,

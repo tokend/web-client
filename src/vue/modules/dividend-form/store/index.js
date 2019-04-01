@@ -2,7 +2,7 @@ import { Balance } from '../wrappers/balance'
 import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api, loadingDataViaLoop } from '../_api'
 import { AssetRecord } from '../wrappers/asset.record'
 
 const HORIZON_VERSION_PREFIX = 'v3'
@@ -40,11 +40,8 @@ export const actions = {
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
     const endpoint = `/${HORIZON_VERSION_PREFIX}/assets`
-    let { data: assets } = await api().getWithSignature(endpoint, {
-      page: {
-        limit: 100,
-      },
-    })
+    let response = await api().getWithSignature(endpoint)
+    let assets = await loadingDataViaLoop(response)
 
     commit(
       types.SET_ASSETS,
@@ -102,10 +99,10 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.assets]: state => state.assets.filter(
-    item => item.balance.id && item.isTransferable
+    item => item.balance.id && item.isTransferable && item.isBaseAsset
   ),
-  [types.ownedAssets]: state => state.assets.filter(
-    item => item.owner === state.accountId
+  [types.ownedAssets]: state => state.assets.filter(item =>
+    item.owner === state.accountId && item.isShareSubtype
   ),
   [types.balanceHolders]: state => state.balanceHolders
     .map(item => new Balance(item)),
