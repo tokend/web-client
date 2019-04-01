@@ -86,6 +86,7 @@ method was called at least once through tests execution
 - Fixed bug with updating balance in AddressLoader
 - Show only base asset on dividend payout
 - Fixed bug with check isAccessible in router
+- Console errors in movements unit tests 
 
 ### Removed
 - Removed feature flags from config
