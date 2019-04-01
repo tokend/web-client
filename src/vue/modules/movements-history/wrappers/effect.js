@@ -30,7 +30,7 @@ export class LockedEffect extends BalanceChangedEffect {}
 /**
  * @class IssuedEffect
  *
- * ё
+ * Represents effect that is triggered when balance become funded by issuing
  * costs that wasn't in circulation before
  */
 export class IssuedEffect extends BalanceChangedEffect {}

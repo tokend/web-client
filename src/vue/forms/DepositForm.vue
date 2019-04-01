@@ -41,7 +41,7 @@
           {{ 'deposit-form.deposit-no-assets' | globalize }}
         </p>
         <router-link
-          to="/assets"
+          :to="vueRoutes.assets"
           tag="button"
           class="app__button-raised deposit__discover-asset-btn">
           {{ 'deposit-form.discover-assets-btn' | globalize }}
@@ -70,6 +70,8 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { vueRoutes } from '@/vue-router/routes'
+
 export default {
   name: 'deposit-form',
   components: {
@@ -85,6 +87,7 @@ export default {
       isLoadingFailed: false,
       assets: [],
       selectedAsset: {},
+      vueRoutes,
     }
   },
   computed: {
