@@ -97,7 +97,7 @@ export default {
   },
 
   async created () {
-    this.createIntervalForLoadAccountDetails()
+    this.loadAccountDetailsTickerTimeout()
     this.loadAccountDetails()
   },
 
@@ -111,7 +111,7 @@ export default {
       clearState: vuexTypes.CLEAR_STATE,
     }),
 
-    async createIntervalForLoadAccountDetails () {
+    async loadAccountDetailsTickerTimeout () {
       setInterval(() => {
         this.loadAccountDetails()
       }, this.loadAccountDetailsTimeout)
