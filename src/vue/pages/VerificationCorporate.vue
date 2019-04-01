@@ -220,7 +220,7 @@ export default {
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
-        : this.kycState
+        : !!this.kycState
     },
   },
 
