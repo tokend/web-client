@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Updating of account details
 - Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
@@ -48,7 +49,13 @@ for further information about branching and tagging conventions.
 method was called at least once through tests execution
 - Add coinpayments-deposit module
 - Added movements history modules unit tests
+- Allow requesting limits change for all of the account types
 - Update chart tickers
+- `isAccountRoleReseted` state field to the KYC vuex module
+- Checking for previous account role & resetting reason when loading 
+KYC request
+- Checking for reset account role on verification pages
+- `resetReason` field to the `ChangeRoleRequestRecord`
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -85,6 +92,7 @@ method was called at least once through tests execution
 - Do not allow unverified users to add an asset with KYC required type to their balances
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
+- Pending status updating in the "Change Limits" form
 - Show only base asset on dividend payout
 - Fixed bug with check isAccessible in router
 - Console errors in movements unit tests
@@ -92,6 +100,8 @@ method was called at least once through tests execution
 - Converting account role to string while creating change role request
 - Fix bug with cancel order
 - Fix bug with import mapActions in SubmitTradeOfferForm
+- Invalid start date for sales that are already started
+- Converting account role ID to number
 - Fixed upload kyc form without avatar
 
 ### Removed

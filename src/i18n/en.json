@@ -159,6 +159,7 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
+      "account-role-reset-msg": "Your verification was reset by administrator with reason: {{reason}}. Please, verify your account again",
       "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
       "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
       "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
@@ -882,7 +883,10 @@
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
       "days-after-end": "Closed {{days}} days ago",
-      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
+      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**",
+      "days-to-end": "{{days}} days to close",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "trade-history": {
       "title": "Trade history",
@@ -996,7 +1000,10 @@
       "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
-      "days-after-end": "days after closed"
+      "days-after-end": "days after closed",
+      "days-to-end": "days to closed",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "opportunity-details": {
       "loading-msg": "Loading",
