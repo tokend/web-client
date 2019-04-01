@@ -79,7 +79,6 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
-    destructClickOutsideHandler: () => {},
     loadAccountDetailsTimeout: 45000,
     destructClickOutsideHandler: () => { },
   }),
