@@ -75,6 +75,7 @@ method was called at least once through tests execution
 - "Soft cap" validation in the "Opportunity create" form
 - Asset name displaying
 - Change defaultQuoteAsset to single acceptable asset for the Revenue opportunities
+- Displaying long strings (asset name, sale short description) inside card components
 - "Tokens" page responsive design
 - Do not allow unverified users to add an asset with KYC required type to their balances
 - Added loading balances to components using balances
