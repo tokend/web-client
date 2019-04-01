@@ -52,6 +52,8 @@ export default {
       precision: config.DECIMAL_POINTS,
       defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
     },
+    loadPricesTickerIntervalId: -1,
+    loadPricesTickerTimeout: 10000,
   }),
   computed: {
     history () {
@@ -75,14 +77,28 @@ export default {
   },
   watch: {
     async lockedAssets (value) {
+      this.createLoadPricesTicker()
       await this.loadPrices()
     },
   },
+  async beforeDestroy () {
+    this.clearLoadPricesTicker()
+  },
   async created () {
+    this.createLoadPricesTicker()
     await this.loadPrices()
     this.scale = this.initialScale
   },
   methods: {
+    async createLoadPricesTicker () {
+      this.clearLoadPricesTicker()
+      this.loadPricesTickerIntervalId = setInterval(async () => {
+        await this.loadPrices()
+      }, this.loadPricesTickerTimeout)
+    },
+    async clearLoadPricesTicker () {
+      clearInterval(this.loadPricesTickerIntervalId)
+    },
     async loadPrices () {
       this.isLoading = true
       try {
