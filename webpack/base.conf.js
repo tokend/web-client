@@ -29,6 +29,7 @@ module.exports = {
       '@static': resolve('static'),
       '@scss': resolve('src/scss'),
       '@modules': resolve('src/vue/modules'),
+      '@test': resolve('src/test'),
     },
   },
   module: {

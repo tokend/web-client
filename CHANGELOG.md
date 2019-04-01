@@ -47,6 +47,7 @@ for further information about branching and tagging conventions.
 - Watcher for console calls that shows the error message if the console
 method was called at least once through tests execution
 - Add coinpayments-deposit module
+- Added movements history modules unit tests
 
 ### Changed
 - Now using new account endpoint for loading the fees
@@ -55,7 +56,10 @@ method was called at least once through tests execution
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- One request to fetch all the account roles instead of fetching it one-by-one `key-value.module.js`
 - Rename fee "Subtype" table header to "Destination" one
+- Now display negative amount on balance effect viewers
+- Renamed operation state "Sale state updated" -> "Sale closed"
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
@@ -81,6 +85,9 @@ method was called at least once through tests execution
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
 - Show only base asset on dividend payout
+
+### Removed
+- Remove `globalize` from asset create form `assetTypes` computed property
 
 ## [1.3.1-rc.0] - 2019-03-20
 
