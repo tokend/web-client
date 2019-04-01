@@ -11,11 +11,17 @@
     </div>
 
     <div class="sale-card__info">
-      <p class="sale-card__name">
+      <p
+        class="sale-card__name"
+        :title="sale.name"
+      >
         {{ sale.name }}
       </p>
 
-      <p class="sale-card__desc">
+      <p
+        class="sale-card__desc"
+        :title="sale.shortDescription"
+      >
         {{ sale.shortDescription }}
       </p>
 
@@ -113,6 +119,7 @@ export default {
   margin: 1rem;
   text-decoration: none;
   color: inherit;
+  min-width: 0;
 }
 
 .sale-card__header {
@@ -156,6 +163,11 @@ export default {
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-sale-card-text-primary;
+}
+
+.sale-card__name, .sale-card__desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sale-card__progress-bar {
