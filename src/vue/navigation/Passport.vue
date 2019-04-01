@@ -72,7 +72,7 @@ export default {
   data: () => ({
     isDropdownOpen: false,
     destructClickOutsideHandler: () => {},
-    timeUpdateAccountDetails: 45000,
+    loadAccountDetailsTimeout: 45000,
   }),
 
   computed: {
@@ -97,10 +97,8 @@ export default {
   },
 
   async created () {
-    setInterval(() => {
-      this.loadKycData()
-    }, this.timeUpdateAccountDetails)
-    this.loadKycData()
+    this.createIntervalForLoadAccountDetails()
+    this.loadAccountDetails()
   },
 
   methods: {
@@ -113,10 +111,18 @@ export default {
       clearState: vuexTypes.CLEAR_STATE,
     }),
 
-    async loadKycData () {
+    async createIntervalForLoadAccountDetails () {
+      setInterval(() => {
+        this.loadAccountDetails()
+      }, this.loadAccountDetailsTimeout)
+    },
+
+    async loadAccountDetails () {
       try {
-        await this.loadAccount(this.accountId)
-        await this.loadKyc()
+        await Promise.all([
+          this.loadAccount(this.accountId),
+          this.loadKyc(),
+        ])
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
