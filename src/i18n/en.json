@@ -882,7 +882,10 @@
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
       "days-after-end": "Closed {{days}} days ago",
-      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
+      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**",
+      "days-to-end": "{{days}} days to close",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "trade-history": {
       "title": "Trade history",
@@ -996,7 +999,10 @@
       "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
-      "days-after-end": "days after closed"
+      "days-after-end": "days after closed",
+      "days-to-end": "days to closed",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "opportunity-details": {
       "loading-msg": "Loading",

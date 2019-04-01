@@ -92,6 +92,7 @@ method was called at least once through tests execution
 - Converting account role to string while creating change role request
 - Fix bug with cancel order
 - Fix bug with import mapActions in SubmitTradeOfferForm
+- Invalid start date for sales that are already started
 
 ### Removed
 - Removed feature flags from config
