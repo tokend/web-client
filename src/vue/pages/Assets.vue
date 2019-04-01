@@ -13,7 +13,10 @@
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
       </template>
-      <template v-if="isAccountCorporate" slot="extra">
+      <template
+        slot="extra"
+        v-if="getModule().canRenderSubmodule(CreateAssetFormModule)"
+      >
         <button
           v-ripple
           class="create-asset-btn"
@@ -23,12 +26,20 @@
         </button>
       </template>
     </top-bar>
-    <drawer :is-shown.sync="isAssetDrawerShown">
-      <template slot="heading">
-        {{ 'assets-page.create-asset-title' | globalize }}
-      </template>
-      <asset-create-form @close="isAssetDrawerShown = false" />
-    </drawer>
+
+    <template v-if="getModule().canRenderSubmodule(CreateAssetFormModule)">
+      <drawer :is-shown.sync="isAssetDrawerShown">
+        <template slot="heading">
+          {{ 'assets-page.create-asset-title' | globalize }}
+        </template>
+
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateAssetFormModule)"
+          @close="isAssetDrawerShown = false"
+        />
+      </drawer>
+    </template>
+
     <router-view />
   </div>
 </template>
@@ -36,22 +47,25 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import AssetCreateForm from '@/vue/forms/AssetCreateForm'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { vueRoutes } from '@/vue-router/routes'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
+import { CreateAssetFormModule } from '@modules/create-asset-form/module'
+
 export default {
   name: 'assets',
   components: {
     TopBar,
     Drawer,
-    AssetCreateForm,
+    SubmoduleImporter,
   },
   data: _ => ({
     vueRoutes,
+    CreateAssetFormModule,
     isAssetDrawerShown: false,
   }),
   computed: {
