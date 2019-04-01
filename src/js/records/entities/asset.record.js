@@ -20,6 +20,7 @@ export class AssetRecord {
     this.details = record.details
     this.name = _get(record, 'details.name')
     this.externalSystemType = _get(record, 'details.externalSystemType')
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
 
     this.logo = _get(record, 'details.logo')
     this.logoKey = _get(record, 'details.logo.key')
@@ -42,7 +43,7 @@ export class AssetRecord {
   }
 
   logoUrl (storageUrl) {
-    if (this.details.logoUrl) {
+    if (_get(this.details, 'logoUrl')) {
       return this.details.logoUrl
     } else {
       return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''

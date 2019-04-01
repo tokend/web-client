@@ -81,7 +81,7 @@ import config from '@/config'
 import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -149,10 +149,14 @@ export default {
     },
   },
   async created () {
-    await this.loadAssets()
+    await this.loadTokens()
+    await this.loadBalances()
   },
   methods: {
-    async loadAssets () {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
+    async loadTokens () {
       try {
         const response = await Sdk.horizon.assets.getAll()
         this.assets = response.data.map(asset => new AssetRecord(asset))

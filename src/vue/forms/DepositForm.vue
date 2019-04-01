@@ -23,10 +23,22 @@
         </div>
 
         <template v-for="item in assets">
+          <template v-if="item === selectedAsset && item.isCoinpayments">
+            <submodule-importer
+              v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)"
+              :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
+              :asset="item"
+              :balance-id="balanceId"
+              :wallet="wallet"
+              :account-id="accountId"
+              :config="config"
+              :key="item.code"
+            />
+          </template>
           <address-loader
             @ready="enableForm()"
             :key="item.code"
-            v-if="item === selectedAsset"
+            v-if="item === selectedAsset && !item.isCoinpayments"
             :asset-code="selectedAsset.code"
             :external-system-type="selectedAsset.externalSystemType"
           />
@@ -63,9 +75,13 @@
 import Loader from '@/vue/common/Loader'
 import AddressLoader from './DepositForm/AddressLoader'
 
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
 import FormMixin from '@/vue/mixins/form.mixin'
 
+import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
@@ -77,12 +93,17 @@ export default {
   components: {
     Loader,
     AddressLoader,
+    SubmoduleImporter,
   },
   mixins: [FormMixin],
   props: {
   },
   data () {
     return {
+      CoinpaymentsDepositModule,
+      config: {
+        horizonURL: config.HORIZON_SERVER,
+      },
       isLoaded: false,
       isLoadingFailed: false,
       assets: [],
@@ -93,11 +114,22 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
+      vuexTypes.account,
+      vuexTypes.wallet,
     ]),
+    balanceId () {
+      return this.account.balances.find(item => {
+        return item.asset.id === this.selectedAsset.code
+      }).id
+    },
   },
   watch: {
     'selectedAsset.code' () {
-      this.disableForm()
+      // Transferred to the disabled state before receiving the address,
+      // in order to avoid a large number of requests
+      if (!this.selectedAsset.isCoinpayments) {
+        this.disableForm()
+      }
     },
   },
   async created () {

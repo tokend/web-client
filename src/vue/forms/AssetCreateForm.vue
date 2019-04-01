@@ -74,7 +74,7 @@
             v-model="form.information.assetType"
             name="asset-create-asset-type"
             key-as-value-text="label"
-            :values="assetTypes"
+            :values="ASSET_TYPES"
             :label="'asset-form.asset-type' | globalize"
             :disabled="formMixin.isDisabled"
             @blur="touchField('form.information.assetType')"
@@ -285,6 +285,17 @@ const EMPTY_DOCUMENT = {
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
+const ASSET_TYPES = [
+  {
+    label: globalize('asset-form.asset-type-not-required-kyc'),
+    value: '0',
+  },
+  {
+    label: globalize('asset-form.asset-type-required-kyc'),
+    value: null,
+  },
+]
+
 export default {
   name: 'asset-create-form',
   components: {
@@ -321,6 +332,7 @@ export default {
     ASSET_POLICIES,
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
+    ASSET_TYPES,
   }),
 
   validations () {
@@ -387,7 +399,9 @@ export default {
       return {
         requestID: requestId,
         code: this.form.information.code,
-        assetType: this.form.information.assetType.value,
+        assetType: this.getAssetTypeValue(
+          this.form.information.assetType.value
+        ),
         preissuedAssetSigner: preissuedAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
@@ -399,18 +413,6 @@ export default {
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },
       }
-    },
-    assetTypes () {
-      return [
-        {
-          label: globalize('asset-form.asset-type-not-required-kyc'),
-          value: '0',
-        },
-        {
-          label: globalize('asset-form.asset-type-required-kyc'),
-          value: String(this.kvAssetTypeKycRequired),
-        },
-      ]
     },
   },
 
@@ -433,8 +435,11 @@ export default {
         information: {
           name: this.request.assetName,
           code: this.request.assetCode,
-          assetType: this.assetTypes
-            .find(item => item.value === String(this.request.assetType)),
+          assetType: ASSET_TYPES
+            .find(item => {
+              const value = this.getAssetTypeValue(item.value)
+              return value === String(this.request.assetType)
+            }),
           maxIssuanceAmount: this.request.maxIssuanceAmount,
           logo: this.request.logo.key
             ? new DocumentContainer(this.request.logo)
@@ -468,7 +473,6 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-
         const operation =
             base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
         await Sdk.horizon.transactions.submitOperations(operation)
@@ -499,6 +503,9 @@ export default {
           document.setKey(documentKey)
         }
       }
+    },
+    getAssetTypeValue (value) {
+      return value !== '0' ? String(this.kvAssetTypeKycRequired) : value
     },
   },
 }

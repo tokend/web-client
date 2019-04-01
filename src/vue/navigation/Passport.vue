@@ -1,10 +1,17 @@
 <template>
   <div class="passport">
-    <button
-      class="passport__email-abbr-btn"
-      @click="toggleDropdown"
-    >
-      {{ email | abbreviate }}
+    <button @click="toggleDropdown">
+      <img
+        v-if="avatarLogoUrl"
+        class="passport__avatar passport__avatar-image"
+        :src="avatarLogoUrl"
+      >
+      <p
+        v-else
+        class="passport__avatar passport__email-abbr-btn"
+      >
+        {{ email | abbreviate }}
+      </p>
     </button>
 
     <div class="passport__account-details-wrp">
@@ -64,18 +71,20 @@ import { vuexTypes } from '@/vuex'
 import { mapGetters, mapMutations } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
+import config from '@/config'
 
 export default {
   name: 'passport',
 
   data: () => ({
     isDropdownOpen: false,
-    destructClickOutsideHandler: () => {},
+    destructClickOutsideHandler: () => { },
   }),
 
   computed: {
     ...mapGetters({
       email: vuexTypes.walletEmail,
+      kycAvatarKey: vuexTypes.kycAvatarKey,
 
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
@@ -90,6 +99,12 @@ export default {
       } else {
         return 'passport.account-unverified'
       }
+    },
+
+    avatarLogoUrl () {
+      return this.kycAvatarKey
+        ? `${config.FILE_STORAGE}/${this.kycAvatarKey}`
+        : ''
     },
   },
 
@@ -148,11 +163,21 @@ $dropdown-item-side-padding: 2.4rem;
   justify-content: flex-end;
 }
 
+.passport__avatar {
+  cursor: pointer;
+  width: 5.5rem;
+  height: 5.5rem;
+  box-shadow: 0 0.4rem 1rem 0 $col-passport-email-abbr-bg;
+}
+
+.passport__avatar-image {
+  border-radius: 50%;
+}
+
 .passport__email-abbr-btn {
   width: 5.5rem;
   height: 5.5rem;
   font-size: 2.4rem;
-  box-shadow: 0 0.4rem 1rem 0 $col-passport-email-abbr-bg;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,7 +274,7 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__dropdown-status-icon {
   &:before {
-    transition: .2s ease-out;
+    transition: 0.2s ease-out;
   }
 }
 </style>
