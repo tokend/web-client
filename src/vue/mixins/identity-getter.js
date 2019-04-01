@@ -14,7 +14,7 @@ export default {
       })
 
       if (data && data[0]) {
-        return data[0].id
+        return data[0].address
       } else {
         throw new errors.UserDoesntExistError()
       }

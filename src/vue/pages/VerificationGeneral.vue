@@ -61,6 +61,20 @@
               <!-- eslint-enable max-len -->
             </div>
           </div>
+
+          <div class="app__form-row">
+            <div class="app__form-field">
+              <file-field
+                v-model="form.documents.avatar"
+                name="verification-general-avatar"
+                :note="'verification-form.image-type-note' | globalize"
+                accept="image/*"
+                :document-type="DOCUMENT_TYPES.kycAvatar"
+                :label="'verification-form.avatar-lbl' | globalize"
+                :disabled="formMixin.isDisabled"
+              />
+            </div>
+          </div>
         </div>
 
         <div class="verification-general-form__block">
@@ -93,8 +107,8 @@
               <file-field
                 v-model="form.documents.verificationPhoto"
                 name="verification-general-verification-photo"
-                :note="'verification-form.file-type-note' | globalize"
-                accept="image/*, .pdf"
+                :note="'verification-form.image-type-note' | globalize"
+                accept="image/*"
                 :document-type="DOCUMENT_TYPES.kycSelfie"
                 :label="'verification-form.photo-lbl' | globalize"
                 :disabled="formMixin.isDisabled"
@@ -171,6 +185,7 @@ export default {
         documentExpirationDate: '',
       },
       documents: {
+        avatar: null,
         idDocument: null,
         verificationPhoto: null,
       },
@@ -255,6 +270,8 @@ export default {
         first_name: this.form.personal.firstName,
         last_name: this.form.personal.lastName,
         documents: {
+          [DOCUMENT_TYPES.kycAvatar]:
+            this.form.documents.avatar.getDetailsForSave(),
           [DOCUMENT_TYPES.kycIdDocument]:
             this.form.documents.idDocument.getDetailsForSave(),
           [DOCUMENT_TYPES.kycSelfie]:
@@ -270,6 +287,9 @@ export default {
           lastName: kycData.last_name,
         },
         documents: {
+          avatar: kycData.documents[DOCUMENT_TYPES.kycAvatar]
+            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+            : {},
           idDocument: kycData.documents[DOCUMENT_TYPES.kycIdDocument]
             ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycIdDocument])
             : {},

@@ -29,12 +29,12 @@
             @click="isWithdrawalDrawerShown = true"
           >
             <i class="mdi mdi-download movements-top-bar__btn-icon" />
-            {{ 'op-pages.withdrawal' | globalize }}
+            {{ 'op-pages.withdraw' | globalize }}
           </button>
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositDrawerPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"
@@ -71,7 +71,9 @@
       <template slot="heading">
         {{ 'deposit-form.deposit' | globalize }}
       </template>
-      <deposit-form />
+      <submodule-importer
+        :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
+      />
     </drawer>
 
     <drawer :is-shown.sync="isTransferDrawerShown">
@@ -95,11 +97,11 @@ import Drawer from '@/vue/common/Drawer'
 import SelectField from '@/vue/fields/SelectField'
 
 import WithdrawalForm from '@/vue/forms/WithdrawalForm'
-import DepositForm from '@/vue/forms/DepositForm'
 import TransferForm from '@/vue/forms/TransferForm'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositDrawerPseudoModule } from '@/modules-arch/pseudo-modules/deposit-drawer-pseudo-module'
+import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 
 const EVENTS = {
@@ -113,8 +115,8 @@ export default {
     TopBar,
     Drawer,
     WithdrawalForm,
-    DepositForm,
     TransferForm,
+    SubmoduleImporter,
   },
   props: {
     wallet: {
@@ -137,7 +139,7 @@ export default {
     isDepositDrawerShown: false,
     isWithdrawalDrawerShown: false,
     WithdrawalDrawerPseudoModule,
-    DepositDrawerPseudoModule,
+    DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     asset: {},
   }),
