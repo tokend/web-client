@@ -101,6 +101,7 @@ KYC request
 - Fix bug with cancel order
 - Fix bug with import mapActions in SubmitTradeOfferForm
 - Invalid start date for sales that are already started
+- Converting account role ID to number
 
 ### Removed
 - Removed feature flags from config

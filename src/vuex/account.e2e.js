@@ -14,7 +14,7 @@ describe('account.module', () => {
   let store
 
   const id = 'GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR'
-  const roleId = '2'
+  const roleId = 2
 
   beforeEach(async () => {
     mockHelper = new MockHelper()
