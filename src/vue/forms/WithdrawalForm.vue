@@ -300,6 +300,7 @@ export default {
   },
   async created () {
     try {
+      await this.loadBalances()
       await this.initAssetSelector()
       this.isLoaded = true
     } catch (error) {
