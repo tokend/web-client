@@ -14,7 +14,7 @@
                 v-model="form.ownedAsset"
                 :values="ownedAssets"
                 key-as-value-text="nameAndCode"
-                :disabled="formMixin.isDisabled || config.oneBaseAsset"
+                :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset' | globalize"
               />
               <p class="app__form-field-description">
@@ -210,8 +210,6 @@ export default {
      * @property config.horizonURL - the url of horizon server (without version)
      * @property [config.defaultAssetCode] - prefills the asset-selector with
      *           this asset code
-     * @property [config.oneBaseAsset] - show only one base asset in selected
-     *           field
      */
     config: {
       type: Object,

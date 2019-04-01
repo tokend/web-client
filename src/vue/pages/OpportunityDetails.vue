@@ -188,7 +188,6 @@ export default {
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
-      oneBaseAsset: true,
     },
     buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
@@ -237,7 +236,6 @@ export default {
       try {
         const { data } = await Sdk.horizon.assets.get(assetCode)
         this.token = new AssetRecord(data)
-        this.dividendConfig.defaultAssetCode = this.token.code
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
