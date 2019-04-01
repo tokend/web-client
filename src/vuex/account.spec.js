@@ -34,6 +34,7 @@ describe('account.module', () => {
 
     it('SET_ACCOUNT_BALANCES_DETAILS should properly modify state', () => {
       mutations[vuexTypes.SET_ACCOUNT_BALANCES_DETAILS](state, obj)
+
       expect(state).to.deep.equal({
         account: {},
         balancesDetails: obj,
