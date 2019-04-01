@@ -149,8 +149,6 @@ import {
 } from '@/js/records/requests/withdrawal-details.record'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export default {
   name: 'incoming-withdrawal-requests',
   components: {
@@ -197,7 +195,7 @@ export default {
 
     getFirstPageLoader (accountId) {
       return function () {
-        const endpoint = `/${HORIZON_VERSION_PREFIX}/create_withdraw_requests`
+        const endpoint = `/v3/create_withdraw_requests`
         return Api.api.getWithSignature(endpoint, {
           filter: {
             reviewer: accountId,
@@ -294,7 +292,7 @@ export default {
     },
     async rewriteWithdrawalRequest () {
       /* eslint-disable-next-line max-len */
-      const endpoint = `/${HORIZON_VERSION_PREFIX}/requests/${this.selectedRequest.id}`
+      const endpoint = `/v3/requests/${this.selectedRequest.id}`
       const { data } = await Api.api.getWithSignature(endpoint, {
         filter: {
           reviewer: this.accountId,

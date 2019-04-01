@@ -4,8 +4,6 @@ import { Movement } from '../wrappers/movement'
 import { types } from './types'
 import { api } from '../_api'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   balances: [],
@@ -30,7 +28,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -44,7 +42,7 @@ export const actions = {
    * @param {String} opts.asset - asset code
    */
   async [types.LOAD_ASSET_PAIRS] ({ commit, getters }, opts) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/asset_pairs`
+    const endpoint = `/v3/asset_pairs`
     const { data: pairs } = await api().getWithSignature(endpoint, {
       filter: {
         asset: opts.asset,
@@ -76,7 +74,7 @@ export const actions = {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/history`
+    const endpoint = `/v3/history`
     const { data: movements } = await api().getWithSignature(endpoint, {
       page: {
         order: 'desc',

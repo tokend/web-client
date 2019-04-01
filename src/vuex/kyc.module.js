@@ -4,8 +4,6 @@ import { Api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 import safeGet from 'lodash/get'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 /**
  * @module
  *
@@ -53,7 +51,7 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await Api.getWithSignature(`${HORIZON_VERSION_PREFIX}/change_role_requests`, {
+    const response = await Api.getWithSignature(`v3/change_role_requests`, {
       filter: {
         requestor,
       },
