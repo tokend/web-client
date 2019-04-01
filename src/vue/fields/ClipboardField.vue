@@ -41,7 +41,7 @@ export default {
 @import '~@scss/mixins';
 
 .clipboard-field {
-  box-shadow: inset 0px 0.2rem 0.4rem $col-tick-field-shadow;
+  box-shadow: inset 0 0.2rem 0.4rem $col-tick-field-shadow;
   display: flex;
   align-items: center;
   width: 100%;

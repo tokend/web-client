@@ -29,14 +29,9 @@
       <template v-else>
         <div class="signup__seed-wrp">
           <div class="signup__seed-explanations">
-            <p class="signup__seed-explanation-text">
-              Seed is used to recover account in case of password loss. If you
-              lose your password and seed, you will <b>never</b> access your
-              account.
-            </p>
-            <p class="signup__seed-explanation-text">
-              <b>We do not know your seed</b> and it will never be shown again!
-            </p>
+            <vue-markdown
+              :source="'auth-pages.save-recovery-seed-explanation' | globalize"
+            />
           </div>
 
           <key-viewer
@@ -46,7 +41,7 @@
 
           <div class="signup__tick-field-container">
             <tick-field
-              v-model="isSeedCopied"
+              v-model="isConfirmedSeedCopied"
               :cb-value="false"
               :required="true"
               :disabled="formMixin.isDisabled"
@@ -59,7 +54,7 @@
             <button
               v-ripple
               @click="submit"
-              :disabled="!isSeedCopied"
+              :disabled="!isConfirmedSeedCopied"
               class="auth-page__submit-btn"
             >
               {{ 'auth-pages.continue' | globalize }}
@@ -76,6 +71,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import SignupForm from '../forms/SignupForm'
 import KeyViewer from '../common/KeyViewer'
 import TickField from '@/vue/fields/TickField'
+import VueMarkdown from 'vue-markdown'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -91,6 +87,7 @@ export default {
     SignupForm,
     KeyViewer,
     TickField,
+    VueMarkdown,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -98,7 +95,7 @@ export default {
     password: null,
     email: null,
     vueRoutes,
-    isSeedCopied: false,
+    isConfirmedSeedCopied: false,
   }),
   computed: {
     ...mapGetters({
@@ -158,17 +155,20 @@ export default {
 <style lang="scss">
 @import './auth-page';
 
-.signup__explanations {
+.signup__seed-explanations {
   margin-bottom: 3rem;
-}
-.signup__seed-explanation-text {
+
+  p {
   margin-bottom: 1rem;
   font-size: 1.6rem;
+  }
 }
+
 .signup__actions {
   margin-top: 2rem;
   text-align: center;
 }
+
 .signup__tick-field-container {
   padding-top: 2.2rem;
 }

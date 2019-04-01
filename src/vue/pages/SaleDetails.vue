@@ -3,9 +3,18 @@
     <template v-if="sale">
       <top-bar>
         <template slot="main">
+          <!--
+            HACK: we don't need any active-class here, so empty "active-class"
+            attr prevents adding any active-class
+           -->
+          <router-link :to="{ ...vueRoutes.sales }" active-class>
+            <span>
+              {{ 'sale-details.opportunities-list' | globalize }}
+            </span>
+          </router-link>
+
           <router-link
-            v-ripple
-            :to="vueRoutes.saleDetails.campaign"
+            :to="{ ...vueRoutes.saleCampaign, params: { id: id } }"
           >
             <span>
               {{ 'sale-details.campaign-title' | globalize }}
@@ -52,8 +61,8 @@
     <template v-else-if="isSaleNotFound">
       <no-data-message
         icon-name="alert-circle"
-        :title-id="'sale-details.sale-not-found-title'"
-        :message-id="'sale-details.sale-not-found-desc'"
+        :title="'sale-details.sale-not-found-title' | globalize"
+        :message="'sale-details.sale-not-found-desc' | globalize"
       />
     </template>
 

@@ -32,7 +32,7 @@
     </p>
     <div class="account-type-selector">
       <router-link
-        :to="vueRoutes.verification.general"
+        :to="vueRoutes.verificationGeneral"
         class="account-type-selector__item"
         :disabled="kycAccountRole &&
           kycAccountRole !== kvEntryGeneralRoleId"
@@ -49,7 +49,7 @@
         </div>
       </router-link>
       <router-link
-        :to="vueRoutes.verification.corporate"
+        :to="vueRoutes.verificationCorporate"
         class="account-type-selector__item"
         :disabled="kycAccountRole &&
           kycAccountRole !== kvEntryCorporateRoleId"
@@ -96,14 +96,14 @@ function verificationGuard (to, from, next) {
 
   switch (kycAccountRole) {
     case kvEntryCorporateRoleId:
-      to.name === vueRoutes.verification.corporate.name
+      to.name === vueRoutes.verificationCorporate.name
         ? next()
-        : next(vueRoutes.verification.corporate)
+        : next(vueRoutes.verificationCorporate)
       break
     case kvEntryGeneralRoleId:
-      to.name === vueRoutes.verification.general.name
+      to.name === vueRoutes.verificationGeneral.name
         ? next()
-        : next(vueRoutes.verification.general)
+        : next(vueRoutes.verificationGeneral)
       break
     default:
       next()
@@ -127,10 +127,10 @@ export default {
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
   },
-  beforeRouteEnter (to, from, next) {
+  async beforeRouteEnter (to, from, next) {
     verificationGuard(to, from, next)
   },
-  beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate (to, from, next) {
     verificationGuard(to, from, next)
   },
 }

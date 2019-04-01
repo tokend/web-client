@@ -1,7 +1,10 @@
 <template>
   <transition name="drawer-transition">
     <div class="drawer" v-if="isShown">
-      <div class="drawer__backdrop" @click="closeSelf" />
+      <div
+        class="drawer__backdrop"
+        @click="closeByClickOutside ? closeSelf : ''"
+      />
       <div class="drawer__pane">
         <div class="drawer__head">
           <h2 class="drawer__heading">
@@ -20,8 +23,6 @@
 </template>
 
 <script>
-import { KEY_CODES } from '@/js/const/key-codes.const'
-
 /**
  * Drawer component serves as a wrapper for modal content.
  *
@@ -37,21 +38,9 @@ import { KEY_CODES } from '@/js/const/key-codes.const'
 export default {
   props: {
     isShown: { type: Boolean, default: true },
-  },
-  created () {
-    document.addEventListener('keydown', this.onDocumentKeyDown)
-  },
-  destroyed () {
-    document.removeEventListener('keydown', this.onDocumentKeyDown)
+    closeByClickOutside: { type: Boolean, default: true },
   },
   methods: {
-    onDocumentKeyDown () {
-      const keyCode = event.which || event.keyCode
-
-      if (keyCode === KEY_CODES.escape) {
-        this.closeSelf()
-      }
-    },
     closeSelf () {
       this.$emit('update:isShown', false)
     },
@@ -61,6 +50,9 @@ export default {
 
 <style lang="scss">
 @import '~@scss/variables';
+@import '~@scss/mixins';
+
+$media-small: 460px;
 
 .drawer {
   position: fixed;
@@ -120,6 +112,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @include respond-to-height($media-small) {
+    padding: 1rem 1.5rem;
+  }
 }
 
 .drawer__heading {
@@ -137,6 +133,10 @@ export default {
   // allows to scroll drawer content when it height more than drawer height
   overflow-y: auto;
   height: 0;
+
+  @include respond-to-height($media-small) {
+    padding: 1rem 1.5rem;
+  }
 }
 
 .drawer-transition-enter-active {

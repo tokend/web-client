@@ -2,7 +2,7 @@
   <div>
     <div v-if="!isAccountCorporate">
       <p>
-        {{ 'issuance.not-available' | globalize }}
+        {{ 'issuance-form.not-available' | globalize }}
       </p>
     </div>
     <div
@@ -19,8 +19,9 @@
             <select-field
               v-model="form.asset"
               :values="ownedAssets"
+              name="issuance-asset"
               key-as-value-text="nameAndCode"
-              :label="'issuance.asset-lbl' | globalize"
+              :label="'issuance-form.asset-lbl' | globalize"
               id="issuance-asset"
               @blur="touchField('form.asset')"
               :disabled="formMixin.isDisabled"
@@ -36,7 +37,8 @@
                 v-model="form.amount"
                 @blur="touchField('form.amount')"
                 id="issuance-amount"
-                :label="'issuance.amount-lbl' | globalize"
+                name="issuance-amount"
+                :label="'issuance-form.amount-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
                   'form.amount',
                   {
@@ -59,7 +61,7 @@
               class="app__form-field-description"
             >
               <!-- eslint-disable-next-line max-len -->
-              {{ 'issuance.available-for-issuance-hint' | globalize({ value: form.asset.availableForIssuance }) }}
+              {{ 'issuance-form.available-for-issuance-hint' | globalize({ value: form.asset.availableForIssuance }) }}
             </p>
           </div>
         </div>
@@ -70,7 +72,8 @@
               v-model="form.receiver"
               @blur="touchField('form.receiver')"
               id="issuance-receiver"
-              :label="'issuance.receiver-lbl' | globalize"
+              name="issuance-receiver"
+              :label="'issuance-form.receiver-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.receiver')"
               :disabled="formMixin.isDisabled"
             />
@@ -83,11 +86,12 @@
               v-model="form.reference"
               @blur="touchField('form.reference')"
               id="issuance-reference"
+              name="issuance-reference"
               :error-message="getFieldErrorMessage(
                 'form.reference',
                 { length: REFERENCE_MAX_LENGTH }
               )"
-              :label="'issuance.reference-lbl' | globalize"
+              :label="'issuance-form.reference-lbl' | globalize"
               :maxlength="REFERENCE_MAX_LENGTH"
               :disabled="formMixin.isDisabled"
             />
@@ -106,18 +110,18 @@
             class="issuance-form__submit-btn"
             :disabled="formMixin.isDisabled"
           >
-            {{ 'issuance.issue-btn' | globalize }}
+            {{ 'issuance-form.issue-btn' | globalize }}
           </button>
         </div>
       </form>
     </div>
     <div v-else-if="isLoaded && !ownedAssets.length">
       <p>
-        {{ 'issuance.no-owned-assets-msg' | globalize }}
+        {{ 'issuance-form.no-owned-assets-msg' | globalize }}
       </p>
     </div>
     <div v-else>
-      <loader :message-id="'issuance.loading-msg'" />
+      <loader :message-id="'issuance-form.loading-msg'" />
     </div>
   </div>
 </template>
@@ -151,6 +155,7 @@ import { vuexTypes } from '@/vuex'
 const REFERENCE_MAX_LENGTH = 255
 const EVENTS = {
   close: 'close',
+  submit: 'submit',
 }
 
 export default {
@@ -226,10 +231,11 @@ export default {
             })
           await Sdk.horizon.transactions.submitOperations(operation)
           await this.reinitAssetSelector()
-          Bus.success('issuance.assets-issued-msg')
+          Bus.success('issuance-form.assets-issued-msg')
+          this.$emit(EVENTS.submit)
           this.$emit(EVENTS.close)
         } else {
-          Bus.error('issuance.balance-required-err')
+          Bus.error('issuance-form.balance-required-err')
         }
       } catch (e) {
         ErrorHandler.process(e)

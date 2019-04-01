@@ -18,6 +18,7 @@
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
             id="asset-name"
+            name="asset-update-name"
             :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.name',
@@ -43,7 +44,20 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.withdrawable"
+          >
+            {{ 'asset-form.withdrawable-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
+            name="asset-update-logo"
             v-model="form.information.logo"
             :note="'asset-form.logo-note' | globalize"
             accept=".jpg, .png"
@@ -75,6 +89,7 @@
         <div class="app__form-field">
           <file-field
             v-model="form.advanced.terms"
+            name="asset-update-terms"
             :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
@@ -291,6 +306,7 @@ export default {
 
     next (formStep) {
       if (this.isFormValid(formStep)) {
+        this.$el.parentElement.scrollTop = 0
         this.currentStep++
       }
     },

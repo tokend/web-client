@@ -6,6 +6,7 @@
           v-model="form.email"
           @blur="touchField('form.email')"
           id="recovery-email"
+          name="recovery-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
           :white-autofill="false"
@@ -18,9 +19,10 @@
           v-model="form.password"
           @blur="touchField('form.password')"
           id="recovery-password"
+          name="recovery-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
-          :label="'auth-pages.password' | globalize"
+          :label="'auth-pages.new-password' | globalize"
           :white-autofill="false"
         />
       </div>
@@ -31,6 +33,7 @@
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
           id="recovery-confirm-password"
+          name="recovery-password-confirm"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
@@ -44,6 +47,7 @@
           v-model="form.recoverySeed"
           @blur="touchField('form.recoverySeed')"
           id="recovery-seed"
+          name="recovery-seed"
           type="password"
           :error-message="getFieldErrorMessage('form.recoverySeed')"
           :label="'auth-pages.recovery-seed' | globalize"
@@ -59,7 +63,7 @@
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.sign-up' | globalize }}
+        {{ 'auth-pages.recover' | globalize }}
       </button>
     </div>
   </form>
@@ -75,9 +79,13 @@ import {
   seed,
 } from '@validators'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
+import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
+import { vuexTypes } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'recovery-form',
@@ -102,7 +110,18 @@ export default {
       recoverySeed: { required, seed },
     },
   },
+  computed: {
+    ...mapGetters({
+      wallet: vuexTypes.wallet,
+    }),
+  },
   methods: {
+    ...mapActions({
+      loadWallet: vuexTypes.LOAD_WALLET,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadKyc: vuexTypes.LOAD_KYC,
+      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+    }),
     async submit () {
       if (!this.isFormValid()) {
         return
@@ -114,12 +133,36 @@ export default {
           this.form.recoverySeed,
           this.form.password
         )
+
+        await this.login()
+
         Bus.success('auth-pages.recovered')
-        this.$router.push(vueRoutes.login)
+        this.$router.push(vueRoutes.app)
       } catch (e) {
-        ErrorHandler.process(e)
+        switch (e.constructor) {
+          case errors.NotFoundError:
+            Bus.error('errors.user-doesnt-exist')
+            ErrorHandler.processWithoutFeedback(e)
+            break
+          default:
+            ErrorHandler.process(e)
+        }
       }
       this.enableForm()
+    },
+
+    async login () {
+      await this.loadWallet({
+        email: this.form.email,
+        password: this.form.password,
+      })
+      const accountId = this.wallet.accountId
+      Sdk.sdk.useWallet(this.wallet)
+      Api.useWallet(this.wallet)
+
+      await this.loadAccount(accountId)
+      await this.loadKvEntriesAccountRoleIds()
+      await this.loadKyc()
     },
   },
 }

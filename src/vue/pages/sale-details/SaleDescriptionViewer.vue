@@ -2,7 +2,10 @@
   <div class="sale-description-viewer">
     <template v-if="isLoaded">
       <template v-if="saleDescription">
-        <vue-markdown :source="saleDescription" />
+        <vue-markdown
+          class="sale-description-viewer__markdown"
+          :source="saleDescription"
+        />
       </template>
 
       <template v-else>
@@ -47,7 +50,7 @@ export default {
 
   data: _ => ({
     saleDescription: '',
-    isLoaded: true,
+    isLoaded: false,
     isLoadingFailed: false,
   }),
 
@@ -80,5 +83,52 @@ export default {
   text-align: center;
   font-weight: bold;
   font-size: 1.6rem;
+}
+</style>
+
+<style lang="scss">
+@import "~@scss/variables";
+
+.sale-description-viewer__markdown {
+  img {
+    max-width: 100%;
+    margin: 0.8rem 0;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.4rem;
+    margin-top: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  p {
+    margin-bottom: 0.8rem;
+  }
+
+  ul {
+    list-style-type: disc !important;
+    padding-left: 1.6rem;
+  }
+
+  li {
+    list-style-type: disc !important;
+    margin-bottom: 0.8rem;
+  }
+
+  a {
+    color: $col-secondary;
+  }
 }
 </style>

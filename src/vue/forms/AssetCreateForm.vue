@@ -18,6 +18,7 @@
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
             id="asset-name"
+            name="asset-create-name"
             :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.name',
@@ -36,6 +37,7 @@
             v-model="form.information.code"
             @blur="touchField('form.information.code')"
             id="asset-code"
+            name="asset-create-asset-code"
             :label="'asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.code',
@@ -55,6 +57,7 @@
             v-model="form.information.maxIssuanceAmount"
             @blur="touchField('form.information.maxIssuanceAmount')"
             id="asset-max-issuance-amount"
+            name="asset-create-max-issuance-amount"
             :label="'asset-form.max-issuance-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.information.maxIssuanceAmount',
@@ -69,6 +72,7 @@
         <div class="app__form-field">
           <select-field
             v-model="form.information.assetType"
+            name="asset-create-asset-type"
             key-as-value-text="label"
             :values="assetTypes"
             :label="'asset-form.asset-type' | globalize"
@@ -95,7 +99,20 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.withdrawable"
+          >
+            {{ 'asset-form.withdrawable-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
+            name="asset-create-logo"
             v-model="form.information.logo"
             :note="'asset-form.logo-note' | globalize"
             accept=".jpg, .png"
@@ -137,17 +154,28 @@
       <template v-if="!form.advanced.isPreissuanceDisabled">
         <div class="app__form-row">
           <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.advanced.preissuedAssetSigner"
-              @blur="touchField('form.advanced.preissuedAssetSigner')"
-              id="asset-preissued-asset-signer"
-              :label="'asset-form.preissued-asset-signer-lbl' | globalize"
-              :error-message="getFieldErrorMessage(
-                'form.advanced.preissuedAssetSigner',
-              )"
-              :disabled="formMixin.isDisabled"
-            />
+            <div class="issuance-form__pre-issued-asset-signer-wrp">
+              <input-field
+                white-autofill
+                v-model="form.advanced.preissuedAssetSigner"
+                @blur="touchField('form.advanced.preissuedAssetSigner')"
+                id="asset-preissued-asset-signer"
+                name="asset-create-preissued-asset-signer"
+                :label="'asset-form.preissued-asset-signer-lbl' | globalize"
+                :error-message="getFieldErrorMessage(
+                  'form.advanced.preissuedAssetSigner',
+                )"
+                :disabled="formMixin.isDisabled"
+              />
+              <button
+                v-ripple
+                type="button"
+                class="app__button-flat issuance-form__insert-account-id-btn"
+                @click="form.advanced.preissuedAssetSigner = accountId"
+              >
+                {{ 'asset-form.use-my-account-id-btn' | globalize }}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -159,6 +187,7 @@
               v-model="form.advanced.initialPreissuedAmount"
               @blur="touchField('form.advanced.initialPreissuedAmount')"
               id="asset-initial-preissued-amount"
+              name="asset-create-initial-preissued-amount"
               :label="'asset-form.initial-preissued-amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.advanced.initialPreissuedAmount',
@@ -174,6 +203,7 @@
         <div class="app__form-field">
           <file-field
             v-model="form.advanced.terms"
+            name="asset-create-terms"
             :note="'asset-form.terms-note' | globalize"
             accept=".jpg, .png, .pdf"
             :document-type="DOCUMENT_TYPES.assetTerms"
@@ -335,7 +365,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      account: vuexTypes.account,
+      accountId: vuexTypes.accountId,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
 
@@ -428,6 +458,7 @@ export default {
 
     next (formStep) {
       if (this.isFormValid(formStep)) {
+        this.$el.parentElement.scrollTop = 0
         this.currentStep++
       }
     },
@@ -474,16 +505,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './app-form';
+@import './app-form';
 
-  .asset-create-form__btn {
-    @include button-raised();
+.asset-create-form__btn {
+  @include button-raised();
 
-    margin-bottom: 2rem;
-    width: 14.4rem;
-  }
+  margin-bottom: 2rem;
+  width: 14.4rem;
+}
 
-  .asset-create-form__kyc-required-row {
-    margin-top: 2.1rem;
-  }
+.asset-create-form__kyc-required-row {
+  margin-top: 2.1rem;
+}
+
+.issuance-form__pre-issued-asset-signer-wrp {
+  display: flex;
+  align-items: center;
+}
+
+.issuance-form__insert-account-id-btn {
+  margin-left: .4rem;
+}
 </style>

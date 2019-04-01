@@ -92,9 +92,10 @@ describe('RecoveryForm component test', () => {
       })
     })
 
-    it('calls SDK wallets.recovery with proper set of params', async () => {
+    it('calls SDK wallets.recovery with proper set of params and logs in the user', async () => {
       const resource = mockHelper.getApiResourcePrototype('wallets')
-      const spy = sinon.stub(resource, 'recovery').resolves()
+      const recoveryStub = sinon.stub(resource, 'recovery').resolves()
+      const loginStub = sinon.stub(wrapper.vm, 'login').resolves()
 
       const form = {
         email: 'alice@mail.com',
@@ -107,14 +108,14 @@ describe('RecoveryForm component test', () => {
 
       await wrapper.vm.submit()
 
-      expect(spy.withArgs(
+      expect(recoveryStub).to.have.been.calledOnceWithExactly(
         form.email,
         form.recoverySeed,
         form.password
-      ).calledOnce)
-        .to
-        .be
-        .true
+      )
+      expect(loginStub).to.have.been.calledOnce
     })
+
+    // TODO: add login method test
   })
 })

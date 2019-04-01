@@ -10,6 +10,7 @@
           <div class="app__form-row withdrawal__form-row">
             <div class="app__form-field">
               <select-field
+                name="withdrawal-asset"
                 v-model="form.asset"
                 :values="assets"
                 key-as-value-text="nameAndCode"
@@ -30,15 +31,17 @@
               class="app__form-field"
               v-model.trim="form.amount"
               type="number"
+              name="withdrawal-amount"
               @blur="touchField('form.amount')"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
+              :step="selectedAssetStep"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
-                from: MIN_AMOUNT,
-                to: form.asset.balance.value,
+                available: form.asset.balance.value,
                 maxDecimalDigitsCount: DECIMAL_POINTS,
+                minValue: selectedAssetStep
               })"
             />
           </div>
@@ -48,6 +51,7 @@
               white-autofill
               class="app__form-field"
               v-model.trim="form.address"
+              name="withdrawal-address"
               @blur="touchField('form.address')"
               :error-message="getFieldErrorMessage('form.address')"
               :label="'withdrawal-form.destination-address' | globalize({
@@ -169,6 +173,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
@@ -178,8 +183,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
-  amountRange,
+  noMoreThanAvailableOnBalance,
   address,
+  minValue,
   maxDecimalDigitsCount,
 } from '@validators'
 
@@ -187,7 +193,7 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
-const EMPTY_FEE = '0.0000'
+const EMPTY_FEE = '0.000000'
 
 export default {
   name: 'withdrawal-form',
@@ -196,36 +202,34 @@ export default {
     Loader,
   },
   mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-      },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+  }),
   validations () {
     return {
       form: {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(
-            this.MIN_AMOUNT,
+          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          minValue: minValue(this.selectedAssetStep),
         },
         address: { required, address: address(this.form.asset.code) },
       },
@@ -236,6 +240,10 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
+    selectedAssetStep () {
+      // eslint-disable-next-line
+      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
+    },
   },
   watch: {
     'form.amount' (value) {

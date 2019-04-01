@@ -1,7 +1,17 @@
 <template>
   <div class="balances">
     <template v-if="isLoaded">
-      <assets-list :assets="assets" />
+      <template v-if="assets.length">
+        <assets-list :assets="assets" />
+      </template>
+
+      <template v-else>
+        <no-data-message
+          icon-name="trending-up"
+          :title="'assets-page.no-balances-title' | globalize"
+          :message="'assets-page.no-balances-msg' | globalize"
+        />
+      </template>
     </template>
 
     <template v-else-if="isLoadingFailed">
@@ -19,6 +29,7 @@
 <script>
 import AssetsList from '@/vue/common/assets/AssetsList'
 import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -30,6 +41,7 @@ export default {
   components: {
     AssetsList,
     Loader,
+    NoDataMessage,
   },
 
   data: _ => ({
