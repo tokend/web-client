@@ -72,7 +72,7 @@ export default {
   data: () => ({
     isDropdownOpen: false,
     destructClickOutsideHandler: () => {},
-    loadAccountDetailsTimeout: 45000,
+    loadAccountDetailsTickerTimeout: 45000,
   }),
 
   computed: {
@@ -97,7 +97,7 @@ export default {
   },
 
   async created () {
-    this.loadAccountDetailsTickerTimeout()
+    this.createLoadAccountDetailsTicker()
     this.loadAccountDetails()
   },
 
@@ -111,10 +111,10 @@ export default {
       clearState: vuexTypes.CLEAR_STATE,
     }),
 
-    async loadAccountDetailsTickerTimeout () {
+    async createLoadAccountDetailsTicker () {
       setInterval(() => {
         this.loadAccountDetails()
-      }, this.loadAccountDetailsTimeout)
+      }, this.loadAccountDetailsTickerTimeout)
     },
 
     async loadAccountDetails () {
