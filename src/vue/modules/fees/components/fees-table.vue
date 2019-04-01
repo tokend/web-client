@@ -65,9 +65,8 @@
     <no-data-message
       v-else
       icon-name="trending-up"
-      title-id="fees.no-valuable-fees-title"
-      message-id="fees.no-valuable-fees-msg"
-      :message-id-keys="{ asset: assetCode }"
+      :title="'fees.no-valuable-fees-title' | globalize"
+      :message="'fees.no-valuable-fees-msg' | globalize({ asset: assetCode })"
     />
   </div>
 </template>

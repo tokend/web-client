@@ -1,9 +1,10 @@
 <template>
-  <div class="loader">
+  <div class="loader" :class="{ 'loader--position-center': positionCenter }">
     <div class="loader__animation" />
     <div
       class="loader__message"
-      v-if="messageId">
+      v-if="messageId"
+    >
       {{ messageId | globalize }}
     </div>
   </div>
@@ -14,6 +15,7 @@ export default {
   name: 'loader',
   props: {
     messageId: { type: String, default: '' },
+    positionCenter: { type: Boolean, default: false },
   },
 }
 </script>
@@ -24,6 +26,10 @@ export default {
 .loader {
   display: flex;
   align-items: center;
+}
+
+.loader--position-center {
+  justify-content: center;
 }
 
 .loader__message {

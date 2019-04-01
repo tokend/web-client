@@ -73,8 +73,8 @@
   </div>
   <div v-else>
     <no-data-message
-      :title-id="'limits.no-limits-list'"
-      :message-id="'limits.here-will-limits-list'"
+      :title="'limits.no-limits-list' | globalize"
+      :message="'limits.here-will-limits-list' | globalize"
     />
   </div>
 </template>

@@ -32,12 +32,13 @@ export default Object.assign(
       trade: true,
       movements: true,
       issuance: true,
-      assets: true,
-      requests: true,
+      assets: false,
+      requests: false,
       settings: true,
       limits: true,
       sales: true,
       saleDetails: true,
+      documents: true,
     },
 
     /**
@@ -103,7 +104,18 @@ export default Object.assign(
      * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
      * inactivity
      */
-    IDLE_TIMEOUT: 1000 * 60 * 15,
+    IDLE_TIMEOUT: 1000 * 60 * 0.1,
+
+    /**
+     * Module scheme to use. The module scheme will be used to combine module
+     * set of the application.
+     */
+    MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Link to iOS application manifest file.
+     */
+    IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
   },
   process.env,
   document.ENV
