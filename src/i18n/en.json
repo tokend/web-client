@@ -177,7 +177,9 @@
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
+      "avatar-lbl": "Avatar",
       "id-document-lbl": "ID document",
+      "image-type-note": "image (Max 5mb)",
       "file-type-note": "image/pdf (Max 5mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
@@ -218,6 +220,7 @@
       "kyc-id-document": "KYC ID Document",
       "kyc-proof-of-address": "KYC Proof Of Address",
       "kyc-selfie": "KYC Selfie",
+      "kyc-avatar": "KYC Avatar",
       "kyc-tax-returns": "KYC Tax Returns",
       "kyc-origination-certificate": "KYC Origination Certificate",
       "kyc-investment-presentation": "KYC Investment Presentation",
@@ -255,6 +258,8 @@
       "terms": "Terms",
       "funds": "Funds",
       "fund-details": "Fund details",
+      "loyalty-points": "Loyalty points",
+      "statistics": "Statistics",
       "documents": "Documents"
     },
     "limits": {
@@ -366,7 +371,7 @@
         "percent-th": "Percent",
         "lower-bound-th": "Lower bound",
         "upper-bound-th": "Upper bound",
-        "subtype-th": "Subtype"
+        "direction-th": "Direction"
       },
       "fees-loading-msg": "Loading your fees…",
       "fees-loading-error-msg": "There was an error while loading your fees.",
@@ -388,7 +393,7 @@
       "something-went-wrong": "Something went wrong",
       "can-not-load-assets": "There was an error while loading assets",
       "assets-loading-msg": "Loading the assets…",
-      "withdrawal": "Withdrawal",
+      "withdraw": "Withdraw",
       "deposit": "Deposit",
       "send": "Send",
       "redeem": "Redeem",
@@ -417,6 +422,50 @@
       "date-lbl": "Date",
       "counterparty-lbl": "Counterparty"
     },
+    "loyalty-points": {
+      "create-invoice-btn": "Create invoice",
+      "create-invoice-form-title": "Create invoice",
+      "statistics-page": "Statistics",
+      "invoices-page": "Invoices"
+    },
+    "loyalty-points-invoices": {
+      "history-title": "History"
+    },
+    "loyalty-points-statistics": {
+      "withdrawals-title": "Withdrawals",
+      "withdrawal-requests-title": "Withdrawal requests",
+      "incoming-volume-title": "Withdrawal's incoming volume",
+      "summary-volume-title": "Withdrawal's summary volume"
+    },
+    "incoming-volume-viewer": {
+      "loading-msg": "Loading incoming withdrawal's volume",
+      "loading-error-msg": "There was an error while loading."
+    },
+    "summary-volume-viewer": {
+      "loading-msg": "Loading summary withdrawal's volume…",
+      "loading-error-msg": "There was an error while loading."
+    },
+    "withdrawals-statistics-viewer": {
+      "loading-msg": "Loading withdrawals statistics…",
+      "loading-error-msg": "There was an error while loading."
+    },
+    "withdrawal-requests-viewer": {
+      "loading-msg": "Loading withdrawal requests…",
+      "loading-error-msg": "There was an error while loading.",
+      "approved-request-label": "Approved",
+      "rejected-request-label": "Rejected"
+    },
+    "create-invoice-form": {
+      "amount-lbl": "Amount {{asset}}",
+      "close": "Close",
+      "price": "Price",
+      "asset": "Asset",
+      "total-amount": "Total amount",
+      "create-invoice": "Create invoice",
+      "no-pairs-message": "No pairs found",
+      "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
+      "loading-msg": "Loading..."
+    },
     "movements-history": {
       "effects": {
         "funded": "Funded",
@@ -432,7 +481,7 @@
       "operations": {
         "create-issuance-request": "Issuance/deposit requested",
         "create-withdraw-request": "Withdraw requested",
-        "check-sale-state": "Sale state updated",
+        "check-sale-state": "Sale closed",
         "review-request": "Request reviewed",
         "create-aml-alert-request": "AML alert",
         "manage-asset-pair": "Pair updated",
@@ -643,8 +692,9 @@
     },
     "requests-page": {
       "asset-creation-title": "Token creation",
-      "sale-creation-title": "Sale creation",
-      "pre-issuance-upload-title": "Pre-issuance upload"
+      "sale-creation-title": "Fund creation",
+      "pre-issuance-upload-title": "Pre-issuance upload",
+      "incoming-withdrawal-title": "Incoming withdrawal"
     },
     "request-states": {
       "approved-state": "Approved",
@@ -701,6 +751,25 @@
       "no-request-history-title": "No request history",
       "no-request-history-desc": "Here will be the list of your pre-issuance upload requests"
     },
+    "incoming-withdrawal-requests": {
+      "details-title": "Incoming withdrawal request",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
+      "requestor-header": "Requestor",
+      "request-state-header": "Request state",
+      "amount-header": "Amount",
+      "created-header": "Created",
+      "last-updated-header": "Last updated",
+      "review-btn": "Review",
+      "no-request-history-title": "No request history",
+      "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
+      "request-rejected-msg": "Your request was successfully rejected",
+      "request-approved-msg": "Your request was successfully approved",
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "permanently-rejected-state": "Permanently rejected"
+    },
     "asset-details": {
       "balance-title": "Balance",
       "maximum-title": "Maximum",
@@ -720,7 +789,8 @@
       "balance-added-msg": "Added to your balances",
       "maturity-date": "Maturity Date",
       "annual-return": "Annual return in percents",
-      "expected-revenue": "Expected revenue per year"
+      "expected-revenue": "Expected revenue per year",
+      "verification-required-err": "You need to verify your account to add this token to your balances"
     },
     "asset-request-details": {
       "request-type-title": "Request type",
@@ -758,6 +828,31 @@
       "view-btn": "View the sale",
       "update-btn": "Update",
       "cancel-btn": "CANCEL"
+    },
+    "withdrawal-request-details": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading",
+      "approve-btn": "Approve",
+      "rejected-btn": "REJECT",
+      "requestor-email": "Requestor email",
+      "requestor-id": "Requestor id",
+      "amount": "Amount",
+      "fixed-fee": "Fixed fee",
+      "percent-fee": "Percent fee",
+      "total-fee": "Total fee",
+      "address": "Address",
+      "created": "Created",
+      "reject-reason": "Reason",
+      "message-text-default": "Please recheck the reason before confirmation",
+      "request-id": "Request id",
+      "approved-msg": "This request was approved",
+      "pending-msg": "This request is pending. Please approve or reject it",
+      "rejected-msg": "This request was rejected with reason: {{reason}}",
+      "permanently-rejected-msg": "This request was rejected permanently with reason: {{reason}}",
+      "approved-state": "Approved",
+      "rejected-state": "Rejected",
+      "pending-state": "Pending",
+      "permanently-rejected-state": "Permanently rejected"
     },
     "file-field": {
       "title": "Drop a file here or click to browse",
@@ -1043,7 +1138,7 @@
     "withdrawal-form": {
       "withdrawal": "Withdrawal",
       "asset": "Token",
-      "balance": "Balance is {{amount}} {{asset}}.",
+      "balance": "Balance: {{balance, money}}",
       "amount": "Amount ({{asset}})",
       "network-fee-hint": "External network fee",
       "network-fee-unknown": "Unknown",
@@ -1058,7 +1153,10 @@
       "discover-assets-btn": "Discover tokens",
       "can-not-load-assets": "There was an error while loading tokens. Please try again later",
       "loading-msg": "Loading…",
-      "fee-loading-msg": "Loading…"
+      "fee-loading-msg": "Loading…",
+      "reviewer": "Reviewer:",
+      "comment": "Comment",
+      "withdraw-btn": "Withdraw"
     },
     "deposit-form": {
       "deposit": "Deposit",
@@ -1128,6 +1226,16 @@
       "fee-loading-msg": "Loading…",
       "no-assets": "No assets found",
       "here-will-assets-list": "Here will be the list of your depositable assets"
+    },
+    "coinpayments-deposit": {
+      "amount-lbl": "Amount",
+      "request-address-lbl": "Request the address",
+      "no-address-msg": "No available addresses to deposit yet. Please try again later.",
+      "time-left-msg": "Time left",
+      "time-over-msg": "Time over",
+      "loading-msg": "Please wait while we loading your data.",
+      "load-failed-msg": "Failed to load account data. Please try again later",
+      "address-ready-msg": "Please send {{amount, money}} to the address provided below. Note that any other token sent to this address will be irretrievably lost."
     },
     "email-getter": {
       "loading-msg": "Loading…",
@@ -1286,7 +1394,6 @@
       "submit-lbl": "Submit",
       "cancel-lbl": "Cancel"
     },
-
     "document-signers-manager": {
       "loading-msg": "Please wait while we're loading list of viewers",
       "can-update-meta-msg": "Can leave comments",

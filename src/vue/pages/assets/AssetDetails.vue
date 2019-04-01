@@ -201,6 +201,7 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
@@ -208,12 +209,24 @@ export default {
     isExistsInUserBalances () {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
+    isBalanceCreationAllowed () {
+      return this.asset.assetType === this.kvAssetTypeKycRequired &&
+        this.isAccountUnverified
+    },
+  },
+  async created () {
+    await this.loadBalances()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
+      if (this.isBalanceCreationAllowed) {
+        Bus.error('asset-details.verification-required-err')
+        return
+      }
+
       this.isBalanceCreating = true
       try {
         const operation = base.Operation.manageBalance({
@@ -238,8 +251,19 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+$media-xsmall-height: 375px;
+$media-small-height: 460px;
+
 .asset-details__table {
   margin-top: 4rem;
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
+
+  @include respond-to-height($media-xsmall-height) {
+    margin-top: 0.8rem;
+  }
 
   tr td:last-child {
     text-align: right;
@@ -263,12 +287,15 @@ export default {
   button + button {
     margin-left: auto;
   }
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
 }
 
 .asset-details__update-btn {
   @include button-raised();
 
-  margin-bottom: 2rem;
   width: 18rem;
 }
 

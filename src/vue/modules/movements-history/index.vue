@@ -12,10 +12,7 @@
         </p>
       </template>
       <template v-else>
-        <load-spinner
-          message-id="movements-history.loading-movements-msg"
-          :position-center="true"
-        />
+        <load-spinner message-id="movements-history.loading-movements-msg" />
       </template>
 
       <div class="movements-history__collection-loader-wrp">
