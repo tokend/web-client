@@ -49,6 +49,7 @@ for further information about branching and tagging conventions.
 method was called at least once through tests execution
 - Add coinpayments-deposit module
 - Added movements history modules unit tests
+- Allow requesting limits change for all of the account types
 - Update chart tickers
 
 ### Changed
@@ -86,6 +87,7 @@ method was called at least once through tests execution
 - Do not allow unverified users to add an asset with KYC required type to their balances
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
+- Pending status updating in the "Change Limits" form
 - Show only base asset on dividend payout
 - Fixed bug with check isAccessible in router
 - Console errors in movements unit tests
