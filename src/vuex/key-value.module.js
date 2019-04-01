@@ -40,21 +40,21 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS] ({ commit }) {
-    const [generalRoleId, corporateRoleId, unverifiedRoleId] = await Promise
-      .all([
-        loadRole(KEY_VALUE_ENTRY_KEYS.general),
-        loadRole(KEY_VALUE_ENTRY_KEYS.corporate),
-        loadRole(KEY_VALUE_ENTRY_KEYS.unverified),
-      ])
+    const { data } = await Api.api.get(`v3/key_values`)
+    const [generalRoleId, corporateRoleId, unverifiedRoleId] = [
+      getRole(KEY_VALUE_ENTRY_KEYS.general),
+      getRole(KEY_VALUE_ENTRY_KEYS.corporate),
+      getRole(KEY_VALUE_ENTRY_KEYS.unverified),
+    ]
+
+    function getRole (roleId) {
+      const role = data.find((key) => key.id === roleId)
+      return role.value.u32
+    }
 
     commit(vuexTypes.SET_KV_ENTRY_GENERAL_ROLE_ID, generalRoleId)
     commit(vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID, corporateRoleId)
     commit(vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID, unverifiedRoleId)
-
-    async function loadRole (keyValueEntryKey) {
-      const { data } = await Api.api.get(`v3/key_values/${keyValueEntryKey}`)
-      return String(data.value.u32)
-    }
   },
   async [vuexTypes.LOAD_KV_KYC_REQUIRED] ({ commit }) {
     const { data } = await Api.api.get(`v3/key_values/asset_type:kyc_required`)

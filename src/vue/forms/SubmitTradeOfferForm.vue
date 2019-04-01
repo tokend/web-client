@@ -99,7 +99,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { formatNumber } from '@/vue/filters/formatNumber'
-import { vuexTypes } from '@/vuex'
+import { vuexTypes, mapActions } from '@/vuex'
 import { mapGetters } from 'vuex'
 
 const EVENTS = {
@@ -137,7 +137,13 @@ export default {
         : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     formatNumber,
     async submit () {
       this.disableForm()

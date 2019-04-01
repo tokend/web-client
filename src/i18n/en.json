@@ -481,7 +481,7 @@
       "operations": {
         "create-issuance-request": "Issuance/deposit requested",
         "create-withdraw-request": "Withdraw requested",
-        "check-sale-state": "Sale state updated",
+        "check-sale-state": "Sale closed",
         "review-request": "Request reviewed",
         "create-aml-alert-request": "AML alert",
         "manage-asset-pair": "Pair updated",

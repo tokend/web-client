@@ -42,6 +42,7 @@
           <p :title="asset.name" class="assets-list__card-name">
             {{ asset.name || asset.code }}
           </p>
+          <!-- eslint-disable max-len -->
           <p
             v-if="asset.balance.value"
             class="assets-list__card-balance"
@@ -50,9 +51,9 @@
                 globalize({ value: asset.balance })
             "
           >
-            <!-- eslint-disable-next-line max-len -->
             {{ 'assets-list.list-item-balance-line' | globalize({ value: asset.balance }) }}
           </p>
+          <!-- eslint-enable max-len -->
           <p
             v-else
             class="assets-list__card-balance assets-list__card-no-balance"
@@ -73,7 +74,7 @@ import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -107,7 +108,13 @@ export default {
         ))
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     selectAsset (asset) {
       this.selectedAsset = asset
       this.isUpdateMode = false
