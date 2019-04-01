@@ -8,8 +8,10 @@ export class ChangeRoleRequestRecord {
     this.requestor = _get(record, 'requestor.id')
     this.reviewer = _get(record, 'reviewer.id')
     this.reference = record.reference
-    this.rejectReason = record.rejectReason ||
-      _get(record, 'requestDetails.creatorDetails.reason')
+    this.rejectReason = record.rejectReason
+    this.resetReason = _get(
+      record, 'requestDetails.creatorDetails.resetReason'
+    )
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt

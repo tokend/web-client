@@ -98,6 +98,7 @@ export const getters = {
   [vuexTypes.kycState]: state => state.request.state,
   [vuexTypes.kycStateI]: state => state.request.stateI,
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
+  [vuexTypes.kycRequestResetReason]: state => state.request.resetReason,
   [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReset
     ? undefined
     : state.request.accountRoleToSet,

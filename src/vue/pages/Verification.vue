@@ -5,10 +5,10 @@
       class="verification__state-message
              verification__state-message--rejected"
     >
-      <p class="verification__state-message__content">
+      <p class="verification__state-message-content">
         {{
           'verification-page.account-role-reset-msg' | globalize({
-            reason: kycRejectReason
+            reason: kycResetReason
           })
         }}
       </p>
@@ -18,7 +18,7 @@
       class="verification__state-message
              verification__state-message--approved"
     >
-      <p class="verification__state-message__content">
+      <p class="verification__state-message-content">
         {{ 'verification-page.approved-request-msg' | globalize }}
       </p>
     </div>
@@ -27,7 +27,7 @@
       class="verification__state-message
              verification__state-message--pending"
     >
-      <p class="verification__state-message__content">
+      <p class="verification__state-message-content">
         {{ 'verification-page.pending-request-msg' | globalize }}
       </p>
     </div>
@@ -36,7 +36,7 @@
       class="verification__state-message
              verification__state-message--rejected"
     >
-      <p class="verification__state-message__content">
+      <p class="verification__state-message-content">
         {{
           'verification-page.rejected-request-msg'
             | globalize({ reason: kycRejectReason })
@@ -138,6 +138,7 @@ export default {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
+      kycResetReason: vuexTypes.kycRequestResetReason,
       isAccountRoleReset: vuexTypes.isAccountRoleReset,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
@@ -172,7 +173,7 @@ export default {
   &--rejected { @include apply-theme($col-request-rejected) }
 }
 
-.verification__state-message__content {
+.verification__state-message-content {
   padding: 2.4rem;
   font-size: 1.3rem;
   font-weight: normal;
