@@ -1152,6 +1152,18 @@
       "comment": "Comment",
       "withdraw-btn": "Withdraw"
     },
+    "fees": {
+      "network-fee-hint": "External network fee",
+      "network-fee-unknown": "Unknown",
+      "source-fixed-fee": "Sender fixed fee",
+      "source-percent-fee": "Sender percent fee",
+      "destination-fixed-fee": "Recipient fixed fee",
+      "destination-percent-fee": "Recipient percent fee",
+      "source-fixed-total-fee": "Total sender fee",
+      "destination-fixed-total-fee": "Total recipient fee",
+      "fee-loading-msg": "Loading…",
+      "pay-fees-for-recipient": "Pay fees for recipient"
+    },
     "deposit-form": {
       "deposit": "Deposit",
       "asset": "Asset",

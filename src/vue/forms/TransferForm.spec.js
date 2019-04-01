@@ -14,7 +14,6 @@ import {
   errors,
   base,
   FEE_TYPES,
-  PAYMENT_FEE_SUBTYPES,
   ASSET_POLICIES,
 } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -94,18 +93,17 @@ describe('TransferForm component', () => {
     })
   })
 
-  describe('loadPaymentFee()', () => {
+  describe('calculateFees()', () => {
     const paymentDetails = {
-      asset: 'BTC',
-      subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-      account: 'SOME_ACCOUNT_ID',
+      assetCode: 'BTC',
       amount: 10,
+      accountId: 'SOME_ACCOUNT_ID',
     }
     let feesResource
     let feesStub
 
     beforeEach(() => {
-      feesResource = mockHelper.getHorizonResourcePrototype('fees')
+      feesResource = mockHelper.mockApiMethod(`/v3/accounts/${paymentDetails.accountId}/calculated_fees`, 'GET')
       feesStub = sinon.stub(feesResource, 'get')
         .withArgs(FEE_TYPES.paymentFee, paymentDetails)
     })
@@ -114,17 +112,16 @@ describe('TransferForm component', () => {
       const expectedResult = { someKey: 'someData' }
       feesStub.resolves({ data: expectedResult })
 
-      const result = await wrapper.vm.loadPaymentFee(paymentDetails)
+      const result = await wrapper.vm.calculateFees(paymentDetails)
 
       expect(feesResource.get.calledOnce).to.be.true
       expect(result).to.deep.equal(expectedResult)
     })
-
     it('handle errors', async () => {
       feesStub.rejects(TestHelper.getError(errors.NotFoundError))
       sinon.stub(ErrorHandler, 'process')
 
-      await wrapper.vm.loadPaymentFee(paymentDetails)
+      await wrapper.vm.calculateFees(paymentDetails)
 
       expect(feesResource.get.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
@@ -219,12 +216,12 @@ describe('TransferForm component', () => {
       const expectedFees = {
         destination: {
           fixed: '0.000001',
-          percent: '0.01',
+          calculatedPercent: '0.01',
           feeAsset: 'BTC',
         },
         source: {
           fixed: '0.000001',
-          percent: '0.01',
+          calculatedPercent: '0.01',
           feeAsset: 'BTC',
         },
       }
@@ -266,7 +263,7 @@ describe('TransferForm component', () => {
       stubFeesWithValidResult()
 
       wrapper.vm.form = {
-        token: {},
+        asset: {},
         amount: '',
         recipient: '',
         subject: '',
@@ -288,7 +285,7 @@ describe('TransferForm component', () => {
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
-        token: { code: 'BTC' },
+        asset: { code: 'BTC' },
         amount: '1',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',
@@ -310,7 +307,7 @@ describe('TransferForm component', () => {
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
-        token: { code: 'BTC' },
+        asset: { code: 'BTC' },
         amount: '1',
         recipient: mockHelper.getDefaultAccountId,
         subject: 'some subject',

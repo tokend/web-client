@@ -29,17 +29,17 @@
               <select-field
                 name="transfer-token"
                 :values="tokens"
-                v-model="form.token"
+                v-model="form.asset"
                 key-as-value-text="nameAndCode"
                 :label="'transfer-form.asset-lbl' | globalize"
                 :disabled="view.mode === VIEW_MODES.confirm"
               />
-              <template v-if="form.token.code">
+              <template v-if="form.asset.code">
                 <p class="app__form-field-description">
                   {{
                     'transfer-form.balance' | globalize({
                       amount: balance.balance,
-                      asset: form.token.code,
+                      asset: form.asset.code,
                       available: balance.balance
                     })
                   }}
@@ -95,134 +95,17 @@
           </div>
         </form>
 
-        <transition name="app__fade-in">
-          <div
-            class="transfer__fee-box"
-            v-if="isFeesLoaded">
-            <h3 class="transfer__fee-box-heading">
-              {{ 'transfer-form.sender-fees' | globalize }}
-            </h3>
-
-            <!-- eslint-disable-next-line -->
-            <template v-if=" +fees.source.fixed || +fees.source.percent || form.isPaidForRecipient ">
-              <p
-                class="transfer__fee"
-                v-if="fees.source.fixed">
-                - {{ fees.source.fixed | formatNumber }}
-                {{ fees.source.asset }}
-                <span class="transfer__fee-type">
-                  {{ 'transfer-form.sender-fixed-fee' | globalize }}
-                </span>
-              </p>
-
-              <p
-                class="transfer__fee"
-                v-if="fees.source.percent">
-                - {{ fees.source.percent | formatNumber }}
-                {{ fees.source.asset }}
-                <span class="transfer__fee-type">
-                  {{ 'transfer-form.sender-percent-fee' | globalize }}
-                </span>
-              </p>
-
-              <p
-                class="transfer__fee"
-                v-if="form.isPaidForRecipient && +fees.destination.fixed">
-                - {{ fees.destination.fixed | formatNumber }}
-                {{ fees.destination.asset }}
-                <span class="transfer__fee-type">
-                  {{ 'transfer-form.recipient-fixed-fee' | globalize }}
-                </span>
-              </p>
-
-              <p
-                class="transfer__fee"
-                v-if="form.isPaidForRecipient && +fees.destination.percent">
-                - {{ fees.destination.percent | formatNumber }}
-                {{ fees.destination.asset }}
-                <span class="transfer__fee-type">
-                  {{ 'transfer-form.recipient-percent-fee' | globalize }}
-                </span>
-              </p>
-            </template>
-
-            <template v-else>
-              <p class="transfer__no-fee-msg">
-                {{ 'transfer-form.source-no-fees' | globalize }}
-              </p>
-            </template>
-
-            <h3 class="transfer__fee-box-heading">
-              {{ 'transfer-form.recipient-fees' | globalize }}
-            </h3>
-
-            <!-- eslint-disable-next-line max-len -->
-            <template v-if="(+fees.destination.fixed || +fees.destination.percent) && !form.isPaidForRecipient">
-              <p
-                class="transfer__fee"
-                v-if="fees.destination.fixed">
-                - {{ fees.destination.fixed | formatNumber }}
-                {{ fees.destination.asset }}
-                <span class="transfer__fee-type">
-                  {{ 'transfer-form.recipient-fixed-fee' | globalize }}
-                </span>
-              </p>
-
-              <p
-                class="transfer__fee"
-                v-if="fees.destination.percent">
-                - {{ fees.destination.percent | formatNumber }}
-                {{ fees.destination.asset }}
-                <span class="transfer__fee-type">
-                  {{ 'transfer-form.recipient-percent-fee' | globalize }}
-                </span>
-              </p>
-            </template>
-
-            <template v-else>
-              <p class="transfer__no-fee-msg">
-                {{ 'transfer-form.recipient-no-fees' | globalize }}
-              </p>
-            </template>
-
-            <h3 class="transfer__fee-box-heading">
-              {{ 'transfer-form.total' | globalize }}
-            </h3>
-
-            <p class="transfer__fee">
-              - {{ totalSenderFee | formatNumber }}
-              {{ fees.source.asset }}
-              <span class="transfer__fee-type">
-                {{ 'transfer-form.total-sender-fee' | globalize }}
-              </span>
-            </p>
-
-            <p class="transfer__fee">
-              - {{ totalReceiverFee | formatNumber }}
-              {{ fees.destination.asset }}
-              <span class="transfer__fee-type">
-                {{ 'transfer-form.total-receiver-fee' | globalize }}
-              </span>
-            </p>
-
-            <p class="transfer__fee">
-              - {{ totalAmount | formatNumber }} {{ form.token.code }}
-              <span class="transfer__fee-type">
-                {{ 'transfer-form.total-amount' | globalize }}
-              </span>
-            </p>
-
-            <!-- eslint-disable-next-line -->
-            <div
-              class="app__form-row"
-              v-if="+fees.destination.fixed || +fees.destination.percent"
-            >
-              <tick-field v-model="form.isPaidForRecipient">
-                {{ 'transfer-form.pay-fees-for-recipient' | globalize }}
-              </tick-field>
-            </div>
-          </div>
-        </transition>
+        <div
+          class="transfer__fee-box"
+          v-if="isFeesLoaded"
+        >
+          <fees
+            :fees="fees"
+            :asset-code="form.asset.code"
+            :is-external-system-type="form.asset.externalSystemType"
+            @isPayForDestination="form.isPaidForRecipient = $event"
+          />
+        </div>
 
         <div class="app__form-actions">
           <button
@@ -264,16 +147,14 @@ import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { vueRoutes } from '@/vue-router/routes'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import {
   base,
-  PAYMENT_FEE_SUBTYPES,
   FEE_TYPES,
 } from '@tokend/js-sdk'
-import { MathUtil } from '@/js/utils'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 import config from '@/config'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -299,33 +180,26 @@ export default {
   components: {
     Loader,
   },
-  mixins: [FormMixin, IdentityGetterMixin],
+  mixins: [
+    FormMixin,
+    IdentityGetterMixin,
+    FeesMixin,
+  ],
   props: {
     assetToTransfer: { type: String, default: '' },
   },
   data: () => ({
     form: {
-      token: {},
+      asset: {},
       amount: '',
       recipient: '',
       subject: '',
       isPaidForRecipient: false,
     },
+    fees: {},
     view: {
       mode: VIEW_MODES.submit,
       opts: {},
-    },
-    fees: {
-      source: {
-        fixed: '',
-        percent: '',
-        feeAsset: '',
-      },
-      destination: {
-        fixed: '',
-        percent: '',
-        feeAsset: '',
-      },
     },
     isLoaded: false,
     isLoadingFailed: false,
@@ -360,19 +234,7 @@ export default {
     },
     balance () {
       return this.accountBalances
-        .find(i => i.asset === this.form.token.code) || {}
-    },
-    totalSenderFee () {
-      return MathUtil.add(this.fees.source.fixed, this.fees.source.percent)
-    },
-    totalReceiverFee () {
-      return MathUtil
-        .add(this.fees.destination.fixed, this.fees.destination.percent)
-    },
-    totalAmount () {
-      const fees = MathUtil
-        .add(this.totalSenderFee, this.totalReceiverFee)
-      return MathUtil.add(fees, this.form.amount)
+        .find(i => i.asset === this.form.asset.code) || {}
     },
   },
   async created () {
@@ -413,22 +275,28 @@ export default {
       try {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
-        const fees = await this.getFees(recipientAccountId)
+        const feesParams = {
+          assetCode: this.form.asset.code,
+          amount: this.form.amount,
+          accountId: recipientAccountId,
+          type: FEE_TYPES.paymentFee,
+        }
+        const fees = await this.calculateFees(feesParams)
         this.fees = fees
         this.isFeesLoaded = true
 
         const opts = {
           amount: this.form.amount,
           destinationAccountId: recipientAccountId,
-          destinationFixedFee: fees.destination.fixed,
-          destinationPercentFee: fees.destination.percent,
-          destinationFeeAsset: fees.destination.feeAsset,
+          destinationFixedFee: fees.destination.data.fixed,
+          destinationPercentFee: fees.destination.data.calculatedPercent,
+          destinationFeeAsset: this.form.asset,
           sourceBalanceId: this.balance.balanceId,
-          sourceFixedFee: fees.source.fixed,
-          sourcePercentFee: fees.source.percent,
-          sourceFeeAsset: fees.source.feeAsset,
+          sourceFixedFee: fees.source.data.fixed,
+          sourcePercentFee: fees.source.data.calculatedPercent,
+          sourceFeeAsset: this.form.asset,
           subject: this.form.subject,
-          tokenCode: this.form.token.code,
+          tokenCode: this.form.asset.code,
         }
         this.updateView(VIEW_MODES.confirm, opts)
       } catch (error) {
@@ -441,37 +309,6 @@ export default {
         return this.getAccountIdByEmail(recipient)
       } else {
         return recipient
-      }
-    },
-    async getFees (recipientAccountId) {
-      const [senderFees, recipientFees] = await Promise.all([
-        this.loadPaymentFee({
-          asset: this.form.token.code,
-          amount: this.form.amount,
-          account: this.accountId,
-          subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-        }),
-        this.loadPaymentFee({
-          asset: this.form.token.code,
-          amount: this.form.amount,
-          account: recipientAccountId,
-          subtype: PAYMENT_FEE_SUBTYPES.incoming,
-        }),
-      ])
-      return {
-        source: senderFees,
-        destination: recipientFees,
-      }
-    },
-    async loadPaymentFee ({ asset, amount, account, subtype }) {
-      try {
-        const response = await Sdk.horizon.fees
-          .get(FEE_TYPES.paymentFee, { asset, amount, account, subtype })
-
-        return response.data
-      } catch (e) {
-        ErrorHandler.process(e)
-        return {}
       }
     },
     buildPaymentOperation () {
@@ -491,7 +328,7 @@ export default {
           sourcePaysForDest: this.view.opts.feeFromSource,
         },
         subject: this.view.opts.subject,
-        asset: this.form.token.code,
+        asset: this.form.asset.code,
       })
     },
     updateView (mode, opts = {}, clear = false) {
@@ -508,7 +345,7 @@ export default {
       setTimeout(() => this.updateView(VIEW_MODES.submit, {}, true), 1)
     },
     setToken () {
-      this.form.token =
+      this.form.asset =
         this.tokens.find(token => token.code === this.assetToTransfer) ||
         this.tokens[0] ||
         {}
@@ -522,9 +359,7 @@ export default {
 @import "~@scss/variables";
 
 .transfer__fee-box {
-  margin-top: 4rem;
   padding-top: 4rem;
-  border-top: 0.1rem dashed $col-text-field-hint-inactive;
 }
 
 .transfer__fee-box-heading {

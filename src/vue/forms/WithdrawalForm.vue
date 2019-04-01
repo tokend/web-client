@@ -91,63 +91,11 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <table class="withdrawal__fee-table">
-              <tbody
-                class="withdrawal__fee-tbody"
-                :class="{ 'withdrawal__data--loading': isFeesLoadPending }"
-              >
-                <tr v-if="form.asset.externalSystemType">
-                  <td>
-                    {{ 'withdrawal-form.network-fee-hint' | globalize }}
-                  </td>
-                  <td>
-                    {{ 'withdrawal-form.network-fee-unknown' | globalize }}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {{ 'withdrawal-form.fixed-fee' | globalize }}
-                  </td>
-                  <td>
-                    <template v-if="isFeesLoadPending">
-                      {{ 'withdrawal-form.fee-loading-msg' | globalize }}
-                    </template>
-                    <template v-else>
-                      <!-- eslint-disable-next-line max-len -->
-                      {{ { value: fixedFee, currency: form.asset.code } | formatMoney }}
-                    </template>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    {{ 'withdrawal-form.percent-fee' | globalize }}
-                  </td>
-                  <td>
-                    <template v-if="isFeesLoadPending">
-                      {{ 'withdrawal-form.fee-loading-msg' | globalize }}
-                    </template>
-                    <template v-else>
-                      <!-- eslint-disable-next-line max-len -->
-                      {{ { value: percentFee, currency: form.asset.code } | formatMoney }}
-                    </template>
-                  </td>
-                </tr>
-                <tr class="withdrawal__total-fee-row">
-                  <td>
-                    {{ 'withdrawal-form.total-amount-account' | globalize }}
-                  </td>
-                  <td>
-                    <template v-if="isFeesLoadPending">
-                      {{ 'withdrawal-form.fee-loading-msg' | globalize }}
-                    </template>
-                    <template v-else>
-                      <!-- eslint-disable-next-line max-len -->
-                      {{ { value: (+percentFee + +fixedFee), currency: form.asset.code } | formatMoney }}
-                    </template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <fees
+              :fees="fees"
+              :asset-code="form.asset.code"
+              :is-external-system-type="form.asset.externalSystemType"
+            />
           </div>
 
           <div class="app__form-actions withdrawal__action">
@@ -198,6 +146,7 @@
 import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
@@ -229,27 +178,34 @@ export default {
     Loader,
     EmailGetter,
   },
-  mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-        comment: '',
+  mixins: [FormMixin, FeesMixin],
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    fees: {
+      destination: {
+        fixed: 0,
+        calculatedPercent: 0,
       },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+      source: {
+        fixed: 0,
+        calculatedPercent: 0,
+      },
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+  }),
   validations () {
     const addressRules = {
       required,
@@ -333,13 +289,15 @@ export default {
     },
     async getFees () {
       try {
-        const fees = await Sdk.horizon.fees.get(FEE_TYPES.withdrawalFee, {
-          account: this.accountId,
-          asset: this.form.asset.code,
-          amount: this.form.amount,
+        const fees = await this.calculateFees({
+          type: FEE_TYPES.withdrawalFee,
+          assetCode: this.form.asset.code,
+          amount: this.form.amount || 0,
+          accountId: this.accountId,
         })
-        this.fixedFee = fees.data.fixed
-        this.percentFee = fees.data.percent
+        this.fees = fees
+        this.fixedFee = fees.source.data.fixed
+        this.percentFee = fees.destination.data.calculatedPercent
         this.isFeesLoadFailed = false
       } catch (e) {
         this.isFeesLoadFailed = true
