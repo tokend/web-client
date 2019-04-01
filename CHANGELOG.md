@@ -85,6 +85,9 @@ method was called at least once through tests execution
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
 
+### Removed
+- Remove `globalize` from asset create form `assetTypes` computed property
+
 ## [1.3.1-rc.0] - 2019-03-20
 
 ### Changed
