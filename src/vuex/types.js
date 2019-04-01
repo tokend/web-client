@@ -94,7 +94,7 @@ const getters = {
   kycPreviousAccountRole: 'kycPreviousAccountRole',
   kycLatestData: 'kycLatestData',
   kycAvatarKey: 'kycAvatarKey',
-  isAccountRoleReset: 'isAccountRoleReset',
+  isAccountRoleReseted: 'isAccountRoleReseted',
 }
 
 export const vuexTypes = {

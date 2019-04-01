@@ -49,7 +49,7 @@ method was called at least once through tests execution
 - Add coinpayments-deposit module
 - Added movements history modules unit tests
 - Update chart tickers
-- `isAccountRoleReset` state field to the KYC vuex module
+- `isAccountRoleReseted` state field to the KYC vuex module
 - Checking for previous account role & resetting reason when loading 
 KYC request
 - Checking for reset account role on verification pages

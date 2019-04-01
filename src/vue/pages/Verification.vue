@@ -1,7 +1,7 @@
 <template>
   <div class="verification">
     <div
-      v-if="isAccountRoleReset"
+      v-if="isAccountRoleReseted"
       class="verification__state-message
              verification__state-message--rejected"
     >
@@ -139,7 +139,7 @@ export default {
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycResetReason: vuexTypes.kycRequestResetReason,
-      isAccountRoleReset: vuexTypes.isAccountRoleReset,
+      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
