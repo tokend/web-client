@@ -101,6 +101,8 @@ account & comment for other ones)
 - Fixed bug with check isAccessible in router
 - Console errors in movements unit tests
 - Sorting of order book
+- Fix bug with cancel order
+- Fix bug with import mapActions in SubmitTradeOfferForm
 
 ### Removed
 - Removed feature flags from config
