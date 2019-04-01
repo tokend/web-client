@@ -85,6 +85,7 @@ method was called at least once through tests execution
 - Added loading balances to components using balances
 - Fixed bug with updating balance in AddressLoader
 - Show only base asset on dividend payout
+- Console errors in movements unit tests 
 
 ### Removed
 - Remove `globalize` from asset create form `assetTypes` computed property
