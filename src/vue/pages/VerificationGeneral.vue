@@ -295,24 +295,21 @@ export default {
           lastName: kycData.last_name,
         },
         documents: {
-          avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
-            ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
-            : null,
-          idDocument: _get(
+          avatar: this.wrapDocument(kycData, DOCUMENT_TYPES.kycAvatar),
+          idDocument: this.wrapDocument(kycData, DOCUMENT_TYPES.kycIdDocument),
+          verificationPhoto: this.wrapDocument(
             kycData,
-            `documents.${DOCUMENT_TYPES.kycIdDocument}.key`
-          )
-            ? new DocumentContainer(
-              kycData.documents[DOCUMENT_TYPES.kycIdDocument]
-            )
-            : null,
-          verificationPhoto: _get(
-            kycData,
-            `documents.${DOCUMENT_TYPES.kycSelfie}.key`
-          )
-            ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycSelfie])
-            : null,
+            DOCUMENT_TYPES.kycSelfie
+          ),
         },
+      }
+    },
+
+    wrapDocument (kycData, documentType) {
+      if (_get(kycData, `documents.${documentType}.key`)) {
+        return new DocumentContainer(kycData.documents[documentType])
+      } else {
+        return null
       }
     },
   },
