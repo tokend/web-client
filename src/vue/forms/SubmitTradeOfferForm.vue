@@ -59,7 +59,10 @@
     <template v-else>
       <div class="submit-trade-offer-form__actions">
         <!-- TODO: make it via tooltip message -->
-        <p v-if="!isEnoughOnBalance" class="app__form-field-description">
+        <p
+          v-if="!isEnoughOnBalance && offer.ownerId !== accountId"
+          class="app__form-field-description"
+        >
           {{
             'submit-trade-offers-form.insufficient-funds' | globalize({
               amount: formatNumber(isBuy
@@ -70,22 +73,30 @@
         </p>
         <div class="app__form-actions">
           <button
+            v-if="offer.ownerId === accountId"
+            :disabled="formMixin.isDisabled"
             v-ripple
+            type="button"
+            @click="showConfirmation"
+            class="app__form-submit-btn"
+          >
+            <template v-if="offer.ownerId === accountId">
+              {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+            </template>
+          </button>
+          <button
+            v-ripple
+            v-else
             type="button"
             @click="showConfirmation"
             class="app__form-submit-btn"
             :disabled="!isEnoughOnBalance || formMixin.isDisabled"
           >
-            <template v-if="offer.ownerId === accountId">
-              {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+            <template v-if="isBuy">
+              {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
             </template>
             <template v-else>
-              <template v-if="isBuy">
-                {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
-              </template>
+              {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
             </template>
           </button>
         </div>
