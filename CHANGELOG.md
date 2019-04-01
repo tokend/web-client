@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Document explorer module
 - Withdrawal fiat by the bank information form module
 - Withdrawal fiat by the card information form module
+- Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
 - Show destination address holder email in the Withdrawal creation form
 - Loyalty points statistics module
 - Pre-issuance drawer pseudo module
@@ -43,6 +44,8 @@ for further information about branching and tagging conventions.
 - Correct base/quote price calculating for Opportunities
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
+- Watcher for console calls that shows the error message if the console
+method was called at least once through tests execution
 - Add coinpayments-deposit module
 
 ### Changed
@@ -52,6 +55,7 @@ for further information about branching and tagging conventions.
 - Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
 - Moved TopBar to the module
+- Rename fee "Subtype" table header to "Destination" one
 
 ### Fixed
 - Sidebar displaying in the Safari browser on the small screens
