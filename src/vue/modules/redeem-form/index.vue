@@ -115,6 +115,8 @@ export default {
      * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
      * @property config.maxAmount - max allowed amount
+     * @property [config.defaultAssetCode] - prefills the asset-selector with
+     *           this asset code
      */
     config: {
       type: Object,
@@ -207,11 +209,23 @@ export default {
       }
     },
     setDefaultAsset () {
-      this.form.asset = this.assetsInBalance[0]
+      if (this.config.defaultAssetCode) {
+        this.setDefaultAssetCodeAsSelected()
+      } else {
+        this.form.asset = this.assetsInBalance[0]
+      }
+    },
+    setDefaultAssetCodeAsSelected () {
+      if (!this.config.defaultAssetCode) {
+        throw new Error('The "defaultAssetCode" property is not defined in the module config!')
+      }
+
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === this.config.defaultAssetCode)
     },
     calculateRedeemPrice (sale) {
       return MathUtil.multiply(
-        this.form.asset.details.redeemPrice,
+        this.form.asset.details.redeemPrice || '0',
         this.selectedAssetBalance(this.form.asset.code)
       )
     },

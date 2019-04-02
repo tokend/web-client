@@ -10,8 +10,10 @@ import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 Vue.use(Router)
 
 export function buildRouter (store) {
+  // TODO: find a way to rebuild router’s routes.
+  // Because would be nice if we do not even build routes that the logged in
+  // user cannot access
   const userRoutes = SchemeRegistry.current.pages
-    .filter(page => page.isAccessible)
     .map(page => page.routerEntry)
 
   return new Router({
@@ -79,7 +81,10 @@ export function buildRouter (store) {
         name: 'app',
         meta: { isNavigationRendered: true },
         component: resolve => require(['@/vue/AppContent'], resolve),
-        beforeEnter: buildInAppRouteGuard(store),
+        beforeEnter: buildInAppRouteGuard({
+          scheme: SchemeRegistry.current,
+          store,
+        }),
         redirect: userRoutes[0],
         children: userRoutes,
       },
@@ -100,11 +105,15 @@ function buildAuthPageGuard (store) {
 }
 
 // doesn't allow to visit in-app page if user is not already logged in
-function buildInAppRouteGuard (store) {
+function buildInAppRouteGuard ({ store, scheme }) {
   return function inAppRouteGuard (to, from, next) {
     const isLoggedIn = store.getters[vuexTypes.isLoggedIn]
+    // TODO: remove when all components modulerized
+    const isAccessible = scheme.findModuleByPath(to.path)
+      ? scheme.findModuleByPath(to.path).isAccessible
+      : true
 
-    isLoggedIn
+    isLoggedIn && isAccessible
       ? next()
       : next({
         name: vueRoutes.login.name,

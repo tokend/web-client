@@ -394,7 +394,7 @@ export default {
         },
         subject: globalize(
           'dividend-form.subject-msg',
-          { asset: this.form.asset.code }
+          { asset: this.form.ownedAsset.code }
         ),
         asset: this.form.asset.code,
       })

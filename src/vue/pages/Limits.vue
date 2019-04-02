@@ -6,10 +6,7 @@
           <span>{{ 'limits.explore-limits' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="isAccountCorporate"
-        slot="extra"
-      >
+      <template slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -130,7 +127,6 @@ export default {
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
-      isAccountCorporate: vuexTypes.isAccountCorporate,
       accountId: vuexTypes.accountId,
     }),
     accountBalancesAssetsCodes () {

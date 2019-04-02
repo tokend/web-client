@@ -19,12 +19,13 @@
           <sale-overview :sale="selectedSale" />
         </drawer>
 
-        <sale-card
-          class="sales__sale-card"
-          v-for="sale in filteredSales"
-          :key="sale.id"
-          :sale="sale"
-        />
+        <template v-for="sale in filteredSales">
+          <sale-card
+            class="sales__sale-card"
+            :key="sale.id"
+            :sale="sale"
+          />
+        </template>
       </div>
     </template>
 

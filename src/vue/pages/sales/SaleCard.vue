@@ -11,11 +11,17 @@
     </div>
 
     <div class="sale-card__info">
-      <p class="sale-card__name">
+      <p
+        class="sale-card__name"
+        :title="sale.name"
+      >
         {{ sale.name }}
       </p>
 
-      <p class="sale-card__desc">
+      <p
+        class="sale-card__desc"
+        :title="sale.shortDescription"
+      >
         {{ sale.shortDescription }}
       </p>
 
@@ -39,13 +45,31 @@
       </p>
 
       <p class="sale-card__days-to-launch">
-        <template v-if="sale.daysAfterEnd > 0">
-          <!-- eslint-disable-next-line -->
-          {{ 'sale-card.days-after-end' | globalize({ days: sale.daysAfterEnd }) }}
+        <template v-if="sale.daysToGo >= 0">
+          {{ 'sale-card.days-to-launch' | globalize({ days: sale.daysToGo }) }}
+        </template>
+
+        <!-- eslint-disable max-len -->
+        <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.open">
+          {{ 'sale-card.days-to-end' | globalize({ days: sale.daysToEnd }) }}
+          <!-- eslint-enable max-len -->
+        </template>
+
+        <!-- eslint-disable max-len -->
+        <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.cancelled">
+          {{ 'sale-card.canceled' | globalize }}
+          <!-- eslint-enable max-len -->
+        </template>
+
+        <!-- eslint-disable max-len -->
+        <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.closed">
+          {{ 'sale-card.closed' | globalize }}
+          <!-- eslint-enable max-len -->
         </template>
 
         <template v-else>
-          {{ 'sale-card.days-to-launch' | globalize({ days: sale.daysToGo }) }}
+          <!-- eslint-disable-next-line -->
+          {{ 'sale-card.days-after-end' | globalize({ days: sale.daysAfterEnd }) }}
         </template>
       </p>
 
@@ -74,6 +98,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 
 import config from '@/config'
 import { vueRoutes } from '@/vue-router/routes'
+import { SALE_STATES } from '@/js/const/sale-states'
 
 export default {
   name: 'sale-card',
@@ -88,6 +113,7 @@ export default {
   data: _ => ({
     config,
     vueRoutes,
+    SALE_STATES,
   }),
 
   computed: {
@@ -113,6 +139,7 @@ export default {
   margin: 1rem;
   text-decoration: none;
   color: inherit;
+  min-width: 0;
 }
 
 .sale-card__header {
@@ -156,6 +183,11 @@ export default {
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-sale-card-text-primary;
+}
+
+.sale-card__name, .sale-card__desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sale-card__progress-bar {
