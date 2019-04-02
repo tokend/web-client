@@ -1,6 +1,9 @@
 <template>
   <tbody>
-    <tr class="attributes-viewer__table-row">
+    <tr
+      v-if="sourceFixedFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.source-fixed-fee-lbl' | globalize }}
       </td>
@@ -8,7 +11,10 @@
         {{ sourceFixedFee | formatMoney }}
       </td>
     </tr>
-    <tr class="attributes-viewer__table-row">
+    <tr
+      v-if="sourceCalculatedPercentFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.source-calculated-percent-fee-lbl' | globalize }}
       </td>
@@ -16,7 +22,10 @@
         {{ sourceCalculatedPercentFee | formatMoney }}
       </td>
     </tr>
-    <tr class="attributes-viewer__table-row">
+    <tr
+      v-if="destinationFixedFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.destination-fixed-fee-lbl' | globalize }}
       </td>
@@ -24,7 +33,10 @@
         {{ destinationFixedFee | formatMoney }}
       </td>
     </tr>
-    <tr class="attributes-viewer__table-row">
+    <tr
+      v-if="destinationCalculatedPercentFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
       <td class="attributes-viewer__table-cell">
         {{
           'movements-history.destination-calculated-percent-fee-lbl' | globalize

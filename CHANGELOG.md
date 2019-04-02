@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+### Added
+- Displaying total fee in the movement attributes
+- Displaying operation summary in the movement attributes 
+
+### Changed
+- Moved movements module translation filters to a mixin
+- Now displaying only valuable fees in the movement attributes
+
+### Removed
+- Fee header from the movements table
+
+### Fixed
+- Translations for loyalty points merchant module
+
 ## [1.4.0-rc.0] - 2019-04-01
 ### Added
  Modularized:

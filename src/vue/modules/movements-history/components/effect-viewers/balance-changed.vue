@@ -8,7 +8,10 @@
         {{ amount | formatMoney }}
       </td>
     </tr>
-    <tr class="attributes-viewer__table-row">
+    <tr
+      v-if="fixedFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.fixed-fee-lbl' | globalize }}
       </td>
@@ -16,7 +19,10 @@
         {{ fixedFee | formatMoney }}
       </td>
     </tr>
-    <tr class="attributes-viewer__table-row">
+    <tr
+      v-if="calculatedPercentFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.calculated-percent-fee-lbl' | globalize }}
       </td>
@@ -24,11 +30,24 @@
         {{ calculatedPercentFee | formatMoney }}
       </td>
     </tr>
+    <tr
+      v-if="totalFee.value > 0"
+      class="attributes-viewer__table-row"
+    >
+      <td class="attributes-viewer__table-cell">
+        {{ 'movements-history.total-fee-lbl' | globalize }}
+      </td>
+      <td class="attributes-viewer__table-cell">
+        {{ totalFee | formatMoney }}
+      </td>
+    </tr>
   </tbody>
 </template>
 
 <script>
 import { BalanceChangedEffect } from '../../wrappers/effect'
+
+import { MathUtil } from '@/js/utils'
 
 export default {
   name: 'balance-changed',
@@ -67,6 +86,15 @@ export default {
       return {
         currency: this.assetCode,
         value: this.effect.calculatedPercentFee,
+      }
+    },
+    totalFee () {
+      return {
+        currency: this.assetCode,
+        value: MathUtil.add(
+          this.effect.fixedFee,
+          this.effect.calculatedPercentFee
+        ),
       }
     },
   },
