@@ -74,7 +74,6 @@
                 {{ 'request-states.canceled-state' | globalize }}
               </td>
 
-              <!-- eslint-disable max-len -->
               <td
                 v-if="issuance.isPermanentlyRejected"
                 class="request-state request-state--permanently-rejected"
@@ -82,7 +81,6 @@
               >
                 {{ 'request-states.permanently-rejected-state' | globalize }}
               </td>
-              <!-- eslint-enable max-len -->
 
               <td :title="issuance.date | formatCalendar">
                 {{ issuance.date | formatCalendar }}
