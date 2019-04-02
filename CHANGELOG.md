@@ -46,8 +46,7 @@ for further information about branching and tagging conventions.
 - Allow requesting of limits change for all account types
 
 #### Changed
-- Now using new account endpoint for loading fees
-- Renamed "Subtype" table header to "Destination" on "Fees" page
+- Renamed "Subtype" table header to "Direction" on "Fees" page
 - Renamed  "Sale state updated" -> "Sale closed" (state) in movements lists
 
 #### Fixed
@@ -91,6 +90,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Use @tokend/js-sdk@1.3.1-x.2
+- Now using new account endpoint for loading fees
 - Renamed `DescriptionEditor` => `MarkdownField`. Also moved to the fields
   directory & included it to the form mixin components
 - Moved fees filters out of global scope to the corresponding viewer components
