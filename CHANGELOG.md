@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Subject field to the create invoice form
+- Displaying invoice summary on create invoice form
 
 ## [1.4.0-rc.0] - 2019-04-01
 ### Added
