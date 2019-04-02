@@ -46,6 +46,7 @@ for further information about branching and tagging conventions.
 - Movements history modules unit tests
 - Allow requesting of limits change for all account types
 - `record` getter to the `AssetRecord`
+- Show available amount on sale creation form
 
 ### Changed
 - Use @tokend/js-sdk@1.3.1-x.2

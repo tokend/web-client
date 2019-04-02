@@ -154,6 +154,16 @@
                   )"
                   :disabled="formMixin.isDisabled"
                 />
+                <template v-if="form.saleInformation.baseAsset">
+                  <p class="app__form-field-description">
+                    {{
+                      'create-sale-form.available-amount' | globalize({
+                        asset: form.saleInformation.baseAsset.code,
+                        amount: availableForIssuance
+                      })
+                    }}
+                  </p>
+                </template>
               </div>
             </div>
             <div class="app__form-row create-sale__form-row">
@@ -529,7 +539,7 @@ export default {
       try {
         await this.uploadDocuments()
         const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.fundOverview,
+          BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
         await Sdk.horizon.transactions.submitOperations(
