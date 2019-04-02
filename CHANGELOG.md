@@ -18,6 +18,8 @@ for further information about branching and tagging conventions.
 
 ### Removed
 - Fee header from the movements table
+- Transfer & deposit pseudomodules from the loyalty points reconciliation 
+scheme
 
 ### Fixed
 - Translations for loyalty points merchant module
