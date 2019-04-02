@@ -11,6 +11,16 @@ for further information about branching and tagging conventions.
 ### Changed
 - Now using "EUR" asset instead of "PET" one on the loyalty statistics charts
 
+## [1.4.0-rc.1] - 2019-04-02
+### Added
+- Updating of movements list and balances on Dashboard page after transfer
+  performed
+- Updating of movements list on "Movements" page after transfer performed
+
+### Changed
+- Change default chart scope to "Day"
+- Swap order book and trade history on "Trades exchange" page
+
 ## [1.4.0-rc.0] - 2019-04-01
 ### Added
  Modularized:
@@ -110,7 +120,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...HEAD
+[1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
 [1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

@@ -6,6 +6,7 @@
         :wallet="wallet"
         :config="movementsTopBarConfig"
         @asset-updated="updateAsset"
+        @movements-update-required="updateList"
       />
     </template>
 
@@ -105,13 +106,18 @@ export default {
     },
 
     withdrawalFiatModuleWithdrawn () {
-      this.historyState++
+      this.updateList()
     },
 
     depositFiatModuleDeposited () {
-      this.historyState++
+      this.updateList()
     },
+
     redeemModuleSubmitted () {
+      this.updateList()
+    },
+
+    updateList () {
       this.historyState++
     },
   },
