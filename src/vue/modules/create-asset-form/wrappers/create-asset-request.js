@@ -1,5 +1,3 @@
-import { ASSET_POLICIES } from '@tokend/js-sdk'
-
 import safeGet from 'lodash/get'
 
 export class CreateAssetRequest extends Request {
@@ -25,21 +23,5 @@ export class CreateAssetRequest extends Request {
 
     this.logo = safeGet(record, 'requestDetails.creatorDetails.logo')
     this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
-  }
-
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
-  termsUrl (storageUrl) {
-    return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
-  }
-
-  get isTransferable () {
-    return Boolean(this.policy & ASSET_POLICIES.transferable)
-  }
-
-  get isWithdrawable () {
-    return Boolean(this.policy & ASSET_POLICIES.withdrawable)
   }
 }

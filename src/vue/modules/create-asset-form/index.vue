@@ -1,28 +1,39 @@
 <template>
-  <form-stepper
-    v-if="isLoaded"
-    :steps="STEPS"
-    :current-step.sync="currentStep"
-    :disabled="isDisabled"
-  >
-    <information-step-form
-      v-show="currentStep === STEPS.information.number"
-      :request="request"
-      @submit="(information = $event) && next()"
-    />
+  <div class="create-asset-form">
+    <template v-if="isLoaded">
+      <form-stepper
+        :steps="STEPS"
+        :current-step.sync="currentStep"
+        :disabled="isDisabled"
+      >
+        <information-step-form
+          v-show="currentStep === STEPS.information.number"
+          :request="request"
+          :kyc-required-asset-type="kycRequiredAssetType"
+          @submit="(information = $event) && next()"
+        />
 
-    <advanced-step-form
-      v-show="currentStep === STEPS.advanced.number"
-      :request="request"
-      :is-disabled.sync="isDisabled"
-      @submit="(advanced = $event) && submit()"
-    />
-  </form-stepper>
+        <advanced-step-form
+          v-show="currentStep === STEPS.advanced.number"
+          :request="request"
+          :is-disabled.sync="isDisabled"
+          :account-id="wallet.accountId"
+          :max-amount="information.maxIssuanceAmount"
+          @submit="(advanced = $event) && submit()"
+        />
+      </form-stepper>
+    </template>
 
-  <loader
-    v-else
-    message-id="asset-form.loading-msg"
-  />
+    <template v-else-if="isLoadFailed">
+      <p class="create-asset-form__error-msg">
+        {{ 'create-asset-form.load-failed-msg' | globalize }}
+      </p>
+    </template>
+
+    <template v-else>
+      <load-spinner message-id="create-asset-form.loading-msg" />
+    </template>
+  </div>
 </template>
 
 <script>
@@ -32,7 +43,7 @@ import InformationStepForm from './components/information-step-form'
 import AdvancedStepForm from './components/advanced-step-form'
 
 import FormStepper from '@/vue/common/FormStepper'
-import Loader from '@/vue/common/Loader'
+import LoadSpinner from '@/vue/common/Loader'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -59,7 +70,7 @@ export default {
   name: 'create-asset-form-module',
   components: {
     FormStepper,
-    Loader,
+    LoadSpinner,
     InformationStepForm,
     AdvancedStepForm,
   },
@@ -77,7 +88,14 @@ export default {
       type: Object,
       required: true,
     },
-    requestId: { type: String, default: '' },
+    requestId: {
+      type: String,
+      default: '',
+    },
+    kycRequiredAssetType: {
+      type: String,
+      required: true,
+    },
   },
 
   data: _ => ({

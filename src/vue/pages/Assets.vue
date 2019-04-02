@@ -37,6 +37,7 @@
           :submodule="getModule().getSubmodule(CreateAssetFormModule)"
           :wallet="wallet"
           :config="config"
+          :kyc-required-asset-type="String(kycRequiredAssetType)"
           @close="isAssetDrawerShown = false"
         />
       </drawer>
@@ -80,6 +81,7 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
       wallet: vuexTypes.wallet,
+      kycRequiredAssetType: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }

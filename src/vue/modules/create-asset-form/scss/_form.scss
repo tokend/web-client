@@ -1,0 +1,115 @@
+@import '~@scss/variables.scss';
+@import '~@scss/mixins.scss';
+
+$margin-row-to-row: 2.4rem;
+$margin-row-to-row-small: 3rem;
+$field-to-field-gap: 2rem;
+
+.app__form-row {
+  display: flex;
+  width: 100%;
+
+  &:not(:first-child) {
+    margin-top: $margin-row-to-row;
+  }
+
+  & > .app__form-field {
+    flex: 1;
+    min-width: 0;
+
+    &--halved {
+      flex: 0.5;
+      margin-right: $field-to-field-gap;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
+
+  & > .app__form-field + .app__form-field {
+    margin-left: $field-to-field-gap;
+  }
+
+  @include respond-to(small) {
+    flex-direction: column;
+
+    & + & {
+      margin-top: $margin-row-to-row-small;
+    }
+
+    & > .app__form-field + .app__form-field {
+      flex: 1;
+      margin-left: 0;
+      margin-top: $margin-row-to-row-small;
+    }
+  }
+}
+
+.app__form-actions {
+  display: flex;
+
+  &:not(:first-child) {
+    margin-top: 5rem;
+  }
+
+  & > button + button {
+    margin-left: 1rem;
+  }
+
+  &--right {
+    justify-content: flex-end;
+  }
+
+  & > .app__form-field {
+    flex: 1;
+
+    &--halved {
+      flex: 0.5;
+      margin-right: $field-to-field-gap;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
+
+  & > .app__form-field + .app__form-field {
+    margin-left: $field-to-field-gap;
+  }
+
+  @include respond-to(small) {
+    &:not(:first-child) {
+      margin-top: 4rem;
+    }
+
+    & > .app__form-field + .app__form-field {
+      flex: 1;
+      margin-left: 0;
+      margin-top: $margin-row-to-row-small;
+    }
+  }
+}
+
+.app__form-submit-btn {
+  @include button-raised();
+  min-width: 16rem;
+  height: 3.6rem;
+}
+
+.app__form-subheading {
+  margin-top: 1.5rem;
+  font-weight: 400;
+  margin-bottom: -1.5rem;
+  font-size: 1.8rem;
+}
+
+.app__form-confirmation {
+  margin-top: 3.2rem;
+}
+
+.app__form-field-description {
+  color: $col-field-text-secondary;
+  font-size: 1.2rem;
+  margin-top: .6rem;
+}

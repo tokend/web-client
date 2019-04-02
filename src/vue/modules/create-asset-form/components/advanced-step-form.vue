@@ -54,7 +54,7 @@
             :label="'asset-form.initial-preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.initialPreissuedAmount',
-              { from: MIN_AMOUNT, to: MAX_AMOUNT }
+              { from: MIN_AMOUNT, to: maxAmount }
             )"
             :disabled="isDisabled"
           />
@@ -105,7 +105,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import config from '@/config'
+import config from '../_config'
 
 import { requiredUnless, amountRange } from '@validators'
 
@@ -120,6 +120,8 @@ export default {
   props: {
     request: { type: CreateAssetRequest, default: null },
     isDisabled: { type: Boolean, default: false },
+    accountId: { type: String, required: true },
+    maxAmount: { type: String, default: '0' },
   },
 
   data: _ => ({
@@ -130,7 +132,6 @@ export default {
       terms: null,
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
     DOCUMENT_TYPES,
   }),
 
@@ -148,7 +149,7 @@ export default {
           }),
           amountRange: amountRange(
             this.MIN_AMOUNT,
-            this.MAX_AMOUNT,
+            this.maxAmount,
           ),
         },
       },
@@ -198,14 +199,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/vue/forms/_app-form';
+@import '../scss/form';
 
 .advanced-step-form__btn {
   width: 14.4rem;
-}
-
-.advanced-step-form__kyc-required-row {
-  margin-top: 2.1rem;
 }
 
 .issuance-form__pre-issued-asset-signer-wrp {

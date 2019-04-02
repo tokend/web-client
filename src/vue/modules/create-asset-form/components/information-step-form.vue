@@ -68,7 +68,7 @@
           name="asset-create-asset-type"
           key-as-value-text="labelTranslationId"
           :is-value-translatable="true"
-          :values="ASSET_TYPES"
+          :values="assetTypes"
           :label="'asset-form.asset-type' | globalize"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.assetType')"
@@ -134,13 +134,15 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
+
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import config from '@/config'
-import { ASSET_POLICIES } from '@tokend/js-sdk'
-
 import { required, amountRange, maxLength } from '@validators'
+
+import config from '../_config'
 
 const EVENTS = {
   submit: 'submit',
@@ -149,22 +151,12 @@ const EVENTS = {
 const CODE_MAX_LENGTH = 16
 const NAME_MAX_LENGTH = 255
 
-const ASSET_TYPES = [
-  {
-    labelTranslationId: 'asset-form.asset-type-not-required-kyc',
-    value: '0',
-  },
-  {
-    labelTranslationId: 'asset-form.asset-type-required-kyc',
-    value: null,
-  },
-]
-
 export default {
   name: 'information-step-form',
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
+    kycRequiredAssetType: { type: String, required: true },
   },
 
   data: _ => ({
@@ -173,7 +165,7 @@ export default {
       code: '',
       maxIssuanceAmount: '',
       logo: null,
-      policies: [],
+      policies: 0,
       assetType: '',
     },
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -182,7 +174,6 @@ export default {
     DOCUMENT_TYPES,
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
-    ASSET_TYPES,
   }),
 
   validations () {
@@ -207,10 +198,47 @@ export default {
     }
   },
 
+  computed: {
+    assetTypes () {
+      return [
+        {
+          labelTranslationId: 'asset-form.asset-type-not-required-kyc',
+          value: '0',
+        },
+        {
+          labelTranslationId: 'asset-form.asset-type-required-kyc',
+          value: this.kycRequiredAssetType,
+        },
+      ]
+    },
+  },
+
+  created () {
+    if (this.request) {
+      this.populateForm()
+    }
+  },
+
   methods: {
     submit () {
       if (this.isFormValid()) {
         this.$emit(EVENTS.submit, this.form)
+      }
+    },
+
+    populateForm () {
+      this.form = {
+        name: this.request.assetName,
+        code: this.request.assetCode,
+        assetType: this.assetTypes
+          .find(item => {
+            return item.value === String(this.request.assetType)
+          }),
+        maxIssuanceAmount: this.request.maxIssuanceAmount,
+        logo: this.request.logo.key
+          ? new DocumentContainer(this.request.logo)
+          : null,
+        policies: this.request.policy,
       }
     },
   },
@@ -218,7 +246,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/vue/forms/_app-form';
+@import '../scss/form';
 
 .information-step-form__btn {
   max-width: 14.4rem;

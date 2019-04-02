@@ -1,7 +1,11 @@
-import config from '@/config'
+import DocumentUploaderMixin from './document-uploader.mixin'
+
 import { base } from '@tokend/js-sdk'
-import { DocumentUploader } from '@/js/helpers/document-uploader'
-import { Sdk } from '@/sdk'
+
+import { api } from '../_api'
+import config from '../_config'
+
+import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 const ASSET_CREATION_REQUEST_ID = '0'
 const EMPTY_DOCUMENT = {
@@ -11,11 +15,10 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
+  mixins: [DocumentUploaderMixin],
+
   computed: {
     assetRequestOpts () {
-      const requestId = this.request
-        ? this.request.id
-        : ASSET_CREATION_REQUEST_ID
       const logo = this.information.logo
       const terms = this.advanced.terms
 
@@ -28,14 +31,14 @@ export default {
         : this.advanced.initialPreissuedAmount
 
       return {
-        requestID: requestId,
+        requestID: this.requestId || ASSET_CREATION_REQUEST_ID,
         code: this.information.code,
         assetType: this.information.assetType.value,
         preissuedAssetSigner: preissuedAssetSigner,
         trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: initialPreissuedAmount,
         maxIssuanceAmount: this.information.maxIssuanceAmount,
-        policies: this.information.policies.reduce((a, b) => (a | b), 0),
+        policies: this.information.policies,
         creatorDetails: {
           name: this.information.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
@@ -46,11 +49,23 @@ export default {
   },
 
   methods: {
+    async getRequestById (id) {
+      const endpoint = `/v3/create_asset_requests/${id}`
+      const { data: record } = await api().getWithSignature(endpoint, {
+        filter: {
+          requestor: this.wallet.accountId,
+        },
+        include: ['request_details'],
+      })
+
+      return new CreateAssetRequest(record)
+    },
+
     async submitCreateAssetRequest () {
       await this.uploadDocuments()
       const operation =
           base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await api().postOperations(operation)
     },
 
     async uploadDocuments () {
@@ -61,7 +76,7 @@ export default {
 
       for (let document of documents) {
         if (document && !document.key) {
-          await DocumentUploader.uploadDocument(document.getDetailsForUpload())
+          await this.uploadDocument(document, this.wallet.accountId)
         }
       }
     },
