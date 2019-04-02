@@ -15,6 +15,10 @@
               <th :title="'issuance-explorer.table.asset-code-th' | globalize">
                 {{ 'issuance-explorer.table.asset-code-th' | globalize }}
               </th>
+              <!-- eslint-disable-next-line max-len -->
+              <th :title="'issuance-explorer.table.state-header-th' | globalize">
+                {{ 'issuance-explorer.table.state-header-th' | globalize }}
+              </th>
               <th :title="'issuance-explorer.table.date-th' | globalize">
                 {{ 'issuance-explorer.table.date-th' | globalize }}
               </th>
@@ -37,6 +41,48 @@
               <td :title="issuance.asset">
                 {{ issuance.asset }}
               </td>
+
+              <td
+                v-if="issuance.isApproved"
+                class="request-state request-state--approved"
+                :title="'request-states.approved-state' | globalize"
+              >
+                {{ 'request-states.approved-state' | globalize }}
+              </td>
+
+              <td
+                v-if="issuance.isPending"
+                class="request-state request-state--pending"
+                :title="'request-states.pending-state' | globalize"
+              >
+                {{ 'request-states.pending-state' | globalize }}
+              </td>
+
+              <td
+                v-if="issuance.isRejected"
+                class="request-state request-state--rejected"
+                :title="'request-states.rejected-state' | globalize"
+              >
+                {{ 'request-states.rejected-state' | globalize }}
+              </td>
+
+              <td
+                v-if="issuance.isCanceled"
+                class="request-state request-state--canceled"
+                :title="'request-states.canceled-state' | globalize"
+              >
+                {{ 'request-states.canceled-state' | globalize }}
+              </td>
+
+              <!-- eslint-disable max-len -->
+              <td
+                v-if="issuance.isPermanentlyRejected"
+                class="request-state request-state--permanently-rejected"
+                :title="'request-states.permanently-rejected-state' | globalize"
+              >
+                {{ 'request-states.permanently-rejected-state' | globalize }}
+              </td>
+              <!-- eslint-enable max-len -->
 
               <td :title="issuance.date | formatCalendar">
                 {{ issuance.date | formatCalendar }}
@@ -80,3 +126,38 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+  @import "~@scss/variables";
+  .app__table {
+    .request-state {
+      padding-left: 3rem;
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        width: 0.6rem;
+        height: 0.6rem;
+        top: 1.7rem;
+        transform: translateY(-50%);
+        left: 1.6rem;
+        border-radius: 100%;
+      }
+
+      &--approved:before {
+        background-color: $col-success;
+      }
+
+      &--pending:before {
+        background-color: $col-warning;
+      }
+
+      &--rejected:before,
+      &--canceled:before,
+      &--permanently-rejected:before {
+        background-color: $col-error;
+      }
+    }
+  }
+</style>
