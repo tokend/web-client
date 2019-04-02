@@ -68,7 +68,7 @@ for further information about branching and tagging conventions.
 - Fixed a bug with impossible order cancelling if user has insufficient balance
 - Fixed a bug with chart line rendering
 
-### Invisible
+### "Under the hood" changes
 #### Added
 - CLI arguments support
 - Module-descriptors schemes (see `src/modules-arch/README.md`)
@@ -115,7 +115,7 @@ for further information about branching and tagging conventions.
 - Fixed a bug with import `mapActions` in `SubmitTradeOfferForm`
 
 ## [1.3.1-rc.0] - 2019-03-20
-### Invisible
+### "Under the hood" changes
 #### Changed
 - Do not throw an error if movement has an unknown effect or operation details
 
