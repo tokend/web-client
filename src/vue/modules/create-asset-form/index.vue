@@ -3,22 +3,26 @@
     v-if="isLoaded"
     :steps="STEPS"
     :current-step.sync="currentStep"
+    :disabled="isDisabled"
   >
     <information-step-form
       v-show="currentStep === STEPS.information.number"
       :request="request"
       @submit="(information = $event) && next()"
     />
+
     <advanced-step-form
       v-show="currentStep === STEPS.advanced.number"
       :request="request"
+      :is-disabled.sync="isDisabled"
       @submit="(advanced = $event) && submit()"
     />
   </form-stepper>
 
   <loader
     v-else
-    message-id="asset-form.loading-msg" />
+    message-id="asset-form.loading-msg"
+  />
 </template>
 
 <script>
@@ -32,6 +36,9 @@ import Loader from '@/vue/common/Loader'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { Wallet } from '@tokend/js-sdk'
+import { initApi } from './_api'
 
 const STEPS = {
   information: {
@@ -58,6 +65,18 @@ export default {
   },
   mixins: [ManageAssetRequestMixin],
   props: {
+    wallet: {
+      type: Wallet,
+      required: true,
+    },
+    /**
+     * @property config - the config for component to use
+     * @property config.horizonURL - the url of horizon server (without version)
+     */
+    config: {
+      type: Object,
+      required: true,
+    },
     requestId: { type: String, default: '' },
   },
 
@@ -67,13 +86,18 @@ export default {
     advanced: {},
     isLoaded: false,
     isLoadFailed: false,
+    isDisabled: false,
     currentStep: 1,
     STEPS,
   }),
 
   async created () {
+    initApi(this.wallet, this.config)
+
     try {
-      // TODO: load request by ID
+      if (this.requestId) {
+        this.request = await this.getRequestById(this.requestId)
+      }
       this.isLoaded = true
     } catch (e) {
       this.isLoadFailed = true
@@ -88,9 +112,9 @@ export default {
     },
 
     async submit () {
-      // TODO: set disabled state
+      this.isDisabled = true
       try {
-        // TODO: submit request
+        await this.submitCreateAssetRequest()
         Bus.success('asset-form.asset-request-submitted-msg')
 
         if (this.requestId) {
@@ -98,6 +122,7 @@ export default {
         }
         this.$emit(EVENTS.close)
       } catch (e) {
+        this.isDisabled = false
         ErrorHandler.process(e)
       }
     },

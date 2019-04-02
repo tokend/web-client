@@ -1,13 +1,13 @@
 <template>
   <form
     class="app__form advanced-step-form"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="isFormValid() && showConfirmation() || emitDisable()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
           v-model="form.isPreissuanceDisabled"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         >
           {{ 'asset-form.additional-issuance-check' | globalize }}
         </tick-field>
@@ -28,7 +28,7 @@
               :error-message="getFieldErrorMessage(
                 'form.preissuedAssetSigner',
               )"
-              :disabled="formMixin.isDisabled"
+              :disabled="isDisabled"
             />
             <button
               v-ripple
@@ -56,7 +56,7 @@
               'form.initialPreissuedAmount',
               { from: MIN_AMOUNT, to: MAX_AMOUNT }
             )"
-            :disabled="formMixin.isDisabled"
+            :disabled="isDisabled"
           />
         </div>
       </div>
@@ -71,7 +71,7 @@
           accept=".jpg, .png, .pdf"
           :document-type="DOCUMENT_TYPES.assetTerms"
           :label="'asset-form.terms-lbl' | globalize"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -80,7 +80,7 @@
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
         @ok="hideConfirmation() || submit()"
-        @cancel="hideConfirmation"
+        @cancel="hideConfirmation() || emitEnable()"
       />
 
       <button
@@ -88,7 +88,7 @@
         v-ripple
         type="submit"
         class="app__button-raised advanced-step-form__btn"
-        :disabled="formMixin.isDisabled"
+        :disabled="isDisabled"
       >
         {{ 'asset-form.submit-btn' | globalize }}
       </button>
@@ -111,6 +111,7 @@ import { requiredUnless, amountRange } from '@validators'
 
 const EVENTS = {
   submit: 'submit',
+  updateIsDisabled: 'update:isDisabled',
 }
 
 export default {
@@ -118,6 +119,7 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
+    isDisabled: { type: Boolean, default: false },
   },
 
   data: _ => ({
@@ -182,6 +184,14 @@ export default {
       if (this.isFormValid()) {
         this.$emit(EVENTS.submit, this.form)
       }
+    },
+
+    emitDisable () {
+      this.$emit(EVENTS.updateIsDisabled, true)
+    },
+
+    emitEnable () {
+      this.$emit(EVENTS.updateIsDisabled, false)
     },
   },
 }
