@@ -64,7 +64,9 @@
       <template slot="heading">
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
-      <withdrawal-form />
+      <withdrawal-form
+        @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+      />
     </drawer>
 
     <drawer :is-shown.sync="isDepositDrawerShown">
@@ -80,7 +82,9 @@
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
       </template>
-      <transfer-form />
+      <transfer-form
+        @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+      />
     </drawer>
   </div>
 </template>
@@ -106,6 +110,7 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 
 const EVENTS = {
   assetUpdated: 'asset-updated',
+  movementsUpdateRequired: 'movements-update-required',
 }
 
 export default {
@@ -142,6 +147,7 @@ export default {
     DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     asset: {},
+    EVENTS,
   }),
   computed: {
     ...mapGetters('movements-top-bar', {
