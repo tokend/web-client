@@ -154,6 +154,7 @@
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
+import _get from 'lodash/get'
 
 import { Sdk } from '@/sdk'
 
@@ -168,6 +169,12 @@ import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { required, documentContainer } from '@validators'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 
 export default {
   name: 'verification-general-form',
@@ -212,9 +219,20 @@ export default {
   computed: {
     ...mapGetters({
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      previousAccountRole: vuexTypes.kycPreviousAccountRole,
     }),
     verificationCode () {
       return this.accountId.slice(1, 6)
+    },
+    isFormEditable () {
+      return this.isAccountRoleReseted ||
+        this.kycState === REQUEST_STATES_STR.rejected
+    },
+    isFormPopulatable () {
+      return this.isAccountRoleReseted
+        ? this.previousAccountRole === this.kvEntryGeneralRoleId
+        : !!this.kycState
     },
   },
 
@@ -228,11 +246,12 @@ export default {
       ErrorHandler.processWithoutFeedback(e)
     }
 
-    if (this.kycState) {
+    if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-      if (this.kycState !== REQUEST_STATES_STR.rejected) {
-        this.disableForm()
-      }
+    }
+
+    if (!this.isFormEditable) {
+      this.disableForm()
     }
   },
 
@@ -259,7 +278,7 @@ export default {
 
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
-        if (!document.key) {
+        if (document && !document.key) {
           document = await DocumentUploader.uploadSingleDocument(document)
         }
       }
@@ -270,8 +289,10 @@ export default {
         first_name: this.form.personal.firstName,
         last_name: this.form.personal.lastName,
         documents: {
-          [DOCUMENT_TYPES.kycAvatar]:
-            this.form.documents.avatar.getDetailsForSave(),
+          // avatar is not required, it may not exist in old kyc data
+          [DOCUMENT_TYPES.kycAvatar]: this.form.documents.avatar
+            ? this.form.documents.avatar.getDetailsForSave()
+            : EMPTY_DOCUMENT,
           [DOCUMENT_TYPES.kycIdDocument]:
             this.form.documents.idDocument.getDetailsForSave(),
           [DOCUMENT_TYPES.kycSelfie]:
@@ -287,25 +308,22 @@ export default {
           lastName: kycData.last_name,
         },
         documents: {
-          avatar: kycData.documents[DOCUMENT_TYPES.kycAvatar]
-            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycAvatar])
-            : {},
-          idDocument: kycData.documents[DOCUMENT_TYPES.kycIdDocument]
-            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycIdDocument])
-            : {},
-          verificationPhoto: kycData.documents[DOCUMENT_TYPES.kycSelfie]
-            ? this.wrapDocument(kycData.documents[DOCUMENT_TYPES.kycSelfie])
-            : {},
+          avatar: this.wrapDocument(kycData, DOCUMENT_TYPES.kycAvatar),
+          idDocument: this.wrapDocument(kycData, DOCUMENT_TYPES.kycIdDocument),
+          verificationPhoto: this.wrapDocument(
+            kycData,
+            DOCUMENT_TYPES.kycSelfie
+          ),
         },
       }
     },
 
-    wrapDocument (document) {
-      return new DocumentContainer({
-        mimeType: document.mime_type,
-        name: document.name,
-        key: document.key,
-      })
+    wrapDocument (kycData, documentType) {
+      if (_get(kycData, `documents.${documentType}.key`)) {
+        return new DocumentContainer(kycData.documents[documentType])
+      } else {
+        return null
+      }
     },
   },
 }
