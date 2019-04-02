@@ -43,6 +43,7 @@
         :config="config"
         :wallet="wallet"
         :amount="selectedItem.price"
+        :subject="selectedItem.name"
         @close="isInvoiceRequestFormShown = false"
       />
     </drawer>

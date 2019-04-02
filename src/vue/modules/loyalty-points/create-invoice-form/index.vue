@@ -29,6 +29,20 @@
           </div>
         </div>
 
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.subject"
+              @blur="touchField('form.subject')"
+              name="create-invoice-subject"
+              :label="'create-invoice-form.subject-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.subject')"
+              :disabled="subject || formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
         <div class="create-invoice-form__asset-pairs">
           <h3>
             {{ 'create-invoice-form.acceptable-asset-pairs-title' | globalize }}
@@ -204,6 +218,11 @@ export default {
       required: false,
       default: '',
     },
+    subject: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
   data: _ => ({
     MIN_AMOUNT: config.MIN_AMOUNT,
@@ -213,6 +232,7 @@ export default {
     isInitialized: false,
     form: {
       amount: '',
+      subject: '',
       merchant: '',
       asset: '',
       account: '',
@@ -231,6 +251,9 @@ export default {
           required,
           minValue: minValue(this.MIN_AMOUNT),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+        },
+        subject: {
+          required,
         },
       },
     }
@@ -331,6 +354,7 @@ export default {
       this.form.account = this.accountId
       this.form.system = config.HORIZON_SERVER
       this.form.amount = this.amount
+      this.form.subject = this.subject
     },
     initPolling () {
       this.pollIntervalId = setInterval(this.checkForPayment, POLL_INTERVAL)
