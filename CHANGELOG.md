@@ -8,8 +8,12 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-### Changed
+#### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
+
+## [1.4.0-rc.2] - 2019-04-02
+#### Fixed
+- A bug with uneditable general verification form for brand-new users
 
 ## [1.4.0-rc.1] - 2019-04-02
 #### Added
@@ -46,8 +50,7 @@ for further information about branching and tagging conventions.
 - Allow requesting of limits change for all account types
 
 #### Changed
-- Now using new account endpoint for loading fees
-- Renamed "Subtype" table header to "Destination" on "Fees" page
+- Renamed "Subtype" table header to "Direction" on "Fees" page
 - Renamed  "Sale state updated" -> "Sale closed" (state) in movements lists
 
 #### Fixed
@@ -91,6 +94,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Use @tokend/js-sdk@1.3.1-x.2
+- Now using new account endpoint for loading fees
 - Renamed `DescriptionEditor` => `MarkdownField`. Also moved to the fields
   directory & included it to the form mixin components
 - Moved fees filters out of global scope to the corresponding viewer components
@@ -128,7 +132,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...HEAD
+[1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
 [1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
