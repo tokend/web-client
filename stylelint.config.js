@@ -24,7 +24,10 @@ module.exports = {
 
     'unit-no-unknown': [true, { severity: 'warning' }],
 
-    'property-no-unknown': [true, { severity: 'warning' }],
+    'property-no-unknown': [true, {
+      severity: 'warning',
+      checkPrefixed: true,
+    }],
 
     'keyframe-declaration-no-important': [true, { severity: 'warning' }],
 
@@ -49,6 +52,7 @@ module.exports = {
     'no-duplicate-at-import-rules': [true, { severity: 'warning' }],
     'no-duplicate-selectors': [true, { severity: 'warning' }],
     'no-extra-semicolons': [true, { severity: 'warning' }],
+    'no-descending-specificity': [true, { severity: 'warning' }],
 
     'number-max-precision': [6, { severity: 'warning' }],
 
@@ -147,6 +151,8 @@ module.exports = {
     'block-opening-brace-space-before': ['always', { severity: 'warning' }],
 
     'selector-attribute-brackets-space-inside': ['never', { severity: 'warning' }],
+    'selector-attribute-operator-space-after': ['never', { severity: 'warning' }],
+    'selector-attribute-operator-space-before': ['never', { severity: 'warning' }],
     'selector-attribute-quotes': ['always', { severity: 'warning' }],
     'selector-combinator-space-after': ['always', { severity: 'warning' }],
     'selector-combinator-space-before': ['always', { severity: 'warning' }],
@@ -162,7 +168,7 @@ module.exports = {
 
     'rule-empty-line-before': ['always-multi-line', {
       severity: 'warning',
-      ignore: ['after-comment', 'first-nested']
+      ignore: ['after-comment', 'first-nested'],
     }],
 
     'media-feature-colon-space-after': ['always', { severity: 'warning' }],
@@ -178,7 +184,7 @@ module.exports = {
     'at-rule-empty-line-before': ['always', {
       severity: 'warning',
       except: ['after-same-name', 'blockless-after-same-name-blockless', 'first-nested'],
-      ignore: ['after-comment', 'first-nested']
+      ignore: ['after-comment', 'first-nested'],
     }],
     'at-rule-name-case': ['lower', { severity: 'warning' }],
     'at-rule-name-space-after': ['always', { severity: 'warning' }],
@@ -192,6 +198,7 @@ module.exports = {
       baseIndentLevel: 0,
       ignore: ['param'],
     }],
+    'linebreaks': ['unix', { severity: 'warning' }],
     'max-empty-lines': [1, {
       severity: 'warning',
       ignore: ['comments'],
