@@ -1,4 +1,4 @@
-import DocumentUploaderMixin from './document-uploader.mixin'
+import UploadDocumentsMixin from './upload-documents.mixin'
 
 import { base } from '@tokend/js-sdk'
 
@@ -15,7 +15,7 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [DocumentUploaderMixin],
+  mixins: [UploadDocumentsMixin],
 
   computed: {
     preissuedAssetSigner () {

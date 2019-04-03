@@ -233,7 +233,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../scss/form';
+@import '@/vue/forms/_app-form';
 
 .information-step-form__btn {
   max-width: 14.4rem;

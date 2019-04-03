@@ -20,8 +20,6 @@ export default {
 
       await this.uploadFile(file, _omit(config, ['id', 'url', 'type']), mimeType)
       document.setKey(config.key)
-
-      return document.key
     },
 
     async getDocumentTypeConfig (documentType, mimeType) {
@@ -40,7 +38,14 @@ export default {
       return config
     },
 
-    uploadFile (file, policy, mimeString) {
+    async uploadFile (file, policy, mimeType) {
+      const formData = this.createFileFormData(file, policy, mimeType)
+
+      // TODO: posting should not be on this level of abstraction
+      await Vue.http.post(this.config.storageURL, formData)
+    },
+
+    createFileFormData (file, policy, mimeType) {
       const formData = new FormData()
 
       for (const key in policy) {
@@ -48,11 +53,11 @@ export default {
         const convertedPolicy = key.replace(/([A-Z])/g, '-$1').toLowerCase()
         formData.append(convertedPolicy, policy[key])
       }
-      const blob = new Blob([file], { type: mimeString })
+
+      const blob = new Blob([file], { type: mimeType })
       formData.append('file', blob)
 
-      // TODO: posting should not be on this lvl of abstraction
-      return Vue.http.post(this.config.storageURL, formData)
+      return formData
     },
   },
 }
