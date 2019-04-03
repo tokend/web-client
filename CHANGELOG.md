@@ -16,7 +16,7 @@ for further information about branching and tagging conventions.
 - Updating of movements list and balances on Dashboard page after transfer
   performed
 - Updating of movements list on "Movements" page after transfer performed
-- Improvement of inserting Youtube video by a link
+- Allow inserting both of YouTube video link or ID
 
 #### Changed
 - Change default chart scope to "Day"
