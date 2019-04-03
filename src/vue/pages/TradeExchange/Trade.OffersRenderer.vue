@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import SubmitTradeOfferForm from '@/vue/forms/SubmitTradeOfferForm'
+import SubmitTradeOfferForm from '@/vue/forms/MarketOrders/SubmitTradeOfferForm'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'

@@ -3,31 +3,46 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model="offer.price"
+          v-model="form.price"
           :label="
             'submit-trade-offers-form.price-label' | globalize({
               asset: assetPair.quote
             })
           "
+          :error-message="getFieldErrorMessage(
+            'form.price', {
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+              available: quoteAssetBalance
+            }
+          )"
+          @blur="touchField('form.price')"
           name="submit-trade-offers-offer-price"
           :white-autofill="true"
-          readonly
         />
       </div>
     </div>
-
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="offer.baseAmount"
+          v-model.trim="form.baseAmount"
           :label="
             'submit-trade-offers-form.want-label' | globalize({
               asset: assetPair.base
             })
           "
+          :error-message="getFieldErrorMessage(
+            'form.baseAmount',
+            {
+              minValue: config.MIN_AMOUNT,
+              available: baseAssetBalance.balance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
+          @blur="touchField('form.amount')"
           name="submit-trade-offers-offer-base-amount"
           :white-autofill="true"
-          readonly
         />
       </div>
     </div>
@@ -35,15 +50,25 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="offer.quoteAmount"
           :label="
             'submit-trade-offers-form.offer-label' | globalize({
               asset: assetPair.quote
             })
           "
+          v-model.trim="totalValue"
           name="submit-trade-offers-offer-quote-amount"
           :white-autofill="true"
-          readonly
+          :error-message="getFieldErrorMessage(
+            'totalValue',
+            {
+              minValue: config.MIN_AMOUNT,
+              available: isBuy ? quoteAssetBalance : baseAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
+          @change="touchField('totalValue')"
+          :readonly="true"
         />
       </div>
     </div>
@@ -66,8 +91,8 @@
           {{
             'submit-trade-offers-form.insufficient-funds' | globalize({
               amount: formatNumber(isBuy
-                ? offerBaseAssetBalance.balance
-                : offerQuoteAssetBalance.balance)
+                ? baseAssetBalance.balance
+                : quoteAssetBalance.balance)
             })
           }}
         </p>
@@ -88,7 +113,7 @@
             type="button"
             @click="showConfirmation"
             class="app__form-submit-btn"
-            :disabled="!isEnoughOnBalance || formMixin.isDisabled"
+            :disabled="isDisabledSubmitButton"
           >
             <template v-if="isBuy">
               {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
@@ -110,6 +135,15 @@ import FormConfirmation from '@/vue/common/FormConfirmation'
 import { formatNumber } from '@/vue/filters/formatNumber'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
+import config from '@/config'
+import {
+  required,
+  amountRange,
+  minValue,
+  noMoreThanAvailableOnBalance,
+  decimal,
+} from '@validators'
+import { MathUtil } from '@/js/utils/math.util'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -117,40 +151,99 @@ const EVENTS = {
 
 export default {
   name: 'submit-trade-offer-form',
-  components: { FormConfirmation },
-  mixins: [FormMixin, OfferManagerMixin],
+  components: {
+    FormConfirmation,
+  },
+  mixins: [
+    FormMixin,
+    OfferManagerMixin,
+  ],
   props: {
-    assetPair: { type: Object, require: true, default: () => ({}) },
-    isBuy: { type: Boolean, require: false, default: true },
-    offer: { type: Object, require: true, default: () => ({}) },
+    assetPair: {
+      type: Object,
+      require: true,
+      default: () => ({}),
+    },
+    isBuy: {
+      type: Boolean,
+      require: false,
+      default: true,
+    },
+    offer: {
+      type: Object,
+      require: true,
+      default: () => ({}),
+    },
   },
   data: () => ({
+    config,
     isOfferSubmitting: false,
+    form: {},
   }),
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.accountBalances,
     ]),
-    offerBaseAssetBalance () {
+    baseAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.offer.baseAssetCode) || {}
+        .find(item => item.asset === this.form.baseAssetCode) || {}
     },
-    offerQuoteAssetBalance () {
+    quoteAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.offer.quoteAssetCode)
+        .find(item => item.asset === this.form.quoteAssetCode)
     },
     isEnoughOnBalance () {
-      return this.isBuy
-        ? +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
-        : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
+      if (this.isBuy) {
+        return +this.baseAssetBalance.balance >= +this.form.baseAmount
+      }
+      return +this.quoteAssetBalance.balance >= +this.form.baseAmount
+    },
+    isDisabledSubmitButton () {
+      return !this.isEnoughOnBalance ||
+        this.formMixin.isDisabled ||
+        !this.form.price ||
+        !this.form.baseAmount
+    },
+    formQuoteAmount () {
+      return MathUtil.multiply(this.form.price, this.form.baseAmount)
+    },
+    totalValue () {
+      return +this.formQuoteAmount ? this.formQuoteAmount : ''
     },
     isOwner () {
-      return this.offer.ownerId === this.accountId
+      return this.form.ownerId === this.accountId
     },
   },
   async created () {
     await this.loadBalances()
+    this.form = Object.assign({}, this.offer)
+  },
+  validations () {
+    return {
+      form: {
+        price: {
+          required,
+          decimal,
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+        },
+        baseAmount: {
+          required,
+          decimal,
+          minValue: minValue(config.MIN_AMOUNT),
+          noMoreThanAvailableOnBalance: this.isBuy
+            ? this.isBuy
+            : noMoreThanAvailableOnBalance(this.baseAssetBalance),
+          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+        },
+      },
+      totalValue: {
+        noMoreThanAvailableOnBalance: this.isBuy
+          ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
+          : !this.isBuy,
+        amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+      },
+    }
   },
   methods: {
     ...mapActions({
@@ -162,9 +255,13 @@ export default {
       this.isOfferSubmitting = true
 
       if (this.isOwner) {
-        await this.cancelOffer(this.getCancelOfferOpts())
+        await this.cancelOffer(
+          this.getCancelOfferOpts()
+        )
       } else {
-        await this.createOffer(this.getCreateOfferOpts())
+        await this.createOffer(
+          this.getCreateOfferOpts()
+        )
       }
 
       this.isOfferSubmitting = false
@@ -175,21 +272,21 @@ export default {
     getCreateOfferOpts () {
       return {
         pair: {
-          base: this.offer.baseAssetCode,
-          quote: this.offer.quoteAssetCode,
+          base: this.form.baseAssetCode,
+          quote: this.form.quoteAssetCode,
         },
-        baseAmount: this.offer.baseAmount,
-        quoteAmount: this.offer.quoteAmount,
-        price: this.offer.price,
-        isBuy: !this.offer.isBuy,
+        baseAmount: this.form.baseAmount,
+        quoteAmount: this.form.quoteAmount,
+        price: this.form.price,
+        isBuy: !this.form.isBuy,
       }
     },
     getCancelOfferOpts () {
       return {
-        price: this.offer.price,
-        baseBalance: this.offerBaseAssetBalance.balanceId,
-        quoteBalance: this.offerQuoteAssetBalance.balanceId,
-        offerId: this.offer.offerId,
+        price: this.form.price,
+        baseBalance: this.baseAssetBalance.balanceId,
+        quoteBalance: this.quoteAssetBalance.balanceId,
+        offerId: this.form.offerId,
       }
     },
   },
@@ -197,7 +294,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './app-form';
+  @import '../app-form';
 
   .submit-trade-offer-form__actions {
     margin-top: 5rem;

@@ -107,7 +107,7 @@ import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
-import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
+import CreateTradeOfferForm from '@/vue/forms/MarketOrders/CreateTradeOfferForm'
 
 import { Sdk } from '@/sdk'
 import { errors } from '@tokend/js-sdk'

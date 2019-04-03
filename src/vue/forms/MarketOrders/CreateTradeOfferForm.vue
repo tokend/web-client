@@ -129,11 +129,24 @@ const EVENTS = {
 
 export default {
   name: 'create-trade-offer-form',
-  components: { FormConfirmation },
-  mixins: [FormMixin, OfferManagerMixin],
+  components: {
+    FormConfirmation,
+  },
+  mixins: [
+    FormMixin,
+    OfferManagerMixin,
+  ],
   props: {
-    assetPair: { type: Object, require: true, default: () => {} },
-    isBuy: { type: Boolean, require: false, default: true },
+    assetPair: {
+      type: Object,
+      require: true,
+      default: () => {},
+    },
+    isBuy: {
+      type: Boolean,
+      require: false,
+      default: true,
+    },
   },
   data: () => ({
     form: {
@@ -156,7 +169,7 @@ export default {
           decimal,
           minValue: minValue(config.MIN_AMOUNT),
           noMoreThanAvailableOnBalance: this.isBuy
-            ? true
+            ? this.isBuy
             : noMoreThanAvailableOnBalance(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
@@ -164,7 +177,7 @@ export default {
       totalValue: {
         noMoreThanAvailableOnBalance: this.isBuy
           ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
-          : true,
+          : !this.isBuy,
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
     }
@@ -198,7 +211,9 @@ export default {
     async submit () {
       this.disableForm()
       this.isOfferCreating = true
-      await this.createOffer(this.getCreateOfferOpts())
+      await this.createOffer(
+        this.getCreateOfferOpts()
+      )
       this.isOfferCreating = false
       this.enableForm()
       this.hideConfirmation()
@@ -221,5 +236,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import '../app-form';
 </style>
