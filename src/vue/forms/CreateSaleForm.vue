@@ -264,7 +264,7 @@
               <div class="app__form-field">
                 <input-field
                   white-autofill
-                  v-model="form.fullDescription.youtubeId"
+                  v-model="form.fullDescription.youtubeURL"
                   id="youtube-id"
                   name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
@@ -275,7 +275,7 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <iframe
-                  v-if="form.fullDescription.youtubeId"
+                  v-if="form.fullDescription.youtubeURL"
                   :src="`https://www.youtube.com/embed/${youtubeId}`"
                   class="create-sale__iframe" />
                 <div v-else class="create-sale__youtub-video">
@@ -422,7 +422,7 @@ export default {
           shortDescription: '',
         },
         fullDescription: {
-          youtubeId: '',
+          youtubeURL: '',
           description: '',
         },
       },
@@ -499,10 +499,10 @@ export default {
         this.form.saleInformation.requiredBaseAssetForHardCap)
     },
     youtubeId () {
-      const inputtedId = this.form.fullDescription.youtubeId
+      const inputtedValue = this.form.fullDescription.youtubeURL
       const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#]*).*/
-      const match = inputtedId.match(regExp)
-      return match ? match[2] : inputtedId
+      const match = inputtedValue.match(regExp)
+      return match ? match[2] : inputtedValue
     },
   },
   async created () {
@@ -609,7 +609,7 @@ export default {
         ? new DocumentContainer(request.logo)
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
-      this.form.fullDescription.youtubeId = request.youtubeVideoId
+      this.form.fullDescription.youtubeURL = request.youtubeVideoId
       this.form.fullDescription.description =
         await this.getSaleDescription(request)
     },
