@@ -64,7 +64,7 @@
             {{ 'trade-open-offers.your-sell-offer' | globalize }}
           </template>
         </template>
-        <submit-trade-offer-form
+        <update-trade-offer-form
           :asset-pair="assetPair"
           :offer="selectedOffer"
           @close-drawer="closeDrawer"
@@ -89,7 +89,7 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import SubmitTradeOfferForm from '@/vue/forms/MarketOrders/SubmitTradeOfferForm'
+import UpdateTradeOfferForm from '@/vue/forms/MarketOrders/UpdateTradeOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
@@ -102,7 +102,7 @@ export default {
   name: 'trade-open-offers',
   components: {
     NoDataMessage,
-    SubmitTradeOfferForm,
+    UpdateTradeOfferForm,
     Loader,
     Drawer,
   },

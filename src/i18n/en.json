@@ -934,7 +934,8 @@
       "submit-buy-btn": "Buy",
       "submit-sell-btn": "Sell",
       "cancel-offer-btn": "Cancel order",
-      "insufficient-funds": "Insufficient balance. You have {{amount}}"
+      "insufficient-funds": "Insufficient balance. You have {{amount}}",
+      "update-offer-btn": "Update"
     },
     "offer-manager": {
       "success-creating": "Order successfully created",
