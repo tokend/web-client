@@ -102,7 +102,6 @@ for further information about branching and tagging conventions.
   - TopBar component
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 
-
 #### Removed
 - Removed feature flags from config
 - Removed `globalize` from asset creating form’s `assetTypes` computed property
