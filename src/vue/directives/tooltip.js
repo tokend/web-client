@@ -2,14 +2,17 @@ import { globalize } from '@/vue/filters/globalize'
 
 /**
  * Tooltip directive
- *
- * @param {string} [type='hover'] - 'click' or 'hover' to summon tooltip
- * @param {string} [width='120px'] - width of tooltip, 120 by default
- * @param {string} position - position of tooltip where it will be placed
- * @param {string} text - text of tooltip
- * @param {string} [bgColor='#000'] - background color of tooltip
- * @param {string} [textColor='#fff'] - text color
- * @param {string} [fontSize='1.4rem'] - font size of text
+ * @param {Object} binding.value - passed params
+ * @param {string} binding.value.text - text of tooltip
+ * @param {string} [binding.value.type] - 'click' or 'hover' to summon tooltip
+ * @param {string} [binding.value.width] - width of tooltip, 120 by default
+ * @param {string} [binding.value.position] -
+ *  position of tooltip, where it will be placed
+ * @param {string} [binding.value.bgColor] - background color of tooltip,
+ *  '#000' by default
+ * @param {string} [binding.value.textColor] - text color, #fff by default
+ * @param {string} [binding.value.fontSize] -
+ *  font size of text, '1.4rem' by default
  *
  */
 export const tooltip = (() => {
@@ -29,7 +32,6 @@ export const tooltip = (() => {
   let tooltipText
   let tooltipWrapper
   let tooltipArrow
-  let targetHeight
   let twRect
   let target
   let targetRect
@@ -60,7 +62,7 @@ export const tooltip = (() => {
     let rectHeight = tooltipWrapper.offsetHeight + MARGIN_SIZE
     let spaceToLeft = appDiv.clientWidth - spaceToRight - targetRect.width
     let spaceToBottom = window.innerHeight - targetRect.bottom
-    // check if there is enough space for tw on left side
+    // check if there is enough space for tooltip wrapper on left side
     if (twRect.width > spaceToLeft && position !== DIRECTIONS.right) {
       let top
       if (position === DIRECTIONS.top) {
@@ -83,7 +85,7 @@ export const tooltip = (() => {
       tooltipWrapper.style.transform = `translateY(${top})`
       refreshPositions()
     }
-    // check if there is enough space for tw on right side
+    // check if there is enough space for tooltip wrapper on right side
     if (twRect.width > spaceToRight && position !== DIRECTIONS.left) {
       let top
       if (position === DIRECTIONS.top) {
@@ -108,7 +110,7 @@ export const tooltip = (() => {
       refreshPositions()
     }
 
-    // check if there is enough space for tw on top side
+    // check if there is enough space for tooltip wrapper on top side
     if (rectHeight > targetRect.top && position === DIRECTIONS.top) {
       let bottom = rectHeight + 'px'
       tooltipWrapper.style.top = '0'
@@ -116,7 +118,7 @@ export const tooltip = (() => {
       currentPosition = DIRECTIONS.bottom
       refreshPositions()
     }
-    // check if there is enough space for tw on bottom
+    // check if there is enough space for tooltip wrapper on bottom
     if (rectHeight > spaceToBottom) {
       let bottom = -rectHeight + 'px'
       tooltipWrapper.style.top = '0'
@@ -128,26 +130,26 @@ export const tooltip = (() => {
       refreshPositions()
     }
 
-    // check if tw overflows left side
+    // check if tooltip wrapper overflows left side
     if (twRect.left < 0) {
       tooltipWrapper.style.right = ''
       tooltipWrapper.style.left = '50%'
       refreshPositions()
     }
-    // check if tw overflows right side
+    // check if tooltip wrapper overflows right side
     if (twRect.right > window.innerWidth) {
       tooltipWrapper.style.left = '-50%'
       refreshPositions()
     }
 
-    // if tw still overflows, place it window center
+    // if tooltip wrapper still overflows, place it window center
     if (twRect.left < 0 || twRect.right > window.innerWidth) {
       const freeWindowSpace = (window.innerWidth - twRect.width) / 2
       const centeredStartPoint = targetRect.left - freeWindowSpace
       tooltipWrapper.style.left = -centeredStartPoint + 'px'
     }
 
-    // if tw doesnt fit left or right sides
+    // if tooltip wrapper doesnt fit left or right sides
     if (targetRect.width > spaceToLeft && targetRect.width > spaceToRight) {
       if (currentPosition === DIRECTIONS.bottom) {
         tooltipWrapper.style.left = '50%'
@@ -158,7 +160,7 @@ export const tooltip = (() => {
       }
       refreshPositions()
     }
-    // check if tw width wider than window
+    // check if tooltip wrapper width wider than window
     if (twRect.width > window.innerWidth) {
       tooltipWrapper.style.margin = '0'
       tooltipWrapper.style.width = appDiv.clientWidth + 'px'
@@ -184,26 +186,34 @@ export const tooltip = (() => {
 
   function getPositionStyle (twRect) {
     let positionStyle
+    const xTargetMidPoint = targetRect.left + (targetRect.width / 2)
+    const yTargetMidPoint = targetRect.top + (targetRect.height / 2)
+    const xTooltipMidPoint = targetRect.left + (twRect.width / 2)
+    const yTooltipMidPoint = targetRect.top + (twRect.height / 2)
     switch (position) {
       case DIRECTIONS.top:
         positionStyle = {
-          top: targetHeight + MARGIN_SIZE,
+          top: targetRect.top - twRect.height - (MARGIN_SIZE / 2),
+          left: targetRect.left - (xTooltipMidPoint - xTargetMidPoint),
         }
         break
       case DIRECTIONS.right:
         positionStyle = {
-          left: twRect.width + MARGIN_SIZE,
+          top: yTargetMidPoint - (twRect.height / 2),
+          left: targetRect.left + targetRect.width + (MARGIN_SIZE / 2),
         }
         break
       case DIRECTIONS.left:
         positionStyle = {
-          left: 0 - twRect.width - MARGIN_SIZE,
+          top: yTargetMidPoint - (twRect.height / 2),
+          left: targetRect.left - twRect.width - (MARGIN_SIZE / 2),
         }
         break
       case DIRECTIONS.bottom:
       default:
         positionStyle = {
-          top: 0 - targetHeight - MARGIN_SIZE,
+          top: targetRect.top + targetRect.height + (MARGIN_SIZE / 2),
+          left: targetRect.left - (xTooltipMidPoint - xTargetMidPoint),
         }
         break
     }
@@ -211,9 +221,9 @@ export const tooltip = (() => {
   }
 
   function renderTooltip (e, binding) {
+    const appContainer = document.getElementsByClassName('app__container')[0]
     target = e.target ? e.target : e
     targetRect = target.getBoundingClientRect()
-    targetHeight = targetRect.height
     position = binding.value.position
     currentPosition = position
     bgColor = binding.value.bgColor || COLOR_BLACK
@@ -222,46 +232,44 @@ export const tooltip = (() => {
     width = binding.value.width || WIDTH
     height = binding.value.height || HEIGHT
     tooltipWrapper = document.createElement('div')
-    tooltipText = document.createElement('div')
     tooltipArrow = document.createElement('div')
-    tooltipWrapper.appendChild(tooltipText)
-    tooltipWrapper.appendChild(tooltipArrow)
-    target.appendChild(tooltipWrapper)
-    target.classList.add('tooltip-container')
+
+    tooltipText = document.createElement('div')
+    tooltipText.className = 'tooltip-wrapper-text'
+    tooltipText.innerText = globalize(binding.value.text)
+    tooltipText.style.fontSize = fontSize
+    tooltipText.style.color = textColor
 
     tooltipWrapper.className = 'tooltip-wrapper'
     tooltipWrapper.style.position = 'absolute'
     tooltipWrapper.style.width = width
     tooltipWrapper.style.height = height
+    tooltipWrapper.style.padding = `${PADDING_SIZE}px`
 
-    tooltipText.className = 'tooltip-wrapper-text'
-    tooltipText.innerText = globalize(binding.value.text)
-    tooltipText.style.fontSize = fontSize
-    tooltipText.style.color = textColor
+    tooltipWrapper.appendChild(tooltipText)
+    tooltipWrapper.appendChild(tooltipArrow)
+    appContainer.appendChild(tooltipWrapper)
+    target.classList.add('tooltip-container')
 
     twRect = tooltipWrapper.getBoundingClientRect()
     const positionStyle = getPositionStyle(twRect)
 
     tooltipWrapper.style.pointerEvents = 'none'
     tooltipWrapper.style.top = positionStyle.top + 'px'
-    tooltipWrapper.style.right = positionStyle.right + 'px'
-    tooltipWrapper.style.bottom = positionStyle.bottom + 'px'
     tooltipWrapper.style.left = positionStyle.left + 'px'
     tooltipWrapper.style.backgroundColor = bgColor
     tooltipWrapper.style.display = 'flex'
     tooltipWrapper.style.justifyContent = 'center'
     tooltipWrapper.style.alignItems = 'center'
-    tooltipWrapper.style.padding = '8px'
     tooltipWrapper.style.transition = 'transform 350ms ease-in-out'
     tooltipWrapper.style.opacity = '0'
     tooltipWrapper.style.zIndex = '120'
     tooltipWrapper.style.borderRadius = '4px'
-
     if (target.style.position !== 'relative') {
       target.style.position = 'relative'
     }
 
-    alignTooltip(target)
+    // alignTooltip(target)
     opacity = 0
     animateFadeEffect()
 
@@ -367,12 +375,13 @@ export const tooltip = (() => {
         })
 
         el.addEventListener('mouseout', (e) => {
-          removeTooltip()
+          // removeTooltip()
         })
       }
     },
     componentUpdate (el) {
       if (bindedOpts.value.type === 'click') {
+        alignTooltip(target) // DELETE later
         detectOpenedTooltips()
       }
     },
