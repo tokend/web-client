@@ -16,7 +16,7 @@
               :label="'create-invoice-form.amount-lbl' | globalize({
                 asset: form.asset
               })"
-              :step="MINIMAL_NUMBER_INPUT_STEP"
+              :step="MIN_AMOUNT"
               :error-message="getFieldErrorMessage(
                 'form.amount',
                 {
@@ -177,6 +177,9 @@ const QR_CODE_BASE = 'tokend://loyaltypay?url='
 const INVOICE_URL_BASE = 'https://go.tokend.io/loyaltypay?url='
 const POLL_INTERVAL = 5000
 
+const MIN_AMOUNT = 0.01
+const DECIMAL_POINTS = 2
+
 export default {
   name: 'create-invoice-form',
   components: {
@@ -206,10 +209,9 @@ export default {
     },
   },
   data: _ => ({
-    MIN_AMOUNT: config.MIN_AMOUNT,
+    MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
-    DECIMAL_POINTS: config.DECIMAL_POINTS,
-    MINIMAL_NUMBER_INPUT_STEP: config.MINIMAL_NUMBER_INPUT_STEP,
+    DECIMAL_POINTS,
     isInitialized: false,
     form: {
       amount: '',
@@ -229,8 +231,8 @@ export default {
       form: {
         amount: {
           required,
-          minValue: minValue(this.MIN_AMOUNT),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          minValue: minValue(MIN_AMOUNT),
+          maxDecimalDigitsCount: maxDecimalDigitsCount(DECIMAL_POINTS),
         },
       },
     }
