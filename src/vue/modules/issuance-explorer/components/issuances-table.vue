@@ -1,7 +1,7 @@
 <template>
   <div class="issuances-table">
     <template v-if="issuances.length">
-      <div class="app__table  app__table--with-shadow issuance_table">
+      <div class="app__table app__table--with-shadow issuance_table">
         <table>
           <thead>
             <tr>
