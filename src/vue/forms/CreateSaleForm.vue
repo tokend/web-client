@@ -276,7 +276,7 @@
               <div class="app__form-field">
                 <iframe
                   v-if="form.fullDescription.youtubeId"
-                  :src="`https://www.youtube.com/embed/${form.fullDescription.youtubeId}`"
+                  :src="`https://www.youtube.com/embed/${youtubeId}`"
                   class="create-sale__iframe" />
                 <div v-else class="create-sale__youtub-video">
                   <i class="mdi mdi-youtube create-sale__video-icon" />
@@ -498,6 +498,12 @@ export default {
       return MathUtil.divide(this.form.saleInformation.hardCap,
         this.form.saleInformation.requiredBaseAssetForHardCap)
     },
+    youtubeId () {
+      const inputtedId = this.form.fullDescription.youtubeId
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#]*).*/
+      const match = inputtedId.match(regExp)
+      return match ? match[2] : inputtedId
+    },
   },
   async created () {
     try {
@@ -561,7 +567,7 @@ export default {
           short_description: this.form.shortBlurb.shortDescription,
           description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
-          youtube_video_id: this.form.fullDescription.youtubeId,
+          youtube_video_id: this.youtubeId,
         },
         // eslint-disable-next-line
         requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
