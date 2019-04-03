@@ -1,7 +1,7 @@
 <template>
   <div class="issuances-table">
     <template v-if="issuances.length">
-      <div class="app__table app__table--with-shadow">
+      <div class="app__table  app__table--with-shadow issuance_table">
         <table>
           <thead>
             <tr>
@@ -127,35 +127,35 @@ export default {
 
 <style lang="scss">
   @import "~@scss/variables";
-  .app__table {
-    .request-state {
-      padding-left: 3rem;
-      position: relative;
+ .issuance_table {
+   .request-state {
+     padding-left: 3rem;
+     position: relative;
 
-      &:before {
-        content: "";
-        position: absolute;
-        width: 0.6rem;
-        height: 0.6rem;
-        top: 1.7rem;
-        transform: translateY(-50%);
-        left: 1.6rem;
-        border-radius: 100%;
-      }
+     &:before {
+       content: "";
+       position: absolute;
+       width: 0.6rem;
+       height: 0.6rem;
+       top: 1.7rem;
+       transform: translateY(-50%);
+       left: 1.6rem;
+       border-radius: 100%;
+     }
 
-      &--approved:before {
-        background-color: $col-success;
-      }
+     &--approved:before {
+       background-color: $col-success;
+     }
 
-      &--pending:before {
-        background-color: $col-warning;
-      }
+     &--pending:before {
+       background-color: $col-warning;
+     }
 
-      &--rejected:before,
-      &--canceled:before,
-      &--permanently-rejected:before {
-        background-color: $col-error;
-      }
-    }
-  }
+     &--rejected:before,
+     &--canceled:before,
+     &--permanently-rejected:before {
+       background-color: $col-error;
+     }
+   }
+ }
 </style>
