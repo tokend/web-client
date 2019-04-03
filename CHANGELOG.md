@@ -9,7 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 ### Changed
-- Now using 2 decimal points for invoice amounts
+- Now using 2 decimal points for invoice amounts (Loyalty)
 
 ## [1.4.0-rc.1] - 2019-04-02
 #### Added
