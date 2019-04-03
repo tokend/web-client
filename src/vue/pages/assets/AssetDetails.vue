@@ -51,6 +51,48 @@
           </tr>
           <tr>
             <td>
+              {{ 'asset-details.transferable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isTransferable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.withdrawable-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isWithdrawable">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'asset-details.requires-kyc-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'asset-details.terms-title' | globalize }}
             </td>
             <td>
@@ -64,6 +106,25 @@
               <p v-else>
                 {{ 'asset-details.no-terms-msg' | globalize }}
               </p>
+            </td>
+          </tr>
+          <tr v-if="asset.maturityDate">
+            <td>
+              {{ 'asset-details.maturity-date' | globalize }}
+            </td>
+            <td>
+              {{ +asset.maturityDate | formatCalendar }}
+            </td>
+          </tr>
+          <tr v-if="asset.annualReturn">
+            <td v-if="ASSET_SUBTYPE.bond === asset.subtype">
+              {{ 'asset-details.annual-return' | globalize }}
+            </td>
+            <td v-else>
+              {{ 'asset-details.expected-revenue' | globalize }}
+            </td>
+            <td>
+              {{ +asset.annualReturn }}%
             </td>
           </tr>
         </tbody>
@@ -111,6 +172,7 @@ import { base } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
+import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -132,11 +194,14 @@ export default {
     isBalanceCreating: false,
     config,
     EVENTS,
+    ASSET_SUBTYPE,
   }),
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
@@ -144,12 +209,24 @@ export default {
     isExistsInUserBalances () {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
+    isBalanceCreationAllowed () {
+      return this.asset.assetType === this.kvAssetTypeKycRequired &&
+        this.isAccountUnverified
+    },
+  },
+  async created () {
+    await this.loadBalances()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
+      if (this.isBalanceCreationAllowed) {
+        Bus.error('asset-details.verification-required-err')
+        return
+      }
+
       this.isBalanceCreating = true
       try {
         const operation = base.Operation.manageBalance({
@@ -174,8 +251,19 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+$media-xsmall-height: 375px;
+$media-small-height: 460px;
+
 .asset-details__table {
   margin-top: 4rem;
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
+
+  @include respond-to-height($media-xsmall-height) {
+    margin-top: 0.8rem;
+  }
 
   tr td:last-child {
     text-align: right;
@@ -199,12 +287,15 @@ export default {
   button + button {
     margin-left: auto;
   }
+
+  @include respond-to-height($media-small-height) {
+    margin-top: 2.4rem;
+  }
 }
 
 .asset-details__update-btn {
   @include button-raised();
 
-  margin-bottom: 2rem;
   width: 18rem;
 }
 

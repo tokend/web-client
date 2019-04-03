@@ -1,0 +1,171 @@
+{
+  "config": {},
+  "translations": {
+    "validation": {
+      "field-error_noMoreThanAvailableOnBalance": "Insufficient opportunities on your balance. You have {{available, number}}"
+    },
+    "document-types": {
+      "sale-logo": "Opportunity Logo",
+      "sale-document": "Opportunity Document",
+      "asset-terms": "Opportunity Terms",
+      "asset-logo": "Opportunity Logo",
+      "token-terms": "Opportunity Terms",
+      "token-logo": "Opportunity Logo"
+    },
+    "auth-pages": {
+      "big-title": "Start tokenizing <br> your real estate <br> in minutes"
+    },
+    "pages-names": {
+      "tokens": "Opportunities",
+      "funds": "Opportunities",
+      "fund-details": "Opportunity details",
+      "movements": "Activity"
+    },
+    "limits": {
+      "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one opportunity to your balances"
+    },
+    "limits-requests-table-renderer": {
+      "table-asset-lbl": "Opportunity"
+    },
+    "fees-page": {
+      "asset-filter-prefix": "Opportunity:"
+    },
+    "op-pages": {
+      "can-not-load-assets": "There was an error while loading opportunities",
+      "assets-loading-msg": "Loading the opportunities…",
+      "no-data-title": "No balance activity yet",
+      "no-data-msg": "Here will be your balance activity history"
+    },
+    "op-details": {
+      "asset-lbl": "Opportunity",
+      "fund-name-lbl": "Opportunity name",
+      "token-fund-val": "{{asset}} opportunity",
+      "base-asset-lbl": "Base opportunity",
+      "destination-asset-lbl": "Destination opportunity"
+    },
+    "movements-history": {
+      "operations": {
+        "check-sale-state": "Opportunity state updated"
+      },
+      "sale-id-lbl": "Opportunity ID",
+      "sale-state-lbl": "Opportunity state",
+      "sale-closed-msg": "Opportunity funded and closed",
+      "sale-canceled-msg": "Opportunity not funded and canceled",
+      "order-book-id-lbl": "Order book (Opportunity) ID",
+      "movements-load-failed-msg": "Failed to load account activity. Please try again later",
+      "loading-movements-msg": "Please wait while we loading your activity",
+      "no-movements-title": "No activity history"
+    },
+    "dashboard": {
+      "here-will-be-the-tokens": "Here will be the list of your opportunities",
+      "no-assets-in-your-wallet": "No opportunities in your wallet",
+      "activity": "Activity"
+    },
+    "chart": {
+      "no-price-history-of-selected-token": "No price history of selected opportunities yet"
+    },
+    "transfer-form": {
+      "no-assets-heading": "No opportunities, no transfers",
+      "no-assets": "Your wallet doesn't contain any transferable opportunities yet. You can discover some on the opportunities list.",
+      "discover-assets-btn": "Discover opportunities",
+      "asset-lbl": "Opportunity",
+      "insufficient-funds": "Insufficient opportunities"
+    },
+    "assets-list": {
+      "details-title": "Opportunity details"
+    },
+    "requests-page": {
+      "asset-creation-title": "Opportunity creation",
+      "sale-creation-title": "Opportunity creation"
+    },
+    "asset-creation-requests": {
+      "update-asset-title": "Update opportunity",
+      "details-title": "Opportunity request details",
+      "asset-code-header": "Opportunity code",
+      "no-request-history-desc": "Here will be the list of your opportunity creation requests"
+    },
+    "sale-creation-requests": {
+      "update-sale-title": "Update opportunity",
+      "details-title": "Opportunity request details",
+      "sale-name-header": "Opportunity name",
+      "asset-code-header": "Opportunity code",
+      "no-owned-assets-title": "No owned opportunities",
+      "no-owned-assets-desc": "Unfortunately, you don't own any opportunities yet",
+      "no-request-history-desc": "Here will be the list of your opportunity creation requests"
+    },
+    "pre-issuance-requests": {
+      "asset-code-header": "Opportunity code"
+    },
+    "asset-request-details": {
+      "asset-create-request-type": "Opportunity create",
+      "asset-update-request-type": "Opportunity update"
+    },
+    "sale-request-details": {
+      "name-title": "Opportunity name",
+      "video-about-sale-title": "Video about opportunity",
+      "view-btn": "View the opportunity"
+    },
+    "sales": {
+      "no-sales-title": "No opportunities found",
+      "no-sales-desc": "Unfortunately, there are no opportunities matching your criteria",
+      "update-sale": "Update opportunity",
+      "overview-title": "Opportunity overview",
+      "asset-code-label": "Opportunity code",
+      "new-sale": "New opportunity",
+      "all-sales": "All opportunities",
+      "my-sales": "My opportunities"
+    },
+    "trade-open-offers": {
+      "table-base-amount-lbl": "Base opportunity amount",
+      "table-price-lbl": "Price in quote opportunity"
+    },
+    "submit-trade-offers-form": {
+      "insufficient-funds": "Insufficient opportunities on your balance. You have {{amount}}"
+    },
+    "trade-top-bar": {
+      "here-will-pairs-list": "Here will be the list of opportunity pairs"
+    },
+    "sale-overview": {
+      "asset-title": "Opportunity",
+      "video-about-sale-title": "Video about opportunity"
+    },
+    "invest-form": {
+      "asset-lbl": "Opportunity",
+      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this opportunity",
+      "sale-owner-msg": "Owners of the opportunity cannot invest themselves",
+      "closed-sale-msg": "Closed opportunities are not investable",
+      "upcoming-sale-msg": "Upcoming opportunities are not investable",
+      "canceled-sale-msg": "Cancelled opportunities are not investable",
+      "cap-exceeded-msg": "Investing amount has exceeded the opportunity cap **{{amount, money}}**",
+      "requires-kyc-title": "KYC required",
+      "requires-kyc-desc": "Investments in this opportunity requires KYC"
+    },
+    "create-sale-form": {
+      "create-sale-header": "Create opportunity",
+      "provide-sale-information": "Provide opportunity information",
+      "sale-name": "Opportunity name",
+      "asset-not-available-yet": "Please create opportunity before creating opportunity"
+    },
+    "withdrawal-form": {
+      "asset": "Opportunity",
+      "no-assets": "Your wallet doesn't contain any withdrawable opportunities yet. You can discover some on the opportunity list.",
+      "discover-assets-btn": "Discover opportunities",
+      "can-not-load-assets": "There was an error while loading opportunities. Please try again later"
+    },
+    "deposit-form": {
+      "how-to": "To make a deposit send some opportunities to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
+      "asset-only": "The address below accepts {{asset}} only! All the other opportunities will be irretrievably lost.",
+      "deposit-no-assets": "Your wallet doesn't contain any opportunities to deposit yet. You can discover some on the opportunity list.",
+      "discover-assets-btn": "Discover opportunities",
+      "can-not-load-assets": "There was an error while loading opportunities. Please try again later"
+    },
+    "downloads-page": {
+      "mobile-apps-header": "All your opportunities right on your phone",
+      "mobile-apps-desc": "To access your opportunities everywhere, get the TokenD app on your mobile device."
+    },
+    "create-opportunity": {
+      "asset-type-required-kyc": "Verification required",
+      "asset-type-not-required-kyc": "Verification doesn't required"
+    }
+  }
+}

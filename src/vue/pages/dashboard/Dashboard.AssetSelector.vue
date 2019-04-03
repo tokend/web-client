@@ -59,9 +59,8 @@
       </template>
       <template v-if="!currentAsset">
         <no-data-message
-          icon-name="toll"
-          :title-id="'dashboard.no-assets-in-your-wallet'"
-          :message-id="'dashboard.here-will-be-the-tokens'"
+          :title="'dashboard.no-assets-in-your-wallet' | globalize"
+          :message="'dashboard.here-will-be-the-tokens' | globalize"
         />
       </template>
     </template>
@@ -82,7 +81,7 @@ import config from '@/config'
 import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -146,13 +145,17 @@ export default {
     },
     imgUrl () {
       const balance = this.balances.find(i => i.asset === this.currentAsset)
-      return balance.assetDetails.logoUrl(config.FILE_STORAGE) || ''
+      return balance.assetDetails.logoUrl(config.FILE_STORAGE)
     },
   },
   async created () {
     await this.loadTokens()
+    await this.loadBalances()
   },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     async loadTokens () {
       try {
         const response = await Sdk.horizon.assets.getAll()
@@ -251,7 +254,7 @@ $custom-breakpoint-medium: 870px;
   }
 
   img {
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .asset-selector__asset-code-abbr {

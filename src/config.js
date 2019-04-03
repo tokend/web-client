@@ -23,24 +23,6 @@ export default Object.assign(
     SKIP_EMAIL_CONFIRMATION_STEP: false,
 
     /**
-     * Disables certain features of the application. Set a property to false to
-     * restrict usage of the feature by all users of the system
-     */
-    featureFlags: {
-      dashboard: true,
-      fees: true,
-      trade: true,
-      movements: true,
-      issuance: true,
-      assets: true,
-      requests: true,
-      settings: true,
-      limits: true,
-      sales: true,
-      saleDetails: true,
-    },
-
-    /**
      * Sets the logging level, for more options visit
      * https://www.npmjs.com/package/loglevel#documentation
      */
@@ -98,6 +80,17 @@ export default Object.assign(
      * The field being displayed on login screen.
      */
     BUILD_VERSION: 'dev: ' + packageJson.version,
+
+    /**
+     * Module scheme to use. The module scheme will be used to combine module
+     * set of the application.
+     */
+    MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Link to iOS application manifest file.
+     */
+    IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
   },
   process.env,
   document.ENV

@@ -6,10 +6,7 @@
           <span>{{ 'limits.explore-limits' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="isAccountCorporate"
-        slot="extra"
-      >
+      <template slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -73,8 +70,8 @@
   </div>
   <div v-else>
     <no-data-message
-      :title-id="'limits.no-limits-list'"
-      :message-id="'limits.here-will-limits-list'"
+      :title="'limits.no-limits-list' | globalize"
+      :message="'limits.here-will-limits-list' | globalize"
     />
   </div>
 </template>
@@ -130,7 +127,6 @@ export default {
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
-      isAccountCorporate: vuexTypes.isAccountCorporate,
       accountId: vuexTypes.accountId,
     }),
     accountBalancesAssetsCodes () {

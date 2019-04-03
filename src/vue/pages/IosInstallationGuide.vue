@@ -28,7 +28,9 @@
           </p>
           <vue-markdown
             class="ios-installation-guide__step-description"
-            :source="'ios-installation-guide.download-step' | globalize"
+            :source="'ios-installation-guide.download-step' | globalize({
+              manifestLink
+            })"
             :html="false"
           />
         </div>
@@ -132,11 +134,17 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
+import config from '@/config'
 
 export default {
   name: 'ios-installation-guide',
   components: {
     VueMarkdown,
+  },
+  data () {
+    return {
+      manifestLink: config.IOS_MANIFEST_LINK,
+    }
   },
 }
 </script>

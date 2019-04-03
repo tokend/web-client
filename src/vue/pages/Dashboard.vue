@@ -12,42 +12,57 @@
           :scale="scale"
         />
         <div class="dashboard__actions">
-          <button
-            v-if="isAccountCorporate"
-            class="app__button-raised dashboard__action"
-            @click="createIssuanceFormIsShown = true"
-          >
-            <i class="mdi mdi-plus dashboard__plus-icon" />
-            {{ 'dashboard.create-issuance-lbl' | globalize }}
-          </button>
-          <button
-            v-if="currentAsset"
-            class="app__button-raised dashboard__action"
-            @click="transferFormIsShown = true"
-          >
-            <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
-            {{
-              'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
-            }}
-          </button>
+          <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)">
+            <button
+              class="app__button-raised dashboard__action"
+              @click="createIssuanceFormIsShown = true"
+            >
+              <i class="mdi mdi-plus dashboard__plus-icon" />
+              {{ 'dashboard.create-issuance-lbl' | globalize }}
+            </button>
+          </template>
+
+          <!-- eslint-disable-next-line max-len -->
+          <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
+            <button
+              v-if="currentAsset"
+              class="app__button-raised dashboard__action"
+              @click="transferFormIsShown = true"
+            >
+              <i class="mdi mdi-send mdi-rotate-315 dashboard__send-icon" />
+              {{
+                'dashboard.send-asset-lbl' | globalize({ asset: currentAsset })
+              }}
+            </button>
+          </template>
         </div>
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET"
+          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+            getModule().getSubmodule(DashboardChartPseudoModule)
+          "
           class="dashboard__chart"
         >
-          <chart
+          <submodule-importer
+            :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
             :base-asset="currentAsset"
             :quote-asset="config.DEFAULT_QUOTE_ASSET"
           />
         </div>
-        <div class="dashboard__activity">
-          <movements-history-module
-            v-if="currentAsset"
+        <div
+          class="dashboard__activity"
+          v-if="getModule().canRenderSubmodule(MovementsHistoryModule) &&
+            currentAsset
+          "
+        >
+          <submodule-importer
+            :submodule="getModule().getSubmodule(MovementsHistoryModule)"
             :asset-code="currentAsset"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
+            :ref="REFS.movementsHistory"
           />
         </div>
       </template>
@@ -55,7 +70,7 @@
     <drawer :is-shown.sync="showDrawer">
       <template v-if="createIssuanceFormIsShown">
         <template slot="heading">
-          {{ 'issuance.issuance-form-heading' | globalize }}
+          {{ 'dashboard.create-issuance-lbl' | globalize }}
         </template>
         <issuance-form @close="showDrawer = false" />
       </template>
@@ -63,25 +78,35 @@
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>
-        <transfer :asset-to-transfer="currentAsset" />
+        <transfer
+          @operation-submitted="updateBalancesAndList()"
+          :asset-to-transfer="currentAsset"
+        />
       </template>
     </drawer>
   </div>
 </template>
 
 <script>
-import MovementsHistoryModule from '@modules/movements-history'
-
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
 import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
-import Chart from '@/vue/common/chart/Chart'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
+import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
+import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+
+const REFS = {
+  movementsHistory: 'movements-history',
+}
 
 export default {
   name: 'dashboard',
@@ -89,10 +114,9 @@ export default {
     AssetSelector,
     IssuanceForm,
     Transfer,
-    MovementsHistoryModule,
-    Chart,
     Loader,
     Drawer,
+    SubmoduleImporter,
   },
   data: () => ({
     currentAsset: null,
@@ -100,8 +124,13 @@ export default {
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
-    scale: 'month',
+    scale: 'day',
     config,
+    MovementsHistoryModule,
+    IssuanceDrawerPseudoModule,
+    TransferDrawerPseudoModule,
+    DashboardChartPseudoModule,
+    REFS,
   }),
   computed: {
     ...mapGetters([
@@ -123,6 +152,9 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
+    currentAsset () {
+      this.loadBalances()
+    },
   },
   async created () {
     this.isLoading = true
@@ -142,6 +174,22 @@ export default {
         this.currentAsset =
           keys.find(a => a === 'ETH') || keys[0] || ''
       }
+    },
+
+    // TODO: find a better way to execute child’s reload-list method
+    updateList () {
+      if (!this.$refs[REFS.movementsHistory]) {
+        return
+      }
+      return this.$refs[REFS.movementsHistory].$children[0]
+        .reloadCollectionLoader()
+    },
+
+    updateBalancesAndList () {
+      return Promise.all([
+        this.loadBalances(),
+        this.updateList(),
+      ])
     },
   },
 }
@@ -187,7 +235,7 @@ export default {
 
 .dashboard__action {
   &:not(:first-child) {
-    margin-left: .8rem;
+    margin-left: 0.8rem;
   }
 }
 
