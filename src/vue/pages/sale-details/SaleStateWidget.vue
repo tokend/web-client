@@ -37,19 +37,42 @@
       <p>{{ 'sale-details.investors' | globalize }}</p>
     </div>
 
-    <template v-if="sale.daysAfterEnd > 0">
+    <template v-if="sale.daysToGo >= 0">
+      <div class="sale-state-widget__days-to-go">
+        <h3>{{ sale.daysToGo }}</h3>
+        <p>{{ 'sale-details.days-to-go' | globalize }}</p>
+      </div>
+    </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.open">
+      <div class="sale-state-widget__days-to-end">
+        <h3>{{ sale.daysToEnd }}</h3>
+        <p>{{ 'sale-details.days-to-end' | globalize }}</p>
+      </div>
+    </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.cancelled">
+      <div class="sale-state-widget__days-to-end">
+        <p>{{ 'sale-details.canceled' | globalize }}</p>
+      </div>
+    </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-else-if="sale.daysToEnd >= 0 && sale.stateValue === SALE_STATES.closed">
+      <div class="sale-state-widget__days-to-end">
+        <p>{{ 'sale-details.closed' | globalize }}</p>
+      </div>
+    </template>
+
+    <template v-else>
       <div class="sale-state-widget__days-after-end">
         <h3>{{ sale.daysAfterEnd }}</h3>
         <p>{{ 'sale-details.days-after-end' | globalize }}</p>
       </div>
     </template>
 
-    <template v-else>
-      <div class="sale-state-widget__days-to-go">
-        <h3>{{ sale.daysToGo }}</h3>
-        <p>{{ 'sale-details.days-to-go' | globalize }}</p>
-      </div>
-    </template>
     <button
       v-ripple
       class="app__button-raised sale-state-widget__overview-btn"
@@ -67,6 +90,7 @@ import Drawer from '@/vue/common/Drawer'
 import SaleOverview from './SaleOverview'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import { SALE_STATES } from '@/js/const/sale-states'
 
 export default {
   name: 'sale-state-widget',
@@ -82,6 +106,7 @@ export default {
 
   data: _ => ({
     isOverviewDrawerShown: false,
+    SALE_STATES,
   }),
 }
 </script>
@@ -113,7 +138,8 @@ export default {
 
 .sale-state-widget__investors,
 .sale-state-widget__days-to-go,
-.sale-state-widget__days-after-end{
+.sale-state-widget__days-after-end,
+.sale-state-widget__days-to-end {
   h3 {
     font-size: 2.4rem;
     font-weight: normal;
@@ -131,7 +157,8 @@ export default {
 }
 
 .sale-state-widget__days-to-go,
-.sale-state-widget__days-after-end {
+.sale-state-widget__days-after-end,
+.sale-state-widget__days-to-end {
   margin-top: 1.6rem;
 }
 

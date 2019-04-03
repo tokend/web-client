@@ -59,7 +59,10 @@
     <template v-else>
       <div class="submit-trade-offer-form__actions">
         <!-- TODO: make it via tooltip message -->
-        <p v-if="!isEnoughOnBalance" class="app__form-field-description">
+        <p
+          v-if="!isEnoughOnBalance && !isOwner"
+          class="app__form-field-description"
+        >
           {{
             'submit-trade-offers-form.insufficient-sales' | globalize({
               amount: formatNumber(isBuy
@@ -71,21 +74,27 @@
         <div class="app__form-actions">
           <button
             v-ripple
+            v-if="isOwner"
+            type="button"
+            @click="showConfirmation"
+            class="app__form-submit-btn"
+            :disabled="formMixin.isDisabled"
+          >
+            {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+          </button>
+          <button
+            v-ripple
+            v-else
             type="button"
             @click="showConfirmation"
             class="app__form-submit-btn"
             :disabled="!isEnoughOnBalance || formMixin.isDisabled"
           >
-            <template v-if="offer.ownerId === accountId">
-              {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+            <template v-if="isBuy">
+              {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
             </template>
             <template v-else>
-              <template v-if="isBuy">
-                {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
-              </template>
+              {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
             </template>
           </button>
         </div>
@@ -99,8 +108,8 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { formatNumber } from '@/vue/filters/formatNumber'
-import { vuexTypes, mapActions } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -136,6 +145,9 @@ export default {
         ? +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
         : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
     },
+    isOwner () {
+      return this.offer.ownerId === this.accountId
+    },
   },
   async created () {
     await this.loadBalances()
@@ -149,7 +161,7 @@ export default {
       this.disableForm()
       this.isOfferSubmitting = true
 
-      if (this.offer.ownerId === this.accountId) {
+      if (this.isOwner) {
         await this.cancelOffer(this.getCancelOfferOpts())
       } else {
         await this.createOffer(this.getCreateOfferOpts())

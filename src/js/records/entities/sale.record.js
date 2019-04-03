@@ -117,14 +117,18 @@ export class SaleRecord {
   /** progress info: **/
 
   get daysToGo () {
+    return moment(this.startTime).diff(moment(), 'days')
+  }
+
+  get daysToEnd () {
     return moment(this.endTime).diff(moment(), 'days')
   }
 
   get daysAfterEnd () {
-    if (this.daysToGo >= 0) {
+    if (this.daysToEnd >= 0) {
       return 0
     } else {
-      return Math.abs(this.daysToGo)
+      return Math.abs(this.daysToEnd)
     }
   }
 

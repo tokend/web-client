@@ -42,8 +42,8 @@ export const getters = {
   [vuexTypes.account]: state => state.account,
   [vuexTypes.accountId]: state => state.account.id,
   [vuexTypes.accountBalances]: state => state.balancesDetails,
-  [vuexTypes.accountRoleId]: state => _get(
-    state.account, 'role.id'
+  [vuexTypes.accountRoleId]: state => Number(
+    _get(state.account, 'role.id')
   ),
   [vuexTypes.accountDepositAddresses]: state =>
     state.account.externalSystemIds || {},
