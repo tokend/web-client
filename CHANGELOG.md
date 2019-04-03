@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
 
+#### Fixed
+- Fixed bug with drawer closing animation
+
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
 - A bug with uneditable general verification form for brand-new users
