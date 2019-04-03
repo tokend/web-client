@@ -10,15 +10,13 @@
           white-autofill
           v-model="form.name"
           @blur="touchField('form.name')"
-          id="asset-name"
-          name="asset-create-name"
-          :label="'asset-form.name-lbl' | globalize"
+          name="create-asset-name"
+          :label="'create-asset-form.name-lbl' | globalize"
           :error-message="getFieldErrorMessage(
             'form.name',
             { length: NAME_MAX_LENGTH }
           )"
           :maxlength="NAME_MAX_LENGTH"
-          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -29,15 +27,13 @@
           white-autofill
           v-model="form.code"
           @blur="touchField('form.code')"
-          id="asset-code"
-          name="asset-create-asset-code"
-          :label="'asset-form.code-lbl' | globalize"
+          name="create-asset-code"
+          :label="'create-asset-form.code-lbl' | globalize"
           :error-message="getFieldErrorMessage(
             'form.code',
             { length: CODE_MAX_LENGTH }
           )"
           :maxlength="CODE_MAX_LENGTH"
-          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -49,14 +45,12 @@
           type="number"
           v-model="form.maxIssuanceAmount"
           @blur="touchField('form.maxIssuanceAmount')"
-          id="asset-max-issuance-amount"
-          name="asset-create-max-issuance-amount"
-          :label="'asset-form.max-issuance-amount-lbl' | globalize"
+          name="create-asset-max-issuance-amount"
+          :label="'create-asset-form.max-issuance-amount-lbl' | globalize"
           :error-message="getFieldErrorMessage(
             'form.maxIssuanceAmount',
             { from: MIN_AMOUNT, to: MAX_AMOUNT }
           )"
-          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -65,12 +59,11 @@
       <div class="app__form-field">
         <select-field
           v-model="form.assetType"
-          name="asset-create-asset-type"
+          name="create-asset-type"
           key-as-value-text="labelTranslationId"
           :is-value-translatable="true"
           :values="assetTypes"
-          :label="'asset-form.asset-type' | globalize"
-          :disabled="formMixin.isDisabled"
+          :label="'create-asset-form.asset-type-lbl' | globalize"
           @blur="touchField('form.assetType')"
           :error-message="getFieldErrorMessage(
             'form.assetType',
@@ -83,10 +76,9 @@
       <div class="app__form-field">
         <tick-field
           v-model="form.policies"
-          :disabled="formMixin.isDisabled"
           :cb-value="ASSET_POLICIES.transferable"
         >
-          {{ 'asset-form.transferable-lbl' | globalize }}
+          {{ 'create-asset-form.transferable-lbl' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -95,10 +87,9 @@
       <div class="app__form-field">
         <tick-field
           v-model="form.policies"
-          :disabled="formMixin.isDisabled"
           :cb-value="ASSET_POLICIES.withdrawable"
         >
-          {{ 'asset-form.withdrawable-lbl' | globalize }}
+          {{ 'create-asset-form.withdrawable-lbl' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -108,11 +99,10 @@
         <file-field
           name="asset-create-logo"
           v-model="form.logo"
-          :note="'asset-form.logo-note' | globalize"
+          :note="'create-asset-form.logo-note' | globalize"
           accept=".jpg, .png"
           :document-type="DOCUMENT_TYPES.assetLogo"
-          :label="'asset-form.logo-lbl' | globalize"
-          :disabled="formMixin.isDisabled"
+          :label="'create-asset-form.logo-lbl' | globalize"
         />
       </div>
     </div>
@@ -122,9 +112,8 @@
         v-ripple
         type="submit"
         class="app__button-raised information-step-form__btn"
-        :disabled="formMixin.isDisabled"
       >
-        {{ 'asset-form.next-btn' | globalize }}
+        {{ 'create-asset-form.next-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -156,7 +145,7 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
-    kycRequiredAssetType: { type: String, required: true },
+    kycRequiredAssetType: { type: Number, required: true },
   },
 
   data: _ => ({
@@ -202,11 +191,11 @@ export default {
     assetTypes () {
       return [
         {
-          labelTranslationId: 'asset-form.asset-type-not-required-kyc',
-          value: '0',
+          labelTranslationId: 'create-asset-form.verification-not-required-lbl',
+          value: 0,
         },
         {
-          labelTranslationId: 'asset-form.asset-type-required-kyc',
+          labelTranslationId: 'create-asset-form.verification-required-lbl',
           value: this.kycRequiredAssetType,
         },
       ]
@@ -231,11 +220,9 @@ export default {
         name: this.request.assetName,
         code: this.request.assetCode,
         assetType: this.assetTypes
-          .find(item => {
-            return item.value === String(this.request.assetType)
-          }),
+          .find(item => item.value === this.request.assetType),
         maxIssuanceAmount: this.request.maxIssuanceAmount,
-        logo: this.request.logo.key
+        logo: this.request.logoKey
           ? new DocumentContainer(this.request.logo)
           : null,
         policies: this.request.policy,

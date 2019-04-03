@@ -19,7 +19,7 @@
       >
         <button
           v-ripple
-          class="create-asset-btn"
+          class="create-asset-btn app__button-raised"
           @click="isAssetDrawerShown = true"
         >
           {{ 'assets-page.create-asset-button' | globalize }}
@@ -37,7 +37,6 @@
           :submodule="getModule().getSubmodule(CreateAssetFormModule)"
           :wallet="wallet"
           :config="config"
-          :kyc-required-asset-type="String(kycRequiredAssetType)"
           @close="isAssetDrawerShown = false"
         />
       </drawer>
@@ -81,17 +80,7 @@ export default {
     ...mapGetters({
       account: vuexTypes.account,
       wallet: vuexTypes.wallet,
-      kycRequiredAssetType: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
-
-.create-asset-btn {
-  @include button-raised;
-}
-</style>

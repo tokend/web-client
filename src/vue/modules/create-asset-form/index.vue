@@ -18,7 +18,7 @@
           :request="request"
           :is-disabled.sync="isDisabled"
           :account-id="wallet.accountId"
-          :max-amount="information.maxIssuanceAmount"
+          :max-issuance-amount="information.maxIssuanceAmount"
           @submit="(advanced = $event) && submit()"
         />
       </form-stepper>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import LoadAssetTypesMixin from './mixins/load-asset-types.mixin'
 import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
 
 import InformationStepForm from './components/information-step-form'
@@ -74,7 +75,7 @@ export default {
     InformationStepForm,
     AdvancedStepForm,
   },
-  mixins: [ManageAssetRequestMixin],
+  mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
   props: {
     wallet: {
       type: Wallet,
@@ -83,6 +84,7 @@ export default {
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
+     * @property config.storageURL - the url of file storage server
      */
     config: {
       type: Object,
@@ -91,10 +93,6 @@ export default {
     requestId: {
       type: String,
       default: '',
-    },
-    kycRequiredAssetType: {
-      type: String,
-      required: true,
     },
   },
 
@@ -113,8 +111,10 @@ export default {
     initApi(this.wallet, this.config)
 
     try {
+      await this.loadKycRequiredAssetType()
+
       if (this.requestId) {
-        this.request = await this.getRequestById(this.requestId)
+        this.request = await this.getCreateAssetRequestById(this.requestId)
       }
       this.isLoaded = true
     } catch (e) {
@@ -133,7 +133,7 @@ export default {
       this.isDisabled = true
       try {
         await this.submitCreateAssetRequest()
-        Bus.success('asset-form.asset-request-submitted-msg')
+        Bus.success('create-asset-form.request-submitted-msg')
 
         if (this.requestId) {
           this.$emit(EVENTS.requestUpdated)

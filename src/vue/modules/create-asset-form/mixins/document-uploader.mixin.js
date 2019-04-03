@@ -6,24 +6,38 @@ import _omit from 'lodash/omit'
 
 export default {
   methods: {
-    async uploadDocument (document, accountId) {
+    async uploadDocuments (documents) {
+      for (const document of documents) {
+        if (document && !document.key) {
+          await this.uploadDocument(document)
+        }
+      }
+    },
+
+    async uploadDocument (document) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const { data: config } = await api().postWithSignature('/documents', {
-        data: {
-          type,
-          attributes: { content_type: mimeType },
-          relationships: {
-            owner: {
-              data: { id: accountId },
-            },
-          },
-        },
-      })
+      const config = await this.getDocumentTypeConfig(type, mimeType)
 
       await this.uploadFile(file, _omit(config, ['id', 'url', 'type']), mimeType)
       document.setKey(config.key)
 
       return document.key
+    },
+
+    async getDocumentTypeConfig (documentType, mimeType) {
+      const { data: config } = await api().postWithSignature('/documents', {
+        data: {
+          type: documentType,
+          attributes: { content_type: mimeType },
+          relationships: {
+            owner: {
+              data: { id: this.wallet.accountId },
+            },
+          },
+        },
+      })
+
+      return config
     },
 
     uploadFile (file, policy, mimeString) {

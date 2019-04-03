@@ -1,7 +1,7 @@
 <template>
   <form
     class="app__form advanced-step-form"
-    @submit.prevent="isFormValid() && showConfirmation() || emitDisable()"
+    @submit.prevent="isFormValid() && setConfirmationState()"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -9,7 +9,7 @@
           v-model="form.isPreissuanceDisabled"
           :disabled="isDisabled"
         >
-          {{ 'asset-form.additional-issuance-check' | globalize }}
+          {{ 'create-asset-form.additional-issuance-check' | globalize }}
         </tick-field>
       </div>
     </div>
@@ -17,14 +17,13 @@
     <template v-if="!form.isPreissuanceDisabled">
       <div class="app__form-row">
         <div class="app__form-field">
-          <div class="issuance-form__pre-issued-asset-signer-wrp">
+          <div class="advanced-step-form__pre-issued-asset-signer-wrp">
             <input-field
               white-autofill
               v-model="form.preissuedAssetSigner"
               @blur="touchField('form.preissuedAssetSigner')"
-              id="asset-preissued-asset-signer"
-              name="asset-create-preissued-asset-signer"
-              :label="'asset-form.preissued-asset-signer-lbl' | globalize"
+              name="create-asset-preissued-asset-signer"
+              :label="'create-asset-form.preissued-signer-lbl' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.preissuedAssetSigner',
               )"
@@ -33,10 +32,11 @@
             <button
               v-ripple
               type="button"
-              class="app__button-flat issuance-form__insert-account-id-btn"
+              class="app__button-flat advanced-step-form__insert-account-id-btn"
+              :disabled="isDisabled"
               @click="form.preissuedAssetSigner = accountId"
             >
-              {{ 'asset-form.use-my-account-id-btn' | globalize }}
+              {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
             </button>
           </div>
         </div>
@@ -49,12 +49,11 @@
             type="number"
             v-model="form.initialPreissuedAmount"
             @blur="touchField('form.initialPreissuedAmount')"
-            id="asset-initial-preissued-amount"
-            name="asset-create-initial-preissued-amount"
-            :label="'asset-form.initial-preissued-amount-lbl' | globalize"
+            name="create-asset-initial-preissued-amount"
+            :label="'create-asset-form.preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.initialPreissuedAmount',
-              { from: MIN_AMOUNT, to: maxAmount }
+              { from: MIN_AMOUNT, to: maxIssuanceAmount }
             )"
             :disabled="isDisabled"
           />
@@ -67,10 +66,10 @@
         <file-field
           v-model="form.terms"
           name="asset-create-terms"
-          :note="'asset-form.terms-note' | globalize"
+          :note="'create-asset-form.terms-note' | globalize"
           accept=".jpg, .png, .pdf"
           :document-type="DOCUMENT_TYPES.assetTerms"
-          :label="'asset-form.terms-lbl' | globalize"
+          :label="'create-asset-form.terms-lbl' | globalize"
           :disabled="isDisabled"
         />
       </div>
@@ -80,7 +79,7 @@
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
         @ok="hideConfirmation() || submit()"
-        @cancel="hideConfirmation() || emitEnable()"
+        @cancel="hideConfirmation() || emitEnabledState()"
       />
 
       <button
@@ -90,7 +89,7 @@
         class="app__button-raised advanced-step-form__btn"
         :disabled="isDisabled"
       >
-        {{ 'asset-form.submit-btn' | globalize }}
+        {{ 'create-asset-form.create-btn' | globalize }}
       </button>
     </div>
   </form>
@@ -121,7 +120,7 @@ export default {
     request: { type: CreateAssetRequest, default: null },
     isDisabled: { type: Boolean, default: false },
     accountId: { type: String, required: true },
-    maxAmount: { type: String, default: '0' },
+    maxIssuanceAmount: { type: String, default: '0' },
   },
 
   data: _ => ({
@@ -149,7 +148,7 @@ export default {
           }),
           amountRange: amountRange(
             this.MIN_AMOUNT,
-            this.maxAmount,
+            this.maxIssuanceAmount,
           ),
         },
       },
@@ -175,7 +174,7 @@ export default {
         initialPreissuedAmount: isPreissuanceDisabled
           ? ''
           : this.request.initialPreissuedAmount,
-        terms: this.request.terms.key
+        terms: this.request.termsKey
           ? new DocumentContainer(this.request.terms)
           : null,
       }
@@ -187,11 +186,16 @@ export default {
       }
     },
 
-    emitDisable () {
+    setConfirmationState () {
+      this.showConfirmation()
+      this.emitDisabledState()
+    },
+
+    emitDisabledState () {
       this.$emit(EVENTS.updateIsDisabled, true)
     },
 
-    emitEnable () {
+    emitEnabledState () {
       this.$emit(EVENTS.updateIsDisabled, false)
     },
   },
@@ -202,15 +206,16 @@ export default {
 @import '../scss/form';
 
 .advanced-step-form__btn {
-  width: 14.4rem;
+  max-width: 14.4rem;
+  width: 100%;
 }
 
-.issuance-form__pre-issued-asset-signer-wrp {
+.advanced-step-form__pre-issued-asset-signer-wrp {
   display: flex;
   align-items: center;
 }
 
-.issuance-form__insert-account-id-btn {
+.advanced-step-form__insert-account-id-btn {
   margin-left: .4rem;
 }
 </style>
