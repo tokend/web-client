@@ -248,10 +248,10 @@ export default {
 
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-    }
 
-    if (!this.isFormEditable) {
-      this.disableForm()
+      if (!this.isFormEditable) {
+        this.disableForm()
+      }
     }
   },
 
