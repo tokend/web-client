@@ -123,7 +123,8 @@
         <div class="app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
-            @ok="hideConfirmation() || submit()"
+            :is-pending="isFormSubmitting"
+            @ok="submit"
             @cancel="hideConfirmation"
           />
           <button
@@ -161,6 +162,7 @@ import { Sdk } from '@/sdk'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Bus } from '@/js/helpers/event-bus'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
@@ -199,6 +201,7 @@ export default {
     },
     isLoaded: false,
     isLoadingFailed: false,
+    isFormSubmitting: false,
     isCodeShown: false,
     DOCUMENT_TYPES,
   }),
@@ -225,10 +228,6 @@ export default {
     verificationCode () {
       return this.accountId.slice(1, 6)
     },
-    isFormEditable () {
-      return this.isAccountRoleReseted ||
-        this.kycState === REQUEST_STATES_STR.rejected
-    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
@@ -248,10 +247,6 @@ export default {
 
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-
-      if (!this.isFormEditable) {
-        this.disableForm()
-      }
     }
   },
 
@@ -259,6 +254,7 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+      this.isFormSubmitting = true
       try {
         await this.uploadDocuments()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
@@ -267,13 +263,18 @@ export default {
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
+        if (this.kycState === REQUEST_STATES_STR.pending) {
+          Bus.success('verification-form.request-updated-msg')
+        }
         do {
           await this.loadKyc()
         } while (this.kycState !== REQUEST_STATES_STR.pending)
       } catch (e) {
-        this.enableForm()
         ErrorHandler.process(e)
       }
+      this.isFormSubmitting = false
+      this.hideConfirmation()
+      this.enableForm()
     },
 
     async uploadDocuments () {

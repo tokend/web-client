@@ -120,7 +120,8 @@
         <div class="app__form-actions">
           <form-confirmation
             v-if="formMixin.isConfirmationShown"
-            @ok="hideConfirmation() || submit()"
+            :is-pending="isFormSubmitting"
+            @ok="submit"
             @cancel="hideConfirmation"
           />
           <button
@@ -162,6 +163,7 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { Bus } from '@/js/helpers/event-bus'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -195,6 +197,7 @@ export default {
     },
     isLoaded: false,
     isLoadingFailed: false,
+    isFormSubmitting: false,
     MIN_TEAM_SIZE,
     DOCUMENT_TYPES,
   }),
@@ -220,10 +223,6 @@ export default {
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       previousAccountRole: vuexTypes.kycPreviousAccountRole,
     }),
-    isFormEditable () {
-      return this.isAccountRoleReseted ||
-        this.kycState === REQUEST_STATES_STR.rejected
-    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
@@ -242,10 +241,6 @@ export default {
     }
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-
-      if (!this.isFormEditable) {
-        this.disableForm()
-      }
     }
   },
 
@@ -253,6 +248,7 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+      this.isFormSubmitting = true
       try {
         await this.uploadAvatar()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
@@ -261,13 +257,18 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
+        if (this.kycState === REQUEST_STATES_STR.pending) {
+          Bus.success('verification-form.request-updated-msg')
+        }
         while (this.kycState !== REQUEST_STATES_STR.pending) {
           await this.loadKyc()
         }
       } catch (e) {
-        this.enableForm()
         ErrorHandler.process(e)
       }
+      this.isFormSubmitting = false
+      this.hideConfirmation()
+      this.enableForm()
     },
 
     async uploadAvatar () {

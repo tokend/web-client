@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Ability to edit KYC request with "pending" status
+
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
 - A bug with uneditable general verification form for brand-new users
