@@ -17,7 +17,6 @@ const Component = {
   template: `<div></div>`,
   props: ['wallet', 'requestId'],
   data: _ => ({
-    asset: { code: 'USD' },
     request: null,
     information: {
       name: '',

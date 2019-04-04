@@ -24,7 +24,7 @@ export default {
         : NEW_UPDATE_ASSET_REQUEST_ID
       const assetCode = this.request
         ? this.request.code
-        : this.asset.code
+        : this.assetCode
 
       const logo = this.information.logo
       const terms = this.advanced.terms
