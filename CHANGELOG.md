@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
-- Withdrawal request creating (for Loyalty Points Reconciliation)
+## [1.4.0-rc.3] - 2019-04-04
+#### Fixed
+- Withdrawal request creating where invalid creatorDetails were submitted
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
