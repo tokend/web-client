@@ -8,12 +8,20 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Subject field to the create invoice form (Loyalty)
+- Displaying invoice summary on create invoice form (Loyalty)
+
+#### Changed
+- Now using 2 decimal points for invoice amounts (Loyalty)
+
 #### Fixed
 - Date field issues:
   - broken "disabled" state;
   - broken manual input. If user type invalid date manually, the field will
     clean up;
   - broken key events (enter, escape, arrow navigation).
+- Fixed a bug with animation flickering on drawer closing
 
 ### "Under the hood" changes
 #### Changed
