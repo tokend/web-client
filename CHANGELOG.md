@@ -10,15 +10,16 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Added
 - Displaying total fee in the movement attributes
-- Displaying operation summary in the movement attributes 
+- Displaying operation summary in the movement attributes
 
 ### Changed
 - Moved movements module translation filters to a mixin
-- Now displaying only valuable fees in the movement attributes
+- Now displaying fees in the movement attributes only if total fee is
+bigger than zero
 
 ### Removed
-- Fee header from the movements table
-- Transfer & deposit pseudomodules from the loyalty points reconciliation 
+- "Fee" column from the movements table
+- Transfer & deposit pseudomodules from the loyalty points reconciliation
 scheme
 
 ### Fixed
