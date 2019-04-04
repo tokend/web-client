@@ -150,9 +150,9 @@ $media-small: 460px;
 }
 
 .drawer-transition-leave-active {
-  /* time animation-duration > animation,
+  /* time animation-duration < animation,
   because after closing it appears again*/
-  animation-duration: .100s;
+  animation-duration: .1s;
   & > .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out reverse;
   }
