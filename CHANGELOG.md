@@ -30,6 +30,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
 - Translations for loyalty points merchant module (Loyalty)
+- Setting merchant account ID to invoice URL (Loyalty)
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
