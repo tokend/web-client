@@ -34,6 +34,9 @@ import InvoiceSummaryViewer from './invoice-summary-viewer'
 import ClipboardField from '@/vue/fields/ClipboardField'
 import QrCode from 'vue-qr'
 
+import { mapGetters } from 'vuex'
+import { types } from '../store/types'
+
 import config from '@/config'
 
 import { Invoice } from '../wrappers/invoice'
@@ -54,6 +57,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters('create-invoice-form', {
+      accountId: types.accountId,
+    }),
+
     encodedBlobUrl () {
       return encodeURIComponent(
         `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${this.invoice.blobId}`
