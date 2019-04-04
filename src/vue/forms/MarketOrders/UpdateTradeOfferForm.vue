@@ -100,7 +100,7 @@
           <button
             v-ripple
             type="button"
-            @click="showConfirmation"
+            @click="cancelOfferAction"
             class="app__form-submit-btn"
             :disabled="formMixin.isDisabled"
           >
@@ -109,7 +109,7 @@
           <button
             v-ripple
             type="button"
-            @click="showConfirmation"
+            @click="updateOfferAction"
             class="app__form-submit-btn"
             :disabled="isDisabledSubmitButton"
           >
@@ -174,6 +174,9 @@ export default {
   data: () => ({
     config,
     isOfferSubmitting: false,
+    isCancelOrderAction: false,
+    isUpdatinglOrderAction: false,
+    isWraningShown: false,
     form: {},
   }),
   computed: {
@@ -198,8 +201,7 @@ export default {
     isDisabledSubmitButton () {
       return !this.isEnoughOnBalance ||
         this.formMixin.isDisabled ||
-        !this.form.price ||
-        !this.form.baseAmount
+        !this.totalValue
     },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.baseAmount)
@@ -250,24 +252,37 @@ export default {
       this.disableForm()
       this.isOfferSubmitting = true
 
-      await this.getCreateOfferOpts()
+      if (this.isCancelOrderAction && this.isOwner) {
+        await this.cancelOffer(
+          this.getCancelOfferOpts()
+        )
+      }
 
-      this.isOfferSubmitting = false
-      this.enableForm()
-      this.$emit(EVENTS.closeDrawer)
-      this.hideConfirmation()
-    },
-    async updateOffer () {
-      try {
+      if (this.isUpdatinglOrderAction) {
         await this.cancelOffer(
           this.getCancelOfferOpts()
         )
         await this.createOffer(
           this.getCreateOfferOpts()
         )
-      } catch (error) {
-      
       }
+      this.isOfferSubmitting = false
+      this.resetStatateActions()
+      this.enableForm()
+      this.$emit(EVENTS.closeDrawer)
+      this.hideConfirmation()
+    },
+    cancelOfferAction () {
+      this.isCancelOrderAction = true
+      this.showConfirmation()
+    },
+    updateOfferAction () {
+      this.isUpdatinglOrderAction = true
+      this.showConfirmation()
+    },
+    resetStatateActions () {
+      this.isCancelOrderAction = false
+      this.isUpdatinglOrderAction = false
     },
 
     getCreateOfferOpts () {

@@ -13,7 +13,7 @@
             'form.price', {
               from: config.MIN_AMOUNT,
               to: config.MAX_AMOUNT,
-              available: quoteAssetBalance
+              available: quoteAssetBalance.balance
             }
           )"
           @blur="touchField('form.price')"
@@ -178,7 +178,17 @@ export default {
   data: () => ({
     config,
     isOfferSubmitting: false,
-    form: {},
+    isCancelingOrder: false,
+    form: {
+      baseAmount: '0',
+      baseAssetCode: null,
+      createdAt: null,
+      isBuy: true,
+      pagingToken: null,
+      price: null,
+      quoteAmount: '0',
+      quoteAssetCode: null,
+    },
   }),
   computed: {
     ...mapGetters([
@@ -191,7 +201,7 @@ export default {
     },
     quoteAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.form.quoteAssetCode)
+        .find(item => item.asset === this.form.quoteAssetCode) || {}
     },
     isEnoughOnBalance () {
       if (this.isBuy) {

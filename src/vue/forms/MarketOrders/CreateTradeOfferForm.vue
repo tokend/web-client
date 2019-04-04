@@ -156,6 +156,25 @@ export default {
     config,
     isOfferCreating: false,
   }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountBalances,
+    ]),
+    baseAssetBalance () {
+      return (this.accountBalances
+        .find(i => i.asset === this.assetPair.base) || {}).balance
+    },
+    quoteAssetBalance () {
+      return (this.accountBalances
+        .find(i => i.asset === this.assetPair.quote) || {}).balance
+    },
+    formQuoteAmount () {
+      return MathUtil.multiply(this.form.price, this.form.amount)
+    },
+    totalValue () {
+      return +this.formQuoteAmount ? this.formQuoteAmount : ''
+    },
+  },
   validations () {
     return {
       form: {
@@ -181,25 +200,6 @@ export default {
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
     }
-  },
-  computed: {
-    ...mapGetters([
-      vuexTypes.accountBalances,
-    ]),
-    baseAssetBalance () {
-      return (this.accountBalances
-        .find(i => i.asset === this.assetPair.base) || {}).balance
-    },
-    quoteAssetBalance () {
-      return (this.accountBalances
-        .find(i => i.asset === this.assetPair.quote) || {}).balance
-    },
-    formQuoteAmount () {
-      return MathUtil.multiply(this.form.price, this.form.amount)
-    },
-    totalValue () {
-      return +this.formQuoteAmount ? this.formQuoteAmount : ''
-    },
   },
   async created () {
     await this.loadBalances()
