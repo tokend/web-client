@@ -18,7 +18,9 @@ for further information about branching and tagging conventions.
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Moved movements module translation filters to a mixin
 - Now displaying fees in the movement attributes only if total fee is
-bigger than zero
+  bigger than zero
+- Now using "EUR" asset instead of "PET" one on the loyalty statistics
+  charts (Loyalty)
 
 #### Removed
 - "Fee" column from the movements table
