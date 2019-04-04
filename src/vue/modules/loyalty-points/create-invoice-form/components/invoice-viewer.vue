@@ -9,8 +9,8 @@
         :text="invoiceQrCodeValue"
         :margin="0"
         :size="250"
-        :color-light="'#f2f2f4'"
-        :color-dark="'#262626'"
+        color-light="#f2f2f4"
+        color-dark="#262626"
       />
     </div>
 
