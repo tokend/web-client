@@ -65,21 +65,21 @@ import { Wallet } from '@tokend/js-sdk'
 const PETS = [
   {
     name: 'Puppy',
-    price: '17.917',
+    price: '17.92',
     logo: {
       url: 'https://goo.gl/dzLcBq',
     },
   },
   {
     name: 'Cavy',
-    price: '8.641',
+    price: '8.64',
     logo: {
       url: 'https://goo.gl/VmXDiv',
     },
   },
   {
     name: 'Rabbit',
-    price: '2.1492',
+    price: '2.14',
     logo: {
       url: 'https://goo.gl/qgDpJ8',
     },
