@@ -65,7 +65,7 @@
       <div class="app__form-field">
         <file-field
           v-model="form.terms"
-          name="asset-create-terms"
+          name="create-asset-terms"
           :note="'create-asset-form.terms-note' | globalize"
           accept=".jpg, .png, .pdf"
           :document-type="DOCUMENT_TYPES.assetTerms"

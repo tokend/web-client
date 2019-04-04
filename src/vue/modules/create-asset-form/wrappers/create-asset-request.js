@@ -1,9 +1,7 @@
 import safeGet from 'lodash/get'
 
-export class CreateAssetRequest extends Request {
+export class CreateAssetRequest {
   constructor (record) {
-    super(record)
-
     this.assetCode = safeGet(record, 'requestDetails.asset')
     this.assetType = safeGet(record, 'requestDetails.type')
     this.assetName = safeGet(record, 'requestDetails.creatorDetails.name')

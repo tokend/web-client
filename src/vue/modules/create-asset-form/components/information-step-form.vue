@@ -97,7 +97,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <file-field
-          name="asset-create-logo"
+          name="create-asset-logo"
           v-model="form.logo"
           :note="'create-asset-form.logo-note' | globalize"
           accept=".jpg, .png"
