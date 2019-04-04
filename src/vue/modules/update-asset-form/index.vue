@@ -126,17 +126,25 @@ export default {
     },
 
     async loadUpdateAssetRecord () {
-      if (this.requestId) {
-        this.request = await this.getUpdateAssetRequestById(this.requestId)
-      } else if (this.assetCode) {
-        const updatableRequest = await this.getUpdatableRequest()
+      const request = await this.getUpdateRequest()
 
-        if (updatableRequest) {
-          this.request = updatableRequest
-        } else {
-          this.asset = await this.getAssetByCode(this.assetCode)
-        }
+      if (request) {
+        this.request = request
+      } else {
+        this.asset = await this.getAssetByCode(this.assetCode)
       }
+    },
+
+    async getUpdateRequest () {
+      let request
+
+      if (this.requestId) {
+        request = await this.getUpdateAssetRequestById(this.requestId)
+      } else if (this.assetCode) {
+        request = await this.getUpdatableRequest()
+      }
+
+      return request
     },
 
     moveToNextStep () {
