@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Subject field to the create invoice form (Loyalty)
+- Addув getting previous account role from previous KYC request
 
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)

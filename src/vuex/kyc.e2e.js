@@ -43,7 +43,7 @@ describe('kyc.module end-to-end test', () => {
               },
           },
       })
-      mockHelper.mockEndpoint(`/v3/change_role_requests?include=request_details&filter%5Brequestor%5D=${accountId}&page%5Blimit%5D=1&page%5Border%5D=desc`,
+      mockHelper.mockEndpoint(`/v3/change_role_requests?include=request_details&filter%5Brequestor%5D=${accountId}&page%5Blimit%5D=2&page%5Border%5D=desc`,
         responseJSON
       )
       await store.dispatch(vuexTypes.LOAD_KYC)

@@ -49,11 +49,11 @@ export const actions = {
   }) {
     const requestor = rootGetters[vuexTypes.accountId]
 
-    // kinda optimization cause we are interested only in the latest
+    // kinda optimization cause we are interested only 2 latest
     // update_kyc request
     // please do not expose the request itself for not making clients dependent
     // on this implementation
-    const limit = 1
+    const limit = 2
     const order = 'desc'
 
     const response = await Api.getWithSignature(`change_role_requests`, {
@@ -70,8 +70,10 @@ export const actions = {
     if (!response.data[0]) {
       return
     }
-
-    const request = new ChangeRoleRequestRecord(response.data[0])
+    const request = new ChangeRoleRequestRecord(
+      response.data[0],
+      response.data[1]
+    )
     const unverifiedRoleId = rootGetters[vuexTypes.kvEntryUnverifiedRoleId]
     const isAccountRoleReseted = request.accountRoleToSet === unverifiedRoleId
 

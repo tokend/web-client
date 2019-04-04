@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
 
 export class ChangeRoleRequestRecord {
-  constructor (record) {
+  constructor (record, previousRecord) {
     this._record = record
 
     this.id = record.id || '0'
@@ -18,9 +18,7 @@ export class ChangeRoleRequestRecord {
     this.state = record.state
     this.stateI = record.stateI
 
-    this.previousAccountRole = _get(
-      record, 'requestDetails.creatorDetails.previousAccountRole'
-    )
+    this.previousAccountRole = _get(previousRecord, 'requestDetails.accountRoleToSet')
     this.requestType = _get(record, 'requestDetails.type')
 
     this.allTasks = record.allTasks
