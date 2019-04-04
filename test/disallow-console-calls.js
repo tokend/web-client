@@ -1,14 +1,18 @@
-// Console methods (such as log, warn, and error) can be called
-// through test execution without failing a test. Furthermore,
-// if an unhandled exception was thrown, but all the test checks
-// have passed, the test would not fail too. It may cause dirty test
-// reports. Besides, ther is more dangerous issue: thrown unhandled
-// error during test execution means that the test doesn't work
-// as expected, though it can pass.
+/**
+ * Console methods (such as log, warn, and error) can be called
+ * through test execution without failing a test. Furthermore,
+ * if an unhandled exception was thrown, but all the test checks
+ * have passed, the test would not fail too. It may cause dirty test
+ * reports. Besides, their is more dangerous issue: thrown unhandled
+ * error during test execution means that the test doesn't work
+ * as expected, though it can pass.
+ *
+ * That's the reason why there had been implemented a console
+ * watcher that counts all the console calls and fail tests if
+ * the console was called at least once through test execution.
+ */
 
-// That's the reason why there had been implemented a console
-// watcher that counts all the console calls and fail tests if
-// the console was called at least once through test execution.
+/* eslint-disable no-console */
 
 let consoleCallCounter = 0
 

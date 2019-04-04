@@ -20,10 +20,8 @@
         </drawer>
 
         <template v-for="sale in filteredSales">
-          <!-- TODO: remove this check (sale.id !== '41') after 29.03.19 -->
           <sale-card
             class="sales__sale-card"
-            v-if="sale.id !== '41'"
             :key="sale.id"
             :sale="sale"
           />
