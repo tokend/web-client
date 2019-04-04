@@ -25,8 +25,7 @@ for further information about branching and tagging conventions.
 
 ### "Under the hood" changes
 #### Changed
-- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component), but via pure
-  [flatpickr](https://www.npmjs.com/package/flatpickr) library
+- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component), but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
