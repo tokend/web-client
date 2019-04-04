@@ -65,7 +65,7 @@
         >
           <template v-if="offerBalance.balance">
             {{
-              'submit-trade-offers-form.insufficient-funds' | globalize({
+              'submit-trade-offers-form.insufficient-funds-msg' | globalize({
                 amount: {
                   value: offerBalance.balance,
                   currency: offerAssetCode
