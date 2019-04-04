@@ -150,7 +150,12 @@ $media-small: 460px;
 }
 
 .drawer-transition-leave-active {
-  animation-duration: .175s;
+  /*
+    overall duration should be less than nested durations,
+    to prevent animation flickering after animation ended
+    but the element still present
+  */
+  animation-duration: .13s;
   & > .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out reverse;
   }

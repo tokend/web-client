@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Subject field to the create invoice form (Loyalty)
+
+#### Changed
+- Now using 2 decimal points for invoice amounts (Loyalty)
+
+#### Fixed
+- Fixed a bug with animation flickering on drawer closing
+
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
 - A bug with uneditable general verification form for brand-new users
