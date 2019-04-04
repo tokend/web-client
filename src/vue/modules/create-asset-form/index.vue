@@ -55,11 +55,11 @@ import { initApi } from './_api'
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'asset-form.information-step',
+    titleId: 'create-asset-form.information-step',
   },
   advanced: {
     number: 2,
-    titleId: 'asset-form.advanced-step',
+    titleId: 'create-asset-form.advanced-step',
   },
 }
 const EVENTS = {
