@@ -89,7 +89,13 @@
         class="app__button-raised advanced-step-form__btn"
         :disabled="isDisabled"
       >
-        {{ 'create-asset-form.create-btn' | globalize }}
+        <template v-if="request">
+          {{ 'create-asset-form.update-request-btn' | globalize }}
+        </template>
+
+        <template v-else>
+          {{ 'create-asset-form.create-request-btn' | globalize }}
+        </template>
       </button>
     </div>
   </form>

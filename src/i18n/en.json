@@ -657,13 +657,14 @@
       "no-assets-msg": "There are no available tokens",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
-      "create-asset-button": "Create token"
+      "create-btn": "Create"
     },
     "create-asset-form": {
       "loading-msg": "Loading…",
       "load-failed-msg": "There was an error while loading.",
       "next-btn": "Next",
-      "create-btn": "Create",
+      "create-request-btn": "Create request",
+      "update-request-btn": "Update request",
       "information-step": "Token information",
       "advanced-step": "Advanced",
       "name-lbl": "Token name",

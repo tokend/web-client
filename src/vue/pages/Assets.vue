@@ -19,10 +19,13 @@
       >
         <button
           v-ripple
-          class="create-asset-btn app__button-raised"
+          class="assets-page__create-btn app__button-raised"
           @click="isAssetDrawerShown = true"
         >
-          {{ 'assets-page.create-asset-button' | globalize }}
+          <i class="mdi mdi-plus assets-page__btn-icon" />
+          <span>
+            {{ 'assets-page.create-btn' | globalize }}
+          </span>
         </button>
       </template>
     </top-bar>
@@ -84,3 +87,12 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.assets-page__btn-icon {
+  display: flex;
+  font-size: 1.8rem;
+  margin-right: 0.5rem;
+  margin-top: -0.4rem;
+}
+</style>
