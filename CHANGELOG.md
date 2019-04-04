@@ -12,7 +12,7 @@ for further information about branching and tagging conventions.
 - Now using 2 decimal points for invoice amounts (Loyalty)
 
 #### Fixed
-- Fixed bug with drawer closing animation
+- Fixed bug with animation flickering on drawer closing
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
