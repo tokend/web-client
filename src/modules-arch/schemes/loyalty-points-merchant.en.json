@@ -22,8 +22,10 @@
       "amount-lbl": "Amount {{asset}}",
       "subject-lbl": "Subject",
       "balance": "Balance: {{balance, money}}",
-      "close": "Close",
-      "waiting-for-payment": "Waiting for payment…",
+      "waiting-for-payment-btn": "Waiting for payment…",
+      "close-btn": "Close",
+      "payment-pending-state": "Waiting for payment",
+      "payment-successful-state": "Successful",
       "acceptable-asset-pairs-title": "Acceptable points",
       "qr-code-description": "Use your loyalty app to perform the payment",
       "price": "Price",
@@ -34,7 +36,11 @@
       "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
       "loading-msg": "Loading...",
       "invoice-url": "Invoice URL",
-      "payment-successful-msg": "Payment successful"
+      "payment-successful-msg": "Payment successful",
+      "summary-title": "Invoice summary",
+      "state-th": "State",
+      "amount-th": "Amount",
+      "subject-th": "Subject"
     }
   }
 }
