@@ -10,7 +10,7 @@
           v-show="currentStep === STEPS.information.number"
           :request="request"
           :kyc-required-asset-type="kycRequiredAssetType"
-          @submit="(information = $event) && next()"
+          @submit="(information = $event) && moveToNextStep()"
         />
 
         <advanced-step-form
@@ -108,25 +108,33 @@ export default {
   }),
 
   async created () {
-    initApi(this.wallet, this.config)
-
-    try {
-      await this.loadKycRequiredAssetType()
-
-      if (this.requestId) {
-        this.request = await this.getCreateAssetRequestById(this.requestId)
-      }
-      this.isLoaded = true
-    } catch (e) {
-      this.isLoadFailed = true
-      ErrorHandler.processWithoutFeedback(e)
-    }
+    await this.init()
   },
 
   methods: {
-    next () {
-      this.$el.parentElement.scrollTop = 0
+    async init () {
+      try {
+        initApi(this.wallet, this.config)
+        await this.loadKycRequiredAssetType()
+        await this.tryLoadRequest()
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+
+    async tryLoadRequest () {
+      if (this.requestId) {
+        this.request = await this.getCreateAssetRequestById(this.requestId)
+      }
+    },
+
+    moveToNextStep () {
       this.currentStep++
+      if (this.$el.parentElement) {
+        this.$el.parentElement.scrollTop = 0
+      }
     },
 
     async submit () {
@@ -134,15 +142,18 @@ export default {
       try {
         await this.submitCreateAssetRequest()
         Bus.success('create-asset-form.request-submitted-msg')
-
-        if (this.requestId) {
-          this.$emit(EVENTS.requestUpdated)
-        }
-        this.$emit(EVENTS.close)
+        this.emitSubmitEvents()
       } catch (e) {
         this.isDisabled = false
         ErrorHandler.process(e)
       }
+    },
+
+    emitSubmitEvents () {
+      if (this.requestId) {
+        this.$emit(EVENTS.requestUpdated)
+      }
+      this.$emit(EVENTS.close)
     },
   },
 }

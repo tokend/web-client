@@ -215,12 +215,15 @@ describe('Manage asset request mixin', () => {
 
           await wrapper.vm.submitCreateAssetRequest()
 
-          expect(wrapper.vm.uploadDocuments).calledOnceWithExactly([
-            logo,
-            terms,
-          ])
-          expect(base.ManageAssetBuilder.assetCreationRequest).calledOnce
-          expect(Api.api().postOperations).calledOnce
+          expect(wrapper.vm.uploadDocuments)
+            .to.have.been.calledOnceWithExactly([
+              logo,
+              terms,
+            ])
+          expect(base.ManageAssetBuilder.assetCreationRequest)
+            .to.have.been.calledOnce
+          expect(Api.api().postOperations)
+            .to.have.been.calledOnce
         }
       )
     })

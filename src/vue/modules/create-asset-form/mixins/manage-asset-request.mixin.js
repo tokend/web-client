@@ -7,7 +7,7 @@ import config from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-const ASSET_CREATION_REQUEST_ID = '0'
+const NEW_CREATE_ASSET_REQUEST_ID = '0'
 const EMPTY_DOCUMENT = {
   mime_type: '',
   name: '',
@@ -35,7 +35,7 @@ export default {
       const terms = this.advanced.terms
 
       return {
-        requestID: this.requestId || ASSET_CREATION_REQUEST_ID,
+        requestID: this.requestId || NEW_CREATE_ASSET_REQUEST_ID,
         code: this.information.code,
         assetType: String(this.information.assetType.value),
         preissuedAssetSigner: this.preissuedAssetSigner,

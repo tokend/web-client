@@ -209,12 +209,6 @@ export default {
   },
 
   methods: {
-    submit () {
-      if (this.isFormValid()) {
-        this.$emit(EVENTS.submit, this.form)
-      }
-    },
-
     populateForm () {
       this.form = {
         name: this.request.assetName,
@@ -226,6 +220,12 @@ export default {
           ? new DocumentContainer(this.request.logo)
           : null,
         policies: this.request.policy,
+      }
+    },
+
+    submit () {
+      if (this.isFormValid()) {
+        this.$emit(EVENTS.submit, this.form)
       }
     },
   },
