@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Subject field to the create invoice form (Loyalty)
+
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
 
