@@ -20,6 +20,7 @@
 
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
+      "subject-lbl": "Subject",
       "balance": "Balance: {{balance, money}}",
       "close": "Close",
       "waiting-for-payment": "Waiting for payment…",
