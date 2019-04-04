@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
+- Allow inserting both of YouTube video link or ID
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
