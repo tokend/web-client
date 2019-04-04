@@ -12,6 +12,8 @@ for further information about branching and tagging conventions.
 - Subject field to the create invoice form (Loyalty)
 
 #### Changed
+- Modularized:
+  - Update asset form
 - Now using 2 decimal points for invoice amounts (Loyalty)
 
 ## [1.4.0-rc.2] - 2019-04-02
