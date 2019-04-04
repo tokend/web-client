@@ -10,6 +10,14 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Ability to edit KYC request with "pending" status
+- Subject field to the create invoice form (Loyalty)
+- Displaying invoice summary on create invoice form (Loyalty)
+
+#### Changed
+- Now using 2 decimal points for invoice amounts (Loyalty)
+
+#### Fixed
+- Fixed a bug with animation flickering on drawer closing
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
