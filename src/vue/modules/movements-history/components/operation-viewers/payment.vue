@@ -1,39 +1,50 @@
 <template>
   <tbody>
-    <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.source-fixed-fee-lbl' | globalize }}
-      </td>
-      <td class="attributes-viewer__table-cell">
-        {{ sourceFixedFee | formatMoney }}
-      </td>
-    </tr>
-    <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.source-calculated-percent-fee-lbl' | globalize }}
-      </td>
-      <td class="attributes-viewer__table-cell">
-        {{ sourceCalculatedPercentFee | formatMoney }}
-      </td>
-    </tr>
-    <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
-        {{ 'movements-history.destination-fixed-fee-lbl' | globalize }}
-      </td>
-      <td class="attributes-viewer__table-cell">
-        {{ destinationFixedFee | formatMoney }}
-      </td>
-    </tr>
-    <tr class="attributes-viewer__table-row">
-      <td class="attributes-viewer__table-cell">
-        {{
-          'movements-history.destination-calculated-percent-fee-lbl' | globalize
-        }}
-      </td>
-      <td class="attributes-viewer__table-cell">
-        {{ destinationCalculatedPercentFee | formatMoney }}
-      </td>
-    </tr>
+    <template v-if="totalFee.value > 0">
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
+          {{ 'movements-history.source-fixed-fee-lbl' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ sourceFixedFee | formatMoney }}
+        </td>
+      </tr>
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
+          <!-- eslint-disable-next-line max-len -->
+          {{ 'movements-history.source-calculated-percent-fee-lbl' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ sourceCalculatedPercentFee | formatMoney }}
+        </td>
+      </tr>
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
+          {{ 'movements-history.destination-fixed-fee-lbl' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ destinationFixedFee | formatMoney }}
+        </td>
+      </tr>
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
+          <!-- eslint-disable-next-line max-len -->
+          {{ 'movements-history.destination-calculated-percent-fee-lbl' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ destinationCalculatedPercentFee | formatMoney }}
+        </td>
+      </tr>
+      <tr class="attributes-viewer__table-row">
+        <td class="attributes-viewer__table-cell">
+          {{ 'movements-history.total-fee-lbl' | globalize }}
+        </td>
+        <td class="attributes-viewer__table-cell">
+          {{ totalFee | formatMoney }}
+        </td>
+      </tr>
+    </template>
+
     <tr class="attributes-viewer__table-row">
       <td class="attributes-viewer__table-cell">
         {{ 'movements-history.source-pays-for-destination-lbl' | globalize }}
@@ -74,6 +85,8 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { PaymentOp } from '../../wrappers/operation-details/payment'
 
+import { MathUtil } from '@/js/utils'
+
 export default {
   components: {
     EmailGetter,
@@ -107,6 +120,21 @@ export default {
       return {
         currency: this.operationDetails.assetCode,
         value: this.operationDetails.destinationCalculatedPercentFee,
+      }
+    },
+    totalFee () {
+      const sourceFee = MathUtil.add(
+        this.operationDetails.sourceFixedFee,
+        this.operationDetails.sourceCalculatedPercentFee,
+      )
+      const destinationFee = MathUtil.add(
+        this.operationDetails.destinationFixedFee,
+        this.operationDetails.destinationCalculatedPercentFee
+      )
+
+      return {
+        currency: this.operationDetails.assetCode,
+        value: MathUtil.add(sourceFee, destinationFee),
       }
     },
   },
