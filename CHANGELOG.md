@@ -11,12 +11,23 @@ for further information about branching and tagging conventions.
 #### Added
 - Subject field to the create invoice form (Loyalty)
 - Displaying invoice summary on create invoice form (Loyalty)
+- Displaying total fee in the movement attributes
+- Displaying operation summary in the movement attributes
 
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
+- Moved movements module translation filters to a mixin
+- Now displaying fees in the movement attributes only if total fee is
+bigger than zero
+
+#### Removed
+- "Fee" column from the movements table
+- Transfer & deposit pseudomodules from the loyalty points reconciliation
+  scheme
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
+- Translations for loyalty points merchant module (Loyalty)
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
