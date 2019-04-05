@@ -144,7 +144,6 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { RecordWrapper } from '@/js/records'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
@@ -186,7 +185,7 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: AssetUpdateRequestRecord, default: null },
-    assetRecord: { type: AssetRecord, default: null },
+    assetRecord: { type: Object, default: null },
   },
 
   data: _ => ({

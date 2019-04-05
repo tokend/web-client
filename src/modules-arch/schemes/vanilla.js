@@ -37,6 +37,10 @@ import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/mo
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
+import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
+import { BalancesPageModule } from '@/vue/pages/balances-page'
+import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
+import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 
 export default {
   pages: [
@@ -128,26 +132,31 @@ export default {
         routerEntry: {
           path: '/tokens',
           name: vueRoutes.assets.name,
-          redirect: vueRoutes.assetsExplore,
-          children: [
-            // These guys cannot be used as independent modules too
-            {
-              path: '/tokens/explore',
-              name: vueRoutes.assetsExplore.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
-              component: _ => import('@/vue/pages/AssetsExplorer'),
-            },
-            {
-              path: '/tokens/balances',
-              name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
-              component: _ => import('@/vue/pages/Balances'),
-            },
-          ],
         },
         menuButtonTranslationId: 'pages-names.tokens',
         menuButtonMdiName: 'coins',
+        isAutoRedirectToFirstChild: true,
         submodules: [
+          new AssetExplorerPageModule({
+            routerEntry: {
+              path: '/tokens/explore',
+              name: vueRoutes.assetsExplore.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+            },
+            submodules: [
+              new AssetExplorerModule(),
+            ],
+          }),
+          new BalancesPageModule({
+            routerEntry: {
+              path: '/tokens/balances',
+              name: vueRoutes.balances.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+            },
+            submodules: [
+              new BalanceExplorerModule(),
+            ],
+          }),
           new CreateAssetFormModule({
             isCorporateOnly: true,
           }),
