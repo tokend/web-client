@@ -220,7 +220,7 @@ export default {
     ...mapGetters({
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
-      previousAccountRole: vuexTypes.kycPreviousAccountRole,
+      previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
     verificationCode () {
       return this.accountId.slice(1, 6)
