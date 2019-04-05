@@ -9,14 +9,14 @@
         <information-step-form
           v-show="currentStep === STEPS.information.number"
           :record="request || asset"
-          @submit="(information = $event) && moveToNextStep()"
+          @submit="setInformationStepForm($event) || moveToNextStep()"
         />
 
         <advanced-step-form
           v-show="currentStep === STEPS.advanced.number"
           :record="request || asset"
           :is-disabled.sync="isDisabled"
-          @submit="(advanced = $event) && submit()"
+          @submit="setAdvancedStepForm($event) || submit()"
         />
       </form-stepper>
     </template>
@@ -47,7 +47,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Wallet } from '@tokend/js-sdk'
+
 import { initApi } from './_api'
+import { initConfig } from './_config'
 
 const STEPS = {
   information: {
@@ -100,8 +102,8 @@ export default {
   data: _ => ({
     request: null,
     asset: null,
-    information: {},
-    advanced: {},
+    informationStepForm: {},
+    advancedStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -117,6 +119,7 @@ export default {
     async init () {
       try {
         initApi(this.wallet, this.config)
+        initConfig(this.config)
         await this.loadUpdateAssetRecord()
         this.isLoaded = true
       } catch (e) {
@@ -152,6 +155,14 @@ export default {
       if (this.$el.parentElement) {
         this.$el.parentElement.scrollTop = 0
       }
+    },
+
+    setInformationStepForm (value) {
+      this.informationStepForm = value
+    },
+
+    setAdvancedStepForm (value) {
+      this.advancedStepForm = value
     },
 
     async submit () {

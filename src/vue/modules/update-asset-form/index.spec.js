@@ -7,9 +7,8 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import * as Api from './_api'
+import * as Config from './_config'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -48,30 +47,24 @@ describe('Update asset form module', () => {
 
     describe('method', () => {
       describe('init', () => {
-        it('initializes API, calls loadUpdateAssetRecord method, and sets isLoaded property to true',
+        it('initializes API and config, call load method, and sets isLoaded property to true',
           async () => {
-            const props = {
-              config: {
-                horizonUrl: 'https://test.api.com',
-                storageURL: 'https://storage.com',
-              },
-              wallet: new Wallet(
-                'test@mail.com',
-                'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-                'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-                '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-              ),
-            }
+            wrapper.setProps({
+              config: 'SOME_CONFIG',
+              wallet: 'SOME_WALLET',
+            })
 
             sandbox.stub(Api, 'initApi')
+            sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadUpdateAssetRecord').resolves()
-
-            wrapper.setProps(props)
 
             await wrapper.vm.init()
 
             expect(Api.initApi)
-              .to.have.been.calledOnceWithExactly(props.wallet, props.config)
+              .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
+            expect(Config.initConfig)
+              .to.have.been.calledOnceWithExactly('SOME_CONFIG')
+
             expect(wrapper.vm.loadUpdateAssetRecord).to.have.been.calledOnce
             expect(wrapper.vm.isLoaded).to.be.true
           }
@@ -92,7 +85,7 @@ describe('Update asset form module', () => {
       })
 
       describe('loadUpdateAssetRecord', () => {
-        it('calls getUpdateRequest method and sets returned result to request property, if result is not empty',
+        it('loads request if loadUpdateAssetRecord returned not empty result',
           async () => {
             const request = { id: '1' }
             sandbox.stub(wrapper.vm, 'getUpdateRequest')
@@ -105,7 +98,7 @@ describe('Update asset form module', () => {
           }
         )
 
-        it('calls getAssetByCode method and sets result to asset property if getUpdateRequest method return empty result',
+        it('loads asset by code if loadUpdateAssetRecord returned empty result',
           async () => {
             const asset = { code: '1' }
             sandbox.stub(wrapper.vm, 'getUpdatableRequest').resolves()
@@ -121,7 +114,7 @@ describe('Update asset form module', () => {
       })
 
       describe('getUpdateRequest', () => {
-        it('calls getUpdateAssetRequestById method with correct id and returns its result if request ID prop is not empty',
+        it('returns getUpdateAssetRequestById method response if request ID prop is not empty',
           async () => {
             const request = { id: '1' }
             sandbox.stub(wrapper.vm, 'getUpdateAssetRequestById')
@@ -139,7 +132,7 @@ describe('Update asset form module', () => {
           }
         )
 
-        it('calls getUpdatableRequest method and returns its result if request ID prop is empty, but asset code prop is present',
+        it('returns getUpdatableRequest response if request ID prop is empty, but asset code is not',
           async () => {
             const request = { id: '1' }
             sandbox.stub(wrapper.vm, 'getUpdatableRequest')
@@ -171,7 +164,7 @@ describe('Update asset form module', () => {
       })
 
       describe('submit', () => {
-        it('calls submitUpdateAssetRequest, Bus.success methods, emits submit events, and sets isDisabled property to true',
+        it('calls proper methods, emits submit events, and sets isDisabled property to true',
           async () => {
             sandbox.stub(wrapper.vm, 'submitUpdateAssetRequest').resolves()
             sandbox.stub(Bus, 'success')

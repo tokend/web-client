@@ -18,12 +18,12 @@ const Component = {
   props: ['wallet', 'requestId'],
   data: _ => ({
     request: null,
-    information: {
+    informationStepForm: {
       name: '',
       logo: null,
       policies: 0,
     },
-    advanced: {
+    advancedStepForm: {
       terms: null,
     },
   }),
@@ -53,7 +53,7 @@ describe('Manage asset request mixin', () => {
             id: '10',
             code: 'USD',
           },
-          information: {
+          informationStepForm: {
             name: 'American dollar',
             policies: 16,
           },
@@ -76,8 +76,8 @@ describe('Manage asset request mixin', () => {
 
       it('returns opts with empty documents if they are not set', () => {
         wrapper.setData({
-          information: { logo: null },
-          advanced: { terms: null },
+          informationStepForm: { logo: null },
+          advancedStepForm: { terms: null },
         })
 
         expect(wrapper.vm.assetRequestOpts.creatorDetails.logo)
@@ -112,7 +112,7 @@ describe('Manage asset request mixin', () => {
     })
 
     describe('getUpdateAssetRequestById', () => {
-      it('calls Api.getWithSignature method with provided params and returns an instance of UpdateAssetRequest record',
+      it('returns UpdateAssetRequest record loaded using API.getWithSignature',
         async () => {
           wrapper.setProps({
             wallet: { accountId: 'SOME_ACCOUNT_ID' },
@@ -143,7 +143,7 @@ describe('Manage asset request mixin', () => {
         })
       })
 
-      it('calls Api.getWithSignature method with provided params and returns an instance of UpdateAssetRequest record',
+      it('returns UpdateAssetRequest record loaded using API.getWithSignature',
         async () => {
           sandbox.stub(Api.api(), 'getWithSignature').resolves({
             data: [{}],
@@ -182,7 +182,7 @@ describe('Manage asset request mixin', () => {
     })
 
     describe('getUpdatableRequest', () => {
-      it('calls getLatestUpdateAssetRequest for pending and rejected requests states and returns loaded request',
+      it('returns getLatestUpdateAssetRequest response for pending or rejected requests state',
         async () => {
           const request = new UpdateAssetRequest({ id: '1' })
           sandbox.stub(wrapper.vm, 'getLatestUpdateAssetRequest')
@@ -208,8 +208,8 @@ describe('Manage asset request mixin', () => {
           const terms = new DocumentContainer({ key: 'terms-key' })
 
           wrapper.setData({
-            information: { logo },
-            advanced: { terms },
+            informationStepForm: { logo },
+            advancedStepForm: { terms },
           })
 
           sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()

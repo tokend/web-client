@@ -26,15 +26,15 @@ export default {
         ? this.request.code
         : this.assetCode
 
-      const logo = this.information.logo
-      const terms = this.advanced.terms
+      const logo = this.informationStepForm.logo
+      const terms = this.advancedStepForm.terms
 
       return {
         requestID: requestId,
         code: assetCode,
-        policies: this.information.policies,
+        policies: this.informationStepForm.policies,
         creatorDetails: {
-          name: this.information.name,
+          name: this.informationStepForm.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },
@@ -85,8 +85,8 @@ export default {
 
     async submitUpdateAssetRequest () {
       const assetDocuments = [
-        this.information.logo,
-        this.advanced.terms,
+        this.informationStepForm.logo,
+        this.advancedStepForm.terms,
       ]
       await this.uploadDocuments(assetDocuments)
 

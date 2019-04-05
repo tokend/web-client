@@ -4,6 +4,8 @@ import { api } from '../_api'
 
 import _omit from 'lodash/omit'
 
+import { config } from '../_config'
+
 export default {
   methods: {
     async uploadDocuments (documents) {
@@ -16,13 +18,13 @@ export default {
 
     async uploadDocument (document) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const config = await this.getDocumentTypeConfig(type, mimeType)
+      const config = await this.createDocumentAnchorConfig(type, mimeType)
 
       await this.uploadFile(file, _omit(config, ['id', 'url', 'type']), mimeType)
       document.setKey(config.key)
     },
 
-    async getDocumentTypeConfig (documentType, mimeType) {
+    async createDocumentAnchorConfig (documentType, mimeType) {
       const { data: config } = await api().postWithSignature('/documents', {
         data: {
           type: documentType,
@@ -42,7 +44,7 @@ export default {
       const formData = this.createFileFormData(file, policy, mimeType)
 
       // TODO: posting should not be on this level of abstraction
-      await Vue.http.post(this.config.storageURL, formData)
+      await Vue.http.post(config().storageURL, formData)
     },
 
     createFileFormData (file, policy, mimeType) {
