@@ -1,5 +1,27 @@
 /**
  * Tooltip directive
+ * 
+ * Draw element used in conjunction with the cursor or mouse pointer to display 
+ * information about an item.
+ * - Can be activated as by mouse click or mouse hover.
+ * - Can calculate free space for placement of tooltip, depenping on user's
+ *   position desire
+ * - Styles are customizable
+ * Example of usage is described below.
+ *  <element
+ *    v-tooltip="{
+ *      type: 'hover'
+        text: 'Lorem ipsum',
+        position: 'top',
+        style: {
+          width: '500',
+          height: '900',
+          bgColor: 'red',
+          textColor: 'green',
+          fontSize: '14px'
+        }
+      }>
+ * 
  * @param {Object} binding.value - passed params
  * @param {string} binding.value.text - text of tooltip
  * @param {string} [binding.value.type] - 'click' or 'hover' to summon tooltip
