@@ -18,9 +18,6 @@ export class ChangeRoleRequestRecord {
     this.state = record.state
     this.stateI = record.stateI
 
-    this.previousAccountRole = _get(
-      record, 'requestDetails.creatorDetails.previousAccountRole'
-    )
     this.requestType = _get(record, 'requestDetails.type')
 
     this.allTasks = record.allTasks

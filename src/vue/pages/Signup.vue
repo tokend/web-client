@@ -90,7 +90,7 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -125,7 +125,7 @@ export default {
             },
           })
         }
-        this.loadKvEntriesAccountRoleIds()
+        this.loadKvEntries()
       } catch (e) {
         ErrorHandler.process(e)
       }
