@@ -1,16 +1,11 @@
 <template>
   <div class="auth-page">
-    <h2 class="auth-page__title">
-      {{
-        recoveryKeypair
-          ? 'auth-pages.save-recovery-seed-warning'
-          : 'auth-pages.get-started'
-          | globalize
-      }}
-    </h2>
+    <template v-if="!recoveryKeypair">
+      <h2 class="auth-page__title">
+        {{ 'auth-pages.signup-title' | globalize }}
+      </h2>
 
-    <div class="auth-page__content">
-      <template v-if="!recoveryKeypair">
+      <div class="auth-page__content">
         <signup-form
           :submit-event="'submit'"
           @submit="handleChildFormSubmit"
@@ -19,16 +14,25 @@
         <div class="auth-page__tips">
           <div class="auth-page__tip">
             {{ 'auth-pages.have-an-account-question' | globalize }}
-            <router-link class="auth-page__tip-link" :to="vueRoutes.login">
+            <router-link
+              class="auth-page__tip-link"
+              :to="vueRoutes.login"
+            >
               {{ 'auth-pages.have-an-account-answer' | globalize }}
             </router-link>
           </div>
         </div>
-      </template>
+      </div>
+    </template>
 
-      <template v-else>
+    <template v-else>
+      <h2 class="auth-page__title signup__seed-title">
+        {{ 'auth-pages.save-recovery-seed-title' | globalize }}
+      </h2>
+
+      <div class="auth-page__content">
         <div class="signup__seed-wrp">
-          <div class="signup__seed-explanations">
+          <div class="signup__seed-disclaimer">
             <vue-markdown
               :source="'auth-pages.save-recovery-seed-explanation' | globalize"
             />
@@ -39,7 +43,7 @@
             :label="'auth-pages.recovery-seed' | globalize"
           />
 
-          <div class="signup__tick-field-container">
+          <div class="app__form-row">
             <tick-field
               v-model="isConfirmedSeedCopied"
               :cb-value="false"
@@ -50,7 +54,7 @@
             </tick-field>
           </div>
 
-          <div class="signup__actions">
+          <div class="app__form-actions">
             <button
               v-ripple
               @click="submit"
@@ -61,15 +65,15 @@
             </button>
           </div>
         </div>
-      </template>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import SignupForm from '../forms/SignupForm'
-import KeyViewer from '../common/KeyViewer'
+import SignupForm from '@/vue/forms/SignupForm'
+import KeyViewer from '@/vue/common/KeyViewer'
 import TickField from '@/vue/fields/TickField'
 import VueMarkdown from 'vue-markdown'
 
@@ -153,23 +157,18 @@ export default {
 </script>
 
 <style lang="scss">
-@import './auth-page';
+@import "./auth-page";
 
-.signup__seed-explanations {
+.signup__seed-title.auth-page__title {
+  margin-top: -4rem;
+}
+
+.signup__seed-disclaimer {
   margin-bottom: 3rem;
 
   p {
-  margin-bottom: 1rem;
-  font-size: 1.6rem;
+    margin-bottom: 1.6rem;
+    font-size: 1.6rem;
   }
-}
-
-.signup__actions {
-  margin-top: 2rem;
-  text-align: center;
-}
-
-.signup__tick-field-container {
-  padding-top: 2.2rem;
 }
 </style>
