@@ -29,7 +29,7 @@
             @click="isFiatWithdrawalFormShown = true"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
-            {{ 'op-pages.withdrawal' | globalize }}
+            {{ 'op-pages.withdraw' | globalize }}
           </button>
         </template>
 

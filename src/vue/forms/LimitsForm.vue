@@ -327,7 +327,7 @@ export default {
           ErrorHandler.process(error)
         }
       }
-      this.isRequestCreating = true
+      this.isRequestCreating = false
       this.enableForm()
       this.hideConfirmation()
       this.$emit(EVENTS.limitsChanged)

@@ -12,10 +12,7 @@
         </p>
       </template>
       <template v-else>
-        <load-spinner
-          message-id="movements-history.loading-movements-msg"
-          :position-center="true"
-        />
+        <load-spinner message-id="movements-history.loading-movements-msg" />
       </template>
 
       <div class="movements-history__collection-loader-wrp">
@@ -25,6 +22,7 @@
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
           @next-page-load="concatMovements"
+          :ref="REFS.collectionLoader"
         />
       </div>
     </template>
@@ -46,6 +44,10 @@ import { types } from './store/types'
 
 import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
+
+const REFS = {
+  collectionLoader: 'collection-loader',
+}
 
 export default {
   name: 'movements-history-module',
@@ -76,6 +78,7 @@ export default {
     isInitialized: false,
     isMovementsLoaded: false,
     isMovementsLoadFailed: false,
+    REFS,
   }),
   computed: {
     ...mapGetters('movements-history', {
@@ -106,6 +109,11 @@ export default {
       loadMovements: types.LOAD_MOVEMENTS,
       loadBalances: types.LOAD_BALANCES,
     }),
+
+    reloadCollectionLoader () {
+      return this.$refs[REFS.collectionLoader].loadFirstPage()
+    },
+
     async loadMovementsFirstPage (assetCode) {
       this.isMovementsLoaded = false
       try {

@@ -4,7 +4,8 @@
     :class="{
       'input-field--error': errorMessage,
       'input-field--monospaced': monospaced,
-      'input-field--readonly': $attrs.readonly
+      'input-field--readonly': $attrs.readonly,
+      'input-field--disabled': $attrs.disabled
     }"
   >
     <input
@@ -252,11 +253,13 @@ export default {
   color: $field-color-error;
 }
 
-.input-field--readonly > .input-field__input {
+.input-field--readonly > .input-field__input,
+.input-field--disabled > .input-field__input {
   @include readonly-material-border($field-color-unfocused);
 }
 
-.input-field--readonly > .input-field__input:focus ~ .input-field__label {
+.input-field--readonly > .input-field__input:focus ~ .input-field__label,
+.input-field--disabled > .input-field__input:focus ~ .input-field__label {
   color: $field-color-unfocused;
 }
 

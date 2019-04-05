@@ -9,7 +9,7 @@
            -->
           <router-link :to="{ ...vueRoutes.sales }" active-class>
             <span>
-              {{ 'sale-details.opportunities-list' | globalize }}
+              {{ 'sale-details.all-sales-tab' | globalize }}
             </span>
           </router-link>
 
@@ -17,7 +17,7 @@
             :to="{ ...vueRoutes.saleCampaign, params: { id: id } }"
           >
             <span>
-              {{ 'sale-details.campaign-title' | globalize }}
+              {{ 'sale-details.campaign-tab' | globalize }}
             </span>
           </router-link>
         </template>
@@ -161,5 +161,6 @@ export default {
   margin-top: .4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
+  word-wrap: break-word;
 }
 </style>

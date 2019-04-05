@@ -56,8 +56,12 @@ export class AssetUpdateRequestRecord extends RequestRecord {
           preIssuedAssetSigner: assetRecord.preissuedAssetSigner,
           maxIssuanceAmount: assetRecord.maxIssuanceAmount,
           initialPreissuedAmount: assetRecord.initialPreissuedAmount,
-          policies: assetRecord.policies.map(policy => ({ value: policy })),
-          details: assetRecord.details,
+          policies: assetRecord.policies,
+          details: {
+            name: assetRecord.name,
+            terms: assetRecord.terms,
+            logo: assetRecord.logo,
+          },
         },
       },
     })
