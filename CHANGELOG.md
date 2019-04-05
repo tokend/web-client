@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 #### Changed
 - Modularized:
   - Create asset form
+  - Update asset form
   - Asset explorer
   - Balance explorer
 - Now using 2 decimal points for invoice amounts (Loyalty)

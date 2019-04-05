@@ -682,6 +682,22 @@
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
     },
+    "update-asset-form": {
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading.",
+      "next-btn": "Next",
+      "update-btn": "Update",
+      "information-step": "Token information",
+      "advanced-step": "Advanced",
+      "name-lbl": "Token name",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
+      "transferable-lbl": "Transferable",
+      "withdrawable-lbl": "Withdrawable",
+      "terms-lbl": "Upload terms",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+    },
     "assets-list": {
       "update-asset-title": "Update token",
       "details-title": "Token details",
