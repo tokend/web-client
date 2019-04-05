@@ -257,7 +257,11 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        if (this.kycState === REQUEST_STATES_STR.pending) {
+        if (
+          this.kycState === REQUEST_STATES_STR.pending ||
+          this.kycState === REQUEST_STATES_STR.approved ||
+          this.kycState === REQUEST_STATES_STR.rejected
+        ) {
           Bus.success('verification-form.request-updated-msg')
         }
         while (this.kycState !== REQUEST_STATES_STR.pending) {

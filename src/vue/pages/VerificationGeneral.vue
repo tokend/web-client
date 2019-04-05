@@ -263,7 +263,11 @@ export default {
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
-        if (this.kycState === REQUEST_STATES_STR.pending) {
+        if (
+          this.kycState === REQUEST_STATES_STR.pending ||
+          this.kycState === REQUEST_STATES_STR.approved ||
+          this.kycState === REQUEST_STATES_STR.rejected
+        ) {
           Bus.success('verification-form.request-updated-msg')
         }
         do {
