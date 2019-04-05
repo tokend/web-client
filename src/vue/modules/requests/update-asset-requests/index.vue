@@ -6,8 +6,10 @@
           <template slot="heading">
             {{ 'update-asset-requests.update-asset-title' | globalize }}
           </template>
-          <asset-update-form
-            :request="selectedRequest"
+          <update-asset-form-module
+            :request-id="selectedRequest.id"
+            :wallet="wallet"
+            :config="config"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -52,9 +54,10 @@ import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
+
+import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
@@ -73,8 +76,8 @@ export default {
     Drawer,
     CollectionLoader,
     RequestsTable,
-    AssetUpdateForm,
     RequestViewer,
+    UpdateAssetFormModule,
   },
 
   props: {

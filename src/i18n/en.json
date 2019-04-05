@@ -816,8 +816,6 @@
       "created-header": "Created",
       "last-updated-header": "Last updated",
       "details-btn": "Details",
-      "no-owned-assets-title": "No owned tokens",
-      "no-owned-assets-desc": "Unfortunately, you don't own any tokens yet",
       "no-request-history-title": "No fund requests",
       "no-request-history-desc": "Here will be the list of your fund creation requests",
       "name-title": "Sale name",

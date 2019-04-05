@@ -1,39 +1,53 @@
 <template>
   <div class="request-viewer">
-    <asset-summary-viewer
-      :config="config()"
-      :asset="baseAsset"
-    />
+    <template v-if="isLoaded">
+      <asset-summary-viewer
+        :config="config()"
+        :asset="baseAsset"
+      />
 
-    <request-message-viewer
-      class="request-viewer__state-message"
-      :request="request"
-    />
+      <request-message-viewer
+        class="request-viewer__state-message"
+        :request="request"
+      />
 
-    <request-attributes-viewer
-      class="request-viewer__table"
-      :request="request"
-    />
+      <request-attributes-viewer
+        class="request-viewer__table"
+        :request="request"
+      />
 
-    <request-actions
-      class="request-viewer__actions"
-      :request="request"
-      @update-ask="$emit(EVENTS.updateAsk)"
-      @cancel="$emit(EVENTS.cancel)"
-    />
+      <request-actions
+        class="request-viewer__actions"
+        :request="request"
+        @update-ask="$emit(EVENTS.updateAsk)"
+        @cancel="$emit(EVENTS.cancel)"
+      />
+    </template>
+
+    <p v-else-if="isLoadingFailed">
+      {{ 'create-sale-requests.loading-error-msg' | globalize }}
+    </p>
+
+    <load-spinner v-else message-id="create-sale-requests.loading-msg" />
   </div>
 </template>
 
 <script>
+import LoadSpinner from '@/vue/common/Loader'
+
 import AssetSummaryViewer from '../../shared/components/asset-summary-viewer'
 import RequestMessageViewer from '../../shared/components/request-message-viewer'
 import RequestAttributesViewer from './request-attributes-viewer'
 import RequestActions from './request-actions'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
-import { Asset } from '../wrappers/asset'
 
 import { config } from '../_config'
+
+import { mapActions } from 'vuex'
+import { types } from '../store/types'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   updateAsk: 'update-ask',
@@ -43,6 +57,7 @@ const EVENTS = {
 export default {
   name: 'request-viewer',
   components: {
+    LoadSpinner,
     AssetSummaryViewer,
     RequestMessageViewer,
     RequestAttributesViewer,
@@ -51,13 +66,36 @@ export default {
 
   props: {
     request: { type: CreateSaleRequest, required: true },
-    baseAsset: { type: Asset, required: true },
   },
 
   data: _ => ({
+    baseAsset: null,
+    isLoaded: false,
+    isLoadingFailed: false,
     config,
     EVENTS,
   }),
+
+  async created () {
+    await this.loadBaseAsset()
+  },
+
+  methods: {
+    ...mapActions('create-sale-requests', {
+      loadAssetById: types.LOAD_ASSET_BY_ID,
+    }),
+
+    async loadBaseAsset () {
+      this.isLoaded = false
+      try {
+        this.baseAsset = await this.loadAssetById(this.request.baseAsset)
+        this.isLoaded = true
+      } catch (e) {
+        this.isLoadingFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+  },
 }
 </script>
 

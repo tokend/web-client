@@ -6,8 +6,10 @@
           <template slot="heading">
             {{ 'create-asset-requests.update-asset-title' | globalize }}
           </template>
-          <asset-create-form
-            :request="selectedRequest"
+          <create-asset-form-module
+            :request-id="selectedRequest.id"
+            :wallet="wallet"
+            :config="config"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -53,9 +55,10 @@ import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import AssetCreateForm from '@/vue/forms/AssetCreateForm'
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
+
+import CreateAssetFormModule from '@modules/create-asset-form'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
@@ -75,7 +78,7 @@ export default {
     CollectionLoader,
     RequestsTable,
     RequestViewer,
-    AssetCreateForm,
+    CreateAssetFormModule,
   },
 
   props: {

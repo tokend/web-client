@@ -42,6 +42,7 @@ for further information about branching and tagging conventions.
 - "Fee" column from the movements table
 - Transfer & deposit pseudomodules from the loyalty points reconciliation
   scheme
+- common records wrappers
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing

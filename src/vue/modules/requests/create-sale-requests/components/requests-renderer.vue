@@ -118,9 +118,7 @@ export default {
     async loadRequests () {
       this.isLoaded = false
       try {
-        const response = await this.loadCreateSaleRequests(
-          this.baseAsset.code
-        )
+        const response = await this.loadCreateSaleRequests()
         this.isLoaded = true
         return response
       } catch (e) {

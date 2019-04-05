@@ -1,27 +1,33 @@
 <template>
   <div class="create-sale-requests">
     <template v-if="isLoaded">
-      <template v-if="filters.baseAsset.code">
-        <!-- eslint-disable max-len -->
-        <select-field
-          v-model="filters.baseAsset"
-          :values="ownedAssets"
-          key-as-value-text="nameAndCode"
-          class="create-sale-requests__asset-list app__select app__select--no-border"
-        />
-        <!-- eslint-enable max-len -->
+      <drawer :is-shown.sync="isDrawerShown">
+        <template v-if="isUpdateMode">
+          <template slot="heading">
+            {{ 'create-sale-requests.update-sale-title' | globalize }}
+          </template>
+          <create-sale-form
+            :request="selectedRequest"
+            @close="isDrawerShown = false"
+            @request-updated="initFirstPageLoader"
+          />
+        </template>
 
-        <requests-renderer
-          class="create-sale-requests__renderer"
-          :base-asset="filters.baseAsset"
-        />
-      </template>
+        <template v-else>
+          <template slot="heading">
+            {{ 'create-sale-requests.details-title' | globalize }}
+          </template>
+          <request-viewer
+            :request="selectedRequest"
+            @update-ask="isUpdateMode = true"
+            @cancel="(isDrawerShown = false) || initFirstPageLoader()"
+          />
+        </template>
+      </drawer>
 
-      <no-data-message
-        v-else
-        icon-name="trending-up"
-        :title="'create-sale-requests.no-owned-assets-title' | globalize"
-        :message="'create-sale-requests.no-owned-assets-desc' | globalize"
+      <requests-table
+        :requests="requests"
+        @select="showRequestDetails"
       />
     </template>
 
@@ -30,20 +36,30 @@
     </p>
 
     <load-spinner v-else message-id="create-sale-requests.loading-msg" />
+
+    <collection-loader
+      class="create-sale-requests__loader"
+      v-show="requests.length && isLoaded"
+      :first-page-loader="firstPageLoader"
+      @first-page-load="setRequests"
+      @next-page-load="concatRequests"
+    />
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import LoadSpinner from '@/vue/common/Loader'
-import SelectField from '@/vue/fields/SelectField'
+import Drawer from '@/vue/common/Drawer'
+import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import RequestsRenderer from './components/requests-renderer'
+import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+import RequestViewer from './components/request-viewer'
+import RequestsTable from './components/requests-table'
+
+import { Wallet } from '@tokend/js-sdk'
 
 import { initApi } from './_api'
 import { initConfig } from './_config'
-
-import { Wallet } from '@tokend/js-sdk'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
@@ -53,10 +69,12 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'create-sale-requests-module',
   components: {
-    NoDataMessage,
     LoadSpinner,
-    SelectField,
-    RequestsRenderer,
+    Drawer,
+    CollectionLoader,
+    RequestsTable,
+    CreateSaleForm,
+    RequestViewer,
   },
 
   props: {
@@ -76,16 +94,17 @@ export default {
   },
 
   data: _ => ({
-    filters: {
-      baseAsset: {},
-    },
     isLoaded: false,
     isLoadingFailed: false,
+    isDrawerShown: false,
+    isUpdateMode: false,
+    selectedRequest: {},
+    firstPageLoader: () => {},
   }),
 
   computed: {
     ...mapGetters('create-sale-requests', {
-      ownedAssets: types.accountOwnedAssets,
+      requests: types.requests,
     }),
   },
 
@@ -94,36 +113,40 @@ export default {
     initConfig(this.config)
 
     this.setAccountId(this.wallet.accountId)
-    await this.initAssetSelector()
+    this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('create-sale-requests', {
       setAccountId: types.SET_ACCOUNT_ID,
+      setRequests: types.SET_REQUESTS,
+      concatRequests: types.CONCAT_REQUESTS,
     }),
 
     ...mapActions('create-sale-requests', {
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
+      loadCreateSaleRequests: types.LOAD_REQUESTS,
     }),
 
-    async initAssetSelector () {
-      await this.loadBalances()
-
-      if (this.ownedAssets.length) {
-        this.filters.baseAsset = this.ownedAssets[0]
-      }
-    },
-
-    async loadBalances () {
+    async loadRequests () {
       this.isLoaded = false
       try {
-        const response = await this.loadAccountBalances()
+        const response = await this.loadCreateSaleRequests()
         this.isLoaded = true
         return response
       } catch (e) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
+    },
+
+    initFirstPageLoader () {
+      this.firstPageLoader = _ => this.loadRequests()
+    },
+
+    showRequestDetails (request) {
+      this.isUpdateMode = false
+      this.selectedRequest = request
+      this.isDrawerShown = true
     },
   },
 }
@@ -136,5 +159,9 @@ export default {
 
 .create-sale-requests__renderer {
   margin-top: 2.1rem;
+}
+
+.create-sale-requests__loader {
+  margin-top: 1rem;
 }
 </style>
