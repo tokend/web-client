@@ -1090,7 +1090,8 @@
       "preview-you-video": "Preview you video",
       "loading-msg": "Loading...",
       "asset-not-available-yet": "Please create a token before creating sale",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "available-amount": "Available: {{amount}} {{asset}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",

@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - Displaying invoice summary on create invoice form (Loyalty)
 - Displaying total fee in the movement attributes
 - Displaying operation summary in the movement attributes
+- Show available base asset amount on sale creation form
 
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
