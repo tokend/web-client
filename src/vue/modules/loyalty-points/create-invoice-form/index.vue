@@ -3,8 +3,22 @@
     <template v-if="assetPairs.length">
       <form
         @submit.prevent="tryToSubmit"
-        v-if="!generatedQRCode"
+        v-if="!invoiceBlobId"
       >
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.subject"
+              @blur="touchField('form.subject')"
+              name="create-invoice-subject"
+              :label="'create-invoice-form.subject-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.subject')"
+              :disabled="subject || formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
@@ -96,26 +110,7 @@
         v-else
         class="create-invoice-form__payment"
       >
-        <p class="create-invoice-form__qr-code-description">
-          {{ 'create-invoice-form.qr-code-description' | globalize }}
-        </p>
-
-        <div class="create-invoice-form__qr-code">
-          <qr-code
-            :text="generatedQRCode"
-            :margin="0"
-            :size="250"
-            :color-light="'#f2f2f4'"
-            :color-dark="'#262626'"
-          />
-        </div>
-
-        <clipboard-field
-          class="create-invoice-form__invoice-url"
-          id="invoice-url"
-          :value="generatedInvoiceUrl"
-          :label="'create-invoice-form.invoice-url' | globalize"
-        />
+        <invoice-viewer :invoice="invoiceRecord" />
 
         <button
           v-ripple
@@ -125,11 +120,11 @@
           @click="closeForm"
         >
           <template v-if="isPaymentConfirmed">
-            {{ 'create-invoice-form.close' | globalize }}
+            {{ 'create-invoice-form.close-btn' | globalize }}
           </template>
 
           <template v-else>
-            {{ 'create-invoice-form.waiting-for-payment' | globalize }}
+            {{ 'create-invoice-form.waiting-for-payment-btn' | globalize }}
           </template>
         </button>
       </div>
@@ -162,19 +157,17 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
 import { Sdk } from '@/sdk'
-import QrCode from 'vue-qr'
-import ClipboardField from '@/vue/fields/ClipboardField'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import InvoiceViewer from './components/invoice-viewer'
 import { Bus } from '@/js/helpers/event-bus'
 import _get from 'lodash/get'
+import { Invoice } from './wrappers/invoice'
 
 const EVENTS = {
   close: 'close',
 }
 
-const QR_CODE_BASE = 'tokend://loyaltypay?url='
-const INVOICE_URL_BASE = 'https://go.tokend.io/loyaltypay?url='
 const POLL_INTERVAL = 5000
 
 const MIN_AMOUNT = 0.01
@@ -183,10 +176,9 @@ const DECIMAL_POINTS = 2
 export default {
   name: 'create-invoice-form',
   components: {
-    QrCode,
     NoDataMessage,
     Loader,
-    ClipboardField,
+    InvoiceViewer,
   },
   mixins: [FormMixin],
   props: {
@@ -207,6 +199,11 @@ export default {
       required: false,
       default: '',
     },
+    subject: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
   data: _ => ({
     MIN_AMOUNT,
@@ -215,13 +212,13 @@ export default {
     isInitialized: false,
     form: {
       amount: '',
+      subject: '',
       merchant: '',
       asset: '',
       account: '',
       system: '',
     },
-    generatedQRCode: '',
-    generatedInvoiceUrl: '',
+    invoiceBlobId: '',
     isFormSubmitting: false,
     isPaymentConfirmed: false,
     pollIntervalId: 0,
@@ -233,6 +230,9 @@ export default {
           required,
           minValue: minValue(MIN_AMOUNT),
           maxDecimalDigitsCount: maxDecimalDigitsCount(DECIMAL_POINTS),
+        },
+        subject: {
+          required,
         },
       },
     }
@@ -246,6 +246,14 @@ export default {
 
     reference () {
       return btoa(Math.random())
+    },
+
+    invoiceRecord () {
+      return new Invoice({
+        record: this.form,
+        blobId: this.invoiceBlobId,
+        isConfirmed: this.isPaymentConfirmed,
+      })
     },
   },
   async created () {
@@ -300,12 +308,7 @@ export default {
           data
         )
 
-        const encodedBlobUrl = encodeURIComponent(
-          `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${blob.id}`
-        )
-        this.generatedQRCode = QR_CODE_BASE + encodedBlobUrl
-        this.generatedInvoiceUrl = INVOICE_URL_BASE + encodedBlobUrl
-
+        this.invoiceBlobId = blob.id
         this.initPolling()
       } catch (error) {
         ErrorHandler.process(error)
@@ -333,6 +336,7 @@ export default {
       this.form.account = this.accountId
       this.form.system = config.HORIZON_SERVER
       this.form.amount = this.amount
+      this.form.subject = this.subject
     },
     initPolling () {
       this.pollIntervalId = setInterval(this.checkForPayment, POLL_INTERVAL)
@@ -375,18 +379,5 @@ export default {
 
 .create-invoice-form__close-btn {
   margin-top: 4rem;
-}
-
-.create-invoice-form__qr-code-description {
-  font-size: 1.6rem;
-}
-
-.create-invoice-form__qr-code {
-  margin-top: 2.4rem;
-  text-align: center;
-}
-
-.create-invoice-form__invoice-url {
-  margin-top: 3rem;
 }
 </style>

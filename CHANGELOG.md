@@ -8,9 +8,30 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Subject field to the create invoice form (Loyalty)
+- Displaying invoice summary on create invoice form (Loyalty)
+- Displaying total fee in the movement attributes
+- Displaying operation summary in the movement attributes
+
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Allow inserting both of YouTube video link or ID
+- Moved movements module translation filters to a mixin
+- Now displaying fees in the movement attributes only if total fee is
+  bigger than zero
+- Now using "EUR" asset instead of "PET" one on the loyalty statistics
+  charts (Loyalty)
+
+#### Removed
+- "Fee" column from the movements table
+- Transfer & deposit pseudomodules from the loyalty points reconciliation
+  scheme
+
+#### Fixed
+- Fixed a bug with animation flickering on drawer closing
+- Translations for loyalty points merchant module (Loyalty)
+- Setting merchant account ID to invoice URL (Loyalty)
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
