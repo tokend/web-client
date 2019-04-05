@@ -132,21 +132,6 @@ for further information about branching and tagging conventions.
   - `resetReason` field to the `ChangeRoleRequestRecord`
 - Movements history modules unit tests
 - `record` getter to the `AssetRecord`
-- Added confirmation to cancel token creation request
-- CLI config passing
-- Added module enabling/disabling
-- Added module schemes
-- Healthcare document type
-- Document explorer page
-- Document explorer module
-- Withdrawal fiat by the bank information form module
-- Withdrawal fiat by the card information form module
-- Subject info `Dividend for <token-name>` for every payment operation in dividends
-- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
-- For sales that were ended show highlighted text like a "Closed [days] ago"
-- Reword create opportunity label "KYC Required" => "Verification required"
-- Asset loading via the loop where was `filter[limit]=100`
-- Chart module on the `SaleDetails` page only for vanilla
 
 #### Changed
 - Use @tokend/js-sdk@1.3.1-x.2
@@ -156,6 +141,10 @@ for further information about branching and tagging conventions.
 - Moved fees filters out of global scope to the corresponding viewer components
 - One request to fetch all the account roles instead of fetching then one-by-one
 - Asset loading via the loop instead of fetching by `filter[limit]=100`
+- Modularized:	
+  - Issuance explorer page	
+  - Fees page	
+  - TopBar component
 
 #### Removed
 - Removed feature flags from config
