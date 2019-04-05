@@ -1,7 +1,6 @@
 import CreateSaleRequestsModule from './index'
 
 import Vuex from 'vuex'
-import { types } from './store/types'
 import { createSaleRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -33,16 +32,9 @@ describe('Create sale requests module', () => {
   let store
 
   beforeEach(() => {
-    sinon.stub(createSaleRequestsModule.getters, types.accountOwnedAssets)
-      .returns([{ code: 'USD' }])
-
     store = new Vuex.Store({
       modules: { 'create-sale-requests': createSaleRequestsModule },
     })
-  })
-
-  afterEach(() => {
-    createSaleRequestsModule.getters[types.accountOwnedAssets].restore()
   })
 
   describe('created hook', () => {
@@ -50,15 +42,14 @@ describe('Create sale requests module', () => {
       sinon.stub(Api, 'initApi')
       sinon.stub(Config, 'initConfig')
       sinon.stub(CreateSaleRequestsModule.methods, 'setAccountId')
-      sinon.stub(CreateSaleRequestsModule.methods, 'initAssetSelector')
-        .resolves()
+      sinon.stub(CreateSaleRequestsModule.methods, 'initFirstPageLoader')
     })
 
     afterEach(() => {
       Api.initApi.restore()
       Config.initConfig.restore()
       CreateSaleRequestsModule.methods.setAccountId.restore()
-      CreateSaleRequestsModule.methods.initAssetSelector.restore()
+      CreateSaleRequestsModule.methods.initFirstPageLoader.restore()
     })
 
     it('calls initApi function', async () => {
@@ -95,14 +86,14 @@ describe('Create sale requests module', () => {
       ).to.have.been.calledOnce
     })
 
-    it('calls initAssetSelector method', async () => {
+    it('calls initFirstPageLoader method', async () => {
       await shallowMount(CreateSaleRequestsModule, {
         localVue,
         store,
         propsData: props,
       })
 
-      expect(CreateSaleRequestsModule.methods.initAssetSelector)
+      expect(CreateSaleRequestsModule.methods.initFirstPageLoader)
         .to.have.been.calledOnce
     })
   })
@@ -125,85 +116,110 @@ describe('Create sale requests module', () => {
     })
 
     describe('method', () => {
-      describe('loadBalances', () => {
-        it('calls loadAccountBalances method', async () => {
-          sinon.stub(wrapper.vm, 'loadAccountBalances').resolves()
+      describe('loadRequests', () => {
+        it('calls loadCreateSaleRequests method', async () => {
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').resolves()
 
-          await wrapper.vm.loadBalances()
+          await wrapper.vm.loadRequests()
 
-          expect(wrapper.vm.loadAccountBalances).to.have.been.calledOnce
+          expect(wrapper.vm.loadCreateSaleRequests)
+            .to.have.been.calledOnce
 
-          wrapper.vm.loadAccountBalances.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
         it('sets isLoaded property to true if loading was succeded', async () => {
-          sinon.stub(wrapper.vm, 'loadAccountBalances').resolves()
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').resolves()
 
-          await wrapper.vm.loadBalances()
+          await wrapper.vm.loadRequests()
 
           expect(wrapper.vm.isLoaded).to.be.true
 
-          wrapper.vm.loadAccountBalances.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
-        it('returns the response of loadAccountBalances method', async () => {
+        it('returns the response of loadCreateSaleRequests method', async () => {
           const responseStub = { data: {} }
 
-          sinon.stub(wrapper.vm, 'loadAccountBalances')
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests')
             .resolves(responseStub)
 
-          const result = await wrapper.vm.loadBalances()
+          const result = await wrapper.vm.loadRequests()
 
           expect(result).to.equal(responseStub)
 
-          wrapper.vm.loadAccountBalances.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
         it('calls ErrorHandler.processWithoutFeedback if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadAccountBalances').rejects()
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
-          await wrapper.vm.loadBalances()
+          await wrapper.vm.loadRequests()
 
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
 
-          wrapper.vm.loadAccountBalances.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
 
         it('set isLoadingFailed property to true if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadAccountBalances').rejects()
+          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
           sinon.stub(ErrorHandler, 'processWithoutFeedback')
 
-          await wrapper.vm.loadBalances()
+          await wrapper.vm.loadRequests()
 
           expect(wrapper.vm.isLoadingFailed).to.be.true
 
-          wrapper.vm.loadAccountBalances.restore()
+          wrapper.vm.loadCreateSaleRequests.restore()
           ErrorHandler.processWithoutFeedback.restore()
         })
       })
 
-      describe('initAssetSelector', () => {
-        beforeEach(() => {
-          sinon.stub(wrapper.vm, 'loadBalances').resolves()
+      describe('initFirstPageLoader', () => {
+        it('sets an instance of loadRequests method to the firstPageLoader property', async () => {
+          sinon.stub(wrapper.vm, 'loadRequests').resolves()
+          wrapper.setData({
+            firstPageLoader: () => {},
+          })
+
+          wrapper.vm.initFirstPageLoader()
+          await wrapper.vm.firstPageLoader()
+
+          expect(wrapper.vm.loadRequests).to.have.been.calledOnce
+        })
+      })
+
+      describe('showRequestDetails', () => {
+        it('sets isUpdateMode property to false', () => {
+          wrapper.setData({
+            isUpdateMode: true,
+          })
+
+          wrapper.vm.showRequestDetails()
+
+          expect(wrapper.vm.isUpdateMode).to.be.false
         })
 
-        afterEach(() => {
-          wrapper.vm.loadBalances.restore()
+        it('sets selectedRequest property to passed param', () => {
+          wrapper.setData({
+            selectedRequest: {},
+          })
+
+          wrapper.vm.showRequestDetails({ id: '1' })
+
+          expect(wrapper.vm.selectedRequest).to.deep.equal({ id: '1' })
         })
 
-        it('calls loadBalance method', async () => {
-          await wrapper.vm.initAssetSelector()
+        it('sets isDrawerShown property to true', () => {
+          wrapper.setData({
+            isDrawerShown: false,
+          })
 
-          expect(wrapper.vm.loadBalances).to.have.been.calledOnce
-        })
+          wrapper.vm.showRequestDetails()
 
-        it('sets filters.baseAsset property if there are owned assets', async () => {
-          await wrapper.vm.initAssetSelector()
-
-          expect(wrapper.vm.filters.baseAsset).to.deep.equal({ code: 'USD' })
+          expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })
     })

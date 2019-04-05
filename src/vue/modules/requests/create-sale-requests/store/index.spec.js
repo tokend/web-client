@@ -4,7 +4,6 @@ import { types } from './types'
 import { Wallet, base } from '@tokend/js-sdk'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
-import { Asset } from '../wrappers/asset'
 
 import * as Api from '../_api'
 
@@ -62,24 +61,6 @@ describe('create-sale-requests.module', () => {
         ],
       })
     })
-
-    it('SET_BALANCES_ASSETS should properly modify state', () => {
-      const state = {
-        balancesAssets: [],
-      }
-
-      mutations[types.SET_BALANCES_ASSETS](state, [
-        { id: 'USD' },
-        { id: 'BTC' },
-      ])
-
-      expect(state).to.deep.equal({
-        balancesAssets: [
-          { id: 'USD' },
-          { id: 'BTC' },
-        ],
-      })
-    })
   })
 
   describe('actions', () => {
@@ -102,8 +83,7 @@ describe('create-sale-requests.module', () => {
         sinon.stub(Api.api(), 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS](
-          { getters: { accountId: 'SOME_ACCOUNT_ID' } },
-          'USD',
+          { getters: { accountId: 'SOME_ACCOUNT_ID' } }
         )
 
         expect(Api.api().getWithSignature)
@@ -115,65 +95,12 @@ describe('create-sale-requests.module', () => {
               },
               filter: {
                 requestor: 'SOME_ACCOUNT_ID',
-                'request_details.base_asset': 'USD',
               },
               include: ['request_details', 'request_details.default_quote_asset'],
             }
           )
 
         Api.api().getWithSignature.restore()
-      })
-    })
-
-    describe('LOAD_ACCOUNT_BALANCES', () => {
-      beforeEach(() => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves({
-          data: {
-            balances: [
-              { asset: { id: 'USD' } },
-              { asset: { id: 'BTC' } },
-            ],
-          },
-        })
-      })
-
-      afterEach(() => {
-        Api.api().getWithSignature.restore()
-      })
-
-      it('calls Api.getWithSignature method with provided params', async () => {
-        await actions[types.LOAD_ACCOUNT_BALANCES]({
-          getters: { accountId: 'SOME_ACCOUNT_ID' },
-          commit: () => {},
-        })
-
-        expect(Api.api().getWithSignature)
-          .to.have.been.calledOnceWithExactly(
-            `/v3/accounts/SOME_ACCOUNT_ID`,
-            { include: ['balances.state', 'balances.asset'] },
-          )
-      })
-
-      it('commits proper set of mutations', async () => {
-        const store = {
-          state: {},
-          getters: { accountId: 'SOME_ACCOUNT_ID' },
-          commit: sinon.stub(),
-          dispatch: sinon.stub(),
-        }
-
-        const expectedAssets = [
-          { id: 'USD' },
-          { id: 'BTC' },
-        ]
-        const expectedMutations = {
-          [types.SET_BALANCES_ASSETS]: expectedAssets,
-        }
-
-        await actions[types.LOAD_ACCOUNT_BALANCES](store)
-
-        expect(store.commit.args)
-          .to.deep.equal(Object.entries(expectedMutations))
       })
     })
 
@@ -227,33 +154,6 @@ describe('create-sale-requests.module', () => {
         .to.deep.equal([
           new CreateSaleRequest({ id: '1' }),
           new CreateSaleRequest({ id: '2' }),
-        ])
-    })
-
-    it('accountOwnedAssets', () => {
-      const state = {
-        accountId: 'SOME_ACCOUNT_ID',
-        balancesAssets: [
-          {
-            id: 'USD',
-            owner: {
-              id: 'SOME_ACCOUNT_ID',
-            },
-          },
-          {
-            id: 'BTC',
-          },
-        ],
-      }
-
-      expect(getters[types.accountOwnedAssets](state))
-        .to.deep.equal([
-          new Asset({
-            id: 'USD',
-            owner: {
-              id: 'SOME_ACCOUNT_ID',
-            },
-          }),
         ])
     })
   })
