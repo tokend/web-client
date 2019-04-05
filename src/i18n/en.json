@@ -1080,7 +1080,7 @@
       "base-asset-hard-cap-to-sell": "{{asset}} to sell",
       "accept-investments-in": "Accept investments in:",
       "upload-image": "Upload the image users will see first in their searcher",
-      "insert-youtube-video": "Insert YouTube video by its ID",
+      "insert-youtube-video": "Insert YouTube video link or ID",
       "next-btn": "Next",
       "submit-btn": "Submit",
       "request-submitted-msg": "Your request was successfully submitted",

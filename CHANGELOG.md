@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
+- Allow inserting both of YouTube video link or ID
 - Moved movements module translation filters to a mixin
 - Now displaying fees in the movement attributes only if total fee is
   bigger than zero
