@@ -10,6 +10,7 @@ import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
 import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { LimitsPageModule } from '@/vue/pages/limits-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
+import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
 import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
@@ -155,6 +156,9 @@ export default {
             submodules: [
               new BalanceExplorerModule(),
             ],
+          }),
+          new CreateAssetFormModule({
+            isCorporateOnly: true,
           }),
         ],
       },

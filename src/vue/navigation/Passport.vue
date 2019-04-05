@@ -68,9 +68,10 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 
 export default {
@@ -78,6 +79,7 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
+    loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
   }),
 
@@ -89,6 +91,7 @@ export default {
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountGeneral: vuexTypes.isAccountGeneral,
+      accountId: vuexTypes.accountId,
     }),
 
     accountRoleTranslationId () {
@@ -108,10 +111,37 @@ export default {
     },
   },
 
+  async created () {
+    this.createLoadAccountDetailsTicker()
+    this.loadAccountDetails()
+  },
+
   methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
+
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
+
+    async createLoadAccountDetailsTicker () {
+      setInterval(() => {
+        this.loadAccountDetails()
+      }, this.loadAccountDetailsTickerTimeout)
+    },
+
+    async loadAccountDetails () {
+      try {
+        await Promise.all([
+          this.loadAccount(this.accountId),
+          this.loadKyc(),
+        ])
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
 
     toggleDropdown () {
       if (this.isDropdownOpen) {
