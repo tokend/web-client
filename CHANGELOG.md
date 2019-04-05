@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Modularized:
+  - Update asset form
   - Create asset form
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Allow inserting both of YouTube video link or ID
