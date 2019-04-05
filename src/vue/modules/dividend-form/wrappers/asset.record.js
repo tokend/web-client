@@ -50,6 +50,10 @@ export class AssetRecord {
     return !!(this.policy & ASSET_POLICIES.transferable)
   }
 
+  get isBaseAsset () {
+    return !!(this.policy & ASSET_POLICIES.baseAsset)
+  }
+
   get isShareSubtype () {
     return this.details.subtype === ASSET_SUBTYPE.share
   }

@@ -4,33 +4,27 @@
       <tr class="movements-table__head-row">
         <th
           class="movements-table__head-cell"
-          :title="'movements-table.head.type' | globalize"
+          :title="'movements-history.type-th' | globalize"
         >
           {{ 'movements-history.type-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
-          :title="'movements-table.head.date' | globalize"
+          :title="'movements-history.operation-th' | globalize"
         >
           {{ 'movements-history.operation-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
-          :title="'movements-table.head.date' | globalize"
+          :title="'movements-history.date-th' | globalize"
         >
           {{ 'movements-history.date-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell"
-          :title="'movements-table.head.amount' | globalize"
+          :title="'movements-history.amount-th' | globalize"
         >
           {{ 'movements-history.amount-th' | globalize }}
-        </th>
-        <th
-          class="movements-table__head-cell"
-          :title="'movements-table.head.fee' | globalize"
-        >
-          {{ 'movements-history.fee-th' | globalize }}
         </th>
         <th
           class="movements-table__head-cell

@@ -8,24 +8,6 @@
         />
       </div>
 
-      <div class="trade-exchange__history">
-        <trade-history-renderer
-          :asset-pair="assetPair"
-          :trade-history="tradeHistory"
-          :is-loading="isTradeHistoryLoading"
-        />
-        <div class="trade-exchange__history-collection-loader">
-          <collection-loader
-            :key="`collection-loader-${assetPair.base}-${assetPair.quote}`"
-            v-show="tradeHistory.length && !isTradeHistoryLoading"
-            :first-page-loader="loadTradeHistory"
-            :page-limit="recordsToShow"
-            @first-page-load="setTradeHistory"
-            @next-page-load="extendTradeHistory"
-          />
-        </div>
-      </div>
-
       <div class="trade-exchange__offers">
         <h2 class="app__table-title">
           {{ 'trade-exchange.offers-section-title' | globalize }}
@@ -47,6 +29,24 @@
             :is-loading="isSellOffersLoading"
             :offers-list="sellOffersList"
             @reload-trades="reloadTrades"
+          />
+        </div>
+      </div>
+
+      <div class="trade-exchange__history">
+        <trade-history-renderer
+          :asset-pair="assetPair"
+          :trade-history="tradeHistory"
+          :is-loading="isTradeHistoryLoading"
+        />
+        <div class="trade-exchange__history-collection-loader">
+          <collection-loader
+            :key="`collection-loader-${assetPair.base}-${assetPair.quote}`"
+            v-show="tradeHistory.length && !isTradeHistoryLoading"
+            :first-page-loader="loadTradeHistory"
+            :page-limit="recordsToShow"
+            @first-page-load="setTradeHistory"
+            @next-page-load="extendTradeHistory"
           />
         </div>
       </div>
@@ -157,7 +157,7 @@ export default {
           quote_asset: this.assetPair.quote,
           is_buy: true,
         })
-        this.buyOffersList = response.data
+        this.buyOffersList = this.sortOffersList(response.data, 'ask')
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
@@ -170,7 +170,7 @@ export default {
           quote_asset: this.assetPair.quote,
           is_buy: false,
         })
-        this.sellOffersList = response.data
+        this.sellOffersList = this.sortOffersList(response.data, 'bids')
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
@@ -183,6 +183,17 @@ export default {
     async reloadTrades () {
       await this.loadData()
       await this.loadBalances()
+    },
+    sortOffersList (list, type) {
+      return list.sort((a, b) => {
+        if (parseFloat(a.price) > parseFloat(b.price)) {
+          return (type === 'ask') ? -1 : 1
+        } else if (parseFloat(a.price) < parseFloat(b.price)) {
+          return (type === 'ask') ? 1 : -1
+        } else {
+          return 0
+        }
+      })
     },
   },
 }
@@ -222,7 +233,7 @@ $custom-breakpoint: 985px;
 }
 
 .trade-exchange__offers {
-  margin-top: 4.8rem;
+  margin-top: 1.6rem;
 }
 
 .trade-exchange__offers-wrapper {
@@ -253,7 +264,7 @@ $custom-breakpoint: 985px;
   }
 }
 .trade-exchange__history-collection-loader {
-  margin-top: 1.6rem;
+  margin-top: 4.8rem;
   display: flex;
   justify-content: center;
 }

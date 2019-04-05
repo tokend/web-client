@@ -58,8 +58,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.account,
       vuexTypes.accountDepositAddresses,
+      vuexTypes.accountId,
     ]),
     address () {
       const externalSystemAccount = Object
@@ -89,7 +89,7 @@ export default {
           })
         await Sdk.horizon.transactions
           .submitOperations(operation)
-        await this.loadAccount()
+        await this.loadAccount(this.accountId)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
