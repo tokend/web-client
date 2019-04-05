@@ -8,6 +8,7 @@
     <template v-if="isLoggedIn && isNavigationRendered">
       <div class="app__container">
         <sidebar />
+        <idle-checker />
 
         <div class="app__main-content">
           <div class="app__navbar">
@@ -33,6 +34,7 @@
 import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
+import IdleChecker from '@/vue/common/IdleChecker'
 import WarningBanner from '@/vue/common/WarningBanner'
 
 import {
@@ -51,6 +53,7 @@ export default {
   components: {
     Navbar,
     Sidebar,
+    IdleChecker,
     StatusMessage,
     WarningBanner,
   },

@@ -7,6 +7,7 @@ import Vuelidate from 'vuelidate'
 import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
+import IdleVue from 'idle-vue'
 
 import { extendStoreWithScheme } from '@/vuex'
 import { buildRouter } from '@/vue-router'
@@ -25,6 +26,11 @@ import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+
+Vue.use(IdleVue, {
+  eventEmitter: new Vue(),
+  idleTime: config.IDLE_TIMEOUT,
+})
 
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)

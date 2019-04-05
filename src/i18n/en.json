@@ -102,6 +102,12 @@
       "account-blocked": "Your account is blocked",
       "user-doesnt-exist": "This user doesn't exist in system"
     },
+
+    "idle-message": {
+      "notification-message": "You have been logged out due to long inactivity!",
+      "close-lbl": "Close"
+    },
+
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
