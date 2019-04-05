@@ -490,7 +490,6 @@
         "payment": "Payment",
         "unknown": "Unknown type"
       },
-      "fee-th": "Fee",
       "type-th": "Type",
       "amount-th": "Amount",
       "date-th": "Date",
@@ -500,9 +499,13 @@
       "loading-movements-msg": "Please wait while we loading your movements",
       "no-movements-title": "No movements history",
       "no-movements-msg": "Nothing happened with your balances yet",
+      "type-lbl": "Type",
+      "operation-lbl": "Operation",
+      "date-lbl": "Date",
       "amount-lbl": "Amount",
       "fixed-fee-lbl": "Fixed fee",
       "calculated-percent-fee-lbl": "Percent fee (calculated)",
+      "total-fee-lbl": "Total fee",
       "sale-id-lbl": "Sale ID",
       "sale-state-lbl": "Sale state",
       "sale-closed-msg": "Sale funded and closed",
@@ -657,7 +660,33 @@
       "no-assets-msg": "There are no available tokens",
       "no-balances-title": "No balances",
       "no-balances-msg": "You do not have any balances yet",
-      "create-asset-button": "Create token"
+      "create-btn": "Create"
+    },
+    "create-asset-form": {
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading.",
+      "next-btn": "Next",
+      "create-request-btn": "Create request",
+      "update-request-btn": "Update request",
+      "information-step": "Token information",
+      "advanced-step": "Advanced",
+      "name-lbl": "Token name",
+      "code-lbl": "Token code",
+      "max-issuance-amount-lbl": "Max issuance amount",
+      "asset-type-lbl": "Type",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
+      "transferable-lbl": "Transferable",
+      "withdrawable-lbl": "Withdrawable",
+      "verification-not-required-lbl": "Does not require verification",
+      "verification-required-lbl": "Requires verification",
+      "additional-issuance-check": "I do not want to make additional issuance later",
+      "preissued-signer-lbl": "Pre-issued asset signer",
+      "use-my-account-id-btn": "Use mine",
+      "preissued-amount-lbl": "Initial pre-issued amount",
+      "terms-lbl": "Upload terms",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
     },
     "assets-list": {
       "update-asset-title": "Update token",
@@ -773,6 +802,7 @@
     },
     "asset-details": {
       "balance-title": "Balance",
+      "converted-balance-title": "Converted balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",
@@ -1077,7 +1107,7 @@
       "base-asset-hard-cap-to-sell": "{{asset}} to sell",
       "accept-investments-in": "Accept investments in:",
       "upload-image": "Upload the image users will see first in their searcher",
-      "insert-youtube-video": "Insert YouTube video by its ID",
+      "insert-youtube-video": "Insert YouTube video link or ID",
       "next-btn": "Next",
       "submit-btn": "Submit",
       "request-submitted-msg": "Your request was successfully submitted",
@@ -1086,7 +1116,8 @@
       "preview-you-video": "Preview you video",
       "loading-msg": "Loading...",
       "asset-not-available-yet": "Please create a token before creating sale",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "available-amount": "Available: {{amount}} {{asset}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",
