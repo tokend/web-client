@@ -662,6 +662,12 @@
     lodash.get "^4.4.2"
 
 <<<<<<< HEAD
+"@tokend/js-sdk@1.3.1-x.0":
+  version "1.3.1-x.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.1-x.0.tgz#8d6c7f933e72a5b7f0b0e31495877881a353f392"
+  integrity sha512-0z+Oncv++KoC/Y8YL4vOM7pleV0/+RI0UX6cba7jDHcC/mW3SnO/agPE/fGLRy/FW02Jb8wYr/wLdU9zs3SNWA==
+=======
+<<<<<<< HEAD
 <<<<<<< HEAD
 "@tokend/js-sdk@1.0.0-x.5":
   version "1.0.0-x.5"
@@ -692,6 +698,7 @@
   resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.1-x.2.tgz#1339fd633af3747e82e91471cdfcd3fb4583e9f7"
   integrity sha512-877Ft1KfhdGZbXlWvuMHWmdqMhKpUckK451SL4Q9O2cB3FMdcrVu0DWAPN1Gtn1EKUqfskry2VX3cgnrSOqYzQ==
 >>>>>>> master
+>>>>>>> modules-prototype
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
@@ -706,7 +713,6 @@
     sjcl-tokend "1.0.6"
     tweetnacl "0.13.3"
     urijs "1.19.1"
->>>>>>> master
   optionalDependencies:
     ed25519 "0.0.4"
 
@@ -5496,11 +5502,7 @@ json5@^2.1.0:
   dependencies:
     minimist "^1.2.0"
 
-<<<<<<< HEAD
-jsona@^1.3.0:
-=======
 jsona@1.3.0:
->>>>>>> master
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/jsona/-/jsona-1.3.0.tgz#f73275fec864534cb7c44abb76d3502496478aee"
   integrity sha512-nOfNhB7aAfRJPB+HyfSRNJkbis4lSn8h0i/0pMFmzJ28J+yiQ4b1IgqSlhElWPlBI9GinNm/vra0dk5wHXLznA==
@@ -5820,20 +5822,12 @@ log4js@^3.0.0:
     rfdc "^1.1.2"
     streamroller "0.7.0"
 
-<<<<<<< HEAD
-loglevel-plugin-prefix@^0.8.4:
-=======
 loglevel-plugin-prefix@0.8.4:
->>>>>>> master
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/loglevel-plugin-prefix/-/loglevel-plugin-prefix-0.8.4.tgz#2fe0e05f1a820317d98d8c123e634c1bd84ff644"
   integrity sha512-WpG9CcFAOjz/FtNht+QJeGpvVl/cdR6P0z6OcXSkr8wFJOsV2GRj2j10JLfjuA4aYkcKCNIEqRGCyTife9R8/g==
 
-<<<<<<< HEAD
-loglevel@1.6.1, loglevel@^1.4.1, loglevel@^1.6.1:
-=======
 loglevel@1.6.1, loglevel@^1.4.1:
->>>>>>> master
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
   integrity sha1-4PyVEztu8nbNyIh82vJKpvFW+Po=
@@ -6296,11 +6290,7 @@ moment@2.23.0:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
   integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
 
-<<<<<<< HEAD
-moment@^2.23.0:
-=======
 moment@2.24.0:
->>>>>>> master
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==

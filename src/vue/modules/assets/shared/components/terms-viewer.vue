@@ -5,29 +5,26 @@
       :href="href"
       class="terms-viewer__link"
     >
-      {{ 'asset-explorer.download-terms-btn' | globalize }}
+      {{ 'assets.download-terms-btn' | globalize }}
     </a>
     <p v-else>
-      {{ 'asset-explorer.no-terms-msg' | globalize }}
+      {{ 'assets.no-terms-msg' | globalize }}
     </p>
   </div>
 </template>
 
 <script>
 import { Asset } from '../wrappers/asset'
-import { config } from '../_config'
 
 export default {
   name: 'terms-viewer',
   props: {
-    asset: {
-      type: Asset,
-      required: true,
-    },
+    asset: { type: Asset, required: true },
+    storageUrl: { type: String, required: true },
   },
   computed: {
     href () {
-      return this.asset.termsUrl(config().storageURL)
+      return this.asset.termsUrl(this.storageUrl)
     },
   },
 }

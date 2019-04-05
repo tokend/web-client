@@ -4,26 +4,28 @@
     :src="url"
     class="logo-viewer logo-viewer--image"
   >
-  <p class="logo-viewer logo-viewer--abbr" v-else>
+  <p
+    v-else
+    class="logo-viewer logo-viewer--abbr"
+    :class="{ 'logo-viewer--dark' : darkMode }"
+  >
     {{ asset.code | abbreviate }}
   </p>
 </template>
 
 <script>
 import { Asset } from '../wrappers/asset'
-import { config } from '@/vue/modules/asset-explorer/_config'
 
 export default {
-  name: 'asset-logo',
+  name: 'logo-viewer',
   props: {
-    asset: {
-      type: Asset,
-      required: true,
-    },
+    asset: { type: Asset, required: true },
+    storageUrl: { type: String, required: true },
+    darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
-      return this.asset.logoUrl(config().storageURL)
+      return this.asset.logoUrl(this.storageUrl)
     },
   },
 }
@@ -48,6 +50,11 @@ export default {
     justify-content: center;
     background: $col-asset-logo-background;
     color: $col-asset-logo-text;
+  }
+
+  &--dark {
+    background: $col-asset-logo-dark-background;
+    color: $col-asset-logo-dark-text;
   }
 }
 </style>

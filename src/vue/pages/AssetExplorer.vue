@@ -1,10 +1,11 @@
 <template>
-  <div class="balance-explorer">
-    <template v-if="getModule().canRenderSubmodule(BalanceExplorerModule)">
+  <div class="asset-explorer">
+    <template v-if="getModule().canRenderSubmodule(AssetExplorerModule)">
       <submodule-importer
-        :submodule="getModule().getSubmodule(BalanceExplorerModule)"
+        :submodule="getModule().getSubmodule(AssetExplorerModule)"
         :config="config"
         :wallet="wallet"
+        :is-account-unverified="isAccountUnverified"
       />
     </template>
   </div>
@@ -12,7 +13,7 @@
 
 <script>
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { BalanceExplorerModule } from '@modules/assets/balance-explorer/module'
+import { AssetExplorerModule } from '@modules/assets/asset-explorer/module'
 
 import config from '../../config'
 
@@ -20,13 +21,13 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
-  name: 'balances',
+  name: 'assets-explorer',
   components: {
     SubmoduleImporter,
   },
 
   data: _ => ({
-    BalanceExplorerModule,
+    AssetExplorerModule,
     config: {
       horizonURL: config.HORIZON_SERVER,
       storageURL: config.FILE_STORAGE,
@@ -35,6 +36,7 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      isAccountUnverified: vuexTypes.isAccountUnverified,
     }),
   },
 }

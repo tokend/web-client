@@ -19,6 +19,9 @@ for further information about branching and tagging conventions.
 - Modularized:
   - Update asset form
   - Create asset form
+  - Update asset form
+  - Asset explorer
+  - Balance explorer
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Allow inserting both of YouTube video link or ID
 - Moved movements module translation filters to a mixin
