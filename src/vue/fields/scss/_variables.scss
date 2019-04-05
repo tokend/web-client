@@ -13,7 +13,6 @@ $field-color-error: $col-accent;
 $field-label-font-size: 1.2rem;
 $field-label-line-height: 1;
 $field-text-font-size: 1.8rem;
-$field-value-font-size: 1.3rem;
 $field-text-line-height: 1.25;
 $field-error-font-size: 1.2rem;
 $field-error-line-height: 1.25;
@@ -37,11 +36,6 @@ $col-tick-field-unfocused: $col-primary-lighten;
 
 @mixin text-font-sizes {
   font-size: $field-text-font-size;
-  line-height: $field-text-line-height;
-}
-
-@mixin value-font-sizes {
-  font-size: $field-value-font-size;
   line-height: $field-text-line-height;
 }
 

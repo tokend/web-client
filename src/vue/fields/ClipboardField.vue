@@ -57,7 +57,8 @@ export default {
   overflow: auto;
   color: $field-color-text;
   padding: 2.6rem 0 0.6rem 1.2rem;
-  @include value-font-sizes;
+  font-size: 1.3rem;
+  line-height: 1.25;
   font-family: monospace;
 
   @include respond-to($x-medium) {
