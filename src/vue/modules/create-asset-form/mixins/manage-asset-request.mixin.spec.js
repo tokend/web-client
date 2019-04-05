@@ -6,7 +6,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import * as Api from '../_api'
-import config from '../_config'
+import * as Config from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -17,7 +17,7 @@ const Component = {
   template: `<div></div>`,
   props: ['wallet', 'requestId'],
   data: _ => ({
-    information: {
+    informationStepForm: {
       name: '',
       code: '',
       maxIssuanceAmount: '',
@@ -25,7 +25,7 @@ const Component = {
       policies: 0,
       assetType: '',
     },
-    advanced: {
+    advancedStepForm: {
       isPreissuanceDisabled: false,
       preissuedAssetSigner: '',
       initialPreissuedAmount: '',
@@ -52,16 +52,19 @@ describe('Manage asset request mixin', () => {
 
   describe('computed property', () => {
     describe('preissuedAssetSigner', () => {
-      it('returns null asset signer ID if pre-issuance is disabled or preissued asset signer property otherwise',
+      it('returns null asset signer ID, if pre-issuance is disabled, or preissued asset signer property otherwise',
         () => {
+          sandbox.stub(Config, 'config').returns({
+            NULL_ASSET_SIGNER: 'NULL_ASSET_SIGNER',
+          })
           wrapper.setData({
-            advanced: { isPreissuanceDisabled: true },
+            advancedStepForm: { isPreissuanceDisabled: true },
           })
           expect(wrapper.vm.preissuedAssetSigner)
-            .to.equal(config.NULL_ASSET_SIGNER)
+            .to.equal('NULL_ASSET_SIGNER')
 
           wrapper.setData({
-            advanced: {
+            advancedStepForm: {
               isPreissuanceDisabled: false,
               preissuedAssetSigner: 'SIGNER_ID',
             },
@@ -72,16 +75,16 @@ describe('Manage asset request mixin', () => {
     })
 
     describe('initialPreissuedAmount', () => {
-      it('returns max issuance amount property if pre-issuance is disabled or initial preissued amount property otherwise',
+      it('returns max issuance amount property, if pre-issuance is disabled, or initial preissued amount property otherwise',
         () => {
           wrapper.setData({
-            information: { maxIssuanceAmount: '1000.000000' },
-            advanced: { isPreissuanceDisabled: true },
+            informationStepForm: { maxIssuanceAmount: '1000.000000' },
+            advancedStepForm: { isPreissuanceDisabled: true },
           })
           expect(wrapper.vm.initialPreissuedAmount).to.equal('1000.000000')
 
           wrapper.setData({
-            advanced: {
+            advancedStepForm: {
               isPreissuanceDisabled: false,
               initialPreissuedAmount: '500.000000',
             },
@@ -97,14 +100,14 @@ describe('Manage asset request mixin', () => {
           requestId: '10',
         })
         wrapper.setData({
-          information: {
+          informationStepForm: {
             name: 'American dollar',
             code: 'USD',
             maxIssuanceAmount: '1000.000000',
             policies: 16,
             assetType: { value: 1 },
           },
-          advanced: {
+          advancedStepForm: {
             isPreissuanceDisabled: false,
             preissuedAssetSigner: 'SIGNER_ID',
             initialPreissuedAmount: '500.000000',
@@ -138,8 +141,8 @@ describe('Manage asset request mixin', () => {
 
       it('returns opts with empty documents if they are not set', () => {
         wrapper.setData({
-          information: { logo: null },
-          advanced: { terms: null },
+          informationStepForm: { logo: null },
+          advancedStepForm: { terms: null },
         })
 
         expect(wrapper.vm.assetRequestOpts.creatorDetails.logo)
@@ -205,8 +208,8 @@ describe('Manage asset request mixin', () => {
           const terms = new DocumentContainer({ key: 'terms-key' })
 
           wrapper.setData({
-            information: { logo },
-            advanced: { terms },
+            informationStepForm: { logo },
+            advancedStepForm: { terms },
           })
 
           sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()

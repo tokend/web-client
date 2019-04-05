@@ -110,7 +110,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import config from '../_config'
+import { config } from '../_config'
 
 import { requiredUnless, amountRange } from '@validators'
 
@@ -136,7 +136,7 @@ export default {
       initialPreissuedAmount: '',
       terms: null,
     },
-    MIN_AMOUNT: config.MIN_AMOUNT,
+    MIN_AMOUNT: config().MIN_AMOUNT,
     DOCUMENT_TYPES,
   }),
 
@@ -170,7 +170,7 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preissuedAssetSigner === config.NULL_ASSET_SIGNER
+        this.request.preissuedAssetSigner === config().NULL_ASSET_SIGNER
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,

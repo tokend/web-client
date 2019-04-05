@@ -38,7 +38,7 @@ describe('Load asset types mixin', () => {
         Api.initApi(wallet, config)
       })
 
-      it('calls Api.get method with provided params and sets kycRequiredAssetType property',
+      it('loads kycRequiredAssetType property using Api.get method',
         async () => {
           sinon.stub(Api.api(), 'get').resolves({
             data: {

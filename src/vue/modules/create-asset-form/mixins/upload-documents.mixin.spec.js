@@ -8,9 +8,10 @@ import { mount, createLocalVue } from '@vue/test-utils'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 import * as Api from '../_api'
-import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
+import * as Config from '../_config'
 
 const localVue = createLocalVue()
 
@@ -39,7 +40,7 @@ describe('Upload documents mixin', () => {
 
   describe('method', () => {
     describe('uploadDocuments', () => {
-      it('calls uploadDocument method for every passed document, that does not contain key',
+      it('calls uploadDocument method for every passed document without key property',
         async () => {
           sandbox.stub(wrapper.vm, 'uploadDocument')
           const documents = [
@@ -70,7 +71,7 @@ describe('Upload documents mixin', () => {
             file: { id: 'file' },
           })
 
-          sandbox.stub(wrapper.vm, 'getDocumentTypeConfig').resolves({
+          sandbox.stub(wrapper.vm, 'createDocumentAnchorConfig').resolves({
             id: 'id',
             url: 'https://storage.com',
             type: 'type',
@@ -82,7 +83,7 @@ describe('Upload documents mixin', () => {
 
           await wrapper.vm.uploadDocument(document)
 
-          expect(wrapper.vm.getDocumentTypeConfig)
+          expect(wrapper.vm.createDocumentAnchorConfig)
             .calledOnceWithExactly(
               DOCUMENT_POLICIES[DOCUMENT_TYPES.assetLogo],
               'mime-type'
@@ -98,7 +99,7 @@ describe('Upload documents mixin', () => {
       )
     })
 
-    describe('getDocumentTypeConfig', () => {
+    describe('createDocumentAnchorConfig', () => {
       beforeEach(() => {
         const wallet = new Wallet(
           'test@mail.com',
@@ -120,7 +121,7 @@ describe('Upload documents mixin', () => {
         sandbox.stub(Api.api(), 'postWithSignature')
           .resolves({ data: { key: 'doc-key' } })
 
-        const result = await wrapper.vm.getDocumentTypeConfig(
+        const result = await wrapper.vm.createDocumentAnchorConfig(
           'doc-type', 'mime-type'
         )
 
@@ -145,9 +146,7 @@ describe('Upload documents mixin', () => {
 
     describe('uploadFile', () => {
       it('creates and posts file form data', async () => {
-        wrapper.setProps({
-          config: { storageURL: 'https://storage.com' },
-        })
+        Config.initConfig({ storageURL: 'https://storage.com' })
         sandbox.stub(wrapper.vm, 'createFileFormData')
           .returns({ 'some-policy': 'Some policy' })
         sandbox.stub(Vue.http, 'post')
@@ -171,19 +170,21 @@ describe('Upload documents mixin', () => {
     })
 
     describe('createFileFormData', () => {
-      it('creates file form data and converts policies to kebab-case', async () => {
-        sandbox.stub(Blob, 'constructor')
+      it('creates file form data and converts policies to kebab-case',
+        async () => {
+          sandbox.stub(Blob, 'constructor')
 
-        const result = await wrapper.vm.createFileFormData(
-          { id: 'file' },
-          { somePolicy: 'Some policy', otherPolicy: 'Other policy' },
-          'mime-type'
-        )
+          const result = await wrapper.vm.createFileFormData(
+            { id: 'file' },
+            { somePolicy: 'Some policy', otherPolicy: 'Other policy' },
+            'mime-type'
+          )
 
-        expect(result.get('some-policy')).to.equal('Some policy')
-        expect(result.get('other-policy')).to.equal('Other policy')
-        expect(result.get('file')).to.be.instanceOf(Blob)
-      })
+          expect(result.get('some-policy')).to.equal('Some policy')
+          expect(result.get('other-policy')).to.equal('Other policy')
+          expect(result.get('file')).to.be.instanceOf(Blob)
+        }
+      )
     })
   })
 })

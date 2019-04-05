@@ -131,7 +131,7 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { required, amountRange, maxLength } from '@validators'
 
-import config from '../_config'
+import { config } from '../_config'
 
 const EVENTS = {
   submit: 'submit',
@@ -157,8 +157,8 @@ export default {
       policies: 0,
       assetType: '',
     },
-    MIN_AMOUNT: config.MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
+    MIN_AMOUNT: config().MIN_AMOUNT,
+    MAX_AMOUNT: config().MAX_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
     CODE_MAX_LENGTH,

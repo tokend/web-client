@@ -1,6 +1,6 @@
 import { base } from '@tokend/js-sdk'
 
-export default Object.freeze({
+let _config = {
   /**
    * Default lower acceptable amount by most input fields. Tends to be
    * dropped one day
@@ -23,4 +23,19 @@ export default Object.freeze({
    * Default asset signer for pre-issuance upload
    */
   NULL_ASSET_SIGNER: 'GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4',
-})
+}
+
+/**
+ * @param {string} storageURL - the URL of the storage server
+ */
+export function initConfig ({ storageURL }) {
+  if (!storageURL) {
+    throw new Error('storageURL is not provided')
+  }
+
+  _config.storageURL = storageURL
+}
+
+export function config () {
+  return _config
+}

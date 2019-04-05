@@ -10,7 +10,7 @@
           v-show="currentStep === STEPS.information.number"
           :request="request"
           :kyc-required-asset-type="kycRequiredAssetType"
-          @submit="(information = $event) && moveToNextStep()"
+          @submit="setInformationStepForm($event) || moveToNextStep()"
         />
 
         <advanced-step-form
@@ -18,8 +18,8 @@
           :request="request"
           :is-disabled.sync="isDisabled"
           :account-id="wallet.accountId"
-          :max-issuance-amount="information.maxIssuanceAmount"
-          @submit="(advanced = $event) && submit()"
+          :max-issuance-amount="informationStepForm.maxIssuanceAmount"
+          @submit="setAdvancedStepForm($event) || submit()"
         />
       </form-stepper>
     </template>
@@ -50,7 +50,9 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Wallet } from '@tokend/js-sdk'
+
 import { initApi } from './_api'
+import { initConfig } from './_config'
 
 const STEPS = {
   information: {
@@ -98,8 +100,8 @@ export default {
 
   data: _ => ({
     request: null,
-    information: {},
-    advanced: {},
+    informationStepForm: {},
+    advancedStepForm: {},
     isLoaded: false,
     isLoadFailed: false,
     isDisabled: false,
@@ -115,8 +117,11 @@ export default {
     async init () {
       try {
         initApi(this.wallet, this.config)
+        initConfig(this.config)
+
         await this.loadKycRequiredAssetType()
         await this.tryLoadRequest()
+
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
@@ -135,6 +140,14 @@ export default {
       if (this.$el.parentElement) {
         this.$el.parentElement.scrollTop = 0
       }
+    },
+
+    setInformationStepForm (value) {
+      this.informationStepForm = value
+    },
+
+    setAdvancedStepForm (value) {
+      this.advancedStepForm = value
     },
 
     async submit () {

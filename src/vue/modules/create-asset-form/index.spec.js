@@ -7,9 +7,8 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import * as Api from './_api'
+import * as Config from './_config'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -52,34 +51,29 @@ describe('Create asset form module', () => {
 
     describe('method', () => {
       describe('init', () => {
-        it('initializes API, calls load methods, and sets isLoaded property to true',
+        it('initializes API and config, calls load methods, and sets isLoaded property to true',
           async () => {
-            const props = {
-              config: {
-                horizonUrl: 'https://test.api.com',
-                storageURL: 'https://storage.com',
-              },
-              wallet: new Wallet(
-                'test@mail.com',
-                'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-                'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-                '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-              ),
-            }
+            wrapper.setProps({
+              config: 'SOME_CONFIG',
+              wallet: 'SOME_WALLET',
+            })
 
             sandbox.stub(Api, 'initApi')
+            sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
             sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
-
-            wrapper.setProps(props)
 
             await wrapper.vm.init()
 
             expect(Api.initApi)
-              .to.have.been.calledOnceWithExactly(props.wallet, props.config)
+              .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
+            expect(Config.initConfig)
+              .to.have.been.calledOnceWithExactly('SOME_CONFIG')
+
             expect(wrapper.vm.loadKycRequiredAssetType)
               .to.have.been.calledOnce
             expect(wrapper.vm.tryLoadRequest).to.have.been.calledOnce
+
             expect(wrapper.vm.isLoaded).to.be.true
           }
         )
@@ -99,7 +93,7 @@ describe('Create asset form module', () => {
       })
 
       describe('tryLoadRequest', () => {
-        it('calls getCreateAssetRequestById method with correct params and sets result to request property, only if request ID was passed as a prop',
+        it('loads request, only if request ID was passed as a prop',
           async () => {
             const request = { id: '1' }
             sandbox.stub(wrapper.vm, 'getCreateAssetRequestById')
@@ -137,7 +131,7 @@ describe('Create asset form module', () => {
       })
 
       describe('submit', () => {
-        it('calls submitCreateAssetRequest, Bus.success, emitSubmitEvents methods and sets isDisabled property to true',
+        it('calls proper methods and sets isDefault proeprty to true',
           async () => {
             sandbox.stub(wrapper.vm, 'submitCreateAssetRequest').resolves()
             sandbox.stub(Bus, 'success')

@@ -3,7 +3,7 @@ import UploadDocumentsMixin from './upload-documents.mixin'
 import { base } from '@tokend/js-sdk'
 
 import { api } from '../_api'
-import config from '../_config'
+import { config } from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
@@ -19,32 +19,32 @@ export default {
 
   computed: {
     preissuedAssetSigner () {
-      return this.advanced.isPreissuanceDisabled
-        ? config.NULL_ASSET_SIGNER
-        : this.advanced.preissuedAssetSigner
+      return this.advancedStepForm.isPreissuanceDisabled
+        ? config().NULL_ASSET_SIGNER
+        : this.advancedStepForm.preissuedAssetSigner
     },
 
     initialPreissuedAmount () {
-      return this.advanced.isPreissuanceDisabled
-        ? this.information.maxIssuanceAmount
-        : this.advanced.initialPreissuedAmount
+      return this.advancedStepForm.isPreissuanceDisabled
+        ? this.informationStepForm.maxIssuanceAmount
+        : this.advancedStepForm.initialPreissuedAmount
     },
 
     assetRequestOpts () {
-      const logo = this.information.logo
-      const terms = this.advanced.terms
+      const logo = this.informationStepForm.logo
+      const terms = this.advancedStepForm.terms
 
       return {
         requestID: this.requestId || NEW_CREATE_ASSET_REQUEST_ID,
-        code: this.information.code,
-        assetType: String(this.information.assetType.value),
+        code: this.informationStepForm.code,
+        assetType: String(this.informationStepForm.assetType.value),
         preissuedAssetSigner: this.preissuedAssetSigner,
-        trailingDigitsCount: config.DECIMAL_POINTS,
+        trailingDigitsCount: config().DECIMAL_POINTS,
         initialPreissuedAmount: this.initialPreissuedAmount,
-        maxIssuanceAmount: this.information.maxIssuanceAmount,
-        policies: this.information.policies,
+        maxIssuanceAmount: this.informationStepForm.maxIssuanceAmount,
+        policies: this.informationStepForm.policies,
         creatorDetails: {
-          name: this.information.name,
+          name: this.informationStepForm.name,
           logo: logo ? logo.getDetailsForSave() : EMPTY_DOCUMENT,
           terms: terms ? terms.getDetailsForSave() : EMPTY_DOCUMENT,
         },
@@ -67,8 +67,8 @@ export default {
 
     async submitCreateAssetRequest () {
       const assetDocuments = [
-        this.information.logo,
-        this.advanced.terms,
+        this.informationStepForm.logo,
+        this.advancedStepForm.terms,
       ]
       await this.uploadDocuments(assetDocuments)
 
