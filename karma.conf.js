@@ -18,12 +18,14 @@ module.exports = function (config) {
     },
     files: [
       'test/disallow-console-calls.js',
-      'src/**/*.spec.js',
+      // 'src/**/*.spec.js',
+      'src/vue/forms/TransferForm.spec.js',
       'src/**/*.e2e.js',
     ],
     preprocessors: {
       'test/disallow-console-calls.js': ['webpack'],
-      'src/**/*.spec.js': [ 'webpack' ],
+      // 'src/**/*.spec.js': [ 'webpack' ],
+      'src/vue/forms/TransferForm.spec.js': [ 'webpack' ],
       'src/**/*.e2e.js': [ 'webpack' ],
     },
 
