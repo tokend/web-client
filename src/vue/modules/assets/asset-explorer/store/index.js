@@ -10,6 +10,7 @@ export const state = {
   accountId: '',
   assets: [],
   balances: [],
+  kycRequiredAssetType: null,
 }
 
 export const mutations = {
@@ -25,6 +26,9 @@ export const mutations = {
   [types.CONCAT_ASSETS] (state, assets) {
     state.assets = state.assets.concat(assets)
   },
+  [types.SET_KYC_REQUIRED_ASSET_TYPE] (state, assetType) {
+    state.kycRequiredAssetType = assetType
+  },
 }
 
 export const actions = {
@@ -39,6 +43,13 @@ export const actions = {
 
   async [types.LOAD_ASSETS] (_, query) {
     return api().get(`/${HORIZON_VERSION_PREFIX}/assets`, query)
+  },
+
+  async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
+    const endpoint = `/v3/key_values/asset_type:kyc_required`
+    const { data } = await api().get(endpoint)
+
+    commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)
   },
 
   async [types.CREATE_BALANCE] ({ getters }, assetCode) {
@@ -59,7 +70,7 @@ export const getters = {
 
     return new Asset(asset, balance ? balance.state.available : '')
   }),
-
+  [types.kycRequiredAssetType]: state => state.kycRequiredAssetType,
 }
 
 export const assetExplorerModule = {

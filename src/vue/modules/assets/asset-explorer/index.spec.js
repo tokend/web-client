@@ -6,8 +6,6 @@ import { assetExplorerModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import * as Api from './_api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -33,33 +31,24 @@ describe('Asset explorer module', () => {
     it('inits API, sets account ID, and loads balances', async () => {
       sandbox.stub(Api, 'initApi')
       sandbox.stub(AssetExplorerModule.methods, 'setAccountId')
-      sandbox.stub(AssetExplorerModule.methods, 'loadBalances')
-
-      const props = {
-        config: {
-          horizonURL: 'https://test.api.com',
-          storageURL: 'https://storage.com',
-        },
-        wallet: new Wallet(
-          'test@mail.com',
-          'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-          'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-          '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-        ),
-      }
+      sandbox.stub(AssetExplorerModule.methods, 'load')
 
       await shallowMount(AssetExplorerModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          config: { horizonURL: 'https://test.api.com' },
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
       })
 
       expect(Api.initApi).to.has.been.calledOnceWithExactly(
-        props.wallet, props.config
+        { accountId: 'SOME_ACCOUNT_ID' },
+        { horizonURL: 'https://test.api.com' }
       )
       expect(AssetExplorerModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly(props.wallet.accountId)
-      expect(AssetExplorerModule.methods.loadBalances)
+        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
+      expect(AssetExplorerModule.methods.load)
         .to.have.been.calledOnce
     })
   })
@@ -74,12 +63,8 @@ describe('Asset explorer module', () => {
         store,
         localVue,
         propsData: {
-          config: {
-            storageURL: 'https://storage.com',
-          },
-          wallet: {
-            accountId: 'SOME_ACCOUNT_ID',
-          },
+          config: { storageURL: 'https://storage.com' },
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
         },
       })
     })
@@ -89,14 +74,15 @@ describe('Asset explorer module', () => {
     })
 
     describe('method', () => {
-      describe('loadBalances', () => {
-        it('calls loadAccountBalances method sets isLoaded property to true if loading was succeded', async () => {
+      describe('load', () => {
+        it('calls load methods and sets isLoaded property to true if loading succeded', async () => {
           sandbox.stub(wrapper.vm, 'loadAccountBalances').resolves()
+          sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
 
-          await wrapper.vm.loadBalances()
+          await wrapper.vm.load()
 
-          expect(wrapper.vm.loadAccountBalances)
-            .to.have.been.calledOnce
+          expect(wrapper.vm.loadAccountBalances).to.have.been.calledOnce
+          expect(wrapper.vm.loadKycRequiredAssetType).to.have.been.calledOnce
           expect(wrapper.vm.isLoaded).to.be.true
         })
 
@@ -104,7 +90,7 @@ describe('Asset explorer module', () => {
           sandbox.stub(wrapper.vm, 'loadAccountBalances').throws()
           sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
-          await wrapper.vm.loadBalances()
+          await wrapper.vm.load()
 
           expect(wrapper.vm.isLoadFailed).to.be.true
           expect(ErrorHandler.processWithoutFeedback)

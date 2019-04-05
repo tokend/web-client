@@ -5,7 +5,6 @@
         :submodule="getModule().getSubmodule(AssetExplorerModule)"
         :config="config"
         :wallet="wallet"
-        :kyc-required-asset-type="kycRequiredAssetType"
         :is-account-unverified="isAccountUnverified"
       />
     </template>
@@ -38,7 +37,6 @@ export default {
     ...mapGetters({
       wallet: vuexTypes.wallet,
       isAccountUnverified: vuexTypes.isAccountUnverified,
-      kycRequiredAssetType: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }

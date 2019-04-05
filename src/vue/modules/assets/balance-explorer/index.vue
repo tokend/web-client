@@ -7,8 +7,10 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <asset-update-form
-            :asset-record="selectedAsset"
+          <asset-update-form-module
+            :asset-code="selectedAsset.code"
+            :wallet="wallet"
+            :config="config"
             @close="isDrawerShown = false"
           />
         </template>
@@ -77,7 +79,8 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
-import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
+
+import AssetUpdateFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
@@ -95,7 +98,7 @@ export default {
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
-    AssetUpdateForm,
+    AssetUpdateFormModule,
   },
   props: {
     wallet: {
@@ -111,10 +114,6 @@ export default {
       type: Object,
       required: true,
     },
-    kycRequiredAssetType: {
-      type: Number,
-      required: true,
-    },
   },
   data: _ => ({
     isLoaded: false,
@@ -123,16 +122,18 @@ export default {
     isUpdateMode: false,
     selectedAsset: {},
   }),
+
   computed: {
     ...mapGetters('balance-explorer', {
       assets: types.assets,
+      kycRequiredAssetType: types.kycRequiredAssetType,
     }),
   },
+
   async created () {
     initApi(this.wallet, this.config)
-
     this.setAccountId(this.wallet.accountId)
-    await this.loadBalances()
+    await this.load()
   },
 
   methods: {
@@ -142,11 +143,13 @@ export default {
 
     ...mapActions('balance-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
+      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
     }),
 
-    async loadBalances () {
+    async load () {
       try {
         await this.loadAccountBalances()
+        await this.loadKycRequiredAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true

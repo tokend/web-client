@@ -5,7 +5,6 @@
         :submodule="getModule().getSubmodule(BalanceExplorerModule)"
         :config="config"
         :wallet="wallet"
-        :kyc-required-asset-type="kycRequiredAssetType"
       />
     </template>
   </div>
@@ -36,7 +35,6 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
-      kycRequiredAssetType: vuexTypes.kvAssetTypeKycRequired,
     }),
   },
 }

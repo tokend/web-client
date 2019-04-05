@@ -2,9 +2,9 @@
   <div class="asset-explorer">
     <template v-if="isLoaded">
       <assets-renderer
+        :wallet="wallet"
         :config="config"
         :is-account-unverified="isAccountUnverified"
-        :kyc-required-asset-type="kycRequiredAssetType"
       />
     </template>
 
@@ -58,10 +58,6 @@ export default {
       type: Boolean,
       required: true,
     },
-    kycRequiredAssetType: {
-      type: Number,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -73,7 +69,7 @@ export default {
     initApi(this.wallet, this.config)
 
     this.setAccountId(this.wallet.accountId)
-    await this.loadBalances()
+    await this.load()
   },
 
   methods: {
@@ -83,11 +79,13 @@ export default {
 
     ...mapActions('asset-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
+      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
     }),
 
-    async loadBalances () {
+    async load () {
       try {
         await this.loadAccountBalances()
+        await this.loadKycRequiredAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true

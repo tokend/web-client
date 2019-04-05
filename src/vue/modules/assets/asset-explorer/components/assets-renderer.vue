@@ -7,8 +7,10 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <asset-update-form
-            :asset-record="selectedAsset"
+          <asset-update-form-module
+            :asset-code="selectedAsset.code"
+            :wallet="wallet"
+            :config="config"
             @close="isDrawerShown = false"
           />
         </template>
@@ -91,7 +93,10 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
 import AssetActions from './asset-actions'
-import AssetUpdateForm from '@/vue/forms/AssetUpdateForm'
+
+import AssetUpdateFormModule from '@modules/update-asset-form'
+
+import { Wallet } from '@tokend/js-sdk'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -110,20 +115,20 @@ export default {
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
-    AssetUpdateForm,
+    AssetUpdateFormModule,
   },
 
   props: {
+    wallet: {
+      type: Wallet,
+      required: true,
+    },
     config: {
       type: Object,
       required: true,
     },
     isAccountUnverified: {
       type: Boolean,
-      required: true,
-    },
-    kycRequiredAssetType: {
-      type: Number,
       required: true,
     },
   },
@@ -141,6 +146,7 @@ export default {
   computed: {
     ...mapGetters('asset-explorer', {
       assets: types.assets,
+      kycRequiredAssetType: types.kycRequiredAssetType,
     }),
   },
 
@@ -166,9 +172,7 @@ export default {
       this.isLoaded = false
       try {
         const response = await this.loadAssets({
-          page: {
-            limit: ASSETS_PER_PAGE,
-          },
+          page: { limit: ASSETS_PER_PAGE },
         })
         this.isLoaded = true
         return response
@@ -191,7 +195,6 @@ export default {
 @import "~@scss/mixins";
 
 $asset-card-margin: 0.75rem;
-
 $media-small-height: 460px;
 
 .assets-renderer__collection-loader-wrp {
