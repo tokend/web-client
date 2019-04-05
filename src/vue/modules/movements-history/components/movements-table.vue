@@ -27,12 +27,6 @@
           {{ 'movements-history.amount-th' | globalize }}
         </th>
         <th
-          class="movements-table__head-cell"
-          :title="'movements-history.fee-th' | globalize"
-        >
-          {{ 'movements-history.fee-th' | globalize }}
-        </th>
-        <th
           class="movements-table__head-cell
                  movements-table__head-cell--expand-btn-wrp"
         />

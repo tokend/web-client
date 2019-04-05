@@ -23,6 +23,7 @@ const mutations = {
   SET_KYC_LATEST_REQUEST: 'SET_KYC_LATEST_REQUEST',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
   SET_ACCOUNT_ROLE_RESET: 'SET_ACCOUNT_ROLE_RESET',
+  SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET: 'SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET',
 }
 
 const actions = {
@@ -91,7 +92,7 @@ const getters = {
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycRequestResetReason: 'kycRequestResetReason',
   kycAccountRoleToSet: 'kycAccountRoleToSet',
-  kycPreviousAccountRole: 'kycPreviousAccountRole',
+  kycPreviousRequestAccountRoleToSet: 'kycPreviousRequestAccountRoleToSet',
   kycLatestData: 'kycLatestData',
   kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
