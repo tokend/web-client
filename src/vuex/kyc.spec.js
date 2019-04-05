@@ -88,10 +88,14 @@ describe('kyc.module', () => {
 
       const expectedRequest = MockWrapper
         .makeJsonapiResponseData(responseJSON)[0]
+      const previousExpectedRequest = MockWrapper
+        .makeJsonapiResponseData(responseJSON)[1]
       const expectedPayload = new ChangeRoleRequestRecord(expectedRequest)
       const expectedMutations = {
         [vuexTypes.SET_ACCOUNT_ROLE_RESET]: false,
         [vuexTypes.SET_KYC_LATEST_REQUEST]: expectedPayload,
+        [vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET]:
+          previousExpectedRequest.requestDetails.accountRoleToSet,
       }
 
       store.rootGetters = {
