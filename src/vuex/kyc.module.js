@@ -56,8 +56,8 @@ export const actions = {
   }) {
     const requestor = rootGetters[vuexTypes.accountId]
 
-    // kinda optimization cause we are interested only 2 latest
-    // update_kyc request
+    // kinda optimization cause we are interested only in
+    // the 2 latest update_kyc request
     // please do not expose the request itself for not making clients dependent
     // on this implementation
     const limit = 2
