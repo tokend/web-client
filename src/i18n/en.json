@@ -776,6 +776,7 @@
     },
     "asset-details": {
       "balance-title": "Balance",
+      "converted-balance-title": "Converted balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",
