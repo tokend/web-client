@@ -2,14 +2,17 @@
   <div class="movement-attributes-viewer">
     <div class="attributes-viewer">
       <table class="attributes-viewer__table">
+        <movement-summary-viewer :movement="movement" />
         <balance-changed-effect-viewer
           v-if="movement.effect instanceof BalanceChangedEffect"
           :effect="movement.effect"
           :asset-code="movement.assetCode"
+          :is-locked="movement.isLocked"
         />
         <particular-balance-changed-effect-viewer
           v-else-if="movement.effect instanceof ParticularBalanceChangeEffect"
           :effect="movement.effect"
+          :is-outgoing="movement.isOutgoing"
         />
         <manage-offer-op-viewer
           v-if="movement.operationDetails instanceof ManageOfferOp"
@@ -64,6 +67,8 @@ import { CreateAMLAlertRequestOp } from '../wrappers/operation-details/create-am
 import { CreateIssuanceRequestOp } from '../wrappers/operation-details/create-issuance-request'
 import { CreateWithdrawRequestOp } from '../wrappers/operation-details/create-withdrawal-request'
 
+import MovementSummaryViewer from './movement-summary-viewer'
+
 import BalanceChangedEffectViewer from './effect-viewers/balance-changed'
 import ParticularBalanceChangedEffectViewer from './effect-viewers/particular-balance-changed'
 
@@ -79,6 +84,7 @@ import CreateWithdrawalRequestOpViewer from './operation-viewers/create-withdraw
 export default {
   name: 'movement-attributes-viewer',
   components: {
+    MovementSummaryViewer,
     BalanceChangedEffectViewer,
     ParticularBalanceChangedEffectViewer,
 
