@@ -141,9 +141,9 @@ for further information about branching and tagging conventions.
 - Moved fees filters out of global scope to the corresponding viewer components
 - One request to fetch all the account roles instead of fetching then one-by-one
 - Asset loading via the loop instead of fetching by `filter[limit]=100`
-- Modularized:	
-  - Issuance explorer page	
-  - Fees page	
+- Modularized:
+  - Issuance explorer page
+  - Fees page
   - TopBar component
 
 #### Removed
