@@ -32,6 +32,8 @@ for further information about branching and tagging conventions.
 - Now sorting balances in desc order by total balance in stats quote asset
 - Now getting previous account role from previous KYC request instead of
   `creatorDetails` of approved reset request
+- Moved redeem offer creation from the global mixin to the local store
+- Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 
 #### Removed
 - "Fee" column from the movements table
