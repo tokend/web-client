@@ -16,6 +16,8 @@ for further information about branching and tagging conventions.
 - Show available base asset amount on sale creation form
 
 #### Changed
+- Modularized:
+  - Create asset form
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Allow inserting both of YouTube video link or ID
 - Moved movements module translation filters to a mixin
