@@ -26,6 +26,8 @@ for further information about branching and tagging conventions.
 - Now using "EUR" asset instead of "PET" one on the loyalty statistics
   charts (Loyalty)
 - Now sorting balances in desc order by total balance in stats quote asset
+- Now getting previous account role from previous KYC request instead of
+  `creatorDetails` of approved reset request
 
 #### Removed
 - "Fee" column from the movements table
