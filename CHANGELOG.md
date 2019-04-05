@@ -37,6 +37,12 @@ for further information about branching and tagging conventions.
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 
+## [1.4.0] - 2019-04-05
+
+## [1.4.0-rc.3] - 2019-04-04
+#### Fixed
+- Withdrawal request creating where invalid creatorDetails were submitted
+
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
 - A bug with uneditable general verification form for brand-new users
@@ -158,7 +164,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0...HEAD
+[1.4.0]: https://github.com/tokend/web-client/compare/1.4.0-rc.3...1.4.0
+[1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
 [1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
