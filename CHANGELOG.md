@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - Displaying invoice summary on create invoice form (Loyalty)
 - Displaying total fee in the movement attributes
 - Displaying operation summary in the movement attributes
+- Show available base asset amount on sale creation form
 
 #### Changed
 - Now using 2 decimal points for invoice amounts (Loyalty)
@@ -114,7 +115,6 @@ for further information about branching and tagging conventions.
   - `resetReason` field to the `ChangeRoleRequestRecord`
 - Movements history modules unit tests
 - `record` getter to the `AssetRecord`
-- Show available amount on sale creation form
 
 #### Changed
 - Use @tokend/js-sdk@1.3.1-x.2
