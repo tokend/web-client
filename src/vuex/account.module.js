@@ -30,10 +30,12 @@ export const actions = {
   async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
     const accountId = getters[vuexTypes.accountId]
     const response = await Sdk.horizon.account.getDetails(accountId)
-    const balances = response.data.map(balance => {
-      balance.assetDetails = new AssetRecord(balance.assetDetails)
-      return balance
-    })
+    const balances = response.data
+      .map(balance => {
+        balance.assetDetails = new AssetRecord(balance.assetDetails)
+        return balance
+      })
+      .sort((a, b) => b.convertedBalance - a.convertedBalance)
     commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
   },
 }
