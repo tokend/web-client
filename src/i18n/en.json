@@ -159,6 +159,7 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
+      "account-role-reset-msg": "Your verification was reset by administrator with reason: {{reason}}. Please, verify your account again",
       "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
       "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
       "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
@@ -489,7 +490,6 @@
         "payment": "Payment",
         "unknown": "Unknown type"
       },
-      "fee-th": "Fee",
       "type-th": "Type",
       "amount-th": "Amount",
       "date-th": "Date",
@@ -499,9 +499,13 @@
       "loading-movements-msg": "Please wait while we loading your movements",
       "no-movements-title": "No movements history",
       "no-movements-msg": "Nothing happened with your balances yet",
+      "type-lbl": "Type",
+      "operation-lbl": "Operation",
+      "date-lbl": "Date",
       "amount-lbl": "Amount",
       "fixed-fee-lbl": "Fixed fee",
       "calculated-percent-fee-lbl": "Percent fee (calculated)",
+      "total-fee-lbl": "Total fee",
       "sale-id-lbl": "Sale ID",
       "sale-state-lbl": "Sale state",
       "sale-closed-msg": "Sale funded and closed",
@@ -650,13 +654,49 @@
       "explore-title": "Explore tokens",
       "balances-title": "My balances",
       "create-asset-title": "Create token",
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
-      "no-assets-title": "No tokens",
-      "no-assets-msg": "There are no available tokens",
-      "no-balances-title": "No balances",
-      "no-balances-msg": "You do not have any balances yet",
-      "create-asset-button": "Create token"
+      "create-btn": "Create"
+    },
+    "create-asset-form": {
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading.",
+      "next-btn": "Next",
+      "create-request-btn": "Create request",
+      "update-request-btn": "Update request",
+      "information-step": "Token information",
+      "advanced-step": "Advanced",
+      "name-lbl": "Token name",
+      "code-lbl": "Token code",
+      "max-issuance-amount-lbl": "Max issuance amount",
+      "asset-type-lbl": "Type",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
+      "transferable-lbl": "Transferable",
+      "withdrawable-lbl": "Withdrawable",
+      "verification-not-required-lbl": "Does not require verification",
+      "verification-required-lbl": "Requires verification",
+      "additional-issuance-check": "I do not want to make additional issuance later",
+      "preissued-signer-lbl": "Pre-issued asset signer",
+      "use-my-account-id-btn": "Use mine",
+      "preissued-amount-lbl": "Initial pre-issued amount",
+      "terms-lbl": "Upload terms",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+    },
+    "update-asset-form": {
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading.",
+      "next-btn": "Next",
+      "update-btn": "Update",
+      "information-step": "Token information",
+      "advanced-step": "Advanced",
+      "name-lbl": "Token name",
+      "logo-lbl": "Token icon",
+      "logo-note": "JPG or PNG, no less than 120x120 px",
+      "transferable-lbl": "Transferable",
+      "withdrawable-lbl": "Withdrawable",
+      "terms-lbl": "Upload terms",
+      "terms-note": "JPG, PNG, PDF, max 5 mb.",
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
     },
     "assets-list": {
       "update-asset-title": "Update token",
@@ -841,6 +881,7 @@
     },
     "asset-details": {
       "balance-title": "Balance",
+      "converted-balance-title": "Converted balance",
       "maximum-title": "Maximum",
       "issued-title": "Issued",
       "available-title": "Available",
@@ -889,7 +930,10 @@
       "invested": "{{invested, money}} invested",
       "days-to-launch": "{{days}} days to launch",
       "days-after-end": "Closed {{days}} days ago",
-      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**"
+      "offer": "Buy **{{baseHardCap, money}}** for **{{hardCap, money}}**",
+      "days-to-end": "{{days}} days to close",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "trade-history": {
       "title": "Trade history",
@@ -993,7 +1037,8 @@
     "sale-details": {
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
-      "campaign-title": "Campaign",
+      "campaign-tab": "Campaign",
+      "all-sales-tab": "All sales",
       "invest": "Invest",
       "overview-title": "Sale overview",
       "sale-not-found-title": "Sale not found",
@@ -1003,7 +1048,10 @@
       "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
-      "days-after-end": "days after closed"
+      "days-after-end": "days after closed",
+      "days-to-end": "days to closed",
+      "closed": "Closed",
+      "canceled": "Canceled"
     },
     "opportunity-details": {
       "loading-msg": "Loading",
@@ -1076,7 +1124,7 @@
       "base-asset-hard-cap-to-sell": "{{asset}} to sell",
       "accept-investments-in": "Accept investments in:",
       "upload-image": "Upload the image users will see first in their searcher",
-      "insert-youtube-video": "Insert YouTube video by its ID",
+      "insert-youtube-video": "Insert YouTube video link or ID",
       "next-btn": "Next",
       "submit-btn": "Submit",
       "request-submitted-msg": "Your request was successfully submitted",
@@ -1085,7 +1133,8 @@
       "preview-you-video": "Preview you video",
       "loading-msg": "Loading...",
       "asset-not-available-yet": "Please create a token before creating sale",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later"
+      "can-not-load-assets": "There was an error while loading assets. Please try again later",
+      "available-amount": "Available: {{amount}} {{asset}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",
@@ -1270,6 +1319,36 @@
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
+    },
+    "assets": {
+      "balances-loading-msg": "Loading your balances…",
+      "assets-loading-msg": "Loading tokens…",
+      "loading-error-msg": "There was an error while loading.",
+      "no-assets-title": "No tokens",
+      "no-assets-msg": "There are no available tokens",
+      "no-balances-title": "No balances",
+      "no-balances-msg": "You do not have any balances yet",
+      "list-item-balance-line": "Balance: {{value, money}}",
+      "no-balance-msg": "No balance",
+      "details-drawer-title": "Token details",
+      "update-drawer-title": "Update token",
+      "add-balance-btn": "Add to my balances",
+      "balance-added-msg": "Added to your balances",
+      "verification-required-err": "You need to verify your account to add this token to your balances",
+      "update-btn": "Update",
+      "no-terms-msg": "No terms",
+      "balance-title": "Balance",
+      "maximum-title": "Maximum",
+      "issued-title": "Issued",
+      "available-title": "Available",
+      "transferable-title": "Transferable",
+      "withdrawable-title": "Withdrawable",
+      "verification-required-title": "Requires verification",
+      "present-msg": "Yes",
+      "absent-msg": "No",
+      "terms-title": "Terms",
+      "download-terms-btn": "Download terms",
+      "already-in-your-balance-btn": "Already in your balances"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

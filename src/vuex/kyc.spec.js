@@ -15,16 +15,10 @@ describe('kyc.module', () => {
   })
 
   describe('mutations', () => {
-    let state
-
-    beforeEach(() => {
-      state = {
-        request: {},
-        latestData: '',
-      }
-    })
-
     it('SET_KYC_LATEST_REQUEST should properly modify state', () => {
+      const state = {
+        request: {},
+      }
       const request = {
         id: '2255625342224',
         details: {},
@@ -33,11 +27,24 @@ describe('kyc.module', () => {
 
       expect(state).to.deep.equal({
         request,
-        latestData: '',
+      })
+    })
+
+    it('SET_ACCOUNT_ROLE_RESET should properly modify state', () => {
+      const state = {
+        isAccountRoleReseted: false,
+      }
+      mutations[vuexTypes.SET_ACCOUNT_ROLE_RESET](state, true)
+
+      expect(state).to.deep.equal({
+        isAccountRoleReseted: true,
       })
     })
 
     it('SET_KYC_LATEST_DATA should properly modify state', () => {
+      const state = {
+        latestData: '{}',
+      }
       const latestData = JSON.stringify({
         first_name: 'Jonh',
         last_name: 'Doe',
@@ -45,7 +52,6 @@ describe('kyc.module', () => {
       mutations[vuexTypes.SET_KYC_LATEST_DATA](state, latestData)
 
       expect(state).to.deep.equal({
-        request: {},
         latestData,
       })
     })
@@ -82,10 +88,14 @@ describe('kyc.module', () => {
 
       const expectedRequest = MockWrapper
         .makeJsonapiResponseData(responseJSON)[0]
+      const previousExpectedRequest = MockWrapper
+        .makeJsonapiResponseData(responseJSON)[1]
       const expectedPayload = new ChangeRoleRequestRecord(expectedRequest)
-      const expectedMutation = vuexTypes.SET_KYC_LATEST_REQUEST
       const expectedMutations = {
-        [expectedMutation]: expectedPayload,
+        [vuexTypes.SET_ACCOUNT_ROLE_RESET]: false,
+        [vuexTypes.SET_KYC_LATEST_REQUEST]: expectedPayload,
+        [vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET]:
+          previousExpectedRequest.requestDetails.accountRoleToSet,
       }
 
       store.rootGetters = {
