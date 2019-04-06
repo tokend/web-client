@@ -32,7 +32,6 @@
         </tr>
 
         <tr>
-          <!-- eslint-disable-next-line max-len -->
           <td>{{ 'create-asset-requests.transferable-title' | globalize }}</td>
           <td>
             <template v-if="request.isTransferable">
@@ -44,6 +43,20 @@
             </template>
           </td>
         </tr>
+
+        <tr>
+          <td>{{ 'create-asset-requests.withdrawable-title' | globalize }}</td>
+          <td>
+            <template v-if="request.isWithdrawable">
+              {{ 'create-asset-requests.yes-msg' | globalize }}
+            </template>
+
+            <template v-else>
+              {{ 'create-asset-requests.no-msg' | globalize }}
+            </template>
+          </td>
+        </tr>
+
         <tr>
           <td>
             {{ 'create-asset-requests.requires-kyc-title' | globalize }}
