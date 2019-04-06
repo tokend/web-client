@@ -58,7 +58,7 @@
             <button
               v-ripple
               @click="submit"
-              :disabled="!isConfirmedSeedCopied"
+              :disabled="!isConfirmedSeedCopied || formMixin.isDisabled"
               class="auth-page__submit-btn"
             >
               {{ 'auth-pages.continue' | globalize }}

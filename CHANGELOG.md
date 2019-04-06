@@ -14,6 +14,8 @@ for further information about branching and tagging conventions.
 - Displaying total fee in the movement attributes
 - Displaying operation summary in the movement attributes
 - Show available base asset amount on sale creation form
+- Warning message when showing recovery seed on signup page
+- QR code plugin wrapper
 
 #### Changed
 - Modularized:
@@ -34,6 +36,8 @@ for further information about branching and tagging conventions.
   `creatorDetails` of approved reset request
 - Moved redeem offer creation from the global mixin to the local store
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
+- Now using "qrcode.vue" plugin instead of "vue-qr"
+- Clipboard field styles to differ it from input fields
 
 #### Removed
 - "Fee" column from the movements table

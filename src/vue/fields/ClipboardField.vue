@@ -65,6 +65,7 @@ export default {
   font-size: 1.3rem;
   line-height: 1.25;
   font-family: monospace;
+  white-space: nowrap;
 
   @include respond-to($x-medium) {
     font-size: 1.1rem;
