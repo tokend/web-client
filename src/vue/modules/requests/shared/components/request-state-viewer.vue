@@ -41,12 +41,14 @@
 </template>
 
 <script>
+import { Request } from '../wrappers/request'
+
 export default {
   name: 'request-state-viewer',
 
   props: {
     request: {
-      type: Object,
+      type: Request,
       required: true,
     },
   },

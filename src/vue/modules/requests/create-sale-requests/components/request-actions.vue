@@ -18,7 +18,7 @@
       v-if="!formMixin.isConfirmationShown"
       class="request-actions__update-btn app__button-raised"
       :disabled="isRequestCanceling || !canBeUpdated"
-      @click="$emit(EVENTS.updateAsk)"
+      @click="$emit(EVENTS.updateClick)"
     >
       {{ 'create-sale-requests.update-btn' | globalize }}
     </button>
@@ -56,7 +56,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
-  updateAsk: 'update-ask',
+  updateClick: 'update-click',
   cancel: 'cancel',
 }
 

@@ -1,8 +1,9 @@
 <template>
   <div class="request-viewer">
     <asset-summary-viewer
-      :config="config()"
-      :request="request"
+      :asset-code="request.assetCode"
+      :asset-name="request.assetName"
+      :asset-logo-url="assetLogoUrl"
     />
 
     <request-message-viewer
@@ -19,7 +20,7 @@
     <request-actions
       class="request-viewer__actions"
       :request="request"
-      @update-ask="$emit(EVENTS.updateAsk)"
+      @update-click="$emit(EVENTS.updateClick)"
       @cancel="$emit(EVENTS.cancel)"
     />
   </div>
@@ -36,7 +37,7 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { config } from '../_config'
 
 const EVENTS = {
-  updateAsk: 'update-ask',
+  updateClick: 'update-click',
   cancel: 'cancel',
 }
 
@@ -55,9 +56,14 @@ export default {
   },
 
   data: _ => ({
-    config,
     EVENTS,
   }),
+
+  computed: {
+    assetLogoUrl () {
+      return this.request.logoUrl(config().storageURL)
+    },
+  },
 }
 </script>
 

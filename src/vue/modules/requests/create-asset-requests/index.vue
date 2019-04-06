@@ -22,7 +22,7 @@
           <request-viewer
             :request="selectedRequest"
             :kyc-required-asset-type="kycRequiredAssetType"
-            @update-ask="isUpdateMode = true"
+            @update-click="isUpdateMode = true"
             @cancel="(isDrawerShown = false) || initFirstPageLoader()"
           />
         </template>

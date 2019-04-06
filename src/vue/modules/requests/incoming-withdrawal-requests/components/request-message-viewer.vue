@@ -5,7 +5,7 @@
       class="request-message-viewer--approved"
     >
       <p class="request-message-viewer__content">
-        {{ 'request-messages.approved-outgoing-msg' | globalize }}
+        {{ 'request-messages.approved-incoming-msg' | globalize }}
       </p>
     </div>
 
@@ -14,7 +14,7 @@
       class="request-message-viewer--pending"
     >
       <p class="request-message-viewer__content">
-        {{ 'request-messages.pending-outgoing-msg' | globalize }}
+        {{ 'request-messages.pending-incoming-msg' | globalize }}
       </p>
     </div>
 
@@ -24,7 +24,7 @@
     >
       <p class="request-message-viewer__content">
         {{
-          'request-messages.rejected-outgoing-msg' | globalize({
+          'request-messages.rejected-incoming-msg' | globalize({
             reason: request.rejectReason
           })
         }}
@@ -36,7 +36,7 @@
       class="request-message-viewer--canceled"
     >
       <p class="request-message-viewer__content">
-        {{ 'request-messages.canceled-outgoing-msg' | globalize }}
+        {{ 'request-messages.canceled-incoming-msg' | globalize }}
       </p>
     </div>
 
@@ -46,7 +46,7 @@
     >
       <p class="request-message-viewer__content">
         {{
-          'request-messages.permanently-rejected-outgoing-msg' | globalize({
+          'request-messages.permanently-rejected-incoming-msg' | globalize({
             reason: request.rejectReason
           })
         }}
@@ -56,12 +56,12 @@
 </template>
 
 <script>
-import { Request } from '../wrappers/request'
+import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 
 export default {
   name: 'request-message-viewer',
   props: {
-    request: { type: Request, required: true },
+    request: { type: IncomingWithdrawalRequest, required: true },
   },
 }
 </script>

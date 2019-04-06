@@ -31,7 +31,7 @@
               :asset="selectedAsset"
               :is-account-unverified="isAccountUnverified"
               :kyc-required-asset-type="kycRequiredAssetType"
-              @update-ask="isUpdateMode = true"
+              @update-click="isUpdateMode = true"
               @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
             />
           </div>

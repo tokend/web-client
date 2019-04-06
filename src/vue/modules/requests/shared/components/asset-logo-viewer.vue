@@ -1,8 +1,8 @@
 <template>
   <img
-    v-if="logoUrl"
+    v-if="assetLogoUrl"
     class="asset-logo-viewer asset-logo-viewer__image"
-    :src="logoUrl"
+    :src="assetLogoUrl"
   >
   <p
     v-else
@@ -16,7 +16,7 @@
 export default {
   name: 'asset-logo-viewer',
   props: {
-    logoUrl: { type: String, required: true },
+    assetLogoUrl: { type: String, default: '' },
     assetCode: { type: String, required: true },
   },
 }

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import RequestMessageViewer from '../../shared/components/request-message-viewer'
+import RequestMessageViewer from './request-message-viewer'
 import RequestAttributesViewer from './request-attributes-viewer'
 import RequestActions from './request-actions'
 

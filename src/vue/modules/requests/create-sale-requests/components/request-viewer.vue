@@ -2,8 +2,9 @@
   <div class="request-viewer">
     <template v-if="isLoaded">
       <asset-summary-viewer
-        :config="config()"
-        :asset="baseAsset"
+        :asset-code="baseAsset.code"
+        :asset-name="baseAsset.name"
+        :asset-logo-url="assetLogoUrl"
       />
 
       <request-message-viewer
@@ -19,7 +20,7 @@
       <request-actions
         class="request-viewer__actions"
         :request="request"
-        @update-ask="$emit(EVENTS.updateAsk)"
+        @update-click="$emit(EVENTS.updateClick)"
         @cancel="$emit(EVENTS.cancel)"
       />
     </template>
@@ -50,7 +51,7 @@ import { types } from '../store/types'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
-  updateAsk: 'update-ask',
+  updateClick: 'update-click',
   cancel: 'cancel',
 }
 
@@ -75,6 +76,16 @@ export default {
     config,
     EVENTS,
   }),
+
+  computed: {
+    assetLogoUrl () {
+      if (this.baseAsset) {
+        return this.baseAsset.logoUrl(config().storageURL)
+      } else {
+        return ''
+      }
+    },
+  },
 
   async created () {
     await this.loadBaseAsset()
