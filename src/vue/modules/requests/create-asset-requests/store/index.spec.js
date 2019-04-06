@@ -92,6 +92,16 @@ describe('create-asset-requests.module', () => {
         ],
       })
     })
+
+    it('SET_KYC_REQUIRED_ASSET_TYPE should properly modify state', () => {
+      const state = {
+        kycRequiredAssetType: null,
+      }
+
+      mutations[types.SET_KYC_REQUIRED_ASSET_TYPE](state, 1)
+
+      expect(state).to.deep.equal({ kycRequiredAssetType: 1 })
+    })
   })
 
   describe('actions', () => {
@@ -105,7 +115,18 @@ describe('create-asset-requests.module', () => {
       horizonURL: 'https://test.api.com',
     }
 
+    let store
+
     beforeEach(() => {
+      store = {
+        state: {},
+        getters: {
+          accountId: 'SOME_ACCOUNT_ID',
+        },
+        commit: sinon.stub(),
+        dispatch: sinon.stub(),
+      }
+
       Api.initApi(wallet, config)
     })
 
@@ -132,6 +153,25 @@ describe('create-asset-requests.module', () => {
           )
 
         Api.api().getWithSignature.restore()
+      })
+    })
+
+    describe('LOAD_KYC_REQUIRED_ASSET_TYPE', () => {
+      it('properly commit its set of mutations', async () => {
+        sinon.stub(Api.api(), 'get').resolves({
+          data: { value: { u32: 1 } },
+        })
+
+        const expectedMutations = {
+          [types.SET_KYC_REQUIRED_ASSET_TYPE]: 1,
+        }
+
+        await actions[types.LOAD_KYC_REQUIRED_ASSET_TYPE](store)
+
+        expect(store.commit.args)
+          .to.deep.equal(Object.entries(expectedMutations))
+
+        Api.api().get.restore()
       })
     })
 
@@ -186,6 +226,13 @@ describe('create-asset-requests.module', () => {
           new CreateAssetRequest({ id: '1' }),
           new CreateAssetRequest({ id: '2' }),
         ])
+    })
+
+    it('kycRequiredAssetType', () => {
+      const state = { kycRequiredAssetType: 1 }
+
+      expect(getters[types.kycRequiredAssetType](state))
+        .to.equal(1)
     })
   })
 })

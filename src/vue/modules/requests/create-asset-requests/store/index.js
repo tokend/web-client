@@ -10,6 +10,7 @@ const HORIZON_VERSION_PREFIX = 'v3'
 export const state = {
   accountId: '',
   requests: [],
+  kycRequiredAssetType: null,
 }
 
 export const mutations = {
@@ -21,6 +22,9 @@ export const mutations = {
   },
   [types.CONCAT_REQUESTS] (state, requests) {
     state.requests = state.requests.concat(requests)
+  },
+  [types.SET_KYC_REQUIRED_ASSET_TYPE] (state, assetType) {
+    state.kycRequiredAssetType = assetType
   },
 }
 
@@ -37,6 +41,13 @@ export const actions = {
     })
   },
 
+  async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
+    const endpoint = `/${HORIZON_VERSION_PREFIX}/key_values/asset_type:kyc_required`
+    const { data } = await api().get(endpoint)
+
+    commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)
+  },
+
   async [types.CANCEL_REQUEST] (_, requestId) {
     const operation = base.ManageAssetBuilder.cancelAssetRequest({
       requestID: requestId,
@@ -49,6 +60,7 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.requests]: state => state.requests
     .map(r => new CreateAssetRequest(r)),
+  [types.kycRequiredAssetType]: state => state.kycRequiredAssetType,
 }
 
 export const createAssetRequestsModule = {

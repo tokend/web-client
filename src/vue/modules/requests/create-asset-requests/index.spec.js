@@ -34,11 +34,12 @@ describe('Create asset requests module', () => {
       sandbox.stub(Api, 'initApi')
       sandbox.stub(Config, 'initConfig')
       sandbox.stub(CreateAssetRequestsModule.methods, 'setAccountId')
+      sandbox.stub(CreateAssetRequestsModule.methods, 'loadAssetTypes')
       sandbox.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
     })
 
-    it('calls initApi function with correct params', () => {
-      shallowMount(CreateAssetRequestsModule, {
+    it('calls initApi function with correct params', async () => {
+      await shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: {
@@ -51,8 +52,8 @@ describe('Create asset requests module', () => {
         .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
-    it('calls initConfig function with correct params', () => {
-      shallowMount(CreateAssetRequestsModule, {
+    it('calls initConfig function with correct params', async () => {
+      await shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: {
@@ -65,8 +66,8 @@ describe('Create asset requests module', () => {
         .to.have.been.calledOnceWithExactly('SOME_CONFIG')
     })
 
-    it('calls setAccountId method', () => {
-      shallowMount(CreateAssetRequestsModule, {
+    it('calls setAccountId method', async () => {
+      await shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: {
@@ -78,8 +79,21 @@ describe('Create asset requests module', () => {
         .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
-    it('calls initFirstPageLoader method', () => {
-      shallowMount(CreateAssetRequestsModule, {
+    it('calls loadAssetTypes method', async () => {
+      await shallowMount(CreateAssetRequestsModule, {
+        localVue,
+        store,
+        propsData: {
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
+      })
+
+      expect(CreateAssetRequestsModule.methods.loadAssetTypes)
+        .to.have.been.calledOnce
+    })
+
+    it('calls initFirstPageLoader method', async () => {
+      await shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
         propsData: {
@@ -126,6 +140,27 @@ describe('Create asset requests module', () => {
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
           expect(wrapper.vm.isLoadingFailed).to.be.true
+        })
+      })
+
+      describe('loadAssetTypes', () => {
+        it('calls loadKycRequiredAssetType method', async () => {
+          sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
+
+          await wrapper.vm.loadAssetTypes()
+
+          expect(wrapper.vm.loadKycRequiredAssetType)
+            .to.have.been.calledOnce
+        })
+
+        it('handles an error properly if it was thrown', async () => {
+          sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').rejects()
+          sandbox.stub(ErrorHandler, 'processWithoutFeedback')
+
+          await wrapper.vm.loadAssetTypes()
+
+          expect(ErrorHandler.processWithoutFeedback)
+            .to.have.been.calledOnce
         })
       })
 

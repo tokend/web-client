@@ -34,6 +34,9 @@ import RequestActions from './request-actions'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
+import { mapGetters } from 'vuex'
+import { types } from '../store/types'
+
 import { config } from '../_config'
 
 const EVENTS = {
@@ -52,7 +55,6 @@ export default {
 
   props: {
     request: { type: CreateAssetRequest, required: true },
-    kycRequiredAssetType: { type: Number, required: true },
   },
 
   data: _ => ({
@@ -60,6 +62,10 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('create-asset-requests', {
+      kycRequiredAssetType: types.kycRequiredAssetType,
+    }),
+
     assetLogoUrl () {
       return this.request.logoUrl(config().storageURL)
     },

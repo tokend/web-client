@@ -21,7 +21,6 @@
           </template>
           <request-viewer
             :request="selectedRequest"
-            :kyc-required-asset-type="kycRequiredAssetType"
             @update-click="isUpdateMode = true"
             @cancel="(isDrawerShown = false) || initFirstPageLoader()"
           />
@@ -95,10 +94,6 @@ export default {
       type: Object,
       required: true,
     },
-    kycRequiredAssetType: {
-      type: Number,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -116,11 +111,12 @@ export default {
     }),
   },
 
-  created () {
+  async created () {
     initApi(this.wallet, this.config)
     initConfig(this.config)
 
     this.setAccountId(this.wallet.accountId)
+    await this.loadAssetTypes()
     this.initFirstPageLoader()
   },
 
@@ -133,7 +129,16 @@ export default {
 
     ...mapActions('create-asset-requests', {
       loadCreateAssetRequests: types.LOAD_REQUESTS,
+      loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
     }),
+
+    async loadAssetTypes () {
+      try {
+        await this.loadKycRequiredAssetType()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
 
     async loadRequests () {
       this.isLoaded = false
