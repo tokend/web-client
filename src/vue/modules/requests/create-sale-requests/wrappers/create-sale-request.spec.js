@@ -19,9 +19,7 @@ describe('Create sale request', () => {
             description: 'SALE_DESCRIPTION_BLOB_ID',
             shortDescription: 'Some info',
             youtubeVideoId: 'YOUTUBE_VIDEO_ID',
-            logo: {
-              key: 'SALE_LOGO_KEY',
-            },
+            logo: { key: 'logo-key' },
           },
         },
       }
@@ -43,10 +41,8 @@ describe('Create sale request', () => {
       expect(result.description).to.equal('SALE_DESCRIPTION_BLOB_ID')
       expect(result.shortDescription).to.equal('Some info')
 
-      expect(result.logo).to.deep.equal({
-        key: 'SALE_LOGO_KEY',
-      })
-      expect(result.logoKey).to.equal('SALE_LOGO_KEY')
+      expect(result.logo).to.deep.equal({ key: 'logo-key' })
+      expect(result.logoKey).to.equal('logo-key')
 
       expect(result.youtubeVideoId).to.equal('YOUTUBE_VIDEO_ID')
     })
@@ -58,15 +54,13 @@ describe('Create sale request', () => {
         const request = new CreateSaleRequest({
           requestDetails: {
             creatorDetails: {
-              logo: {
-                key: 'SALE_LOGO_KEY',
-              },
+              logo: { key: 'logo-key' },
             },
           },
         })
 
         expect(request.logoUrl('https://storage.com'))
-          .to.equal('https://storage.com/SALE_LOGO_KEY')
+          .to.equal('https://storage.com/logo-key')
       })
 
       it('returns empty string if logo key is absent', () => {
@@ -98,14 +92,12 @@ describe('Create sale request', () => {
       it('returns video link if youtube video ID is present', () => {
         const request = new CreateSaleRequest({
           requestDetails: {
-            creatorDetails: {
-              youtubeVideoId: 'YOUTUBE_VIDEO_ID',
-            },
+            creatorDetails: { youtubeVideoId: 'video-id' },
           },
         })
 
         expect(request.youtubeVideoUrl)
-          .to.equal('https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID')
+          .to.equal('https://www.youtube.com/watch?v=video-id')
       })
 
       it('returns empty string if youtube video ID is absent', () => {

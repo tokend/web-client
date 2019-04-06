@@ -10,9 +10,7 @@ describe('Incoming withdrawal request', () => {
             fixed: '1.000000',
             calculatedPercent: '3.000000',
           },
-          creatorDetails: {
-            comment: 'Some comment',
-          },
+          creatorDetails: { comment: 'Some comment' },
         },
       }
 

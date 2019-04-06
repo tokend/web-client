@@ -1,4 +1,9 @@
-import { mutations, getters, actions } from './index'
+import {
+  incomingWithdrawalRequestsModule,
+  mutations,
+  getters,
+  actions,
+} from './index'
 import { types } from './types'
 
 import { Wallet, base } from '@tokend/js-sdk'
@@ -8,6 +13,32 @@ import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-reque
 import * as Api from '../_api'
 
 describe('incoming-withdrawals-requests.module', () => {
+  describe('vuex types', () => {
+    const getModuleKeys = (module) => {
+      return Object.keys({
+        ...module.actions,
+        ...module.mutations,
+        ...module.getters,
+      })
+    }
+
+    it('every entity in module should be mentioned in vuex-types', () => {
+      for (const key of getModuleKeys(incomingWithdrawalRequestsModule)) {
+        expect(types).to.have.property(key)
+      }
+    })
+
+    it('every key described in vuex-types should be a real vuex-entity', () => {
+      const moduleKeys = [
+        ...getModuleKeys(incomingWithdrawalRequestsModule),
+      ]
+
+      for (const key of Object.keys(types)) {
+        expect(moduleKeys).to.include(key)
+      }
+    })
+  })
+
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
@@ -16,9 +47,7 @@ describe('incoming-withdrawals-requests.module', () => {
 
       mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
 
-      expect(state).to.deep.equal({
-        accountId: 'SOME_ACCOUNT_ID',
-      })
+      expect(state).to.deep.equal({ accountId: 'SOME_ACCOUNT_ID' })
     })
 
     it('SET_REQUESTS should properly modify state', () => {
@@ -92,12 +121,8 @@ describe('incoming-withdrawals-requests.module', () => {
           .to.have.been.calledOnceWithExactly(
             '/v3/create_withdraw_requests',
             {
-              page: {
-                order: 'desc',
-              },
-              filter: {
-                reviewer: 'SOME_ACCOUNT_ID',
-              },
+              page: { order: 'desc' },
+              filter: { reviewer: 'SOME_ACCOUNT_ID' },
               include: ['request_details', 'request_details.balance'],
             }
           )

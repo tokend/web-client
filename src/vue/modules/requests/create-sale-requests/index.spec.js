@@ -5,8 +5,6 @@ import { createSaleRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import * as Api from './_api'
 import * as Config from './_config'
 
@@ -16,81 +14,76 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Create sale requests module', () => {
-  const props = {
-    config: {
-      horizonURL: 'https://test.api.com',
-      storageURL: 'https://test.storage.com',
-    },
-    wallet: new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ),
-  }
-
+  let sandbox
   let store
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
     store = new Vuex.Store({
       modules: { 'create-sale-requests': createSaleRequestsModule },
     })
   })
 
+  afterEach(() => {
+    sandbox.restore()
+  })
+
   describe('created hook', () => {
     beforeEach(() => {
-      sinon.stub(Api, 'initApi')
-      sinon.stub(Config, 'initConfig')
-      sinon.stub(CreateSaleRequestsModule.methods, 'setAccountId')
-      sinon.stub(CreateSaleRequestsModule.methods, 'initFirstPageLoader')
+      sandbox.stub(Api, 'initApi')
+      sandbox.stub(Config, 'initConfig')
+      sandbox.stub(CreateSaleRequestsModule.methods, 'setAccountId')
+      sandbox.stub(CreateSaleRequestsModule.methods, 'initFirstPageLoader')
     })
 
-    afterEach(() => {
-      Api.initApi.restore()
-      Config.initConfig.restore()
-      CreateSaleRequestsModule.methods.setAccountId.restore()
-      CreateSaleRequestsModule.methods.initFirstPageLoader.restore()
-    })
-
-    it('calls initApi function', async () => {
-      await shallowMount(CreateSaleRequestsModule, {
+    it('calls initApi function with correct params', () => {
+      shallowMount(CreateSaleRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          config: 'SOME_CONFIG',
+          wallet: 'SOME_WALLET',
+        },
       })
 
       expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly(props.wallet, props.config)
+        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
-    it('calls initConfig function', async () => {
-      await shallowMount(CreateSaleRequestsModule, {
+    it('calls initConfig function with correct params', () => {
+      shallowMount(CreateSaleRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          config: 'SOME_CONFIG',
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
       })
 
       expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly(props.config)
+        .to.have.been.calledOnceWithExactly('SOME_CONFIG')
     })
 
-    it('calls setAccountId method', async () => {
-      await shallowMount(CreateSaleRequestsModule, {
+    it('calls setAccountId method', () => {
+      shallowMount(CreateSaleRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
       })
 
-      expect(CreateSaleRequestsModule.methods.setAccountId
-        .withArgs(props.wallet.accountId)
-      ).to.have.been.calledOnce
+      expect(CreateSaleRequestsModule.methods.setAccountId)
+        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
-    it('calls initFirstPageLoader method', async () => {
-      await shallowMount(CreateSaleRequestsModule, {
+    it('calls initFirstPageLoader method', () => {
+      shallowMount(CreateSaleRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
       })
 
       expect(CreateSaleRequestsModule.methods.initFirstPageLoader)
@@ -102,12 +95,11 @@ describe('Create sale requests module', () => {
     let wrapper
 
     beforeEach(() => {
-      sinon.stub(CreateSaleRequestsModule, 'created').resolves()
+      sandbox.stub(CreateSaleRequestsModule, 'created').resolves()
 
       wrapper = shallowMount(CreateSaleRequestsModule, {
         store,
         localVue,
-        propsData: props,
       })
     })
 
@@ -117,69 +109,33 @@ describe('Create sale requests module', () => {
 
     describe('method', () => {
       describe('loadRequests', () => {
-        it('calls loadCreateSaleRequests method', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').resolves()
-
-          await wrapper.vm.loadRequests()
-
-          expect(wrapper.vm.loadCreateSaleRequests)
-            .to.have.been.calledOnce
-
-          wrapper.vm.loadCreateSaleRequests.restore()
-        })
-
-        it('sets isLoaded property to true if loading was succeded', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').resolves()
-
-          await wrapper.vm.loadRequests()
-
-          expect(wrapper.vm.isLoaded).to.be.true
-
-          wrapper.vm.loadCreateSaleRequests.restore()
-        })
-
-        it('returns the response of loadCreateSaleRequests method', async () => {
+        it('loads requests and returns the response if loading succeded', async () => {
           const responseStub = { data: {} }
-
-          sinon.stub(wrapper.vm, 'loadCreateSaleRequests')
+          sandbox.stub(wrapper.vm, 'loadCreateSaleRequests')
             .resolves(responseStub)
 
           const result = await wrapper.vm.loadRequests()
 
+          expect(wrapper.vm.loadCreateSaleRequests).to.have.been.calledOnce
+          expect(wrapper.vm.isLoaded).to.be.true
           expect(result).to.equal(responseStub)
-
-          wrapper.vm.loadCreateSaleRequests.restore()
         })
 
-        it('calls ErrorHandler.processWithoutFeedback if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
+        it('handles an error properly if it was thrown', async () => {
+          sandbox.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
+          sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadRequests()
 
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
-
-          wrapper.vm.loadCreateSaleRequests.restore()
-          ErrorHandler.processWithoutFeedback.restore()
-        })
-
-        it('set isLoadingFailed property to true if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadCreateSaleRequests').rejects()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
-
-          await wrapper.vm.loadRequests()
-
           expect(wrapper.vm.isLoadingFailed).to.be.true
-
-          wrapper.vm.loadCreateSaleRequests.restore()
-          ErrorHandler.processWithoutFeedback.restore()
         })
       })
 
       describe('initFirstPageLoader', () => {
         it('sets an instance of loadRequests method to the firstPageLoader property', async () => {
-          sinon.stub(wrapper.vm, 'loadRequests').resolves()
+          sandbox.stub(wrapper.vm, 'loadRequests').resolves()
           wrapper.setData({
             firstPageLoader: () => {},
           })
@@ -192,33 +148,17 @@ describe('Create sale requests module', () => {
       })
 
       describe('showRequestDetails', () => {
-        it('sets isUpdateMode property to false', () => {
-          wrapper.setData({
-            isUpdateMode: true,
-          })
-
-          wrapper.vm.showRequestDetails()
-
-          expect(wrapper.vm.isUpdateMode).to.be.false
-        })
-
-        it('sets selectedRequest property to passed param', () => {
+        it('sets component data properties properly', () => {
           wrapper.setData({
             selectedRequest: {},
+            isUpdateMode: true,
+            isDrawerShown: false,
           })
 
           wrapper.vm.showRequestDetails({ id: '1' })
 
           expect(wrapper.vm.selectedRequest).to.deep.equal({ id: '1' })
-        })
-
-        it('sets isDrawerShown property to true', () => {
-          wrapper.setData({
-            isDrawerShown: false,
-          })
-
-          wrapper.vm.showRequestDetails()
-
+          expect(wrapper.vm.isUpdateMode).to.be.false
           expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })

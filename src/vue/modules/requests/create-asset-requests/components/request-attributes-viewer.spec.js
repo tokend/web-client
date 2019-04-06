@@ -28,10 +28,10 @@ describe('Create asset request attributes viewer', () => {
 
     describe('assetTermsUrl', () => {
       it('returns request.termsUrl', () => {
-        const expectedUrl = 'https://test.com/terms'
-        sinon.stub(wrapper.vm.request, 'termsUrl').returns(expectedUrl)
+        sinon.stub(wrapper.vm.request, 'termsUrl')
+          .returns('https://test.com/terms')
 
-        expect(wrapper.vm.assetTermsUrl).to.equal(expectedUrl)
+        expect(wrapper.vm.assetTermsUrl).to.equal('https://test.com/terms')
 
         wrapper.vm.request.termsUrl.restore()
       })

@@ -5,7 +5,6 @@ import { preIssuanceRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
 import * as Api from './_api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -36,26 +35,17 @@ describe('Pre issuance requests module', () => {
     })
 
     it('calls initApi function with correct params', () => {
-      const props = {
-        config: {
-          horizonURL: 'https://test.api.com',
-        },
-        wallet: new Wallet(
-          'test@mail.com',
-          'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-          'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-          '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-        ),
-      }
-
       shallowMount(PreIssuanceRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          config: 'SOME_CONFIG',
+          wallet: 'SOME_WALLET',
+        },
       })
 
       expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly(props.wallet, props.config)
+        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
     it('calls setAccountId method', () => {
@@ -98,7 +88,7 @@ describe('Pre issuance requests module', () => {
 
     describe('method', () => {
       describe('loadRequests', () => {
-        it('calls loadPreIssuanceRequests method, sets isLoaded property to true, and returns the requests response if loading succeded', async () => {
+        it('loads requests properly and returns the response if loading succeded', async () => {
           const responseStub = { data: {} }
           sandbox.stub(wrapper.vm, 'loadPreIssuanceRequests')
             .resolves(responseStub)
@@ -110,7 +100,7 @@ describe('Pre issuance requests module', () => {
           expect(result).to.equal(responseStub)
         })
 
-        it('calls ErrorHandler.processWithoutFeedback and sets isLoadingFailed property to true if an error was thrown', async () => {
+        it('handles an error properly if it was thrown', async () => {
           sandbox.stub(wrapper.vm, 'loadPreIssuanceRequests').rejects()
           sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 

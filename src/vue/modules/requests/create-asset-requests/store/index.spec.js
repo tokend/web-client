@@ -1,4 +1,9 @@
-import { mutations, getters, actions } from './index'
+import {
+  createAssetRequestsModule,
+  mutations,
+  getters,
+  actions,
+} from './index'
 import { types } from './types'
 
 import { Wallet, base } from '@tokend/js-sdk'
@@ -8,6 +13,32 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import * as Api from '../_api'
 
 describe('create-asset-requests.module', () => {
+  describe('vuex types', () => {
+    const getModuleKeys = (module) => {
+      return Object.keys({
+        ...module.actions,
+        ...module.mutations,
+        ...module.getters,
+      })
+    }
+
+    it('every entity in module should be mentioned in vuex-types', () => {
+      for (const key of getModuleKeys(createAssetRequestsModule)) {
+        expect(types).to.have.property(key)
+      }
+    })
+
+    it('every key described in vuex-types should be a real vuex-entity', () => {
+      const moduleKeys = [
+        ...getModuleKeys(createAssetRequestsModule),
+      ]
+
+      for (const key of Object.keys(types)) {
+        expect(moduleKeys).to.include(key)
+      }
+    })
+  })
+
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
       const state = {
@@ -16,9 +47,7 @@ describe('create-asset-requests.module', () => {
 
       mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
 
-      expect(state).to.deep.equal({
-        accountId: 'SOME_ACCOUNT_ID',
-      })
+      expect(state).to.deep.equal({ accountId: 'SOME_ACCOUNT_ID' })
     })
 
     it('SET_REQUESTS should properly modify state', () => {

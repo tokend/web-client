@@ -6,19 +6,13 @@ describe('Update asset request', () => {
     it('should properly parse record', () => {
       const record = {
         requestDetails: {
-          asset: {
-            id: 'USD',
-          },
+          asset: { id: 'USD' },
           type: 0,
           policies: 3,
           creatorDetails: {
             name: 'Dollar',
-            terms: {
-              key: 'ASSET_TERMS_KEY',
-            },
-            logo: {
-              key: 'ASSET_LOGO_KEY',
-            },
+            terms: { key: 'terms-key' },
+            logo: { key: 'logo-key' },
           },
         },
       }
@@ -31,15 +25,11 @@ describe('Update asset request', () => {
 
       expect(result.policy).to.equal(3)
 
-      expect(result.terms).to.deep.equal({
-        key: 'ASSET_TERMS_KEY',
-      })
-      expect(result.termsKey).to.equal('ASSET_TERMS_KEY')
+      expect(result.terms).to.deep.equal({ key: 'terms-key' })
+      expect(result.termsKey).to.equal('terms-key')
 
-      expect(result.logo).to.deep.equal({
-        key: 'ASSET_LOGO_KEY',
-      })
-      expect(result.logoKey).to.equal('ASSET_LOGO_KEY')
+      expect(result.logo).to.deep.equal({ key: 'logo-key' })
+      expect(result.logoKey).to.equal('logo-key')
     })
   })
 
@@ -50,13 +40,11 @@ describe('Update asset request', () => {
         const request = new UpdateAssetRequest({
           requestDetails: {
             creatorDetails: {
-              logo: {
-                key: 'ASSET_LOGO_KEY',
-              },
+              logo: { key: 'logo-key' },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/ASSET_LOGO_KEY'
+        const expectedUrl = 'https://storage.com/logo-key'
 
         expect(request.logoUrl(storageUrl)).to.equal(expectedUrl)
       })
@@ -75,13 +63,11 @@ describe('Update asset request', () => {
         const request = new UpdateAssetRequest({
           requestDetails: {
             creatorDetails: {
-              terms: {
-                key: 'ASSET_TERMS_KEY',
-              },
+              terms: { key: 'terms-key' },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/ASSET_TERMS_KEY'
+        const expectedUrl = 'https://storage.com/terms-key'
 
         expect(request.termsUrl(storageUrl)).to.equal(expectedUrl)
       })

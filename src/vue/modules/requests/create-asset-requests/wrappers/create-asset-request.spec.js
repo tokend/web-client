@@ -10,16 +10,12 @@ describe('Create asset request', () => {
           type: 0,
           initialPreissuedAmount: '100.000000',
           maxIssuanceAmount: '1000.000000',
-          preIssuanceAssetSigner: 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J',
+          preIssuanceAssetSigner: 'SIGNER_ID',
           policies: 3,
           creatorDetails: {
             name: 'Dollar',
-            terms: {
-              key: 'dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz',
-            },
-            logo: {
-              key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
-            },
+            terms: { key: 'terms-key' },
+            logo: { key: 'logo-key' },
           },
         },
       }
@@ -32,70 +28,58 @@ describe('Create asset request', () => {
 
       expect(result.initialPreissuedAmount).to.equal('100.000000')
       expect(result.maxIssuanceAmount).to.equal('1000.000000')
-      expect(result.preissuedAssetSigner).to.equal('GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J')
+      expect(result.preissuedAssetSigner).to.equal('SIGNER_ID')
 
       expect(result.policy).to.equal(3)
 
-      expect(result.terms).to.deep.equal({
-        key: 'dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz',
-      })
-      expect(result.termsKey).to.equal('dpurex4infnebjhcost7fvlv776hudvnj3shl3gdjk57xjtkflvvbwmz')
+      expect(result.terms).to.deep.equal({ key: 'terms-key' })
+      expect(result.termsKey).to.equal('terms-key')
 
-      expect(result.logo).to.deep.equal({
-        key: 'dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55',
-      })
-      expect(result.logoKey).to.equal('dpurex4infnebjhcost7fvpmwbkjdkfxwegfwxy7lhthh7i3oydard55')
+      expect(result.logo).to.deep.equal({ key: 'logo-key' })
+      expect(result.logoKey).to.equal('logo-key')
     })
   })
 
   describe('methods', () => {
     describe('logoUrl', () => {
       it('returns storage logo URL if logo key is present', () => {
-        const storageUrl = 'https://storage.com'
         const request = new CreateAssetRequest({
           requestDetails: {
             creatorDetails: {
-              logo: {
-                key: 'ASSET_LOGO_KEY',
-              },
+              logo: { key: 'logo-key' },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/ASSET_LOGO_KEY'
 
-        expect(request.logoUrl(storageUrl)).to.equal(expectedUrl)
+        expect(request.logoUrl('https://storage.com'))
+          .to.equal('https://storage.com/logo-key')
       })
 
       it('returns empty string if logo key is absent', () => {
-        const storageUrl = 'https://storage.com'
         const request = new CreateAssetRequest({})
 
-        expect(request.logoUrl(storageUrl)).to.equal('')
+        expect(request.logoUrl('https://storage.com')).to.equal('')
       })
     })
 
     describe('termsUrl', () => {
       it('returns storage terms URL if logo key is present', () => {
-        const storageUrl = 'https://storage.com'
         const request = new CreateAssetRequest({
           requestDetails: {
             creatorDetails: {
-              terms: {
-                key: 'ASSET_TERMS_KEY',
-              },
+              terms: { key: 'terms-key' },
             },
           },
         })
-        const expectedUrl = 'https://storage.com/ASSET_TERMS_KEY'
 
-        expect(request.termsUrl(storageUrl)).to.equal(expectedUrl)
+        expect(request.termsUrl('https://storage.com'))
+          .to.equal('https://storage.com/terms-key')
       })
 
       it('returns empty string if logo key is absent', () => {
-        const storageUrl = 'https://storage.com'
         const request = new CreateAssetRequest({})
 
-        expect(request.termsUrl(storageUrl)).to.equal('')
+        expect(request.termsUrl('https://storage.com')).to.equal('')
       })
     })
   })
@@ -114,9 +98,7 @@ describe('Create asset request', () => {
 
       it('returns false if the request does not have transferable policy', () => {
         const request = new CreateAssetRequest({
-          requestDetails: {
-            policies: 0,
-          },
+          requestDetails: { policies: 0 },
         })
 
         expect(request.isTransferable).to.be.false
@@ -136,9 +118,7 @@ describe('Create asset request', () => {
 
       it('returns false if the request does not have withdrawable policy', () => {
         const request = new CreateAssetRequest({
-          requestDetails: {
-            policies: 0,
-          },
+          requestDetails: { policies: 0 },
         })
 
         expect(request.isWithdrawable).to.be.false

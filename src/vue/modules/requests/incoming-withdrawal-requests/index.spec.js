@@ -6,8 +6,6 @@ import { incomingWithdrawalRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import * as Api from './_api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -16,19 +14,11 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Incoming withdrawal requests module', () => {
-  const props = {
-    config: { horizonURL: 'https://test.api.com' },
-    wallet: new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ),
-  }
-
+  let sandbox
   let store
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
     store = new Vuex.Store({
       modules: {
         'incoming-withdrawal-requests': incomingWithdrawalRequestsModule,
@@ -36,51 +26,57 @@ describe('Incoming withdrawal requests module', () => {
     })
   })
 
-  describe('created hook', () => {
-    it('calls initApi function with provided params', () => {
-      sinon.stub(Api, 'initApi')
+  afterEach(() => {
+    sandbox.restore()
+  })
 
+  describe('created hook', () => {
+    beforeEach(() => {
+      sandbox.stub(Api, 'initApi')
+      sandbox.stub(IncomingWitdrawalRequestsModule.methods, 'setAccountId')
+      sandbox.stub(
+        IncomingWitdrawalRequestsModule.methods, 'initFirstPageLoader'
+      )
+    })
+
+    it('calls initApi function with correct params', () => {
       shallowMount(IncomingWitdrawalRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          config: 'SOME_CONFIG',
+          wallet: 'SOME_WALLET',
+        },
       })
 
       expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly(props.wallet, props.config)
-
-      Api.initApi.restore()
+        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
     it('calls setAccountId method', () => {
-      sinon.stub(IncomingWitdrawalRequestsModule.methods, 'setAccountId')
-
       shallowMount(IncomingWitdrawalRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
       })
 
-      expect(IncomingWitdrawalRequestsModule.methods.setAccountId
-        .withArgs(props.wallet.accountId)
-      ).to.have.been.calledOnce
-
-      IncomingWitdrawalRequestsModule.methods.setAccountId.restore()
+      expect(IncomingWitdrawalRequestsModule.methods.setAccountId)
+        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {
-      sinon.stub(IncomingWitdrawalRequestsModule.methods, 'initFirstPageLoader')
-
       shallowMount(IncomingWitdrawalRequestsModule, {
         localVue,
         store,
-        propsData: props,
+        propsData: {
+          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+        },
       })
 
       expect(IncomingWitdrawalRequestsModule.methods.initFirstPageLoader)
         .to.have.been.calledOnce
-
-      IncomingWitdrawalRequestsModule.methods.initFirstPageLoader.restore()
     })
   })
 
@@ -88,78 +84,43 @@ describe('Incoming withdrawal requests module', () => {
     let wrapper
 
     beforeEach(() => {
+      sandbox.stub(IncomingWitdrawalRequestsModule, 'created').resolves()
       wrapper = shallowMount(IncomingWitdrawalRequestsModule, {
         store,
         localVue,
-        propsData: props,
       })
     })
 
     describe('method', () => {
       describe('loadRequests', () => {
-        it('calls loadIncomingWithdrawalRequests method', async () => {
-          sinon.stub(wrapper.vm, 'loadIncomingWithdrawalRequests').resolves()
-
-          await wrapper.vm.loadRequests()
-
-          expect(wrapper.vm.loadIncomingWithdrawalRequests)
-            .to.have.been.calledOnce
-
-          wrapper.vm.loadIncomingWithdrawalRequests.restore()
-        })
-
-        it('sets isLoaded property to true if loading was succeded', async () => {
-          sinon.stub(wrapper.vm, 'loadIncomingWithdrawalRequests').resolves()
-
-          await wrapper.vm.loadRequests()
-
-          expect(wrapper.vm.isLoaded).to.be.true
-
-          wrapper.vm.loadIncomingWithdrawalRequests.restore()
-        })
-
-        it('returns the response of loadIncomingWithdrawalRequests method', async () => {
+        it('loads requests and returns the response if loading succeded', async () => {
           const responseStub = { data: {} }
-
-          sinon.stub(wrapper.vm, 'loadIncomingWithdrawalRequests')
+          sandbox.stub(wrapper.vm, 'loadIncomingWithdrawalRequests')
             .resolves(responseStub)
 
           const result = await wrapper.vm.loadRequests()
 
+          expect(wrapper.vm.loadIncomingWithdrawalRequests)
+            .to.have.been.calledOnce
+          expect(wrapper.vm.isLoaded).to.be.true
           expect(result).to.equal(responseStub)
-
-          wrapper.vm.loadIncomingWithdrawalRequests.restore()
         })
 
-        it('calls ErrorHandler.processWithoutFeedback if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadIncomingWithdrawalRequests').rejects()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
+        it('handles an error properly if it was thrown', async () => {
+          sandbox.stub(wrapper.vm, 'loadIncomingWithdrawalRequests').rejects()
+          sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
           await wrapper.vm.loadRequests()
 
           expect(ErrorHandler.processWithoutFeedback)
             .to.have.been.calledOnce
-
-          wrapper.vm.loadIncomingWithdrawalRequests.restore()
-          ErrorHandler.processWithoutFeedback.restore()
-        })
-
-        it('set isLoadingFailed property to true if an error was thrown', async () => {
-          sinon.stub(wrapper.vm, 'loadIncomingWithdrawalRequests').rejects()
-          sinon.stub(ErrorHandler, 'processWithoutFeedback')
-
-          await wrapper.vm.loadRequests()
-
           expect(wrapper.vm.isLoadingFailed).to.be.true
-
-          wrapper.vm.loadIncomingWithdrawalRequests.restore()
-          ErrorHandler.processWithoutFeedback.restore()
         })
       })
 
       describe('initFirstPageLoader', () => {
         it('sets an instance of loadRequests method to the firstPageLoader property', async () => {
-          sinon.stub(wrapper.vm, 'loadRequests').resolves()
+          sandbox.stub(wrapper.vm, 'loadRequests').resolves()
           wrapper.setData({
             firstPageLoader: () => {},
           })
@@ -172,23 +133,15 @@ describe('Incoming withdrawal requests module', () => {
       })
 
       describe('showRequestDetails', () => {
-        it('sets selectedRequest property to passed param', () => {
+        it('sets component data properties properly', () => {
           wrapper.setData({
             selectedRequest: {},
+            isDrawerShown: false,
           })
 
           wrapper.vm.showRequestDetails({ id: '1' })
 
           expect(wrapper.vm.selectedRequest).to.deep.equal({ id: '1' })
-        })
-
-        it('sets isDrawerShown property to true', () => {
-          wrapper.setData({
-            isDrawerShown: false,
-          })
-
-          wrapper.vm.showRequestDetails()
-
           expect(wrapper.vm.isDrawerShown).to.be.true
         })
       })

@@ -8,9 +8,7 @@ describe('Asset', () => {
         owner: { id: 'SOME_ACCOUNT_ID' },
         details: {
           name: 'Dollar',
-          logo: {
-            key: 'ASSET_LOGO_KEY',
-          },
+          logo: { key: 'logo-key' },
         },
       }
 
@@ -20,7 +18,7 @@ describe('Asset', () => {
       expect(result.owner).to.equal('SOME_ACCOUNT_ID')
 
       expect(result.name).to.equal('Dollar')
-      expect(result.logoKey).to.equal('ASSET_LOGO_KEY')
+      expect(result.logoKey).to.equal('logo-key')
     })
   })
 
@@ -29,14 +27,12 @@ describe('Asset', () => {
       it('returns storage logo URL if logo key is present', () => {
         const asset = new Asset({
           details: {
-            logo: {
-              key: 'ASSET_LOGO_KEY',
-            },
+            logo: { key: 'logo-key' },
           },
         })
 
         expect(asset.logoUrl('https://storage.com'))
-          .to.equal('https://storage.com/ASSET_LOGO_KEY')
+          .to.equal('https://storage.com/logo-key')
       })
 
       it('returns empty string if logo key is absent', () => {

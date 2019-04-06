@@ -1,4 +1,9 @@
-import { mutations, getters, actions } from './index'
+import {
+  createSaleRequestsModule,
+  mutations,
+  getters,
+  actions,
+} from './index'
 import { types } from './types'
 
 import { Wallet, base } from '@tokend/js-sdk'
@@ -8,11 +13,35 @@ import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import * as Api from '../_api'
 
 describe('create-sale-requests.module', () => {
+  describe('vuex types', () => {
+    const getModuleKeys = (module) => {
+      return Object.keys({
+        ...module.actions,
+        ...module.mutations,
+        ...module.getters,
+      })
+    }
+
+    it('every entity in module should be mentioned in vuex-types', () => {
+      for (const key of getModuleKeys(createSaleRequestsModule)) {
+        expect(types).to.have.property(key)
+      }
+    })
+
+    it('every key described in vuex-types should be a real vuex-entity', () => {
+      const moduleKeys = [
+        ...getModuleKeys(createSaleRequestsModule),
+      ]
+
+      for (const key of Object.keys(types)) {
+        expect(moduleKeys).to.include(key)
+      }
+    })
+  })
+
   describe('mutations', () => {
     it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
+      const state = { accountId: '' }
 
       mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
 
@@ -22,9 +51,7 @@ describe('create-sale-requests.module', () => {
     })
 
     it('SET_REQUESTS should properly modify state', () => {
-      const state = {
-        requests: [],
-      }
+      const state = { requests: [] }
 
       mutations[types.SET_REQUESTS](state, [
         { id: '1' },
@@ -90,13 +117,12 @@ describe('create-sale-requests.module', () => {
           .to.have.been.calledOnceWithExactly(
             '/v3/create_sale_requests',
             {
-              page: {
-                order: 'desc',
-              },
-              filter: {
-                requestor: 'SOME_ACCOUNT_ID',
-              },
-              include: ['request_details', 'request_details.default_quote_asset'],
+              page: { order: 'desc' },
+              filter: { requestor: 'SOME_ACCOUNT_ID' },
+              include: [
+                'request_details',
+                'request_details.default_quote_asset',
+              ],
             }
           )
 

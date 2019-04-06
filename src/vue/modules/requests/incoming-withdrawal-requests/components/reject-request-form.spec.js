@@ -17,9 +17,11 @@ localVue.use(Vuelidate)
 localVue.use(Vuex)
 
 describe('Reject incoming withdrawal request form', () => {
+  let sandbox
   let wrapper
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
     const store = new Vuex.Store({
       modules: {
         'incoming-withdrawal-requests': incomingWithdrawalRequestsModule,
@@ -30,6 +32,10 @@ describe('Reject incoming withdrawal request form', () => {
       localVue,
       store,
     })
+  })
+
+  afterEach(() => {
+    sandbox.restore()
   })
 
   describe('validation rules assigned correctly', () => {
@@ -50,7 +56,7 @@ describe('Reject incoming withdrawal request form', () => {
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
       it(`$v.form.${model} is touched after blur event emitted on ${selector}`, () => {
-        sinon.stub(wrapper.vm, 'touchField')
+        sandbox.stub(wrapper.vm, 'touchField')
 
         wrapper.find(selector).vm.$emit('blur')
 
@@ -63,68 +69,38 @@ describe('Reject incoming withdrawal request form', () => {
 
   describe('component', () => {
     describe('method', () => {
-      beforeEach(() => {
-        sinon.stub(Bus, 'success')
-        sinon.stub(ErrorHandler, 'process')
-        sinon.stub(wrapper.vm, 'rejectWithdrawalRequest').resolves()
-      })
+      describe('rejectRequest', () => {
+        it('calls proper set of methods and emits proper event if request rejecting succeded', async () => {
+          const request = new IncomingWithdrawalRequest({ id: '1' })
+          wrapper.setProps({ request })
+          wrapper.setData({ form: { rejectReason: 'Some reason' } })
 
-      afterEach(() => {
-        Bus.success.restore()
-        ErrorHandler.process.restore()
-        wrapper.vm.rejectWithdrawalRequest.restore()
-      })
+          sandbox.stub(Bus, 'success')
+          sandbox.stub(ErrorHandler, 'process')
+          sandbox.stub(wrapper.vm, 'rejectWithdrawalRequest').resolves()
 
-      it('sets isRequestRejecting property to true', async () => {
-        await wrapper.vm.rejectRequest()
+          await wrapper.vm.rejectRequest()
 
-        expect(wrapper.vm.isRequestRejecting).to.be.true
-      })
+          expect(wrapper.vm.isRequestRejecting).to.be.true
+          expect(wrapper.vm.rejectWithdrawalRequest)
+            .to.have.been.calledOnceWithExactly({
+              request,
+              reason: 'Some reason',
+            })
 
-      it('calls rejectWithdrawalRequest method with correct params', async () => {
-        const request = new IncomingWithdrawalRequest({ id: '1' })
-        wrapper.setProps({ request })
-        wrapper.setData({ form: { rejectReason: 'Some reason' } })
+          expect(Bus.success).to.have.been.calledOnce
+          expect(wrapper.emitted()['request-rejected']).to.exist
+        })
 
-        await wrapper.vm.rejectRequest()
+        it('handles an error properly if it was thrown', async () => {
+          sandbox.stub(wrapper.vm, 'rejectWithdrawalRequest').rejects()
+          sandbox.stub(ErrorHandler, 'process')
 
-        expect(wrapper.vm.rejectWithdrawalRequest)
-          .to.have.been.calledOnceWithExactly({
-            request,
-            reason: 'Some reason',
-          })
-      })
+          await wrapper.vm.rejectRequest()
 
-      it('calls Bus.success if rejectWithdrawalRequest did not throw an error', async () => {
-        await wrapper.vm.rejectRequest()
-
-        expect(Bus.success).to.have.been.calledOnce
-      })
-
-      it('emits reject event if rejectWithdrawalRequest did not throw an error', async () => {
-        const rejectedEvent = 'request-rejected'
-
-        await wrapper.vm.rejectRequest()
-
-        expect(wrapper.emitted()[rejectedEvent]).to.exist
-      })
-
-      it('calls ErrorHandler.process if an error was thrown', async () => {
-        wrapper.vm.rejectWithdrawalRequest.restore()
-        sinon.stub(wrapper.vm, 'rejectWithdrawalRequest').rejects()
-
-        await wrapper.vm.rejectRequest()
-
-        expect(ErrorHandler.process).to.have.been.calledOnce
-      })
-
-      it('sets isRequestRejecting to false if an error was thrown', async () => {
-        wrapper.vm.rejectWithdrawalRequest.restore()
-        sinon.stub(wrapper.vm, 'rejectWithdrawalRequest').rejects()
-
-        await wrapper.vm.rejectRequest()
-
-        expect(wrapper.vm.isRequestRejecting).to.be.false
+          expect(ErrorHandler.process).to.have.been.calledOnce
+          expect(wrapper.vm.isRequestRejecting).to.be.false
+        })
       })
     })
   })

@@ -5,9 +5,7 @@ describe('Pre-issuance request', () => {
     it('should properly parse record', () => {
       const record = {
         requestDetails: {
-          asset: {
-            id: 'USD',
-          },
+          asset: { id: 'USD' },
           amount: '100.000000',
         },
       }
