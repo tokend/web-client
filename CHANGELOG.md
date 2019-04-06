@@ -37,6 +37,8 @@ for further information about branching and tagging conventions.
 - Now sorting balances in desc order by total balance in stats quote asset
 - Now getting previous account role from previous KYC request instead of
   `creatorDetails` of approved reset request
+- Moved redeem offer creation from the global mixin to the local store
+- Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 
 #### Removed
 - "Fee" column from the movements table
@@ -48,6 +50,7 @@ for further information about branching and tagging conventions.
 - Fixed a bug with animation flickering on drawer closing
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
+- Displaying insufficient/absent balance message on submit trade form
 
 ## [1.4.0] - 2019-04-05
 

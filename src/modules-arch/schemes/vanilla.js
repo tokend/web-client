@@ -39,6 +39,8 @@ import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sal
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
+import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
@@ -237,15 +239,23 @@ export default {
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
-          children: [
-            {
+        },
+        submodules: [
+          new SaleCampaignViewerPageModule({
+            routerEntry: {
               path: '/funds/:id/campaign',
               name: vueRoutes.saleCampaign.name,
-              component: _ => import('@/vue/pages/sale-details/SaleCampaignViewer'),
               props: true,
             },
-          ],
-        },
+            submodules: [
+              new SaleStateWidgetModule({
+                submodules: [
+                  new DashboardChartPseudoModule(),
+                ],
+              }),
+            ],
+          }),
+        ],
       },
     ),
 
