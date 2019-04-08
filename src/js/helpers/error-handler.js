@@ -3,8 +3,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
 
-// import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
-
 export class ErrorHandler {
   static process (error, translationId = '') {
     ErrorHandler.processWithoutFeedback(error)
@@ -61,6 +59,8 @@ export class ErrorHandler {
       case errors.TransactionError:
         translationId = `errors.${error.resultCodes[0].errorCode}`
         if (!i18next.exists(translationId)) {
+          // If there is no localized error code, display the message
+          // that came from the backend
           translationId = error.resultCodes[0].message
         }
         break
