@@ -118,7 +118,7 @@
       "table-price-lbl": "Price in quote opportunity"
     },
     "submit-trade-offers-form": {
-      "insufficient-sales": "Insufficient opportunities on your balance. You have {{amount}}"
+      "insufficient-sales-msg": "Insufficient opportunities on your balance. You have {{amount, money}}"
     },
     "trade-top-bar": {
       "here-will-pairs-list": "Here will be the list of opportunity pairs"

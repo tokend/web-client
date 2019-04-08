@@ -25,6 +25,14 @@
               {{ asset.balance | formatMoney }}
             </td>
           </tr>
+          <tr v-if="asset.balance.value">
+            <td>
+              {{ 'asset-details.converted-balance-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.convertedBalance | formatMoney }}
+            </td>
+          </tr>
           <tr>
             <td>
               {{ 'asset-details.maximum-title' | globalize }}

@@ -34,6 +34,11 @@ export const mutations = {
 }
 
 export const actions = {
+  async [vuexTypes.LOAD_KV_ENTRIES] ({ dispatch }) {
+    await dispatch(vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS)
+    await dispatch(vuexTypes.LOAD_KV_KYC_REQUIRED)
+  },
+
   async [vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS] ({ commit }) {
     const { data } = await Api.api.get(`v3/key_values`)
     const [generalRoleId, corporateRoleId, unverifiedRoleId] = [
