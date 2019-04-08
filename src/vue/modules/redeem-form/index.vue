@@ -78,7 +78,7 @@
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
-import { Wallet } from '@tokend/js-sdk'
+import { Wallet, errors } from '@tokend/js-sdk'
 import { initApi } from './_api'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
@@ -86,9 +86,12 @@ import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 
 import { MathUtil } from '@/js/utils/math.util'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
 const EVENTS = {
   redeemed: 'redeemed',
@@ -101,7 +104,7 @@ export default {
     NoDataMessage,
     Loader,
   },
-  mixins: [FormMixin, OfferManagerMixin],
+  mixins: [FormMixin],
   props: {
     wallet: {
       type: Wallet,
@@ -136,6 +139,7 @@ export default {
       assets: types.assets,
       assetsInBalance: types.assetsInBalance,
       selectedAssetBalance: types.selectedAssetBalance,
+      accountId: types.accountId,
     }),
   },
   watch: {
@@ -154,6 +158,7 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
+    await this.loadAccountBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
@@ -166,12 +171,25 @@ export default {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
       loadSaleByBaseAsset: types.LOAD_SALE_BY_BASE_ASSET,
+      createOffer: types.CREATE_OFFER,
+      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
       this.disableForm()
       this.isRedeemProcessing = true
-      // TODO: move it to the store action
-      await this.createOffer(this.getCreateOfferOpts())
+      try {
+        await this.createOffer(this.getCreateOfferOpts())
+        Bus.success('offer-manager.success-creating')
+      } catch (error) {
+        if (
+          error instanceof errors.TransactionError &&
+          error.includesOpCode(OPERATION_ERROR_CODES.opCrossSelf)
+        ) {
+          Bus.error('offer-manager.error-operation-cross-self')
+        } else {
+          ErrorHandler.process(error)
+        }
+      }
       this.isRedeemProcessing = false
       this.enableForm()
       this.hideConfirmation()
@@ -187,6 +205,7 @@ export default {
         quoteAmount: this.form.totalAmount,
         price: this.form.asset.details.redeemPrice,
         isBuy: false,
+        accountId: this.accountId,
       }
     },
     setDefaultAsset () {

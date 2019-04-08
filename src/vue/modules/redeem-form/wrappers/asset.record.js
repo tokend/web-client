@@ -9,18 +9,6 @@ export class AssetRecord {
     this.name = _get(record, 'details.name')
     this.details = record.details
     this.owner = record.owner
-
-    this.policies = this._policies()
-    this.policy = this._policy()
-  }
-
-  _policies () {
-    const policies = this._record.policies.flags || []
-    return policies.map(policy => policy.value)
-  }
-
-  _policy () {
-    return this._policies().reduce((s, p) => s | p, 0)
   }
 
   get nameAndCode () {

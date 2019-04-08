@@ -46,9 +46,7 @@ export default {
 @import "~@scss/mixins";
 
 .clipboard-field {
-  border-bottom: 0.1rem solid $col-primary;
-  display: flex;
-  align-items: center;
+  background: $col-clipboard-background;
   width: 100%;
 }
 
@@ -61,19 +59,24 @@ export default {
 
 .clipboard-field__value {
   width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: auto;
   color: $field-color-text;
-  padding: $field-input-padding;
-  @include text-font-sizes;
+  padding: 2.6rem 0 0.6rem 1.2rem;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  font-family: monospace;
+  white-space: nowrap;
+
+  @include respond-to($x-medium) {
+    font-size: 1.1rem;
+  }
 }
 
 .clipboard-field__label {
   font-size: 0.8rem;
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 1.2rem;
+  top: .8rem;
   pointer-events: none;
   color: $field-color-unfocused;
   @include label-font-sizes;
@@ -81,17 +84,13 @@ export default {
 
 .clipboard-field__button {
   @include button-icon();
-  padding: 0;
-  min-width: 4.5rem;
-  min-height: 4.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin: .1rem .2rem 0 0;
 }
 
 .clipboard-field__copy-icon {
-  font-size: 2.4rem;
-  padding-top: 0.4rem;
+  font-size: 1.8rem;
   color: $col-primary-lighten;
 }
 </style>

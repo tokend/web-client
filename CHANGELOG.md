@@ -10,12 +10,51 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Subject field to the create invoice form (Loyalty)
+- Displaying invoice summary on create invoice form (Loyalty)
+- Displaying total fee in the movement attributes
+- Displaying operation summary in the movement attributes
+- Show available base asset amount on sale creation form
+- Warning message when showing recovery seed on signup page
+- QR code plugin wrapper
 
 #### Changed
+- Modularized:
+  - Update asset form
+  - Create asset form
+  - Update asset form
+  - Asset explorer
+  - Balance explorer
 - Now using 2 decimal points for invoice amounts (Loyalty)
+- Allow inserting both of YouTube video link or ID
+- Moved movements module translation filters to a mixin
+- Now displaying fees in the movement attributes only if total fee is
+  bigger than zero
+- Now using "EUR" asset instead of "PET" one on the loyalty statistics
+  charts (Loyalty)
+- Now sorting balances in desc order by total balance in stats quote asset
+- Now getting previous account role from previous KYC request instead of
+  `creatorDetails` of approved reset request
+- Moved redeem offer creation from the global mixin to the local store
+- Removed useless fields and getters in the Redeem `Sale` and `Asset` records
+- Now using "qrcode.vue" plugin instead of "vue-qr"
+- Clipboard field styles to differ it from input fields
+
+#### Removed
+- "Fee" column from the movements table
+- Transfer & deposit pseudomodules from the loyalty points reconciliation
+  scheme
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
+- Translations for loyalty points merchant module (Loyalty)
+- Setting merchant account ID to invoice URL (Loyalty)
+- Displaying insufficient/absent balance message on submit trade form
+
+## [1.4.0] - 2019-04-05
+
+## [1.4.0-rc.3] - 2019-04-04
+#### Fixed
+- Withdrawal request creating where invalid creatorDetails were submitted
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
@@ -138,7 +177,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.4.0...HEAD
+[1.4.0]: https://github.com/tokend/web-client/compare/1.4.0-rc.3...1.4.0
+[1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
 [1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
