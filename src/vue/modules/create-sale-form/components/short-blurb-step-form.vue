@@ -1,0 +1,126 @@
+<template>
+  <form
+    novalidate
+    class="app__form"
+    @submit.prevent="submit"
+  >
+    <div class="app__form-row create-sale__form-row">
+      <div class="app__form-field">
+        <file-field
+          :label="'create-sale-form.upload-image' | globalize"
+          :note="'create-sale-form.upload-image' | globalize"
+          name="create-sale-sale-logo"
+          accept=".jpg, .png"
+          :document-type="DOCUMENT_TYPES.saleLogo"
+          v-model="form.saleLogo"
+          :error-message="getFieldErrorMessage(
+            'form.saleLogo'
+          )"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row create-sale__form-row">
+      <div class="app__form-field">
+        {{ 'create-sale-form.short-description' | globalize }}
+        <textarea-field
+          name="create-sale-short-description"
+          v-model="form.shortDescription"
+          @blur="touchField('form.shortDescription')"
+          :label="'transfer-form.subject-lbl' | globalize({
+            length: DESCRIPTION_MAX_LENGTH
+          })"
+          :maxlength="DESCRIPTION_MAX_LENGTH"
+          :error-message="getFieldErrorMessage(
+            'form.shortDescription', {
+              length: DESCRIPTION_MAX_LENGTH
+            }
+          )"
+        />
+      </div>
+    </div>
+    <div class="app__form-actions">
+      <button
+        v-ripple
+        type="submit"
+        class="app__button-raised"
+      >
+        {{ 'create-sale-form.next-btn' | globalize }}
+      </button>
+    </div>
+  </form>
+</template>
+
+<script>
+import FormMixin from '@/vue/mixins/form.mixin'
+
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { CreateSaleRequest } from '../wrappers/create-sale-request'
+
+import { required, maxLength } from '@validators'
+
+const EVENTS = {
+  submit: 'submit',
+}
+const DESCRIPTION_MAX_LENGTH = 255
+
+export default {
+  name: 'information-step-form',
+  mixins: [FormMixin],
+  props: {
+    request: { type: CreateSaleRequest, default: null },
+  },
+
+  data: _ => ({
+    form: {
+      saleLogo: null,
+      shortDescription: '',
+    },
+    DOCUMENT_TYPES,
+    DESCRIPTION_MAX_LENGTH,
+  }),
+
+  validations () {
+    return {
+      form: {
+        saleLogo: {
+          required,
+        },
+        shortDescription: {
+          required,
+          maxLength: maxLength(DESCRIPTION_MAX_LENGTH),
+        },
+      },
+    }
+  },
+
+  created () {
+    if (this.request) {
+      this.populateForm()
+    }
+  },
+
+  methods: {
+    populateForm () {
+      this.form = {
+        saleLogo: this.request.logoKey
+          ? new DocumentContainer(this.request.logo)
+          : null,
+        shortDescription: this.request.shortDescription,
+      }
+    },
+
+    submit () {
+      if (this.isFormValid()) {
+        this.$emit(EVENTS.submit, this.form)
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '@/vue/forms/_app-form';
+</style>

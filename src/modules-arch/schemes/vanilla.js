@@ -29,7 +29,7 @@ import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-ps
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
+import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
@@ -218,7 +218,7 @@ export default {
               },
             },
           }),
-          new CreateSalePseudoModule({
+          new CreateSaleFormModule({
             isCorporateOnly: true,
           }),
         ],
