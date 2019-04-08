@@ -190,7 +190,8 @@
       "headquarters-lbl": "Headquarters",
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
-      "website-lbl": "Website"
+      "website-lbl": "Website",
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"
