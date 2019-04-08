@@ -137,6 +137,7 @@ $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
 $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
+$col-tick-field-shadow: rgba($_eastBay, 0.6);
 $col-select-field-selected-background: rgba($_eastBay, 0.1);
 $col-select-field-hover-background: rgba($_eastBay, 0.05);
 $col-switch-field-background: $_whiteSmoke;
@@ -150,6 +151,7 @@ $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
+$col-clipboard-background: #eee;
 
 // table colors:
 $col-table-background: $_white;

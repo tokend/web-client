@@ -7,14 +7,15 @@
 
       <sale-overview :sale="sale" />
     </drawer>
-
-    <!-- <chart
-      :base-asset="sale.baseAsset"
-      :quote-asset="sale.defaultQuoteAsset"
-      :show-tabs="false"
-      :show-ticks="false"
-    /> -->
-
+    <template v-if="getModule().canRenderSubmodule(DashboardChartPseudoModule)">
+      <submodule-importer
+        :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
+        :base-asset="sale.baseAsset"
+        :quote-asset="sale.defaultQuoteAsset"
+        :show-tabs="false"
+        :show-ticks="false"
+      />
+    </template>
     <p class="sale-state-widget__invested">
       <!-- eslint-disable-next-line max-len -->
       {{ { value: sale.currentCap, currency: sale.defaultQuoteAsset } | formatMoney }}
@@ -85,9 +86,11 @@
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-// import Chart from '@/vue/common/chart/Chart'
 
 import SaleOverview from './SaleOverview'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+
+import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import { SALE_STATES } from '@/js/const/sale-states'
@@ -96,8 +99,8 @@ export default {
   name: 'sale-state-widget',
   components: {
     Drawer,
-    // Chart,
     SaleOverview,
+    SubmoduleImporter,
   },
 
   props: {
@@ -106,6 +109,7 @@ export default {
 
   data: _ => ({
     isOverviewDrawerShown: false,
+    DashboardChartPseudoModule,
     SALE_STATES,
   }),
 }

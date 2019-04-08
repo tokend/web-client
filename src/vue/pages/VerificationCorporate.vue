@@ -218,7 +218,7 @@ export default {
     ...mapGetters({
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
-      previousAccountRole: vuexTypes.kycPreviousAccountRole,
+      previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
     isFormEditable () {
       return this.isAccountRoleReseted ||

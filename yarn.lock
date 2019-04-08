@@ -661,10 +661,44 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
+<<<<<<< HEAD
+"@tokend/js-sdk@1.3.1-x.0":
+  version "1.3.1-x.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.1-x.0.tgz#8d6c7f933e72a5b7f0b0e31495877881a353f392"
+  integrity sha512-0z+Oncv++KoC/Y8YL4vOM7pleV0/+RI0UX6cba7jDHcC/mW3SnO/agPE/fGLRy/FW02Jb8wYr/wLdU9zs3SNWA==
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+"@tokend/js-sdk@1.0.0-x.5":
+  version "1.0.0-x.5"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.0.0-x.5.tgz#dfb874ae2191e3da6f95770ffe1407fee44326a5"
+  integrity sha512-gPWuzz6v15qXom46jef4TnOqX49NHfrDi3hK6Wi32JkxB5hZ5j4BjnlFtNL3Hji/wC30PEUDVKGu2/aLKXIQdA==
+  dependencies:
+    axios "^0.16.0"
+    base32.js "~0.1.0"
+    bignumber.js "^2.0.7"
+    crc "^3.3.0"
+    js-xdr "^1.0.5"
+    jsona "^1.3.0"
+    lodash "^4.17.11"
+    loglevel "^1.6.1"
+    loglevel-plugin-prefix "^0.8.4"
+    moment "^2.23.0"
+    sjcl-tokend "^1.0.6"
+    tweetnacl "^0.13.0"
+    urijs "^1.19.1"
+=======
+"@tokend/js-sdk@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.0.tgz#c377099adb0526bfd7cd7660ac81115d5d89e245"
+  integrity sha512-vQuId/miSkKqYYxLBV70TP7RW8y2qNZAs3U2zs+MuWmgMu3L8ET0MWNOAWPY0qSue4uTX5GOTcXC04tWycRlYQ==
+=======
 "@tokend/js-sdk@1.3.1-x.2":
   version "1.3.1-x.2"
   resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.3.1-x.2.tgz#1339fd633af3747e82e91471cdfcd3fb4583e9f7"
   integrity sha512-877Ft1KfhdGZbXlWvuMHWmdqMhKpUckK451SL4Q9O2cB3FMdcrVu0DWAPN1Gtn1EKUqfskry2VX3cgnrSOqYzQ==
+>>>>>>> master
+>>>>>>> modules-prototype
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
@@ -7592,6 +7626,11 @@ qjobs@^1.1.4:
   resolved "https://registry.yarnpkg.com/qjobs/-/qjobs-1.2.0.tgz#c45e9c61800bd087ef88d7e256423bdd49e5d071"
   integrity sha512-8YOJEHtxpySA3fFDyCRxA+UUV+fA+rTWnuWvylOK/NCjhY+b4ocCtmu8TtsWb+mYeU+GCHf/S66KZF/AsteKHg==
 
+qrcode.vue@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/qrcode.vue/-/qrcode.vue-1.6.1.tgz#0cdc6e032befb9711c8c55ef1fd7696ccf0d5147"
+  integrity sha512-Qo0zpAQVTdRZsmquppZShMQOaxg/JhzTsoQtlIxTTgwHr2oVg4mhCah41MtBYi67O00D342dzgU4YyECSK04FA==
+
 qs@6.5.2, qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
@@ -9419,14 +9458,6 @@ vue-markdown@2.2.4:
     markdown-it-task-lists "^2.0.1"
     markdown-it-toc-and-anchor "^4.1.2"
 
-vue-qr@1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/vue-qr/-/vue-qr-1.5.2.tgz#a10614ea97f9f2bd55892bbebcd09b708bda1686"
-  integrity sha512-n253Rr6URhcFqLtCs9u9qnXAvBPQZOGVgGnP4MnhXi0pa4jkVDKBdlovnu0YaUbsKZO38RbmvaMrqF7DBmC14g==
-  dependencies:
-    uuid "^3.3.2"
-    vue "^2.5.16"
-
 vue-resource@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/vue-resource/-/vue-resource-1.5.1.tgz#0f3d685e3254d21800bebd966edcf56c34b3b6e4"
@@ -9472,11 +9503,6 @@ vue@2.5.21:
   version "2.5.21"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.21.tgz#3d33dcd03bb813912ce894a8303ab553699c4a85"
   integrity sha512-Aejvyyfhn0zjVeLvXd70h4hrE4zZDx1wfZqia6ekkobLmUZ+vNFQer53B4fu0EjWBSiqApxPejzkO1Znt3joxQ==
-
-vue@^2.5.16:
-  version "2.5.22"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.22.tgz#3bf88041af08b8539c37b268b70ca79245e9cc30"
-  integrity sha512-pxY3ZHlXNJMFQbkjEgGVMaMMkSV1ONpz+4qB55kZuJzyJOhn6MSy/YZdzhdnumegNzVTL/Dn3Pp4UrVBYt1j/g==
 
 vuelidate@0.7.4:
   version "0.7.4"
