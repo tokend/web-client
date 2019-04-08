@@ -135,7 +135,7 @@ export default {
       }, this.loadTradeDataTickerTimeout)
     },
     async clearLoadTradeDataTicker () {
-      clearInterval(this.loadPricesTickerIntervalId)
+      clearInterval(this.loadTradeDataTickerIntervalId)
     },
     async loadData () {
       this.isTradeHistoryLoading = true
