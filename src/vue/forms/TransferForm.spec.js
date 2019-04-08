@@ -10,6 +10,7 @@ import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
+import FormMixin from '@/vue/mixins/form.mixin'
 import { vuexTypes } from '@/vuex'
 import {
   errors,
@@ -43,8 +44,11 @@ describe('TransferForm component', () => {
   beforeEach(() => {
     mockHelper = new MockHelper()
 
-    sinon.stub(TransferForm, 'created').resolves()
-    sinon.stub(accountModule.getters, vuexTypes.accountId)
+    sinon
+      .stub(TransferForm, 'created')
+      .resolves()
+    sinon
+      .stub(accountModule.getters, vuexTypes.accountId)
       .returns(mockHelper.getDefaultAccountId)
 
     mockedAccountBalances = [
@@ -79,9 +83,11 @@ describe('TransferForm component', () => {
         }),
       },
     ]
-    sinon.stub(accountModule.getters, vuexTypes.accountBalances)
+    sinon
+      .stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
-    sinon.stub(accountModule.actions, vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
+    sinon
+      .stub(accountModule.actions, vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
       .resolves(mockedAccountBalances)
 
     store = new Vuex.Store({
@@ -90,7 +96,10 @@ describe('TransferForm component', () => {
     })
     wrapper = shallowMount(TransferForm, {
       store,
-      mixins: [FeesMixin],
+      mixins: [
+        FeesMixin,
+        FormMixin,
+      ],
       localVue,
     })
   })
@@ -110,7 +119,7 @@ describe('TransferForm component', () => {
         .withArgs(paymentDetails)
     })
 
-    it('fetches fees', async () => {
+    it('calculateFees()', async () => {
       const expectedResult = { someKey: 'someData' }
       feesSpy.resolves(expectedResult)
 
@@ -119,22 +128,13 @@ describe('TransferForm component', () => {
       expect(feesSpy.calledOnce).to.be.true
       expect(result).to.deep.equal(expectedResult)
     })
-    // it('handle errors', async () => {
-    //   feesSpy.throws()
-    //   sinon.stub(ErrorHandler, 'process')
-
-    //   await wrapper.vm.calculateFees(paymentDetails)
-
-    //   expect(ErrorHandler.process)
-    //     .to.have.been.calledOnce
-    //   wrapper.vm.calculateFees.restore()
-    //   ErrorHandler.process.restore()
-    // })
   })
 
   describe('getCounterparty()', () => {
     beforeEach(() => {
-      sinon.stub(wrapper.vm, 'getAccountIdByEmail').resolves(mockHelper.getDefaultAccountId)
+      sinon
+        .stub(wrapper.vm, 'getAccountIdByEmail')
+        .resolves(mockHelper.getDefaultAccountId)
     })
 
     it('check that handles email as argument', async () => {
@@ -216,21 +216,18 @@ describe('TransferForm component', () => {
   })
 
   describe('processTransfer()', () => {
-    function stubFeesWithValidResult () {
-      const expectedFees = {
-        destination: {
-          fixed: '0.000001',
-          calculatedPercent: '0.01',
-          feeAsset: 'BTC',
-        },
-        source: {
-          fixed: '0.000001',
-          calculatedPercent: '0.01',
-          feeAsset: 'BTC',
-        },
-        type: 0,
-      }
-      sinon.stub(wrapper.vm, 'calculateFees').resolves(expectedFees)
+    const expectedFees = {
+      destination: {
+        fixed: '0.000001',
+        calculatedPercent: '0.01',
+        feeAsset: 'BTC',
+      },
+      source: {
+        fixed: '0.000001',
+        calculatedPercent: '0.01',
+        feeAsset: 'BTC',
+      },
+      type: 0,
     }
 
     beforeEach(() => {
@@ -255,7 +252,8 @@ describe('TransferForm component', () => {
         },
       })
 
-      sinon.stub(wrapper.vm, 'getCounterparty')
+      sinon
+        .stub(wrapper.vm, 'getCounterparty')
         .resolves(mockHelper.getDefaultAccountId)
 
       sinon.stub(wrapper.vm, 'updateView')
@@ -264,28 +262,12 @@ describe('TransferForm component', () => {
       sinon.stub(ErrorHandler, 'process')
     })
 
-    it('do not try to process transfer if form is not valid', async () => {
-      stubFeesWithValidResult()
+    it('try to process transfer - valid', async () => {
+      sinon
+        .stub(wrapper.vm, 'calculateFees')
+        .resolves(expectedFees)
+      sinon.stub(wrapper.vm.isFeesLoaded)
 
-      wrapper.vm.form = {
-        asset: {},
-        amount: '',
-        recipient: '',
-        subject: '',
-        isPaidForRecipient: false,
-      }
-
-      await wrapper.vm.processTransfer()
-
-      expect(wrapper.vm.getCounterparty.called).to.be.false
-      expect(wrapper.vm.calculateFees.called).to.be.false
-      expect(wrapper.vm.updateView.called).to.be.false
-      expect(ErrorHandler.process.calledOnce).to.be.false
-    })
-
-    it('try to process transfer if form is valid', async () => {
-      stubFeesWithValidResult()
-      // make form valid to pass isFormValid()
       wrapper.vm.form = {
         asset: { code: 'BTC' },
         amount: '1',
@@ -296,14 +278,16 @@ describe('TransferForm component', () => {
 
       await wrapper.vm.processTransfer()
 
-      expect(wrapper.vm.getCounterparty.called).to.be.true
-      expect(wrapper.vm.calculateFees.called).to.be.true
-      expect(wrapper.vm.updateView.called).to.be.true
-      expect(ErrorHandler.process.calledOnce).to.be.false
+      expect(wrapper.vm.getCounterparty.calledOnce).to.be.true
+      expect(wrapper.vm.calculateFees.calledOnce).to.be.true
+      expect(wrapper.vm.isFeesLoaded).equal(true)
+      expect(ErrorHandler.process.calledOnce).to.be.true
     })
 
-    it('handle errors', async () => {
-      sinon.stub(wrapper.vm, 'calculateFees').rejects()
+    it('calculateFees handle error', async () => {
+      sinon
+        .stub(wrapper.vm, 'calculateFees')
+        .rejects()
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
@@ -363,11 +347,14 @@ describe('TransferForm component', () => {
     it('check than called all methods ', async () => {
       sinon.stub(wrapper.vm, 'disableForm')
       sinon.stub(wrapper.vm, 'enableForm')
-      sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
+      sinon
+        .stub(wrapper.vm, 'buildPaymentOperation')
+        .returns(true)
 
       const transactionsResource =
         mockHelper.getHorizonResourcePrototype('transactions')
-      sinon.stub(transactionsResource, 'submitOperations')
+      sinon
+        .stub(transactionsResource, 'submitOperations')
         .withArgs(true)
         .resolves()
       sinon.stub(wrapper.vm, 'rerenderForm')
