@@ -86,6 +86,9 @@ export default {
     isSellOffersLoading: false,
     recordsOrder: 'desc',
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
+
+    loadTradeDataTickerIntervalId: -1,
+    loadTradeDataTickerTimeout: 10000,
   }),
   computed: {
     assetPair () {
@@ -102,6 +105,7 @@ export default {
         this.setCurrentAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
           this.loadData()
+          this.createLoadTradeDataTicker()
         }
       },
     },
@@ -114,12 +118,25 @@ export default {
     this.setCurrentAssets(this.assetPair)
     if (this.assetPair.base) {
       await this.loadData()
+      this.createLoadTradeDataTicker()
     }
+  },
+  async beforeDestroy () {
+    this.clearLoadTradeDataTicker()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    async createLoadTradeDataTicker () {
+      this.clearLoadTradeDataTicker()
+      this.loadTradeDataTickerIntervalId = setInterval(async () => {
+        await this.loadData()
+      }, this.loadTradeDataTickerTimeout)
+    },
+    async clearLoadTradeDataTicker () {
+      clearInterval(this.loadPricesTickerIntervalId)
+    },
     async loadData () {
       this.isTradeHistoryLoading = true
       this.isBuyOffersLoading = true

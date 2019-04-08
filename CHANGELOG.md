@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 - Show available base asset amount on sale creation form
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
+- Dynamically refresh order book
 
 #### Changed
 - Modularized:
