@@ -1,8 +1,9 @@
 import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
+import i18next from 'i18next'
 
-import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
+// import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
 export class ErrorHandler {
   static process (error, translationId = '') {
@@ -58,10 +59,9 @@ export class ErrorHandler {
         translationId = 'errors.user-exists'
         break
       case errors.TransactionError:
-        if (error.includesOpCode(OPERATION_ERROR_CODES.opAccountBlocked)) {
-          translationId = 'errors.account-blocked'
-        } else {
-          translationId = 'errors.transaction'
+        translationId = `errors.${error.resultCodes[0].errorCode}`
+        if (!i18next.exists(translationId)) {
+          translationId = error.resultCodes[0].message
         }
         break
       default:
