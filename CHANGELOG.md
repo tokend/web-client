@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
   bigger than zero
 - Now using "EUR" asset instead of "PET" one on the loyalty statistics
   charts (Loyalty)
+- Now show limit request details in drawer
 
 #### Removed
 - "Fee" column from the movements table
