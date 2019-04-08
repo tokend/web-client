@@ -18,6 +18,7 @@ import safeGet from 'lodash/get'
 export const state = {
   isAccountRoleReseted: false,
   request: {},
+  previousRequestAccountRoleToSet: null,
   latestData: '{}', // JSON string
 }
 
@@ -32,6 +33,12 @@ export const mutations = {
 
   [vuexTypes.SET_ACCOUNT_ROLE_RESET] (state, isReset) {
     state.isAccountRoleReseted = isReset
+  },
+  [vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET] (
+    state,
+    previousRequestAccountRoleToSet
+  ) {
+    state.previousRequestAccountRoleToSet = previousRequestAccountRoleToSet
   },
 }
 
@@ -49,11 +56,11 @@ export const actions = {
   }) {
     const requestor = rootGetters[vuexTypes.accountId]
 
-    // kinda optimization cause we are interested only in the latest
-    // update_kyc request
+    // kinda optimization cause we are interested only in
+    // the 2 latest update_kyc request
     // please do not expose the request itself for not making clients dependent
     // on this implementation
-    const limit = 1
+    const limit = 2
     const order = 'desc'
 
     const response = await Api.getWithSignature(`change_role_requests`, {
@@ -70,13 +77,20 @@ export const actions = {
     if (!response.data[0]) {
       return
     }
-
     const request = new ChangeRoleRequestRecord(response.data[0])
+    const previousRequestAccountRoleToSet = safeGet(
+      response.data[1],
+      'requestDetails.accountRoleToSet'
+    )
     const unverifiedRoleId = rootGetters[vuexTypes.kvEntryUnverifiedRoleId]
     const isAccountRoleReseted = request.accountRoleToSet === unverifiedRoleId
 
     commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, isAccountRoleReseted)
     commit(vuexTypes.SET_KYC_LATEST_REQUEST, request)
+    commit(
+      vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET,
+      previousRequestAccountRoleToSet
+    )
   },
 
   async [vuexTypes.LOAD_KYC_DATA] ({
@@ -102,8 +116,8 @@ export const getters = {
   [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReseted
     ? undefined
     : state.request.accountRoleToSet,
-  [vuexTypes.kycPreviousAccountRole]: state =>
-    state.request.previousAccountRole,
+  [vuexTypes.kycPreviousRequestAccountRoleToSet]: state =>
+    state.previousRequestAccountRoleToSet,
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycAvatarKey]: state => safeGet(

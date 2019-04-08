@@ -80,7 +80,7 @@ export default {
 
   methods: {
     ...mapActions({
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
@@ -89,7 +89,7 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        await this.loadKvEntriesAccountRoleIds()
+        await this.loadKvEntries()
       }
     },
     detectIE () {
