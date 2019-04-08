@@ -70,7 +70,7 @@ for further information about branching and tagging conventions.
 - Invalid start date for sales that are already started
 - Fixed a bug with impossible order cancelling if user has insufficient balance
 - Fixed a bug with chart line rendering
-- Fixed a bug with cannot invest if asset balance is 0 on `Invest` form
+- Warning message about insufficient balance in the "Invest" form
 
 ### "Under the hood" changes
 #### Added

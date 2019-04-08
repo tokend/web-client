@@ -584,8 +584,4 @@ export default {
     cursor: default;
   }
 }
-
-.invest-form__discover-tokens-btn {
-  margin: 2rem auto 0;
-}
 </style>
