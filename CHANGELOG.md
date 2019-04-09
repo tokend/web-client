@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - QR code plugin wrapper
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
+- Added transaction errors handling
 
 #### Changed
 - Modularized:
