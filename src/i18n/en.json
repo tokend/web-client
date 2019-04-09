@@ -960,9 +960,10 @@
       "verification-not-required-lbl": "Does not require verification",
       "verification-required-lbl": "Requires verification",
       "additional-issuance-check": "I do not want to make additional issuance later",
-      "preissued-signer-lbl": "Pre-issued asset signer",
+      "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
+      "pre-issuance-signer-disclaimer": "WARNING! After recovery or password change you won't be able to make pre-issuance using your secret seed. Please, save your current secret seed to make pre-issuance later.",
       "use-my-account-id-btn": "Use mine",
-      "preissued-amount-lbl": "Initial pre-issued amount",
+      "preissued-amount-lbl": "Amount for pre-issuance",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"

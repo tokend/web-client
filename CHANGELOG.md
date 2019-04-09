@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
 - Added transaction errors handling
+- Disclaimer message about pre-issued asset signer
 
 #### Changed
 - Modularized:
@@ -39,6 +40,9 @@ for further information about branching and tagging conventions.
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
+- Now using wallet public key instead of account ID for setting
+  pre-issued asset signer
+- Renamed "Pre-issued asset signer -> "Pre-issuance asset signer"
 
 #### Removed
 - "Fee" column from the movements table
