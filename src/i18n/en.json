@@ -100,7 +100,9 @@
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
       "account-blocked": "Your account is blocked",
-      "user-doesnt-exist": "This user doesn't exist in system",
+      "user-doesnt-exist": "This user doesn't exist in system"
+    },
+    "transaction-errors": {
       "tx_failed": "Transaction failed",
       "tx_too_early": "Too early",
       "tx_too_late": "Too late",
