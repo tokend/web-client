@@ -187,7 +187,6 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 
 import moment from 'moment'
-import { formatDate } from '@/vue/filters/formatDate'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
@@ -302,7 +301,7 @@ export default {
 
   methods: {
     getCurrentDate () {
-      return formatDate(moment().toISOString())
+      return moment().toISOString()
     },
 
     populateForm () {

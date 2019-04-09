@@ -39,6 +39,8 @@ for further information about branching and tagging conventions.
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
+- Now formatting `minDate` validation message using i18n date filter
+- Now using `moment().toISOString()` value instead of `moment().toString()`
 
 #### Removed
 - "Fee" column from the movements table
