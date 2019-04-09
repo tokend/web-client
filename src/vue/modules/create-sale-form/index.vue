@@ -145,7 +145,7 @@ export default {
         initApi(this.wallet, this.config)
         initConfig(this.config)
 
-        await this.loadOwnedAssets()
+        await this.loadAssets()
         await this.tryLoadRequest()
 
         this.isLoaded = true

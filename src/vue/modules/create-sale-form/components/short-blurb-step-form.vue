@@ -9,7 +9,7 @@
         <file-field
           :label="'create-sale-form.sale-logo-lbl' | globalize"
           :note="'create-sale-form.sale-logo-note' | globalize"
-          name="create-sale-sale-logo"
+          name="create-sale-logo"
           accept=".jpg, .png"
           :document-type="DOCUMENT_TYPES.saleLogo"
           v-model="form.saleLogo"
@@ -21,9 +21,9 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <textarea-field
-          name="create-sale-short-description"
           v-model="form.shortDescription"
           @blur="touchField('form.shortDescription')"
+          name="create-sale-short-description"
           :label="'create-sale-form.short-description-lbl' | globalize"
           :maxlength="DESCRIPTION_MAX_LENGTH"
           :error-message="getFieldErrorMessage(

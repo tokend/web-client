@@ -109,9 +109,7 @@
         <input-field
           white-autofill
           v-model="form.assetsToSell"
-          @blur="touchField(
-            'form.assetsToSell'
-          )"
+          @blur="touchField('form.assetsToSell')"
           name="create-sale-assets-to-sell"
           type="number"
           :label="'create-sale-form.assets-to-sell-lbl' |
@@ -249,11 +247,11 @@ export default {
         baseAsset: { required },
         startTime: {
           required,
-          minDate: minDate(moment().toString()),
+          minDate: minDate(moment().toISOString()),
         },
         endTime: {
           required,
-          minDate: minDate(this.form.startTime || moment().toString()),
+          minDate: minDate(this.form.startTime || moment().toISOString()),
         },
         softCap: {
           required,
@@ -284,24 +282,27 @@ export default {
     },
 
     availableForIssuance () {
-      return this.form.baseAsset.availableForIssuance
+      return this.form.baseAsset
+        ? this.form.baseAsset.availableForIssuance
+        : ''
     },
 
     yesterday () {
-      return moment().subtract(1, 'days').toString()
+      return moment().subtract(1, 'days').toISOString()
     },
   },
 
   created () {
-    this.form.baseAsset = this.ownedAssets[0] || {}
     if (this.request) {
       this.populateForm()
+    } else {
+      this.form.baseAsset = this.ownedAssets[0] || {}
     }
   },
 
   methods: {
     getCurrentDate () {
-      return formatDate(moment().toString())
+      return formatDate(moment().toISOString())
     },
 
     populateForm () {
