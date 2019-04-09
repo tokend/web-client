@@ -17,7 +17,7 @@ for further information about branching and tagging conventions.
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
 - Ticker to refresh order book with interval
-- Add const for load data ticker interval
+- Ticker interval is now global and applies for all tickers throughout the app
 
 #### Changed
 - Modularized:
