@@ -12,7 +12,7 @@ export class AssetRecord {
 
     this.policies = this._policies()
     this.policy = this._policy()
-
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
     this.balance = this._getBalance(balances)
   }
 

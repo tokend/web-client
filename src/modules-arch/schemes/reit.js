@@ -36,6 +36,7 @@ import { WithdrawalFiatModule } from '@modules/withdrawal-fiat/module'
 import { WithdrawalFiatCardModule } from '@modules/withdrawal-fiat-card/module'
 import { WithdrawalFiatBankModule } from '@modules/withdrawal-fiat-bank/module'
 import { RedeemFormModule } from '@modules/redeem-form/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 
 export default {
   importEnLocaleFile () {
@@ -118,6 +119,7 @@ export default {
                   new WithdrawalFiatBankModule(),
                 ],
               }),
+              new CoinpaymentsDepositModule(),
               new DepositFiatModule({
                 submodules: [
                   new DepositFiatCardModule(),
