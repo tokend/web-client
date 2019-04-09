@@ -4,6 +4,7 @@ import { DepositFiatModule } from '@modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@modules/withdrawal-fiat/module'
 import { RedeemFormModule } from '@modules/redeem-form/module'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 
 export class MovementsTopBarReitModule extends ModuleDescriptor {
   constructor (opts = {}) {
@@ -19,6 +20,7 @@ export class MovementsTopBarReitModule extends ModuleDescriptor {
         WithdrawalFiatModule,
         DepositFiatModule,
         CoinpaymentsDepositModule,
+        WithdrawalDrawerPseudoModule,
         TransferDrawerPseudoModule,
         RedeemFormModule,
       ],

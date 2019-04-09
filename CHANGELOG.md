@@ -18,6 +18,7 @@ for further information about branching and tagging conventions.
 - QR code plugin wrapper
 - Added transaction errors handling
 - Added depositing with CoinpaymentsDepositModule in MovementsTopBarReitModule
+- Added WithdrawalDrawerPseudoModule in MovementsTopBarReitModule
 
 #### Changed
 - Modularized:

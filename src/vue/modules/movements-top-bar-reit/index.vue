@@ -33,6 +33,21 @@
           </button>
         </template>
 
+        <template
+          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
+            && asset.isCoinpayments
+            && asset.isWithdrawable"
+        >
+          <button
+            v-ripple
+            class="app__button-raised movements-top-bar-reit__button-raised"
+            @click="isWithdrawalDrawerShown = true"
+          >
+            <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
+            {{ 'op-pages.withdraw' | globalize }}
+          </button>
+        </template>
+
         <!-- eslint-disable-next-line max-len -->
         <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
           <button
@@ -70,8 +85,11 @@
           </button>
         </template>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(RedeemFormModule) && asset.isBond && !isOwnedAsset">
+        <template
+          v-if="getModule().canRenderSubmodule(RedeemFormModule)
+            && asset.isBond
+            && !isOwnedAsset"
+        >
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__button-raised"
@@ -94,6 +112,23 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalFiatModule)"
+          :config="withdrawalFiatConfig"
+          :wallet="wallet"
+          @withdrawn="withdrawalFiatModuleWithdrawn"
+        />
+      </drawer>
+    </template>
+
+    <template
+      v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
+        && asset.isCoinpayments
+        && asset.isWithdrawable">
+      <drawer :is-shown.sync="isWithdrawalDrawerShown">
+        <template slot="heading">
+          {{ 'withdrawal-form.withdrawal' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(WithdrawalDrawerPseudoModule)"
           :config="withdrawalFiatConfig"
           :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
@@ -224,6 +259,7 @@ export default {
     isReedemDrawerShown: false,
     isDepositDrawerShown: false,
     isFiatWithdrawalFormShown: false,
+    isWithdrawalFormShown: false,
     isWithdrawalDrawerShown: false,
     withdrawalFiatConfig: {},
     depositFiatConfig: {},
