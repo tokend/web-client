@@ -164,11 +164,11 @@ import { Bus } from '@/js/helpers/event-bus'
 import _get from 'lodash/get'
 import { Invoice } from './wrappers/invoice'
 
+import { LOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-timeout.const'
+
 const EVENTS = {
   close: 'close',
 }
-
-const POLL_INTERVAL = 5000
 
 const MIN_AMOUNT = 0.01
 const DECIMAL_POINTS = 2
@@ -339,7 +339,10 @@ export default {
       this.form.subject = this.subject
     },
     initPolling () {
-      this.pollIntervalId = setInterval(this.checkForPayment, POLL_INTERVAL)
+      this.pollIntervalId = setInterval(
+        this.checkForPayment,
+        LOAD_DATA_TICKER_INTERVAL_MS
+      )
     },
     async checkForPayment () {
       try {

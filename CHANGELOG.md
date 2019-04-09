@@ -16,7 +16,8 @@ for further information about branching and tagging conventions.
 - Show available base asset amount on sale creation form
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
-- Dynamically refresh order book
+- Ticker to refresh order book with interval
+- Add const for load data ticker interval
 
 #### Changed
 - Modularized:

@@ -65,6 +65,7 @@ import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { LOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-timeout.const'
 
 export default {
   name: 'trade-exchange',
@@ -88,7 +89,6 @@ export default {
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
 
     loadTradeDataTickerIntervalId: -1,
-    loadTradeDataTickerTimeout: 10000,
   }),
   computed: {
     assetPair () {
@@ -132,7 +132,7 @@ export default {
       this.clearLoadTradeDataTicker()
       this.loadTradeDataTickerIntervalId = setInterval(async () => {
         await this.loadData()
-      }, this.loadTradeDataTickerTimeout)
+      }, LOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadTradeDataTicker () {
       clearInterval(this.loadTradeDataTickerIntervalId)

@@ -29,6 +29,7 @@ import { errors } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { LOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-timeout.const'
 
 export default {
   name: 'chart',
@@ -53,7 +54,6 @@ export default {
       defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
     },
     loadPricesTickerIntervalId: -1,
-    loadPricesTickerTimeout: 10000,
   }),
   computed: {
     history () {
@@ -94,7 +94,7 @@ export default {
       this.clearLoadPricesTicker()
       this.loadPricesTickerIntervalId = setInterval(async () => {
         await this.loadPrices()
-      }, this.loadPricesTickerTimeout)
+      }, LOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadPricesTicker () {
       clearInterval(this.loadPricesTickerIntervalId)

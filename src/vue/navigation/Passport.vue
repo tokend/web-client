@@ -72,6 +72,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { LOAD_ACCOUNT_DETAILS_TICKER_INTERVAL_MS } from '@/js/const/ticker-timeout.const'
 import config from '@/config'
 
 export default {
@@ -79,7 +80,6 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
-    loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
   }),
 
@@ -129,7 +129,7 @@ export default {
     async createLoadAccountDetailsTicker () {
       setInterval(() => {
         this.loadAccountDetails()
-      }, this.loadAccountDetailsTickerTimeout)
+      }, LOAD_ACCOUNT_DETAILS_TICKER_INTERVAL_MS)
     },
 
     async loadAccountDetails () {
