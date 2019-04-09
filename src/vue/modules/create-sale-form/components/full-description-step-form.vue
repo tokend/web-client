@@ -3,36 +3,39 @@
     class="app__form full-description-step-form"
     @submit.prevent="setConfirmationState"
   >
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
           v-model="form.youtubeVideo"
           name="create-sale-youtube-id"
-          :label="'create-sale-form.insert-youtube-video' | globalize"
+          :label="'create-sale-form.youtube-video-lbl' | globalize"
           :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
-    <div class="app__form-row create-sale__form-row">
+
+    <div class="app__form-row">
       <div class="app__form-field">
         <iframe
           v-if="form.youtubeVideo"
           :src="`https://www.youtube.com/embed/${youtubeId}`"
-          class="create-sale__iframe" />
+          class="full-description-step-form__iframe" />
 
-        <div v-else class="create-sale__youtube-video">
-          <i class="mdi mdi-youtube create-sale__video-icon" />
+        <div v-else class="full-description-step-form__youtube-video">
+          <i class="mdi mdi-youtube full-description-step-form__video-icon" />
           <span>
-            {{ 'create-sale-form.preview-you-video' | globalize }}
+            {{ 'create-sale-form.preview-video-msg' | globalize }}
           </span>
         </div>
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
-        {{ 'create-sale-form.full-description' | globalize }}
+        <span>
+          {{ 'create-sale-form.full-description-lbl' | globalize }}
+        </span>
         <markdown-field v-model="form.description" />
       </div>
     </div>
@@ -85,7 +88,7 @@ export default {
   data: _ => ({
     form: {
       youtubeVideo: '',
-      description: '',
+      description: 'hello',
     },
   }),
 
@@ -137,33 +140,31 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
+@import '~@scss/variables';
 
 .full-description-step-form__btn {
   max-width: 14.4rem;
   width: 100%;
 }
 
-@import '@/vue/forms/_app-form';
-@import '~@scss/variables';
-
-.create-sale__youtube-video {
+.full-description-step-form__youtube-video {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 26.4rem;
-  border: 0.2rem dashed $_eastBay;
+  border: 0.2rem dashed $col-border;
   border-radius: 0.4rem;
   opacity: 0.5;
 }
 
-.create-sale__iframe {
+.full-description-step-form__iframe {
   width: 100%;
   min-height: 26rem;
 }
 
-.create-sale__video-icon {
+.full-description-step-form__video-icon {
   display: flex;
   font-size: 9rem;
 }

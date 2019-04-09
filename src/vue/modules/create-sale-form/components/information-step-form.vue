@@ -4,75 +4,69 @@
     class="app__form"
     @submit.prevent="submit"
   >
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
           v-model="form.name"
           @blur="touchField('form.name')"
           name="create-sale-name"
-          :label="'create-sale-form.sale-name' | globalize"
+          :label="'create-sale-form.sale-name-lbl' | globalize"
           :error-message="getFieldErrorMessage(
-            'form.name',{
-              length: NAME_MAX_LENGTH
-            })"
+            'form.name', { length: NAME_MAX_LENGTH }
+          )"
           :maxlength="NAME_MAX_LENGTH"
         />
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <select-field
           v-model="form.baseAsset"
           :values="ownedAssets"
           name="create-sale-base-asset"
           key-as-value-text="nameAndCode"
-          :label="'create-sale-form.base-asset' | globalize"
+          :label="'create-sale-form.base-asset-lbl' | globalize"
         />
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <date-field
           v-model="form.startTime"
           name="create-sale-start-time"
           :enable-time="true"
-          :disable-before="moment().subtract(1, 'days').toString()"
+          :disable-before="yesterday"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
-          :label="'create-sale-form.start-time' | globalize"
+          :label="'create-sale-form.start-time-lbl' | globalize"
           :error-message="getFieldErrorMessage(
-            'form.startTime', {
-              minDate: formatDate(moment().toString())
-            }
+            'form.startTime', { minDate: getCurrentDate() }
           )"
         />
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <date-field
           v-model="form.endTime"
           :enable-time="true"
-          :disable-before="moment().subtract(1, 'days').toString()"
+          :disable-before="yesterday"
           @input="touchField('form.endTime')"
           @blur="touchField('form.endTime')"
           name="create-sale-end-time"
-          :label="'create-sale-form.close-time' | globalize"
+          :label="'create-sale-form.close-time-lbl' | globalize"
           :error-message="getFieldErrorMessage(
-            'form.endTime', {
-              minDate: form.startTime ||
-                formatDate(moment().toString())
-            }
+            'form.endTime', { minDate: form.startTime || getCurrentDate() }
           )"
         />
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
@@ -80,7 +74,7 @@
           v-model="form.softCap"
           @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
-          :label="'create-sale-form.soft-cap' | globalize({
+          :label="'create-sale-form.soft-cap-lbl' | globalize({
             asset: DEFAULT_QUOTE_ASSET
           })"
           :error-message="getFieldErrorMessage(
@@ -91,7 +85,7 @@
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
@@ -99,7 +93,7 @@
           v-model="form.hardCap"
           @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
-          :label="'create-sale-form.hard-cap' | globalize({
+          :label="'create-sale-form.hard-cap-lbl' | globalize({
             asset: DEFAULT_QUOTE_ASSET
           })"
           :error-message="getFieldErrorMessage(
@@ -110,20 +104,20 @@
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
-          v-model="form.requiredBaseAssetForHardCap"
+          v-model="form.assetsToSell"
           @blur="touchField(
-            'form.requiredBaseAssetForHardCap'
+            'form.assetsToSell'
           )"
-          name="create-sale-base-asset-for-hard-cap"
+          name="create-sale-assets-to-sell"
           type="number"
-          :label="'create-sale-form.base-asset-hard-cap-to-sell' |
+          :label="'create-sale-form.assets-to-sell-lbl' |
             globalize({ asset: form.baseAsset.code })"
           :error-message="getFieldErrorMessage(
-            'form.requiredBaseAssetForHardCap',
+            'form.assetsToSell',
             { from: MIN_AMOUNT, to: availableForIssuance }
           )"
         />
@@ -131,7 +125,7 @@
         <template v-if="form.baseAsset">
           <p class="app__form-field-description">
             {{
-              'create-sale-form.available-amount' | globalize({
+              'create-sale-form.available-amount-hint' | globalize({
                 asset: form.baseAsset.code,
                 amount: availableForIssuance
               })
@@ -141,23 +135,26 @@
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
-        <p class="create-sale__price">
-          {{ 'create-sale-form.price' | globalize({
-            base: form.baseAsset.code,
-            quote: DEFAULT_QUOTE_ASSET
-          }) }}
-          <!-- eslint-disable-next-line max-len -->
-          {{ { value: price, currency: DEFAULT_QUOTE_ASSET } | formatMoney }}
+        <p class="information-step-form__price">
+          {{
+            'create-sale-form.price-for-asset-hint' | globalize({
+              base: form.baseAsset.code,
+              quote: DEFAULT_QUOTE_ASSET,
+              value: priceForAsset
+            })
+          }}
         </p>
       </div>
     </div>
-    <div class="app__form-row create-sale__form-row">
-      {{ 'create-sale-form.accept-investments-in' | globalize }}
+
+    <div class="app__form-row">
+      {{ 'create-sale-form.accept-investments-msg' | globalize }}
     </div>
+
     <div
-      class="app__form-row create-sale__form-row"
+      class="app__form-row"
       v-for="item in baseAssets"
       :key="item.code"
     >
@@ -171,9 +168,11 @@
         </tick-field>
       </div>
     </div>
-    <div class="create-sale__error-text">
+
+    <div class="information-step-form__error-text">
       {{ getFieldErrorMessage('form.quoteAssets') }}
     </div>
+
     <div class="app__form-actions">
       <button
         v-ripple
@@ -230,7 +229,7 @@ export default {
       endTime: '',
       softCap: '',
       hardCap: '',
-      requiredBaseAssetForHardCap: '',
+      assetsToSell: '',
       quoteAssets: [],
     },
     MIN_AMOUNT: config().MIN_AMOUNT,
@@ -247,17 +246,14 @@ export default {
           required,
           maxLength: maxLength(NAME_MAX_LENGTH),
         },
-        baseAsset: {
-          required,
-        },
+        baseAsset: { required },
         startTime: {
           required,
           minDate: minDate(moment().toString()),
         },
         endTime: {
           required,
-          minDate: minDate(this.form.startTime ||
-            moment().toString()),
+          minDate: minDate(this.form.startTime || moment().toString()),
         },
         softCap: {
           required,
@@ -265,44 +261,48 @@ export default {
         },
         hardCap: {
           required,
-          amountRange: amountRange(this.form.softCap,
-            this.MAX_AMOUNT),
+          amountRange: amountRange(this.form.softCap, this.MAX_AMOUNT),
         },
-        requiredBaseAssetForHardCap: {
+        assetsToSell: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT,
-            this.availableForIssuance),
+          amountRange: amountRange(this.MIN_AMOUNT, this.availableForIssuance),
         },
-        quoteAssets: {
-          requiredAtLeastOne,
-        },
+        quoteAssets: { requiredAtLeastOne },
       },
     }
   },
 
   computed: {
-    price () {
-      return MathUtil.divide(
-        this.form.hardCap,
-        this.form.requiredBaseAssetForHardCap
-      )
+    priceForAsset () {
+      return {
+        value: MathUtil.divide(
+          this.form.hardCap,
+          this.form.assetsToSell
+        ),
+        currency: this.DEFAULT_QUOTE_ASSET,
+      }
     },
 
     availableForIssuance () {
       return this.form.baseAsset.availableForIssuance
     },
+
+    yesterday () {
+      return moment().subtract(1, 'days').toString()
+    },
   },
 
   created () {
-    this.form.baseAsset = this.ownedAssets[0]
+    this.form.baseAsset = this.ownedAssets[0] || {}
     if (this.request) {
       this.populateForm()
     }
   },
 
   methods: {
-    moment,
-    formatDate,
+    getCurrentDate () {
+      return formatDate(moment().toString())
+    },
 
     populateForm () {
       this.form = {
@@ -310,10 +310,10 @@ export default {
         baseAsset: this.ownedAssets
           .find(item => item.code === this.request.baseAsset),
         startTime: this.request.startTime,
-        endTime: this.request.endTme,
+        endTime: this.request.endTime,
         softCap: this.request.softCap,
         hardCap: this.request.hardCap,
-        requiredBaseAssetForHardCap: this.request.baseAssetForHardCap,
+        assetsToSell: this.request.assetsToSell,
         quoteAssets: this.request.quoteAssets,
       }
     },
@@ -336,12 +336,12 @@ export default {
   width: 100%;
 }
 
-.create-sale__error-text {
+.information-step-form__error-text {
   margin-top: 1rem;
   color: $col-error;
 }
 
-.create-sale__price {
+.information-step-form__price {
   font-size: 1.4rem;
 }
 </style>

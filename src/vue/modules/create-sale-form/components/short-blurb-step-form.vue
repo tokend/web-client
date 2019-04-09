@@ -4,32 +4,27 @@
     class="app__form"
     @submit.prevent="submit"
   >
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
         <file-field
-          :label="'create-sale-form.upload-image' | globalize"
-          :note="'create-sale-form.upload-image' | globalize"
+          :label="'create-sale-form.sale-logo-lbl' | globalize"
+          :note="'create-sale-form.sale-logo-note' | globalize"
           name="create-sale-sale-logo"
           accept=".jpg, .png"
           :document-type="DOCUMENT_TYPES.saleLogo"
           v-model="form.saleLogo"
-          :error-message="getFieldErrorMessage(
-            'form.saleLogo'
-          )"
+          :error-message="getFieldErrorMessage('form.saleLogo')"
         />
       </div>
     </div>
 
-    <div class="app__form-row create-sale__form-row">
+    <div class="app__form-row">
       <div class="app__form-field">
-        {{ 'create-sale-form.short-description' | globalize }}
         <textarea-field
           name="create-sale-short-description"
           v-model="form.shortDescription"
           @blur="touchField('form.shortDescription')"
-          :label="'transfer-form.subject-lbl' | globalize({
-            length: DESCRIPTION_MAX_LENGTH
-          })"
+          :label="'create-sale-form.short-description-lbl' | globalize"
           :maxlength="DESCRIPTION_MAX_LENGTH"
           :error-message="getFieldErrorMessage(
             'form.shortDescription', {
@@ -67,7 +62,7 @@ const EVENTS = {
 const DESCRIPTION_MAX_LENGTH = 255
 
 export default {
-  name: 'information-step-form',
+  name: 'short-blurb-step-form',
   mixins: [FormMixin],
   props: {
     request: { type: CreateSaleRequest, default: null },

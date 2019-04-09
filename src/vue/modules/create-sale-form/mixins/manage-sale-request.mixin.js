@@ -1,7 +1,7 @@
 import UploadDocumentsMixin from './upload-documents.mixin'
+import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
 import { base, SALE_TYPES } from '@tokend/js-sdk'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 import { api } from '../_api'
 import { config } from '../_config'
@@ -11,9 +11,10 @@ import { DateUtil } from '@/js/utils'
 
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
+const DEFAULT_QUOTE_ASSET_PRICE = '1'
 
 export default {
-  mixins: [UploadDocumentsMixin],
+  mixins: [UploadDocumentsMixin, ManageSaleDescriptionMixin],
   data: _ => ({
     saleDescriptionBlobId: '',
   }),
@@ -35,12 +36,11 @@ export default {
           logo: this.shortBlurbStepForm.saleLogo.getDetailsForSave(),
           youtube_video_id: this.fullDescriptionStepForm.youtubeId,
         },
-        requiredBaseAssetForHardCap: this.informationStepForm
-          .requiredBaseAssetForHardCap,
+        requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
         quoteAssets: this.informationStepForm.quoteAssets
           .map((item) => ({
             asset: item,
-            price: '1',
+            price: DEFAULT_QUOTE_ASSET_PRICE,
           })),
         saleEnumType: SALE_TYPES.fixedPrice,
         saleType: DEFAULT_SALE_TYPE,
@@ -49,35 +49,6 @@ export default {
   },
 
   methods: {
-    async createDescriptionBlob () {
-      const { data } = await api().postWithSignature('/blobs', {
-        data: {
-          type: BLOB_TYPES.fundOverview,
-          attributes: {
-            value: JSON.stringify(this.fullDescriptionStepForm.description),
-          },
-          relationships: {
-            owner: {
-              data: { id: this.wallet.accountId },
-            },
-          },
-        },
-      })
-
-      this.saleDescriptionBlobId = data.id
-    },
-
-    async getSaleDescription (blobId) {
-      try {
-        const endpoint = `/accounts/${this.wallet.accountId}/blobs/${blobId}`
-        const { data: blob } = await api().getWithSignature(endpoint)
-
-        return JSON.parse(blob.value)
-      } catch {
-        return ''
-      }
-    },
-
     async getCreateSaleRequestById (id) {
       const endpoint = `/v3/create_sale_requests/${id}`
       const { data: record } = await api().getWithSignature(endpoint, {
@@ -95,7 +66,9 @@ export default {
         this.shortBlurbStepForm.saleLogo,
       ]
       await this.uploadDocuments(saleDocuments)
-      await this.createDescriptionBlob()
+      this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
+        this.fullDescriptionStepForm.description
+      )
 
       const operation =
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)

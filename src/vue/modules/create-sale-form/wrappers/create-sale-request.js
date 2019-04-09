@@ -5,10 +5,7 @@ export class CreateSaleRequest {
     this.name = safeGet(record, 'requestDetails.creatorDetails.name')
 
     this.baseAsset = safeGet(record, 'requestDetails.baseAsset.id')
-    this.defaultQuoteAsset = safeGet(
-      record, 'requestDetails.defaultQuoteAsset.id'
-    )
-    this.baseAssetForHardCap = safeGet(
+    this.assetsToSell = safeGet(
       record, 'requestDetails.baseAssetForHardCap'
     )
     this.quoteAssets = this._getQuoteAssets(record)
@@ -19,7 +16,7 @@ export class CreateSaleRequest {
     this.softCap = safeGet(record, 'requestDetails.defaultQuoteAsset.softCap')
     this.hardCap = safeGet(record, 'requestDetails.defaultQuoteAsset.hardCap')
 
-    this.description = safeGet(
+    this.descriptionBlobId = safeGet(
       record, 'requestDetails.creatorDetails.description'
     )
     this.shortDescription = safeGet(

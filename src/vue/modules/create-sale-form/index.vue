@@ -6,35 +6,37 @@
         :current-step.sync="currentStep"
         :disabled="isDisabled"
       >
-        <information-step-form
-          v-show="currentStep === STEPS.information.number"
-          :request="request"
-          :base-assets="baseAssets"
-          :owned-assets="ownedAssets"
-          @submit="setInformationStepForm($event) || moveToNextStep()"
-        />
+        <keep-alive>
+          <information-step-form
+            v-if="currentStep === STEPS.information.number"
+            :request="request"
+            :base-assets="baseAssets"
+            :owned-assets="ownedAssets"
+            @submit="setInformationStepForm($event) || moveToNextStep()"
+          />
 
-        <short-blurb-step-form
-          v-show="currentStep === STEPS.shortBlurb.number"
-          :request="request"
-          @submit="setShortBlurbStepForm($event) || moveToNextStep()"
-        />
+          <short-blurb-step-form
+            v-if="currentStep === STEPS.shortBlurb.number"
+            :request="request"
+            @submit="setShortBlurbStepForm($event) || moveToNextStep()"
+          />
 
-        <full-description-step-form
-          v-show="currentStep === STEPS.fullDescription.number"
-          :request="request"
-          :sale-description="saleDescription"
-          :is-disabled.sync="isDisabled"
-          @submit="setFullDescriptionStepForm($event) || submit()"
-        />
+          <full-description-step-form
+            v-if="currentStep === STEPS.fullDescription.number"
+            :request="request"
+            :sale-description="saleDescription"
+            :is-disabled.sync="isDisabled"
+            @submit="setFullDescriptionStepForm($event) || submit()"
+          />
+        </keep-alive>
       </form-stepper>
     </template>
 
     <template v-else-if="isLoaded">
       <no-data-message
         icon-name="plus-network"
-        :title="'create-sale-form.not-available' | globalize"
-        :message="'create-sale-form.asset-not-available-yet' | globalize"
+        :title="'create-sale-form.no-owned-assets-title' | globalize"
+        :message="'create-sale-form.no-owned-assets-desc' | globalize"
       />
     </template>
 
@@ -73,15 +75,15 @@ import { initConfig } from './_config'
 const STEPS = {
   information: {
     number: 1,
-    titleId: 'create-sale-form.provide-sale-information',
+    titleId: 'create-sale-form.main-information-step-title',
   },
   shortBlurb: {
     number: 2,
-    titleId: 'create-sale-form.add-short-blurb',
+    titleId: 'create-sale-form.short-blurb-step-title',
   },
   fullDescription: {
     number: 3,
-    titleId: 'create-sale-form.full-description',
+    titleId: 'create-sale-form.full-description-step-title',
   },
 }
 const EVENTS = {
@@ -157,7 +159,7 @@ export default {
       if (this.requestId) {
         this.request = await this.getCreateSaleRequestById(this.requestId)
         this.saleDescription = await this.getSaleDescription(
-          this.request.description
+          this.request.descriptionBlobId
         )
       }
     },
