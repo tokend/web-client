@@ -42,7 +42,7 @@ for further information about branching and tagging conventions.
 - Clipboard field styles to differ it from input fields
 - Now using wallet public key instead of account ID for setting
   pre-issued asset signer
-- Renamed "Pre-issued asset signer -> "Pre-issuance asset signer"
+- Renamed "Pre-issued asset signer" -> "Pre-issuance asset signer"
 
 #### Removed
 - "Fee" column from the movements table
