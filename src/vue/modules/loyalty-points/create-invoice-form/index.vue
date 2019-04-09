@@ -164,7 +164,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import _get from 'lodash/get'
 import { Invoice } from './wrappers/invoice'
 
-import { LOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-timeout.const'
+import { RELOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-interval.const'
 
 const EVENTS = {
   close: 'close',
@@ -341,7 +341,7 @@ export default {
     initPolling () {
       this.pollIntervalId = setInterval(
         this.checkForPayment,
-        LOAD_DATA_TICKER_INTERVAL_MS
+        RELOAD_DATA_TICKER_INTERVAL_MS
       )
     },
     async checkForPayment () {

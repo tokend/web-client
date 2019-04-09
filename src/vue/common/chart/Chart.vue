@@ -29,7 +29,7 @@ import { errors } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
 import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { LOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-timeout.const'
+import { RELOAD_DATA_TICKER_INTERVAL_MS } from '@/js/const/ticker-interval.const'
 
 export default {
   name: 'chart',
@@ -94,7 +94,7 @@ export default {
       this.clearLoadPricesTicker()
       this.loadPricesTickerIntervalId = setInterval(async () => {
         await this.loadPrices()
-      }, LOAD_DATA_TICKER_INTERVAL_MS)
+      }, RELOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadPricesTicker () {
       clearInterval(this.loadPricesTickerIntervalId)
