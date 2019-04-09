@@ -57,7 +57,14 @@ export class ErrorHandler {
         translationId = 'errors.user-exists'
         break
       case errors.TransactionError:
-        translationId = `transaction-errors.${error.errorResults[0].errorCode}`
+        let getErrorCode
+        let errorResults = error.errorResults
+        if (errorResults) {
+          getErrorCode = error.errorResults[0].errorCode
+        } else {
+          getErrorCode = error._resultCodes.operations[0]
+        }
+        translationId = `transaction-errors.${getErrorCode}`
         if (!i18next.exists(translationId)) {
           // If there is no localized error code, display the message
           // that came from the backend
