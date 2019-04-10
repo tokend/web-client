@@ -17,6 +17,8 @@ for further information about branching and tagging conventions.
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
 - Added transaction errors handling
+- Two factor authentication on login & change passwrod forms
+- Enabling/disabling 2FA form
 
 #### Changed
 - Modularized:
