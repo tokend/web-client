@@ -17,7 +17,6 @@
             white-autofill
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
-            id="asset-name"
             name="asset-update-name"
             :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage(

@@ -14,7 +14,6 @@
               :values="quoteAssetListValues"
               key-as-value-text="nameAndCode"
               :label="'invest-form.asset-lbl' | globalize"
-              id="invest-asset"
               name="invest-asset"
               @blur="touchField('form.asset')"
               :disabled="formMixin.isDisabled || !canUpdateOffer"
@@ -36,7 +35,6 @@
               type="number"
               v-model="form.amount"
               @input="touchField('form.amount')"
-              id="invest-amount"
               name="invest-amount"
               :label="'invest-form.amount-lbl' | globalize({
                 asset: form.asset.code

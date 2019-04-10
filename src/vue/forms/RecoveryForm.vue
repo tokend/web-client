@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="recovery-email"
           name="recovery-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,7 +17,6 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="recovery-password"
           name="recovery-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
@@ -32,7 +30,6 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          id="recovery-confirm-password"
           name="recovery-password-confirm"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
@@ -46,7 +43,6 @@
         <input-field
           v-model="form.recoverySeed"
           @blur="touchField('form.recoverySeed')"
-          id="recovery-seed"
           name="recovery-seed"
           type="password"
           :error-message="getFieldErrorMessage('form.recoverySeed')"

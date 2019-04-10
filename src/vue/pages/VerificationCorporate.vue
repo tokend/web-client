@@ -16,7 +16,6 @@
               white-autofill
               v-model="form.name"
               @blur="touchField('form.name')"
-              id="verification-corporate-name"
               name="verification-corporate-name"
               :label="'verification-form.name-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.name')"
@@ -31,7 +30,6 @@
               white-autofill
               v-model="form.company"
               @blur="touchField('form.company')"
-              id="verification-corporate-company"
               name="verification-corporate-company"
               :label="'verification-form.company-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.company')"
@@ -60,7 +58,6 @@
               white-autofill
               v-model="form.headquarters"
               @blur="touchField('form.headquarters')"
-              id="verification-corporate-headquarters"
               name="verification-corporate-headquarters"
               :label="'verification-form.headquarters-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.headquarters')"
@@ -75,7 +72,6 @@
               white-autofill
               v-model="form.industry"
               @blur="touchField('form.industry')"
-              id="verification-corporate-industry"
               name="verification-corporate-industry"
               :label="'verification-form.industry-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.industry')"
@@ -91,7 +87,6 @@
               type="number"
               v-model="form.teamSize"
               @blur="touchField('form.teamSize')"
-              id="verification-corporate-team-size"
               name="verification-corporate-team-size"
               :label="'verification-form.team-size-lbl' | globalize"
               :error-message="
@@ -108,7 +103,6 @@
               white-autofill
               v-model="form.website"
               @blur="touchField('form.website')"
-              id="verification-corporate-website"
               name="verification-corporate-website"
               :label="'verification-form.website-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.website')"

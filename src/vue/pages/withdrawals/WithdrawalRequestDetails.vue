@@ -159,7 +159,6 @@
     >
       <div class="withdrawal-request-details__form-field">
         <textarea-field
-          id="withdrawal-request-details-reject-reason"
           name="withdrawal-request-details-reject-reason"
           v-model="rejectReason"
           :label="'withdrawal-request-details.reject-reason' | globalize"

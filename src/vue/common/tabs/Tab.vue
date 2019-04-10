@@ -3,7 +3,6 @@
     v-show="isActive"
     :aria-hidden="!isActive"
     class="app-tabs__panel"
-    :id="hash"
     role="tabpanel"
   >
     <slot />
@@ -13,7 +12,6 @@
 <script>
 export default {
   props: {
-    id: { type: String, required: false, default: '' },
     name: { type: String, required: true, default: '' },
     prefix: { type: String, required: false, default: '' },
     suffix: { type: String, required: false, default: '' },
@@ -33,9 +31,7 @@ export default {
     hash () {
       if (this.isDisabled) return '#'
 
-      return this.id
-        ? '#' + this.id
-        : '#' + this.name.toLowerCase().replace(/ /g, '-')
+      return '#' + this.name.toLowerCase().replace(/ /g, '-')
     },
   },
 }

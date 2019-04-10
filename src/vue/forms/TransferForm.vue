@@ -21,7 +21,6 @@
           view.mode === VIEW_MODES.confirm">
         <form
           @submit.prevent="processTransfer"
-          id="transfer-form"
           v-if="view.mode === VIEW_MODES.submit ||
             view.mode === VIEW_MODES.confirm">
           <div class="app__form-row">
@@ -82,7 +81,6 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <textarea-field
-                id="transfer-description"
                 name="transfer-description"
                 v-model="form.subject"
                 :label="'transfer-form.subject-lbl' | globalize({

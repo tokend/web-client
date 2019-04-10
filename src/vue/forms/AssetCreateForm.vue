@@ -17,7 +17,6 @@
             white-autofill
             v-model="form.information.name"
             @blur="touchField('form.information.name')"
-            id="asset-name"
             name="asset-create-name"
             :label="'asset-form.name-lbl' | globalize"
             :error-message="getFieldErrorMessage(
@@ -36,7 +35,6 @@
             white-autofill
             v-model="form.information.code"
             @blur="touchField('form.information.code')"
-            id="asset-code"
             name="asset-create-asset-code"
             :label="'asset-form.code-lbl' | globalize"
             :error-message="getFieldErrorMessage(
@@ -56,7 +54,6 @@
             type="number"
             v-model="form.information.maxIssuanceAmount"
             @blur="touchField('form.information.maxIssuanceAmount')"
-            id="asset-max-issuance-amount"
             name="asset-create-max-issuance-amount"
             :label="'asset-form.max-issuance-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
@@ -159,7 +156,6 @@
                 white-autofill
                 v-model="form.advanced.preissuedAssetSigner"
                 @blur="touchField('form.advanced.preissuedAssetSigner')"
-                id="asset-preissued-asset-signer"
                 name="asset-create-preissued-asset-signer"
                 :label="'asset-form.preissued-asset-signer-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
@@ -186,7 +182,6 @@
               type="number"
               v-model="form.advanced.initialPreissuedAmount"
               @blur="touchField('form.advanced.initialPreissuedAmount')"
-              id="asset-initial-preissued-amount"
               name="asset-create-initial-preissued-amount"
               :label="'asset-form.initial-preissued-amount-lbl' | globalize"
               :error-message="getFieldErrorMessage(

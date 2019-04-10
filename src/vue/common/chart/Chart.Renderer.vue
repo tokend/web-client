@@ -48,7 +48,6 @@ export default {
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
     isTicksShown: { type: Boolean, default: true },
-    id: { type: String, required: true },
   },
   data () {
     return {
@@ -88,7 +87,7 @@ export default {
   methods: {
     formatMoney,
     clear () {
-      d3.select(`svg#${this.id}`).remove()
+      d3.select(this.$refs.chart).select('svg').remove()
     },
     getDimensions () {
       const parentElement = this.$el.parentElement
@@ -159,7 +158,6 @@ export default {
         .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
         .attr('preserveAspectRatio', 'xMinYMin')
         .attr('class', className)
-        .attr('id', this.id)
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {

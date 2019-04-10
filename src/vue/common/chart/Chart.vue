@@ -10,7 +10,6 @@
     />
     <chart-renderer
       class="chart__renderer"
-      id="chart"
       :scale="scale"
       :has-value="isActualData && historyHasValue"
       :is-loading="isLoading"

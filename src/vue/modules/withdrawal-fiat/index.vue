@@ -1,20 +1,14 @@
 <template>
   <div class="withdrawal-fiat-module">
     <tabs>
-      <tab
-        :name="'withdrawal-fiat-module.tab-card-lbl' | globalize"
-        id="withdrawal-fiat-card-tab"
-      >
+      <tab :name="'withdrawal-fiat-module.tab-card-lbl' | globalize">
         <withdrawal-fiat-card
           :config="config"
           :wallet="wallet"
           @withdrawn="withdrawn"
         />
       </tab>
-      <tab
-        :name="'withdrawal-fiat-module.tab-bank-lbl' | globalize"
-        id="withdrawal-fiat-bank-tab"
-      >
+      <tab :name="'withdrawal-fiat-module.tab-bank-lbl' | globalize">
         <withdrawal-fiat-bank
           :config="config"
           :wallet="wallet"
