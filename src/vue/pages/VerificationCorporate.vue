@@ -166,7 +166,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, url, integer, minValue } from '@validators'
+import { required, validateUrl, integer, minValue } from '@validators'
 
 const MIN_TEAM_SIZE = 1
 
@@ -210,7 +210,10 @@ export default {
         integer,
         minValue: minValue(MIN_TEAM_SIZE),
       },
-      website: { required, url },
+      website: {
+        required,
+        validateUrl,
+      },
     },
   },
 
