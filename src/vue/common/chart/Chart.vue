@@ -50,7 +50,6 @@ export default {
     scale: 'day',
     common: {
       precision: config.DECIMAL_POINTS,
-      defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
     },
     loadPricesTickerIntervalId: -1,
     loadPricesTickerTimeout: 10000,

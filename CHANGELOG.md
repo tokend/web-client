@@ -149,6 +149,7 @@ for further information about branching and tagging conventions.
   - Issuance explorer page
   - Fees page
   - TopBar component
+- Extracted default quote asset from the server
 
 #### Removed
 - Removed feature flags from config
