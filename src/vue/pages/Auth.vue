@@ -19,7 +19,9 @@
     <div class="auth__form">
       <logo class="auth__logo" />
 
-      <idle-message />
+      <div class="auth__idle-message-wrp">
+        <idle-message />
+      </div>
 
       <router-view />
 
@@ -146,5 +148,10 @@ export default {
   font-size: 1.2rem;
   color: $col-text-auth-version;
   margin: 1.2rem 0 0;
+}
+
+.auth__idle-message-wrp {
+  margin-top: -6rem;
+  margin-bottom: 4rem;
 }
 </style>

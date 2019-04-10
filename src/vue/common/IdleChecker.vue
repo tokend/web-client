@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <div />
 </template>
 
@@ -11,7 +11,10 @@ export default {
 
   onIdle () {
     this.clearState()
-    this.$router.push({ name: this.$route.name, query: { isIdle: 'true' } })
+    this.$router.push({
+      name: this.$route.name,
+      query: { isIdle: 'true' }
+    })
     location.reload()
   },
 

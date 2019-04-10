@@ -1,20 +1,16 @@
 <template>
   <div
-    v-if="isLoggedOut"
+    v-if="isMessageShown"
     class="idle-message-wrapper"
   >
     <div class="idle-message">
       <p class="idle-message__text">
         {{ "idle-message.notification-message" | globalize }}
       </p>
-      <div class="idle-message__btn-wrp">
-        <button
-          class="idle-message__btn"
-          @click="closeSelf"
-        >
-          {{ "idle-message.close-lbl" | globalize }}
-        </button>
-      </div>
+      <button
+        class="idle-message__close-btn"
+        @click="isMessageShown = false"
+      />
     </div>
   </div>
 </template>
@@ -23,26 +19,39 @@
 export default {
   name: 'idle-message',
 
-  data () {
-    return {
-      isLoggedOut: false,
-    }
-  },
+  data: _ => ({
+    isMessageShown: false,
+  }),
 
   created () {
-    this.showIdleNotification()
+    this.tryShowMessageOnce()
   },
 
   methods: {
-    showIdleNotification () {
-      const routeQuery = this.$route.query || ''
-      if (routeQuery.redirectPath.includes('isIdle=true')) {
-        this.isLoggedOut = true
+    tryShowMessageOnce () {
+      if (this.queryHasIsIdle(this.$route.query)) {
+        this.isMessageShown = true
+        this.cleanQueryIsIdle(this.$route.query)
       }
     },
 
-    closeSelf () {
-      this.isLoggedOut = false
+    queryHasIsIdle (query) {
+      return query.isIdle || /isIdle=true/ig.test(query.redirectPath)
+    },
+
+    cleanQueryIsIdle (query) {
+      const noIdleQuery = Object.assign({}, query)
+      delete noIdleQuery.isIdle
+
+      if (noIdleQuery.redirectPath) {
+        noIdleQuery.redirectPath =
+          noIdleQuery.redirectPath.replace(/(\?|&)?isIdle=(true|false)/ig, '')
+      }
+
+      this.$router.push({
+        path: this.$route.path,
+        query: noIdleQuery,
+      })
     },
   },
 }
@@ -52,38 +61,50 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.idle-message-wrapper {
-  margin-top: -6rem;
-  margin-bottom: 4rem;
-}
-
 .idle-message {
-  display: flex;
-  justify-content: space-around;
   align-items: center;
-  padding: 1.7rem 2rem;
+  padding: 2.4rem;
   background-color: $col-warning;
-  text-decoration: none;
+  position: relative;
 }
 
 .idle-message__text {
   color: $col-text-msg-warning;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  line-height: 1.25;
   font-weight: bold;
 }
 
-.idle-message__btn-wrp {
-  margin-left: 1rem;
-}
+.idle-message__close-btn {
+  position: absolute;
+  width: 2.4rem;
+  height: 2.4rem;
+  top: 0.6rem;
+  right: 0.6rem;
 
-.idle-message__btn {
-  @include button-raised();
-  background: transparent;
-  border: 0.1rem solid $col-text-msg-warning;
+  &:after,
+  &:before {
+    content: "";
+    height: 60%;
+    width: 0.2rem;
+    position: absolute;
+    top: 20%;
+    left: calc(50% - 0.1rem);
+    background-color: $col-text-msg-warning;
+  }
 
-  &:hover {
-    background-color: $col-button-raised;
-    border: 0.1rem solid transparent;
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:hover:after,
+  &:hover:before {
+    opacity: 0.7;
+    transition: opacity 0.2s;
   }
 }
 </style>
