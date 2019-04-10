@@ -13,7 +13,7 @@ export default {
     this.clearState()
     this.$router.push({
       name: this.$route.name,
-      query: { isIdle: 'true' }
+      query: { isIdle: 'true' },
     })
     location.reload()
   },
