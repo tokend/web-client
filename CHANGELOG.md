@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
+- Autocomplete limit change forms
 
 #### Changed
 - Modularized:
