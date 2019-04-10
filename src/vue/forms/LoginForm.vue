@@ -104,12 +104,7 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
-        if (this.tfaError) {
-          await Sdk.api.factors.verifyTotpFactor(
-            this.tfaError,
-            this.form.tfaCode
-          )
-        }
+        await this.verifyTfaFactor()
         await this.loadWallet({
           email: this.form.email.toLowerCase(),
           password: this.form.password,
@@ -131,6 +126,14 @@ export default {
         this.processAuthError(e)
       }
       this.enableForm()
+    },
+    async verifyTfaFactor () {
+      if (this.tfaError) {
+        await Sdk.api.factors.verifyTotpFactor(
+          this.tfaError,
+          this.form.tfaCode
+        )
+      }
     },
     processAuthError (error) {
       switch (error.constructor) {
