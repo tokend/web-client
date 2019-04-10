@@ -2,7 +2,10 @@
   <div class="deposit-fiat-module">
     <tabs>
       <template v-if="getModule().canRenderSubmodule(DepositFiatCardModule)">
-        <tab :name="'deposit-fiat-module.tab-card-lbl' | globalize">
+        <tab
+          :name="'deposit-fiat-module.tab-card-lbl' | globalize"
+          id="deposit-fiat-card-tab"
+        >
           <submodule-importer
             :submodule="getModule().getSubmodule(DepositFiatCardModule)"
             :config="config"
@@ -13,7 +16,10 @@
       </template>
 
       <template v-if="getModule().canRenderSubmodule(DepositFiatBankModule)">
-        <tab :name="'deposit-fiat-module.tab-bank-lbl' | globalize">
+        <tab
+          :name="'deposit-fiat-module.tab-bank-lbl' | globalize"
+          id="deposit-fiat-bank-tab"
+        >
           <submodule-importer
             :submodule="getModule().getSubmodule(DepositFiatBankModule)"
             :config="config"
