@@ -19,10 +19,7 @@
     <div class="auth__form">
       <logo class="auth__logo" />
 
-      <idle-message
-        v-if="isLoggedout"
-        :is-shown.sync="isLoggedout"
-      />
+      <idle-message />
 
       <router-view />
 
@@ -49,19 +46,7 @@ export default {
   data () {
     return {
       buildVersion: config.BUILD_VERSION,
-      isLoggedout: false,
     }
-  },
-  created () {
-    this.showIdleNotification()
-  },
-  methods: {
-    showIdleNotification () {
-      const routeQuery = this.$route.query || ''
-      if (routeQuery.redirectPath.includes('isIdle=true')) {
-        this.isLoggedout = true
-      }
-    },
   },
 }
 </script>

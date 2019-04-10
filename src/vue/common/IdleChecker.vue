@@ -1,7 +1,5 @@
-<template>
-  <div class="idle-check">
-    .
-  </div>
+<template functional>
+  <div />
 </template>
 
 <script>
@@ -24,13 +22,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
-
-.idle-check {
-  display: none;
-}
-
-</style>

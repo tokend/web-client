@@ -26,7 +26,6 @@ import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
-import { IDLE } from './js/const/idle.const'
 
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
@@ -61,11 +60,9 @@ async function init () {
   const store = await extendStoreWithScheme(SchemeRegistry.current)
   const router = buildRouter(store)
 
-  const eventsHub = new Vue()
-
   Vue.use(IdleVue, {
-    eventEmitter: eventsHub,
-    idleTime: IDLE.time,
+    eventEmitter: new Vue(),
+    idleTime: config.IDLE_TIMEOUT,
   })
 
   /* eslint-disable no-new */

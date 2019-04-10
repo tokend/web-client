@@ -20,18 +20,29 @@
 </template>
 
 <script>
-const EVENTS = {
-  updateIsShown: 'update:isShown',
-}
-
 export default {
   name: 'idle-message',
-  props: {
-    isLoggedOut: { type: Boolean, default: false },
+
+  data () {
+    return {
+      isLoggedOut: false,
+    }
   },
+
+  created () {
+    this.showIdleNotification()
+  },
+
   methods: {
+    showIdleNotification () {
+      const routeQuery = this.$route.query || ''
+      if (routeQuery.redirectPath.includes('isIdle=true')) {
+        this.isLoggedOut = true
+      }
+    },
+
     closeSelf () {
-      this.$emit(EVENTS.updateIsShown, false)
+      this.isLoggedOut = false
     },
   },
 }
