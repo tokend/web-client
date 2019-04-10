@@ -156,8 +156,9 @@ import _get from 'lodash/get'
 import { Api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+
+import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { ErrorHandler } from '@/js/helpers/error-handler'
