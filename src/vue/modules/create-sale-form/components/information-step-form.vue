@@ -79,7 +79,7 @@
           })"
           :error-message="getFieldErrorMessage(
             'form.softCap',
-            { from: MIN_AMOUNT, to: MAX_AMOUNT }
+            { hardCap: form.hardCap || '0' }
           )"
         />
       </div>
@@ -98,7 +98,7 @@
           })"
           :error-message="getFieldErrorMessage(
             'form.hardCap',
-            { from: form.softCap, to: MAX_AMOUNT }
+            { softCap: form.softCap || '0' }
           )"
         />
       </div>
@@ -196,6 +196,8 @@ import {
   required,
   maxLength,
   amountRange,
+  softCapMoreThanHardCap,
+  hardCapLessThanSoftCap,
   requiredAtLeastOne,
   minDate,
 } from '@validators'
@@ -254,11 +256,15 @@ export default {
         },
         softCap: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
+          softCapMoreThanHardCap: softCapMoreThanHardCap(
+            this.MIN_AMOUNT, this.form.hardCap
+          ),
         },
         hardCap: {
           required,
-          amountRange: amountRange(this.form.softCap, this.MAX_AMOUNT),
+          hardCapLessThanSoftCap: hardCapLessThanSoftCap(
+            this.form.softCap, this.MAX_AMOUNT
+          ),
         },
         assetsToSell: {
           required,

@@ -82,7 +82,6 @@
           :submodule="getModule().getSubmodule(CreateSaleFormModule)"
           :config="config"
           :wallet="wallet"
-          request-id="107"
           @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
