@@ -268,12 +268,20 @@ export default {
         )
         await Sdk.horizon.transactions.submitOperations(operation)
         do {
-          setTimeout(await this.loadKyc(), 5000)
+          await this.loadKyc()
+          await this.delay(5000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    delay (ms) {
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
+      })
     },
 
     async uploadDocuments () {
