@@ -30,7 +30,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          name="recovery-password-confirm"
+          name="recovery-confirm-password"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"

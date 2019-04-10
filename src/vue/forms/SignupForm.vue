@@ -30,7 +30,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          name="signup-password-confirm"
+          name="signup-confirm-password"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :white-autofill="false"
