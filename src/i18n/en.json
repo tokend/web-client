@@ -1387,7 +1387,9 @@
       "cap-exceeded-msg": "Investing amount has exceeded the sale cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the fund succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
-      "deposit-btn": "Deposit"
+      "deposit-btn": "Deposit",
+      "requires-verification-title": "Verification required",
+      "requires-verification-desc": "Please, verify your account to invest in this sale"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
