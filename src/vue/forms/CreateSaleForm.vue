@@ -154,6 +154,16 @@
                   )"
                   :disabled="formMixin.isDisabled"
                 />
+                <template v-if="form.saleInformation.baseAsset">
+                  <p class="app__form-field-description">
+                    {{
+                      'create-sale-form.available-amount' | globalize({
+                        asset: form.saleInformation.baseAsset.code,
+                        amount: availableForIssuance
+                      })
+                    }}
+                  </p>
+                </template>
               </div>
             </div>
             <div class="app__form-row create-sale__form-row">
@@ -264,7 +274,7 @@
               <div class="app__form-field">
                 <input-field
                   white-autofill
-                  v-model="form.fullDescription.youtubeId"
+                  v-model="form.fullDescription.youtubeVideo"
                   id="youtube-id"
                   name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
@@ -275,8 +285,8 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <iframe
-                  v-if="form.fullDescription.youtubeId"
-                  :src="`https://www.youtube.com/embed/${form.fullDescription.youtubeId}`"
+                  v-if="form.fullDescription.youtubeVideo"
+                  :src="`https://www.youtube.com/embed/${youtubeId}`"
                   class="create-sale__iframe" />
                 <div v-else class="create-sale__youtub-video">
                   <i class="mdi mdi-youtube create-sale__video-icon" />
@@ -289,7 +299,7 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 {{ 'create-sale-form.full-description' | globalize }}
-                <description-editor
+                <markdown-field
                   v-model="form.fullDescription.description"
                 />
               </div>
@@ -335,7 +345,6 @@ import config from '@/config'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import FormStepper from '@/vue/common/FormStepper'
-import DescriptionEditor from '@/vue/common/DescriptionEditor'
 
 import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
@@ -386,7 +395,6 @@ export default {
   name: 'create-sale-form',
   components: {
     FormStepper,
-    DescriptionEditor,
     Loader,
   },
   mixins: [FormMixin],
@@ -424,7 +432,7 @@ export default {
           shortDescription: '',
         },
         fullDescription: {
-          youtubeId: '',
+          youtubeVideo: '',
           description: '',
         },
       },
@@ -500,6 +508,12 @@ export default {
       return MathUtil.divide(this.form.saleInformation.hardCap,
         this.form.saleInformation.requiredBaseAssetForHardCap)
     },
+    youtubeId () {
+      const inputtedValue = this.form.fullDescription.youtubeVideo
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#]*).*/
+      const match = inputtedValue.match(regExp)
+      return match ? match[2] : inputtedValue
+    },
   },
   async created () {
     try {
@@ -522,6 +536,7 @@ export default {
     formatDate,
     nextStep (formStep) {
       if (this.isFormValid(formStep)) {
+        this.$el.parentElement.scrollTop = 0
         this.currentStep++
       }
     },
@@ -562,7 +577,7 @@ export default {
           short_description: this.form.shortBlurb.shortDescription,
           description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
-          youtube_video_id: this.form.fullDescription.youtubeId,
+          youtube_video_id: this.youtubeId,
         },
         // eslint-disable-next-line
         requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
@@ -604,7 +619,7 @@ export default {
         ? new DocumentContainer(request.logo)
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
-      this.form.fullDescription.youtubeId = request.youtubeVideoId
+      this.form.fullDescription.youtubeVideo = request.youtubeVideoId
       this.form.fullDescription.description =
         await this.getSaleDescription(request)
     },

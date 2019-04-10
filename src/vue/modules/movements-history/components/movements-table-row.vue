@@ -33,13 +33,6 @@
       </td>
 
       <td
-        class="movements-table-row__cell"
-        :title="movement | movementFee | formatMoney"
-      >
-        {{ movement | movementFee | formatMoney }}
-      </td>
-
-      <td
         class="movements-table-row__cell
                movements-table-row__cell--expand-btn-wrp"
       >
@@ -59,7 +52,7 @@
       v-if="isAttributesViewerShown"
       class="movements-table-row__attributes"
     >
-      <td colspan="6">
+      <td colspan="5">
         <div class="movements-table-row__attributes-viewer-wrp">
           <movement-attributes-viewer :movement="movement" />
         </div>
@@ -70,25 +63,8 @@
 
 <script>
 import { Movement } from '../wrappers/movement'
-import { MathUtil } from '@/js/utils'
-import {
-  FundedEffect,
-  LockedEffect,
-  IssuedEffect,
-  ChargedEffect,
-  UnlockedEffect,
-  WithdrawnEffect,
-  ChargedFromLockedEffect,
-  ParticularBalanceChangeEffect,
-} from '../wrappers/effect'
 
-import { CreateAMLAlertRequestOp } from '../wrappers/operation-details/create-aml-alert-request'
-import { CheckSaleStateOp } from '../wrappers/operation-details/check-sale-state'
-import { CreateIssuanceRequestOp } from '../wrappers/operation-details/create-issuance-request'
-import { CreateWithdrawRequestOp } from '../wrappers/operation-details/create-withdrawal-request'
-import { ManageOfferOp } from '../wrappers/operation-details/manage-offer'
-import { PaymentOp } from '../wrappers/operation-details/payment'
-import { ReviewRequestOp } from '../wrappers/operation-details/review-request'
+import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
 import MovementAttributesViewer from './movement-attributes-viewer'
 import MovementDirectionMark from './movement-direction-mark'
@@ -100,44 +76,6 @@ export default {
     MovementDirectionMark,
   },
   filters: {
-    effectTypeTranslationId (effect) {
-      switch (effect.constructor) {
-        case FundedEffect:
-          return 'movements-history.effects.funded'
-        case LockedEffect:
-          return 'movements-history.effects.locked'
-        case IssuedEffect:
-          return 'movements-history.effects.issued'
-        case ChargedEffect:
-          return 'movements-history.effects.charged'
-        case UnlockedEffect:
-          return 'movements-history.effects.unlocked'
-        case WithdrawnEffect:
-          return 'movements-history.effects.withdrawn'
-        case ChargedFromLockedEffect:
-          return 'movements-history.effects.charged-from-locked'
-        case ParticularBalanceChangeEffect:
-          return 'movements-history.effects.matched'
-      }
-    },
-    operationTypeTranslationId (operationDetails) {
-      switch (operationDetails.constructor) {
-        case CreateAMLAlertRequestOp:
-          return 'movements-history.operations.create-aml-alert-request'
-        case CheckSaleStateOp:
-          return 'movements-history.operations.check-sale-state'
-        case CreateIssuanceRequestOp:
-          return 'movements-history.operations.create-issuance-request'
-        case CreateWithdrawRequestOp:
-          return 'movements-history.operations.create-withdraw-request'
-        case ManageOfferOp:
-          return 'movements-history.operations.manage-offer'
-        case PaymentOp:
-          return 'movements-history.operations.payment'
-        case ReviewRequestOp:
-          return 'movements-history.operations.review-request'
-      }
-    },
     movementAmount (movement) {
       let currency = movement.assetCode
       let value = movement.effect.amount
@@ -148,16 +86,8 @@ export default {
 
       return { currency, value }
     },
-    movementFee (movement) {
-      let currency = movement.assetCode
-      let value = MathUtil.add(
-        movement.fixedFee,
-        movement.calculatedPercentFee
-      )
-
-      return { currency, value }
-    },
   },
+  mixins: [TranslationFiltersMixin],
 
   props: {
     movement: { type: Movement, required: true },

@@ -44,6 +44,18 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
+          <tick-field
+            v-model="form.information.policies"
+            :disabled="formMixin.isDisabled"
+            :cb-value="ASSET_POLICIES.withdrawable"
+          >
+            {{ 'asset-form.withdrawable-lbl' | globalize }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
           <file-field
             name="asset-update-logo"
             v-model="form.information.logo"
@@ -132,7 +144,6 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { RecordWrapper } from '@/js/records'
 import { AssetUpdateRequestRecord } from '@/js/records/requests/asset-update.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { Sdk } from '@/sdk'
 import { base, ASSET_POLICIES } from '@tokend/js-sdk'
@@ -174,7 +185,7 @@ export default {
   mixins: [FormMixin],
   props: {
     request: { type: AssetUpdateRequestRecord, default: null },
-    assetRecord: { type: AssetRecord, default: null },
+    assetRecord: { type: Object, default: null },
   },
 
   data: _ => ({
@@ -294,6 +305,7 @@ export default {
 
     next (formStep) {
       if (this.isFormValid(formStep)) {
+        this.$el.parentElement.scrollTop = 0
         this.currentStep++
       }
     },

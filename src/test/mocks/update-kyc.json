@@ -1,66 +1,142 @@
 {
   "links": {
-    "self": "/v3/change_role_requests?filter%5Brequestor%5D=GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR\u0026include=request_details\u0026page%5Bcursor%5D=9223372036854775807\u0026page%5Blimit%5D=1\u0026page%5Border%5D=desc",
-    "prev": "/v3/change_role_requests?filter%5Brequestor%5D=GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR\u0026include=request_details\u0026page%5Bcursor%5D=9223372036854775807\u0026page%5Blimit%5D=1\u0026page%5Border%5D=asc",
-    "next": "/v3/change_role_requests?filter%5Brequestor%5D=GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR\u0026include=request_details\u0026page%5Bcursor%5D=2\u0026page%5Blimit%5D=1\u0026page%5Border%5D=desc"
+    "self": "/v3/change_role_requests?filter%5Brequestor%5D=GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU\u0026include=request_details\u0026page%5Bcursor%5D=9223372036854775807\u0026page%5Blimit%5D=2\u0026page%5Border%5D=desc",
+    "prev": "/v3/change_role_requests?filter%5Brequestor%5D=GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU\u0026include=request_details\u0026page%5Bcursor%5D=9223372036854775807\u0026page%5Blimit%5D=2\u0026page%5Border%5D=asc",
+    "next": "/v3/change_role_requests?filter%5Brequestor%5D=GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU\u0026include=request_details\u0026page%5Bcursor%5D=70\u0026page%5Blimit%5D=2\u0026page%5Border%5D=desc"
   },
-  "data": [{
-    "id": "2",
-    "type": "requests",
-    "attributes": {
-      "reference": "17eb70034b5b71092521d184c5e7b069d47de657e51aef2be11a00c115036943",
-      "reject_reason": "",
-      "hash": "de47d9e4824f785aabe139cc93e493a9665d6231a5c116b8b518979b3a1d8600",
-      "all_tasks": 1,
-      "pending_tasks": 1,
-      "external_details": {
-        "data": [{
-          "rejector": "Some service"
-        }]
+  "data": [
+    {
+      "id": "71",
+      "type": "requests",
+      "attributes": {
+        "reference": "17eb70034b5b71092521d184c5e7b069d47de657e51aef2be11a00c115036943",
+        "reject_reason": "",
+        "hash": "0f11a196fdd2ec38f4d4120aff776e25d80650220d647b93e28c38bba918a822",
+        "all_tasks": 1,
+        "pending_tasks": 0,
+        "external_details": {
+          "data": [
+            {
+              "rejector": "Some service"
+            },
+            {}
+          ]
+        },
+        "created_at": "2019-04-02T14:00:18Z",
+        "updated_at": "2019-04-02T14:01:33Z",
+        "state": "approved",
+        "state_i": 3,
+        "xdr_type": {
+          "value": 8,
+          "name": "change_role"
+        }
       },
-      "created_at": "2019-02-21T11:40:26Z",
-      "updated_at": "2019-02-21T11:40:26Z",
-      "state": "pending",
-      "state_i": 1
+      "relationships": {
+        "requestor": {
+          "data": {
+            "id": "GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU",
+            "type": "accounts"
+          }
+        },
+        "reviewer": {
+          "data": {
+            "id": "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB",
+            "type": "accounts"
+          }
+        },
+        "request_details": {
+          "data": {
+            "id": "71",
+            "type": "request-details-change-role"
+          }
+        }
+      }
     },
-    "relationships": {
-      "requestor": {
-        "data": {
-          "id": "GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR",
-          "type": "accounts"
+    {
+      "id": "70",
+      "type": "requests",
+      "attributes": {
+        "reference": "17eb70034b5b71092521d184c5e7b069d47de657e51aef2be11a00c115036943",
+        "reject_reason": "",
+        "hash": "28899e37becca9c3799cbe26238581e2303dff8e5b4525ca303b3d4ae2498705",
+        "all_tasks": 0,
+        "pending_tasks": 0,
+        "external_details": {
+          "data": [
+            {}
+          ]
+        },
+        "created_at": "2019-04-02T13:58:28Z",
+        "updated_at": "2019-04-02T13:58:28Z",
+        "state": "approved",
+        "state_i": 3,
+        "xdr_type": {
+          "value": 8,
+          "name": "change_role"
         }
       },
-      "reviewer": {
-        "data": {
-          "id": "GA67BUDBYDGCVCL6EKPDAREG5IPLHSROF6QJX7MLS2BQJZJDO6FCZAKE",
-          "type": "accounts"
-        }
-      },
-      "request_details": {
-        "data": {
-          "id": "2",
-          "type": "request-details-change-role"
+      "relationships": {
+        "requestor": {
+          "data": {
+            "id": "GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU",
+            "type": "accounts"
+          }
+        },
+        "reviewer": {
+          "data": {
+            "id": "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB",
+            "type": "accounts"
+          }
+        },
+        "request_details": {
+          "data": {
+            "id": "70",
+            "type": "request-details-change-role"
+          }
         }
       }
     }
-  }],
-  "included": [{
-    "id": "2",
-    "type": "request-details-change-role",
-    "attributes": {
-      "account_role_to_set": 3,
-      "creator_details": {
-        "blob_id": "OOFBHZPK2Y2VUJRRTO2X6GKUXH6MO6GNKAIM4TYJFA3VZGZ2LB7A"
+  ],
+  "included": [
+    {
+      "id": "71",
+      "type": "request-details-change-role",
+      "attributes": {
+        "account_role_to_set": 3,
+        "sequence_number": 1,
+        "creator_details": {
+          "blob_id": "G6V2SIIY2KAP3NGZTJ5DJTBFFKPIC2LESBGQITXR64HXFPFOVPGA"
+        }
       },
-      "sequence_number": 0
+      "relationships": {
+        "account_to_update_role": {
+          "data": {
+            "id": "GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU",
+            "type": "accounts"
+          }
+        }
+      }
     },
-    "relationships": {
-      "account_to_update_role": {
-        "data": {
-          "id": "GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR",
-          "type": "accounts"
+    {
+      "id": "70",
+      "type": "request-details-change-role",
+      "attributes": {
+        "account_role_to_set": 4,
+        "sequence_number": 0,
+        "creator_details": {
+          "blobId": "HKRDBQPYTE5MXDFKBQ2IQ3KIOCCQIUC2V5PXWPTECGCMMGTZSAUQ",
+          "resetReason": "Izmena",
+          "previousAccountRole": 3
+        }
+      },
+      "relationships": {
+        "account_to_update_role": {
+          "data": {
+            "id": "GA2DLLQAX4PDR5WKBNWBTXBA57HTD7IPREDR4F5JVOEK2LORUWLIE7XU",
+            "type": "accounts"
+          }
         }
       }
     }
-  }]
+  ]
 }

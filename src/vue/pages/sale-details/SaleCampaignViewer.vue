@@ -7,7 +7,12 @@
       </div>
 
       <div class="sale-campaign-viewer__state">
-        <sale-state-widget :sale="sale" />
+        <template v-if="getModule().canRenderSubmodule(SaleStateWidgetModule)">
+          <submodule-importer
+            :submodule="getModule().getSubmodule(SaleStateWidgetModule)"
+            :sale="sale"
+          />
+        </template>
       </div>
     </div>
   </div>
@@ -16,7 +21,8 @@
 <script>
 import SaleLogoViewer from './SaleLogoViewer'
 import SaleDescriptionViewer from './SaleDescriptionViewer'
-import SaleStateWidget from './SaleStateWidget'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -25,12 +31,16 @@ export default {
   components: {
     SaleLogoViewer,
     SaleDescriptionViewer,
-    SaleStateWidget,
+    SubmoduleImporter,
   },
 
   props: {
     sale: { type: SaleRecord, required: true },
   },
+  data: _ => ({
+    SaleStateWidgetModule,
+  }),
+
 }
 </script>
 
@@ -58,6 +68,7 @@ export default {
   background-color: $col-sale-details-block;
   border-radius: .4rem;
   margin: 1.6rem;
+  overflow: auto;
 
   @include respond-to($x-medium) {
     flex-basis: 55%;

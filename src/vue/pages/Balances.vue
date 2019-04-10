@@ -1,81 +1,41 @@
 <template>
-  <div class="balances">
-    <template v-if="isLoaded">
-      <template v-if="assets.length">
-        <assets-list :assets="assets" />
-      </template>
-
-      <template v-else>
-        <no-data-message
-          icon-name="trending-up"
-          title-id="assets-page.no-balances-title"
-          message-id="assets-page.no-balances-msg"
-        />
-      </template>
-    </template>
-
-    <template v-else-if="isLoadingFailed">
-      <p>
-        {{ 'assets-page.loading-error-msg' | globalize }}
-      </p>
-    </template>
-
-    <template v-else>
-      <loader message-id="assets-page.loading-msg" />
+  <div class="balance-explorer">
+    <template v-if="getModule().canRenderSubmodule(BalanceExplorerModule)">
+      <submodule-importer
+        :submodule="getModule().getSubmodule(BalanceExplorerModule)"
+        :config="config"
+        :wallet="wallet"
+      />
     </template>
   </div>
 </template>
 
 <script>
-import AssetsList from '@/vue/common/assets/AssetsList'
-import Loader from '@/vue/common/Loader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { BalanceExplorerModule } from '@modules/assets/balance-explorer/module'
 
-import { ErrorHandler } from '@/js/helpers/error-handler'
+import config from '../../config'
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'balances',
   components: {
-    AssetsList,
-    Loader,
-    NoDataMessage,
+    SubmoduleImporter,
   },
 
   data: _ => ({
-    assets: [],
-    isLoaded: false,
-    isLoadingFailed: false,
+    BalanceExplorerModule,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+      storageURL: config.FILE_STORAGE,
+    },
   }),
-
   computed: {
     ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
-    }),
-  },
-
-  async created () {
-    try {
-      await this.loadBalances()
-      this.assets = this.accountBalances
-        .map(balance => balance.assetDetails)
-      this.isLoaded = true
-    } catch (e) {
-      this.isLoadingFailed = true
-      ErrorHandler.processWithoutFeedback(e)
-    }
-  },
-
-  methods: {
-    ...mapActions({
-      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      wallet: vuexTypes.wallet,
     }),
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

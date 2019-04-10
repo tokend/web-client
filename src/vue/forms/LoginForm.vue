@@ -78,7 +78,7 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -94,7 +94,7 @@ export default {
         Api.useWallet(this[vuexTypes.wallet])
 
         await this.loadAccount(accountId)
-        await this.loadKvEntriesAccountRoleIds()
+        await this.loadKvEntries()
         await this.loadKyc()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })

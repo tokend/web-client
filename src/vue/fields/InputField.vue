@@ -4,7 +4,8 @@
     :class="{
       'input-field--error': errorMessage,
       'input-field--monospaced': monospaced,
-      'input-field--readonly': $attrs.readonly
+      'input-field--readonly': $attrs.readonly,
+      'input-field--disabled': $attrs.disabled
     }"
   >
     <input
@@ -25,7 +26,7 @@
     <span class="input-field__label">
       {{ label }}
 
-      <template v-if="isCapsLockState">
+      <template v-if="isCapsLockOn">
         ({{ 'input-field.caps-lock-warning' | globalize }})
       </template>
     </span>
@@ -55,7 +56,7 @@ export default {
   },
 
   data: () => ({
-    isCapsLockState: false,
+    isCapsLockOn: false,
   }),
 
   computed: {
@@ -89,7 +90,7 @@ export default {
         document.removeEventListener('keydown', this.detectCapsLock)
         document.removeEventListener('keyup', this.detectCapsLock)
 
-        if (!this.value) this.isCapsLockState = false
+        if (!this.value) this.isCapsLockOn = false
       }
     },
     detectCapsLock (event) {
@@ -98,7 +99,7 @@ export default {
        *
        * @return {Boolean}
        */
-      this.isCapsLockState = event.getModifierState('CapsLock')
+      this.isCapsLockOn = event.getModifierState('CapsLock')
     },
   },
 }
@@ -252,11 +253,13 @@ export default {
   color: $field-color-error;
 }
 
-.input-field--readonly > .input-field__input {
+.input-field--readonly > .input-field__input,
+.input-field--disabled > .input-field__input {
   @include readonly-material-border($field-color-unfocused);
 }
 
-.input-field--readonly > .input-field__input:focus ~ .input-field__label {
+.input-field--readonly > .input-field__input:focus ~ .input-field__label,
+.input-field--disabled > .input-field__input:focus ~ .input-field__label {
   color: $field-color-unfocused;
 }
 

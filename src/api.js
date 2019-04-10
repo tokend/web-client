@@ -25,7 +25,7 @@ export class Api {
 
   /**
    * @param {String} path - endpoint path for the request
-   * @param {Object} opts - request options
+   * @param {Object} [opts] - request options
    *
    * @returns {Promise} - API response
    */

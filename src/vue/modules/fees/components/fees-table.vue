@@ -10,8 +10,8 @@
             <th :title="'fees.table.type-th' | globalize">
               {{ 'fees.table.type-th' | globalize }}
             </th>
-            <th :title="'fees.table.subtype-th' | globalize">
-              {{ 'fees.table.subtype-th' | globalize }}
+            <th :title="'fees.table.direction-th' | globalize">
+              {{ 'fees.table.direction-th' | globalize }}
             </th>
             <th :title="'fees.table.fixed-th' | globalize">
               {{ 'fees.table.fixed-th' | globalize }}
@@ -65,9 +65,8 @@
     <no-data-message
       v-else
       icon-name="trending-up"
-      title-id="fees.no-valuable-fees-title"
-      message-id="fees.no-valuable-fees-msg"
-      :message-id-keys="{ asset: assetCode }"
+      :title="'fees.no-valuable-fees-title' | globalize"
+      :message="'fees.no-valuable-fees-msg' | globalize({ asset: assetCode })"
     />
   </div>
 </template>
