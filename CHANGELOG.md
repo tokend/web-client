@@ -51,7 +51,14 @@ for further information about branching and tagging conventions.
 - "Fee" column from the movements table
 - Transfer & deposit pseudomodules from the loyalty points reconciliation
   scheme
-- common records wrappers
+- Common records wrappers:
+  - `RecordWrapper` factory
+  - `AssetCreateRequestRecord`
+  - `AssetUpdateRequestRecord`
+  - `WithdrawalDetailsRequestRecord`
+  - `PreIssuanceCreateRequestRecord`
+  - `SaleRequestRecord`
+- Hardcoded `REQUEST_TYPES` constant
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
@@ -183,14 +190,6 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Not handling 'manage-asset-pair' operation details
-
-### Removed
-- `AssetRequestDetails` component
-- `SaleRequestDetails` component
-- `PreIssuanceCreateRequestRecord` wrapper
-- `SaleRequestRecord` wrapper
-- Update sale details JSON mock
-- Sale create request JSON mock
 
 ## [1.3.0] - 2019-03-01
 
