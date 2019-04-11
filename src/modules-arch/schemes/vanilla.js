@@ -282,7 +282,7 @@ export default {
           }),
           new AssetUpdateRequestsPageModule({
             routerEntry: {
-              path: '/requests/token-update',
+              path: '/requests/asset-update',
               name: vueRoutes.assetUpdateRequests.name,
             },
             submodules: [
