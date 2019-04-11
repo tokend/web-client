@@ -31,41 +31,6 @@ describe('StatusMessage component test', () => {
     }
   })
 
-  describe('renders the proper labels for the close button', () => {
-    before(() => {
-      TestHelper.useTranslations({
-        'status-message': {
-          'close-lbl_warning': 'Warning label',
-          'close-lbl_success': 'Success label',
-          'close-lbl_error': 'Error label',
-          'close-lbl_info': 'Info label',
-        },
-      })
-    })
-
-    after(() => {
-      TestHelper.resetTranslations()
-    })
-
-    const expectedResults = {
-      [Bus.eventList.warning]: 'Warning label',
-      [Bus.eventList.success]: 'Success label',
-      [Bus.eventList.error]: 'Error label',
-      [Bus.eventList.info]: 'Info label',
-    }
-
-    for (const [eventName, label] of Object.entries(expectedResults)) {
-      it(`${eventName} event`, async () => {
-        const wrapper = mount(StatusMessage, { localVue })
-        Bus.emit(eventName)
-        await localVue.nextTick()
-        const button = wrapper.find('.status-message__btn')
-
-        expect(button.text()).to.equal(label)
-      })
-    }
-  })
-
   describe('event message rendering', () => {
     it('renders the message passed to the emitted event', () => {
       before(() => {

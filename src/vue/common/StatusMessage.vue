@@ -4,30 +4,30 @@
       v-if="isShown"
       :class="`status-message status-message--${messageType}`"
     >
-      <div class="status-message__content">
-        <p class="status-message__text">
-          {{
-            messageId | globalize({
-              context: messageType,
-              ...messageArgs
-            })
-          }}
-        </p>
-      </div>
-      <div
-        class="status-message__btn-wrp"
-        :class="`status-message__btn-wrp--${messageType}`"
-      >
-        <button
-          @click="isShown = false"
-          :class="`status-message__btn status-message__btn--${messageType}`"
-        >
-          {{
-            "status-message.close-lbl" | globalize({
-              context: messageType
-            })
-          }}
-        </button>
+      <div class="status-message__wrp">
+        <div class="status-message__content">
+          <p class="status-message__title">
+            {{
+              messageTitleId | globalize({
+                context: messageType
+              })
+            }}
+          </p>
+          <p class="status-message__text">
+            {{
+              messageId | globalize({
+                context: messageType,
+                ...messageArgs
+              })
+            }}
+          </p>
+        </div>
+        <div class="status-message__btn-wrp">
+          <button
+            @click="isShown = false"
+            class="status-message__btn"
+          />
+        </div>
       </div>
     </div>
   </transition>
@@ -47,6 +47,7 @@ const MESSAGE_TYPES = Object.freeze({
 export default {
   name: 'status-message',
   data: _ => ({
+    messageTitleId: '',
     messageId: '',
     messageType: '',
     messageArgs: {},
@@ -66,10 +67,11 @@ export default {
   methods: {
     show (messageType, payload) {
       this.messageType = messageType
+      this.messageTitleId = 'status-message.title'
 
       if (typeof payload === 'string') {
         this.messageId = payload
-      // eslint-disable-next-line
+        // eslint-disable-next-line
       } else if (typeof payload === 'object' && !Array.isArray(payload) && !null) {
         this.messageId = payload.messageId || 'status-message.default-message'
         this.messageArgs = payload.messageArgs || {}
@@ -96,13 +98,7 @@ export default {
 @import "~@scss/mixins";
 
 .status-message {
-  box-shadow:
-    .6rem
-    .6rem
-    .6rem
-    -.4rem
-    $col-msg-shadow;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
   font-size: 1.6rem;
   position: fixed;
   right: 4rem;
@@ -110,8 +106,9 @@ export default {
   z-index: $z-status-message;
   max-width: 42rem;
   min-width: 32rem;
+  padding: 4rem 2.2rem 2rem 2.5rem;
   text-align: center;
-  opacity: .8;
+
   @include respond-to($tablet) {
     min-width: auto;
   }
@@ -119,114 +116,98 @@ export default {
   @include respond-to-custom($status-message-reposition-bp) {
     right: $content-side-paddings-sm;
     left: $content-side-paddings-sm;
-    opacity: 1;
   }
 
-  @mixin apply-theme ($col-bg, $col-bg-secondary, $col-msg) {
-    background: $col-bg;
-    background: linear-gradient($col-bg, $col-bg-secondary 25%);
-
-    .status-message__text {
-      color: $col-msg;
+  @mixin apply-theme($col-main, $col-secondary) {
+    box-shadow: 0.5rem 0.5rem 0.4rem -0.4rem rgba($col-main, .4);
+    background: $col-secondary;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 1.4rem;
+      left: 0;
+      width: 100%;
+      height: 0.45rem;
+      background-color: $col-main;
     }
-  }
-
-  &--warning {
-    @include apply-theme($col-warning, $col-warning-secondary, $col-msg-warning)
-  }
-  &--success {
-    @include apply-theme($col-success,$col-success-secondary,  $col-msg-success)
-  }
-  &--error {
-    @include apply-theme($col-error,$col-error-secondary,  $col-msg-error)
-  }
-  &--info {
-    @include apply-theme($col-info,$col-info-secondary,  $col-msg-info)
-  }
-}
-
-  .status-message__content {
-    position: relative;
-    border-color: transparent;
-    padding: 2rem 2rem 0.5rem;
-
+    .status-message__wrp {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .status-message__content {
+      min-width: 17rem;
+      margin-right: 2rem;
+    }
     p {
       font-size: 1.8rem;
+      text-align: left;
+      line-height: 1.3;
+      padding: 0.6rem 0;
     }
-  }
-
-.status-message__text {
-  margin: 2rem;
-}
-
-.status-message__btn-wrp {
-  padding: .8rem;
-  text-align: center;
-  background-color: $col-msg-info;
-
-  @mixin apply-theme ($col-bg, $col-border) {
-    background-color: $col-bg;
-    border: 0.01rem solid $col-border;
-  }
-
-  &--warning {
-     @include apply-theme($col-msg-warning, $col-warning-secondary)
-  }
-  &--success {
-     @include apply-theme($col-msg-success, $col-success-secondary)
-  }
-  &--error {
-     @include apply-theme($col-msg-error, $col-error-secondary)
-  }
-  &--info {
-     @include apply-theme($col-msg-info, $col-info-secondary)
-  }
-}
-
-.status-message__btn {
-  border-radius: .5rem;
-  border-width: .1rem;
-  border-style: solid;
-  font-size: 1.6rem;
-  padding: 1rem 2.9rem;
-  cursor: pointer;
-  transition: .2s;
-
-  &:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-
-  @mixin apply-theme ($col-main, $col-secondary) {
-    background-color: $col-main;
-    color: $col-secondary;
-    border-color: $col-secondary;
-
-    &:hover {
+    .status-message__title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
       color: $col-main;
-      border-color: $col-secondary;
-      background-color: $col-secondary;
-
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+    .status-message__btn {
+      position: relative;
+      width: 3.5rem;
+      height: 3.5rem;
+      background-color: $col-main;
+      background: $col-main;
+      border-radius: 0.2rem;
+      color: $col-secondary;
+      opacity: 0.85;
+      box-shadow: 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: 0.2s;
+      &:hover {
+        opacity: 1;
+        box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.4);
+      }
+      &:before, &:after  {
+        content: '';
+        position: absolute;
+        top: 0.8rem;
+        left: 1.7rem;
+        height: 2rem;
+        width: 0.2rem;
+        background-color: $col-secondary;
+      }
+      &:before {
+      transform: rotate(45deg);
+      }
+      &:after {
+      transform: rotate(-45deg);
+      }
     }
   }
 
   &--warning {
-     @include apply-theme($col-msg-warning, $col-warning-secondary)
+    @include apply-theme($col-warning, $col-msg-warning);
   }
   &--success {
-     @include apply-theme($col-msg-success, $col-success-secondary)
+    @include apply-theme($col-success, $col-msg-success);
   }
   &--error {
-     @include apply-theme($col-msg-error, $col-error-secondary)
+    @include apply-theme($col-error, $col-msg-error);
   }
   &--info {
-     @include apply-theme($col-msg-info, $col-info-secondary)
+    @include apply-theme($col-info, $col-msg-info);
   }
 }
 
-.toggle-enter-active, .toggle-leave-active {
+.toggle-enter-active,
+.toggle-leave-active {
   transition: all 0.2s linear;
 }
-.toggle-enter, .toggle-leave-to {
+.toggle-enter,
+.toggle-leave-to {
   transform: rotateX(90deg);
   opacity: 0;
 }
