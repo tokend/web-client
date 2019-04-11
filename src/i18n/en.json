@@ -961,9 +961,9 @@
       "verification-required-lbl": "Requires verification",
       "additional-issuance-check": "I do not want to make additional issuance later",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
-      "pre-issuance-signer-disclaimer": "WARNING! After recovery or password change you won't be able to make pre-issuance using your secret seed. Please, save your current secret seed to make pre-issuance later.",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset more securely use [offline issuance application](https://tokend.gitbook.io/product-guide/user-guide/offline-application)",
       "use-my-account-id-btn": "Use mine",
-      "preissued-amount-lbl": "Amount for pre-issuance",
+      "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"

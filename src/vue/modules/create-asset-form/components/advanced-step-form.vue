@@ -40,9 +40,11 @@
             </button>
           </div>
 
-          <p class="advanced-step-form__pre-issuance-signer-disclaimer">
-            {{ 'create-asset-form.pre-issuance-signer-disclaimer' | globalize }}
-          </p>
+          <vue-markdown
+            v-if="form.preIssuanceAssetSigner === publicKey"
+            class="advanced-step-form__pre-issuance-disclaimer"
+            :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
+          />
         </div>
       </div>
 
@@ -108,8 +110,9 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import VueMarkdown from 'vue-markdown'
 
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
@@ -125,6 +128,7 @@ const EVENTS = {
 
 export default {
   name: 'advanced-step-form',
+  components: { VueMarkdown },
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
@@ -229,7 +233,7 @@ export default {
   margin-left: .4rem;
 }
 
-.advanced-step-form__pre-issuance-signer-disclaimer {
+.advanced-step-form__pre-issuance-disclaimer {
   font-size: 1.4rem;
   margin-top: 1rem;
 }
