@@ -29,23 +29,42 @@
         <tbody>
           <tr>
             <td>{{ 'limits-form.daily-limit-lbl' | globalize }}</td>
-            <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.dailyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByPeriod('dailyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.weekly-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.weeklyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByPeriod('weeklyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.monthly-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.monthlyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByPeriod('monthlyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.annual-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.annualOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByPeriod('annualOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -214,12 +233,17 @@ const EVENTS = {
 }
 
 const MIN_VALID_LIMIT_VALUE = 0
+const MAX_VALID_LIMIT_VALUE = config.MAX_AMOUNT
 
 export default {
   name: 'limits-form',
   mixins: [FormMixin],
   props: {
-    limits: { type: Object, required: true, default: () => ({}) },
+    limits: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
   },
   data: () => ({
     form: {
@@ -309,6 +333,31 @@ export default {
     tryToSubmit () {
       if (!this.isFormValid()) return
       this.showConfirmation()
+    },
+    getLimitByPeriod (period) {
+      const limitType = this.selectedLimitsByOpType
+      switch (period) {
+        case 'dailyOut':
+          if (MAX_VALID_LIMIT_VALUE === limitType.dailyOut) {
+            return ''
+          }
+          return limitType.dailyOut
+        case 'weeklyOut':
+          if (MAX_VALID_LIMIT_VALUE === limitType.weeklyOut) {
+            return ''
+          }
+          return limitType.weeklyOut
+        case 'monthlyOut':
+          if (MAX_VALID_LIMIT_VALUE === limitType.monthlyOut) {
+            return ''
+          }
+          return limitType.monthlyOut
+        case 'annualOut':
+          if (MAX_VALID_LIMIT_VALUE === limitType.annualOut) {
+            return ''
+          }
+          return limitType.annualOut
+      }
     },
     async submit () {
       this.disableForm()
