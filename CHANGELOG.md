@@ -20,7 +20,7 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
-- Hide `Withdraw` and `Deposit` buttons accordingly to asset policies
+- Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
 
 #### Changed
 - Modularized:
