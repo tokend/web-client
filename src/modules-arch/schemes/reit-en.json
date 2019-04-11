@@ -78,7 +78,7 @@
       "asset-creation-title": "Opportunity creation",
       "sale-creation-title": "Opportunity creation"
     },
-    "asset-creation-requests": {
+    "create-asset-requests": {
       "update-asset-title": "Update opportunity",
       "details-title": "Opportunity request details",
       "asset-code-header": "Opportunity code",
@@ -120,7 +120,7 @@
       "table-price-lbl": "Price in quote opportunity"
     },
     "submit-trade-offers-form": {
-      "insufficient-funds": "Insufficient opportunities on your balance. You have {{amount}}"
+      "insufficient-funds-msg": "Insufficient opportunities on your balance. You have {{amount, money}}"
     },
     "trade-top-bar": {
       "here-will-pairs-list": "Here will be the list of opportunity pairs"
