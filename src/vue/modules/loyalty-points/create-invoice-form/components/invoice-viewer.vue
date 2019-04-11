@@ -6,6 +6,8 @@
 
     <div class="invoice-viewer__qr-code">
       <qr-code-wrapper
+        background="#f6f8fb"
+        foreground="#262626"
         :value="invoiceQrCodeValue"
         :size="250"
       />
