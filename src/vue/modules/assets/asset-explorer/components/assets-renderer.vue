@@ -7,7 +7,7 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <asset-update-form-module
+          <update-asset-form-module
             :asset-code="selectedAsset.code"
             :wallet="wallet"
             :config="config"
@@ -31,7 +31,7 @@
               :asset="selectedAsset"
               :is-account-unverified="isAccountUnverified"
               :kyc-required-asset-type="kycRequiredAssetType"
-              @update-ask="isUpdateMode = true"
+              @update-click="isUpdateMode = true"
               @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
             />
           </div>
@@ -94,7 +94,7 @@ import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
 import AssetActions from './asset-actions'
 
-import AssetUpdateFormModule from '@modules/update-asset-form'
+import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { Wallet } from '@tokend/js-sdk'
 
@@ -115,7 +115,7 @@ export default {
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
-    AssetUpdateFormModule,
+    UpdateAssetFormModule,
   },
 
   props: {
