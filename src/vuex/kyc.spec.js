@@ -93,9 +93,9 @@ describe('kyc.module', () => {
       const expectedPayload = new ChangeRoleRequestRecord(expectedRequest)
       const expectedMutations = {
         [vuexTypes.SET_ACCOUNT_ROLE_RESET]: false,
-        [vuexTypes.SET_KYC_LATEST_REQUEST]: expectedPayload,
         [vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET]:
           previousExpectedRequest.requestDetails.accountRoleToSet,
+        [vuexTypes.SET_KYC_LATEST_REQUEST]: expectedPayload,
       }
 
       store.rootGetters = {

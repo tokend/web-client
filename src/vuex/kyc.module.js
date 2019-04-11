@@ -85,7 +85,7 @@ export const actions = {
     const unverifiedRoleId = rootGetters[vuexTypes.kvEntryUnverifiedRoleId]
     const blockedRoleId = rootGetters[vuexTypes.kvEntryBlockedRoleId]
 
-    const isAccountRoleReseted = request.resetReason &&
+    const isAccountRoleReseted = Boolean(request.resetReason) &&
       request.accountRoleToSet === unverifiedRoleId
     const isUnverifiedAccountUnblocked =
       request.accountRoleToSet === unverifiedRoleId &&
