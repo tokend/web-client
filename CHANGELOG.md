@@ -48,6 +48,7 @@ for further information about branching and tagging conventions.
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
+- Show limits request list on top of other limits on `Limits` page
 
 #### Removed
 - "Fee" column from the movements table
