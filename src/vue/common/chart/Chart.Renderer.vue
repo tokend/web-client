@@ -7,7 +7,7 @@
     </div>
     <div v-else-if="!hasValue" class="chart-renderer__wrapper">
       <div class="chart-renderer__wrapper-message">
-        {{ 'chart.no-price-history-of-selected-token' | globalize }}
+        {{ 'chart.no-price-history-of-selected-asset' | globalize }}
       </div>
     </div>
     <div class="chart-renderer__chart" ref="chart" />

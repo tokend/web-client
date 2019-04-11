@@ -52,7 +52,6 @@ export default {
       precision: config.DECIMAL_POINTS,
     },
     loadPricesTickerIntervalId: -1,
-    loadPricesTickerTimeout: 10000,
   }),
   computed: {
     history () {
@@ -93,7 +92,7 @@ export default {
       this.clearLoadPricesTicker()
       this.loadPricesTickerIntervalId = setInterval(async () => {
         await this.loadPrices()
-      }, this.loadPricesTickerTimeout)
+      }, config.RELOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadPricesTicker () {
       clearInterval(this.loadPricesTickerIntervalId)

@@ -82,6 +82,11 @@ export default Object.assign(
     MODULE_SCHEME_NAME: 'vanilla',
 
     /**
+     * Data reload interval
+     */
+    RELOAD_DATA_TICKER_INTERVAL_MS: 10000,
+
+    /**
      * Link to iOS application manifest file.
      */
     IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',

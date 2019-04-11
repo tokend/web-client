@@ -66,9 +66,9 @@ export default {
         routerEntry: {
           path: '/opportunities',
           name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
+          meta: { pageNameTranslationId: 'pages-names.sales' },
         },
-        menuButtonTranslationId: 'pages-names.funds',
+        menuButtonTranslationId: 'pages-names.sales',
         menuButtonMdiName: 'trending-up',
         isAutoRedirectToFirstChild: true,
         submodules: [
@@ -191,7 +191,7 @@ export default {
         routerEntry: {
           path: '/opportunities/:id',
           name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          meta: { pageNameTranslationId: 'pages-names.sale-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
         },
