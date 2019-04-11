@@ -78,7 +78,7 @@
       "asset-creation-title": "Opportunity creation",
       "sale-creation-title": "Opportunity creation"
     },
-    "asset-creation-requests": {
+    "create-asset-requests": {
       "update-asset-title": "Update opportunity",
       "details-title": "Opportunity request details",
       "asset-code-header": "Opportunity code",

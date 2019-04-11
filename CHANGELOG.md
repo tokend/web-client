@@ -16,6 +16,9 @@ for further information about branching and tagging conventions.
 - Show available base asset amount on sale creation form
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
+- Ticker to refresh order book with interval
+- Ticker interval is now global and applies for all tickers throughout the app
+- Added transaction errors handling
 
 #### Changed
 - Modularized:
@@ -24,6 +27,11 @@ for further information about branching and tagging conventions.
   - Update asset form
   - Asset explorer
   - Balance explorer
+  - Create asset requests
+  - Update asset requests
+  - Create sale requests
+  - Pre-issuance requests
+  - Incoming withdrawal requests
   - Create sale form
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Allow inserting both of YouTube video link or ID
@@ -46,6 +54,14 @@ for further information about branching and tagging conventions.
 - "Fee" column from the movements table
 - Transfer & deposit pseudomodules from the loyalty points reconciliation
   scheme
+- Common records wrappers:
+  - `RecordWrapper` factory
+  - `AssetCreateRequestRecord`
+  - `AssetUpdateRequestRecord`
+  - `WithdrawalDetailsRequestRecord`
+  - `PreIssuanceCreateRequestRecord`
+  - `SaleRequestRecord`
+- Hardcoded `REQUEST_TYPES` constant
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing

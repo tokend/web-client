@@ -16,9 +16,15 @@ import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-requests/module'
+import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
+import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
+import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-requests/module'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
+import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -270,27 +276,45 @@ export default {
               path: '/requests/token-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new CreateAssetRequestsModule(),
+            ],
+          }),
+          new AssetUpdateRequestsPageModule({
+            routerEntry: {
+              path: '/requests/token-update',
+              name: vueRoutes.assetUpdateRequests.name,
+            },
+            submodules: [
+              new UpdateAssetRequestsModule(),
+            ],
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
               path: '/requests/fund-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new CreateSaleRequestsModule(),
+            ],
           }),
           new PreIssuanceRequestsPageModule({
             routerEntry: {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new PreIssuanceRequestsModule(),
+            ],
           }),
           new IncomingWithdrawalRequestsPageModule({
             routerEntry: {
               path: '/requests/incoming-withdrawal',
               name: vueRoutes.incomingWithdrawalRequests.name,
             },
+            submodules: [
+              new IncomingWithdrawalRequestsModule(),
+            ],
           }),
         ],
       },
