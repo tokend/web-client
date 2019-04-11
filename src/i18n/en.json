@@ -445,7 +445,8 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
-      "account-role-reset-msg": "Your verification was reset by administrator with reason: {{reason}}. Please, verify your account again",
+      "account-blocked-msg": "Your account was blocked by administrator with reason: {{reason}}",
+      "account-role-reset-msg": "Your verification was resetted by administrator with reason: {{reason}}. Please, verify your account again",
       "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
       "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
       "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
@@ -615,6 +616,7 @@
       "account-unverified": "Unverified account",
       "account-general": "General account",
       "account-corporate": "Corporate account",
+      "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
       "sign-out-btn": "Sign out"

@@ -12,6 +12,9 @@ export class ChangeRoleRequestRecord {
     this.resetReason = _get(
       record, 'requestDetails.creatorDetails.resetReason'
     )
+    this.blockReason = _get(
+      record, 'requestDetails.creatorDetails.blockReason'
+    )
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt

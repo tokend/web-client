@@ -7,6 +7,7 @@ const mutations = {
   SET_KV_ENTRY_GENERAL_ROLE_ID: 'SET_KV_ENTRY_GENERAL_ROLE_ID',
   SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
   SET_KV_ENTRY_UNVERIFIED_ROLE_ID: 'SET_KV_ENTRY_UNVERIFIED_ROLE_ID',
+  SET_KV_ENTRY_BLOCKED_ROLE_ID: 'SET_KV_ENTRY_BLOCKED_ROLE_ID',
   SET_KV_KYC_REQUIRED: 'SET_KV_KYC_REQUIRED',
 
   // account
@@ -57,6 +58,7 @@ const getters = {
   kvEntryGeneralRoleId: 'kvEntryGeneralRoleId',
   kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
   kvEntryUnverifiedRoleId: 'kvEntryUnverifiedRoleId',
+  kvEntryBlockedRoleId: 'kvEntryBlockedRoleId',
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
 
   // account
@@ -69,6 +71,7 @@ const getters = {
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',
   isAccountUnverified: 'isAccountUnverified',
+  isAccountBlocked: 'isAccountBlocked',
 
   // wallet
   wallet: 'wallet',
@@ -92,6 +95,7 @@ const getters = {
   kycRequestId: 'kycRequestId',
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycRequestResetReason: 'kycRequestResetReason',
+  kycRequestBlockReason: 'kycRequestBlockReason',
   kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycPreviousRequestAccountRoleToSet: 'kycPreviousRequestAccountRoleToSet',
   kycLatestData: 'kycLatestData',

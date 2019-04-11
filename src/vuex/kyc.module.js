@@ -83,14 +83,25 @@ export const actions = {
       'requestDetails.accountRoleToSet'
     )
     const unverifiedRoleId = rootGetters[vuexTypes.kvEntryUnverifiedRoleId]
-    const isAccountRoleReseted = request.accountRoleToSet === unverifiedRoleId
+    const blockedRoleId = rootGetters[vuexTypes.kvEntryBlockedRoleId]
+
+    const isAccountRoleReseted = request.resetReason &&
+      request.accountRoleToSet === unverifiedRoleId
+    const isUnverifiedAccountUnblocked =
+      request.accountRoleToSet === unverifiedRoleId &&
+      previousRequestAccountRoleToSet === blockedRoleId
 
     commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, isAccountRoleReseted)
-    commit(vuexTypes.SET_KYC_LATEST_REQUEST, request)
     commit(
       vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET,
       previousRequestAccountRoleToSet
     )
+
+    if (isUnverifiedAccountUnblocked) {
+      commit(vuexTypes.SET_KYC_LATEST_REQUEST, {})
+    } else {
+      commit(vuexTypes.SET_KYC_LATEST_REQUEST, request)
+    }
   },
 
   async [vuexTypes.LOAD_KYC_DATA] ({
@@ -113,6 +124,7 @@ export const getters = {
   [vuexTypes.kycStateI]: state => state.request.stateI,
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
   [vuexTypes.kycRequestResetReason]: state => state.request.resetReason,
+  [vuexTypes.kycRequestBlockReason]: state => state.request.blockReason,
   [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReseted
     ? undefined
     : state.request.accountRoleToSet,

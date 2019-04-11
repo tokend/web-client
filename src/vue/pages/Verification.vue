@@ -1,7 +1,20 @@
 <template>
   <div class="verification">
     <div
-      v-if="isAccountRoleReseted"
+      v-if="isAccountBlocked"
+      class="verification__state-message
+             verification__state-message--rejected"
+    >
+      <p class="verification__state-message-content">
+        {{
+          'verification-page.account-blocked-msg' | globalize({
+            reason: kycBlockReason
+          })
+        }}
+      </p>
+    </div>
+    <div
+      v-else-if="isAccountRoleReseted"
       class="verification__state-message
              verification__state-message--rejected"
     >
@@ -43,48 +56,51 @@
         }}
       </p>
     </div>
-    <p class="verification__subtitle">
-      {{ 'verification-page.account-type-lbl' | globalize }}
-    </p>
-    <div class="account-type-selector">
-      <router-link
-        :to="vueRoutes.verificationGeneral"
-        class="account-type-selector__item"
-        :disabled="kycAccountRole &&
-          kycAccountRole !== kvEntryGeneralRoleId"
-      >
-        <p class="account-type-selector__item-title">
-          {{ 'verification-page.account-type-general-title' | globalize }}
-        </p>
-        <p class="account-type-selector__item-description">
-          {{ 'verification-page.account-type-general-description'
-            | globalize }}
-        </p>
-        <div class="account-type-selector__selected-icon">
-          <i class="mdi mdi-check" />
-        </div>
-      </router-link>
-      <router-link
-        :to="vueRoutes.verificationCorporate"
-        class="account-type-selector__item"
-        :disabled="kycAccountRole &&
-          kycAccountRole !== kvEntryCorporateRoleId"
-      >
-        <p class="account-type-selector__item-title">
-          {{ 'verification-page.account-type-corporate-title' | globalize }}
-        </p>
-        <p class="account-type-selector__item-description">
-          {{ 'verification-page.account-type-corporate-description'
-            | globalize }}
-        </p>
-        <div class="account-type-selector__selected-icon">
-          <i class="mdi mdi-check" />
-        </div>
-      </router-link>
-    </div>
-    <div class="verification__form">
-      <router-view />
-    </div>
+
+    <template v-if="!isAccountBlocked">
+      <p class="verification__subtitle">
+        {{ 'verification-page.account-type-lbl' | globalize }}
+      </p>
+      <div class="account-type-selector">
+        <router-link
+          :to="vueRoutes.verificationGeneral"
+          class="account-type-selector__item"
+          :disabled="kycAccountRole &&
+            kycAccountRole !== kvEntryGeneralRoleId"
+        >
+          <p class="account-type-selector__item-title">
+            {{ 'verification-page.account-type-general-title' | globalize }}
+          </p>
+          <p class="account-type-selector__item-description">
+            {{ 'verification-page.account-type-general-description'
+              | globalize }}
+          </p>
+          <div class="account-type-selector__selected-icon">
+            <i class="mdi mdi-check" />
+          </div>
+        </router-link>
+        <router-link
+          :to="vueRoutes.verificationCorporate"
+          class="account-type-selector__item"
+          :disabled="kycAccountRole &&
+            kycAccountRole !== kvEntryCorporateRoleId"
+        >
+          <p class="account-type-selector__item-title">
+            {{ 'verification-page.account-type-corporate-title' | globalize }}
+          </p>
+          <p class="account-type-selector__item-description">
+            {{ 'verification-page.account-type-corporate-description'
+              | globalize }}
+          </p>
+          <div class="account-type-selector__selected-icon">
+            <i class="mdi mdi-check" />
+          </div>
+        </router-link>
+      </div>
+      <div class="verification__form">
+        <router-view />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -137,9 +153,14 @@ export default {
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
+
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycResetReason: vuexTypes.kycRequestResetReason,
+      kycBlockReason: vuexTypes.kycRequestBlockReason,
+
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      isAccountBlocked: vuexTypes.isAccountBlocked,
+
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
