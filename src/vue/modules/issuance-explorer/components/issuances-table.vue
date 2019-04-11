@@ -1,7 +1,7 @@
 <template>
   <div class="issuances-table">
     <template v-if="issuances.length">
-      <div class="app__table app__table--with-shadow issuance_table">
+      <div class="app__table app__table--with-shadow">
         <table>
           <thead>
             <tr>
@@ -42,44 +42,8 @@
                 {{ issuance.asset }}
               </td>
 
-              <td
-                v-if="issuance.isApproved"
-                class="request-state request-state--approved"
-                :title="'request-states.approved-state' | globalize"
-              >
-                {{ 'request-states.approved-state' | globalize }}
-              </td>
-
-              <td
-                v-if="issuance.isPending"
-                class="request-state request-state--pending"
-                :title="'request-states.pending-state' | globalize"
-              >
-                {{ 'request-states.pending-state' | globalize }}
-              </td>
-
-              <td
-                v-if="issuance.isRejected"
-                class="request-state request-state--rejected"
-                :title="'request-states.rejected-state' | globalize"
-              >
-                {{ 'request-states.rejected-state' | globalize }}
-              </td>
-
-              <td
-                v-if="issuance.isCanceled"
-                class="request-state request-state--canceled"
-                :title="'request-states.canceled-state' | globalize"
-              >
-                {{ 'request-states.canceled-state' | globalize }}
-              </td>
-
-              <td
-                v-if="issuance.isPermanentlyRejected"
-                class="request-state request-state--permanently-rejected"
-                :title="'request-states.permanently-rejected-state' | globalize"
-              >
-                {{ 'request-states.permanently-rejected-state' | globalize }}
+              <td>
+                <request-state-viewer :request="issuance" />
               </td>
 
               <td :title="issuance.date | formatCalendar">
@@ -108,12 +72,14 @@
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import RequestStateViewer from '@modules/requests/shared/components/request-state-viewer'
 
 export default {
   name: 'issuanes-table',
   components: {
     EmailGetter,
     NoDataMessage,
+    RequestStateViewer
   },
 
   props: {
@@ -126,36 +92,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@scss/variables";
- .issuance_table {
-   .request-state {
-     padding-left: 3rem;
-     position: relative;
 
-     &:before {
-       content: "";
-       position: absolute;
-       width: 0.6rem;
-       height: 0.6rem;
-       top: 1.7rem;
-       transform: translateY(-50%);
-       left: 1.6rem;
-       border-radius: 100%;
-     }
-
-     &--approved:before {
-       background-color: $col-success;
-     }
-
-     &--pending:before {
-       background-color: $col-warning;
-     }
-
-     &--rejected:before,
-     &--canceled:before,
-     &--permanently-rejected:before {
-       background-color: $col-error;
-     }
-   }
- }
 </style>
