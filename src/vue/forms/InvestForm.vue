@@ -4,8 +4,9 @@
     <template v-if="isLoaded && isAllowedAccountType">
       <form
         novalidate
+        id="invest-form"
         class="app__form"
-        @submit.prevent="isFormValid() && showConfirmation()"
+        @submit.prevent="processInvestment"
       >
         <div class="app__form-row">
           <div class="app__form-field">
@@ -154,6 +155,76 @@
           </template>
         </p>
       </form>
+
+      <transition name="app__fade-in">
+        <div
+          class="invest-form__fee-box"
+          v-if="isFeesLoaded">
+          <h3 class="invest-form__fee-box-heading">
+            {{ 'transfer-form.sender-fees' | globalize }}
+          </h3>
+
+          <!-- eslint-disable-next-line -->
+          <template v-if=" +fees.fixed || +fees.percent ">
+            <p
+              class="invest-form__fee"
+              v-if="fees.fixed">
+              - {{ fees.fixed | formatNumber }}
+              {{ form.asset.code }}
+              <span class="invest-form__fee-type">
+                {{ 'transfer-form.sender-fixed-fee' | globalize }}
+              </span>
+            </p>
+
+            <p
+              class="invest-form__fee"
+              v-if="fees.percent">
+              - {{ fees.percent | formatNumber }}
+              {{ form.asset.code }}
+              <span class="invest-form__fee-type">
+                {{ 'transfer-form.sender-percent-fee' | globalize }}
+              </span>
+            </p>
+          </template>
+
+          <template v-else>
+            <p class="invest-form__no-fee-msg">
+              {{ 'transfer-form.source-no-fees' | globalize }}
+            </p>
+          </template>
+
+          <h3 class="invest-form__fee-box-heading">
+            {{ 'transfer-form.total' | globalize }}
+          </h3>
+
+          <p class="invest-form__fee">
+            - {{ totalAmount | formatNumber }} {{ form.asset.code }}
+            <span class="invest-form__fee-type">
+              {{ 'transfer-form.total-amount' | globalize }}
+            </span>
+          </p>
+        </div>
+      </transition>
+
+      <div class="app__form-actions">
+        <button
+          v-ripple
+          v-if="view.mode === VIEW_MODES.submit"
+          type="submit"
+          class="app__form-submit-btn"
+          :disabled="formMixin.isDisabled"
+          form="invest-form">
+          {{ 'transfer-form.continue-btn' | globalize }}
+        </button>
+
+        <form-confirmation
+          v-if="view.mode === VIEW_MODES.confirm"
+          :message="'transfer-form.recheck-form' | globalize"
+          :ok-button="'transfer-form.submit-btn' | globalize"
+          @cancel="updateView(VIEW_MODES.submit)"
+          @ok="submit()"
+        />
+      </div>
     </template>
 
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
@@ -207,6 +278,11 @@ const EVENTS = {
   canceled: 'canceled',
 }
 
+const VIEW_MODES = {
+  submit: 'submit',
+  confirm: 'confirm',
+}
+
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
@@ -230,6 +306,13 @@ export default {
       asset: {},
       amount: '',
     },
+    view: {
+      mode: VIEW_MODES.submit,
+    },
+    fees: {
+      fixed: '',
+      percent: '',
+    },
     offers: [],
     saleBaseAsset: null,
     isLoaded: false,
@@ -239,6 +322,8 @@ export default {
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
     isSubmitting: false,
+    isFeesLoaded: false,
+    VIEW_MODES,
     vueRoutes,
   }),
 
@@ -339,6 +424,12 @@ export default {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
         this.isConvertedAmountLoaded
+    },
+
+    totalAmount () {
+      const fees = MathUtil
+        .add(this.fees.fixed, this.fees.percent)
+      return MathUtil.add(fees, this.form.amount)
     },
   },
 
@@ -528,12 +619,32 @@ export default {
         ErrorHandler.process(e)
       }
     },
+
+    async processInvestment () {
+      if (!await this.isFormValid()) return
+      this.disableForm()
+      try {
+        const { data: fees } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+          asset: this.form.asset.code,
+          account: this.accountId,
+          amount: this.form.amount,
+        })
+        this.fees.fixed = fees.fixed
+        this.fees.percent = fees.percent
+        this.isFeesLoaded = true
+      } catch (error) {
+        ErrorHandler.process(error)
+        this.isFeesLoaded = false
+      }
+      this.enableForm()
+    },
   },
 }
 </script>
 
 <style lang="scss">
 @import './app-form';
+@import "~@scss/variables";
 
 .invest-form__amount-hint {
   p {
@@ -580,5 +691,20 @@ export default {
     filter: grayscale(100%);
     cursor: default;
   }
+}
+
+.invest-form__discover-tokens-btn {
+  margin: 2rem auto 0;
+}
+
+.invest-form__fee {
+  color: $col-details-value;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.invest-form__fee-type {
+  color: $col-details-label;
 }
 </style>

@@ -1454,7 +1454,16 @@
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
       "requires-verification-title": "Verification required",
-      "requires-verification-desc": "Please, verify your account to invest in this sale"
+      "requires-verification-desc": "Please, verify your account to invest in this sale",
+      "deposit-btn": "Deposit",
+      "fees": "Fees",
+      "fixed-fee": "fixed fee",
+      "percent-fee": "percent fee",
+      "total": "Total",
+      "total-fee": "Total fee",
+      "total-amount": "Total amount",
+      "continue-btn": "Continue",
+      "recheck-form": "Please recheck the form before proceeding"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
