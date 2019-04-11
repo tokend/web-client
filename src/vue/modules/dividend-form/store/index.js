@@ -37,7 +37,7 @@ export const actions = {
     commit(types.SET_BALANCES, account.balances)
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    const endpoint = `/v3/assets`
+    const endpoint = '/v3/assets'
     let response = await api().getWithSignature(endpoint)
     let assets = await loadingDataViaLoop(response)
 
@@ -52,7 +52,7 @@ export const actions = {
    * @param {String} opts.assetCode - asset code
    */
   async [types.LOAD_BALANCE_HOLDERS] ({ commit }, opts) {
-    const endpoint = `/v3/balances`
+    const endpoint = '/v3/balances'
     const { data: holders } = await api().getWithSignature(endpoint, {
       filter: {
         asset: opts.assetCode,

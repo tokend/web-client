@@ -27,16 +27,7 @@ export class Api {
    * @returns {Promise} - API response
    */
   static getWithSignature (path, opts) {
-    return _api.getWithSignature(this._getEndpoint(path), opts)
-  }
-
-  /**
-   * @param {String} path - endpoint path for the request
-   *
-   * @returns {String} - endpoint path, containing horizon version
-   */
-  static _getEndpoint (path) {
-    return `/${path}`
+    return _api.getWithSignature(path, opts)
   }
 
   /**

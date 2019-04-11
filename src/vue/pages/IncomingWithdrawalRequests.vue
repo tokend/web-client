@@ -195,7 +195,7 @@ export default {
 
     getFirstPageLoader (accountId) {
       return function () {
-        const endpoint = `/v3/create_withdraw_requests`
+        const endpoint = '/v3/create_withdraw_requests'
         return Api.api.getWithSignature(endpoint, {
           filter: {
             reviewer: accountId,
@@ -229,7 +229,7 @@ export default {
 
     async getAssetFromBalanceId (request) {
       const { _rawResponse: token } = await Api.api
-        .get(`balances/${request.balanceId}/asset`)
+        .get(`/balances/${request.balanceId}/asset`)
       return token.data.code
     },
 

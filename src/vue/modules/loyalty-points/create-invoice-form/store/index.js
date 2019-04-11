@@ -42,7 +42,7 @@ export const actions = {
    * @param {String} opts.asset - asset code
    */
   async [types.LOAD_ASSET_PAIRS] ({ commit, getters }, opts) {
-    const endpoint = `/v3/asset_pairs`
+    const endpoint = '/v3/asset_pairs'
     const { data: pairs } = await api().getWithSignature(endpoint, {
       filter: {
         asset: opts.asset,
@@ -74,7 +74,7 @@ export const actions = {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
-    const endpoint = `/v3/history`
+    const endpoint = '/v3/history'
     const { data: movements } = await api().getWithSignature(endpoint, {
       page: {
         order: 'desc',

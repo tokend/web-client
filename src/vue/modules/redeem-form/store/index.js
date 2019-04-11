@@ -33,7 +33,7 @@ export const actions = {
     commit(types.SET_BALANCES, account.balances)
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    let response = await api().get(`v3/assets`)
+    let response = await api().get('/v3/assets')
     let assets = response.data
     while (response.data.length) {
       response = await response.fetchNext()
@@ -47,7 +47,7 @@ export const actions = {
    * @param {String} baseAsset - filter sales by base asset code
    */
   async [types.LOAD_SALE_BY_BASE_ASSET] ({ getters }, baseAsset) {
-    let { data: sales } = await api().get(`v3/sales`, {
+    let { data: sales } = await api().get('/v3/sales', {
       filter: {
         base_asset: baseAsset,
       },

@@ -44,7 +44,7 @@ export default {
     async getChangeRoleRequest (accountId) {
       const limit = 1
       const order = 'desc'
-      const endpoint = `/v3/change_role_requests`
+      const endpoint = '/v3/change_role_requests'
 
       const { data } = await api().getWithSignature(endpoint, {
         filter: {

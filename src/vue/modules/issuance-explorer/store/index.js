@@ -23,7 +23,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_ISSUANCES] ({ getters }) {
-    return api().getWithSignature(`/v3/create_issuance_requests`, {
+    return api().getWithSignature('/v3/create_issuance_requests', {
       page: {
         order: 'desc',
       },

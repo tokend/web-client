@@ -33,7 +33,7 @@ export const actions = {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
-    return api().getWithSignature(`/v3/history`, {
+    return api().getWithSignature('/v3/history', {
       page: {
         order: 'desc',
       },
