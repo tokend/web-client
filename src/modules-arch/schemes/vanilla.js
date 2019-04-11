@@ -10,14 +10,21 @@ import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
 import { TradePageModule } from '@/vue/pages/trade-page-module'
 import { LimitsPageModule } from '@/vue/pages/limits-page-module'
 import { AssetsPageModule } from '@/vue/pages/assets-page-module'
+import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 import { SalesPageModule } from '@/vue/pages/sales-page-module'
 import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-requests/module'
+import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
+import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
+import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-requests/module'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
+import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -32,10 +39,16 @@ import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sal
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
+import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
+import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { MovementsTopBarModule } from '@modules/movements-top-bar/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
+import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
+import { BalancesPageModule } from '@/vue/pages/balances-page'
+import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
+import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 
 export default {
   pages: [
@@ -127,25 +140,35 @@ export default {
         routerEntry: {
           path: '/tokens',
           name: vueRoutes.assets.name,
-          redirect: vueRoutes.assetsExplore,
-          children: [
-            // These guys cannot be used as independent modules too
-            {
-              path: '/tokens/explore',
-              name: vueRoutes.assetsExplore.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
-              component: _ => import('@/vue/pages/AssetsExplorer'),
-            },
-            {
-              path: '/tokens/balances',
-              name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
-              component: _ => import('@/vue/pages/Balances'),
-            },
-          ],
         },
         menuButtonTranslationId: 'pages-names.tokens',
         menuButtonMdiName: 'coins',
+        isAutoRedirectToFirstChild: true,
+        submodules: [
+          new AssetExplorerPageModule({
+            routerEntry: {
+              path: '/tokens/explore',
+              name: vueRoutes.assetsExplore.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+            },
+            submodules: [
+              new AssetExplorerModule(),
+            ],
+          }),
+          new BalancesPageModule({
+            routerEntry: {
+              path: '/tokens/balances',
+              name: vueRoutes.balances.name,
+              meta: { pageNameTranslationId: 'pages-names.tokens' },
+            },
+            submodules: [
+              new BalanceExplorerModule(),
+            ],
+          }),
+          new CreateAssetFormModule({
+            isCorporateOnly: true,
+          }),
+        ],
       },
     ),
 
@@ -216,15 +239,23 @@ export default {
           meta: { pageNameTranslationId: 'pages-names.fund-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
-          children: [
-            {
+        },
+        submodules: [
+          new SaleCampaignViewerPageModule({
+            routerEntry: {
               path: '/funds/:id/campaign',
               name: vueRoutes.saleCampaign.name,
-              component: _ => import('@/vue/pages/sale-details/SaleCampaignViewer'),
               props: true,
             },
-          ],
-        },
+            submodules: [
+              new SaleStateWidgetModule({
+                submodules: [
+                  new DashboardChartPseudoModule(),
+                ],
+              }),
+            ],
+          }),
+        ],
       },
     ),
 
@@ -245,27 +276,45 @@ export default {
               path: '/requests/token-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new CreateAssetRequestsModule(),
+            ],
+          }),
+          new AssetUpdateRequestsPageModule({
+            routerEntry: {
+              path: '/requests/token-update',
+              name: vueRoutes.assetUpdateRequests.name,
+            },
+            submodules: [
+              new UpdateAssetRequestsModule(),
+            ],
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
               path: '/requests/fund-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new CreateSaleRequestsModule(),
+            ],
           }),
           new PreIssuanceRequestsPageModule({
             routerEntry: {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new PreIssuanceRequestsModule(),
+            ],
           }),
           new IncomingWithdrawalRequestsPageModule({
             routerEntry: {
               path: '/requests/incoming-withdrawal',
               name: vueRoutes.incomingWithdrawalRequests.name,
             },
+            submodules: [
+              new IncomingWithdrawalRequestsModule(),
+            ],
           }),
         ],
       },
