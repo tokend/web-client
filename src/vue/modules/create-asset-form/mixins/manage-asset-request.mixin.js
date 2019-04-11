@@ -33,13 +33,12 @@ export default {
     assetRequestOpts () {
       const logo = this.informationStepForm.logo
       const terms = this.advancedStepForm.terms
-
       return {
         requestID: this.requestId || NEW_CREATE_ASSET_REQUEST_ID,
         code: this.informationStepForm.code,
         assetType: String(this.informationStepForm.assetType.value),
         preissuedAssetSigner: this.preissuedAssetSigner,
-        trailingDigitsCount: config().DECIMAL_POINTS,
+        trailingDigitsCount: +this.informationStepForm.trailingDigitsCount,
         initialPreissuedAmount: this.initialPreissuedAmount,
         maxIssuanceAmount: this.informationStepForm.maxIssuanceAmount,
         policies: this.informationStepForm.policies,

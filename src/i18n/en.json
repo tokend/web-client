@@ -82,7 +82,9 @@
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
-      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
+      "field-error_numeric": "Full and positive numbers are accepted.",
+      "field-error_between": "Numbers between 0 and 6 are accepted."
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -962,6 +964,7 @@
       "additional-issuance-check": "I do not want to make additional issuance later",
       "preissued-signer-lbl": "Pre-issued asset signer",
       "use-my-account-id-btn": "Use mine",
+      "trailing-digits-count-lbl": "Trailing Digits Count",
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",

@@ -57,6 +57,20 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <input-field
+          white-autofill
+          type="number"
+          v-model="form.trailingDigitsCount"
+          @blur="touchField('form.trailingDigitsCount')"
+          name="create-asset-trailing-digits-count"
+          :label="'create-asset-form.trailing-digits-count-lbl' | globalize"
+          :error-message="getFieldErrorMessage('form.trailingDigitsCount')"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <select-field
           v-model="form.assetType"
           name="create-asset-type"
@@ -66,7 +80,7 @@
           :label="'create-asset-form.asset-type-lbl' | globalize"
           @blur="touchField('form.assetType')"
           :error-message="getFieldErrorMessage(
-            'form.assetType',
+            'form.assetType'
           )"
         />
       </div>
@@ -129,7 +143,13 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { required, amountRange, maxLength } from '@validators'
+import {
+  required,
+  amountRange,
+  maxLength,
+  between,
+  numeric,
+} from '@validators'
 
 import { config } from '../_config'
 
@@ -144,8 +164,14 @@ export default {
   name: 'information-step-form',
   mixins: [FormMixin],
   props: {
-    request: { type: CreateAssetRequest, default: null },
-    kycRequiredAssetType: { type: Number, required: true },
+    request: {
+      type: CreateAssetRequest,
+      default: null,
+    },
+    kycRequiredAssetType: {
+      type: Number,
+      required: true,
+    },
   },
 
   data: _ => ({
@@ -156,6 +182,7 @@ export default {
       logo: null,
       policies: 0,
       assetType: '',
+      trailingDigitsCount: '',
     },
     MIN_AMOUNT: config().MIN_AMOUNT,
     MAX_AMOUNT: config().MAX_AMOUNT,
@@ -171,6 +198,11 @@ export default {
         name: {
           required,
           maxLength: maxLength(NAME_MAX_LENGTH),
+        },
+        trailingDigitsCount: {
+          required,
+          between: between(0, 6),
+          numeric,
         },
         code: {
           required,
