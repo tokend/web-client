@@ -26,6 +26,7 @@
         <key-viewer
           class="pending-issuances-table-row__key-viewer"
           :value="address"
+          :label="'coinpayments-deposit.address' | globalize"
         />
       </td>
     </tr>
@@ -81,7 +82,7 @@ export default {
   }
 
   .pending-issuances-table-row__key-viewer {
-    padding: 2rem 1rem;
+    padding: 2rem 0;
   }
 
   .pending-issuances-table-row__btn {
@@ -92,5 +93,8 @@ export default {
     width: 100%;
     max-width: 100%;
     overflow: hidden;
+    td {
+      padding: 0.5rem 0rem;
+    }
   }
 </style>

@@ -1559,6 +1559,7 @@
     },
     "coinpayments-deposit": {
       "amount-lbl": "Amount",
+      "address": "Address:",
       "request-address-lbl": "Request the address",
       "no-address-msg": "No available addresses to deposit yet. Please try again later.",
       "time-left-msg": "Time left",
