@@ -1,5 +1,8 @@
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
+
+// docs of idle-vue:
+// https://www.npmjs.com/package/idle-vue
 
 export default {
   onIdle () {
@@ -15,16 +18,23 @@ export default {
       name: this.$route.name,
       query: { isIdle: true },
     })
-    location.reload()
+    this.reloadApp()
   },
 
   computed: {
-    isLoggedIn: vuexTypes.isLoggedIn,
+    ...mapGetters({
+      isLoggedIn: vuexTypes.isLoggedIn,
+    }),
   },
 
   methods: {
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
+
+    reloadApp () {
+      // wrapped for testing purposes
+      return location.reload()
+    },
   },
 }
