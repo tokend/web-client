@@ -230,9 +230,9 @@ export default {
     },
 
     async getAssetFromBalanceId (request) {
-      const { _rawResponse: token } = await Api.api
+      const { _rawResponse: response } = await Api.api
         .get(`balances/${request.balanceId}/asset`)
-      return token.data.code
+      return response.data.code
     },
 
     showRequestDetails (index) {
