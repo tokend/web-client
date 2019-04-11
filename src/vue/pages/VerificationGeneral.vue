@@ -269,7 +269,7 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         do {
           await this.loadKyc()
-          await this.delay(5000)
+          await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
       } catch (e) {
         this.enableForm()
