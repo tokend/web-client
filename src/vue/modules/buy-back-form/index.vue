@@ -18,7 +18,7 @@
         </div>
         <p class="app__form-field-description">
           {{
-            'buy-back-form.issued-tokens-msg' | globalize({
+            'buy-back-form.issued-assets-msg' | globalize({
               value: allowedToBuy(form.asset.code)
             })
           }}

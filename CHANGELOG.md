@@ -8,6 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
 #### Added
 - Subject field to the create invoice form (Loyalty)
 - Displaying invoice summary on create invoice form (Loyalty)
@@ -46,6 +47,7 @@ for further information about branching and tagging conventions.
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
+- Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 
 #### Removed
 - "Fee" column from the movements table
