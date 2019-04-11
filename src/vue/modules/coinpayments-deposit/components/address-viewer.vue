@@ -9,7 +9,7 @@
     </p>
     <key-viewer
       :value="address"
-      :label="'coinpayments-deposit.address' | globalize"
+      :label="'coinpayments-deposit.address-lbl' | globalize"
     />
     <div class="address-viewer__timeout-ticker-wrp">
       <timeout-ticker :end-time="endTime" />

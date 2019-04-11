@@ -26,7 +26,7 @@
         <key-viewer
           class="pending-issuances-table-row__key-viewer"
           :value="address"
-          :label="'coinpayments-deposit.address' | globalize"
+          :label="'coinpayments-deposit.address-lbl' | globalize"
         />
       </td>
     </tr>
@@ -94,7 +94,7 @@ export default {
     max-width: 100%;
     overflow: hidden;
     td {
-      padding: 0.5rem 0rem;
+      padding: 0.5rem 0;
     }
   }
 </style>
