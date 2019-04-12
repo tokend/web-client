@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
 - Added transaction errors handling
 - Show issuance status in issuances list
 - Displaying success message after sending verification request
+- Displaying fee boundaries’ asset code in fees list
 
 #### Changed
 - Modularized:
