@@ -67,6 +67,7 @@ for further information about branching and tagging conventions.
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 - Displaying insufficient/absent balance message on submit trade form
+- Warning message about insufficient balance in the "Invest" form
 
 ## [1.4.0] - 2019-04-05
 
@@ -137,7 +138,6 @@ for further information about branching and tagging conventions.
 - Invalid start date for sales that are already started
 - Fixed a bug with impossible order cancelling if user has insufficient balance
 - Fixed a bug with chart line rendering
-- Warning message about insufficient balance in the "Invest" form
 
 ### "Under the hood" changes
 #### Added
