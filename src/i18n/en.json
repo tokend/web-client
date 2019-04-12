@@ -43,14 +43,14 @@
       "more-btn": "More"
     },
     "status-message": {
+      "title_warning": "Warning",
+      "title_success": "Success",
+      "title_error": "Error",
+      "title_info": "Notification",
       "default-message_warning": "Something you are doing is not recommended",
       "default-message_success": "Action successful",
       "default-message_error": "Something went wrong",
-      "default-message_info": "Something is happening. Just want you to know that",
-      "close-lbl_warning": "OK",
-      "close-lbl_success": "OK",
-      "close-lbl_error": "Close",
-      "close-lbl_info": "Got it"
+      "default-message_info": "Something is happening. Just want you to know that"
     },
     "validation": {
       "failed": "Please fill out all the fields before continuing",
@@ -405,6 +405,7 @@
       "email-verified": "Email successfully verified",
       "signup-title": "Get started",
       "recover-account": "Recover your account",
+      "recover-lbl": "Recover",
       "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
