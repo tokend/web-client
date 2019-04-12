@@ -168,8 +168,6 @@ const EVENTS = {
   close: 'close',
 }
 
-const POLL_INTERVAL = 5000
-
 const MIN_AMOUNT = 0.01
 const DECIMAL_POINTS = 2
 
@@ -339,7 +337,10 @@ export default {
       this.form.subject = this.subject
     },
     initPolling () {
-      this.pollIntervalId = setInterval(this.checkForPayment, POLL_INTERVAL)
+      this.pollIntervalId = setInterval(
+        this.checkForPayment,
+        config.RELOAD_DATA_TICKER_INTERVAL_MS
+      )
     },
     async checkForPayment () {
       try {

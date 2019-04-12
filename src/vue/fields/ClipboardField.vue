@@ -53,6 +53,7 @@ export default {
 .clipboard-field__content {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: relative;
   width: 100%;
 }
@@ -65,7 +66,7 @@ export default {
   font-size: 1.3rem;
   line-height: 1.25;
   font-family: monospace;
-  white-space: nowrap;
+  word-break: break-word;
 
   @include respond-to($x-medium) {
     font-size: 1.1rem;
@@ -86,11 +87,10 @@ export default {
   @include button-icon();
   width: 3.2rem;
   height: 3.2rem;
-  margin: .1rem .2rem 0 0;
+  margin-right: 0.4rem;
 }
 
 .clipboard-field__copy-icon {
   font-size: 1.8rem;
-  color: $col-primary-lighten;
 }
 </style>
