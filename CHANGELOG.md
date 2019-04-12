@@ -23,6 +23,7 @@ for further information about branching and tagging conventions.
 - Show issuance status in issuances list
 - Displaying success message after sending verification request
 - Displaying fee boundaries’ asset code in fees list
+- URL validation to corporate verification form
 
 #### Changed
 - Modularized:
