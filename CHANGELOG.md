@@ -72,7 +72,7 @@ for further information about branching and tagging conventions.
 - Setting merchant account ID to invoice URL (Loyalty)
 - Displaying insufficient/absent balance message on submit trade form
 - Warning message about insufficient balance in the "Invest" form
-- Asset code displaying of converted balance on "Dashboard" page
+- Converted balance displaying on "Dashboard" page
 
 ## [1.4.0] - 2019-04-05
 
