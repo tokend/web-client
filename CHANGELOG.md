@@ -49,6 +49,7 @@ for further information about branching and tagging conventions.
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 - Displaying insufficient/absent balance message on submit trade form
+- Asset code displaying of converted balance on "Dashboard" page
 
 ## [1.4.0] - 2019-04-05
 
