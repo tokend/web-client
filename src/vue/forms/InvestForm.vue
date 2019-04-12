@@ -584,5 +584,4 @@ export default {
     cursor: default;
   }
 }
-
 </style>
