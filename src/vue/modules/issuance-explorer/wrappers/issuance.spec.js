@@ -1,4 +1,4 @@
-import { Issuance } from './issuance'
+import { IssuanceRequest } from './issuance'
 
 describe('Issuance', () => {
   describe('constructor', () => {
@@ -18,7 +18,7 @@ describe('Issuance', () => {
         },
       }
 
-      const result = new Issuance(record)
+      const result = new IssuanceRequest(record)
 
       expect(result.id).to.equal('1')
       expect(result.amount).to.equal('100.000000')

@@ -1,3 +1,4 @@
+<script src="../index.spec.js"></script>
 <template>
   <div class="issuances-table">
     <template v-if="issuances.length">
@@ -72,7 +73,7 @@
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import RequestStateViewer from '@modules/requests/shared/components/request-state-viewer'
+import RequestStateViewer from './request-state-viewer'
 
 export default {
   name: 'issuanes-table',
@@ -90,7 +91,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-
-</style>

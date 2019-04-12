@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
-import { Request } from '@modules/requests/shared/wrappers/request'
+import { Request } from './request'
 
-export class Issuance extends Request {
+export class IssuanceRequest extends Request {
   constructor (record) {
     super(record)
     this.amount = _get(record, 'requestDetails.amount')
