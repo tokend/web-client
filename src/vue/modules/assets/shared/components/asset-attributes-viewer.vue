@@ -27,6 +27,14 @@
               }}
             </td>
           </tr>
+          <tr v-if="asset.balance">
+            <td>{{ 'assets.assets-loading-title' | globalize }}</td>
+            <td>
+              {{
+                asset.trailingDigitsCount
+              }}
+            </td>
+          </tr>
           <tr>
             <td>{{ 'assets.maximum-title' | globalize }}</td>
             <td>{{ asset.maxIssuanceAmount | formatMoney }}</td>
@@ -106,9 +114,18 @@ export default {
     TermsViewer,
   },
   props: {
-    asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
-    kycRequiredAssetType: { type: Number, required: true },
+    asset: {
+      type: Asset,
+      required: true,
+    },
+    storageUrl: {
+      type: String,
+      required: true,
+    },
+    kycRequiredAssetType: {
+      type: Number,
+      required: true,
+    },
   },
 }
 </script>

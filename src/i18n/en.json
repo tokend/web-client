@@ -1618,6 +1618,7 @@
     "assets": {
       "balances-loading-msg": "Loading your balances…",
       "assets-loading-msg": "Loading assets…",
+      "assets-loading-title": "Trailing Digits Count",
       "loading-error-msg": "There was an error while loading.",
       "no-assets-title": "No assets",
       "no-assets-msg": "There are no available assets",

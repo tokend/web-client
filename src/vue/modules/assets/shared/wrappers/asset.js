@@ -3,9 +3,11 @@ import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 export class Asset {
   constructor (record, balance) {
+    this._record = record
     this.code = record.id
     this.name = safeGet(record, 'details.name')
     this.type = record.type
+    this.trailingDigitsCount = record.trailingDigits || 0
 
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount
