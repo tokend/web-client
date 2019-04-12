@@ -4,8 +4,6 @@ import { types } from './types'
 
 import { api } from '../_api'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   issuances: [],
@@ -25,7 +23,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_ISSUANCES] ({ getters }) {
-    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_issuance_requests`, {
+    return api().getWithSignature('/v3/create_issuance_requests', {
       page: {
         order: 'desc',
       },

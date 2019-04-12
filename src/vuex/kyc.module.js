@@ -63,7 +63,7 @@ export const actions = {
     const limit = 2
     const order = 'desc'
 
-    const response = await Api.getWithSignature(`change_role_requests`, {
+    const response = await Api.getWithSignature('/v3/change_role_requests', {
       filter: {
         requestor,
       },

@@ -172,6 +172,7 @@ for further information about branching and tagging conventions.
 - Removed feature flags from config
 - Removed `globalize` from asset creating form’s `assetTypes` computed property
 - Converting account role to string in `ChangeRoleRequestRecord`
+- Horizon version prefix from all project
 
 #### Fixed
 - Loading balances instead of account on "Movements" page
