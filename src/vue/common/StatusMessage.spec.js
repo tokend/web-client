@@ -31,6 +31,41 @@ describe('StatusMessage component test', () => {
     }
   })
 
+  describe('renders proper titles', () => {
+    before(() => {
+      TestHelper.useTranslations({
+        'status-message': {
+          'title_warning': 'Warning title',
+          'title_success': 'Success title',
+          'title_error': 'Error title',
+          'title_info': 'Info title',
+        },
+      })
+    })
+
+    after(() => {
+      TestHelper.resetTranslations()
+    })
+
+    const expectedResults = {
+      [Bus.eventList.warning]: 'Warning title',
+      [Bus.eventList.success]: 'Success title',
+      [Bus.eventList.error]: 'Error title',
+      [Bus.eventList.info]: 'Info title',
+    }
+
+    for (const [eventName, title] of Object.entries(expectedResults)) {
+      it(`${eventName} event`, async () => {
+        const wrapper = mount(StatusMessage, { localVue })
+        Bus.emit(eventName)
+        await localVue.nextTick()
+        const titleEl = wrapper.find('.status-message__title')
+
+        expect(titleEl.text()).to.equal(title)
+      })
+    }
+  })
+
   describe('event message rendering', () => {
     it('renders the message passed to the emitted event', () => {
       before(() => {
