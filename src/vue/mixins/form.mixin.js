@@ -1,4 +1,6 @@
 import { validationMixin } from 'vuelidate'
+import config from '@/config'
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 
 import InputField from '../fields/InputField'
 import SelectField from '../fields/SelectField'
@@ -96,6 +98,10 @@ export default {
           })
         }
       }
+    },
+    selectedAssetStep (asset) {
+      return inputStepByDigitsCount(asset.trailingDigitsCount) ||
+        config.MIN_AMOUNT
     },
     clearFields () {
       this.clearFieldsWithOverriding({})

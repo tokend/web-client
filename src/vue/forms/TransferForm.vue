@@ -52,7 +52,7 @@
             <div class="app__form-field">
               <input-field
                 name="transfer-amount"
-                :step="config.MINIMAL_NUMBER_INPUT_STEP"
+                :step="selectedAssetStep(form.asset)"
                 type="number"
                 v-model.trim="form.amount"
                 autocomplete="off"
