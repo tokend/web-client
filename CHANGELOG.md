@@ -8,6 +8,7 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
 #### Added
 - Subject field to the create invoice form (Loyalty)
 - Displaying invoice summary on create invoice form (Loyalty)
@@ -16,6 +17,8 @@ for further information about branching and tagging conventions.
 - Show available base asset amount on sale creation form
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
+- Ticker to refresh order book with interval
+- Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
 
 #### Changed
@@ -25,6 +28,11 @@ for further information about branching and tagging conventions.
   - Update asset form
   - Asset explorer
   - Balance explorer
+  - Create asset requests
+  - Update asset requests
+  - Create sale requests
+  - Pre-issuance requests
+  - Incoming withdrawal requests
 - Now using 2 decimal points for invoice amounts (Loyalty)
 - Allow inserting both of YouTube video link or ID
 - Moved movements module translation filters to a mixin
@@ -39,11 +47,20 @@ for further information about branching and tagging conventions.
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
+- Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 
 #### Removed
 - "Fee" column from the movements table
 - Transfer & deposit pseudomodules from the loyalty points reconciliation
   scheme
+- Common records wrappers:
+  - `RecordWrapper` factory
+  - `AssetCreateRequestRecord`
+  - `AssetUpdateRequestRecord`
+  - `WithdrawalDetailsRequestRecord`
+  - `PreIssuanceCreateRequestRecord`
+  - `SaleRequestRecord`
+- Hardcoded `REQUEST_TYPES` constant
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
@@ -155,6 +172,7 @@ for further information about branching and tagging conventions.
 - Removed feature flags from config
 - Removed `globalize` from asset creating form’s `assetTypes` computed property
 - Converting account role to string in `ChangeRoleRequestRecord`
+- Horizon version prefix from all project
 
 #### Fixed
 - Loading balances instead of account on "Movements" page
