@@ -43,7 +43,7 @@ export default Object.assign(
     // deprecated constants
 
     /**
-     * Default asset code for converting token's price,
+     * Default asset code for converting asset's price,
      * trade and sale offers
      */
     DEFAULT_QUOTE_ASSET: 'USD',
@@ -86,6 +86,11 @@ export default Object.assign(
      * set of the application.
      */
     MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Data reload interval
+     */
+    RELOAD_DATA_TICKER_INTERVAL_MS: 10000,
 
     /**
      * Link to iOS application manifest file.
