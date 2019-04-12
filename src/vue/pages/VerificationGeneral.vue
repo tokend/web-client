@@ -161,7 +161,7 @@ import { Sdk } from '@/sdk'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
-import { Bus } from '../../js/helpers/event-bus'
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
