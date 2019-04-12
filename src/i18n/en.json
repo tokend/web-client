@@ -1381,14 +1381,12 @@
     },
     "invest-form": {
       "asset-lbl": "Asset",
-      "available-amount-hint": "Available: **{{amount, money}}**",
+      "balance-hint": "Balance: **{{amount, money}}**",
       "current-investment": "Current investment: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
       "converted-amount-hint": "Converted: **{{amount, money}}**",
       "loading-msg": "Loading...",
       "loading-error-msg": "There was an error while loading.",
-      "insufficient-balance-title": "Insufficient balance",
-      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this sale",
       "converting-error-msg": "Converting error. Enter another amount, please",
       "invest-btn": "Invest",
       "update-offer-btn": "Update offer",
@@ -1400,7 +1398,8 @@
       "cap-exceeded-msg": "Investing amount has exceeded the sale cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
-      "deposit-btn": "Deposit"
+      "requires-kyc-title": "Requires KYC",
+      "requires-kyc-desc": "Investments in this sale requires KYC"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
