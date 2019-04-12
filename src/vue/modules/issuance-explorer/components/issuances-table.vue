@@ -1,4 +1,3 @@
-<script src="../index.spec.js"></script>
 <template>
   <div class="issuances-table">
     <template v-if="issuances.length">

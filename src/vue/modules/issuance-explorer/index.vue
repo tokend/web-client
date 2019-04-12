@@ -1,4 +1,3 @@
-<script src="module.js"></script>
 <template>
   <div class="issuance-explorer">
     <template v-if="isLoaded">
