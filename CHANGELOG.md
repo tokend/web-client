@@ -73,6 +73,7 @@ for further information about branching and tagging conventions.
 - Displaying insufficient/absent balance message on submit trade form
 - Warning message about insufficient balance in the "Invest" form
 - Converted balance displaying on "Dashboard" page
+- Invalid matched fee calculation in invest form
 
 ## [1.4.0] - 2019-04-05
 

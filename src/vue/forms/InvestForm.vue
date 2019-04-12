@@ -466,7 +466,7 @@ export default {
       const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
         asset: this.form.asset.code,
         account: this.accountId,
-        amount: this.converted,
+        amount: this.form.amount,
       })
 
       let operations = []
@@ -479,7 +479,6 @@ export default {
           )
         ))
       }
-
       operations.push(
         base.ManageOfferBuilder.manageOffer(
           this.getOfferOpts(OFFER_CREATE_ID, fee.percent)
