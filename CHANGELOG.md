@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
 - Show issuance status in issuances list
+- Displaying success message after sending verification request
 
 #### Changed
 - Modularized:

@@ -160,8 +160,10 @@ import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -265,6 +267,7 @@ export default {
           await this.loadKyc()
           await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
+        Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
