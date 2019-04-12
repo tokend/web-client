@@ -1,34 +1,23 @@
 <template>
-  <transition name="toggle">
+  <transition name="status-message__transition">
     <div
       v-if="isShown"
       :class="`status-message status-message--${messageType}`"
     >
-      <div class="status-message__wrp">
-        <div class="status-message__content">
-          <p class="status-message__title">
-            {{
-              messageTitleId | globalize({
-                context: messageType
-              })
-            }}
-          </p>
-          <p class="status-message__text">
-            {{
-              messageId | globalize({
-                context: messageType,
-                ...messageArgs
-              })
-            }}
-          </p>
-        </div>
-        <div class="status-message__btn-wrp">
-          <button
-            @click="isShown = false"
-            class="status-message__btn"
-          />
-        </div>
+      <div class="status-message__payload">
+        <h4 class="status-message__title">
+          {{ 'status-message.title' | globalize({ context: messageType }) }}
+        </h4>
+
+        <p class="status-message__text">
+          {{ messageId | globalize({ context: messageType, ...messageArgs }) }}
+        </p>
       </div>
+
+      <button
+        @click="isShown = false"
+        class="status-message__close-btn"
+      />
     </div>
   </transition>
 </template>
@@ -36,7 +25,8 @@
 <script>
 import { Bus } from '@/js/helpers/event-bus'
 
-const CLOSE_TIMEOUT_MS = 5000
+const DEFAULT_MESSAGE_TRANSLATION_ID = 'status-message.default-message'
+const CLOSE_TIMEOUT_MS = 10000
 const MESSAGE_TYPES = Object.freeze({
   warning: 'warning',
   success: 'success',
@@ -46,14 +36,16 @@ const MESSAGE_TYPES = Object.freeze({
 
 export default {
   name: 'status-message',
+
   data: _ => ({
     messageTitleId: '',
     messageId: '',
     messageType: '',
     messageArgs: {},
     isShown: false,
-    timeoutId: null,
+    timeoutId: -1,
   }),
+
   created () {
     Bus.on(Bus.eventList.success, payload =>
       this.show(MESSAGE_TYPES.success, payload))
@@ -64,30 +56,33 @@ export default {
     Bus.on(Bus.eventList.info, payload =>
       this.show(MESSAGE_TYPES.info, payload))
   },
+
   methods: {
     show (messageType, payload) {
       this.messageType = messageType
-      this.messageTitleId = 'status-message.title'
 
       if (typeof payload === 'string') {
         this.messageId = payload
-        // eslint-disable-next-line
-      } else if (typeof payload === 'object' && !Array.isArray(payload) && !null) {
-        this.messageId = payload.messageId || 'status-message.default-message'
+      } else if (this.isObject(payload)) {
+        this.messageId = payload.messageId || DEFAULT_MESSAGE_TRANSLATION_ID
         this.messageArgs = payload.messageArgs || {}
       } else {
-        this.messageId = 'status-message.default-message'
+        this.messageId = DEFAULT_MESSAGE_TRANSLATION_ID
       }
 
       this.isShown = true
 
-      if (this.timeoutId) {
+      if (this.timeoutId >= 0) {
         window.clearTimeout(this.timeoutId)
       }
 
       this.timeoutId = window.setTimeout(_ => {
         this.isShown = false
       }, CLOSE_TIMEOUT_MS)
+    },
+
+    isObject (value) {
+      return typeof value === 'object' && !Array.isArray(value) && !null
     },
   },
 }
@@ -97,17 +92,33 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
+$payload-padding: 2.4rem;
+
 .status-message {
-  border-radius: 0.3rem;
-  font-size: 1.6rem;
+  @include box-shadow();
   position: fixed;
   right: 4rem;
   top: 4rem;
   z-index: $z-status-message;
   max-width: 42rem;
   min-width: 32rem;
-  padding: 4rem 2.2rem 2rem 2.5rem;
-  text-align: center;
+  display: flex;
+
+  &--warning {
+    background-color: $col-status-msg-warning;
+  }
+
+  &--success {
+    background-color: $col-status-msg-success;
+  }
+
+  &--error {
+    background-color: $col-status-msg-error;
+  }
+
+  &--info {
+    background-color: $col-status-msg-info;
+  }
 
   @include respond-to($tablet) {
     min-width: auto;
@@ -117,97 +128,78 @@ export default {
     right: $content-side-paddings-sm;
     left: $content-side-paddings-sm;
   }
-
-  @mixin apply-theme($col-main, $col-secondary) {
-    box-shadow: 0.5rem 0.5rem 0.4rem -0.4rem rgba($col-main, .4);
-    background: $col-secondary;
-    &:before {
-      content: '';
-      position: absolute;
-      top: 1.4rem;
-      left: 0;
-      width: 100%;
-      height: 0.45rem;
-      background-color: $col-main;
-    }
-    .status-message__wrp {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .status-message__content {
-      min-width: 17rem;
-      margin-right: 2rem;
-    }
-    p {
-      font-size: 1.8rem;
-      text-align: left;
-      line-height: 1.3;
-      padding: 0.6rem 0;
-    }
-    .status-message__title {
-      font-size: 2.2rem;
-      font-weight: bold;
-      letter-spacing: 0.05rem;
-      color: $col-main;
-      &::first-letter {
-        text-transform: uppercase;
-      }
-    }
-    .status-message__btn {
-      position: relative;
-      width: 3.5rem;
-      height: 3.5rem;
-      background-color: $col-main;
-      background: $col-main;
-      border-radius: 0.2rem;
-      color: $col-secondary;
-      opacity: 0.85;
-      box-shadow: 0.1rem 0.1rem rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: 0.2s;
-      &:hover {
-        opacity: 1;
-        box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.4);
-      }
-      &:before, &:after  {
-        content: '';
-        position: absolute;
-        top: 0.8rem;
-        left: 1.7rem;
-        height: 2rem;
-        width: 0.2rem;
-        background-color: $col-secondary;
-      }
-      &:before {
-      transform: rotate(45deg);
-      }
-      &:after {
-      transform: rotate(-45deg);
-      }
-    }
-  }
-
-  &--warning {
-    @include apply-theme($col-warning, $col-msg-warning);
-  }
-  &--success {
-    @include apply-theme($col-success, $col-msg-success);
-  }
-  &--error {
-    @include apply-theme($col-error, $col-msg-error);
-  }
-  &--info {
-    @include apply-theme($col-info, $col-msg-info);
-  }
 }
 
-.toggle-enter-active,
-.toggle-leave-active {
+.status-message__payload {
+  padding: $payload-padding;
+  flex: 1;
+}
+
+.status-message__text {
+  font-size: 1.6rem;
+  line-height: 1.25;
+  color: $col-status-msg-text;
+}
+
+.status-message__title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+  color: $col-status-msg-text;
+}
+
+.status-message__close-btn {
+  position: relative;
+  width: 4rem;
+  align-self: stretch;
+  background-color: transparent;
+  display: block;
+
+  &:hover {
+    transition: 0.2s;
+    background-color: $col-status-close-btn-hover;
+  }
+
+  /* cross */
+  $cross-stroke-width: 0.2rem;
+  $cross-stroke-height: 2rem;
+
+  &:before,
+  &:after {
+    transition: 0.2s;
+
+    content: "";
+    position: absolute;
+    height: $cross-stroke-height;
+    width: $cross-stroke-width;
+    top: $payload-padding - 0.2rem;
+    left: calc(50% - #{$cross-stroke-width / 2});
+    background-color: $col-button-raised-txt;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover:after,
+  &:hover:before {
+    transition: 0.2s;
+    top: calc(50% - #{$cross-stroke-height / 2});
+  }
+  /* /cross */
+}
+
+.status-message__transition-enter-active,
+.status-message__transition-leave-active {
   transition: all 0.2s linear;
 }
-.toggle-enter,
-.toggle-leave-to {
+
+.status-message__transition-enter,
+.status-message__transition-leave-to {
   transform: rotateX(90deg);
   opacity: 0;
 }
