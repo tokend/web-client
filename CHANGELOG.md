@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
+- Show issuance status in issuances list
 
 #### Changed
 - Modularized:
@@ -62,6 +63,7 @@ for further information about branching and tagging conventions.
   - `PreIssuanceCreateRequestRecord`
   - `SaleRequestRecord`
 - Hardcoded `REQUEST_TYPES` constant
+- Horizon version prefix
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
@@ -155,7 +157,6 @@ for further information about branching and tagging conventions.
   - `resetReason` field to the `ChangeRoleRequestRecord`
 - Movements history modules unit tests
 - `record` getter to the `AssetRecord`
-- Show issuance status in Issuance history list
 
 #### Changed
 - Use @tokend/js-sdk@1.3.1-x.2
@@ -174,7 +175,6 @@ for further information about branching and tagging conventions.
 - Removed feature flags from config
 - Removed `globalize` from asset creating form’s `assetTypes` computed property
 - Converting account role to string in `ChangeRoleRequestRecord`
-- Horizon version prefix from all project
 
 #### Fixed
 - Loading balances instead of account on "Movements" page

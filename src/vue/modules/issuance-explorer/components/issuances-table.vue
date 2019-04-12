@@ -79,7 +79,7 @@ export default {
   components: {
     EmailGetter,
     NoDataMessage,
-    RequestStateViewer
+    RequestStateViewer,
   },
 
   props: {
