@@ -365,7 +365,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
@@ -400,8 +399,9 @@ export default {
   mixins: [FormMixin],
   props: {
     request: {
-      type: SaleRequestRecord,
-      default: _ => (new SaleRequestRecord()) },
+      type: Object,
+      default: _ => ({}),
+    },
   },
   data () {
     return {
@@ -501,9 +501,6 @@ export default {
     availableForIssuance () {
       return this.form.saleInformation.baseAsset.availableForIssuance
     },
-    isUpdateMode () {
-      return +this.request.id !== 0
-    },
     price () {
       return MathUtil.divide(this.form.saleInformation.hardCap,
         this.form.saleInformation.requiredBaseAssetForHardCap)
@@ -519,7 +516,7 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
-      if (this.isUpdateMode) {
+      if (this.request.id) {
         await this.populateForm(this.request)
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
@@ -545,7 +542,7 @@ export default {
       try {
         await this.uploadDocuments()
         const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.fundOverview,
+          BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
         await Sdk.horizon.transactions.submitOperations(
@@ -565,7 +562,7 @@ export default {
     },
     getOperation (saleDescriptionBlobId) {
       const operation = {
-        requestID: this.isUpdateMode ? this.request.id : '0',
+        requestID: this.request.id || '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
         defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),

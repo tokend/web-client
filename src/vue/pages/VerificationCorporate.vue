@@ -263,14 +263,22 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        while (this.kycState !== REQUEST_STATES_STR.pending) {
+        do {
           await this.loadKyc()
-        }
+          await this.delay(3000)
+        } while (this.kycState !== REQUEST_STATES_STR.pending)
         Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    delay (ms) {
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
+      })
     },
 
     async uploadAvatar () {
