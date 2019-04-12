@@ -3,7 +3,7 @@ import { MathUtil } from '@/js/utils'
 const SECONDARY_MARKET_ORDER_BOOK_ID = 0
 
 /**
- * Manage offer is an operation that locks funds once account places an offer
+ * Manage offer is an operation that locks sales once account places an offer
  * and once when the offer is matched
  */
 export class ManageOfferOp {
