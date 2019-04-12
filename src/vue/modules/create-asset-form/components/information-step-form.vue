@@ -20,7 +20,6 @@
         />
       </div>
     </div>
-
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -54,7 +53,7 @@
         />
       </div>
     </div>
-
+    <!-- TODO: Revome v-if when trailingDigitsCount add to api -->
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -182,7 +181,7 @@ export default {
       logo: null,
       policies: 0,
       assetType: '',
-      trailingDigitsCount: '',
+      trailingDigitsCount: '0',
     },
     MIN_AMOUNT: config().MIN_AMOUNT,
     MAX_AMOUNT: config().MAX_AMOUNT,
@@ -252,6 +251,7 @@ export default {
           ? new DocumentContainer(this.request.logo)
           : null,
         policies: this.request.policy,
+        trailingDigitsCount: this.request.trailingDigitsCount || 0,
       }
     },
 
