@@ -1,4 +1,4 @@
-import { Issuance } from '../wrappers/issuance'
+import { IssuanceRequest } from '../wrappers/issuance'
 
 import { types } from './types'
 
@@ -37,7 +37,7 @@ export const actions = {
 
 export const getters = {
   [types.accountId]: state => state.accountId,
-  [types.issuances]: state => state.issuances.map(i => new Issuance(i)),
+  [types.issuances]: state => state.issuances.map(i => new IssuanceRequest(i)),
 }
 
 export const issuanceExplorerModule = {

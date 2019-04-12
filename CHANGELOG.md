@@ -155,6 +155,7 @@ for further information about branching and tagging conventions.
   - `resetReason` field to the `ChangeRoleRequestRecord`
 - Movements history modules unit tests
 - `record` getter to the `AssetRecord`
+- Show issuance status in Issuance history list
 
 #### Changed
 - Use @tokend/js-sdk@1.3.1-x.2

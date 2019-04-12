@@ -930,7 +930,8 @@
         "date-th": "Date",
         "reference-th": "Reference",
         "no-issuances-title": "No issuances yet",
-        "no-issuances-msg": "Here will be the list of your issuances"
+        "no-issuances-msg": "Here will be the list of your issuances",
+        "state-header-th": "State"
       },
       "loading-msg": "Loading your issuances…",
       "load-failed-msg": "There was an error while loading your issuances"
