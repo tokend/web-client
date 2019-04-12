@@ -48,6 +48,7 @@ for further information about branching and tagging conventions.
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
+- Redesigned status message
 
 #### Removed
 - "Fee" column from the movements table
