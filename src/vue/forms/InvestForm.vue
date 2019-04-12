@@ -356,7 +356,7 @@ export default {
 
   async created () {
     try {
-      await this.loadSaleBaseToken()
+      await this.loadSaleBaseAsset()
       await this.loadBalances()
       await this.loadOffers()
 
@@ -376,7 +376,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
-    async loadSaleBaseToken () {
+    async loadSaleBaseAsset () {
       const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
 
       this.saleBaseAsset = new AssetRecord(data)
@@ -584,4 +584,5 @@ export default {
     cursor: default;
   }
 }
+
 </style>

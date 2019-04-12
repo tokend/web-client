@@ -8,17 +8,15 @@
       "sale-logo": "Opportunity Logo",
       "sale-document": "Opportunity Document",
       "asset-terms": "Opportunity Terms",
-      "asset-logo": "Opportunity Logo",
-      "token-terms": "Opportunity Terms",
-      "token-logo": "Opportunity Logo"
+      "asset-logo": "Opportunity Logo"
     },
     "auth-pages": {
       "big-title": "Start tokenizing <br> your real estate <br> in minutes"
     },
     "pages-names": {
-      "tokens": "Opportunities",
-      "funds": "Opportunities",
-      "fund-details": "Opportunity details",
+      "assets": "Opportunities",
+      "sales": "Opportunities",
+      "sale-details": "Opportunity details",
       "movements": "Activity"
     },
     "limits": {
@@ -38,8 +36,8 @@
     },
     "op-details": {
       "asset-lbl": "Opportunity",
-      "fund-name-lbl": "Opportunity name",
-      "token-fund-val": "{{asset}} opportunity",
+      "sale-name-lbl": "Opportunity name",
+      "asset-sale-val": "{{asset}} opportunity",
       "base-asset-lbl": "Base opportunity",
       "destination-asset-lbl": "Destination opportunity"
     },
@@ -57,19 +55,19 @@
       "no-movements-title": "No activity history"
     },
     "dashboard": {
-      "here-will-be-the-tokens": "Here will be the list of your opportunities",
+      "here-will-be-the-assets": "Here will be the list of your opportunities",
       "no-assets-in-your-wallet": "No opportunities in your wallet",
       "activity": "Activity"
     },
     "chart": {
-      "no-price-history-of-selected-token": "No price history of selected opportunities yet"
+      "no-price-history-of-selected-asset": "No price history of selected opportunities yet"
     },
     "transfer-form": {
       "no-assets-heading": "No opportunities, no transfers",
       "no-assets": "Your wallet doesn't contain any transferable opportunities yet. You can discover some on the opportunities list.",
       "discover-assets-btn": "Discover opportunities",
       "asset-lbl": "Opportunity",
-      "insufficient-funds": "Insufficient opportunities"
+      "insufficient-sales": "Insufficient opportunities"
     },
     "assets-list": {
       "details-title": "Opportunity details"
@@ -78,7 +76,7 @@
       "asset-creation-title": "Opportunity creation",
       "sale-creation-title": "Opportunity creation"
     },
-    "asset-creation-requests": {
+    "create-asset-requests": {
       "update-asset-title": "Update opportunity",
       "details-title": "Opportunity request details",
       "asset-code-header": "Opportunity code",
@@ -120,7 +118,7 @@
       "table-price-lbl": "Price in quote opportunity"
     },
     "submit-trade-offers-form": {
-      "insufficient-funds-msg": "Insufficient opportunities on your balance. You have {{amount, money}}"
+      "insufficient-sales-msg": "Insufficient opportunities on your balance. You have {{amount, money}}"
     },
     "trade-top-bar": {
       "here-will-pairs-list": "Here will be the list of opportunity pairs"
@@ -165,6 +163,18 @@
     "create-opportunity": {
       "asset-type-required-kyc": "Verification required",
       "asset-type-not-required-kyc": "Verification doesn't required"
+    },
+    "transaction-errors": {
+      "op_start_end_invalid": "IO should not end before start",
+      "op_invalid_end": "Trying to create IO which already ended",
+      "op_request_or_sale_already_exists": "IO creation request or IO already exists for specified asset",
+      "op_order_book_does_not_exists": "Specified IO does not exists or already closed",
+      "op_sale_is_not_started_yet": "IO has not been started yet",
+      "op_sale_already_ended": "IO already ended",
+      "op_order_violates_hard_cap": "Offer violates hard cap restriction of the IO",
+      "op_cant_participate_own_sale": "Can not participate in the own IO",
+      "op_sale_is_not_active": "IO is not active",
+      "op_promotion_update_request_start_end_invalid": "IO should not end before start"
     }
   }
 }
