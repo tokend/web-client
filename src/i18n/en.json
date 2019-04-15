@@ -388,6 +388,9 @@
       "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
       "op_vote_not_found": "Vote to remove cannot be found"
     },
+    "idle-message": {
+      "notification-message": "You have been logged out due to long inactivity."
+    },
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",

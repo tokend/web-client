@@ -76,6 +76,12 @@ export default Object.assign(
     BUILD_VERSION: 'dev: ' + packageJson.version,
 
     /**
+     * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
+     * inactivity
+     */
+    IDLE_TIMEOUT: 1000 * 60 * 15,
+
+    /**
      * Module scheme to use. The module scheme will be used to combine module
      * set of the application.
      */
