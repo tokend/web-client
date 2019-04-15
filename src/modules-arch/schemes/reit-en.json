@@ -129,14 +129,12 @@
     },
     "invest-form": {
       "asset-lbl": "Opportunity",
-      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this opportunity",
       "sale-owner-msg": "Owners of the opportunity cannot invest themselves",
       "closed-sale-msg": "Closed opportunities are not investable",
       "upcoming-sale-msg": "Upcoming opportunities are not investable",
       "canceled-sale-msg": "Cancelled opportunities are not investable",
       "cap-exceeded-msg": "Investing amount has exceeded the opportunity cap **{{amount, money}}**",
-      "requires-kyc-title": "KYC required",
-      "requires-kyc-desc": "Investments in this opportunity requires KYC"
+      "requires-verification-desc": "Investments in this opportunity requires verification"
     },
     "create-sale-form": {
       "create-sale-header": "Create opportunity",

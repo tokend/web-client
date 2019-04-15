@@ -48,10 +48,11 @@
               <span class="asset-selector__asset-value-secondary">
                 {{
                   currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
+                    currency: currentAssetBalanceDetails.convertedToAsset,
+                    symbolAllowed: true
                   })
                 }}
-                {{ config.DEFAULT_QUOTE_ASSET }}
+                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>
@@ -100,8 +101,8 @@ export default {
   },
   props: {
     currentAsset: {
-      type: [String, Object],
-      default: config.DEFAULT_QUOTE_ASSET,
+      type: [String],
+      default: '',
     },
   },
   data: () => ({
@@ -114,6 +115,7 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
       const balancesAssetCodes = this.balances.map(i => i.asset)

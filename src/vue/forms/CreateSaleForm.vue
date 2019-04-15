@@ -94,7 +94,7 @@
                   id="soft-cap"
                   name="create-sale-soft-cap"
                   :label="'create-sale-form.soft-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.softCap',
@@ -117,7 +117,7 @@
                   id="hard-cap"
                   name="create-sale-hard-cap"
                   :label="'create-sale-form.hard-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.hardCap',
@@ -171,10 +171,10 @@
                 <p class="create-sale__price">
                   {{ 'create-sale-form.price' | globalize({
                     base: form.saleInformation.baseAsset.code,
-                    quote: config.DEFAULT_QUOTE_ASSET
+                    quote: defaultQuoteAsset
                   }) }}
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+                  {{ { value: price, currency: defaultQuoteAsset } | formatMoney }}
                 </p>
               </div>
             </div>
@@ -491,6 +491,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
@@ -564,7 +565,7 @@ export default {
       const operation = {
         requestID: this.request.id || '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
-        defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
