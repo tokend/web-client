@@ -77,6 +77,7 @@ for further information about branching and tagging conventions.
 - Warning message about insufficient balance in the "Invest" form
 - Converted balance displaying on "Dashboard" page
 - Invalid matched fee calculation in invest form
+- Displaying input field label on Firefox
 
 ## [1.4.0] - 2019-04-05
 
