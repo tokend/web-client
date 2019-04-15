@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Idle auto-logout
 - Depositing with `CoinpaymentsDepositModule` in `MovementsTopBarReitModule`
 - `WithdrawalDrawerPseudoModule` in `MovementsTopBarReitModule`
+- Disabled state to form tabs that cannot be attended
 
 #### Changed
 - Modularized:
