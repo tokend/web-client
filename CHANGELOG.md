@@ -29,6 +29,7 @@ for further information about branching and tagging conventions.
 - Depositing with `CoinpaymentsDepositModule` in `MovementsTopBarReitModule`
 - `WithdrawalDrawerPseudoModule` in `MovementsTopBarReitModule`
 - Disabled state to form tabs that cannot be attended
+- Autocomplete limit change forms
 
 #### Changed
 - Modularized:
