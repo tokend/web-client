@@ -101,8 +101,8 @@ export default {
   },
   props: {
     currentAsset: {
-      type: [String, Object],
-      default: config.DEFAULT_QUOTE_ASSET,
+      type: [String],
+      default: '',
     },
   },
   data: () => ({
@@ -115,6 +115,7 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
       const balancesAssetCodes = this.balances.map(i => i.asset)

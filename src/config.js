@@ -43,12 +43,6 @@ export default Object.assign(
     // deprecated constants
 
     /**
-     * Default asset code for converting asset's price,
-     * trade and sale offers
-     */
-    DEFAULT_QUOTE_ASSET: 'USD',
-
-    /**
      * Default limit of the number of transactions per a page
      */
     TRANSACTIONS_PER_PAGE: 12,

@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
+- Extract default quote asset from the server
 - Show issuance status in issuances list
 - Displaying success message after sending verification request
 - Displaying fee boundaries’ asset code in fees list
@@ -67,6 +68,7 @@ for further information about branching and tagging conventions.
   - `PreIssuanceCreateRequestRecord`
   - `SaleRequestRecord`
 - Hardcoded `REQUEST_TYPES` constant
+- `DEFAULT_QUOTE_ASSET` field from config
 - Horizon version prefix
 
 #### Fixed
