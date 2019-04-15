@@ -90,6 +90,7 @@ for further information about branching and tagging conventions.
 - Invalid matched fee calculation in invest form
 - Bug with validation `maturityDate`
 - Bug with getting asset pair price for opportunity creation
+- Trade history table margins
 
 ## [1.4.0] - 2019-04-05
 
