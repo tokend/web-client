@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
+- Extract default quote asset from the server
 
 #### Changed
 - Modularized:
@@ -61,6 +62,7 @@ for further information about branching and tagging conventions.
   - `PreIssuanceCreateRequestRecord`
   - `SaleRequestRecord`
 - Hardcoded `REQUEST_TYPES` constant
+- `DEFAULT_QUOTE_ASSET` field from config
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
@@ -167,7 +169,6 @@ for further information about branching and tagging conventions.
   - Issuance explorer page
   - Fees page
   - TopBar component
-- Extracted default quote asset from the server
 
 #### Removed
 - Removed feature flags from config
