@@ -30,6 +30,7 @@ for further information about branching and tagging conventions.
 - `WithdrawalDrawerPseudoModule` in `MovementsTopBarReitModule`
 - Disabled state to form tabs that cannot be attended
 - Autocomplete limit change forms
+- Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
 
 #### Changed
 - Modularized:

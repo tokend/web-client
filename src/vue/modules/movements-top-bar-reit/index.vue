@@ -22,7 +22,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__button-raised"
@@ -49,7 +49,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__button-raised"
