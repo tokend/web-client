@@ -167,8 +167,8 @@
     <template v-else-if="!isAllowedAccountType">
       <no-data-message
         icon-name="alert-circle"
-        :title="'invest-form.requires-kyc-title' | globalize"
-        :message="'invest-form.requires-kyc-desc' | globalize"
+        :title="'invest-form.requires-verification-title' | globalize"
+        :message="'invest-form.requires-verification-desc' | globalize"
       />
     </template>
 
