@@ -65,7 +65,7 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await Api.getWithSignature(`change_role_requests`, {
+    const response = await Api.getWithSignature(`/v3/change_role_requests`, {
       filter: { requestor },
       page: { limit, order },
       include: ['request_details'],
@@ -99,7 +99,7 @@ export const actions = {
     requestId
   ) {
     const { data } = await Api.getWithSignature(
-      `change_role_requests/${requestId}`,
+      `/v3/change_role_requests/${requestId}`,
       {
         filter: { requestor: rootGetters[vuexTypes.accountId] },
         include: ['request_details'],

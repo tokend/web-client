@@ -129,7 +129,6 @@
     },
     "invest-form": {
       "asset-lbl": "Opportunity",
-      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this opportunity",
       "sale-owner-msg": "Owners of the opportunity cannot invest themselves",
       "closed-sale-msg": "Closed opportunities are not investable",
       "upcoming-sale-msg": "Upcoming opportunities are not investable",

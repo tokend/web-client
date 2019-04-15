@@ -1,7 +1,7 @@
 <template>
   <div class="invest-form">
     <!-- eslint-disable-next-line -->
-    <template v-if="isLoaded && quoteAssetBalances.length && isAllowedAccountType">
+    <template v-if="isLoaded && isAllowedAccountType">
       <form
         novalidate
         class="app__form"
@@ -22,7 +22,7 @@
 
             <vue-markdown
               class="app__form-field-description invest-form__amount-hint"
-              :source="'invest-form.available-amount-hint' | globalize({
+              :source="'invest-form.balance-hint' | globalize({
                 amount: availableAmount
               })"
             />
@@ -158,23 +158,6 @@
       </form>
     </template>
 
-    <template v-else-if="isLoaded && isAllowedAccountType">
-      <no-data-message
-        icon-name="alert-circle"
-        :title="'invest-form.insufficient-balance-title' | globalize"
-        :message="'invest-form.insufficient-balance-desc' | globalize"
-      >
-        <router-link
-          :to="vueRoutes.movements"
-          tag="button"
-          type="button"
-          class="app__button-raised invest-form__discover-assets-btn"
-        >
-          {{ 'invest-form.deposit-btn' | globalize }}
-        </router-link>
-      </no-data-message>
-    </template>
-
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
       <p>
         {{ 'invest-form.loading-error-msg' | globalize }}
@@ -285,8 +268,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset === quote.asset &&
-            Number(balanceItem.balance) > 0
+          return balanceItem.asset === quote.asset
         })
 
         if (balance) {
@@ -484,7 +466,7 @@ export default {
       const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
         asset: this.form.asset.code,
         account: this.accountId,
-        amount: this.converted,
+        amount: this.form.amount,
       })
 
       let operations = []
@@ -497,7 +479,6 @@ export default {
           )
         ))
       }
-
       operations.push(
         base.ManageOfferBuilder.manageOffer(
           this.getOfferOpts(OFFER_CREATE_ID, fee.percent)
@@ -601,9 +582,5 @@ export default {
     filter: grayscale(100%);
     cursor: default;
   }
-}
-
-.invest-form__discover-assets-btn {
-  margin: 2rem auto 0;
 }
 </style>
