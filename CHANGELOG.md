@@ -53,6 +53,7 @@ for further information about branching and tagging conventions.
 - Clipboard field styles to differ it from input fields
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 - Redesigned status message
+- "Already in your balances" button increased width
 
 #### Removed
 - "Fee" column from the movements table
@@ -176,7 +177,6 @@ for further information about branching and tagging conventions.
   - Issuance explorer page
   - Fees page
   - TopBar component
-- "Already in your balances" button width
 
 #### Removed
 - Removed feature flags from config
