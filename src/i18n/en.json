@@ -1402,8 +1402,8 @@
       "cap-exceeded-msg": "Investing amount has exceeded the sale cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
-      "requires-kyc-title": "Requires KYC",
-      "requires-kyc-desc": "Investments in this sale requires KYC"
+      "requires-verification-title": "Verification required",
+      "requires-verification-desc": "Please, verify your account to invest in this sale"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",

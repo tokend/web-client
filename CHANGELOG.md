@@ -79,6 +79,7 @@ for further information about branching and tagging conventions.
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 - Displaying insufficient/absent balance message on submit trade form
+- "Verification required" translations on invest form
 - Warning message about insufficient balance in the "Invest" form
 - Converted balance displaying on "Dashboard" page
 - Invalid matched fee calculation in invest form
