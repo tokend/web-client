@@ -18,7 +18,7 @@ import safeGet from 'lodash/get'
 export const state = {
   isAccountRoleReseted: false,
   request: {},
-  previousRequestAccountRoleToSet: null,
+  relatedRequest: {},
   latestData: '{}', // JSON string
 }
 
@@ -27,18 +27,16 @@ export const mutations = {
     state.request = request
   },
 
+  [vuexTypes.SET_KYC_RELATED_REQUEST] (state, request) {
+    state.relatedRequest = request
+  },
+
   [vuexTypes.SET_KYC_LATEST_DATA] (state, data) {
     state.latestData = data
   },
 
   [vuexTypes.SET_ACCOUNT_ROLE_RESET] (state, isReset) {
     state.isAccountRoleReseted = isReset
-  },
-  [vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET] (
-    state,
-    previousRequestAccountRoleToSet
-  ) {
-    state.previousRequestAccountRoleToSet = previousRequestAccountRoleToSet
   },
 }
 
@@ -53,55 +51,62 @@ export const actions = {
   async [vuexTypes.LOAD_KYC_LATEST_REQUEST] ({
     rootGetters,
     commit,
+    dispatch,
   }) {
     const requestor = rootGetters[vuexTypes.accountId]
 
     // kinda optimization cause we are interested only in
-    // the 2 latest update_kyc request
+    // the latest change role request
     // please do not expose the request itself for not making clients dependent
     // on this implementation
-    const limit = 2
+    const limit = 1
     const order = 'desc'
 
     const response = await Api.getWithSignature(`change_role_requests`, {
-      filter: {
-        requestor,
-      },
-      page: {
-        limit,
-        order,
-      },
+      filter: { requestor },
+      page: { limit, order },
       include: ['request_details'],
     })
 
     if (!response.data[0]) {
       return
     }
+
     const request = new ChangeRoleRequestRecord(response.data[0])
-    const previousRequestAccountRoleToSet = safeGet(
-      response.data[1],
-      'requestDetails.accountRoleToSet'
-    )
-    const unverifiedRoleId = rootGetters[vuexTypes.kvEntryUnverifiedRoleId]
-    const blockedRoleId = rootGetters[vuexTypes.kvEntryBlockedRoleId]
 
-    const isAccountRoleReseted = Boolean(request.resetReason) &&
-      request.accountRoleToSet === unverifiedRoleId
-    const isUnverifiedAccountUnblocked =
-      request.accountRoleToSet === unverifiedRoleId &&
-      previousRequestAccountRoleToSet === blockedRoleId
-
-    commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, isAccountRoleReseted)
-    commit(
-      vuexTypes.SET_PREVIOUS_REQUEST_ACCOUNT_ROLE_TO_SET,
-      previousRequestAccountRoleToSet
-    )
-
-    if (isUnverifiedAccountUnblocked) {
-      commit(vuexTypes.SET_KYC_LATEST_REQUEST, {})
-    } else {
+    if (Object.keys(request.creatorDetails).length) {
       commit(vuexTypes.SET_KYC_LATEST_REQUEST, request)
+    } else {
+      commit(vuexTypes.SET_KYC_LATEST_REQUEST, {})
     }
+
+    if (request.relatedRequestId) {
+      await dispatch(
+        vuexTypes.LOAD_KYC_RELATED_REQUEST,
+        request.relatedRequestId
+      )
+    } else {
+      commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, false)
+      commit(vuexTypes.SET_KYC_RELATED_REQUEST, {})
+    }
+  },
+
+  async [vuexTypes.LOAD_KYC_RELATED_REQUEST] (
+    { state, commit, rootGetters },
+    requestId
+  ) {
+    const { data } = await Api.getWithSignature(
+      `change_role_requests/${requestId}`,
+      {
+        filter: { requestor: rootGetters[vuexTypes.accountId] },
+        include: ['request_details'],
+      }
+    )
+
+    const request = new ChangeRoleRequestRecord(data)
+
+    commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, Boolean(state.request.resetReason))
+    commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
   async [vuexTypes.LOAD_KYC_DATA] ({
@@ -109,7 +114,7 @@ export const actions = {
     rootGetters,
     commit,
   }) {
-    const latestBlobId = state.request.blobId
+    const latestBlobId = state.request.blobId || state.relatedRequest.blobId
     if (!latestBlobId) {
       return
     }
@@ -122,21 +127,25 @@ export const actions = {
 export const getters = {
   [vuexTypes.kycState]: state => state.request.state,
   [vuexTypes.kycStateI]: state => state.request.stateI,
+
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
   [vuexTypes.kycRequestResetReason]: state => state.request.resetReason,
   [vuexTypes.kycRequestBlockReason]: state => state.request.blockReason,
+
+  [vuexTypes.isAccountRoleReseted]: state => state.isAccountRoleReseted,
   [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReseted
     ? undefined
-    : state.request.accountRoleToSet,
-  [vuexTypes.kycPreviousRequestAccountRoleToSet]: state =>
-    state.previousRequestAccountRoleToSet,
+    : state.relatedRequest.accountRoleToSet || state.request.accountRoleToSet,
+  [vuexTypes.kycPreviousRequestAccountRoleToSet]: state => {
+    return state.relatedRequest.accountRoleToSet
+  },
+
   [vuexTypes.kycRequestId]: state => state.request.id,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycAvatarKey]: state => safeGet(
     JSON.parse(state.latestData),
     'documents.kyc_avatar.key'
   ),
-  [vuexTypes.isAccountRoleReseted]: state => state.isAccountRoleReseted,
 }
 
 export default {

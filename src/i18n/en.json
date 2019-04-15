@@ -450,6 +450,7 @@
       "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
       "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
       "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
+      "permanently-rejected-request-msg": "Your verification request was rejected permanently with reason: {{reason}}",
       "account-type-lbl": "Account type",
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",

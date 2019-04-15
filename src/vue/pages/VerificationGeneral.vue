@@ -220,19 +220,18 @@ export default {
     ...mapGetters({
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
-    verificationCode () {
-      return this.accountId.slice(1, 6)
-    },
-    isFormEditable () {
-      return this.isAccountRoleReseted ||
-        this.kycState === REQUEST_STATES_STR.rejected
+    isFormDisabled () {
+      return !this.isAccountRoleReseted && this.kycState &&
+        this.kycState !== REQUEST_STATES_STR.rejected &&
+        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
     },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
-        : !!this.kycState
+        : this.accountRoleToSet === this.kvEntryGeneralRoleId
     },
   },
 
@@ -249,7 +248,7 @@ export default {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
 
-      if (!this.isFormEditable) {
+      if (this.isFormDisabled) {
         this.disableForm()
       }
     }

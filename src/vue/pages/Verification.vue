@@ -57,6 +57,19 @@
       </p>
     </div>
 
+    <div
+      v-else-if="kycState === REQUEST_STATES_STR.permanentlyRejected"
+      class="verification__state-message
+             verification__state-message--rejected"
+    >
+      <p class="verification__state-message-content">
+        {{
+          'verification-page.permanently-rejected-request-msg'
+            | globalize({ reason: kycRejectReason })
+        }}
+      </p>
+    </div>
+
     <template v-if="!isAccountBlocked">
       <p class="verification__subtitle">
         {{ 'verification-page.account-type-lbl' | globalize }}
@@ -65,8 +78,9 @@
         <router-link
           :to="vueRoutes.verificationGeneral"
           class="account-type-selector__item"
-          :disabled="kycAccountRole &&
-            kycAccountRole !== kvEntryGeneralRoleId"
+          :disabled="kycState && kycAccountRole &&
+            kycAccountRole !== kvEntryGeneralRoleId &&
+            kycState !== REQUEST_STATES_STR.permanentlyRejected"
         >
           <p class="account-type-selector__item-title">
             {{ 'verification-page.account-type-general-title' | globalize }}
@@ -82,8 +96,9 @@
         <router-link
           :to="vueRoutes.verificationCorporate"
           class="account-type-selector__item"
-          :disabled="kycAccountRole &&
-            kycAccountRole !== kvEntryCorporateRoleId"
+          :disabled="kycState && kycAccountRole &&
+            kycAccountRole !== kvEntryCorporateRoleId &&
+            kycState !== REQUEST_STATES_STR.permanentlyRejected"
         >
           <p class="account-type-selector__item-title">
             {{ 'verification-page.account-type-corporate-title' | globalize }}
@@ -122,9 +137,15 @@ import config from '@/config'
 // the guard when routing from the child's path to the parent's one.
 // Details: https://forum.vuejs.org/t/vue-router-beforeenter-doesnt-work-properly-for-children-path/20019
 function verificationGuard (to, from, next) {
+  const kycState = store.getters[vuexTypes.kycState]
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
   const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
+
+  if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
+    next()
+    return
+  }
 
   switch (kycAccountRole) {
     case kvEntryCorporateRoleId:
