@@ -53,8 +53,8 @@ export class AssetRecord {
   }
 
   get isWithdrawable () {
-    return !!(this.policy & ASSET_POLICIES.withdrawable) ||
-      !!(this.policy & ASSET_POLICIES.withdrawableV2)
+    return (this.policy & ASSET_POLICIES.withdrawable) ||
+      (this.policy & ASSET_POLICIES.withdrawableV2)
   }
 
   get isDepositable () {
