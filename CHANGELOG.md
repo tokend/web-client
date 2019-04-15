@@ -77,6 +77,8 @@ for further information about branching and tagging conventions.
 - Warning message about insufficient balance in the "Invest" form
 - Converted balance displaying on "Dashboard" page
 - Invalid matched fee calculation in invest form
+- Bug with validation `maturityDate`
+- Bug with getting asset pair price for opportunity creation
 
 ## [1.4.0] - 2019-04-05
 
