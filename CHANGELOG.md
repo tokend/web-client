@@ -21,6 +21,10 @@ for further information about branching and tagging conventions.
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
 - Extract default quote asset from the server
+- Show issuance status in issuances list
+- Displaying success message after sending verification request
+- Displaying fee boundaries’ asset code in fees list
+- URL validation to corporate verification form
 
 #### Changed
 - Modularized:
@@ -49,6 +53,8 @@ for further information about branching and tagging conventions.
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
+- Redesigned status message
+- "Already in your balances" button increased width
 
 #### Removed
 - "Fee" column from the movements table
@@ -63,12 +69,16 @@ for further information about branching and tagging conventions.
   - `SaleRequestRecord`
 - Hardcoded `REQUEST_TYPES` constant
 - `DEFAULT_QUOTE_ASSET` field from config
+- Horizon version prefix
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 - Displaying insufficient/absent balance message on submit trade form
+- Warning message about insufficient balance in the "Invest" form
+- Converted balance displaying on "Dashboard" page
+- Invalid matched fee calculation in invest form
 
 ## [1.4.0] - 2019-04-05
 

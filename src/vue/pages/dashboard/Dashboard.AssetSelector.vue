@@ -48,10 +48,11 @@
               <span class="asset-selector__asset-value-secondary">
                 {{
                   currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: defaultQuoteAsset, symbolAllowed: true
+                    currency: currentAssetBalanceDetails.convertedToAsset,
+                    symbolAllowed: true
                   })
                 }}
-                {{ defaultQuoteAsset }}
+                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>

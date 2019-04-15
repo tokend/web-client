@@ -2,8 +2,6 @@ import { types } from './types'
 import { api } from '../_api'
 import { Fee } from '../wrappers/fee'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   fees: [],
@@ -20,7 +18,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_ACCOUNT_FEES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
 
     const { data } = await api().getWithSignature(endpoint, {
       include: ['fees'],
