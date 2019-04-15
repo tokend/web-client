@@ -7,7 +7,7 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <asset-update-form-module
+          <update-asset-form-module
             :asset-code="selectedAsset.code"
             :wallet="wallet"
             :config="config"
@@ -80,7 +80,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 
-import AssetUpdateFormModule from '@modules/update-asset-form'
+import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
@@ -98,7 +98,7 @@ export default {
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
-    AssetUpdateFormModule,
+    UpdateAssetFormModule,
   },
   props: {
     wallet: {

@@ -3,7 +3,7 @@ import { types } from './types'
 
 import { Wallet } from '@tokend/js-sdk'
 
-import { Issuance } from '../wrappers/issuance'
+import { IssuanceRequest } from '../wrappers/issuance'
 
 import * as Api from '../_api'
 
@@ -112,7 +112,7 @@ describe('issuance-explorer.module', () => {
       const state = { issuances }
 
       expect(getters[types.issuances](state))
-        .to.deep.equal(issuances.map(i => new Issuance(i)))
+        .to.deep.equal(issuances.map(i => new IssuanceRequest(i)))
     })
   })
 })

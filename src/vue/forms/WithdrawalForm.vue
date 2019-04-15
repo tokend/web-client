@@ -177,7 +177,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.assets"
           tag="button"
           class="app__button-raised withdrawal__action"
         >
@@ -206,6 +206,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
+import { vueRoutes } from '@/vue-router/routes'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -230,26 +231,24 @@ export default {
     EmailGetter,
   },
   mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-        comment: '',
-      },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+    vueRoutes,
+  }),
   validations () {
     const addressRules = {
       required,

@@ -7,8 +7,13 @@
         }
       }) }}
     </p>
-    <key-viewer :value="address" />
-    <timeout-ticker :end-time="endTime" />
+    <key-viewer
+      :value="address"
+      :label="'coinpayments-deposit.address-lbl' | globalize"
+    />
+    <div class="address-viewer__timeout-ticker-wrp">
+      <timeout-ticker :end-time="endTime" />
+    </div>
   </div>
 </template>
 
@@ -34,5 +39,9 @@ export default {
 <style lang="scss" scoped>
   .address-viewer__help-msg {
     margin-bottom: 2rem;
+  }
+
+  .address-viewer__timeout-ticker-wrp {
+    margin-top: 1rem;
   }
 </style>
