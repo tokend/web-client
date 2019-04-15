@@ -61,6 +61,8 @@ for further information about branching and tagging conventions.
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 - Redesigned status message
 - "Already in your balances" button increased width
+- Orange peel global color
+- Redesigned verification state message & extracted it to a separate component
 
 #### Removed
 - "Fee" column from the movements table
