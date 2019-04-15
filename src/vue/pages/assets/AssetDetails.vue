@@ -138,8 +138,6 @@
         v-ripple
         v-if="asset.owner !== accountId"
         class="asset-details__update-btn"
-        :class="{'asset-details__update-btn--disabled':
-          asset.balance.value || isBalanceCreating}"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
@@ -271,12 +269,7 @@ export default {
   @include button-raised();
 
   margin-bottom: 2rem;
-  width: 18rem;
-
-  &--disabled {
-    width: 21rem;
-    white-space: nowrap;
-  }
+  width: 20rem;
 }
 
 .asset-details__cancel-btn {
