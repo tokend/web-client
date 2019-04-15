@@ -26,6 +26,8 @@ for further information about branching and tagging conventions.
 - Displaying fee boundaries’ asset code in fees list
 - URL validation to corporate verification form
 - Idle auto-logout
+- Depositing with `CoinpaymentsDepositModule` in `MovementsTopBarReitModule`
+- `WithdrawalDrawerPseudoModule` in `MovementsTopBarReitModule`
 
 #### Changed
 - Modularized:
