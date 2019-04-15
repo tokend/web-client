@@ -32,12 +32,12 @@ describe('kyc.module', () => {
 
     it('SET_ACCOUNT_ROLE_RESET should properly modify state', () => {
       const state = {
-        isAccountRoleReseted: false,
+        isAccountRoleReset: false,
       }
       mutations[vuexTypes.SET_ACCOUNT_ROLE_RESET](state, true)
 
       expect(state).to.deep.equal({
-        isAccountRoleReseted: true,
+        isAccountRoleReset: true,
       })
     })
 

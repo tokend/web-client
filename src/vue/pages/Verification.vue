@@ -1,136 +1,153 @@
 <template>
   <div class="verification">
-    <div
-      v-if="isAccountBlocked"
-      class="verification__state-message
-             verification__state-message--rejected"
-    >
-      <p class="verification__state-message-content">
-        {{
-          'verification-page.account-blocked-msg' | globalize({
-            reason: kycBlockReason
-          })
-        }}
-      </p>
-    </div>
-    <div
-      v-else-if="isAccountRoleReseted"
-      class="verification__state-message
-             verification__state-message--rejected"
-    >
-      <p class="verification__state-message-content">
-        {{
-          'verification-page.account-role-reset-msg' | globalize({
-            reason: kycResetReason
-          })
-        }}
-      </p>
-    </div>
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.approved"
-      class="verification__state-message
-             verification__state-message--approved"
-    >
-      <p class="verification__state-message-content">
-        {{ 'verification-page.approved-request-msg' | globalize }}
-      </p>
-    </div>
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.pending"
-      class="verification__state-message
-             verification__state-message--pending"
-    >
-      <p class="verification__state-message-content">
-        {{ 'verification-page.pending-request-msg' | globalize }}
-      </p>
-    </div>
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.rejected"
-      class="verification__state-message
-             verification__state-message--rejected"
-    >
-      <p class="verification__state-message-content">
-        {{
-          'verification-page.rejected-request-msg'
-            | globalize({ reason: kycRejectReason })
-        }}
-      </p>
-    </div>
-
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.permanentlyRejected"
-      class="verification__state-message
-             verification__state-message--rejected"
-    >
-      <p class="verification__state-message-content">
-        {{
-          'verification-page.permanently-rejected-request-msg'
-            | globalize({ reason: kycRejectReason })
-        }}
-      </p>
-    </div>
-
-    <template v-if="!isAccountBlocked">
-      <p class="verification__subtitle">
-        {{ 'verification-page.account-type-lbl' | globalize }}
-      </p>
-      <div class="account-type-selector">
-        <router-link
-          :to="vueRoutes.verificationGeneral"
-          class="account-type-selector__item"
-          :disabled="kycState && kycAccountRole &&
-            kycAccountRole !== kvEntryGeneralRoleId &&
-            kycState !== REQUEST_STATES_STR.permanentlyRejected"
-        >
-          <p class="account-type-selector__item-title">
-            {{ 'verification-page.account-type-general-title' | globalize }}
-          </p>
-          <p class="account-type-selector__item-description">
-            {{ 'verification-page.account-type-general-description'
-              | globalize }}
-          </p>
-          <div class="account-type-selector__selected-icon">
-            <i class="mdi mdi-check" />
-          </div>
-        </router-link>
-        <router-link
-          :to="vueRoutes.verificationCorporate"
-          class="account-type-selector__item"
-          :disabled="kycState && kycAccountRole &&
-            kycAccountRole !== kvEntryCorporateRoleId &&
-            kycState !== REQUEST_STATES_STR.permanentlyRejected"
-        >
-          <p class="account-type-selector__item-title">
-            {{ 'verification-page.account-type-corporate-title' | globalize }}
-          </p>
-          <p class="account-type-selector__item-description">
-            {{ 'verification-page.account-type-corporate-description'
-              | globalize }}
-          </p>
-          <div class="account-type-selector__selected-icon">
-            <i class="mdi mdi-check" />
-          </div>
-        </router-link>
+    <template v-if="isLoaded">
+      <div
+        v-if="isAccountBlocked"
+        class="verification__state-message
+                verification__state-message--rejected"
+      >
+        <p class="verification__state-message-content">
+          {{
+            'verification-page.account-blocked-msg' | globalize({
+              reason: kycBlockReason
+            })
+          }}
+        </p>
       </div>
-      <div class="verification__form">
-        <router-view />
+      <div
+        v-else-if="isAccountRoleReset"
+        class="verification__state-message
+                verification__state-message--rejected"
+      >
+        <p class="verification__state-message-content">
+          {{
+            'verification-page.account-role-reset-msg' | globalize({
+              reason: kycResetReason
+            })
+          }}
+        </p>
       </div>
+      <div
+        v-else-if="kycState === REQUEST_STATES_STR.approved"
+        class="verification__state-message
+                verification__state-message--approved"
+      >
+        <p class="verification__state-message-content">
+          {{ 'verification-page.approved-request-msg' | globalize }}
+        </p>
+      </div>
+      <div
+        v-else-if="kycState === REQUEST_STATES_STR.pending"
+        class="verification__state-message
+                verification__state-message--pending"
+      >
+        <p class="verification__state-message-content">
+          {{ 'verification-page.pending-request-msg' | globalize }}
+        </p>
+      </div>
+      <div
+        v-else-if="kycState === REQUEST_STATES_STR.rejected"
+        class="verification__state-message
+                verification__state-message--rejected"
+      >
+        <p class="verification__state-message-content">
+          {{
+            'verification-page.rejected-request-msg'
+              | globalize({ reason: kycRejectReason })
+          }}
+        </p>
+      </div>
+
+      <div
+        v-else-if="kycState === REQUEST_STATES_STR.permanentlyRejected"
+        class="verification__state-message
+                verification__state-message--rejected"
+      >
+        <p class="verification__state-message-content">
+          {{
+            'verification-page.permanently-rejected-request-msg'
+              | globalize({ reason: kycRejectReason })
+          }}
+        </p>
+      </div>
+
+      <template v-if="!isAccountBlocked">
+        <p class="verification__subtitle">
+          {{ 'verification-page.account-type-lbl' | globalize }}
+        </p>
+        <div class="account-type-selector">
+          <router-link
+            :to="vueRoutes.verificationGeneral"
+            class="account-type-selector__item"
+            :disabled="kycState && kycAccountRole &&
+              kycAccountRole !== kvEntryGeneralRoleId &&
+              kycState !== REQUEST_STATES_STR.permanentlyRejected"
+          >
+            <p class="account-type-selector__item-title">
+              {{ 'verification-page.account-type-general-title' | globalize }}
+            </p>
+            <p class="account-type-selector__item-description">
+              {{ 'verification-page.account-type-general-description'
+                | globalize }}
+            </p>
+            <div class="account-type-selector__selected-icon">
+              <i class="mdi mdi-check" />
+            </div>
+          </router-link>
+
+          <router-link
+            :to="vueRoutes.verificationCorporate"
+            class="account-type-selector__item"
+            :disabled="kycState && kycAccountRole &&
+              kycAccountRole !== kvEntryCorporateRoleId &&
+              kycState !== REQUEST_STATES_STR.permanentlyRejected"
+          >
+            <p class="account-type-selector__item-title">
+              {{ 'verification-page.account-type-corporate-title' | globalize }}
+            </p>
+            <p class="account-type-selector__item-description">
+              {{ 'verification-page.account-type-corporate-description'
+                | globalize }}
+            </p>
+            <div class="account-type-selector__selected-icon">
+              <i class="mdi mdi-check" />
+            </div>
+          </router-link>
+        </div>
+
+        <div class="verification__form">
+          <router-view />
+        </div>
+      </template>
+    </template>
+
+    <template v-else-if="isLoadingFailed">
+      <p>{{ 'verification-page.loading-error-msg' | globalize }}</p>
+    </template>
+
+    <template v-else>
+      <loader :message-id="'verification-page.loading-msg'" />
     </template>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import Loader from '@/vue/common/Loader'
+
+import { mapGetters, mapActions } from 'vuex'
 import { store, vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import config from '@/config'
 
 // The guard doesn't allow the user to visit a verification page
-// if he/she has already sent the verification request. It redirects
-// him/her to the verification page for the account type specified
+// if he/she has already sent the verification request, and the admin
+// hasn't reset or blocked the user's account. It redirects
+// the user to the verification page for the account type specified
 // in the latest KYC data the user sent.
 //
 // Placed in the component hooks because Vue router doesn't call
@@ -144,42 +161,46 @@ function verificationGuard (to, from, next) {
 
   if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
     next()
-    return
-  }
-
-  switch (kycAccountRole) {
-    case kvEntryCorporateRoleId:
-      to.name === vueRoutes.verificationCorporate.name
-        ? next()
-        : next(vueRoutes.verificationCorporate)
-      break
-    case kvEntryGeneralRoleId:
-      to.name === vueRoutes.verificationGeneral.name
-        ? next()
-        : next(vueRoutes.verificationGeneral)
-      break
-    default:
-      next()
-      break
+  } else {
+    switch (kycAccountRole) {
+      case kvEntryCorporateRoleId:
+        to.name === vueRoutes.verificationCorporate.name
+          ? next()
+          : next(vueRoutes.verificationCorporate)
+        break
+      case kvEntryGeneralRoleId:
+        to.name === vueRoutes.verificationGeneral.name
+          ? next()
+          : next(vueRoutes.verificationGeneral)
+        break
+      default:
+        next()
+        break
+    }
   }
 }
 
 export default {
   name: 'verification',
+  components: { Loader },
   data: _ => ({
+    isLoaded: false,
+    isLoadingFailed: false,
     vueRoutes,
     REQUEST_STATES_STR,
     config,
   }),
+
   computed: {
     ...mapGetters({
+      accountId: vuexTypes.accountId,
       kycState: vuexTypes.kycState,
 
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycResetReason: vuexTypes.kycRequestResetReason,
       kycBlockReason: vuexTypes.kycRequestBlockReason,
 
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      isAccountRoleReset: vuexTypes.isAccountRoleReset,
       isAccountBlocked: vuexTypes.isAccountBlocked,
 
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
@@ -187,11 +208,31 @@ export default {
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
     }),
   },
+
   async beforeRouteEnter (to, from, next) {
     verificationGuard(to, from, next)
   },
+
   async beforeRouteUpdate (to, from, next) {
     verificationGuard(to, from, next)
+  },
+
+  async created () {
+    try {
+      await this.loadAccount(this.accountId)
+      await this.loadKyc()
+      this.isLoaded = true
+    } catch (e) {
+      this.isLoadingFailed = true
+      ErrorHandler.processWithoutFeedback(e)
+    }
+  },
+
+  methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
   },
 }
 </script>

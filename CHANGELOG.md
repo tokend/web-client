@@ -147,7 +147,7 @@ for further information about branching and tagging conventions.
 - A feature that makes your tests execution fail if there’s any `console.log`,
   `console.warn` or `console.error` call
 - Account reset related stuff:
-  - `isAccountRoleReseted` state field to the KYC vuex module
+  - `isAccountRoleReset` state field to the KYC vuex module
   - Checking for previous account role & resetting reason when loading
     KYC request
   - Checking for reset account role on verification pages

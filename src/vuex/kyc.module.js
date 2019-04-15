@@ -16,7 +16,7 @@ import safeGet from 'lodash/get'
  */
 
 export const state = {
-  isAccountRoleReseted: false,
+  isAccountRoleReset: false,
   request: {},
   relatedRequest: {},
   latestData: '{}', // JSON string
@@ -36,7 +36,7 @@ export const mutations = {
   },
 
   [vuexTypes.SET_ACCOUNT_ROLE_RESET] (state, isReset) {
-    state.isAccountRoleReseted = isReset
+    state.isAccountRoleReset = isReset
   },
 }
 
@@ -104,20 +104,18 @@ export const actions = {
     )
 
     const request = new ChangeRoleRequestRecord(data)
+    const resetReason = request.resetReason || state.request.resetReason
 
-    commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, Boolean(state.request.resetReason))
+    commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, Boolean(resetReason))
     commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
-  async [vuexTypes.LOAD_KYC_DATA] ({
-    state,
-    rootGetters,
-    commit,
-  }) {
+  async [vuexTypes.LOAD_KYC_DATA] ({ state, commit }) {
     const latestBlobId = state.request.blobId || state.relatedRequest.blobId
     if (!latestBlobId) {
       return
     }
+
     const latestBlobResponse = await Sdk.api.blobs.get(latestBlobId)
     const latestData = latestBlobResponse.data.value
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
@@ -132,8 +130,8 @@ export const getters = {
   [vuexTypes.kycRequestResetReason]: state => state.request.resetReason,
   [vuexTypes.kycRequestBlockReason]: state => state.request.blockReason,
 
-  [vuexTypes.isAccountRoleReseted]: state => state.isAccountRoleReseted,
-  [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReseted
+  [vuexTypes.isAccountRoleReset]: state => state.isAccountRoleReset,
+  [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReset
     ? undefined
     : state.relatedRequest.accountRoleToSet || state.request.accountRoleToSet,
   [vuexTypes.kycPreviousRequestAccountRoleToSet]: state => {

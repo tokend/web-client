@@ -445,6 +445,8 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "account-blocked-msg": "Your account was blocked by administrator with reason: {{reason}}",
       "account-role-reset-msg": "Your verification was resetted by administrator with reason: {{reason}}. Please, verify your account again",
       "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
@@ -458,8 +460,6 @@
       "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets "
     },
     "verification-form": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",

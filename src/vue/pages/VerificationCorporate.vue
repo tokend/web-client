@@ -1,156 +1,143 @@
 <template>
   <div class="verification-corporate-form">
-    <template v-if="isLoaded">
-      <p class="verification-corporate-form__account-info-title">
-        {{ 'verification-form.account-information-lbl' | globalize }}
-      </p>
+    <p class="verification-corporate-form__account-info-title">
+      {{ 'verification-form.account-information-lbl' | globalize }}
+    </p>
 
-      <form
-        novalidate
-        class="app-form"
-        @submit.prevent="isFormValid() && showConfirmation()"
-      >
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.name"
-              @blur="touchField('form.name')"
-              id="verification-corporate-name"
-              name="verification-corporate-name"
-              :label="'verification-form.name-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.name')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.company"
-              @blur="touchField('form.company')"
-              id="verification-corporate-company"
-              name="verification-corporate-company"
-              :label="'verification-form.company-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.company')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <file-field
-              v-model="form.avatar"
-              name="verification-corporate-avatar"
-              :note="'verification-form.image-type-note' | globalize"
-              accept="image/*"
-              :document-type="DOCUMENT_TYPES.kycAvatar"
-              :label="'verification-form.avatar-lbl' | globalize"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.headquarters"
-              @blur="touchField('form.headquarters')"
-              id="verification-corporate-headquarters"
-              name="verification-corporate-headquarters"
-              :label="'verification-form.headquarters-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.headquarters')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.industry"
-              @blur="touchField('form.industry')"
-              id="verification-corporate-industry"
-              name="verification-corporate-industry"
-              :label="'verification-form.industry-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.industry')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              type="number"
-              v-model="form.teamSize"
-              @blur="touchField('form.teamSize')"
-              id="verification-corporate-team-size"
-              name="verification-corporate-team-size"
-              :label="'verification-form.team-size-lbl' | globalize"
-              :error-message="
-                getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
-              "
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-row">
-          <div class="app__form-field">
-            <input-field
-              white-autofill
-              v-model="form.website"
-              @blur="touchField('form.website')"
-              id="verification-corporate-website"
-              name="verification-corporate-website"
-              :label="'verification-form.website-lbl' | globalize"
-              :error-message="getFieldErrorMessage('form.website')"
-              :disabled="formMixin.isDisabled"
-            />
-          </div>
-        </div>
-
-        <div class="app__form-actions">
-          <form-confirmation
-            v-if="formMixin.isConfirmationShown"
-            @ok="hideConfirmation() || submit()"
-            @cancel="hideConfirmation"
-          />
-          <button
-            v-ripple
-            v-else
-            type="submit"
-            class="verification-corporate-form__submit-btn"
+    <form
+      novalidate
+      class="app-form"
+      @submit.prevent="isFormValid() && showConfirmation()"
+    >
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.name"
+            @blur="touchField('form.name')"
+            id="verification-corporate-name"
+            name="verification-corporate-name"
+            :label="'verification-form.name-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.name')"
             :disabled="formMixin.isDisabled"
-          >
-            {{ 'verification-form.submit-btn' | globalize }}
-          </button>
+          />
         </div>
-      </form>
-    </template>
+      </div>
 
-    <template v-else-if="isLoadingFailed">
-      <p>
-        {{ 'verification-form.loading-error-msg' | globalize }}
-      </p>
-    </template>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.company"
+            @blur="touchField('form.company')"
+            id="verification-corporate-company"
+            name="verification-corporate-company"
+            :label="'verification-form.company-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.company')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
 
-    <template v-else>
-      <loader :message-id="'verification-form.loading-msg'" />
-    </template>
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <file-field
+            v-model="form.avatar"
+            name="verification-corporate-avatar"
+            :note="'verification-form.image-type-note' | globalize"
+            accept="image/*"
+            :document-type="DOCUMENT_TYPES.kycAvatar"
+            :label="'verification-form.avatar-lbl' | globalize"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.headquarters"
+            @blur="touchField('form.headquarters')"
+            id="verification-corporate-headquarters"
+            name="verification-corporate-headquarters"
+            :label="'verification-form.headquarters-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.headquarters')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.industry"
+            @blur="touchField('form.industry')"
+            id="verification-corporate-industry"
+            name="verification-corporate-industry"
+            :label="'verification-form.industry-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.industry')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            type="number"
+            v-model="form.teamSize"
+            @blur="touchField('form.teamSize')"
+            id="verification-corporate-team-size"
+            name="verification-corporate-team-size"
+            :label="'verification-form.team-size-lbl' | globalize"
+            :error-message="
+              getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
+            "
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            white-autofill
+            v-model="form.website"
+            @blur="touchField('form.website')"
+            id="verification-corporate-website"
+            name="verification-corporate-website"
+            :label="'verification-form.website-lbl' | globalize"
+            :error-message="getFieldErrorMessage('form.website')"
+            :disabled="formMixin.isDisabled"
+          />
+        </div>
+      </div>
+
+      <div class="app__form-actions">
+        <form-confirmation
+          v-if="formMixin.isConfirmationShown"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
+        />
+        <button
+          v-ripple
+          v-else
+          type="submit"
+          class="verification-corporate-form__submit-btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'verification-form.submit-btn' | globalize }}
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
-import Loader from '@/vue/common/Loader'
 import _get from 'lodash/get'
 
 import { Api } from '@/api'
@@ -178,9 +165,6 @@ const EMPTY_DOCUMENT = {
 
 export default {
   name: 'verification-corporate-form',
-  components: {
-    Loader,
-  },
   mixins: [VerificationFormMixin],
 
   data: _ => ({
@@ -193,8 +177,6 @@ export default {
       teamSize: '0',
       website: '',
     },
-    isLoaded: false,
-    isLoadingFailed: false,
     MIN_TEAM_SIZE,
     DOCUMENT_TYPES,
   }),
@@ -217,31 +199,23 @@ export default {
   computed: {
     ...mapGetters({
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      isAccountRoleReset: vuexTypes.isAccountRoleReset,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
     isFormDisabled () {
-      return !this.isAccountRoleReseted && this.kycState &&
+      return !this.isAccountRoleReset && this.kycState &&
         this.kycState !== REQUEST_STATES_STR.rejected &&
         this.kycState !== REQUEST_STATES_STR.permanentlyRejected
     },
     isFormPopulatable () {
-      return this.isAccountRoleReseted
+      return this.isAccountRoleReset
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
         : this.accountRoleToSet === this.kvEntryCorporateRoleId
     },
   },
 
   async created () {
-    try {
-      await this.loadAccount(this.accountId)
-      await this.loadKyc()
-      this.isLoaded = true
-    } catch (e) {
-      this.isLoadingFailed = true
-      ErrorHandler.processWithoutFeedback(e)
-    }
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
 
