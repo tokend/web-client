@@ -1,48 +1,7 @@
 <template>
   <div class="verification">
-    <div
-      v-if="isAccountRoleReseted"
-      class="verification__state-message
-             verification__state-message--rejected"
-    >
-      <p class="verification__state-message-content">
-        {{
-          'verification-page.account-role-reset-msg' | globalize({
-            reason: kycResetReason
-          })
-        }}
-      </p>
-    </div>
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.approved"
-      class="verification__state-message
-             verification__state-message--approved"
-    >
-      <p class="verification__state-message-content">
-        {{ 'verification-page.approved-request-msg' | globalize }}
-      </p>
-    </div>
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.pending"
-      class="verification__state-message
-             verification__state-message--pending"
-    >
-      <p class="verification__state-message-content">
-        {{ 'verification-page.pending-request-msg' | globalize }}
-      </p>
-    </div>
-    <div
-      v-else-if="kycState === REQUEST_STATES_STR.rejected"
-      class="verification__state-message
-             verification__state-message--rejected"
-    >
-      <p class="verification__state-message-content">
-        {{
-          'verification-page.rejected-request-msg'
-            | globalize({ reason: kycRejectReason })
-        }}
-      </p>
-    </div>
+    <verification-state-message />
+
     <p class="verification__subtitle">
       {{ 'verification-page.account-type-lbl' | globalize }}
     </p>
@@ -89,6 +48,8 @@
 </template>
 
 <script>
+import VerificationStateMessage from '@/vue/pages/verification/VerificationStateMessage'
+
 import { mapGetters } from 'vuex'
 import { store, vuexTypes } from '@/vuex'
 
@@ -129,6 +90,7 @@ function verificationGuard (to, from, next) {
 
 export default {
   name: 'verification',
+  components: { VerificationStateMessage },
   data: _ => ({
     vueRoutes,
     REQUEST_STATES_STR,
@@ -136,10 +98,6 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      kycState: vuexTypes.kycState,
-      kycRejectReason: vuexTypes.kycRequestRejectReason,
-      kycResetReason: vuexTypes.kycRequestResetReason,
-      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
@@ -157,28 +115,6 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 @import "~@scss/mixins";
-
-.verification__state-message {
-  min-height: 6.4rem;
-  width: 100%;
-  display: none;
-
-  @mixin apply-theme ($col-msg-background) {
-    background-color: $col-msg-background;
-    display: block;
-  }
-
-  &--approved { @include apply-theme($col-request-approved) }
-  &--pending { @include apply-theme($col-request-pending) }
-  &--rejected { @include apply-theme($col-request-rejected) }
-}
-
-.verification__state-message-content {
-  padding: 2.4rem;
-  font-size: 1.3rem;
-  font-weight: normal;
-  color: $col-primary-txt;
-}
 
 .verification__subtitle {
   color: $col-primary;

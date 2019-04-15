@@ -20,10 +20,17 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
+- Extract default quote asset from the server
 - Show issuance status in issuances list
 - Displaying success message after sending verification request
 - Displaying fee boundaries’ asset code in fees list
 - URL validation to corporate verification form
+- Idle auto-logout
+- Depositing with `CoinpaymentsDepositModule` in `MovementsTopBarReitModule`
+- `WithdrawalDrawerPseudoModule` in `MovementsTopBarReitModule`
+- Disabled state to form tabs that cannot be attended
+- Autocomplete limit change forms
+- Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
 
 #### Changed
 - Modularized:
@@ -54,6 +61,8 @@ for further information about branching and tagging conventions.
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
 - Redesigned status message
 - "Already in your balances" button increased width
+- Orange peel global color
+- Redesigned verification state message & extracted it to a separate component
 
 #### Removed
 - "Fee" column from the movements table
@@ -67,6 +76,7 @@ for further information about branching and tagging conventions.
   - `PreIssuanceCreateRequestRecord`
   - `SaleRequestRecord`
 - Hardcoded `REQUEST_TYPES` constant
+- `DEFAULT_QUOTE_ASSET` field from config
 - Horizon version prefix
 
 #### Fixed
@@ -74,9 +84,13 @@ for further information about branching and tagging conventions.
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 - Displaying insufficient/absent balance message on submit trade form
+- "Verification required" translations on invest form
 - Warning message about insufficient balance in the "Invest" form
 - Converted balance displaying on "Dashboard" page
 - Invalid matched fee calculation in invest form
+- Bug with validation `maturityDate`
+- Bug with getting asset pair price for opportunity creation
+- Trade history table margins
 - Displaying input field label on Firefox
 
 ## [1.4.0] - 2019-04-05

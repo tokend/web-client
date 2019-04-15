@@ -388,6 +388,9 @@
       "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
       "op_vote_not_found": "Vote to remove cannot be found"
     },
+    "idle-message": {
+      "notification-message": "You have been logged out due to long inactivity."
+    },
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
@@ -446,15 +449,29 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
-      "account-role-reset-msg": "Your verification was reset by administrator with reason: {{reason}}. Please verify your account again",
-      "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
-      "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
-      "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
       "account-type-lbl": "Account type",
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
       "account-type-general-description": "Deposit, withdraw, buy, sell and transfer assets",
       "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets "
+    },
+    "verification-state-message": {
+      "blocked-title": "Account blocked",
+      "reset-title": "Verification reset",
+      "approved-title": "Account approved",
+      "pending-title": "Verification in progress",
+      "rejected-title": "Verification rejected",
+      "permanently-rejected-title": "Verification rejected permanently",
+      "blocked-desc": "Your verification request was blocked by administrator.",
+      "reset-desc": "Your verification request was reset by administrator. Please, verify your account again.",
+      "approved-desc": "Your account was approved by administrator. Now you can access all the features requiring verification.",
+      "pending-desc": "Your verification request is being processed. You will be able to update details once the request is reviewed.",
+      "rejected-desc": "Your verification request was rejected by administrator. Please, resolve all the issues and send the request again.",
+      "permanently-rejected-desc": "Your verification request was permanently rejected by administrator. Please, send the request again.",
+      "blocked-reason": "Blocking reason:",
+      "reset-reason": "Reset reason:",
+      "rejected-reason": "Rejection reason:",
+      "permanently-rejected-reason": "Rejection reason:"
     },
     "verification-form": {
       "loading-msg": "Loading",
@@ -1399,8 +1416,8 @@
       "cap-exceeded-msg": "Investing amount has exceeded the sale cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
-      "requires-kyc-title": "Requires KYC",
-      "requires-kyc-desc": "Investments in this sale requires KYC"
+      "requires-verification-title": "Verification required",
+      "requires-verification-desc": "Please, verify your account to invest in this sale"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
