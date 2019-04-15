@@ -124,8 +124,10 @@
           <p class="app__form-field-description">
             {{
               'create-sale-form.available-amount-hint' | globalize({
-                asset: form.baseAsset.code,
-                amount: availableForIssuance
+                amount: {
+                  value: availableForIssuance,
+                  currency: form.baseAsset.code
+                }
               })
             }}
           </p>

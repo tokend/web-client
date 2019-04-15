@@ -138,18 +138,18 @@ export default {
     new AssetsPageModule(
       {
         routerEntry: {
-          path: '/tokens',
+          path: '/assets',
           name: vueRoutes.assets.name,
         },
-        menuButtonTranslationId: 'pages-names.tokens',
+        menuButtonTranslationId: 'pages-names.assets',
         menuButtonMdiName: 'coins',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new AssetExplorerPageModule({
             routerEntry: {
-              path: '/tokens/explore',
+              path: '/assets/explore',
               name: vueRoutes.assetsExplore.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              meta: { pageNameTranslationId: 'pages-names.assets' },
             },
             submodules: [
               new AssetExplorerModule(),
@@ -157,9 +157,9 @@ export default {
           }),
           new BalancesPageModule({
             routerEntry: {
-              path: '/tokens/balances',
+              path: '/assets/balances',
               name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              meta: { pageNameTranslationId: 'pages-names.assets' },
             },
             submodules: [
               new BalanceExplorerModule(),
@@ -196,17 +196,17 @@ export default {
     new SalesPageModule(
       {
         routerEntry: {
-          path: '/funds',
+          path: '/sales',
           name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
+          meta: { pageNameTranslationId: 'pages-names.sales' },
         },
-        menuButtonTranslationId: 'pages-names.funds',
+        menuButtonTranslationId: 'pages-names.sales',
         menuButtonMdiName: 'trending-up',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new SalesListPageModule({
             routerEntry: {
-              path: '/funds/all',
+              path: '/sales/all',
               name: vueRoutes.allSales.name,
               props: {
                 default: true,
@@ -216,7 +216,7 @@ export default {
           }),
           new SalesListOwnedPageModule({
             routerEntry: {
-              path: '/funds/my',
+              path: '/sales/my',
               name: vueRoutes.userOwnedSales.name,
               props: {
                 default: true,
@@ -234,16 +234,16 @@ export default {
     new SaleDetailsPageModule(
       {
         routerEntry: {
-          path: '/funds/:id',
+          path: '/sales/:id',
           name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          meta: { pageNameTranslationId: 'pages-names.sale-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
         },
         submodules: [
           new SaleCampaignViewerPageModule({
             routerEntry: {
-              path: '/funds/:id/campaign',
+              path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,
               props: true,
             },
@@ -273,7 +273,7 @@ export default {
         submodules: [
           new AssetCreationRequestsPageModule({
             routerEntry: {
-              path: '/requests/token-creation',
+              path: '/requests/asset-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
             submodules: [
@@ -282,7 +282,7 @@ export default {
           }),
           new AssetUpdateRequestsPageModule({
             routerEntry: {
-              path: '/requests/token-update',
+              path: '/requests/asset-update',
               name: vueRoutes.assetUpdateRequests.name,
             },
             submodules: [
@@ -291,7 +291,7 @@ export default {
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
-              path: '/requests/fund-creation',
+              path: '/requests/sale-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
             submodules: [

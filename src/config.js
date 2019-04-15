@@ -43,7 +43,7 @@ export default Object.assign(
     // deprecated constants
 
     /**
-     * Default asset code for converting token's price,
+     * Default asset code for converting asset's price,
      * trade and sale offers
      */
     DEFAULT_QUOTE_ASSET: 'USD',

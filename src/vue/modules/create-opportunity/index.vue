@@ -734,7 +734,7 @@ export default {
       try {
         await this.uploadDocuments()
         const blobId = await this.getBlobId({
-          type: BLOB_TYPES.fundOverview,
+          type: BLOB_TYPES.saleOverview,
           attributes: {
             value: JSON.stringify(this.form.shortBlurb.description),
           },
@@ -817,7 +817,7 @@ export default {
         operation.creatorDetails.maturityDate = DateUtil
           .toMs(this.form.information.maturityDate)
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
-        operation.creatorDetails.investmentToken = {
+        operation.creatorDetails.investmentAsset = {
           asset: this.form.saleInformation.quoteAssets,
           price: this.salePriceRatioStatsQuoteAsset,
         }

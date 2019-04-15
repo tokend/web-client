@@ -4,8 +4,6 @@ import { Balance } from '../wrappers/balance'
 import { types } from './types'
 import { api } from '../_api'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   balances: [],
@@ -35,7 +33,7 @@ export const actions = {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
-    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/history`, {
+    return api().getWithSignature('/v3/history', {
       page: {
         order: 'desc',
       },
@@ -48,7 +46,7 @@ export const actions = {
   },
 
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
