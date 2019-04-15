@@ -63,7 +63,7 @@
         class="auth-form__submit-btn"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.recover' | globalize }}
+        {{ 'auth-pages.recover-lbl' | globalize }}
       </button>
     </div>
   </form>
@@ -120,7 +120,7 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     async submit () {
       if (!this.isFormValid()) {
@@ -161,7 +161,7 @@ export default {
       Api.useWallet(this.wallet)
 
       await this.loadAccount(accountId)
-      await this.loadKvEntriesAccountRoleIds()
+      await this.loadKvEntries()
       await this.loadKyc()
     },
   },

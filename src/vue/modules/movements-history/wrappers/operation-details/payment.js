@@ -1,5 +1,5 @@
 /**
- * Payment is an operation that charges costs from one account and funds with
+ * Payment is an operation that charges costs from one account and sales with
  * them another account
  */
 export class PaymentOp {
