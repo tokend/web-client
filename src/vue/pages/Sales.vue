@@ -151,6 +151,7 @@ export default {
   display: flex;
   font-size: 1.8rem;
   margin-right: 0.5rem;
+  margin-top: -0.4rem;
 }
 
 .sales__asset-filter {
