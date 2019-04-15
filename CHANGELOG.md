@@ -17,8 +17,8 @@ for further information about branching and tagging conventions.
 - Warning message when showing recovery seed on signup page
 - QR code plugin wrapper
 - Added transaction errors handling
-- Added depositing with CoinpaymentsDepositModule in MovementsTopBarReitModule
-- Added WithdrawalDrawerPseudoModule in MovementsTopBarReitModule
+- Added depositing with `oinpaymentsDepositModule` in `MovementsTopBarReitModule`
+- `WithdrawalDrawerPseudoModule` in `MovementsTopBarReitModule`
 
 #### Changed
 - Modularized:
