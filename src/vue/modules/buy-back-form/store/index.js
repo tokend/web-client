@@ -6,8 +6,6 @@ import { AssetRecord } from '../wrappers/asset.record'
 import { SaleRecord } from '../wrappers/sale.record'
 import { MathUtil } from '@/js/utils'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   balances: [],
@@ -28,7 +26,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -36,7 +34,7 @@ export const actions = {
     commit(types.SET_BALANCES, account.balances)
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    let response = await api().get(`${HORIZON_VERSION_PREFIX}/assets`)
+    let response = await api().get('/v3/assets')
     let assets = response.data
     while (response.data.length) {
       response = await response.fetchNext()
@@ -50,7 +48,7 @@ export const actions = {
    * @param {String} baseAsset - filter sales by base asset code
    */
   async [types.LOAD_SALE_BY_BASE_ASSET] ({ getters }, baseAsset) {
-    let { data: sales } = await api().get(`${HORIZON_VERSION_PREFIX}/sales`, {
+    let { data: sales } = await api().get('/v3/sales', {
       filter: {
         base_asset: baseAsset,
       },
