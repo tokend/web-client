@@ -20,6 +20,8 @@ for further information about branching and tagging conventions.
 - Ticker to refresh order book with interval
 - Ticker interval is now global and applies for all tickers throughout the app
 - Added transaction errors handling
+- Displaying blocked account role
+- Displaying permanently rejected change role request state
 
 #### Changed
 - Modularized:
@@ -48,6 +50,10 @@ for further information about branching and tagging conventions.
 - Now using "qrcode.vue" plugin instead of "vue-qr"
 - Clipboard field styles to differ it from input fields
 - Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
+- Now loading KYC requests in the parent verification component
+- Now getting latest approved request ID in creator details of the latest
+  change role request, and loading the related request itself if account
+  was reset or blocked
 
 #### Removed
 - "Fee" column from the movements table

@@ -1,8 +1,11 @@
 import { vuexTypes } from './types'
+
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
+
 import safeGet from 'lodash/get'
+import _isEmpty from 'lodash/isEmpty'
 
 /**
  * @module
@@ -74,7 +77,7 @@ export const actions = {
 
     const request = new ChangeRoleRequestRecord(response.data[0])
 
-    if (Object.keys(request.creatorDetails).length) {
+    if (!_isEmpty(request.creatorDetails)) {
       commit(vuexTypes.SET_KYC_LATEST_REQUEST, request)
     } else {
       commit(vuexTypes.SET_KYC_LATEST_REQUEST, {})
