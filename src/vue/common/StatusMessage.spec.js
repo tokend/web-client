@@ -31,14 +31,14 @@ describe('StatusMessage component test', () => {
     }
   })
 
-  describe('renders the proper labels for the close button', () => {
+  describe('renders proper titles', () => {
     before(() => {
       TestHelper.useTranslations({
         'status-message': {
-          'close-lbl_warning': 'Warning label',
-          'close-lbl_success': 'Success label',
-          'close-lbl_error': 'Error label',
-          'close-lbl_info': 'Info label',
+          'title_warning': 'Warning title',
+          'title_success': 'Success title',
+          'title_error': 'Error title',
+          'title_info': 'Info title',
         },
       })
     })
@@ -48,20 +48,20 @@ describe('StatusMessage component test', () => {
     })
 
     const expectedResults = {
-      [Bus.eventList.warning]: 'Warning label',
-      [Bus.eventList.success]: 'Success label',
-      [Bus.eventList.error]: 'Error label',
-      [Bus.eventList.info]: 'Info label',
+      [Bus.eventList.warning]: 'Warning title',
+      [Bus.eventList.success]: 'Success title',
+      [Bus.eventList.error]: 'Error title',
+      [Bus.eventList.info]: 'Info title',
     }
 
-    for (const [eventName, label] of Object.entries(expectedResults)) {
+    for (const [eventName, title] of Object.entries(expectedResults)) {
       it(`${eventName} event`, async () => {
         const wrapper = mount(StatusMessage, { localVue })
         Bus.emit(eventName)
         await localVue.nextTick()
-        const button = wrapper.find('.status-message__btn')
+        const titleEl = wrapper.find('.status-message__title')
 
-        expect(button.text()).to.equal(label)
+        expect(titleEl.text()).to.equal(title)
       })
     }
   })

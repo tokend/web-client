@@ -1,5 +1,5 @@
 /**
- * Create AML alert request - moves balance funds to the locked state until the
+ * Create AML alert request - moves balance sales to the locked state until the
  * request is either approved or rejected.
  */
 export class CreateAMLAlertRequestOp {
