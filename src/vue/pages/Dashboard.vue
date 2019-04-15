@@ -62,6 +62,7 @@
             :asset-code="currentAsset"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
+            :ref="REFS.movementsHistory"
           />
         </div>
       </template>
@@ -77,7 +78,10 @@
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>
-        <transfer :asset-to-transfer="currentAsset" />
+        <transfer
+          @operation-submitted="updateBalancesAndList()"
+          :asset-to-transfer="currentAsset"
+        />
       </template>
     </drawer>
   </div>
@@ -99,6 +103,10 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+
+const REFS = {
+  movementsHistory: 'movements-history',
+}
 
 export default {
   name: 'dashboard',
@@ -122,6 +130,7 @@ export default {
     IssuanceDrawerPseudoModule,
     TransferDrawerPseudoModule,
     DashboardChartPseudoModule,
+    REFS,
   }),
   computed: {
     ...mapGetters([
@@ -165,6 +174,22 @@ export default {
         this.currentAsset =
           keys.find(a => a === 'ETH') || keys[0] || ''
       }
+    },
+
+    // TODO: find a better way to execute child’s reload-list method
+    updateList () {
+      if (!this.$refs[REFS.movementsHistory]) {
+        return
+      }
+      return this.$refs[REFS.movementsHistory].$children[0]
+        .reloadCollectionLoader()
+    },
+
+    updateBalancesAndList () {
+      return Promise.all([
+        this.loadBalances(),
+        this.updateList(),
+      ])
     },
   },
 }

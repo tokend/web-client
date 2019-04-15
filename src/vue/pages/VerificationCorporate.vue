@@ -42,6 +42,20 @@
 
         <div class="app__form-row">
           <div class="app__form-field">
+            <file-field
+              v-model="form.avatar"
+              name="verification-corporate-avatar"
+              :note="'verification-form.image-type-note' | globalize"
+              accept="image/*"
+              :document-type="DOCUMENT_TYPES.kycAvatar"
+              :label="'verification-form.avatar-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
             <input-field
               white-autofill
               v-model="form.headquarters"
@@ -137,20 +151,32 @@
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import Loader from '@/vue/common/Loader'
+import _get from 'lodash/get'
 
 import { Api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
+import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, url, integer, minValue } from '@validators'
+import { required, validateUrl, integer, minValue } from '@validators'
 
 const MIN_TEAM_SIZE = 1
+
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 
 export default {
   name: 'verification-corporate-form',
@@ -163,6 +189,7 @@ export default {
     form: {
       name: '',
       company: '',
+      avatar: null,
       headquarters: '',
       industry: '',
       teamSize: '0',
@@ -171,6 +198,7 @@ export default {
     isLoaded: false,
     isLoadingFailed: false,
     MIN_TEAM_SIZE,
+    DOCUMENT_TYPES,
   }),
 
   validations: {
@@ -184,14 +212,28 @@ export default {
         integer,
         minValue: minValue(MIN_TEAM_SIZE),
       },
-      website: { required, url },
+      website: {
+        required,
+        validateUrl,
+      },
     },
   },
 
   computed: {
     ...mapGetters({
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
+      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
+      previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
+    isFormEditable () {
+      return this.isAccountRoleReseted ||
+        this.kycState === REQUEST_STATES_STR.rejected
+    },
+    isFormPopulatable () {
+      return this.isAccountRoleReseted
+        ? this.previousAccountRole === this.kvEntryCorporateRoleId
+        : !!this.kycState
+    },
   },
 
   async created () {
@@ -203,9 +245,10 @@ export default {
       this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(e)
     }
-    if (this.kycState) {
+    if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-      if (this.kycState !== REQUEST_STATES_STR.rejected) {
+
+      if (!this.isFormEditable) {
         this.disableForm()
       }
     }
@@ -216,18 +259,35 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
+        await this.uploadAvatar()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        while (this.kycState !== REQUEST_STATES_STR.pending) {
+        do {
           await this.loadKyc()
-        }
+          await this.delay(3000)
+        } while (this.kycState !== REQUEST_STATES_STR.pending)
+        Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
+      }
+    },
+
+    delay (ms) {
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
+      })
+    },
+
+    async uploadAvatar () {
+      let document = this.form.avatar
+      if (document && !document.key) {
+        document = await DocumentUploader.uploadSingleDocument(document)
       }
     },
 
@@ -239,6 +299,11 @@ export default {
         industry: this.form.industry,
         team_size: this.form.teamSize,
         homepage: this.form.website,
+        documents: {
+          [DOCUMENT_TYPES.kycAvatar]: this.form.avatar
+            ? this.form.avatar.getDetailsForSave()
+            : EMPTY_DOCUMENT,
+        },
       }
     },
 
@@ -246,6 +311,9 @@ export default {
       return {
         name: kycData.name,
         company: kycData.company,
+        avatar: _get(kycData, `documents.${DOCUMENT_TYPES.kycAvatar}.key`)
+          ? new DocumentContainer(kycData.documents[DOCUMENT_TYPES.kycAvatar])
+          : null,
         headquarters: kycData.headquarters,
         industry: kycData.industry,
         teamSize: kycData.team_size,

@@ -1,11 +1,10 @@
 export const DOCUMENT_TYPES = Object.freeze({
   saleLogo: 'sale_logo',
   saleDocument: 'sale_document',
-  assetTerms: 'asset_terms',
-  assetLogo: 'asset_logo',
   kycIdDocument: 'kyc_id_document',
   kycProofOfAddress: 'kyc_poa',
   kycSelfie: 'kyc_selfie',
+  kycAvatar: 'kyc_avatar',
   kycTaxReturns: 'kyc_tax_returns',
   kycOriginationCertificate: 'company_origination_certificate',
   kycInvestmentPresentation: 'kyc_investment_presentation',
@@ -20,8 +19,8 @@ export const DOCUMENT_TYPES = Object.freeze({
   driving_license: 'driving_license',
   identity_card: 'identity_card',
   residence_permit: 'residence_permit',
-  tokenTerms: 'token_terms',
-  tokenLogo: 'asset_logo',
+  assetTerms: 'token_terms',
+  assetLogo: 'asset_logo',
   healthcareDocument: 'healthcare_document',
 })
 
@@ -33,6 +32,7 @@ export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
   [DOCUMENT_TYPES.kycIdDocument]: 'document-types.kyc-id-document',
   [DOCUMENT_TYPES.kycProofOfAddress]: 'document-types.kyc-proof-of-address',
   [DOCUMENT_TYPES.kycSelfie]: 'document-types.kyc-selfie',
+  [DOCUMENT_TYPES.kycAvatar]: 'document-types.kyc-avatar',
   [DOCUMENT_TYPES.kycTaxReturns]: 'document-types.kyc-tax-returns',
   [DOCUMENT_TYPES.kycOriginationCertificate]: 'document-types.kyc-origination-certificate',
   [DOCUMENT_TYPES.kycInvestmentPresentation]: 'document-types.kyc-investment-presentation',
@@ -47,6 +47,6 @@ export const DOCUMENT_TYPES_TRANSLATION_IDS = Object.freeze({
   [DOCUMENT_TYPES.driving_license]: 'document-types.driving-license',
   [DOCUMENT_TYPES.identity_card]: 'document-types.identity-card',
   [DOCUMENT_TYPES.residence_permit]: 'document-types.residence-permit',
-  [DOCUMENT_TYPES.tokenTerms]: 'document-types.token-terms',
-  [DOCUMENT_TYPES.tokenLogo]: 'document-types.token-logo',
+  [DOCUMENT_TYPES.assetTerms]: 'document-types.asset-terms',
+  [DOCUMENT_TYPES.assetLogo]: 'document-types.asset-logo',
 })

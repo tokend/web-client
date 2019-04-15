@@ -1,6 +1,6 @@
 <template>
   <div class="asset-selector">
-    <template v-if="tokens.length">
+    <template v-if="assets.length">
       <div
         class="asset-selector__wrapper"
         v-if="currentAsset"
@@ -22,7 +22,7 @@
           <div>
             <select-field
               :value="currentAssetForSelect"
-              :values="tokensList"
+              :values="assetsList"
               :key="currentAssetForSelect.code"
               key-as-value-text="nameAndCode"
               @input="$emit(EVENTS.assetChange, $event)"
@@ -48,10 +48,11 @@
               <span class="asset-selector__asset-value-secondary">
                 {{
                   currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
+                    currency: currentAssetBalanceDetails.convertedToAsset,
+                    symbolAllowed: true
                   })
                 }}
-                {{ config.DEFAULT_QUOTE_ASSET }}
+                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>
@@ -60,7 +61,7 @@
       <template v-if="!currentAsset">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
-          :message="'dashboard.here-will-be-the-tokens' | globalize"
+          :message="'dashboard.here-will-be-the-assets' | globalize"
         />
       </template>
     </template>
@@ -81,7 +82,7 @@ import config from '@/config'
 import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -106,7 +107,7 @@ export default {
   },
   data: () => ({
     EVENTS,
-    tokens: [],
+    assets: [],
     isLoadingFailed: false,
     config,
     ASSET_POLICIES,
@@ -115,21 +116,21 @@ export default {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
     }),
-    tokensList () {
+    assetsList () {
       const balancesAssetCodes = this.balances.map(i => i.asset)
-      const tokens = this.tokens
-        .filter(token => balancesAssetCodes.includes(token.code))
+      const assets = this.assets
+        .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
-      // correcty in the list of all tokens: baseAssets should be displayed at
+      // correcty in the list of all assets: baseAssets should be displayed at
       // the beginning and otherAssets after baseAssets
 
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
-      const baseAssets = tokens
-        .filter(token => token.isBaseAsset)
+      const baseAssets = assets
+        .filter(asset => asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
-      const otherAssets = tokens
-        .filter(token => !token.isBaseAsset)
+      const otherAssets = assets
+        .filter(asset => !asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
         ...baseAssets,
@@ -137,7 +138,7 @@ export default {
       ]
     },
     currentAssetForSelect () {
-      return this.tokens.find(t => t.code === this.currentAsset) || {}
+      return this.assets.find(t => t.code === this.currentAsset) || {}
     },
     currentAssetBalanceDetails () {
       return this.balances
@@ -149,13 +150,17 @@ export default {
     },
   },
   async created () {
-    await this.loadTokens()
+    await this.loadAssets()
+    await this.loadBalances()
   },
   methods: {
-    async loadTokens () {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
+    async loadAssets () {
       try {
         const response = await Sdk.horizon.assets.getAll()
-        this.tokens = response.data.map(asset => new AssetRecord(asset))
+        this.assets = response.data.map(asset => new AssetRecord(asset))
       } catch (error) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)

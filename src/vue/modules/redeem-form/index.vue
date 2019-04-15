@@ -12,7 +12,7 @@
               :values="assetsInBalance"
               key-as-value-text="nameAndCode"
               class="app__select"
-              :label="'redeem-form.opportunity-uniq-code' | globalize"
+              :label="'redeem-form.opportunity-uniq-code-lbl' | globalize"
             />
           </div>
         </div>
@@ -21,9 +21,9 @@
           <div class="app__form-field">
             <input-field
               v-if="selectedSale.defaultQuoteAsset"
-              :label="'redeem-form.invested-in' | globalize"
+              :label="'redeem-form.quote-asset-lbl' | globalize"
               v-model="selectedSale.defaultQuoteAsset.id"
-              name="redeem-invested-in"
+              name="redeem-quote-asset"
               :readonly="true"
             />
           </div>
@@ -32,7 +32,7 @@
         <div class="app__form-row">
           <div class="app__form-field">
             <input-field
-              :label="'redeem-form.total' | globalize"
+              :label="'redeem-form.total-lbl' | globalize"
               v-model="form.totalAmount"
               name="redeem-total"
               :readonly="true"
@@ -78,7 +78,7 @@
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
-import { Wallet } from '@tokend/js-sdk'
+import { Wallet, errors } from '@tokend/js-sdk'
 import { initApi } from './_api'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
@@ -86,9 +86,12 @@ import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import FormMixin from '@/vue/mixins/form.mixin'
-import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 
 import { MathUtil } from '@/js/utils/math.util'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
 const EVENTS = {
   redeemed: 'redeemed',
@@ -101,7 +104,7 @@ export default {
     NoDataMessage,
     Loader,
   },
-  mixins: [FormMixin, OfferManagerMixin],
+  mixins: [FormMixin],
   props: {
     wallet: {
       type: Wallet,
@@ -112,6 +115,8 @@ export default {
      * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
      * @property config.maxAmount - max allowed amount
+     * @property [config.defaultAssetCode] - prefills the asset-selector with
+     *           this asset code
      */
     config: {
       type: Object,
@@ -134,6 +139,7 @@ export default {
       assets: types.assets,
       assetsInBalance: types.assetsInBalance,
       selectedAssetBalance: types.selectedAssetBalance,
+      accountId: types.accountId,
     }),
   },
   watch: {
@@ -152,6 +158,7 @@ export default {
 
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
+    await this.loadAccountBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
@@ -164,16 +171,29 @@ export default {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
       loadSaleByBaseAsset: types.LOAD_SALE_BY_BASE_ASSET,
+      createOffer: types.CREATE_OFFER,
+      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
       this.disableForm()
       this.isRedeemProcessing = true
-      // TODO: move it to the store action
-      await this.createOffer(this.getCreateOfferOpts())
+      try {
+        await this.createOffer(this.getCreateOfferOpts())
+        Bus.success('offer-manager.success-creating')
+      } catch (error) {
+        if (
+          error instanceof errors.TransactionError &&
+          error.includesOpCode(OPERATION_ERROR_CODES.opCrossSelf)
+        ) {
+          Bus.error('offer-manager.error-operation-cross-self')
+        } else {
+          ErrorHandler.process(error)
+        }
+      }
       this.isRedeemProcessing = false
       this.enableForm()
       this.hideConfirmation()
-      this.$emit(EVENTS.closeDrawer)
+      this.$emit(EVENTS.redeemed)
     },
     getCreateOfferOpts () {
       return {
@@ -185,19 +205,29 @@ export default {
         quoteAmount: this.form.totalAmount,
         price: this.form.asset.details.redeemPrice,
         isBuy: false,
+        accountId: this.accountId,
       }
     },
     setDefaultAsset () {
-      this.form.asset = this.assetsInBalance[0]
+      if (this.config.defaultAssetCode) {
+        this.setDefaultAssetCodeAsSelected()
+      } else {
+        this.form.asset = this.assetsInBalance[0]
+      }
+    },
+    setDefaultAssetCodeAsSelected () {
+      if (!this.config.defaultAssetCode) {
+        throw new Error('The "defaultAssetCode" property is not defined in the module config!')
+      }
+
+      this.form.asset = this.assetsInBalance
+        .find(item => item.code === this.config.defaultAssetCode)
     },
     calculateRedeemPrice (sale) {
       return MathUtil.multiply(
-        this.form.asset.details.redeemPrice,
+        this.form.asset.details.redeemPrice || '0',
         this.selectedAssetBalance(this.form.asset.code)
       )
-    },
-    redeemed () {
-      this.$emit(EVENTS.redeemed)
     },
   },
 }

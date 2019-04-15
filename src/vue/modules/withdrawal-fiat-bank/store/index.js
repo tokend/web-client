@@ -2,10 +2,8 @@ import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api, loadingDataViaLoop } from '../_api'
 import { AssetRecord } from '../wrappers/asset.record'
-
-const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
   accountId: '',
@@ -31,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -39,12 +37,9 @@ export const actions = {
     commit(types.SET_BALANCES, account.balances)
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/assets`
-    let { data: assets } = await api().getWithSignature(endpoint, {
-      page: {
-        limit: 100,
-      },
-    })
+    const endpoint = '/v3/assets'
+    let response = await api().getWithSignature(endpoint)
+    let assets = await loadingDataViaLoop(response)
 
     commit(
       types.SET_ASSETS,
@@ -58,7 +53,7 @@ export const actions = {
    * @param {String} opts.amount - amount to calculate fee
    */
   async [types.LOAD_FEES] ({ commit, getters }, opts) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters.accountId}/calculated_fees`
+    const endpoint = `/v3/accounts/${getters.accountId}/calculated_fees`
     const { data: fees } = await api().getWithSignature(endpoint, {
       asset: opts.assetCode,
       fee_type: FEE_TYPES.withdrawalFee,

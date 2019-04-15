@@ -54,6 +54,12 @@ export const emailOrAccountId = value => {
   return validateEmail(value) || base.Keypair.isValidPublicKey(value)
 }
 export const documentContainer = value => value instanceof DocumentContainer
+export const softCapMoreThanHardCap = (min, hardCap) => value => {
+  return amountRange(min, hardCap)(value)
+}
+export const hardCapLessThanSoftCap = (softCap, max) => value => {
+  return amountRange(softCap, max)(value)
+}
 
 export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance >= +value
@@ -117,3 +123,9 @@ export const cardCVV3 = value => {
 export const bankBIC = value =>
   /^([A-Z]{6}[A-Z2-9][A-NP-Z1-9])(X{3}|[A-WY-Z0-9][A-Z0-9]{2})?$/
     .test(value.toUpperCase())
+
+export const validateUrl = url => {
+  // eslint-disable-next-line
+  const reg = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
+  return reg.test(url)
+}

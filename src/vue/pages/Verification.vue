@@ -1,26 +1,42 @@
 <template>
   <div class="verification">
     <div
-      v-if="kycState === REQUEST_STATES_STR.approved"
-      class="kyc-request-state kyc-request-state--approved"
+      v-if="isAccountRoleReseted"
+      class="verification__state-message
+             verification__state-message--rejected"
     >
-      <p class="kyc-request-state__content">
+      <p class="verification__state-message-content">
+        {{
+          'verification-page.account-role-reset-msg' | globalize({
+            reason: kycResetReason
+          })
+        }}
+      </p>
+    </div>
+    <div
+      v-else-if="kycState === REQUEST_STATES_STR.approved"
+      class="verification__state-message
+             verification__state-message--approved"
+    >
+      <p class="verification__state-message-content">
         {{ 'verification-page.approved-request-msg' | globalize }}
       </p>
     </div>
     <div
       v-else-if="kycState === REQUEST_STATES_STR.pending"
-      class="kyc-request-state kyc-request-state--pending"
+      class="verification__state-message
+             verification__state-message--pending"
     >
-      <p class="kyc-request-state__content">
+      <p class="verification__state-message-content">
         {{ 'verification-page.pending-request-msg' | globalize }}
       </p>
     </div>
     <div
       v-else-if="kycState === REQUEST_STATES_STR.rejected"
-      class="kyc-request-state kyc-request-state--rejected"
+      class="verification__state-message
+             verification__state-message--rejected"
     >
-      <p class="kyc-request-state__content">
+      <p class="verification__state-message-content">
         {{
           'verification-page.rejected-request-msg'
             | globalize({ reason: kycRejectReason })
@@ -122,6 +138,8 @@ export default {
     ...mapGetters({
       kycState: vuexTypes.kycState,
       kycRejectReason: vuexTypes.kycRequestRejectReason,
+      kycResetReason: vuexTypes.kycRequestResetReason,
+      isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       kycAccountRole: vuexTypes.kycAccountRoleToSet,
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
@@ -140,7 +158,7 @@ export default {
 @import "~@scss/variables";
 @import "~@scss/mixins";
 
-.kyc-request-state {
+.verification__state-message {
   min-height: 6.4rem;
   width: 100%;
   display: none;
@@ -155,7 +173,7 @@ export default {
   &--rejected { @include apply-theme($col-request-rejected) }
 }
 
-.kyc-request-state__content {
+.verification__state-message-content {
   padding: 2.4rem;
   font-size: 1.3rem;
   font-weight: normal;

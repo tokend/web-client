@@ -50,6 +50,9 @@ export default {
 
 <style lang="scss">
 @import '~@scss/variables';
+@import '~@scss/mixins';
+
+$media-small: 460px;
 
 .drawer {
   position: fixed;
@@ -109,6 +112,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @include respond-to-height($media-small) {
+    padding: 1rem 1.5rem;
+  }
 }
 
 .drawer__heading {
@@ -126,6 +133,10 @@ export default {
   // allows to scroll drawer content when it height more than drawer height
   overflow-y: auto;
   height: 0;
+
+  @include respond-to-height($media-small) {
+    padding: 1rem 1.5rem;
+  }
 }
 
 .drawer-transition-enter-active {
@@ -139,7 +150,12 @@ export default {
 }
 
 .drawer-transition-leave-active {
-  animation-duration: .175s;
+  /*
+    overall duration should be less than nested durations,
+    to prevent animation flickering after animation ended
+    but the element still present
+  */
+  animation-duration: .13s;
   & > .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out reverse;
   }

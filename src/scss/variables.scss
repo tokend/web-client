@@ -31,8 +31,10 @@ $_thinBlue: #f6f8fb;
 $_lightGray: #c6c6c6;
 $_mediumGray: #ccc;
 $_lightRed: #ef5350;
+$_darkRed: #d6244a;
 $_cornflowerBlue: #7b6eff;
-$_green: #33A494;
+$_deepBlue: #291e93;
+$_green: #33a494;
 $_lightGreen: #51ca90;
 $_orange: #ef6c00;
 $_orangePeel: #f2a100;
@@ -61,13 +63,6 @@ $col-success: $_green;
 $col-error: $_lightRed;
 $col-info: $_cornflowerBlue;
 
-$col-text-msg-warning: $_white;
-$col-text-msg-success: $_white;
-$col-text-msg-error: $_white;
-$col-text-msg-info: $_white;
-
-$col-msg-shadow: rgba(0, 0, 0, 0.25);
-
 // global colors
 $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
@@ -83,7 +78,6 @@ $col-text-auth-title-big: $_white;
 $col-text-auth-title-small: $_cornflowerBlue;
 $col-text-auth-tip-link: $_cornflowerBlue;
 $col-text-auth-version: rgba($_cornflowerBlue, 0.65);
-$col-text-status-message: $_white;
 $col-text-highlighted: $col-primary-lighten;
 
 // button colors:
@@ -111,6 +105,14 @@ $col-block-bg: $_white;
 $col-block-shadow: rgba(0, 0, 0, 0.1);
 $col-block-line: $_thinPurple;
 
+// status message colors
+$col-status-msg-warning: $col-warning;
+$col-status-msg-success: #3cab00;
+$col-status-msg-error: $col-error;
+$col-status-msg-info: $col-info;
+$col-status-msg-text: $col-text-on-dark-bg;
+$col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
+
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
 $col-drawer-head-bg: $_athensGray;
@@ -137,6 +139,7 @@ $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
 $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
+$col-tick-field-shadow: rgba($_eastBay, 0.6);
 $col-select-field-selected-background: rgba($_eastBay, 0.1);
 $col-select-field-hover-background: rgba($_eastBay, 0.05);
 $col-switch-field-background: $_whiteSmoke;
@@ -150,6 +153,7 @@ $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
+$col-clipboard-background: $_whiteSmoke;
 
 // table colors:
 $col-table-background: $_white;
@@ -222,6 +226,10 @@ $col-asset-card-background: $_white;
 $col-asset-card-header-background: $_athensGray;
 $col-asset-card-text-primary: $col-text;
 $col-asset-card-text-secondary: $col-text-secondary;
+
+// loyalty points invoices card colors
+$col-invoices-card-background: $_white;
+$col-invoices-card-header-background: $_athensGray;
 
 // tabs colors:
 $col-tabs-txt: $col-primary;
@@ -298,6 +306,11 @@ $col-incoming: $_green;
 $col-outgoing: $_lightRed;
 $col-locked: $_orangePeel;
 $col-unlocked: $_orangePeel;
+
+// pie chart colors
+$col-pie-chart-shadow: rgba(0, 0, 0, 0.25);
+$col-pie-chart-stroke: rgba($col-text, 0.5);
+$col-pie-chart-text: $col-text;
 
 // document card colors:
 $col-document-card-viewer-bg: $_white;

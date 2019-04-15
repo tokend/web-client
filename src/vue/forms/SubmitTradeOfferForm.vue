@@ -59,33 +59,53 @@
     <template v-else>
       <div class="submit-trade-offer-form__actions">
         <!-- TODO: make it via tooltip message -->
-        <p v-if="!isEnoughOnBalance" class="app__form-field-description">
-          {{
-            'submit-trade-offers-form.insufficient-funds' | globalize({
-              amount: formatNumber(isBuy
-                ? offerBaseAssetBalance.balance
-                : offerQuoteAssetBalance.balance)
-            })
-          }}
+        <p
+          v-if="!isEnoughOnBalance && !isOwner"
+          class="app__form-field-description"
+        >
+          <template v-if="offerBalance.balance">
+            {{
+              'submit-trade-offers-form.insufficient-sales-msg' | globalize({
+                amount: {
+                  value: offerBalance.balance,
+                  currency: offerAssetCode
+                }
+              })
+            }}
+          </template>
+
+          <template v-else>
+            {{
+              'submit-trade-offers-form.no-balance-msg' | globalize({
+                asset: offerAssetCode
+              })
+            }}
+          </template>
         </p>
         <div class="app__form-actions">
           <button
             v-ripple
+            v-if="isOwner"
+            type="button"
+            @click="showConfirmation"
+            class="app__form-submit-btn"
+            :disabled="formMixin.isDisabled"
+          >
+            {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+          </button>
+          <button
+            v-ripple
+            v-else
             type="button"
             @click="showConfirmation"
             class="app__form-submit-btn"
             :disabled="!isEnoughOnBalance || formMixin.isDisabled"
           >
-            <template v-if="offer.ownerId === accountId">
-              {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+            <template v-if="isBuy">
+              {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
             </template>
             <template v-else>
-              <template v-if="isBuy">
-                {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
-              </template>
-              <template v-else>
-                {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
-              </template>
+              {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
             </template>
           </button>
         </div>
@@ -98,9 +118,9 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
-import { formatNumber } from '@/vue/filters/formatNumber'
+
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -129,21 +149,35 @@ export default {
     },
     offerQuoteAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.offer.quoteAssetCode)
+        .find(item => item.asset === this.offer.quoteAssetCode) || {}
+    },
+    offerBalance () {
+      return this.isBuy
+        ? this.offerBaseAssetBalance
+        : this.offerQuoteAssetBalance
+    },
+    offerAssetCode () {
+      return this.isBuy ? this.offer.baseAssetCode : this.offer.quoteAssetCode
     },
     isEnoughOnBalance () {
-      return this.isBuy
-        ? +this.offerBaseAssetBalance.balance >= +this.offer.baseAmount
-        : +this.offerQuoteAssetBalance.balance >= +this.offer.baseAmount
+      return +this.offerBalance.balance >= +this.offer.baseAmount
+    },
+    isOwner () {
+      return this.offer.ownerId === this.accountId
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
-    formatNumber,
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     async submit () {
       this.disableForm()
       this.isOfferSubmitting = true
 
-      if (this.offer.ownerId === this.accountId) {
+      if (this.isOwner) {
         await this.cancelOffer(this.getCancelOfferOpts())
       } else {
         await this.createOffer(this.getCreateOfferOpts())

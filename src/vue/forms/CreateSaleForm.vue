@@ -154,6 +154,16 @@
                   )"
                   :disabled="formMixin.isDisabled"
                 />
+                <template v-if="form.saleInformation.baseAsset">
+                  <p class="app__form-field-description">
+                    {{
+                      'create-sale-form.available-amount' | globalize({
+                        asset: form.saleInformation.baseAsset.code,
+                        amount: availableForIssuance
+                      })
+                    }}
+                  </p>
+                </template>
               </div>
             </div>
             <div class="app__form-row create-sale__form-row">
@@ -264,7 +274,7 @@
               <div class="app__form-field">
                 <input-field
                   white-autofill
-                  v-model="form.fullDescription.youtubeId"
+                  v-model="form.fullDescription.youtubeVideo"
                   id="youtube-id"
                   name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
@@ -275,8 +285,8 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <iframe
-                  v-if="form.fullDescription.youtubeId"
-                  :src="`https://www.youtube.com/embed/${form.fullDescription.youtubeId}`"
+                  v-if="form.fullDescription.youtubeVideo"
+                  :src="`https://www.youtube.com/embed/${youtubeId}`"
                   class="create-sale__iframe" />
                 <div v-else class="create-sale__youtub-video">
                   <i class="mdi mdi-youtube create-sale__video-icon" />
@@ -355,7 +365,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
@@ -390,8 +399,9 @@ export default {
   mixins: [FormMixin],
   props: {
     request: {
-      type: SaleRequestRecord,
-      default: _ => (new SaleRequestRecord()) },
+      type: Object,
+      default: _ => ({}),
+    },
   },
   data () {
     return {
@@ -422,7 +432,7 @@ export default {
           shortDescription: '',
         },
         fullDescription: {
-          youtubeId: '',
+          youtubeVideo: '',
           description: '',
         },
       },
@@ -491,19 +501,22 @@ export default {
     availableForIssuance () {
       return this.form.saleInformation.baseAsset.availableForIssuance
     },
-    isUpdateMode () {
-      return +this.request.id !== 0
-    },
     price () {
       return MathUtil.divide(this.form.saleInformation.hardCap,
         this.form.saleInformation.requiredBaseAssetForHardCap)
+    },
+    youtubeId () {
+      const inputtedValue = this.form.fullDescription.youtubeVideo
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#]*).*/
+      const match = inputtedValue.match(regExp)
+      return match ? match[2] : inputtedValue
     },
   },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
-      if (this.isUpdateMode) {
+      if (this.request.id) {
         await this.populateForm(this.request)
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
@@ -529,7 +542,7 @@ export default {
       try {
         await this.uploadDocuments()
         const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.fundOverview,
+          BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
         await Sdk.horizon.transactions.submitOperations(
@@ -549,7 +562,7 @@ export default {
     },
     getOperation (saleDescriptionBlobId) {
       const operation = {
-        requestID: this.isUpdateMode ? this.request.id : '0',
+        requestID: this.request.id || '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
         defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
@@ -561,7 +574,7 @@ export default {
           short_description: this.form.shortBlurb.shortDescription,
           description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
-          youtube_video_id: this.form.fullDescription.youtubeId,
+          youtube_video_id: this.youtubeId,
         },
         // eslint-disable-next-line
         requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
@@ -603,7 +616,7 @@ export default {
         ? new DocumentContainer(request.logo)
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
-      this.form.fullDescription.youtubeId = request.youtubeVideoId
+      this.form.fullDescription.youtubeVideo = request.youtubeVideoId
       this.form.fullDescription.description =
         await this.getSaleDescription(request)
     },

@@ -23,25 +23,6 @@ export default Object.assign(
     SKIP_EMAIL_CONFIRMATION_STEP: false,
 
     /**
-     * Disables certain features of the application. Set a property to false to
-     * restrict usage of the feature by all users of the system
-     */
-    featureFlags: {
-      dashboard: true,
-      fees: true,
-      trade: true,
-      movements: true,
-      issuance: true,
-      assets: false,
-      requests: false,
-      settings: true,
-      limits: true,
-      sales: true,
-      saleDetails: true,
-      documents: true,
-    },
-
-    /**
      * Sets the logging level, for more options visit
      * https://www.npmjs.com/package/loglevel#documentation
      */
@@ -62,7 +43,7 @@ export default Object.assign(
     // deprecated constants
 
     /**
-     * Default asset code for converting token's price,
+     * Default asset code for converting asset's price,
      * trade and sale offers
      */
     DEFAULT_QUOTE_ASSET: 'USD',
@@ -105,6 +86,11 @@ export default Object.assign(
      * set of the application.
      */
     MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Data reload interval
+     */
+    RELOAD_DATA_TICKER_INTERVAL_MS: 10000,
 
     /**
      * Link to iOS application manifest file.

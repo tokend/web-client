@@ -15,10 +15,12 @@ export class AssetRecord {
     this.maxIssuanceAmount = record.maxIssuanceAmount
     this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
+    this.trailingDigitsCount = record.trailingDigitsCount
 
     this.details = record.details
     this.name = _get(record, 'details.name')
     this.externalSystemType = _get(record, 'details.externalSystemType')
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
 
     this.logo = _get(record, 'details.logo')
     this.logoKey = _get(record, 'details.logo.key')
@@ -38,10 +40,11 @@ export class AssetRecord {
     this.policy = this._policy()
 
     this.balance = this._getBalance(balances)
+    this.convertedBalance = this._getConvertedBalance(balances)
   }
 
   logoUrl (storageUrl) {
-    if (this.details.logoUrl) {
+    if (_get(this.details, 'logoUrl')) {
       return this.details.logoUrl
     } else {
       return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
@@ -59,6 +62,18 @@ export class AssetRecord {
         value: balance.balance,
         currency: balance.asset,
         id: balance.balanceId,
+      }
+    } else {
+      return {}
+    }
+  }
+
+  _getConvertedBalance (balances) {
+    const balance = balances.find(balance => balance.asset === this.code)
+    if (balance) {
+      return {
+        value: balance.convertedBalance,
+        currency: balance.convertedToAsset,
       }
     } else {
       return {}

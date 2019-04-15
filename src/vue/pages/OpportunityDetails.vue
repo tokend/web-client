@@ -23,19 +23,21 @@
         </template>
 
         <template slot="extra">
-          <template v-if="isOpportunityOwner && token">
-            <template v-if="token.details.subtype === ASSET_SUBTYPE.bond">
+          <template v-if="isOpportunityOwner && asset">
+            <template v-if="asset.details.subtype === ASSET_SUBTYPE.bond">
               <button
                 v-ripple
+                :disabled="!isOpportunityClosed"
                 class="app__button-raised opportunity-details__invest-btn"
                 @click="isBuyBackDrawerShown = true"
               >
                 {{ 'opportunity-details.buy-back' | globalize }}
               </button>
             </template>
-            <template v-else-if="token.details.subtype === ASSET_SUBTYPE.share">
+            <template v-else-if="asset.details.subtype === ASSET_SUBTYPE.share">
               <button
                 v-ripple
+                :disabled="!isOpportunityClosed"
                 class="app__button-raised opportunity-details__invest-btn"
                 @click="isDividendDrawerShown = true"
               >
@@ -81,6 +83,20 @@
         </drawer>
       </template>
 
+      <template v-if="getModule().canRenderSubmodule(BuyBackFormModule)">
+        <drawer :is-shown.sync="isBuyBackDrawerShown">
+          <template slot="heading">
+            {{ 'opportunity-details.buy-back-form-title' | globalize }}
+          </template>
+          <submodule-importer
+            :submodule="getModule().getSubmodule(BuyBackFormModule)"
+            :wallet="wallet"
+            :config="buyBackConfig"
+            @submitted="buyBackModuleSubmitted"
+          />
+        </drawer>
+      </template>
+
       <div class="opportunity-details__title">
         <h2 class="opportunity-details__name">
           {{ `${opportunity.name} (${opportunity.baseAsset})` }}
@@ -122,6 +138,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InvestForm from '@/vue/forms/InvestForm'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
+import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
@@ -156,7 +173,7 @@ export default {
 
   data: _ => ({
     opportunity: null,
-    token: null,
+    asset: null,
     isOpportunityNotFound: false,
     isLoadingFailed: false,
     isDividendDrawerShown: false,
@@ -165,7 +182,14 @@ export default {
     vueRoutes,
     ASSET_SUBTYPE,
     DividendFormModule,
+    BuyBackFormModule,
     dividendConfig: {
+      decimalPoints: config.DECIMAL_POINTS,
+      horizonURL: config.HORIZON_SERVER,
+      minAmount: config.MIN_AMOUNT,
+      defaultAssetCode: null,
+    },
+    buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
       horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
@@ -181,12 +205,16 @@ export default {
     isOpportunityOwner () {
       return this.opportunity.owner === this.accountId
     },
+    isOpportunityClosed () {
+      return this.opportunity.isClosed
+    },
   },
 
   async created () {
     await this.loadOpportunity(this.id)
-    await this.loadToken(this.opportunity.baseAsset)
+    await this.loadAsset(this.opportunity.baseAsset)
     this.setDefaultDividendAssetCode()
+    this.setDefaultBuyBackAssetCode()
   },
 
   methods: {
@@ -204,10 +232,10 @@ export default {
       }
     },
 
-    async loadToken (assetCode) {
+    async loadAsset (assetCode) {
       try {
         const { data } = await Sdk.horizon.assets.get(assetCode)
-        this.token = new AssetRecord(data)
+        this.asset = new AssetRecord(data)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
@@ -222,8 +250,16 @@ export default {
       this.dividendConfig.defaultAssetCode = this.opportunity.baseAsset
     },
 
+    setDefaultBuyBackAssetCode () {
+      this.buyBackConfig.defaultAssetCode = this.opportunity.baseAsset
+    },
+
     dividendModuleTransferred () {
       this.isDividendDrawerShown = false
+    },
+
+    buyBackModuleSubmitted () {
+      this.isBuyBackDrawerShown = false
     },
 
     hideInvestDrawer () {

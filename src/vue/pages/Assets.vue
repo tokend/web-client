@@ -3,34 +3,48 @@
     <top-bar>
       <template slot="main">
         <router-link
-          v-ripple
           :to="vueRoutes.assetsExplore"
         >
           <span>{{ 'assets-page.explore-title' | globalize }}</span>
         </router-link>
         <router-link
-          v-ripple
           :to="vueRoutes.balances"
         >
           <span>{{ 'assets-page.balances-title' | globalize }}</span>
         </router-link>
       </template>
-      <template v-if="isAccountCorporate" slot="extra">
+      <template
+        slot="extra"
+        v-if="getModule().canRenderSubmodule(CreateAssetFormModule)"
+      >
         <button
           v-ripple
-          class="create-asset-btn"
+          class="assets-page__create-btn app__button-raised"
           @click="isAssetDrawerShown = true"
         >
-          {{ 'assets-page.create-asset-button' | globalize }}
+          <i class="mdi mdi-plus assets-page__btn-icon" />
+          <span>
+            {{ 'assets-page.create-btn' | globalize }}
+          </span>
         </button>
       </template>
     </top-bar>
-    <drawer :is-shown.sync="isAssetDrawerShown">
-      <template slot="heading">
-        {{ 'assets-page.create-asset-title' | globalize }}
-      </template>
-      <asset-create-form @close="isAssetDrawerShown = false" />
-    </drawer>
+
+    <template v-if="getModule().canRenderSubmodule(CreateAssetFormModule)">
+      <drawer :is-shown.sync="isAssetDrawerShown">
+        <template slot="heading">
+          {{ 'assets-page.create-asset-title' | globalize }}
+        </template>
+
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateAssetFormModule)"
+          :wallet="wallet"
+          :config="config"
+          @close="isAssetDrawerShown = false"
+        />
+      </drawer>
+    </template>
+
     <router-view />
   </div>
 </template>
@@ -38,38 +52,47 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
-import AssetCreateForm from '@/vue/forms/AssetCreateForm'
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { vueRoutes } from '@/vue-router/routes'
 
+import config from '@/config'
+
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+
+import { CreateAssetFormModule } from '@modules/create-asset-form/module'
 
 export default {
   name: 'assets',
   components: {
     TopBar,
     Drawer,
-    AssetCreateForm,
+    SubmoduleImporter,
   },
   data: _ => ({
     vueRoutes,
+    CreateAssetFormModule,
     isAssetDrawerShown: false,
+    config: {
+      horizonURL: config.HORIZON_SERVER,
+      storageURL: config.FILE_STORAGE,
+    },
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      isAccountCorporate: vuexTypes.isAccountCorporate,
+      wallet: vuexTypes.wallet,
     }),
   },
 }
 </script>
 
-<style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
-
-.create-asset-btn {
-  @include button-raised;
+<style lang="scss">
+.assets-page__btn-icon {
+  display: flex;
+  font-size: 1.8rem;
+  margin-right: 0.5rem;
+  margin-top: -0.4rem;
 }
 </style>

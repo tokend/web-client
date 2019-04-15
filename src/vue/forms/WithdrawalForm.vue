@@ -19,12 +19,26 @@
               />
               <div class="withdrawal__form-field-description">
                 <p>
-                  <!-- eslint-disable-next-line max-len -->
-                  {{ 'withdrawal-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}
+                  {{
+                    'withdrawal-form.balance' | globalize({
+                      balance: {
+                        value: form.asset.balance.value,
+                        currency: form.asset.code
+                      }
+                    })
+                  }}
+                </p>
+              </div>
+
+              <div class="withdrawal__form-field-description">
+                <p>
+                  <span>{{ 'withdrawal-form.reviewer' | globalize }}</span>
+                  <email-getter :account-id="form.asset.owner" />
                 </p>
               </div>
             </div>
           </div>
+
           <div class="app__form-row withdrawal__form-row">
             <input-field
               white-autofill
@@ -36,28 +50,44 @@
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
+              :step="selectedAssetStep"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
                 available: form.asset.balance.value,
                 maxDecimalDigitsCount: DECIMAL_POINTS,
+                minValue: selectedAssetStep
               })"
             />
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <input-field
-              white-autofill
-              class="app__form-field"
-              v-model.trim="form.address"
-              name="withdrawal-address"
-              @blur="touchField('form.address')"
-              :error-message="getFieldErrorMessage('form.address')"
-              :label="'withdrawal-form.destination-address' | globalize({
-                asset: form.asset.code
-              })"
-              :monospaced="true"
-              :disabled="formMixin.isDisabled"
-            />
+            <template v-if="isMasterAssetOwner">
+              <input-field
+                white-autofill
+                class="app__form-field"
+                v-model.trim="form.address"
+                name="withdrawal-address"
+                @blur="touchField('form.address')"
+                :error-message="getFieldErrorMessage('form.address')"
+                :label="'withdrawal-form.destination-address' | globalize({
+                  asset: form.asset.code
+                })"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
+
+            <template v-else>
+              <input-field
+                white-autofill
+                class="app__form-field"
+                v-model.trim="form.comment"
+                name="withdrawal-address"
+                @blur="touchField('form.address')"
+                :error-message="getFieldErrorMessage('form.address')"
+                :label="'withdrawal-form.comment' | globalize"
+                :disabled="formMixin.isDisabled"
+              />
+            </template>
           </div>
 
           <div class="app__form-row withdrawal__form-row">
@@ -66,7 +96,7 @@
                 class="withdrawal__fee-tbody"
                 :class="{ 'withdrawal__data--loading': isFeesLoadPending }"
               >
-                <tr>
+                <tr v-if="form.asset.externalSystemType">
                   <td>
                     {{ 'withdrawal-form.network-fee-hint' | globalize }}
                   </td>
@@ -129,7 +159,7 @@
               :disabled="formMixin.isDisabled"
               form="withdrawal-form"
             >
-              {{ 'withdrawal-form.withdrawal' | globalize }}
+              {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
             <form-confirmation
               v-if="formMixin.isConfirmationShown"
@@ -147,7 +177,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.assets"
           tag="button"
           class="app__button-raised withdrawal__action"
         >
@@ -168,13 +198,15 @@
 import config from '@/config'
 import debounce from 'lodash/debounce'
 import FormMixin from '@/vue/mixins/form.mixin'
-import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
+import EmailGetter from '@/vue/common/EmailGetter'
 
+import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
+import { vueRoutes } from '@/vue-router/routes'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -182,6 +214,7 @@ import {
   required,
   noMoreThanAvailableOnBalance,
   address,
+  minValue,
   maxDecimalDigitsCount,
 } from '@validators'
 
@@ -194,8 +227,8 @@ const EMPTY_FEE = '0.000000'
 export default {
   name: 'withdrawal-form',
   components: {
-    FormConfirmation,
     Loader,
+    EmailGetter,
   },
   mixins: [FormMixin],
   data: () => ({
@@ -214,8 +247,13 @@ export default {
     isFeesLoadPending: false,
     isFeesLoadFailed: false,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
+    vueRoutes,
   }),
   validations () {
+    const addressRules = {
+      required,
+      address: address(this.form.asset.code),
+    }
     return {
       form: {
         asset: { required },
@@ -225,8 +263,9 @@ export default {
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          minValue: minValue(this.selectedAssetStep),
         },
-        address: { required, address: address(this.form.asset.code) },
+        address: this.isMasterAssetOwner ? addressRules : {},
       },
     }
   },
@@ -235,6 +274,15 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
     }),
+
+    isMasterAssetOwner () {
+      return this.form.asset.owner === Sdk.networkDetails.adminAccountId
+    },
+
+    selectedAssetStep () {
+      // eslint-disable-next-line
+      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
+    },
   },
   watch: {
     'form.amount' (value) {
@@ -251,6 +299,7 @@ export default {
   },
   async created () {
     try {
+      await this.loadBalances()
       await this.initAssetSelector()
       this.isLoaded = true
     } catch (error) {
@@ -260,7 +309,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async submit () {
       if (!this.isFormValid()) return
@@ -305,10 +354,18 @@ export default {
       return this.feesDebouncedRequest()
     },
     composeOptions () {
+      const creatorDetails = {}
+
+      if (this.isMasterAssetOwner) {
+        creatorDetails.address = this.form.address
+      } else {
+        creatorDetails.comment = this.form.comment
+      }
+
       return {
         balance: this.form.asset.balance.id,
         amount: this.form.amount,
-        creatorDetails: { address: this.form.address },
+        creatorDetails: creatorDetails,
         destAsset: this.form.asset.code,
         expectedDestAssetAmount: this.form.amount,
         fee: {
@@ -332,7 +389,7 @@ export default {
       }
     },
     async loadAssets () {
-      await this.loadAccount(this.accountId)
+      await this.loadBalances()
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets
         .map(item => new AssetRecord(item, this.balances))
@@ -360,7 +417,7 @@ export default {
 }
 
 .withdrawal__form-field-description {
-  margin-top: 0.4rem;
+  margin-top: 0.7rem;
   opacity: 0.7;
 }
 
