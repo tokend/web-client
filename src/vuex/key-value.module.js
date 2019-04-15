@@ -15,7 +15,7 @@ export const state = {
     unverified: null,
   },
   kvAssetTypeKycRequired: null,
-  defaultQuoteAsset: null,
+  defaultQuoteAsset: '',
 }
 
 export const mutations = {
@@ -66,7 +66,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
   },
   async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {
-    const { data } = await Api.getWithSignature('assets', {
+    const { data } = await Api.getWithSignature('/v3/assets', {
       filter: {
         policy: ASSET_POLICIES.statsQuoteAsset,
       },
