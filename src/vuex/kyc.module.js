@@ -19,7 +19,7 @@ import _isEmpty from 'lodash/isEmpty'
  */
 
 export const state = {
-  isAccountRoleReset: false,
+  isAccountRoleReseted: false,
   request: {},
   relatedRequest: {},
   latestData: '{}', // JSON string
@@ -38,8 +38,8 @@ export const mutations = {
     state.latestData = data
   },
 
-  [vuexTypes.SET_ACCOUNT_ROLE_RESET] (state, isReset) {
-    state.isAccountRoleReset = isReset
+  [vuexTypes.SET_ACCOUNT_ROLE_RESETED] (state, isReseted) {
+    state.isAccountRoleReseted = isReseted
   },
 }
 
@@ -89,7 +89,7 @@ export const actions = {
         request.relatedRequestId
       )
     } else {
-      commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, false)
+      commit(vuexTypes.SET_ACCOUNT_ROLE_RESETED, false)
       commit(vuexTypes.SET_KYC_RELATED_REQUEST, {})
     }
   },
@@ -109,7 +109,7 @@ export const actions = {
     const request = new ChangeRoleRequestRecord(data)
     const resetReason = request.resetReason || state.request.resetReason
 
-    commit(vuexTypes.SET_ACCOUNT_ROLE_RESET, Boolean(resetReason))
+    commit(vuexTypes.SET_ACCOUNT_ROLE_RESETED, Boolean(resetReason))
     commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
@@ -133,8 +133,8 @@ export const getters = {
   [vuexTypes.kycRequestResetReason]: state => state.request.resetReason,
   [vuexTypes.kycRequestBlockReason]: state => state.request.blockReason,
 
-  [vuexTypes.isAccountRoleReset]: state => state.isAccountRoleReset,
-  [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReset
+  [vuexTypes.isAccountRoleReseted]: state => state.isAccountRoleReseted,
+  [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReseted
     ? undefined
     : state.relatedRequest.accountRoleToSet || state.request.accountRoleToSet,
   [vuexTypes.kycPreviousRequestAccountRoleToSet]: state => {

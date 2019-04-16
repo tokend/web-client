@@ -30,14 +30,14 @@ describe('kyc.module', () => {
       })
     })
 
-    it('SET_ACCOUNT_ROLE_RESET should properly modify state', () => {
+    it('SET_ACCOUNT_ROLE_RESETED should properly modify state', () => {
       const state = {
-        isAccountRoleReset: false,
+        isAccountRoleReseted: false,
       }
-      mutations[vuexTypes.SET_ACCOUNT_ROLE_RESET](state, true)
+      mutations[vuexTypes.SET_ACCOUNT_ROLE_RESETED](state, true)
 
       expect(state).to.deep.equal({
-        isAccountRoleReset: true,
+        isAccountRoleReseted: true,
       })
     })
 
@@ -91,7 +91,7 @@ describe('kyc.module', () => {
       const expectedPayload = new ChangeRoleRequestRecord(expectedRequest)
       const expectedMutations = {
         [vuexTypes.SET_KYC_LATEST_REQUEST]: expectedPayload,
-        [vuexTypes.SET_ACCOUNT_ROLE_RESET]: false,
+        [vuexTypes.SET_ACCOUNT_ROLE_RESETED]: false,
         [vuexTypes.SET_KYC_RELATED_REQUEST]: {},
       }
 
