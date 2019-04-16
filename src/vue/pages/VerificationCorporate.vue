@@ -16,7 +16,6 @@
               white-autofill
               v-model="form.name"
               @blur="touchField('form.name')"
-              id="verification-corporate-name"
               name="verification-corporate-name"
               :label="'verification-form.name-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.name')"
@@ -31,7 +30,6 @@
               white-autofill
               v-model="form.company"
               @blur="touchField('form.company')"
-              id="verification-corporate-company"
               name="verification-corporate-company"
               :label="'verification-form.company-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.company')"
@@ -60,7 +58,6 @@
               white-autofill
               v-model="form.headquarters"
               @blur="touchField('form.headquarters')"
-              id="verification-corporate-headquarters"
               name="verification-corporate-headquarters"
               :label="'verification-form.headquarters-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.headquarters')"
@@ -75,7 +72,6 @@
               white-autofill
               v-model="form.industry"
               @blur="touchField('form.industry')"
-              id="verification-corporate-industry"
               name="verification-corporate-industry"
               :label="'verification-form.industry-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.industry')"
@@ -91,7 +87,6 @@
               type="number"
               v-model="form.teamSize"
               @blur="touchField('form.teamSize')"
-              id="verification-corporate-team-size"
               name="verification-corporate-team-size"
               :label="'verification-form.team-size-lbl' | globalize"
               :error-message="
@@ -108,7 +103,6 @@
               white-autofill
               v-model="form.website"
               @blur="touchField('form.website')"
-              id="verification-corporate-website"
               name="verification-corporate-website"
               :label="'verification-form.website-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.website')"
@@ -161,13 +155,15 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { required, url, integer, minValue } from '@validators'
+import { required, validateUrl, integer, minValue } from '@validators'
 
 const MIN_TEAM_SIZE = 1
 
@@ -211,7 +207,10 @@ export default {
         integer,
         minValue: minValue(MIN_TEAM_SIZE),
       },
-      website: { required, url },
+      website: {
+        required,
+        validateUrl,
+      },
     },
   },
 
@@ -262,13 +261,22 @@ export default {
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        while (this.kycState !== REQUEST_STATES_STR.pending) {
+        do {
           await this.loadKyc()
-        }
+          await this.delay(3000)
+        } while (this.kycState !== REQUEST_STATES_STR.pending)
+        Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    delay (ms) {
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
+      })
     },
 
     async uploadAvatar () {

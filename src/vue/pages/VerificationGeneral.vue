@@ -21,7 +21,6 @@
                 white-autofill
                 v-model="form.personal.firstName"
                 @blur="touchField('form.personal.firstName')"
-                id="verification-general-first-name"
                 name="verification-general-first-name"
                 :label="'verification-form.first-name-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.personal.firstName')"
@@ -36,7 +35,6 @@
                 white-autofill
                 v-model="form.personal.lastName"
                 @blur="touchField('form.personal.lastName')"
-                id="verification-general-last-name"
                 name="verification-general-last-name"
                 :label="'verification-form.last-name-lbl' | globalize"
                 :error-message="getFieldErrorMessage('form.personal.lastName')"
@@ -159,8 +157,10 @@ import _get from 'lodash/get'
 import { Sdk } from '@/sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
@@ -270,11 +270,20 @@ export default {
         await Sdk.horizon.transactions.submitOperations(operation)
         do {
           await this.loadKyc()
+          await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
+        Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
         this.enableForm()
         ErrorHandler.process(e)
       }
+    },
+
+    delay (ms) {
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
+      })
     },
 
     async uploadDocuments () {

@@ -34,7 +34,6 @@
               white-autofill
               v-model="form.information.name"
               @blur="touchField('form.information.name')"
-              id="asset-name"
               name="asset-create-name"
               :label="'create-opportunity.opportunity-name' | globalize"
               :error-message="getFieldErrorMessage(
@@ -53,7 +52,6 @@
               white-autofill
               v-model="form.information.code"
               @blur="touchField('form.information.code')"
-              id="asset-code"
               name="asset-create-asset-code"
               :label="'create-opportunity.opportunity-code' | globalize"
               :error-message="getFieldErrorMessage(
@@ -77,7 +75,6 @@
               :disable-before="moment().subtract(1, 'days').toString()"
               @input="touchField('form.information.maturityDate')"
               @blur="touchField('form.information.maturityDate')"
-              id="sale-end-time"
               name="create-sale-end-time"
               :label="'create-opportunity.maturity-date' | globalize"
               :error-message="getFieldErrorMessage(
@@ -99,7 +96,6 @@
               type="number"
               v-model="form.saleInformation.annualReturn"
               @blur="touchField('form.saleInformation.annualReturn')"
-              id="anual-return"
               name="create-sale-anual-return"
               :label="
                 form.information.formType.value ===
@@ -125,7 +121,6 @@
               type="number"
               v-model="form.information.maxIssuanceAmount"
               @blur="touchField('form.information.maxIssuanceAmount')"
-              id="max-issuance-amount"
               name="create-sale-max-issuance-amount"
               :label="'create-opportunity.max-issuance-amount' | globalize"
               :error-message="getFieldErrorMessage(
@@ -226,7 +221,6 @@
                   .subtract(1, 'days').toString() : ''"
               @input="touchField('form.saleInformation.startTime')"
               @blur="touchField('form.saleInformation.startTime')"
-              id="sale-start-time"
               :label="'create-opportunity.start-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.startTime', {
@@ -247,7 +241,6 @@
                 .subtract(1, 'days').toString()"
               @input="touchField('form.saleInformation.endTime')"
               @blur="touchField('form.saleInformation.endTime')"
-              id="sale-end-time"
               name="create-sale-end-time"
               :label="'create-opportunity.close-time' | globalize"
               :error-message="getFieldErrorMessage(
@@ -268,7 +261,6 @@
               type="number"
               v-model="form.saleInformation.softCap"
               @blur="touchField('form.saleInformation.softCap')"
-              id="soft-cap"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
                 asset: form.saleInformation.defaultQuoteAsset
@@ -290,7 +282,6 @@
               type="number"
               v-model="form.saleInformation.hardCap"
               @blur="touchField('form.saleInformation.hardCap')"
-              id="hard-cap"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({
                 asset: form.saleInformation.defaultQuoteAsset
@@ -372,7 +363,6 @@
           <div class="app__form-field">
             {{ 'create-opportunity.short-description' | globalize }}
             <textarea-field
-              id="sale-short-description"
               name="create-sale-short-description"
               v-model="form.shortBlurb.shortDescription"
               @blur="touchField('form.shortBlurb.shortDescription')"
@@ -552,11 +542,11 @@ export default {
           maxIssuanceAmount: '',
           formType: {},
           terms: null,
+          maturityDate: '',
         },
         saleInformation: {
           startTime: '',
           endTime: '',
-          maturityDate: '',
           softCap: '',
           hardCap: '',
           annualReturn: '',
@@ -741,7 +731,7 @@ export default {
       try {
         await this.uploadDocuments()
         const blobId = await this.getBlobId({
-          type: BLOB_TYPES.fundOverview,
+          type: BLOB_TYPES.saleOverview,
           attributes: {
             value: JSON.stringify(this.form.shortBlurb.description),
           },
@@ -824,7 +814,7 @@ export default {
         operation.creatorDetails.maturityDate = DateUtil
           .toMs(this.form.information.maturityDate)
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
-        operation.creatorDetails.investmentToken = {
+        operation.creatorDetails.investmentAsset = {
           asset: this.form.saleInformation.quoteAssets,
           price: this.salePriceRatioStatsQuoteAsset,
         }
@@ -906,15 +896,27 @@ export default {
       if (asset === this.statsQuoteAsset.code) {
         return this.salePriceRatioStatsQuoteAsset
       } else {
-        const assetPrice = this.pairs.find(item =>
-          item.baseAsset.id === asset &&
-          item.quoteAsset.id === this.statsQuoteAsset.code
-        ).price || '1'
-
         return MathUtil.divide(
           this.salePriceRatioStatsQuoteAsset,
-          assetPrice
+          this.getAssetPairPrice(asset, this.statsQuoteAsset.code) || '1'
         )
+      }
+    },
+    getAssetPairPrice (baseAsset, quoteAsset) {
+      const assetPair = this.pairs.find(item =>
+        item.baseAsset.id === baseAsset &&
+        item.quoteAsset.id === quoteAsset
+      )
+      if (assetPair) {
+        return assetPair.price
+      }
+
+      const reversedAssetPair = this.pairs.find(item =>
+        item.quoteAsset.id === baseAsset &&
+          item.baseAsset.id === quoteAsset
+      )
+      if (reversedAssetPair) {
+        return MathUtil.divide(1, reversedAssetPair.price)
       }
     },
   },

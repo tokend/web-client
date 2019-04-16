@@ -31,11 +31,13 @@ $_thinBlue: #f6f8fb;
 $_lightGray: #c6c6c6;
 $_mediumGray: #ccc;
 $_lightRed: #ef5350;
+$_darkRed: #d6244a;
 $_cornflowerBlue: #7b6eff;
-$_green: #33A494;
+$_deepBlue: #291e93;
+$_green: #33a494;
 $_lightGreen: #51ca90;
 $_orange: #ef6c00;
-$_orangePeel: #f2a100;
+$_orangePeel: #ffa333;
 $_whiteSmoke: #f5f6f9;
 $_lightPurple: #837fa1;
 $_ghostWhite: #c4c8cb;
@@ -61,13 +63,6 @@ $col-success: $_green;
 $col-error: $_lightRed;
 $col-info: $_cornflowerBlue;
 
-$col-text-msg-warning: $_white;
-$col-text-msg-success: $_white;
-$col-text-msg-error: $_white;
-$col-text-msg-info: $_white;
-
-$col-msg-shadow: rgba(0, 0, 0, 0.25);
-
 // global colors
 $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
@@ -83,7 +78,6 @@ $col-text-auth-title-big: $_white;
 $col-text-auth-title-small: $_cornflowerBlue;
 $col-text-auth-tip-link: $_cornflowerBlue;
 $col-text-auth-version: rgba($_cornflowerBlue, 0.65);
-$col-text-status-message: $_white;
 $col-text-highlighted: $col-primary-lighten;
 
 // button colors:
@@ -110,6 +104,14 @@ $col-button-flat-light-text: $col-text;
 $col-block-bg: $_white;
 $col-block-shadow: rgba(0, 0, 0, 0.1);
 $col-block-line: $_thinPurple;
+
+// status message colors
+$col-status-msg-warning: $col-warning;
+$col-status-msg-success: #3cab00;
+$col-status-msg-error: $col-error;
+$col-status-msg-info: $col-info;
+$col-status-msg-text: $col-text-on-dark-bg;
+$col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
@@ -151,7 +153,8 @@ $col-switch-field-disabled-border: darken($col-switch-field-disabled, 10%);
 $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
-$col-clipboard-background: #eee;
+$col-clipboard-background: $_whiteSmoke;
+$col-clipboard-background-darken: darken($col-clipboard-background, 5%);
 
 // table colors:
 $col-table-background: $_white;
@@ -189,11 +192,6 @@ $col-top-bar-background: $_white;
 $col-top-bar-text: $_eastBay;
 $col-top-bar-tab: $_lightPurple;
 $col-top-bar-tab-active: $_cornflowerBlue;
-
-// request colors
-$col-request-approved: $_cyan;
-$col-request-pending: $_orangePeel;
-$col-request-rejected: $_lightRed;
 
 // chart colors:
 $col-chart-line: $col-primary-lighten;

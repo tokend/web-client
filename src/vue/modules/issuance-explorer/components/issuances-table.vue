@@ -15,6 +15,10 @@
               <th :title="'issuance-explorer.table.asset-code-th' | globalize">
                 {{ 'issuance-explorer.table.asset-code-th' | globalize }}
               </th>
+              <!-- eslint-disable-next-line max-len -->
+              <th :title="'issuance-explorer.table.state-header-th' | globalize">
+                {{ 'issuance-explorer.table.state-header-th' | globalize }}
+              </th>
               <th :title="'issuance-explorer.table.date-th' | globalize">
                 {{ 'issuance-explorer.table.date-th' | globalize }}
               </th>
@@ -36,6 +40,10 @@
 
               <td :title="issuance.asset">
                 {{ issuance.asset }}
+              </td>
+
+              <td>
+                <request-state-viewer :request="issuance" />
               </td>
 
               <td :title="issuance.date | formatCalendar">
@@ -64,12 +72,14 @@
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import RequestStateViewer from './request-state-viewer'
 
 export default {
   name: 'issuanes-table',
   components: {
     EmailGetter,
     NoDataMessage,
+    RequestStateViewer,
   },
 
   props: {
