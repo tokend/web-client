@@ -63,7 +63,7 @@ export class SaleRecord {
   get quoteAssetPrices () {
     return this.quoteAssets.reduce(
       (prices, asset) => {
-        prices[asset.asset] = asset.price; return prices
+        prices[asset.id] = asset.price; return prices
       }, {})
   }
 

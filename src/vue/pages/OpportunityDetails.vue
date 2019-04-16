@@ -222,7 +222,7 @@ export default {
     async loadOpportunity (opportunityId) {
       try {
         const { data } = await Api.getWithSignature(`/v3/sales/${opportunityId}`, {
-          include: ['base_asset', 'default_quote_asset'],
+          include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.opportunity = new SaleRecord(data)
       } catch (e) {

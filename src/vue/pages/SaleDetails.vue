@@ -125,7 +125,7 @@ export default {
     async loadSale (saleId) {
       try {
         const { data } = await Api.getWithSignature(`/v3/sales/${saleId}`, {
-          include: ['base_asset', 'default_quote_asset'],
+          include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.sale = new SaleRecord(data)
       } catch (e) {
