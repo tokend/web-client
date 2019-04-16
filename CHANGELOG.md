@@ -45,6 +45,8 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - "Fee" column from the movements table
+- Sale statistics in all `sale.record`
+- Displaying quantity investors in sails details
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps

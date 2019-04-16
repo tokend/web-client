@@ -444,20 +444,20 @@
       "account-address-label": "Account address",
       "secret-seed-desc": "Secret seed is private information that proves you own your account."
     },
-    "tfa-form": {	
-      "password-lbl": "Current password",	
-      "qr-desc": "Scan the QR with your 2FA app",	
-      "code-lbl": "2FA code",	
-      "secret-code-desc": "Or manually set the secret code",	
-      "tfa-code-desc": "And enter your 2FA code to continue",	
-      "wrong-password-err": "Wrong password",	
-      "wrong-code-err": "Wrong 2FA code",	
-      "tfa-enabled-msg": "2FA is enabled",	
-      "tfa-disabled-msg": "2FA is disabled",	
-      "secret-lbl": "Secret",	
-      "disable-btn": "Disable",	
-      "next-btn": "Next",	
-      "enable-btn": "Enable"	
+    "tfa-form": {
+      "password-lbl": "Current password",
+      "qr-desc": "Scan the QR with your 2FA app",
+      "code-lbl": "2FA code",
+      "secret-code-desc": "Or manually set the secret code",
+      "tfa-code-desc": "And enter your 2FA code to continue",
+      "wrong-password-err": "Wrong password",
+      "wrong-code-err": "Wrong 2FA code",
+      "tfa-enabled-msg": "2FA is enabled",
+      "tfa-disabled-msg": "2FA is disabled",
+      "secret-lbl": "Secret",
+      "disable-btn": "Disable",
+      "next-btn": "Next",
+      "enable-btn": "Enable"
     },
     "change-password-form": {
       "current-password-lbl": "Current password",
@@ -1378,7 +1378,6 @@
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
-      "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
       "days-after-end": "days after closed",
