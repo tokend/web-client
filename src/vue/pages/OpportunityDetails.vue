@@ -23,8 +23,8 @@
         </template>
 
         <template slot="extra">
-          <template v-if="isOpportunityOwner && token">
-            <template v-if="token.details.subtype === ASSET_SUBTYPE.bond">
+          <template v-if="isOpportunityOwner && asset">
+            <template v-if="asset.details.subtype === ASSET_SUBTYPE.bond">
               <button
                 v-ripple
                 :disabled="!isOpportunityClosed"
@@ -34,7 +34,7 @@
                 {{ 'opportunity-details.buy-back' | globalize }}
               </button>
             </template>
-            <template v-else-if="token.details.subtype === ASSET_SUBTYPE.share">
+            <template v-else-if="asset.details.subtype === ASSET_SUBTYPE.share">
               <button
                 v-ripple
                 :disabled="!isOpportunityClosed"
@@ -173,7 +173,7 @@ export default {
 
   data: _ => ({
     opportunity: null,
-    token: null,
+    asset: null,
     isOpportunityNotFound: false,
     isLoadingFailed: false,
     isDividendDrawerShown: false,
@@ -212,7 +212,7 @@ export default {
 
   async created () {
     await this.loadOpportunity(this.id)
-    await this.loadToken(this.opportunity.baseAsset)
+    await this.loadAsset(this.opportunity.baseAsset)
     this.setDefaultDividendAssetCode()
     this.setDefaultBuyBackAssetCode()
   },
@@ -232,10 +232,10 @@ export default {
       }
     },
 
-    async loadToken (assetCode) {
+    async loadAsset (assetCode) {
       try {
         const { data } = await Sdk.horizon.assets.get(assetCode)
-        this.token = new AssetRecord(data)
+        this.asset = new AssetRecord(data)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }

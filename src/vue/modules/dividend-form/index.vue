@@ -72,7 +72,7 @@
                       {{ 'dividend-form.email' | globalize }}
                     </td>
                     <td>
-                      {{ 'dividend-form.token-amount' | globalize }}
+                      {{ 'dividend-form.asset-amount' | globalize }}
                     </td>
                     <td>
                       {{ 'dividend-form.supposed-dividend-amount' | globalize }}
@@ -148,7 +148,7 @@
           {{ 'dividend-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.sales"
           tag="button"
           class="app__button-raised dividend__action"
         >
@@ -184,6 +184,7 @@ import {
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   transferred: 'transferred',
@@ -228,6 +229,7 @@ export default {
     isSignersLoadPending: false,
     isSignersLoaded: false,
     isDividendSubmitting: false,
+    vueRoutes,
   }),
   computed: {
     ...mapGetters('dividend-form', {

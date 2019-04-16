@@ -279,8 +279,13 @@ $custom-breakpoint: 985px;
     }
   }
 }
-.trade-exchange__history-collection-loader {
+
+.trade-exchange__history {
   margin-top: 4.8rem;
+}
+
+.trade-exchange__history-collection-loader {
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
 }

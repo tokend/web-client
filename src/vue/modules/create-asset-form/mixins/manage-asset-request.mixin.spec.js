@@ -14,7 +14,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 const localVue = createLocalVue()
 
 const Component = {
-  template: `<div></div>`,
+  template: '<div></div>',
   props: ['wallet', 'requestId'],
   data: _ => ({
     informationStepForm: {

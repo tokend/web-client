@@ -535,11 +535,11 @@ export default {
           maxIssuanceAmount: '',
           formType: {},
           terms: null,
+          maturityDate: '',
         },
         saleInformation: {
           startTime: '',
           endTime: '',
-          maturityDate: '',
           softCap: '',
           hardCap: '',
           annualReturn: '',
@@ -724,7 +724,7 @@ export default {
       try {
         await this.uploadDocuments()
         const blobId = await this.getBlobId({
-          type: BLOB_TYPES.fundOverview,
+          type: BLOB_TYPES.saleOverview,
           attributes: {
             value: JSON.stringify(this.form.shortBlurb.description),
           },
@@ -807,7 +807,7 @@ export default {
         operation.creatorDetails.maturityDate = DateUtil
           .toMs(this.form.information.maturityDate)
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
-        operation.creatorDetails.investmentToken = {
+        operation.creatorDetails.investmentAsset = {
           asset: this.form.saleInformation.quoteAssets,
           price: this.salePriceRatioStatsQuoteAsset,
         }
@@ -889,15 +889,27 @@ export default {
       if (asset === this.statsQuoteAsset.code) {
         return this.salePriceRatioStatsQuoteAsset
       } else {
-        const assetPrice = this.pairs.find(item =>
-          item.baseAsset.id === asset &&
-          item.quoteAsset.id === this.statsQuoteAsset.code
-        ).price || '1'
-
         return MathUtil.divide(
           this.salePriceRatioStatsQuoteAsset,
-          assetPrice
+          this.getAssetPairPrice(asset, this.statsQuoteAsset.code) || '1'
         )
+      }
+    },
+    getAssetPairPrice (baseAsset, quoteAsset) {
+      const assetPair = this.pairs.find(item =>
+        item.baseAsset.id === baseAsset &&
+        item.quoteAsset.id === quoteAsset
+      )
+      if (assetPair) {
+        return assetPair.price
+      }
+
+      const reversedAssetPair = this.pairs.find(item =>
+        item.quoteAsset.id === baseAsset &&
+          item.baseAsset.id === quoteAsset
+      )
+      if (reversedAssetPair) {
+        return MathUtil.divide(1, reversedAssetPair.price)
       }
     },
   },

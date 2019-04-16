@@ -7,7 +7,7 @@
     </div>
     <div v-else-if="!hasValue" class="chart-renderer__wrapper">
       <div class="chart-renderer__wrapper-message">
-        {{ 'chart.no-price-history-of-selected-token' | globalize }}
+        {{ 'chart.no-price-history-of-selected-asset' | globalize }}
       </div>
     </div>
     <div class="chart-renderer__chart" ref="chart" />
@@ -16,6 +16,8 @@
 
 <script>
 import { formatMoney } from '@/vue/filters/formatMoney'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 import * as d3Array from 'd3-array'
 import * as d3Selection from 'd3-selection'
 import * as d3Scale from 'd3-scale'
@@ -25,7 +27,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 // import * as d3 from 'd3'
 import moment from 'moment'
-import config from '@/config'
 import { chunk } from 'lodash'
 const d3 = Object.assign(
   {},
@@ -51,11 +52,14 @@ export default {
   },
   data () {
     return {
-      defaultAsset: this.currency || config.DEFAULT_QUOTE_ASSET,
+      defaultAsset: this.currency || this.defaultQuoteAsset,
       chartRenderingTime: 500,
     }
   },
   computed: {
+    ...mapGetters({
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
+    }),
     normalizedData () {
       return this.data.map(item => ({
         time: moment(item.timestamp).toDate(),

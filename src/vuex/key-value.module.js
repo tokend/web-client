@@ -1,5 +1,6 @@
 import { vuexTypes } from '@/vuex/types'
 import { Api } from '@/api'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 const KEY_VALUE_ENTRY_KEYS = Object.freeze({
   general: 'account_role:general',
@@ -14,6 +15,7 @@ export const state = {
     unverified: null,
   },
   kvAssetTypeKycRequired: null,
+  defaultQuoteAsset: '',
 }
 
 export const mutations = {
@@ -31,6 +33,9 @@ export const mutations = {
   [vuexTypes.SET_KV_KYC_REQUIRED] (state, kvAssetTypeKycRequired) {
     state.kvAssetTypeKycRequired = kvAssetTypeKycRequired
   },
+  [vuexTypes.SET_DEFAULT_QUOTE_ASSET] (state, asset) {
+    state.defaultQuoteAsset = asset
+  },
 }
 
 export const actions = {
@@ -40,7 +45,7 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS] ({ commit }) {
-    const { data } = await Api.api.get(`v3/key_values`)
+    const { data } = await Api.api.get('/v3/key_values')
     const [generalRoleId, corporateRoleId, unverifiedRoleId] = [
       getRole(KEY_VALUE_ENTRY_KEYS.general),
       getRole(KEY_VALUE_ENTRY_KEYS.corporate),
@@ -57,8 +62,17 @@ export const actions = {
     commit(vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID, unverifiedRoleId)
   },
   async [vuexTypes.LOAD_KV_KYC_REQUIRED] ({ commit }) {
-    const { data } = await Api.api.get(`v3/key_values/asset_type:kyc_required`)
+    const { data } = await Api.api.get('/v3/key_values/asset_type:kyc_required')
     commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
+  },
+  async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {
+    const { data } = await Api.getWithSignature('/v3/assets', {
+      filter: {
+        policy: ASSET_POLICIES.statsQuoteAsset,
+      },
+    })
+
+    commit(vuexTypes.SET_DEFAULT_QUOTE_ASSET, data[0].id)
   },
 }
 
@@ -67,6 +81,7 @@ export const getters = {
   [vuexTypes.kvEntryCorporateRoleId]: state => state.defaultRoleIds.corporate,
   [vuexTypes.kvEntryUnverifiedRoleId]: state => state.defaultRoleIds.unverified,
   [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
+  [vuexTypes.defaultQuoteAsset]: state => state.defaultQuoteAsset,
 }
 
 export default {

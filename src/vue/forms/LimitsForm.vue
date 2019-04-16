@@ -297,6 +297,14 @@ export default {
       )
     },
   },
+  watch: {
+    selectedLimitsByOpType () {
+      this.form.dailyOut = this.selectedLimitsByOpType.dailyOut || ''
+      this.form.weeklyOut = this.selectedLimitsByOpType.weeklyOut || ''
+      this.form.monthlyOut = this.selectedLimitsByOpType.monthlyOut || ''
+      this.form.annualOut = this.selectedLimitsByOpType.annualOut || ''
+    },
+  },
   created () {
     this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
   },

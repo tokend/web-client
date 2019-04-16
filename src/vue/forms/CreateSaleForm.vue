@@ -90,7 +90,7 @@
                   @blur="touchField('form.saleInformation.softCap')"
                   name="create-sale-soft-cap"
                   :label="'create-sale-form.soft-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.softCap',
@@ -112,7 +112,7 @@
                   @blur="touchField('form.saleInformation.hardCap')"
                   name="create-sale-hard-cap"
                   :label="'create-sale-form.hard-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.hardCap',
@@ -165,10 +165,10 @@
                 <p class="create-sale__price">
                   {{ 'create-sale-form.price' | globalize({
                     base: form.saleInformation.baseAsset.code,
-                    quote: config.DEFAULT_QUOTE_ASSET
+                    quote: defaultQuoteAsset
                   }) }}
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+                  {{ { value: price, currency: defaultQuoteAsset } | formatMoney }}
                 </p>
               </div>
             </div>
@@ -357,7 +357,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
 import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
@@ -392,8 +391,9 @@ export default {
   mixins: [FormMixin],
   props: {
     request: {
-      type: SaleRequestRecord,
-      default: _ => (new SaleRequestRecord()) },
+      type: Object,
+      default: _ => ({}),
+    },
   },
   data () {
     return {
@@ -483,6 +483,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
@@ -492,9 +493,6 @@ export default {
     },
     availableForIssuance () {
       return this.form.saleInformation.baseAsset.availableForIssuance
-    },
-    isUpdateMode () {
-      return +this.request.id !== 0
     },
     price () {
       return MathUtil.divide(this.form.saleInformation.hardCap,
@@ -511,7 +509,7 @@ export default {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
-      if (this.isUpdateMode) {
+      if (this.request.id) {
         await this.populateForm(this.request)
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
@@ -537,7 +535,7 @@ export default {
       try {
         await this.uploadDocuments()
         const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.fundOverview,
+          BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
         await Sdk.horizon.transactions.submitOperations(
@@ -557,9 +555,9 @@ export default {
     },
     getOperation (saleDescriptionBlobId) {
       const operation = {
-        requestID: this.isUpdateMode ? this.request.id : '0',
+        requestID: this.request.id || '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
-        defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
