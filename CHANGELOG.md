@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Displaying blocked account role
+- Displaying permanently rejected change role request state
+
+#### Changed
+- Now loading KYC requests in the parent verification component
+- Now getting latest approved request ID in creator details of the latest
+  change role request, and loading the related request itself if account
+  was reset or blocked
+
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added
 - Displaying of feedback message after successful verification request submitting
@@ -19,8 +30,6 @@ for further information about branching and tagging conventions.
 - Two-factor validation on login & change password forms
 - Enabling/disabling 2FA form in "Settings" page
 - Disclaimer message about pre-issuance asset signer if press "Use mine" button
-- Displaying blocked account role
-- Displaying permanently rejected change role request state
 
 #### Changed
 - Movement list items displaying changes:
@@ -82,10 +91,8 @@ for further information about branching and tagging conventions.
 - Moved movements modules translation filters to a mixin
 - Extracted verification state message to a separate component
 - Now using "qrcode.vue" package instead of "vue-qr"
-- Now loading KYC requests in the parent verification component
-- Now getting latest approved request ID in creator details of the latest
-  change role request, and loading the related request itself if account
-  was reset or blocked
+- Now getting previous account role from previous KYC request instead of
+  `creatorDetails` of approved reset request
 - Now using main signers account id instead of accounts account ID for
   setting pre-issuance asset signer
 
