@@ -69,7 +69,7 @@ export default {
 }
 
 .idle-message__text {
-  color: $col-text-msg-warning;
+  color: $col-text-on-dark-bg;
   font-size: 1.4rem;
   line-height: 1.25;
   font-weight: bold;
@@ -90,7 +90,7 @@ export default {
     position: absolute;
     top: 20%;
     left: calc(50% - 0.1rem);
-    background-color: $col-text-msg-warning;
+    background-color: $col-text-on-dark-bg;
   }
 
   &:after {
