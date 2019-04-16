@@ -14,7 +14,7 @@
       v-else-if="asset.owner === accountId"
       v-ripple
       class="app__button-raised asset-actions__btn"
-      @click="$emit(EVENTS.updateAsk)"
+      @click="$emit(EVENTS.updateClick)"
     >
       {{ 'assets.update-btn' | globalize }}
     </button>
@@ -32,7 +32,7 @@ import { Bus } from '@/js/helpers/event-bus'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
-  updateAsk: 'update-ask',
+  updateClick: 'update-click',
 }
 
 export default {
