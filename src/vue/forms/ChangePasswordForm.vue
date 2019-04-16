@@ -8,7 +8,6 @@
         <input-field
           v-model="form.currentPassword"
           @blur="touchField('form.currentPassword')"
-          id="change-password-current"
           name="change-password-current-password"
           type="password"
           :error-message="getFieldErrorMessage('form.currentPassword')"
@@ -22,7 +21,6 @@
         <input-field
           v-model="form.newPassword"
           @blur="touchField('form.newPassword')"
-          id="change-password-new"
           name="change-password-new-password"
           type="password"
           :error-message="getFieldErrorMessage('form.newPassword')"
@@ -36,7 +34,6 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          id="change-password-confirm"
           name="change-password-new-password-confirm"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"

@@ -82,6 +82,7 @@ for further information about branching and tagging conventions.
 - Hardcoded `REQUEST_TYPES` constant
 - `DEFAULT_QUOTE_ASSET` field from config
 - Horizon version prefix
+- ID attribute from forms & charts
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing

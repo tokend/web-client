@@ -2,7 +2,6 @@
   <div
     class="pie-chart"
     ref="chart"
-    :id="id"
   />
 </template>
 
@@ -34,7 +33,6 @@ export default {
     innerRadius: { type: Number, default: 0.4 },
     // [{ label, value, color }]
     data: { type: Array, default: _ => [] },
-    id: { type: String, required: true },
   },
 
   data: _ => ({

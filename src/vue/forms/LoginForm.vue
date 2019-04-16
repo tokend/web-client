@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="login-email"
           name="login-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,7 +17,6 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="login-password"
           name="login-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
