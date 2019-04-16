@@ -84,6 +84,7 @@ for further information about branching and tagging conventions.
   `creatorDetails` of approved reset request
 - Now using main signers account id instead of accounts account ID for
   setting pre-issuance asset signer
+- Update `@tokend/js-sdk` version
 
 #### Removed
 - `DEFAULT_QUOTE_ASSET` field from config
@@ -124,6 +125,8 @@ for further information about branching and tagging conventions.
 - Fixed bug with getting asset pair price in opportunity creation form. Now
   opportunity creation should work for both inverted and straight asset pairs.
   (Reit)
+- Getting sales from v3/sales
+- `sale.record` according new response
 
 ## [1.4.0] - 2019-04-05
 
