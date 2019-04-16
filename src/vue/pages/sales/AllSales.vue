@@ -159,6 +159,7 @@ export default {
         page: {
           order: 'desc',
         },
+        include: ['base_asset', 'quote_assets', 'default_quote_asset'],
       }
       if (saleState === SALE_STATES.live.value) {
         opts.filter = {
