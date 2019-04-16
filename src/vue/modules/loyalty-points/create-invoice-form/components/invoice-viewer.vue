@@ -15,7 +15,6 @@
 
     <clipboard-field
       class="invoice-viewer__invoice-url"
-      id="invoice-url"
       :value="invoiceUrl"
       :label="'create-invoice-form.invoice-url' | globalize"
     />

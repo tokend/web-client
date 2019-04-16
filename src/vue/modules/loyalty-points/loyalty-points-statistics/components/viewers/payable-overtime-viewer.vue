@@ -2,7 +2,6 @@
   <div class="payable-overtime-viewer">
     <line-chart
       v-if="isLoaded"
-      id="payable-overtime-chart"
       :data="payableOvertime"
       :currency="point"
     />

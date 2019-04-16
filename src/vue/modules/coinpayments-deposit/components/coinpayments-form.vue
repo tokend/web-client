@@ -4,7 +4,6 @@
       <template v-if="!depositDetails">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="coinpayments-form"
           novalidate
         >
           <div class="app__form-row">
@@ -13,7 +12,6 @@
               class="app__form-field"
               v-model.trim="form.amount"
               name="coinpayments-amount"
-              id="coinpayments-amount"
               @blur="touchField('form.amount')"
               :error-message="getFieldErrorMessage(
                 'form.amount',

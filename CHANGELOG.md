@@ -31,9 +31,12 @@ for further information about branching and tagging conventions.
 - Disabled state to form tabs that cannot be attended
 - Autocomplete limit change forms
 - Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
+- Two-factor authentication on login & change password forms
+- Enabling/disabling 2FA form
 - Disclaimer message about pre-issued asset signer
 
 #### Changed
+- Use @tokend/js-sdk@1.4.4
 - Modularized:
   - Update asset form
   - Create asset form
@@ -64,6 +67,7 @@ for further information about branching and tagging conventions.
 - "Already in your balances" button increased width
 - Orange peel global color
 - Redesigned verification state message & extracted it to a separate component
+- Redesigned recovery seed page
 - Now using wallet public key instead of account ID for setting
   pre-issued asset signer
 - Renamed "Pre-issued asset signer" -> "Pre-issuance asset signer"
@@ -82,6 +86,7 @@ for further information about branching and tagging conventions.
 - Hardcoded `REQUEST_TYPES` constant
 - `DEFAULT_QUOTE_ASSET` field from config
 - Horizon version prefix
+- ID attribute from forms & charts
 
 #### Fixed
 - Fixed a bug with animation flickering on drawer closing

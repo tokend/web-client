@@ -3,7 +3,6 @@
     v-if="form.asset && isInitialized"
     @submit.prevent="isFormValid() && showConfirmation()"
     class="withdrawal-fiat-bank-module"
-    id="withdrawal-fiat-bank-module"
   >
     <div class="app__form-row withdrawal-fiat-bank__form-row">
       <div class="app__form-field">
