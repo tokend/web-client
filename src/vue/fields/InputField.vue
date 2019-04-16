@@ -192,7 +192,13 @@ export default {
   color: $field-color-unfocused;
   @include label-font-sizes;
 
-  .input-field__input:not(:focus):placeholder-shown ~ &,
+  .input-field__input:not(:focus):placeholder-shown ~ & {
+    top: $field-input-padding-top;
+    @include text-font-sizes;
+  }
+
+  // HACK: Minimize label on autocomplete (Chrome).
+  // Do not merge with selector above.
   .input-field__input:not(:focus):placeholder-shown:-webkit-autofill ~ & {
     top: $field-input-padding-top;
     @include text-font-sizes;

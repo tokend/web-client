@@ -16,9 +16,15 @@ import { SaleDetailsPageModule } from '@/vue/pages/sale-details-page-module'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { SettingsPageModule } from '@/vue/pages/settings-page-module'
 import { AssetCreationRequestsPageModule } from '@/vue/pages/asset-creation-requests-page'
+import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-requests/module'
+import { AssetUpdateRequestsPageModule } from '@/vue/pages/asset-update-requests-page'
+import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
 import { SaleCreationRequestsPageModule } from '@/vue/pages/sale-creation-requests-page'
+import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 import { PreIssuanceRequestsPageModule } from '@/vue/pages/pre-issuance-requests-page'
+import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-requests/module'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
+import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
 import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
@@ -132,18 +138,18 @@ export default {
     new AssetsPageModule(
       {
         routerEntry: {
-          path: '/tokens',
+          path: '/assets',
           name: vueRoutes.assets.name,
         },
-        menuButtonTranslationId: 'pages-names.tokens',
+        menuButtonTranslationId: 'pages-names.assets',
         menuButtonMdiName: 'coins',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new AssetExplorerPageModule({
             routerEntry: {
-              path: '/tokens/explore',
+              path: '/assets/explore',
               name: vueRoutes.assetsExplore.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              meta: { pageNameTranslationId: 'pages-names.assets' },
             },
             submodules: [
               new AssetExplorerModule(),
@@ -151,9 +157,9 @@ export default {
           }),
           new BalancesPageModule({
             routerEntry: {
-              path: '/tokens/balances',
+              path: '/assets/balances',
               name: vueRoutes.balances.name,
-              meta: { pageNameTranslationId: 'pages-names.tokens' },
+              meta: { pageNameTranslationId: 'pages-names.assets' },
             },
             submodules: [
               new BalanceExplorerModule(),
@@ -190,17 +196,17 @@ export default {
     new SalesPageModule(
       {
         routerEntry: {
-          path: '/funds',
+          path: '/sales',
           name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
+          meta: { pageNameTranslationId: 'pages-names.sales' },
         },
-        menuButtonTranslationId: 'pages-names.funds',
+        menuButtonTranslationId: 'pages-names.sales',
         menuButtonMdiName: 'trending-up',
         isAutoRedirectToFirstChild: true,
         submodules: [
           new SalesListPageModule({
             routerEntry: {
-              path: '/funds/all',
+              path: '/sales/all',
               name: vueRoutes.allSales.name,
               props: {
                 default: true,
@@ -210,7 +216,7 @@ export default {
           }),
           new SalesListOwnedPageModule({
             routerEntry: {
-              path: '/funds/my',
+              path: '/sales/my',
               name: vueRoutes.userOwnedSales.name,
               props: {
                 default: true,
@@ -228,16 +234,16 @@ export default {
     new SaleDetailsPageModule(
       {
         routerEntry: {
-          path: '/funds/:id',
+          path: '/sales/:id',
           name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          meta: { pageNameTranslationId: 'pages-names.sale-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
         },
         submodules: [
           new SaleCampaignViewerPageModule({
             routerEntry: {
-              path: '/funds/:id/campaign',
+              path: '/sales/:id/campaign',
               name: vueRoutes.saleCampaign.name,
               props: true,
             },
@@ -267,30 +273,48 @@ export default {
         submodules: [
           new AssetCreationRequestsPageModule({
             routerEntry: {
-              path: '/requests/token-creation',
+              path: '/requests/asset-creation',
               name: vueRoutes.assetCreationRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new CreateAssetRequestsModule(),
+            ],
+          }),
+          new AssetUpdateRequestsPageModule({
+            routerEntry: {
+              path: '/requests/asset-update',
+              name: vueRoutes.assetUpdateRequests.name,
+            },
+            submodules: [
+              new UpdateAssetRequestsModule(),
+            ],
           }),
           new SaleCreationRequestsPageModule({
             routerEntry: {
-              path: '/requests/fund-creation',
+              path: '/requests/sale-creation',
               name: vueRoutes.saleCreationRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new CreateSaleRequestsModule(),
+            ],
           }),
           new PreIssuanceRequestsPageModule({
             routerEntry: {
               path: '/requests/pre-issuance-upload',
               name: vueRoutes.preIssuanceUploadRequests.name,
             },
-            isCorporateOnly: true,
+            submodules: [
+              new PreIssuanceRequestsModule(),
+            ],
           }),
           new IncomingWithdrawalRequestsPageModule({
             routerEntry: {
               path: '/requests/incoming-withdrawal',
               name: vueRoutes.incomingWithdrawalRequests.name,
             },
+            submodules: [
+              new IncomingWithdrawalRequestsModule(),
+            ],
           }),
         ],
       },

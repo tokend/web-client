@@ -38,8 +38,6 @@ import { initApi, api } from './_api'
 import { IssuanceRecord } from './wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export default {
   name: 'coinpayments-deposit',
   components: {
@@ -110,7 +108,7 @@ export default {
         },
         include: ['request_details'],
       }
-      const endpoint = `/${HORIZON_VERSION_PREFIX}/create_issuance_requests`
+      const endpoint = '/v3/create_issuance_requests'
       const response = await api().getWithSignature(endpoint, params)
       return response
     },
