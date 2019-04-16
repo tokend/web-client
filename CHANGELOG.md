@@ -33,6 +33,7 @@ for further information about branching and tagging conventions.
 - Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
 - Two-factor authentication on login & change password forms
 - Enabling/disabling 2FA form
+- Disclaimer message about pre-issued asset signer
 
 #### Changed
 - Use @tokend/js-sdk@1.4.4
@@ -67,6 +68,9 @@ for further information about branching and tagging conventions.
 - Orange peel global color
 - Redesigned verification state message & extracted it to a separate component
 - Redesigned recovery seed page
+- Now using wallet public key instead of account ID for setting
+  pre-issued asset signer
+- Renamed "Pre-issued asset signer" -> "Pre-issuance asset signer"
 
 #### Removed
 - "Fee" column from the movements table
