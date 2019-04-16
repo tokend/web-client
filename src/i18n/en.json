@@ -470,6 +470,8 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "account-type-lbl": "Account type",
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
@@ -495,8 +497,6 @@
       "permanently-rejected-reason": "Rejection reason:"
     },
     "verification-form": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
@@ -655,6 +655,7 @@
       "account-unverified": "Unverified account",
       "account-general": "General account",
       "account-corporate": "Corporate account",
+      "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
       "sign-out-btn": "Sign out"
