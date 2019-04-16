@@ -31,6 +31,8 @@ for further information about branching and tagging conventions.
 - Disabled state to form tabs that cannot be attended
 - Autocomplete limit change forms
 - Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
+- Two-factor authentication on login & change password forms
+- Enabling/disabling 2FA form
 
 #### Changed
 - Use @tokend/js-sdk@1.4.4
