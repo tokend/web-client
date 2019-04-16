@@ -33,6 +33,7 @@ for further information about branching and tagging conventions.
 - Hide `Withdraw` and `Deposit` buttons accordingly to asset policies on `Movements` page
 
 #### Changed
+- Use @tokend/js-sdk@1.4.4
 - Modularized:
   - Update asset form
   - Create asset form
