@@ -17,7 +17,7 @@
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :public-key="walletPublicKey"
+          :signer-account-id="walletPublicKey"
           :max-issuance-amount="informationStepForm.maxIssuanceAmount"
           @submit="setAdvancedStepForm($event) || submit()"
         />

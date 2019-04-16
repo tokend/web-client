@@ -34,14 +34,14 @@
               type="button"
               class="app__button-flat advanced-step-form__insert-account-id-btn"
               :disabled="isDisabled"
-              @click="form.preIssuanceAssetSigner = publicKey"
+              @click="form.preIssuanceAssetSigner = signerAccountId"
             >
               {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
             </button>
           </div>
 
           <vue-markdown
-            v-if="form.preIssuanceAssetSigner === publicKey"
+            v-if="form.preIssuanceAssetSigner === signerAccountId"
             class="advanced-step-form__pre-issuance-disclaimer"
             :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
           />
@@ -133,7 +133,7 @@ export default {
   props: {
     request: { type: CreateAssetRequest, default: null },
     isDisabled: { type: Boolean, default: false },
-    publicKey: { type: String, required: true },
+    signerAccountId: { type: String, required: true },
     maxIssuanceAmount: { type: String, default: '0' },
   },
 
