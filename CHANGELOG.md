@@ -66,6 +66,7 @@ for further information about branching and tagging conventions.
 - "Already in your balances" button increased width
 - Orange peel global color
 - Redesigned verification state message & extracted it to a separate component
+- Redesigned recovery seed page
 
 #### Removed
 - "Fee" column from the movements table

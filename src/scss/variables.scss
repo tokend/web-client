@@ -154,6 +154,7 @@ $col-auth-titles-background-light: #5d5882;
 $col-auth-titles-background-dark: #2a2749;
 $col-auth-titles-background-fallback: #332f5c;
 $col-clipboard-background: $_whiteSmoke;
+$col-clipboard-background-darken: darken($col-clipboard-background, 5%);
 
 // table colors:
 $col-table-background: $_white;
