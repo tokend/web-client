@@ -8,7 +8,10 @@
         v-for="step in steps"
         :key="step.number"
         class="form-stepper__tab"
-        :class="{ 'form-stepper__tab--active': step.number === currentStep }"
+        :class="{
+          'form-stepper__tab--active': step.number === currentStep,
+          'form-stepper__tab--disabled': step.number > currentStep
+        }"
         @click="updateStep(step)"
       >
         <p
@@ -146,6 +149,11 @@ export default {
   }
 }
 
+.form-stepper__tab--disabled {
+  cursor: default;
+  filter: grayscale(100%);
+}
+
 .form-stepper__form {
   margin-top: 3.2rem;
 }
@@ -153,6 +161,7 @@ export default {
 .form-stepper--disabled {
   .form-stepper__tab {
     cursor: default;
+    filter: grayscale(100%);
   }
 }
 </style>

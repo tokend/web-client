@@ -20,7 +20,6 @@
               white-autofill
               v-model="form.personal.firstName"
               @blur="touchField('form.personal.firstName')"
-              id="verification-general-first-name"
               name="verification-general-first-name"
               :label="'verification-form.first-name-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.personal.firstName')"
@@ -221,7 +220,7 @@ export default {
     },
   },
 
-  async created () {
+  created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
 

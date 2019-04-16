@@ -17,7 +17,7 @@
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :account-id="wallet.accountId"
+          :main-signer-account-id="mainSignerAccountId"
           :max-issuance-amount="informationStepForm.maxIssuanceAmount"
           @submit="setAdvancedStepForm($event) || submit()"
         />
@@ -108,6 +108,16 @@ export default {
     currentStep: 1,
     STEPS,
   }),
+
+  computed: {
+    mainSignerAccountId () {
+      if (this.wallet.keypair) {
+        return this.wallet.keypair.accountId()
+      } else {
+        return ''
+      }
+    },
+  },
 
   async created () {
     await this.init()

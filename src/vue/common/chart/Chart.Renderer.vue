@@ -16,6 +16,8 @@
 
 <script>
 import { formatMoney } from '@/vue/filters/formatMoney'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 import * as d3Array from 'd3-array'
 import * as d3Selection from 'd3-selection'
 import * as d3Scale from 'd3-scale'
@@ -25,7 +27,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 // import * as d3 from 'd3'
 import moment from 'moment'
-import config from '@/config'
 import { chunk } from 'lodash'
 const d3 = Object.assign(
   {},
@@ -48,15 +49,17 @@ export default {
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
     isTicksShown: { type: Boolean, default: true },
-    id: { type: String, required: true },
   },
   data () {
     return {
-      defaultAsset: this.currency || config.DEFAULT_QUOTE_ASSET,
+      defaultAsset: this.currency || this.defaultQuoteAsset,
       chartRenderingTime: 500,
     }
   },
   computed: {
+    ...mapGetters({
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
+    }),
     normalizedData () {
       return this.data.map(item => ({
         time: moment(item.timestamp).toDate(),
@@ -88,7 +91,7 @@ export default {
   methods: {
     formatMoney,
     clear () {
-      d3.select(`svg#${this.id}`).remove()
+      d3.select(this.$refs.chart).select('svg').remove()
     },
     getDimensions () {
       const parentElement = this.$el.parentElement
@@ -159,7 +162,6 @@ export default {
         .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
         .attr('preserveAspectRatio', 'xMinYMin')
         .attr('class', className)
-        .attr('id', this.id)
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {
