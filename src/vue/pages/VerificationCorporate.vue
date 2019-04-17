@@ -110,39 +110,6 @@
         </div>
       </div>
 
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            type="number"
-            v-model="form.teamSize"
-            @blur="touchField('form.teamSize')"
-            id="verification-corporate-team-size"
-            name="verification-corporate-team-size"
-            :label="'verification-form.team-size-lbl' | globalize"
-            :error-message="
-              getFieldErrorMessage('form.teamSize', { value: MIN_TEAM_SIZE})
-            "
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <input-field
-            white-autofill
-            v-model="form.website"
-            @blur="touchField('form.website')"
-            id="verification-corporate-website"
-            name="verification-corporate-website"
-            :label="'verification-form.website-lbl' | globalize"
-            :error-message="getFieldErrorMessage('form.website')"
-            :disabled="formMixin.isDisabled"
-          />
-        </div>
-      </div>
-
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"

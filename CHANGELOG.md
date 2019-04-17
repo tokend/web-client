@@ -8,9 +8,18 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-### Fixed
-- Bug with displaying verification state message
-- Bug with displaying "undefined" instead of quote asset in dashboard’s chart
+#### Added
+- Displaying of limit request details in drawer
+
+#### Removed
+- Buttons' "form" attributes
+- Dupe team size and website fields on corporate verification
+
+#### Fixed
+- Fixed a bug with unsubmitted transfer form
+- Fixed a bug with displaying verification state message
+- Fixed a bug with displaying "undefined" instead of quote asset in
+  dashboard’s chart
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
