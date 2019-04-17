@@ -635,7 +635,6 @@
       "table-request-type-lbl": "Request type",
       "table-state-lbl": "State",
       "table-asset-lbl": "Asset",
-      "upload-documents-btn": "Upload documents",
       "data-loading": "Fetching limits requests data...",
       "document-uploader-form-heading": "Upload documents",
       "request-details-drawer-heading": "Limits request details",
@@ -650,7 +649,8 @@
       "here-will-requests-list": "Here will be the list of your limits change requests",
       "load-requests-btn": "Load requests",
       "loading-failed": "Failed to load limits requests",
-      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again"
+      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again",
+      "details-btn": "Details"
     },
     "limits-request-details-viewer": {
       "table-daily-limit-lbl": "Daily limit",
@@ -660,7 +660,9 @@
       "approved-msg": "Your request was approved",
       "pending-msg": "Your request was submitted. Please wait until it is reviewed",
       "rejected-msg": "Your request require approval documents",
-      "permanently-rejected-msg": "Your request was rejected with reason: {{reason}}"
+      "permanently-rejected-msg": "Your request was rejected with reason: {{reason}}",
+      "upload-documents-btn": "Upload documents",
+      "not-set-lbl": "Not set"
     },
     "passport": {
       "account-unverified": "Unverified account",
