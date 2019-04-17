@@ -90,7 +90,7 @@ export default {
     /**
      * Flatpickr instance
      */
-    fp: null,
+    flatpickr: null,
   }),
 
   computed: {
@@ -128,7 +128,7 @@ export default {
       // Prevent updates if v-model value is same as input's current value
       if (newValue === this.flatpickrDate) return
       // Sets the current selected date after value changed
-      if (this.fp) this.fp.setDate(newValue, true)
+      if (this.flatpickr) this.flatpickr.setDate(newValue, true)
     },
     /**
      * Watch for any config changes and redraw date-picker
@@ -149,7 +149,7 @@ export default {
         })
 
         // set new config
-        this.fp.set(safeConfig)
+        this.flatpickr.set(safeConfig)
       },
     },
   },
@@ -171,7 +171,7 @@ export default {
     safeConfig.defaultDate = this.value || safeConfig.defaultDate
 
     // Init flatpickr
-    this.fp = new Flatpickr(this.$refs.dateField, safeConfig)
+    this.flatpickr = new Flatpickr(this.$refs.dateField, safeConfig)
     this.isFlatpickrMounted = true
 
     this.flatpickrDate = this.value || safeConfig.defaultDate || null
@@ -181,9 +181,9 @@ export default {
    * Free up memory
    */
   beforeDestroy () {
-    if (this.fp) {
-      this.fp.destroy()
-      this.fp = null
+    if (this.flatpickr) {
+      this.flatpickr.destroy()
+      this.flatpickr = null
     }
   },
 
@@ -218,7 +218,7 @@ export default {
     onClose (selectedDates, dateStr, instance) {
       this.isCalendarOpen = false
       this.flatpickrDate = dateStr
-      this.fp.setDate(dateStr, true)
+      this.flatpickr.setDate(dateStr, true)
       // Let's wait for DOM to be updated
       this.$nextTick(() => {
         this.$emit(EMITABLE_EVENTS.input, dateStr)
