@@ -166,7 +166,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="deposit-fiat-card-module"
       >
         {{ 'deposit-fiat-card-module.deposit' | globalize }}
       </button>

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Removed
+- Buttons' "form" attributes
+
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
 - Displaying of blocked account role

@@ -156,7 +156,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="withdrawal-form"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>

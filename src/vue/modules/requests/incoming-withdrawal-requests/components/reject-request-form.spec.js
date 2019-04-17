@@ -51,7 +51,7 @@ describe('Reject incoming withdrawal request form', () => {
     }
 
     const fieldBindings = {
-      '#withdrawal-request-reject-reason': 'rejectReason',
+      '[name=withdrawal-request-reject-reason]': 'rejectReason',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
