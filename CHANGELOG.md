@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Displaying blocked account role
 - Displaying permanently rejected change role request state
+- Displaying of limit request details in drawer
 
 #### Changed
 - Now loading KYC requests in the parent verification component
@@ -122,10 +123,6 @@ for further information about branching and tagging conventions.
   charts (Loyalty)
 - Moved redeem offer creation from the global mixin to the local store
   (UTH, Reit)
-- Removed useless fields and getters in the Redeem `Sale` and `Asset` records
-- Now using "qrcode.vue" plugin instead of "vue-qr"
-- Clipboard field styles to differ it from input fields
-- Now show limit request details in drawer
 
 #### Removed
 - Removed Transfer & deposit from the loyalty points reconciliation scheme
