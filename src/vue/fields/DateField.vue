@@ -39,7 +39,7 @@ import Flatpickr from 'flatpickr'
 import moment from 'moment'
 
 // All supported events by Flatpickr
-const ALLOWED_FLATPICKR_EVENTS = {
+const FLATPICKR_EVENTS = {
   onChange: 'onChange',
   onClose: 'onClose',
   onDestroy: 'onDestroy',
@@ -58,14 +58,14 @@ const ALLOWED_FLATPICKR_EVENTS = {
 const EMITABLE_EVENTS = {
   getNewValue: 'getNewValue',
   input: 'input',
-  onClose: ALLOWED_FLATPICKR_EVENTS.onClose,
-  onOpen: ALLOWED_FLATPICKR_EVENTS.onOpen,
+  onClose: FLATPICKR_EVENTS.onClose,
+  onOpen: FLATPICKR_EVENTS.onOpen,
 }
 
 // Events that component uses for itself
 const BUILTIN_EVENTS = {
-  onClose: ALLOWED_FLATPICKR_EVENTS.onClose,
-  onOpen: ALLOWED_FLATPICKR_EVENTS.onOpen,
+  onClose: FLATPICKR_EVENTS.onClose,
+  onOpen: FLATPICKR_EVENTS.onOpen,
 }
 
 export default {
@@ -143,7 +143,7 @@ export default {
         // Notice: we are looping through all events
         // This also means that new callbacks cannot be passed once a component
         // has been initialized
-        ALLOWED_FLATPICKR_EVENTS.forEach((hook) => {
+        FLATPICKR_EVENTS.forEach((hook) => {
           delete safeConfig[hook]
         })
 
