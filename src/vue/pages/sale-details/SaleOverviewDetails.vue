@@ -54,7 +54,7 @@
         <tr>
           <td>
             <!-- eslint-disable-next-line max-len -->
-            {{ 'sale-overview.owner' | globalize({ asset: sale.baseAsset }) }}
+            {{ 'sale-overview.owner-lbl' | globalize({ asset: sale.baseAsset }) }}
           </td>
           <td>
             <email-getter

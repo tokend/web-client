@@ -88,7 +88,7 @@
             </td>
           </tr>
           <tr>
-            <td>{{ 'assets.owner' | globalize }}</td>
+            <td>{{ 'assets.owner-lbl' | globalize }}</td>
             <td>
               <email-getter
                 right-side
