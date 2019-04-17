@@ -9,7 +9,6 @@
           <input-field
             v-model="form.password"
             @blur="touchField('form.password')"
-            id="tfa-password"
             type="password"
             :error-message="getFieldErrorMessage('form.password')"
             :label="'tfa-form.password-lbl' | globalize"
@@ -58,7 +57,6 @@
         <input-field
           v-model="form.code"
           @blur="touchField('form.code')"
-          id="tfa-code"
           :error-message="getFieldErrorMessage('form.code')"
           :label="'tfa-form.code-lbl' | globalize"
           :disabled="formMixin.isDisabled"

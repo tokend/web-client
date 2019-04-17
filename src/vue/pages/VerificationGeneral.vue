@@ -34,7 +34,6 @@
               white-autofill
               v-model="form.personal.lastName"
               @blur="touchField('form.personal.lastName')"
-              id="verification-general-last-name"
               name="verification-general-last-name"
               :label="'verification-form.last-name-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.personal.lastName')"

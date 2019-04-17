@@ -117,7 +117,6 @@
             type="number"
             v-model="form.teamSize"
             @blur="touchField('form.teamSize')"
-            id="verification-corporate-team-size"
             name="verification-corporate-team-size"
             :label="'verification-form.team-size-lbl' | globalize"
             :error-message="
@@ -134,7 +133,6 @@
             white-autofill
             v-model="form.website"
             @blur="touchField('form.website')"
-            id="verification-corporate-website"
             name="verification-corporate-website"
             :label="'verification-form.website-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.website')"

@@ -33,7 +33,6 @@
         <input-field
           v-model="form.tfaCode"
           @blur="touchField('form.tfaCode')"
-          id="login-tfa-code"
           :error-message="getFieldErrorMessage('form.tfaCode')"
           :white-autofill="false"
           :label="'auth-pages.tfa-code' | globalize"

@@ -50,7 +50,6 @@
         <input-field
           v-model="form.tfaCode"
           @blur="touchField('form.tfaCode')"
-          id="change-password-tfa-code"
           :error-message="getFieldErrorMessage('form.tfaCode')"
           :label="'change-password-form.tfa-code-lbl' | globalize"
           :disabled="formMixin.isDisabled"
