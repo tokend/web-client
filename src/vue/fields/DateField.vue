@@ -63,7 +63,7 @@ const EMITABLE_EVENTS = {
 }
 
 // Events that component uses for itself
-const BUILDIN_EVENTS = {
+const BUILTIN_EVENTS = {
   onClose: ALLOWED_FLATPICKR_EVENTS.onClose,
   onOpen: ALLOWED_FLATPICKR_EVENTS.onOpen,
 }
@@ -161,7 +161,7 @@ export default {
     let safeConfig = Object.assign({}, this.config)
 
     // Inject defined methods into events array
-    Object.values(BUILDIN_EVENTS).forEach(hook => {
+    Object.values(BUILTIN_EVENTS).forEach(hook => {
       // eslint-disable-next-line
       safeConfig[hook] = this.arrayify(safeConfig[hook] || [])
         .concat((...args) => this[hook](...args))
