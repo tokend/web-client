@@ -304,7 +304,7 @@ $media-small-height: 460px;
 .asset-details__update-btn {
   @include button-raised();
 
-  width: 18rem;
+  width: 20rem;
 }
 
 .asset-details__cancel-btn {

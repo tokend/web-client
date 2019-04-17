@@ -7,7 +7,6 @@
 
     <chart-renderer
       class="line-chart__renderer"
-      :id="id"
       :scale="scale"
       :data="history"
       :currency="currency"

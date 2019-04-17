@@ -10,7 +10,6 @@
     />
     <chart-renderer
       class="chart__renderer"
-      id="chart"
       :scale="scale"
       :has-value="isActualData && historyHasValue"
       :is-loading="isLoading"
@@ -50,10 +49,8 @@ export default {
     scale: 'day',
     common: {
       precision: config.DECIMAL_POINTS,
-      defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
     },
     loadPricesTickerIntervalId: -1,
-    loadPricesTickerTimeout: 10000,
   }),
   computed: {
     history () {
@@ -94,7 +91,7 @@ export default {
       this.clearLoadPricesTicker()
       this.loadPricesTickerIntervalId = setInterval(async () => {
         await this.loadPrices()
-      }, this.loadPricesTickerTimeout)
+      }, config.RELOAD_DATA_TICKER_INTERVAL_MS)
     },
     async clearLoadPricesTicker () {
       clearInterval(this.loadPricesTickerIntervalId)

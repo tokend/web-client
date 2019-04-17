@@ -1,8 +1,9 @@
 import _get from 'lodash/get'
+import { Request } from './request'
 
-export class Issuance {
+export class IssuanceRequest extends Request {
   constructor (record) {
-    this.id = record.id
+    super(record)
     this.amount = _get(record, 'requestDetails.amount')
     this.asset = _get(record, 'requestDetails.asset.id')
     this.date = record.createdAt

@@ -9,7 +9,7 @@ import * as Api from '../_api'
 const localVue = createLocalVue()
 
 const Component = {
-  template: `<div></div>`,
+  template: '<div></div>',
 }
 
 describe('Load asset types mixin', () => {

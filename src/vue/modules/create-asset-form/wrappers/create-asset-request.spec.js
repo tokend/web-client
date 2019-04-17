@@ -13,12 +13,8 @@ describe('Create asset request', () => {
           policies: 16,
           creatorDetails: {
             name: 'American Dollar',
-            logo: {
-              key: 'logo-key',
-            },
-            terms: {
-              key: 'terms-key',
-            },
+            logo: { key: 'logo-key' },
+            terms: { key: 'terms-key' },
           },
         },
       }
@@ -31,7 +27,7 @@ describe('Create asset request', () => {
 
       expect(result.initialPreissuedAmount).to.equal('1000.000000')
       expect(result.maxIssuanceAmount).to.equal('2000.000000')
-      expect(result.preissuedAssetSigner).to.equal('SIGNER_ID')
+      expect(result.preIssuanceAssetSigner).to.equal('SIGNER_ID')
 
       expect(result.policy).to.equal(16)
 
