@@ -300,8 +300,7 @@ export default {
       const balanceId = await this.getQuoteAssetBalanceId()
       const recipient = await this.getPaymentRecipient()
 
-      // const operation =
-      base.PaymentBuilder.payment({
+      const operation = base.PaymentBuilder.payment({
         sourceBalanceId: balanceId,
         destination: recipient,
         amount: this.totalPrice,
@@ -311,7 +310,7 @@ export default {
         reference: this.reference,
       })
 
-      // await api().postOperations(operation)
+      await api().postOperations(operation)
     },
 
     async getQuoteAssetBalanceId () {
