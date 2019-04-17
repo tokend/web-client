@@ -52,7 +52,6 @@ export default {
   },
   data () {
     return {
-      defaultAsset: this.currency || this.defaultQuoteAsset,
       chartRenderingTime: 500,
     }
   },
@@ -74,6 +73,9 @@ export default {
         hour: 30,
       }
       return Math.ceil(this.data.length / ticksCount[this.scale])
+    },
+    defaultAsset () {
+      return this.currency || this.defaultQuoteAsset
     },
   },
   watch: {

@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 ### Fixed
 - Bug with displaying verification state message
+- Bug with displaying "undefined" instead of quote asset in dashboard’s chart
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
