@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Removed
+- Sale statistics in all `SaleRecord`
+- Displaying investors quantity in sail details
+
+### Changed
+- Now using /v3 API for getting sales
+- Sale record is now parsing the resource from new API
+
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added
 - Displaying of feedback message after successful verification request submitting
@@ -45,8 +54,6 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - "Fee" column from the movements table
-- Sale statistics in all `sale.record`
-- Displaying quantity investors in sails details
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps
@@ -86,7 +93,6 @@ for further information about branching and tagging conventions.
   `creatorDetails` of approved reset request
 - Now using main signers account id instead of accounts account ID for
   setting pre-issuance asset signer
-- Update `@tokend/js-sdk` version
 
 #### Removed
 - `DEFAULT_QUOTE_ASSET` field from config
@@ -127,8 +133,6 @@ for further information about branching and tagging conventions.
 - Fixed bug with getting asset pair price in opportunity creation form. Now
   opportunity creation should work for both inverted and straight asset pairs.
   (Reit)
-- Getting sales from v3/sales
-- `sale.record` according new response
 
 ## [1.4.0] - 2019-04-05
 

@@ -161,15 +161,17 @@ export default {
         },
         include: ['base_asset', 'quote_assets', 'default_quote_asset'],
       }
-      if (saleState === SALE_STATES.live.value) {
-        opts.filter = {
-          state: SALE_STATES.live.state,
-        }
-      }
-      if (saleState === SALE_STATES.upcoming.value) {
-        opts.filter = {
-          min_start_time: new Date().toISOString(),
-        }
+      switch (saleState) {
+        case SALE_STATES.live.value:
+          opts.filter = {
+            state: SALE_STATES.live.state,
+          }
+          break
+        case SALE_STATES.upcoming.value:
+          opts.filter = {
+            min_start_time: new Date().toISOString(),
+          }
+          break
       }
       return function () {
         return Api.getWithSignature('/v3/sales', opts)
