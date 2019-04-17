@@ -1,5 +1,6 @@
 import { Balance } from '../wrappers/balance'
 import { Movement } from '../wrappers/movement'
+import { AssetPair } from '../wrappers/asset-pair'
 
 import { types } from './types'
 import { api } from '../_api'
@@ -49,15 +50,20 @@ export const actions = {
       },
       include: [
         'quote_asset',
+        'base_asset',
       ],
     })
 
     pairs.unshift({
       id: 'PET:PET',
       price: '1.000000',
-      policies: { 'value': 0, 'flags': null },
-      baseAsset: { 'type': 'assets', 'id': 'PET' },
-      quoteAsset: { 'type': 'assets', 'id': 'PET' },
+      policies: { value: 0, flags: null },
+      baseAsset: { type: 'assets', id: 'PET' },
+      quoteAsset: {
+        type: 'assets',
+        id: 'PET',
+        details: { name: 'Pet shop bonuses' },
+      },
     })
 
     commit(types.SET_ASSET_PAIRS, pairs)
@@ -94,7 +100,7 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.movements]: state => state.movements.map(m => new Movement(m)),
-  [types.assetPairs]: state => state.assetPairs,
+  [types.assetPairs]: state => state.assetPairs.map(p => new AssetPair(p)),
   [types.getBalanceByAssetCode]: (_, getters) => assetCode => getters
     .balances
     .find(b => b.assetCode === assetCode),

@@ -18,6 +18,8 @@ for further information about branching and tagging conventions.
 - Now getting latest approved request ID in creator details of the latest
   change role request, and loading the related request itself if account
   was reset or blocked
+- Use select field instead of table for acceptable points on
+  create invoice form (Loyalty)
 
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added

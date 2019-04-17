@@ -58,49 +58,40 @@
           </div>
         </div>
 
-        <div class="create-invoice-form__asset-pairs">
-          <h3>
-            {{ 'create-invoice-form.acceptable-asset-pairs-title' | globalize }}
-          </h3>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <select-field
+              :values="quoteAssets"
+              name="create-invoice-quote-asset"
+              :disabled="formMixin.isDisabled"
+              v-model="form.quoteAsset"
+              key-as-value-text="nameAndCode"
+              :label="'create-invoice-form.quote-asset-lbl' | globalize"
+            />
 
-          <div
-            class="app__table
-                   app__table--with-shadow
-                   create-invoice-form__table"
-          >
-            <table>
-              <thead>
-                <tr>
-                  <th>
-                    {{ 'create-invoice-form.asset' | globalize }}
-                  </th>
-                  <th>
-                    {{ 'create-invoice-form.price' | globalize }}
-                  </th>
-                  <th>
-                    {{ 'create-invoice-form.total-amount' | globalize }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, i) in assetPairs"
-                  :key="`create-invoice-table-row-${i}`"
-                >
-                  <td>
-                    {{ item.quoteAsset.id }}
-                  </td>
-                  <td>
-                    {{ item.price | formatNumber }}
-                  </td>
-                  <td>
-                    {{ calculateRate(item.price, form.amount) | formatNumber }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <vue-markdown
+              v-if="form.asset !== form.quoteAsset.code"
+              class="app__form-field-description create-invoice-form__price"
+              :source="'create-invoice-form.price-hint' | globalize({
+                baseAsset: form.asset,
+                amount: {
+                  value: selectedAssetPair.price,
+                  currency: form.quoteAsset.code
+                }
+              })"
+            />
           </div>
         </div>
+
+        <vue-markdown
+          class="create-invoice-form__total-price"
+          :source="'create-invoice-form.total-price' | globalize({
+            amount: {
+              value: calculateRate(selectedAssetPair.price, form.amount),
+              currency: form.quoteAsset.code
+            }
+          })"
+        />
 
         <div class="app__form-actions">
           <form-confirmation
@@ -158,25 +149,28 @@
 </template>
 
 <script>
-import { initApi } from './_api'
-import { Wallet } from '@tokend/js-sdk'
-import FormMixin from '@/vue/mixins/form.mixin'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import config from '@/config'
-import {
-  required,
-  minValue,
-  maxDecimalDigitsCount,
-} from '@validators'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
-import { MathUtil } from '@/js/utils/math.util'
-import { types } from './store/types'
-import { Sdk } from '@/sdk'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import InvoiceViewer from './components/invoice-viewer'
+import VueMarkdown from 'vue-markdown'
+
+import FormMixin from '@/vue/mixins/form.mixin'
+import { required, minValue, maxDecimalDigitsCount } from '@validators'
+
+import { initApi } from './_api'
+import { Wallet } from '@tokend/js-sdk'
+import config from '@/config'
+import { Sdk } from '@/sdk'
+
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { types } from './store/types'
+
 import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { MathUtil } from '@/js/utils/math.util'
 import _get from 'lodash/get'
+
 import { Invoice } from './wrappers/invoice'
 
 const EVENTS = {
@@ -192,6 +186,7 @@ export default {
     NoDataMessage,
     Loader,
     InvoiceViewer,
+    VueMarkdown,
   },
   mixins: [FormMixin],
   props: {
@@ -227,6 +222,7 @@ export default {
       amount: '',
       subject: '',
       accountNumber: '',
+      quoteAsset: {},
       merchant: '',
       asset: '',
       account: '',
@@ -265,6 +261,15 @@ export default {
       return btoa(Math.random())
     },
 
+    quoteAssets () {
+      return this.assetPairs.map(p => p.quoteAsset)
+    },
+
+    selectedAssetPair () {
+      return this.assetPairs
+        .find(p => p.quoteAsset === this.form.quoteAsset)
+    },
+
     invoiceRecord () {
       return new Invoice({
         record: this.form,
@@ -281,6 +286,10 @@ export default {
       this.setDefaultFormValues()
 
       await this.loadAssetPairs({ asset: this.form.asset })
+
+      if (this.assetPairs.length) {
+        this.form.quoteAsset = this.assetPairs[0].quoteAsset
+      }
     } catch (error) {
       // TODO: replace with processWithoutFeedback
       // some text message instead the form should be introduce in this case
@@ -381,7 +390,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 @import "@/vue/forms/_app-form";
 
 .create-invoice-form__field-description {
@@ -399,5 +408,24 @@ export default {
 
 .create-invoice-form__close-btn {
   margin-top: 4rem;
+}
+
+.create-invoice-form__price-wrp {
+  margin-top: 2.4rem;
+  line-height: 2;
+}
+
+.create-invoice-form__price, .create-invoice-form__total-price {
+  strong {
+    color: $col-text-highlighted;
+  }
+}
+
+.create-invoice-form__total-price {
+  margin-top: 2.4rem;
+
+  p {
+    font-size: 1.6rem;
+  }
 }
 </style>
