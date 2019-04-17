@@ -52,7 +52,8 @@
       "summary-title": "Invoice summary",
       "state-th": "State",
       "amount-th": "Amount",
-      "subject-th": "Subject"
+      "subject-th": "Subject",
+      "invalid-account-number-err": "You've entered invalid account number. Please, try another one"
     }
   }
 }

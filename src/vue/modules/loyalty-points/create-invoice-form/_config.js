@@ -1,6 +1,6 @@
 import { base } from '@tokend/js-sdk'
 
-let _config = {
+export const config = Object.freeze({
   MIN_AMOUNT: 0.01,
   MAX_AMOUNT: String(base.Operation.MAX_INT64_AMOUNT),
   DECIMAL_POINTS: 2,
@@ -8,6 +8,8 @@ let _config = {
 
   DEFAULT_POINT: 'PET',
   MERCHANT_NAME: 'Pets shop, Sumska 46',
+  MERCHANT_ACCOUNT_ID: 'GAGNVDMHHL3UJEIKSYRLKILHGA7K6MKZS2KXQSWBRQ55XUB2YBSTRVDV',
+
   LOYALTY_ACCOUNTS: [
     {
       number: '992475256941',
@@ -21,20 +23,11 @@ let _config = {
       accountId: 'GBSJHO5CGQ3TU4FONWWNXC7TFWRX5SKANXXRGBCQOCJW463BR4VHNFWS',
       secretSeed: 'SBOISN4L4PJOAKHREFNRLGQTMRDGPZTXGZHSK37ZEIYFKVU3SY34ACPZ',
     },
+    {
+      number: '992475256941',
+      system: 'https://api.petshop.tokend.io',
+      accountId: 'GAI4EIE6ALCZLAT6MTIQVUSOSBPB73XWDXUPVZV46ZB2NQA4CBWTSMOG',
+      secretSeed: 'SDQSYDALD2GW4R4MCSNPW4KXB246PNCM4ESNYXETUVU3JOXTTOL6TDDZ',
+    },
   ],
-}
-
-/**
- * @param {string} horizonURL - the URL of the horizon server
- */
-export function initConfig ({ horizonURL }) {
-  if (!horizonURL) {
-    throw new Error('horizonURL is not provided')
-  }
-
-  _config.horizonURL = horizonURL
-}
-
-export function config () {
-  return _config
-}
+})
