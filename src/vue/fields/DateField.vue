@@ -84,7 +84,6 @@ export default {
   },
 
   data: _ => ({
-    isFlatpickrMounted: false,
     flatpickrDate: '',
     isCalendarOpen: false,
     /**
@@ -156,7 +155,7 @@ export default {
 
   mounted () {
     // Return early if flatpickr is already mounted
-    if (this.isFlatpickrMounted) return
+    if (this.flatpickr) return
 
     let safeConfig = Object.assign({}, this.config)
 
@@ -172,7 +171,6 @@ export default {
 
     // Init flatpickr
     this.flatpickr = new Flatpickr(this.$refs.dateField, safeConfig)
-    this.isFlatpickrMounted = true
 
     this.flatpickrDate = this.value || safeConfig.defaultDate || null
   },
