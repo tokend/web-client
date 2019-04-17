@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Removed
 - Buttons' "form" attributes
 
+#### Fixed
+- Fixed a bug with unsubmitted transfer form
+
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
 - Displaying of blocked account role
