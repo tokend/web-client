@@ -160,7 +160,7 @@ $col-clipboard-background-darken: darken($col-clipboard-background, 5%);
 $col-table-background: $_white;
 $col-table-alt-row-background: $_whiteSmoke;
 $col-table-cell-text: $col-primary;
-$col-table-cell-text-inactive: rgba($col-primary, .3);
+$col-table-cell-text-inactive: $_lightPurple;
 $col-table-head-text: $_lightPurple;
 $col-table-row-selected: darken($_whiteSmoke, 10%);
 $col-table-row-disabled: $_alto;
