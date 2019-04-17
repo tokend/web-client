@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Displaying blocked account role
 - Displaying permanently rejected change role request state
+- Account number field to the invoice form (Loyalty)
 
 #### Changed
 - Now loading KYC requests in the parent verification component

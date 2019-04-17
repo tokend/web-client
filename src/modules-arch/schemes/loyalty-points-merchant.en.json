@@ -31,6 +31,7 @@
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
       "subject-lbl": "Subject",
+      "account-number-lbl": "Loyalty account number",
       "balance": "Balance: {{balance, money}}",
       "waiting-for-payment-btn": "Waiting for payment…",
       "close-btn": "Close",

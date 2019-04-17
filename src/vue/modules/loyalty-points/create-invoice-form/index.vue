@@ -43,6 +43,21 @@
           </div>
         </div>
 
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              type="number"
+              v-model="form.accountNumber"
+              @blur="touchField('form.accountNumber')"
+              name="create-invoice-account-number"
+              :label="'create-invoice-form.account-number-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.accountNumber')"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
         <div class="create-invoice-form__asset-pairs">
           <h3>
             {{ 'create-invoice-form.acceptable-asset-pairs-title' | globalize }}
@@ -211,6 +226,7 @@ export default {
     form: {
       amount: '',
       subject: '',
+      accountNumber: '',
       merchant: '',
       asset: '',
       account: '',
@@ -230,6 +246,9 @@ export default {
           maxDecimalDigitsCount: maxDecimalDigitsCount(DECIMAL_POINTS),
         },
         subject: {
+          required,
+        },
+        accountNumber: {
           required,
         },
       },
