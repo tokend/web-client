@@ -7,7 +7,6 @@
     <div class="reject-request-form__row">
       <div class="reject-request-form__field">
         <textarea-field
-          id="withdrawal-request-reject-reason"
           name="withdrawal-request-reject-reason"
           v-model="form.rejectReason"
           @blur="touchField('form.rejectReason')"

@@ -59,6 +59,9 @@ export const getters = {
   [vuexTypes.isAccountUnverified]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountRoleId] ===
     rootGetters[vuexTypes.kvEntryUnverifiedRoleId],
+  [vuexTypes.isAccountBlocked]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryBlockedRoleId],
 }
 
 export default {
