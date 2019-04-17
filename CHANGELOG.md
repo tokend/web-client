@@ -9,7 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Removed
-- Sale statistics in all `SaleRecord`
+- Statistics from the `SaleRecord`
 - Displaying investors quantity in sail details
 
 ### Changed
