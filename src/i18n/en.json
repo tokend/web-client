@@ -1378,7 +1378,8 @@
       "asset-to-sell-title": "{{asset}} to sell",
       "video-about-sale-title": "Video about sale",
       "no-video-msg": "No video",
-      "view-video-btn": "View"
+      "view-video-btn": "View",
+      "owner": "Owner"
     },
     "invest-form": {
       "asset-lbl": "Asset",
@@ -1642,7 +1643,8 @@
       "absent-msg": "No",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
-      "already-in-your-balance-btn": "Already in your balances"
+      "already-in-your-balance-btn": "Already in your balances",
+      "owner": "Owner"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

@@ -1,27 +1,38 @@
 <template>
   <span
-    class="email-getter"
-    :title="isTitled && (email || accountId || balanceId)"
+    class="email-getter__wrapper"
+    :class="{ 'justify-end': rightSide }"
   >
-    <template v-if="isMasterAccount">
-      {{ 'email-getter.master-account' | globalize }}
-    </template>
+    <span
+      class="email-getter"
+      :title="isTitled && (email || accountId || balanceId)"
+    >
+      <template v-if="isMasterAccount">
+        {{ 'email-getter.master-account' | globalize }}
+      </template>
 
-    <template v-else-if="isLoading">
-      {{ 'email-getter.loading-msg' | globalize }}
-    </template>
+      <template v-else-if="isLoading">
+        {{ 'email-getter.loading-msg' | globalize }}
+      </template>
 
-    <template v-else-if="email">
-      {{ email }}
-    </template>
+      <template v-else-if="email">
+        {{ email }}
+      </template>
 
-    <template v-else-if="accountId || balanceId">
-      {{ accountId || balanceId | cropAddress }}
-    </template>
+      <template v-else-if="accountId || balanceId">
+        {{ accountId || balanceId | cropAddress }}
+      </template>
 
-    <template v-else>
-      &mdash;
-    </template>
+      <template v-else>
+        &mdash;
+      </template>
+    </span>
+
+    <i
+      v-if="isCopyButton && !isMasterAccount && !isLoading"
+      class="mdi mdi-content-copy copy-button"
+      @click="copyToClipboard(email || accountId || balanceId)"
+    />
   </span>
 </template>
 
@@ -46,6 +57,14 @@ export default {
     isTitled: {
       type: Boolean,
       default: true,
+    },
+    isCopyButton: {
+      type: Boolean,
+      default: true,
+    },
+    rightSide: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -104,9 +123,60 @@ export default {
         return ''
       }
     },
+
+    async copyToClipboard (data) {
+      try {
+        await navigator.clipboard.writeText(data)
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
+    },
   },
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import "~@scss/variables";
+  @import "~@scss/mixins";
+  .email-getter__wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .email-getter {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .copy-button {
+    @include button-icon();
+    color: $col-primary-inactive;
+    font-size: 1.3rem;
+    margin-left: .5rem;
+    min-height: unset;
+    min-width: unset;
+    padding: .5rem .6rem;
+
+    &::before {
+      vertical-align: middle;
+    }
+
+    &:hover {
+      background-color: $col-primary-flat-hover;
+    }
+
+    &:active {
+      background-color: darken($col-primary-flat-hover, 30%);
+    }
+  }
+
+  .justify-end {
+    justify-content: flex-end;
+
+    .copy-button {
+      margin-right: -.6rem;
+    }
+  }
 </style>

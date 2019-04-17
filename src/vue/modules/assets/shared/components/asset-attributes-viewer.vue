@@ -87,6 +87,15 @@
               <terms-viewer :asset="asset" :storage-url="storageUrl" />
             </td>
           </tr>
+          <tr>
+            <td>{{ 'assets.owner' | globalize }}</td>
+            <td>
+              <email-getter
+                right-side
+                :account-id="asset.owner"
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -96,6 +105,7 @@
 <script>
 import LogoViewer from './logo-viewer'
 import TermsViewer from './terms-viewer'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 import { Asset } from '../wrappers/asset'
 
@@ -104,6 +114,7 @@ export default {
   components: {
     LogoViewer,
     TermsViewer,
+    EmailGetter,
   },
   props: {
     asset: { type: Asset, required: true },
