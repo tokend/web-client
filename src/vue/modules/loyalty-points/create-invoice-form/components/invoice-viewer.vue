@@ -5,18 +5,16 @@
     </p>
 
     <div class="invoice-viewer__qr-code">
-      <qr-code
-        :text="invoiceQrCodeValue"
-        :margin="0"
+      <qr-code-wrapper
+        background="#f6f8fb"
+        foreground="#262626"
+        :value="invoiceQrCodeValue"
         :size="250"
-        color-light="#f2f2f4"
-        color-dark="#262626"
       />
     </div>
 
     <clipboard-field
       class="invoice-viewer__invoice-url"
-      id="invoice-url"
       :value="invoiceUrl"
       :label="'create-invoice-form.invoice-url' | globalize"
     />
@@ -32,7 +30,10 @@
 import InvoiceSummaryViewer from './invoice-summary-viewer'
 
 import ClipboardField from '@/vue/fields/ClipboardField'
-import QrCode from 'vue-qr'
+import QrCodeWrapper from '@/vue/common/QrCodeWrapper'
+
+import { mapGetters } from 'vuex'
+import { types } from '../store/types'
 
 import config from '@/config'
 
@@ -45,7 +46,7 @@ export default {
   name: 'invoice-viewer',
   components: {
     InvoiceSummaryViewer,
-    QrCode,
+    QrCodeWrapper,
     ClipboardField,
   },
 
@@ -54,6 +55,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters('create-invoice-form', {
+      accountId: types.accountId,
+    }),
+
     encodedBlobUrl () {
       return encodeURIComponent(
         `${config.HORIZON_SERVER}/accounts/${this.accountId}/blobs/${this.invoice.blobId}`

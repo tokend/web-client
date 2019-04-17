@@ -6,6 +6,16 @@
       "account-corporate": "Merchant"
     },
 
+    "movements-history": {
+      "effects": {
+        "issued": "Funded"
+      },
+      "operations": {
+        "create-issuance-request": "External System Payment"
+      },
+      "reference-lbl": "Invoice ID"
+    },
+
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
       "create-invoice-form-title": "Create invoice",

@@ -48,9 +48,9 @@ describe('SignupForm component test', () => {
     }
 
     const fieldBindings = {
-      '#signup-email': 'email',
-      '#signup-password': 'password',
-      '#signup-confirm-password': 'confirmPassword',
+      '[name=signup-email]': 'email',
+      '[name=signup-password]': 'password',
+      '[name=signup-confirm-password]': 'confirmPassword',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {

@@ -34,6 +34,7 @@ import StatusMessage from '@/vue/common/StatusMessage'
 import Navbar from '@/vue/navigation/Navbar.vue'
 import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
+import IdleHandlerMixin from '@/vue/mixins/idle-handler'
 
 import {
   mapGetters,
@@ -54,6 +55,8 @@ export default {
     StatusMessage,
     WarningBanner,
   },
+
+  mixins: [IdleHandlerMixin],
 
   data: () => ({
     isNotSupportedBrowser: false,
@@ -80,7 +83,8 @@ export default {
 
   methods: {
     ...mapActions({
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
+      loadDefaultQuoteAsset: vuexTypes.LOAD_DEFAULT_QUOTE_ASSET,
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
@@ -89,7 +93,8 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        await this.loadKvEntriesAccountRoleIds()
+        await this.loadKvEntries()
+        await this.loadDefaultQuoteAsset()
       }
     },
     detectIE () {

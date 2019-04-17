@@ -50,12 +50,14 @@
               {{ fee.percent | formatPercent }}
             </td>
 
-            <td :title="fee.lowerBound | formatMoney">
-              {{ fee.lowerBound | formatMoney }}
+            <!-- eslint-disable-next-line -->
+            <td :title="{ value: fee.lowerBound, currency: fee.asset } | formatMoney">
+              {{ { value: fee.lowerBound, currency: fee.asset } | formatMoney }}
             </td>
 
-            <td :title="fee.upperBound | formatMoney">
-              {{ fee.upperBound | formatMoney }}
+            <!-- eslint-disable-next-line -->
+            <td :title="{ value: fee.upperBound, currency: fee.asset } | formatMoney">
+              {{ { value: fee.upperBound, currency: fee.asset } | formatMoney }}
             </td>
           </tr>
         </tbody>
@@ -97,7 +99,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

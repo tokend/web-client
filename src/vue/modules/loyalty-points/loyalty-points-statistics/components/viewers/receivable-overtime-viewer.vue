@@ -2,7 +2,6 @@
   <div class="receivable-overtime-viewer">
     <line-chart
       v-if="isLoaded"
-      id="receivable-overtime-chart"
       :data="receivableOvertime"
       :currency="point"
     />
@@ -26,7 +25,7 @@ import receivableOvertimeMock from '../../mocks/receivable-overtime'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-const DEFAULT_POINT = 'PET'
+const DEFAULT_POINT = 'EUR'
 
 export default {
   name: 'receivable-overtime-viewer',

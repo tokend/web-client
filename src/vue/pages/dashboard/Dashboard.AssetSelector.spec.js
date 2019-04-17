@@ -25,7 +25,7 @@ describe('Dashboard.AssetSelector component', () => {
   let store
   let wrapper
   let mockedAccountBalances
-  let mockedTokens
+  let mockedAssets
 
   afterEach(() => {
     sinon.restore()
@@ -66,7 +66,7 @@ describe('Dashboard.AssetSelector component', () => {
         }),
       },
     ]
-    mockedTokens = [
+    mockedAssets = [
       new AssetRecord({
         code: 'USD',
         details: {
@@ -128,7 +128,7 @@ describe('Dashboard.AssetSelector component', () => {
     })
   })
 
-  describe('loadTokens()', () => {
+  describe('loadAssets()', () => {
     let assetsResource
 
     beforeEach(() => {
@@ -138,23 +138,23 @@ describe('Dashboard.AssetSelector component', () => {
 
     it('is called inside created hook', () => {
       AssetSelector.created.restore()
-      sinon.stub(AssetSelector.methods, 'loadTokens')
+      sinon.stub(AssetSelector.methods, 'loadAssets')
 
       shallowMount(AssetSelector, {
         store,
         localVue,
       })
 
-      expect(AssetSelector.methods.loadTokens.calledOnce).to.be.true
+      expect(AssetSelector.methods.loadAssets.calledOnce).to.be.true
     })
 
     it('works correctly', async () => {
       const expectAssets = { data: [] }
       sinon.stub(assetsResource, 'getAll').resolves(expectAssets)
 
-      await wrapper.vm.loadTokens()
+      await wrapper.vm.loadAssets()
 
-      expect(wrapper.vm.tokens).to.deep.equal(expectAssets.data)
+      expect(wrapper.vm.assets).to.deep.equal(expectAssets.data)
       expect(assetsResource.getAll.calledOnce).to.be.true
       expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.false
     })
@@ -162,26 +162,26 @@ describe('Dashboard.AssetSelector component', () => {
     it('handle errors', async () => {
       sinon.stub(assetsResource, 'getAll').rejects()
 
-      await wrapper.vm.loadTokens()
+      await wrapper.vm.loadAssets()
 
       expect(assetsResource.getAll.calledOnce).to.be.true
-      expect(wrapper.vm.tokens).to.deep.equal([])
+      expect(wrapper.vm.assets).to.deep.equal([])
       expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.true
     })
   })
 
   describe('computed properties', () => {
     describe('currentAssetForSelect()', () => {
-      it('returns asset if this.tokens list is not empty', () => {
+      it('returns asset if this.assets list is not empty', () => {
         wrapper.vm.currentAsset = 'ETH'
-        wrapper.vm.tokens = mockedTokens
+        wrapper.vm.assets = mockedAssets
 
-        expect(wrapper.vm.currentAssetForSelect).to.equal(mockedTokens[2])
+        expect(wrapper.vm.currentAssetForSelect).to.equal(mockedAssets[2])
       })
 
-      it('returns empty object if this.tokens list is empty', () => {
+      it('returns empty object if this.assets list is empty', () => {
         wrapper.vm.currentAsset = 'ETH'
-        wrapper.vm.tokens = []
+        wrapper.vm.assets = []
 
         expect(wrapper.vm.currentAssetForSelect).to.deep.equal({})
       })
@@ -204,13 +204,13 @@ describe('Dashboard.AssetSelector component', () => {
         expect(wrapper.vm.currentAssetBalanceDetails).to.deep.equal({})
       })
     })
-    it('tokensList()', () => {
-      wrapper.vm.tokens = mockedTokens
-      const sortedTokens = mockedTokens
+    it('assetsList()', () => {
+      wrapper.vm.assets = mockedAssets
+      const sortedAssets = mockedAssets
         .sort((a, b) => a.code.localeCompare(b.code))
 
-      expect(wrapper.vm.tokensList)
-        .to.deep.equal(sortedTokens)
+      expect(wrapper.vm.assetsList)
+        .to.deep.equal(sortedAssets)
     })
   })
 })

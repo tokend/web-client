@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="login-email"
           name="login-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,12 +17,26 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="login-password"
           name="login-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
           :white-autofill="false"
           :label="'auth-pages.password' | globalize"
+        />
+      </div>
+    </div>
+    <div
+      v-if="tfaError"
+      class="app__form-row"
+    >
+      <div class="app__form-field">
+        <input-field
+          v-model="form.tfaCode"
+          @blur="touchField('form.tfaCode')"
+          id="login-tfa-code"
+          :error-message="getFieldErrorMessage('form.tfaCode')"
+          :white-autofill="false"
+          :label="'auth-pages.tfa-code' | globalize"
         />
       </div>
     </div>
@@ -43,7 +56,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required } from '@validators'
+import { required, requiredIf } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -60,12 +73,17 @@ export default {
     form: {
       email: '',
       password: '',
+      tfaCode: '',
     },
+    tfaError: null,
   }),
   validations: {
     form: {
       email: { required },
       password: { required },
+      tfaCode: {
+        required: requiredIf(function () { return this.tfaError }),
+      },
     },
   },
   computed: {
@@ -78,12 +96,13 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
+        await this.verifyTfaFactor()
         await this.loadWallet({
           email: this.form.email.toLowerCase(),
           password: this.form.password,
@@ -94,7 +113,7 @@ export default {
         Api.useWallet(this[vuexTypes.wallet])
 
         await this.loadAccount(accountId)
-        await this.loadKvEntriesAccountRoleIds()
+        await this.loadKvEntries()
         await this.loadKyc()
         if (Object.keys(this.$route.query).includes('redirectPath')) {
           this.$router.push({ path: this.$route.query.redirectPath })
@@ -105,6 +124,14 @@ export default {
         this.processAuthError(e)
       }
       this.enableForm()
+    },
+    async verifyTfaFactor () {
+      if (this.tfaError) {
+        await Sdk.api.factors.verifyTotpFactor(
+          this.tfaError,
+          this.form.tfaCode
+        )
+      }
     },
     processAuthError (error) {
       switch (error.constructor) {
@@ -119,10 +146,19 @@ export default {
             },
           })
           break
+        case errors.TFARequiredError:
+          this.tfaError = error
+          break
         case errors.NotFoundError:
           ErrorHandler.process(
             error,
             'auth-pages.wrong-email-or-password-err'
+          )
+          break
+        case errors.BadRequestError:
+          ErrorHandler.process(
+            error,
+            'auth-pages.wrong-tfa-code-err'
           )
           break
         default:
