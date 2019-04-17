@@ -155,7 +155,7 @@ export default {
 
     recordsLoader () {
       const saleState = this.filters.state.value
-      let opts = {
+      const opts = {
         page: {
           order: 'desc',
         },

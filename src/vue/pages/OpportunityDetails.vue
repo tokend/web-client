@@ -221,7 +221,7 @@ export default {
   methods: {
     async loadOpportunity (opportunityId) {
       try {
-        const { data } = await Api.getWithSignature(`/v3/sales/${opportunityId}`, {
+        const { data } = await Api.get(`/v3/sales/${opportunityId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.opportunity = new SaleRecord(data)
