@@ -1,9 +1,10 @@
 <template>
-  <div v-if="isInitialized">
+  <div v-if="isLoaded">
     <template v-if="assetPairs.length">
       <form
-        @submit.prevent="tryToSubmit"
-        v-if="!invoiceBlobId"
+        novalidate
+        v-if="!isTransactionSent"
+        @submit.prevent="isFormValid() && showConfirmation()"
       >
         <div class="app__form-row">
           <div class="app__form-field">
@@ -87,7 +88,7 @@
           class="create-invoice-form__total-price"
           :source="'create-invoice-form.total-price' | globalize({
             amount: {
-              value: calculateRate(selectedAssetPair.price, form.amount),
+              value: totalPrice,
               currency: form.quoteAsset.code
             }
           })"
@@ -100,6 +101,7 @@
             @ok="submit"
             @cancel="hideConfirmation"
           />
+
           <button
             v-else
             v-ripple
@@ -116,7 +118,7 @@
         v-else
         class="create-invoice-form__payment"
       >
-        <invoice-viewer :invoice="invoiceRecord" />
+        <!-- <invoice-viewer :invoice="invoiceRecord" /> -->
 
         <button
           v-ripple
@@ -142,25 +144,29 @@
       :message="'create-invoice-form.here-will-pairs-list' | globalize"
     />
   </div>
-  <loader
+
+  <p v-else-if="isLoadFailed">
+    {{ 'create-invoice-form.load-failed-msg' | globalize }}
+  </p>
+
+  <load-spinner
     v-else
     :message-id="'create-invoice-form.loading-msg'"
   />
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
+import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import InvoiceViewer from './components/invoice-viewer'
+// import InvoiceViewer from './components/invoice-viewer'
 import VueMarkdown from 'vue-markdown'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required, minValue, maxDecimalDigitsCount } from '@validators'
 
-import { initApi } from './_api'
-import { Wallet } from '@tokend/js-sdk'
-import config from '@/config'
-import { Sdk } from '@/sdk'
+import { initApi, api } from './_api'
+import { initConfig, config } from './_config'
+import { Wallet, base } from '@tokend/js-sdk'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { types } from './store/types'
@@ -169,23 +175,29 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { MathUtil } from '@/js/utils/math.util'
-import _get from 'lodash/get'
-
-import { Invoice } from './wrappers/invoice'
 
 const EVENTS = {
   close: 'close',
 }
 
-const MIN_AMOUNT = 0.01
-const DECIMAL_POINTS = 2
+const EMPTY_FEE = {
+  sourceFee: {
+    percent: '0.000000',
+    fixed: '0.000000',
+  },
+  destinationFee: {
+    percent: '0.000000',
+    fixed: '0.000000',
+  },
+  sourcePaysForDest: true,
+}
 
 export default {
   name: 'create-invoice-form',
   components: {
     NoDataMessage,
-    Loader,
-    InvoiceViewer,
+    LoadSpinner,
+    // InvoiceViewer,
     VueMarkdown,
   },
   mixins: [FormMixin],
@@ -204,42 +216,44 @@ export default {
     },
     amount: {
       type: String,
-      required: false,
       default: '',
     },
     subject: {
       type: String,
-      required: false,
       default: '',
     },
   },
+
   data: _ => ({
-    MIN_AMOUNT,
-    MAX_AMOUNT: config.MAX_AMOUNT,
-    DECIMAL_POINTS,
-    isInitialized: false,
+    isLoaded: false,
+    isLoadFailed: false,
+
     form: {
       amount: '',
       subject: '',
       accountNumber: '',
       quoteAsset: {},
-      merchant: '',
       asset: '',
-      account: '',
-      system: '',
     },
-    invoiceBlobId: '',
+
     isFormSubmitting: false,
+    isTransactionSent: false,
     isPaymentConfirmed: false,
     pollIntervalId: 0,
+
+    MIN_AMOUNT: config().MIN_AMOUNT,
+    MAX_AMOUNT: config().MAX_AMOUNT,
+    DECIMAL_POINTS: config().DECIMAL_POINTS,
   }),
+
   validations () {
     return {
       form: {
         amount: {
           required,
-          minValue: minValue(MIN_AMOUNT),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(DECIMAL_POINTS),
+          minValue: minValue(config().MIN_AMOUNT),
+          maxDecimalDigitsCount:
+            maxDecimalDigitsCount(config().DECIMAL_POINTS),
         },
         subject: {
           required,
@@ -250,12 +264,13 @@ export default {
       },
     }
   },
+
   computed: {
-    ...mapGetters('create-invoice-form', [
-      types.accountId,
-      types.assetPairs,
-      types.movements,
-    ]),
+    ...mapGetters('create-invoice-form', {
+      accountId: types.accountId,
+      assetPairs: types.assetPairs,
+      movements: types.movements,
+    }),
 
     reference () {
       return btoa(Math.random())
@@ -270,37 +285,56 @@ export default {
         .find(p => p.quoteAsset === this.form.quoteAsset)
     },
 
-    invoiceRecord () {
-      return new Invoice({
-        record: this.form,
-        blobId: this.invoiceBlobId,
-        isConfirmed: this.isPaymentConfirmed,
+    totalPrice () {
+      return MathUtil.multiply(
+        this.selectedAssetPair.price,
+        this.form.amount
+      )
+    },
+
+    systemIdentifier () {
+      if (this.form.asset === this.form.quoteAsset.code) {
+        return this.config.horizonURL
+      } else {
+        return this.form.quoteAsset.system
+      }
+    },
+
+    transactionSubject () {
+      const firstLine = `${this.accountId}@${btoa(this.systemIdentifier)}`
+      const secondLine = JSON.stringify({
+        merchant: config().MERCHANT_NAME,
+        subject: this.form.subject,
       })
+
+      return `${firstLine}\n${secondLine}`
     },
   },
+
   async created () {
     try {
       initApi(this.wallet, this.config)
+      initConfig(this.config)
 
       this.setAccountId(this.wallet.accountId)
-      this.setDefaultFormValues()
+      this.populateForm()
 
       await this.loadAssetPairs({ asset: this.form.asset })
 
       if (this.assetPairs.length) {
         this.form.quoteAsset = this.assetPairs[0].quoteAsset
       }
+      this.isLoaded = true
     } catch (error) {
-      // TODO: replace with processWithoutFeedback
-      // some text message instead the form should be introduce in this case
+      this.isLoadFailed = true
       ErrorHandler.process(error)
     }
-
-    this.isInitialized = true
   },
+
   destroyed () {
     clearInterval(this.pollIntervalId)
   },
+
   methods: {
     ...mapMutations('create-invoice-form', {
       setAccountId: types.SET_ACCOUNT_ID,
@@ -311,30 +345,40 @@ export default {
       loadMovements: types.LOAD_MOVEMENTS,
     }),
 
-    calculateRate (rate, amount) {
-      return MathUtil.multiply(rate, amount)
-    },
-
-    tryToSubmit () {
-      if (!this.isFormValid()) return false
-      this.showConfirmation()
-    },
-
     async submit () {
       this.isFormSubmitting = true
 
       try {
-        const data = JSON.stringify({
-          ...this.form,
-          reference: this.reference,
-          accept: this.mapAcceptableAssets(),
+        const loyaltyAccount = config().LOYALTY_ACCOUNTS.find(a => {
+          return a.number === this.form.accountNumber &&
+            a.system === this.systemIdentifier
         })
-        const { data: blob } = await Sdk.api.blobs.create(
-          Sdk.api.blobs.types.bravo,
-          data
-        )
 
-        this.invoiceBlobId = blob.id
+        if (!loyaltyAccount) {
+          throw new Error('Wrong account number')
+        }
+
+        const newWallet = new Wallet(
+          this.wallet.email,
+          loyaltyAccount.secretSeed,
+          loyaltyAccount.accountId
+        )
+        const newConfig = {
+          horizonURL: this.systemIdentifier,
+        }
+
+        initApi(newWallet, newConfig)
+        initConfig(newConfig)
+
+        const balanceId = await this.getBalanceId(newWallet.accountId)
+        const recipient = await this.getRecipient()
+
+        await this.sendTransaction(balanceId, recipient)
+
+        initApi(this.wallet, this.config)
+        initConfig(this.config)
+
+        this.isTransactionSent = true
         this.initPolling()
       } catch (error) {
         ErrorHandler.process(error)
@@ -344,32 +388,67 @@ export default {
       this.hideConfirmation()
     },
 
-    mapAcceptableAssets () {
-      return this.assetPairs.map(item => ({
-        asset: item.quoteAsset.id,
-        system: _get(item, 'quoteAsset.details.system', this.config.horizonURL),
-        amount: this.calculateRate(item.price, this.form.amount),
-      }))
+    async getBalanceId (accountId) {
+      const endpoint = `/v3/accounts/${accountId}`
+      const { data: account } = await api().getWithSignature(endpoint, {
+        include: ['balances.state'],
+      })
+      const balance = account.balances
+        .find(b => b.asset.id === this.form.quoteAsset.code)
+
+      return balance ? balance.id : ''
+    },
+
+    async getRecipient () {
+      if (this.systemIdentifier === this.config.horizonURL) {
+        return this.wallet.accountId
+      } else {
+        const { data } = await api().get('/')
+        return data.adminAccountId
+      }
+    },
+
+    async sendTransaction (balanceId, recipient) {
+      // console.log({
+      //   sourceBalanceId: balanceId,
+      //   destination: recipient,
+      //   amount: this.totalPrice,
+      //   feeData: EMPTY_FEE,
+      //   subject: this.transactionSubject,
+      //   asset: this.form.quoteAsset.code,
+      //   reference: this.reference,
+      // })
+
+      const operation = base.PaymentBuilder.payment({
+        sourceBalanceId: balanceId,
+        destination: recipient,
+        amount: this.totalPrice,
+        feeData: EMPTY_FEE,
+        subject: this.transactionSubject,
+        asset: this.form.quoteAsset.code,
+        reference: this.reference,
+      })
+
+      await api().postOperations(operation)
     },
 
     closeForm () {
       this.$emit(EVENTS.close)
     },
 
-    setDefaultFormValues () {
-      this.form.merchant = 'Pets shop, Sumska 46'
-      this.form.asset = 'PET'
-      this.form.account = this.accountId
-      this.form.system = config.HORIZON_SERVER
+    populateForm () {
+      this.form.asset = config().DEFAULT_POINT
       this.form.amount = this.amount
       this.form.subject = this.subject
     },
+
     initPolling () {
       this.pollIntervalId = setInterval(
         this.checkForPayment,
-        config.RELOAD_DATA_TICKER_INTERVAL_MS
+        config().RELOAD_DATA_TICKER_INTERVAL_MS
       )
     },
+
     async checkForPayment () {
       try {
         await this.loadMovements(this.form.asset)
