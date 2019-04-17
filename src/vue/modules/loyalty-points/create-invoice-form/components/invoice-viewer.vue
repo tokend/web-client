@@ -1,10 +1,9 @@
 <template>
   <div class="invoice-viewer">
-    <p class="create-invoice-form__qr-code-description">
-      {{ 'create-invoice-form.qr-code-description' | globalize }}
-    </p>
-
-    <confirmation-state-viewer :invoice="invoice" />
+    <confirmation-state-viewer
+      class="invoice-viewer__confirmations"
+      :invoice="invoice"
+    />
 
     <invoice-summary-viewer
       class="invoice-viewer__summary"
