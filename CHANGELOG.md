@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - Buttons' "form" attributes
+- Dupe team size and website fields on corporate verification
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
