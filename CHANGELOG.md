@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Displaying of limit request details in drawer
+
 #### Removed
 - Buttons' "form" attributes
 
