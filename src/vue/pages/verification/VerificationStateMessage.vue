@@ -3,7 +3,10 @@
     class="verification-state-message"
     :class="`verification-state-message--${verificationState}`"
   >
-    <div class="verification-state-message__content">
+    <div
+      v-if="verificationState"
+      class="verification-state-message__content"
+    >
       <h3 class="verification-state-message__title">
         {{ verificationTitleTranslationId | globalize }}
       </h3>
