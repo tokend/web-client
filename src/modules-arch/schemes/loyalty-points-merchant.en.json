@@ -53,6 +53,8 @@
       "state-th": "State",
       "amount-th": "Amount",
       "subject-th": "Subject",
+      "point-th": "Point",
+      "system-th": "System",
       "invalid-account-number-err": "You've entered invalid account number. Please, try another one"
     }
   }

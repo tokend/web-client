@@ -7,7 +7,7 @@
       type="button"
       class="create-invoice-form__close-btn app__button-raised"
       :disabled="!isPaymentConfirmed"
-      @click="closeForm"
+      @click="$emit(EVENTS.close)"
     >
       <template v-if="isPaymentConfirmed">
         {{ 'create-invoice-form.close-btn' | globalize }}
@@ -46,14 +46,18 @@ export default {
   },
 
   data: _ => ({
-    isPaymentConfirmed: false,
     pollIntervalId: 0,
+    EVENTS,
   }),
 
   computed: {
     ...mapGetters('create-invoice-form', {
       movements: types.movements,
     }),
+
+    isPaymentConfirmed () {
+      return this.invoice.isSuccessful
+    },
   },
 
   created () {
@@ -69,10 +73,6 @@ export default {
       loadMovements: types.LOAD_MOVEMENTS,
     }),
 
-    closeForm () {
-      this.$emit(EVENTS.close)
-    },
-
     initPolling () {
       this.pollIntervalId = setInterval(
         this.checkForPayment,
@@ -82,7 +82,7 @@ export default {
 
     async checkForPayment () {
       try {
-        await this.loadMovements(this.form.asset)
+        await this.loadMovements(config.DEFAULT_POINT)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
@@ -92,7 +92,7 @@ export default {
 
       if (payment) {
         clearInterval(this.pollIntervalId)
-        this.isPaymentConfirmed = true
+        this.invoice.setSuccessfulState()
         Bus.success('create-invoice-form.payment-successful-msg')
       }
     },
