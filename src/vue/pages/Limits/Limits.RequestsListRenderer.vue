@@ -34,14 +34,14 @@
               {{ request.updatedAt | formatDate }}
             </td>
             <!-- eslint-disable-next-line -->
-            <td :title="LIMITS_REQUEST_TYPE_TRANSLATE_ID[request.limitsRequestType] | globalize">
+            <td :title="LIMITS_REQUEST_TYPE_TRANSLATION_ID[request.limitsRequestType] | globalize">
               <!-- eslint-disable-next-line -->
-              {{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[request.limitsRequestType] | globalize }}
+              {{ LIMITS_REQUEST_TYPE_TRANSLATION_ID[request.limitsRequestType] | globalize }}
             </td>
             <!-- eslint-disable-next-line -->
-            <td :title="LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[request.state] | globalize">
+            <td :title="LIMITS_REQUEST_STATES_STR_TRANSLATION_ID[request.state] | globalize">
               <!-- eslint-disable-next-line -->
-              {{ LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[request.state] | globalize }}
+              {{ LIMITS_REQUEST_STATES_STR_TRANSLATION_ID[request.state] | globalize }}
             </td>
             <td :title="request.asset">
               {{ request.asset }}
@@ -52,7 +52,7 @@
                   limits-requests-list-renderer__show-details-btn"
                 @click="showRequestDetails (request)"
               >
-                {{ 'asset-creation-requests.details-btn' | globalize }}
+                {{ 'limits-requests-table-renderer.details-btn' | globalize }}
               </a>
             </td>
           </tr>
@@ -107,7 +107,8 @@
       </template>
       <limits-request-details-viewer
         @upload="showDocumentUploadForm"
-        :request="selectedRequest" />
+        :request="selectedRequest"
+      />
     </drawer>
   </div>
 </template>
@@ -127,7 +128,7 @@ const EVENTS = Object.freeze({
   requestsReloadAsk: 'requests-reload-ask',
 })
 
-const LIMITS_REQUEST_STATES_STR_TRANSLATE_ID = Object.freeze({
+const LIMITS_REQUEST_STATES_STR_TRANSLATION_ID = Object.freeze({
   [LIMITS_REQUEST_STATES_STR.pending]: 'limits-requests-table-renderer.request-state-pending',
   [LIMITS_REQUEST_STATES_STR.cancelled]: 'limits-requests-table-renderer.request-state-cancelled',
   [LIMITS_REQUEST_STATES_STR.approved]: 'limits-requests-table-renderer.request-state-approved',
@@ -135,7 +136,7 @@ const LIMITS_REQUEST_STATES_STR_TRANSLATE_ID = Object.freeze({
   [LIMITS_REQUEST_STATES_STR.permanentlyRejected]: 'limits-requests-table-renderer.request-state-permanently-rejected',
 })
 
-const LIMITS_REQUEST_TYPE_TRANSLATE_ID = Object.freeze({
+const LIMITS_REQUEST_TYPE_TRANSLATION_ID = Object.freeze({
   [LIMITS_REQUEST_TYPE.initial]: 'limits-requests-table-renderer.request-type-initial',
   [LIMITS_REQUEST_TYPE.docsUploading]: 'limits-requests-table-renderer.request-type-docs-uploading',
 })
@@ -156,8 +157,8 @@ export default {
   },
   data: () => ({
     LIMITS_REQUEST_STATES_STR,
-    LIMITS_REQUEST_TYPE_TRANSLATE_ID,
-    LIMITS_REQUEST_STATES_STR_TRANSLATE_ID,
+    LIMITS_REQUEST_TYPE_TRANSLATION_ID,
+    LIMITS_REQUEST_STATES_STR_TRANSLATION_ID,
     isDocumentsUploaderFormShown: false,
     isDetailsDrawerShown: false,
     selectedRequest: null,

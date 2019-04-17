@@ -2,50 +2,54 @@
   <div class="limits-request-details-viewer">
     <div
       v-if="request.isApproved"
-      class="request-state request-state--approved"
+      class="limits-request-details-viewer__request-state
+             limits-request-details-viewer__request-state--approved"
     >
-      <p class="request-state__content">
+      <p class="limits-request-details-viewer__request-state-content">
         {{ 'limits-request-details-viewer.approved-msg' | globalize }}
       </p>
     </div>
     <div
       v-else-if="request.isPending"
-      class="request-state request-state--pending"
+      class="limits-request-details-viewer__request-state
+             limits-request-details-viewer__request-state--pending"
     >
-      <p class="request-state__content">
+      <p class="limits-request-details-viewer__request-state-content">
         {{ 'limits-request-details-viewer.pending-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isRejected"
-      class="request-state request-state--rejected"
+      class="limits-request-details-viewer__request-state
+             limits-request-details-viewer__request-state--rejected"
     >
-      <p class="request-state__content">
-        <!-- eslint-disable-next-line max-len -->
-        {{ 'limits-request-details-viewer.rejected-msg' | globalize() }}
+      <p class="limits-request-details-viewer__request-state-content">
+        {{ 'limits-request-details-viewer.rejected-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isCanceled"
-      class="request-state request-state--canceled"
+      class="limits-request-details-viewer__request-state
+             limits-request-details-viewer__request-state--canceled"
     >
-      <p class="request-state__content">
-        {{ 'request-messages.canceled-msg' | globalize() }}
+      <p class="limits-request-details-viewer__request-state-content">
+        {{ 'request-messages.canceled-msg' | globalize }}
       </p>
     </div>
 
     <div
       v-else-if="request.isPermanentlyRejected"
-      class="request-state request-state--permanently-rejected"
+      class="limits-request-details-viewer__request-state
+             limits-request-details-viewer__request-state--permanently-rejected"
     >
-      <p class="request-state__content">
+      <p class="limits-request-details-viewer__request-state-content">
         <!-- eslint-disable-next-line max-len -->
-        {{ 'request-messages.permanently-rejected-msg' | globalize({ reason: request.rejectReason }) }}
+        {{ 'request-messages.permanently-rejected-outgoing-msg' | globalize({ reason: request.rejectReason }) }}
       </p>
     </div>
-    <div class="app__table limits-request-details__table">
+    <div class="app__table limits-request-details-viewer__table">
       <table>
         <tbody>
           <tr>
@@ -65,7 +69,13 @@
               {{ 'limits-request-details-viewer.table-daily-limit-lbl' | globalize }}
             </td>
             <td>
-              {{ request.limits.dailyOut }} {{ request.asset }}
+              <template
+                v-if="request.limits.dailyOut">
+                {{ request.limits.dailyOut }} {{ request.asset }}
+              </template>
+              <template v-else>
+                {{ 'limits-request-details-viewer.not-set-lbl' | globalize }}
+              </template>
             </td>
           </tr>
           <tr>
@@ -74,7 +84,13 @@
               {{ 'limits-request-details-viewer.table-weekly-limit-lbl' | globalize }}
             </td>
             <td>
-              {{ request.limits.weeklyOut }} {{ request.asset }}
+              <template
+                v-if="request.limits.weeklyOut">
+                {{ request.limits.weeklyOut }} {{ request.asset }}
+              </template>
+              <template v-else>
+                {{ 'limits-request-details-viewer.not-set-lbl' | globalize }}
+              </template>
             </td>
           </tr>
           <tr>
@@ -83,7 +99,13 @@
               {{ 'limits-request-details-viewer.table-monthly-limit-lbl' | globalize }}
             </td>
             <td>
-              {{ request.limits.monthlyOut }} {{ request.asset }}
+              <template
+                v-if="request.limits.monthlyOut">
+                {{ request.limits.monthlyOut }} {{ request.asset }}
+              </template>
+              <template v-else>
+                {{ 'limits-request-details-viewer.not-set-lbl' | globalize }}
+              </template>
             </td>
           </tr>
           <tr>
@@ -92,19 +114,25 @@
               {{ 'limits-request-details-viewer.table-annual-limit-lbl' | globalize }}
             </td>
             <td>
-              {{ request.limits.annualOut }} {{ request.asset }}
+              <template
+                v-if="request.limits.annualOut">
+                {{ request.limits.annualOut }} {{ request.asset }}
+              </template>
+              <template v-else>
+                {{ 'limits-request-details-viewer.not-set-lbl' | globalize }}
+              </template>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="limits-request-details__buttons">
+    <div class="limits-request-details-viewer__buttons">
       <button
-        class="app__button-raised limits-request-details__upload-btn"
+        class="app__button-raised limits-request-details-viewer__upload-btn"
         :disabled="!request.isRejected"
         @click="$emit(EVENTS.upload)"
       >
-        {{ 'limits-requests-table-renderer.upload-documents-btn' | globalize }}
+        {{ 'limits-request-details-viewer.upload-documents-btn' | globalize }}
       </button>
     </div>
   </div>
@@ -158,13 +186,13 @@ export default {
 
 <style lang="scss" scoped>
   @import "~@scss/variables";
-  .request-state {
+  .limits-request-details-viewer__request-state {
     min-height: 6.4rem;
     width: 100%;
     margin-top: 2rem;
     display: none;
 
-    .request-state__content {
+    .limits-request-details-viewer__request-state-content {
       padding: 2.4rem;
       font-size: 1.3rem;
       font-weight: normal;
@@ -183,7 +211,7 @@ export default {
     }
   }
 
-  .limits-request-details__table {
+  .limits-request-details-viewer__table {
     margin-top: 2rem;
 
     tr td:last-child {
@@ -191,7 +219,7 @@ export default {
     }
   }
 
-  .limits-request-details__buttons {
+  .limits-request-details-viewer__buttons {
     margin-top: 4.9rem;
     display: flex;
 
