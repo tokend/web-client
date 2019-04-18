@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 - Now getting blob types from SDK
 - Now using /v3 API for getting sales
 - Sale record is now parsing the resource from new API
+- Show limits request list on top of other limits on "Limits" page
 
 #### Removed
 - Buttons' "form" attributes
