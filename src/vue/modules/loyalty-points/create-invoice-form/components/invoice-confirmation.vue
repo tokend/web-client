@@ -88,7 +88,7 @@ export default {
       }
 
       const payment = this.movements
-        .find(m => m.reference === this.reference)
+        .find(m => m.reference === this.invoice.reference)
 
       if (payment) {
         clearInterval(this.pollIntervalId)

@@ -1,11 +1,13 @@
 import { PAYMENT_STATES } from '../const/payment-states'
 
 export class Invoice {
-  constructor ({ record, system, isConfirmed }) {
-    this.amount = record.amount
-    this.asset = record.quoteAsset
+  constructor ({ record, isConfirmed }) {
     this.subject = record.subject
-    this.system = system
+    this.totalPrice = record.totalPrice
+
+    this.asset = record.quoteAsset
+    this.reference = record.reference
+    this.system = record.system
 
     this.state = isConfirmed
       ? PAYMENT_STATES.successful

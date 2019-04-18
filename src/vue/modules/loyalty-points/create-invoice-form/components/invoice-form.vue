@@ -240,8 +240,12 @@ export default {
 
     invoiceRecord () {
       return new Invoice({
-        record: this.form,
-        system: this.systemIdentifier,
+        record: {
+          ...this.form,
+          totalPrice: this.totalPrice,
+          reference: this.reference,
+          system: this.systemIdentifier,
+        },
         isConfirmed: false,
       })
     },
@@ -277,10 +281,9 @@ export default {
         }
       } catch (error) {
         ErrorHandler.process(error)
+        this.isFormSubmitting = false
+        this.hideConfirmation()
       }
-
-      this.isFormSubmitting = false
-      this.hideConfirmation()
     },
 
     async initExternalSystemApi () {
@@ -329,8 +332,7 @@ export default {
       if (this.systemIdentifier === this.merchantSystem) {
         return config.MERCHANT_ACCOUNT_ID
       } else {
-        const { data } = await api().get('/')
-        return data.adminAccountId
+        return api().networkDetails.adminAccountId
       }
     },
   },

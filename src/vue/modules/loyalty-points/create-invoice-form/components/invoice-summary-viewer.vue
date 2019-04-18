@@ -25,6 +25,11 @@
           </tr>
 
           <tr>
+            <td>{{ 'create-invoice-form.total-price-th' | globalize }}</td>
+            <td>{{ invoiceTotalPrice | formatMoney }}</td>
+          </tr>
+
+          <tr>
             <td>{{ 'create-invoice-form.system-th' | globalize }}</td>
             <td>
               <a
@@ -34,11 +39,6 @@
                 {{ invoice.system }}
               </a>
             </td>
-          </tr>
-
-          <tr>
-            <td>{{ 'create-invoice-form.amount-th' | globalize }}</td>
-            <td>{{ invoiceAmount | formatMoney }}</td>
           </tr>
         </tbody>
       </table>
@@ -62,9 +62,9 @@ export default {
   },
 
   computed: {
-    invoiceAmount () {
+    invoiceTotalPrice () {
       return {
-        value: this.invoice.amount,
+        value: this.invoice.totalPrice,
         currency: this.invoice.asset.code,
       }
     },

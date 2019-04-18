@@ -121,9 +121,14 @@ export default {
       loadAssetPairs: types.LOAD_ASSET_PAIRS,
     }),
 
-    initConfirmation (payload) {
-      this.invoice = payload
-      this.isTransactionSent = true
+    async initConfirmation (payload) {
+      try {
+        await initApi(this.wallet, this.config)
+        this.invoice = payload
+        this.isTransactionSent = true
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
     },
   },
 }

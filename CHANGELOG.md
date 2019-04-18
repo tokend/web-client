@@ -20,6 +20,8 @@ for further information about branching and tagging conventions.
   was reset or blocked
 - Use select field instead of table for acceptable points on
   create invoice form (Loyalty)
+- Now sending payment transaction to the external system instead of
+  creating a blob (Loyalty)
 
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added

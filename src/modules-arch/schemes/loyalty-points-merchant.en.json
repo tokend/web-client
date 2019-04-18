@@ -48,7 +48,7 @@
       "confirmations-count": "{{current}}/{{total}} confirmations",
       "summary-title": "Invoice summary",
       "state-th": "State",
-      "amount-th": "Amount",
+      "total-price-th": "Total price",
       "subject-th": "Subject",
       "point-th": "Point",
       "system-th": "System",
