@@ -1,7 +1,7 @@
 <template>
   <div
     class="date-field-flatpickr"
-    :class="{ 'date-field-flatpickr__input--disabled': $attrs.disabled }"
+    :class="{ 'date-field-flatpickr__input--disabled': disabled }"
   >
     <label
       class="date-field-flatpickr__label"
@@ -19,7 +19,6 @@
         class="date-field-flatpickr__input"
         @input="dateFieldUpdated"
         v-model="flatpickrDate"
-        :disabled="disabled"
         :placeholder="placeholder"
         :key="_uid"
       >
@@ -150,6 +149,21 @@ export default {
         // set new config
         this.flatpickr.set(safeConfig)
       },
+    },
+
+    /**
+     * We can set disabled state only directly, because of flatpickr does not
+     * provide any config options
+     *
+     * @link https://github.com/flatpickr/flatpickr/issues/777
+     */
+
+    disabled (value) {
+      if (value) {
+        this.flatpickr._input.setAttribute('disabled', 'disabled')
+      } else {
+        this.flatpickr._input.setAttribute('disabled', '')
+      }
     },
   },
 
