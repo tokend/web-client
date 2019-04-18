@@ -17,7 +17,7 @@
               :label="'invest-form.asset-lbl' | globalize"
               name="invest-asset"
               @blur="touchField('form.asset')"
-              :disabled="formMixin.isDisabled || !canUpdateOffer"
+              :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
 
             <vue-markdown
@@ -44,7 +44,7 @@
                 'form.amount',
                 { from: MIN_AMOUNT, to: availableAmount.value }
               )"
-              :disabled="formMixin.isDisabled || !canUpdateOffer"
+              :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
 
             <p class="app__form-field-description">
@@ -80,50 +80,6 @@
             }
           })"
         />
-
-        <div class="app__form-actions invest-form__actions">
-          <template v-if="formMixin.isConfirmationShown">
-            <form-confirmation
-              @ok="submit"
-              :is-pending="isSubmitting"
-              @cancel="hideConfirmation"
-            />
-          </template>
-
-          <template v-else>
-            <template v-if="currentInvestment.offerId">
-              <button
-                v-ripple
-                type="submit"
-                class="app__button-raised invest-form__submit-btn"
-                :disabled="formMixin.isDisabled || !canSubmit"
-              >
-                {{ 'invest-form.update-offer-btn' | globalize }}
-              </button>
-
-              <button
-                v-ripple
-                type="button"
-                @click="cancelOffer"
-                class="app__button-flat"
-                :disabled="formMixin.isDisabled || !canUpdateOffer"
-              >
-                {{ 'invest-form.cancel-offer-btn' | globalize }}
-              </button>
-            </template>
-
-            <template v-else>
-              <button
-                v-ripple
-                type="submit"
-                class="app__button-raised invest-form__submit-btn"
-                :disabled="formMixin.isDisabled || !canSubmit"
-              >
-                {{ 'invest-form.invest-btn' | globalize }}
-              </button>
-            </template>
-          </template>
-        </div>
 
         <p class="app__form-field-description">
           <template v-if="sale.owner === accountId">
@@ -161,7 +117,7 @@
           class="invest-form__fee-box"
           v-if="isFeesLoaded">
           <h3 class="invest-form__fee-box-heading">
-            {{ 'transfer-form.sender-fees' | globalize }}
+            {{ 'invest-form.transaction-fees' | globalize }}
           </h3>
 
           <!-- eslint-disable-next-line -->
@@ -172,7 +128,7 @@
               - {{ fees.fixed | formatNumber }}
               {{ form.asset.code }}
               <span class="invest-form__fee-type">
-                {{ 'transfer-form.sender-fixed-fee' | globalize }}
+                {{ 'invest-form.fixed-fee' | globalize }}
               </span>
             </p>
 
@@ -182,45 +138,67 @@
               - {{ fees.percent | formatNumber }}
               {{ form.asset.code }}
               <span class="invest-form__fee-type">
-                {{ 'transfer-form.sender-percent-fee' | globalize }}
+                {{ 'invest-form.percent-fee' | globalize }}
               </span>
             </p>
           </template>
 
           <template v-else>
             <p class="invest-form__no-fee-msg">
-              {{ 'transfer-form.source-no-fees' | globalize }}
+              {{ 'invest-form.no-transaction-fees' | globalize }}
             </p>
           </template>
 
           <h3 class="invest-form__fee-box-heading">
-            {{ 'transfer-form.total' | globalize }}
+            {{ 'invest-form.total-fee' | globalize }}
           </h3>
 
           <p class="invest-form__fee">
             - {{ totalAmount | formatNumber }} {{ form.asset.code }}
             <span class="invest-form__fee-type">
-              {{ 'transfer-form.total-amount' | globalize }}
+              {{ 'invest-form.total-amount' | globalize }}
             </span>
           </p>
         </div>
       </transition>
 
       <div class="app__form-actions">
-        <button
-          v-ripple
-          v-if="view.mode === VIEW_MODES.submit"
-          type="submit"
-          class="app__form-submit-btn"
-          :disabled="formMixin.isDisabled"
-          form="invest-form">
-          {{ 'transfer-form.continue-btn' | globalize }}
-        </button>
+        <template v-if="currentInvestment.offerId">
+          <button
+            v-ripple
+            type="button"
+            @click="submit"
+            class="app__button-raised invest-form__submit-btn"
+            :disabled="formMixin.isDisabled || !canSubmit"
+          >
+            {{ 'invest-form.update-offer-btn' | globalize }}
+          </button>
+          <button
+            v-ripple
+            type="button"
+            @click="cancelOffer"
+            class="app__button-flat"
+            :disabled="formMixin.isDisabled || !canUpdateOffer"
+          >
+            {{ 'invest-form.cancel-offer-btn' | globalize }}
+          </button>
+        </template>
+        <template v-else>
+          <button
+            v-ripple
+            v-if="view.mode === VIEW_MODES.submit"
+            click="submit"
+            class="app__form-submit-btn"
+            :disabled="formMixin.isDisabled"
+            form="invest-form">
+            {{ 'invest-form.continue-btn' | globalize }}
+          </button>
+        </template>
 
         <form-confirmation
           v-if="view.mode === VIEW_MODES.confirm"
-          :message="'transfer-form.recheck-form' | globalize"
-          :ok-button="'transfer-form.submit-btn' | globalize"
+          :message="'invest-form.recheck-form' | globalize"
+          :ok-button="'invest-form.invest-btn' | globalize"
           @cancel="updateView(VIEW_MODES.submit)"
           @ok="submit()"
         />
@@ -321,7 +299,6 @@ export default {
     convertedAmount: 0,
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
-    isSubmitting: false,
     isFeesLoaded: false,
     VIEW_MODES,
     vueRoutes,
@@ -509,9 +486,8 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
-
+      this.updateView(VIEW_MODES.submit)
       this.disableForm()
-      this.isSubmitting = true
 
       try {
         const baseBalance = this.balances
@@ -536,7 +512,6 @@ export default {
       }
 
       this.enableForm()
-      this.isSubmitting = false
       this.hideConfirmation()
     },
 
@@ -632,11 +607,15 @@ export default {
         this.fees.fixed = fees.fixed
         this.fees.percent = fees.percent
         this.isFeesLoaded = true
+        this.updateView(VIEW_MODES.confirm)
       } catch (error) {
         ErrorHandler.process(error)
         this.isFeesLoaded = false
       }
       this.enableForm()
+    },
+    updateView (mode) {
+      this.view.mode = mode
     },
   },
 }
@@ -704,7 +683,24 @@ export default {
   margin: 0;
 }
 
+.invest-form__fee-box {
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 0.1rem dashed $col-text-field-hint-inactive;
+}
+
+.invest-form__fee-box-heading:not(:first-child) {
+  margin-top: 2.5rem;
+}
+
 .invest-form__fee-type {
   color: $col-details-label;
+}
+
+.invest-form__no-fee-msg {
+  color: $col-details-label;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  margin: 1rem 0;
 }
 </style>
