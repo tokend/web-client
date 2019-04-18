@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Displaying of limit request details in drawer
 
+#### Changed
+- Show limits request list on top of other limits on `Limits` page
+
 #### Removed
 - Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
@@ -109,13 +112,6 @@ for further information about branching and tagging conventions.
 - Now using "qrcode.vue" package instead of "vue-qr"
 - Now getting previous account role from previous KYC request instead of
   `creatorDetails` of approved reset request
-- Moved redeem offer creation from the global mixin to the local store
-- Removed useless fields and getters in the Redeem `Sale` and `Asset` records
-- Now using "qrcode.vue" plugin instead of "vue-qr"
-- Clipboard field styles to differ it from input fields
-- Renamed `Fund(s)` -> `Sale(s)` and `Token(s)` -> `Asset(s)`
-- Redesigned status message
-- Show limits request list on top of other limits on `Limits` page
 - Now using main signers account id instead of accounts account ID for
   setting pre-issuance asset signer
 
