@@ -10,6 +10,11 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Displaying of limit request details in drawer
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+
+#### Changed
+- Corrected statistics charts data (Loyalty)
 
 #### Removed
 - Buttons' "form" attributes
@@ -21,6 +26,8 @@ for further information about branching and tagging conventions.
 - Fixed a bug with displaying "undefined" instead of quote asset in
   dashboard’s chart
 - Fixed a bug with unreadable QR codes on "Downloads" page
+- Calculating percent delta on line chart
+- Displaying negative values on line chart
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added

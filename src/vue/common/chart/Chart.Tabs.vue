@@ -67,9 +67,6 @@ export default {
       all: 'all',
     },
   }),
-  created () {
-    this.$emit(EVENTS.input, this.tabs.day)
-  },
 }
 </script>
 
