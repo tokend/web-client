@@ -21,7 +21,7 @@
         </button>
 
         <button
-          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
@@ -46,7 +46,7 @@
     </drawer>
 
     <drawer
-      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
       :is-shown.sync="isIssuanceDrawerShown"
     >
       <template slot="heading">
@@ -54,7 +54,9 @@
       </template>
 
       <submodule-importer
-        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
+        :submodule="getModule().getSubmodule(IssuanceFormModule)"
+        :wallet="wallet"
+        :config="config"
         @submit="isIssuanceCreated = true"
         @close="isIssuanceDrawerShown = false"
       />
@@ -83,7 +85,7 @@ import config from '@/config'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 
 export default {
@@ -103,7 +105,7 @@ export default {
     },
     vueRoutes,
     IssuanceExplorerModule,
-    IssuanceDrawerPseudoModule,
+    IssuanceFormModule,
     PreIssuanceDrawerPseudoModule,
   }),
 

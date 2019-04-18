@@ -13,7 +13,7 @@
         />
         <div class="dashboard__actions">
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)">
+          <template v-if="getModule().canRenderSubmodule(IssuanceFormModule)">
             <button
               class="app__button-raised dashboard__action"
               @click="createIssuanceFormIsShown = true"
@@ -68,12 +68,22 @@
       </template>
     </template>
     <drawer :is-shown.sync="showDrawer">
-      <template v-if="createIssuanceFormIsShown">
+      <template
+        v-if="createIssuanceFormIsShown &&
+          getModule().canRenderSubmodule(IssuanceFormModule)"
+      >
         <template slot="heading">
           {{ 'dashboard.create-issuance-lbl' | globalize }}
         </template>
-        <issuance-form @close="showDrawer = false" />
+
+        <submodule-importer
+          :submodule="getModule().getSubmodule(IssuanceFormModule)"
+          :config="{ horizonURL: config.HORIZON_SERVER }"
+          :wallet="wallet"
+          @close="showDrawer = false"
+        />
       </template>
+
       <template v-if="transferFormIsShown">
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
@@ -89,7 +99,6 @@
 
 <script>
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
-import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -100,7 +109,7 @@ import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
@@ -112,7 +121,6 @@ export default {
   name: 'dashboard',
   components: {
     AssetSelector,
-    IssuanceForm,
     Transfer,
     Loader,
     Drawer,
@@ -127,7 +135,7 @@ export default {
     scale: 'day',
     config,
     MovementsHistoryModule,
-    IssuanceDrawerPseudoModule,
+    IssuanceFormModule,
     TransferDrawerPseudoModule,
     DashboardChartPseudoModule,
     REFS,

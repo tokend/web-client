@@ -10,7 +10,7 @@ import { StatisticsPageModule } from '@/vue/pages/statistics-page'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 
 export default {
@@ -49,7 +49,7 @@ export default {
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
           new PreIssuanceDrawerPseudoModule({

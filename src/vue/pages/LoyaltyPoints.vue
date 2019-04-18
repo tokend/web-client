@@ -10,7 +10,7 @@
       </template>
       <template slot="extra">
         <button
-          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
@@ -31,7 +31,7 @@
     <router-view />
 
     <drawer
-      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
       :is-shown.sync="isIssuanceDrawerShown"
     >
       <template slot="heading">
@@ -39,7 +39,9 @@
       </template>
 
       <submodule-importer
-        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
+        :submodule="getModule().getSubmodule(IssuanceFormModule)"
+        :wallet="wallet"
+        :config="config"
         @close="isIssuanceDrawerShown = false"
       />
     </drawer>
@@ -67,7 +69,7 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { CreateInvoiceFormModule } from '@modules/loyalty-points/create-invoice-form/module'
 
 import { vueRoutes } from '@/vue-router/routes'
@@ -91,7 +93,7 @@ export default {
     config: {
       horizonURL: config.HORIZON_SERVER,
     },
-    IssuanceDrawerPseudoModule,
+    IssuanceFormModule,
     CreateInvoiceFormModule,
   }),
   computed: {
