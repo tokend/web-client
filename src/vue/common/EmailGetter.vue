@@ -1,10 +1,10 @@
 <template>
   <span
-    class="email-getter__wrapper"
-    :class="{ 'justify-end': rightSide }"
+    class="email-getter"
+    :class="{ 'email-getter--justify-end': rightSide }"
   >
     <span
-      class="email-getter"
+      class="email-getter__value"
       :title="isTitled && (email || accountId || balanceId)"
     >
       <template v-if="isMasterAccount">
@@ -28,11 +28,20 @@
       </template>
     </span>
 
-    <i
-      v-if="isCopyButton && !isMasterAccount && !isLoading"
-      class="mdi mdi-content-copy copy-button"
-      @click="copyToClipboard(email || accountId || balanceId)"
-    />
+    <button
+      v-show="isCopyButton && !isMasterAccount && !isLoading"
+      class="email-getter__copy-button"
+      :id="`clipboard-btn-${_uid}`"
+      :data-clipboard-text="email || accountId || balanceId"
+      @click="changeBtnIcon"
+    >
+      <i
+        class="mdi email-getter__icon"
+        :class="isCopyBtnPressed ?
+          'mdi-clipboard-check' :
+          'mdi-clipboard-text'"
+      />
+    </button>
   </span>
 </template>
 
@@ -41,6 +50,7 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import Clipboard from 'clipboard'
 
 export default {
   mixins: [IdentityGetterMixin],
@@ -72,6 +82,7 @@ export default {
     email: '',
     isMasterAccount: false,
     isLoading: false,
+    isCopyBtnPressed: false,
   }),
 
   watch: {
@@ -86,6 +97,15 @@ export default {
 
   async created () {
     await this.init()
+  },
+
+  // TODO: Add "Copied!!" tooltip when the tooltip directive ready
+  mounted () {
+    const btn = document.querySelector(
+      `#clipboard-btn-${this._uid}`
+    )
+    if (!btn) return
+    this.clipboard = new Clipboard(btn)
   },
 
   methods: {
@@ -124,12 +144,9 @@ export default {
       }
     },
 
-    async copyToClipboard (data) {
-      try {
-        await navigator.clipboard.writeText(data)
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
-      }
+    changeBtnIcon () {
+      this.isCopyBtnPressed = true
+      setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
     },
   },
 }
@@ -138,45 +155,44 @@ export default {
 <style lang="scss" scoped>
   @import "~@scss/variables";
   @import "~@scss/mixins";
-  .email-getter__wrapper {
+  .email-getter {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-  }
 
-  .email-getter {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .copy-button {
-    @include button-icon();
-    color: $col-primary-inactive;
-    font-size: 1.3rem;
-    margin-left: .5rem;
-    min-height: unset;
-    min-width: unset;
-    padding: .5rem .6rem;
-
-    &::before {
-      vertical-align: middle;
+    &--justify-end {
+      justify-content: flex-end;
     }
 
-    &:hover {
-      background-color: $col-primary-flat-hover;
+    &__value {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    &:active {
-      background-color: darken($col-primary-flat-hover, 30%);
+    &__copy-button {
+      @include button-icon();
+      color: $col-primary-inactive;
+      margin-left: .5rem;
+      min-height: 1rem;
+      min-width: 1rem;
+      transition: .1s ease-out;
+      padding: 0;
+
+      &:hover {
+        color: lighten($col-primary-inactive, 20%);
+        background: none;
+      }
+
+      &:active {
+        color: darken($col-primary-inactive, 20%);
+      }
     }
-  }
 
-  .justify-end {
-    justify-content: flex-end;
-
-    .copy-button {
-      margin-right: -.6rem;
+    &__icon {
+      &::before {
+        vertical-align: middle;
+      }
     }
   }
 </style>
