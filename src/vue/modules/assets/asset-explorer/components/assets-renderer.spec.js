@@ -23,6 +23,8 @@ describe('Assets renderer', () => {
     })
   })
 
+  afterEach(() => sandbox.restore())
+
   describe('created hook', () => {
     it('calls initFirstPageLoader function', () => {
       sandbox.stub(AssetsRenderer.methods, 'initFirstPageLoader')

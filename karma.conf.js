@@ -18,17 +18,19 @@ module.exports = function (config) {
     },
     files: [
       'test/disallow-console-calls.js',
-      'src/**/*.spec.js',
-      'src/**/*.e2e.js',
+      'karma-context.js',
+      // 'src/**/*.spec.js',
+      // 'src/**/*.e2e.js',
     ],
     preprocessors: {
       'test/disallow-console-calls.js': ['webpack'],
-      'src/**/*.spec.js': [ 'webpack' ],
-      'src/**/*.e2e.js': [ 'webpack' ],
+      'karma-context.js': ['webpack'],
+      // 'src/**/*.spec.js': [ 'webpack' ],
+      // 'src/**/*.e2e.js': [ 'webpack' ],
     },
 
     webpack: webpackConfig,
     frameworks: ['mocha', 'sinon', 'chai', 'sinon-chai'],
-    reporters: ['spec'],
+    // reporters: ['spec'],
   })
 }
