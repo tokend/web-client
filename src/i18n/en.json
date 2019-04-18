@@ -1393,7 +1393,6 @@
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
-      "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
       "days-after-end": "days after closed",

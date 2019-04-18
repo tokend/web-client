@@ -12,11 +12,16 @@ for further information about branching and tagging conventions.
 - Displaying of limit request details in drawer
 
 #### Changed
-- Show limits request list on top of other limits on `Limits` page
+- Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- Sale record is now parsing the resource from new API
+- Show limits request list on top of other limits on "Limits" page
 
 #### Removed
 - Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
+- Statistics property from `SaleRecord`
+- Displaying investors quantity in sale details
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
