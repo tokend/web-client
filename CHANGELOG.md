@@ -8,13 +8,38 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Removed
-- Statistics from the `SaleRecord`
-- Displaying investors quantity in sale details
+#### Added
+- Displaying of limit request details in drawer
 
-### Changed
+#### Changed
+- Now getting blob types from SDK
 - Now using /v3 API for getting sales
 - Sale record is now parsing the resource from new API
+
+#### Removed
+- Buttons' "form" attributes
+- Dupe team size and website fields on corporate verification
+- Statistics property from `SaleRecord`
+- Displaying investors quantity in sale details
+
+#### Fixed
+- Fixed a bug with unsubmitted transfer form
+- Fixed a bug with displaying verification state message
+- Fixed a bug with displaying "undefined" instead of quote asset in
+  dashboard’s chart
+- Fixed a bug with unreadable QR codes on "Downloads" page
+
+## [1.5.0-rc.1] - 2019-04-17
+#### Added
+- Displaying of blocked account role
+- Displaying of permanently rejected verification request state
+
+### "Under the hood" changes
+#### Changed
+- Now loading KYC requests in the parent verification component
+- Now getting latest approved request ID in creator details of the latest
+  change role request, and loading the related request itself if account
+  was reset or blocked
 
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added
@@ -261,7 +286,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...HEAD
+[1.5.0-rc.1]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...1.5.0-rc.1
 [1.5.0-rc.0]: https://github.com/tokend/web-client/compare/1.4.0...1.5.0-rc.0
 [1.4.0]: https://github.com/tokend/web-client/compare/1.4.0-rc.3...1.4.0
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3

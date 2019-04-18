@@ -470,6 +470,8 @@
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "account-type-lbl": "Account type",
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
@@ -495,8 +497,6 @@
       "permanently-rejected-reason": "Rejection reason:"
     },
     "verification-form": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
@@ -619,12 +619,13 @@
       "op-type-deposit": "Deposit",
       "op-type-withdraw": "Withdraw",
       "op-type-payment-out": "Payment",
-      "table-tx-type-lbl": "Transaction type",
-      "table-daily-limit-lbl": "Daily limit (left/total)",
-      "table-weekly-limit-lbl": "Weekly limit (left/total)",
-      "table-monthly-limit-lbl": "Monthly limit (left/total)",
-      "table-annual-limit-lbl": "Annual limit (left/total)",
+      "table-tx-type-lbl": "Operation type",
+      "table-daily-limit-lbl": "Daily (left/total)",
+      "table-weekly-limit-lbl": "Weekly (left/total)",
+      "table-monthly-limit-lbl": "Monthly (left/total)",
+      "table-annual-limit-lbl": "Annual (left/total)",
       "not-set-lbl": "Not set",
+      "unlimited-lbl": "Unlimited",
       "data-loading": "Fetching limits data...",
       "load-limits-btn": "Load limits",
       "loading-failed": "Failed to load limits",
@@ -635,9 +636,9 @@
       "table-request-type-lbl": "Request type",
       "table-state-lbl": "State",
       "table-asset-lbl": "Asset",
-      "upload-documents-btn": "Upload documents",
       "data-loading": "Fetching limits requests data...",
       "document-uploader-form-heading": "Upload documents",
+      "request-details-drawer-heading": "Limits request details",
       "request-state-pending": "Pending",
       "request-state-cancelled": "Cancelled",
       "request-state-approved": "Approved",
@@ -649,12 +650,26 @@
       "here-will-requests-list": "Here will be the list of your limits change requests",
       "load-requests-btn": "Load requests",
       "loading-failed": "Failed to load limits requests",
-      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again"
+      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again",
+      "details-btn": "Details"
+    },
+    "limits-request-details-viewer": {
+      "table-daily-limit-lbl": "Daily limit",
+      "table-weekly-limit-lbl": "Weekly limit",
+      "table-monthly-limit-lbl": "Monthly limit",
+      "table-annual-limit-lbl": "Annual limit",
+      "approved-msg": "Your request was approved",
+      "pending-msg": "Your request was submitted. Please wait until it is reviewed",
+      "rejected-msg": "Your request require approval documents",
+      "permanently-rejected-msg": "Your request was rejected with reason: {{reason}}",
+      "upload-documents-btn": "Upload documents",
+      "not-set-lbl": "Not set"
     },
     "passport": {
       "account-unverified": "Unverified account",
       "account-general": "General account",
       "account-corporate": "Corporate account",
+      "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
       "sign-out-btn": "Sign out"

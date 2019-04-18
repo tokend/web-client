@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="verificationState"
     class="verification-state-message"
     :class="`verification-state-message--${verificationState}`"
   >
@@ -47,17 +48,21 @@ export default {
   computed: {
     ...mapGetters({
       kycState: vuexTypes.kycState,
+
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycResetReason: vuexTypes.kycRequestResetReason,
+      kycBlockReason: vuexTypes.kycRequestBlockReason,
+
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
-      // TODO: Fill when blocking account feature is merged
+      isAccountBlocked: vuexTypes.isAccountBlocked,
     }),
 
     verificationState () {
       let state
 
-      // TODO: Fill when blocking account feature is merged
-      if (this.isAccountRoleReseted) {
+      if (this.isAccountBlocked) {
+        state = VERIFICATION_STATES.blocked
+      } else if (this.isAccountRoleReseted) {
         state = VERIFICATION_STATES.reset
       } else if (this.kycState === REQUEST_STATES_STR.approved) {
         state = VERIFICATION_STATES.approved
@@ -65,6 +70,8 @@ export default {
         return VERIFICATION_STATES.pending
       } else if (this.kycState === REQUEST_STATES_STR.rejected) {
         state = VERIFICATION_STATES.rejected
+      } else if (this.kycState === REQUEST_STATES_STR.permanentlyRejected) {
+        state = VERIFICATION_STATES.permanentlyRejected
       }
 
       return state
@@ -73,8 +80,7 @@ export default {
     verificationReason () {
       switch (this.verificationState) {
         case VERIFICATION_STATES.blocked:
-          // TODO: Fill when blocking account feature is merged
-          return ''
+          return this.kycBlockReason
         case VERIFICATION_STATES.reset:
           return this.kycResetReason
         case VERIFICATION_STATES.rejected:
