@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Displaying of limit request details in drawer
+
+#### Changed
+- Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- Sale record is now parsing the resource from new API
+- Show limits request list on top of other limits on "Limits" page
+
+#### Removed
+- Buttons' "form" attributes
+- Dupe team size and website fields on corporate verification
+- Statistics property from `SaleRecord`
+- Displaying investors quantity in sale details
+
+#### Fixed
+- Fixed a bug with unsubmitted transfer form
+- Fixed a bug with displaying verification state message
+- Fixed a bug with displaying "undefined" instead of quote asset in
+  dashboard’s chart
+- Fixed a bug with unreadable QR codes on "Downloads" page
+
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
 - Displaying of blocked account role

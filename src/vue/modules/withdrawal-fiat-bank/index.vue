@@ -165,7 +165,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="withdrawal-fiat-bank-module"
       >
         {{ 'withdrawal-fiat-bank-module.withdrawal' | globalize }}
       </button>

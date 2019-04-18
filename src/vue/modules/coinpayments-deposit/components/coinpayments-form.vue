@@ -29,7 +29,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="coinpayments-form"
             >
               {{ 'coinpayments-deposit.request-address-lbl' | globalize }}
             </button>
