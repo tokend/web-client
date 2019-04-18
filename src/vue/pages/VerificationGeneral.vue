@@ -208,6 +208,9 @@ export default {
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
+    verificationCode () {
+      return this.accountId.slice(1, 6)
+    },
     isFormDisabled () {
       return !this.isAccountRoleReseted && this.kycState &&
         this.kycState !== REQUEST_STATES_STR.rejected &&

@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
 - Dupe team size and website fields on corporate verification
 - Statistics property from `SaleRecord`
 - Displaying investors quantity in sale details
+- Opera from noscript
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
@@ -29,6 +30,7 @@ for further information about branching and tagging conventions.
 - Fixed a bug with displaying "undefined" instead of quote asset in
   dashboard’s chart
 - Fixed a bug with unreadable QR codes on "Downloads" page
+- Displaying verification code on general KYC form
 - Paying fees for recipient while sending assets
 
 ## [1.5.0-rc.1] - 2019-04-17
