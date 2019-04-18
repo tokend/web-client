@@ -18,6 +18,7 @@
         ref="dateField"
         class="date-field-flatpickr__input"
         @input="dateFieldUpdated"
+        :disabled="disabled"
         v-model="flatpickrDate"
         :placeholder="placeholder"
         :key="_uid"
@@ -117,22 +118,13 @@ export default {
   },
 
   watch: {
-    /**
-     * Watch for changes from parent component and update DOM
-     *
-     * @param {string|date} newValue
-     */
     value (newValue) {
       // Prevent updates if v-model value is same as input's current value
       if (newValue === this.flatpickrDate) return
       // Sets the current selected date after value changed
       if (this.flatpickr) this.flatpickr.setDate(newValue, true)
     },
-    /**
-     * Watch for any config changes and redraw date-picker
-     *
-     * @param {object} newConfig
-     */
+
     config: {
       deep: true,
       handler (newConfig) {
@@ -143,7 +135,6 @@ export default {
         // This also means that new callbacks cannot be passed once a component
         // has been initialized
 
-        // set new config
         this.flatpickr.set(this.removeFlatpickrHooks(safeConfig))
       },
     },
@@ -154,7 +145,6 @@ export default {
      *
      * @link https://github.com/flatpickr/flatpickr/issues/777
      */
-
     disabled (value) {
       if (value) {
         this.flatpickr._input.setAttribute('disabled', 'disabled')
@@ -165,21 +155,19 @@ export default {
   },
 
   mounted () {
-    // Return early if flatpickr is already mounted
     if (this.flatpickr) return
 
     let safeConfig = Object.assign({}, this.config)
 
     // Inject defined methods into events array
     Object.values(BUILTIN_EVENTS).forEach(hook => {
-      safeConfig[hook] = this.arrayify(safeConfig[hook] || [])
+      safeConfig[hook] = this.arrayify(safeConfig[hook])
         .concat((...args) => this[hook](...args))
     })
 
     // Set initial date without emitting any event
     safeConfig.defaultDate = this.value || safeConfig.defaultDate
 
-    // Init flatpickr
     this.flatpickr = new Flatpickr(this.$refs.dateField, safeConfig)
 
     this.flatpickrDate = this.value || safeConfig.defaultDate || null
@@ -205,13 +193,9 @@ export default {
       }
     },
     /**
-     * @param {array} selectedDates - an array of Date objects selected by the
-     *        user. When there are no dates selected, the array is empty.
-     * @param {string} dateStr - a string representation of the latest selected
-     *        Date object by the user. The string is formatted as per the
-     *        dateFormat option.
-     * @param {object} instance - the flatpickr object, containing various
-     *        methods and properties.
+     * Params doc:
+     *
+     * @link https://flatpickr.js.org/events/#events
      */
     onOpen (selectedDates, dateStr, instance) {
       this.isCalendarOpen = true
@@ -221,7 +205,9 @@ export default {
       })
     },
     /**
-     * @link onOpen
+     * Params doc:
+     *
+     * @link https://flatpickr.js.org/events/#events
      */
     onClose (selectedDates, dateStr, instance) {
       this.isCalendarOpen = false
@@ -234,6 +220,9 @@ export default {
       })
     },
     arrayify (obj) {
+      if (!obj) {
+        return []
+      }
       return obj instanceof Array ? obj : [obj]
     },
     removeFlatpickrHooks (config) {
