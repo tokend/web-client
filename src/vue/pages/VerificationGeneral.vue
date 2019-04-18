@@ -151,7 +151,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
+
+import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { required, documentContainer } from '@validators'
 import { mapGetters } from 'vuex'

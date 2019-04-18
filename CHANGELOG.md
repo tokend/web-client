@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Displaying of limit request details in drawer
 
+#### Changed
+- Now getting blob types from SDK
+
 #### Removed
 - Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
