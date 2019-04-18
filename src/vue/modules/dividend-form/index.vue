@@ -4,7 +4,6 @@
       <template v-if="ownedAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="dividend-form"
           novalidate
         >
           <div class="app__form-row dividend__form-row">
@@ -128,7 +127,6 @@
                 !balanceHolders.length ||
                 !isSignersLoaded
               "
-              form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
             </button>

@@ -24,10 +24,6 @@ export class SaleRecord {
     this.hardCap = _get(record, 'hardCap')
     this.currentCap = _get(record, 'currentCap')
 
-    this.statistics = _get(record, 'statistics')
-    this.investors = _get(record, 'statistics.investors')
-    this.averageInvestment = _get(record, 'statistics.averageAmount')
-
     this.state = _get(record, 'state')
     this.stateValue = _get(record, 'state.value')
     this.stateStr = _get(record, 'state.name')
