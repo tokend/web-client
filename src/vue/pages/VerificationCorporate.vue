@@ -262,7 +262,7 @@ export default {
       this.disableForm()
       try {
         await this.uploadAvatar()
-        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryCorporateRoleId
