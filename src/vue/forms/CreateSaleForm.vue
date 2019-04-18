@@ -19,7 +19,6 @@
                   white-autofill
                   v-model="form.saleInformation.name"
                   @blur="touchField('form.saleInformation.name')"
-                  id="sale-name"
                   name="create-sale-name"
                   :label="'create-sale-form.sale-name' | globalize"
                   :error-message="getFieldErrorMessage(
@@ -52,7 +51,6 @@
                   :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.startTime')"
                   @blur="touchField('form.saleInformation.startTime')"
-                  id="sale-start-time"
                   :label="'create-sale-form.start-time' | globalize"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.startTime', {
@@ -71,7 +69,6 @@
                   :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.endTime')"
                   @blur="touchField('form.saleInformation.endTime')"
-                  id="sale-end-time"
                   name="create-sale-end-time"
                   :label="'create-sale-form.close-time' | globalize"
                   :error-message="getFieldErrorMessage(
@@ -91,10 +88,9 @@
                   type="number"
                   v-model="form.saleInformation.softCap"
                   @blur="touchField('form.saleInformation.softCap')"
-                  id="soft-cap"
                   name="create-sale-soft-cap"
                   :label="'create-sale-form.soft-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.softCap',
@@ -114,10 +110,9 @@
                   type="number"
                   v-model="form.saleInformation.hardCap"
                   @blur="touchField('form.saleInformation.hardCap')"
-                  id="hard-cap"
                   name="create-sale-hard-cap"
                   :label="'create-sale-form.hard-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.hardCap',
@@ -138,7 +133,6 @@
                   @blur="touchField(
                     'form.saleInformation.requiredBaseAssetForHardCap'
                   )"
-                  id="base-asset-for-hard-cap"
                   name="create-sale-base-asset-for-hard-cap"
                   type="number"
                   :label="'create-sale-form.base-asset-hard-cap-to-sell' |
@@ -171,10 +165,10 @@
                 <p class="create-sale__price">
                   {{ 'create-sale-form.price' | globalize({
                     base: form.saleInformation.baseAsset.code,
-                    quote: config.DEFAULT_QUOTE_ASSET
+                    quote: defaultQuoteAsset
                   }) }}
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+                  {{ { value: price, currency: defaultQuoteAsset } | formatMoney }}
                 </p>
               </div>
             </div>
@@ -237,7 +231,6 @@
               <div class="app__form-field">
                 {{ 'create-sale-form.short-description' | globalize }}
                 <textarea-field
-                  id="sale-short-description"
                   name="create-sale-short-description"
                   v-model="form.shortBlurb.shortDescription"
                   @blur="touchField('form.shortBlurb.shortDescription')"
@@ -275,7 +268,6 @@
                 <input-field
                   white-autofill
                   v-model="form.fullDescription.youtubeVideo"
-                  id="youtube-id"
                   name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
                   :disabled="formMixin.isDisabled"
@@ -491,6 +483,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
@@ -564,7 +557,7 @@ export default {
       const operation = {
         requestID: this.request.id || '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
-        defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
