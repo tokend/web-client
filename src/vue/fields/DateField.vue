@@ -137,17 +137,14 @@ export default {
       deep: true,
       handler (newConfig) {
         let safeConfig = Object.assign({}, newConfig)
+
         // Workaround: Don't pass hooks to configs again otherwise
         // previously registered hooks will stop working
-        // Notice: we are looping through all events
         // This also means that new callbacks cannot be passed once a component
         // has been initialized
-        FLATPICKR_EVENTS.forEach((hook) => {
-          delete safeConfig[hook]
-        })
 
         // set new config
-        this.flatpickr.set(safeConfig)
+        this.flatpickr.set(this.removeFlatpickrHooks(safeConfig))
       },
     },
 
@@ -175,7 +172,6 @@ export default {
 
     // Inject defined methods into events array
     Object.values(BUILTIN_EVENTS).forEach(hook => {
-      // eslint-disable-next-line
       safeConfig[hook] = this.arrayify(safeConfig[hook] || [])
         .concat((...args) => this[hook](...args))
     })
@@ -237,11 +233,15 @@ export default {
         this.$emit(EMITABLE_EVENTS.onClose)
       })
     },
-    camelToKebab (string) {
-      return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
-    },
     arrayify (obj) {
       return obj instanceof Array ? obj : [obj]
+    },
+    removeFlatpickrHooks (config) {
+      let safeConfig = config
+      FLATPICKR_EVENTS.forEach((hook) => {
+        delete safeConfig[hook]
+      })
+      return safeConfig
     },
   },
 }
