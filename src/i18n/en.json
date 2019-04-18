@@ -1463,7 +1463,9 @@
       "total-fee": "Total fee",
       "total-amount": "Total amount",
       "continue-btn": "Continue",
-      "recheck-form": "Please recheck the form before proceeding"
+      "recheck-form": "Please recheck the form before proceeding",
+      "transaction-fees": "Transaction fees",
+      "no-transaction-fees": "No fees for this transaction"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
