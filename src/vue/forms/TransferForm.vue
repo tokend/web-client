@@ -368,8 +368,10 @@ export default {
         .add(this.fees.destination.fixed, this.fees.destination.percent)
     },
     totalAmount () {
-      const fees = MathUtil
-        .add(this.totalSenderFee, this.totalReceiverFee)
+      const fees = this.form.isPaidForRecipient
+        ? MathUtil.add(this.totalSenderFee, this.totalReceiverFee)
+        : this.totalSenderFee
+
       return MathUtil.add(fees, this.form.amount)
     },
   },
@@ -486,7 +488,7 @@ export default {
             percent: this.view.opts.destinationPercentFee,
             fixed: this.view.opts.destinationFixedFee,
           },
-          sourcePaysForDest: this.view.opts.feeFromSource,
+          sourcePaysForDest: this.form.isPaidForRecipient,
         },
         subject: this.view.opts.subject,
         asset: this.form.asset.code,
