@@ -1,11 +1,11 @@
 <template>
-  <div class="create-invoice-form__payment">
+  <div class="invoice-confirmation">
     <invoice-viewer :invoice="invoice" />
 
     <button
       v-ripple
       type="button"
-      class="create-invoice-form__close-btn app__button-raised"
+      class="invoice-confirmation__close-btn app__button-raised"
       :disabled="!isPaymentConfirmed"
       @click="$emit(EVENTS.close)"
     >
@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style scoped>
-.create-invoice-form__close-btn {
+.invoice-confirmation__close-btn {
   margin-top: 4rem;
 }
 </style>
