@@ -150,7 +150,6 @@ export default {
 
 <style scoped lang="scss">
 @import "~@scss/mixins";
-@import "~@scss/variables";
 
 $hide-account-details-bp: 800px;
 $dropdown-item-side-padding: 2.4rem;

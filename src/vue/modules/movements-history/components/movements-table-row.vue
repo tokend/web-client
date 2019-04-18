@@ -178,7 +178,7 @@ export default {
 
 <style lang="scss">
 @import '~@scss/mixins';
-@import '~@scss/variables';
+
 @import '../scss/variables';
 
 .movements-table-row__brief {

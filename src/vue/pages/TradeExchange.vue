@@ -190,8 +190,6 @@ export default {
 
 <style lang="scss">
 @import "~@scss/mixins";
-@import "~@scss/variables";
-
 $custom-breakpoint: 985px;
 
 .trade-exchange__asset-selector-field {

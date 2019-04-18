@@ -240,7 +240,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@scss/variables";
+
   @import "~@scss/mixins";
 
   .withdrawal-requests-details__request-state {

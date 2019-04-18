@@ -191,8 +191,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-
 .limits-table-renderer__table-item--inactive {
   color: $col-table-cell-text-inactive;
 }

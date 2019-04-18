@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
+
   @import "~@scss/mixins";
 
   .account-type-selector__item {

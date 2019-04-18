@@ -51,8 +51,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
-
 .comment-viewer__header {
   display: flex;
   justify-content: space-between;

@@ -35,7 +35,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
 
 .movement-direction-mark {
   font-size: 1.8rem;

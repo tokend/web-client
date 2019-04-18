@@ -21,8 +21,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables';
-
 .loader {
   display: flex;
   align-items: center;

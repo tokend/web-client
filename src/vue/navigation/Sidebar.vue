@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 // we cannot wrap all the the contents into a wrapper because the links should

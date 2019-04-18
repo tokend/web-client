@@ -88,8 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-
 .sale-overview-details {
   tr td:last-child {
     text-align: right;

@@ -135,8 +135,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-
 .loyalty-points-invoices-module__cards {
   display: flex;
   justify-content: space-between;

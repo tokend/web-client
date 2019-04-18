@@ -39,7 +39,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
 
 .footer {
   display: flex;

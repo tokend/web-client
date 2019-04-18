@@ -519,8 +519,6 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
-@import "~@scss/variables";
-
 .transfer__fee-box {
   margin-top: 4rem;
   padding-top: 4rem;

@@ -39,7 +39,6 @@ export default {
 
 <style scoped lang="scss">
 @import "~@scss/mixins";
-@import "~@scss/variables";
 
 .navbar {
   width: 100%;

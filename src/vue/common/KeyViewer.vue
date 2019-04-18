@@ -53,8 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
-
 .key-viewer__qr-wrp {
   margin-bottom: 3rem;
   text-align: center;

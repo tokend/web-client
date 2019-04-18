@@ -99,8 +99,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/scss/variables";
-
   .address-loader__key-viewer-wrp {
     border: solid 0.1rem $col-form-stepper-tab-border;
     border-radius: 0.2rem;

@@ -182,7 +182,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 .movements-top-bar__actions {

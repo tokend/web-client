@@ -259,7 +259,6 @@ export default {
 
 <style lang="scss">
 @import "~@scss/mixins";
-@import "~@scss/variables";
 
 $custom-breakpoint: 450px;
 

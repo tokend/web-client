@@ -47,7 +47,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@scss/mixins';
-@import '~@scss/variables';
 
 .auth {
   display: flex;

@@ -103,7 +103,6 @@ export default {
 
 <style lang="scss">
 @import "~@scss/mixins";
-@import "~@scss/variables";
 
 .app__container {
   display: flex;

@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+
 .no-data-message {
   text-align: center;
   max-width: 52rem;

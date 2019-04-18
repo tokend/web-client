@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 .sale-campaign-viewer {

@@ -1,4 +1,5 @@
 'use strict'
+import { MODULE_SCHEME_NAME } from '../src/schemeName'
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -77,7 +78,17 @@ module.exports = {
       },
       {
         test: /\.s[a|c]ss$/,
-        loader: 'style-loader!css-loader!sass-loader',
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              data: `@import "scss/${MODULE_SCHEME_NAME}.variables.scss";`,
+              includePaths: [__dirname, 'src'],
+            },
+          },
+        ],
       },
     ],
   },

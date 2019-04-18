@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
+
 @import '~@scss/mixins';
 
 $avatar-size: 5rem;

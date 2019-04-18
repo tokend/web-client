@@ -23,8 +23,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-
 .asset-logo-dark {
   width: 5.3rem;
   height: 5.3rem;

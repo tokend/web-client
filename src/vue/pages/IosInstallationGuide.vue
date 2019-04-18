@@ -150,7 +150,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 .ios-installation-guide {

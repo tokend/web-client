@@ -81,7 +81,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables.scss";
 @import "~@scss/mixins.scss";
 
 .form-confirmation {

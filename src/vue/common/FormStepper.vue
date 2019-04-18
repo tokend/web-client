@@ -97,8 +97,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
-
 .form-stepper__tabs {
   display: flex;
   flex-direction: row;

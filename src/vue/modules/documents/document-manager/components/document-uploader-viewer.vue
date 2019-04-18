@@ -63,8 +63,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
-
 .document-uploader-viewer__uploader {
   line-height: 2rem;
 }

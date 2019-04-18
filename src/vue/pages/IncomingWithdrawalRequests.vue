@@ -311,8 +311,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@scss/variables";
-
   .incoming-withdrawal-requests__asset-list {
     width: fit-content;
   }

@@ -190,7 +190,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 .pre-issuance-requests__request-state {

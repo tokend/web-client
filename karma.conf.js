@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack/test.conf')
+const webpackConfig = require('./webpack/test.conf.babel')
 
 module.exports = function (config) {
   // HACK: Chrome relies on this variable, so by overwriting it we can ensure

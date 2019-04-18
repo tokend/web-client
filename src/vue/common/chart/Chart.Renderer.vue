@@ -426,7 +426,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@scss/variables";
+
    .chart-renderer {
     position: relative;
   }

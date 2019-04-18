@@ -1,7 +1,7 @@
 'use strict'
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const baseWebpackConfig = require('./base.conf')
+const baseWebpackConfig = require('./base.conf.babel')
 
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',

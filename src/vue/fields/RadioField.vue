@@ -59,8 +59,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables';
-
 .radio-field {
   width: 100%;
   display: flex;

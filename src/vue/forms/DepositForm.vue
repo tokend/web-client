@@ -149,8 +149,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/scss/variables";
-
   .deposit__help-message {
     font-size: 1.2rem;
     opacity: 0.7;

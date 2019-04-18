@@ -290,7 +290,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 .asset-creation-requests__table {

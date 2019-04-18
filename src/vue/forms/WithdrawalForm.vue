@@ -400,8 +400,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
-
 .withdrawal__fees-container {
   &.loading {
     opacity: 0.7;

@@ -56,8 +56,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~@scss/variables';
-
   .pending-issuances-table-row {
     width: 100%;
     max-width: 100%;

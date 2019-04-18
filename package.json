@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "dev": "webpack-dev-server --config ./webpack/local.conf.js",
+    "dev": "nodemon --watch src/config.js --exec \"webpack-dev-server --config ./webpack/local.conf.babel.js\"",
     "start": "yarn dev",
     "build": "node webpack/build.js",
     "test": "node --max-old-space-size=4096 node_modules/.bin/karma start",
@@ -91,6 +91,7 @@
     "mini-css-extract-plugin": "0.5.0",
     "mocha": "5.2.0",
     "node-sass": "4.11.0",
+    "nodemon": "^1.18.10",
     "opn": "5.4.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "ora": "3.0.0",

@@ -105,8 +105,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-
 .state-checker {
   padding: 1rem 0;
 

@@ -149,8 +149,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-
 .sale-details__name {
   font-size: 3rem;
   font-weight: normal;

@@ -1,7 +1,7 @@
 'use strict'
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const baseWebpackConfig = require('./base.conf')
+const baseWebpackConfig = require('./base.conf.babel')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
@@ -40,5 +40,5 @@ module.exports = merge(baseWebpackConfig, {
       inject: true,
     }),
     new FriendlyErrorsPlugin(),
-  ]
+  ],
 })

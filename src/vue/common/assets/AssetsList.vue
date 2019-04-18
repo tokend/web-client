@@ -122,7 +122,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+
 @import "~@scss/mixins";
 
 $asset-card-header-height: 8.5rem;

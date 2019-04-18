@@ -161,8 +161,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-
 .sale-overview__short-description {
   margin-top: 4rem;
   font-size: 1.4rem;

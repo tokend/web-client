@@ -26,8 +26,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~@scss/variables';
-
   .pending-issuances-table {
     width: 100%;
     border-collapse: collapse;

@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
+
   @import "~@scss/mixins";
 
   .chart-tabs__tab {

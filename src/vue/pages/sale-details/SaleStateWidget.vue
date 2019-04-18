@@ -87,8 +87,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-
 .sale-state-widget__progress-bar {
   margin-top: 3rem;
   width: 100%;

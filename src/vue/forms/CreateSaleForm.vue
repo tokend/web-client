@@ -622,7 +622,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables';
+
 @import './app-form';
 
 .create-sale__form-row {

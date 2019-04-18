@@ -28,7 +28,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@scss/variables.scss';
 .progress-bar__wrp {
   width: 100%;
   height: .3rem;

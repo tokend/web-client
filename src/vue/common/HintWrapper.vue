@@ -24,8 +24,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@scss/variables';
-
 .hint-wrapper {
   position: relative;
   display: inline-block;

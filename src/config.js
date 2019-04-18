@@ -1,5 +1,6 @@
 import { base } from '@tokend/js-sdk'
 import packageJson from '../package.json'
+import { MODULE_SCHEME_NAME } from './schemeName'
 
 export default Object.assign(
   {
@@ -105,7 +106,7 @@ export default Object.assign(
      * Module scheme to use. The module scheme will be used to combine module
      * set of the application.
      */
-    MODULE_SCHEME_NAME: 'vanilla',
+    MODULE_SCHEME_NAME: MODULE_SCHEME_NAME,
 
     /**
      * Link to iOS application manifest file.

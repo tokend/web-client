@@ -87,8 +87,6 @@ export default {
 </style>
 
 <style lang="scss">
-@import "~@scss/variables";
-
 .sale-description-viewer__markdown {
   img {
     max-width: 100%;

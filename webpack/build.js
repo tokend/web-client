@@ -65,7 +65,7 @@ const ora = require('ora')
 const rm = require('rimraf')
 const chalk = require('chalk')
 const webpack = require('webpack')
-const webpackConfig = require('./prod.conf')
+const webpackConfig = require('./prod.conf.babel')
 
 const spinner = ora('building for production...')
 
