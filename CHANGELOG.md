@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Displaying of limit request details in drawer
+- Display fees in invest form
 
 #### Removed
 - Buttons' "form" attributes
