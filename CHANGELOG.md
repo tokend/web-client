@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Displaying of limit request details in drawer
+- WDS run on nearest non-busy port
 
 #### Changed
 - Now getting blob types from SDK
