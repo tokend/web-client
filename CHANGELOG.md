@@ -13,10 +13,14 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- Sale record is now parsing the resource from new API
 
 #### Removed
 - Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
+- Statistics property from `SaleRecord`
+- Displaying investors quantity in sale details
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
