@@ -180,12 +180,8 @@ export default {
       padding: 0;
 
       &:hover {
-        color: lighten($col-primary-inactive, 20%);
-        background: none;
-      }
-
-      &:active {
         color: darken($col-primary-inactive, 20%);
+        background: none;
       }
     }
 
