@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="verificationState"
     class="verification-state-message"
     :class="`verification-state-message--${verificationState}`"
   >

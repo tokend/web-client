@@ -16,9 +16,14 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - Buttons' "form" attributes
+- Dupe team size and website fields on corporate verification
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
+- Fixed a bug with displaying verification state message
+- Fixed a bug with displaying "undefined" instead of quote asset in
+  dashboard’s chart
+- Fixed a bug with unreadable QR codes on "Downloads" page
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added

@@ -20,8 +20,8 @@ export default {
   props: {
     value: { type: String, default: '' },
     size: { type: Number, default: 200 },
-    background: { type: String, default: '#000' },
-    foreground: { type: String, default: '#fff' },
+    background: { type: String, default: '#fff' },
+    foreground: { type: String, default: '#262626' },
     className: { type: String, default: '' },
     level: { type: String, default: 'L' },
   },
