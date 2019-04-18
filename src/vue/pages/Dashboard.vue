@@ -1,9 +1,6 @@
 <template>
   <div class="dashboard">
-    <template v-if="isLoading">
-      <loader message-id="dashboard.data-loading" />
-    </template>
-    <template v-else>
+    <template v-if="isLoaded">
       <div class="dashboard__toolbar">
         <asset-selector
           class="dashboard__asset-selector"
@@ -66,34 +63,39 @@
           />
         </div>
       </template>
+
+      <drawer :is-shown.sync="showDrawer">
+        <template
+          v-if="createIssuanceFormIsShown &&
+            getModule().canRenderSubmodule(IssuanceFormModule)"
+        >
+          <template slot="heading">
+            {{ 'dashboard.create-issuance-lbl' | globalize }}
+          </template>
+
+          <submodule-importer
+            :submodule="getModule().getSubmodule(IssuanceFormModule)"
+            :config="{ horizonURL: config.HORIZON_SERVER }"
+            :wallet="wallet"
+            @close="showDrawer = false"
+          />
+        </template>
+
+        <template v-if="transferFormIsShown">
+          <template slot="heading">
+            {{ 'transfer-form.form-heading' | globalize }}
+          </template>
+          <transfer
+            @operation-submitted="updateBalancesAndList()"
+            :asset-to-transfer="currentAsset"
+          />
+        </template>
+      </drawer>
     </template>
-    <drawer :is-shown.sync="showDrawer">
-      <template
-        v-if="createIssuanceFormIsShown &&
-          getModule().canRenderSubmodule(IssuanceFormModule)"
-      >
-        <template slot="heading">
-          {{ 'dashboard.create-issuance-lbl' | globalize }}
-        </template>
 
-        <submodule-importer
-          :submodule="getModule().getSubmodule(IssuanceFormModule)"
-          :config="{ horizonURL: config.HORIZON_SERVER }"
-          :wallet="wallet"
-          @close="showDrawer = false"
-        />
-      </template>
-
-      <template v-if="transferFormIsShown">
-        <template slot="heading">
-          {{ 'transfer-form.form-heading' | globalize }}
-        </template>
-        <transfer
-          @operation-submitted="updateBalancesAndList()"
-          :asset-to-transfer="currentAsset"
-        />
-      </template>
-    </drawer>
+    <template v-else>
+      <loader message-id="dashboard.data-loading" />
+    </template>
   </div>
 </template>
 
@@ -128,7 +130,7 @@ export default {
   },
   data: () => ({
     currentAsset: null,
-    isLoading: false,
+    isLoaded: false,
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
@@ -165,10 +167,9 @@ export default {
     },
   },
   async created () {
-    this.isLoading = true
     await this.loadBalances()
     this.setCurrentAsset()
-    this.isLoading = false
+    this.isLoaded = true
   },
   methods: {
     ...mapActions({

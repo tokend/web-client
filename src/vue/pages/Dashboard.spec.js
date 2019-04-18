@@ -66,6 +66,7 @@ describe('Dashboard component', () => {
       actions: accountModule.actions,
     })
 
+    sinon.stub(Dashboard, 'created').resolves()
     wrapper = shallowMount(Dashboard, {
       store,
       localVue,
