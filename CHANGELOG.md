@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
 - Dupe team size and website fields on corporate verification
 - Statistics property from `SaleRecord`
 - Displaying investors quantity in sale details
+- Opera from noscript
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
