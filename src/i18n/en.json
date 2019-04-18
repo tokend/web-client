@@ -191,7 +191,7 @@
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
       "website-lbl": "Website",
-      "request-updated-msg": "Request was succefully updated"
+      "request-updated-msg": "Request was successfully updated"
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"
