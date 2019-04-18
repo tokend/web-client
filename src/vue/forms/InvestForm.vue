@@ -163,11 +163,13 @@
       </transition>
 
       <div class="app__form-actions">
-        <template v-if="currentInvestment.offerId">
+        <template
+          v-if="currentInvestment.offerId &&
+            view.mode === VIEW_MODES.submit">
           <button
             v-ripple
             type="button"
-            @click="submit"
+            @click="processInvestment"
             class="app__button-raised invest-form__submit-btn"
             :disabled="formMixin.isDisabled || !canSubmit"
           >
@@ -614,6 +616,7 @@ export default {
       }
       this.enableForm()
     },
+
     updateView (mode) {
       this.view.mode = mode
     },
