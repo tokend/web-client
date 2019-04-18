@@ -578,7 +578,7 @@
       "settings": "Settings",
       "fees": "Fees",
       "movements": "Movements",
-      "issuance": "Issuance",
+      "issuance": "Issuance requests",
       "downloads": "TokenD downloads",
       "terms": "Terms",
       "sales": "Sales",
@@ -895,7 +895,7 @@
       "activity": "Movements",
       "date": "Date",
       "transaction-type": "Transaction type",
-      "create-issuance-lbl": "Create issuance",
+      "create-issuance-lbl": "Create issuance request",
       "send-asset-lbl": "Send {{asset}}",
       "asset": "Asset",
       "amount": "Amount",
@@ -948,7 +948,7 @@
     },
     "issuance-page": {
       "history-title": "History",
-      "create-issuance": "Create issuance",
+      "create-issuance": "Create issuance request",
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
@@ -983,8 +983,8 @@
         "asset-code-th": "Asset code",
         "date-th": "Date",
         "reference-th": "Reference",
-        "no-issuances-title": "No issuances yet",
-        "no-issuances-msg": "Here will be the list of your issuances",
+        "no-issuances-title": "No issuance requests yet",
+        "no-issuances-msg": "Here will be the list of your issuance requests",
         "state-header-th": "State"
       },
       "loading-msg": "Loading your issuances…",
