@@ -1,33 +1,42 @@
 <template>
   <div class="asset-selector">
-    <template v-if="tokens.length">
+    <template>
       <div
         class="asset-selector__wrapper"
-        v-if="currentAsset"
       >
         <div class="asset-selector__select">
-          <div class="asset-selector__select-picture">
-            <img
-              v-if="imgUrl"
-              class="asset-selector__asset-logo"
-              :src="imgUrl"
-            >
-            <p
-              v-else
-              class="asset-selector__asset-code-abbr"
-            >
-              {{ currentAsset | abbreviate }}
-            </p>
-          </div>
+          <skeleton-template
+            :is-loading="imgUrl === null || !currentAsset ||
+              tokens.length === 0"
+          >
+            <div class="asset-selector__select-picture">
+              <img
+                v-if="imgUrl"
+                class="asset-selector__asset-logo"
+                :src="imgUrl"
+              >
+              <p
+                v-if="currentAsset && !imgUrl"
+                class="asset-selector__asset-code-abbr"
+              >
+                {{ currentAsset | abbreviate }}
+              </p>
+            </div>
+          </skeleton-template>
           <div>
-            <select-field
-              :value="currentAssetForSelect"
-              :values="tokensList"
-              :key="currentAssetForSelect.code"
-              key-as-value-text="nameAndCode"
-              @input="$emit(EVENTS.assetChange, $event)"
-              class="app__select app__select--no-border"
-            />
+            <skeleton-template
+              :is-loading="imgUrl === null || !currentAsset ||
+                tokens.length === 0"
+            >
+              <select-field
+                :value="currentAssetForSelect"
+                :values="tokensList"
+                :key="currentAssetForSelect.code"
+                key-as-value-text="nameAndCode"
+                @input="$emit(EVENTS.assetChange, $event)"
+                class="app__select app__select--no-border"
+              />
+            </skeleton-template>
           </div>
         </div>
       </div>
@@ -57,26 +66,22 @@
           </div>
         </div>
       </template>
-      <template v-if="!currentAsset">
+      <template v-if="tokens.length && !currentAsset">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
           :message="'dashboard.here-will-be-the-tokens' | globalize"
         />
       </template>
     </template>
-    <template v-else-if="isLoadingFailed">
+    <template v-if="isLoadingFailed">
       <p>
         {{ 'dashboard.loading-error-msg' | globalize }}
       </p>
-    </template>
-    <template v-else>
-      <loader message-id="dashboard.loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import SelectField from '@/vue/fields/SelectField'
 import NoDataMessage from '@/vue/common/NoDataMessage'
@@ -86,6 +91,7 @@ import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import SkeletonTemplate from '@/vue/common/skeleton-screen/SkeletonTemplate'
 
 const EVENTS = {
   assetChange: 'asset-change',
@@ -96,7 +102,7 @@ export default {
   components: {
     SelectField,
     NoDataMessage,
-    Loader,
+    SkeletonTemplate,
   },
   props: {
     currentAsset: {
@@ -144,8 +150,12 @@ export default {
         .find(i => i.asset === this.currentAsset) || {}
     },
     imgUrl () {
-      const balance = this.balances.find(i => i.asset === this.currentAsset)
-      return balance.assetDetails.logoUrl(config.FILE_STORAGE)
+      if (this.balances.length > 0 && this.currentAsset) {
+        const balance = this.balances.find(i => i.asset === this.currentAsset)
+        return balance.assetDetails.logoUrl(config.FILE_STORAGE)
+      } else {
+        return null
+      }
     },
   },
   async created () {

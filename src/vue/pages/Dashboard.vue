@@ -1,9 +1,6 @@
 <template>
   <div class="dashboard">
-    <template v-if="isLoading">
-      <loader message-id="dashboard.data-loading" />
-    </template>
-    <template v-else>
+    <template>
       <div class="dashboard__toolbar">
         <asset-selector
           class="dashboard__asset-selector"
@@ -94,7 +91,6 @@ import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import Loader from '@/vue/common/Loader'
 import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
@@ -114,7 +110,6 @@ export default {
     AssetSelector,
     IssuanceForm,
     Transfer,
-    Loader,
     Drawer,
     SubmoduleImporter,
   },
@@ -160,7 +155,9 @@ export default {
     this.isLoading = true
     await this.loadBalances()
     this.setCurrentAsset()
-    this.isLoading = false
+    setTimeout(() => {
+      this.isLoading = false
+    }, 3000)
   },
   methods: {
     ...mapActions({
