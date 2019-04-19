@@ -267,22 +267,24 @@ export default {
     },
 
     async submit () {
+      if (!this.loyaltyAccount) {
+        Bus.error('create-invoice-form.invalid-account-number-err')
+        this.hideConfirmation()
+        return
+      }
+
       this.isFormSubmitting = true
       try {
-        if (!this.loyaltyAccount) {
-          Bus.error('create-invoice-form.invalid-account-number-err')
-        } else {
-          if (this.systemIdentifier !== this.merchantSystem) {
-            await this.initExternalSystemApi()
-          }
-
-          await this.sendTransaction()
-          this.$emit(EVENTS.submit, this.invoiceRecord)
+        if (this.systemIdentifier !== this.merchantSystem) {
+          await this.initExternalSystemApi()
         }
+
+        await this.sendTransaction()
+        this.$emit(EVENTS.submit, this.invoiceRecord)
       } catch (error) {
-        ErrorHandler.process(error)
         this.isFormSubmitting = false
         this.hideConfirmation()
+        ErrorHandler.process(error)
       }
     },
 
