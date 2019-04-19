@@ -8,26 +8,48 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Added
-- Account number field to the invoice form (Loyalty)
-- Displaying of limit request details in drawer
-
 #### Changed
 - Use select field instead of table for acceptable points on
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
 
+## [1.5.0-rc.3] - 2019-04-19
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0-rc.1
+
+## [1.5.0-rc.2] - 2019-04-19
+#### Added
+- Account number field to the invoice form (Loyalty)
+- Displaying of limit request details in drawer
+- Show limits request list on top of other limits on "Limits" page
+- "Issuance" labels on Issuance page renamed to "Issuance requests"
+
 #### Removed
-- Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
+- Displaying investors quantity in sale details
+- Opera from noscript
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
 - Fixed a bug with displaying verification state message
 - Fixed a bug with displaying "undefined" instead of quote asset in
   dashboard’s chart
-- Fixed a bug with unreadable QR codes on "Downloads" page
+- Fixed a bug with unreadable QR code on "Downloads" page
+- Fixed a bug with undisplayed verification code on general KYC form
+- Fixed a bug with incorrect displaying of fees paid for recipient while
+  in transfer form
+
+### "Under the hood" changes
+#### Changed
+- Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- `SaleRecord` is now parsing the resource from new API
+
+#### Removed
+- Statistics property from `SaleRecord`
+- Buttons' "form" attributes
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
@@ -286,7 +308,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...HEAD
+[1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
+[1.5.0-rc.2]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...1.5.0-rc.1
 [1.5.0-rc.0]: https://github.com/tokend/web-client/compare/1.4.0...1.5.0-rc.0
 [1.4.0]: https://github.com/tokend/web-client/compare/1.4.0-rc.3...1.4.0

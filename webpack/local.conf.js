@@ -1,9 +1,13 @@
-'use strict'
+const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
@@ -26,6 +30,11 @@ module.exports = merge(baseWebpackConfig, {
       {
         test: /\.css?$/,
         loader: 'style-loader!css-loader',
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader?cacheDirectory',
+        include: [resolve('src')],
       },
     ],
   },
