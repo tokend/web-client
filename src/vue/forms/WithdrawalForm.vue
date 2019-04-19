@@ -4,7 +4,6 @@
       <template v-if="assets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="withdrawal-form"
           novalidate
         >
           <div class="app__form-row withdrawal__form-row">
@@ -157,7 +156,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="withdrawal-form"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>

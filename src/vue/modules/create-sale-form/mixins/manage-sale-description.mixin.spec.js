@@ -1,7 +1,6 @@
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
-import { Wallet } from '@tokend/js-sdk'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
+import { Wallet, BLOB_TYPES } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 

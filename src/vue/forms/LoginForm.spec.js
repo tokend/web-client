@@ -53,8 +53,8 @@ describe('LoginForm component unit test', () => {
     }
 
     const fieldBindings = {
-      '#login-email': 'email',
-      '#login-password': 'password',
+      '[name=login-email]': 'email',
+      '[name=login-password]': 'password',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {

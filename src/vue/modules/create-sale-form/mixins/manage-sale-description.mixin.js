@@ -1,4 +1,4 @@
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
+import { BLOB_TYPES } from '@tokend/js-sdk'
 import { api } from '../_api'
 
 export default {

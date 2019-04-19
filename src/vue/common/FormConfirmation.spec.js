@@ -1,28 +1,19 @@
 import FormConfirmation from './FormConfirmation'
 
-import { TestHelper } from '@/test/test-helper'
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import { globalize } from '@/vue/filters/globalize'
-
-const localVue = createLocalVue()
-
-localVue.filter('globalize', globalize)
-
 describe('FormConfirmation component test', () => {
-  afterEach(() => {
-    TestHelper.resetTranslations()
-    sinon.restore()
-  })
-
   it('template properly renders the data provided through props', () => {
-    TestHelper.useTranslations({
-      'form-confirmation': {
-        'message-text-custom': 'Please ensure everything is OK!',
-        'button-text-ok-custom': 'I\'m okay, let\'s go!',
-        'button-text-cancel-custom': '!WOWO, wait please',
-      },
-    })
+    const globalizeStub = sinon.stub()
+    globalizeStub
+      .withArgs('form-confirmation.message-text-custom')
+      .returns('Please ensure everything is OK!')
+      .withArgs('form-confirmation.button-text-ok-custom')
+      .returns('I\'m okay, let\'s go!')
+      .withArgs('form-confirmation.button-text-cancel-custom')
+      .returns('!WOW, wait please')
+    const localVue = createLocalVue()
+    localVue.filter('globalize', globalizeStub)
 
     const wrapper = mount(FormConfirmation, {
       propsData: {
@@ -33,53 +24,44 @@ describe('FormConfirmation component test', () => {
       localVue,
     })
 
-    const renderedMessage = wrapper
-      .find('.form-confirmation__msg')
-      .text()
-    const renderedOkButtonText = wrapper
-      .find('.form-confirmation__ok-btn')
-      .text()
-    const renderedCancelButtonText = wrapper
-      .find('.form-confirmation__cancel-btn')
-      .text()
+    expect(wrapper.find('.form-confirmation__msg').text())
+      .to.equal('Please ensure everything is OK!')
 
-    expect(renderedMessage).to.equal('Please ensure everything is OK!')
-    expect(renderedOkButtonText).to.equal('I\'m okay, let\'s go!')
-    expect(renderedCancelButtonText).to.equal('!WOWO, wait please')
+    expect(wrapper.find('.form-confirmation__ok-btn').text())
+      .to.equal('I\'m okay, let\'s go!')
+
+    expect(wrapper.find('.form-confirmation__cancel-btn').text())
+      .to.equal('!WOW, wait please')
   })
 
   it('properly renders the default data if no props provided', () => {
-    TestHelper.useTranslations({
-      'form-confirmation': {
-        'message-text-default': 'Please recheck the form before confirmation',
-        'button-text-ok': 'Confirm',
-        'button-text-cancel': 'Cancel',
-      },
-    })
+    const globalizeStub = sinon.stub()
+    globalizeStub
+      .withArgs('form-confirmation.message-text-default')
+      .returns('Please recheck the form before confirmation')
+      .withArgs('form-confirmation.button-text-ok')
+      .returns('Confirm')
+      .withArgs('form-confirmation.button-text-cancel')
+      .returns('Cancel')
+    const localVue = createLocalVue()
+    localVue.filter('globalize', globalizeStub)
 
-    const wrapper = mount(FormConfirmation, {
-      localVue,
-    })
+    const wrapper = mount(FormConfirmation, { localVue })
 
-    const renderedMessage = wrapper
-      .find('.form-confirmation__msg')
-      .text()
-    const renderedOkButtonText = wrapper
-      .find('.form-confirmation__ok-btn')
-      .text()
-    const renderedCancelButtonText = wrapper
-      .find('.form-confirmation__cancel-btn')
-      .text()
+    expect(wrapper.find('.form-confirmation__msg').text())
+      .to.equal('Please recheck the form before confirmation')
 
-    expect(renderedMessage).to.equal('Please recheck the form before confirmation')
-    expect(renderedOkButtonText).to.equal('Confirm')
-    expect(renderedCancelButtonText).to.equal('Cancel')
+    expect(wrapper.find('.form-confirmation__ok-btn').text())
+      .to.equal('Confirm')
+
+    expect(wrapper.find('.form-confirmation__cancel-btn').text())
+      .to.equal('Cancel')
   })
 
   it('template disables the OK and cancel buttons if isPending is true', () => {
     const wrapper = mount(FormConfirmation, {
       propsData: { isPending: true },
-      localVue,
+      localVue: createLocalVue(),
     })
     const okBtn = wrapper.find('.form-confirmation__ok-btn')
     const cancelBtn = wrapper.find('.form-confirmation__cancel-btn')
@@ -92,13 +74,14 @@ describe('FormConfirmation component test', () => {
     sinon.stub(FormConfirmation, 'created')
     const wrapper = mount(FormConfirmation, {
       propsData: { isPending: false },
-      localVue,
+      localVue: createLocalVue(),
     })
     const okBtn = wrapper.find('.form-confirmation__ok-btn')
     const cancelBtn = wrapper.find('.form-confirmation__cancel-btn')
 
     expect(okBtn.attributes('disabled')).to.be.undefined
     expect(cancelBtn.attributes('disabled')).to.be.undefined
+    FormConfirmation.created.restore()
   })
 
   it('component emits the passed okEvent when clicking the OK button', () => {
@@ -106,7 +89,7 @@ describe('FormConfirmation component test', () => {
     const okEvent = 'ok-event'
     const wrapper = mount(FormConfirmation, {
       propsData: { okEvent },
-      localVue,
+      localVue: createLocalVue(),
     })
 
     wrapper
@@ -114,6 +97,7 @@ describe('FormConfirmation component test', () => {
       .trigger('click')
 
     expect(wrapper.emitted()[okEvent]).to.exist
+    FormConfirmation.created.restore()
   })
 
   it('component emits the passed cancelEvent when clicking the cancel button', () => {
@@ -121,7 +105,7 @@ describe('FormConfirmation component test', () => {
     const cancelEvent = 'cancel-event'
     const wrapper = mount(FormConfirmation, {
       propsData: { cancelEvent },
-      localVue,
+      localVue: createLocalVue(),
     })
 
     wrapper
@@ -129,5 +113,6 @@ describe('FormConfirmation component test', () => {
       .trigger('click')
 
     expect(wrapper.emitted()[cancelEvent]).to.exist
+    FormConfirmation.created.restore()
   })
 })
