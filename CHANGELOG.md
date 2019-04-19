@@ -15,6 +15,9 @@ for further information about branching and tagging conventions.
 - Modularized:
   - Issuance form
 
+#### Fixed
+- Dashboard loading flow
+
 ## [1.5.0-rc.3] - 2019-04-19
 ### "Under the hood changes"
 #### Changed
