@@ -28,7 +28,6 @@ import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
 
 async function init () {
-  // console.log(SchemeRegistry.current.importEnLocaleFile)
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
   Vue.use(SchemeRegistry.current)
 
