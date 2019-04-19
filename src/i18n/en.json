@@ -100,7 +100,8 @@
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
       "account-blocked": "Your account is blocked",
-      "user-doesnt-exist": "This user doesn't exist in system"
+      "user-doesnt-exist": "This user doesn't exist in system",
+      "balance-not-found": "The user does not have this asset balance yet"
     },
     "transaction-errors": {
       "tx_failed": "Transaction failed",
@@ -842,7 +843,7 @@
       "activity": "Movements",
       "date": "Date",
       "transaction-type": "Transaction type",
-      "create-issuance-lbl": "Create issuance",
+      "create-issuance-lbl": "New issuance",
       "send-asset-lbl": "Send {{asset}}",
       "asset": "Asset",
       "amount": "Amount",
@@ -895,20 +896,21 @@
     },
     "issuance-page": {
       "history-title": "History",
-      "create-issuance": "Create issuance",
+      "create-issuance-btn": "Create issuance",
+      "create-issuance-title": "New issuance",
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
-      "loading-msg": "Loading…",
+      "loading-msg": "Loading your assets…",
+      "load-failed-msg": "There was an error while loading your assets. Please, try again later",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "reference-lbl": "Reference",
-      "available-for-issuance-hint": "Available for issuance: {{value, money}}",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "receiver-lbl": "Email or account ID",
       "issue-btn": "Issue",
-      "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
-      "not-available": "Issuance creation is available only for corporate users, complete verification to become one",
-      "balance-required-err": "The receiver doesn't have this asset balance",
+      "no-owned-assets-title": "No owned assets yet",
+      "no-owned-assets-msg": "Please create an asset to make an issuance",
       "assets-issued-msg": "Your assets were successfully issued"
     },
     "pre-issuance-form": {

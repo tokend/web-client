@@ -26,7 +26,7 @@
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
         >
-          {{ 'issuance-page.create-issuance' | globalize }}
+          {{ 'issuance-page.create-issuance-btn' | globalize }}
         </button>
       </template>
     </top-bar>
@@ -50,7 +50,7 @@
       :is-shown.sync="isIssuanceDrawerShown"
     >
       <template slot="heading">
-        {{ 'issuance-page.create-issuance' | globalize }}
+        {{ 'issuance-page.create-issuance-title' | globalize }}
       </template>
 
       <submodule-importer

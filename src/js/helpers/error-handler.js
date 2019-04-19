@@ -23,6 +23,9 @@ export class ErrorHandler {
       case errors.UserDoesntExistError:
         translationId = 'errors.user-doesnt-exist'
         break
+      case errors.BalanceNotFoundError:
+        translationId = 'errors.balance-not-found'
+        break
       case errors.TimeoutError:
         translationId = 'errors.timeout'
         break
