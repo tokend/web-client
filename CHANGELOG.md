@@ -32,6 +32,7 @@ for further information about branching and tagging conventions.
   dashboard’s chart
 - Fixed a bug with unreadable QR codes on "Downloads" page
 - Displaying verification code on general KYC form
+- Paying fees for recipient while sending assets
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
