@@ -1,6 +1,6 @@
 <template>
   <transition name="drawer-transition">
-    <div class="drawer" v-if="isShown">
+    <div class="drawer" v-show="isShown">
       <div
         class="drawer__backdrop"
         @click="closeByClickOutside ? closeSelf : ''"
