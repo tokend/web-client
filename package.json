@@ -14,9 +14,10 @@
     "dev": "webpack-dev-server --config ./webpack/local.conf.js",
     "start": "yarn dev",
     "build": "node webpack/build.js",
-    "test": "node --max-old-space-size=4096 node_modules/.bin/karma start",
-    "test:watch": "node --max-old-space-size=4096 node_modules/.bin/karma start --no-single-run --auto-watch",
-    "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0"
+    "lint": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0",
+    "test": "karma start --reporters spec",
+    "test:watch": "karma start --no-single-run --auto-watch",
+    "test:watchVerbose": "karma start --no-single-run --auto-watch --reporters spec"
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
