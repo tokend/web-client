@@ -40,28 +40,36 @@
           </div>
         </div>
       </div>
-      <template v-if="currentAsset">
+      <template>
         <div class="asset-selector__wrapper asset-selector__wrapper--values">
           <div class="asset-selector__asset-available">
             <div class="asset-selector__asset-value">
-              <span class="asset-selector__asset-value-main">
-                {{
-                  currentAssetBalanceDetails.balance | formatMoney({
-                    currency: currentAsset
-                  })
-                }}
-                {{ currentAsset }}
-              </span>
+              <skeleton-template
+                :is-loading="!currentAsset"
+              >
+                <span class="asset-selector__asset-value-main">
+                  {{
+                    currentAssetBalanceDetails.balance | formatMoney({
+                      currency: currentAsset
+                    })
+                  }}
+                  {{ currentAsset }}
+                </span>
+              </skeleton-template>
             </div>
             <div class="asset-selector__asset-subvalue">
-              <span class="asset-selector__asset-value-secondary">
-                {{
-                  currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
-                  })
-                }}
-                {{ config.DEFAULT_QUOTE_ASSET }}
-              </span>
+              <skeleton-template
+                :is-loading="!currentAsset"
+              >
+                <span class="asset-selector__asset-value-secondary">
+                  {{
+                    currentAssetBalanceDetails.convertedBalance | formatMoney({
+                      currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
+                    })
+                  }}
+                  {{ config.DEFAULT_QUOTE_ASSET }}
+                </span>
+              </skeleton-template>
             </div>
           </div>
         </div>

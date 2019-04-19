@@ -29,7 +29,8 @@ export default {
     slotRootClass () {
       let classFromDefaultSlot = this.$slots.default[0].data.staticClass
       let tagRootDefaultSlot = this.$slots.default[0].tag
-      return (tagRootDefaultSlot.indexOf(this.vueComponent) > -1) ? 'base-template' : classFromDefaultSlot
+      return (tagRootDefaultSlot.indexOf(this.vueComponent) > -1 ||
+        tagRootDefaultSlot === 'span') ? 'base-template' : classFromDefaultSlot
     },
   },
 }
