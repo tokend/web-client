@@ -137,8 +137,9 @@ import _get from 'lodash/get'
 import { Api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+
+import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -230,7 +231,7 @@ export default {
       this.disableForm()
       try {
         await this.uploadAvatar()
-        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycSyndicate)
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryCorporateRoleId

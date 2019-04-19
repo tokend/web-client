@@ -422,9 +422,16 @@ import moment from 'moment'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { Wallet, base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
+
+import {
+  Wallet,
+  base,
+  ASSET_POLICIES,
+  SALE_TYPES,
+  BLOB_TYPES,
+} from '@tokend/js-sdk'
+
 import { api, initApi } from './_api'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.const'
 
 import { DateUtil } from '@/js/utils'

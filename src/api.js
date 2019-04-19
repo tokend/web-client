@@ -26,6 +26,16 @@ export class Api {
    *
    * @returns {Promise} - API response
    */
+  static get (path, opts) {
+    return _api.get(path, opts)
+  }
+
+  /**
+   * @param {String} path - endpoint path for the request
+   * @param {Object} [opts] - request options
+   *
+   * @returns {Promise} - API response
+   */
   static getWithSignature (path, opts) {
     return _api.getWithSignature(path, opts)
   }
