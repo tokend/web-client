@@ -2,7 +2,6 @@
   <div class="payable-receivable-viewer">
     <div
       v-if="isLoaded"
-      id="payable-receivable-chart"
       :data="payableReceivable"
     />
 

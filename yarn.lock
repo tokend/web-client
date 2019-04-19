@@ -667,10 +667,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@tokend/js-sdk@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.4.3.tgz#5ac22eff2613a16eca48bac0cd7337da3aa047fa"
-  integrity sha512-iIkqWSRBWD6utebp/pF74kyKsojAWOZAbiJ6Jr9wPAi8hbL7lA0OMnP3DWYBnmCbbeWgkA6Rb6KU7HSZ1NGcmg==
+"@tokend/js-sdk@1.5.0-rc.1":
+  version "1.5.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.5.0-rc.1.tgz#4497fae44fea348f2147ca92d121030af4989613"
+  integrity sha512-ZUk0NRXE9xSpYYAlJu/tCysgfuJ0cGD8cmbtiTGdXHK4j84KoOwFLTBquA89yGj5nkOz9oxEmhMF6RQWpfl5RQ==
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
@@ -4780,6 +4780,18 @@ icss-utils@^4.0.0:
   integrity sha512-3DEun4VOeMvSczifM3F2cKQrDQ5Pj6WKhkOq6HD4QTnDUAq8MQRxy5TX6Sy1iY6WPBe4gQ3p5vTECjbIkglkkQ==
   dependencies:
     postcss "^7.0.14"
+
+idle-js@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/idle-js/-/idle-js-0.1.3.tgz#1343fc601fc2bee66cc11ae763f846368e3174ad"
+  integrity sha512-Hvd+OLMUWfVJUv/HoX7wtBgPwx2OdcEd2TzXcBQJyuINXcf7Ig2SgxRMuq2wZNkarf/+DrzV7NxwjKcexIfWBg==
+
+idle-vue@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/idle-vue/-/idle-vue-2.0.5.tgz#300e3ccd958170c4d7efa7cc9aece86078bef576"
+  integrity sha1-MA48zZWBcMTX76fMmuzoYHi+9XY=
+  dependencies:
+    idle-js "^0.1.3"
 
 ieee754@^1.1.4:
   version "1.1.13"
