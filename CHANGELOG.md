@@ -7,21 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [1.5.0-rc.2] - 2019-04-19
 #### Added
 - Displaying of limit request details in drawer
 
 #### Changed
-- Now getting blob types from SDK
-- Now using /v3 API for getting sales
-- Sale record is now parsing the resource from new API
 - Show limits request list on top of other limits on "Limits" page
 - "Issuance" labels on Issuance page renamed to "Issuance requests"
 
 #### Removed
-- Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
-- Statistics property from `SaleRecord`
 - Displaying investors quantity in sale details
 - Opera from noscript
 
@@ -30,9 +25,20 @@ for further information about branching and tagging conventions.
 - Fixed a bug with displaying verification state message
 - Fixed a bug with displaying "undefined" instead of quote asset in
   dashboard’s chart
-- Fixed a bug with unreadable QR codes on "Downloads" page
-- Displaying verification code on general KYC form
-- Paying fees for recipient while sending assets
+- Fixed a bug with unreadable QR code on "Downloads" page
+- Fixed a bug with undisplayed verification code on general KYC form
+- Fixed a bug with incorrect displaying of fees paid for recipient while
+  in transfer form
+
+### "Under the hood" changes
+#### Changed
+- Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- `SaleRecord` is now parsing the resource from new API
+
+#### Removed
+- Statistics property from `SaleRecord`
+- Buttons' "form" attributes
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
