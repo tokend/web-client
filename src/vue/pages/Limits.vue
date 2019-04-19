@@ -16,25 +16,6 @@
         </button>
       </template>
     </top-bar>
-    <div class="limits__asset-selector">
-      <!--
-        :key is a hack to ensure that the component will be updated
-        after computed calculated
-      -->
-      <select-field
-        v-model="selectedAsset"
-        :values="accountBalancesAssetsCodes"
-        :key="`limits-asset-selector-${selectedAsset}`"
-        class="limits__assets-select app__select--no-border"
-      />
-    </div>
-
-    <limits-table-renderer
-      :is-loading="isLimitsLoading"
-      :is-loading-failed="isLimitsLoadingFailed"
-      :limits="selectedLimitsList"
-      @limits-reload-ask="loadLimits"
-    />
 
     <div class="limits__requests">
       <h3 class="limits__requests-title">
@@ -57,6 +38,26 @@
         />
       </div>
     </div>
+
+    <div class="limits__asset-selector">
+      <!--
+        :key is a hack to ensure that the component will be updated
+        after computed calculated
+      -->
+      <select-field
+        v-model="selectedAsset"
+        :values="accountBalancesAssetsCodes"
+        :key="`limits-asset-selector-${selectedAsset}`"
+        class="limits__assets-select app__select--no-border"
+      />
+    </div>
+
+    <limits-table-renderer
+      :is-loading="isLimitsLoading"
+      :is-loading-failed="isLimitsLoadingFailed"
+      :limits="selectedLimitsList"
+      @limits-reload-ask="loadLimits"
+    />
 
     <drawer :is-shown.sync="isLimitsChangeDrawerShown">
       <template slot="heading">

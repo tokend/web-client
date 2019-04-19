@@ -65,6 +65,7 @@ describe('CollectionLoader component test', () => {
       await wrapper.vm.loadPage('event', errorThrownFn)
 
       expect(spyError.withArgs(error).calledOnce).to.be.true
+      ErrorHandler.processWithoutFeedback.restore()
     })
 
     it('sets isCollectionFetched to false when data is not fully loaded',
