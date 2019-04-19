@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Fixes
+- Fixed a bug when with `defaultQuoteAsset` loading race condition
+
 ## [1.5.0-rc.3] - 2019-04-19
 ### "Under the hood changes"
 #### Changed
@@ -14,16 +18,16 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
-- Displaying of limit request details in drawer
+! Displaying of limit request details in drawer
 
 #### Changed
-- Show limits request list on top of other limits on "Limits" page
-- "Issuance" labels on Issuance page renamed to "Issuance requests"
+! Show limits request list on top of other limits on "Limits" page
+! "Issuance" labels on Issuance page renamed to "Issuance requests"
 
 #### Removed
 - Dupe team size and website fields on corporate verification
 - Displaying investors quantity in sale details
-- Opera from noscript
+! Opera from noscript
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
@@ -47,8 +51,8 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
-- Displaying of blocked account role
-- Displaying of permanently rejected verification request state
+! Displaying of blocked account role
+! Displaying of permanently rejected verification request state
 
 ### "Under the hood" changes
 #### Changed
@@ -59,42 +63,42 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added
-- Displaying of feedback message after successful verification request submitting
+! Displaying of feedback message after successful verification request submitting
 - Displaying of available base asset amount on sale creation form
-- Displaying of issuance status in issuances list
+! Displaying of issuance status in issuances list
 - Polling ticker of order book
 - URL validation of Homepage field of corporate verification form
-- User auto-logout on idle activity
+! User auto-logout on idle activity
 - Auto-populating of limit change request forms
-- Two-factor validation on login & change password forms
-- Enabling/disabling 2FA form in "Settings" page
-- Disclaimer message about pre-issuance asset signer if press "Use mine" button
+! Two-factor validation on login & change password forms
+! Enabling/disabling 2FA form in "Settings" page
+! Disclaimer message about pre-issuance asset signer if press "Use mine" button
 
 #### Changed
-- Movement list items displaying changes:
+! Movement list items displaying changes:
   - Display total fee
   - Display operation summary (type, operation and date)
   - Display fee information only if total fee is bigger than zero
-- Redesigned recovery seed page:
+! Redesigned recovery seed page:
   - Added warning message
   - Some minor design adjustments
   - Use redesigned clipboard field with a bit darken background
-- Redesigned verification state message
-- Redesigned clipboard field
-- Redesigned feedback status message
+! Redesigned verification state message
+! Redesigned clipboard field
+! Redesigned feedback status message
 - Renamed "Fund(s)" to "Sale(s)" and "Token(s)" to "Asset(s)"
 - Renamed "Pre-issued asset signer" to "Pre-issuance asset signer"
-- Hide "Withdraw" and "Deposit" buttons accordingly to selected assets’ policies
+! Hide "Withdraw" and "Deposit" buttons accordingly to selected assets’ policies
   on "Movements" page
 - Increased width of "Already in your balances" to prevent its wrapping
 - Made warning color (orange) a bit brighter
 - Now support inserting both of YouTube video link and YouTube video ID on
   sale creating form
-- Now sorting balances on "Balances" page in desc order by total balance
+! Now sorting balances on "Balances" page in desc order by total balance
   converted to default quote asset
 
 #### Removed
-- "Fee" column from the movements table
+! "Fee" column from the movements table
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps
