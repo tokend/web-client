@@ -1,11 +1,6 @@
-// const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./base.conf')
-
-// function resolve (dir) {
-//   return path.join(__dirname, '..', dir)
-// }
 
 module.exports = merge(baseWebpackConfig, {
   mode: 'development',
@@ -15,11 +10,6 @@ module.exports = merge(baseWebpackConfig, {
         test: /\.css?$/,
         loader: 'style-loader!css-loader',
       },
-      // {
-      //   test: /\.js$/,
-      //   loader: 'babel-loader',
-      //   include: [resolve('src')],
-      // },
     ],
   },
   plugins: [
