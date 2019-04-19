@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 - Now using /v3 API for getting sales
 - Sale record is now parsing the resource from new API
 - Show limits request list on top of other limits on "Limits" page
+- "Issuance" labels on Issuance page renamed to "Issuance requests"
 
 #### Removed
 - Buttons' "form" attributes
