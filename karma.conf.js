@@ -25,6 +25,5 @@ module.exports = function (config) {
 
     webpack: webpackConfig,
     frameworks: ['mocha', 'sinon', 'chai', 'sinon-chai'],
-    // reporters: ['spec'],
   })
 }
