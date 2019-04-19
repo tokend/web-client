@@ -1,187 +1,92 @@
 <template>
-  <div
-    v-if="isLoaded && ownedAssets.length"
-    class="pre-issuance-form"
-  >
-    <form
-      class="app__form pre-issuance-form"
-      @submit.prevent="isFormValid() && showConfirmation()"
-    >
-      <div class="app__form-row">
-        <div class="app__form-field">
-          <file-field
-            :label="'pre-issuance-form.pre-issuance-lbl' | globalize"
-            :note="'pre-issuance-form.file-type-note' | globalize"
-            accept=".iss"
-            v-model="preIssuanceDocument"
-            :disabled="formMixin.isDisabled"
-            :error-message="getFieldErrorMessage('preIssuanceDocument')"
-          />
-        </div>
-      </div>
-      <div
-        v-if="issuance"
-        class="pre-issuance-form__issuance-details"
-      >
-        <h3>
-          {{ 'pre-issuance-form.pre-issuance-details-title' | globalize }}
-        </h3>
-        <div class="app__table">
-          <table>
-            <thead>
-              <th>{{ 'pre-issuance-form.asset-lbl' | globalize }}</th>
-              <th>{{ 'pre-issuance-form.amount-lbl' | globalize }}</th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ issuance.asset }}</td>
-                <td>{{ issuance.amount | formatMoney }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="app__form-actions">
-        <form-confirmation
-          v-if="formMixin.isConfirmationShown"
-          @ok="hideConfirmation() || submit()"
-          @cancel="hideConfirmation"
-        />
-        <button
-          v-else
-          v-ripple
-          type="submit"
-          class="pre-issuance-form__submit-btn"
-          :disabled="formMixin.isDisabled"
-        >
-          {{ 'pre-issuance-form.upload-btn' | globalize }}
-        </button>
-      </div>
-    </form>
-  </div>
-  <div v-else-if="isLoaded && !ownedAssets.length">
-    <p>
-      {{ 'pre-issuance-form.no-owned-assets-msg' | globalize }}
+  <div class="pre-issuance-form">
+    <template v-if="isLoaded">
+      <upload-pre-issuance-form
+        v-if="ownedAssets.length"
+        :owned-assets="ownedAssets"
+        @submit="$emit(EVENTS.preIssuanceCreated)"
+      />
+
+      <no-data-message
+        v-else
+        icon-name="alert-circle"
+        :title="'pre-issuance-form.no-owned-assets-title' | globalize"
+        :message="'pre-issuance-form.no-owned-assets-msg' | globalize"
+      />
+    </template>
+
+    <p v-else-if="isLoadFailed">
+      {{ 'pre-issuance-form.load-failed-msg' | globalize }}
     </p>
-  </div>
-  <div v-else>
-    <loader :message-id="'pre-issuance-form.loading-msg'" />
+
+    <load-spinner
+      v-else
+      :message-id="'pre-issuance-form.loading-msg'"
+    />
   </div>
 </template>
 
 <script>
-import OwnedAssetsLoaderMixin from '@/vue/mixins/owned-assets-loader.mixin'
-import FormMixin from '@/vue/mixins/form.mixin'
+import LoadOwnedAssetsMixin from './mixins/load-owned-assets.mixin'
 
-import Loader from '@/vue/common/Loader'
+import NoDataMessage from '@/vue/common/NoDataMessage'
+import LoadSpinner from '@/vue/common/Loader'
+import UploadPreIssuanceForm from './components/upload-pre-issuance-form'
 
-import { Sdk } from '@/sdk'
-import { base } from '@tokend/js-sdk'
-
-import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { FileUtil } from '@/js/utils/file.util'
-import { documentContainer } from '@validators'
+import { Wallet } from '@tokend/js-sdk'
+import { initApi } from './_api'
 
 const EVENTS = {
-  close: 'close',
+  preIssuanceCreated: 'pre-issuance-created',
 }
 
 export default {
-  name: 'pre-issuance-form',
+  name: 'issuance-form-module',
   components: {
-    Loader,
+    NoDataMessage,
+    LoadSpinner,
+    UploadPreIssuanceForm,
   },
-  mixins: [OwnedAssetsLoaderMixin, FormMixin],
+  mixins: [LoadOwnedAssetsMixin],
+
+  props: {
+    wallet: {
+      type: Wallet,
+      required: true,
+    },
+    /**
+     * @property config - the config for component to use
+     * @property config.horizonURL - the url of horizon server (without version)
+     */
+    config: {
+      type: Object,
+      required: true,
+    },
+  },
+
   data: _ => ({
-    preIssuanceDocument: null,
-    issuance: null,
     isLoaded: false,
+    isLoadFailed: false,
+    EVENTS,
   }),
-  validations: {
-    preIssuanceDocument: { documentContainer },
-  },
-  watch: {
-    'preIssuanceDocument': async function (value) {
-      if (value && value.file) {
-        await this.extractPreIssuanceRequest(value.file)
-      }
-    },
-  },
+
   async created () {
-    await this.loadOwnedAssets()
-    this.isLoaded = true
+    await this.init()
   },
+
   methods: {
-    async submit () {
-      if (!this.preIssuanceDocument) {
-        Bus.error('file-field.file-not-selected-err')
-        return
-      }
-      this.disableForm()
+    async init () {
       try {
-        const operation = base.PreIssuanceRequestOpBuilder
-          .createPreIssuanceRequestOp({
-            request: this.issuance.xdr,
-          })
-        await Sdk.horizon.transactions.submitOperations(operation)
-        Bus.success('pre-issuance-form.pre-issuance-uploaded-msg')
-        this.$emit(EVENTS.close)
-        this.reset()
-      } catch (e) {
-        ErrorHandler.process(e)
+        initApi(this.wallet, this.config)
+        await this.loadOwnedAssets(this.wallet.accountId)
+        this.isLoaded = true
+      } catch (error) {
+        this.isLoadFailed = true
+        ErrorHandler.processWithoutFeedback(error)
       }
-      this.enableForm()
-    },
-    async extractPreIssuanceRequest (file) {
-      try {
-        const extracted = await FileUtil.getText(file)
-        this.parsePreIssuance(JSON.parse(extracted).issuances[0])
-      } catch (e) {
-        Bus.error('file-field.file-corrupted-err')
-      }
-    },
-    parsePreIssuance (preIssuance) {
-      const _xdr = base.xdr.PreIssuanceRequest
-        .fromXDR(preIssuance.preEmission, 'hex')
-      const result = base.PreIssuanceRequest.dataFromXdr(_xdr)
-      result.xdr = _xdr
-      result.isUsed = preIssuance.used
-
-      if (!this.isAssetDefined(result.asset)) {
-        Bus.error('pre-issuance-form.pre-issuance-not-allowed-err')
-        this.issuance = null
-        this.disableForm()
-        return
-      }
-
-      this.issuance = result
-      this.enableForm()
-    },
-    isAssetDefined (assetCode) {
-      return Boolean(this.ownedAssets
-        .filter(item => item.code === assetCode).length
-      )
-    },
-    reset () {
-      this.issuance = null
-      this.preIssuanceDocument = null
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '~@/vue/forms/app-form';
-
-.pre-issuance-form__submit-btn {
-  @include button-raised();
-
-  width: 18rem;
-}
-
-.pre-issuance-form__issuance-details {
-  margin-top: 2rem;
-}
-</style>

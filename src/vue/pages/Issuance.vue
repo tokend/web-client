@@ -41,7 +41,9 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
-        @close="isPreIssuanceDrawerShown = false"
+        :wallet="wallet"
+        :config="config"
+        @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>
 
@@ -55,9 +57,8 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
-        :wallet="wallet"
-        :config="config"
-        @submit="setIssuanceCreated() && closePreIssuanceDrawer()"
+        @submit="isIssuanceCreated = true"
+        @close="isIssuanceDrawerShown = false"
       />
     </drawer>
 
@@ -114,18 +115,5 @@ export default {
       wallet: vuexTypes.wallet,
     }),
   },
-
-  methods: {
-    setIssuanceCreated () {
-      this.isIssuanceCreated = true
-    },
-
-    closePreIssuanceDrawer () {
-      this.isIssuanceDrawerShown = false
-    },
-  },
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

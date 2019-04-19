@@ -972,7 +972,8 @@
       "pre-issuance-lbl": "Select file(s) with pre-issued asset. You cannot upload the same pre-issuance twice.",
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
-      "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you",
+      "asset-not-owned-err": "You cannot upload the asset that is not owned by you",
+      "file-corrupted-err": "Your file is corrupted. Please, try to upload another one",
       "pre-issuance-details-title": "Pre-issuance info",
       "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded"
     },
