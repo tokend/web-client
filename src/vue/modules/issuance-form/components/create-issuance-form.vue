@@ -188,7 +188,7 @@ export default {
     async submit () {
       this.isFormSubmitting = true
       try {
-        await this.sendIssuance()
+        await this.createIssuance()
         Bus.success('issuance-form.assets-issued-msg')
         this.$emit(EVENTS.submit)
       } catch (e) {

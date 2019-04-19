@@ -8,12 +8,15 @@ export default {
 
   methods: {
     async loadOwnedAssets (ownerAccountId) {
-      const { data: assets } = await api().get('/v3/assets', {
-        page: { limit: 100 },
-        filter: { owner: ownerAccountId },
+      const endpoint = `/v3/accounts/${ownerAccountId}`
+      const { data: account } = await api().get(endpoint, {
+        include: ['balances.asset'],
       })
 
-      this.ownedAssets = assets.map(a => new Asset(a))
+      this.ownedAssets = account.balances
+        .map(b => b.asset)
+        .map(a => new Asset(a))
+        .filter(a => a.owner === ownerAccountId)
     },
   },
 }

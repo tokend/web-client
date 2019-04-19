@@ -8,19 +8,8 @@ import { errors } from '@/js/errors'
 export default {
   mixins: [GetReceiverAccountMixin],
 
-  computed: {
-    issuanceRequestOpts () {
-      return {
-        asset: this.form.asset.code,
-        amount: this.form.amount.toString(),
-        reference: this.form.reference,
-        creatorDetails: {},
-      }
-    },
-  },
-
   methods: {
-    async sendIssuance () {
+    async createIssuance () {
       const receiverAccountId = await this.getReceiverAccountId(
         this.form.receiver
       )
@@ -36,16 +25,6 @@ export default {
       }
     },
 
-    async postIssuanceOperation (receiverBalanceId) {
-      const operation = base.CreateIssuanceRequestBuilder
-        .createIssuanceRequest({
-          ...this.issuanceRequestOpts,
-          receiver: receiverBalanceId,
-        })
-
-      await api().postOperations(operation)
-    },
-
     async getReceiverBalanceId (receiverAccountId, assetCode) {
       const endpoint = `/v3/accounts/${receiverAccountId}`
       const { data: account } = await api().get(endpoint, {
@@ -56,6 +35,19 @@ export default {
         .find(item => item.asset.id === assetCode)
 
       return balance ? balance.id : ''
+    },
+
+    async postIssuanceOperation (receiverBalanceId) {
+      const operation = base.CreateIssuanceRequestBuilder
+        .createIssuanceRequest({
+          asset: this.form.asset.code,
+          amount: this.form.amount.toString(),
+          receiver: receiverBalanceId,
+          reference: this.form.reference,
+          creatorDetails: {},
+        })
+
+      await api().postOperations(operation)
     },
   },
 }
