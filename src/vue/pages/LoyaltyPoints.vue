@@ -42,7 +42,7 @@
         :submodule="getModule().getSubmodule(IssuanceFormModule)"
         :wallet="wallet"
         :config="config"
-        @close="isIssuanceDrawerShown = false"
+        @issuance-created="isIssuanceDrawerShown = false"
       />
     </drawer>
 

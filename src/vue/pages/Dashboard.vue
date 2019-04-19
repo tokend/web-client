@@ -16,7 +16,7 @@
               @click="createIssuanceFormIsShown = true"
             >
               <i class="mdi mdi-plus dashboard__plus-icon" />
-              {{ 'dashboard.create-issuance-lbl' | globalize }}
+              {{ 'dashboard.create-issuance-btn' | globalize }}
             </button>
           </template>
 
@@ -70,14 +70,14 @@
             getModule().canRenderSubmodule(IssuanceFormModule)"
         >
           <template slot="heading">
-            {{ 'dashboard.create-issuance-lbl' | globalize }}
+            {{ 'dashboard.create-issuance-title' | globalize }}
           </template>
 
           <submodule-importer
             :submodule="getModule().getSubmodule(IssuanceFormModule)"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
-            @close="showDrawer = false"
+            @issuance-created="showDrawer = false"
           />
         </template>
 

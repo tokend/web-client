@@ -4,6 +4,7 @@
       <create-issuance-form
         v-if="ownedAssets.length"
         :owned-assets="ownedAssets"
+        @submit="$emit(EVENTS.issuanceCreated)"
       />
 
       <no-data-message
@@ -38,8 +39,7 @@ import { Wallet } from '@tokend/js-sdk'
 import { initApi } from './_api'
 
 const EVENTS = {
-  close: 'close',
-  submit: 'submit',
+  issuanceCreated: 'issuance-created',
 }
 
 export default {

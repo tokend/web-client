@@ -57,8 +57,7 @@
         :submodule="getModule().getSubmodule(IssuanceFormModule)"
         :wallet="wallet"
         :config="config"
-        @submit="isIssuanceCreated = true"
-        @close="isIssuanceDrawerShown = false"
+        @issuance-created="setIssuanceCreated() || closeIssuanceDrawer()"
       />
     </drawer>
 
@@ -115,8 +114,15 @@ export default {
       wallet: vuexTypes.wallet,
     }),
   },
+
+  methods: {
+    setIssuanceCreated () {
+      this.isIssuanceCreated = true
+    },
+
+    closeIssuanceDrawer () {
+      this.isIssuanceDrawerShown = false
+    },
+  },
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

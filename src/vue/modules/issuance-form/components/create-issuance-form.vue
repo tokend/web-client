@@ -192,11 +192,11 @@ export default {
         Bus.success('issuance-form.assets-issued-msg')
         this.$emit(EVENTS.submit)
       } catch (e) {
-        this.isFormSubmitting = false
-        this.hideConfirmation()
-
         ErrorHandler.process(e)
       }
+
+      this.isFormSubmitting = false
+      this.hideConfirmation()
     },
   },
 }

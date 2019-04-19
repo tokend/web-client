@@ -82,35 +82,30 @@ describe('Create issuance form', () => {
     })
 
     describe('submit', () => {
-      it('calls proper methods, emits proper event, and sets isFormSubmitting property to true',
-        async () => {
-          sandbox.stub(wrapper.vm, 'createIssuance').resolves()
-          sandbox.stub(Bus, 'success')
+      it('calls proper methods and emits proper event', async () => {
+        sandbox.stub(wrapper.vm, 'createIssuance').resolves()
+        sandbox.stub(Bus, 'success')
+        sandbox.stub(wrapper.vm, 'hideConfirmation')
 
-          await wrapper.vm.submit()
+        await wrapper.vm.submit()
 
-          expect(wrapper.vm.createIssuance)
-            .to.have.been.calledOnce
-          expect(Bus.success).to.have.been.calledOnce
+        expect(wrapper.vm.createIssuance)
+          .to.have.been.calledOnce
+        expect(Bus.success).to.have.been.calledOnce
+        expect(wrapper.emitted('submit')).to.exist
+        expect(wrapper.vm.hideConfirmation).to.have.been.calledOnce
+      })
 
-          expect(wrapper.emitted('submit')).to.exist
-          expect(wrapper.vm.isFormSubmitting).to.be.true
-        }
-      )
+      it('handles a thrown error properly', async () => {
+        sandbox.stub(wrapper.vm, 'createIssuance').rejects()
+        sandbox.stub(ErrorHandler, 'process')
 
-      it('handles a thrown error properly and set isFormSubmitting property to false',
-        async () => {
-          sandbox.stub(wrapper.vm, 'createIssuance').rejects()
-          sandbox.stub(ErrorHandler, 'process')
+        wrapper.setData({ isFormSubmitting: true })
 
-          wrapper.setData({ isFormSubmitting: true })
+        await wrapper.vm.submit()
 
-          await wrapper.vm.submit()
-
-          expect(ErrorHandler.process).to.have.been.calledOnce
-          expect(wrapper.vm.isFormSubmitting).to.be.false
-        }
-      )
+        expect(ErrorHandler.process).to.have.been.calledOnce
+      })
     })
   })
 })
