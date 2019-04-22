@@ -23,11 +23,13 @@
 </template>
 
 <script>
+import { Issuance } from '../wrappers/issuance'
+
 export default {
   name: 'issuance-viewer',
 
   props: {
-    issuance: { type: Object, required: true },
+    issuance: { type: Issuance, required: true },
   },
 }
 </script>

@@ -17,7 +17,7 @@
     </div>
 
     <issuance-viewer
-      v-if="issuance"
+      v-if="issuance.amount"
       class="upload-pre-issuance-form__issuance-details"
       :issuance="issuance"
     />
@@ -81,7 +81,7 @@ export default {
     'preIssuanceDocument': async function (value) {
       if (value && value.file) {
         try {
-          await this.extractPreIssuanceRequest(value.file)
+          await this.extractPreIssuance(value.file)
         } catch (e) {
           ErrorHandler.process(e, 'pre-issuance-form.file-corrupted-err')
         }
@@ -95,9 +95,7 @@ export default {
       try {
         await this.createPreIssuanceRequest()
         Bus.success('pre-issuance-form.pre-issuance-uploaded-msg')
-
         this.$emit(EVENTS.submit)
-        this.reset()
       } catch (e) {
         if (e instanceof AssetNotOwnedError) {
           ErrorHandler.process(e, 'pre-issuance-form.asset-not-owned-err')
@@ -108,11 +106,6 @@ export default {
 
       this.isFormSubmitting = false
       this.hideConfirmation()
-    },
-
-    reset () {
-      this.issuance = null
-      this.preIssuanceDocument = null
     },
   },
 }

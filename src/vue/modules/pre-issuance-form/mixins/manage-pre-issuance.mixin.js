@@ -9,12 +9,15 @@ import { AssetNotOwnedError, FileCorruptedError } from '../_errors'
 
 export default {
   data: _ => ({
-    issuance: null,
+    issuance: {},
   }),
 
   methods: {
     async createPreIssuanceRequest () {
-      if (!this.isAssetOwned(this.issuance.asset)) {
+      const issuanceAsset = this.ownedAssets
+        .find(item => item.code === this.issuance.asset)
+
+      if (!issuanceAsset) {
         throw new AssetNotOwnedError()
       }
 
@@ -25,14 +28,7 @@ export default {
       await api().postOperations(operation)
     },
 
-    isAssetOwned (assetCode) {
-      return Boolean(this.ownedAssets
-        .filter(item => item.code === assetCode)
-        .length
-      )
-    },
-
-    async extractPreIssuanceRequest (file) {
+    async extractPreIssuance (file) {
       try {
         const extracted = await FileUtil.getText(file)
         const rawPreIssuance = JSON.parse(extracted).issuances[0]
