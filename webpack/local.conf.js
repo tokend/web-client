@@ -4,16 +4,18 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const portfinder = require('portfinder')
+const defaultPort = 8095
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-module.exports = merge(baseWebpackConfig, {
+const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: '#cheap-module-eval-source-map',
   devServer: {
-    port: 8095,
+    port: defaultPort,
     hot: true,
     host: 'localhost',
     overlay: true,
@@ -51,3 +53,12 @@ module.exports = merge(baseWebpackConfig, {
     new FriendlyErrorsPlugin(),
   ]
 })
+
+module.exports = async () => {
+  portfinder.basePort = defaultPort
+  await portfinder.getPort((err, port) => {
+    if (err) throw err
+    devWebpackConfig.devServer.port = port
+  })
+  return devWebpackConfig
+}
