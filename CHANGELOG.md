@@ -26,6 +26,7 @@ for further information about branching and tagging conventions.
 - Calculating percent delta on line chart
 - Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
+- Polling when creating an invoice (Loyalty)
 
 #### Removed
 - Quitted building sourcemaps for production

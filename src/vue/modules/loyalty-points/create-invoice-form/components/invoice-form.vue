@@ -320,8 +320,8 @@ export default {
 
     async getQuoteAssetBalanceId () {
       const endpoint = `/v3/accounts/${this.loyaltyAccount.accountId}`
-      const { data: account } = await api().getWithSignature(endpoint, {
-        include: ['balances.state'],
+      const { data: account } = await api().get(endpoint, {
+        include: ['balances'],
       })
 
       const balance = account.balances
