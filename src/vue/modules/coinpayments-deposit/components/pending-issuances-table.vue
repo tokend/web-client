@@ -34,7 +34,7 @@ export default {
       if (value) {
         this.resetIssuanceSelection()
       }
-    }
+    },
   },
   methods: {
     issuanceSelected (issuance) {
@@ -42,8 +42,8 @@ export default {
     },
     resetIssuanceSelection () {
       this.selectedIssuance = null
-    }
-  }
+    },
+  },
 }
 </script>
 

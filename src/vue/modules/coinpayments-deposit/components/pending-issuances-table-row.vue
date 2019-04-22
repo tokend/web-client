@@ -39,7 +39,7 @@ import KeyViewer from '@/vue/common/KeyViewer'
 
 const EVENTS = {
   issuanceSelected: 'issuance-selected',
-  resetIssuanceSelection: 'reset-issuance-selection'
+  resetIssuanceSelection: 'reset-issuance-selection',
 }
 
 export default {
@@ -55,8 +55,8 @@ export default {
     address: { type: String, required: true },
     selectedIssuance: {
       required: true,
-      validator: prop => typeof prop === 'string' || prop === null
-    }
+      validator: prop => typeof prop === 'string' || prop === null,
+    },
   },
   data () {
     return {
@@ -76,7 +76,7 @@ export default {
         this.$emit(EVENTS.issuanceSelected, this.address)
       }
     },
-  }
+  },
 }
 </script>
 

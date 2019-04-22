@@ -117,7 +117,7 @@ export default {
     },
     issuanceCreatedHandler () {
       this.isIssuanceCreated = true
-    }
+    },
   },
 }
 </script>
