@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
+- Loading account balance info in to `DepositForm` before deposit
 
 #### Changed
 - Corrected statistics charts data (Loyalty)
