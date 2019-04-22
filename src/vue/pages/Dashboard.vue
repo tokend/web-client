@@ -155,9 +155,7 @@ export default {
     this.isLoading = true
     await this.loadBalances()
     this.setCurrentAsset()
-    setTimeout(() => {
-      this.isLoading = false
-    }, 3000)
+    this.isLoading = false
   },
   methods: {
     ...mapActions({
