@@ -274,6 +274,7 @@ import {
 import { MathUtil } from '@/js/utils'
 import config from '@/config'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
@@ -394,8 +395,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await Sdk.horizon.transactions
-          .submitOperations(this.buildPaymentOperation())
+        await Api.api.postOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)

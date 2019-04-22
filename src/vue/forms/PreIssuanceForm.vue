@@ -75,7 +75,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import Loader from '@/vue/common/Loader'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -125,7 +125,7 @@ export default {
           .createPreIssuanceRequestOp({
             request: this.issuance.xdr,
           })
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         Bus.success('pre-issuance-form.pre-issuance-uploaded-msg')
         this.$emit(EVENTS.close)
         this.reset()

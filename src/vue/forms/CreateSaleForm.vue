@@ -339,6 +339,8 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormStepper from '@/vue/common/FormStepper'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
+
 import { mapGetters } from 'vuex'
 import { DateUtil, MathUtil } from '@/js/utils'
 import { vuexTypes } from '@/vuex/types'
@@ -537,9 +539,7 @@ export default {
           BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
-        await Sdk.horizon.transactions.submitOperations(
-          this.getOperation(blob.id)
-        )
+        await Api.api.postOperations(this.getOperation(blob.id))
         Bus.success('create-sale-form.request-submitted-msg')
         this.enableForm()
         this.$emit(EVENTS.close)

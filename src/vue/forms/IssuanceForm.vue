@@ -135,6 +135,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import {
@@ -225,7 +226,7 @@ export default {
               reference: this.form.reference,
               creatorDetails: {},
             })
-          await Sdk.horizon.transactions.submitOperations(operation)
+          await Api.api.postOperations(operation)
           await this.reinitAssetSelector()
           Bus.success('issuance-form.assets-issued-msg')
           this.$emit(EVENTS.submit)

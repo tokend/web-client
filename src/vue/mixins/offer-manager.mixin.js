@@ -4,6 +4,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { base, errors, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
@@ -42,7 +43,7 @@ export default {
             asset: opts.pair.base,
             action: base.xdr.ManageBalanceAction.createUnique(),
           })
-          await Sdk.horizon.transactions.submitOperations(operation)
+          await Api.api.postOperations(operation)
           await this.loadBalances(this.accountId)
         }
 
@@ -52,7 +53,7 @@ export default {
             asset: opts.pair.quote,
             action: base.xdr.ManageBalanceAction.createUnique(),
           })
-          await Sdk.horizon.transactions.submitOperations(operation)
+          await Api.api.postOperations(operation)
           await this.loadBalances(this.accountId)
         }
 
@@ -78,7 +79,7 @@ export default {
         }
         const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
 
         Bus.success('offer-manager.success-creating')
       } catch (error) {
@@ -108,7 +109,7 @@ export default {
           price: opts.price,
           orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         })
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         Bus.success('offer-manager.success-cancelling')
       } catch (error) {
         ErrorHandler.process(error)

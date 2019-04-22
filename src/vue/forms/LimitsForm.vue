@@ -173,7 +173,7 @@ import {
   maxDecimalPoints,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
@@ -361,7 +361,7 @@ export default {
             note,
           },
         })
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await Api.api.postOperations(operation)
     },
   },
 }

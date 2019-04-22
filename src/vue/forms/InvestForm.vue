@@ -188,6 +188,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
@@ -430,7 +431,7 @@ export default {
         }
 
         const operations = await this.getOfferOperations()
-        await Sdk.horizon.transactions.submitOperations(...operations)
+        await Api.api.postOperations(...operations)
         await this.loadBalances()
 
         Bus.success({
@@ -456,7 +457,7 @@ export default {
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
 
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await Api.api.postOperations.submitOperations(operation)
       await this.loadBalances()
     },
 
@@ -518,7 +519,7 @@ export default {
             CANCEL_OFFER_FEE
           )
         )
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations.submitOperations(operation)
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
