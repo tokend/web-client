@@ -275,10 +275,7 @@ export default {
 
       this.isFormSubmitting = true
       try {
-        if (this.systemIdentifier !== this.merchantSystem) {
-          await this.initExternalSystemApi()
-        }
-
+        await this.initExternalSystemApi()
         await this.sendTransaction()
         this.$emit(EVENTS.submit, this.invoiceRecord)
       } catch (error) {

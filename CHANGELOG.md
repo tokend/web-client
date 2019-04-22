@@ -12,7 +12,7 @@ for further information about branching and tagging conventions.
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
-- Loading account balance info in to `DepositForm` before deposit
+- "Copy" button to EmailGetter
 
 #### Changed
 - Corrected statistics charts data (Loyalty)
@@ -28,6 +28,8 @@ for further information about branching and tagging conventions.
 - Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
 - Polling when creating an invoice (Loyalty)
+- Invoice transaction source account (Loyalty)
+- Fixed a bug with absent preloading of account balance in `DepositForm`
 
 #### Removed
 - Quitted building sourcemaps for production
@@ -45,7 +47,6 @@ for further information about branching and tagging conventions.
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
 - Displaying of limit request details in drawer
-- "Copy" button to EmailGetter
 
 #### Changed
 - Show limits request list on top of other limits on "Limits" page
