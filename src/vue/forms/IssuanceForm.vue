@@ -134,7 +134,6 @@ import config from '@/config'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
@@ -213,16 +212,16 @@ export default {
       this.disableForm()
 
       try {
-        const receiverBalance = await this.getReceiverBalance(
+        const receiverBalanceId = await this.getReceiverBalanceId(
           this.form.receiver,
           this.form.asset.code
         )
-        if (receiverBalance) {
+        if (receiverBalanceId) {
           const operation =
             base.CreateIssuanceRequestBuilder.createIssuanceRequest({
               asset: this.form.asset.code,
               amount: this.form.amount.toString(),
-              receiver: receiverBalance.balanceId,
+              receiver: receiverBalanceId,
               reference: this.form.reference,
               creatorDetails: {},
             })
@@ -240,12 +239,16 @@ export default {
 
       this.enableForm()
     },
-    async getReceiverBalance (receiver, asset) {
+    async getReceiverBalanceId (receiver, assetCode) {
       const receiverAccountId = await this.getReceiverAccountId(receiver)
-      const { data } =
-        await Sdk.horizon.account.getBalances(receiverAccountId)
-      const receiverBalance = data.find(balance => balance.asset === asset)
-      return receiverBalance
+      const endpoint = `/v3/accounts/${receiverAccountId}`
+      const { data: account } = await Api.get(endpoint, {
+        include: ['balances'],
+      })
+
+      const receiverBalance = account.balances
+        .find(balance => balance.asset.id === assetCode)
+      return receiverBalance ? receiverBalance.id : ''
     },
     async getReceiverAccountId (receiver) {
       if (email(receiver)) {
