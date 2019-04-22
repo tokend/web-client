@@ -8,8 +8,13 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Fixes
+#### Changed
+- Modularized:
+  - Pre-issuance form
+
+#### Fixed
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
+- `preissuedAssetSigner` field on the create asset form
 
 ## [1.5.0-rc.3] - 2019-04-19
 ### "Under the hood changes"
