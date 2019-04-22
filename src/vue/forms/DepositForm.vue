@@ -133,8 +133,8 @@ export default {
     },
   },
   async created () {
-    await this.loadAccount(this.accountId)
     try {
+      await this.loadAccount(this.accountId)
       const { data: assets } = await Sdk.horizon.account
         .getDetails(this.accountId)
       this.assets = assets
