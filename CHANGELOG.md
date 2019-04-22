@@ -43,6 +43,7 @@ for further information about branching and tagging conventions.
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
 - Displaying of limit request details in drawer
+- "Copy" button to EmailGetter
 
 #### Changed
 - Show limits request list on top of other limits on "Limits" page
