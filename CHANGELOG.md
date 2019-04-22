@@ -8,11 +8,26 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+
 #### Changed
+- Corrected statistics charts data (Loyalty)
 - Use select field instead of table for acceptable points on
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
+
+#### Fixed
+- Calculating percent delta on line chart
+- Displaying negative values on line chart
+- Fixed a bug when with `defaultQuoteAsset` loading race condition
+
+## [1.5.0]
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0
 
 ## [1.5.0-rc.3] - 2019-04-19
 ### "Under the hood changes"
@@ -308,7 +323,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
 [1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
 [1.5.0-rc.2]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...1.5.0-rc.1

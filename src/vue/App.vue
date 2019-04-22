@@ -90,11 +90,12 @@ export default {
       await Sdk.init(config.HORIZON_SERVER)
       Api.init({ horizonURL: config.HORIZON_SERVER })
 
+      await this.loadKvEntries()
+      await this.loadDefaultQuoteAsset()
+
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        await this.loadKvEntries()
-        await this.loadDefaultQuoteAsset()
       }
     },
     detectIE () {
