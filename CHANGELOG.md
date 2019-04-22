@@ -16,8 +16,8 @@ for further information about branching and tagging conventions.
 - Corrected statistics charts data (Loyalty)
 
 #### Fixed
-- Calculating percent delta on line chart (Loyalty)
-- Displaying negative values on line chart (Loyalty)
+- Calculating percent delta on line chart
+- Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
 
 ## [1.5.0]
