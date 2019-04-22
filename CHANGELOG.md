@@ -19,6 +19,8 @@ for further information about branching and tagging conventions.
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
+- Now running WDS run on nearest non-busy port. No more "ERR_ADDRINUSE"
+  for us
 
 #### Fixed
 - Calculating percent delta on line chart
@@ -38,7 +40,6 @@ for further information about branching and tagging conventions.
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
 - Displaying of limit request details in drawer
-- WDS run on nearest non-busy port
 
 #### Changed
 - Show limits request list on top of other limits on "Limits" page
