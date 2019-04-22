@@ -463,11 +463,15 @@ export default {
     },
 
     async getOfferOperations () {
-      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-        asset: this.form.asset.code,
-        account: this.accountId,
-        amount: this.form.amount,
-      })
+      const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+      const params = [
+        `asset=${this.form.asset.code}`,
+        `fee_type=${FEE_TYPES.offerFee}`,
+        `amount=${this.form.amount}`,
+      ]
+
+      const endpoint = `${baseEndpoint}?${params.join('&')}`
+      const { data: fee } = await Api.get(endpoint)
 
       let operations = []
 
@@ -481,7 +485,7 @@ export default {
       }
       operations.push(
         base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts(OFFER_CREATE_ID, fee.percent)
+          this.getOfferOpts(OFFER_CREATE_ID, fee.calculatedPercent)
         ),
       )
 

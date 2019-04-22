@@ -3,7 +3,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { base, errors, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
@@ -58,13 +57,18 @@ export default {
         }
 
         const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value
-        const feeOpts = {
-          asset: opts.pair.quote,
-          amount: opts.quoteAmount,
-          subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-          account: this.accountId,
-        }
-        const fee = (await Sdk.horizon.fees.get(feeType, feeOpts)).data
+
+        const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+        const params = [
+          `asset=${opts.pair.quote}`,
+          `fee_type=${feeType}`,
+          `subtype=${PAYMENT_FEE_SUBTYPES.outgoing}`,
+          `amount=${opts.quoteAmount}`,
+        ]
+
+        const endpoint = `${baseEndpoint}?${params.join('&')}`
+        const { data: fee } = await Api.get(endpoint)
+
         const operationOpts = {
           amount: opts.baseAmount,
           price: opts.price,
@@ -75,7 +79,7 @@ export default {
           // For this operation, back-end creates a "calculated fee", that
           // calculates as amount * percent fee. We can ignore the fixed fee
           // because of this is a back-end business
-          fee: fee.percent,
+          fee: fee.calculatedPercent,
         }
         const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
