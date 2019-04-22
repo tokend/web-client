@@ -8,7 +8,16 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Fixes
+#### Added
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+
+#### Changed
+- Corrected statistics charts data (Loyalty)
+
+#### Fixed
+- Calculating percent delta on line chart
+- Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
 
 ## [1.5.0]
