@@ -29,6 +29,7 @@ for further information about branching and tagging conventions.
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
 - Polling when creating an invoice (Loyalty)
 - Invoice transaction source account (Loyalty)
+- Fixed a bug with absent preloading of account balance in `DepositForm`
 
 #### Removed
 - Quitted building sourcemaps for production

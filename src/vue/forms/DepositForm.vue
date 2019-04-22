@@ -82,7 +82,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -134,6 +134,7 @@ export default {
   },
   async created () {
     try {
+      await this.loadAccount(this.accountId)
       const { data: assets } = await Sdk.horizon.account
         .getDetails(this.accountId)
       this.assets = assets
@@ -148,6 +149,11 @@ export default {
       this.isLoadingFailed = true
     }
   },
+  methods: {
+    ...mapActions({
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    })
+  }
 }
 </script>
 
