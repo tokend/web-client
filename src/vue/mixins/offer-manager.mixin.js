@@ -74,8 +74,8 @@ export default {
           price: opts.price,
           orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
           isBuy: opts.isBuy,
-          baseBalance: this.getAssetDetails(opts.pair.base).balanceId,
-          quoteBalance: this.getAssetDetails(opts.pair.quote).balanceId,
+          baseBalance: this.getAssetDetails(opts.pair.base).id,
+          quoteBalance: this.getAssetDetails(opts.pair.quote).id,
           // For this operation, back-end creates a "calculated fee", that
           // calculates as amount * percent fee. We can ignore the fixed fee
           // because of this is a back-end business

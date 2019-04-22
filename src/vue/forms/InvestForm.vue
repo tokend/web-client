@@ -48,7 +48,7 @@
 
             <p class="app__form-field-description">
               <vue-markdown
-                v-if="isConvertedAmountLoaded"
+                v-if="isAssetPairPriceLoaded"
                 class="app__form-field-description invest-form__amount-hint"
                 :source="'invest-form.converted-amount-hint' | globalize({
                   amount: {
@@ -58,7 +58,7 @@
                 })"
               />
 
-              <template v-else-if="isConvertingFailed">
+              <template v-else-if="isPriceLoadFailed">
                 {{ 'invest-form.converting-error-msg' | globalize }}
               </template>
 
@@ -201,8 +201,6 @@ import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
 
-import _throttle from 'lodash/throttle'
-
 const EVENTS = {
   submitted: 'submitted',
   canceled: 'canceled',
@@ -211,7 +209,6 @@ const EVENTS = {
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
-const CONVERTING_DELAY = 1000
 
 export default {
   name: 'invest-form',
@@ -231,14 +228,14 @@ export default {
       asset: {},
       amount: '',
     },
+    assetPairPrice: '',
     offers: [],
     saleBaseAsset: null,
     isLoaded: false,
     isLoadingFailed: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
-    convertedAmount: 0,
-    isConvertedAmountLoaded: true,
-    isConvertingFailed: false,
+    isAssetPairPriceLoaded: true,
+    isPriceLoadFailed: false,
     isSubmitting: false,
     vueRoutes,
   }),
@@ -261,6 +258,14 @@ export default {
       isAccountUnverified: vuexTypes.isAccountUnverified,
       balances: vuexTypes.accountBalances,
     }),
+
+    convertedAmount () {
+      if (this.form.asset.code === this.sale.defaultQuoteAsset) {
+        return this.form.amount
+      } else {
+        return MathUtil.multiply(this.form.amount, this.assetPairPrice)
+      }
+    },
 
     quoteAssetBalances () {
       let quoteAssetBalances = []
@@ -295,10 +300,6 @@ export default {
         value: availableBalance,
         currency: this.form.asset.code,
       }
-    },
-
-    convertAmountLoader () {
-      return _throttle(this.loadConvertedAmount, CONVERTING_DELAY)
     },
 
     currentInvestment () {
@@ -339,17 +340,13 @@ export default {
     canSubmit () {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
-        this.isConvertedAmountLoaded
+        this.isAssetPairPriceLoaded
     },
   },
 
   watch: {
-    'form.amount': function () {
-      this.setConvertedAmount()
-    },
-
-    'form.asset': function () {
-      this.setConvertedAmount()
+    'form.asset': async function () {
+      await this.loadAssetPairPrice()
     },
   },
 
@@ -390,30 +387,21 @@ export default {
       this.offers = data
     },
 
-    setConvertedAmount () {
-      if (this.form.asset.code === this.sale.defaultQuoteAsset) {
-        this.convertedAmount = this.form.amount
-      } else if (this.form.amount === '') {
-        this.convertedAmount = 0
-      } else {
-        this.convertAmountLoader()
-      }
-    },
-
-    async loadConvertedAmount () {
-      this.isConvertingFailed = false
-      this.isConvertedAmountLoaded = false
+    async loadAssetPairPrice () {
+      this.isPriceLoadFailed = false
+      this.isAssetPairPriceLoaded = false
 
       try {
-        const { data } = await Sdk.horizon.assetPairs.convert({
-          source_asset: this.form.asset.code,
-          dest_asset: this.sale.defaultQuoteAsset,
-          amount: this.form.amount,
-        })
-        this.convertedAmount = data.amount
-        this.isConvertedAmountLoaded = true
+        const sourceAsset = this.form.asset.code
+        const destAsset = this.sale.defaultQuoteAsset
+
+        const endpoint = `/v3/asset_pairs/${sourceAsset}:${destAsset}`
+        const { data: assetPair } = await Api.get(endpoint)
+
+        this.assetPairPrice = assetPair.price
+        this.isAssetPairPriceLoaded = true
       } catch (e) {
-        this.isConvertingFailed = true
+        this.isPriceLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
     },
@@ -496,9 +484,9 @@ export default {
       return {
         offerID: offerId,
         baseBalance: this.balances
-          .find(balance => balance.asset === this.sale.baseAsset).balanceId,
+          .find(balance => balance.asset === this.sale.baseAsset).id,
         quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset.code).balanceId,
+          .find(balance => balance.asset === this.form.asset.code).id,
         isBuy: true,
         amount: MathUtil.divide(
           this.form.amount,

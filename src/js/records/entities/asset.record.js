@@ -61,7 +61,7 @@ export class AssetRecord {
       return {
         value: balance.balance,
         currency: balance.asset,
-        id: balance.balanceId,
+        id: balance.id,
       }
     } else {
       return {}

@@ -428,7 +428,7 @@ export default {
           destinationFixedFee: fees.destination.fixed,
           destinationPercentFee: fees.destination.calculatedPercent,
           destinationFeeAsset: this.form.asset.code,
-          sourceBalanceId: this.balance.balanceId,
+          sourceBalanceId: this.balance.id,
           sourceFixedFee: fees.source.fixed,
           sourcePercentFee: fees.source.calculatedPercent,
           sourceFeeAsset: this.form.asset.code,

@@ -95,6 +95,7 @@ import { LimitsRecord } from '@/js/records/entities/limits.record'
 import { LimitsUpdateRequestRecord } from '@/js/records/requests/limits-update.record'
 import config from '@/config'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import { Api } from '@/api'
 
 export default {
   name: 'limits',
@@ -157,9 +158,11 @@ export default {
       this.isLimitsLoading = true
       this.isLimitsLoadingFailed = false
       try {
-        const response = await Sdk.horizon.account.getLimits(this.accountId)
-
-        this.formatLimits({ limits: response.data.limits })
+        const endpoint = `/v3/accounts/${this.accountId}`
+        const { data: account } = await Api.getWithSignature(endpoint, {
+          include: ['limits'],
+        })
+        this.formatLimits(account.limits)
       } catch (error) {
         this.isLimitsLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -194,14 +197,14 @@ export default {
           new LimitsUpdateRequestRecord(item)
         ))
     },
-    formatLimits ({ limits }) {
+    formatLimits (limits) {
       const formattedLimits = {}
       this.accountBalancesAssetsCodes.forEach(assetCode => {
         if (!limits) limits = []
         formattedLimits[assetCode] = limits
-          .filter(item => item.limit.assetCode === assetCode)
+          .filter(item => item.asset.id === assetCode)
           .reduce((acc, item) => {
-            switch (item.limit.statsOpType) {
+            switch (item.statsOpType) {
               case STATS_OPERATION_TYPES.paymentOut:
                 return { ...acc, payment: new LimitsRecord(item) }
               case STATS_OPERATION_TYPES.withdraw:

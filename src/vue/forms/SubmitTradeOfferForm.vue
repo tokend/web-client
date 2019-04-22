@@ -203,8 +203,8 @@ export default {
     getCancelOfferOpts () {
       return {
         price: this.offer.price,
-        baseBalance: this.offerBaseAssetBalance.balanceId,
-        quoteBalance: this.offerQuoteAssetBalance.balanceId,
+        baseBalance: this.offerBaseAssetBalance.id,
+        quoteBalance: this.offerQuoteAssetBalance.id,
         offerId: this.offer.offerId,
       }
     },

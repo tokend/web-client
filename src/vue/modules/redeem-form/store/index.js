@@ -131,8 +131,8 @@ export const actions = {
       price: opts.price,
       orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
       isBuy: opts.isBuy,
-      baseBalance: getters.assetDetails(opts.pair.base).balanceId,
-      quoteBalance: getters.assetDetails(opts.pair.quote).balanceId,
+      baseBalance: getters.assetDetails(opts.pair.base).id,
+      quoteBalance: getters.assetDetails(opts.pair.quote).id,
       fee: fee.calculatedPercent,
     }
     const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
