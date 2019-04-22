@@ -28,11 +28,10 @@ export default {
   props: {
     data: { type: Object, default: _ => ({}) },
     currency: { type: String, default: ' ' },
-    id: { type: String, required: true },
   },
 
   data: _ => ({
-    scale: 'month',
+    scale: 'year',
   }),
 
   computed: {

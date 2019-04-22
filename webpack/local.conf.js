@@ -1,4 +1,4 @@
-'use strict'
+const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./base.conf')
@@ -6,6 +6,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 const defaultPort = 8095
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
@@ -28,6 +32,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       {
         test: /\.css?$/,
         loader: 'style-loader!css-loader',
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader?cacheDirectory',
+        include: [resolve('src')],
       },
     ],
   },

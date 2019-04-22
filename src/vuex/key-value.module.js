@@ -75,7 +75,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
   },
   async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {
-    const { data } = await Api.getWithSignature('/v3/assets', {
+    const { data } = await Api.get('/v3/assets', {
       filter: {
         policy: ASSET_POLICIES.statsQuoteAsset,
       },

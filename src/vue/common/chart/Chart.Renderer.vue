@@ -131,16 +131,14 @@ export default {
       this.clear()
       // Setup the data
       const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
-        const itemLength = item.length
-        let defaultDate = 0
-        let max = 0
-        for (let i = 0; i < itemLength; i++) {
-          defaultDate += Date.parse(item[i].time)
-          if (item[i].value > max) max = item[i].value
-        }
+        const defaultDate = item.reduce((sum, current) => {
+          sum += Date.parse(current.time)
+          return sum
+        }, 0)
+
         return {
-          time: new Date(defaultDate / itemLength),
-          value: max,
+          time: new Date(defaultDate / item.length),
+          value: Math.max(...item.map(i => i.value)),
         }
       })
       const { max, min } = this.getMaxAndMin(data)
@@ -393,10 +391,12 @@ export default {
             const prevValue = data[data.indexOf(nearestPoint) - 1].value
             const currentValue = nearestPoint.value
             if (prevValue > currentValue) {
-              const val = ((prevValue - currentValue) / currentValue) * 100
+              const val = ((prevValue - currentValue) /
+                Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
             } else if (prevValue < currentValue) {
-              const val = ((currentValue - prevValue) / currentValue) * 100
+              const val = ((currentValue - prevValue) /
+                Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`+${val.toPrecision(getPrecision(val))}%`)
             } else {
               tipPriceChangeText.text('+0%')
