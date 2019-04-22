@@ -27,6 +27,9 @@ for further information about branching and tagging conventions.
 - Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
 
+#### Removed
+- Quitted building sourcemaps for production
+
 ## [1.5.0]
 ### "Under the hood changes"
 #### Changed
