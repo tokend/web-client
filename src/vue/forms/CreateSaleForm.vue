@@ -508,8 +508,15 @@ export default {
   },
   async created () {
     try {
-      const { data: assets } = await Sdk.horizon.assets.getAll()
-      this.assets = assets.map(item => new AssetRecord(item))
+      const endpoint = `/v3/accounts/${this.accountId}`
+      const { data: account } = await Api.get(endpoint, {
+        include: ['balances.asset'],
+      })
+
+      this.assets = account.balances
+        .map(b => b.asset)
+        .map(a => new AssetRecord(a))
+
       if (this.request.id) {
         await this.populateForm(this.request)
       } else {

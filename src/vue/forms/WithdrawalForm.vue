@@ -390,8 +390,13 @@ export default {
     },
     async loadAssets () {
       await this.loadBalances()
-      const { data: assets } = await Sdk.horizon.assets.getAll()
-      this.assets = assets
+      const endpoint = `/v3/accounts/${this.accountId}`
+      const { data: account } = await Api.get(endpoint, {
+        include: ['balances.asset'],
+      })
+
+      this.assets = account.balances
+        .map(b => b.asset)
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.isWithdrawable && item.balance.id)
     },

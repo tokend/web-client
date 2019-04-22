@@ -88,7 +88,7 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      Api.init({ horizonURL: config.HORIZON_SERVER })
+      await Api.init({ horizonURL: config.HORIZON_SERVER })
 
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()

@@ -84,7 +84,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -114,6 +114,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
@@ -160,8 +161,14 @@ export default {
     }),
     async loadAssets () {
       try {
-        const response = await Sdk.horizon.assets.getAll()
-        this.assets = response.data.map(asset => new AssetRecord(asset))
+        const endpoint = `/v3/accounts/${this.accountId}`
+        const { data: account } = await Api.get(endpoint, {
+          include: ['balances.asset'],
+        })
+
+        this.assets = account.balances
+          .map(b => b.asset)
+          .map(a => new AssetRecord(a))
       } catch (error) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)

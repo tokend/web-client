@@ -376,7 +376,8 @@ export default {
     }),
 
     async loadSaleBaseAsset () {
-      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+      const endpoint = `/v3/assets/${this.sale.baseAsset}`
+      const { data } = await Api.get(endpoint)
 
       this.saleBaseAsset = new AssetRecord(data)
     },

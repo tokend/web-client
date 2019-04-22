@@ -8,9 +8,9 @@ export class Api {
    * @param {String} config.horizonURL - the url of the horizon server
    * (without version prefix)
    */
-  static init (config) {
+  static async init (config) {
     const horizonURL = config.horizonURL
-    _api = ApiCaller.getInstance(horizonURL)
+    _api = await ApiCaller.getInstanceWithPassphrase(horizonURL)
   }
 
   /**
@@ -38,6 +38,10 @@ export class Api {
    */
   static getWithSignature (path, opts) {
     return _api.getWithSignature(path, opts)
+  }
+
+  static get networkDetails () {
+    return this.api.networkDetails
   }
 
   /**
