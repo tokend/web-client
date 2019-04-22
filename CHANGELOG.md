@@ -11,9 +11,14 @@ for further information about branching and tagging conventions.
 #### Added
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
+- Account number field to the invoice form (Loyalty)
 
 #### Changed
 - Corrected statistics charts data (Loyalty)
+- Use select field instead of table for acceptable points on
+  create invoice form (Loyalty)
+- Now sending payment transaction to the external system instead of
+  creating a blob (Loyalty)
 
 #### Fixed
 - Calculating percent delta on line chart

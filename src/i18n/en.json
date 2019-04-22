@@ -764,7 +764,7 @@
     },
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
+      "create-invoice-form-title": "New invoice",
       "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
