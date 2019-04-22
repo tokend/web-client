@@ -27,6 +27,7 @@ for further information about branching and tagging conventions.
 - Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
 - Polling when creating an invoice (Loyalty)
+- Invoice transaction source account (Loyalty)
 
 #### Removed
 - Quitted building sourcemaps for production
