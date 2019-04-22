@@ -46,7 +46,7 @@ export default {
   },
 
   data: _ => ({
-    pollIntervalId: 0,
+    pollTimeoutId: 0,
     EVENTS,
   }),
 
@@ -60,25 +60,18 @@ export default {
     },
   },
 
-  created () {
-    this.initPolling()
+  async created () {
+    await this.checkForPayment()
   },
 
   destroyed () {
-    clearInterval(this.pollIntervalId)
+    clearTimeout(this.pollTimeoutId)
   },
 
   methods: {
     ...mapActions('create-invoice-form', {
       loadMovements: types.LOAD_MOVEMENTS,
     }),
-
-    initPolling () {
-      this.pollIntervalId = setInterval(
-        this.checkForPayment,
-        config.RELOAD_DATA_TICKER_INTERVAL_MS
-      )
-    },
 
     async checkForPayment () {
       try {
@@ -91,9 +84,13 @@ export default {
         .find(m => m.reference === this.invoice.reference)
 
       if (payment) {
-        clearInterval(this.pollIntervalId)
+        clearTimeout(this.pollTimeoutId)
         this.invoice.setSuccessfulState()
         Bus.success('create-invoice-form.payment-successful-msg')
+      } else {
+        this.pollTimeoutId = setTimeout(
+          this.checkForPayment, config.RELOAD_DATA_TICKER_INTERVAL_MS
+        )
       }
     },
   },
