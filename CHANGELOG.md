@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
+- Account number field to the invoice form (Loyalty)
 
 #### Changed
 - Corrected statistics charts data (Loyalty)
@@ -36,7 +37,6 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
-- Account number field to the invoice form (Loyalty)
 - Displaying of limit request details in drawer
 - Show limits request list on top of other limits on "Limits" page
 - "Issuance" labels on Issuance page renamed to "Issuance requests"
