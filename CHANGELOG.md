@@ -31,6 +31,9 @@ for further information about branching and tagging conventions.
 #### Removed
 - Quitted building sourcemaps for production
 
+#### Changed
+- show only one QR code on Coinpayments deposit
+
 ## [1.5.0]
 ### "Under the hood changes"
 #### Changed
