@@ -1,10 +1,9 @@
 import { Balance } from '../wrappers/balance'
 import { Movement } from '../wrappers/movement'
+import { AssetPair } from '../wrappers/asset-pair'
 
 import { types } from './types'
 import { api } from '../_api'
-
-const HORIZON_VERSION_PREFIX = 'v3'
 
 export const state = {
   accountId: '',
@@ -30,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -44,22 +43,27 @@ export const actions = {
    * @param {String} opts.asset - asset code
    */
   async [types.LOAD_ASSET_PAIRS] ({ commit, getters }, opts) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/asset_pairs`
+    const endpoint = '/v3/asset_pairs'
     const { data: pairs } = await api().getWithSignature(endpoint, {
       filter: {
         asset: opts.asset,
       },
       include: [
         'quote_asset',
+        'base_asset',
       ],
     })
 
     pairs.unshift({
       id: 'PET:PET',
       price: '1.000000',
-      policies: { 'value': 0, 'flags': null },
-      baseAsset: { 'type': 'assets', 'id': 'PET' },
-      quoteAsset: { 'type': 'assets', 'id': 'PET' },
+      policies: { value: 0, flags: null },
+      baseAsset: { type: 'assets', id: 'PET' },
+      quoteAsset: {
+        type: 'assets',
+        id: 'PET',
+        details: { name: 'Pet shop bonuses' },
+      },
     })
 
     commit(types.SET_ASSET_PAIRS, pairs)
@@ -76,7 +80,7 @@ export const actions = {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/history`
+    const endpoint = '/v3/history'
     const { data: movements } = await api().getWithSignature(endpoint, {
       page: {
         order: 'desc',
@@ -96,7 +100,7 @@ export const getters = {
   [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.movements]: state => state.movements.map(m => new Movement(m)),
-  [types.assetPairs]: state => state.assetPairs,
+  [types.assetPairs]: state => state.assetPairs.map(p => new AssetPair(p)),
   [types.getBalanceByAssetCode]: (_, getters) => assetCode => getters
     .balances
     .find(b => b.assetCode === assetCode),

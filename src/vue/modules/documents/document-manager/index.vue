@@ -180,7 +180,7 @@ export default {
         .find(s => s.publicKey === this.wallet.accountId)
     },
     async getMetadataHistory () {
-      const { data: changeRoleRequests } = await api().getWithSignature(`/v3/change_role_requests`, {
+      const { data: changeRoleRequests } = await api().getWithSignature('/v3/change_role_requests', {
         include: ['request_details'],
         filter: {
           state: REQUEST_STATES.approved,

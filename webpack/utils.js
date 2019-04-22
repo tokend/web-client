@@ -1,4 +1,3 @@
-'use strict'
 const path = require('path')
 
 const assetsPath = function (_path) {

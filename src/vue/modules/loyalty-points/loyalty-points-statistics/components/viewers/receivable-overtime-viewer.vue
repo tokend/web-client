@@ -2,7 +2,6 @@
   <div class="receivable-overtime-viewer">
     <line-chart
       v-if="isLoaded"
-      id="receivable-overtime-chart"
       :data="receivableOvertime"
       :currency="point"
     />

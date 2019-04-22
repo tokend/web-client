@@ -43,21 +43,21 @@
       "more-btn": "More"
     },
     "status-message": {
+      "title_warning": "Warning",
+      "title_success": "Success",
+      "title_error": "Error",
+      "title_info": "Notification",
       "default-message_warning": "Something you are doing is not recommended",
       "default-message_success": "Action successful",
       "default-message_error": "Something went wrong",
-      "default-message_info": "Something is happening. Just want you to know that",
-      "close-lbl_warning": "OK",
-      "close-lbl_success": "OK",
-      "close-lbl_error": "Close",
-      "close-lbl_info": "Got it"
+      "default-message_info": "Something is happening. Just want you to know that"
     },
     "validation": {
       "failed": "Please fill out all the fields before continuing",
       "field-error_email": "This field should be a valid email",
       "field-error_seed": "This field should be a valid secret seed",
       "field-error_required": "Please fill out this field",
-      "field-error_url": "This field should be a valid website URL",
+      "field-error_validateUrl": "This field should be a valid website URL",
       "field-error_documentContainer": "This field should contain a document",
       "field-error_integer": "This field should be a valid integer",
       "field-error_minValue": "This field should be more or equal {{minValue, number}}",
@@ -98,6 +98,7 @@
       "bad-request": "The request you sent is invalid in some way",
       "not-allowed": "Your account don't have permissions to perform this request",
       "unauthorized": "Access denied",
+      "tfa-required": "2FA required",
       "verification-required": "Verification required",
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
@@ -390,23 +391,29 @@
       "op_poll_ended": "CreatePoll has ended, no votes can be accepted",
       "op_vote_not_found": "Vote to remove cannot be found"
     },
+    "idle-message": {
+      "notification-message": "You have been logged out due to long inactivity."
+    },
     "auth-pages": {
       "small-title": "Create, distribute and trade",
       "big-title": "Start tokenizing <br> your assets <br> in minutes",
       "email": "Email",
       "password": "Password",
       "new-password": "New password",
+      "tfa-code": "2FA code",
       "recovery-seed": "Recovery seed",
       "confirm-password": "Confirm password",
       "sign-in": "Sign In",
       "sign-up": "Sign Up",
       "wrong-email-or-password-err": "Wrong email or password",
+      "wrong-tfa-code-err": "Wrong 2FA code",
       "almost-done": "Almost done",
       "almost-done-details": "A confirmation email was sent to {{email}}. Please check your inbox to verify your account. If you didn't receive a confirmation email, check your spam folder.",
       "continue": "Continue",
       "email-verified": "Email successfully verified",
       "signup-title": "Get started",
       "recover-account": "Recover your account",
+      "recover-lbl": "Recover",
       "recovered": "Account recovered. You can now use the new credentials to sign in",
       "request-new-email": "Request new email",
       "email-requested": "Email sent. Please check your inbox",
@@ -428,6 +435,8 @@
       "my-account-tab": "My account"
     },
     "security-page": {
+      "enable-tfa-title": "Enable 2FA",
+      "disable-tfa-title": "Disable 2FA",
       "password-title": "Password",
       "change-password-btn": "Change password",
       "account-id-title": "Account ID",
@@ -437,29 +446,59 @@
       "account-address-label": "Account address",
       "secret-seed-desc": "Secret seed is private information that proves you own your account."
     },
+    "tfa-form": {
+      "password-lbl": "Current password",
+      "qr-desc": "Scan the QR with your 2FA app",
+      "code-lbl": "2FA code",
+      "secret-code-desc": "Or manually set the secret code",
+      "tfa-code-desc": "And enter your 2FA code to continue",
+      "wrong-password-err": "Wrong password",
+      "wrong-code-err": "Wrong 2FA code",
+      "tfa-enabled-msg": "2FA is enabled",
+      "tfa-disabled-msg": "2FA is disabled",
+      "secret-lbl": "Secret",
+      "disable-btn": "Disable",
+      "next-btn": "Next",
+      "enable-btn": "Enable"
+    },
     "change-password-form": {
       "current-password-lbl": "Current password",
       "new-password-lbl": "New password",
       "confirm-password-lbl": "Confirm new password",
+      "tfa-code-lbl": "2FA code",
       "change-password-btn": "Change password",
       "wrong-password-err": "Your current password is wrong",
       "wrong-code-err": "Wrong 2FA code",
       "password-changed-msg": "Your password was successfully changed"
     },
     "verification-page": {
-      "account-role-reset-msg": "Your verification was reset by administrator with reason: {{reason}}. Please, verify your account again",
-      "approved-request-msg": "Your account is approved. All actions that requires verification are now available",
-      "pending-request-msg": "Your verification request is submitted. Please wait until we review the information. You will be able to update details once the request is reviewed",
-      "rejected-request-msg": "Your verification request was rejected with reason: {{reason}}",
+      "loading-msg": "Loading",
+      "loading-error-msg": "There was an error while loading.",
       "account-type-lbl": "Account type",
       "account-type-general-title": "General",
       "account-type-corporate-title": "Corporate",
       "account-type-general-description": "Deposit, withdraw, buy, sell and transfer assets",
       "account-type-corporate-description": "Deposit, withdraw, buy, sell, transfer and create assets "
     },
+    "verification-state-message": {
+      "blocked-title": "Account blocked",
+      "reset-title": "Verification reset",
+      "approved-title": "Account approved",
+      "pending-title": "Verification in progress",
+      "rejected-title": "Verification rejected",
+      "permanently-rejected-title": "Verification rejected permanently",
+      "blocked-desc": "Your verification request was blocked by administrator.",
+      "reset-desc": "Your verification request was reset by administrator. Please, verify your account again.",
+      "approved-desc": "Your account was approved by administrator. Now you can access all the features requiring verification.",
+      "pending-desc": "Your verification request is being processed. You will be able to update details once the request is reviewed.",
+      "rejected-desc": "Your verification request was rejected by administrator. Please, resolve all the issues and send the request again.",
+      "permanently-rejected-desc": "Your verification request was permanently rejected by administrator. Please, send the request again.",
+      "blocked-reason": "Blocking reason:",
+      "reset-reason": "Reset reason:",
+      "rejected-reason": "Rejection reason:",
+      "permanently-rejected-reason": "Rejection reason:"
+    },
     "verification-form": {
-      "loading-msg": "Loading",
-      "loading-error-msg": "There was an error while loading.",
       "account-information-lbl": "Account information",
       "submit-btn": "Submit",
       "personal-details-lbl": "Personal details",
@@ -478,7 +517,8 @@
       "headquarters-lbl": "Headquarters",
       "industry-lbl": "Industry",
       "team-size-lbl": "Team size",
-      "website-lbl": "Website"
+      "website-lbl": "Website",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
     },
     "input-field": {
       "caps-lock-warning": "Warning: Caps-Lock is ON"
@@ -540,7 +580,7 @@
       "settings": "Settings",
       "fees": "Fees",
       "movements": "Movements",
-      "issuance": "Issuance",
+      "issuance": "Issuance requests",
       "downloads": "TokenD downloads",
       "terms": "Terms",
       "sales": "Sales",
@@ -581,12 +621,13 @@
       "op-type-deposit": "Deposit",
       "op-type-withdraw": "Withdraw",
       "op-type-payment-out": "Payment",
-      "table-tx-type-lbl": "Transaction type",
-      "table-daily-limit-lbl": "Daily limit (left/total)",
-      "table-weekly-limit-lbl": "Weekly limit (left/total)",
-      "table-monthly-limit-lbl": "Monthly limit (left/total)",
-      "table-annual-limit-lbl": "Annual limit (left/total)",
+      "table-tx-type-lbl": "Operation type",
+      "table-daily-limit-lbl": "Daily (left/total)",
+      "table-weekly-limit-lbl": "Weekly (left/total)",
+      "table-monthly-limit-lbl": "Monthly (left/total)",
+      "table-annual-limit-lbl": "Annual (left/total)",
       "not-set-lbl": "Not set",
+      "unlimited-lbl": "Unlimited",
       "data-loading": "Fetching limits data...",
       "load-limits-btn": "Load limits",
       "loading-failed": "Failed to load limits",
@@ -597,9 +638,9 @@
       "table-request-type-lbl": "Request type",
       "table-state-lbl": "State",
       "table-asset-lbl": "Asset",
-      "upload-documents-btn": "Upload documents",
       "data-loading": "Fetching limits requests data...",
       "document-uploader-form-heading": "Upload documents",
+      "request-details-drawer-heading": "Limits request details",
       "request-state-pending": "Pending",
       "request-state-cancelled": "Cancelled",
       "request-state-approved": "Approved",
@@ -611,12 +652,26 @@
       "here-will-requests-list": "Here will be the list of your limits change requests",
       "load-requests-btn": "Load requests",
       "loading-failed": "Failed to load limits requests",
-      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again"
+      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again",
+      "details-btn": "Details"
+    },
+    "limits-request-details-viewer": {
+      "table-daily-limit-lbl": "Daily limit",
+      "table-weekly-limit-lbl": "Weekly limit",
+      "table-monthly-limit-lbl": "Monthly limit",
+      "table-annual-limit-lbl": "Annual limit",
+      "approved-msg": "Your request was approved",
+      "pending-msg": "Your request was submitted. Please wait until it is reviewed",
+      "rejected-msg": "Your request require approval documents",
+      "permanently-rejected-msg": "Your request was rejected with reason: {{reason}}",
+      "upload-documents-btn": "Upload documents",
+      "not-set-lbl": "Not set"
     },
     "passport": {
       "account-unverified": "Unverified account",
       "account-general": "General account",
       "account-corporate": "Corporate account",
+      "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
       "sign-out-btn": "Sign out"
@@ -711,7 +766,7 @@
     },
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
+      "create-invoice-form-title": "New invoice",
       "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
@@ -842,7 +897,7 @@
       "activity": "Movements",
       "date": "Date",
       "transaction-type": "Transaction type",
-      "create-issuance-lbl": "Create issuance",
+      "create-issuance-lbl": "Create issuance request",
       "send-asset-lbl": "Send {{asset}}",
       "asset": "Asset",
       "amount": "Amount",
@@ -895,7 +950,7 @@
     },
     "issuance-page": {
       "history-title": "History",
-      "create-issuance": "Create issuance",
+      "create-issuance": "Create issuance request",
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
@@ -930,8 +985,9 @@
         "asset-code-th": "Asset code",
         "date-th": "Date",
         "reference-th": "Reference",
-        "no-issuances-title": "No issuances yet",
-        "no-issuances-msg": "Here will be the list of your issuances"
+        "no-issuances-title": "No issuance requests yet",
+        "no-issuances-msg": "Here will be the list of your issuance requests",
+        "state-header-th": "State"
       },
       "loading-msg": "Loading your issuances…",
       "load-failed-msg": "There was an error while loading your issuances"
@@ -967,7 +1023,8 @@
       "verification-not-required-lbl": "Does not require verification",
       "verification-required-lbl": "Requires verification",
       "additional-issuance-check": "I do not want to make additional issuance later",
-      "preissued-signer-lbl": "Pre-issued asset signer",
+      "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details [here](https://docs.tokend.io/#operation/token_lifecycle)",
       "use-my-account-id-btn": "Use mine",
       "trailing-digits-count-lbl": "Trailing Digits Count",
       "preissued-amount-lbl": "Initial pre-issued amount",
@@ -1339,7 +1396,6 @@
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
-      "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
       "days-after-end": "days after closed",
@@ -1378,18 +1434,17 @@
       "asset-to-sell-title": "{{asset}} to sell",
       "video-about-sale-title": "Video about sale",
       "no-video-msg": "No video",
-      "view-video-btn": "View"
+      "view-video-btn": "View",
+      "owner-lbl": "Owner"
     },
     "invest-form": {
       "asset-lbl": "Asset",
-      "available-amount-hint": "Available: **{{amount, money}}**",
+      "balance-hint": "Balance: **{{amount, money}}**",
       "current-investment": "Current investment: **{{amount, money}}**",
       "amount-lbl": "Amount {{asset}}",
       "converted-amount-hint": "Converted: **{{amount, money}}**",
       "loading-msg": "Loading...",
       "loading-error-msg": "There was an error while loading.",
-      "insufficient-balance-title": "Insufficient balance",
-      "insufficient-balance-desc": "Unfortunately, you do not have enough balance to invest in this sale",
       "converting-error-msg": "Converting error. Enter another amount, please",
       "invest-btn": "Invest",
       "update-offer-btn": "Update offer",
@@ -1401,7 +1456,8 @@
       "cap-exceeded-msg": "Investing amount has exceeded the sale cap **{{amount, money}}**",
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
-      "deposit-btn": "Deposit"
+      "requires-verification-title": "Verification required",
+      "requires-verification-desc": "Please, verify your account to invest in this sale"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
@@ -1644,7 +1700,8 @@
       "absent-msg": "No",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
-      "already-in-your-balance-btn": "Already in your balances"
+      "already-in-your-balance-btn": "Already in your balances",
+      "owner-lbl": "Owner"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

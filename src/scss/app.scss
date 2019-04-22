@@ -240,13 +240,6 @@ h6.app__page-heading {
   font-weight: bold;
 }
 
-h4 {
-  font-size: .8rem;
-  font-weight: bold;
-  opacity: .65;
-  padding: .75rem 0 .3rem;
-}
-
 .app__button {
   @include button();
 }
