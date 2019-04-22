@@ -7,6 +7,9 @@
       :asset="item.asset"
       :address="item.address"
       :key="index"
+      :selected-issuance="selectedIssuance"
+      @issuance-selected="issuanceSelected"
+      @reset-issuance-selection="resetIssuanceSelection"
     />
   </table>
 </template>
@@ -21,7 +24,26 @@ export default {
   },
   props: {
     pendingIssuances: { type: Array, required: true },
+    issuanceCreated: { type: Boolean, required: true },
   },
+  data: () => ({
+    selectedIssuance: null,
+  }),
+  watch: {
+    issuanceCreated (value) {
+      if (value) {
+        this.resetIssuanceSelection()
+      }
+    }
+  },
+  methods: {
+    issuanceSelected (issuance) {
+      this.selectedIssuance = issuance
+    },
+    resetIssuanceSelection () {
+      this.selectedIssuance = null
+    }
+  }
 }
 </script>
 
