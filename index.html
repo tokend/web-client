@@ -22,33 +22,49 @@
       width: 80%;
       max-width: 320px;
     }
-
-    .app__init-logo {
+    .app__init-left-face-logo {
+      position: absolute;
+      margin: 0 auto;
+      width: 100%;
+      animation: init-left-face-logo .6s ease-out infinite;
+    }
+    .app__init-top-face-logo {
+      position: absolute;
+      margin: 0 auto;
+      width: 100%;
+      animation: init-top-face-logo .6s ease-out infinite;
+    }
+    .app__init-right-face-logo {
+      position: absolute;
+      margin: 0 auto;
+      width: 100%;
+      animation: init-right-face-logo .6s ease-out infinite;
+    }
+    .app__init-logo-text {
+      position: absolute;
       margin: 0 auto;
       width: 100%;
     }
 
-    .app__init-load-spinner {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto;
+    @keyframes init-left-face-logo {
+      0% { opacity: 0 }
+      33% { opacity: 1 }
+      66% { opacity: 0 }
+      100% { opacity: 0 }
+    }
+    @keyframes init-top-face-logo {
+      0% { opacity: 0 }
+      33% { opacity: 0 }
+      66% { opacity: 1 }
+      100% { opacity: 0 }
+    }
+    @keyframes init-right-face-logo {
+      0% { opacity: 1 }
+      33% { opacity: 0 }
+      66% { opacity: 0 }
+      100% { opacity: 1 }
     }
 
-    .app__init-load-spinner:after {
-      content: "";
-      display: block;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 8px solid;
-      border-color: #3a4180 transparent;
-      animation: init-load-spinner 1.2s linear infinite;
-    }
-
-    @keyframes init-load-spinner {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
   </style>
 
   <link href="/static/favicon-64.png" rel="icon" type="image/x-icon">
@@ -60,8 +76,10 @@
   <script type="text/javascript" src="/static/env.js"></script>
   <div id="app">
     <div id="noscript" class="app__init">
-      <div class="app__init-load-spinner"></div>
-      <img class="app__init-logo" src="/static/logo.svg">
+      <img class="app__init-logo-text" src="/static/logo_text.svg">
+      <img class="app__init-left-face-logo" src="/static/left_face_of_logo.svg">
+      <img class="app__init-top-face-logo" src="/static/top_face_of_logo.svg">
+      <img class="app__init-right-face-logo" src="/static/right_face_of_logo.svg">
     </div>
   </div>
   <!-- built files will be auto injected -->
