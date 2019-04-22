@@ -39,7 +39,7 @@
               v-for="(offer, i) in openOffers"
               :key="`trade-open-offers-row-${i}`"
               @click="selectOffer(offer)">
-              <td>{{ offer.offerId }}</td>
+              <td>{{ offer.id }}</td>
               <td>{{ offer.createdAt | formatCalendar }}</td>
               <td>
                 <template v-if="offer.isBuy">

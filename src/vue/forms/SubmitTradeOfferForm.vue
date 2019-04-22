@@ -145,11 +145,11 @@ export default {
     ]),
     offerBaseAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.offer.baseAssetCode) || {}
+        .find(item => item.asset === this.offer.baseAsset.id) || {}
     },
     offerQuoteAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.offer.quoteAssetCode) || {}
+        .find(item => item.asset === this.offer.quoteAsset.id) || {}
     },
     offerBalance () {
       return this.isBuy
@@ -157,7 +157,7 @@ export default {
         : this.offerQuoteAssetBalance
     },
     offerAssetCode () {
-      return this.isBuy ? this.offer.baseAssetCode : this.offer.quoteAssetCode
+      return this.isBuy ? this.offer.baseAsset.id : this.offer.quoteAsset.id
     },
     isEnoughOnBalance () {
       return +this.offerBalance.balance >= +this.offer.baseAmount
@@ -191,8 +191,8 @@ export default {
     getCreateOfferOpts () {
       return {
         pair: {
-          base: this.offer.baseAssetCode,
-          quote: this.offer.quoteAssetCode,
+          base: this.offer.baseAsset.id,
+          quote: this.offer.quoteAsset.id,
         },
         baseAmount: this.offer.baseAmount,
         quoteAmount: this.offer.quoteAmount,

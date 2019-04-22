@@ -75,7 +75,7 @@
           :source="'invest-form.current-investment' | globalize({
             amount: {
               value: currentInvestment.quoteAmount,
-              currency: currentInvestment.quoteAssetCode
+              currency: currentInvestment.quoteAsset.id
             }
           })"
         />
@@ -90,7 +90,7 @@
           </template>
 
           <template v-else>
-            <template v-if="currentInvestment.offerId">
+            <template v-if="currentInvestment.id">
               <button
                 v-ripple
                 type="submit"
@@ -187,7 +187,6 @@ import config from '@/config'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
@@ -229,7 +228,7 @@ export default {
       amount: '',
     },
     assetPairPrice: '',
-    offers: [],
+    currentInvestment: {},
     saleBaseAsset: null,
     isLoaded: false,
     isLoadingFailed: false,
@@ -302,11 +301,6 @@ export default {
       }
     },
 
-    currentInvestment () {
-      return this.offers
-        .find(offer => offer.quoteAssetCode === this.form.asset.code) || {}
-    },
-
     isCapExceeded () {
       return Number(this.convertedAmount) > this.investedCap
     },
@@ -346,7 +340,15 @@ export default {
 
   watch: {
     'form.asset': async function () {
-      await this.loadAssetPairPrice()
+      try {
+        if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
+          await this.loadAssetPairPrice()
+        }
+
+        await this.loadCurrentInvestment()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 
@@ -354,11 +356,12 @@ export default {
     try {
       await this.loadSaleBaseAsset()
       await this.loadBalances()
-      await this.loadOffers()
 
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }
+
+      await this.loadCurrentInvestment()
 
       this.isLoaded = true
     } catch (e) {
@@ -379,12 +382,18 @@ export default {
       this.saleBaseAsset = new AssetRecord(data)
     },
 
-    async loadOffers () {
-      const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
-        is_buy: true,
-        order_book_id: this.sale.id,
+    async loadCurrentInvestment () {
+      const { data: offers } = await Api.getWithSignature('/v3/offers', {
+        filter: {
+          order_book: this.sale.id,
+          owner: this.accountId,
+          is_buy: 1,
+          quote_asset: this.form.asset.code,
+          base_asset: this.sale.baseAsset,
+        },
       })
-      this.offers = data
+
+      this.currentInvestment = offers[0] || {}
     },
 
     async loadAssetPairPrice () {
@@ -446,7 +455,7 @@ export default {
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
 
-      await Api.api.postOperations.submitOperations(operation)
+      await Api.api.postOperations(operation)
       await this.loadBalances()
     },
 
@@ -463,10 +472,10 @@ export default {
 
       let operations = []
 
-      if (this.currentInvestment.offerId) {
+      if (this.currentInvestment.id) {
         operations.push(base.ManageOfferBuilder.cancelOffer(
           this.getOfferOpts(
-            String(this.currentInvestment.offerId),
+            String(this.currentInvestment.id),
             CANCEL_OFFER_FEE
           )
         ))
@@ -480,9 +489,9 @@ export default {
       return operations
     },
 
-    getOfferOpts (offerId, offerFee) {
+    getOfferOpts (id, offerFee) {
       return {
-        offerID: offerId,
+        offerID: id,
         baseBalance: this.balances
           .find(balance => balance.asset === this.sale.baseAsset).id,
         quoteBalance: this.balances
@@ -508,11 +517,11 @@ export default {
       try {
         const operation = base.ManageOfferBuilder.cancelOffer(
           this.getOfferOpts(
-            String(this.currentInvestment.offerId),
+            String(this.currentInvestment.id),
             CANCEL_OFFER_FEE
           )
         )
-        await Api.api.postOperations.submitOperations(operation)
+        await Api.api.postOperations(operation)
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')

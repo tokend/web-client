@@ -61,6 +61,7 @@ import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
@@ -145,8 +146,24 @@ export default {
       await this.loadTradeHistory()
     },
     async loadTradeOffers () {
-      await this.loadTradeBuyOffers()
-      await this.loadTradeSellOffers()
+      try {
+        const baseAsset = this.assetPair.base
+        const quoteAsset = this.assetPair.quote
+        const orderBookId = SECONDARY_MARKET_ORDER_BOOK_ID
+
+        const endpoint = `/v3/order_books/${baseAsset}:${quoteAsset}:${orderBookId}`
+        const { data: orderBook } = await Api.get(endpoint, {
+          include: ['buy_entries', 'sell_entries'],
+        })
+
+        this.buyOffersList = this.sortOffersList(orderBook.buyEntries, 'ask')
+        this.sellOffersList = this.sortOffersList(orderBook.sellEntries, 'bids')
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
+
+      this.isBuyOffersLoading = false
+      this.isSellOffersLoading = false
     },
     async loadTradeHistory () {
       let response = await Sdk.horizon.trades.getPage({
@@ -165,32 +182,6 @@ export default {
     },
     extendTradeHistory (data) {
       this.tradeHistory = this.tradeHistory.concat(data)
-    },
-    async loadTradeBuyOffers () {
-      try {
-        const response = await Sdk.horizon.orderBook.getAll({
-          base_asset: this.assetPair.base,
-          quote_asset: this.assetPair.quote,
-          is_buy: true,
-        })
-        this.buyOffersList = this.sortOffersList(response.data, 'ask')
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
-      }
-      this.isBuyOffersLoading = false
-    },
-    async loadTradeSellOffers () {
-      try {
-        const response = await Sdk.horizon.orderBook.getAll({
-          base_asset: this.assetPair.base,
-          quote_asset: this.assetPair.quote,
-          is_buy: false,
-        })
-        this.sellOffersList = this.sortOffersList(response.data, 'bids')
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
-      }
-      this.isSellOffersLoading = false
     },
     setCurrentAssets (assetPair) {
       this.assetPair.base = assetPair.base
