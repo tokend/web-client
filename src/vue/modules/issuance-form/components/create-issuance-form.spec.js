@@ -100,8 +100,6 @@ describe('Create issuance form', () => {
         sandbox.stub(wrapper.vm, 'createIssuance').rejects()
         sandbox.stub(ErrorHandler, 'process')
 
-        wrapper.setData({ isFormSubmitting: true })
-
         await wrapper.vm.submit()
 
         expect(ErrorHandler.process).to.have.been.calledOnce
