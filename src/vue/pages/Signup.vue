@@ -1,16 +1,11 @@
 <template>
   <div class="auth-page">
-    <h2 class="auth-page__title">
-      {{
-        recoveryKeypair
-          ? 'auth-pages.save-recovery-seed'
-          : 'auth-pages.get-started'
-          | globalize
-      }}
-    </h2>
+    <template v-if="!recoveryKeypair">
+      <h2 class="auth-page__title">
+        {{ 'auth-pages.signup-title' | globalize }}
+      </h2>
 
-    <div class="auth-page__content">
-      <template v-if="!recoveryKeypair">
+      <div class="auth-page__content">
         <signup-form
           :submit-event="'submit'"
           @submit="handleChildFormSubmit"
@@ -19,45 +14,69 @@
         <div class="auth-page__tips">
           <div class="auth-page__tip">
             {{ 'auth-pages.have-an-account-question' | globalize }}
-            <router-link class="auth-page__tip-link" :to="vueRoutes.login">
+            <router-link
+              class="auth-page__tip-link"
+              :to="vueRoutes.login"
+            >
               {{ 'auth-pages.have-an-account-answer' | globalize }}
             </router-link>
           </div>
         </div>
-      </template>
+      </div>
+    </template>
 
-      <template v-else>
+    <template v-else>
+      <h2 class="auth-page__title signup__seed-title">
+        {{ 'auth-pages.save-recovery-seed-title' | globalize }}
+      </h2>
+
+      <div class="auth-page__content">
         <div class="signup__seed-wrp">
-          <p class="signup__seed-explanations">
-            {{ 'auth-pages.save-recovery-seed-details' | globalize }}
-          </p>
+          <div class="signup__seed-disclaimer">
+            <vue-markdown
+              :source="'auth-pages.save-recovery-seed-explanation' | globalize"
+            />
+          </div>
 
           <key-viewer
+            class="signup__key-viewer"
             :value="recoveryKeypair.secret()"
             :label="'auth-pages.recovery-seed' | globalize"
           />
 
-          <div class="signup__actions">
+          <div class="app__form-row">
+            <tick-field
+              v-model="isConfirmedSeedCopied"
+              :cb-value="false"
+              :required="true"
+              :disabled="formMixin.isDisabled"
+            >
+              {{ 'auth-pages.save-recovery-seed-confirmation' | globalize }}
+            </tick-field>
+          </div>
+
+          <div class="app__form-actions">
             <button
               v-ripple
               @click="submit"
-              :disabled="formMixin.isDisabled"
+              :disabled="!isConfirmedSeedCopied || formMixin.isDisabled"
               class="auth-page__submit-btn"
             >
               {{ 'auth-pages.continue' | globalize }}
             </button>
           </div>
         </div>
-      </template>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-
-import SignupForm from '../forms/SignupForm'
-import KeyViewer from '../common/KeyViewer'
+import SignupForm from '@/vue/forms/SignupForm'
+import KeyViewer from '@/vue/common/KeyViewer'
+import TickField from '@/vue/fields/TickField'
+import VueMarkdown from 'vue-markdown'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -72,6 +91,8 @@ export default {
   components: {
     SignupForm,
     KeyViewer,
+    TickField,
+    VueMarkdown,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -79,6 +100,7 @@ export default {
     password: null,
     email: null,
     vueRoutes,
+    isConfirmedSeedCopied: false,
   }),
   computed: {
     ...mapGetters({
@@ -90,7 +112,7 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     handleChildFormSubmit (form) {
       this.email = form.email
@@ -125,7 +147,7 @@ export default {
             },
           })
         }
-        this.loadKvEntriesAccountRoleIds()
+        this.loadKvEntries()
       } catch (e) {
         ErrorHandler.process(e)
       }
@@ -135,20 +157,23 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import './auth-page';
+<style lang="scss">
+@import "./auth-page";
 
-.signup__seed-wrp {
-  max-width: 51rem;
+.signup__seed-title.auth-page__title {
+  margin-top: -4rem;
 }
 
-.signup__seed-explanations {
-  margin-bottom: 2rem;
+.signup__seed-disclaimer {
+  margin-bottom: 3rem;
+
+  p {
+    margin-bottom: 1.6rem;
+    font-size: 1.6rem;
+  }
 }
 
-.signup__actions {
-  margin-top: 2rem;
-  text-align: center;
+.signup__key-viewer /deep/ .clipboard-field {
+  background: $col-clipboard-background-darken;
 }
-
 </style>

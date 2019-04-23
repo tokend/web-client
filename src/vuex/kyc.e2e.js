@@ -15,10 +15,10 @@ describe('kyc.module end-to-end test', () => {
     let store, mockHelper
 
     const accountId = 'GA4BFNAN3UHKCMK3Q5QVQFLANHHEGMOCDRHY6MN4OSPEPWOYGHYVY7M2'
-    const latestBlobId = 'OOFBHZPK2Y2VUJRRTO2X6GKUXH6MO6GNKAIM4TYJFA3VZGZ2LB7A'
+    const latestBlobId = 'G6V2SIIY2KAP3NGZTJ5DJTBFFKPIC2LESBGQITXR64HXFPFOVPGA'
     const latestKycData = { first_name: 'Bob', last_name: 'Smith' }
-    const kycState = 'pending'
-    const kycStateI = 1
+    const kycState = 'approved'
+    const kycStateI = 3
 
     beforeEach(async () => {
       mockHelper = new MockHelper()

@@ -86,6 +86,8 @@ export default {
     isSellOffersLoading: false,
     recordsOrder: 'desc',
     recordsToShow: config.TRANSACTIONS_PER_PAGE,
+
+    loadTradeDataTickerIntervalId: -1,
   }),
   computed: {
     assetPair () {
@@ -102,6 +104,7 @@ export default {
         this.setCurrentAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
           this.loadData()
+          this.createLoadTradeDataTicker()
         }
       },
     },
@@ -114,12 +117,25 @@ export default {
     this.setCurrentAssets(this.assetPair)
     if (this.assetPair.base) {
       await this.loadData()
+      this.createLoadTradeDataTicker()
     }
+  },
+  async beforeDestroy () {
+    this.clearLoadTradeDataTicker()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+    async createLoadTradeDataTicker () {
+      this.clearLoadTradeDataTicker()
+      this.loadTradeDataTickerIntervalId = setInterval(async () => {
+        await this.loadData()
+      }, config.RELOAD_DATA_TICKER_INTERVAL_MS)
+    },
+    async clearLoadTradeDataTicker () {
+      clearInterval(this.loadTradeDataTickerIntervalId)
+    },
     async loadData () {
       this.isTradeHistoryLoading = true
       this.isBuyOffersLoading = true
@@ -270,6 +286,10 @@ $custom-breakpoint: 985px;
 
 .trade-exchange__history-collection-loader {
   margin-top: 4.8rem;
+}
+
+.trade-exchange__history-collection-loader {
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
 }

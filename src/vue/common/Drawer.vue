@@ -23,6 +23,10 @@
 </template>
 
 <script>
+const EVENTS = {
+  updateIsShown: 'update:isShown',
+}
+
 /**
  * Drawer component serves as a wrapper for modal content.
  *
@@ -42,7 +46,7 @@ export default {
   },
   methods: {
     closeSelf () {
-      this.$emit('update:isShown', false)
+      this.$emit(EVENTS.updateIsShown, false)
     },
   },
 }

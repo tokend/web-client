@@ -2,7 +2,6 @@
   <div
     class="pie-chart"
     ref="chart"
-    :id="id"
   />
 </template>
 
@@ -34,7 +33,6 @@ export default {
     innerRadius: { type: Number, default: 0.4 },
     // [{ label, value, color }]
     data: { type: Array, default: _ => [] },
-    id: { type: String, required: true },
   },
 
   data: _ => ({
@@ -111,7 +109,8 @@ export default {
       this.renderLabel(pie)
       this.renderLines(pie)
 
-      d3.selectAll('.pie-chart__label text, .pie-chart__slices path')
+      d3.select(this.$refs.chart)
+        .selectAll('.pie-chart__label text, .pie-chart__slices path')
         .call(this.renderToolTip)
     },
 
@@ -136,8 +135,8 @@ export default {
         .data(pie)
         .enter()
         .append('text')
-        .attr('dy', '.35em')
-        .html(item => `${item.data.label}: <tspan>${item.data.value}</tspan>`)
+        .attr('dy', '-0.25em')
+        .html(item => `${item.data.label}<tspan x="0" dy="1.2em">${item.data.value}</tspan>`)
         .attr('transform', item => {
           const labelPosition = SCALE_COEFF * this.radius
           let pos = this.outerArc.centroid(item)

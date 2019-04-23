@@ -38,7 +38,7 @@ describe('CoinpaymentsForm', () => {
     }
 
     const fieldBindings = {
-      '#coinpayments-amount': 'amount',
+      '[name=coinpayments-amount]': 'amount',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {

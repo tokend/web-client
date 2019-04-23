@@ -7,7 +7,7 @@
     </div>
     <div v-else-if="!hasValue" class="chart-renderer__wrapper">
       <div class="chart-renderer__wrapper-message">
-        {{ 'chart.no-price-history-of-selected-token' | globalize }}
+        {{ 'chart.no-price-history-of-selected-asset' | globalize }}
       </div>
     </div>
     <div class="chart-renderer__chart" ref="chart" />
@@ -16,6 +16,8 @@
 
 <script>
 import { formatMoney } from '@/vue/filters/formatMoney'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 import * as d3Array from 'd3-array'
 import * as d3Selection from 'd3-selection'
 import * as d3Scale from 'd3-scale'
@@ -25,7 +27,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 // import * as d3 from 'd3'
 import moment from 'moment'
-import config from '@/config'
 import { chunk } from 'lodash'
 const d3 = Object.assign(
   {},
@@ -48,15 +49,16 @@ export default {
     hasValue: { type: Boolean, default: true },
     isLoading: { type: Boolean, default: false },
     isTicksShown: { type: Boolean, default: true },
-    id: { type: String, required: true },
   },
   data () {
     return {
-      defaultAsset: this.currency || config.DEFAULT_QUOTE_ASSET,
       chartRenderingTime: 500,
     }
   },
   computed: {
+    ...mapGetters({
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
+    }),
     normalizedData () {
       return this.data.map(item => ({
         time: moment(item.timestamp).toDate(),
@@ -71,6 +73,9 @@ export default {
         hour: 30,
       }
       return Math.ceil(this.data.length / ticksCount[this.scale])
+    },
+    defaultAsset () {
+      return this.currency || this.defaultQuoteAsset
     },
   },
   watch: {
@@ -88,7 +93,7 @@ export default {
   methods: {
     formatMoney,
     clear () {
-      d3.select(`svg#${this.id}`).remove()
+      d3.select(this.$refs.chart).select('svg').remove()
     },
     getDimensions () {
       const parentElement = this.$el.parentElement
@@ -126,16 +131,14 @@ export default {
       this.clear()
       // Setup the data
       const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
-        const itemLength = item.length
-        let defaultDate = 0
-        let max = 0
-        for (let i = 0; i < itemLength; i++) {
-          defaultDate += Date.parse(item[i].time)
-          if (item[i].value > max) max = item[i].value
-        }
+        const defaultDate = item.reduce((sum, current) => {
+          sum += Date.parse(current.time)
+          return sum
+        }, 0)
+
         return {
-          time: new Date(defaultDate / itemLength),
-          value: max,
+          time: new Date(defaultDate / item.length),
+          value: Math.max(...item.map(i => i.value)),
         }
       })
       const { max, min } = this.getMaxAndMin(data)
@@ -159,7 +162,6 @@ export default {
         .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
         .attr('preserveAspectRatio', 'xMinYMin')
         .attr('class', className)
-        .attr('id', this.id)
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {
@@ -389,10 +391,12 @@ export default {
             const prevValue = data[data.indexOf(nearestPoint) - 1].value
             const currentValue = nearestPoint.value
             if (prevValue > currentValue) {
-              const val = ((prevValue - currentValue) / currentValue) * 100
+              const val = ((prevValue - currentValue) /
+                Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
             } else if (prevValue < currentValue) {
-              const val = ((currentValue - prevValue) / currentValue) * 100
+              const val = ((currentValue - prevValue) /
+                Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`+${val.toPrecision(getPrecision(val))}%`)
             } else {
               tipPriceChangeText.text('+0%')
