@@ -121,7 +121,7 @@
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
           :is-pending="isFormSubmitting"
-          @ok="hideConfirmation() || submit()"
+          @ok="submit"
           @cancel="hideConfirmation"
         />
         <button
@@ -146,8 +146,6 @@ import { Sdk } from '@/sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-import { Bus } from '@/js/helpers/event-bus'
-
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -212,11 +210,6 @@ export default {
     verificationCode () {
       return this.accountId.slice(1, 6)
     },
-    isFormDisabled () {
-      return !this.isAccountRoleReseted && this.kycState &&
-        this.kycState !== REQUEST_STATES_STR.rejected &&
-        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
-    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
@@ -227,10 +220,6 @@ export default {
   created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-
-      if (this.isFormDisabled) {
-        this.disableForm()
-      }
     }
   },
 
@@ -241,25 +230,22 @@ export default {
       this.isFormSubmitting = true
       try {
         await this.uploadDocuments()
+        const isNewKYC = !this.kycState
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryGeneralRoleId
         )
         await Sdk.horizon.transactions.submitOperations(operation)
-        if (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.approved ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        ) {
-          Bus.success('verification-form.request-updated-msg')
-        } else {
-          Bus.success('verification-form.request-submitted-msg')
-        }
         do {
           await this.loadKyc()
           await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
+        if (isNewKYC) {
+          Bus.success('verification-form.request-submitted-msg')
+        } else {
+          Bus.success('verification-form.request-updated-msg')
+        }
       } catch (e) {
         ErrorHandler.process(e)
       }

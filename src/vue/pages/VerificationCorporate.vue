@@ -114,7 +114,7 @@
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
           :is-pending="isFormSubmitting"
-          @ok="hideConfirmation() || submit()"
+          @ok="submit"
           @cancel="hideConfirmation"
         />
         <button
@@ -144,8 +144,6 @@ import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-import { Bus } from '@/js/helpers/event-bus'
-
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -206,11 +204,6 @@ export default {
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
-    isFormDisabled () {
-      return !this.isAccountRoleReseted && this.kycState &&
-        this.kycState !== REQUEST_STATES_STR.rejected &&
-        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
-    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
@@ -221,10 +214,6 @@ export default {
   created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-
-      if (this.isFormDisabled) {
-        this.disableForm()
-      }
     }
   },
 
@@ -235,25 +224,22 @@ export default {
       this.isFormSubmitting = true
       try {
         await this.uploadAvatar()
+        const isNewKYC = !this.kycState
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
         const operation = this.createKycOperation(
           kycBlobId,
           this.kvEntryCorporateRoleId
         )
         await Api.api.postOperations(operation)
-        if (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.approved ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        ) {
-          Bus.success('verification-form.request-updated-msg')
-        } else {
-          Bus.success('verification-form.request-submitted-msg')
-        }
         do {
           await this.loadKyc()
           await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
+        if (isNewKYC) {
+          Bus.success('verification-form.request-submitted-msg')
+        } else {
+          Bus.success('verification-form.request-updated-msg')
+        }
       } catch (e) {
         ErrorHandler.process(e)
       }
