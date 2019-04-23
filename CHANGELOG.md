@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
 - "Copy" button to EmailGetter
+- "initSync" method to Api class
 
 #### Changed
 - Corrected statistics charts data (Loyalty)
@@ -22,6 +23,7 @@ for further information about branching and tagging conventions.
   creating a blob (Loyalty)
 - Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
   for us
+- Moved horizon resources to "/v3" endpoints
 
 #### Fixed
 - Calculating percent delta on line chart
