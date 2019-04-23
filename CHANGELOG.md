@@ -30,9 +30,18 @@ for further information about branching and tagging conventions.
 - Polling when creating an invoice (Loyalty)
 - Invoice transaction source account (Loyalty)
 - Fixed a bug with absent preloading of account balance in `DepositForm`
+- Date field issues:
+  - broken "disabled" state;
+  - broken manual input. If user type invalid date manually, the field will
+    clean up;
+  - broken key events (enter, escape, arrow navigation).
 
 #### Removed
 - Quitted building sourcemaps for production
+
+### "Under the hood" changes
+#### Changed
+- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component), but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
 
 ## [1.5.0]
 ### "Under the hood changes"
