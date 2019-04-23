@@ -20,8 +20,25 @@
           </tr>
 
           <tr>
-            <td>{{ 'create-invoice-form.amount-th' | globalize }}</td>
-            <td>{{ invoiceAmount | formatMoney }}</td>
+            <td>{{ 'create-invoice-form.point-th' | globalize }}</td>
+            <td>{{ invoice.asset.nameAndCode }}</td>
+          </tr>
+
+          <tr>
+            <td>{{ 'create-invoice-form.total-price-th' | globalize }}</td>
+            <td>{{ invoiceTotalPrice | formatMoney }}</td>
+          </tr>
+
+          <tr>
+            <td>{{ 'create-invoice-form.system-th' | globalize }}</td>
+            <td>
+              <a
+                class="invoice-summary-viewer__link"
+                :href="invoice.system"
+              >
+                {{ invoice.system }}
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -45,10 +62,10 @@ export default {
   },
 
   computed: {
-    invoiceAmount () {
+    invoiceTotalPrice () {
       return {
-        value: this.invoice.amount,
-        currency: this.invoice.asset,
+        value: this.invoice.totalPrice,
+        currency: this.invoice.asset.code,
       }
     },
   },
@@ -56,6 +73,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@scss/variables";
+
 .invoice-summary-viewer__table {
   margin-top: 1rem;
 
@@ -63,6 +82,15 @@ export default {
     tr td:last-child {
       text-align: right;
     }
+  }
+}
+
+.invoice-summary-viewer__link {
+  color: $col-primary-lighten;
+  text-decoration: none;
+
+  &:visited {
+    color: $col-primary-lighten;
   }
 }
 </style>

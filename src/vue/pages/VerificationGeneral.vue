@@ -1,172 +1,160 @@
 <template>
   <div class="verification-general-form">
-    <template v-if="isLoaded">
-      <p class="verification-general-form__account-info-title">
-        {{ 'verification-form.account-information-lbl' | globalize }}
-      </p>
+    <p class="verification-general-form__account-info-title">
+      {{ 'verification-form.account-information-lbl' | globalize }}
+    </p>
 
-      <form
-        novalidate
-        class="app-form"
-        @submit.prevent="isFormValid() && showConfirmation()"
-      >
-        <div class="verification-general-form__block">
-          <p class="verification-general-form__block-label">
-            {{ 'verification-form.personal-details-lbl' | globalize }}
-          </p>
+    <form
+      novalidate
+      class="app-form"
+      @submit.prevent="isFormValid() && showConfirmation()"
+    >
+      <div class="verification-general-form__block">
+        <p class="verification-general-form__block-label">
+          {{ 'verification-form.personal-details-lbl' | globalize }}
+        </p>
 
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.personal.firstName"
-                @blur="touchField('form.personal.firstName')"
-                id="verification-general-first-name"
-                name="verification-general-first-name"
-                :label="'verification-form.first-name-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.personal.firstName')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <input-field
-                white-autofill
-                v-model="form.personal.lastName"
-                @blur="touchField('form.personal.lastName')"
-                id="verification-general-last-name"
-                name="verification-general-last-name"
-                :label="'verification-form.last-name-lbl' | globalize"
-                :error-message="getFieldErrorMessage('form.personal.lastName')"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <!-- eslint-disable max-len -->
-              <file-field
-                v-model="form.documents.idDocument"
-                name="verification-general-id-document"
-                :note="'verification-form.file-type-note' | globalize"
-                accept="image/*, .pdf"
-                :document-type="DOCUMENT_TYPES.kycIdDocument"
-                :label="'verification-form.id-document-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-                :error-message="getFieldErrorMessage('form.documents.idDocument')"
-              />
-              <!-- eslint-enable max-len -->
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <file-field
-                v-model="form.documents.avatar"
-                name="verification-general-avatar"
-                :note="'verification-form.image-type-note' | globalize"
-                accept="image/*"
-                :document-type="DOCUMENT_TYPES.kycAvatar"
-                :label="'verification-form.avatar-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-              />
-            </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.personal.firstName"
+              @blur="touchField('form.personal.firstName')"
+              name="verification-general-first-name"
+              :label="'verification-form.first-name-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.personal.firstName')"
+              :disabled="formMixin.isDisabled"
+            />
           </div>
         </div>
 
-        <div class="verification-general-form__block">
-          <p class="verification-general-form__block-label">
-            {{ 'verification-form.photo-verification-lbl' | globalize }}
-          </p>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <p class="verification-general-form__photo-explanation">
-                {{ 'verification-form.photo-explanation-msg' | globalize }}
-              </p>
-              <button
-                v-ripple
-                class="verification-general-form__verification-code-btn"
-                :disabled="formMixin.isDisabled"
-                @click.prevent="isCodeShown = true"
-              >
-                {{
-                  isCodeShown
-                    ? verificationCode
-                    : 'verification-form.verification-code-btn' | globalize
-                }}
-              </button>
-            </div>
-          </div>
-
-          <div class="app__form-row">
-            <div class="app__form-field">
-              <file-field
-                v-model="form.documents.verificationPhoto"
-                name="verification-general-verification-photo"
-                :note="'verification-form.image-type-note' | globalize"
-                accept="image/*"
-                :document-type="DOCUMENT_TYPES.kycSelfie"
-                :label="'verification-form.photo-lbl' | globalize"
-                :disabled="formMixin.isDisabled"
-                :error-message="getFieldErrorMessage(
-                  'form.documents.verificationPhoto'
-                )"
-              />
-            </div>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.personal.lastName"
+              @blur="touchField('form.personal.lastName')"
+              name="verification-general-last-name"
+              :label="'verification-form.last-name-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.personal.lastName')"
+              :disabled="formMixin.isDisabled"
+            />
           </div>
         </div>
 
-        <div class="app__form-actions">
-          <form-confirmation
-            v-if="formMixin.isConfirmationShown"
-            :is-pending="isFormSubmitting"
-            @ok="submit"
-            @cancel="hideConfirmation"
-          />
-          <button
-            v-ripple
-            v-else
-            type="submit"
-            class="verification-general-form__submit-btn"
-            :disabled="formMixin.isDisabled"
-          >
-            {{ 'verification-form.submit-btn' | globalize }}
-          </button>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <!-- eslint-disable max-len -->
+            <file-field
+              v-model="form.documents.idDocument"
+              name="verification-general-id-document"
+              :note="'verification-form.file-type-note' | globalize"
+              accept="image/*, .pdf"
+              :document-type="DOCUMENT_TYPES.kycIdDocument"
+              :label="'verification-form.id-document-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage('form.documents.idDocument')"
+            />
+            <!-- eslint-enable max-len -->
+          </div>
         </div>
-      </form>
-    </template>
 
-    <template v-else-if="isLoadingFailed">
-      <p>
-        {{ 'verification-form.loading-error-msg' | globalize }}
-      </p>
-    </template>
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <file-field
+              v-model="form.documents.avatar"
+              name="verification-general-avatar"
+              :note="'verification-form.image-type-note' | globalize"
+              accept="image/*"
+              :document-type="DOCUMENT_TYPES.kycAvatar"
+              :label="'verification-form.avatar-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+      </div>
 
-    <template v-else>
-      <loader :message-id="'verification-form.loading-msg'" />
-    </template>
+      <div class="verification-general-form__block">
+        <p class="verification-general-form__block-label">
+          {{ 'verification-form.photo-verification-lbl' | globalize }}
+        </p>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <p class="verification-general-form__photo-explanation">
+              {{ 'verification-form.photo-explanation-msg' | globalize }}
+            </p>
+            <button
+              v-ripple
+              class="verification-general-form__verification-code-btn"
+              :disabled="formMixin.isDisabled"
+              @click.prevent="isCodeShown = true"
+            >
+              {{
+                isCodeShown
+                  ? verificationCode
+                  : 'verification-form.verification-code-btn' | globalize
+              }}
+            </button>
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <file-field
+              v-model="form.documents.verificationPhoto"
+              name="verification-general-verification-photo"
+              :note="'verification-form.image-type-note' | globalize"
+              accept="image/*"
+              :document-type="DOCUMENT_TYPES.kycSelfie"
+              :label="'verification-form.photo-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage(
+                'form.documents.verificationPhoto'
+              )"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="app__form-actions">
+        <form-confirmation
+          v-if="formMixin.isConfirmationShown"
+          :is-pending="isFormSubmitting"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
+        />
+        <button
+          v-ripple
+          v-else
+          type="submit"
+          class="verification-general-form__submit-btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'verification-form.submit-btn' | globalize }}
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
-import Loader from '@/vue/common/Loader'
 import _get from 'lodash/get'
 
 import { Sdk } from '@/sdk'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
+
+import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { required, documentContainer } from '@validators'
 import { mapGetters } from 'vuex'
@@ -180,9 +168,6 @@ const EMPTY_DOCUMENT = {
 
 export default {
   name: 'verification-general-form',
-  components: {
-    Loader,
-  },
   mixins: [VerificationFormMixin],
 
   data: _ => ({
@@ -199,8 +184,6 @@ export default {
         verificationPhoto: null,
       },
     },
-    isLoaded: false,
-    isLoadingFailed: false,
     isFormSubmitting: false,
     isCodeShown: false,
     DOCUMENT_TYPES,
@@ -223,30 +206,31 @@ export default {
     ...mapGetters({
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
-      previousAccountRole: vuexTypes.kycPreviousAccountRole,
+      accountRoleToSet: vuexTypes.kycAccountRoleToSet,
+      previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
     verificationCode () {
       return this.accountId.slice(1, 6)
     },
+    isFormDisabled () {
+      return !this.isAccountRoleReseted && this.kycState &&
+        this.kycState !== REQUEST_STATES_STR.rejected &&
+        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
+    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
-        : !!this.kycState
+        : this.accountRoleToSet === this.kvEntryGeneralRoleId
     },
   },
 
-  async created () {
-    try {
-      await this.loadAccount(this.accountId)
-      await this.loadKyc()
-      this.isLoaded = true
-    } catch (e) {
-      this.isLoadingFailed = true
-      ErrorHandler.processWithoutFeedback(e)
-    }
-
+  created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
+
+      if (this.isFormDisabled) {
+        this.disableForm()
+      }
     }
   },
 
@@ -269,9 +253,12 @@ export default {
           this.kycState === REQUEST_STATES_STR.rejected
         ) {
           Bus.success('verification-form.request-updated-msg')
+        } else {
+          Bus.success('verification-form.request-submitted-msg')
         }
         do {
           await this.loadKyc()
+          await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
       } catch (e) {
         ErrorHandler.process(e)
@@ -279,6 +266,13 @@ export default {
       this.isFormSubmitting = false
       this.hideConfirmation()
       this.enableForm()
+    },
+
+    delay (ms) {
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
+      })
     },
 
     async uploadDocuments () {

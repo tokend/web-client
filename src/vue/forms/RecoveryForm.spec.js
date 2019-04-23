@@ -48,10 +48,10 @@ describe('RecoveryForm component test', () => {
     }
 
     const fieldBindings = {
-      '#recovery-email': 'email',
-      '#recovery-password': 'password',
-      '#recovery-confirm-password': 'confirmPassword',
-      '#recovery-seed': 'recoverySeed',
+      '[name=recovery-email]': 'email',
+      '[name=recovery-password]': 'password',
+      '[name=recovery-confirm-password]': 'confirmPassword',
+      '[name=recovery-seed]': 'recoverySeed',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {

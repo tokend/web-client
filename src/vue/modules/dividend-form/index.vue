@@ -4,7 +4,6 @@
       <template v-if="ownedAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="dividend-form"
           novalidate
         >
           <div class="app__form-row dividend__form-row">
@@ -73,7 +72,7 @@
                       {{ 'dividend-form.email' | globalize }}
                     </td>
                     <td>
-                      {{ 'dividend-form.token-amount' | globalize }}
+                      {{ 'dividend-form.asset-amount' | globalize }}
                     </td>
                     <td>
                       {{ 'dividend-form.supposed-dividend-amount' | globalize }}
@@ -128,7 +127,6 @@
                 !balanceHolders.length ||
                 !isSignersLoaded
               "
-              form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
             </button>
@@ -149,7 +147,7 @@
           {{ 'dividend-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.sales"
           tag="button"
           class="app__button-raised dividend__action"
         >
@@ -185,6 +183,7 @@ import {
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   transferred: 'transferred',
@@ -229,6 +228,7 @@ export default {
     isSignersLoadPending: false,
     isSignersLoaded: false,
     isDividendSubmitting: false,
+    vueRoutes,
   }),
   computed: {
     ...mapGetters('dividend-form', {

@@ -89,10 +89,10 @@ describe('IssuanceForm', () => {
     }
 
     const fieldBindings = {
-      '#issuance-asset': 'asset',
-      '#issuance-amount': 'amount',
-      '#issuance-receiver': 'receiver',
-      '#issuance-reference': 'reference',
+      '[name=issuance-asset]': 'asset',
+      '[name=issuance-amount]': 'amount',
+      '[name=issuance-receiver]': 'receiver',
+      '[name=issuance-reference]': 'reference',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
