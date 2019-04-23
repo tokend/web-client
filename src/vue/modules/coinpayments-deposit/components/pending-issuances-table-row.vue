@@ -12,7 +12,7 @@
       <td class="pending-issuances-table-row__btn">
         <button
           class="app__button-icon"
-          @click="selectIssuance"
+          @click="expandRow"
         >
           <i class="mdi mdi-view-dashboard" />
         </button>
@@ -20,7 +20,7 @@
     </tr>
     <tr
       class="pending-issuances-table-row__key-viewer-wrp"
-      v-if="isSelected"
+      v-if="selected"
     >
       <td colspan="3">
         <key-viewer
@@ -38,8 +38,7 @@ import TimeoutTicker from './timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 const EVENTS = {
-  issuanceSelected: 'issuance-selected',
-  resetIssuanceSelection: 'reset-issuance-selection',
+  expandRow: 'expand-row',
 }
 
 export default {
@@ -53,28 +52,11 @@ export default {
     amount: { type: [String, Number], required: true },
     asset: { type: String, required: true },
     address: { type: String, required: true },
-    selectedIssuance: {
-      required: true,
-      validator: prop => typeof prop === 'string' || prop === null,
-    },
-  },
-  data () {
-    return {
-      isAddressViewerShown: false,
-    }
-  },
-  computed: {
-    isSelected () {
-      return this.address === this.selectedIssuance
-    },
+    selected: { type: Boolean, required: true },
   },
   methods: {
-    selectIssuance () {
-      if (this.isSelected) {
-        this.$emit(EVENTS.resetIssuanceSelection)
-      } else {
-        this.$emit(EVENTS.issuanceSelected, this.address)
-      }
+    expandRow () {
+      this.$emit(EVENTS.expandRow)
     },
   },
 }

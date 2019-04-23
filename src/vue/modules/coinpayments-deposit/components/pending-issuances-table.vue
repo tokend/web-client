@@ -7,9 +7,8 @@
       :asset="item.asset"
       :address="item.address"
       :key="index"
-      :selected-issuance="selectedIssuance"
-      @issuance-selected="issuanceSelected"
-      @reset-issuance-selection="resetIssuanceSelection"
+      :selected="selectedIssuance === item.address"
+      @expand-row="selectIssuance(item.address)"
     />
   </table>
 </template>
@@ -37,11 +36,15 @@ export default {
     },
   },
   methods: {
-    issuanceSelected (issuance) {
-      this.selectedIssuance = issuance
-    },
     resetIssuanceSelection () {
       this.selectedIssuance = null
+    },
+    selectIssuance (address) {
+      if (this.selectedIssuance === address) {
+        this.selectedIssuance = null
+      } else {
+        this.selectedIssuance = address
+      }
     },
   },
 }
