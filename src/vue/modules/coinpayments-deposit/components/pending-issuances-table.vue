@@ -24,13 +24,13 @@ export default {
   },
   props: {
     pendingIssuances: { type: Array, required: true },
-    issuanceCreated: { type: Boolean, required: true },
+    addressCreated: { type: Boolean, required: true },
   },
   data: () => ({
     selectedIssuance: null,
   }),
   watch: {
-    issuanceCreated (value) {
+    addressCreated (value) {
       if (value) {
         this.resetIssuanceSelection()
       }

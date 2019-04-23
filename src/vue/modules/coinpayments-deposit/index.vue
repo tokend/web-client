@@ -3,13 +3,13 @@
     <coinpayments-form
       :asset="asset"
       :balance-id="balanceId"
-      @issuance-created="issuanceCreatedHandler"
+      @new-address-created="newAddressCreatedHandler"
     />
     <div class="coinpayments-deposit__pending-issuances-table-wrp">
       <pending-issuances-table
         v-if="!isLoading"
         :pending-issuances="pendingIssuances"
-        :issuance-created="isIssuanceCreated"
+        :address-created="isNewAddressCreated"
       />
       <template v-else-if="isFailed">
         <p>
@@ -69,7 +69,7 @@ export default {
     return {
       isLoading: true,
       isFailed: false,
-      isIssuanceCreated: false,
+      isNewAddressCreated: false,
       pendingIssuances: [],
     }
   },
@@ -115,8 +115,8 @@ export default {
       const response = await api().getWithSignature(endpoint, params)
       return response
     },
-    issuanceCreatedHandler () {
-      this.isIssuanceCreated = true
+    newAddressCreatedHandler () {
+      this.isNewAddressCreated = true
     },
   },
 }
