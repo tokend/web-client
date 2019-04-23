@@ -151,11 +151,25 @@ export default {
 
     let safeConfig = Object.assign({}, this.config)
 
-    // Inject defined methods into events array
-    Object.values(BUILTIN_EVENTS).forEach(hook => {
-      safeConfig[hook] = this.arrayify(safeConfig[hook])
-        .concat((...args) => this[hook](...args))
-    })
+    const hooks = {
+      [FLATPICKR_HOOKS.onClose]: this.arrayify(
+        safeConfig[FLATPICKR_HOOKS.onClose]
+      ).concat(
+        (...args) => this.onClose(...args)
+      ),
+      [FLATPICKR_HOOKS.onOpen]: this.arrayify(
+        safeConfig[FLATPICKR_HOOKS.onOpen]
+      ).concat(
+        (...args) => this.onOpen(...args)
+      ),
+    }
+
+    // Inject defined methods into hooks array
+
+    safeConfig = {
+      ...safeConfig,
+      ...hooks,
+    }
 
     // Set initial date without emitting any event
     safeConfig.defaultDate = this.value || safeConfig.defaultDate
