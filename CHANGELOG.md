@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
   creating a blob (Loyalty)
 - Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
   for us
+- Quantity points on the chart
 
 #### Fixed
 - Calculating percent delta on line chart

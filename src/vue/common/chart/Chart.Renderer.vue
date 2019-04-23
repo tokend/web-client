@@ -67,10 +67,10 @@ export default {
     },
     itemsPerTick () {
       const ticksCount = {
-        year: 24,
-        month: 30,
-        day: 30,
-        hour: 30,
+        year: 200,
+        month: 200,
+        day: 200,
+        hour: 200,
       }
       return Math.ceil(this.data.length / ticksCount[this.scale])
     },
@@ -104,8 +104,8 @@ export default {
           : parentElement.clientHeight,
       }
     },
-    getMaxAndMin () {
-      const arr = this.data.map(item => item.value)
+    getMaxAndMin (data) {
+      const arr = data.map(item => item.value)
       const max = Math.max(...arr, ...this.requiredTicks)
       const min = this.requiredTicks && this.requiredTicks.length
         ? 0
@@ -141,7 +141,20 @@ export default {
           value: Math.max(...item.map(i => i.value)),
         }
       })
-      const { max, min } = this.getMaxAndMin(data)
+      let { max, min } = this.getMaxAndMin(data)
+      const tickValues = []
+      if (max === min) {
+        tickValues.push(max)
+        max = max * 1.1
+        min = min * 0.9
+        tickValues.push(min)
+        tickValues.push(max)
+      } else {
+        tickValues.push(max)
+        tickValues.push(min)
+        tickValues.push(Math.floor(max * 0.3333))
+        tickValues.push(Math.floor(max * 0.6666))
+      }
       if (!data[0] || !data[data.length - 1]) return
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time
@@ -188,7 +201,7 @@ export default {
       const x = d3.scaleTime()
         .range([0, width])
         .domain([firstDate, lastDate])
-      // Render the line and area
+        // Render the line and area
       const area = d3.area()
         .x((d) => x(d.time))
         .y0(y(min))
@@ -245,42 +258,11 @@ export default {
         setTimeout(() => {
           chartAreaWithGradient.style('opacity', '1')
         }, this.chartRenderingTime)
-        svg.append('g')
-          .attr('height', height)
-          .selectAll('rect')
-          .data(data)
-          .enter().append('rect')
-          .attr('fill', '#837fa1')
-          .attr('opacity', '0.2')
-          .attr('width', '1')
-          .attr('height', (localData) => height - y(localData.value) - 9)
-          .attr('x', (localData) => x(localData.time))
-          .attr('y', (localData) => y(localData.value))
-        const chartTipsPoints = svg.append('g')
-          .attr('height', height)
-          .attr('width', width)
-          .selectAll('circle')
-          .data(data)
-          .enter().append('circle')
-          .attr('r', '3')
-          .attr('fill', '#bdb6ff')
-          .style('opacity', '0')
-          .style('transition', '0.3s ease-out')
-          .attr('cx', (localData) => x(localData.time))
-          .attr('cy', (localData) => y(localData.value))
-        setTimeout(() => {
-          chartTipsPoints.style('opacity', '1')
-        }, this.chartRenderingTime)
       }
       // Render x-axis
       if (this.isTicksShown) {
         const yAxisLine = d3.axisRight(y)
-          .tickValues([
-            max,
-            max - ((max - min) * 0.3333),
-            max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
-            min,
-          ].concat(this.requiredTicks))
+          .tickValues(tickValues.concat(this.requiredTicks))
           .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
           .tickSizeInner(width)
           .tickSizeOuter(0)
@@ -293,19 +275,19 @@ export default {
       // Tip
       const tip = svg.append('g')
         .attr('class', `${className}__tip`)
-      // Tip line
+        // Tip line
       const tipLine = tip.append('line')
         .attr('class', `${className}__tip-line`)
         .attr('x1', 0)
         .attr('y1', 10)
         .attr('x2', 0)
         .attr('y2', 0)
-      // Tip circle
+        // Tip circle
       const tipCircle = tip.append('circle')
         .attr('class', `${className}__tip-circle`)
         .attr('cx', 0)
         .attr('r', 5)
-      // Tip text box
+        // Tip text box
       const tipTextBox = tip.append('g')
       tipTextBox.append('polygon')
         .attr('points', '0,0 11.5,7 11.5,7 21,0') // width 21, height 7
@@ -334,13 +316,13 @@ export default {
         .attr('class', `${className}__tip-text-time-mm`)
         .attr('text-anchor', 'middle')
         .attr('y', height + margin.bottom + 8)
-      // Tip motion capture area
+        // Tip motion capture area
       const motionCaptureArea = svg.append('rect')
         .attr('class', `${className}__tip-motion-capture-area`)
         .attr('width', width)
         .attr('height', height - 25)
         .attr('transform', 'translate(0, 25)')
-      // Tip Mouse events
+        // Tip Mouse events
       for (const event of ['mouseenter', 'touchenter']) {
         motionCaptureArea.on(event, function () {
           tip.classed(`${className}__tip--show`, true)
@@ -392,11 +374,11 @@ export default {
             const currentValue = nearestPoint.value
             if (prevValue > currentValue) {
               const val = ((prevValue - currentValue) /
-                Math.abs(prevValue)) * 100
+                  Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
             } else if (prevValue < currentValue) {
               const val = ((currentValue - prevValue) /
-                Math.abs(prevValue)) * 100
+                  Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`+${val.toPrecision(getPrecision(val))}%`)
             } else {
               tipPriceChangeText.text('+0%')
@@ -431,7 +413,7 @@ export default {
 
 <style lang="scss">
   @import "~@scss/variables";
-   .chart-renderer {
+  .chart-renderer {
     position: relative;
   }
   .chart-renderer__wrapper {
@@ -474,7 +456,7 @@ export default {
   }
   .chart__line {
     fill: none;
-    stroke-width: .2rem;
+    stroke-width: .1rem;
     stroke: $col-chart-line;
     stroke-linecap: round;
   }
@@ -493,7 +475,7 @@ export default {
     line {
       stroke-dasharray: 3 3;
       stroke: $col-chart-ticks;
-      opacity: .15;
+      opacity: .55;
     }
     .domain { display: none; }
   }
