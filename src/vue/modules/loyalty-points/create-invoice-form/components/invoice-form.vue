@@ -275,10 +275,7 @@ export default {
 
       this.isFormSubmitting = true
       try {
-        if (this.systemIdentifier !== this.merchantSystem) {
-          await this.initExternalSystemApi()
-        }
-
+        await this.initExternalSystemApi()
         await this.sendTransaction()
         this.$emit(EVENTS.submit, this.invoiceRecord)
       } catch (error) {
@@ -320,8 +317,8 @@ export default {
 
     async getQuoteAssetBalanceId () {
       const endpoint = `/v3/accounts/${this.loyaltyAccount.accountId}`
-      const { data: account } = await api().getWithSignature(endpoint, {
-        include: ['balances.state'],
+      const { data: account } = await api().get(endpoint, {
+        include: ['balances'],
       })
 
       const balance = account.balances

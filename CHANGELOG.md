@@ -12,6 +12,7 @@ for further information about branching and tagging conventions.
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
+- "Copy" button to EmailGetter
 
 #### Changed
 - Corrected statistics charts data (Loyalty)
@@ -19,11 +20,19 @@ for further information about branching and tagging conventions.
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
+- Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
+  for us
 
 #### Fixed
 - Calculating percent delta on line chart
 - Displaying negative values on line chart
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
+- Polling when creating an invoice (Loyalty)
+- Invoice transaction source account (Loyalty)
+- Fixed a bug with absent preloading of account balance in `DepositForm`
+
+#### Removed
+- Quitted building sourcemaps for production
 
 ## [1.5.0]
 ### "Under the hood changes"

@@ -150,7 +150,7 @@ export default {
 
   methods: {
     ...mapActions({
-      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
   },
 }

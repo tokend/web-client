@@ -13,6 +13,11 @@ export class Api {
     _api = await ApiCaller.getInstanceWithPassphrase(horizonURL)
   }
 
+  /**
+   * @param {Object} config - wallet to sign the requests
+   * @param {String} config.horizonURL - the url of the horizon server
+   * (without version prefix)
+   */
   static initSync (config) {
     _api = ApiCaller.getInstance(config.horizonURL)
   }
