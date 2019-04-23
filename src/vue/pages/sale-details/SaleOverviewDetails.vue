@@ -53,6 +53,19 @@
 
         <tr>
           <td>
+            <!-- eslint-disable-next-line max-len -->
+            {{ 'sale-overview.owner-lbl' | globalize({ asset: sale.baseAsset }) }}
+          </td>
+          <td>
+            <email-getter
+              right-side
+              :account-id="sale.owner"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td>
             {{ 'sale-overview.video-about-sale-title' | globalize }}
           </td>
           <td>
@@ -77,10 +90,13 @@
 
 <script>
 import { SaleRecord } from '@/js/records/entities/sale.record'
+import EmailGetter from '@/vue/common/EmailGetter'
 
 export default {
   name: 'sale-overview-details',
-
+  components: {
+    EmailGetter,
+  },
   props: {
     sale: { type: SaleRecord, required: true },
   },

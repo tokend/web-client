@@ -67,7 +67,7 @@ export default {
     },
 
     async getLatestUpdateAssetRequest (requestState) {
-      const endpoint = `/v3/update_asset_requests`
+      const endpoint = '/v3/update_asset_requests'
       const { data: requests } = await api().getWithSignature(endpoint, {
         page: {
           limit: 1,

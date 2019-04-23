@@ -3,7 +3,6 @@
     v-if="form.asset && isInitialized"
     @submit.prevent="isFormValid() && showConfirmation()"
     class="deposit-fiat-card-module"
-    id="deposit-fiat-card-module"
   >
     <div class="app__form-row deposit-fiat-card__form-row">
       <div class="app__form-field">
@@ -167,7 +166,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="deposit-fiat-card-module"
       >
         {{ 'deposit-fiat-card-module.deposit' | globalize }}
       </button>
