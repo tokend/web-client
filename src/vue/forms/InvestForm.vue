@@ -117,18 +117,16 @@
           class="invest-form__fee-box"
           v-if="isFeesLoaded">
           <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.transaction-fees' | globalize }}
+            {{ 'invest-form.transaction-fees-heading' | globalize }}
           </h3>
-
-          <!-- eslint-disable-next-line -->
-          <template v-if=" +fees.fixed || +fees.percent ">
+          <template v-if="+fees.fixed || +fees.percent">
             <p
               class="invest-form__fee"
               v-if="fees.fixed">
               - {{ fees.fixed | formatNumber }}
               {{ form.asset.code }}
               <span class="invest-form__fee-type">
-                {{ 'invest-form.fixed-fee' | globalize }}
+                {{ 'invest-form.fixed-fee-label' | globalize }}
               </span>
             </p>
 
@@ -138,25 +136,25 @@
               - {{ fees.percent | formatNumber }}
               {{ form.asset.code }}
               <span class="invest-form__fee-type">
-                {{ 'invest-form.percent-fee' | globalize }}
+                {{ 'invest-form.percent-fee-label' | globalize }}
               </span>
             </p>
           </template>
 
           <template v-else>
             <p class="invest-form__no-fee-msg">
-              {{ 'invest-form.no-transaction-fees' | globalize }}
+              {{ 'invest-form.no-transaction-fees-msg' | globalize }}
             </p>
           </template>
 
           <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.total-fee' | globalize }}
+            {{ 'invest-form.total-fee-label' | globalize }}
           </h3>
 
           <p class="invest-form__fee">
             - {{ totalAmount | formatNumber }} {{ form.asset.code }}
             <span class="invest-form__fee-type">
-              {{ 'invest-form.total-amount' | globalize }}
+              {{ 'invest-form.total-amount-label' | globalize }}
             </span>
           </p>
         </div>
@@ -199,8 +197,9 @@
 
         <form-confirmation
           v-if="view.mode === VIEW_MODES.confirm"
-          :message="'invest-form.recheck-form' | globalize"
+          :message="'invest-form.recheck-form-msg' | globalize"
           :ok-button="'invest-form.invest-btn' | globalize"
+          :is-pending="isSubmitting"
           @cancel="updateView(VIEW_MODES.submit)"
           @ok="submit()"
         />
@@ -302,6 +301,7 @@ export default {
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
     isFeesLoaded: false,
+    isSubmitting: false,
     VIEW_MODES,
     vueRoutes,
   }),
@@ -490,6 +490,7 @@ export default {
       if (!this.isFormValid()) return
       this.updateView(VIEW_MODES.submit)
       this.disableForm()
+      this.isSubmitting = true
 
       try {
         const baseBalance = this.balances
@@ -512,7 +513,7 @@ export default {
       } catch (e) {
         ErrorHandler.process(e)
       }
-
+      this.isSubmitting = false
       this.enableForm()
       this.hideConfirmation()
     },
