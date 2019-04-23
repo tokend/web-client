@@ -22,22 +22,21 @@
       width: 80%;
       max-width: 320px;
     }
-    .app__init-left-face-logo {
+    .app__init-left-face-logo,
+    .app__init-top-face-logo,
+    .app__init-right-face-logo,
+    .app__init-logo-text {
       position: absolute;
       margin: 0 auto;
       width: 100%;
+    }
+    .app__init-left-face-logo {
       animation: init-left-face-logo .6s ease-out infinite;
     }
     .app__init-top-face-logo {
-      position: absolute;
-      margin: 0 auto;
-      width: 100%;
       animation: init-top-face-logo .6s ease-out infinite;
     }
     .app__init-right-face-logo {
-      position: absolute;
-      margin: 0 auto;
-      width: 100%;
       animation: init-right-face-logo .6s ease-out infinite;
     }
     .app__init-logo-text {
@@ -45,7 +44,6 @@
       margin: 0 auto;
       width: 100%;
     }
-
     @keyframes init-left-face-logo {
       0% { opacity: 0 }
       33% { opacity: 1 }
@@ -74,12 +72,14 @@
 </head>
 <body>
   <script type="text/javascript" src="/static/env.js"></script>
-  <div id="app">
+  <div>
     <div id="noscript" class="app__init">
-      <img class="app__init-logo-text" src="/static/logo_text.svg">
-      <img class="app__init-left-face-logo" src="/static/left_face_of_logo.svg">
-      <img class="app__init-top-face-logo" src="/static/top_face_of_logo.svg">
-      <img class="app__init-right-face-logo" src="/static/right_face_of_logo.svg">
+      <div>
+        <img class="app__init-logo-text" src="/static/logo-text.svg">
+        <img class="app__init-left-face-logo" src="/static/left-face-of-logo.svg">
+        <img class="app__init-top-face-logo" src="/static/top-face-of-logo.svg">
+        <img class="app__init-right-face-logo" src="/static/right-face-of-logo.svg">
+      </div>
     </div>
   </div>
   <!-- built files will be auto injected -->
