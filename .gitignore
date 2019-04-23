@@ -10,7 +10,6 @@ test/e2e/reports
 selenium-debug.log
 .eslintcache
 package-lock.json
-karma.conf.js
 
 deprecated
 

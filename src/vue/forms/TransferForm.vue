@@ -100,7 +100,7 @@
               :fees="fees"
               :asset-code="form.asset.code"
               :is-external-system-type="form.asset.externalSystemType"
-              @isPayForDestination="form.isPaidForRecipient = $event"
+              @is-pay-for-destination="form.isPaidForRecipient = $event"
             />
           </div>
 

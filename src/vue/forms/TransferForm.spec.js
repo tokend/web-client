@@ -15,7 +15,6 @@ import { vuexTypes } from '@/vuex'
 import {
   errors,
   base,
-  FEE_TYPES,
   ASSET_POLICIES,
 } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -101,32 +100,6 @@ describe('TransferForm component', () => {
         FormMixin,
       ],
       localVue,
-    })
-  })
-
-  describe('calculateFees()', () => {
-    const paymentDetails = {
-      assetCode: 'BTC',
-      amount: 10,
-      accountId: 'SOME_ACCOUNT_ID',
-      type: FEE_TYPES.paymentFee,
-    }
-    let feesSpy
-
-    beforeEach(() => {
-      feesSpy = sinon
-        .stub(wrapper.vm, 'calculateFees')
-        .withArgs(paymentDetails)
-    })
-
-    it('calculateFees()', async () => {
-      const expectedResult = { someKey: 'someData' }
-      feesSpy.resolves(expectedResult)
-
-      const result = await wrapper.vm.calculateFees(paymentDetails)
-
-      expect(feesSpy.calledOnce).to.be.true
-      expect(result).to.deep.equal(expectedResult)
     })
   })
 

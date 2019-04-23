@@ -17,7 +17,6 @@
 let consoleCallCounter = 0
 
 const errorFn = console.error
-// eslint-disable-next-line no-console
 const logFn = console.log
 const warnFn = console.warn
 
@@ -26,7 +25,6 @@ console.error = (...args) => {
   errorFn(...args)
 }
 
-// eslint-disable-next-line no-console
 console.log = (...args) => {
   consoleCallCounter++
   logFn(...args)

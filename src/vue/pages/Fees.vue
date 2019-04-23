@@ -1,10 +1,10 @@
 <template>
-  <div class="fees-page">
+  <div class="fees-renderer">
     <template v-if="isLoaded && assets.length">
       <top-bar>
         <template slot="main">
-          <div class="fees-page__filter">
-            <span class="fees-page__filter-prefix">
+          <div class="fees-renderer__filter">
+            <span class="fees-renderer__filter-prefix">
               {{ 'fees-page.asset-filter-prefix' | globalize }}
             </span>
             <select-field
@@ -125,16 +125,16 @@ export default {
 <style lang="scss" scoped>
 @import "~@scss/variables";
 
-.fees-page {
+.fees-renderer {
   width: 100%;
 }
 
-.fees-page__filter {
+.fees-renderer__filter {
   display: inline-flex;
   align-items: center;
 }
 
-.fees-page__filter-prefix {
+.fees-renderer__filter-prefix {
   margin-right: 1.5rem;
   line-height: 1;
 }
