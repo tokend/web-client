@@ -139,7 +139,6 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps
-- Fixed a bug with animation flickering on drawer closing
 - Fixed displaying of insufficient/absent balance message on submit trade
   offer form
 - Fixed converted balance displaying on "Dashboard" page
