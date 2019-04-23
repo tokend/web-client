@@ -330,7 +330,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset === quote.asset
+          return balanceItem.asset === quote.id
         })
 
         if (balance) {

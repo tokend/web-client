@@ -279,7 +279,8 @@
                 <iframe
                   v-if="form.fullDescription.youtubeVideo"
                   :src="`https://www.youtube.com/embed/${youtubeId}`"
-                  class="create-sale__iframe" />
+                  class="create-sale__iframe"
+                />
                 <div v-else class="create-sale__youtub-video">
                   <i class="mdi mdi-youtube create-sale__video-icon" />
                   <span>
@@ -350,14 +351,13 @@ import {
   minDate,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
-import { SALE_TYPES } from '@tokend/js-sdk'
+import { SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
   saleInformation: {
@@ -447,8 +447,9 @@ export default {
           },
           endTime: {
             required,
-            minDate: minDate(this.form.saleInformation.startTime ||
-              moment().toString()),
+            minDate: minDate(
+              this.form.saleInformation.startTime || moment().toString()
+            ),
           },
           softCap: {
             required,
@@ -456,13 +457,17 @@ export default {
           },
           hardCap: {
             required,
-            amountRange: amountRange(this.form.saleInformation.softCap,
-              this.MAX_AMOUNT),
+            amountRange: amountRange(
+              this.form.saleInformation.softCap,
+              this.MAX_AMOUNT
+            ),
           },
           requiredBaseAssetForHardCap: {
             required,
-            amountRange: amountRange(this.MIN_AMOUNT,
-              this.availableForIssuance),
+            amountRange: amountRange(
+              this.MIN_AMOUNT,
+              this.availableForIssuance
+            ),
           },
           quoteAssets: {
             requiredAtLeastOne,

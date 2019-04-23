@@ -33,11 +33,6 @@
       />
     </div>
 
-    <div class="sale-state-widget__investors">
-      <h3>{{ sale.investors }}</h3>
-      <p>{{ 'sale-details.investors' | globalize }}</p>
-    </div>
-
     <template v-if="sale.daysToGo >= 0">
       <div class="sale-state-widget__days-to-go">
         <h3>{{ sale.daysToGo }}</h3>
