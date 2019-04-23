@@ -30,6 +30,7 @@ for further information about branching and tagging conventions.
 - Polling when creating an invoice (Loyalty)
 - Invoice transaction source account (Loyalty)
 - Fixed a bug with absent preloading of account balance in `DepositForm`
+- Displaying incoming withdrawal requests (Loyalty)
 
 #### Removed
 - Quitted building sourcemaps for production
