@@ -1,6 +1,6 @@
 import LoadAssetsMixin from './load-assets.mixin'
 
-import { Wallet, ASSET_POLICIES } from '@tokend/js-sdk'
+import { ApiCaller, ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
@@ -15,13 +15,20 @@ const Component = {
 }
 
 describe('Load assets mixin', () => {
+  let sandbox
   let wrapper
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
+
     wrapper = mount(Component, {
       mixins: [LoadAssetsMixin],
       localVue,
     })
+  })
+
+  afterEach(() => {
+    sandbox.restore()
   })
 
   describe('computed property', () => {
@@ -94,23 +101,13 @@ describe('Load assets mixin', () => {
   describe('method', () => {
     describe('loadAssets', () => {
       beforeEach(() => {
-        const wallet = new Wallet(
-          'test@mail.com',
-          'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-          'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-          '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-        )
-        const config = {
-          horizonURL: 'https://test.api.com',
-        }
-
-        Api.initApi(wallet, config)
+        sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
       })
 
       it('calls Api.getWithSignature method with provided params and sets assets property',
         async () => {
           wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sinon.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api(), 'getWithSignature').resolves({
             data: {
               balances: [
                 { asset: { id: 'USD' } },
@@ -130,8 +127,6 @@ describe('Load assets mixin', () => {
             new Asset({ id: 'USD' }),
             new Asset({ id: 'BTC' }),
           ])
-
-          Api.api().getWithSignature.restore()
         }
       )
     })

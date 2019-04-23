@@ -1,6 +1,6 @@
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
-import { Wallet, BLOB_TYPES } from '@tokend/js-sdk'
+import { ApiCaller, BLOB_TYPES } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
@@ -14,35 +14,32 @@ const Component = {
 }
 
 describe('Manage sale description mixin', () => {
+  let sandbox
   let wrapper
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
+
     wrapper = mount(Component, {
       mixins: [ManageSaleDescriptionMixin],
       localVue,
     })
   })
 
+  afterEach(() => {
+    sandbox.restore()
+  })
+
   describe('method', () => {
     beforeEach(() => {
-      const wallet = new Wallet(
-        'test@mail.com',
-        'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-        'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-        '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-      )
-      const config = {
-        horizonURL: 'https://test.api.com',
-      }
-
-      Api.initApi(wallet, config)
+      sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
     })
 
     describe('createSaleDescriptionBlob', () => {
       it('calls Api.postWithSignature method with provided params and returns blob ID from response',
         async () => {
           wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sinon.stub(Api.api(), 'postWithSignature').resolves({
+          sandbox.stub(Api.api(), 'postWithSignature').resolves({
             data: { id: 'BLOB_ID' },
           })
 
@@ -61,8 +58,6 @@ describe('Manage sale description mixin', () => {
               },
             })
           expect(result).to.equal('BLOB_ID')
-
-          Api.api().postWithSignature.restore()
         }
       )
     })
@@ -71,7 +66,7 @@ describe('Manage sale description mixin', () => {
       it('calls Api.getWithSignature method with provided params and returns parsed response if loading succeded',
         async () => {
           wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sinon.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api(), 'getWithSignature').resolves({
             data: { value: '"Some value"' },
           })
 
@@ -82,20 +77,16 @@ describe('Manage sale description mixin', () => {
               '/accounts/SOME_ACCOUNT_ID/blobs/BLOB_ID'
             )
           expect(result).to.equal('Some value')
-
-          Api.api().getWithSignature.restore()
         }
       )
 
       it('returns empty string if loading failed',
         async () => {
-          sinon.stub(Api.api(), 'getWithSignature').rejects()
+          sandbox.stub(Api.api(), 'getWithSignature').rejects()
 
           const result = await wrapper.vm.getSaleDescription('BLOB_ID')
 
           expect(result).to.equal('')
-
-          Api.api().getWithSignature.restore()
         }
       )
     })
