@@ -172,25 +172,25 @@ describe('TransferForm component', () => {
           },
         },
       })
-      sinon.stub(wrapper.vm, 'setToken')
+      sinon.stub(wrapper.vm, 'setAsset')
     })
 
     it('do not reset form if third argument (clear) not passed', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {})
 
-      expect(wrapper.vm.setToken.called).to.be.false
+      expect(wrapper.vm.setAsset.called).to.be.false
     })
 
     it('do not reset form if third argument (clear) passed with value "false"', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {}, false)
 
-      expect(wrapper.vm.setToken.called).to.be.false
+      expect(wrapper.vm.setAsset.called).to.be.false
     })
 
     it('reset form if third argument (clear) passed with value "true"', () => {
       wrapper.vm.updateView('SOME_VIEW_MODE', {}, true)
 
-      expect(wrapper.vm.setToken.calledOnce).to.be.true
+      expect(wrapper.vm.setAsset.calledOnce).to.be.true
     })
   })
 
@@ -206,7 +206,7 @@ describe('TransferForm component', () => {
     wrapper.vm.view.opts.destinationFeeAsset = 'BTC'
     wrapper.vm.view.opts.feeFromSource = false
     wrapper.vm.view.opts.subject = 'Some text'
-    wrapper.vm.form.token = { code: 'BTC' }
+    wrapper.vm.form.asset = { code: 'BTC' }
 
     sinon.stub(base.PaymentBuilder, 'payment').returns('some operation')
 
@@ -305,17 +305,17 @@ describe('TransferForm component', () => {
   })
 
   describe('computed properties', () => {
-    it('userTransferableTokens()', () => {
-      const expectUserTransferableTokens = [
+    it('userTransferableAssets()', () => {
+      const expectUserTransferableAssets = [
         mockedAccountBalances[0],
         mockedAccountBalances[1],
       ]
-      expect(wrapper.vm.userTransferableTokens)
-        .to.deep.equal(expectUserTransferableTokens)
+      expect(wrapper.vm.userTransferableAssets)
+        .to.deep.equal(expectUserTransferableAssets)
     })
 
-    it('tokens()', () => {
-      const expectUserTransferableTokens = [
+    it('assets()', () => {
+      const expectUserTransferableAssets = [
         mockedAccountBalances[0],
         mockedAccountBalances[1],
       ]
@@ -323,13 +323,13 @@ describe('TransferForm component', () => {
         store,
         localVue,
         computed: {
-          userTransferableTokens () {
-            return expectUserTransferableTokens
+          userTransferableAssets () {
+            return expectUserTransferableAssets
           },
         },
       })
 
-      expect(wrapper.vm.tokens)
+      expect(wrapper.vm.assets)
         .to.deep.equal([
           mockedAccountBalances[0].assetDetails,
           mockedAccountBalances[1].assetDetails,

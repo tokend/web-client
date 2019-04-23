@@ -1,5 +1,6 @@
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 import _get from 'lodash/get'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 export class AssetRecord {
   constructor (record = {}, balances = []) {
@@ -12,7 +13,7 @@ export class AssetRecord {
 
     this.policies = this._policies()
     this.policy = this._policy()
-
+    this.isCoinpayments = _get(record, 'details.isCoinpayments')
     this.balance = this._getBalance(balances)
   }
 
@@ -49,5 +50,10 @@ export class AssetRecord {
 
   get isFiat () {
     return !!this.details.isFiat && this.details.subtype === undefined
+  }
+
+  get isWithdrawable () {
+    return !!(this.policy & ASSET_POLICIES.withdrawable) ||
+      !!(this.policy & ASSET_POLICIES.withdrawableV2)
   }
 }

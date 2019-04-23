@@ -4,7 +4,6 @@
       <template v-if="assets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="withdrawal-form"
           novalidate
         >
           <div class="app__form-row withdrawal__form-row">
@@ -105,7 +104,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="withdrawal-form"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
@@ -125,7 +123,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.assets"
           tag="button"
           class="app__button-raised withdrawal__action"
         >
@@ -155,6 +153,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
+import { vueRoutes } from '@/vue-router/routes'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -205,6 +204,7 @@ export default {
     isFeesLoadPending: false,
     isFeesLoadFailed: false,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
+    vueRoutes,
   }),
   validations () {
     const addressRules = {

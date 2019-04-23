@@ -39,6 +39,7 @@
           </div>
 
           <key-viewer
+            class="signup__key-viewer"
             :value="recoveryKeypair.secret()"
             :label="'auth-pages.recovery-seed' | globalize"
           />
@@ -170,5 +171,9 @@ export default {
     margin-bottom: 1.6rem;
     font-size: 1.6rem;
   }
+}
+
+.signup__key-viewer /deep/ .clipboard-field {
+  background: $col-clipboard-background-darken;
 }
 </style>

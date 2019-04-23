@@ -22,7 +22,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule) && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"
@@ -34,7 +34,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule) && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"

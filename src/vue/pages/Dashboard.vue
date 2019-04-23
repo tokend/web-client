@@ -40,7 +40,7 @@
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+          v-if="currentAsset !== defaultQuoteAsset &&
             getModule().getSubmodule(DashboardChartPseudoModule)
           "
           class="dashboard__chart"
@@ -48,7 +48,7 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
             :base-asset="currentAsset"
-            :quote-asset="config.DEFAULT_QUOTE_ASSET"
+            :quote-asset="defaultQuoteAsset"
           />
         </div>
         <div
@@ -137,6 +137,7 @@ export default {
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
       vuexTypes.wallet,
+      vuexTypes.defaultQuoteAsset,
     ]),
   },
   watch: {

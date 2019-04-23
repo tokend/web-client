@@ -65,7 +65,7 @@ import SelectField from '@/vue/fields/SelectField'
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -76,6 +76,7 @@ const SALE_STATES = {
   live: {
     labelTranslationId: 'sales.sale-live-state',
     value: 'live',
+    state: 1,
   },
   upcoming: {
     labelTranslationId: 'sales.sale-upcoming-state',
@@ -155,15 +156,25 @@ export default {
     recordsLoader () {
       const saleState = this.filters.state.value
       const opts = {
-        open_only: saleState === SALE_STATES.upcoming.value ||
-          saleState === SALE_STATES.live.value,
-        upcoming: saleState === SALE_STATES.upcoming.value,
+        page: {
+          order: 'desc',
+        },
+        include: ['base_asset', 'quote_assets', 'default_quote_asset'],
       }
-      if (this.isUserSales) {
-        opts.owner = this.accountId
+      switch (saleState) {
+        case SALE_STATES.live.value:
+          opts.filter = {
+            state: SALE_STATES.live.state,
+          }
+          break
+        case SALE_STATES.upcoming.value:
+          opts.filter = {
+            min_start_time: new Date().toISOString(),
+          }
+          break
       }
       return function () {
-        return Sdk.horizon.sales.getPage(opts)
+        return Api.getWithSignature('/v3/sales', opts)
       }
     },
   },

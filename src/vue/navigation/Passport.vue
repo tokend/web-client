@@ -28,7 +28,10 @@
         />
       </button>
 
-      <div class="passport__account-type">
+      <div
+        class="passport__account-type"
+        :class="{ 'passport__account-type--blocked': isAccountBlocked }"
+      >
         {{ accountRoleTranslationId | globalize }}
       </div>
     </div>
@@ -91,6 +94,7 @@ export default {
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountGeneral: vuexTypes.isAccountGeneral,
+      isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
     }),
 
@@ -99,6 +103,8 @@ export default {
         return 'passport.account-general'
       } else if (this.isAccountCorporate) {
         return 'passport.account-corporate'
+      } else if (this.isAccountBlocked) {
+        return 'passport.account-blocked'
       } else {
         return 'passport.account-unverified'
       }
@@ -244,6 +250,11 @@ $dropdown-item-side-padding: 2.4rem;
   color: $col-text;
   font-size: 1.2rem;
   line-height: 1.5;
+}
+
+.passport__account-type--blocked {
+  color: $col-error;
+  font-weight: bold;
 }
 
 .passport__dropdown {

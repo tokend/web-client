@@ -1,7 +1,7 @@
 <template>
   <div class="transfer app__page-content-wrp">
     <template v-if="isLoaded">
-      <template v-if="!tokens.length">
+      <template v-if="!assets.length">
         <h2 class="app__page-heading">
           {{ 'transfer-form.no-assets-heading' | globalize }}
         </h2>
@@ -21,7 +21,6 @@
           view.mode === VIEW_MODES.confirm">
         <form
           @submit.prevent="processTransfer"
-          id="transfer-form"
           v-if="view.mode === VIEW_MODES.submit ||
             view.mode === VIEW_MODES.confirm">
           <div class="app__form-row">
@@ -82,7 +81,6 @@
           <div class="app__form-row">
             <div class="app__form-field">
               <textarea-field
-                id="transfer-description"
                 name="transfer-description"
                 v-model="form.subject"
                 :label="'transfer-form.subject-lbl' | globalize({
@@ -93,40 +91,39 @@
               />
             </div>
           </div>
-        </form>
 
-        <div
-          class="transfer__fee-box"
-          v-if="isFeesLoaded"
-        >
-          <fees
-            :fees="fees"
-            :asset-code="form.asset.code"
-            :is-external-system-type="form.asset.externalSystemType"
-            @isPayForDestination="form.isPaidForRecipient = $event"
-          />
-        </div>
+          <div
+            class="transfer__fee-box"
+            v-if="isFeesLoaded"
+          >
+            <fees
+              :fees="fees"
+              :asset-code="form.asset.code"
+              :is-external-system-type="form.asset.externalSystemType"
+              @isPayForDestination="form.isPaidForRecipient = $event"
+            />
+          </div>
 
-        <div class="app__form-actions">
-          <button
-            v-ripple
-            v-if="view.mode === VIEW_MODES.submit"
-            type="submit"
-            class="app__form-submit-btn"
-            :disabled="formMixin.isDisabled"
-            form="transfer-form">
-            {{ 'transfer-form.continue-btn' | globalize }}
-          </button>
+          <div class="app__form-actions">
+            <button
+              v-ripple
+              v-if="view.mode === VIEW_MODES.submit"
+              type="submit"
+              class="app__form-submit-btn"
+              :disabled="formMixin.isDisabled"
+              form="transfer-form">
+              {{ 'transfer-form.continue-btn' | globalize }}
+            </button>
 
-          <form-confirmation
-            v-if="view.mode === VIEW_MODES.confirm"
-            :message="'transfer-form.recheck-form' | globalize"
-            :ok-button="'transfer-form.submit-btn' | globalize"
-            @cancel="updateView(VIEW_MODES.submit)"
-            @ok="submit(form.isPaidForRecipient)"
-          />
-        </div>
-      </template>
+            <form-confirmation
+              v-if="view.mode === VIEW_MODES.confirm"
+              :message="'transfer-form.recheck-form' | globalize"
+              :ok-button="'transfer-form.submit-btn' | globalize"
+              @cancel="updateView(VIEW_MODES.submit)"
+              @ok="submit(form.isPaidForRecipient)"
+            />
+          </div>
+      </form></template>
     </template>
 
     <template v-else-if="!isLoadingFailed">
@@ -226,11 +223,11 @@ export default {
       vuexTypes.accountBalances,
       vuexTypes.accountId,
     ]),
-    userTransferableTokens () {
+    userTransferableAssets () {
       return this.accountBalances.filter(i => i.assetDetails.isTransferable)
     },
-    tokens () {
-      return this.userTransferableTokens.map(token => token.assetDetails)
+    assets () {
+      return this.userTransferableAssets.map(asset => asset.assetDetails)
     },
     balance () {
       return this.accountBalances
@@ -240,7 +237,7 @@ export default {
   async created () {
     try {
       await this.loadCurrentBalances()
-      this.setToken()
+      this.setAsset()
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
@@ -325,7 +322,7 @@ export default {
             percent: this.view.opts.destinationPercentFee,
             fixed: this.view.opts.destinationFixedFee,
           },
-          sourcePaysForDest: this.view.opts.feeFromSource,
+          sourcePaysForDest: this.form.isPaidForRecipient,
         },
         subject: this.view.opts.subject,
         asset: this.form.asset.code,
@@ -336,7 +333,7 @@ export default {
       this.view.opts = opts
       if (clear) {
         this.clearFields()
-        this.setToken()
+        this.setAsset()
       }
     },
     rerenderForm () {
