@@ -123,7 +123,8 @@
               @ok="submit(form.isPaidForRecipient)"
             />
           </div>
-      </form></template>
+        </form>
+      </template>
     </template>
 
     <template v-else-if="!isLoadingFailed">
@@ -341,7 +342,7 @@ export default {
       this.isFeesLoaded = false
       setTimeout(() => this.updateView(VIEW_MODES.submit, {}, true), 1)
     },
-    setToken () {
+    setAsset () {
       this.form.asset =
         this.tokens.find(token => token.code === this.assetToTransfer) ||
         this.tokens[0] ||
