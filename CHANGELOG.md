@@ -139,6 +139,7 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps
+- Fixed a bug with animation flickering on drawer closing
 - Fixed displaying of insufficient/absent balance message on submit trade
   offer form
 - Fixed converted balance displaying on "Dashboard" page
@@ -208,7 +209,6 @@ for further information about branching and tagging conventions.
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 
 #### Fixed
-- Fixed a bug with animation flickering on drawer closing
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
 - Fixed bug with validation of maturity date (Reit)
