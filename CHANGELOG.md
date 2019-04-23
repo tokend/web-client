@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
 - "Copy" button to EmailGetter
+- Fix for handling a "400" errors
 
 #### Changed
 - Corrected statistics charts data (Loyalty)

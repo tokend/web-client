@@ -168,7 +168,7 @@
       "op_src_balance_not_found": "Source balance not found",
       "op_reference_duplication": "You cannot make two issuances with the same reference",
       "op_stats_overflow": "Overflow during statistics calculation",
-      "op_limits_exceeded": "You have increased the limit. Details in Limits page.",
+      "op_limits_exceeded": "The operation exceeds limits set to your account. Check \"Limits\" page for your current limits.",
       "op_not_allowed_by_asset_policy": "This action is not allowed by token policy",
       "op_already_exists": "Entry already exists",
       "op_invalid_asset": "Invalid asset",
