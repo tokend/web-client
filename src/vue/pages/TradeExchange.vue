@@ -166,6 +166,7 @@ export default {
       this.isSellOffersLoading = false
     },
     async loadTradeHistory () {
+      // TODO: No /v3 endpoint for trades yet
       let response = await Sdk.horizon.trades.getPage({
         base_asset: this.assetPair.base,
         quote_asset: this.assetPair.quote,

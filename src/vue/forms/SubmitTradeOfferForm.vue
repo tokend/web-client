@@ -163,7 +163,8 @@ export default {
       return +this.offerBalance.balance >= +this.offer.baseAmount
     },
     isOwner () {
-      return this.offer.ownerId === this.accountId
+      const owner = this.offer.owner
+      return owner && owner.id === this.accountId
     },
   },
   async created () {
@@ -205,7 +206,7 @@ export default {
         price: this.offer.price,
         baseBalance: this.offerBaseAssetBalance.id,
         quoteBalance: this.offerQuoteAssetBalance.id,
-        offerId: this.offer.offerId,
+        offerId: this.offer.id,
       }
     },
   },

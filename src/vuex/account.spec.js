@@ -83,6 +83,7 @@ describe('account.module', () => {
           .map(item => {
             item.assetDetails = new AssetRecord(item.asset)
             item.asset = item.assetDetails.code
+            item.balance = item.state.available
             return item
           })
           .sort((a, b) => b.convertedBalance - a.convertedBalance)

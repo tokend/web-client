@@ -55,10 +55,10 @@ export default {
   watch: {
     'assetPair': {
       deep: true,
-      handler: async function (assetPair) {
+      handler: function (assetPair) {
         this.setSelectedAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
-          await this.loadOffersHistory()
+          this.initFirstPageLoader()
         }
       },
     },

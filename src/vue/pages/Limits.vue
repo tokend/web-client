@@ -85,7 +85,6 @@ import LimitsForm from '@/vue/forms/LimitsForm'
 import LimitsTableRenderer from '@/vue/pages/Limits/Limits.TableRenderer'
 import LimitsRequestsListRenderer from '@/vue/pages/Limits/Limits.RequestsListRenderer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -174,11 +173,11 @@ export default {
       this.isLimitsRequestsLoadingFailed = false
       let response = {}
       try {
-        response = await Sdk.horizon.request
-          .getAllForLimitsUpdates({
-            ...this.limitsRequestsQueries,
-            requestor: this.accountId,
-          })
+        response = await Api.getWithSignature('/v3/update_limits_requests', {
+          filter: { requestor: this.accountId },
+          page: { ...this.limitsRequestsQueries },
+          include: ['request_details'],
+        })
       } catch (error) {
         this.isLimitsRequestsLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
