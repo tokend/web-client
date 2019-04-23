@@ -578,7 +578,7 @@
       "settings": "Settings",
       "fees": "Fees",
       "movements": "Movements",
-      "issuance": "Issuance",
+      "issuance": "Issuance requests",
       "downloads": "TokenD downloads",
       "terms": "Terms",
       "sales": "Sales",
@@ -636,9 +636,9 @@
       "table-request-type-lbl": "Request type",
       "table-state-lbl": "State",
       "table-asset-lbl": "Asset",
-      "upload-documents-btn": "Upload documents",
       "data-loading": "Fetching limits requests data...",
       "document-uploader-form-heading": "Upload documents",
+      "request-details-drawer-heading": "Limits request details",
       "request-state-pending": "Pending",
       "request-state-cancelled": "Cancelled",
       "request-state-approved": "Approved",
@@ -650,7 +650,20 @@
       "here-will-requests-list": "Here will be the list of your limits change requests",
       "load-requests-btn": "Load requests",
       "loading-failed": "Failed to load limits requests",
-      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again"
+      "loading-failed-message": "Limits requests loading was failed in some way. Try to load limits requests again",
+      "details-btn": "Details"
+    },
+    "limits-request-details-viewer": {
+      "table-daily-limit-lbl": "Daily limit",
+      "table-weekly-limit-lbl": "Weekly limit",
+      "table-monthly-limit-lbl": "Monthly limit",
+      "table-annual-limit-lbl": "Annual limit",
+      "approved-msg": "Your request was approved",
+      "pending-msg": "Your request was submitted. Please wait until it is reviewed",
+      "rejected-msg": "Your request require approval documents",
+      "permanently-rejected-msg": "Your request was rejected with reason: {{reason}}",
+      "upload-documents-btn": "Upload documents",
+      "not-set-lbl": "Not set"
     },
     "passport": {
       "account-unverified": "Unverified account",
@@ -751,7 +764,7 @@
     },
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
+      "create-invoice-form-title": "New invoice",
       "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
@@ -882,7 +895,7 @@
       "activity": "Movements",
       "date": "Date",
       "transaction-type": "Transaction type",
-      "create-issuance-lbl": "Create issuance",
+      "create-issuance-lbl": "Create issuance request",
       "send-asset-lbl": "Send {{asset}}",
       "asset": "Asset",
       "amount": "Amount",
@@ -935,7 +948,7 @@
     },
     "issuance-page": {
       "history-title": "History",
-      "create-issuance": "Create issuance",
+      "create-issuance": "Create issuance request",
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
@@ -970,8 +983,8 @@
         "asset-code-th": "Asset code",
         "date-th": "Date",
         "reference-th": "Reference",
-        "no-issuances-title": "No issuances yet",
-        "no-issuances-msg": "Here will be the list of your issuances",
+        "no-issuances-title": "No issuance requests yet",
+        "no-issuances-msg": "Here will be the list of your issuance requests",
         "state-header-th": "State"
       },
       "loading-msg": "Loading your issuances…",
@@ -1380,7 +1393,6 @@
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
-      "investors": "investors",
       "days-to-go": "days to go",
       "view-details-btn": "View details",
       "days-after-end": "days after closed",
@@ -1419,7 +1431,8 @@
       "asset-to-sell-title": "{{asset}} to sell",
       "video-about-sale-title": "Video about sale",
       "no-video-msg": "No video",
-      "view-video-btn": "View"
+      "view-video-btn": "View",
+      "owner-lbl": "Owner"
     },
     "invest-form": {
       "asset-lbl": "Asset",
@@ -1683,7 +1696,8 @@
       "absent-msg": "No",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
-      "already-in-your-balance-btn": "Already in your balances"
+      "already-in-your-balance-btn": "Already in your balances",
+      "owner-lbl": "Owner"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

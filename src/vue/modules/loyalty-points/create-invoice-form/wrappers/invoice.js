@@ -1,11 +1,13 @@
 import { PAYMENT_STATES } from '../const/payment-states'
 
 export class Invoice {
-  constructor ({ record, blobId, isConfirmed }) {
-    this.amount = record.amount
-    this.asset = record.asset
+  constructor ({ record, isConfirmed }) {
     this.subject = record.subject
-    this.blobId = blobId
+    this.totalPrice = record.totalPrice
+
+    this.asset = record.quoteAsset
+    this.reference = record.reference
+    this.system = record.system
 
     this.state = isConfirmed
       ? PAYMENT_STATES.successful
@@ -18,5 +20,9 @@ export class Invoice {
 
   get isSuccessful () {
     return this.state === PAYMENT_STATES.successful
+  }
+
+  setSuccessfulState () {
+    this.state = PAYMENT_STATES.successful
   }
 }

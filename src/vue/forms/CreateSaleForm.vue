@@ -351,14 +351,13 @@ import {
   minDate,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
-import { SALE_TYPES } from '@tokend/js-sdk'
+import { SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
   saleInformation: {

@@ -7,6 +7,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+- Account number field to the invoice form (Loyalty)
+- "Copy" button to EmailGetter
+
+#### Changed
+- Corrected statistics charts data (Loyalty)
+- Use select field instead of table for acceptable points on
+  create invoice form (Loyalty)
+- Now sending payment transaction to the external system instead of
+  creating a blob (Loyalty)
+- Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
+  for us
+
+#### Fixed
+- Calculating percent delta on line chart
+- Displaying negative values on line chart
+- Fixed a bug when with `defaultQuoteAsset` loading race condition
+- Polling when creating an invoice (Loyalty)
+- Invoice transaction source account (Loyalty)
+- Fixed a bug with absent preloading of account balance in `DepositForm`
+
+#### Removed
+- Quitted building sourcemaps for production
+
+## [1.5.0]
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0
+
+## [1.5.0-rc.3] - 2019-04-19
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0-rc.1
+
+## [1.5.0-rc.2] - 2019-04-19
+#### Added
+- Displaying of limit request details in drawer
+
+#### Changed
+- Show limits request list on top of other limits on "Limits" page
+- "Issuance" labels on Issuance page renamed to "Issuance requests"
+
+#### Removed
+- Dupe team size and website fields on corporate verification
+- Displaying investors quantity in sale details
+- Opera from noscript
+
+#### Fixed
+- Fixed a bug with unsubmitted transfer form
+- Fixed a bug with displaying verification state message
+- Fixed a bug with displaying "undefined" instead of quote asset in
+  dashboard’s chart
+- Fixed a bug with unreadable QR code on "Downloads" page
+- Fixed a bug with undisplayed verification code on general KYC form
+- Fixed a bug with incorrect displaying of fees paid for recipient while
+  in transfer form
+
+### "Under the hood" changes
+#### Changed
+- Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- `SaleRecord` is now parsing the resource from new API
+
+#### Removed
+- Statistics property from `SaleRecord`
+- Buttons' "form" attributes
+
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
 - Displaying of blocked account role
@@ -274,7 +344,10 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0...HEAD
+[1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
+[1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
+[1.5.0-rc.2]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...1.5.0-rc.1
 [1.5.0-rc.0]: https://github.com/tokend/web-client/compare/1.4.0...1.5.0-rc.0
 [1.4.0]: https://github.com/tokend/web-client/compare/1.4.0-rc.3...1.4.0

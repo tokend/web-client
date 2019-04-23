@@ -127,7 +127,6 @@
                 !balanceHolders.length ||
                 !isSignersLoaded
               "
-              form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
             </button>

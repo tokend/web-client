@@ -34,7 +34,6 @@
               white-autofill
               v-model="form.personal.lastName"
               @blur="touchField('form.personal.lastName')"
-              id="verification-general-last-name"
               name="verification-general-last-name"
               :label="'verification-form.last-name-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.personal.lastName')"
@@ -152,7 +151,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
+
+import { BLOB_TYPES } from '@tokend/js-sdk'
 
 import { required, documentContainer } from '@validators'
 import { mapGetters } from 'vuex'
@@ -208,6 +208,9 @@ export default {
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
+    verificationCode () {
+      return this.accountId.slice(1, 6)
+    },
     isFormDisabled () {
       return !this.isAccountRoleReseted && this.kycState &&
         this.kycState !== REQUEST_STATES_STR.rejected &&
