@@ -152,8 +152,8 @@ export default {
   methods: {
     ...mapActions({
       loadAccount: vuexTypes.LOAD_ACCOUNT,
-    })
-  }
+    }),
+  },
 }
 </script>
 
