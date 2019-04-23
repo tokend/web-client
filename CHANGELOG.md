@@ -30,9 +30,19 @@ for further information about branching and tagging conventions.
 - Polling when creating an invoice (Loyalty)
 - Invoice transaction source account (Loyalty)
 - Fixed a bug with absent preloading of account balance in `DepositForm`
+- Date field issues:
+  - broken "disabled" state;
+  - broken manual input. If user type invalid date manually, the field will
+    clean up;
+  - broken key events (enter, escape, arrow navigation).
+- Fixed a bug with animation flickering on drawer closing
 
 #### Removed
 - Quitted building sourcemaps for production
+
+### "Under the hood" changes
+#### Changed
+- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component), but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
 
 ## [1.5.0]
 ### "Under the hood changes"
@@ -130,7 +140,6 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps
-- Fixed a bug with animation flickering on drawer closing
 - Fixed displaying of insufficient/absent balance message on submit trade
   offer form
 - Fixed converted balance displaying on "Dashboard" page
@@ -200,11 +209,6 @@ for further information about branching and tagging conventions.
 - Removed useless fields and getters in the Redeem `Sale` and `Asset` records
 
 #### Fixed
-- Date field issues:
-  - broken "disabled" state;
-  - broken manual input. If user type invalid date manually, the field will
-    clean up;
-  - broken key events (enter, escape, arrow navigation).
 - Fixed a bug with animation flickering on drawer closing
 - Translations for loyalty points merchant module (Loyalty)
 - Setting merchant account ID to invoice URL (Loyalty)
@@ -218,10 +222,6 @@ for further information about branching and tagging conventions.
 ## [1.4.0-rc.3] - 2019-04-04
 #### Fixed
 - Withdrawal request creating where invalid creatorDetails were submitted
-
-### "Under the hood" changes
-#### Changed
-- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component), but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
 
 ## [1.4.0-rc.2] - 2019-04-02
 #### Fixed
