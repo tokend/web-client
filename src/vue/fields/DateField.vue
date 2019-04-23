@@ -21,7 +21,6 @@
         :disabled="disabled"
         v-model="flatpickrDate"
         :placeholder="placeholder"
-        :key="_uid"
       >
     </div>
 
@@ -39,7 +38,7 @@ import Flatpickr from 'flatpickr'
 import moment from 'moment'
 
 // All supported events by Flatpickr
-const FLATPICKR_EVENTS = {
+const FLATPICKR_HOOKS = {
   onChange: 'onChange',
   onClose: 'onClose',
   onDestroy: 'onDestroy',
@@ -58,14 +57,8 @@ const FLATPICKR_EVENTS = {
 const EMITABLE_EVENTS = {
   getNewValue: 'getNewValue',
   input: 'input',
-  onClose: FLATPICKR_EVENTS.onClose,
-  onOpen: FLATPICKR_EVENTS.onOpen,
-}
-
-// Events that component uses for itself
-const BUILTIN_EVENTS = {
-  onClose: FLATPICKR_EVENTS.onClose,
-  onOpen: FLATPICKR_EVENTS.onOpen,
+  onClose: FLATPICKR_HOOKS.onClose,
+  onOpen: FLATPICKR_HOOKS.onOpen,
 }
 
 export default {
