@@ -121,14 +121,13 @@ export default {
     config: {
       deep: true,
       handler (newConfig) {
-        let safeConfig = Object.assign({}, newConfig)
+        const safeConfig = Object.assign({}, newConfig)
 
         // Workaround: Don't pass hooks to configs again otherwise
         // previously registered hooks will stop working
         // This also means that new callbacks cannot be passed once a component
         // has been initialized
-
-        this.flatpickr.set(this.removeFlatpickrHooks(safeConfig))
+        this.flatpickr.set(this.defineFlatpickrHooks(safeConfig))
       },
     },
 
@@ -185,8 +184,24 @@ export default {
         })
       }
     },
+    defineFlatpickrHooks (config) {
+      let safeConfig = Object.assign({}, config)
+      FLATPICKR_HOOKS.forEach((hook) => {
+        delete safeConfig[hook]
+      })
+      return safeConfig
+    },
+    arrayify (obj) {
+      if (!obj) {
+        return []
+      }
+      return obj instanceof Array ? obj : [obj]
+    },
+
+    /* FLATPICKR HOOKS */
+
     /**
-     * Params doc:
+     * Function arguments doc:
      *
      * @link https://flatpickr.js.org/events/#events
      */
@@ -197,11 +212,6 @@ export default {
         this.$emit(EMITABLE_EVENTS.onOpen)
       })
     },
-    /**
-     * Params doc:
-     *
-     * @link https://flatpickr.js.org/events/#events
-     */
     onClose (selectedDates, dateStr, instance) {
       this.isCalendarOpen = false
       this.flatpickrDate = dateStr
@@ -211,19 +221,6 @@ export default {
         this.$emit(EMITABLE_EVENTS.input, dateStr)
         this.$emit(EMITABLE_EVENTS.onClose)
       })
-    },
-    arrayify (obj) {
-      if (!obj) {
-        return []
-      }
-      return obj instanceof Array ? obj : [obj]
-    },
-    removeFlatpickrHooks (config) {
-      let safeConfig = config
-      FLATPICKR_EVENTS.forEach((hook) => {
-        delete safeConfig[hook]
-      })
-      return safeConfig
     },
   },
 }
