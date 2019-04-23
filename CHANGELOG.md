@@ -35,6 +35,7 @@ for further information about branching and tagging conventions.
   - broken manual input. If user type invalid date manually, the field will
     clean up;
   - broken key events (enter, escape, arrow navigation).
+- Displaying incoming withdrawal requests (Loyalty)
 
 #### Removed
 - Quitted building sourcemaps for production

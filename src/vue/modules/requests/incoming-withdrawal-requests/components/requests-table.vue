@@ -61,8 +61,8 @@
     <no-data-message
       v-else
       icon-name="trending-up"
-      :title="'create-asset-requests.no-request-history-title' | globalize"
-      :message="'create-asset-requests.no-request-history-desc' | globalize"
+      :title="'incoming-withdrawal-requests.no-history-title' | globalize"
+      :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
     />
   </div>
 </template>
