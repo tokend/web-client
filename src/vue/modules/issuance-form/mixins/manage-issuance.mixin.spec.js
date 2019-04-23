@@ -1,6 +1,6 @@
 import ManageIssuanceMixin from './manage-issuance.mixin'
 
-import { Wallet, base } from '@tokend/js-sdk'
+import { ApiCaller, base } from '@tokend/js-sdk'
 
 import { errors } from '@/js/errors'
 
@@ -41,17 +41,7 @@ describe('Manage issuance mixin', () => {
 
   describe('method', () => {
     beforeEach(() => {
-      const wallet = new Wallet(
-        'test@mail.com',
-        'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-        'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-        '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-      )
-      const config = {
-        horizonURL: 'https://test.api.com',
-      }
-
-      Api.initApi(wallet, config)
+      sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
     })
 
     describe('createIssuance', () => {

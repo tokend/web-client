@@ -1,6 +1,6 @@
 import LoadOwnedAssetsMixin from './load-owned-assets.mixin'
 
-import { Wallet } from '@tokend/js-sdk'
+import { ApiCaller } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
@@ -14,34 +14,31 @@ const Component = {
 }
 
 describe('Load assets mixin', () => {
+  let sandbox
   let wrapper
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox()
+
     wrapper = mount(Component, {
       mixins: [LoadOwnedAssetsMixin],
       localVue,
     })
   })
 
+  afterEach(() => {
+    sandbox.restore()
+  })
+
   describe('method', () => {
     describe('loadOwnedAssets', () => {
       beforeEach(() => {
-        const wallet = new Wallet(
-          'test@mail.com',
-          'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-          'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-          '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-        )
-        const config = {
-          horizonURL: 'https://test.api.com',
-        }
-
-        Api.initApi(wallet, config)
+        sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
       })
 
       it('calls Api.getWithSignature method with provided params and sets assets property',
         async () => {
-          sinon.stub(Api.api(), 'get').resolves({
+          sandbox.stub(Api.api(), 'get').resolves({
             data: {
               balances: [
                 { asset: { id: 'USD', owner: { id: 'SOME_ACCOUNT_ID' } } },
@@ -60,8 +57,6 @@ describe('Load assets mixin', () => {
           expect(wrapper.vm.ownedAssets).to.deep.equal([
             new Asset({ id: 'USD', owner: { id: 'SOME_ACCOUNT_ID' } }),
           ])
-
-          Api.api().get.restore()
         }
       )
     })
