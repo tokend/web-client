@@ -50,6 +50,8 @@ import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 
+import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
+
 export default {
   pages: [
     new DashboardPageModule(
@@ -343,6 +345,9 @@ export default {
                   path: '/settings/verification/general',
                   name: vueRoutes.verificationGeneral.name,
                 },
+                submodules: [
+                  new VerificationGeneralFormModule(),
+                ],
               }),
               new VerificationCorporatePageModule({
                 routerEntry: {
