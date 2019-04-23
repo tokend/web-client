@@ -1,8 +1,10 @@
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { COUNTRIES } from '../countries'
 import { types } from './types'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 const state = {
-  formData: {
+  form: {
     personal: {
       firstName: '',
       lastName: '',
@@ -30,93 +32,138 @@ const state = {
 const mutations = {
   // personal
   [types.SET_FIRST_NAME] (state, firstName) {
-    state.formData.personal.firstName = firstName
+    state.form.personal.firstName = firstName
   },
   [types.SET_LAST_NAME] (state, lastName) {
-    state.formData.personal.lastName = lastName
+    state.form.personal.lastName = lastName
   },
   [types.SET_DATE_OF_BIRTH] (state, dateOfBirth) {
-    state.formData.personal.dateOfBirth = dateOfBirth
+    state.form.personal.dateOfBirth = dateOfBirth
   },
 
   // address
-  [types.SET_ADDRESS_LINE_1] (state, line1) {
-    state.formData.address.line1 = line1
+  [types.SET_LINE_1] (state, line1) {
+    state.form.address.line1 = line1
   },
-  [types.SET_ADDRESS_LINE_2] (state, line2) {
-    state.formData.address.line2 = line2
+  [types.SET_LINE_2] (state, line2) {
+    state.form.address.line2 = line2
   },
-  [types.SET_ADDRESS_CITY] (state, city) {
-    state.formData.address.city = city
+  [types.SET_CITY] (state, city) {
+    state.form.address.city = city
   },
-  [types.SET_ADDRESS_COUNTRY] (state, country) {
-    state.formData.address.country = country
+  [types.SET_COUNTRY] (state, country) {
+    state.form.address.country = country
   },
-  [types.SET_ADDRESS_STATE] (state, s) {
-    state.formData.address.state = s
+  [types.SET_STATE] (state, s) {
+    state.form.address.state = s
   },
-  [types.SET_ADDRESS_POSTAL_CODE] (state, code) {
-    state.formData.address.postalCode = code
+  [types.SET_POSTAL_CODE] (state, code) {
+    state.form.address.postalCode = code
   },
 
   // document fields
   [types.SET_ID_DOCUMENT_TYPE] (state, type) {
-    state.formData.documents.idDocumentType = type
+    state.form.documents.idDocumentType = type
   },
 
   // documents
-  [types.SET_DOCUMENT_AVATAR] (state, doc) {
-    state.formData.documents.avatar = doc
+  [types.SET_AVATAR] (state, doc) {
+    state.form.documents.avatar = doc
   },
-  [types.SET_DOCUMENT_SELFIE] (state, doc) {
-    state.formData.documents.selfie = doc
+  [types.SET_SELFIE] (state, doc) {
+    state.form.documents.selfie = doc
   },
-  [types.SET_DOCUMENT_ID_DOC_FACE] (state, doc) {
-    state.formData.documents.idDocument.face = doc
+  [types.SET_ID_DOCUMENT_FACE] (state, doc) {
+    state.form.documents.idDocument.face = doc
   },
-  [types.SET_DOCUMENT_ID_DOC_BACK] (state, doc) {
-    state.formData.documents.idDocument.back = doc
+  [types.SET_ID_DOCUMENT_BACK] (state, doc) {
+    state.form.documents.idDocument.back = doc
   },
 }
 
-const actions = {}
+const actions = {
+  [types.POPULATE_FORM] ({ commit }, blobData) {
+    commit(types.SET_FIRST_NAME, blobData.first_name)
+    commit(types.SET_LAST_NAME, blobData.last_name)
+    commit(types.SET_DATE_OF_BIRTH, blobData.date_of_birth)
+
+    commit(types.SET_LINE_1, blobData.address.line_1)
+    commit(types.SET_LINE_2, blobData.address.line_2)
+    commit(types.SET_CITY, blobData.address.city)
+    commit(types.SET_COUNTRY, {
+      code: blobData.address.country,
+      translation: COUNTRIES[blobData.address.country],
+    })
+    commit(types.SET_STATE, blobData.address.state)
+    commit(types.SET_POSTAL_CODE, blobData.address.postal_code)
+
+    commit(types.SET_SELFIE, new DocumentContainer(
+      blobData.documents[DOCUMENT_TYPES.kycSelfie]
+    ))
+
+    const idDocument = blobData.documents[DOCUMENT_TYPES.kycIdDocument]
+
+    commit(types.SET_ID_DOCUMENT_TYPE, new DocumentContainer(idDocument.type))
+    commit(types.SET_ID_DOCUMENT_FACE,
+      new DocumentContainer(idDocument.face)
+    )
+    if (idDocument.back) {
+      commit(types.SET_ID_DOCUMENT_BACK,
+        new DocumentContainer(idDocument.back)
+      )
+    }
+
+    if (blobData.documents[DOCUMENT_TYPES.kycAvatar]) {
+      commit(types.SET_AVATAR, new DocumentContainer(
+        blobData.documents[DOCUMENT_TYPES.kycAvatar]
+      ))
+    }
+  },
+}
 
 const getters = {
   [types.blobData]: (state) => {
-    const formData = state.formData
+    const form = state.form
 
     const blobData = {
-      first_name: formData.personal.firstName,
-      last_name: formData.personal.lastName,
-      date_of_birth: formData.personal.dateOfBirth,
+      first_name: form.personal.firstName,
+      last_name: form.personal.lastName,
+      date_of_birth: form.personal.dateOfBirth,
       address: {
-        line_1: formData.address.line1,
-        line_2: formData.address.line2,
-        city: formData.address.city,
-        country: formData.address.country.code,
-        state: formData.address.state,
-        postal_code: formData.address.postalCode,
+        line_1: form.address.line1,
+        line_2: form.address.line2,
+        city: form.address.city,
+        country: form.address.country.code,
+        state: form.address.state,
+        postal_code: form.address.postalCode,
       },
       documents: {
         [DOCUMENT_TYPES.kycIdDocument]: {
-          type: formData.documents.idDocumentType.value,
-          face: formData.documents.idDocumentFace.getDetailsForSave(),
+          type: form.documents.idDocumentType.value,
         },
-        [DOCUMENT_TYPES.kycSelfie]:
-          formData.documents.selfie.getDetailsForSave(),
       },
     }
 
+    if (form.documents.idDocumentFace) {
+      blobData.documents[DOCUMENT_TYPES.kycIdDocument].face =
+        form.documents.idDocumentFace.getDetailsForSave()
+    }
+
+    if (form.documents.selfie) {
+      blobData.documents[DOCUMENT_TYPES.kycSelfie] =
+        form.documents.selfie.getDetailsForSave()
+    }
+
     // avatar is not required, it may not exist in old kyc data
-    if (formData.documents.avatar) {
+    if (form.documents.avatar) {
       blobData.documents[DOCUMENT_TYPES.kycAvatar] =
-        formData.documents.avatar.getDetailsForSave()
+        form.documents.avatar.getDetailsForSave()
     }
 
     // back side of documents is required only for specific document types
-    if (formData.documents.idDocument.back) {
+    if (form.documents.idDocumentBack) {
       blobData.documents[DOCUMENT_TYPES.kycIdDocument].back =
-        formData.documents.idDocument.back.getDetailsForSave()
+        form.documents.idDocumentBack.getDetailsForSave()
     }
 
     return blobData

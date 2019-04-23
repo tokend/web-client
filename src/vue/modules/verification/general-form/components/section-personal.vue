@@ -66,18 +66,18 @@ export default {
   }),
   computed: {
     ...mapState('verification-general-form', {
-      formData: state => state.formData,
+      form: state => state.form,
     }),
     firstName: {
-      get () { return this.formData.personal.firstName },
+      get () { return this.form.personal.firstName },
       set (v) { this.setFirstName(v) },
     },
     lastName: {
-      get () { return this.formData.personal.lastName },
+      get () { return this.form.personal.lastName },
       set (v) { this.setLastName(v) },
     },
     dateOfBirth: {
-      get () { return this.formData.personal.dateOfBirth },
+      get () { return this.form.personal.dateOfBirth },
       set (v) { this.setDateOfBirth(v) },
     },
   },

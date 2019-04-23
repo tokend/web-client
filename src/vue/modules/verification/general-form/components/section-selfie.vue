@@ -63,10 +63,10 @@ export default {
   },
   computed: {
     ...mapState('verification-general-form', {
-      formData: state => state.formData,
+      form: state => state.form,
     }),
     selfie: {
-      get () { return this.formData.documents.selfie },
+      get () { return this.form.documents.selfie },
       set (v) { this.setSelfie(v) },
     },
     verificationCode () {
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     ...mapMutations('verification-general-form', {
-      setSelfie: types.SET_DOCUMENT_SELFIE,
+      setSelfie: types.SET_SELFIE,
     }),
   },
 }

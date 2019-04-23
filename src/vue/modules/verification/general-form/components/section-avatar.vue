@@ -36,16 +36,16 @@ export default {
   }),
   computed: {
     ...mapState('verification-general-form', {
-      formData: state => state.formData,
+      form: state => state.form,
     }),
     avatar: {
-      get () { return this.formData.documents.avatar },
+      get () { return this.form.documents.avatar },
       set (v) { this.setAvatar(v) },
     },
   },
   methods: {
     ...mapMutations('verification-general-form', {
-      setAvatar: types.SET_DOCUMENT_AVATAR,
+      setAvatar: types.SET_AVATAR,
     }),
   },
 }

@@ -99,30 +99,30 @@ export default {
   }),
   computed: {
     ...mapState('verification-general-form', {
-      formData: state => state.formData,
+      form: state => state.form,
     }),
     line1: {
-      get () { return this.formData.address.line1 },
+      get () { return this.form.address.line1 },
       set (v) { this.setLine1(v) },
     },
     line2: {
-      get () { return this.formData.address.line2 },
+      get () { return this.form.address.line2 },
       set (v) { this.setLine2(v) },
     },
     city: {
-      get () { return this.formData.address.city },
+      get () { return this.form.address.city },
       set (v) { this.setCity(v) },
     },
     state: {
-      get () { return this.formData.address.state },
+      get () { return this.form.address.state },
       set (v) { this.setState(v) },
     },
     country: {
-      get () { return this.formData.address.country },
+      get () { return this.form.address.country },
       set (v) { this.setCountry(v) },
     },
     postalCode: {
-      get () { return this.formData.address.postalCode },
+      get () { return this.form.address.postalCode },
       set (v) { this.setPostalCode(v) },
     },
   },
@@ -136,12 +136,12 @@ export default {
   },
   methods: {
     ...mapMutations('verification-general-form', {
-      setLine1: types.SET_ADDRESS_LINE_1,
-      setLine2: types.SET_ADDRESS_LINE_2,
-      setCity: types.SET_ADDRESS_CITY,
-      setState: types.SET_ADDRESS_STATE,
-      setCountry: types.SET_ADDRESS_COUNTRY,
-      setPostalCode: types.SET_ADDRESS_POSTAL_CODE,
+      setLine1: types.SET_LINE_1,
+      setLine2: types.SET_LINE_2,
+      setCity: types.SET_CITY,
+      setState: types.SET_STATE,
+      setCountry: types.SET_COUNTRY,
+      setPostalCode: types.SET_POSTAL_CODE,
     }),
   },
 }

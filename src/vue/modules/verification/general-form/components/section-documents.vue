@@ -43,26 +43,9 @@ import { mapMutations, mapState } from 'vuex'
 import { types } from '../store/types'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { documentContainer, required } from '@/validators'
+import { ID_DOCUMENT_TYPES } from '../id-document-types'
 
-const ID_DOCUMENT_TYPES = [ // TODO: should it be placed here?
-  {
-    value: 'passport',
-    labelTranslationId: 'general-form.passport-lbl',
-  },
-  {
-    value: 'identity_card',
-    labelTranslationId: 'general-form.identity-card-lbl',
-  },
-  {
-    value: 'driving_license',
-    labelTranslationId: 'general-form.driving-license-lbl',
-  },
-  {
-    value: 'residence_permit',
-    labelTranslationId: 'general-form.residence-permit-lbl',
-  },
-]
+import { documentContainer, required } from '@/validators'
 
 export default {
   name: 'section-documents',
@@ -73,20 +56,20 @@ export default {
   }),
   computed: {
     ...mapState('verification-general-form', {
-      formData: state => state.formData,
+      form: state => state.form,
     }),
 
     idDocumentType: {
-      get () { return this.formData.documents.idDocumentType },
+      get () { return this.form.documents.idDocumentType },
       set (v) { this.setIdDocumentType(v) },
     },
 
     idDocumentFace: {
-      get () { return this.formData.documents.idDocumentFace },
+      get () { return this.form.documents.idDocumentFace },
       set (v) { this.setIdDocumentFace(v) },
     },
     idDocumentBack: {
-      get () { return this.formData.documents.idDocumentBack },
+      get () { return this.form.documents.idDocumentBack },
       set (v) { this.setIdDocumentBack(v) },
     },
   },
@@ -97,8 +80,8 @@ export default {
   methods: {
     ...mapMutations('verification-general-form', {
       setIdDocumentType: types.SET_ID_DOCUMENT_TYPE,
-      setIdDocumentFace: types.SET_DOCUMENT_ID_DOC_FACE,
-      setIdDocumentBack: types.SET_DOCUMENT_ID_DOC_BACK,
+      setIdDocumentFace: types.SET_ID_DOCUMENT_FACE,
+      setIdDocumentBack: types.SET_ID_DOCUMENT_BACK,
     }),
   },
 }
