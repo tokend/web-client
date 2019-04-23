@@ -9,7 +9,7 @@ import { base } from '@tokend/js-sdk'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
-import { MockHelper, MockWrapper } from '@/test'
+import { MockHelper } from '@/test'
 
 import { Bus } from '@/js/helpers/event-bus'
 
@@ -17,6 +17,7 @@ import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -110,17 +111,10 @@ describe('IssuanceForm', () => {
     let wrapper
     let mockHelper
 
-    let accountResource
-    let transactionsResource
-
     let store
 
     beforeEach(() => {
       mockHelper = new MockHelper()
-
-      accountResource = mockHelper.getHorizonResourcePrototype('account')
-      transactionsResource =
-        mockHelper.getHorizonResourcePrototype('transactions')
 
       const getters = accountModule.getters
       sinon.stub(getters, vuexTypes.isAccountCorporate).returns(true)
@@ -184,14 +178,13 @@ describe('IssuanceForm', () => {
         let loadAssetsSpy
 
         beforeEach(() => {
-          getBalanceSpy = sinon.stub(wrapper.vm, 'getReceiverBalance')
+          getBalanceSpy = sinon.stub(wrapper.vm, 'getReceiverBalanceId')
             .resolves({})
           operationBuilderSpy = sinon.stub(base.CreateIssuanceRequestBuilder,
             'createIssuanceRequest'
           ).returns({})
-          submitTransactionsSpy = sinon.stub(transactionsResource,
-            'submitOperations'
-          ).resolves()
+          submitTransactionsSpy = sinon.stub(Api.api, 'postOperations')
+            .resolves()
           loadAssetsSpy = sinon.stub(wrapper.vm, 'loadOwnedAssets').resolves()
         })
 
@@ -225,8 +218,8 @@ describe('IssuanceForm', () => {
         })
 
         it('shows the error if the receiver balance is not provided', async () => {
-          wrapper.vm.getReceiverBalance.restore()
-          sinon.stub(wrapper.vm, 'getReceiverBalance').resolves(null)
+          wrapper.vm.getReceiverBalanceId.restore()
+          sinon.stub(wrapper.vm, 'getReceiverBalanceId').resolves(null)
           const spy = sinon.stub(Bus, 'error')
 
           await wrapper.vm.submit()
@@ -235,10 +228,10 @@ describe('IssuanceForm', () => {
         })
       })
 
-      describe('getReceiverBalance', () => {
+      describe('getReceiverBalanceId', () => {
         const sampleBalanceData = {
-          asset: 'BTC',
-          balanceId: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV',
+          asset: { id: 'BTC' },
+          id: 'BCQOBAIMVNNH7RHZTD4OVSRUX2W575VUK4RUYELRHDPXSXJ5TMS2BHAV',
         }
         const receiver = sampleIssuanceData.form.receiver
         const asset = sampleIssuanceData.form.asset.code
@@ -249,12 +242,12 @@ describe('IssuanceForm', () => {
         beforeEach(() => {
           getAccountIdSpy = sinon.stub(wrapper.vm, 'getReceiverAccountId')
             .resolves(mockHelper.getMockWallet().accountId)
-          fetchBalancesSpy = sinon.stub(accountResource, 'getBalances')
-            .resolves(MockWrapper.makeHorizonResponse([sampleBalanceData]))
+          fetchBalancesSpy = sinon.stub(Api, 'get')
+            .resolves({ data: { balances: [sampleBalanceData] } })
         })
 
         it('loads receiver account ID', async () => {
-          await wrapper.vm.getReceiverBalance(receiver, asset)
+          await wrapper.vm.getReceiverBalanceId(receiver, asset)
 
           expect(getAccountIdSpy
             .withArgs(receiver)
@@ -263,18 +256,18 @@ describe('IssuanceForm', () => {
         })
 
         it('fetches receiver balances', async () => {
-          await wrapper.vm.getReceiverBalance(receiver, asset)
+          await wrapper.vm.getReceiverBalanceId(receiver, asset)
 
-          expect(fetchBalancesSpy
-            .withArgs(mockHelper.getMockWallet().accountId)
-            .calledOnce
-          ).to.be.true
+          expect(fetchBalancesSpy.withArgs(
+            `/v3/accounts/${mockHelper.getMockWallet().accountId}`,
+            { include: ['balances'] }
+          )).to.have.been.calledOnce
         })
 
-        it('returns a balance for provided asset', async () => {
-          const result = await wrapper.vm.getReceiverBalance(receiver, asset)
+        it('returns a balance ID for provided asset', async () => {
+          const result = await wrapper.vm.getReceiverBalanceId(receiver, asset)
 
-          expect(result).to.deep.equal(sampleBalanceData)
+          expect(result).to.deep.equal(sampleBalanceData.id)
         })
       })
 

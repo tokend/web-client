@@ -10,7 +10,7 @@ let apiInstance = null
 export class MockHelper {
   constructor () {
     Sdk.initSync('https://test.api.com')
-    Api.init({
+    Api.initSync({
       horizonURL: 'https://test.api.com',
     })
 

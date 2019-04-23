@@ -15,6 +15,7 @@ import { FileUtil } from '@/js/utils/file.util'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
+import { Api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -38,13 +39,10 @@ describe('PreIssuanceForm component', () => {
 
   let wrapper
   let mockHelper
-  let transactionsResource
   let store
 
   beforeEach(() => {
     mockHelper = new MockHelper()
-    transactionsResource =
-      mockHelper.getHorizonResourcePrototype('transactions')
 
     const getters = accountModule.getters
     sinon.stub(getters, vuexTypes.account)
@@ -116,9 +114,8 @@ describe('PreIssuanceForm component', () => {
         operationBuilderSpy = sinon.stub(base.PreIssuanceRequestOpBuilder,
           'createPreIssuanceRequestOp'
         ).returns({})
-        submitTransactionsSpy = sinon.stub(transactionsResource,
-          'submitOperations'
-        ).resolves()
+        submitTransactionsSpy = sinon.stub(Api.api, 'postOperations')
+          .resolves()
       })
 
       it('creates pre-issuance operation', async () => {

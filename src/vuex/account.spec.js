@@ -5,6 +5,7 @@ import { vuexTypes } from './types'
 import accountJSON from '../test/mocks/account'
 import balancesDetailsJSON from '../test/mocks/account-balances-details'
 import { AssetRecord } from '../js/records/entities/asset.record'
+import { Api } from '@/api'
 
 describe('account.module', () => {
   afterEach(() => {
@@ -74,16 +75,15 @@ describe('account.module', () => {
 
     it('LOAD_ACCOUNT_BALANCES_DETAILS commits proper set of mutations',
       async () => {
-        mockHelper.mockHorizonMethod(
-          'account',
-          'getDetails',
-          balancesDetailsJSON
-        )
+        sinon.stub(Api, 'getWithSignature').resolves({
+          data: { balances: balancesDetailsJSON },
+        })
         const type = vuexTypes.SET_ACCOUNT_BALANCES_DETAILS
-        const payload = MockWrapper.makeHorizonData(balancesDetailsJSON)
-          .map(balance => {
-            balance.assetDetails = new AssetRecord(balance.assetDetails)
-            return balance
+        const payload = balancesDetailsJSON
+          .map(item => {
+            item.assetDetails = new AssetRecord(item.asset)
+            item.asset = item.assetDetails.code
+            return item
           })
           .sort((a, b) => b.convertedBalance - a.convertedBalance)
         const expectedMutations = {
