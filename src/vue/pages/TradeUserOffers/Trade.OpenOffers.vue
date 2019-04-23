@@ -89,7 +89,7 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import UpdateTradeOfferForm from '@/vue/forms/MarketOrders/UpdateTradeOfferForm'
+import UpdateTradeOfferForm from '@/vue/forms/market-orders/UpdateTradeOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
