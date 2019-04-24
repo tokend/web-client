@@ -1,11 +1,11 @@
-import { PAYMENT_STATES } from '../const/payment-states'
+import { PAYMENT_STATES } from '../const/payment-states.const'
 
 export class Invoice {
   constructor ({ record, isConfirmed }) {
     this.subject = record.subject
     this.totalPrice = record.totalPrice
 
-    this.asset = record.quoteAsset
+    this.asset = record.asset
     this.reference = record.reference
     this.system = record.system
 

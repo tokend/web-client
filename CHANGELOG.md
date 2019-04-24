@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Changed
 - More cutier animation for init loader 
+- Now selecting invoice point by loyalty account number (Loyalty)
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
