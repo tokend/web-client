@@ -6,7 +6,7 @@ export class VerificationGeneralPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponentFn: _ => import('@/vue/pages/VerificationGeneral2'),
+      importComponentFn: _ => import('@/vue/pages/VerificationGeneral'),
       allowedSubmodules: [
         VerificationGeneralFormModule,
       ],
