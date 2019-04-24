@@ -27,7 +27,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 // import * as d3 from 'd3'
 import moment from 'moment'
-import { chunk } from 'lodash'
 const d3 = Object.assign(
   {},
   d3Array,
@@ -64,15 +63,6 @@ export default {
         time: moment(item.timestamp).toDate(),
         value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
-    },
-    itemsPerTick () {
-      const ticksCount = {
-        year: 200,
-        month: 200,
-        day: 200,
-        hour: 200,
-      }
-      return Math.ceil(this.data.length / ticksCount[this.scale])
     },
     defaultAsset () {
       return this.currency || this.defaultQuoteAsset
@@ -130,17 +120,7 @@ export default {
     render () {
       this.clear()
       // Setup the data
-      const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
-        const defaultDate = item.reduce((sum, current) => {
-          sum += Date.parse(current.time)
-          return sum
-        }, 0)
-
-        return {
-          time: new Date(defaultDate / item.length),
-          value: Math.max(...item.map(i => i.value)),
-        }
-      })
+      const data = this.normalizedData
       let { max, min } = this.getMaxAndMin(data)
       const tickValues = []
       if (max === min) {
