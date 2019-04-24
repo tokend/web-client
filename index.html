@@ -22,6 +22,7 @@
       width: 80%;
       max-width: 320px;
     }
+
     .app__init-left-face-logo,
     .app__init-top-face-logo,
     .app__init-right-face-logo,
@@ -30,39 +31,31 @@
       margin: 0 auto;
       width: 100%;
     }
-    .app__init-left-face-logo {
-      animation: init-left-face-logo .6s ease-out infinite;
+
+    .app__init-left-face-logo,
+    .app__init-top-face-logo,
+    .app__init-right-face-logo {
+      animation: .6s app__init-blink infinite;
     }
     .app__init-top-face-logo {
-      animation: init-top-face-logo .6s ease-out infinite;
+      opacity: 0;
+      animation-delay: .18s;
     }
     .app__init-right-face-logo {
-      animation: init-right-face-logo .6s ease-out infinite;
+      opacity: 0;
+      animation-delay: .36s;
     }
     .app__init-logo-text {
       position: absolute;
       margin: 0 auto;
       width: 100%;
     }
-    @keyframes init-left-face-logo {
-      0% { opacity: 0 }
-      33% { opacity: 1 }
-      66% { opacity: 0 }
-      100% { opacity: 0 }
-    }
-    @keyframes init-top-face-logo {
-      0% { opacity: 0 }
-      33% { opacity: 0 }
-      66% { opacity: 1 }
-      100% { opacity: 0 }
-    }
-    @keyframes init-right-face-logo {
-      0% { opacity: 1 }
-      33% { opacity: 0 }
-      66% { opacity: 0 }
-      100% { opacity: 1 }
-    }
 
+    @keyframes app__init-blink {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
   </style>
 
   <link href="/static/favicon-64.png" rel="icon" type="image/x-icon">
@@ -72,9 +65,9 @@
 </head>
 <body>
   <script type="text/javascript" src="/static/env.js"></script>
-  <div>
+  <div id="app">
     <div id="noscript" class="app__init">
-      <div>
+      <div class="app__init-logo">
         <img class="app__init-logo-text" src="/static/logo-text.svg">
         <img class="app__init-left-face-logo" src="/static/left-face-of-logo.svg">
         <img class="app__init-top-face-logo" src="/static/top-face-of-logo.svg">
