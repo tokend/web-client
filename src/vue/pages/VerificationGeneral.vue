@@ -7,6 +7,9 @@
       :blob-id="isFormPopulatable ? kycLatestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
       :general-role-id="String(kvEntryGeneralRoleId)"
+      :us-verified-role-id="String(kvEntryUsVerifiedRoleId)"
+      :us-accredited-role-id="String(kvEntryUsAccreditedRoleId)"
+
       ref="form-module-importer"
       @submit="onFormSubmit"
     />
@@ -45,6 +48,9 @@ export default {
       kycLatestBlobId: vuexTypes.kycLatestBlobId,
 
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+      kvEntryUsVerifiedRoleId: vuexTypes.kvEntryUsVerifiedRoleId,
+      kvEntryUsAccreditedRoleId: vuexTypes.kvEntryUsAccreditedRoleId,
+
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,

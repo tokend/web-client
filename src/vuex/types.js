@@ -8,6 +8,9 @@ const mutations = {
   SET_KV_ENTRY_CORPORATE_ROLE_ID: 'SET_KV_ENTRY_CORPORATE_ROLE_ID',
   SET_KV_ENTRY_UNVERIFIED_ROLE_ID: 'SET_KV_ENTRY_UNVERIFIED_ROLE_ID',
   SET_KV_ENTRY_BLOCKED_ROLE_ID: 'SET_KV_ENTRY_BLOCKED_ROLE_ID',
+  SET_KV_ENTRY_US_VERIFIED_ROLE_ID: 'SET_KV_ENTRY_US_VERIFIED_ROLE_ID',
+  SET_KV_ENTRY_US_ACCREDITED_ROLE_ID: 'SET_KV_ENTRY_US_ACCREDITED_ROLE_ID',
+
   SET_KV_KYC_REQUIRED: 'SET_KV_KYC_REQUIRED',
   SET_DEFAULT_QUOTE_ASSET: 'SET_DEFAULT_QUOTE_ASSET',
 
@@ -62,6 +65,8 @@ const getters = {
   kvEntryCorporateRoleId: 'kvEntryCorporateRoleId',
   kvEntryUnverifiedRoleId: 'kvEntryUnverifiedRoleId',
   kvEntryBlockedRoleId: 'kvEntryBlockedRoleId',
+  kvEntryUsVerifiedRoleId: 'kvEntryUsVerifiedRoleId',
+  kvEntryUsAccreditedRoleId: 'kvEntryUsAccreditedRoleId',
   kvAssetTypeKycRequired: 'kvAssetTypeKycRequired',
   defaultQuoteAsset: 'defaultQuoteAsset',
 

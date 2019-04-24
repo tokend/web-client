@@ -90,7 +90,10 @@ export default {
 
     blobId: { type: String, default: '' },
     requestId: { type: String, required: true },
+
     generalRoleId: { type: String, required: true },
+    usVerifiedRoleId: { type: String, required: true },
+    usAccreditedRoleId: { type: String, required: true },
   },
   data: _ => ({
     isInitialized: false,
@@ -99,6 +102,9 @@ export default {
     ...mapGetters('verification-general-form', {
       blobData: types.blobData,
     }),
+    accountRoleToSet () {
+      return this.generalRoleId
+    },
   },
   async created () {
     initApi(this.wallet, this.config)
@@ -148,7 +154,7 @@ export default {
         .createChangeRoleRequest({
           requestID: this.requestId,
           destinationAccount: this.wallet.accountId,
-          accountRoleToSet: this.generalRoleId,
+          accountRoleToSet: this.accountRoleToSet,
           creatorDetails: { blob_id: blobId },
         })
 
