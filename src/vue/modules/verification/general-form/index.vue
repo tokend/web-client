@@ -66,6 +66,10 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Wallet, base } from '@tokend/js-sdk'
 import { api, initApi } from './_api'
 
+const EVENTS = {
+  submit: 'submit',
+}
+
 export default {
   name: 'verification-general-form',
   components: {
@@ -100,6 +104,7 @@ export default {
     initApi(this.wallet, this.config)
 
     if (this.blobId) {
+      // TODO: handle incompatible requests
       this.populateForm(await this.getBlobData(this.blobId))
     }
 
@@ -131,10 +136,12 @@ export default {
         await this.uploadDocuments()
         const blobId = await this.createBlob(this.wallet.accountId)
         await this.createRequest(blobId)
+        this.enableForm()
+        this.$emit(EVENTS.submit)
       } catch (e) {
+        this.enableForm()
         ErrorHandler.process(e)
       }
-      this.enableForm()
     },
     async createRequest (blobId) {
       const operation = base.CreateChangeRoleRequestBuilder

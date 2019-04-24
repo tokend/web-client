@@ -524,7 +524,8 @@
       "file-type-note": "image/pdf (Max 5mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
-      "photo-lbl": "Selfie with verification code"
+      "photo-lbl": "Selfie with verification code",
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
     },
     "verification-form": {
       "account-information-lbl": "Account information",

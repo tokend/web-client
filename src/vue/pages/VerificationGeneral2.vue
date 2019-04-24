@@ -7,6 +7,8 @@
       :blob-id="isFormPopulatable ? kycLatestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
       :general-role-id="String(kvEntryGeneralRoleId)"
+      ref="form-module-importer"
+      @submit="onFormSubmit"
     />
   </div>
 </template>
@@ -15,10 +17,11 @@
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+import { Bus } from '@/js/helpers/event-bus'
 
 import config from '@/config'
 
@@ -60,6 +63,37 @@ export default {
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
         : this.accountRoleToSet === this.kvEntryGeneralRoleId
     },
+  },
+  methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC,
+    }),
+    async onFormSubmit () {
+      const formRef = this.$refs['form-module-importer'].$refs['component']
+      formRef.disableForm()
+      do {
+        await this.loadKyc()
+        await this.delay(3000)
+      } while (this.kycState !== REQUEST_STATES_STR.pending)
+      // TODO: handle auto-approve
+      Bus.success('general-form.request-submitted-msg')
+      this.scrollTop()
+      formRef.enableForm()
+    },
+    scrollTop () {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    },
+    delay (ms) { // TODO: should not be here
+      /* eslint-disable-next-line promise/avoid-new */
+      return new Promise((resolve) => {
+        setTimeout(resolve, ms)
+      })
+    },
+
   },
 }
 </script>
