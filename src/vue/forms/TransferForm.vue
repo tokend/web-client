@@ -281,8 +281,8 @@ import {
   emailOrAccountId,
   amount,
   noMoreThanAvailableOnBalance,
+  maxDecimalDigitsCount,
 } from '@validators'
-
 const VIEW_MODES = {
   submit: 'submit',
   confirm: 'confirm',
@@ -309,6 +309,7 @@ export default {
       subject: '',
       isPaidForRecipient: false,
     },
+    assetDigitsCount: 0,
     view: {
       mode: VIEW_MODES.submit,
       opts: {},
@@ -340,6 +341,10 @@ export default {
           amount,
           noMoreThanAvailableOnBalance:
             noMoreThanAvailableOnBalance(this.balance.balance),
+          maxDecimalDigitsCount:
+            maxDecimalDigitsCount(
+              this.assetDigitsCount
+            ),
         },
         recipient: { required, emailOrAccountId },
       },
@@ -349,6 +354,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
       vuexTypes.accountId,
+      'asset-explorer/assets',
     ]),
     userTransferableAssets () {
       return this.accountBalances.filter(i => i.assetDetails.isTransferable)
@@ -379,6 +385,12 @@ export default {
     try {
       await this.loadCurrentBalances()
       this.setAsset()
+      const asset = this.assets.find(asset => {
+        if (asset.code === this.assetToTransfer) {
+          return asset
+        }
+      })
+      this.assetDigitsCount = asset.trailingDigitsCount
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true

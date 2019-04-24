@@ -60,7 +60,6 @@ export const softCapMoreThanHardCap = (min, hardCap) => value => {
 export const hardCapLessThanSoftCap = (softCap, max) => value => {
   return amountRange(softCap, max)(value)
 }
-
 export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance >= +value
 }

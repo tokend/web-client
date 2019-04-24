@@ -84,6 +84,7 @@
       </template>
       <transfer-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+        :asset-to-transfer="asset.code"
       />
     </drawer>
   </div>
