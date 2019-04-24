@@ -1,4 +1,6 @@
 const mutations = {
+  SET_IS_ACCREDITED: 'SET_IS_ACCREDITED',
+
   SET_FIRST_NAME: 'SET_FIRST_NAME',
   SET_LAST_NAME: 'SET_LAST_NAME',
   SET_DATE_OF_BIRTH: 'SET_DATE_OF_BIRTH',
@@ -16,6 +18,7 @@ const mutations = {
   SET_SELFIE: 'SET_SELFIE',
   SET_ID_DOCUMENT_FACE: 'SET_ID_DOCUMENT_FACE',
   SET_ID_DOCUMENT_BACK: 'SET_ID_DOCUMENT_BACK',
+  SET_PROOF_OF_INVESTOR: 'SET_PROOF_OF_INVESTOR',
 }
 
 const actions = {
@@ -27,7 +30,9 @@ const actions = {
 }
 
 const getters = {
+  country: 'country',
   blobData: 'blobData',
+  isAccredited: 'isAccredited',
 }
 
 export const types = {

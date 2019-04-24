@@ -525,7 +525,12 @@
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
-      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review."
+      "request-submitted-msg": "Your request has been submitted successfully. Please wait for review.",
+      "usa-warning-msg": "Due to US government regulations, some opportunities are only available to accredited investors",
+      "i-am-accredited-lbl": "I am an accredited investor",
+      "document-poi-lbl": "Proof document",
+      "country-details-lbl": "Country details",
+      "usa-accredited-exp-msg": "For us to be able to verify your status, please provide the document proof of being an accredited investor"
     },
     "verification-form": {
       "account-information-lbl": "Account information",

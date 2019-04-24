@@ -9,6 +9,7 @@ import { api } from '../_api'
 
 const state = {
   form: {
+    isAccredited: false,
     personal: {
       firstName: '',
       lastName: '',
@@ -29,11 +30,16 @@ const state = {
       selfie: null,
       idDocumentFace: null,
       idDocumentBack: null,
+      proofOfInvestor: null,
     },
   },
 }
 
 const mutations = {
+  [types.SET_IS_ACCREDITED] (state, isAccredited) {
+    state.form.isAccredited = isAccredited
+  },
+
   // personal
   [types.SET_FIRST_NAME] (state, firstName) {
     state.form.personal.firstName = firstName
@@ -82,6 +88,9 @@ const mutations = {
   },
   [types.SET_ID_DOCUMENT_BACK] (state, doc) {
     state.form.documents.idDocumentBack = doc
+  },
+  [types.SET_PROOF_OF_INVESTOR] (state, doc) {
+    state.form.documents.proofOfInvestor = doc
   },
 }
 
@@ -137,6 +146,13 @@ const actions = {
         type: DOCUMENT_TYPES.kycAvatar,
       }))
     }
+
+    if (blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor]) {
+      commit(types.SET_PROOF_OF_INVESTOR, new DocumentContainer({
+        ...blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor],
+        type: DOCUMENT_TYPES.kycProofOfInvestor,
+      }))
+    }
   },
 
   async [types.UPLOAD_DOCUMENTS] ({ state }) {
@@ -151,6 +167,7 @@ const actions = {
       upload(state.form.documents.selfie),
       upload(state.form.documents.idDocumentFace),
       upload(state.form.documents.idDocumentBack),
+      upload(state.form.documents.proofOfInvestor),
     ])
   },
 
@@ -176,7 +193,9 @@ const actions = {
 }
 
 const getters = {
-  [types.blobData]: (state) => {
+  [types.country]: state => state.form.country,
+  [types.isAccredited]: state => state.form.isAccredited,
+  [types.blobData]: state => {
     const form = state.form
 
     const blobData = {
@@ -199,6 +218,13 @@ const getters = {
       },
     }
 
+    if (form.isAccredited) {
+      if (form.kycProofOfInvestor) {
+        blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor] =
+          form.documents.proofOfInvestor.getDetailsForSave()
+      }
+    }
+
     if (form.documents.idDocumentFace) {
       blobData.documents[DOCUMENT_TYPES.kycIdDocument].face =
         form.documents.idDocumentFace.getDetailsForSave()
@@ -219,6 +245,12 @@ const getters = {
     if (form.documents.idDocumentBack) {
       blobData.documents[DOCUMENT_TYPES.kycIdDocument].back =
         form.documents.idDocumentBack.getDetailsForSave()
+    }
+
+    // is required only when applying for accredited investor role
+    if (form.documents.proofOfInvestor) {
+      blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor] =
+        form.documents.proofOfInvestor.getDetailsForSave()
     }
 
     return blobData

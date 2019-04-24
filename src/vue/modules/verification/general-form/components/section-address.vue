@@ -31,18 +31,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <select-field
-          v-model="country"
-          name="id-document-type"
-          key-as-value-text="translation"
-          :is-value-translatable="false"
-          :values="COUNTRIES"
-          :label="'general-form.address-country-lbl' | globalize"
-          @blur="touchField('country')"
-          :error-message="getFieldErrorMessage('country')"
-        />
-      </div>
-      <div class="app__form-field">
         <input-field
           white-autofill
           v-model="city"
@@ -53,9 +41,6 @@
           :disabled="isDisabled"
         />
       </div>
-    </div>
-
-    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
@@ -67,6 +52,9 @@
           :disabled="isDisabled"
         />
       </div>
+    </div>
+
+    <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           white-autofill
@@ -90,14 +78,9 @@ import { mapState, mapMutations } from 'vuex'
 import { types } from '../store/types'
 import { required } from '@validators'
 
-import { COUNTRIES } from '../countries'
-
 export default {
   name: 'section-address',
   mixins: [FormMixin, SectionMixin],
-  data: _ => ({
-    COUNTRIES,
-  }),
   computed: {
     ...mapState('verification-general-form', {
       form: state => state.form,
@@ -118,10 +101,6 @@ export default {
       get () { return this.form.address.state },
       set (v) { this.setState(v) },
     },
-    country: {
-      get () { return this.form.address.country },
-      set (v) { this.setCountry(v) },
-    },
     postalCode: {
       get () { return this.form.address.postalCode },
       set (v) { this.setPostalCode(v) },
@@ -132,7 +111,6 @@ export default {
     line2: { required },
     city: { required },
     state: { required },
-    country: { required },
     postalCode: { required },
   },
   methods: {
@@ -141,7 +119,6 @@ export default {
       setLine2: types.SET_LINE_2,
       setCity: types.SET_CITY,
       setState: types.SET_STATE,
-      setCountry: types.SET_COUNTRY,
       setPostalCode: types.SET_POSTAL_CODE,
     }),
   },
@@ -149,5 +126,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/styles';
+@import '../scss/styles';
 </style>

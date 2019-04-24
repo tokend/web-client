@@ -9,6 +9,10 @@
       class="app-form"
       @submit.prevent="isAllFormsValid() && showConfirmation()"
     >
+      <section-country
+        :is-disabled="formMixin.isDisabled"
+        ref="country-form"
+      />
       <section-personal
         :is-disabled="formMixin.isDisabled"
         ref="personal-form"
@@ -53,6 +57,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
+import SectionCountry from './components/section-country'
 import SectionPersonal from './components/section-personal'
 import SectionAddress from './components/section-address'
 import SectionDocuments from './components/section-documents'
@@ -73,6 +78,7 @@ const EVENTS = {
 export default {
   name: 'verification-general-form',
   components: {
+    SectionCountry,
     SectionPersonal,
     SectionAddress,
     SectionDocuments,
@@ -100,9 +106,20 @@ export default {
   }),
   computed: {
     ...mapGetters('verification-general-form', {
+      isAccredited: types.isAccredited,
       blobData: types.blobData,
+      country: types.country,
     }),
+    isUSResident () {
+      return ['UM', 'US', 'VI'].includes(this.country && this.country.code)
+    },
     accountRoleToSet () {
+      if (this.isUSResident) {
+        return this.isAccredited
+          ? this.usAccreditedRoleId
+          : this.usVerifiedRoleId
+      }
+
       return this.generalRoleId
     },
   },

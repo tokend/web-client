@@ -1,6 +1,6 @@
 <template>
-  <div class="verification-general-form__block">
-    <p class="verification-general-form__block-label">
+  <div class="verification-general-form__section">
+    <p class="verification-general-form__section-label">
       {{ 'general-form.photo-verification-lbl' | globalize }}
     </p>
 
