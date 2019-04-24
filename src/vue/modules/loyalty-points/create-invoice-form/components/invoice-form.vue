@@ -45,51 +45,50 @@
       <div class="app__form-field">
         <input-field
           white-autofill
-          type="number"
           v-model="form.accountNumber"
-          @blur="touchField('form.accountNumber')"
           name="create-invoice-account-number"
+          @blur="touchField('form.accountNumber')"
           :label="'create-invoice-form.account-number-lbl' | globalize"
           :error-message="getFieldErrorMessage('form.accountNumber')"
           :disabled="formMixin.isDisabled"
+          :maxlength="8"
         />
       </div>
     </div>
 
-    <div class="app__form-row">
-      <div class="app__form-field">
-        <select-field
-          :values="quoteAssets"
-          name="create-invoice-quote-asset"
-          :disabled="formMixin.isDisabled"
-          v-model="form.quoteAsset"
-          key-as-value-text="nameAndCode"
-          :label="'create-invoice-form.quote-asset-lbl' | globalize"
-        />
+    <template v-if="selectedQuoteAsset.code">
+      <div class="app__form-row">
+        <div class="app__form-field">
+          <input-field
+            :value="selectedQuoteAsset.nameAndCode"
+            :disabled="selectedQuoteAsset.code"
+            :label="'create-invoice-form.quote-asset-lbl' | globalize"
+          />
 
-        <vue-markdown
-          v-if="form.asset !== form.quoteAsset.code"
-          class="app__form-field-description invoice-form__price-per-point"
-          :source="'create-invoice-form.price-hint' | globalize({
-            baseAsset: form.asset,
-            amount: {
-              value: selectedAssetPair.price,
-              currency: form.quoteAsset.code
-            }
-          })"
-        />
+          <vue-markdown
+            v-if="form.asset !== selectedQuoteAsset.code"
+            class="app__form-field-description invoice-form__price-per-point"
+            :source="'create-invoice-form.price-hint' | globalize({
+              baseAsset: form.asset,
+              amount: {
+                value: selectedAssetPair.price,
+                currency: selectedQuoteAsset.code
+              }
+            })"
+          />
+        </div>
       </div>
-    </div>
 
-    <vue-markdown
-      class="invoice-form__total-price"
-      :source="'create-invoice-form.total-price' | globalize({
-        amount: {
-          value: totalPrice,
-          currency: form.quoteAsset.code
-        }
-      })"
-    />
+      <vue-markdown
+        class="invoice-form__total-price"
+        :source="'create-invoice-form.total-price' | globalize({
+          amount: {
+            value: totalPrice,
+            currency: selectedQuoteAsset.code
+          }
+        })"
+      />
+    </template>
 
     <div class="app__form-actions">
       <form-confirmation
@@ -104,7 +103,7 @@
         v-ripple
         type="submit"
         class="app__button-raised"
-        :disabled="formMixin.isDisabled"
+        :disabled="formMixin.isDisabled || !selectedQuoteAsset.code"
       >
         {{ 'create-invoice-form.create-invoice' | globalize }}
       </button>
@@ -131,6 +130,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
 
 import { Invoice } from '../wrappers/invoice'
+import { POINT_CODES } from '../const/point-codes.const'
 
 const EVENTS = {
   submit: 'submit',
@@ -165,7 +165,6 @@ export default {
       amount: '',
       subject: '',
       accountNumber: '',
-      quoteAsset: {},
       asset: '',
     },
     isFormSubmitting: false,
@@ -199,9 +198,21 @@ export default {
       return this.assetPairs.map(p => p.quoteAsset)
     },
 
+    quotePointCode () {
+      const pointNumber = this.form.accountNumber.slice(0, 4)
+      return POINT_CODES[pointNumber] || ''
+    },
+
+    selectedQuoteAsset () {
+      const quoteAsset = this.quoteAssets
+        .find(item => item.code === this.quotePointCode)
+
+      return quoteAsset || {}
+    },
+
     selectedAssetPair () {
       return this.assetPairs
-        .find(p => p.quoteAsset === this.form.quoteAsset)
+        .find(p => p.quoteAsset === this.selectedQuoteAsset)
     },
 
     totalPrice () {
@@ -212,9 +223,9 @@ export default {
     },
 
     systemIdentifier () {
-      return this.form.asset === this.form.quoteAsset.code
+      return this.form.asset === this.selectedQuoteAsset.code
         ? this.merchantSystem
-        : this.form.quoteAsset.system
+        : this.selectedQuoteAsset.system
     },
 
     loyaltyAccount () {
@@ -241,7 +252,8 @@ export default {
     invoiceRecord () {
       return new Invoice({
         record: {
-          ...this.form,
+          asset: this.selectedQuoteAsset,
+          subject: this.form.subject,
           totalPrice: this.totalPrice,
           reference: this.reference,
           system: this.systemIdentifier,
@@ -253,10 +265,6 @@ export default {
 
   created () {
     this.populateForm()
-
-    if (this.assetPairs.length) {
-      this.form.quoteAsset = this.assetPairs[0].quoteAsset
-    }
   },
 
   methods: {
@@ -308,7 +316,7 @@ export default {
         amount: this.totalPrice,
         feeData: EMPTY_FEE,
         subject: this.transactionSubject,
-        asset: this.form.quoteAsset.code,
+        asset: this.selectedQuoteAsset.code,
         reference: this.reference,
       })
 
@@ -322,7 +330,7 @@ export default {
       })
 
       const balance = account.balances
-        .find(b => b.asset.id === this.form.quoteAsset.code)
+        .find(b => b.asset.id === this.selectedQuoteAsset.code)
 
       return balance ? balance.id : ''
     },
