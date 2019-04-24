@@ -5,8 +5,6 @@ import { base } from '@tokend/js-sdk'
 import { types } from './types'
 import { api } from '../_api'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   requests: [],
@@ -26,7 +24,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_withdraw_requests`, {
+    return api().getWithSignature(`/v3/create_withdraw_requests`, {
       page: {
         order: 'desc',
       },
