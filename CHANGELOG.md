@@ -35,6 +35,7 @@ for further information about branching and tagging conventions.
   user was logged in but the session still not expired
 - Fixed a bug with absent preloading of account balance in Coinpayments deposit
   form
+- Make `<email-getter>` be inlined flex
 
 ### Experimental features changes
 #### Added
