@@ -1,7 +1,11 @@
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { ID_DOCUMENT_TYPES } from '../id-document-types'
 import { COUNTRIES } from '../countries'
+import { BLOB_TYPES } from '@tokend/js-sdk'
 import { types } from './types'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { api } from '../_api'
 
 const state = {
   form: {
@@ -15,11 +19,11 @@ const state = {
       line2: '',
       city: '',
       state: '',
-      country: '', // // { code, translation }
+      country: '', // { code, translation }
       postalCode: '',
     },
     documents: {
-      idDocumentType: {}, // { value, translationId }
+      idDocumentType: '', // { value, translationId }
 
       avatar: null,
       selfie: null,
@@ -74,14 +78,20 @@ const mutations = {
     state.form.documents.selfie = doc
   },
   [types.SET_ID_DOCUMENT_FACE] (state, doc) {
-    state.form.documents.idDocument.face = doc
+    state.form.documents.idDocumentFace = doc
   },
   [types.SET_ID_DOCUMENT_BACK] (state, doc) {
-    state.form.documents.idDocument.back = doc
+    state.form.documents.idDocumentBack = doc
   },
 }
 
 const actions = {
+  async [types.GET_BLOB_DATA] (v, blobId) {
+    const { data } = await api().getWithSignature(`/blobs/${blobId}`)
+
+    return JSON.parse(data.value)
+  },
+
   [types.POPULATE_FORM] ({ commit }, blobData) {
     commit(types.SET_FIRST_NAME, blobData.first_name)
     commit(types.SET_LAST_NAME, blobData.last_name)
@@ -90,34 +100,78 @@ const actions = {
     commit(types.SET_LINE_1, blobData.address.line_1)
     commit(types.SET_LINE_2, blobData.address.line_2)
     commit(types.SET_CITY, blobData.address.city)
-    commit(types.SET_COUNTRY, {
-      code: blobData.address.country,
-      translation: COUNTRIES[blobData.address.country],
-    })
+    commit(types.SET_COUNTRY,
+      COUNTRIES.find(c => c.code === blobData.address.country)
+    )
     commit(types.SET_STATE, blobData.address.state)
     commit(types.SET_POSTAL_CODE, blobData.address.postal_code)
 
-    commit(types.SET_SELFIE, new DocumentContainer(
-      blobData.documents[DOCUMENT_TYPES.kycSelfie]
-    ))
+    commit(types.SET_SELFIE, new DocumentContainer({
+      ...blobData.documents[DOCUMENT_TYPES.kycSelfie],
+      type: DOCUMENT_TYPES.kycSelfie,
+    }))
 
     const idDocument = blobData.documents[DOCUMENT_TYPES.kycIdDocument]
 
-    commit(types.SET_ID_DOCUMENT_TYPE, new DocumentContainer(idDocument.type))
+    commit(types.SET_ID_DOCUMENT_TYPE,
+      ID_DOCUMENT_TYPES.find(t => t.value === idDocument.type)
+    )
     commit(types.SET_ID_DOCUMENT_FACE,
-      new DocumentContainer(idDocument.face)
+      new DocumentContainer({
+        ...idDocument.face,
+        type: DOCUMENT_TYPES.kycIdDocument,
+      })
     )
     if (idDocument.back) {
       commit(types.SET_ID_DOCUMENT_BACK,
-        new DocumentContainer(idDocument.back)
+        new DocumentContainer({
+          ...idDocument.back,
+          type: DOCUMENT_TYPES.kycIdDocument,
+        })
       )
     }
 
     if (blobData.documents[DOCUMENT_TYPES.kycAvatar]) {
-      commit(types.SET_AVATAR, new DocumentContainer(
-        blobData.documents[DOCUMENT_TYPES.kycAvatar]
-      ))
+      commit(types.SET_AVATAR, new DocumentContainer({
+        ...blobData.documents[DOCUMENT_TYPES.kycAvatar],
+        type: DOCUMENT_TYPES.kycAvatar,
+      }))
     }
+  },
+
+  async [types.UPLOAD_DOCUMENTS] ({ state }) {
+    function upload (document) {
+      if (document && !document.key) {
+        return DocumentUploader.uploadSingleDocument(document)
+      }
+    }
+
+    await Promise.all([
+      upload(state.form.documents.avatar),
+      upload(state.form.documents.selfie),
+      upload(state.form.documents.idDocumentFace),
+      upload(state.form.documents.idDocumentBack),
+    ])
+  },
+
+  async [types.CREATE_BLOB] ({ getters }, ownerAccountId) {
+    const { data } = await api().postWithSignature('/blobs', {
+      data: {
+        type: BLOB_TYPES.kycGeneral,
+        attributes: {
+          value: JSON.stringify(getters[types.blobData]),
+        },
+        relationships: {
+          owner: {
+            data: {
+              id: ownerAccountId,
+            },
+          },
+        },
+      },
+    })
+
+    return data.id
   },
 }
 
@@ -133,13 +187,14 @@ const getters = {
         line_1: form.address.line1,
         line_2: form.address.line2,
         city: form.address.city,
-        country: form.address.country.code,
+        country: form.address.country && form.address.country.code,
         state: form.address.state,
         postal_code: form.address.postalCode,
       },
       documents: {
         [DOCUMENT_TYPES.kycIdDocument]: {
-          type: form.documents.idDocumentType.value,
+          type: form.documents.idDocumentType &&
+            form.documents.idDocumentType.value,
         },
       },
     }

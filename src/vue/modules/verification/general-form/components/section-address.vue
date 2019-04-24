@@ -13,7 +13,7 @@
           name="verification-general-address-line-1"
           :label="'general-form.address-line-1-lbl' | globalize"
           :error-message="getFieldErrorMessage('line1')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
       <div class="app__form-field">
@@ -24,7 +24,7 @@
           name="verification-general-address-line-2"
           :label="'general-form.address-line-2-lbl' | globalize"
           :error-message="getFieldErrorMessage('line2')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -50,7 +50,7 @@
           name="verification-general-address-city"
           :label="'general-form.address-city-lbl' | globalize"
           :error-message="getFieldErrorMessage('city')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -64,7 +64,7 @@
           name="verification-general-address-state"
           :label="'general-form.address-state-lbl' | globalize"
           :error-message="getFieldErrorMessage('state')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
       <div class="app__form-field">
@@ -75,7 +75,7 @@
           name="verification-general-address-postal-code"
           :label="'general-form.address-postal-code-lbl' | globalize"
           :error-message="getFieldErrorMessage('postalCode')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -84,6 +84,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import SectionMixin from './section.mixin'
 
 import { mapState, mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -93,7 +94,7 @@ import { COUNTRIES } from '../countries'
 
 export default {
   name: 'section-address',
-  mixins: [FormMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     COUNTRIES,
   }),

@@ -1,5 +1,5 @@
 <template>
-  <div class="verification-general-form">
+  <div class="verification-general-form" v-if="isInitialized">
     <p class="verification-general-form__account-info-title">
       {{ 'general-form.account-information-lbl' | globalize }}
     </p>
@@ -9,11 +9,26 @@
       class="app-form"
       @submit.prevent="isAllFormsValid() && showConfirmation()"
     >
-      <section-personal ref="personal-form" />
-      <section-address ref="address-form" />
-      <section-documents ref="documents-form" />
-      <section-selfie ref="selfie-form" />
-      <section-avatar ref="avatar-form" />
+      <section-personal
+        :is-disabled="formMixin.isDisabled"
+        ref="personal-form"
+      />
+      <section-address
+        :is-disabled="formMixin.isDisabled"
+        ref="address-form"
+      />
+      <section-documents
+        :is-disabled="formMixin.isDisabled"
+        ref="documents-form"
+      />
+      <section-selfie
+        :is-disabled="formMixin.isDisabled"
+        ref="selfie-form"
+      />
+      <section-avatar
+        :is-disabled="formMixin.isDisabled"
+        ref="section-avatar"
+      />
 
       <div class="app__form-actions">
         <form-confirmation
@@ -45,7 +60,11 @@ import SectionSelfie from './components/section-selfie'
 import SectionAvatar from './components/section-avatar'
 
 import { types } from './store/types'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Wallet, base } from '@tokend/js-sdk'
+import { api, initApi } from './_api'
 
 export default {
   name: 'verification-general-form',
@@ -57,23 +76,76 @@ export default {
     SectionAvatar,
   },
   mixins: [FormMixin],
+  props: {
+    /**
+     * @property config - the config for component to use
+     * @property config.horizonURL - the url of horizon server (without version)
+     */
+    config: { type: Object, required: true },
+    wallet: { type: Wallet, required: true },
+
+    blobId: { type: String, default: '' },
+    requestId: { type: String, required: true },
+    generalRoleId: { type: String, required: true },
+  },
+  data: _ => ({
+    isInitialized: false,
+  }),
   computed: {
     ...mapGetters('verification-general-form', {
       blobData: types.blobData,
     }),
   },
+  async created () {
+    initApi(this.wallet, this.config)
+
+    if (this.blobId) {
+      this.populateForm(await this.getBlobData(this.blobId))
+    }
+
+    this.isInitialized = true
+  },
   methods: {
+    ...mapActions('verification-general-form', {
+      getBlobData: types.GET_BLOB_DATA,
+      populateForm: types.POPULATE_FORM,
+      uploadDocuments: types.UPLOAD_DOCUMENTS,
+      createBlob: types.CREATE_BLOB,
+    }),
     isAllFormsValid () {
       let isValid = true
 
-      // we need to trigger all invalid form errors, even if the first one
-      // is not invalid
-      Object.values(this.$refs).forEach(ref => { isValid = ref.isFormValid() })
+      // we need to trigger errors in all sections,
+      // even if we've already found invalid one
+      Object.values(this.$refs).forEach(ref => {
+        if (!ref.isFormValid()) {
+          isValid = false
+        }
+      })
 
       return isValid
     },
-    submit () {
-      // TODO
+    async submit () {
+      this.disableForm()
+      try {
+        await this.uploadDocuments()
+        const blobId = await this.createBlob(this.wallet.accountId)
+        await this.createRequest(blobId)
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.enableForm()
+    },
+    async createRequest (blobId) {
+      const operation = base.CreateChangeRoleRequestBuilder
+        .createChangeRoleRequest({
+          requestID: this.requestId,
+          destinationAccount: this.wallet.accountId,
+          accountRoleToSet: this.generalRoleId,
+          creatorDetails: { blob_id: blobId },
+        })
+
+      await api().postOperations(operation)
     },
   },
 }

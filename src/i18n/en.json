@@ -499,7 +499,8 @@
     "general-form": {
       "address-postal-code-lbl'": "Postal code",
       "documents-lbl": "Documents",
-      "id-document-lbl": "Idenity document",
+      "id-document-face-lbl": "Idenity document (face side)",
+      "id-document-back-lbl": "Idenity document (back side)",
       "address-details-lbl": "Address details",
       "date-of-birth-lbl": "Date of birth",
       "address-line-1-lbl": "Line 1",

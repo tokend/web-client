@@ -13,7 +13,7 @@
           accept="image/*"
           :document-type="DOCUMENT_TYPES.kycAvatar"
           :label="'general-form.avatar-lbl' | globalize"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -22,6 +22,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import SectionMixin from './section.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
@@ -30,7 +31,7 @@ import { types } from '../store/types'
 
 export default {
   name: 'section-avatar',
-  mixins: [FormMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     DOCUMENT_TYPES,
   }),

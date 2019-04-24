@@ -19,7 +19,11 @@ const mutations = {
 }
 
 const actions = {
+  GET_BLOB_DATA: 'GET_BLOB_DATA',
   POPULATE_FORM: 'POPULATE_FORM',
+  UPLOAD_DOCUMENTS: 'UPLOAD_DOCUMENTS',
+  CREATE_BLOB: 'CREATE_BLOB',
+  SUBMIT_REQUEST_OP: 'SUBMIT_REQUEST_OP',
 }
 
 const getters = {

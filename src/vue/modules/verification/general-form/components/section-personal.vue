@@ -13,7 +13,7 @@
           name="verification-general-first-name"
           :label="'general-form.first-name-lbl' | globalize"
           :error-message="getFieldErrorMessage('firstName')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
       <div class="app__form-field">
@@ -24,7 +24,7 @@
           name="verification-general-last-name"
           :label="'general-form.last-name-lbl' | globalize"
           :error-message="getFieldErrorMessage('lastName')"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -42,7 +42,7 @@
           :error-message="getFieldErrorMessage('dateOfBirth', {
             maxDate: moment().subtract(18, 'years').toString()
           })"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
         />
       </div>
     </div>
@@ -51,6 +51,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import SectionMixin from './section.mixin'
 
 import { mapState, mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -60,7 +61,7 @@ import moment from 'moment'
 
 export default {
   name: 'section-personal',
-  mixins: [FormMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     moment,
   }),

@@ -12,7 +12,7 @@
         <button
           v-ripple
           class="verification-general-form__verification-code-btn"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
           @click.prevent="isCodeShown = true"
         >
           {{
@@ -33,7 +33,7 @@
           accept="image/*"
           :document-type="DOCUMENT_TYPES.kycSelfie"
           :label="'general-form.photo-lbl' | globalize"
-          :disabled="formMixin.isDisabled"
+          :disabled="isDisabled"
           :error-message="getFieldErrorMessage('selfie')"
         />
       </div>
@@ -43,6 +43,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import SectionMixin from './section.mixin'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
@@ -53,7 +54,7 @@ import { documentContainer } from '@/validators'
 
 export default {
   name: 'section-selfie',
-  mixins: [FormMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     isCodeShown: false,
     DOCUMENT_TYPES,
