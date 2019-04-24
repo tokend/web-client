@@ -181,7 +181,7 @@ export default {
       const x = d3.scaleTime()
         .range([0, width])
         .domain([firstDate, lastDate])
-        // Render the line and area
+      // Render the line and area
       const area = d3.area()
         .x((d) => x(d.time))
         .y0(y(min))
@@ -255,19 +255,19 @@ export default {
       // Tip
       const tip = svg.append('g')
         .attr('class', `${className}__tip`)
-        // Tip line
+      // Tip line
       const tipLine = tip.append('line')
         .attr('class', `${className}__tip-line`)
         .attr('x1', 0)
         .attr('y1', 10)
         .attr('x2', 0)
         .attr('y2', 0)
-        // Tip circle
+      // Tip circle
       const tipCircle = tip.append('circle')
         .attr('class', `${className}__tip-circle`)
         .attr('cx', 0)
         .attr('r', 5)
-        // Tip text box
+      // Tip text box
       const tipTextBox = tip.append('g')
       tipTextBox.append('polygon')
         .attr('points', '0,0 11.5,7 11.5,7 21,0') // width 21, height 7
@@ -296,13 +296,13 @@ export default {
         .attr('class', `${className}__tip-text-time-mm`)
         .attr('text-anchor', 'middle')
         .attr('y', height + margin.bottom + 8)
-        // Tip motion capture area
+      // Tip motion capture area
       const motionCaptureArea = svg.append('rect')
         .attr('class', `${className}__tip-motion-capture-area`)
         .attr('width', width)
         .attr('height', height - 25)
         .attr('transform', 'translate(0, 25)')
-        // Tip Mouse events
+      // Tip Mouse events
       for (const event of ['mouseenter', 'touchenter']) {
         motionCaptureArea.on(event, function () {
           tip.classed(`${className}__tip--show`, true)
@@ -354,11 +354,11 @@ export default {
             const currentValue = nearestPoint.value
             if (prevValue > currentValue) {
               const val = ((prevValue - currentValue) /
-                  Math.abs(prevValue)) * 100
+                Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
             } else if (prevValue < currentValue) {
               const val = ((currentValue - prevValue) /
-                  Math.abs(prevValue)) * 100
+                Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`+${val.toPrecision(getPrecision(val))}%`)
             } else {
               tipPriceChangeText.text('+0%')
