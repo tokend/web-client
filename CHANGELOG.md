@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Changed
+- More cutier animation for init loader 
+
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
 - Copy button next to email values
