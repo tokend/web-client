@@ -37,7 +37,7 @@ export const actions = {
   },
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
-    const endpoint = `/v3/key_values/asset_type:kyc_required`
+    const endpoint = '/v3/key_values/asset_type:kyc_required'
     const { data } = await api().get(endpoint)
 
     commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)

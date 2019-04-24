@@ -33,7 +33,7 @@ export const actions = {
   },
 
   [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature(`/v3/create_sale_requests`, {
+    return api().getWithSignature('/v3/create_sale_requests', {
       page: {
         order: 'desc',
       },

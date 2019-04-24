@@ -28,7 +28,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature(`/v3/create_asset_requests`, {
+    return api().getWithSignature('/v3/create_asset_requests', {
       page: {
         order: 'desc',
       },
@@ -40,7 +40,7 @@ export const actions = {
   },
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
-    const endpoint = `/v3/key_values/asset_type:kyc_required`
+    const endpoint = '/v3/key_values/asset_type:kyc_required'
     const { data } = await api().get(endpoint)
 
     commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)

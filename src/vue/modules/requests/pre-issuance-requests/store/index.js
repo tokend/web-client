@@ -23,7 +23,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ getters }) {
-    const endpoint = `/v3/create_pre_issuance_requests`
+    const endpoint = '/v3/create_pre_issuance_requests'
     return api().getWithSignature(endpoint, {
       page: {
         order: 'desc',

@@ -24,7 +24,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature(`/v3/create_withdraw_requests`, {
+    return api().getWithSignature('/v3/create_withdraw_requests', {
       page: {
         order: 'desc',
       },
