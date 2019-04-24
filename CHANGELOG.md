@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Changed
 - More cutier animation for init loader 
 - Now selecting invoice point by loyalty account number (Loyalty)
+- Now showing all the received points (360) on the chart
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
