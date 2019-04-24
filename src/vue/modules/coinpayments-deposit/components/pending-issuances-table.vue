@@ -23,18 +23,10 @@ export default {
   },
   props: {
     pendingIssuances: { type: Array, required: true },
-    addressCreated: { type: Boolean, required: true },
   },
   data: () => ({
     selectedIssuance: null,
   }),
-  watch: {
-    addressCreated (value) {
-      if (value) {
-        this.resetIssuanceSelection()
-      }
-    },
-  },
   methods: {
     resetIssuanceSelection () {
       this.selectedIssuance = null
