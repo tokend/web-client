@@ -118,6 +118,7 @@ import {
   minValue,
   noMoreThanAvailableOnBalance,
   decimal,
+  maxDecimalDigitsCount,
 } from '@validators'
 
 import { vuexTypes } from '@/vuex'
@@ -140,6 +141,7 @@ export default {
       price: '',
       amount: '',
     },
+    baseDigitsCount: 0,
     config,
     isOfferCreating: false,
   }),
@@ -150,6 +152,10 @@ export default {
           required,
           decimal,
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          maxDecimalDigitsCount:
+            maxDecimalDigitsCount(
+              this.baseDigitsCount
+            ),
         },
         amount: {
           required,
@@ -159,6 +165,10 @@ export default {
             ? true
             : noMoreThanAvailableOnBalance(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          maxDecimalDigitsCount:
+            maxDecimalDigitsCount(
+              this.baseDigitsCount
+            ),
         },
       },
       totalValue: {
@@ -181,6 +191,12 @@ export default {
       return (this.accountBalances
         .find(i => i.asset === this.assetPair.quote) || {}).balance
     },
+    userTransferableAssets () {
+      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
+    },
+    assets () {
+      return this.userTransferableAssets.map(asset => asset.assetDetails)
+    },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
     },
@@ -190,6 +206,12 @@ export default {
   },
   async created () {
     await this.loadBalances()
+    const asset = this.assets.find(asset => {
+      if (asset.code === this.assetPair.base) {
+        return asset
+      }
+    })
+    this.baseDigitsCount = asset.trailingDigitsCount
   },
   methods: {
     ...mapActions({
