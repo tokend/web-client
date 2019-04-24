@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
   - Broken manual input. If the user input invalid date manually the field
     cleans up
   - Broken key events (enter, escape, arrow navigation)
+- Fixed margin of Limits page, added "Current limits" subheading
 
 ### "Under the hood" changes
 #### Changed
