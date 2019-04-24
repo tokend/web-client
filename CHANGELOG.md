@@ -52,8 +52,6 @@ for further information about branching and tagging conventions.
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
-- Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
-  for us
 - Corrected statistics charts data (Loyalty)
 
 #### Fixed
