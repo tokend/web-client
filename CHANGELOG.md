@@ -22,6 +22,9 @@ for further information about branching and tagging conventions.
   creating a blob (Loyalty)
 - Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
   for us
+- Now showing zero axis line on chart, if it has both negative and
+  positive values
+- Now using default d3 ticks calculation on chart axes
 
 #### Fixed
 - Calculating percent delta on line chart

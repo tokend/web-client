@@ -106,10 +106,14 @@ export default {
     },
     getMaxAndMin () {
       const arr = this.data.map(item => item.value)
-      const max = Math.max(...arr, ...this.requiredTicks)
-      const min = this.requiredTicks && this.requiredTicks.length
-        ? 0
-        : Math.min(...arr)
+      let max = Math.max(...arr)
+      let min = Math.min(...arr)
+
+      if (max === min) {
+        max *= 1.1
+        min *= 0.9
+      }
+
       return { max, min }
     },
     addDomainPadding (domain) {
@@ -275,12 +279,7 @@ export default {
       // Render x-axis
       if (this.isTicksShown) {
         const yAxisLine = d3.axisRight(y)
-          .tickValues([
-            max,
-            max - ((max - min) * 0.3333),
-            max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
-            min,
-          ].concat(this.requiredTicks))
+          .ticks(4)
           .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
           .tickSizeInner(width)
           .tickSizeOuter(0)
@@ -289,6 +288,21 @@ export default {
           .attr('class', `${className}__y-axis`)
           .call(yAxisLine)
           .selectAll('line')
+
+        const isZeroAxisRendered = min < 0 && max > 0
+
+        if (isZeroAxisRendered) {
+          const yAxisLineZero = d3.axisRight(y)
+            .tickValues([0])
+            .tickFormat((d) => `${d} ${this.defaultAsset}`)
+            .tickSizeInner(width)
+            .tickSizeOuter(0)
+            .tickPadding(25)
+          svg.append('g')
+            .attr('class', `${className}__y-axis-zero`)
+            .call(yAxisLineZero)
+            .selectAll('line')
+        }
       }
       // Tip
       const tip = svg.append('g')
@@ -485,7 +499,7 @@ export default {
     }
     .domain { display: none; }
   }
-  .chart__y-axis {
+  .chart__y-axis, .chart__y-axis-zero {
     text {
       font-size: 1.6rem;
       fill: $col-chart-text;
@@ -496,6 +510,12 @@ export default {
       opacity: .15;
     }
     .domain { display: none; }
+  }
+  .chart__y-axis-zero {
+    line {
+      stroke-dasharray: 5 2;
+      opacity: 0.75;
+    }
   }
   .chart__tip {
     transition: opacity .2s;
