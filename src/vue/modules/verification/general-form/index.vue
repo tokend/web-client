@@ -28,6 +28,7 @@
       />
       <section-selfie
         :is-disabled="formMixin.isDisabled"
+        :verification-code="verificationCode"
         ref="selfie-form"
       />
       <section-avatar
@@ -113,6 +114,9 @@ export default {
       blobData: types.blobData,
       country: types.country,
     }),
+    verificationCode () {
+      return this.wallet.accountId.slice(1, 6)
+    },
     isUSResident () {
       return ['UM', 'US', 'VI'].includes(this.countryCode)
     },

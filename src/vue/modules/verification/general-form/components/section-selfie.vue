@@ -56,6 +56,12 @@ import { documentContainer } from '@/validators'
 export default {
   name: 'section-selfie',
   mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  props: {
+    verificationCode: {
+      type: String,
+      required: true,
+    },
+  },
   data: _ => ({
     isCodeShown: false,
     DOCUMENT_TYPES,
@@ -67,10 +73,6 @@ export default {
     selfie: {
       get () { return this.getter(types.selfie) },
       set (v) { this.setSelfie(v) },
-    },
-    verificationCode () {
-      // TODO
-      return 'TODO'
     },
   },
   methods: {
