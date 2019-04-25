@@ -12,6 +12,8 @@ for further information about branching and tagging conventions.
 - More cutier animation for init loader 
 - Now selecting invoice point by loyalty account number (Loyalty)
 - Now showing all the received points (360) on the chart
+- Now sorting asset list on balances page descending
+  by converted balance amount
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added

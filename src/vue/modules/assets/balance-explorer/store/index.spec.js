@@ -187,7 +187,7 @@ describe('balance explorer module', () => {
             asset: { id: 'USD' },
           },
           {
-            state: { available: '1.000000' },
+            state: { available: '100.000000' },
             asset: { id: 'BTC' },
           },
         ],
@@ -195,8 +195,8 @@ describe('balance explorer module', () => {
 
       expect(getters[types.assets](state))
         .to.deep.equal([
+          new Asset({ id: 'BTC' }, '100.000000'),
           new Asset({ id: 'USD' }, '10.000000'),
-          new Asset({ id: 'BTC' }, '1.000000'),
         ])
     })
 
