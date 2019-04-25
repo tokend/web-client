@@ -6,7 +6,7 @@
     >
       <tr
         class="fees_renderer__didcated-text"
-        v-if="+isExternalSystemType && isWithdrawalFees"
+        v-if="+externalSystemType && isWithdrawalFees"
       >
         <td>
           {{ 'fees.network-fee-hint' | globalize }}
@@ -20,15 +20,16 @@
           {{ 'fees.source-fixed-fee' | globalize }}
         </td>
         <td>
-          <template v-if="isPayForDestination">
+          <template v-if="paidForDestination">
             {{
-              getFeeSumByAsset(
-                fees.source.fixed, fees.destination.fixed
-              ) | formatMoney
+              formatFee(
+                fees.source.fixed,
+                fees.destination.fixed
+              )
             }}
           </template>
           <template v-else>
-            {{ getFeeByAsset(fees.source.fixed) | formatMoney }}
+            {{ formatFee(fees.source.fixed) }}
           </template>
         </td>
       </tr>
@@ -37,16 +38,16 @@
           {{ 'fees.source-percent-fee' | globalize }}
         </td>
         <td>
-          <template v-if="isPayForDestination">
+          <template v-if="paidForDestination">
             {{
-              getFeeSumByAsset(
+              formatFee(
                 fees.source.calculatedPercent,
                 fees.destination.calculatedPercent
-              ) | formatMoney
+              )
             }}
           </template>
           <template v-else>
-            {{ getFeeByAsset(fees.source.calculatedPercent) | formatMoney }}
+            {{ formatFee(fees.source.calculatedPercent) }}
           </template>
         </td>
       </tr>
@@ -56,11 +57,11 @@
             {{ 'fees.destination-fixed-fee' | globalize }}
           </td>
           <td>
-            <template v-if="isPayForDestination">
-              {{ getFeeByAsset(0) | formatMoney }}
+            <template v-if="paidForDestination">
+              {{ formatFee(0) }}
             </template>
             <template v-else>
-              {{ getFeeByAsset(fees.destination.fixed) | formatMoney }}
+              {{ formatFee(fees.destination.fixed) }}
             </template>
           </td>
         </tr>
@@ -69,14 +70,14 @@
             {{ 'fees.destination-percent-fee' | globalize }}
           </td>
           <td>
-            <template v-if="isPayForDestination">
-              {{ getFeeByAsset(0) | formatMoney }}
+            <template v-if="paidForDestination">
+              {{ formatFee(0) }}
             </template>
             <template v-else>
               {{
-                getFeeByAsset(
+                formatFee(
                   fees.destination.calculatedPercent
-                ) | formatMoney
+                )
               }}
             </template>
           </td>
@@ -88,15 +89,15 @@
           {{ 'fees.source-fixed-total-fee' | globalize }}
         </td>
         <td>
-          <template v-if="isPayForDestination">
-            {{ getTotalFeeSumByAsset() | formatMoney }}
+          <template v-if="paidForDestination">
+            {{ formatTotalFeeSum(0) }}
           </template>
           <template v-else>
             {{
-              getTotalFee({
+              formatTotalFee({
                 fixed: fees.source.fixed,
                 percent: fees.source.calculatedPercent
-              }) | formatMoney
+              })
             }}
           </template>
         </td>
@@ -110,20 +111,20 @@
           {{ 'fees.destination-fixed-total-fee' | globalize }}
         </td>
         <td>
-          <template v-if="isPayForDestination">
+          <template v-if="paidForDestination">
             {{
-              getTotalFee({
+              formatTotalFee({
                 fixed: 0,
                 percent: 0
-              }) | formatMoney
+              })
             }}
           </template>
           <template v-else>
             {{
-              getTotalFee({
+              formatTotalFee({
                 fixed: fees.destination.fixed,
                 percent: fees.destination.calculatedPercent
-              }) | formatMoney
+              })
             }}
           </template>
         </td>
@@ -133,7 +134,7 @@
         v-if="isAnyFeeForDestination && !isWithdrawalFees"
       >
         <td class="fees-renderer__tick-field">
-          <tick-field v-model="isPayForDestination">
+          <tick-field v-model="paidForDestination">
             {{ 'fees.pay-fees-for-recipient' | globalize }}
           </tick-field>
         </td>
@@ -146,12 +147,14 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { MathUtil } from '@/js/utils'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
-import {
-  FEE_TYPES,
-} from '@tokend/js-sdk'
+import { FEE_TYPES } from '@tokend/js-sdk'
+
+const EVENTS = {
+  paidForDestination: 'paidForDestination',
+}
+
 export default {
   name: 'fees',
-  components: {},
   mixins: [
     FormMixin,
     IdentityGetterMixin,
@@ -174,7 +177,7 @@ export default {
       type: String,
       default: '',
     },
-    isExternalSystemType: {
+    externalSystemType: {
       type: [String, Number],
       default: 0,
     },
@@ -182,7 +185,7 @@ export default {
   data () {
     return {
       isFeesLoadPending: false,
-      isPayForDestination: false,
+      paidForDestination: false,
     }
   },
   computed: {
@@ -195,42 +198,57 @@ export default {
     },
   },
   watch: {
-    isPayForDestination () {
-      this.$emit('isPayForDestination', this.isPayForDestination)
+    paidForDestination () {
+      this.$emit(
+        EVENTS.paidForDestination,
+        this.paidForDestination
+      )
     },
   },
   methods: {
     formatMoney,
-    getFeeByAsset (fees) {
-      return {
-        value: fees,
+    formatFee (fee) {
+      const feeData = {
+        value: fee,
         currency: this.assetCode,
       }
+      return this.$options.filters.formatMoney(
+        feeData
+      )
     },
-    getFeeSumByAsset (...fees) {
-      return {
+    formatFeeSum (...fees) {
+      const feeSumData = {
         value: fees.reduce((sum, item) => sum + item),
         currency: this.assetCode,
       }
+      return this.$options.filters.formatMoney(
+        feeSumData
+      )
     },
-    getTotalFeeSumByAsset () {
+    formatTotalFeeSum () {
       const resultFeesFixed =
         Number(this.fees.destination.fixed) +
         Number(this.fees.source.fixed)
       const resultFeesPercent =
         Number(this.fees.destination.calculatedPercent) +
         Number(this.fees.source.calculatedPercent)
-      return {
+      const feeSumData = {
         value: resultFeesFixed + resultFeesPercent,
         currency: this.assetCode,
       }
+      return this.$options.filters.formatMoney(
+        feeSumData
+      )
     },
-    getTotalFee (fees) {
+    formatTotalFee (fees) {
       const result = MathUtil.add(fees.fixed, fees.percent)
-      return {
+      const feeData = {
         value: result,
         currency: this.assetCode,
       }
+      return this.$options.filters.formatMoney(
+        feeData
+      )
     },
   },
 }
