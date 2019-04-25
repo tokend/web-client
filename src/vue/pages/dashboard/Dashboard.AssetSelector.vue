@@ -5,38 +5,41 @@
         class="asset-selector__wrapper"
       >
         <div class="asset-selector__select">
-          <skeleton-template
-            :is-loading="imgUrl === null || !currentAsset ||
+          <skeleton-loader
+            v-if="imgUrl === null || !currentAsset ||
               tokens.length === 0"
-          >
-            <div class="asset-selector__select-picture">
-              <img
-                v-if="imgUrl"
-                class="asset-selector__asset-logo"
-                :src="imgUrl"
-              >
-              <p
-                v-if="currentAsset && !imgUrl"
-                class="asset-selector__asset-code-abbr"
-              >
-                {{ currentAsset | abbreviate }}
-              </p>
-            </div>
-          </skeleton-template>
-          <div>
-            <skeleton-template
-              :is-loading="imgUrl === null || !currentAsset ||
-                tokens.length === 0"
+            template="bigIcon"
+            class="asset-selector__select-picture"
+          />
+          <div v-else class="asset-selector__select-picture">
+            <img
+              v-if="imgUrl"
+              class="asset-selector__asset-logo"
+              :src="imgUrl"
             >
-              <select-field
-                :value="currentAssetForSelect"
-                :values="tokensList"
-                :key="currentAssetForSelect.code"
-                key-as-value-text="nameAndCode"
-                @input="$emit(EVENTS.assetChange, $event)"
-                class="app__select app__select--no-border"
-              />
-            </skeleton-template>
+            <p
+              v-if="currentAsset && !imgUrl"
+              class="asset-selector__asset-code-abbr"
+            >
+              {{ currentAsset | abbreviate }}
+            </p>
+          </div>
+          <div>
+            <skeleton-loader
+              v-if="imgUrl === null || !currentAsset ||
+                tokens.length === 0"
+              class="app__select"
+              template="bigString"
+            />
+            <select-field
+              v-else
+              :value="currentAssetForSelect"
+              :values="tokensList"
+              :key="currentAssetForSelect.code"
+              key-as-value-text="nameAndCode"
+              @input="$emit(EVENTS.assetChange, $event)"
+              class="app__select app__select--no-border"
+            />
           </div>
         </div>
       </div>
@@ -44,32 +47,38 @@
         <div class="asset-selector__wrapper asset-selector__wrapper--values">
           <div class="asset-selector__asset-available">
             <div class="asset-selector__asset-value">
-              <skeleton-template
-                :is-loading="!currentAsset"
+              <skeleton-loader
+                v-if="!currentAsset"
+                template="bigString"
+              />
+              <span
+                v-else
+                class="asset-selector__asset-value-main"
               >
-                <span class="asset-selector__asset-value-main">
-                  {{
-                    currentAssetBalanceDetails.balance | formatMoney({
-                      currency: currentAsset
-                    })
-                  }}
-                  {{ currentAsset }}
-                </span>
-              </skeleton-template>
+                {{
+                  currentAssetBalanceDetails.balance | formatMoney({
+                    currency: currentAsset
+                  })
+                }}
+                {{ currentAsset }}
+              </span>
             </div>
             <div class="asset-selector__asset-subvalue">
-              <skeleton-template
-                :is-loading="!currentAsset"
+              <skeleton-loader
+                v-if="!currentAsset"
+                template="bigString"
+              />
+              <span
+                v-else
+                class="asset-selector__asset-value-secondary"
               >
-                <span class="asset-selector__asset-value-secondary">
-                  {{
-                    currentAssetBalanceDetails.convertedBalance | formatMoney({
-                      currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
-                    })
-                  }}
-                  {{ config.DEFAULT_QUOTE_ASSET }}
-                </span>
-              </skeleton-template>
+                {{
+                  currentAssetBalanceDetails.convertedBalance | formatMoney({
+                    currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
+                  })
+                }}
+                {{ config.DEFAULT_QUOTE_ASSET }}
+              </span>
             </div>
           </div>
         </div>
@@ -99,7 +108,7 @@ import { vuexTypes } from '@/vuex'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import SkeletonTemplate from '@/vue/common/skeleton-screen/SkeletonTemplate'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 const EVENTS = {
   assetChange: 'asset-change',
@@ -110,7 +119,7 @@ export default {
   components: {
     SelectField,
     NoDataMessage,
-    SkeletonTemplate,
+    SkeletonLoader,
   },
   props: {
     currentAsset: {
