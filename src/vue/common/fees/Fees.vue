@@ -1,11 +1,11 @@
 <template>
-  <table class="fees">
+  <table class="fees-renderer">
     <tbody
-      class="fees-tbody"
-      :class="{ 'fees__data--loading': isFeesLoadPending }"
+      class="fees-renderer__tbody"
+      :class="{ 'fees-renderer__data--loading': isFeesLoadPending }"
     >
       <tr
-        class="fees__total-fee-row"
+        class="fees_renderer__didcated-text"
         v-if="+isExternalSystemType && isWithdrawalFees"
       >
         <td>
@@ -19,30 +19,35 @@
         <td>
           {{ 'fees.source-fixed-fee' | globalize }}
         </td>
-        <td v-if="isPayForDestination">
-          {{
-            getFeeSumByAsset(
-              fees.source.fixed, fees.destination.fixed
-            ) | formatMoney
-          }}
-        </td>
-        <td v-else>
-          {{ getFeeByAsset(fees.source.fixed) | formatMoney }}
+        <td>
+          <template v-if="isPayForDestination">
+            {{
+              getFeeSumByAsset(
+                fees.source.fixed, fees.destination.fixed
+              ) | formatMoney
+            }}
+          </template>
+          <template v-else>
+            {{ getFeeByAsset(fees.source.fixed) | formatMoney }}
+          </template>
         </td>
       </tr>
       <tr>
         <td>
           {{ 'fees.source-percent-fee' | globalize }}
         </td>
-        <td v-if="isPayForDestination">
-          {{
-            getFeeSumByAsset(
-              fees.source.calculatedPercent, fees.destination.calculatedPercent
-            ) | formatMoney
-          }}
-        </td>
-        <td v-else>
-          {{ getFeeByAsset(fees.source.calculatedPercent) | formatMoney }}
+        <td>
+          <template v-if="isPayForDestination">
+            {{
+              getFeeSumByAsset(
+                fees.source.calculatedPercent,
+                fees.destination.calculatedPercent
+              ) | formatMoney
+            }}
+          </template>
+          <template v-else>
+            {{ getFeeByAsset(fees.source.calculatedPercent) | formatMoney }}
+          </template>
         </td>
       </tr>
       <template v-if="!isWithdrawalFees">
@@ -50,74 +55,84 @@
           <td>
             {{ 'fees.destination-fixed-fee' | globalize }}
           </td>
-          <td v-if="isPayForDestination">
-            {{ getFeeByAsset(0) | formatMoney }}
-          </td>
-          <td v-else>
-            {{ getFeeByAsset(fees.destination.fixed) | formatMoney }}
+          <td>
+            <template v-if="isPayForDestination">
+              {{ getFeeByAsset(0) | formatMoney }}
+            </template>
+            <template v-else>
+              {{ getFeeByAsset(fees.destination.fixed) | formatMoney }}
+            </template>
           </td>
         </tr>
         <tr>
           <td>
             {{ 'fees.destination-percent-fee' | globalize }}
           </td>
-          <td v-if="isPayForDestination">
-            {{ getFeeByAsset(0) | formatMoney }}
-          </td>
-          <td v-else>
-            {{
-              getFeeByAsset(fees.destination.calculatedPercent) | formatMoney
-            }}
+          <td>
+            <template v-if="isPayForDestination">
+              {{ getFeeByAsset(0) | formatMoney }}
+            </template>
+            <template v-else>
+              {{
+                getFeeByAsset(
+                  fees.destination.calculatedPercent
+                ) | formatMoney
+              }}
+            </template>
           </td>
         </tr>
       </template>
 
-      <tr class="fees__total-fee-row">
+      <tr class="fees-renderer__total-fee-row">
         <td>
           {{ 'fees.source-fixed-total-fee' | globalize }}
         </td>
-        <td v-if="isPayForDestination">
-          {{ getTotalFeeSumByAsset() | formatMoney }}
-        </td>
-        <td v-else>
-          {{
-            getTotalFee({
-              fixed: fees.source.fixed,
-              percent: fees.source.calculatedPercent
-            }) | formatMoney
-          }}
+        <td>
+          <template v-if="isPayForDestination">
+            {{ getTotalFeeSumByAsset() | formatMoney }}
+          </template>
+          <template v-else>
+            {{
+              getTotalFee({
+                fixed: fees.source.fixed,
+                percent: fees.source.calculatedPercent
+              }) | formatMoney
+            }}
+          </template>
         </td>
       </tr>
 
       <tr
-        class="fees__total-fee-row"
+        class="fees-renderer__total-fee-row"
         v-if="!isWithdrawalFees"
       >
         <td>
           {{ 'fees.destination-fixed-total-fee' | globalize }}
         </td>
-        <td v-if="isPayForDestination">
-          {{
-            getTotalFee({
-              fixed: 0,
-              percent: 0
-            }) | formatMoney
-          }}
-        </td>
-        <td v-else>
-          {{
-            getTotalFee({
-              fixed: fees.destination.fixed,
-              percent: fees.destination.calculatedPercent
-            }) | formatMoney
-          }}
+        <td>
+          <template v-if="isPayForDestination">
+            {{
+              getTotalFee({
+                fixed: 0,
+                percent: 0
+              }) | formatMoney
+            }}
+          </template>
+          <template v-else>
+            {{
+              getTotalFee({
+                fixed: fees.destination.fixed,
+                percent: fees.destination.calculatedPercent
+              }) | formatMoney
+            }}
+          </template>
         </td>
       </tr>
 
       <tr
         v-if="isAnyFeeForDestination && !isWithdrawalFees"
       >
-        <td class="fees__tick-field">
+        <td class="fees-renderer__tick-field">
           <tick-field v-model="isPayForDestination">
             {{ 'fees.pay-fees-for-recipient' | globalize }}
           </tick-field>
@@ -224,7 +239,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/scss/variables";
 
-.fees {
+.fees-renderer {
   width: 100%;
   font-size: 1.2rem;
   tr {
@@ -234,17 +249,21 @@ export default {
     text-align: right;
   }
 }
-.fees-tbody {
+.fees-renderer__tbody {
   color: $col-text-secondary;
 }
-.fees__total-fee-row {
+.fees-renderer__total-fee-row {
   color: $col-text;
   font-weight: 600;
 }
-.fees__data--loading {
+.fees-renderer__data--loading {
   opacity: 0.4;
 }
-.fees__tick-field {
-  padding: 15px 0px;
+.fees-renderer__tick-field {
+  padding: 1.2rem 0rem;
+}
+.fees_renderer__didcated-text {
+  font-weight: 600;
+  color: $col-text;
 }
 </style>

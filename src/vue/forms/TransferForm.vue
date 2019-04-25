@@ -18,16 +18,17 @@
 
       <template
         v-else-if="view.mode === VIEW_MODES.submit ||
-          view.mode === VIEW_MODES.confirm">
+          view.mode === VIEW_MODES.confirm"
+      >
         <form
+          id="transfer-form"
           @submit.prevent="processTransfer"
-          v-if="view.mode === VIEW_MODES.submit ||
-            view.mode === VIEW_MODES.confirm">
+        >
           <div class="app__form-row">
             <div class="app__form-field">
               <select-field
-                name="transfer-token"
-                :values="tokens"
+                name="transfer-asset"
+                :values="assets"
                 v-model="form.asset"
                 key-as-value-text="nameAndCode"
                 :label="'transfer-form.asset-lbl' | globalize"
@@ -111,7 +112,8 @@
               type="submit"
               class="app__form-submit-btn"
               :disabled="formMixin.isDisabled"
-              form="transfer-form">
+              form="transfer-form"
+            >
               {{ 'transfer-form.continue-btn' | globalize }}
             </button>
 
@@ -344,8 +346,8 @@ export default {
     },
     setAsset () {
       this.form.asset =
-        this.tokens.find(token => token.code === this.assetToTransfer) ||
-        this.tokens[0] ||
+        this.assets.find(token => token.code === this.assetToTransfer) ||
+        this.assets[0] ||
         {}
     },
   },
