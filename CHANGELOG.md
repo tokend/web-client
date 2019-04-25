@@ -48,11 +48,8 @@ for further information about branching and tagging conventions.
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
-<<<<<<< HEAD
 - "Copy" button to EmailGetter
 - Fix for handling a "400" errors
-=======
->>>>>>> master
 
 #### Changed
 - Use select field instead of table for acceptable points on
