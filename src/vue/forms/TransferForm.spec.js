@@ -273,6 +273,7 @@ describe('TransferForm component', () => {
 
       await wrapper.vm.processTransfer()
 
+      expect(wrapper.vm.calculateFees.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
     })
   })

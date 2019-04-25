@@ -278,7 +278,8 @@ export default {
         const feesParams = {
           assetCode: this.form.asset.code,
           amount: this.form.amount,
-          accountId: recipientAccountId,
+          recipientId: recipientAccountId,
+          senderId: this.accountId,
           type: FEE_TYPES.paymentFee,
         }
         const fees = await this.calculateFees(feesParams)

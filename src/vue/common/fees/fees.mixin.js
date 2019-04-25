@@ -7,11 +7,14 @@ export default {
     Fees,
   },
   methods: {
+    requestUrl (accountId) {
+      const requestUrl = `v3/accounts/${accountId}/calculated_fees`
+      return requestUrl
+    },
     async calculateFees (opts) {
-      const requestUrl = `v3/accounts/${opts.accountId}/calculated_fees`
       const [senderFees, recipientFees] = await Promise.all([
         Api.api.get(
-          requestUrl,
+          this.requestUrl(opts.senderId),
           {
             asset: opts.assetCode,
             fee_type: opts.type,
@@ -19,7 +22,7 @@ export default {
             amount: opts.amount,
           }),
         Api.api.get(
-          requestUrl,
+          this.requestUrl(opts.recipientId),
           {
             asset: opts.assetCode,
             fee_type: opts.type,
@@ -27,6 +30,7 @@ export default {
             amount: opts.amount,
           }),
       ])
+      // TODO: SEND ASSET/FEE INFO TO FEES.RECORD
       return {
         source: senderFees,
         destination: recipientFees,
