@@ -39,7 +39,7 @@
       <template v-if="isAccredited">
         <div class="app__form-row" v-if="isAccredited">
           <div class="app__form-field">
-            <p class="verification-general-form__usa-accredited-exp-msg">
+            <p class="verification-general-form__usa-accredited-explain-msg">
               {{ 'general-form.usa-accredited-exp-msg' | globalize }}
             </p>
 
@@ -119,14 +119,16 @@ export default {
 <style lang="scss" scoped>
 @import '../scss/styles';
 
-.verification-general-form__usa-warning-msg {
-  color: $col-warning;
-  margin-top: .5rem;
-}
+.verification-general-form {
+  &__usa-warning-msg {
+    color: $col-warning;
+    margin-top: .5rem;
+  }
 
-.verification-general-form__usa-accredited-exp-msg {
-  margin-bottom: 1rem;
-  color: $col-text-secondary;
-  font-style: italic;
+  &__usa-accredited-explain-msg {
+    margin-bottom: 1rem;
+    color: $col-text-secondary;
+    font-style: italic;
+  }
 }
 </style>
