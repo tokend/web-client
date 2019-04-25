@@ -73,6 +73,8 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Wallet, base } from '@tokend/js-sdk'
 import { api, initApi } from './_api'
 
+import log from 'loglevel'
+
 const EVENTS = {
   submit: 'submit',
 }
@@ -134,8 +136,13 @@ export default {
     initApi(this.wallet, this.config)
 
     if (this.blobId) {
-      // TODO: handle incompatible requests
-      this.populateForm(await this.getBlobData(this.blobId))
+      try {
+        this.populateForm(await this.getBlobData(this.blobId))
+      } catch (e) {
+        // catching error to be able to
+        // re-submit incompatible requests
+        log.error(e)
+      }
 
       // Disabling country change to prevent updating role for
       // unfulfilled requests. Is temporary until canceling change
