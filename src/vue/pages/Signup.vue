@@ -77,11 +77,12 @@ import SignupForm from '@/vue/forms/SignupForm'
 import KeyViewer from '@/vue/common/KeyViewer'
 import TickField from '@/vue/fields/TickField'
 import VueMarkdown from 'vue-markdown'
+import config from '@/config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { initApi } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -131,7 +132,7 @@ export default {
         )
         if (response.data.verified) {
           Sdk.sdk.useWallet(wallet)
-          Api.useWallet(wallet)
+          initApi(wallet, config.HORIZON_SERVER)
           this.storeWallet(wallet)
           await this.loadAccount(this.storedWallet.accountId)
           await this.loadKyc()

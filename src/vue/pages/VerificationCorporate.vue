@@ -134,7 +134,7 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import _get from 'lodash/get'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -236,7 +236,7 @@ export default {
           kycBlobId,
           this.kvEntryCorporateRoleId
         )
-        await Api.api.postOperations(operation)
+        await api().postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)

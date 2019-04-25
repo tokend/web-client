@@ -83,7 +83,7 @@ describe('kyc.module', () => {
     })
 
     it('LOAD_KYC_LATEST_REQUEST commits the proper set of mutations', async () => {
-      sinon.stub(mockHelper.apiInstance, 'getWithSignature')
+      sinon.stub(mockHelper.apiInstance(), 'getWithSignature')
         .resolves(MockWrapper.makeJsonapiResponse(responseJSON))
 
       const expectedRequest = MockWrapper

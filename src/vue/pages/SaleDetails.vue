@@ -88,7 +88,7 @@ import InvestForm from '@/vue/forms/InvestForm'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -124,7 +124,7 @@ export default {
   methods: {
     async loadSale (saleId) {
       try {
-        const { data } = await Api.get(`/v3/sales/${saleId}`, {
+        const { data } = await api().get(`/v3/sales/${saleId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.sale = new SaleRecord(data)

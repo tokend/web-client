@@ -48,7 +48,7 @@ import {
   mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { initApi } from '@/api'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -97,14 +97,13 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      Api.init({ horizonURL: config.HORIZON_SERVER })
-
+      initApi(null, config.HORIZON_SERVER)
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()
 
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        Api.useWallet(this[vuexTypes.wallet])
+        initApi(this[vuexTypes.wallet], config.HORIZON_SERVER)
       }
     },
     detectIE () {

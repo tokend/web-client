@@ -59,7 +59,7 @@ describe('account.module', () => {
     })
 
     it('LOAD_ACCOUNT properly commit it\'s set of mutations', async () => {
-      sinon.stub(mockHelper.apiInstance, 'getWithSignature')
+      sinon.stub(mockHelper.apiInstance(), 'getWithSignature')
         .resolves(MockWrapper.makeJsonapiResponse(accountJSON))
 
       const expectedMutations = {

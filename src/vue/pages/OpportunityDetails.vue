@@ -147,7 +147,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -221,7 +221,7 @@ export default {
   methods: {
     async loadOpportunity (opportunityId) {
       try {
-        const { data } = await Api.get(`/v3/sales/${opportunityId}`, {
+        const { data } = await api().get(`/v3/sales/${opportunityId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.opportunity = new SaleRecord(data)

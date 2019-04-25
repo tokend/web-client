@@ -54,6 +54,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import config from '@/config'
 
 import { required, requiredIf } from '@validators'
 import { vuexTypes } from '@/vuex'
@@ -61,7 +62,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { initApi } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 
@@ -109,7 +110,7 @@ export default {
         const accountId = this[vuexTypes.wallet].accountId
 
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        Api.useWallet(this[vuexTypes.wallet])
+        initApi(this[vuexTypes.wallet], config.HORIZON_SERVER)
 
         await this.loadAccount(accountId)
         await this.loadKvEntries()

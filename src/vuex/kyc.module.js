@@ -1,7 +1,7 @@
 import { vuexTypes } from './types'
 
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 
 import safeGet from 'lodash/get'
@@ -65,7 +65,7 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await Api.getWithSignature(`/v3/change_role_requests`, {
+    const response = await api().getWithSignature(`/v3/change_role_requests`, {
       filter: { requestor },
       page: { limit, order },
       include: ['request_details'],
@@ -98,7 +98,7 @@ export const actions = {
     { state, commit, rootGetters },
     requestId
   ) {
-    const { data } = await Api.getWithSignature(
+    const { data } = await api().getWithSignature(
       `/v3/change_role_requests/${requestId}`,
       {
         filter: { requestor: rootGetters[vuexTypes.accountId] },
