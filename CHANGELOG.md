@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Show message for blocked user
+
 #### Changed
 - More cutier animation for init loader 
 - Now selecting invoice point by loyalty account number (Loyalty)
@@ -16,10 +19,11 @@ for further information about branching and tagging conventions.
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
 - Copy button next to email values
-- Show message for blocked user
 
 #### Removed
 - Quitted building sourcemaps for production
+
+#### Unreleased
 
 #### Fixed
 - Fixed calculating of percent delta on line chart

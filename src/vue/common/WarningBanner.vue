@@ -37,13 +37,4 @@ export default {
     background-color: $col-danger;
   }
 }
-
-.warning-banner__message-link {
-  color: #fff;
-  cursor: pointer;
-  text-decoration: underline;
-  text-align: center;
-
-  &:hover { color: #fff }
-}
 </style>

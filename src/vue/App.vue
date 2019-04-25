@@ -9,8 +9,8 @@
       <warning-banner
         v-if="isAccountBlocked"
         :message-id="'warning-banner.blocked-desc'"
-        :message-type="'danger'"
         :message-args="kycRequestBlockReason"
+        message-type="danger"
       />
       <div class="app__container">
         <sidebar />
