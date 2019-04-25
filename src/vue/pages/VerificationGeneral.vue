@@ -1,115 +1,366 @@
 <template>
-  <div class="verification-general-2">
-    <submodule-importer
-      :config="config"
-      :wallet="wallet"
-      :submodule="getModule().getSubmodule(VerificationGeneralFormModule)"
-      :blob-id="isFormPopulatable ? kycLatestBlobId : ''"
-      :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
-      :general-role-id="String(kvEntryGeneralRoleId)"
-      :us-verified-role-id="String(kvEntryUsVerifiedRoleId)"
-      :us-accredited-role-id="String(kvEntryUsAccreditedRoleId)"
+  <div class="verification-general-form">
+    <p class="verification-general-form__account-info-title">
+      {{ 'verification-form.account-information-lbl' | globalize }}
+    </p>
 
-      ref="form-module-importer"
-      @submit="onFormSubmit"
-    />
+    <form
+      novalidate
+      class="app-form"
+      @submit.prevent="isFormValid() && showConfirmation()"
+    >
+      <div class="verification-general-form__block">
+        <p class="verification-general-form__block-label">
+          {{ 'verification-form.personal-details-lbl' | globalize }}
+        </p>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.personal.firstName"
+              @blur="touchField('form.personal.firstName')"
+              name="verification-general-first-name"
+              :label="'verification-form.first-name-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.personal.firstName')"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <input-field
+              white-autofill
+              v-model="form.personal.lastName"
+              @blur="touchField('form.personal.lastName')"
+              name="verification-general-last-name"
+              :label="'verification-form.last-name-lbl' | globalize"
+              :error-message="getFieldErrorMessage('form.personal.lastName')"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <!-- eslint-disable max-len -->
+            <file-field
+              v-model="form.documents.idDocument"
+              name="verification-general-id-document"
+              :note="'verification-form.file-type-note' | globalize"
+              accept="image/*, .pdf"
+              :document-type="DOCUMENT_TYPES.kycIdDocument"
+              :label="'verification-form.id-document-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage('form.documents.idDocument')"
+            />
+            <!-- eslint-enable max-len -->
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <file-field
+              v-model="form.documents.avatar"
+              name="verification-general-avatar"
+              :note="'verification-form.image-type-note' | globalize"
+              accept="image/*"
+              :document-type="DOCUMENT_TYPES.kycAvatar"
+              :label="'verification-form.avatar-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="verification-general-form__block">
+        <p class="verification-general-form__block-label">
+          {{ 'verification-form.photo-verification-lbl' | globalize }}
+        </p>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <p class="verification-general-form__photo-explanation">
+              {{ 'verification-form.photo-explanation-msg' | globalize }}
+            </p>
+            <button
+              v-ripple
+              class="verification-general-form__verification-code-btn"
+              :disabled="formMixin.isDisabled"
+              @click.prevent="isCodeShown = true"
+            >
+              {{
+                isCodeShown
+                  ? verificationCode
+                  : 'verification-form.verification-code-btn' | globalize
+              }}
+            </button>
+          </div>
+        </div>
+
+        <div class="app__form-row">
+          <div class="app__form-field">
+            <file-field
+              v-model="form.documents.verificationPhoto"
+              name="verification-general-verification-photo"
+              :note="'verification-form.image-type-note' | globalize"
+              accept="image/*"
+              :document-type="DOCUMENT_TYPES.kycSelfie"
+              :label="'verification-form.photo-lbl' | globalize"
+              :disabled="formMixin.isDisabled"
+              :error-message="getFieldErrorMessage(
+                'form.documents.verificationPhoto'
+              )"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="app__form-actions">
+        <form-confirmation
+          v-if="formMixin.isConfirmationShown"
+          @ok="hideConfirmation() || submit()"
+          @cancel="hideConfirmation"
+        />
+        <button
+          v-ripple
+          v-else
+          type="submit"
+          class="verification-general-form__submit-btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'verification-form.submit-btn' | globalize }}
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
-import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
+import _get from 'lodash/get'
 
-import { mapActions, mapGetters } from 'vuex'
+import { Sdk } from '@/sdk'
+
+import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+
+import { Bus } from '@/js/helpers/event-bus'
+import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
+
+import { BLOB_TYPES } from '@tokend/js-sdk'
+
+import { required, documentContainer } from '@validators'
+import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
-import { Bus } from '@/js/helpers/event-bus'
-
-import config from '@/config'
+const EMPTY_DOCUMENT = {
+  mime_type: '',
+  name: '',
+  key: '',
+}
 
 export default {
-  name: 'verification-general-2',
-  components: {
-    SubmoduleImporter,
-  },
+  name: 'verification-general-form',
+  mixins: [VerificationFormMixin],
+
   data: _ => ({
-    config: {
-      horizonURL: config.HORIZON_SERVER,
+    form: {
+      personal: {
+        firstName: '',
+        lastName: '',
+        birthDate: '',
+        documentExpirationDate: '',
+      },
+      documents: {
+        avatar: null,
+        idDocument: null,
+        verificationPhoto: null,
+      },
     },
-    VerificationGeneralFormModule,
+    isLoaded: false,
+    isLoadingFailed: false,
+    isCodeShown: false,
+    DOCUMENT_TYPES,
   }),
+
+  validations: {
+    form: {
+      personal: {
+        firstName: { required },
+        lastName: { required },
+      },
+      documents: {
+        idDocument: { documentContainer },
+        verificationPhoto: { documentContainer },
+      },
+    },
+  },
+
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
-
-      kycState: vuexTypes.kycState,
-      kycRequestId: vuexTypes.kycRequestId,
-      kycLatestBlobId: vuexTypes.kycLatestBlobId,
-
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
-      kvEntryUsVerifiedRoleId: vuexTypes.kvEntryUsVerifiedRoleId,
-      kvEntryUsAccreditedRoleId: vuexTypes.kvEntryUsAccreditedRoleId,
-
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
-    isRequestUpdatable () {
-      return (
-        this.kycState &&
-        (
-          this.kycState === REQUEST_STATES_STR.pending ||
-          this.kycState === REQUEST_STATES_STR.rejected
-        )
-      )
+    verificationCode () {
+      return this.accountId.slice(1, 6)
+    },
+    isFormDisabled () {
+      return !this.isAccountRoleReseted && this.kycState &&
+        this.kycState !== REQUEST_STATES_STR.rejected &&
+        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
     },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
-        : (
-          this.accountRoleToSet === this.kvEntryGeneralRoleId ||
-          this.accountRoleToSet === this.kvEntryUsAccreditedRoleId ||
-          this.accountRoleToSet === this.kvEntryUsAccreditedRoleId
-        )
+        : this.accountRoleToSet === this.kvEntryGeneralRoleId
     },
   },
+
+  created () {
+    if (this.isFormPopulatable) {
+      this.form = this.parseKycData(this.kycLatestData)
+
+      if (this.isFormDisabled) {
+        this.disableForm()
+      }
+    }
+  },
+
   methods: {
-    ...mapActions({
-      loadKyc: vuexTypes.LOAD_KYC,
-    }),
-    async onFormSubmit () {
-      const formRef = this.$refs['form-module-importer'].$refs['component']
-      formRef.disableForm()
-      do {
-        // HACK: to reduce the probability of
-        // request being not ingested by API
-        await this.delay(3000)
-        await this.loadKyc()
-      } while (this.kycState !== REQUEST_STATES_STR.pending)
-      // TODO: handle auto-approve
-      Bus.success('general-form.request-submitted-msg')
-      this.scrollTop()
-      formRef.enableForm()
+    async submit () {
+      if (!this.isFormValid()) return
+      this.disableForm()
+      try {
+        await this.uploadDocuments()
+        const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
+        const operation = this.createKycOperation(
+          kycBlobId,
+          this.kvEntryGeneralRoleId,
+        )
+        await Sdk.horizon.transactions.submitOperations(operation)
+        do {
+          await this.loadKyc()
+          await this.delay(3000)
+        } while (this.kycState !== REQUEST_STATES_STR.pending)
+        Bus.success('verification-form.request-submitted-msg')
+      } catch (e) {
+        this.enableForm()
+        ErrorHandler.process(e)
+      }
     },
-    scrollTop () {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      })
-    },
-    delay (ms) { // TODO: should not be here
+
+    delay (ms) {
       /* eslint-disable-next-line promise/avoid-new */
-      return new Promise((resolve) => {
-        setTimeout(resolve, ms)
+      return new Promise((resolve, reject) => {
+        resolve(setTimeout(resolve, ms))
       })
     },
 
+    async uploadDocuments () {
+      for (let document of Object.values(this.form.documents)) {
+        if (document && !document.key) {
+          document = await DocumentUploader.uploadSingleDocument(document)
+        }
+      }
+    },
+
+    createKycData () {
+      return {
+        first_name: this.form.personal.firstName,
+        last_name: this.form.personal.lastName,
+        documents: {
+          // avatar is not required, it may not exist in old kyc data
+          [DOCUMENT_TYPES.kycAvatar]: this.form.documents.avatar
+            ? this.form.documents.avatar.getDetailsForSave()
+            : EMPTY_DOCUMENT,
+          [DOCUMENT_TYPES.kycIdDocument]:
+            this.form.documents.idDocument.getDetailsForSave(),
+          [DOCUMENT_TYPES.kycSelfie]:
+            this.form.documents.verificationPhoto.getDetailsForSave(),
+        },
+      }
+    },
+
+    parseKycData (kycData) {
+      return {
+        personal: {
+          firstName: kycData.first_name,
+          lastName: kycData.last_name,
+        },
+        documents: {
+          avatar: this.wrapDocument(kycData, DOCUMENT_TYPES.kycAvatar),
+          idDocument: this.wrapDocument(kycData, DOCUMENT_TYPES.kycIdDocument),
+          verificationPhoto: this.wrapDocument(
+            kycData,
+            DOCUMENT_TYPES.kycSelfie,
+          ),
+        },
+      }
+    },
+
+    wrapDocument (kycData, documentType) {
+      if (_get(kycData, `documents.${documentType}.key`)) {
+        return new DocumentContainer(kycData.documents[documentType])
+      } else {
+        return null
+      }
+    },
   },
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~@/vue/forms/app-form';
 
+.verification-general-form {
+  margin-top: 4rem;
+}
+
+.verification-general-form__submit-btn {
+  @include button-raised();
+
+  margin-right: auto;
+  width: 100%;
+  max-width: 20rem;
+}
+
+.verification-general-form__verification-code-btn {
+  @include button-raised();
+  margin-top: 1.5rem;
+}
+
+.verification-general-form__account-info-title {
+  color: $col-primary;
+  font-size: 1.3rem;
+}
+
+.verification-general-form {
+  form {
+    margin-top: 1rem;
+    background-color: $col-block-bg;
+    padding: 2.4rem;
+
+    @include box-shadow();
+
+    & > .verification-general-form__block:not(:first-child) {
+      margin-top: 6rem;
+    }
+  }
+}
+
+.verification-general-form__block-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.verification-general-form__photo-explanation {
+  font-size: 1.5rem;
+}
 </style>

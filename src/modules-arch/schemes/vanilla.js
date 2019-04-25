@@ -26,7 +26,7 @@ import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-r
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
-import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
+import { VerificationGeneralAdvancedPageModule } from '@/vue/pages/verification-general-advanced-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
@@ -340,7 +340,7 @@ export default {
               name: vueRoutes.verification.name,
             },
             submodules: [
-              new VerificationGeneralPageModule({
+              new VerificationGeneralAdvancedPageModule({
                 routerEntry: {
                   path: '/settings/verification/general',
                   name: vueRoutes.verificationGeneral.name,
