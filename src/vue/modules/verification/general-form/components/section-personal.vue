@@ -35,13 +35,11 @@
           v-model="dateOfBirth"
           name="verification-general-date-of-birth"
           :enable-time="false"
-          :disable-after="moment().subtract(18, 'years').toString()"
+          :disable-after="moment().toString()"
           @input="touchField('dateOfBirth')"
           @blur="touchField('dateOfBirth')"
           :label="'general-form.date-of-birth-lbl' | globalize"
-          :error-message="getFieldErrorMessage('dateOfBirth', {
-            maxDate: moment().subtract(18, 'years').toString()
-          })"
+          :error-message="getFieldErrorMessage('dateOfBirth')"
           :disabled="isDisabled"
         />
       </div>
