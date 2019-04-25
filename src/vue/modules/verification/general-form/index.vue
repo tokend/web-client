@@ -72,6 +72,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Wallet, base } from '@tokend/js-sdk'
 import { api, initApi } from './_api'
+import { isUSResidence } from './is-us-residence'
 
 import log from 'loglevel'
 
@@ -120,7 +121,7 @@ export default {
       return this.wallet.accountId.slice(1, 6)
     },
     isUSResident () {
-      return ['UM', 'US', 'VI'].includes(this.countryCode)
+      return isUSResidence(this.countryCode)
     },
     accountRoleToSet () {
       if (this.isUSResident) {

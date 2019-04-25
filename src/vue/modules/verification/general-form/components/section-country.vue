@@ -70,6 +70,7 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { mapGetters, mapMutations } from 'vuex'
 import { required, requiredIf } from '@validators'
 import { types } from '../store/types'
+import { isUSResidence } from '../is-us-residence'
 
 export default {
   name: 'section-country',
@@ -108,7 +109,7 @@ export default {
       set (v) { this.setProofOfInvestor(v) },
     },
     isUSResident () {
-      return ['UM', 'US', 'VI'].includes(this.countryCode)
+      return isUSResidence(this.countryCode)
     },
   },
   methods: {
