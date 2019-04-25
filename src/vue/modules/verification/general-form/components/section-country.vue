@@ -51,6 +51,7 @@
               :document-type="DOCUMENT_TYPES.kycProofOfInvestor"
               :label="'general-form.document-poi-lbl' | globalize"
               :disabled="isDisabled"
+              :error-message="getFieldErrorMessage('proofOfInvestor')"
             />
           </div>
         </div>
@@ -67,7 +68,7 @@ import GetterAccessorMixin from './getter-accessor'
 import { COUNTRIES } from '../countries'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { mapGetters, mapMutations } from 'vuex'
-import { required } from '@validators'
+import { required, requiredIf } from '@validators'
 import { types } from '../store/types'
 
 export default {
@@ -85,6 +86,10 @@ export default {
   }),
   validations: {
     country: { required },
+    proofOfInvestor: { required: requiredIf(function () {
+      return this.isAccredited
+    }),
+    },
   },
   computed: {
     ...mapGetters('verification-general-form', {
