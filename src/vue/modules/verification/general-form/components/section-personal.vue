@@ -52,8 +52,9 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
+import GetterAccessorMixin from './getter-accessor'
 
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import { types } from '../store/types'
 import { required } from '@validators'
 
@@ -61,24 +62,21 @@ import moment from 'moment'
 
 export default {
   name: 'section-personal',
-  mixins: [FormMixin, SectionMixin],
+  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
   data: _ => ({
     moment,
   }),
   computed: {
-    ...mapState('verification-general-form', {
-      form: state => state.form,
-    }),
     firstName: {
-      get () { return this.form.personal.firstName },
+      get () { return this.getter(types.firstName) },
       set (v) { this.setFirstName(v) },
     },
     lastName: {
-      get () { return this.form.personal.lastName },
+      get () { return this.getter(types.lastName) },
       set (v) { this.setLastName(v) },
     },
     dateOfBirth: {
-      get () { return this.form.personal.dateOfBirth },
+      get () { return this.getter(types.dateOfBirth) },
       set (v) { this.setDateOfBirth(v) },
     },
   },
@@ -98,5 +96,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/styles';
+@import '../scss/styles';
 </style>

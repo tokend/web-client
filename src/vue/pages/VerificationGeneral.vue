@@ -67,7 +67,11 @@ export default {
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryGeneralRoleId
-        : this.accountRoleToSet === this.kvEntryGeneralRoleId
+        : (
+          this.accountRoleToSet === this.kvEntryGeneralRoleId ||
+          this.accountRoleToSet === this.kvEntryUsAccreditedRoleId ||
+          this.accountRoleToSet === this.kvEntryUsAccreditedRoleId
+        )
     },
   },
   methods: {

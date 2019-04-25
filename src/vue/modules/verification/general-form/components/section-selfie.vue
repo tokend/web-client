@@ -44,17 +44,18 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
+import GetterAccessorMixin from './getter-accessor'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import { types } from '../store/types'
 
 import { documentContainer } from '@/validators'
 
 export default {
   name: 'section-selfie',
-  mixins: [FormMixin, SectionMixin],
+  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
   data: _ => ({
     isCodeShown: false,
     DOCUMENT_TYPES,
@@ -63,11 +64,8 @@ export default {
     selfie: { documentContainer },
   },
   computed: {
-    ...mapState('verification-general-form', {
-      form: state => state.form,
-    }),
     selfie: {
-      get () { return this.form.documents.selfie },
+      get () { return this.getter(types.selfie) },
       set (v) { this.setSelfie(v) },
     },
     verificationCode () {

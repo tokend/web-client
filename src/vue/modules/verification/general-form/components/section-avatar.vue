@@ -23,24 +23,22 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
+import GetterAccessorMixin from './getter-accessor'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import { types } from '../store/types'
 
 export default {
   name: 'section-avatar',
-  mixins: [FormMixin, SectionMixin],
+  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
   data: _ => ({
     DOCUMENT_TYPES,
   }),
   computed: {
-    ...mapState('verification-general-form', {
-      form: state => state.form,
-    }),
     avatar: {
-      get () { return this.form.documents.avatar },
+      get () { return this.getter(types.avatar) },
       set (v) { this.setAvatar(v) },
     },
   },

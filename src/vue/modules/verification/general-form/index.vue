@@ -11,6 +11,7 @@
     >
       <section-country
         :is-disabled="formMixin.isDisabled"
+        :is-country-change-disabled="isCountryChangeDisabled"
         ref="country-form"
       />
       <section-personal
@@ -103,15 +104,17 @@ export default {
   },
   data: _ => ({
     isInitialized: false,
+    isCountryChangeDisabled: false,
   }),
   computed: {
     ...mapGetters('verification-general-form', {
       isAccredited: types.isAccredited,
+      countryCode: types.countryCode,
       blobData: types.blobData,
       country: types.country,
     }),
     isUSResident () {
-      return ['UM', 'US', 'VI'].includes(this.country && this.country.code)
+      return ['UM', 'US', 'VI'].includes(this.countryCode)
     },
     accountRoleToSet () {
       if (this.isUSResident) {
@@ -129,6 +132,11 @@ export default {
     if (this.blobId) {
       // TODO: handle incompatible requests
       this.populateForm(await this.getBlobData(this.blobId))
+
+      // Disabling country change to prevent updating role for
+      // unfulfilled requests. Is temporary until canceling change
+      // role requests is implemented on backend:
+      this.isCountryChangeDisabled = true
     }
 
     this.isInitialized = true
@@ -136,7 +144,7 @@ export default {
   methods: {
     ...mapActions('verification-general-form', {
       getBlobData: types.GET_BLOB_DATA,
-      populateForm: types.POPULATE_FORM,
+      populateForm: types.POPULATE_STATE,
       uploadDocuments: types.UPLOAD_DOCUMENTS,
       createBlob: types.CREATE_BLOB,
     }),

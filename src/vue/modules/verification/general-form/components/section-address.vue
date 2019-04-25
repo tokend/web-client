@@ -73,36 +73,34 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
+import GetterAccessorMixin from './getter-accessor'
 
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import { types } from '../store/types'
 import { required } from '@validators'
 
 export default {
   name: 'section-address',
-  mixins: [FormMixin, SectionMixin],
+  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
   computed: {
-    ...mapState('verification-general-form', {
-      form: state => state.form,
-    }),
     line1: {
-      get () { return this.form.address.line1 },
+      get () { return this.getter(types.line1) },
       set (v) { this.setLine1(v) },
     },
     line2: {
-      get () { return this.form.address.line2 },
+      get () { return this.getter(types.line2) },
       set (v) { this.setLine2(v) },
     },
     city: {
-      get () { return this.form.address.city },
+      get () { return this.getter(types.city) },
       set (v) { this.setCity(v) },
     },
     state: {
-      get () { return this.form.address.state },
+      get () { return this.getter(types.state) },
       set (v) { this.setState(v) },
     },
     postalCode: {
-      get () { return this.form.address.postalCode },
+      get () { return this.getter(types.postalCode) },
       set (v) { this.setPostalCode(v) },
     },
   },

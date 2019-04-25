@@ -54,8 +54,9 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
+import GetterAccessorMixin from './getter-accessor'
 
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 import { types } from '../store/types'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -69,27 +70,23 @@ import {
 
 export default {
   name: 'section-documents',
-  mixins: [FormMixin, SectionMixin],
+  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
   data: _ => ({
     DOCUMENT_TYPES,
     ID_DOCUMENT_TYPES,
   }),
   computed: {
-    ...mapState('verification-general-form', {
-      form: state => state.form,
-    }),
-
     idDocumentType: {
-      get () { return this.form.documents.idDocumentType },
+      get () { return this.getter(types.idDocumentType) },
       set (v) { this.setIdDocumentType(v) },
     },
 
     idDocumentFace: {
-      get () { return this.form.documents.idDocumentFace },
+      get () { return this.getter(types.idDocumentFace) },
       set (v) { this.setIdDocumentFace(v) },
     },
     idDocumentBack: {
-      get () { return this.form.documents.idDocumentBack },
+      get () { return this.getter(types.idDocumentBack) },
       set (v) { this.setIdDocumentBack(v) },
     },
     needIdDocumentBack () {

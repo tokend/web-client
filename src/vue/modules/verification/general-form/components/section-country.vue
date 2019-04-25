@@ -15,6 +15,7 @@
           :label="'general-form.address-country-lbl' | globalize"
           @blur="touchField('country')"
           :error-message="getFieldErrorMessage('country')"
+          :disabled="isDisabled || isCountryChangeDisabled"
         />
       </div>
     </div>
@@ -26,7 +27,10 @@
 
       <div class="app__form-row">
         <div class="app__form-field">
-          <tick-field v-model="isAccredited">
+          <tick-field
+            v-model="isAccredited"
+            :disabled="isDisabled || isCountryChangeDisabled"
+          >
             {{ 'general-form.i-am-accredited-lbl' | globalize }}
           </tick-field>
         </div>
@@ -58,16 +62,23 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
+import GetterAccessorMixin from './getter-accessor'
 
 import { COUNTRIES } from '../countries'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { mapState, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { required } from '@validators'
 import { types } from '../store/types'
 
 export default {
   name: 'section-country',
-  mixins: [FormMixin, SectionMixin],
+  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  props: {
+    isCountryChangeDisabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: _ => ({
     COUNTRIES,
     DOCUMENT_TYPES,
@@ -76,23 +87,23 @@ export default {
     country: { required },
   },
   computed: {
-    ...mapState('verification-general-form', {
-      form: state => state.form,
+    ...mapGetters('verification-general-form', {
+      countryCode: types.countryCode,
     }),
     isAccredited: {
-      get () { return this.form.isAccredited },
+      get () { return this.getter(types.isAccredited) },
       set (v) { this.setIsAccredited(v) },
     },
     country: {
-      get () { return this.form.address.country },
+      get () { return this.getter(types.country) },
       set (v) { this.setCountry(v) },
     },
     proofOfInvestor: {
-      get () { return this.form.documents.proofOfInvestor },
+      get () { return this.getter(types.proofOfInvestor) },
       set (v) { this.setProofOfInvestor(v) },
     },
     isUSResident () {
-      return ['UM', 'US', 'VI'].includes(this.country && this.country.code)
+      return ['UM', 'US', 'VI'].includes(this.countryCode)
     },
   },
   methods: {

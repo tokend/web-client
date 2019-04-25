@@ -23,16 +23,35 @@ const mutations = {
 
 const actions = {
   GET_BLOB_DATA: 'GET_BLOB_DATA',
-  POPULATE_FORM: 'POPULATE_FORM',
+  POPULATE_STATE: 'POPULATE_STATE',
   UPLOAD_DOCUMENTS: 'UPLOAD_DOCUMENTS',
   CREATE_BLOB: 'CREATE_BLOB',
   SUBMIT_REQUEST_OP: 'SUBMIT_REQUEST_OP',
 }
 
 const getters = {
+  firstName: 'firstName',
+  lastName: 'lastName',
+  dateOfBirth: 'dateOfBirth',
+
+  line1: 'line1',
+  line2: 'line2',
+  city: 'city',
   country: 'country',
-  blobData: 'blobData',
+  state: 'state',
+  postalCode: 'postalCode',
+  countryCode: 'countryCode',
+
+  idDocumentType: 'idDocumentType',
+  avatar: 'avatar',
+  selfie: 'selfie',
+  idDocumentFace: 'idDocumentFace',
+  idDocumentBack: 'idDocumentBack',
+  proofOfInvestor: 'proofOfInvestor',
+
   isAccredited: 'isAccredited',
+
+  blobData: 'blobData',
 }
 
 export const types = {
