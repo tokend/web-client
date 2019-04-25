@@ -9,6 +9,9 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Changed
+- More cutier animation for init loader 
+- Now selecting invoice point by loyalty account number (Loyalty)
+- Now showing all the received points (360) on the chart
 - Now showing zero axis line, if chart has both negative and
   positive values
 - Now using default d3 ticks calculation on chart axes

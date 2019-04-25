@@ -27,7 +27,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 // import * as d3 from 'd3'
 import moment from 'moment'
-import { chunk } from 'lodash'
 const d3 = Object.assign(
   {},
   d3Array,
@@ -65,15 +64,6 @@ export default {
         value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
     },
-    itemsPerTick () {
-      const ticksCount = {
-        year: 24,
-        month: 30,
-        day: 30,
-        hour: 30,
-      }
-      return Math.ceil(this.data.length / ticksCount[this.scale])
-    },
     defaultAsset () {
       return this.currency || this.defaultQuoteAsset
     },
@@ -104,8 +94,8 @@ export default {
           : parentElement.clientHeight,
       }
     },
-    getMaxAndMin () {
-      const arr = this.data.map(item => item.value)
+    getMaxAndMin (data) {
+      const arr = data.map(item => item.value)
       let max = Math.max(...arr)
       let min = Math.min(...arr)
 
@@ -134,18 +124,21 @@ export default {
     render () {
       this.clear()
       // Setup the data
-      const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
-        const defaultDate = item.reduce((sum, current) => {
-          sum += Date.parse(current.time)
-          return sum
-        }, 0)
-
-        return {
-          time: new Date(defaultDate / item.length),
-          value: Math.max(...item.map(i => i.value)),
-        }
-      })
-      const { max, min } = this.getMaxAndMin(data)
+      const data = this.normalizedData
+      let { max, min } = this.getMaxAndMin(data)
+      const tickValues = []
+      if (max === min) {
+        tickValues.push(max)
+        max = max * 1.1
+        min = min * 0.9
+        tickValues.push(min)
+        tickValues.push(max)
+      } else {
+        tickValues.push(max)
+        tickValues.push(min)
+        tickValues.push(Math.floor(max * 0.3333))
+        tickValues.push(Math.floor(max * 0.6666))
+      }
       if (!data[0] || !data[data.length - 1]) return
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time
@@ -248,32 +241,6 @@ export default {
           .style('transition', '0.3s ease-out')
         setTimeout(() => {
           chartAreaWithGradient.style('opacity', '1')
-        }, this.chartRenderingTime)
-        svg.append('g')
-          .attr('height', height)
-          .selectAll('rect')
-          .data(data)
-          .enter().append('rect')
-          .attr('fill', '#837fa1')
-          .attr('opacity', '0.2')
-          .attr('width', '1')
-          .attr('height', (localData) => height - y(localData.value) - 9)
-          .attr('x', (localData) => x(localData.time))
-          .attr('y', (localData) => y(localData.value))
-        const chartTipsPoints = svg.append('g')
-          .attr('height', height)
-          .attr('width', width)
-          .selectAll('circle')
-          .data(data)
-          .enter().append('circle')
-          .attr('r', '3')
-          .attr('fill', '#bdb6ff')
-          .style('opacity', '0')
-          .style('transition', '0.3s ease-out')
-          .attr('cx', (localData) => x(localData.time))
-          .attr('cy', (localData) => y(localData.value))
-        setTimeout(() => {
-          chartTipsPoints.style('opacity', '1')
         }, this.chartRenderingTime)
       }
       // Render x-axis
@@ -445,7 +412,7 @@ export default {
 
 <style lang="scss">
   @import "~@scss/variables";
-   .chart-renderer {
+  .chart-renderer {
     position: relative;
   }
   .chart-renderer__wrapper {
@@ -488,7 +455,7 @@ export default {
   }
   .chart__line {
     fill: none;
-    stroke-width: .2rem;
+    stroke-width: .1rem;
     stroke: $col-chart-line;
     stroke-linecap: round;
   }
@@ -507,14 +474,13 @@ export default {
     line {
       stroke-dasharray: 3 3;
       stroke: $col-chart-ticks;
-      opacity: .15;
+      opacity: .55;
     }
     .domain { display: none; }
   }
   .chart__y-axis-zero {
     line {
-      stroke-dasharray: 5 2;
-      opacity: 0.75;
+      opacity: 1;
     }
   }
   .chart__tip {
