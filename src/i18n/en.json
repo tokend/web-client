@@ -1836,6 +1836,9 @@
       "manage-signer-title": "Update viewer access",
       "add-signer-title": "Add viewer",
       "signer-email-lbl": "Email address"
+    },
+    "warning-banner": {
+      "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
     }
   }
 }

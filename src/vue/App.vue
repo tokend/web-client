@@ -6,6 +6,12 @@
     />
 
     <template v-if="isLoggedIn && isNavigationRendered">
+      <warning-banner
+        v-if="isAccountBlocked"
+        :message-id="'warning-banner.blocked-desc'"
+        :message-type="'danger'"
+        :message-args="kycRequestBlockReason"
+      />
       <div class="app__container">
         <sidebar />
 
@@ -67,6 +73,8 @@ export default {
     ...mapGetters([
       vuexTypes.wallet,
       vuexTypes.isLoggedIn,
+      vuexTypes.isAccountBlocked,
+      vuexTypes.kycRequestBlockReason,
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)
