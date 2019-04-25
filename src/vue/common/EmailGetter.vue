@@ -156,7 +156,7 @@ export default {
   @import "~@scss/variables";
   @import "~@scss/mixins";
   .email-getter {
-    display: flex;
+    display: inline-flex;
     justify-content: flex-start;
     align-items: center;
 

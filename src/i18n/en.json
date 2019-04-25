@@ -592,6 +592,7 @@
       "limits-form-heading": "Change limits",
       "change-limits-bth": "Change limits",
       "requests-subheading": "Requests",
+      "actual-limits-subheading": "Current limits",
       "no-limits-list": "No limits list",
       "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one asset to your balances"
     },
@@ -1203,8 +1204,8 @@
       "request-state-header": "Request state",
       "created-header": "Created",
       "review-btn": "Review",
-      "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
+      "no-history-title": "No request history",
+      "no-history-desc": "Here will be the list of your incoming withdrawal requests",
       "request-id": "Request ID",
       "created": "Created",
       "requestor-email": "Requestor email",

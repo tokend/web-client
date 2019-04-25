@@ -279,7 +279,8 @@
                 <iframe
                   v-if="form.fullDescription.youtubeVideo"
                   :src="`https://www.youtube.com/embed/${youtubeId}`"
-                  class="create-sale__iframe" />
+                  class="create-sale__iframe"
+                />
                 <div v-else class="create-sale__youtub-video">
                   <i class="mdi mdi-youtube create-sale__video-icon" />
                   <span>
@@ -446,8 +447,9 @@ export default {
           },
           endTime: {
             required,
-            minDate: minDate(this.form.saleInformation.startTime ||
-              moment().toString()),
+            minDate: minDate(
+              this.form.saleInformation.startTime || moment().toString()
+            ),
           },
           softCap: {
             required,
@@ -455,13 +457,17 @@ export default {
           },
           hardCap: {
             required,
-            amountRange: amountRange(this.form.saleInformation.softCap,
-              this.MAX_AMOUNT),
+            amountRange: amountRange(
+              this.form.saleInformation.softCap,
+              this.MAX_AMOUNT
+            ),
           },
           requiredBaseAssetForHardCap: {
             required,
-            amountRange: amountRange(this.MIN_AMOUNT,
-              this.availableForIssuance),
+            amountRange: amountRange(
+              this.MIN_AMOUNT,
+              this.availableForIssuance
+            ),
           },
           quoteAssets: {
             requiredAtLeastOne,
