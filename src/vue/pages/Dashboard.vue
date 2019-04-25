@@ -63,6 +63,7 @@
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
             :ref="REFS.movementsHistory"
+            :latest-activity="true"
           />
         </div>
       </template>

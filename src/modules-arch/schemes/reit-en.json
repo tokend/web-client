@@ -52,6 +52,7 @@
       "order-book-id-lbl": "Order book (Opportunity) ID",
       "movements-load-failed-msg": "Failed to load account activity. Please try again later",
       "loading-movements-msg": "Please wait while we loading your activity",
+      "latest-activity": "Latest activity",
       "no-movements-title": "No activity history"
     },
     "dashboard": {

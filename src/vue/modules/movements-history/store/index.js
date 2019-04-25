@@ -36,6 +36,7 @@ export const actions = {
     return api().getWithSignature('/v3/history', {
       page: {
         order: 'desc',
+        limit: 10,
       },
       filter: {
         account: getters[types.accountId],
