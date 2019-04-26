@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Changed
+- Now opening pre-issuance details link in new tab 
+
 ## [1.6.0-x.1] - 2019-04-26
 #### Added
 - Selected asset query parameter to URL on dashboard, movements,
@@ -27,7 +31,6 @@ for further information about branching and tagging conventions.
 #### Changed
 - Now using @tokend/js-sdk@1.6.0-x.0
 - Now using "app__button-*" classes instead of button mixins
-- Now opening pre-issuance details link in new tab 
 
 ### Experimental features changes
 #### Changed
