@@ -8,6 +8,10 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages 
+
 #### Changed
 - More cutier animation for init loader
 - Now selecting invoice point by loyalty account number (Loyalty)
