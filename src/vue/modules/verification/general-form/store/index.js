@@ -8,6 +8,8 @@ import { api } from '../_api'
 import { wrapDocument } from './wrap_document'
 import { uploadDocument } from './upload_document'
 
+import { toRFC3339, fromRFC3339 } from '../format-date'
+
 const state = {
   isAccredited: false,
   personal: {
@@ -103,7 +105,7 @@ const actions = {
   [types.POPULATE_STATE] ({ commit }, blobData) {
     commit(types.SET_FIRST_NAME, blobData.first_name)
     commit(types.SET_LAST_NAME, blobData.last_name)
-    commit(types.SET_DATE_OF_BIRTH, blobData.date_of_birth)
+    commit(types.SET_DATE_OF_BIRTH, fromRFC3339(blobData.date_of_birth))
 
     commit(types.SET_LINE_1, blobData.address.line_1)
     commit(types.SET_LINE_2, blobData.address.line_2)
@@ -210,7 +212,7 @@ const getters = {
     const blobData = {
       first_name: getters[types.firstName],
       last_name: getters[types.lastName],
-      date_of_birth: getters[types.dateOfBirth],
+      date_of_birth: toRFC3339(getters[types.dateOfBirth]),
       address: {
         line_1: getters[types.line1],
         line_2: getters[types.line2],
@@ -257,7 +259,7 @@ const getters = {
     }
 
     // is required only when applying for accredited investor role
-    if (state.documents.proofOfInvestor) {
+    if (state.documents.proofOfInvestor) { // TODO
       blobData.documents[DOCUMENT_TYPES.kycProofOfInvestor] =
         state.documents.proofOfInvestor.getDetailsForSave()
     }
