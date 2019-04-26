@@ -17,7 +17,7 @@ export class CreateAssetRequest extends Request {
     )
     this.maxIssuanceAmount = safeGet(record, 'requestDetails.maxIssuanceAmount')
     this.preissuedAssetSigner = safeGet(
-      record, 'requestDetails.preIssuanceAssetSigner'
+      record, 'requestDetails.preissuedAssetSigner'
     )
 
     this.policy = safeGet(record, 'requestDetails.policies')

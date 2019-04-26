@@ -9,7 +9,7 @@ describe('Create asset request', () => {
           type: 1,
           maxIssuanceAmount: '2000.000000',
           initialPreissuedAmount: '1000.000000',
-          preIssuanceAssetSigner: 'SIGNER_ID',
+          preissuedAssetSigner: 'SIGNER_ID',
           policies: 16,
           creatorDetails: {
             name: 'American Dollar',
@@ -27,7 +27,7 @@ describe('Create asset request', () => {
 
       expect(result.initialPreissuedAmount).to.equal('1000.000000')
       expect(result.maxIssuanceAmount).to.equal('2000.000000')
-      expect(result.preIssuanceAssetSigner).to.equal('SIGNER_ID')
+      expect(result.preissuedAssetSigner).to.equal('SIGNER_ID')
 
       expect(result.policy).to.equal(16)
 

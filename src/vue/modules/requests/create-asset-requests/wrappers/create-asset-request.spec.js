@@ -10,7 +10,7 @@ describe('Create asset request', () => {
           type: 0,
           initialPreissuedAmount: '100.000000',
           maxIssuanceAmount: '1000.000000',
-          preIssuanceAssetSigner: 'SIGNER_ID',
+          preissuedAssetSigner: 'SIGNER_ID',
           policies: 3,
           creatorDetails: {
             name: 'Dollar',

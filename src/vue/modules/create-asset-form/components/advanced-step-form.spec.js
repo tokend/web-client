@@ -26,7 +26,7 @@ describe('Advanced step form', () => {
     })
 
     const expectedResults = {
-      preIssuanceAssetSigner: ['required'],
+      preissuedAssetSigner: ['required'],
       initialPreissuedAmount: ['required', 'amountRange'],
     }
 
@@ -38,7 +38,7 @@ describe('Advanced step form', () => {
     }
 
     const fieldBindings = {
-      '[name=create-asset-pre-issuance-asset-signer]': 'preIssuanceAssetSigner',
+      '[name=create-asset-pre-issuance-asset-signer]': 'preissuedAssetSigner',
       '[name=create-asset-initial-preissued-amount]': 'initialPreissuedAmount',
     }
 
@@ -83,7 +83,7 @@ describe('Advanced step form', () => {
       it('properly sets request prop fields to form property', () => {
         wrapper.setProps({
           request: {
-            preIssuanceAssetSigner: 'SIGNER_ID',
+            preissuedAssetSigner: 'SIGNER_ID',
             initialPreissuedAmount: '500.000000',
           },
         })
@@ -91,7 +91,7 @@ describe('Advanced step form', () => {
         wrapper.vm.populateForm()
 
         expect(wrapper.vm.form.isPreissuanceDisabled).to.be.false
-        expect(wrapper.vm.form.preIssuanceAssetSigner).to.equal('SIGNER_ID')
+        expect(wrapper.vm.form.preissuedAssetSigner).to.equal('SIGNER_ID')
         expect(wrapper.vm.form.initialPreissuedAmount).to.equal('500.000000')
       })
     })
