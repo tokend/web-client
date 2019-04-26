@@ -30,7 +30,7 @@
     "i18next": "13.1.0",
     "iban": "0.0.12",
     "idle-vue": "2.0.5",
-    "iso-country-codes": "^0.0.5",
+    "iso-country-codes": "0.0.5",
     "lodash": "4.17.11",
     "loglevel": "1.6.1",
     "moment": "2.23.0",
