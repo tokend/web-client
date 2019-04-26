@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Re-render chart animation
+
 #### Changed
 - Now opening pre-issuance details link in new tab 
 
