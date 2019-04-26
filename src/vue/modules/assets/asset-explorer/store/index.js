@@ -4,8 +4,6 @@ import { api } from '../_api'
 import { types } from './types'
 import { base } from '@tokend/js-sdk'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   assets: [],
@@ -33,7 +31,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_ACCOUNT_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -42,11 +40,11 @@ export const actions = {
   },
 
   async [types.LOAD_ASSETS] (_, query) {
-    return api().get(`/${HORIZON_VERSION_PREFIX}/assets`, query)
+    return api().get('/v3/assets', query)
   },
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/key_values/asset_type:kyc_required`
+    const endpoint = '/v3/key_values/asset_type:kyc_required'
     const { data } = await api().get(endpoint)
 
     commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)
