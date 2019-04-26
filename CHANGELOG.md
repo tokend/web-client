@@ -16,6 +16,9 @@ for further information about branching and tagging conventions.
   positive values
 - Now using default d3 ticks calculation on chart axes
 
+#### Added
+- Re-render chart animation
+
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
 - Copy button next to email values

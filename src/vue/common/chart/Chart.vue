@@ -105,18 +105,6 @@ export default {
             `${this.lockedAssets.base}-${this.lockedAssets.quote}`
           )
           : await Sdk.horizon.charts.get(this.lockedAssets.base)
-        let startValue = 1
-        let shift = 0.05
-        response.data.day.forEach(item => {
-          if (startValue >= 2) {
-            shift = -0.05
-          }
-          if (startValue <= 0) {
-            shift = 0.05
-          }
-          startValue += shift
-          item.value = startValue
-        })
         this.data = response.data
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)

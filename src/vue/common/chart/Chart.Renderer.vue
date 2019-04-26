@@ -61,7 +61,7 @@ export default {
       x: '',
       yAxisLine: '',
       isFirstRender: true,
-      animationDuration: 500,
+      isAnimating: false,
     }
   },
   computed: {
@@ -169,10 +169,16 @@ export default {
       }
       this.y = d3.scaleLinear().range([this.height, 0])
       this.x = d3.scaleTime().range([0, this.width])
+      // init y-axis
+      this.svg.append('g')
+        .attr('class', `${CLASS_NAME}__y-axis`)
       this.update()
       this.isFirstRender = false
     },
     update () {
+      this.isAnimating = true
+      const chartSvg = d3.select(`svg.${CLASS_NAME}`)
+      chartSvg.classed(`${CLASS_NAME}--overflow-hidden`, true)
       const data = this.normalizedData
       let { max, min } = this.getMaxAndMin(data)
       const firstDate = data[0].time
@@ -180,13 +186,12 @@ export default {
       if (!this.hasValue) {
         if (this.isTicksShown) {
           this.y.domain([0, 12])
-
           const yAxisLine = d3.axisRight(this.y)
             .tickValues([0, 5, 10])
-          this.svg.selectAll('class', `${CLASS_NAME}__y-axis`)
+          this.svg.selectAll(`.${CLASS_NAME}__y-axis`)
             .call(yAxisLine)
-            .selectAll('line')
         }
+        console.log('asd')
         return
       }
       // Define domains
@@ -201,31 +206,36 @@ export default {
         .x((d) => this.x(d.time))
         .y((d) => this.y(d.value))
 
-      let path = this.svg.selectAll(`.${CLASS_NAME}__line`)
-        .data([data])
+      if (this.isFirstRender) {
+        // Render line
+        const path = this.svg.append('path')
+          .attr('class', `${CLASS_NAME}__line`)
+          .attr('d', line(data))
 
-      path = path
-        .enter()
-        .append('path')
-        .attr('class', `${CLASS_NAME}__line`)
-        .merge(path)
-
-      path.transition()
-        .duration(this.animationDuration)
-        .attr('d', line)
-
-      // const path = this.svg.append('path')
-      //   .attr('class', `${CLASS_NAME}__line`)
-      //   .attr('d', line(data))
-
-      // const totalLength = path.node().getTotalLength()
-      // path
-      //   .attr('stroke-dasharray', totalLength + ' ' + totalLength)
-      //   .attr('stroke-dashoffset', totalLength)
-      //   .transition()
-      //   .duration(this.chartRenderingTime)
-      //   .ease(d3.easeLinear)
-      //   .attr('stroke-dashoffset', 0)
+        const totalLength = path.node().getTotalLength()
+        path
+          .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+          .attr('stroke-dashoffset', totalLength)
+          .transition()
+          .duration(this.chartRenderingTime)
+          .ease(d3.easeLinear)
+          .attr('stroke-dashoffset', 0)
+      } else {
+        // Update the line
+        let path = this.svg.selectAll(`.${CLASS_NAME}__line`)
+          .attr('stroke-dasharray', null)
+          .attr('stroke-dashoffset', null)
+          .attr('stroke-dashoffset', null)
+          .data([data])
+        path = path
+          .enter()
+          .append('path')
+          .attr('class', `${CLASS_NAME}__line`)
+          .merge(path)
+        path.transition()
+          .duration(this.chartRenderingTime)
+          .attr('d', line)
+      }
       let defs = this.svg.append('defs')
       let lg = defs.append('linearGradient')
         .attr('id', 'area-gradient')
@@ -254,16 +264,31 @@ export default {
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.05)
       if (max !== min) {
-        const chartAreaWithGradient = this.svg
-          .append('path')
-          .datum(data)
-          .attr('fill', 'url(#area-gradient)')
-          .attr('d', area)
-          .style('opacity', '0')
-          .style('transition', '0.3s ease-out')
-        setTimeout(() => {
-          chartAreaWithGradient.style('opacity', '1')
-        }, this.chartRenderingTime)
+        if (this.isFirstRender) {
+          const chartAreaWithGradient = this.svg
+            .append('path')
+            .attr('class', `${CLASS_NAME}__linear-gradient`)
+            .datum(data)
+            .attr('fill', 'url(#area-gradient)')
+            .attr('d', area)
+            .style('opacity', '0')
+            .style('transition', '0.3s ease-out')
+          setTimeout(() => {
+            chartAreaWithGradient.style('opacity', '1')
+          }, this.chartRenderingTime)
+        } else {
+          let chartAreaWithGradient = this.svg.selectAll(`.${CLASS_NAME}__linear-gradient`)
+            .datum(data)
+            .style('transition', null)
+          chartAreaWithGradient = chartAreaWithGradient
+            .enter()
+            .append('path')
+            .attr('class', `${CLASS_NAME}__linear-gradient`)
+            .merge(chartAreaWithGradient)
+          chartAreaWithGradient.transition()
+            .duration(this.chartRenderingTime)
+            .attr('d', area)
+        }
       }
       // Render x-axis
       if (this.isTicksShown) {
@@ -273,10 +298,10 @@ export default {
           .tickSizeInner(this.width)
           .tickSizeOuter(0)
           .tickPadding(25)
-        this.svg.append('g')
-          .attr('class', `${CLASS_NAME}__y-axis`)
+        this.svg.selectAll(`.${CLASS_NAME}__y-axis`)
+          .transition()
+          .duration(this.chartRenderingTime)
           .call(yAxisLine)
-          .selectAll('line')
 
         const isZeroAxisRendered = min < 0 && max > 0
 
@@ -290,7 +315,6 @@ export default {
           this.svg.append('g')
             .attr('class', `${CLASS_NAME}__y-axis-zero`)
             .call(yAxisLineZero)
-            .selectAll('line')
         }
       }
       // Tip
@@ -351,7 +375,9 @@ export default {
       }
       for (const event of ['mousemove', 'touchmove']) {
         motionCaptureArea.on(event, () => {
-          tip.classed(`${CLASS_NAME}__tip--hidden`, false)
+          if (!this.isAnimating) {
+            tip.classed(`${CLASS_NAME}__tip--hidden`, false)
+          }
           const x0 = this.x.invert(d3.mouse(this.svg.node())[0])
           const bisectDate = d3.bisector(d => d.time).left
           const bisectIndex = bisectDate(data, x0, 1)
@@ -427,6 +453,10 @@ export default {
         })
       }
       tip.classed(`${CLASS_NAME}__tip--hidden`, true)
+      setTimeout(() => {
+        this.isAnimating = false
+        chartSvg.classed(`${CLASS_NAME}--overflow-hidden`, false)
+      }, this.chartRenderingTime)
     },
   },
 }
@@ -470,6 +500,7 @@ export default {
     overflow: visible;
     * { font-family: inherit; }
     & > g { overflow: hidden; }
+    &--overflow-hidden { overflow: hidden; }
   }
   .chart__area {
     fill: $col-chart-fill;
