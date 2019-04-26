@@ -338,7 +338,6 @@ import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import FormStepper from '@/vue/common/FormStepper'
 
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 
 import { mapGetters } from 'vuex'
@@ -352,7 +351,7 @@ import {
   minDate,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
-import { SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
+import { base, SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
@@ -542,11 +541,8 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.saleOverview,
-          JSON.stringify(this.form.fullDescription.description)
-        )
-        await Api.api.postOperations(this.getOperation(blob.id))
+        const blobId = await this.createSaleBlob()
+        await Api.api.postOperations(this.getOperation(blobId))
         Bus.success('create-sale-form.request-submitted-msg')
         this.enableForm()
         this.$emit(EVENTS.close)
@@ -558,6 +554,21 @@ export default {
         ErrorHandler.process(e)
         this.enableForm()
       }
+    },
+    async createSaleBlob () {
+      const { data: blob } = await Api.api.postWithSignature('/blobs', {
+        data: {
+          type: BLOB_TYPES.saleOverview,
+          attributes: {
+            value: JSON.stringify(this.form.fullDescription.description),
+          },
+          relationships: {
+            owner: { data: { id: this.accountId } },
+          },
+        },
+      })
+
+      return blob.id
     },
     getOperation (saleDescriptionBlobId) {
       const operation = {
@@ -585,7 +596,7 @@ export default {
         saleEnumType: SALE_TYPES.fixedPrice,
         saleType: DEFAULT_SALE_TYPE,
       }
-      return Sdk.base.SaleRequestBuilder.createSaleCreationRequest(operation)
+      return base.SaleRequestBuilder.createSaleCreationRequest(operation)
     },
     async uploadDocuments () {
       const documents = [

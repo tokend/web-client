@@ -24,6 +24,7 @@ for further information about branching and tagging conventions.
 - Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
   for us
 - Moved horizon resources to "/v3" endpoints
+- Now processing documents & blobs using new ApiCaller
 
 #### Fixed
 - Calculating percent delta on line chart
