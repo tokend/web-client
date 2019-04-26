@@ -35,8 +35,7 @@ import PendingIssuancesTable from './components/pending-issuances-table'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { api } from '@/api'
 import { IssuanceRecord } from './wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -49,18 +48,6 @@ export default {
     Loader,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     asset: { type: Object, required: true },
     balanceId: { type: String, required: true },
     accountId: { type: String, required: true },
@@ -77,9 +64,6 @@ export default {
     firstPageLoader () {
       return _ => this.loadFirstPage()
     },
-  },
-  created () {
-    initApi(this.wallet, this.config)
   },
   methods: {
     setPendingIssuances (records) {

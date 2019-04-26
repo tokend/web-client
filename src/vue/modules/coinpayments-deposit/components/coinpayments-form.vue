@@ -65,7 +65,7 @@ import moment from 'moment'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
