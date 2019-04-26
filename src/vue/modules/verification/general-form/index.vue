@@ -179,6 +179,9 @@ export default {
         await this.uploadDocuments()
         const blobId = await this.createBlob(this.wallet.accountId)
         await this.createRequest(blobId)
+        // we duplicating enabling form in try/catch blocks to prevent race
+        // condition - the outer component disables the form after submit event
+        // again and can does it before we enable it here.
         this.enableForm()
         this.$emit(EVENTS.submit)
       } catch (e) {
