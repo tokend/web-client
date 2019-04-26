@@ -106,10 +106,14 @@ export default {
     },
     getMaxAndMin (data) {
       const arr = data.map(item => item.value)
-      const max = Math.max(...arr, ...this.requiredTicks)
-      const min = this.requiredTicks && this.requiredTicks.length
-        ? 0
-        : Math.min(...arr)
+      let max = Math.max(...arr)
+      let min = Math.min(...arr)
+
+      if (max === min) {
+        max *= 1.1
+        min *= 0.9
+      }
+
       return { max, min }
     },
     addDomainPadding (domain) {
@@ -131,20 +135,7 @@ export default {
       this.isFirstRender = true
       this.clear()
       const data = this.normalizedData
-      let { max, min } = this.getMaxAndMin(data)
-      const tickValues = []
-      if (max === min) {
-        tickValues.push(max)
-        max = max * 1.1
-        min = min * 0.9
-        tickValues.push(min)
-        tickValues.push(max)
-      } else {
-        tickValues.push(max)
-        tickValues.push(min)
-        tickValues.push(Math.floor(max * 0.3333))
-        tickValues.push(Math.floor(max * 0.6666))
-      }
+      let { max } = this.getMaxAndMin(data)
       if (!data[0] || !data[data.length - 1]) return
       const yAxisTickWidth = this.isTicksShown
         ? this.formatMoneyCustom(max).length * 9 - 5
@@ -184,19 +175,6 @@ export default {
     update () {
       const data = this.normalizedData
       let { max, min } = this.getMaxAndMin(data)
-      const tickValues = []
-      if (max === min) {
-        tickValues.push(max)
-        max = max * 1.1
-        min = min * 0.9
-        tickValues.push(min)
-        tickValues.push(max)
-      } else {
-        tickValues.push(max)
-        tickValues.push(min)
-        tickValues.push(Math.floor(max * 0.3333))
-        tickValues.push(Math.floor(max * 0.6666))
-      }
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time
       if (!this.hasValue) {
@@ -290,7 +268,7 @@ export default {
       // Render x-axis
       if (this.isTicksShown) {
         const yAxisLine = d3.axisRight(this.y)
-          .tickValues(tickValues.concat(this.requiredTicks))
+          .ticks(4)
           .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
           .tickSizeInner(this.width)
           .tickSizeOuter(0)
@@ -299,6 +277,21 @@ export default {
           .attr('class', `${CLASS_NAME}__y-axis`)
           .call(yAxisLine)
           .selectAll('line')
+
+        const isZeroAxisRendered = min < 0 && max > 0
+
+        if (isZeroAxisRendered) {
+          const yAxisLineZero = d3.axisRight(this.y)
+            .tickValues([0])
+            .tickFormat((d) => `${d} ${this.defaultAsset}`)
+            .tickSizeInner(this.width)
+            .tickSizeOuter(0)
+            .tickPadding(25)
+          this.svg.append('g')
+            .attr('class', `${CLASS_NAME}__y-axis-zero`)
+            .call(yAxisLineZero)
+            .selectAll('line')
+        }
       }
       // Tip
       const tip = this.svg.append('g')
@@ -495,7 +488,7 @@ export default {
     }
     .domain { display: none; }
   }
-  .chart__y-axis {
+  .chart__y-axis, .chart__y-axis-zero {
     text {
       font-size: 1.6rem;
       fill: $col-chart-text;
@@ -506,6 +499,11 @@ export default {
       opacity: .55;
     }
     .domain { display: none; }
+  }
+  .chart__y-axis-zero {
+    line {
+      opacity: 1;
+    }
   }
   .chart__tip {
     transition: opacity .2s;
