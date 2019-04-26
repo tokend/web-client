@@ -30,7 +30,7 @@
 
     <button
       v-show="isCopyButton && !isMasterAccount && !isLoading"
-      class="email-getter__copy-button"
+      class="email-getter__copy-button  app__button-icon"
       :id="`clipboard-btn-${_uid}`"
       :data-clipboard-text="email || accountId || balanceId"
       @click="changeBtnIcon"
@@ -171,7 +171,6 @@ export default {
     }
 
     &__copy-button {
-      @include button-icon();
       color: $col-primary-inactive;
       margin-left: .5rem;
       min-height: 1rem;

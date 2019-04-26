@@ -66,7 +66,7 @@
         <button
           v-ripple
           type="submit"
-          class="tfa-form__btn"
+          class="tfa-form__btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'tfa-form.enable-btn' | globalize }}
@@ -224,7 +224,6 @@ export default {
 @import './app-form';
 
 .tfa-form__btn {
-  @include button-raised();
   max-width: 18rem;
   width: 100%;
 }
