@@ -1,12 +1,12 @@
 <template>
-  <div class="verification-general-form" v-if="isInitialized">
+  <div class="verification-general-form__outer" v-if="isInitialized">
     <p class="verification-general-form__account-info-title">
       {{ 'general-form.account-information-lbl' | globalize }}
     </p>
 
     <form
       novalidate
-      class="app-form"
+      class="verification-general-form app-form"
       @submit.prevent="isAllFormsValid() && showConfirmation()"
     >
       <section-country
