@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this project will be documented in this file.
+All notable changes to this ~project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,34 +9,87 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Receivable distribution chart (Loyalty)
-- Receivable-payable delta chart (Loyalty)
-- Account number field to the invoice form (Loyalty)
-- "Copy" button to EmailGetter
 - "initSync" method to Api class
 
 #### Changed
-- Corrected statistics charts data (Loyalty)
+- Moved horizon resources to "/v3" endpoints
+- Now processing documents & blobs using new ApiCaller
+
+#### Removed
+- Unused methods from `DocumentContainer` class
+
+## [1.6.0-x.1] - 2019-04-26
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages
+
+#### Changed
+- Now using more modern animation for init loader
+- Now showing all the received points (360) on the chart
+- Now showing zero axis line, if chart has both negative and
+  positive values
+- Now using default d3 ticks calculation on chart axes, so the ticks count and
+  positions are not fixed now and ticks have more user-friendly values
+
+#### Fixed
+- Account verification using received link from e-mail
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-x.0
+- Now using "app__button-*" classes instead of button mixins
+
+### Experimental features changes
+#### Changed
+- Now selecting invoice point by loyalty account number (Loyalty)
+
+## [1.6.0-x.0] - 2019-04-24
+#### Added
+- Copy button next to email values
+
+#### Removed
+- Quitted building sourcemaps for production
+
+#### Fixed
+- Fixed calculating of percent delta on line chart
+- Fixed displaying of negative values on line chart
+- Fixed bunch of date field issues:
+  - Broken "disabled" state
+  - Broken manual input. If the user input invalid date manually the field
+    cleans up
+  - Broken key events (enter, escape, arrow navigation)
+- Fixed margin of Limits page, added "Current limits" subheading
+
+### "Under the hood" changes
+#### Changed
+- Now running WDS on a nearest non-busy port. No more `EADDRINUSE` for us
+- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component),
+  but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
+
+#### Fixed
+- Fixed a bug when with initial app configuration loading at the start if the
+  user was logged in but the session still not expired
+- Fixed a bug with absent preloading of account balance in Coinpayments deposit
+  form
+- Make `<email-getter>` be inlined flex
+
+### Experimental features changes
+#### Added
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+- Account number field to the invoice form (Loyalty)
+
+#### Changed
 - Use select field instead of table for acceptable points on
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
-- Now running WDS run on nearest non-busy port. No more "EADDRINUSE"
-  for us
-- Moved horizon resources to "/v3" endpoints
-- Now processing documents & blobs using new ApiCaller
+- Corrected statistics charts data (Loyalty)
 
 #### Fixed
-- Calculating percent delta on line chart
-- Displaying negative values on line chart
-- Fixed a bug when with `defaultQuoteAsset` loading race condition
 - Polling when creating an invoice (Loyalty)
 - Invoice transaction source account (Loyalty)
-- Fixed a bug with absent preloading of account balance in `DepositForm`
-
-#### Removed
-- Quitted building sourcemaps for production
-- Unused methods from `DocumentContainer` class
+- Displaying incoming withdrawal requests (Loyalty)
 
 ## [1.5.0]
 ### "Under the hood changes"
@@ -338,7 +391,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.1...HEAD
+[1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
+[1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
 [1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
 [1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
 [1.5.0-rc.2]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...1.5.0-rc.2

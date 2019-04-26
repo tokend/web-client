@@ -27,7 +27,6 @@ import * as d3Transition from 'd3-transition'
 import * as d3Ease from 'd3-ease'
 // import * as d3 from 'd3'
 import moment from 'moment'
-import { chunk } from 'lodash'
 const d3 = Object.assign(
   {},
   d3Array,
@@ -65,15 +64,6 @@ export default {
         value: parseFloat(parseFloat(item.value).toFixed(this.precision)),
       }))
     },
-    itemsPerTick () {
-      const ticksCount = {
-        year: 24,
-        month: 30,
-        day: 30,
-        hour: 30,
-      }
-      return Math.ceil(this.data.length / ticksCount[this.scale])
-    },
     defaultAsset () {
       return this.currency || this.defaultQuoteAsset
     },
@@ -104,12 +94,16 @@ export default {
           : parentElement.clientHeight,
       }
     },
-    getMaxAndMin () {
-      const arr = this.data.map(item => item.value)
-      const max = Math.max(...arr, ...this.requiredTicks)
-      const min = this.requiredTicks && this.requiredTicks.length
-        ? 0
-        : Math.min(...arr)
+    getMaxAndMin (data) {
+      const arr = data.map(item => item.value)
+      let max = Math.max(...arr)
+      let min = Math.min(...arr)
+
+      if (max === min) {
+        max *= 1.1
+        min *= 0.9
+      }
+
       return { max, min }
     },
     addDomainPadding (domain) {
@@ -130,18 +124,8 @@ export default {
     render () {
       this.clear()
       // Setup the data
-      const data = chunk(this.normalizedData, this.itemsPerTick).map(item => {
-        const defaultDate = item.reduce((sum, current) => {
-          sum += Date.parse(current.time)
-          return sum
-        }, 0)
-
-        return {
-          time: new Date(defaultDate / item.length),
-          value: Math.max(...item.map(i => i.value)),
-        }
-      })
-      const { max, min } = this.getMaxAndMin(data)
+      const data = this.normalizedData
+      let { max, min } = this.getMaxAndMin(data)
       if (!data[0] || !data[data.length - 1]) return
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time
@@ -245,42 +229,11 @@ export default {
         setTimeout(() => {
           chartAreaWithGradient.style('opacity', '1')
         }, this.chartRenderingTime)
-        svg.append('g')
-          .attr('height', height)
-          .selectAll('rect')
-          .data(data)
-          .enter().append('rect')
-          .attr('fill', '#837fa1')
-          .attr('opacity', '0.2')
-          .attr('width', '1')
-          .attr('height', (localData) => height - y(localData.value) - 9)
-          .attr('x', (localData) => x(localData.time))
-          .attr('y', (localData) => y(localData.value))
-        const chartTipsPoints = svg.append('g')
-          .attr('height', height)
-          .attr('width', width)
-          .selectAll('circle')
-          .data(data)
-          .enter().append('circle')
-          .attr('r', '3')
-          .attr('fill', '#bdb6ff')
-          .style('opacity', '0')
-          .style('transition', '0.3s ease-out')
-          .attr('cx', (localData) => x(localData.time))
-          .attr('cy', (localData) => y(localData.value))
-        setTimeout(() => {
-          chartTipsPoints.style('opacity', '1')
-        }, this.chartRenderingTime)
       }
       // Render x-axis
       if (this.isTicksShown) {
         const yAxisLine = d3.axisRight(y)
-          .tickValues([
-            max,
-            max - ((max - min) * 0.3333),
-            max - ((max - min) * 0.3333) - ((max - min) * 0.3333),
-            min,
-          ].concat(this.requiredTicks))
+          .ticks(4)
           .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
           .tickSizeInner(width)
           .tickSizeOuter(0)
@@ -289,6 +242,21 @@ export default {
           .attr('class', `${className}__y-axis`)
           .call(yAxisLine)
           .selectAll('line')
+
+        const isZeroAxisRendered = min < 0 && max > 0
+
+        if (isZeroAxisRendered) {
+          const yAxisLineZero = d3.axisRight(y)
+            .tickValues([0])
+            .tickFormat((d) => `${d} ${this.defaultAsset}`)
+            .tickSizeInner(width)
+            .tickSizeOuter(0)
+            .tickPadding(25)
+          svg.append('g')
+            .attr('class', `${className}__y-axis-zero`)
+            .call(yAxisLineZero)
+            .selectAll('line')
+        }
       }
       // Tip
       const tip = svg.append('g')
@@ -431,7 +399,7 @@ export default {
 
 <style lang="scss">
   @import "~@scss/variables";
-   .chart-renderer {
+  .chart-renderer {
     position: relative;
   }
   .chart-renderer__wrapper {
@@ -474,7 +442,7 @@ export default {
   }
   .chart__line {
     fill: none;
-    stroke-width: .2rem;
+    stroke-width: .1rem;
     stroke: $col-chart-line;
     stroke-linecap: round;
   }
@@ -485,7 +453,7 @@ export default {
     }
     .domain { display: none; }
   }
-  .chart__y-axis {
+  .chart__y-axis, .chart__y-axis-zero {
     text {
       font-size: 1.6rem;
       fill: $col-chart-text;
@@ -493,9 +461,14 @@ export default {
     line {
       stroke-dasharray: 3 3;
       stroke: $col-chart-ticks;
-      opacity: .15;
+      opacity: .55;
     }
     .domain { display: none; }
+  }
+  .chart__y-axis-zero {
+    line {
+      opacity: 1;
+    }
   }
   .chart__tip {
     transition: opacity .2s;

@@ -145,7 +145,7 @@
       <button
         v-ripple
         v-if="asset.owner !== accountId"
-        class="asset-details__update-btn"
+        class="asset-details__update-btn app__button-raised"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
@@ -159,7 +159,7 @@
       <button
         v-else
         v-ripple
-        class="asset-details__update-btn"
+        class="asset-details__update-btn app__button-raised"
         @click="$emit(EVENTS.updateAsk)"
       >
         {{ 'asset-details.update-btn' | globalize }}
@@ -302,18 +302,7 @@ $media-small-height: 460px;
 }
 
 .asset-details__update-btn {
-  @include button-raised();
-
   width: 20rem;
-}
-
-.asset-details__cancel-btn {
-  @include button();
-
-  padding-left: .1rem;
-  padding-right: .1rem;
-  margin-bottom: 2rem;
-  font-weight: normal;
 }
 
 .asset-details__header {
