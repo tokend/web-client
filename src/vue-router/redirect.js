@@ -15,9 +15,9 @@ export const resolveRedirect = (to, from, next) => {
   }
 }
 
-function handleEmailRedirect (verificationCode, next) {
+function handleEmailRedirect (encodedVerificationCode, next) {
   next({
     ...vueRoutes.login,
-    params: { encodedVerificationCode: verificationCode },
+    params: { encodedVerificationCode },
   })
 }
