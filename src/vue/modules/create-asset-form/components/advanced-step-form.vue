@@ -20,12 +20,12 @@
           <div class="advanced-step-form__pre-issued-asset-signer-wrp">
             <input-field
               white-autofill
-              v-model="form.preissuedAssetSigner"
-              @blur="touchField('form.preissuedAssetSigner')"
+              v-model="form.preIssuanceAssetSigner"
+              @blur="touchField('form.preIssuanceAssetSigner')"
               name="create-asset-pre-issuance-asset-signer"
               :label="'create-asset-form.pre-issuance-signer-lbl' | globalize"
               :error-message="getFieldErrorMessage(
-                'form.preissuedAssetSigner',
+                'form.preIssuanceAssetSigner',
               )"
               :disabled="isDisabled"
             />
@@ -34,14 +34,14 @@
               type="button"
               class="app__button-flat advanced-step-form__insert-account-id-btn"
               :disabled="isDisabled"
-              @click="form.preissuedAssetSigner = mainSignerAccountId"
+              @click="form.preIssuanceAssetSigner = mainSignerAccountId"
             >
               {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
             </button>
           </div>
 
           <vue-markdown
-            v-if="form.preissuedAssetSigner === mainSignerAccountId"
+            v-if="form.preIssuanceAssetSigner === mainSignerAccountId"
             class="advanced-step-form__pre-issuance-disclaimer"
             :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
           />
@@ -140,7 +140,7 @@ export default {
   data: _ => ({
     form: {
       isPreissuanceDisabled: false,
-      preissuedAssetSigner: '',
+      preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
     },
@@ -151,7 +151,7 @@ export default {
   validations () {
     return {
       form: {
-        preissuedAssetSigner: {
+        preIssuanceAssetSigner: {
           required: requiredUnless(function () {
             return this.form.isPreissuanceDisabled
           }),
@@ -178,13 +178,13 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preissuedAssetSigner === config().NULL_ASSET_SIGNER
+        this.request.preIssuanceAssetSigner === config().NULL_ASSET_SIGNER
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,
-        preissuedAssetSigner: isPreissuanceDisabled
+        preIssuanceAssetSigner: isPreissuanceDisabled
           ? ''
-          : this.request.preissuedAssetSigner,
+          : this.request.preIssuanceAssetSigner,
         initialPreissuedAmount: isPreissuanceDisabled
           ? ''
           : this.request.initialPreissuedAmount,
