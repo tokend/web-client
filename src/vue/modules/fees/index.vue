@@ -22,12 +22,10 @@
 import FeesTable from './components/fees-table'
 import LoadSpinner from '@/vue/common/Loader'
 
-import { Wallet } from '@tokend/js-sdk'
+import { vuexTypes } from '@/vuex'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { initApi } from './_api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
@@ -37,18 +35,6 @@ export default {
     FeesTable,
   },
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     assetCode: {
       type: String,
       default: '',
@@ -64,6 +50,9 @@ export default {
     ...mapGetters('fees', {
       fees: types.fees,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
 
     valuableFeesByAssetCode () {
       return this.fees.filter(item => {
@@ -74,11 +63,9 @@ export default {
   },
 
   async created () {
-    initApi(this.wallet, this.config)
     this.setAccountId(this.wallet.accountId)
     await this.loadFees()
   },
-
   methods: {
     ...mapMutations('fees', {
       setAccountId: types.SET_ACCOUNT_ID,

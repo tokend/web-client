@@ -1,5 +1,5 @@
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 import { Fee } from '../wrappers/fee'
 
 export const state = {
