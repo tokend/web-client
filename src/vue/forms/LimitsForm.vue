@@ -31,7 +31,7 @@
             <td>{{ 'limits-form.daily-limit-lbl' | globalize }}</td>
             <td>
               {{
-                getLimitByPeriod('dailyOut') ||
+                getLimitByScope('dailyOut') ||
                   'limits-form.not-set-lbl' | globalize
               }}
             </td>
@@ -41,7 +41,7 @@
             <!-- eslint-disable-next-line -->
             <td>
               {{
-                getLimitByPeriod('weeklyOut') ||
+                getLimitByScope('weeklyOut') ||
                   'limits-form.not-set-lbl' | globalize
               }}
             </td>
@@ -51,7 +51,7 @@
             <!-- eslint-disable-next-line -->
             <td>
               {{
-                getLimitByPeriod('monthlyOut') ||
+                getLimitByScope('monthlyOut') ||
                   'limits-form.not-set-lbl' | globalize
               }}
             </td>
@@ -61,7 +61,7 @@
             <!-- eslint-disable-next-line -->
             <td>
               {{
-                getLimitByPeriod('annualOut') ||
+                getLimitByScope('annualOut') ||
                   'limits-form.not-set-lbl' | globalize
               }}
             </td>
@@ -334,29 +334,29 @@ export default {
       if (!this.isFormValid()) return
       this.showConfirmation()
     },
-    getLimitByPeriod (period) {
-      const limitType = this.selectedLimitsByOpType
+    getLimitByScope (period) {
+      const limitByType = this.selectedLimitsByOpType
       switch (period) {
         case 'dailyOut':
-          if (MAX_VALID_LIMIT_VALUE === limitType.dailyOut) {
+          if (limitByType.dailyOut === MAX_VALID_LIMIT_VALUE) {
             return ''
           }
-          return limitType.dailyOut
+          return limitByType.dailyOut
         case 'weeklyOut':
-          if (MAX_VALID_LIMIT_VALUE === limitType.weeklyOut) {
+          if (limitByType.weeklyOut === MAX_VALID_LIMIT_VALUE) {
             return ''
           }
-          return limitType.weeklyOut
+          return limitByType.weeklyOut
         case 'monthlyOut':
-          if (MAX_VALID_LIMIT_VALUE === limitType.monthlyOut) {
+          if (MAX_VALID_LIMIT_VALUE === limitByType.monthlyOut) {
             return ''
           }
-          return limitType.monthlyOut
+          return limitByType.monthlyOut
         case 'annualOut':
-          if (MAX_VALID_LIMIT_VALUE === limitType.annualOut) {
+          if (MAX_VALID_LIMIT_VALUE === limitByType.annualOut) {
             return ''
           }
-          return limitType.annualOut
+          return limitByType.annualOut
       }
     },
     async submit () {
