@@ -129,3 +129,7 @@ export const validateUrl = url => {
   const reg = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
   return reg.test(url)
 }
+
+export const isInsufficient = (available) => value => {
+  return !validators.helpers.req(value) || Number(value) < Number(available)
+}
