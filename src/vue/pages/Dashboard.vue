@@ -153,7 +153,10 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    currentAsset () {
+    currentAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
       this.loadBalances()
     },
   },
@@ -173,7 +176,7 @@ export default {
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.find(a => a === 'ETH') || keys[0] || ''
+          keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
     },
 

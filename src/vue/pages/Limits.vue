@@ -142,6 +142,13 @@ export default {
       return this.formattedAccountLimits[this.selectedAsset] || {}
     },
   },
+  watch: {
+    selectedAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
+    },
+  },
   async created () {
     if (!this.accountBalances.length) {
       try {
@@ -246,7 +253,9 @@ export default {
       this.setLimitsRequestsLoader()
     },
     setDefaultAssetCode () {
-      this.selectedAsset = this.accountBalancesAssetsCodes[0]
+      this.selectedAsset = this.accountBalancesAssetsCodes
+        .find(item => item === this.$route.query.asset) ||
+        this.accountBalancesAssetsCodes[0]
     },
     setLimitsRequestsLoader () {
       this.limitsRequestsLoader = this.getLimitsRequestsLoader()
