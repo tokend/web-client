@@ -838,10 +838,9 @@ export default {
       ]
       for (let document of documents) {
         if (document && !document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
           )
-          document.setKey(documentKey)
         }
       }
     },

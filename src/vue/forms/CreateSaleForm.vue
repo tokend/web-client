@@ -593,10 +593,9 @@ export default {
       ]
       for (let document of documents) {
         if (document && !document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
           )
-          document.setKey(documentKey)
         }
       }
     },
@@ -622,9 +621,13 @@ export default {
 
     async getSaleDescription (request) {
       try {
-        const { data } =
-          await Sdk.api.blobs.get(request.description, this.accountId)
-        return JSON.parse(data.value)
+        const accountId = this.accountId
+        const blobId = request.description
+
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+        const { data: blob } = await Api.getWithSignature(endpoint)
+
+        return JSON.parse(blob.value)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }

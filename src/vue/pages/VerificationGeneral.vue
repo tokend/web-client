@@ -266,7 +266,9 @@ export default {
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
         if (document && !document.key) {
-          document = await DocumentUploader.uploadSingleDocument(document)
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
+          )
         }
       }
     },

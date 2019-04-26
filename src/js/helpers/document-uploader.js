@@ -15,12 +15,15 @@ export class DocumentUploader {
    * document (!! nothing common with MIME-type)
    * @param opts.mimeType - MIME-type of the file being uploaded
    * @param opts.file {ArrayBuffer} - file itself
+   * @param opts.accountId {string} - document's owner account ID
    *
    * @return {string}
    */
   static async uploadDocument (opts) {
-    const { type, mimeType, file } = opts
-    const config = await this.createDocumentAnchorConfig(type, mimeType)
+    const { type, mimeType, file, accountId } = opts
+    const config = await this._createDocumentAnchorConfig(
+      { type, mimeType, accountId }
+    )
 
     await this._uploadFile(
       file, _omit(config, ['id', 'url', 'type']), mimeType
@@ -36,23 +39,25 @@ export class DocumentUploader {
   /**
    * @param {DocumentContainer} document - instance of {@link DocumentContainer}
    * to be uploaded
+   * @param {string} accountId - document's owner account ID
+   *
    * @returns {Promise<object>}
    */
-  static async uploadSingleDocument (document) {
+  static async uploadSingleDocument (document, accountId) {
     const details = document.getDetailsForUpload()
-    const key = await this.uploadDocument(details)
+    const key = await this.uploadDocument({ ...details, accountId })
     document.setKey(key)
     return document
   }
 
-  async _createDocumentAnchorConfig (documentType, mimeType) {
+  static async _createDocumentAnchorConfig ({ type, mimeType, accountId }) {
     const { data: config } = await Api.api.postWithSignature('/documents', {
       data: {
-        type: documentType,
+        type,
         attributes: { content_type: mimeType },
         relationships: {
           owner: {
-            data: { id: this.wallet.accountId },
+            data: { id: accountId },
           },
         },
       },
@@ -69,14 +74,14 @@ export class DocumentUploader {
    * @return {*}
    * @private
    */
-  async _uploadFile (file, policy, mimeType) {
-    const formData = this.createFileFormData(file, policy, mimeType)
+  static async _uploadFile (file, policy, mimeType) {
+    const formData = this._createFileFormData(file, policy, mimeType)
 
     // TODO: posting should not be on this level of abstraction
     await Vue.http.post(config.FILE_STORAGE, formData)
   }
 
-  _createFileFormData (file, policy, mimeType) {
+  static _createFileFormData (file, policy, mimeType) {
     const formData = new FormData()
 
     for (const key in policy) {

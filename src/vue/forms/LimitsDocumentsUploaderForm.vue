@@ -75,6 +75,9 @@ import { Api } from '@/api'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 const EVENTS = {
   requestUploaded: 'request-uploaded',
 }
@@ -92,6 +95,11 @@ export default {
       documents: {},
     },
   }),
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
+  },
   validations () {
     const documents = {}
 
@@ -153,7 +161,9 @@ export default {
     },
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
-        document = await DocumentUploader.uploadSingleDocument(document)
+        document = await DocumentUploader.uploadSingleDocument(
+          document, this.accountId
+        )
       }
     },
     formatDocumentsForRequest () {
