@@ -86,9 +86,10 @@ export default {
   }),
   validations: {
     country: { required },
-    proofOfInvestor: { required: requiredIf(function () {
-      return this.isAccredited
-    }),
+    proofOfInvestor: {
+      required: requiredIf(function () {
+        return this.isAccredited
+      }),
     },
   },
   computed: {
