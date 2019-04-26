@@ -2,7 +2,7 @@ import { IssuanceRequest } from '../wrappers/issuance'
 
 import { types } from './types'
 
-import { api } from '../_api'
+import { api } from '@/api'
 
 export const state = {
   accountId: '',

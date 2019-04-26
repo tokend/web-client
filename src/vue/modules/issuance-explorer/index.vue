@@ -33,11 +33,9 @@ import IssuancesTable from './components/issuances-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 
 const EVENTS = {
   shouldUpdate: 'update:shouldUpdate',
@@ -52,18 +50,6 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     shouldUpdate: {
       type: Boolean,
       default: false,
@@ -81,6 +67,9 @@ export default {
       accountId: types.accountId,
       issuances: types.issuances,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
 
   watch: {
@@ -93,7 +82,6 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
     this.setAccountId(this.wallet.accountId)
 
     this.initFirstPageLoader()
