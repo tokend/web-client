@@ -155,15 +155,19 @@ export default {
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {
-          this.y = d3.scaleLinear()
+          const y = d3.scaleLinear()
             .range([this.height, 0])
-          this.yAxisLine = d3.axisRight(this.y)
+            .domain([0, 12])
+          this.yAxisLine = d3.axisRight(y)
+            .tickValues([0, 5, 10])
             .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
             .tickSizeInner(this.width)
             .tickSizeOuter(0)
             .tickPadding(25)
           this.svg.append('g')
             .attr('class', `${CLASS_NAME}__y-axis`)
+            .call(this.yAxisLine)
+            .selectAll('line')
         }
         return
       }
@@ -183,16 +187,6 @@ export default {
       let { max, min } = this.getMaxAndMin(data)
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time
-      if (!this.hasValue) {
-        if (this.isTicksShown) {
-          this.y.domain([0, 12])
-          const yAxisLine = d3.axisRight(this.y)
-            .tickValues([0, 5, 10])
-          this.svg.selectAll(`.${CLASS_NAME}__y-axis`)
-            .call(yAxisLine)
-        }
-        return
-      }
       // Define domains
       this.y.domain(this.addDomainPadding([min, max]))
       this.x.domain([firstDate, lastDate])
