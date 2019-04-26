@@ -74,8 +74,6 @@ import { Wallet, base } from '@tokend/js-sdk'
 import { api, initApi } from './_api'
 import { isUSResidence } from './is-us-residence'
 
-import log from 'loglevel'
-
 const EVENTS = {
   submit: 'submit',
 }
@@ -140,9 +138,7 @@ export default {
       try {
         this.populateForm(await this.getBlobData(this.blobId))
       } catch (e) {
-        // catching error to be able to
-        // re-submit incompatible requests
-        log.error(e)
+        ErrorHandler.processWithoutFeedback(e)
       }
 
       // Disabling country change to prevent updating role for
