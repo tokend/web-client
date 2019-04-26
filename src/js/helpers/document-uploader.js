@@ -1,6 +1,9 @@
 import Vue from 'vue'
+
 import config from '@/config'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
+
+import _omit from 'lodash/omit'
 
 export class DocumentUploader {
   /**
@@ -17,27 +20,17 @@ export class DocumentUploader {
    */
   static async uploadDocument (opts) {
     const { type, mimeType, file } = opts
-    const configResponse = await Sdk.api.documents.create(type, mimeType)
-    const config = {
-      ...configResponse.formData,
-    }
-    await this._uploadFile(file, config, mimeType)
+    const config = await this.createDocumentAnchorConfig(type, mimeType)
+
+    await this._uploadFile(
+      file, _omit(config, ['id', 'url', 'type']), mimeType
+    )
+
     return config.key
   }
 
   static async uploadDocuments (...files) {
     return Promise.all(files.map(file => this.uploadDocument(file)))
-  }
-
-  /**
-   * @async
-   * Loads file by specified URL
-   * @param url {string} - full URL where document is placed
-   * @return {Blob}
-   */
-  static async loadFileByURL (url) {
-    const response = await Vue.http.get(url, { responseType: 'blob' })
-    return response.body
   }
 
   /**
@@ -52,23 +45,49 @@ export class DocumentUploader {
     return document
   }
 
+  async _createDocumentAnchorConfig (documentType, mimeType) {
+    const { data: config } = await Api.api.postWithSignature('/documents', {
+      data: {
+        type: documentType,
+        attributes: { content_type: mimeType },
+        relationships: {
+          owner: {
+            data: { id: this.wallet.accountId },
+          },
+        },
+      },
+    })
+
+    return config
+  }
+
   /**
    * Uploads file sending multipart/form-data request to the server
    * @param file {ArrayBuffer}
    * @param policy {policy}
-   * @param mimeString
+   * @param mimeType
    * @return {*}
    * @private
    */
-  static _uploadFile (file, policy, mimeString) {
+  async _uploadFile (file, policy, mimeType) {
+    const formData = this.createFileFormData(file, policy, mimeType)
+
+    // TODO: posting should not be on this level of abstraction
+    await Vue.http.post(config.FILE_STORAGE, formData)
+  }
+
+  _createFileFormData (file, policy, mimeType) {
     const formData = new FormData()
+
     for (const key in policy) {
-      // FIXME: Fix config method in SDK
-      formData.append(key.replace(/_/g, '-'), policy[key])
+      // converts camelCase policy to kebab-case
+      const convertedPolicy = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+      formData.append(convertedPolicy, policy[key])
     }
-    const blob = new Blob([file], { type: mimeString })
+
+    const blob = new Blob([file], { type: mimeType })
     formData.append('file', blob)
-    // TODO: posting should not be on this lvl of abstraction
-    return Vue.http.post(config.FILE_STORAGE, formData)
+
+    return formData
   }
 }

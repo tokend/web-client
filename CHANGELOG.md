@@ -35,6 +35,7 @@ for further information about branching and tagging conventions.
 
 #### Removed
 - Quitted building sourcemaps for production
+- Unused methods from `DocumentContainer` class
 
 ## [1.5.0]
 ### "Under the hood changes"
