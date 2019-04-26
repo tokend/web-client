@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
 - Now showing zero axis line, if chart has both negative and
   positive values
 - Now using default d3 ticks calculation on chart axes
+- Now using "app__button-*" classes instead of button mixins
 - Now opening pre-issuance details link in new tab 
 
 ## [1.6.0-x.0] - 2019-04-24

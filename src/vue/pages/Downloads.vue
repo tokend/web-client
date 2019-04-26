@@ -1,7 +1,7 @@
 <template>
   <div class="downloads">
     <button
-      class="downloads__link"
+      class="downloads__link app__button"
       @click="$router.go(-1)"
     >
       {{ 'downloads-page.go-back-btn' | globalize }}
@@ -127,8 +127,6 @@ export default {
 }
 
 .downloads__link {
-  @include button();
-
   padding: 0;
   font-weight: normal;
   font-size: 1.3rem;

@@ -1,7 +1,7 @@
 <template>
   <div class="ios-installation-guide">
     <button
-      class="ios-installation-guide__link"
+      class="ios-installation-guide__link app__button"
       @click="$router.go(-1)"
     >
       {{ 'ios-installation-guide.go-back-btn' | globalize }}
@@ -170,8 +170,6 @@ export default {
 }
 
 .ios-installation-guide__link {
-  @include button();
-
   padding: 0;
   font-weight: normal;
   font-size: 1.3rem;
