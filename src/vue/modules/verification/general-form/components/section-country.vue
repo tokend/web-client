@@ -63,7 +63,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
-import GetterAccessorMixin from './getter-accessor'
 
 import { COUNTRIES } from '../countries'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -74,7 +73,7 @@ import { isUSResidence } from '../is-us-residence'
 
 export default {
   name: 'section-country',
-  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  mixins: [FormMixin, SectionMixin],
   props: {
     isCountryChangeDisabled: {
       type: Boolean,
@@ -97,15 +96,15 @@ export default {
       countryCode: types.countryCode,
     }),
     isAccredited: {
-      get () { return this.getter(types.isAccredited) },
+      get () { return this.callGetter(types.isAccredited) },
       set (v) { this.setIsAccredited(v) },
     },
     country: {
-      get () { return this.getter(types.country) },
+      get () { return this.callGetter(types.country) },
       set (v) { this.setCountry(v) },
     },
     proofOfInvestor: {
-      get () { return this.getter(types.proofOfInvestor) },
+      get () { return this.callGetter(types.proofOfInvestor) },
       set (v) { this.setProofOfInvestor(v) },
     },
     isUSResident () {

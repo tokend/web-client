@@ -23,7 +23,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
-import GetterAccessorMixin from './getter-accessor'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
@@ -32,13 +31,13 @@ import { types } from '../store/types'
 
 export default {
   name: 'section-avatar',
-  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     DOCUMENT_TYPES,
   }),
   computed: {
     avatar: {
-      get () { return this.getter(types.avatar) },
+      get () { return this.callGetter(types.avatar) },
       set (v) { this.setAvatar(v) },
     },
   },

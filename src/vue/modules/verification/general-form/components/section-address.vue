@@ -73,7 +73,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
-import GetterAccessorMixin from './getter-accessor'
 
 import { mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -81,26 +80,26 @@ import { required } from '@validators'
 
 export default {
   name: 'section-address',
-  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  mixins: [FormMixin, SectionMixin],
   computed: {
     line1: {
-      get () { return this.getter(types.line1) },
+      get () { return this.callGetter(types.line1) },
       set (v) { this.setLine1(v) },
     },
     line2: {
-      get () { return this.getter(types.line2) },
+      get () { return this.callGetter(types.line2) },
       set (v) { this.setLine2(v) },
     },
     city: {
-      get () { return this.getter(types.city) },
+      get () { return this.callGetter(types.city) },
       set (v) { this.setCity(v) },
     },
     state: {
-      get () { return this.getter(types.state) },
+      get () { return this.callGetter(types.state) },
       set (v) { this.setState(v) },
     },
     postalCode: {
-      get () { return this.getter(types.postalCode) },
+      get () { return this.callGetter(types.postalCode) },
       set (v) { this.setPostalCode(v) },
     },
   },

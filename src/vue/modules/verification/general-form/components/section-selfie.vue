@@ -44,7 +44,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
-import GetterAccessorMixin from './getter-accessor'
 
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
@@ -55,7 +54,7 @@ import { documentContainer } from '@/validators'
 
 export default {
   name: 'section-selfie',
-  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  mixins: [FormMixin, SectionMixin],
   props: {
     verificationCode: {
       type: String,
@@ -71,7 +70,7 @@ export default {
   },
   computed: {
     selfie: {
-      get () { return this.getter(types.selfie) },
+      get () { return this.callGetter(types.selfie) },
       set (v) { this.setSelfie(v) },
     },
   },

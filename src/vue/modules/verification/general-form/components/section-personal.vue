@@ -50,7 +50,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
-import GetterAccessorMixin from './getter-accessor'
 
 import { mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -60,21 +59,21 @@ import moment from 'moment'
 
 export default {
   name: 'section-personal',
-  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     moment,
   }),
   computed: {
     firstName: {
-      get () { return this.getter(types.firstName) },
+      get () { return this.callGetter(types.firstName) },
       set (v) { this.setFirstName(v) },
     },
     lastName: {
-      get () { return this.getter(types.lastName) },
+      get () { return this.callGetter(types.lastName) },
       set (v) { this.setLastName(v) },
     },
     dateOfBirth: {
-      get () { return this.getter(types.dateOfBirth) },
+      get () { return this.callGetter(types.dateOfBirth) },
       set (v) { this.setDateOfBirth(v) },
     },
   },

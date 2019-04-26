@@ -5,4 +5,9 @@ export default {
       required: true,
     },
   },
+  methods: {
+    callGetter (type) {
+      return this.$store.getters[`verification-general-form/${type}`]
+    },
+  },
 }

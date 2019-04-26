@@ -54,7 +54,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import SectionMixin from './section.mixin'
-import GetterAccessorMixin from './getter-accessor'
 
 import { mapMutations } from 'vuex'
 import { types } from '../store/types'
@@ -70,23 +69,23 @@ import {
 
 export default {
   name: 'section-documents',
-  mixins: [FormMixin, SectionMixin, GetterAccessorMixin],
+  mixins: [FormMixin, SectionMixin],
   data: _ => ({
     DOCUMENT_TYPES,
     ID_DOCUMENT_TYPES,
   }),
   computed: {
     idDocumentType: {
-      get () { return this.getter(types.idDocumentType) },
+      get () { return this.callGetter(types.idDocumentType) },
       set (v) { this.setIdDocumentType(v) },
     },
 
     idDocumentFace: {
-      get () { return this.getter(types.idDocumentFace) },
+      get () { return this.callGetter(types.idDocumentFace) },
       set (v) { this.setIdDocumentFace(v) },
     },
     idDocumentBack: {
-      get () { return this.getter(types.idDocumentBack) },
+      get () { return this.callGetter(types.idDocumentBack) },
       set (v) { this.setIdDocumentBack(v) },
     },
     needIdDocumentBack () {
