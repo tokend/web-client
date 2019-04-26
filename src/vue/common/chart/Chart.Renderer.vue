@@ -61,6 +61,7 @@ export default {
       x: '',
       yAxisLine: '',
       isFirstRender: true,
+      animationDuration: 500
     }
   },
   computed: {
@@ -170,6 +171,8 @@ export default {
             .tickSizeInner(this.width)
             .tickSizeOuter(0)
             .tickPadding(25)
+          this.svg.append('g')
+            .attr('class', `${CLASS_NAME}__y-axis`)
         }
         return
       }
@@ -202,8 +205,7 @@ export default {
 
           const yAxisLine = d3.axisRight(this.y)
             .tickValues([0, 5, 10])
-          this.svg.append('g')
-            .attr('class', `${CLASS_NAME}__y-axis`)
+          this.svg.selectAll('class', `${CLASS_NAME}__y-axis`)
             .call(yAxisLine)
             .selectAll('line')
         }
@@ -220,17 +222,32 @@ export default {
       const line = d3.line()
         .x((d) => this.x(d.time))
         .y((d) => this.y(d.value))
-      const path = this.svg.append('path')
+
+      let path = this.svg.selectAll(`.${CLASS_NAME}__line`)
+        .data([data])
+
+      path = path
+        .enter()
+        .append('path')
         .attr('class', `${CLASS_NAME}__line`)
-        .attr('d', line(data))
-      const totalLength = path.node().getTotalLength()
-      path
-        .attr('stroke-dasharray', totalLength + ' ' + totalLength)
-        .attr('stroke-dashoffset', totalLength)
-        .transition()
-        .duration(this.chartRenderingTime)
-        .ease(d3.easeLinear)
-        .attr('stroke-dashoffset', 0)
+        .merge(path)
+
+      path.transition()
+        .duration(this.animationDuration)
+        .attr('d', line)
+
+      // const path = this.svg.append('path')
+      //   .attr('class', `${CLASS_NAME}__line`)
+      //   .attr('d', line(data))
+
+      // const totalLength = path.node().getTotalLength()
+      // path
+      //   .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+      //   .attr('stroke-dashoffset', totalLength)
+      //   .transition()
+      //   .duration(this.chartRenderingTime)
+      //   .ease(d3.easeLinear)
+      //   .attr('stroke-dashoffset', 0)
       let defs = this.svg.append('defs')
       let lg = defs.append('linearGradient')
         .attr('id', 'area-gradient')
@@ -418,276 +435,6 @@ export default {
       }
       tip.classed(`${CLASS_NAME}__tip--hidden`, true)
     },
-    // render () {
-    //   this.clear()
-    //   // Setup the data
-    //   const data = this.normalizedData
-    //   let { max, min } = this.getMaxAndMin(data)
-    //   const tickValues = []
-    //   if (max === min) {
-    //     tickValues.push(max)
-    //     max = max * 1.1
-    //     min = min * 0.9
-    //     tickValues.push(min)
-    //     tickValues.push(max)
-    //   } else {
-    //     tickValues.push(max)
-    //     tickValues.push(min)
-    //     tickValues.push(Math.floor(max * 0.3333))
-    //     tickValues.push(Math.floor(max * 0.6666))
-    //   }
-    //   if (!data[0] || !data[data.length - 1]) return
-    //   const firstDate = data[0].time
-    //   const lastDate = data[data.length - 1].time
-    //   // Setup svg
-    //   const className = 'chart'
-    //   const yAxisTickWidth = this.isTicksShown
-    //     ? this.formatMoneyCustom(max).length * 9 - 5
-    //     : 0
-    //   const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
-    //   const dimensions = this.getDimensions(this.$el)
-    //   const width = dimensions.width // - margin.right - margin.left
-    //   const height = dimensions.height - margin.top - margin.bottom
-    //   const viewWidth = width + margin.left
-    //   const viewHeight = height + margin.top + margin.bottom
-    //   const svg = d3.select(this.$refs.chart)
-    //     .append('svg')
-    //     .attr('width', '100%')
-    //     .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
-    //     .attr('preserveAspectRatio', 'xMinYMin')
-    //     .attr('class', className)
-    //     .append('g')
-    //   if (!this.hasValue) {
-    //     if (this.isTicksShown) {
-    //       const y = d3.scaleLinear()
-    //         .range([height, 0])
-    //         .domain([0, 12])
-    //       const yAxisLine = d3.axisRight(y)
-    //         .tickValues([0, 5, 10])
-    //         .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
-    //         .tickSizeInner(width)
-    //         .tickSizeOuter(0)
-    //         .tickPadding(25)
-    //       svg.append('g')
-    //         .attr('class', `${className}__y-axis`)
-    //         .call(yAxisLine)
-    //         .selectAll('line')
-    //     }
-    //     return
-    //   }
-    //   // Define domains
-    //   const y = d3.scaleLinear()
-    //     .range([height, 0])
-    //     .domain(this.addDomainPadding([min, max]))
-    //   const x = d3.scaleTime()
-    //     .range([0, width])
-    //     .domain([firstDate, lastDate])
-    //   // Render the line and area
-    //   const area = d3.area()
-    //     .x((d) => x(d.time))
-    //     .y0(y(min))
-    //     .y1((d) => y(d.value))
-    //   const line = d3.line()
-    //     .x((d) => x(d.time))
-    //     .y((d) => y(d.value))
-    //   const path = svg.append('path')
-    //     .attr('class', `${className}__line`)
-    //     .attr('d', line(data))
-    //   const totalLength = path.node().getTotalLength()
-    //   path
-    //     .attr('stroke-dasharray', totalLength + ' ' + totalLength)
-    //     .attr('stroke-dashoffset', totalLength)
-    //     .transition()
-    //     .duration(this.chartRenderingTime)
-    //     .ease(d3.easeLinear)
-    //     .attr('stroke-dashoffset', 0)
-    //   let defs = svg.append('defs')
-    //   let lg = defs.append('linearGradient')
-    //     .attr('id', 'area-gradient')
-    //     .attr('x1', '0%')
-    //     .attr('x2', '0%')
-    //     .attr('y1', '0%')
-    //     .attr('y2', '100%')
-    //   lg.append('stop')
-    //     .attr('offset', '30%')
-    //     .style('stop-color', '#d5ceff')
-    //     .style('stop-opacity', 0.5)
-    //   lg.append('stop')
-    //     .attr('offset', '50%')
-    //     .style('stop-color', '#d5ceff')
-    //     .style('stop-opacity', 0.25)
-    //   lg.append('stop')
-    //     .attr('offset', '70%')
-    //     .style('stop-color', '#d5ceff')
-    //     .style('stop-opacity', 0.1)
-    //   lg.append('stop')
-    //     .attr('offset', '90%')
-    //     .style('stop-color', '#d5ceff')
-    //     .style('stop-opacity', 0.07)
-    //   lg.append('stop')
-    //     .attr('offset', '100%')
-    //     .style('stop-color', '#d5ceff')
-    //     .style('stop-opacity', 0.05)
-    //   if (max !== min) {
-    //     const chartAreaWithGradient = svg
-    //       .append('path')
-    //       .datum(data)
-    //       .attr('fill', 'url(#area-gradient)')
-    //       .attr('d', area)
-    //       .style('opacity', '0')
-    //       .style('transition', '0.3s ease-out')
-    //     setTimeout(() => {
-    //       chartAreaWithGradient.style('opacity', '1')
-    //     }, this.chartRenderingTime)
-    //   }
-    //   // Render x-axis
-    //   if (this.isTicksShown) {
-    //     const yAxisLine = d3.axisRight(y)
-    //       .tickValues(tickValues.concat(this.requiredTicks))
-    //       .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
-    //       .tickSizeInner(width)
-    //       .tickSizeOuter(0)
-    //       .tickPadding(25)
-    //     svg.append('g')
-    //       .attr('class', `${className}__y-axis`)
-    //       .call(yAxisLine)
-    //       .selectAll('line')
-    //   }
-    //   // Tip
-    //   const tip = svg.append('g')
-    //     .attr('class', `${className}__tip`)
-    //   // Tip line
-    //   const tipLine = tip.append('line')
-    //     .attr('class', `${className}__tip-line`)
-    //     .attr('x1', 0)
-    //     .attr('y1', 10)
-    //     .attr('x2', 0)
-    //     .attr('y2', 0)
-    //   // Tip circle
-    //   const tipCircle = tip.append('circle')
-    //     .attr('class', `${className}__tip-circle`)
-    //     .attr('cx', 0)
-    //     .attr('r', 5)
-    //   // Tip text box
-    //   const tipTextBox = tip.append('g')
-    //   tipTextBox.append('polygon')
-    //     .attr('points', '0,0 11.5,7 11.5,7 21,0') // width 21, height 7
-    //     .style('fill', 'white')
-    //     .attr('transform', 'translate(-11.5, 17)')
-    //   tipTextBox.append('rect')
-    //     .attr('class', `${className}__tip-text-box`)
-    //     .attr('width', 150)
-    //     .attr('height', 55)
-    //     .attr('transform', 'translate(-75, -38)')
-    //     .attr('rx', 3)
-    //     .attr('ry', 30)
-    //   const tipPriceText = tipTextBox.append('text')
-    //     .attr('class', `${className}__tip-text-price`)
-    //     .attr('text-anchor', 'middle')
-    //     .attr('y', -15)
-    //   const tipPriceChangeText = tipTextBox.append('text')
-    //     .attr('class', `${className}__tip-text-price-change`)
-    //     .attr('text-anchor', 'middle')
-    //     .attr('y', 5)
-    //   const tipTimeTextDD = tip.append('text')
-    //     .attr('class', `${className}__tip-text-time-dd`)
-    //     .attr('text-anchor', 'middle')
-    //     .attr('y', height + margin.bottom - 5)
-    //   const tipTimeTextMM = tip.append('text')
-    //     .attr('class', `${className}__tip-text-time-mm`)
-    //     .attr('text-anchor', 'middle')
-    //     .attr('y', height + margin.bottom + 8)
-    //   // Tip motion capture area
-    //   const motionCaptureArea = svg.append('rect')
-    //     .attr('class', `${className}__tip-motion-capture-area`)
-    //     .attr('width', width)
-    //     .attr('height', height - 25)
-    //     .attr('transform', 'translate(0, 25)')
-    //   // Tip Mouse events
-    //   for (const event of ['mouseenter', 'touchenter']) {
-    //     motionCaptureArea.on(event, function () {
-    //       tip.classed(`${className}__tip--show`, true)
-    //     })
-    //   }
-    //   for (const event of ['mousemove', 'touchmove']) {
-    //     motionCaptureArea.on(event, () => {
-    //       tip.classed(`${className}__tip--hidden`, false)
-    //       const x0 = x.invert(d3.mouse(svg.node())[0])
-    //       const bisectDate = d3.bisector(d => d.time).left
-    //       const bisectIndex = bisectDate(data, x0, 1)
-    //       const d0 = data[bisectIndex - 1]
-    //       const d1 = data[bisectIndex]
-    //       const nearestPoint = x0 - d0.time > d1.time - x0 ? d1 : d0
-    //       // Change text of the tooltip
-    //       tipPriceText.text(`${formatMoney(nearestPoint.value)} ${this.defaultAsset}`)
-    //       switch (this.scale) {
-    //         case 'year': {
-    //           tipTimeTextDD.text(moment(nearestPoint.time).format('DD MMM'))
-    //           tipTimeTextMM.text(moment(nearestPoint.time).format('YYYY'))
-    //           break
-    //         }
-    //         case 'month': {
-    //           tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
-    //           tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
-    //           break
-    //         }
-    //         case 'day': {
-    //           tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
-    //           tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
-    //           break
-    //         }
-    //         case 'hour': {
-    //           tipTimeTextDD.text(moment(nearestPoint.time).format('h:mm a'))
-    //           tipTimeTextMM.text(moment(nearestPoint.time).format('DD MMM'))
-    //           break
-    //         }
-    //         default: {
-    //           tipTimeTextDD.text(moment(nearestPoint.time).format('DD'))
-    //           tipTimeTextMM.text(moment(nearestPoint.time).format('MMM'))
-    //           break
-    //         }
-    //       }
-    //       function getPrecision (number) {
-    //         return number.toString().split('.')[0].length + 1
-    //       }
-    //       if (data[data.indexOf(nearestPoint) - 1]) {
-    //         const prevValue = data[data.indexOf(nearestPoint) - 1].value
-    //         const currentValue = nearestPoint.value
-    //         if (prevValue > currentValue) {
-    //           const val = ((prevValue - currentValue) /
-    //             Math.abs(prevValue)) * 100
-    //           tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)
-    //         } else if (prevValue < currentValue) {
-    //           const val = ((currentValue - prevValue) /
-    //             Math.abs(prevValue)) * 100
-    //           tipPriceChangeText.text(`+${val.toPrecision(getPrecision(val))}%`)
-    //         } else {
-    //           tipPriceChangeText.text('+0%')
-    //         }
-    //       } else {
-    //         tipPriceChangeText.text('+0%')
-    //       }
-    //       // Change X position of the tip
-    //       tip.attr('transform', `translate(${x(nearestPoint.time)})`)
-    //       tipTextBox.style('transform', `translateY(${y(nearestPoint.value) - 35}px)`)
-    //       if (min === max) {
-    //         tipLine.attr('y1', height / 2)
-    //         tipLine.attr('y2', height)
-    //       } else {
-    //         tipLine.attr('y1', y(nearestPoint.value))
-    //         tipLine.attr('y2', height - 10)
-    //       }
-    //       // Change Y position of the circle
-    //       tipCircle.attr('cy', y(nearestPoint.value))
-    //     })
-    //   }
-    //   for (const event of ['mouseout', 'touchout']) {
-    //     motionCaptureArea.on(event, function () {
-    //       tip.classed(`${className}__tip--show`, false)
-    //     })
-    //   }
-    //   tip.classed(`${className}__tip--hidden`, true)
-    // },
   },
 }
 </script>
