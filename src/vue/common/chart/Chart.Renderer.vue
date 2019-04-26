@@ -126,19 +126,6 @@ export default {
       // Setup the data
       const data = this.normalizedData
       let { max, min } = this.getMaxAndMin(data)
-      const tickValues = []
-      if (max === min) {
-        tickValues.push(max)
-        max = max * 1.1
-        min = min * 0.9
-        tickValues.push(min)
-        tickValues.push(max)
-      } else {
-        tickValues.push(max)
-        tickValues.push(min)
-        tickValues.push(Math.floor(max * 0.3333))
-        tickValues.push(Math.floor(max * 0.6666))
-      }
       if (!data[0] || !data[data.length - 1]) return
       const firstDate = data[0].time
       const lastDate = data[data.length - 1].time

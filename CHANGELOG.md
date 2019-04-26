@@ -9,7 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Changed
-- More cutier animation for init loader 
+- More cutier animation for init loader
 - Now selecting invoice point by loyalty account number (Loyalty)
 - Now showing all the received points (360) on the chart
 - Now showing zero axis line, if chart has both negative and
@@ -57,6 +57,7 @@ for further information about branching and tagging conventions.
   create invoice form (Loyalty)
 - Now sending payment transaction to the external system instead of
   creating a blob (Loyalty)
+- Corrected statistics charts data (Loyalty)
 
 #### Fixed
 - Polling when creating an invoice (Loyalty)
