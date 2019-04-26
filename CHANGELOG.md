@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Re-render chart animation
+
 #### Changed
 - Now opening pre-issuance details link in new tab 
 
@@ -35,9 +38,6 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Changed
 - Now selecting invoice point by loyalty account number (Loyalty)
-
-#### Added
-- Re-render chart animation
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
