@@ -5,8 +5,8 @@ import { BLOB_TYPES } from '@tokend/js-sdk'
 import { types } from './types'
 import { api } from '../_api'
 
-import { wrapDocument } from './wrap_document'
-import { uploadDocument } from './upload_document'
+import { wrapDocument } from './wrap-document'
+import { uploadDocument } from './upload-document'
 
 import { toRFC3339, fromRFC3339 } from '../format-date'
 
