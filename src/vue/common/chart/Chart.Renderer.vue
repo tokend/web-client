@@ -61,7 +61,7 @@ export default {
       x: '',
       yAxisLine: '',
       isFirstRender: true,
-      animationDuration: 500
+      animationDuration: 500,
     }
   },
   computed: {
