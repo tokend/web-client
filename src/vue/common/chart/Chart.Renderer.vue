@@ -177,7 +177,6 @@ export default {
       this.svg.append('g')
         .attr('class', `${CLASS_NAME}__y-axis`)
       this.update()
-      this.isFirstRender = false
     },
     update () {
       this.isAnimating = true
@@ -446,6 +445,7 @@ export default {
         })
       }
       tip.classed(`${CLASS_NAME}__tip--hidden`, true)
+      this.isFirstRender = false
       setTimeout(() => {
         this.isAnimating = false
         chartSvg.classed(`${CLASS_NAME}--overflow-hidden`, false)
