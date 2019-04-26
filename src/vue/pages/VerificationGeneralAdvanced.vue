@@ -81,13 +81,12 @@ export default {
     async onFormSubmit () {
       const formRef = this.$refs['form-module-importer'].$refs['component']
       formRef.disableForm()
-      do {
-        // HACK: to reduce the probability of
-        // request being not ingested by API
-        await this.delay(3000)
-        await this.loadKyc()
-      } while (this.kycState !== REQUEST_STATES_STR.pending)
-      // TODO: handle auto-approve
+
+      // HACK: to reduce the probability of
+      // request being not ingested by API
+      await this.delay(3000)
+      await this.loadKyc()
+
       Bus.success('general-form.request-submitted-msg')
       this.scrollTop()
       formRef.enableForm()
