@@ -191,7 +191,6 @@ export default {
           this.svg.selectAll(`.${CLASS_NAME}__y-axis`)
             .call(yAxisLine)
         }
-        console.log('asd')
         return
       }
       // Define domains
