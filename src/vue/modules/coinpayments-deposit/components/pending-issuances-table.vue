@@ -7,7 +7,7 @@
       :asset="item.asset"
       :address="item.address"
       :key="index"
-      :selected="selectedIssuance === item.address"
+      :expanded="selectedIssuance === item.address"
       @expand-row="selectIssuance(item.address)"
     />
   </table>

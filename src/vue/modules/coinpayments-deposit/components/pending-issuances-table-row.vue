@@ -20,7 +20,7 @@
     </tr>
     <tr
       class="pending-issuances-table-row__key-viewer-wrp"
-      v-if="selected"
+      v-if="expanded"
     >
       <td colspan="3">
         <key-viewer
@@ -52,7 +52,7 @@ export default {
     amount: { type: [String, Number], required: true },
     asset: { type: String, required: true },
     address: { type: String, required: true },
-    selected: { type: Boolean, required: true },
+    expanded: { type: Boolean, required: true },
   },
   methods: {
     expandRow () {
