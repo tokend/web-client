@@ -21,6 +21,9 @@ for further information about branching and tagging conventions.
 - Now using default d3 ticks calculation on chart axes
 - Now using "app__button-*" classes instead of button mixins
 
+#### Fixed
+- Account verification using received link from e-mail
+
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
 - Copy button next to email values
