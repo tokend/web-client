@@ -100,8 +100,7 @@
             <fees
               :fees="fees"
               :asset-code="form.asset.code"
-              :external-system-type="form.asset.externalSystemType"
-              @is-pay-for-destination="form.isPaidForRecipient = $event"
+              @paid-for-destination="form.isPaidForRecipient = $event"
             />
           </div>
 
@@ -276,7 +275,7 @@ export default {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
         const feesParams = {
-          assetCode: this.form.asset.code,
+          asset: this.form.asset,
           amount: this.form.amount,
           recipientId: recipientAccountId,
           senderId: this.accountId,

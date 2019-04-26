@@ -1,23 +1,23 @@
 <template>
   <table class="fees-renderer">
     <tbody
-      class="fees-renderer__tbody"
+      class="fees-component__tbody"
       :class="{ 'fees-renderer__data--loading': isFeesLoadPending }"
     >
       <tr
         class="fees_renderer__didcated-text"
-        v-if="+externalSystemType && isWithdrawalFees"
+        v-if="+fees.externalSystemType && fees.isWithdrawalFees"
       >
         <td>
-          {{ 'fees.network-fee-hint' | globalize }}
+          {{ 'fees-renderer.network-fee-hint' | globalize }}
         </td>
         <td>
-          {{ 'fees.network-fee-unknown' | globalize }}
+          {{ 'fees-renderer.network-fee-unknown' | globalize }}
         </td>
       </tr>
       <tr>
         <td>
-          {{ 'fees.source-fixed-fee' | globalize }}
+          {{ 'fees-renderer.source-fixed-fee' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -35,7 +35,7 @@
       </tr>
       <tr>
         <td>
-          {{ 'fees.source-percent-fee' | globalize }}
+          {{ 'fees-renderer.source-percent-fee' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -51,10 +51,10 @@
           </template>
         </td>
       </tr>
-      <template v-if="!isWithdrawalFees">
+      <template v-if="!fees.isWithdrawalFees">
         <tr>
           <td>
-            {{ 'fees.destination-fixed-fee' | globalize }}
+            {{ 'fees-renderer.destination-fixed-fee' | globalize }}
           </td>
           <td>
             <template v-if="paidForDestination">
@@ -67,7 +67,7 @@
         </tr>
         <tr>
           <td>
-            {{ 'fees.destination-percent-fee' | globalize }}
+            {{ 'fees-renderer.destination-percent-fee' | globalize }}
           </td>
           <td>
             <template v-if="paidForDestination">
@@ -86,7 +86,7 @@
 
       <tr class="fees-renderer__total-fee-row">
         <td>
-          {{ 'fees.source-fixed-total-fee' | globalize }}
+          {{ 'fees-renderer.source-fixed-total-fee' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -105,10 +105,10 @@
 
       <tr
         class="fees-renderer__total-fee-row"
-        v-if="!isWithdrawalFees"
+        v-if="!fees.isWithdrawalFees"
       >
         <td>
-          {{ 'fees.destination-fixed-total-fee' | globalize }}
+          {{ 'fees-renderer.destination-fixed-total-fee' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -131,11 +131,11 @@
       </tr>
 
       <tr
-        v-if="isAnyFeeForDestination && !isWithdrawalFees"
+        v-if="fees.isAnyFeeForDestination && !fees.isWithdrawalFees"
       >
         <td class="fees-renderer__tick-field">
           <tick-field v-model="paidForDestination">
-            {{ 'fees.pay-fees-for-recipient' | globalize }}
+            {{ 'fees-renderer.pay-fees-for-recipient' | globalize }}
           </tick-field>
         </td>
       </tr>
@@ -147,7 +147,7 @@ import { formatMoney } from '@/vue/filters/formatMoney'
 import { MathUtil } from '@/js/utils'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
-import { FEE_TYPES } from '@tokend/js-sdk'
+import { FeesRecord } from '@/js/records/entities/fees.record'
 
 const EVENTS = {
   paidForDestination: 'paidForDestination',
@@ -162,24 +162,11 @@ export default {
   props: {
     fees: {
       type: Object,
-      default: () => ({
-        destination: {
-          fixed: 0,
-          calculatedPercent: 0,
-        },
-        source: {
-          fixed: 0,
-          calculatedPercent: 0,
-        },
-      }),
+      default: () => FeesRecord,
     },
     assetCode: {
       type: String,
       default: '',
-    },
-    externalSystemType: {
-      type: [String, Number],
-      default: 0,
     },
   },
   data () {
@@ -187,15 +174,6 @@ export default {
       isFeesLoadPending: false,
       paidForDestination: false,
     }
-  },
-  computed: {
-    isWithdrawalFees () {
-      return this.fees.type === FEE_TYPES.withdrawalFee
-    },
-    isAnyFeeForDestination () {
-      return Number(this.fees.destination.fixed) ||
-        Number(this.fees.destination.calculatedPercent)
-    },
   },
   watch: {
     paidForDestination () {
@@ -210,7 +188,7 @@ export default {
     formatFee (fee) {
       const feeData = {
         value: fee,
-        currency: this.assetCode,
+        currency: this.fees.assetCode,
       }
       return this.$options.filters.formatMoney(
         feeData
@@ -219,7 +197,7 @@ export default {
     formatFeeSum (...fees) {
       const feeSumData = {
         value: fees.reduce((sum, item) => sum + item),
-        currency: this.assetCode,
+        currency: this.fees.assetCode,
       }
       return this.$options.filters.formatMoney(
         feeSumData
@@ -234,7 +212,7 @@ export default {
         Number(this.fees.source.calculatedPercent)
       const feeSumData = {
         value: resultFeesFixed + resultFeesPercent,
-        currency: this.assetCode,
+        currency: this.fees.assetCode,
       }
       return this.$options.filters.formatMoney(
         feeSumData
@@ -244,7 +222,7 @@ export default {
       const result = MathUtil.add(fees.fixed, fees.percent)
       const feeData = {
         value: result,
-        currency: this.assetCode,
+        currency: this.fees.assetCode,
       }
       return this.$options.filters.formatMoney(
         feeData

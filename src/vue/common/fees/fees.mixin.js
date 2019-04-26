@@ -1,4 +1,5 @@
 import { PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { FeesRecord } from '@/js/records/entities/fees.record'
 import Fees from './Fees'
 import { Api } from '@/api'
 
@@ -16,7 +17,7 @@ export default {
         Api.api.get(
           this.requestUrl(opts.senderId),
           {
-            asset: opts.assetCode,
+            asset: opts.asset.code,
             fee_type: opts.type,
             subtype: PAYMENT_FEE_SUBTYPES.outgoing,
             amount: opts.amount,
@@ -24,18 +25,19 @@ export default {
         Api.api.get(
           this.requestUrl(opts.recipientId),
           {
-            asset: opts.assetCode,
+            asset: opts.asset.code,
             fee_type: opts.type,
             subtype: PAYMENT_FEE_SUBTYPES.incoming,
             amount: opts.amount,
           }),
       ])
-      // TODO: SEND ASSET/FEE INFO TO FEES.RECORD
-      return {
+      const fees = {
         source: senderFees,
         destination: recipientFees,
         type: opts.type,
+        asset: opts.asset,
       }
+      return new FeesRecord(fees)
     },
   },
 }

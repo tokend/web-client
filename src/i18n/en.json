@@ -1556,7 +1556,7 @@
       "comment": "Comment",
       "withdraw-btn": "Withdraw"
     },
-    "fees": {
+    "fees-renderer": {
       "network-fee-hint": "External network fee",
       "network-fee-unknown": "Unknown",
       "source-fixed-fee": "Sender fixed fee",
