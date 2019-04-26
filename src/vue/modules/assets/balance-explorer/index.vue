@@ -10,7 +10,7 @@
           <update-asset-form-module
             :asset-code="selectedAsset.code"
             :wallet="wallet"
-            :config="config"
+            :storage-url="storageURL"
             @close="isDrawerShown = false"
           />
         </template>
@@ -21,7 +21,7 @@
           </template>
           <asset-attributes-viewer
             :asset="selectedAsset"
-            :storage-url="config.storageURL"
+            :storage-url="storageURL"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
@@ -45,7 +45,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :storage-url="config.storageURL"
+              :storage-url="storageURL"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -85,9 +85,7 @@ import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -102,17 +100,8 @@ export default {
     UpdateAssetFormModule,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-    * @property config - the config for component to use
-    * @property config.horizonURL - the url of horizon server (without version)
-    * @property config.storageURL - the url of storage server
-    */
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },
@@ -130,10 +119,12 @@ export default {
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
 
   async created () {
-    initApi(this.wallet, this.config)
     this.setAccountId(this.wallet.accountId)
     await this.load()
   },

@@ -6,7 +6,7 @@ import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'

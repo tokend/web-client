@@ -7,7 +7,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from './_api'
+import * as Api from '@/api'
 import * as Config from './_config'
 
 const localVue = createLocalVue()

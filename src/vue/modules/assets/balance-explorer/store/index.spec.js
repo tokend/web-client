@@ -3,7 +3,7 @@ import { types } from './types'
 import { Asset } from '../../shared/wrappers/asset'
 
 import { Wallet } from '@tokend/js-sdk'
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('balance explorer module', () => {
   describe('vuex-types', () => {

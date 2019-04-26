@@ -1,4 +1,4 @@
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { Asset } from '../wrappers/asset'
 

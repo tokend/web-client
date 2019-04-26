@@ -1,6 +1,6 @@
 import { Asset } from '../../shared/wrappers/asset'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { types } from './types'
 
 export const state = {

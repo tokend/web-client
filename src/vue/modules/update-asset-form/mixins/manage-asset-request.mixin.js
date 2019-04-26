@@ -3,7 +3,7 @@ import UploadDocumentsMixin from './upload-documents.mixin'
 import { base } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 

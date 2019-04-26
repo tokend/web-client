@@ -3,7 +3,7 @@
     <template v-if="getModule().canRenderSubmodule(BalanceExplorerModule)">
       <submodule-importer
         :submodule="getModule().getSubmodule(BalanceExplorerModule)"
-        :config="config"
+        :storage-url="storageURL"
         :wallet="wallet"
       />
     </template>
@@ -27,10 +27,7 @@ export default {
 
   data: _ => ({
     BalanceExplorerModule,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
+    storageURL: config.FILE_STORAGE,
   }),
   computed: {
     ...mapGetters({

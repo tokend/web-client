@@ -22,10 +22,9 @@
 import FeesTable from './components/fees-table'
 import LoadSpinner from '@/vue/common/Loader'
 
-import { vuexTypes } from '@/vuex'
-
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
