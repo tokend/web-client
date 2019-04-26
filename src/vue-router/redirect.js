@@ -10,11 +10,14 @@ export const resolveRedirect = (to, from, next) => {
 
   switch (action.type) {
     case REDIRECT_TYPES.email:
-      handleEmailRedirect(action, next)
+      handleEmailRedirect(encodedValue, next)
       break
   }
 }
 
-function handleEmailRedirect (encodedAction, next) {
-  next({ ...vueRoutes.login, params: { encodedEmailAction: encodedAction } })
+function handleEmailRedirect (verificationCode, next) {
+  next({
+    ...vueRoutes.login,
+    params: { encodedVerificationCode: verificationCode },
+  })
 }
