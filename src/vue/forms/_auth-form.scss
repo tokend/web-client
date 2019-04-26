@@ -2,8 +2,6 @@
 @import '~@scss/variables';
 
 .auth-form__submit-btn {
-  @include button-raised();
-
   margin-right: auto;
   width: 20rem;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="terms">
     <button
-      class="terms__link"
+      class="terms__link app__button"
       @click="$router.go(-1)"
     >
       {{ 'terms-page.go-back-btn' | globalize }}
@@ -51,7 +51,6 @@ export default {
 }
 
 .terms__link {
-  @include button();
   padding: 0;
   font-weight: normal;
   font-size: 1.3rem;
