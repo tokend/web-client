@@ -13,6 +13,9 @@ for further information about branching and tagging conventions.
 - Now selecting invoice point by loyalty account number (Loyalty)
 - Now showing all the received points (360) on the chart
 
+#### Fixed
+- Invalid opts when submitting create asset request
+
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
 - Copy button next to email values
