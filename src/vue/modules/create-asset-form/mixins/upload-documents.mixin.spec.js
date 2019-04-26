@@ -10,7 +10,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 import * as Config from '../_config'
 
 const localVue = createLocalVue()

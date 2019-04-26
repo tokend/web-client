@@ -38,8 +38,7 @@
 
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateAssetFormModule)"
-          :wallet="wallet"
-          :config="config"
+          :storage-url="storageURL"
           @close="isAssetDrawerShown = false"
         />
       </drawer>
@@ -74,15 +73,11 @@ export default {
     vueRoutes,
     CreateAssetFormModule,
     isAssetDrawerShown: false,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
+    storageURL: config.FILE_STORAGE,
   }),
   computed: {
     ...mapGetters({
       account: vuexTypes.account,
-      wallet: vuexTypes.wallet,
     }),
   },
 }

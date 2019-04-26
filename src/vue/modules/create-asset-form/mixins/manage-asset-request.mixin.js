@@ -2,7 +2,7 @@ import UploadDocumentsMixin from './upload-documents.mixin'
 
 import { base } from '@tokend/js-sdk'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { config } from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'

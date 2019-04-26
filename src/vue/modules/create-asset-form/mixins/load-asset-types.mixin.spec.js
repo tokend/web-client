@@ -4,7 +4,7 @@ import { Wallet } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 const localVue = createLocalVue()
 

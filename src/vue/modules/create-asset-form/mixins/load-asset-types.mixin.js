@@ -1,5 +1,5 @@
 
-import { api } from '../_api'
+import { api } from '@/api'
 
 export default {
   data: _ => ({

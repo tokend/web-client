@@ -5,7 +5,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 import * as Config from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
