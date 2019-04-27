@@ -703,6 +703,8 @@
     },
     "passport": {
       "account-unverified": "Unverified account",
+      "account-us-accredited": "Verified accredited investor (US)",
+      "account-us-verified": "Verified account (US)",
       "account-general": "General account",
       "account-corporate": "Corporate account",
       "account-blocked": "Blocked account",

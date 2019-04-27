@@ -79,6 +79,8 @@ const getters = {
 
   isAccountGeneral: 'isAccountGeneral',
   isAccountCorporate: 'isAccountCorporate',
+  isAccountUsAccredited: 'isAccountUsAccredited',
+  isAccountUsVerified: 'isAccountUsVerified',
   isAccountUnverified: 'isAccountUnverified',
   isAccountBlocked: 'isAccountBlocked',
 
