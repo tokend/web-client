@@ -24,6 +24,7 @@
             :asset="selectedAsset"
             :storage-url="config.storageURL"
             :kyc-required-asset-type="kycRequiredAssetType"
+            :security-asset-type="securityAssetType"
           />
 
           <div class="assets-renderer__actions">
@@ -31,6 +32,7 @@
               :asset="selectedAsset"
               :is-account-unverified="isAccountUnverified"
               :kyc-required-asset-type="kycRequiredAssetType"
+              :security-asset-type="securityAssetType"
               @update-click="isUpdateMode = true"
               @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
             />
@@ -147,6 +149,7 @@ export default {
     ...mapGetters('asset-explorer', {
       assets: types.assets,
       kycRequiredAssetType: types.kycRequiredAssetType,
+      securityAssetType: types.securityAssetType,
     }),
   },
 

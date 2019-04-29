@@ -40,6 +40,7 @@ export default {
   props: {
     asset: { type: Asset, required: true },
     kycRequiredAssetType: { type: Number, required: true },
+    securityAssetType: { type: Number, required: true },
     isAccountUnverified: { type: Boolean, required: true },
   },
   data: _ => ({
@@ -51,6 +52,7 @@ export default {
       accountId: types.accountId,
     }),
     isBalanceCreationAllowed () {
+      // TODO: check for U.S. role
       return this.asset.type === this.kycRequiredAssetType &&
         this.isAccountUnverified
     },

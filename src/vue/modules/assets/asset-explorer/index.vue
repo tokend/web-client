@@ -80,12 +80,14 @@ export default {
     ...mapActions('asset-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
+      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     async load () {
       try {
         await this.loadAccountBalances()
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
