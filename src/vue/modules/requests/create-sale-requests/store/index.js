@@ -4,7 +4,7 @@ import { Asset } from '../wrappers/asset'
 import { base } from '@tokend/js-sdk'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 
 export const state = {
   accountId: '',

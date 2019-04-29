@@ -3,8 +3,7 @@
     <submodule-importer
       v-if="getModule().canRenderSubmodule(CreateSaleRequestsModule)"
       :submodule="getModule().getSubmodule(CreateSaleRequestsModule)"
-      :wallet="wallet"
-      :config="config"
+      :storage-url="storageUrl"
     />
   </div>
 </template>
@@ -26,10 +25,7 @@ export default {
 
   data: _ => ({
     CreateSaleRequestsModule,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
+    storageUrl: config.FILE_STORAGE,
   }),
 
   computed: {

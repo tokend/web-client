@@ -56,13 +56,11 @@ import CreateSaleForm from '@/vue/forms/CreateSaleForm'
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
 import { initConfig } from './_config'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -78,17 +76,8 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },
@@ -106,11 +95,13 @@ export default {
     ...mapGetters('create-sale-requests', {
       requests: types.requests,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
+    initConfig(this.storageUrl)
 
     this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()

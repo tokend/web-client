@@ -10,7 +10,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('create-sale-requests.module', () => {
   describe('vuex types', () => {
