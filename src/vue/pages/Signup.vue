@@ -60,7 +60,7 @@
               v-ripple
               @click="submit"
               :disabled="!isConfirmedSeedCopied || formMixin.isDisabled"
-              class="auth-page__submit-btn"
+              class="auth-page__submit-btn app__button-raised"
             >
               {{ 'auth-pages.continue' | globalize }}
             </button>

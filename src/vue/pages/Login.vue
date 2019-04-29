@@ -27,9 +27,12 @@
 
 <script>
 import LoginForm from '@/vue/forms/LoginForm'
+
 import { vueRoutes } from '@/vue-router/routes'
-import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
+
+import { Sdk } from '@/sdk'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'login',
@@ -40,11 +43,15 @@ export default {
     vueRoutes,
   }),
   async created () {
-    // Verifying email if user came here from email link
-    const emailAction = this.$route.params.encodedEmailAction
-    if (emailAction) {
-      await Sdk.api.wallets.verifyEmail(emailAction)
-      Bus.success('auth-pages.email-verified')
+    try {
+      // Verifying email if user came here from email link
+      const verificationCode = this.$route.params.encodedVerificationCode
+      if (verificationCode) {
+        await Sdk.api.wallets.verifyEmail(verificationCode)
+        Bus.success('auth-pages.email-verified')
+      }
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
     }
   },
 }
