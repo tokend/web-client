@@ -172,9 +172,10 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
-import { PAYMENT_FEE_SUBTYPES, Wallet, base } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
+import { PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import {
   amount,
   maxDecimalDigitsCount,
@@ -198,15 +199,10 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property [config.defaultAssetCode] - prefills the asset-selector with
      *           this asset code
      */
@@ -238,6 +234,9 @@ export default {
       ownedAssets: types.ownedAssets,
       signers: types.balanceHolders,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
   watch: {
     'form.ownedAsset.code' () {
@@ -262,8 +261,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()

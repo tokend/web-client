@@ -117,9 +117,7 @@
 <script>
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
@@ -150,13 +148,8 @@ export default {
   },
   mixins: [FormMixin, OfferManagerMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
      * @property config.decimalPoints - default max allowed points after dot
      * @property [config.defaultAssetCode] - prefills the asset-selector with
@@ -200,6 +193,9 @@ export default {
       assetsInBalance: types.assetsInBalance,
       allowedToBuy: types.allowedToBuy,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
   watch: {
     async 'form.asset' (asset) {
@@ -217,8 +213,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()

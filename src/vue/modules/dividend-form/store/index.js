@@ -2,7 +2,7 @@ import { Balance } from '../wrappers/balance'
 import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { types } from './types'
-import { api, loadingDataViaLoop } from '../_api'
+import { api, loadingDataViaLoop } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 
 export const state = {

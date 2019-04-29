@@ -16,7 +16,7 @@ export default {
     LoyaltyPointsInvoicesModule,
   },
   data: _ => ({
-    horizonUrl: config.HORIZON_SERVER
+    horizonUrl: config.HORIZON_SERVER,
   }),
 }
 </script>

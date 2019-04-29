@@ -76,7 +76,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(DividendFormModule)"
-            :wallet="wallet"
             :config="dividendConfig"
             @transferred="dividendModuleTransferred"
           />
@@ -90,7 +89,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(BuyBackFormModule)"
-            :wallet="wallet"
             :config="buyBackConfig"
             @submitted="buyBackModuleSubmitted"
           />
@@ -186,13 +184,11 @@ export default {
     BuyBackFormModule,
     dividendConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
     buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
@@ -200,7 +196,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       accountId: vuexTypes.accountId,
     }),
     isOpportunityOwner () {
