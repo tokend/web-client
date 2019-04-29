@@ -126,7 +126,7 @@ export default {
     },
     async verifyTfaFactor () {
       if (this.tfaError) {
-        await Sdk.api.factors.verifyTotpFactor(
+        await Api.walletsManager.verifyTotpFactor(
           this.tfaError,
           this.form.tfaCode
         )

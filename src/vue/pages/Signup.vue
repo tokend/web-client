@@ -124,7 +124,7 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        const { response, wallet } = await Sdk.api.wallets.create(
+        const { response, wallet } = await Api.walletsManager.create(
           this.email.toLowerCase(),
           this.password,
           this.recoveryKeypair

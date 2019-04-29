@@ -167,7 +167,7 @@ export default {
     },
     async loadTradeHistory () {
       // TODO: No /v3 endpoint for trades yet
-      let response = await Sdk.horizon.trades.getPage({
+      const response = await Sdk.horizon.trades.getPage({
         base_asset: this.assetPair.base,
         quote_asset: this.assetPair.quote,
         order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
