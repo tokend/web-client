@@ -6,7 +6,7 @@ import { Wallet } from '@tokend/js-sdk'
 import { Movement } from '../wrappers/movement'
 import { Balance } from '../wrappers/balance'
 
-import * as ApiImporter from '../_api'
+import * as ApiImporter from '@/api'
 import accountBalancesJSON from '@/test/mocks/account-balances'
 
 describe('movements-history.module', () => {

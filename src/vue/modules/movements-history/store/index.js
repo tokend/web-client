@@ -2,7 +2,7 @@ import { Movement } from '../wrappers/movement'
 import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 
 export const state = {
   accountId: '',

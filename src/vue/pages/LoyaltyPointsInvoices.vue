@@ -1,8 +1,7 @@
 <template>
   <div>
     <loyalty-points-invoices-module
-      :config="config"
-      :wallet="wallet"
+      :horizon-url="horizonUrl"
     />
   </div>
 </template>
@@ -10,8 +9,6 @@
 <script>
 import config from '@/config'
 import LoyaltyPointsInvoicesModule from '@modules/loyalty-points/loyalty-points-invoices'
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex/types'
 
 export default {
   name: 'loyalty-points-invoices-page',
@@ -19,15 +16,8 @@ export default {
     LoyaltyPointsInvoicesModule,
   },
   data: _ => ({
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
+    horizonUrl: config.HORIZON_SERVER
   }),
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
 }
 </script>
 

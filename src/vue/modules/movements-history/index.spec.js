@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Wallet } from '@tokend/js-sdk'
 
-import * as ApiImporter from './_api'
+import * as ApiImporter from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
