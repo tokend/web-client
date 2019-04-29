@@ -8,7 +8,7 @@
           </template>
           <create-asset-form-module
             :request-id="selectedRequest.id"
-            :storage-url="storageURL"
+            :storage-url="storageUrl"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -103,7 +103,7 @@ export default {
   },
 
   async created () {
-    initConfig(this.storageURL)
+    initConfig(this.storageUrl)
 
     this.setAccountId(this.wallet.accountId)
     await this.loadAssetTypes()

@@ -38,7 +38,7 @@
 
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateAssetFormModule)"
-          :storage-url="storageURL"
+          :storage-url="storageUrl"
           @close="isAssetDrawerShown = false"
         />
       </drawer>
@@ -73,7 +73,7 @@ export default {
     vueRoutes,
     CreateAssetFormModule,
     isAssetDrawerShown: false,
-    storageURL: config.FILE_STORAGE,
+    storageUrl: config.FILE_STORAGE,
   }),
   computed: {
     ...mapGetters({

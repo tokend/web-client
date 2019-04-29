@@ -10,7 +10,7 @@ import { Wallet } from '@tokend/js-sdk'
 
 import { PreIssuanceRequest } from '../wrappers/pre-issuance-request'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('pre-issuance-requests.module', () => {
   describe('vuex types', () => {

@@ -3,7 +3,7 @@ import { types } from './types'
 import { Fee } from '../wrappers/fee'
 
 import { Wallet } from '@tokend/js-sdk'
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('fees.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'

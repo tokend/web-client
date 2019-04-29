@@ -5,7 +5,7 @@ import { Wallet } from '@tokend/js-sdk'
 
 import { IssuanceRequest } from '../wrappers/issuance'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('issuance-explorer.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'

@@ -2,7 +2,7 @@ import { types } from './types'
 import { balanceExplorerModule } from './index'
 
 import { Wallet } from '@tokend/js-sdk'
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 import Vuex from 'vuex'
 import Vue from 'vue'

@@ -26,7 +26,7 @@ export default {
 
   data: _ => ({
     CreateAssetRequestsModule,
-    storageURL: config.FILE_STORAGE,
+    storageUrl: config.FILE_STORAGE,
   }),
 
   computed: {

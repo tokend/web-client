@@ -106,7 +106,7 @@ export default {
   methods: {
     async init () {
       try {
-        initConfig(this.storageURL)
+        initConfig(this.storageUrl)
         await this.loadUpdateAssetRecord()
         this.isLoaded = true
       } catch (e) {

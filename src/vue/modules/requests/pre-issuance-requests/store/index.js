@@ -1,7 +1,7 @@
 import { PreIssuanceRequest } from '../wrappers/pre-issuance-request'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 
 export const state = {
   accountId: '',

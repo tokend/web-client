@@ -8,7 +8,7 @@ import { Asset } from '../shared/wrappers/asset'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
+import * as Api from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 

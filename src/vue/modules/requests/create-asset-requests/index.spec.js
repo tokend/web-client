@@ -6,7 +6,7 @@ import { createAssetRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
+import * as Api from '@/api'
 import * as Config from './_config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
