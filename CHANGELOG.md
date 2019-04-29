@@ -12,7 +12,10 @@ for further information about branching and tagging conventions.
 - Re-render chart animation
 
 #### Changed
-- Now opening pre-issuance details link in new tab 
+- Now opening pre-issuance details link in new tab
+
+#### Fixed
+- Deposit fiat Drawer displaying on REIT
 
 ## [1.6.0-x.1] - 2019-04-26
 #### Added
