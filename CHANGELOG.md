@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+#### Added
+- Display fees in invest form
+
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
 - Re-render chart animation
@@ -104,7 +108,6 @@ for further information about branching and tagging conventions.
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
 - Displaying of limit request details in drawer
-- Display fees in invest form
 
 #### Changed
 - Show limits request list on top of other limits on "Limits" page
