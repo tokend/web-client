@@ -117,7 +117,7 @@ import VueMarkdown from 'vue-markdown'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required, minValue, maxDecimalDigitsCount } from '@validators'
 
-import { initApi, api } from '../_api'
+import { initApi, api } from '@/api'
 import { config } from '../_config'
 import { Wallet, base } from '@tokend/js-sdk'
 

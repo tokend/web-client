@@ -1,6 +1,6 @@
 <template>
   <div class="statistics-page">
-    <loyalty-points-statistics-module/>
+    <loyalty-points-statistics-module />
   </div>
 </template>
 
