@@ -5,7 +5,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { Asset } from '../../shared/wrappers/asset'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('Asset explorer module', () => {
   describe('vuex-types', () => {

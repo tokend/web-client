@@ -10,7 +10,7 @@
           <update-asset-form-module
             :asset-code="selectedAsset.code"
             :wallet="wallet"
-            :storage-url="storageURL"
+            :storage-url="storageUrl"
             @close="isDrawerShown = false"
           />
         </template>
@@ -21,7 +21,7 @@
           </template>
           <asset-attributes-viewer
             :asset="selectedAsset"
-            :storage-url="storageURL"
+            :storage-url="storageUrl"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
@@ -45,7 +45,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :storage-url="storageURL"
+              :storage-url="storageUrl"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
