@@ -10,7 +10,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('incoming-withdrawals-requests.module', () => {
   describe('vuex types', () => {
