@@ -32,6 +32,7 @@ export default {
     formMixin: {
       isDisabled: false,
       isConfirmationShown: false,
+      isFormSubmitting: false,
     },
   }),
   methods: {
@@ -124,6 +125,57 @@ export default {
         field.$touch()
       }
     },
+    /** START OF THE FORM SUBMITTING FLOW
+     *
+     * Form submitting flow looks like:
+     * 1. Check that form can be submitted (`tryToSubmitForm`).
+     * 2. Call method that will submit form after submit confirmation message
+     *    that was shown after successful check in the first step.
+     * 3. Preparing the properties that required for the correct
+     *    form submitting (`startFormSubmitting`).
+     * 4. The body of the form sender. A method or several methods that are
+     *    declared in the component and send data and process it.
+     * 5. Resetting the properties that required for the correct
+     *    form submitting (`finishFormSubmitting`).
+     *
+     *
+     * Three of these steps (1, 3, 5) is auxiliary and used everywhere through
+     * application to make code reusable and clean.
+     *
+     * First step (`tryToSubmitForm`) should be used as handler for `submit`
+     * form event.
+     *
+     * Example:
+     * <form @submit.prevent="tryToSubmitForm">
+     *  ...form code
+     * </form>
+     *
+     *
+     * Third and fifth steps used inside a method that was called in the second
+     * step.
+     *
+     * Example:
+     * someSubmitMethod () {
+     *   this.startFormSubmitting()
+     *
+     *   ..body of the form sender (fought step)
+     *
+     *   this.finishFormSubmitting()
+     * }
+     */
+    async tryToSubmitForm () {
+      if (!await this.isFormValid()) return
+      this.showConfirmation()
+    },
+    startFormSubmitting () {
+      this.formMixin.isFormSubmitting = true
+    },
+    finishFormSubmitting () {
+      this.formMixin.isFormSubmitting = false
+      this.hideConfirmation()
+    },
+    /** END OF THE FORM SUBMITTING FLOW */
+
     disableForm () {
       this.formMixin.isDisabled = true
     },
