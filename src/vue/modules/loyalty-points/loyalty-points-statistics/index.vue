@@ -54,10 +54,6 @@ import PayableDistributionViewer from './components/viewers/payable-distribution
 import ReceivableOvertimeViewer from './components/viewers/receivable-overtime-viewer'
 import PayableOvertimeViewer from './components/viewers/payable-overtime-viewer'
 
-import { initApi } from './_api'
-
-import { Wallet } from '@tokend/js-sdk'
-
 export default {
   name: 'loyalty-points-statistics-module',
   components: {
@@ -66,25 +62,6 @@ export default {
     ReceivableDistributionViewer,
     ReceivableOvertimeViewer,
     PayableOvertimeViewer,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  async created () {
-    initApi(this.wallet, this.config)
   },
 }
 </script>
