@@ -18,8 +18,6 @@
         </div>
         <div class="document-manager__signers-manager-wrp">
           <signers-manager-module
-            :config="config"
-            :wallet="wallet"
             :source-account-id="attachedAccountId"
           />
         </div>
@@ -62,7 +60,6 @@
           <add-comment-form
             :document-account-id="attachedAccountId"
             :metadata="metadata"
-            :wallet="wallet"
             @comment-add="loadDocument"
           />
         </div>
@@ -104,8 +101,9 @@ import SignersManagerModule from './modules/signers-manager'
 
 import LoadSpinner from '@/vue/common/Loader'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { api } from '@/api'
 
 import { Metadata } from './wrappers/metadata'
 import { Signer } from './wrappers/signer'
@@ -132,18 +130,6 @@ export default {
     LoadSpinner,
   },
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     attachedAccountId: {
       type: String,
       required: true,
@@ -159,8 +145,12 @@ export default {
     isUnauthorized: false,
     isNotFound: false,
   }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
+  },
   async created () {
-    initApi(this.wallet, this.config)
     await Promise.all([
       this.loadDocument(),
       this.loadSigner(),

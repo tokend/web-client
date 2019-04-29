@@ -1,5 +1,5 @@
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 import { Signer } from '../wrappers/signer'
 
 const state = {

@@ -45,7 +45,8 @@ import SignerListItem from './signer-list-item'
 
 import Drawer from '@/vue/common/Drawer'
 
-import { Wallet } from '@tokend/js-sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'signer-list-manager',
@@ -57,10 +58,6 @@ export default {
   props: {
     signers: {
       type: Array, /** @link Signer **/
-      required: true,
-    },
-    wallet: {
-      type: Wallet,
       required: true,
     },
     sourceAccountId: {
@@ -77,6 +74,9 @@ export default {
     signerWhoManages () {
       return this.signers.find(s => s.publicKey === this.wallet.accountId)
     },
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
   methods: {
     openAddForm () {

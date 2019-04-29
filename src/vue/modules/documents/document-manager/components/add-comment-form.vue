@@ -39,9 +39,12 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { base, Wallet } from '@tokend/js-sdk'
-import { api } from '../_api'
+import { base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import { required } from '@validators'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { Metadata } from '../wrappers/metadata'
 
@@ -66,10 +69,6 @@ export default {
       type: Metadata,
       required: true,
     },
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
   },
   data: _ => ({
     form: {
@@ -81,6 +80,11 @@ export default {
     form: {
       description: { required },
     },
+  },
+  computed: {
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
   methods: {
     expand () {

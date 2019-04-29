@@ -70,7 +70,7 @@ import { Bus as GlobalBus } from '@/js/helpers/event-bus'
 import { Bus as LocalBus } from '../event-bus'
 
 import { base } from '@tokend/js-sdk'
-import { api } from '../../../_api'
+import { api } from '@/api'
 import { required, email } from '@validators'
 
 import { Signer } from '../wrappers/signer'
