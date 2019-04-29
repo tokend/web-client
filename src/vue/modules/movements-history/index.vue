@@ -41,6 +41,7 @@ import LoadSpinner from '@/vue/common/Loader'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 const REFS = {
   collectionLoader: 'collection-loader',
@@ -70,6 +71,9 @@ export default {
       balances: types.balances,
       movements: types.movements,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
     firstPageLoader () {
       const assetCode = this.assetCode // HACK: passing this.assetCode directly
       // to function will lead to losing reactivity

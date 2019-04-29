@@ -10,7 +10,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('asset-update-requests.module', () => {
   describe('vuex types', () => {
