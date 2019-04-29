@@ -6,8 +6,6 @@ import { base } from '@tokend/js-sdk'
 import { types } from './types'
 import { api } from '../_api'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   requests: [],
@@ -29,13 +27,13 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_ASSET_BY_ID] (_, id) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/assets/${id}`
+    const endpoint = `/v3/assets/${id}`
     const { data: record } = await api().get(endpoint)
     return new Asset(record)
   },
 
   [types.LOAD_REQUESTS] ({ getters }) {
-    return api().getWithSignature(`/${HORIZON_VERSION_PREFIX}/create_sale_requests`, {
+    return api().getWithSignature('/v3/create_sale_requests', {
       page: {
         order: 'desc',
       },

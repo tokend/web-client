@@ -12,7 +12,7 @@
       </span>
       <button
         type="button"
-        class="clipboard-field__button"
+        class="clipboard-field__button app__button-icon"
         :id="`clipboard-btn-${_uid}`"
         :data-clipboard-target="`#clipboard-target-${_uid}`"
       >
@@ -84,7 +84,6 @@ export default {
 }
 
 .clipboard-field__button {
-  @include button-icon();
   width: 3.2rem;
   height: 3.2rem;
   margin-right: 0.4rem;
