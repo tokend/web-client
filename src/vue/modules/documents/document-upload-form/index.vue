@@ -88,12 +88,11 @@ import CreateAccountMixin from './mixins/create-account.mixin'
 
 import ProgressBar from './progress-bar'
 
-import { Wallet, base, errors } from '@tokend/js-sdk'
+import { base, errors } from '@tokend/js-sdk'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { documentContainer, required } from '@validators'
 
-import { initApi } from './_api'
 import { initConfig } from './_config'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -101,6 +100,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
 import { CryptoUtil } from './utils/crypto.util'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -120,17 +122,8 @@ export default {
   ],
 
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of file storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-    wallet: {
-      type: Wallet,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },
@@ -159,6 +152,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
     completedSteps () {
       if (!this.isPending) {
         return 0
@@ -189,8 +185,7 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
+    initConfig(this.storageUrl)
   },
 
   methods: {

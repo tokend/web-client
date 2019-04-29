@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { config } from '../_config'
 
 import _omit from 'lodash/omit'
