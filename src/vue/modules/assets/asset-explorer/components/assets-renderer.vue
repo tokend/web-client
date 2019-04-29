@@ -31,6 +31,9 @@
             <asset-actions
               :asset="selectedAsset"
               :is-account-unverified="isAccountUnverified"
+              :is-account-general="isAccountGeneral"
+              :is-account-us-accredited="isAccountUsAccredited"
+              :is-account-us-verified="isAccountUsVerified"
               :kyc-required-asset-type="kycRequiredAssetType"
               :security-asset-type="securityAssetType"
               @update-click="isUpdateMode = true"
@@ -130,6 +133,18 @@ export default {
       required: true,
     },
     isAccountUnverified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsVerified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsAccredited: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountGeneral: {
       type: Boolean,
       required: true,
     },

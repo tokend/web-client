@@ -218,8 +218,14 @@ export default {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
     isBalanceCreationAllowed () {
-      return this.asset.assetType === this.kvAssetTypeKycRequired &&
-        this.isAccountUnverified
+      switch (this.asset.assetType) {
+        case this.kycRequiredAssetType:
+          return !this.isAccountUnverified
+        case this.securityAssetType:
+          return this.isAccountGeneral || this.isAccountUsAccredited
+        default:
+          return true
+      }
     },
   },
   async created () {
@@ -230,7 +236,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
-      if (this.isBalanceCreationAllowed) {
+      if (!this.isBalanceCreationAllowed) {
         Bus.error('asset-details.verification-required-err')
         return
       }

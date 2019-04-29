@@ -5,6 +5,10 @@
         :wallet="wallet"
         :config="config"
         :is-account-unverified="isAccountUnverified"
+        :is-account-us-accredited="isAccountUsAccredited"
+        :is-account-us-verified="isAccountUsVerified"
+        :is-account-general="isAccountGeneral"
+        :is-account-corporate="isAccountCorporate"
       />
     </template>
 
@@ -55,6 +59,22 @@ export default {
       required: true,
     },
     isAccountUnverified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsAccredited: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsVerified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountGeneral: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountCorporate: {
       type: Boolean,
       required: true,
     },

@@ -1,14 +1,24 @@
 <template>
   <div class="asset-actions">
-    <button
-      v-if="!asset.balance"
-      v-ripple
-      class="app__button-raised asset-actions__btn"
-      :disabled="isPending"
-      @click="addBalance"
-    >
-      {{ 'assets.add-balance-btn' | globalize }}
-    </button>
+    <template v-if="!asset.balance">
+      <button
+        v-if="isBalanceCreationAllowed"
+        v-ripple
+        class="app__button-raised asset-actions__btn"
+        :disabled="isPending"
+        @click="addBalance"
+      >
+        {{ 'assets.add-balance-btn' | globalize }}
+      </button>
+      <p class="asset-actions__not-allowed-msg" v-else>
+        <template v-if="isAccountUsVerified">
+          {{ 'assets.us-accreditation-required-msg' | globalize }}
+        </template>
+        <template v-else>
+          {{ 'assets.verification-required-msg' | globalize }}
+        </template>
+      </p>
+    </template>
 
     <button
       v-else-if="asset.owner === accountId"
@@ -42,6 +52,9 @@ export default {
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
     isAccountUnverified: { type: Boolean, required: true },
+    isAccountUsVerified: { type: Boolean, required: true },
+    isAccountUsAccredited: { type: Boolean, required: true },
+    isAccountGeneral: { type: Boolean, required: true },
   },
   data: _ => ({
     isPending: false,
@@ -52,9 +65,14 @@ export default {
       accountId: types.accountId,
     }),
     isBalanceCreationAllowed () {
-      // TODO: check for U.S. role
-      return this.asset.type === this.kycRequiredAssetType &&
-        this.isAccountUnverified
+      switch (this.asset.type) {
+        case this.kycRequiredAssetType:
+          return !this.isAccountUnverified
+        case this.securityAssetType:
+          return this.isAccountGeneral || this.isAccountUsAccredited
+        default:
+          return true
+      }
     },
   },
   methods: {
@@ -63,11 +81,6 @@ export default {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
     }),
     async addBalance () {
-      if (this.isBalanceCreationAllowed) {
-        Bus.error('assets.verification-required-err')
-        return
-      }
-
       this.isPending = true
       try {
         await this.createBalance(this.asset.code)
@@ -85,8 +98,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@scss/variables';
 .asset-actions__btn {
   max-width: 18rem;
   width: 100%;
 }
+
+.asset-actions__not-allowed-msg {
+  padding: .25rem 1.5rem;
+  color: $col-text-secondary;
+  font-style: italic;
+}
+
 </style>
