@@ -18,7 +18,7 @@
         </div>
         <p class="app__form-field-description">
           {{
-            'buy-back-form.issued-tokens-msg' | globalize({
+            'buy-back-form.issued-assets-msg' | globalize({
               value: allowedToBuy(form.asset.code)
             })
           }}
@@ -94,7 +94,7 @@
             <button
               v-ripple
               type="submit"
-              class="app__form-submit-btn"
+              class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled"
             >
               <template>

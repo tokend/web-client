@@ -1,8 +1,7 @@
 import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
-
-import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
+import i18next from 'i18next'
 
 export class ErrorHandler {
   static process (error, translationId = '') {
@@ -58,10 +57,11 @@ export class ErrorHandler {
         translationId = 'errors.user-exists'
         break
       case errors.TransactionError:
-        if (error.includesOpCode(OPERATION_ERROR_CODES.opAccountBlocked)) {
-          translationId = 'errors.account-blocked'
-        } else {
-          translationId = 'errors.transaction'
+        translationId = `transaction-errors.${error.errorResults[0].errorCode}`
+        if (!i18next.exists(translationId)) {
+          // If there is no localized error code, display the message
+          // that came from the backend
+          translationId = error.errorResults[0].message
         }
         break
       default:

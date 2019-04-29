@@ -1,27 +1,47 @@
 <template>
   <span
     class="email-getter"
-    :title="isTitled && (email || accountId || balanceId)"
+    :class="{ 'email-getter--justify-end': rightSide }"
   >
-    <template v-if="isMasterAccount">
-      {{ 'email-getter.master-account' | globalize }}
-    </template>
+    <span
+      class="email-getter__value"
+      :title="isTitled && (email || accountId || balanceId)"
+    >
+      <template v-if="isMasterAccount">
+        {{ 'email-getter.master-account' | globalize }}
+      </template>
 
-    <template v-else-if="isLoading">
-      {{ 'email-getter.loading-msg' | globalize }}
-    </template>
+      <template v-else-if="isLoading">
+        {{ 'email-getter.loading-msg' | globalize }}
+      </template>
 
-    <template v-else-if="email">
-      {{ email }}
-    </template>
+      <template v-else-if="email">
+        {{ email }}
+      </template>
 
-    <template v-else-if="accountId || balanceId">
-      {{ accountId || balanceId | cropAddress }}
-    </template>
+      <template v-else-if="accountId || balanceId">
+        {{ accountId || balanceId | cropAddress }}
+      </template>
 
-    <template v-else>
-      &mdash;
-    </template>
+      <template v-else>
+        &mdash;
+      </template>
+    </span>
+
+    <button
+      v-show="isCopyButton && !isMasterAccount && !isLoading"
+      class="email-getter__copy-button  app__button-icon"
+      :id="`clipboard-btn-${_uid}`"
+      :data-clipboard-text="email || accountId || balanceId"
+      @click="changeBtnIcon"
+    >
+      <i
+        class="mdi email-getter__icon"
+        :class="isCopyBtnPressed ?
+          'mdi-clipboard-check' :
+          'mdi-clipboard-text'"
+      />
+    </button>
   </span>
 </template>
 
@@ -30,6 +50,7 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import Clipboard from 'clipboard'
 
 export default {
   mixins: [IdentityGetterMixin],
@@ -47,12 +68,21 @@ export default {
       type: Boolean,
       default: true,
     },
+    isCopyButton: {
+      type: Boolean,
+      default: true,
+    },
+    rightSide: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data: _ => ({
     email: '',
     isMasterAccount: false,
     isLoading: false,
+    isCopyBtnPressed: false,
   }),
 
   watch: {
@@ -67,6 +97,15 @@ export default {
 
   async created () {
     await this.init()
+  },
+
+  // TODO: Add "Copied!!" tooltip when the tooltip directive ready
+  mounted () {
+    const btn = document.querySelector(
+      `#clipboard-btn-${this._uid}`
+    )
+    if (!btn) return
+    this.clipboard = new Clipboard(btn)
   },
 
   methods: {
@@ -104,9 +143,51 @@ export default {
         return ''
       }
     },
+
+    changeBtnIcon () {
+      this.isCopyBtnPressed = true
+      setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
+    },
   },
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import "~@scss/variables";
+  @import "~@scss/mixins";
+  .email-getter {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &--justify-end {
+      justify-content: flex-end;
+    }
+
+    &__value {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__copy-button {
+      color: $col-primary-inactive;
+      margin-left: .5rem;
+      min-height: 1rem;
+      min-width: 1rem;
+      transition: .1s ease-out;
+      padding: 0;
+
+      &:hover {
+        color: darken($col-primary-inactive, 20%);
+        background: none;
+      }
+    }
+
+    &__icon {
+      &::before {
+        vertical-align: middle;
+      }
+    }
+  }
 </style>

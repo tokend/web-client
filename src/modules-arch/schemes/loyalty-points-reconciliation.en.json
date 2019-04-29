@@ -6,8 +6,19 @@
       "account-corporate": "Partner"
     },
 
+    "movements-history": {
+      "effects": {
+        "issued": "Funded"
+      },
+      "operations": {
+        "create-issuance-request": "External System Payment"
+      },
+      "reference-lbl": "Invoice ID"
+    },
+
     "loyalty-points-statistics": {
-      "payable-receivable-title": "Payable / Receivable",
+      "receivable-payable-title": "Receivable-Payable delta",
+      "payable-distribution-title": "Payable distribution",
       "receivable-distribution-title": "Receivable distribution",
       "receivable-overtime-title": "Receivable overtime",
       "payable-overtime-title": "Payable overtime"

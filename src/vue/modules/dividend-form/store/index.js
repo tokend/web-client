@@ -5,8 +5,6 @@ import { types } from './types'
 import { api, loadingDataViaLoop } from '../_api'
 import { AssetRecord } from '../wrappers/asset.record'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   balances: [],
@@ -31,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${getters[types.accountId]}`
+    const endpoint = `/v3/accounts/${getters[types.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -39,7 +37,7 @@ export const actions = {
     commit(types.SET_BALANCES, account.balances)
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/assets`
+    const endpoint = '/v3/assets'
     let response = await api().getWithSignature(endpoint)
     let assets = await loadingDataViaLoop(response)
 
@@ -54,7 +52,7 @@ export const actions = {
    * @param {String} opts.assetCode - asset code
    */
   async [types.LOAD_BALANCE_HOLDERS] ({ commit }, opts) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/balances`
+    const endpoint = '/v3/balances'
     const { data: holders } = await api().getWithSignature(endpoint, {
       filter: {
         asset: opts.assetCode,
@@ -73,7 +71,7 @@ export const actions = {
    * @param {String} opts.amount - amount to calculate fee
    */
   async [types.LOAD_FEES] ({ commit }, opts) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/accounts/${opts.accountId}/calculated_fees`
+    const endpoint = `/v3/accounts/${opts.accountId}/calculated_fees`
     const { data: fees } = await api().getWithSignature(endpoint, {
       asset: opts.assetCode,
       fee_type: FEE_TYPES.paymentFee,

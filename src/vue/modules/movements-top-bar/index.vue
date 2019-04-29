@@ -22,7 +22,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule) && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"
@@ -34,7 +34,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule) && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"
@@ -159,6 +159,9 @@ export default {
     asset: {
       deep: true,
       handler (value) {
+        this.$router.push({
+          query: { asset: value.code },
+        })
         this.$emit(EVENTS.assetUpdated, value)
       },
     },
@@ -181,7 +184,9 @@ export default {
       loadAssets: types.LOAD_ASSETS,
     }),
     setDefaultAsset () {
-      this.asset = this.assets[0]
+      this.asset = this.assets
+        .find(item => item.code === this.$route.query.asset) ||
+        this.assets[0]
     },
   },
 }

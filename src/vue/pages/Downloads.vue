@@ -1,7 +1,7 @@
 <template>
   <div class="downloads">
     <button
-      class="downloads__link"
+      class="downloads__link app__button"
       @click="$router.go(-1)"
     >
       {{ 'downloads-page.go-back-btn' | globalize }}
@@ -66,9 +66,9 @@
         <p class="downloads__section-text">
           {{ 'downloads-page.config-desc' | globalize }}
         </p>
-        <qr-code
+        <qr-code-wrapper
           class="downloads__config-qr"
-          :text="qrConfigText"
+          :value="qrConfigText"
           :size="250"
         />
       </section>
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import QrCode from 'vue-qr'
+import QrCodeWrapper from '@/vue/common/QrCodeWrapper'
 
 import config from '@/config'
 
@@ -86,7 +86,7 @@ import { vueRoutes } from '@/vue-router/routes'
 export default {
   name: 'downloads',
   components: {
-    QrCode,
+    QrCodeWrapper,
   },
   data: _ => ({
     vueRoutes,
@@ -127,8 +127,6 @@ export default {
 }
 
 .downloads__link {
-  @include button();
-
   padding: 0;
   font-weight: normal;
   font-size: 1.3rem;

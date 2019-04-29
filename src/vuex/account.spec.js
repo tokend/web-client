@@ -85,6 +85,7 @@ describe('account.module', () => {
             balance.assetDetails = new AssetRecord(balance.assetDetails)
             return balance
           })
+          .sort((a, b) => b.convertedBalance - a.convertedBalance)
         const expectedMutations = {
           [type]: payload,
         }

@@ -8,10 +8,10 @@ let _api = null
  * @param {Wallet} config.horizonURL - the url of the horizon server
  * (without version prefix)
  */
-export function initApi (wallet, config) {
+export async function initApi (wallet, config) {
   const horizonURL = config.horizonURL
 
-  _api = ApiCaller.getInstance(horizonURL)
+  _api = await ApiCaller.getInstanceWithPassphrase(horizonURL)
   _api.useWallet(wallet)
 }
 
