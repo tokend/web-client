@@ -26,12 +26,9 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import RequestsTable from './components/requests-table'
 
-import { initApi } from './_api'
-
-import { Wallet } from '@tokend/js-sdk'
-
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -41,21 +38,6 @@ export default {
     LoadSpinner,
     CollectionLoader,
     RequestsTable,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -68,11 +50,12 @@ export default {
     ...mapGetters('pre-issuance-requests', {
       requests: types.requests,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
 
   created () {
-    initApi(this.wallet, this.config)
-
     this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
