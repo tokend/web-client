@@ -124,6 +124,7 @@ export const getters = {
     state.defaultRoleIds.usAccredited,
   [vuexTypes.kvEntryBlockedRoleId]: state => state.defaultRoleIds.blocked,
   [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
+  [vuexTypes.kvAssetTypeSecurity]: state => state.kvAssetTypeSecurity,
   [vuexTypes.defaultQuoteAsset]: state => state.defaultQuoteAsset,
 }
 
