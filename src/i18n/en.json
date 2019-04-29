@@ -1023,7 +1023,7 @@
       "verification-required-lbl": "Requires verification",
       "additional-issuance-check": "I do not want to make additional issuance later",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
-      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details [here](https://docs.tokend.io/#operation/token_lifecycle)",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a>",
       "use-my-account-id-btn": "Use mine",
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
@@ -1455,7 +1455,15 @@
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
       "requires-verification-title": "Verification required",
-      "requires-verification-desc": "Please, verify your account to invest in this sale"
+      "requires-verification-desc": "Please, verify your account to invest in this sale",
+      "fixed-fee-label": "fixed fee",
+      "percent-fee-label": "percent fee",
+      "total-fee-label": "Total fee",
+      "total-amount-label": "Total amount",
+      "continue-btn": "Continue",
+      "recheck-form-msg": "Please recheck the form before proceeding",
+      "transaction-fees-heading": "Transaction fees",
+      "no-transaction-fees-msg": "No fees for this transaction"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",

@@ -37,6 +37,7 @@ const d3 = Object.assign(
   d3Transition,
   d3Ease
 )
+const CLASS_NAME = 'chart'
 export default {
   name: 'chart-renderer',
   props: {
@@ -52,6 +53,15 @@ export default {
   data () {
     return {
       chartRenderingTime: 500,
+      margin: '',
+      width: '',
+      height: '',
+      svg: '',
+      y: '',
+      x: '',
+      yAxisLine: '',
+      isFirstRender: true,
+      isAnimating: false,
     }
   },
   computed: {
@@ -70,15 +80,15 @@ export default {
   },
   watch: {
     data (data) {
-      this.render()
+      this.isFirstRender ? this.init() : this.update()
     },
   },
   mounted (...args) {
-    this.render()
-    window.addEventListener('resize', this.render)
+    this.isFirstRender ? this.init() : this.update()
+    window.addEventListener('resize', this.init)
   },
   beforeDestroy () {
-    window.removeEventListener('resize', this.render)
+    window.removeEventListener('resize', this.init)
   },
   methods: {
     formatMoney,
@@ -121,77 +131,104 @@ export default {
       }
       return moneyFormats['en'](curSym, amount.toFixed(this.precision))
     },
-    render () {
+    init () {
+      this.isFirstRender = true
       this.clear()
-      // Setup the data
       const data = this.normalizedData
-      let { max, min } = this.getMaxAndMin(data)
+      let { max } = this.getMaxAndMin(data)
       if (!data[0] || !data[data.length - 1]) return
-      const firstDate = data[0].time
-      const lastDate = data[data.length - 1].time
-      // Setup svg
-      const className = 'chart'
       const yAxisTickWidth = this.isTicksShown
         ? this.formatMoneyCustom(max).length * 9 - 5
         : 0
-      const margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
+      this.margin = { top: 2, left: yAxisTickWidth, bottom: 32, right: 0 }
       const dimensions = this.getDimensions(this.$el)
-      const width = dimensions.width // - margin.right - margin.left
-      const height = dimensions.height - margin.top - margin.bottom
-      const viewWidth = width + margin.left
-      const viewHeight = height + margin.top + margin.bottom
-      const svg = d3.select(this.$refs.chart)
+      this.width = dimensions.width // - margin.right - margin.left
+      this.height = dimensions.height - this.margin.top - this.margin.bottom
+      const viewWidth = this.width + this.margin.left
+      const viewHeight = this.height + this.margin.top + this.margin.bottom
+      this.svg = d3.select(this.$refs.chart)
         .append('svg')
         .attr('width', '100%')
         .attr('viewBox', `0 0 ${viewWidth} ${viewHeight}`)
         .attr('preserveAspectRatio', 'xMinYMin')
-        .attr('class', className)
+        .attr('class', CLASS_NAME)
         .append('g')
       if (!this.hasValue) {
         if (this.isTicksShown) {
           const y = d3.scaleLinear()
-            .range([height, 0])
+            .range([this.height, 0])
             .domain([0, 12])
-          const yAxisLine = d3.axisRight(y)
+          this.yAxisLine = d3.axisRight(y)
             .tickValues([0, 5, 10])
             .tickFormat((d) => `${formatMoney(d)} ${this.defaultAsset}`)
-            .tickSizeInner(width)
+            .tickSizeInner(this.width)
             .tickSizeOuter(0)
             .tickPadding(25)
-          svg.append('g')
-            .attr('class', `${className}__y-axis`)
-            .call(yAxisLine)
+          this.svg.append('g')
+            .attr('class', `${CLASS_NAME}__y-axis`)
+            .call(this.yAxisLine)
             .selectAll('line')
         }
         return
       }
+      this.y = d3.scaleLinear().range([this.height, 0])
+      this.x = d3.scaleTime().range([0, this.width])
+      // init y-axis
+      this.svg.append('g')
+        .attr('class', `${CLASS_NAME}__y-axis`)
+      this.update()
+    },
+    update () {
+      this.isAnimating = true
+      const chartSvg = d3.select(`svg.${CLASS_NAME}`)
+      chartSvg.classed(`${CLASS_NAME}--overflow-hidden`, true)
+      const data = this.normalizedData
+      let { max, min } = this.getMaxAndMin(data)
+      const firstDate = data[0].time
+      const lastDate = data[data.length - 1].time
       // Define domains
-      const y = d3.scaleLinear()
-        .range([height, 0])
-        .domain(this.addDomainPadding([min, max]))
-      const x = d3.scaleTime()
-        .range([0, width])
-        .domain([firstDate, lastDate])
+      this.y.domain(this.addDomainPadding([min, max]))
+      this.x.domain([firstDate, lastDate])
       // Render the line and area
       const area = d3.area()
-        .x((d) => x(d.time))
-        .y0(y(min))
-        .y1((d) => y(d.value))
+        .x((d) => this.x(d.time))
+        .y0(this.y(min))
+        .y1((d) => this.y(d.value))
       const line = d3.line()
-        .x((d) => x(d.time))
-        .y((d) => y(d.value))
-      const path = svg.append('path')
-        .attr('class', `${className}__line`)
-        .attr('d', line(data))
-      const totalLength = path.node().getTotalLength()
-      path
-        .attr('stroke-dasharray', totalLength + ' ' + totalLength)
-        .attr('stroke-dashoffset', totalLength)
-        .transition()
-        .duration(this.chartRenderingTime)
-        .ease(d3.easeLinear)
-        .attr('stroke-dashoffset', 0)
-      let defs = svg.append('defs')
+        .x((d) => this.x(d.time))
+        .y((d) => this.y(d.value))
+
+      if (this.isFirstRender) {
+        // Render line
+        const path = this.svg.append('path')
+          .attr('class', `${CLASS_NAME}__line`)
+          .attr('d', line(data))
+
+        const totalLength = path.node().getTotalLength()
+        path
+          .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+          .attr('stroke-dashoffset', totalLength)
+          .transition()
+          .duration(this.chartRenderingTime)
+          .ease(d3.easeLinear)
+          .attr('stroke-dashoffset', 0)
+      } else {
+        // Update the line
+        let path = this.svg.selectAll(`.${CLASS_NAME}__line`)
+          .attr('stroke-dasharray', null)
+          .attr('stroke-dashoffset', null)
+          .attr('stroke-dashoffset', null)
+          .data([data])
+        path = path
+          .enter()
+          .append('path')
+          .attr('class', `${CLASS_NAME}__line`)
+          .merge(path)
+        path.transition()
+          .duration(this.chartRenderingTime)
+          .attr('d', line)
+      }
+      let defs = this.svg.append('defs')
       let lg = defs.append('linearGradient')
         .attr('id', 'area-gradient')
         .attr('x1', '0%')
@@ -219,58 +256,72 @@ export default {
         .style('stop-color', '#d5ceff')
         .style('stop-opacity', 0.05)
       if (max !== min) {
-        const chartAreaWithGradient = svg
-          .append('path')
-          .datum(data)
-          .attr('fill', 'url(#area-gradient)')
-          .attr('d', area)
-          .style('opacity', '0')
-          .style('transition', '0.3s ease-out')
-        setTimeout(() => {
-          chartAreaWithGradient.style('opacity', '1')
-        }, this.chartRenderingTime)
+        if (this.isFirstRender) {
+          const chartAreaWithGradient = this.svg
+            .append('path')
+            .attr('class', `${CLASS_NAME}__linear-gradient`)
+            .datum(data)
+            .attr('fill', 'url(#area-gradient)')
+            .attr('d', area)
+            .style('opacity', '0')
+            .style('transition', '0.3s ease-out')
+          setTimeout(() => {
+            chartAreaWithGradient.style('opacity', '1')
+          }, this.chartRenderingTime)
+        } else {
+          let chartAreaWithGradient = this.svg.selectAll(`.${CLASS_NAME}__linear-gradient`)
+            .datum(data)
+            .style('transition', null)
+          chartAreaWithGradient = chartAreaWithGradient
+            .enter()
+            .append('path')
+            .attr('class', `${CLASS_NAME}__linear-gradient`)
+            .merge(chartAreaWithGradient)
+          chartAreaWithGradient.transition()
+            .duration(this.chartRenderingTime)
+            .attr('d', area)
+        }
       }
       // Render x-axis
       if (this.isTicksShown) {
-        const yAxisLine = d3.axisRight(y)
+        const yAxisLine = d3.axisRight(this.y)
           .ticks(4)
           .tickFormat((d) => `${formatMoney(d.toFixed(2))} ${this.defaultAsset}`)
-          .tickSizeInner(width)
+          .tickSizeInner(this.width)
           .tickSizeOuter(0)
           .tickPadding(25)
-        svg.append('g')
-          .attr('class', `${className}__y-axis`)
+        this.svg.selectAll(`.${CLASS_NAME}__y-axis`)
+          .transition()
+          .duration(this.chartRenderingTime)
           .call(yAxisLine)
-          .selectAll('line')
 
         const isZeroAxisRendered = min < 0 && max > 0
 
         if (isZeroAxisRendered) {
-          const yAxisLineZero = d3.axisRight(y)
+          const yAxisLineZero = d3.axisRight(this.y)
             .tickValues([0])
             .tickFormat((d) => `${d} ${this.defaultAsset}`)
-            .tickSizeInner(width)
+            .tickSizeInner(this.width)
             .tickSizeOuter(0)
             .tickPadding(25)
-          svg.append('g')
-            .attr('class', `${className}__y-axis-zero`)
+          this.svg.append('g')
+            .attr('class', `${CLASS_NAME}__y-axis-zero`)
             .call(yAxisLineZero)
-            .selectAll('line')
         }
       }
       // Tip
-      const tip = svg.append('g')
-        .attr('class', `${className}__tip`)
+      const tip = this.svg.append('g')
+        .attr('class', `${CLASS_NAME}__tip`)
       // Tip line
       const tipLine = tip.append('line')
-        .attr('class', `${className}__tip-line`)
+        .attr('class', `${CLASS_NAME}__tip-line`)
         .attr('x1', 0)
         .attr('y1', 10)
         .attr('x2', 0)
         .attr('y2', 0)
       // Tip circle
       const tipCircle = tip.append('circle')
-        .attr('class', `${className}__tip-circle`)
+        .attr('class', `${CLASS_NAME}__tip-circle`)
         .attr('cx', 0)
         .attr('r', 5)
       // Tip text box
@@ -280,44 +331,46 @@ export default {
         .style('fill', 'white')
         .attr('transform', 'translate(-11.5, 17)')
       tipTextBox.append('rect')
-        .attr('class', `${className}__tip-text-box`)
+        .attr('class', `${CLASS_NAME}__tip-text-box`)
         .attr('width', 150)
         .attr('height', 55)
         .attr('transform', 'translate(-75, -38)')
         .attr('rx', 3)
         .attr('ry', 30)
       const tipPriceText = tipTextBox.append('text')
-        .attr('class', `${className}__tip-text-price`)
+        .attr('class', `${CLASS_NAME}__tip-text-price`)
         .attr('text-anchor', 'middle')
         .attr('y', -15)
       const tipPriceChangeText = tipTextBox.append('text')
-        .attr('class', `${className}__tip-text-price-change`)
+        .attr('class', `${CLASS_NAME}__tip-text-price-change`)
         .attr('text-anchor', 'middle')
         .attr('y', 5)
       const tipTimeTextDD = tip.append('text')
-        .attr('class', `${className}__tip-text-time-dd`)
+        .attr('class', `${CLASS_NAME}__tip-text-time-dd`)
         .attr('text-anchor', 'middle')
-        .attr('y', height + margin.bottom - 5)
+        .attr('y', this.height + this.margin.bottom - 5)
       const tipTimeTextMM = tip.append('text')
-        .attr('class', `${className}__tip-text-time-mm`)
+        .attr('class', `${CLASS_NAME}__tip-text-time-mm`)
         .attr('text-anchor', 'middle')
-        .attr('y', height + margin.bottom + 8)
+        .attr('y', this.height + this.margin.bottom + 8)
       // Tip motion capture area
-      const motionCaptureArea = svg.append('rect')
-        .attr('class', `${className}__tip-motion-capture-area`)
-        .attr('width', width)
-        .attr('height', height - 25)
+      const motionCaptureArea = this.svg.append('rect')
+        .attr('class', `${CLASS_NAME}__tip-motion-capture-area`)
+        .attr('width', this.width)
+        .attr('height', this.height - 25)
         .attr('transform', 'translate(0, 25)')
       // Tip Mouse events
       for (const event of ['mouseenter', 'touchenter']) {
         motionCaptureArea.on(event, function () {
-          tip.classed(`${className}__tip--show`, true)
+          tip.classed(`${CLASS_NAME}__tip--show`, true)
         })
       }
       for (const event of ['mousemove', 'touchmove']) {
         motionCaptureArea.on(event, () => {
-          tip.classed(`${className}__tip--hidden`, false)
-          const x0 = x.invert(d3.mouse(svg.node())[0])
+          if (!this.isAnimating) {
+            tip.classed(`${CLASS_NAME}__tip--hidden`, false)
+          }
+          const x0 = this.x.invert(d3.mouse(this.svg.node())[0])
           const bisectDate = d3.bisector(d => d.time).left
           const bisectIndex = bisectDate(data, x0, 1)
           const d0 = data[bisectIndex - 1]
@@ -373,25 +426,30 @@ export default {
             tipPriceChangeText.text('+0%')
           }
           // Change X position of the tip
-          tip.attr('transform', `translate(${x(nearestPoint.time)})`)
-          tipTextBox.style('transform', `translateY(${y(nearestPoint.value) - 35}px)`)
+          tip.attr('transform', `translate(${this.x(nearestPoint.time)})`)
+          tipTextBox.style('transform', `translateY(${this.y(nearestPoint.value) - 35}px)`)
           if (min === max) {
-            tipLine.attr('y1', height / 2)
-            tipLine.attr('y2', height)
+            tipLine.attr('y1', this.height / 2)
+            tipLine.attr('y2', this.height)
           } else {
-            tipLine.attr('y1', y(nearestPoint.value))
-            tipLine.attr('y2', height - 10)
+            tipLine.attr('y1', this.y(nearestPoint.value))
+            tipLine.attr('y2', this.height - 10)
           }
           // Change Y position of the circle
-          tipCircle.attr('cy', y(nearestPoint.value))
+          tipCircle.attr('cy', this.y(nearestPoint.value))
         })
       }
       for (const event of ['mouseout', 'touchout']) {
         motionCaptureArea.on(event, function () {
-          tip.classed(`${className}__tip--show`, false)
+          tip.classed(`${CLASS_NAME}__tip--show`, false)
         })
       }
-      tip.classed(`${className}__tip--hidden`, true)
+      tip.classed(`${CLASS_NAME}__tip--hidden`, true)
+      this.isFirstRender = false
+      setTimeout(() => {
+        this.isAnimating = false
+        chartSvg.classed(`${CLASS_NAME}--overflow-hidden`, false)
+      }, this.chartRenderingTime)
     },
   },
 }
@@ -435,6 +493,7 @@ export default {
     overflow: visible;
     * { font-family: inherit; }
     & > g { overflow: hidden; }
+    &--overflow-hidden { overflow: hidden; }
   }
   .chart__area {
     fill: $col-chart-fill;
