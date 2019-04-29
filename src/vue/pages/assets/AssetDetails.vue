@@ -210,6 +210,7 @@ export default {
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
@@ -222,7 +223,9 @@ export default {
         case this.kycRequiredAssetType:
           return !this.isAccountUnverified
         case this.securityAssetType:
-          return this.isAccountGeneral || this.isAccountUsAccredited
+          return this.isAccountGeneral ||
+                 this.isAccountUsAccredited ||
+                 this.isAccountCorporate
         default:
           return true
       }

@@ -55,6 +55,7 @@ export default {
     isAccountUsVerified: { type: Boolean, required: true },
     isAccountUsAccredited: { type: Boolean, required: true },
     isAccountGeneral: { type: Boolean, required: true },
+    isAccountCorporate: { type: Boolean, required: true },
   },
   data: _ => ({
     isPending: false,
@@ -69,7 +70,9 @@ export default {
         case this.kycRequiredAssetType:
           return !this.isAccountUnverified
         case this.securityAssetType:
-          return this.isAccountGeneral || this.isAccountUsAccredited
+          return this.isAccountGeneral ||
+                 this.isAccountUsAccredited ||
+                 this.isAccountCorporate
         default:
           return true
       }

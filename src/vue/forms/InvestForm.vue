@@ -165,8 +165,20 @@
     <template v-else-if="!isAllowedAccountType">
       <no-data-message
         icon-name="alert-circle"
-        :title="'invest-form.requires-verification-title' | globalize"
-        :message="'invest-form.requires-verification-desc' | globalize"
+        :title="
+          (
+            isAccountUsVerified
+              ? 'invest-form.requires-us-accreditation-title'
+              : 'invest-form.requires-verification-title'
+          ) | globalize
+        "
+        :message="
+          (
+            isAccountUsVerified
+              ? 'invest-form.requires-us-accreditation-desc'
+              : 'invest-form.requires-verification-desc'
+          ) | globalize
+        "
       />
     </template>
 
@@ -257,7 +269,13 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
+      isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
+      isAccountUsVerified: vuexTypes.isAccountUsVerified,
       balances: vuexTypes.accountBalances,
     }),
 
@@ -320,10 +338,15 @@ export default {
     },
 
     isAllowedAccountType () {
-      if (this.saleBaseAsset) {
-        return !(this.saleBaseAsset.isRequiresKYC && this.isAccountUnverified)
-      } else {
-        return true
+      switch (this.sale.baseAsset.assetType) {
+        case this.kvAssetTypeKycRequired:
+          return !this.isAccountUnverified
+        case this.kvAssetTypeSecurity:
+          return this.isAccountGeneral ||
+                 this.isAccountUsAccredited ||
+                 this.isAccountCorporate
+        default:
+          return true
       }
     },
 

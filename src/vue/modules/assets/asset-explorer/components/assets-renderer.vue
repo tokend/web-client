@@ -34,6 +34,7 @@
               :is-account-general="isAccountGeneral"
               :is-account-us-accredited="isAccountUsAccredited"
               :is-account-us-verified="isAccountUsVerified"
+              :is-account-corporate="isAccountCorporate"
               :kyc-required-asset-type="kycRequiredAssetType"
               :security-asset-type="securityAssetType"
               @update-click="isUpdateMode = true"
@@ -145,6 +146,10 @@ export default {
       required: true,
     },
     isAccountGeneral: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountCorporate: {
       type: Boolean,
       required: true,
     },

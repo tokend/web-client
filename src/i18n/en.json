@@ -1493,7 +1493,9 @@
       "investment-submitted-msg": "Invested successfully. Your account will be funded with {{asset}} once the sale succeeds",
       "offer-canceled-msg": "Your offer was successfully cancelled",
       "requires-verification-title": "Verification required",
-      "requires-verification-desc": "Please, verify your account to invest in this sale"
+      "requires-verification-desc": "Please, verify your account to invest in this sale",
+      "requires-us-accreditation-title": "Accreditation required",
+      "requires-us-accreditation-desc": "U.S. citizens are required to verify their accreditation before holding this asset"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
