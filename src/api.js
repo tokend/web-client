@@ -22,6 +22,7 @@ export class Api {
    */
   static initSync (config) {
     _api = ApiCaller.getInstance(config.horizonURL)
+    _walletsManager = new WalletsManager(_api)
   }
 
   /**
