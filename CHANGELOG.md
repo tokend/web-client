@@ -8,8 +8,15 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Fixes
+
+### Fixed
 - Fixed a bug when with `defaultQuoteAsset` loading race condition
+
+### Added 
+- General verification form module (included in vanilla scheme only)
+- `usVerified` and `usAccredited` roles to key/value module
+- `Passport` is now able to show US verified and US accredited user roles
+- Users with US verified and US accredited roles will now also be redirected to general form
 
 ## [1.5.0]
 ### "Under the hood changes"
