@@ -1,8 +1,8 @@
 import { validationMixin } from 'vuelidate'
 
-import InputField from '../fields/InputField'
-import SelectField from '../fields/SelectField'
-import DateField from '../fields/DateField'
+import InputField from '@/vue/fields/InputField'
+import SelectField from '@/vue/fields/SelectField'
+import DateField from '@/vue/fields/DateField'
 import TextareaField from '@/vue/fields/TextareaField'
 import TickField from '@/vue/fields/TickField'
 import FileField from '@/vue/fields/FileField'
