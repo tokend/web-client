@@ -148,16 +148,22 @@ export default {
       this.enableForm()
     },
     async createTotpFactor () {
+      const endpoint = `/wallets/${this.walletId}/factors`
       try {
         await this.deleteTotpFactor()
-        await Api.walletsManager.createTotpFactor()
+
+        await Api.api.postWithSignature(endpoint, {
+          data: { type: 'totp' },
+        })
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
             await Api.walletsManager.verifyPasswordFactor(
               error, this.form.password
             )
-            const { data } = await Api.walletsManager.createTotpFactor()
+            const { data } = await Api.api.postWithSignature(endpoint, {
+              data: { type: 'totp' },
+            })
             this.factor = data
           } catch (e) {
             ErrorHandler.process(e, 'tfa-form.wrong-password-err')
@@ -216,7 +222,7 @@ export default {
       this.enableForm()
     },
     async changeFactorPriority () {
-      const endpoint = `/wallets/${this.walletId}/factors/${this.factorId}`
+      const endpoint = `/wallets/${this.walletId}/factors/${this.factor.id}`
       await Api.api.patchWithSignature(endpoint, {
         data: { attributes: { priority: ENABLED_FACTOR_PRIORITY } },
       })
