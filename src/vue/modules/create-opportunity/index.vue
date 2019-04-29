@@ -424,14 +424,13 @@ import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import {
-  Wallet,
   base,
   ASSET_POLICIES,
   SALE_TYPES,
   BLOB_TYPES,
 } from '@tokend/js-sdk'
 
-import { api, initApi } from './_api'
+import { api } from '@/api'
 import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.const'
 
 import { DateUtil } from '@/js/utils'
@@ -504,18 +503,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-    */
-    config: {
-      type: Object,
-      required: true,
-    },
     accountId: {
       type: String,
       required: true,
@@ -702,7 +689,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
     this.form.information.formType = this.FORM_TYPES[0]
     await this.loadAssets()
     await this.loadBaseAssetsPairs()
