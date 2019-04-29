@@ -2,7 +2,7 @@
 import { Document } from '../wrappers/document'
 import { ChangeRoleRequest } from '../wrappers/change-role-request'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import moment from 'moment'
 
 export default {
