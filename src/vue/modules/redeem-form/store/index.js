@@ -1,7 +1,7 @@
 import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 import { SaleRecord } from '../wrappers/sale.record'
 import { base, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'

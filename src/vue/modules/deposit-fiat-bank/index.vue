@@ -204,9 +204,8 @@
 <script>
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -238,22 +237,6 @@ export default {
     NoDataMessage,
   },
   mixins: [FormMixin],
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.decimalPoints - count of allowed decimal points
-     * @property config.minAmount - minimal allowed amount
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
   data: _ => ({
     isInitialized: false,
     form: {
@@ -288,6 +271,9 @@ export default {
       balances: types.balances,
       calculatedFees: types.fees,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
     totalFee () {
       return MathUtil.add(this.fees.percentFee, this.fees.fixedFee)
     },
@@ -298,8 +284,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
     this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()

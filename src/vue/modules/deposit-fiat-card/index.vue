@@ -194,6 +194,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { Wallet, base } from '@tokend/js-sdk'
 import { initApi, api } from './_api'
@@ -232,10 +233,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
@@ -272,6 +269,9 @@ export default {
       balances: types.balances,
       calculatedFees: types.fees,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
     totalFee () {
       return MathUtil.add(this.fees.percentFee, this.fees.fixedFee)
     },

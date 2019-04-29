@@ -2,7 +2,7 @@ import { FEE_TYPES, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
-import { api, loadingDataViaLoop } from '../_api'
+import { api, loadingDataViaLoop } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 
 export const state = {

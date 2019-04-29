@@ -1,7 +1,7 @@
 import { Balance } from '../wrappers/balance'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 
 export const state = {
