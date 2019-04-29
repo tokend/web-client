@@ -1,7 +1,7 @@
 <template>
   <form
     class="app-form change-password-form"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="tryToSubmitForm"
   >
     <div class="app__form-row">
       <div class="app__form-field">
@@ -60,7 +60,8 @@
     <div class="app__form-actions">
       <form-confirmation
         v-if="formMixin.isConfirmationShown"
-        @ok="hideConfirmation() || submit()"
+        :is-pending="formMixin.isFormSubmitting"
+        @ok="submit"
         @cancel="hideConfirmation"
       />
       <button
@@ -128,10 +129,7 @@ export default {
       storeWallet: vuexTypes.STORE_WALLET,
     }),
     async submit () {
-      if (!this.isFormValid()) {
-        return
-      }
-      this.disableForm()
+      this.startFormSubmitting()
       try {
         await Sdk.api.wallets.changePassword(this.form.newPassword)
       } catch (e) {
@@ -143,7 +141,7 @@ export default {
           ErrorHandler.process(e)
         }
       }
-      this.enableForm()
+      this.finishFormSubmitting()
     },
 
     async retryPasswordChange (tfaError) {
