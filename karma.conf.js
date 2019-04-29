@@ -26,8 +26,8 @@ module.exports = function (config) {
     webpack: webpackConfig,
     frameworks: ['mocha', 'sinon', 'chai', 'sinon-chai'],
     captureTimeout: 210000,
-    browserDisconnectTolerance: 3, 
-    browserDisconnectTimeout : 210000,
-    browserNoActivityTimeout : 210000,
+    browserDisconnectTolerance: 3,
+    browserDisconnectTimeout: 210000,
+    browserNoActivityTimeout: 210000,
   })
 }
