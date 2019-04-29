@@ -10,7 +10,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 describe('create-asset-requests.module', () => {
   describe('vuex types', () => {

@@ -8,8 +8,7 @@
           </template>
           <create-asset-form-module
             :request-id="selectedRequest.id"
-            :wallet="wallet"
-            :config="config"
+            :storage-url="storageURL"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -59,13 +58,11 @@ import RequestsTable from './components/requests-table'
 
 import CreateAssetFormModule from '@modules/create-asset-form'
 
-import { initApi } from './_api'
 import { initConfig } from './_config'
-
-import { Wallet } from '@tokend/js-sdk'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -81,17 +78,8 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },
@@ -109,11 +97,13 @@ export default {
     ...mapGetters('create-asset-requests', {
       requests: types.requests,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
+    initConfig(this.storageURL)
 
     this.setAccountId(this.wallet.accountId)
     await this.loadAssetTypes()
