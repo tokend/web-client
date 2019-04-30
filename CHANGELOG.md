@@ -18,6 +18,9 @@ for further information about branching and tagging conventions.
 - Show banner for blocked user
 - Validator of available for issuance amount
 
+#### Changed
+- Show only one QR code on Coinpayments deposit
+
 #### Fixed
 - Invalid opts when submitting create asset request
 

@@ -72,6 +72,10 @@ import {
   amountRange,
 } from '@validators'
 
+const EVENTS = {
+  submitted: 'submitted',
+}
+
 const TRANSACTION_TIME_MARGIN = 600 // seconds
 
 export default {
@@ -118,6 +122,7 @@ export default {
         )
         this.depositDetails.endTime = moment().unix() +
           this.depositDetails.timeout - TRANSACTION_TIME_MARGIN
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
         this.isFailed = true
