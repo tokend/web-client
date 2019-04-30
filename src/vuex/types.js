@@ -110,6 +110,7 @@ const getters = {
   kycLatestBlobId: 'kycLatestBlobId',
   kycRequestRejectReason: 'kycRequestRejectReason',
   kycRequestResetReason: 'kycRequestResetReason',
+  kycRequestExternalDetails: 'kycRequestExternalDetails',
   kycRequestBlockReason: 'kycRequestBlockReason',
   kycAccountRoleToSet: 'kycAccountRoleToSet',
   kycPreviousRequestAccountRoleToSet: 'kycPreviousRequestAccountRoleToSet',

@@ -5292,7 +5292,7 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-iso-country-codes@^0.0.5:
+iso-country-codes@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/iso-country-codes/-/iso-country-codes-0.0.5.tgz#fb48b2a677707c07c4e98e2721cda9a79894f3a0"
   integrity sha1-+0iypndwfAfE6Y4nIc2pp5iU86A=

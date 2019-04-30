@@ -40,7 +40,9 @@ export class ChangeRoleRequestRecord {
 
     this.accountRoleToSet = _get(record, 'requestDetails.accountRoleToSet')
     this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
-    this.externalDetails = _get(record, 'externalDetails.data')
+    this.externalDetails = (_get(record, 'externalDetails.data') || [])
+      .slice() // to avoid modifying record itself
+      .pop() // because only the last object in external details
   }
 
   get rejector () {
