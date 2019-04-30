@@ -1,10 +1,10 @@
 <template>
   <transition name="drawer-v-if-transition">
-    <div v-if="!isDrawerDeleted">
+    <div v-if="!isDeleted">
       <transition name="drawer-v-show-transition">
         <div
           class="drawer"
-          v-show="!isDrawerHidden"
+          v-show="!isHidden"
         >
           <div
             class="drawer__backdrop"
@@ -55,23 +55,23 @@ export default {
     closeByClickOutside: { type: Boolean, default: true },
   },
   data: () => ({
-    isDrawerHidden: true,
-    isDrawerDeleted: true,
+    isHidden: true,
+    isDeleted: true,
   }),
   watch: {
     'isShown': function () {
       if (this.isShown) {
-        this.isDrawerHidden = false
-        this.isDrawerDeleted = false
+        this.isHidden = false
+        this.isDeleted = false
       }
-      if (!this.isShown && !this.isDrawerHidden) {
-        this.isDrawerDeleted = true
+      if (!this.isShown && !this.isHidden) {
+        this.isDeleted = true
       }
     },
   },
   methods: {
     closeSelf () {
-      this.isDrawerHidden = true
+      this.isHidden = true
       this.$emit(EVENTS.updateIsShown, false)
     },
   },
