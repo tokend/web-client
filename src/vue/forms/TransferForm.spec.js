@@ -252,9 +252,9 @@ describe('TransferForm component', () => {
       await wrapper.vm.processTransfer()
 
       expect(wrapper.vm.getCounterparty.calledOnce).to.be.true
-      expect(wrapper.vm.calculateFees.calledOnce).to.be.true
       expect(wrapper.vm.isFeesLoaded).equal(true)
-      expect(ErrorHandler.process.calledOnce).to.be.true
+      expect(wrapper.vm.calculateFees.calledOnce).to.be.true
+      expect(ErrorHandler.process.calledOnce).to.be.false
     })
 
     it('calculateFees handle error', async () => {

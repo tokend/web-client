@@ -12,15 +12,15 @@
         v-if="fees.IsAnyExternalFee"
       >
         <td>
-          {{ 'fees-renderer.network-fee-hint' | globalize }}
+          {{ 'fees-renderer.network-fee-lbl' | globalize }}
         </td>
         <td>
-          {{ 'fees-renderer.network-fee-unknown' | globalize }}
+          {{ 'fees-renderer.network-fee-unknown-lbl' | globalize }}
         </td>
       </tr>
       <tr>
         <td>
-          {{ 'fees-renderer.source-fixed-fee' | globalize }}
+          {{ 'fees-renderer.source-fixed-fee-lbl' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -38,7 +38,7 @@
       </tr>
       <tr>
         <td>
-          {{ 'fees-renderer.source-percent-fee' | globalize }}
+          {{ 'fees-renderer.source-percent-fee-lbl' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -57,7 +57,7 @@
       <template v-if="fees.destination.fixed">
         <tr>
           <td>
-            {{ 'fees-renderer.destination-fixed-fee' | globalize }}
+            {{ 'fees-renderer.destination-fixed-fee-lbl' | globalize }}
           </td>
           <td>
             <template v-if="paidForDestination">
@@ -70,7 +70,7 @@
         </tr>
         <tr v-if="fees.destination.calculatedPercent">
           <td>
-            {{ 'fees-renderer.destination-percent-fee' | globalize }}
+            {{ 'fees-renderer.destination-percent-fee-lbl' | globalize }}
           </td>
           <td>
             <template v-if="paidForDestination">
@@ -89,7 +89,7 @@
 
       <tr class="fees-renderer__total-fee-row">
         <td>
-          {{ 'fees-renderer.source-fixed-total-fee' | globalize }}
+          {{ 'fees-renderer.source-fixed-total-fee-lbl' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -117,7 +117,7 @@
         class="fees-renderer__total-fee-row"
       >
         <td>
-          {{ 'fees-renderer.destination-fixed-total-fee' | globalize }}
+          {{ 'fees-renderer.destination-fixed-total-fee-lbl' | globalize }}
         </td>
         <td>
           <template v-if="paidForDestination">
@@ -141,7 +141,7 @@
       >
         <td class="fees-renderer__tick-field">
           <tick-field v-model="isPaidForRecipient">
-            {{ 'fees-renderer.pay-fees-for-recipient' | globalize }}
+            {{ 'fees-renderer.pay-fees-for-recipient-lbl' | globalize }}
           </tick-field>
         </td>
       </tr>
