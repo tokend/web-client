@@ -40,8 +40,8 @@ export default {
       senderFees.assetCode = opts.assetCode
       senderFees.type = opts.type
       const coupledFeesRecord = new CoupledFeesRecord({
-        destination: new FeesRecord(recipientFees),
-        source: new FeesRecord(senderFees),
+        destination: recipientFees,
+        source: senderFees,
         assetCode: opts.assetCode,
       })
       coupledFeesRecord.setIsAnyExternalFee = {
@@ -62,7 +62,7 @@ export default {
           subtype: PAYMENT_FEE_SUBTYPES.outgoing,
         }
       )
-      return result.data
+      return new FeesRecord(result.data)
     },
 
     async calculateRecipientFees ({ accountId, type, assetCode, amount }) {
@@ -75,7 +75,7 @@ export default {
           amount: amount,
         }
       )
-      return result.data
+      return new FeesRecord(result.data)
     },
   },
 }
