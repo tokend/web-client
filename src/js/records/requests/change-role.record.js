@@ -42,6 +42,6 @@ export class ChangeRoleRequestRecord {
     this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
     this.externalDetails = (_get(record, 'externalDetails.data') || [])
       .slice() // to avoid modifying record itself
-      .pop() // because only the last object in external details
+      .pop() // because only the last object in external details is actual
   }
 }
