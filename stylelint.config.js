@@ -105,14 +105,14 @@ module.exports = {
 
     'font-weight-notation': ['numeric', { severity: 'warning' }],
 
-    'function-comma-newline-after': ['never-multi-line', { severity: 'warning' }],
+    'function-comma-newline-after': ['always-multi-line', { severity: 'warning' }],
     'function-comma-newline-before': ['never-multi-line', { severity: 'warning' }],
-    'function-comma-space-after': ['always', { severity: 'warning' }],
+    'function-comma-space-after': ['always-single-line', { severity: 'warning' }],
     'function-comma-space-before': ['never', { severity: 'warning' }],
     'function-max-empty-lines': [0, { severity: 'warning' }],
     'function-name-case': ['lower', { severity: 'warning' }],
-    'function-parentheses-newline-inside': ['never-multi-line', { severity: 'warning' }],
-    'function-parentheses-space-inside': ['never', { severity: 'warning' }],
+    'function-parentheses-newline-inside': ['always-multi-line', { severity: 'warning' }],
+    'function-parentheses-space-inside': ['never-single-line', { severity: 'warning' }],
     'function-url-quotes': ['always', { severity: 'warning' }],
     'function-whitespace-after': ['always', { severity: 'warning' }],
 
@@ -127,7 +127,7 @@ module.exports = {
 
     'value-keyword-case': ['lower', { severity: 'warning' }],
 
-    'value-list-comma-space-after': ['always', { severity: 'warning' }],
+    'value-list-comma-space-after': ['always-single-line', { severity: 'warning' }],
     'value-list-comma-space-before': ['never', { severity: 'warning' }],
     'value-list-max-empty-lines': [0, { severity: 'warning' }],
 
@@ -136,7 +136,7 @@ module.exports = {
     'declaration-bang-space-after': ['never', { severity: 'warning' }],
     'declaration-bang-space-before': ['always', { severity: 'warning' }],
     'declaration-colon-newline-after': ['always-multi-line', { severity: 'warning' }],
-    'declaration-colon-space-after': ['always', { severity: 'warning' }],
+    'declaration-colon-space-after': ['always-single-line', { severity: 'warning' }],
     'declaration-colon-space-before': ['never', { severity: 'warning' }],
 
     'declaration-block-semicolon-newline-after': ['always-multi-line', { severity: 'warning' }],
@@ -161,6 +161,27 @@ module.exports = {
     'selector-pseudo-element-case': ['lower', { severity: 'warning' }],
     'selector-pseudo-element-colon-notation': ['single', { severity: 'warning' }],
     'selector-type-case': ['lower', { severity: 'warning' }],
+    /**
+     * selector-nested-pattern
+     *
+     * Only followed patterns allowed:
+     * 1. selector & {
+     *      ...code
+     *    }
+     * 2. &:[any pseudo-class|element] OR &::[any pseudo-class|element] {
+     *      ...code
+     *    }
+     * 3. &--[class modifier name] {
+     *      ...code
+     *    }
+     * 4. & + & {
+     *      ...code
+     *    }
+     */
+    'selector-nested-pattern': [
+      '^(.*\\s&|(&:{1,2}[0-9a-z(),:-]+(\\s*)?)+|(&-{2}[a-z]{1}[a-z-:,]+(\\s*)?)+)$',
+      { severity: 'warning' },
+    ],
 
     'selector-list-comma-newline-after': ['always', { severity: 'warning' }],
     'selector-list-comma-space-after': ['always-single-line', { severity: 'warning' }],
@@ -222,7 +243,7 @@ module.exports = {
         ignoreFunctions: false,
         ignoreKeywords: {
           // '' means default, for all
-          '': ['currentColor', 'transparent'],
+          '': ['currentColor', 'transparent', 'inherit', 'initial'],
           'fill': ['none'],
           'stroke': ['none'],
         },
