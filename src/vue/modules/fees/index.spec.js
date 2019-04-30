@@ -9,9 +9,6 @@ import { Fee } from './wrappers/fee'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
-import * as Api from '@/api'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -19,15 +16,6 @@ localVue.use(Vuex)
 
 describe('Fees module', () => {
   const props = {
-    config: {
-      horizonUrl: 'https://test.api.com',
-    },
-    wallet: new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ),
     assetCode: 'USD',
   }
 
@@ -64,7 +52,16 @@ describe('Fees module', () => {
     sinon.stub(feesModule.getters, types.fees).returns(fees)
 
     store = new Vuex.Store({
-      modules: { 'fees': feesModule },
+      modules: {
+        'fees': feesModule,
+        'wallet': {
+          getters: {
+            wallet: _ => ({
+              accountId: 'SOME_ACCOUNT_ID',
+            }),
+          },
+        },
+      },
     })
   })
 
@@ -74,27 +71,13 @@ describe('Fees module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sinon.stub(Api, 'initApi')
       sinon.stub(FeesModule.methods, 'setAccountId')
       sinon.stub(FeesModule.methods, 'loadFees')
     })
 
     afterEach(() => {
-      Api.initApi.restore()
       FeesModule.methods.setAccountId.restore()
       FeesModule.methods.loadFees.restore()
-    })
-
-    it('calls initApi function with correct params', async () => {
-      await shallowMount(FeesModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(Api.initApi).to.has.been.calledOnceWithExactly(
-        props.wallet, props.config
-      )
     })
 
     it('calls setAccountId method with correct params', async () => {
@@ -105,7 +88,7 @@ describe('Fees module', () => {
       })
 
       expect(FeesModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly(props.wallet.accountId)
+        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls loadFees method', async () => {

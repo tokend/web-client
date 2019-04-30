@@ -5,8 +5,6 @@ import Vuex from 'vuex'
 import { assetExplorerModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-
-import * as Api from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -19,7 +17,16 @@ describe('Asset explorer module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'asset-explorer': assetExplorerModule },
+      modules: {
+        'asset-explorer': assetExplorerModule,
+        'wallet': {
+          getters: {
+            wallet: _ => ({
+              accountId: 'SOME_ACCOUNT_ID',
+            }),
+          },
+        },
+      },
     })
   })
 
@@ -28,24 +35,18 @@ describe('Asset explorer module', () => {
   })
 
   describe('created hook', () => {
-    it('inits API, sets account ID, and loads balances', async () => {
-      sandbox.stub(Api, 'initApi')
+    it('inits API, sets account ID, and loads balances', () => {
       sandbox.stub(AssetExplorerModule.methods, 'setAccountId')
       sandbox.stub(AssetExplorerModule.methods, 'load')
 
-      await shallowMount(AssetExplorerModule, {
+      shallowMount(AssetExplorerModule, {
         localVue,
         store,
         propsData: {
-          config: { horizonURL: 'https://test.api.com' },
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 
-      expect(Api.initApi).to.has.been.calledOnceWithExactly(
-        { accountId: 'SOME_ACCOUNT_ID' },
-        { horizonURL: 'https://test.api.com' }
-      )
       expect(AssetExplorerModule.methods.setAccountId)
         .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
       expect(AssetExplorerModule.methods.load)

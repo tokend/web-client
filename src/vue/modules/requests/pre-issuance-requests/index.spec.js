@@ -5,8 +5,6 @@ import { preIssuanceRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from '@/api'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -19,7 +17,16 @@ describe('Pre issuance requests module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'pre-issuance-requests': preIssuanceRequestsModule },
+      modules: {
+        'pre-issuance-requests': preIssuanceRequestsModule,
+        'wallet': {
+          getters: {
+            wallet: _ => ({
+              accountId: 'SOME_ACCOUNT_ID',
+            }),
+          },
+        },
+      },
     })
   })
 
@@ -29,32 +36,14 @@ describe('Pre issuance requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Api, 'initApi')
       sandbox.stub(PreIssuanceRequestsModule.methods, 'setAccountId')
       sandbox.stub(PreIssuanceRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls initApi function with correct params', () => {
-      shallowMount(PreIssuanceRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          config: 'SOME_CONFIG',
-          wallet: 'SOME_WALLET',
-        },
-      })
-
-      expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
     it('calls setAccountId method', () => {
       shallowMount(PreIssuanceRequestsModule, {
         localVue,
         store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
 
       expect(PreIssuanceRequestsModule.methods.setAccountId)
@@ -65,9 +54,6 @@ describe('Pre issuance requests module', () => {
       shallowMount(PreIssuanceRequestsModule, {
         localVue,
         store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
 
       expect(PreIssuanceRequestsModule.methods.initFirstPageLoader)

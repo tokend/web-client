@@ -146,7 +146,7 @@ describe('Upload documents mixin', () => {
 
     describe('uploadFile', () => {
       it('creates and posts file form data', async () => {
-        Config.initConfig({ storageURL: 'https://storage.com' })
+        Config.initConfig('https://storage.com')
         sandbox.stub(wrapper.vm, 'createFileFormData')
           .returns({ 'some-policy': 'Some policy' })
         sandbox.stub(Vue.http, 'post')

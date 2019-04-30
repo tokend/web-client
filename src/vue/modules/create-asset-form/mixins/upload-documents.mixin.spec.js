@@ -1,7 +1,5 @@
 import UploadDocumentsMixin from './upload-documents.mixin'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import { mount, createLocalVue } from '@vue/test-utils'
@@ -100,20 +98,6 @@ describe('Upload documents mixin', () => {
     })
 
     describe('createDocumentAnchorConfig', () => {
-      beforeEach(() => {
-        const wallet = new Wallet(
-          'test@mail.com',
-          'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-          'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-          '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-        )
-        const config = {
-          horizonURL: 'https://test.api.com',
-        }
-
-        Api.initApi(wallet, config)
-      })
-
       it('calls Api.postWithSignature method with provided params', async () => {
         wrapper.setProps({
           wallet: { accountId: 'SOME_ACCOUNT_ID' },
@@ -146,7 +130,7 @@ describe('Upload documents mixin', () => {
 
     describe('uploadFile', () => {
       it('creates and posts file form data', async () => {
-        Config.initConfig({ storageURL: 'https://storage.com' })
+        Config.initConfig('https://storage.com')
         sandbox.stub(wrapper.vm, 'createFileFormData')
           .returns({ 'some-policy': 'Some policy' })
         sandbox.stub(Vue.http, 'post')

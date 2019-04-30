@@ -8,8 +8,6 @@ import { Asset } from '../shared/wrappers/asset'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from '@/api'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -22,7 +20,16 @@ describe('Balance explorer module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'balance-explorer': balanceExplorerModule },
+      modules: {
+        'balance-explorer': balanceExplorerModule,
+        'wallet': {
+          getters: {
+            wallet: _ => ({
+              accountId: 'SOME_ACCOUNT_ID',
+            }),
+          },
+        },
+      },
     })
   })
 
@@ -32,7 +39,6 @@ describe('Balance explorer module', () => {
 
   describe('created hook', () => {
     it('inits API, sets account ID, and loads balances', async () => {
-      sandbox.stub(Api, 'initApi')
       sandbox.stub(BalanceExplorerModule.methods, 'setAccountId')
       sandbox.stub(BalanceExplorerModule.methods, 'load')
 
@@ -40,15 +46,10 @@ describe('Balance explorer module', () => {
         localVue,
         store,
         propsData: {
-          config: { horizonURL: 'https://test.api.com' },
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 
-      expect(Api.initApi).to.has.been.calledOnceWithExactly(
-        { accountId: 'SOME_ACCOUNT_ID' },
-        { horizonURL: 'https://test.api.com' }
-      )
       expect(BalanceExplorerModule.methods.setAccountId)
         .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
       expect(BalanceExplorerModule.methods.load)

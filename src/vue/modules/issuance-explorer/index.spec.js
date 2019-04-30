@@ -6,9 +6,6 @@ import { issuanceExplorerModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import * as Api from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -16,15 +13,6 @@ localVue.use(Vuex)
 
 describe('Issuance explorer module', () => {
   const props = {
-    config: {
-      horizonUrl: 'https://test.api.com',
-    },
-    wallet: new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ),
     shouldUpdate: false,
   }
 
@@ -32,26 +20,20 @@ describe('Issuance explorer module', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: { 'issuance-explorer': issuanceExplorerModule },
+      modules: {
+        'issuance-explorer': issuanceExplorerModule,
+        'wallet': {
+          getters: {
+            wallet: _ => ({
+              accountId: 'SOME_ACCOUNT_ID',
+            }),
+          },
+        },
+      },
     })
   })
 
   describe('created hook', () => {
-    it('calls initApi function', () => {
-      sinon.stub(Api, 'initApi')
-
-      shallowMount(IssuanceExplorerModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(Api.initApi.withArgs(props.wallet, props.config))
-        .to.have.been.calledOnce
-
-      Api.initApi.restore()
-    })
-
     it('calls setAccountId method', () => {
       sinon.stub(IssuanceExplorerModule.methods, 'setAccountId')
 
@@ -62,7 +44,7 @@ describe('Issuance explorer module', () => {
       })
 
       expect(IssuanceExplorerModule.methods.setAccountId
-        .withArgs(props.wallet.accountId)
+        .withArgs('SOME_ACCOUNT_ID')
       ).to.have.been.calledOnce
 
       IssuanceExplorerModule.methods.setAccountId.restore()
