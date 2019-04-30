@@ -8,7 +8,6 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-
 #### Added
 - Display fees in invest form
 - General verification form module (included in vanilla scheme only)
