@@ -23,8 +23,6 @@ for further information about branching and tagging conventions.
 #### Removed
 - Quitted building sourcemaps for production
 
-#### Unreleased
-
 #### Fixed
 - Fixed calculating of percent delta on line chart
 - Fixed displaying of negative values on line chart
