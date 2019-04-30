@@ -6,7 +6,7 @@
       </p>
       <div class="form-confirmation__btns">
         <button
-          class="form-confirmation__cancel-btn"
+          class="form-confirmation__cancel-btn app__button-flat"
           type="button"
           @click.prevent="emitCancel"
           :disabled="isPending || isDisabled">
@@ -14,7 +14,7 @@
         </button>
         <button
           type="submit"
-          class="form-confirmation__ok-btn"
+          class="form-confirmation__ok-btn app__button-raised"
           @click.prevent="emitOk"
           :disabled="isPending || isDisabled">
           <template v-if="!isPending">
@@ -114,13 +114,11 @@ export default {
 }
 
 .form-confirmation__ok-btn {
-  @include button-raised();
   position: relative;
   height: 2.1rem;
 }
 
 .form-confirmation__cancel-btn {
-  @include button-flat();
   position: relative;
   height: 2.1rem;
 }
