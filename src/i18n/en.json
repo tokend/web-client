@@ -628,6 +628,7 @@
       "limits-form-heading": "Change limits",
       "change-limits-bth": "Change limits",
       "requests-subheading": "Requests",
+      "actual-limits-subheading": "Current limits",
       "no-limits-list": "No limits list",
       "here-will-limits-list": "Here will be the list of your limits. To get a list of limits, you must add at least one asset to your balances"
     },
@@ -802,7 +803,7 @@
     },
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
+      "create-invoice-form-title": "New invoice",
       "statistics-page": "Statistics",
       "invoices-page": "Invoices"
     },
@@ -1061,7 +1062,7 @@
       "verification-required-lbl": "Requires verification",
       "additional-issuance-check": "I do not want to make additional issuance later",
       "pre-issuance-signer-lbl": "Pre-issuance asset signer ID",
-      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details [here](https://docs.tokend.io/#operation/token_lifecycle)",
+      "pre-issuance-disclaimer": "**WARNING!** Please, save your current secret seed to make pre-issuance after recovery or password change. To pre-issue your asset use offline issuance application. See more details <a target=\"_blank\" href=\"https://docs.tokend.io/#operation/token_lifecycle\">here</a>",
       "use-my-account-id-btn": "Use mine",
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
@@ -1243,8 +1244,8 @@
       "request-state-header": "Request state",
       "created-header": "Created",
       "review-btn": "Review",
-      "no-request-history-title": "No request history",
-      "no-request-history-desc": "Here will be the list of your incoming withdrawal requests",
+      "no-history-title": "No request history",
+      "no-history-desc": "Here will be the list of your incoming withdrawal requests",
       "request-id": "Request ID",
       "created": "Created",
       "requestor-email": "Requestor email",
@@ -1471,7 +1472,8 @@
       "asset-to-sell-title": "{{asset}} to sell",
       "video-about-sale-title": "Video about sale",
       "no-video-msg": "No video",
-      "view-video-btn": "View"
+      "view-video-btn": "View",
+      "owner-lbl": "Owner"
     },
     "invest-form": {
       "asset-lbl": "Asset",
@@ -1495,7 +1497,15 @@
       "requires-verification-title": "Verification required",
       "requires-verification-desc": "Please, verify your account to invest in this sale",
       "requires-us-accreditation-title": "Accreditation required",
-      "requires-us-accreditation-desc": "U.S. citizens are required to verify their accreditation before holding this asset"
+      "requires-us-accreditation-desc": "U.S. citizens are required to verify their accreditation before holding this asset",
+      "fixed-fee-label": "fixed fee",
+      "percent-fee-label": "percent fee",
+      "total-fee-label": "Total fee",
+      "total-amount-label": "Total amount",
+      "continue-btn": "Continue",
+      "recheck-form-msg": "Please recheck the form before proceeding",
+      "transaction-fees-heading": "Transaction fees",
+      "no-transaction-fees-msg": "No fees for this transaction"
     },
     "create-sale-form": {
       "create-sale-header": "Create sale",
@@ -1739,7 +1749,8 @@
       "absent-msg": "No",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
-      "already-in-your-balance-btn": "Already in your balances"
+      "already-in-your-balance-btn": "Already in your balances",
+      "owner-lbl": "Owner"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",

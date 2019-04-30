@@ -43,7 +43,7 @@
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-in' | globalize }}
