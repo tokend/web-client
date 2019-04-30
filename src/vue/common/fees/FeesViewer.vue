@@ -1,12 +1,15 @@
 <template>
-  <table class="fees-renderer">
+  <table
+    v-if="ifFeesDownloaded"
+    class="fees-renderer"
+  >
     <tbody
       class="fees-component__tbody"
       :class="{ 'fees-renderer__data--loading': isFeesLoadPending }"
     >
       <tr
-        class="fees_renderer__didcated-text"
-        v-if="+fees.externalSystemType && fees.isWithdrawalFees"
+        class="fees-renderer__strong"
+        v-if="fees.IsAnyExternalFee"
       >
         <td>
           {{ 'fees-renderer.network-fee-hint' | globalize }}
@@ -22,10 +25,10 @@
         <td>
           <template v-if="paidForDestination">
             {{
-              formatFee(
+              formatFeeSum([
                 fees.source.fixed,
                 fees.destination.fixed
-              )
+              ])
             }}
           </template>
           <template v-else>
@@ -40,10 +43,10 @@
         <td>
           <template v-if="paidForDestination">
             {{
-              formatFee(
+              formatFeeSum([
                 fees.source.calculatedPercent,
                 fees.destination.calculatedPercent
-              )
+              ])
             }}
           </template>
           <template v-else>
@@ -51,7 +54,7 @@
           </template>
         </td>
       </tr>
-      <template v-if="!fees.isWithdrawalFees">
+      <template v-if="fees.destination.fixed">
         <tr>
           <td>
             {{ 'fees-renderer.destination-fixed-fee' | globalize }}
@@ -65,7 +68,7 @@
             </template>
           </td>
         </tr>
-        <tr>
+        <tr v-if="fees.destination.calculatedPercent">
           <td>
             {{ 'fees-renderer.destination-percent-fee' | globalize }}
           </td>
@@ -90,14 +93,21 @@
         </td>
         <td>
           <template v-if="paidForDestination">
-            {{ formatTotalFeeSum(0) }}
+            {{
+              formatFeeSum([
+                fees.destination.fixed,
+                fees.source.fixed,
+                fees.destination.calculatedPercent,
+                fees.source.calculatedPercent,
+              ])
+            }}
           </template>
           <template v-else>
             {{
-              formatTotalFee({
-                fixed: fees.source.fixed,
-                percent: fees.source.calculatedPercent
-              })
+              formatFeeSum([
+                fees.source.fixed,
+                fees.source.calculatedPercent
+              ])
             }}
           </template>
         </td>
@@ -105,7 +115,6 @@
 
       <tr
         class="fees-renderer__total-fee-row"
-        v-if="!fees.isWithdrawalFees"
       >
         <td>
           {{ 'fees-renderer.destination-fixed-total-fee' | globalize }}
@@ -113,28 +122,25 @@
         <td>
           <template v-if="paidForDestination">
             {{
-              formatTotalFee({
-                fixed: 0,
-                percent: 0
-              })
+              formatFeeSum([0])
             }}
           </template>
           <template v-else>
             {{
-              formatTotalFee({
-                fixed: fees.destination.fixed,
-                percent: fees.destination.calculatedPercent
-              })
+              formatFeeSum([
+                fees.destination.fixed,
+                fees.destination.calculatedPercent
+              ])
             }}
           </template>
         </td>
       </tr>
 
       <tr
-        v-if="fees.isAnyFeeForDestination && !fees.isWithdrawalFees"
+        v-if="fees.isAnyDestinationFee && !fees.isWithdrawalFees"
       >
         <td class="fees-renderer__tick-field">
-          <tick-field v-model="paidForDestination">
+          <tick-field v-model="isPaidForRecipient">
             {{ 'fees-renderer.pay-fees-for-recipient' | globalize }}
           </tick-field>
         </td>
@@ -143,11 +149,9 @@
   </table>
 </template>
 <script>
-import { formatMoney } from '@/vue/filters/formatMoney'
-import { MathUtil } from '@/js/utils'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
-import { FeesRecord } from '@/js/records/entities/fees.record'
+import { CoupledFeesRecord } from './fees.record'
 
 const EVENTS = {
   paidForDestination: 'paidForDestination',
@@ -162,70 +166,49 @@ export default {
   props: {
     fees: {
       type: Object,
-      default: () => FeesRecord,
+      default: () => CoupledFeesRecord,
     },
-    assetCode: {
-      type: String,
-      default: '',
+    paidForDestination: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data () {
     return {
       isFeesLoadPending: false,
-      paidForDestination: false,
+      isPaidForRecipient: false,
     }
+  },
+  computed: {
+    ifFeesDownloaded () {
+      return Boolean(Object.keys(this.fees).length)
+    },
   },
   watch: {
     paidForDestination () {
       this.$emit(
         EVENTS.paidForDestination,
-        this.paidForDestination
+        this.isPaidForRecipient
       )
     },
   },
+  created () {
+    this.isPaidForRecipient = this.paidForDestination
+  },
+
   methods: {
-    formatMoney,
     formatFee (fee) {
-      const feeData = {
+      const fees = {
         value: fee,
         currency: this.fees.assetCode,
       }
       return this.$options.filters.formatMoney(
-        feeData
+        fees
       )
     },
     formatFeeSum (...fees) {
-      const feeSumData = {
-        value: fees.reduce((sum, item) => sum + item),
-        currency: this.fees.assetCode,
-      }
-      return this.$options.filters.formatMoney(
-        feeSumData
-      )
-    },
-    formatTotalFeeSum () {
-      const resultFeesFixed =
-        Number(this.fees.destination.fixed) +
-        Number(this.fees.source.fixed)
-      const resultFeesPercent =
-        Number(this.fees.destination.calculatedPercent) +
-        Number(this.fees.source.calculatedPercent)
-      const feeSumData = {
-        value: resultFeesFixed + resultFeesPercent,
-        currency: this.fees.assetCode,
-      }
-      return this.$options.filters.formatMoney(
-        feeSumData
-      )
-    },
-    formatTotalFee (fees) {
-      const result = MathUtil.add(fees.fixed, fees.percent)
-      const feeData = {
-        value: result,
-        currency: this.fees.assetCode,
-      }
-      return this.$options.filters.formatMoney(
-        feeData
+      return this.formatFee(
+        fees.reduce((sum, item) => sum + item)
       )
     },
   },
@@ -258,7 +241,7 @@ export default {
 .fees-renderer__tick-field {
   padding: 1.2rem 0rem;
 }
-.fees_renderer__didcated-text {
+.fees-renderer__strong {
   font-weight: 600;
   color: $col-text;
 }

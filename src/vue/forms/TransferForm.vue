@@ -99,8 +99,7 @@
           >
             <fees
               :fees="fees"
-              :asset-code="form.asset.code"
-              @paid-for-destination="form.isPaidForRecipient = $event"
+              :paid-for-destination.sync="form.isPaidForRecipient"
             />
           </div>
 
@@ -149,10 +148,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import {
-  base,
-  FEE_TYPES,
-} from '@tokend/js-sdk'
+import { base, FEE_TYPES } from '@tokend/js-sdk'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
 import config from '@/config'
 import { Sdk } from '@/sdk'
@@ -190,9 +186,9 @@ export default {
   data: () => ({
     form: {
       asset: {},
-      amount: '',
-      recipient: '',
-      subject: '',
+      amount: '1',
+      recipient: 'second_user@mail.com',
+      subject: '<3',
       isPaidForRecipient: false,
     },
     fees: {},
@@ -206,6 +202,7 @@ export default {
     VIEW_MODES,
     vueRoutes,
     config,
+    FEE_TYPES,
   }),
   validations () {
     return {
@@ -275,25 +272,24 @@ export default {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
         const feesParams = {
-          asset: this.form.asset,
+          assetCode: this.form.asset.code,
           amount: this.form.amount,
-          recipientId: recipientAccountId,
-          senderId: this.accountId,
+          recipientAccountId: recipientAccountId,
+          senderAccountId: this.accountId,
           type: FEE_TYPES.paymentFee,
         }
         const fees = await this.calculateFees(feesParams)
         this.fees = fees
         this.isFeesLoaded = true
-
         const opts = {
           amount: this.form.amount,
           destinationAccountId: recipientAccountId,
-          destinationFixedFee: fees.destination.data.fixed,
-          destinationPercentFee: fees.destination.data.calculatedPercent,
+          destinationFixedFee: fees.destination.fixed,
+          destinationPercentFee: fees.destination.calculatedPercent,
           destinationFeeAsset: this.form.asset,
           sourceBalanceId: this.balance.balanceId,
-          sourceFixedFee: fees.source.data.fixed,
-          sourcePercentFee: fees.source.data.calculatedPercent,
+          sourceFixedFee: fees.source.fixed,
+          sourcePercentFee: fees.source.calculatedPercent,
           sourceFeeAsset: this.form.asset,
           subject: this.form.subject,
           tokenCode: this.form.asset.code,

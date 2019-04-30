@@ -89,11 +89,12 @@
             </template>
           </div>
 
-          <div class="app__form-row withdrawal__form-row">
+          <div
+            class="app__form-row withdrawal__form-row"
+            v-if="!isFeesLoadPending"
+          >
             <fees
               :fees="fees"
-              :asset-code="form.asset.code"
-              :is-external-system-type="form.asset.externalSystemType"
             />
           </div>
 
@@ -150,6 +151,7 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -177,7 +179,7 @@ export default {
     Loader,
     EmailGetter,
   },
-  mixins: [FormMixin, FeesMixin],
+  mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
   data: () => ({
     isLoaded: false,
     isFailed: false,
@@ -205,6 +207,7 @@ export default {
     isFeesLoadFailed: false,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
+    FEE_TYPES,
   }),
   validations () {
     const addressRules = {
@@ -293,11 +296,12 @@ export default {
           type: FEE_TYPES.withdrawalFee,
           assetCode: this.form.asset.code,
           amount: this.form.amount || 0,
-          accountId: this.accountId,
+          senderAccountId: this.accountId,
+          recipientAccountId: this.accountId,
         })
         this.fees = fees
-        this.fixedFee = fees.source.data.fixed
-        this.percentFee = fees.destination.data.calculatedPercent
+        this.fixedFee = fees.source.fixed
+        this.percentFee = fees.destination.calculatedPercent
         this.isFeesLoadFailed = false
       } catch (e) {
         this.isFeesLoadFailed = true
