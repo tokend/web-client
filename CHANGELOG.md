@@ -18,6 +18,9 @@ for further information about branching and tagging conventions.
 - Show banner for blocked user
 - Validator of available for issuance amount
 
+#### Changed
+- Show only one QR code on Coinpayments deposit
+
 #### Fixed
 - Invalid opts when submitting create asset request
 
@@ -104,9 +107,6 @@ for further information about branching and tagging conventions.
 - Polling when creating an invoice (Loyalty)
 - Invoice transaction source account (Loyalty)
 - Displaying incoming withdrawal requests (Loyalty)
-
-#### Changed
-- show only one QR code on Coinpayments deposit
 
 ## [1.5.0]
 ### "Under the hood changes"
