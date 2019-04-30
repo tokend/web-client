@@ -8,7 +8,7 @@
       :address="item.address"
       :key="index"
       :expanded="selectedIssuance === item.address"
-      @expand-row="selectIssuance(item.address)"
+      @expand-requested="selectIssuance(item.address)"
     />
   </table>
 </template>

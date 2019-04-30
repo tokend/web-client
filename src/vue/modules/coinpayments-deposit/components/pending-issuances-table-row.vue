@@ -12,7 +12,7 @@
       <td class="pending-issuances-table-row__btn">
         <button
           class="app__button-icon"
-          @click="expandRow"
+          @click="requestExpand"
         >
           <i class="mdi mdi-view-dashboard" />
         </button>
@@ -38,7 +38,7 @@ import TimeoutTicker from './timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 const EVENTS = {
-  expandRow: 'expand-row',
+  expandRequested: 'expand-requested',
 }
 
 export default {
@@ -55,8 +55,8 @@ export default {
     expanded: { type: Boolean, required: true },
   },
   methods: {
-    expandRow () {
-      this.$emit(EVENTS.expandRow)
+    requestExpand () {
+      this.$emit(EVENTS.expandRequested)
     },
   },
 }

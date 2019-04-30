@@ -3,13 +3,12 @@
     <coinpayments-form
       :asset="asset"
       :balance-id="balanceId"
-      @submitted="submittedHandler"
+      @submitted="handleCoinpaymentsFormSubmitted"
     />
     <div class="coinpayments-deposit__pending-issuances-table-wrp">
       <pending-issuances-table
         v-if="!isLoading"
         :pending-issuances="pendingIssuances"
-        :submitted="isSubmitted"
         ref="table"
       />
       <template v-else-if="isFailed">
@@ -116,7 +115,7 @@ export default {
       const response = await api().getWithSignature(endpoint, params)
       return response
     },
-    submittedHandler () {
+    handleCoinpaymentsFormSubmitted () {
       this.$refs.table.resetIssuanceSelection()
     },
   },
