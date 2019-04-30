@@ -53,6 +53,11 @@ export default {
         form = this.$v
       }
 
+      if (!form) {
+        // in case we have no validation rules at all
+        return true
+      }
+
       form.$touch()
       const isValid = !form.$invalid
       return isValid

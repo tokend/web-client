@@ -120,7 +120,7 @@
           v-ripple
           v-else
           type="submit"
-          class="verification-corporate-form__submit-btn"
+          class="verification-corporate-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'verification-form.submit-btn' | globalize }}
@@ -303,8 +303,6 @@ export default {
 }
 
 .verification-corporate-form__submit-btn {
-  @include button-raised();
-
   margin-right: auto;
   width: 100%;
   max-width: 20rem;
