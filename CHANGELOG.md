@@ -10,7 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Selected asset query parameter to URL on dashboard, movements,
-  limits, and fees pages 
+  limits, and fees pages
 - Validator of available for issuance amount
 
 #### Changed
@@ -20,7 +20,6 @@ for further information about branching and tagging conventions.
 - Now showing zero axis line, if chart has both negative and
   positive values
 - Now using default d3 ticks calculation on chart axes
-- Validation of preissuance asset amount
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added

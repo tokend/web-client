@@ -27,7 +27,7 @@ describe('Advanced step form', () => {
 
     const expectedResults = {
       preIssuanceAssetSigner: ['required'],
-      initialPreissuedAmount: ['required', 'numeric'],
+      initialPreissuedAmount: ['required', 'amountRange'],
     }
 
     for (const [model, rules] of Object.entries(expectedResults)) {

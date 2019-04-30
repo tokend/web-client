@@ -83,7 +83,6 @@
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
       "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
-      "field-error_numeric": "Amount should be positive",
       "field-error_isInsufficient": "Insufficient amount available for issuance"
     },
     "errors": {

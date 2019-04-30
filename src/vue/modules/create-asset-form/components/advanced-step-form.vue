@@ -59,6 +59,7 @@
             :label="'create-asset-form.preissued-amount-lbl' | globalize"
             :error-message="getFieldErrorMessage(
               'form.initialPreissuedAmount',
+              { from: MIN_AMOUNT, to: maxIssuanceAmount }
             )"
             :disabled="isDisabled"
           />
@@ -118,7 +119,7 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { config } from '../_config'
 
-import { requiredUnless, numeric } from '@validators'
+import { requiredUnless, amountRange } from '@validators'
 
 const EVENTS = {
   submit: 'submit',
@@ -143,6 +144,7 @@ export default {
       initialPreissuedAmount: '',
       terms: null,
     },
+    MIN_AMOUNT: config().MIN_AMOUNT,
     DOCUMENT_TYPES,
   }),
 
@@ -158,7 +160,10 @@ export default {
           required: requiredUnless(function () {
             return this.form.isPreissuanceDisabled
           }),
-          numeric,
+          amountRange: amountRange(
+            this.MIN_AMOUNT,
+            this.maxIssuanceAmount,
+          ),
         },
       },
     }
