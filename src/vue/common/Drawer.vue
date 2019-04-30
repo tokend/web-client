@@ -1,23 +1,30 @@
 <template>
-  <transition name="drawer-transition">
-    <div class="drawer" v-show="isShown">
-      <div
-        class="drawer__backdrop"
-        @click="closeByClickOutside ? closeSelf : ''"
-      />
-      <div class="drawer__pane">
-        <div class="drawer__head">
-          <h2 class="drawer__heading">
-            <slot name="heading" />
-          </h2>
-          <button class="app__button-icon drawer__close-btn" @click="closeSelf">
-            <i class="mdi mdi-close drawer__close-icon" />
-          </button>
+  <transition name="drawer-v-if-transition">
+    <div v-if="!isDrawerDeleted">
+      <transition name="drawer-v-show-transition">
+        <div
+          class="drawer"
+          v-show="!isDrawerHidden"
+        >
+          <div
+            class="drawer__backdrop"
+            @click="closeByClickOutside ? closeSelf : ''"
+          />
+          <div class="drawer__pane">
+            <div class="drawer__head">
+              <h2 class="drawer__heading">
+                <slot name="heading" />
+              </h2>
+              <button class="app__button-icon drawer__close-btn" @click="closeSelf">
+                <i class="mdi mdi-close drawer__close-icon" />
+              </button>
+            </div>
+            <div class="drawer__body">
+              <slot />
+            </div>
+          </div>
         </div>
-        <div class="drawer__body">
-          <slot />
-        </div>
-      </div>
+      </transition>
     </div>
   </transition>
 </template>
@@ -44,8 +51,24 @@ export default {
     isShown: { type: Boolean, default: true },
     closeByClickOutside: { type: Boolean, default: true },
   },
+  data: () => ({
+    isDrawerHidden: true,
+    isDrawerDeleted: true,
+  }),
+  watch: {
+    'isShown': function () {
+      if (this.isShown) {
+        this.isDrawerHidden = false
+        this.isDrawerDeleted = false
+      }
+      if (!this.isShown && !this.isDrawerHidden) {
+        this.isDrawerDeleted = true
+      }
+    },
+  },
   methods: {
     closeSelf () {
+      this.isDrawerHidden = true
       this.$emit(EVENTS.updateIsShown, false)
     },
   },
@@ -143,27 +166,29 @@ $media-small: 460px;
   }
 }
 
-.drawer-transition-enter-active {
+.drawer-v-if-transition-enter-active,
+.drawer-v-show-transition-enter-active {
   animation-duration: .2s;
-  & > .drawer__backdrop {
+   .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out;
   }
-  & > .drawer__pane {
+   .drawer__pane {
     animation: drawer-pane-keyframes 0.2s ease-in-out;
   }
 }
 
-.drawer-transition-leave-active {
+.drawer-v-if-transition-leave-active,
+.drawer-v-show-transition-leave-active {
   /*
     overall duration should be less than nested durations,
     to prevent animation flickering after animation ended
     but the element still present
   */
   animation-duration: .13s;
-  & > .drawer__backdrop {
+   .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out reverse;
   }
-  & > .drawer__pane {
+   .drawer__pane {
     animation: drawer-pane-keyframes 0.2s ease-in-out reverse;
   }
 }

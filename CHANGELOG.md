@@ -10,13 +10,13 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Displaying of limit request details in drawer
-
 #### Changed
 - Now getting blob types from SDK
 - Now using /v3 API for getting sales
 - Sale record is now parsing the resource from new API
 - Show limits request list on top of other limits on "Limits" page
 - "Issuance" labels on Issuance page renamed to "Issuance requests"
+- Drawers preserve data entered by user
 
 #### Removed
 - Buttons' "form" attributes
