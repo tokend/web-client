@@ -495,7 +495,8 @@
       "blocked-reason": "Blocking reason:",
       "reset-reason": "Reset reason:",
       "rejected-reason": "Rejection reason:",
-      "permanently-rejected-reason": "Rejection reason:"
+      "permanently-rejected-reason": "Rejection reason:",
+      "additional-info-title": "Additional information (provided by admin or KYC service): "
     },
     "general-form": {
       "address-postal-code-lbl'": "Postal code",
