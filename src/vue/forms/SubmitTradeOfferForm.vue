@@ -88,7 +88,7 @@
             v-if="isOwner"
             type="button"
             @click="showConfirmation"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="formMixin.isDisabled"
           >
             {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
@@ -98,7 +98,7 @@
             v-else
             type="button"
             @click="showConfirmation"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="!isEnoughOnBalance || formMixin.isDisabled"
           >
             <template v-if="isBuy">
