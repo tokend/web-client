@@ -14,6 +14,7 @@ for further information about branching and tagging conventions.
 - `usVerified` and `usAccredited` roles to key/value module
 - `Passport` is now able to show US verified and US accredited user roles
 - Users with US verified and US accredited roles will now also be redirected to general form
+- Security asset type
 
 #### Fixed
 - Invalid opts when submitting create asset request

@@ -21,6 +21,7 @@ export const state = {
     blocked: null,
   },
   kvAssetTypeKycRequired: null,
+  kvAssetTypeSecurity: null,
   defaultQuoteAsset: '',
 }
 
@@ -52,6 +53,9 @@ export const mutations = {
   [vuexTypes.SET_KV_KYC_REQUIRED] (state, kvAssetTypeKycRequired) {
     state.kvAssetTypeKycRequired = kvAssetTypeKycRequired
   },
+  [vuexTypes.SET_KV_ASSET_TYPE_SECURITY] (state, kvAssetTypeSecurity) {
+    state.kvAssetTypeSecurity = kvAssetTypeSecurity
+  },
   [vuexTypes.SET_DEFAULT_QUOTE_ASSET] (state, asset) {
     state.defaultQuoteAsset = asset
   },
@@ -61,6 +65,7 @@ export const actions = {
   async [vuexTypes.LOAD_KV_ENTRIES] ({ dispatch }) {
     await dispatch(vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS)
     await dispatch(vuexTypes.LOAD_KV_KYC_REQUIRED)
+    await dispatch(vuexTypes.LOAD_KV_ASSET_TYPE_SECURITY)
   },
 
   async [vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS] ({ commit }) {
@@ -95,6 +100,10 @@ export const actions = {
     const { data } = await Api.api.get('/v3/key_values/asset_type:kyc_required')
     commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
   },
+  async [vuexTypes.LOAD_KV_ASSET_TYPE_SECURITY] ({ commit }) {
+    const { data } = await Api.api.get('/v3/key_values/asset_type:security')
+    commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, data.value.u32)
+  },
   async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {
     const { data } = await Api.get('/v3/assets', {
       filter: {
@@ -115,6 +124,7 @@ export const getters = {
     state.defaultRoleIds.usAccredited,
   [vuexTypes.kvEntryBlockedRoleId]: state => state.defaultRoleIds.blocked,
   [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
+  [vuexTypes.kvAssetTypeSecurity]: state => state.kvAssetTypeSecurity,
   [vuexTypes.defaultQuoteAsset]: state => state.defaultQuoteAsset,
 }
 

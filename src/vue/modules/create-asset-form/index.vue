@@ -10,6 +10,7 @@
           v-show="currentStep === STEPS.information.number"
           :request="request"
           :kyc-required-asset-type="kycRequiredAssetType"
+          :security-asset-type="securityAssetType"
           @submit="setInformationStepForm($event) || moveToNextStep()"
         />
 
@@ -130,6 +131,8 @@ export default {
         initConfig(this.config)
 
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
+
         await this.tryLoadRequest()
 
         this.isLoaded = true
