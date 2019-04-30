@@ -73,6 +73,7 @@
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
       "field-error_noMoreThanAvailableOnBalance": "Insufficient balance. You have {{available, number}}",
+      "field-error_noMoreThanAvailableForIssuance": "Insufficient available for issuance amount. You have {{available, number}}",
       "field-error_address": "Make sure the address is correct",
       "field-error_maxLength": "This field must contain maximum {{length}} symbols",
       "field-error_maxDecimalDigitsCount": "This field cannot contain more than {{maxDecimalDigitsCount}} decimal digits",
@@ -82,8 +83,7 @@
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
-      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
-      "field-error_isInsufficient": "Insufficient amount available for issuance"
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -1483,7 +1483,7 @@
       "loading-msg": "Loading...",
       "asset-not-available-yet": "Please create an asset before creating sale",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
-      "available-amount": "Available: {{amount}} {{asset}}"
+      "available-amount": "Available: {{amount, money}}"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",

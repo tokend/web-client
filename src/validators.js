@@ -64,6 +64,11 @@ export const hardCapLessThanSoftCap = (softCap, max) => value => {
 export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance >= +value
 }
+
+export const noMoreThanAvailableForIssuance = available => value => {
+  return +available >= +value
+}
+
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
   const [, decimals] = String(value).split('.')
   if (decimals) {
@@ -128,8 +133,4 @@ export const validateUrl = url => {
   // eslint-disable-next-line
   const reg = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
   return reg.test(url)
-}
-
-export const isInsufficient = (available) => value => {
-  return !validators.helpers.req(value) || Number(value) < Number(available)
 }

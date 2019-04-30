@@ -59,9 +59,7 @@
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.requiredBaseAssetForHardCap',
                     {
-                      from:MIN_AMOUNT,
-                      to:availableForIssuance,
-                      available:availableForIssuance
+                      available: availableForIssuance
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -70,8 +68,10 @@
                   <p class="app__form-field-description">
                     {{
                       'create-sale-form.available-amount' | globalize({
-                        asset: form.saleInformation.baseAsset.code,
-                        amount: availableForIssuance
+                        amount: {
+                          value: availableForIssuance,
+                          currency: form.saleInformation.baseAsset.code,
+                        }
                       })
                     }}
                   </p>
@@ -350,7 +350,7 @@ import {
   amountRange,
   requiredAtLeastOne,
   minDate,
-  isInsufficient,
+  noMoreThanAvailableForIssuance,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
 import { SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
@@ -465,12 +465,8 @@ export default {
             ),
           },
           requiredBaseAssetForHardCap: {
-            isInsufficient: isInsufficient(
-              this.availableForIssuance
-            ),
             required,
-            amountRange: amountRange(
-              this.MIN_AMOUNT,
+            noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
               this.availableForIssuance
             ),
           },
