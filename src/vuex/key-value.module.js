@@ -7,12 +7,16 @@ const KEY_VALUE_ENTRY_KEYS = Object.freeze({
   corporate: 'account_role:corporate',
   unverified: 'account_role:unverified',
   blocked: 'account_role:blocked',
+  usVerified: 'account_role:us_verified',
+  usAccredited: 'account_role:us_accredited',
 })
 
 export const state = {
   defaultRoleIds: {
     general: null,
     corporate: null,
+    usVerified: null,
+    usAccredited: null,
     unverified: null,
     blocked: null,
   },
@@ -27,6 +31,14 @@ export const mutations = {
 
   [vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID] (state, id) {
     state.defaultRoleIds.corporate = id
+  },
+
+  [vuexTypes.SET_KV_ENTRY_US_VERIFIED_ROLE_ID] (state, id) {
+    state.defaultRoleIds.usVerified = id
+  },
+
+  [vuexTypes.SET_KV_ENTRY_US_ACCREDITED_ROLE_ID] (state, id) {
+    state.defaultRoleIds.usAccredited = id
   },
 
   [vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID] (state, id) {
@@ -58,9 +70,16 @@ export const actions = {
     const corporateRoleId = getRole(KEY_VALUE_ENTRY_KEYS.corporate)
     const unverifiedRoleId = getRole(KEY_VALUE_ENTRY_KEYS.unverified)
     const blockedRoleId = getRole(KEY_VALUE_ENTRY_KEYS.blocked)
+    const usVerifiedRoleId = getRole(KEY_VALUE_ENTRY_KEYS.usVerified)
+    const usAccreditedRoleId = getRole(KEY_VALUE_ENTRY_KEYS.usAccredited)
 
     function getRole (roleId) {
       const role = data.find((key) => key.id === roleId)
+
+      if (!role) {
+        return ''
+      }
+
       return role.value.u32
     }
 
@@ -68,6 +87,8 @@ export const actions = {
     commit(vuexTypes.SET_KV_ENTRY_CORPORATE_ROLE_ID, corporateRoleId)
     commit(vuexTypes.SET_KV_ENTRY_UNVERIFIED_ROLE_ID, unverifiedRoleId)
     commit(vuexTypes.SET_KV_ENTRY_BLOCKED_ROLE_ID, blockedRoleId)
+    commit(vuexTypes.SET_KV_ENTRY_US_VERIFIED_ROLE_ID, usVerifiedRoleId)
+    commit(vuexTypes.SET_KV_ENTRY_US_ACCREDITED_ROLE_ID, usAccreditedRoleId)
   },
 
   async [vuexTypes.LOAD_KV_KYC_REQUIRED] ({ commit }) {
@@ -89,6 +110,9 @@ export const getters = {
   [vuexTypes.kvEntryGeneralRoleId]: state => state.defaultRoleIds.general,
   [vuexTypes.kvEntryCorporateRoleId]: state => state.defaultRoleIds.corporate,
   [vuexTypes.kvEntryUnverifiedRoleId]: state => state.defaultRoleIds.unverified,
+  [vuexTypes.kvEntryUsVerifiedRoleId]: state => state.defaultRoleIds.usVerified,
+  [vuexTypes.kvEntryUsAccreditedRoleId]: state =>
+    state.defaultRoleIds.usAccredited,
   [vuexTypes.kvEntryBlockedRoleId]: state => state.defaultRoleIds.blocked,
   [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
   [vuexTypes.defaultQuoteAsset]: state => state.defaultQuoteAsset,

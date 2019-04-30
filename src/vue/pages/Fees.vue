@@ -91,6 +91,14 @@ export default {
     }),
   },
 
+  watch: {
+    asset (value) {
+      this.$router.push({
+        query: { asset: value.code },
+      })
+    },
+  },
+
   async created () {
     try {
       await this.initAssetSelector()
@@ -109,7 +117,9 @@ export default {
     async initAssetSelector () {
       await this.loadAssets()
       if (this.assets.length) {
-        this.asset = this.assets[0]
+        this.asset = this.assets
+          .find(item => item.code === this.$route.query.asset) ||
+          this.assets[0]
       }
     },
 

@@ -4,8 +4,9 @@
     <template v-if="isLoaded && isAllowedAccountType">
       <form
         novalidate
+        id="invest-form"
         class="app__form"
-        @submit.prevent="isFormValid() && showConfirmation()"
+        @submit.prevent="processInvestment"
       >
         <div class="app__form-row">
           <div class="app__form-field">
@@ -16,7 +17,7 @@
               :label="'invest-form.asset-lbl' | globalize"
               name="invest-asset"
               @blur="touchField('form.asset')"
-              :disabled="formMixin.isDisabled || !canUpdateOffer"
+              :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
 
             <vue-markdown
@@ -43,7 +44,7 @@
                 'form.amount',
                 { from: MIN_AMOUNT, to: availableAmount.value }
               )"
-              :disabled="formMixin.isDisabled || !canUpdateOffer"
+              :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
 
             <p class="app__form-field-description">
@@ -80,50 +81,6 @@
           })"
         />
 
-        <div class="app__form-actions invest-form__actions">
-          <template v-if="formMixin.isConfirmationShown">
-            <form-confirmation
-              @ok="submit"
-              :is-pending="isSubmitting"
-              @cancel="hideConfirmation"
-            />
-          </template>
-
-          <template v-else>
-            <template v-if="currentInvestment.offerId">
-              <button
-                v-ripple
-                type="submit"
-                class="app__button-raised invest-form__submit-btn"
-                :disabled="formMixin.isDisabled || !canSubmit"
-              >
-                {{ 'invest-form.update-offer-btn' | globalize }}
-              </button>
-
-              <button
-                v-ripple
-                type="button"
-                @click="cancelOffer"
-                class="app__button-flat"
-                :disabled="formMixin.isDisabled || !canUpdateOffer"
-              >
-                {{ 'invest-form.cancel-offer-btn' | globalize }}
-              </button>
-            </template>
-
-            <template v-else>
-              <button
-                v-ripple
-                type="submit"
-                class="app__button-raised invest-form__submit-btn"
-                :disabled="formMixin.isDisabled || !canSubmit"
-              >
-                {{ 'invest-form.invest-btn' | globalize }}
-              </button>
-            </template>
-          </template>
-        </div>
-
         <p class="app__form-field-description">
           <template v-if="sale.owner === accountId">
             {{ 'invest-form.sale-owner-msg' | globalize }}
@@ -154,6 +111,99 @@
           </template>
         </p>
       </form>
+
+      <transition name="app__fade-in">
+        <div
+          class="invest-form__fee-box"
+          v-if="isFeesLoaded">
+          <h3 class="invest-form__fee-box-heading">
+            {{ 'invest-form.transaction-fees-heading' | globalize }}
+          </h3>
+          <template v-if="+fees.fixed || +fees.percent">
+            <p
+              class="invest-form__fee"
+              v-if="fees.fixed">
+              - {{ fees.fixed | formatNumber }}
+              {{ form.asset.code }}
+              <span class="invest-form__fee-type">
+                {{ 'invest-form.fixed-fee-label' | globalize }}
+              </span>
+            </p>
+
+            <p
+              class="invest-form__fee"
+              v-if="fees.percent">
+              - {{ fees.percent | formatNumber }}
+              {{ form.asset.code }}
+              <span class="invest-form__fee-type">
+                {{ 'invest-form.percent-fee-label' | globalize }}
+              </span>
+            </p>
+          </template>
+
+          <template v-else>
+            <p class="invest-form__no-fee-msg">
+              {{ 'invest-form.no-transaction-fees-msg' | globalize }}
+            </p>
+          </template>
+
+          <h3 class="invest-form__fee-box-heading">
+            {{ 'invest-form.total-fee-label' | globalize }}
+          </h3>
+
+          <p class="invest-form__fee">
+            - {{ totalAmount | formatNumber }} {{ form.asset.code }}
+            <span class="invest-form__fee-type">
+              {{ 'invest-form.total-amount-label' | globalize }}
+            </span>
+          </p>
+        </div>
+      </transition>
+
+      <div class="app__form-actions">
+        <template
+          v-if="currentInvestment.offerId &&
+            view.mode === VIEW_MODES.submit">
+          <button
+            v-ripple
+            type="button"
+            @click="processInvestment"
+            class="app__button-raised invest-form__submit-btn"
+            :disabled="formMixin.isDisabled || !canSubmit"
+          >
+            {{ 'invest-form.update-offer-btn' | globalize }}
+          </button>
+          <button
+            v-ripple
+            type="button"
+            @click="cancelOffer"
+            class="app__button-flat"
+            :disabled="formMixin.isDisabled || !canUpdateOffer"
+          >
+            {{ 'invest-form.cancel-offer-btn' | globalize }}
+          </button>
+        </template>
+        <template v-else>
+          <button
+            v-ripple
+            v-if="view.mode === VIEW_MODES.submit"
+            click="submit"
+            class="app__form-submit-btn"
+            :disabled="formMixin.isDisabled"
+            form="invest-form">
+            {{ 'invest-form.continue-btn' | globalize }}
+          </button>
+        </template>
+
+        <form-confirmation
+          v-if="view.mode === VIEW_MODES.confirm"
+          :message="'invest-form.recheck-form-msg' | globalize"
+          :ok-button="'invest-form.invest-btn' | globalize"
+          :is-pending="isSubmitting"
+          @cancel="updateView(VIEW_MODES.submit)"
+          @ok="submit()"
+        />
+      </div>
     </template>
 
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
@@ -207,6 +257,11 @@ const EVENTS = {
   canceled: 'canceled',
 }
 
+const VIEW_MODES = {
+  submit: 'submit',
+  confirm: 'confirm',
+}
+
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
@@ -230,6 +285,13 @@ export default {
       asset: {},
       amount: '',
     },
+    view: {
+      mode: VIEW_MODES.submit,
+    },
+    fees: {
+      fixed: '',
+      percent: '',
+    },
     offers: [],
     saleBaseAsset: null,
     isLoaded: false,
@@ -238,7 +300,9 @@ export default {
     convertedAmount: 0,
     isConvertedAmountLoaded: true,
     isConvertingFailed: false,
+    isFeesLoaded: false,
     isSubmitting: false,
+    VIEW_MODES,
     vueRoutes,
   }),
 
@@ -340,6 +404,12 @@ export default {
         !this.isCapExceeded &&
         this.isConvertedAmountLoaded
     },
+
+    totalAmount () {
+      const fees = MathUtil
+        .add(this.fees.fixed, this.fees.percent)
+      return MathUtil.add(fees, this.form.amount)
+    },
   },
 
   watch: {
@@ -418,7 +488,7 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
-
+      this.updateView(VIEW_MODES.submit)
       this.disableForm()
       this.isSubmitting = true
 
@@ -443,9 +513,8 @@ export default {
       } catch (e) {
         ErrorHandler.process(e)
       }
-
-      this.enableForm()
       this.isSubmitting = false
+      this.enableForm()
       this.hideConfirmation()
     },
 
@@ -528,12 +597,37 @@ export default {
         ErrorHandler.process(e)
       }
     },
+
+    async processInvestment () {
+      if (!await this.isFormValid()) return
+      this.disableForm()
+      try {
+        const { data: fees } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+          asset: this.form.asset.code,
+          account: this.accountId,
+          amount: this.form.amount,
+        })
+        this.fees.fixed = fees.fixed
+        this.fees.percent = fees.percent
+        this.isFeesLoaded = true
+        this.updateView(VIEW_MODES.confirm)
+      } catch (error) {
+        ErrorHandler.process(error)
+        this.isFeesLoaded = false
+      }
+      this.enableForm()
+    },
+
+    updateView (mode) {
+      this.view.mode = mode
+    },
   },
 }
 </script>
 
 <style lang="scss">
 @import './app-form';
+@import "~@scss/variables";
 
 .invest-form__amount-hint {
   p {
@@ -580,5 +674,37 @@ export default {
     filter: grayscale(100%);
     cursor: default;
   }
+}
+
+.invest-form__discover-tokens-btn {
+  margin: 2rem auto 0;
+}
+
+.invest-form__fee {
+  color: $col-details-value;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.invest-form__fee-box {
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 0.1rem dashed $col-text-field-hint-inactive;
+}
+
+.invest-form__fee-box-heading:not(:first-child) {
+  margin-top: 2.5rem;
+}
+
+.invest-form__fee-type {
+  color: $col-details-label;
+}
+
+.invest-form__no-fee-msg {
+  color: $col-details-label;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  margin: 1rem 0;
 }
 </style>

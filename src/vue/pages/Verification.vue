@@ -90,6 +90,10 @@ function verificationGuard (to, from, next) {
   const kycState = store.getters[vuexTypes.kycState]
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kvEntryUsVerifiedRoleId =
+    store.getters[vuexTypes.kvEntryUsVerifiedRoleId]
+  const kvEntryUsAccreditedRoleId =
+    store.getters[vuexTypes.kvEntryUsAccreditedRoleId]
   const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
 
   if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
@@ -102,6 +106,8 @@ function verificationGuard (to, from, next) {
           : next(vueRoutes.verificationCorporate)
         break
       case kvEntryGeneralRoleId:
+      case kvEntryUsVerifiedRoleId:
+      case kvEntryUsAccreditedRoleId:
         to.name === vueRoutes.verificationGeneral.name
           ? next()
           : next(vueRoutes.verificationGeneral)
