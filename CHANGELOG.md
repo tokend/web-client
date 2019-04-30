@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 #### Changed
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
+- Now performing actions with wallets & factors using relevant managers
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -29,7 +30,6 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Fixed
 - Deposit fiat drawer displaying on REIT
->>>>>>> master
 
 ## [1.6.0-x.1] - 2019-04-26
 #### Added

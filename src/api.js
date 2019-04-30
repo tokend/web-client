@@ -1,7 +1,8 @@
-import { ApiCaller, WalletsManager } from '@tokend/js-sdk'
+import { ApiCaller, WalletsManager, FactorsManager } from '@tokend/js-sdk'
 
 let _api = null
 let _walletsManager = null
+let _factorsManager = null
 
 export class Api {
   /**
@@ -12,7 +13,9 @@ export class Api {
   static async init (config) {
     const horizonURL = config.horizonURL
     _api = await ApiCaller.getInstanceWithPassphrase(horizonURL)
+
     _walletsManager = new WalletsManager(_api)
+    _factorsManager = new FactorsManager(_api)
   }
 
   /**
@@ -76,5 +79,16 @@ export class Api {
     }
 
     return _walletsManager
+  }
+
+  /**
+   * @returns {sdk.WalletsManager}
+   */
+  static get factorsManager () {
+    if (!_factorsManager) {
+      throw new Error('FactorsManager is not initialized')
+    }
+
+    return _factorsManager
   }
 }

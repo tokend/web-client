@@ -158,7 +158,7 @@ export default {
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Api.walletsManager.verifyPasswordFactor(
+            await Api.factorsManager.verifyPasswordFactor(
               error, this.form.password
             )
             const { data } = await Api.api.postWithSignature(endpoint, {
@@ -184,7 +184,7 @@ export default {
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Api.walletsManager.verifyPasswordFactorAndRetry(error,
+            await Api.factorsManager.verifyPasswordFactorAndRetry(error,
               this.form.password
             )
             Bus.success('tfa-form.tfa-disabled-msg')
@@ -207,7 +207,7 @@ export default {
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Api.walletsManager.verifyTotpFactor(error, this.form.code)
+            await Api.factorsManager.verifyTotpFactor(error, this.form.code)
             await this.changeFactorPriority()
 
             this.$emit(EVENTS.update)
