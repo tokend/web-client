@@ -44,14 +44,4 @@ export class ChangeRoleRequestRecord {
       .slice() // to avoid modifying record itself
       .pop() // because only the last object in external details
   }
-
-  get rejector () {
-    if (!this.externalDetails || !this.externalDetails.length) return
-    for (const detail of this.externalDetails.slice().reverse()) {
-      if (detail.rejector) {
-        return detail.rejector
-      }
-    }
-    return ''
-  }
 }
