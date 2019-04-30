@@ -15,6 +15,9 @@ for further information about branching and tagging conventions.
 - `Passport` is now able to show US verified and US accredited user roles
 - Users with US verified and US accredited roles will now also be redirected to general form
 
+#### Fixed
+- Invalid opts when submitting create asset request
+
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
 - Re-render chart animation
@@ -50,9 +53,6 @@ for further information about branching and tagging conventions.
 ### Experimental features changes
 #### Changed
 - Now selecting invoice point by loyalty account number (Loyalty)
-
-#### Fixed
-- Invalid opts when submitting create asset request
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
