@@ -16,6 +16,10 @@ for further information about branching and tagging conventions.
 - Users with US verified and US accredited roles will now also be redirected to general form
 - Security asset type
 - Show banner for blocked user
+- Validator of available for issuance amount
+
+#### Changed
+- Show only one QR code on Coinpayments deposit
 
 #### Fixed
 - Invalid opts when submitting create asset request
