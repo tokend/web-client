@@ -10,6 +10,7 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Displaying of limit request details in drawer
+
 #### Changed
 - Now getting blob types from SDK
 - Now using /v3 API for getting sales
