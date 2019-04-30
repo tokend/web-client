@@ -10,6 +10,10 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Display fees in invest form
+- General verification form module (included in vanilla scheme only)
+- `usVerified` and `usAccredited` roles to key/value module
+- `Passport` is now able to show US verified and US accredited user roles
+- Users with US verified and US accredited roles will now also be redirected to general form
 
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
