@@ -2,14 +2,15 @@
   <div id="app" v-if="isAppInitialized">
     <warning-banner
       v-if="isNotSupportedBrowser"
-      :message-id="'common.browser-not-supported'"
+      :message="'common.browser-not-supported' | globalize"
     />
 
     <template v-if="isLoggedIn && isNavigationRendered">
       <warning-banner
         v-if="isAccountBlocked"
-        :message-id="'warning-banner.blocked-desc'"
-        :message-args="kycRequestBlockReason"
+        :message="'warning-banner.blocked-desc' | globalize({
+          reason: kycRequestBlockReason
+        })"
         message-type="danger"
       />
       <div class="app__container">
