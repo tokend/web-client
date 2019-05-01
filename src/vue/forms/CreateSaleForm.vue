@@ -44,6 +44,42 @@
             </div>
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
+                <input-field
+                  white-autofill
+                  v-model="form.saleInformation.requiredBaseAssetForHardCap"
+                  @blur="touchField(
+                    'form.saleInformation.requiredBaseAssetForHardCap'
+                  )"
+                  name="create-sale-base-asset-for-hard-cap"
+                  type="number"
+                  :label="'create-sale-form.base-asset-hard-cap-to-sell' |
+                    globalize({
+                      asset: form.saleInformation.baseAsset.code
+                    })"
+                  :error-message="getFieldErrorMessage(
+                    'form.saleInformation.requiredBaseAssetForHardCap',
+                    {
+                      available: availableForIssuance
+                    }
+                  )"
+                  :disabled="formMixin.isDisabled"
+                />
+                <template v-if="form.saleInformation.baseAsset">
+                  <p class="app__form-field-description">
+                    {{
+                      'create-sale-form.available-amount' | globalize({
+                        amount: {
+                          value: availableForIssuance,
+                          currency: form.saleInformation.baseAsset.code,
+                        }
+                      })
+                    }}
+                  </p>
+                </template>
+              </div>
+            </div>
+            <div class="app__form-row create-sale__form-row">
+              <div class="app__form-field">
                 <date-field
                   v-model="form.saleInformation.startTime"
                   name="create-sale-start-time"
@@ -123,41 +159,6 @@
                   )"
                   :disabled="formMixin.isDisabled"
                 />
-              </div>
-            </div>
-            <div class="app__form-row create-sale__form-row">
-              <div class="app__form-field">
-                <input-field
-                  white-autofill
-                  v-model="form.saleInformation.requiredBaseAssetForHardCap"
-                  @blur="touchField(
-                    'form.saleInformation.requiredBaseAssetForHardCap'
-                  )"
-                  name="create-sale-base-asset-for-hard-cap"
-                  type="number"
-                  :label="'create-sale-form.base-asset-hard-cap-to-sell' |
-                    globalize({
-                      asset: form.saleInformation.baseAsset.code
-                    })"
-                  :error-message="getFieldErrorMessage(
-                    'form.saleInformation.requiredBaseAssetForHardCap',
-                    {
-                      from:MIN_AMOUNT,
-                      to:availableForIssuance
-                    }
-                  )"
-                  :disabled="formMixin.isDisabled"
-                />
-                <template v-if="form.saleInformation.baseAsset">
-                  <p class="app__form-field-description">
-                    {{
-                      'create-sale-form.available-amount' | globalize({
-                        asset: form.saleInformation.baseAsset.code,
-                        amount: availableForIssuance
-                      })
-                    }}
-                  </p>
-                </template>
               </div>
             </div>
             <div class="app__form-row create-sale__form-row">
@@ -350,6 +351,7 @@ import {
   amountRange,
   requiredAtLeastOne,
   minDate,
+  noMoreThanAvailableForIssuance,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
 import { base, SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
@@ -465,8 +467,7 @@ export default {
           },
           requiredBaseAssetForHardCap: {
             required,
-            amountRange: amountRange(
-              this.MIN_AMOUNT,
+            noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
               this.availableForIssuance
             ),
           },

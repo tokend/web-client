@@ -10,15 +10,26 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Display fees in invest form
+- General verification form module (included in vanilla scheme only)
+- `usVerified` and `usAccredited` roles to key/value module
+- `Passport` is now able to show US verified and US accredited user roles
+- Users with US verified and US accredited roles will now also be redirected to general form
+- Security asset type
+- Show banner for blocked user
+- Validator of available for issuance amount
 - "initSync" method to Api class
 
 #### Changed
+- Show only one QR code on Coinpayments deposit
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
 
 #### Removed
 - Unused methods from `DocumentContainer` class
+
+#### Fixed
+- Invalid opts when submitting create asset request
 
 ## [1.6.0-x.2] - 2019-04-29
 #### Added

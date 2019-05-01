@@ -243,7 +243,7 @@ export default {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(
           kycBlobId,
-          this.kvEntryGeneralRoleId
+          this.kvEntryGeneralRoleId,
         )
         await Api.api.postOperations(operation)
         do {
@@ -302,7 +302,7 @@ export default {
           idDocument: this.wrapDocument(kycData, DOCUMENT_TYPES.kycIdDocument),
           verificationPhoto: this.wrapDocument(
             kycData,
-            DOCUMENT_TYPES.kycSelfie
+            DOCUMENT_TYPES.kycSelfie,
           ),
         },
       }
