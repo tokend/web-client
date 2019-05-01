@@ -1,17 +1,29 @@
 <template>
-  <form @submit.prevent="isFormValid() && showConfirmation()">
+  <form
+    @submit.prevent="isFormValid() && showConfirmation()"
+    v-if="isLoadedInfo"
+  >
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <select-field
+          :values="accountAssets"
+          v-model="form.asset"
+          name="create-sale-base-asset"
+          :disabled="formMixin.isDisabled"
+          :label="'create-sale-form.base-asset' | globalize"
+        />
+      </div>
+    </div>
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
+          name="trade-offer-price"
           :label="
             'offer-creation-form.price-per-asset' | globalize({
-              asset: assetPair.base
+              asset: form.asset
             })
           "
-          name="trade-offer-price"
-          :white-autofill="true"
-          :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage(
             'form.price', {
               from: config.MIN_AMOUNT,
@@ -20,6 +32,8 @@
             }
           )"
           @blur="touchField('form.price')"
+          :white-autofill="true"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -28,13 +42,10 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.amount"
-          :label="'offer-creation-form.amount' | globalize({
-            asset: assetPair.base
-          })"
           name="trade-offer-amount"
-          :white-autofill="true"
-          :max="baseAssetBalance"
-          :disabled="formMixin.isDisabled"
+          :label="'offer-creation-form.amount' | globalize({
+            asset: form.asset
+          })"
           :error-message="getFieldErrorMessage(
             'form.amount',
             {
@@ -45,6 +56,9 @@
             }
           )"
           @blur="touchField('form.amount')"
+          :white-autofill="true"
+          :max="baseAssetBalance"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -57,6 +71,7 @@
           })"
           v-model="totalValue"
           name="trade-offer-total"
+          :white-autofill="true"
           :error-message="getFieldErrorMessage(
             'totalValue',
             {
@@ -105,11 +120,9 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
-
 import FormConfirmation from '@/vue/common/FormConfirmation'
-
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
-
 import config from '@/config'
 
 import {
@@ -139,34 +152,39 @@ export default {
   props: {
     assetPair: {
       type: Object,
-      require: true,
-      default: () => {},
+      default: () => ({}),
     },
     isBuy: {
       type: Boolean,
-      require: false,
-      default: true,
+      default: false,
     },
   },
   data: () => ({
     form: {
       price: '',
       amount: '',
+      asset: '',
     },
     config,
     isOfferCreating: false,
+    isLoadedInfo: false,
   }),
   computed: {
     ...mapGetters([
       vuexTypes.accountBalances,
     ]),
+    accountAssets () {
+      return this.accountBalances
+        .map(balance => balance.asset)
+        .filter(asset => asset !== this.assetPair.quote)
+    },
     baseAssetBalance () {
       return (this.accountBalances
-        .find(i => i.asset === this.assetPair.base) || {}).balance
+        .find(balance => balance.asset === this.form.asset) || {}).balance
     },
     quoteAssetBalance () {
       return (this.accountBalances
-        .find(i => i.asset === this.assetPair.quote) || {}).balance
+        .find(balance => balance.asset === this.assetPair.quote) || {}).balance
     },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
@@ -181,7 +199,10 @@ export default {
         price: {
           required,
           decimal,
-          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          amountRange: amountRange(
+            config.MIN_AMOUNT,
+            config.MAX_AMOUNT
+          ),
         },
         amount: {
           required,
@@ -190,19 +211,31 @@ export default {
           noMoreThanAvailableOnBalance: this.isBuy
             ? this.isBuy
             : noMoreThanAvailableOnBalance(this.baseAssetBalance),
-          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          amountRange: amountRange(
+            config.MIN_AMOUNT,
+            config.MAX_AMOUNT
+          ),
         },
       },
       totalValue: {
         noMoreThanAvailableOnBalance: this.isBuy
           ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
           : !this.isBuy,
-        amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+        amountRange: amountRange(
+          config.MIN_AMOUNT,
+          config.MAX_AMOUNT
+        ),
       },
     }
   },
   async created () {
-    await this.loadBalances()
+    try {
+      await this.loadBalances()
+      this.form.asset = this.assetPair.base
+      this.isLoadedInfo = true
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error)
+    }
   },
   methods: {
     ...mapActions({
@@ -211,9 +244,13 @@ export default {
     async submit () {
       this.disableForm()
       this.isOfferCreating = true
-      await this.createOffer(
-        this.getCreateOfferOpts()
-      )
+      try {
+        await this.createOffer(
+          this.getCreateOfferOpts()
+        )
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
       this.isOfferCreating = false
       this.enableForm()
       this.hideConfirmation()
@@ -222,7 +259,7 @@ export default {
     getCreateOfferOpts () {
       return {
         pair: {
-          base: this.assetPair.base,
+          base: this.form.asset,
           quote: this.assetPair.quote,
         },
         baseAmount: this.form.amount,

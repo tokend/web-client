@@ -1,9 +1,23 @@
 <template>
-  <form>
+  <form v-if="isLoadedInfo">
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <div class="app__form-field">
+          <select-field
+            :values="accountAssets"
+            v-model="form.baseAssetCode"
+            name="create-sale-base-asset"
+            :disabled="formMixin.isDisabled"
+            :label="'create-sale-form.base-asset' | globalize"
+          />
+        </div>
+      </div>
+    </div>
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model="form.price"
+          v-model.trim="form.price"
+          name="submit-trade-offers-offer-price"
           :label="
             'submit-trade-offers-form.price-label' | globalize({
               asset: assetPair.quote
@@ -17,20 +31,20 @@
             }
           )"
           @blur="touchField('form.price')"
-          name="submit-trade-offers-offer-price"
           :white-autofill="true"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
+
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           v-model.trim="form.baseAmount"
-          :label="
-            'submit-trade-offers-form.want-label' | globalize({
-              asset: assetPair.base
-            })
-          "
+          name="submit-trade-offers-offer-base-amount"
+          :label="'submit-trade-offers-form.want-label' | globalize({
+            asset: form.baseAssetCode
+          })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
             {
@@ -41,8 +55,9 @@
             }
           )"
           @blur="touchField('form.amount')"
-          name="submit-trade-offers-offer-base-amount"
           :white-autofill="true"
+          :max="baseAssetBalance.balance"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -90,9 +105,9 @@
         >
           {{
             'submit-trade-offers-form.insufficient-funds' | globalize({
-              amount: formatNumber(isBuy
-                ? baseAssetBalance.balance
-                : quoteAssetBalance.balance)
+              amount: formatNumber(
+                isBuy ? baseAssetBalance.balance : quoteAssetBalance.balance
+              )
             })
           }}
         </p>
@@ -101,7 +116,7 @@
             v-ripple
             type="button"
             @click="cancelOfferAction"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="formMixin.isDisabled"
           >
             {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
@@ -110,7 +125,7 @@
             v-ripple
             type="button"
             @click="updateOfferAction"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="isDisabledSubmitButton"
           >
             <template>
@@ -131,6 +146,7 @@ import { formatNumber } from '@/vue/filters/formatNumber'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import config from '@/config'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
   amountRange,
@@ -139,14 +155,13 @@ import {
   decimal,
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
-// import Bus from '@/utils/EventBus'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
 }
 
 export default {
-  name: 'submit-trade-offer-form',
+  name: 'your-sale-offer',
   components: {
     FormConfirmation,
   },
@@ -157,7 +172,6 @@ export default {
   props: {
     assetPair: {
       type: Object,
-      require: true,
       default: () => ({}),
     },
     isBuy: {
@@ -167,7 +181,6 @@ export default {
     },
     offer: {
       type: Object,
-      require: true,
       default: () => ({}),
     },
   },
@@ -177,16 +190,31 @@ export default {
     isCancelOrderAction: false,
     isUpdatinglOrderAction: false,
     isWraningShown: false,
-    form: {},
+    isLoadedInfo: false,
+    form: {
+      baseAmount: '0',
+      baseAssetCode: null,
+      offerId: null,
+      ownerId: null,
+      price: '0',
+      quoteAmount: null,
+      quoteAssetCode: null,
+      quoteBalanceId: null,
+    },
   }),
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
       vuexTypes.accountBalances,
     ]),
+    accountAssets () {
+      return this.accountBalances
+        .map(balance => balance.asset)
+        .filter(asset => asset !== this.assetPair.quote)
+    },
     baseAssetBalance () {
       return this.accountBalances
-        .find(item => item.asset === this.form.baseAssetCode) || {}
+        .find(balance => balance.asset === this.form.baseAssetCode) || {}
     },
     quoteAssetBalance () {
       return this.accountBalances
@@ -214,8 +242,22 @@ export default {
     },
   },
   async created () {
-    await this.loadBalances()
-    this.form = Object.assign({}, this.offer)
+    try {
+      await this.loadBalances()
+      this.form = {
+        baseAmount: this.offer.baseAmount,
+        baseAssetCode: this.offer.baseAssetCode,
+        offerId: this.offer.offerId,
+        ownerId: this.offer.ownerId,
+        price: this.offer.price,
+        quoteAmount: this.offer.quoteAmount,
+        quoteAssetCode: this.offer.quoteAssetCode,
+        quoteBalanceId: this.offer.quoteBalanceId,
+      }
+      this.isLoadedInfo = true
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error)
+    }
   },
   validations () {
     return {
@@ -251,21 +293,24 @@ export default {
     async submit () {
       this.disableForm()
       this.isOfferSubmitting = true
-
-      if (this.isCancelOrderAction && this.isOwner) {
-        await this.cancelOffer(
-          this.getCancelOfferOpts()
-        )
+      try {
+        if (this.isCancelOrderAction && this.isOwner) {
+          await this.cancelOffer(
+            this.getCancelOfferOpts()
+          )
+        }
+        if (this.isUpdatinglOrderAction) {
+          await this.cancelOffer(
+            this.getCancelOfferOpts()
+          )
+          await this.createOffer(
+            this.getCreateOfferOpts()
+          )
+        }
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
       }
 
-      if (this.isUpdatinglOrderAction) {
-        await this.cancelOffer(
-          this.getCancelOfferOpts()
-        )
-        await this.createOffer(
-          this.getCreateOfferOpts()
-        )
-      }
       this.isOfferSubmitting = false
       this.resetStatateActions()
       this.enableForm()
@@ -294,7 +339,7 @@ export default {
         baseAmount: this.form.baseAmount,
         quoteAmount: this.form.quoteAmount,
         price: this.form.price,
-        isBuy: !this.form.isBuy,
+        isBuy: !this.isBuy,
       }
     },
     getCancelOfferOpts () {

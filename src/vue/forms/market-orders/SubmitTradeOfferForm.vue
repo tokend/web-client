@@ -3,7 +3,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model="form.price"
+          v-model.trim="form.price"
+          name="submit-trade-offers-offer-price"
           :label="
             'submit-trade-offers-form.price-label' | globalize({
               asset: assetPair.quote
@@ -17,20 +18,20 @@
             }
           )"
           @blur="touchField('form.price')"
-          name="submit-trade-offers-offer-price"
           :white-autofill="true"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
+
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
           v-model.trim="form.baseAmount"
-          :label="
-            'submit-trade-offers-form.want-label' | globalize({
-              asset: assetPair.base
-            })
-          "
+          name="submit-trade-offers-offer-base-amount"
+          :label="'submit-trade-offers-form.want-label' | globalize({
+            asset: assetPair.base
+          })"
           :error-message="getFieldErrorMessage(
             'form.baseAmount',
             {
@@ -41,8 +42,9 @@
             }
           )"
           @blur="touchField('form.amount')"
-          name="submit-trade-offers-offer-base-amount"
           :white-autofill="true"
+          :max="baseAssetBalance.balance"
+          :disabled="formMixin.isDisabled"
         />
       </div>
     </div>
@@ -102,7 +104,7 @@
             v-if="isOwner"
             type="button"
             @click="showConfirmation"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="formMixin.isDisabled"
           >
             {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
@@ -112,7 +114,7 @@
             v-else
             type="button"
             @click="showConfirmation"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="isDisabledSubmitButton"
           >
             <template v-if="isBuy">
@@ -161,13 +163,11 @@ export default {
   props: {
     assetPair: {
       type: Object,
-      require: true,
       default: () => ({}),
     },
     isBuy: {
       type: Boolean,
-      require: false,
-      default: true,
+      default: false,
     },
     offer: {
       type: Object,
@@ -180,14 +180,16 @@ export default {
     isOfferSubmitting: false,
     isCancelingOrder: false,
     form: {
-      baseAmount: '0',
-      baseAssetCode: null,
-      createdAt: null,
-      isBuy: true,
-      pagingToken: null,
-      price: null,
-      quoteAmount: '0',
-      quoteAssetCode: null,
+      form: {
+        baseAmount: '0',
+        baseAssetCode: null,
+        offerId: null,
+        ownerId: null,
+        price: '0',
+        quoteAmount: null,
+        quoteAssetCode: null,
+        quoteBalanceId: null,
+      },
     },
   }),
   computed: {
@@ -227,7 +229,16 @@ export default {
   },
   async created () {
     await this.loadBalances()
-    this.form = Object.assign({}, this.offer)
+    this.form = {
+      baseAmount: this.offer.baseAmount,
+      baseAssetCode: this.offer.baseAssetCode,
+      offerId: this.offer.offerId,
+      ownerId: this.offer.ownerId,
+      price: this.offer.price,
+      quoteAmount: this.offer.quoteAmount,
+      quoteAssetCode: this.offer.quoteAssetCode,
+      quoteBalanceId: this.offer.quoteBalanceId,
+    }
   },
   validations () {
     return {
