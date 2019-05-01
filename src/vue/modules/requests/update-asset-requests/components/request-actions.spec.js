@@ -31,7 +31,7 @@ describe('Update asset request actions', () => {
               accountId: 'SOME_ACCOUNT_ID',
             }),
           },
-        }
+        },
       },
     })
 

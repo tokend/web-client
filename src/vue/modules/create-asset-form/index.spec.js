@@ -44,7 +44,7 @@ describe('Create asset form module', () => {
 
         await shallowMount(CreateAssetForm, {
           localVue,
-          store
+          store,
         })
 
         expect(CreateAssetForm.methods.init).to.have.been.calledOnce
@@ -60,7 +60,7 @@ describe('Create asset form module', () => {
 
       wrapper = shallowMount(CreateAssetForm, {
         localVue,
-        store
+        store,
       })
     })
 

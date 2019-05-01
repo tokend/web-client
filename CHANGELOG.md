@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Show only one QR code on Coinpayments deposit
+- Use global api.js in all modules
 
 #### Fixed
 - Invalid opts when submitting create asset request

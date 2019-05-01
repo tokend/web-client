@@ -49,7 +49,7 @@ describe('Update asset form module', () => {
         it('initializes API and config, call load method, and sets isLoaded property to true',
           async () => {
             wrapper.setProps({
-              storageUrl: 'https://storage.com'
+              storageUrl: 'https://storage.com',
             })
 
             sandbox.stub(Config, 'initConfig')
