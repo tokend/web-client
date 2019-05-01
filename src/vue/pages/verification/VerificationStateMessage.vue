@@ -21,7 +21,25 @@
           {{ verificationReasonTranslationId | globalize }}
         </p>
 
-        <p>{{ verificationReason }}</p>
+        <p class="verification-state-message__reason-msg">
+          {{ verificationReason }}
+        </p>
+
+        <div
+          v-if="kycRequestExternalDetails"
+          class="verification-state-message__external-details"
+        >
+          <h4 class="verification-state-message__external-details-title">
+            {{ 'verification-state-message.additional-info-title' | globalize }}
+          </h4>
+          <p
+            v-for="(value, key) in kycRequestExternalDetails"
+            class="verification-state-message__external-detail-msg"
+            :key="key"
+          >
+            {{ key }}: {{ value }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +70,7 @@ export default {
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycResetReason: vuexTypes.kycRequestResetReason,
       kycBlockReason: vuexTypes.kycRequestBlockReason,
+      kycRequestExternalDetails: vuexTypes.kycRequestExternalDetails,
 
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       isAccountBlocked: vuexTypes.isAccountBlocked,
@@ -139,6 +158,10 @@ export default {
 
 .verification-state-message__reason {
   margin-top: 1.6rem;
+}
+
+.verification-state-message__reason-msg {
+  margin-bottom: 1rem;
 }
 
 .verification-state-message__reason-title {

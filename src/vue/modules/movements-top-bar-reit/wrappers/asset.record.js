@@ -14,6 +14,7 @@ export class AssetRecord {
     this.policies = this._policies()
     this.policy = this._policy()
     this.isCoinpayments = _get(record, 'details.isCoinpayments')
+    this.externalSystemType = _get(record, 'details.externalSystemType')
     this.balance = this._getBalance(balances)
   }
 
@@ -55,5 +56,9 @@ export class AssetRecord {
   get isWithdrawable () {
     return !!(this.policy & ASSET_POLICIES.withdrawable) ||
       !!(this.policy & ASSET_POLICIES.withdrawableV2)
+  }
+
+  get isDepositable () {
+    return !!this.externalSystemType
   }
 }

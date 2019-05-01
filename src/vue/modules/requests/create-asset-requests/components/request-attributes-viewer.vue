@@ -65,7 +65,20 @@
             <template v-if="request.assetType === kycRequiredAssetType">
               {{ 'create-asset-requests.yes-msg' | globalize }}
             </template>
+            <template v-else>
+              {{ 'create-asset-requests.no-msg' | globalize }}
+            </template>
+          </td>
+        </tr>
 
+        <tr :title="'create-asset-requests.security-asset-title' | globalize">
+          <td>
+            {{ 'create-asset-requests.security-asset-title' | globalize }}
+          </td>
+          <td>
+            <template v-if="request.assetType === securityAssetType">
+              {{ 'create-asset-requests.yes-msg' | globalize }}
+            </template>
             <template v-else>
               {{ 'create-asset-requests.no-msg' | globalize }}
             </template>
@@ -86,6 +99,7 @@ export default {
   props: {
     request: { type: CreateAssetRequest, required: true },
     kycRequiredAssetType: { type: Number, required: true },
+    securityAssetType: { type: Number, required: true },
   },
 
   computed: {

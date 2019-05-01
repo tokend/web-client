@@ -15,6 +15,7 @@
       class="request-viewer__table"
       :request="request"
       :kyc-required-asset-type="kycRequiredAssetType"
+      :security-asset-type="securityAssetType"
     />
 
     <request-actions
@@ -64,6 +65,7 @@ export default {
   computed: {
     ...mapGetters('create-asset-requests', {
       kycRequiredAssetType: types.kycRequiredAssetType,
+      securityAssetType: types.securityAssetType,
     }),
 
     assetLogoUrl () {

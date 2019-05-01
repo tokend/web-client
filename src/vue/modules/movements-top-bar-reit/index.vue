@@ -162,7 +162,7 @@
     <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
       <drawer :is-shown.sync="isCoinpaymentsDepositFormShown">
         <template slot="heading">
-          {{ 'deposit-form' | globalize }}
+          {{ 'deposit-form.deposit-lbl' | globalize }}
         </template>
         <div>
           <p class="movements-top-bar-reit__deposit-help-msg">

@@ -7,6 +7,8 @@
       :asset="item.asset"
       :address="item.address"
       :key="index"
+      :expanded="selectedIssuance === item.address"
+      @expand-requested="selectIssuance(item.address)"
     />
   </table>
 </template>
@@ -21,6 +23,21 @@ export default {
   },
   props: {
     pendingIssuances: { type: Array, required: true },
+  },
+  data: () => ({
+    selectedIssuance: null,
+  }),
+  methods: {
+    resetIssuanceSelection () {
+      this.selectedIssuance = null
+    },
+    selectIssuance (address) {
+      if (this.selectedIssuance === address) {
+        this.selectedIssuance = null
+      } else {
+        this.selectedIssuance = address
+      }
+    },
   },
 }
 </script>

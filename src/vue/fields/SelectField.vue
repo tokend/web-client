@@ -9,9 +9,9 @@
     }"
   >
     <template v-if="label">
-      <div class="select-field__label">
+      <label class="select-field__label">
         {{ label }}
-      </div>
+      </label>
     </template>
     <button
       type="button"
@@ -23,10 +23,22 @@
       :disabled="disabled"
       @click.prevent="toggleListVisibility"
     >
-      <span class="select-field__selected-value" v-if="isValueTranslatable">
+      <span
+        class="select-field__selected-value"
+        v-if="!selected"
+      >
+        &nbsp;
+      </span>
+      <span
+        class="select-field__selected-value"
+        v-else-if="isValueTranslatable"
+      >
         {{ selected | getValueText(keyAsValueText) | globalize }}
       </span>
-      <span class="select-field__selected-value" v-else>
+      <span
+        class="select-field__selected-value"
+        v-else
+      >
         {{ selected | getValueText(keyAsValueText) }}
       </span>
       <i
@@ -328,6 +340,7 @@ export default {
 }
 
 .select-field--focused > .select-field__label {
+  top: 0;
   color: $field-color-focused;
 
   @include label-font-sizes;

@@ -64,6 +64,11 @@ export const hardCapLessThanSoftCap = (softCap, max) => value => {
 export const noMoreThanAvailableOnBalance = balance => value => {
   return +balance >= +value
 }
+
+export const noMoreThanAvailableForIssuance = available => value => {
+  return +available >= +value
+}
+
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
   const [, decimals] = String(value).split('.')
   if (decimals) {

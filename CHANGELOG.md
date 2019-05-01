@@ -9,10 +9,31 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Display fees in invest form
+- General verification form module (included in vanilla scheme only)
+- `usVerified` and `usAccredited` roles to key/value module
+- `Passport` is now able to show US verified and US accredited user roles
+- Users with US verified and US accredited roles will now also be redirected to general form
+- Security asset type
+- Show banner for blocked user
+- Validator of available for issuance amount
+
+#### Changed
+- Show only one QR code on Coinpayments deposit
+
+#### Fixed
+- Invalid opts when submitting create asset request
+
+## [1.6.0-x.2] - 2019-04-29
+#### Added
 - Re-render chart animation
 
 #### Changed
-- Now opening pre-issuance details link in new tab 
+- Now opening pre-issuance details link in new tab
+
+### Experimental features changes
+#### Fixed
+- Deposit fiat drawer displaying on REIT
 
 ## [1.6.0-x.1] - 2019-04-26
 #### Added
@@ -33,7 +54,7 @@ for further information about branching and tagging conventions.
 ### "Under the hood" changes
 #### Changed
 - Now using @tokend/js-sdk@1.6.0-x.0
-- Now using "app__button-*" classes instead of button mixins
+- Now using "app__button-..." classes instead of button mixins
 
 ### Experimental features changes
 #### Changed
@@ -387,7 +408,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.2...HEAD
+[1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
 [1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0

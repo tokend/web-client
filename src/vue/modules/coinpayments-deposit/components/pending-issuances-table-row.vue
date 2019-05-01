@@ -12,7 +12,7 @@
       <td class="pending-issuances-table-row__btn">
         <button
           class="app__button-icon"
-          @click="isAddressViewerShown = !isAddressViewerShown"
+          @click="requestExpand"
         >
           <i class="mdi mdi-view-dashboard" />
         </button>
@@ -20,7 +20,7 @@
     </tr>
     <tr
       class="pending-issuances-table-row__key-viewer-wrp"
-      v-if="isAddressViewerShown"
+      v-if="expanded"
     >
       <td colspan="3">
         <key-viewer
@@ -36,6 +36,11 @@
 <script>
 import TimeoutTicker from './timeout-ticker'
 import KeyViewer from '@/vue/common/KeyViewer'
+
+const EVENTS = {
+  expandRequested: 'expand-requested',
+}
+
 export default {
   name: 'pending-issuances-table-row',
   components: {
@@ -47,11 +52,12 @@ export default {
     amount: { type: [String, Number], required: true },
     asset: { type: String, required: true },
     address: { type: String, required: true },
+    expanded: { type: Boolean, required: true },
   },
-  data () {
-    return {
-      isAddressViewerShown: false,
-    }
+  methods: {
+    requestExpand () {
+      this.$emit(EVENTS.expandRequested)
+    },
   },
 }
 </script>
