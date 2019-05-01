@@ -55,7 +55,7 @@ export class MockHelper {
 
   useMockWallet ({ walletId, accountId } = {}) {
     sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
-    initApi(this.getMockWallet({ walletId, accountId }), HORIZON_URL)
+    api().useWallet(this.getMockWallet({ walletId, accountId }))
   }
 
   mockEndpoint (endpoint, response) {

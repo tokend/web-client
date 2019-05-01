@@ -48,7 +48,7 @@ import {
   mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { initApi } from '@/api'
+import { initApi, api } from '@/api'
 import { vuexTypes } from '@/vuex'
 
 import config from '@/config'
@@ -103,7 +103,7 @@ export default {
 
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        initApi(this[vuexTypes.wallet], config.HORIZON_SERVER)
+        api().useWallet(this[vuexTypes.wallet])
       }
     },
     detectIE () {
