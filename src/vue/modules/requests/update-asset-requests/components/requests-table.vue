@@ -98,11 +98,9 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.requests-table {
-  tr td:last-child {
-    width: 3rem;
-    text-align: right;
-  }
+.requests-table tr td:last-child {
+  width: 3rem;
+  text-align: right;
 }
 
 .requests-table__details-btn {

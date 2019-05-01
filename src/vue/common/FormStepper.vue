@@ -109,7 +109,7 @@ export default {
 }
 
 .form-stepper__tab {
-  border-bottom: .2rem solid $col-form-stepper-tab-border;
+  border-bottom: 0.2rem solid $col-form-stepper-tab-border;
   padding: 1rem;
   cursor: pointer;
   min-width: 12rem;
@@ -117,36 +117,36 @@ export default {
   align-items: center;
   justify-content: center;
 
-  .form-stepper__tab-title {
-    font-size: 1.2rem;
-    color: $col-form-stepper-text;
-    text-align: center;
+  .form-stepper--disabled & {
+    cursor: default;
+    filter: grayscale(100%);
   }
+}
 
-  .form-stepper__tab-icon {
-    font-size: 1rem;
-    background-color: $col-form-stepper-icon-background;
-    color: $col-form-stepper-icon;
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    padding: .2rem;
-    margin-right: .4rem;
-  }
+.form-stepper__tab-title {
+  font-size: 1.2rem;
+  color: $col-form-stepper-text;
+  text-align: center;
 
-  .form-stepper__tab-title {
-    font-size: 1.2rem;
-    color: $col-primary;
+  .form-stepper__tab--active & {
+    color: $col-form-stepper-tab-active;
+    font-weight: 700;
   }
+}
+
+.form-stepper__tab-icon {
+  font-size: 1rem;
+  background-color: $col-form-stepper-icon-background;
+  color: $col-form-stepper-icon;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  padding: 0.2rem;
+  margin-right: 0.4rem;
 }
 
 .form-stepper__tab--active {
   border-color: $col-form-stepper-tab-active;
-
-  & .form-stepper__tab-title {
-    color: $col-form-stepper-tab-active;
-    font-weight: bold;
-  }
 }
 
 .form-stepper__tab--disabled {
@@ -156,12 +156,5 @@ export default {
 
 .form-stepper__form {
   margin-top: 3.2rem;
-}
-
-.form-stepper--disabled {
-  .form-stepper__tab {
-    cursor: default;
-    filter: grayscale(100%);
-  }
 }
 </style>

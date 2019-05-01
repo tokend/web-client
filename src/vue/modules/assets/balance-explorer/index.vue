@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import '~@scss/mixins';
 
 $asset-card-margin: 0.75rem;
 

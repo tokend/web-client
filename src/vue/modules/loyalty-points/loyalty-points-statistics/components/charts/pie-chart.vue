@@ -208,6 +208,7 @@ export default {
 <style lang="scss">
 @import '~@scss/variables';
 
+/* stylelint-disable selector-nested-pattern */
 .pie-chart {
   svg {
     filter: drop-shadow(0 0.3rem 0.3rem $col-pie-chart-shadow);
@@ -228,4 +229,5 @@ export default {
     }
   }
 }
+/* stylelint-enable selector-nested-pattern */
 </style>

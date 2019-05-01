@@ -22,17 +22,17 @@ export default {
   padding: 1.6rem 4.8rem;
   background-color: $col-warning;
   font-size: 1.6rem;
-  color: #fff;
+  color: $col-warning-banner-text;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .warning-banner__message-link {
-  color: #fff;
+  color: $col-warning-banner-message-link-text;
   cursor: pointer;
   text-decoration: underline;
 
-  &:hover { color: #fff }
+  &:hover { color: $col-warning-banner-message-link-text; }
 }
 </style>

@@ -15,14 +15,20 @@ $content-padding-right: 6.5rem;
 $content-side-paddings-sm: 2rem;
 
 // z-indexes
+$z-app-navbar: 4;
 $z-sidebar-burger: 10;
 $z-status-message: 10;
 $z-drawer: 10;
+$z-drawer-backdrop: -1;
+$z-hint-wrapper-box: 100;
+$z-sidebar-backdrop: 115;
 $z-sidebar: 120;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
+$_concrete: #f2f2f2;
+$_black: #000000;
 $_gray: #e2e3e3;
 $_silverChalice: #aeaeae;
 $_cyan: #0ea7ba;
@@ -43,6 +49,7 @@ $_lightPurple: #837fa1;
 $_ghostWhite: #c4c8cb;
 $_thinPurple: #c1bfd0;
 $_alto: #e0e0e0;
+$_silverChalice: #aaaaaa;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -53,6 +60,7 @@ $col-link: $col-primary-lighten;
 $col-text-on-dark-bg: $_white;
 
 $col-primary-inactive: rgba($col-primary, 0.7);
+$col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
 $col-primary-flat-hover: rgba($col-primary, 0.2);
 
 // status colors:
@@ -115,6 +123,7 @@ $col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
+$col-drawer-backdrop-bg: rgba(0, 0, 0, 0.1);
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
 
@@ -166,6 +175,9 @@ $col-table-row-selected: darken($_whiteSmoke, 10%);
 $col-table-row-disabled: $_alto;
 $col-table-shadow: rgba(0, 0, 0, 0.1);
 $col-table-scroll-side-shadow: rgba(0, 0, 0, 0.2);
+
+// document manager
+$col-document-manager-border: $_silverChalice;
 
 // loader colors:
 $col-loader-text: $col-primary;
@@ -336,3 +348,11 @@ $col-document-uploader-text-unlighten: $_lightPurple;
 $col-border-comment-viewer-header: $_eastBay;
 $col-comment-content-gradient-from: $_eastBay;
 $col-comment-content-gradient-to: $_gray;
+
+// warning banner
+$col-warning-banner-text: $_white;
+$col-warning-banner-message-link-text: $_white;
+
+// hint-wrapepr
+$col-hint-wrapper-box-bg: rgba($_black, 0.9);
+$col-hint-wrapper-box-text: $_concrete;

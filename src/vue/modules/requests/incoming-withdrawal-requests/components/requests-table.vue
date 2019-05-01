@@ -95,13 +95,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
-.requests-table {
-  tr td:last-child {
-    width: 3rem;
-    text-align: right;
-  }
+.requests-table tr td:last-child {
+  width: 3rem;
+  text-align: right;
 }
 
 .requests-table__review-btn {

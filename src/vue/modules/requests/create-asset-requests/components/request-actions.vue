@@ -3,7 +3,11 @@
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="request-actions__update-btn app__button-raised"
+      class="
+        request-actions__btn
+        request-actions__btn--update
+        app__button-raised
+      "
       :disabled="isRequestCanceling || !canBeUpdated"
       @click="$emit(EVENTS.updateClick)"
     >
@@ -13,7 +17,11 @@
     <button
       v-ripple
       v-if="!formMixin.isConfirmationShown"
-      class="request-actions__cancel-btn app__button-flat"
+      class="
+        request-actions__btn
+        request-actions__btn--cancel
+        app__button-flat
+      "
       :disabled="isRequestCanceling || !canBeCanceled"
       @click="showConfirmation"
     >
@@ -95,19 +103,21 @@ export default {
 <style lang="scss" scoped>
 .request-actions {
   display: flex;
+}
 
-  button + button {
+.request-actions__btn {
+  & + & {
     margin-left: auto;
   }
 }
 
-.request-actions__update-btn {
+.request-actions__btn--update {
   margin-bottom: 2rem;
   width: 18rem;
 }
 
-.request-actions__cancel-btn {
+.request-actions__btn--cancel {
   margin-bottom: 2rem;
-  font-weight: normal;
+  font-weight: 400;
 }
 </style>

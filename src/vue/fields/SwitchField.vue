@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "scss/variables";
+@import 'scss/variables';
 
 .switch-field {
   display: flex;
@@ -52,25 +52,25 @@ export default {
   width: 5.3rem;
   height: 2.8rem;
   background-color: $col-switch-field-background;
-  border: solid .1rem $col-switch-field-border;
+  border: solid 0.1rem $col-switch-field-border;
   border-radius: 3.4rem;
 
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     height: 2.2rem;
     width: 2.2rem;
-    left: .1rem;
-    bottom: .1rem;
+    left: 0.1rem;
+    bottom: 0.1rem;
     background-color: $col-switch-field-disabled;
-    border: solid .1rem $col-switch-field-disabled-border;
-    transition: .4s;
+    border: solid 0.1rem $col-switch-field-disabled-border;
+    transition: 0.4s;
     border-radius: 50%;
   }
 
   &--enabled:before {
     background-color: $col-switch-field-enabled;
-    border: solid .1rem $col-switch-field-enabled-border;
+    border: solid 0.1rem $col-switch-field-enabled-border;
     transform: translateX(2.5rem);
   }
 }

@@ -158,12 +158,14 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./auth-page";
+@import './auth-page';
 
 .signup__seed-title.auth-page__title {
   margin-top: -4rem;
 }
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .signup__seed-disclaimer {
   margin-bottom: 3rem;
 
@@ -172,6 +174,7 @@ export default {
     font-size: 1.6rem;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .signup__key-viewer /deep/ .clipboard-field {
   background: $col-clipboard-background-darken;

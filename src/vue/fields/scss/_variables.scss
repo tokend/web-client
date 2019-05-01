@@ -5,6 +5,8 @@ $col-field-text-unfocused: $col-primary-inactive;
 $col-field-icon: $col-primary;
 $col-dropdown-bg: $_white;
 
+$z-index-select-field-list: 5;
+
 $field-color-background: $_thinBlue;
 $field-color-text: $col-field-text;
 $field-color-focused: $field-color-text;
@@ -70,3 +72,7 @@ $col-tick-field-unfocused: $col-primary-lighten;
   background: none;
 }
 
+@mixin placeholder {
+  color: $field-placeholer-color;
+  transition: opacity $field-transition-duration;
+}

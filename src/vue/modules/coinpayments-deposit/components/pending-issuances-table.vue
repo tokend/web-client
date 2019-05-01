@@ -26,16 +26,15 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~@scss/variables';
+@import '~@scss/variables';
 
-  .pending-issuances-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    tbody:nth-child(odd){
-      tr:first-child {
-        background: $col-table-alt-row-background;
-      }
-    }
-  }
+.pending-issuances-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.pending-issuances-table tbody:nth-child(odd) tr:first-child {
+  background: $col-table-alt-row-background;
+}
 </style>

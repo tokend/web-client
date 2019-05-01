@@ -162,10 +162,10 @@ $avatar-margin-right: 1.8rem;
   font-weight: 500;
   font-size: 1.6rem;
   margin-bottom: 0.5rem;
+}
 
-  .signer-list-item__you-lbl {
-    color: $col-signer-list-item-rule-text;
-  }
+.signer-list-item__you-lbl {
+  color: $col-signer-list-item-rule-text;
 }
 
 .signer-list-item__rule {

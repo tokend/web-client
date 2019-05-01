@@ -49,12 +49,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@scss/variables';
-@import "~@scss/mixins";
+@import '~@scss/mixins';
 
 .document-card-viewer {
   cursor: pointer;
-  border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-document-card-viewer-shadow;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.5rem 1rem 0 $col-document-card-viewer-shadow;
   background-color: $col-document-card-viewer-bg;
   margin: 1rem;
   text-decoration: none;
@@ -64,50 +64,48 @@ export default {
   @include respond-to-custom($large) {
     flex: 0 1 calc(33.3% - 2rem);
   }
-
   @include respond-to-custom($x-medium) {
     flex: 0 1 calc(50% - 2rem);
   }
-
   @include respond-to-custom($x-small) {
     flex: 0 1 calc(100% - 2rem);
   }
+}
 
-  &__header {
-    border-radius: .4rem .4rem 0rem 0rem;
-    height: 8.5rem;
-    padding-top: 1.25rem;
-    background-color: $col-document-card-viewer-header-bg;
-  }
+.document-card-viewer__header {
+  border-radius: 0.4rem 0.4rem 0 0;
+  height: 8.5rem;
+  padding-top: 1.25rem;
+  background-color: $col-document-card-viewer-header-bg;
+}
 
-  &__logo {
-    margin: 0 auto;
-  }
+.document-card-viewer__logo {
+  margin: 0 auto;
+}
 
-  &__info {
-    padding: 2.2rem 1.5rem;
-    max-width: 100%;
-  }
+.document-card-viewer__info {
+  padding: 2.2rem 1.5rem;
+  max-width: 100%;
+}
 
-  &__name {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: $col-document-card-viewer-text;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.document-card-viewer__name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $col-document-card-viewer-text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  &__type {
-    margin-top: 0.5rem;
-    font-size: 1.4rem;
-    color: $col-document-card-viewer-text;
-  }
+.document-card-viewer__type {
+  margin-top: 0.5rem;
+  font-size: 1.4rem;
+  color: $col-document-card-viewer-text;
+}
 
-  &__created {
-    margin-top: 1.6rem;
-    font-size: 1.4rem;
-    color: $col-document-card-viewer-text;
-  }
+.document-card-viewer__created {
+  margin-top: 1.6rem;
+  font-size: 1.4rem;
+  color: $col-document-card-viewer-text;
 }
 </style>
