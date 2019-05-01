@@ -101,7 +101,7 @@ export const actions = {
     commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
   },
   async [vuexTypes.LOAD_KV_ASSET_TYPE_SECURITY] ({ commit }) {
-    const { data } = await Api.api.get('/v3/key_values/asset_type:security')
+    const { data } = await api().get('/v3/key_values/asset_type:security')
     commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, data.value.u32)
   },
   async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {

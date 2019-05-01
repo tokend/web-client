@@ -66,12 +66,13 @@ import SectionDocuments from './components/section-documents'
 import SectionSelfie from './components/section-selfie'
 import SectionAvatar from './components/section-avatar'
 
+import { vuexTypes } from '@/vuex'
 import { types } from './store/types'
 import { mapActions, mapGetters } from 'vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Wallet, base } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
+import { base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import { isUSResidence } from './is-us-residence'
 
 const EVENTS = {
@@ -90,13 +91,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: { type: Object, required: true },
-    wallet: { type: Wallet, required: true },
-
     blobId: { type: String, default: '' },
     requestId: { type: String, required: true },
 
@@ -115,6 +109,9 @@ export default {
       blobData: types.blobData,
       country: types.country,
     }),
+    ...mapGetters([
+      vuexTypes.wallet,
+    ]),
     verificationCode () {
       return this.wallet.accountId.slice(1, 6)
     },
@@ -132,8 +129,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
     if (this.blobId) {
       try {
         this.populateForm(await this.getBlobData(this.blobId))
