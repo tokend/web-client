@@ -3,7 +3,7 @@ import { ID_DOCUMENT_TYPES } from '../id-document-types'
 import { COUNTRIES } from '../countries'
 import { BLOB_TYPES } from '@tokend/js-sdk'
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { wrapDocument } from './wrap-document'
 
