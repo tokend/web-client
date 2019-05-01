@@ -92,7 +92,6 @@ $field-to-field-gap: 2rem;
 }
 
 .app__form-submit-btn {
-  @include button-raised();
   min-width: 16rem;
   height: 3.6rem;
 }

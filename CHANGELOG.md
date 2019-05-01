@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this project will be documented in this file.
+All notable changes to this ~project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -8,13 +8,57 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Display fees in invest form
+- General verification form module (included in vanilla scheme only)
+- `usVerified` and `usAccredited` roles to key/value module
+- `Passport` is now able to show US verified and US accredited user roles
+- Users with US verified and US accredited roles will now also be redirected to general form
+- Security asset type
+- Show banner for blocked user
+- Validator of available for issuance amount
+
 #### Changed
-- More cutier animation for init loader
-- Now selecting invoice point by loyalty account number (Loyalty)
+- Show only one QR code on Coinpayments deposit
+
+#### Fixed
+- Invalid opts when submitting create asset request
+
+## [1.6.0-x.2] - 2019-04-29
+#### Added
+- Re-render chart animation
+
+#### Changed
+- Now opening pre-issuance details link in new tab
+
+### Experimental features changes
+#### Fixed
+- Deposit fiat drawer displaying on REIT
+
+## [1.6.0-x.1] - 2019-04-26
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages
+
+#### Changed
+- Now using more modern animation for init loader
 - Now showing all the received points (360) on the chart
 - Now showing zero axis line, if chart has both negative and
   positive values
-- Now using default d3 ticks calculation on chart axes
+- Now using default d3 ticks calculation on chart axes, so the ticks count and
+  positions are not fixed now and ticks have more user-friendly values
+
+#### Fixed
+- Account verification using received link from e-mail
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-x.0
+- Now using "app__button-..." classes instead of button mixins
+
+### Experimental features changes
+#### Changed
+- Now selecting invoice point by loyalty account number (Loyalty)
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
@@ -364,7 +408,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.2...HEAD
+[1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
+[1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
 [1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
 [1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3

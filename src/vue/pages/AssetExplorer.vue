@@ -6,6 +6,10 @@
         :config="config"
         :wallet="wallet"
         :is-account-unverified="isAccountUnverified"
+        :is-account-general="isAccountGeneral"
+        :is-account-us-verified="isAccountUsVerified"
+        :is-account-us-accredited="isAccountUsAccredited"
+        :is-account-corporate="isAccountCorporate"
       />
     </template>
   </div>
@@ -37,6 +41,10 @@ export default {
     ...mapGetters({
       wallet: vuexTypes.wallet,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountGeneral: vuexTypes.isAccountGeneral,
+      isAccountUsVerified: vuexTypes.isAccountUsVerified,
+      isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
 }

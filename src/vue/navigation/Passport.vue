@@ -92,6 +92,8 @@ export default {
       kycAvatarKey: vuexTypes.kycAvatarKey,
 
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
+      isAccountUsVerified: vuexTypes.isAccountUsVerified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountBlocked: vuexTypes.isAccountBlocked,
@@ -103,6 +105,10 @@ export default {
         return 'passport.account-general'
       } else if (this.isAccountCorporate) {
         return 'passport.account-corporate'
+      } else if (this.isAccountUsAccredited) {
+        return 'passport.account-us-accredited'
+      } else if (this.isAccountUsVerified) {
+        return 'passport.account-us-verified'
       } else if (this.isAccountBlocked) {
         return 'passport.account-blocked'
       } else {

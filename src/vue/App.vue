@@ -2,10 +2,17 @@
   <div id="app" v-if="isAppInitialized">
     <warning-banner
       v-if="isNotSupportedBrowser"
-      :message-id="'common.browser-not-supported'"
+      :message="'common.browser-not-supported' | globalize"
     />
 
     <template v-if="isLoggedIn && isNavigationRendered">
+      <warning-banner
+        v-if="isAccountBlocked"
+        :message="'warning-banner.blocked-desc' | globalize({
+          reason: kycRequestBlockReason
+        })"
+        message-type="danger"
+      />
       <div class="app__container">
         <sidebar />
 
@@ -67,6 +74,8 @@ export default {
     ...mapGetters([
       vuexTypes.wallet,
       vuexTypes.isLoggedIn,
+      vuexTypes.isAccountBlocked,
+      vuexTypes.kycRequestBlockReason,
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)

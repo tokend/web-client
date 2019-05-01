@@ -86,7 +86,8 @@
             </p>
             <button
               v-ripple
-              class="verification-general-form__verification-code-btn"
+              class="verification-general-form__verification-code-btn
+                     app__button-raised"
               :disabled="formMixin.isDisabled"
               @click.prevent="isCodeShown = true"
             >
@@ -127,7 +128,7 @@
           v-ripple
           v-else
           type="submit"
-          class="verification-general-form__submit-btn"
+          class="verification-general-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'verification-form.submit-btn' | globalize }}
@@ -242,7 +243,7 @@ export default {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(
           kycBlobId,
-          this.kvEntryGeneralRoleId
+          this.kvEntryGeneralRoleId,
         )
         await Sdk.horizon.transactions.submitOperations(operation)
         do {
@@ -299,7 +300,7 @@ export default {
           idDocument: this.wrapDocument(kycData, DOCUMENT_TYPES.kycIdDocument),
           verificationPhoto: this.wrapDocument(
             kycData,
-            DOCUMENT_TYPES.kycSelfie
+            DOCUMENT_TYPES.kycSelfie,
           ),
         },
       }
@@ -324,15 +325,12 @@ export default {
 }
 
 .verification-general-form__submit-btn {
-  @include button-raised();
-
   margin-right: auto;
   width: 100%;
   max-width: 20rem;
 }
 
 .verification-general-form__verification-code-btn {
-  @include button-raised();
   margin-top: 1.5rem;
 }
 

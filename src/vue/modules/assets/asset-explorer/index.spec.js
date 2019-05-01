@@ -78,6 +78,7 @@ describe('Asset explorer module', () => {
         it('calls load methods and sets isLoaded property to true if loading succeded', async () => {
           sandbox.stub(wrapper.vm, 'loadAccountBalances').resolves()
           sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
+          sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
 
           await wrapper.vm.load()
 

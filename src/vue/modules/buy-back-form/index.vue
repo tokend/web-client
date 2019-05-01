@@ -94,7 +94,7 @@
             <button
               v-ripple
               type="submit"
-              class="app__form-submit-btn"
+              class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled"
             >
               <template>
