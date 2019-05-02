@@ -19,13 +19,6 @@ describe('Asset explorer module', () => {
     store = new Vuex.Store({
       modules: {
         'asset-explorer': assetExplorerModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })
@@ -36,7 +29,6 @@ describe('Asset explorer module', () => {
 
   describe('created hook', () => {
     it('inits API, sets account ID, and loads balances', () => {
-      sandbox.stub(AssetExplorerModule.methods, 'setAccountId')
       sandbox.stub(AssetExplorerModule.methods, 'load')
 
       shallowMount(AssetExplorerModule, {
@@ -47,8 +39,6 @@ describe('Asset explorer module', () => {
         },
       })
 
-      expect(AssetExplorerModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
       expect(AssetExplorerModule.methods.load)
         .to.have.been.calledOnce
     })

@@ -28,9 +28,8 @@ import LoadSpinner from '@/vue/common/Loader'
 
 import AssetsRenderer from './components/assets-renderer'
 
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -72,22 +71,12 @@ export default {
     isLoaded: false,
     isLoadFailed: false,
   }),
-  computed: {
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
-  },
 
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.load()
   },
 
   methods: {
-    ...mapMutations('asset-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('asset-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,

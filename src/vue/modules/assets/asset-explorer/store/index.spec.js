@@ -35,16 +35,6 @@ describe('Asset explorer module', () => {
   })
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
-
-      expect(state).to.deep.equal({ accountId: 'SOME_ACCOUNT_ID' })
-    })
-
     it('SET_ACCOUNT_BALANCES should properly modify state', () => {
       const state = {
         balances: [],
@@ -131,7 +121,7 @@ describe('Asset explorer module', () => {
     beforeEach(() => {
       store = {
         state: {},
-        getters: {
+        rootGetters: {
           accountId: 'SOME_ACCOUNT_ID',
         },
         commit: sinon.stub(),
@@ -210,13 +200,6 @@ describe('Asset explorer module', () => {
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId: 'SOME_ACCOUNT_ID' }
-
-      expect(getters[types.accountId](state))
-        .to.equal('SOME_ACCOUNT_ID')
-    })
-
     it('assets', () => {
       const state = {
         assets: [
