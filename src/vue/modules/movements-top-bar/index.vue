@@ -90,9 +90,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -138,9 +137,6 @@ export default {
       balances: types.balances,
       assets: types.assets,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
   watch: {
     asset: {
@@ -154,16 +150,12 @@ export default {
     },
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('movements-top-bar', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('movements-top-bar', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
