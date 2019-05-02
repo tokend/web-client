@@ -7,7 +7,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint",
-      "pre-push": "yarn test"
+      "pre-push": "yarn rsc && yarn test"
     }
   },
   "scripts": {
@@ -19,7 +19,8 @@
     "test:watchVerbose": "karma start --no-single-run --auto-watch --reporters spec",
     "lint": "npm run lint:styles && npm run lint:scripts",
     "lint:scripts": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0",
-    "lint:styles": "stylelint 'src/**/*.{vue,css,scss}' --syntax scss --max-warnings=0"
+    "lint:styles": "stylelint 'src/**/*.{vue,css,scss}' --syntax scss --max-warnings=0",
+    "rsc": "node scripts/release-sanity-check.js"
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
@@ -65,6 +66,7 @@
     "babel-plugin-transform-builtin-extend": "1.1.2",
     "chai": "4.2.0",
     "chalk": "2.4.1",
+    "child_process": "1.0.2",
     "connect-history-api-fallback": "1.5.0",
     "copy-webpack-plugin": "4.6.0",
     "css-loader": "2.1.0",
