@@ -24,9 +24,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
@@ -64,19 +63,12 @@ export default {
     ...mapGetters('withdrawal-fiat', {
       balances: types.balances,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('withdrawal-fiat', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('withdrawal-fiat', {
       loadBalances: types.LOAD_BALANCES,
     }),
