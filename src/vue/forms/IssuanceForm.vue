@@ -42,7 +42,7 @@
                   {
                     from: MIN_AMOUNT,
                     to: form.asset.availableForIssuance,
-                    maxDecimalDigitsCount: DECIMAL_POINTS
+                    maxDecimalDigitsCount: trailingDigitsCount
                   }
                 )"
                 :disabled="formMixin.isDisabled"
@@ -171,7 +171,6 @@ export default {
     isLoaded: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
     REFERENCE_MAX_LENGTH,
-    DECIMAL_POINTS: config.DECIMAL_POINTS,
   }),
   validations () {
     return {
@@ -183,7 +182,9 @@ export default {
             this.MIN_AMOUNT,
             this.form.asset.availableForIssuance
           ),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          maxDecimalDigitsCount: maxDecimalDigitsCount(
+            this.trailingDigitsCount
+          ),
         },
         receiver: { required, emailOrAccountId },
         reference: {
@@ -197,10 +198,14 @@ export default {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
     ]),
+    trailingDigitsCount () {
+      return this.form.asset.trailingDigitsCount || config.DECIMAL_POINTS
+    },
   },
   async created () {
     try {
       await this.initAssetSelector()
+      this.loadAssets()
       this.isLoaded = true
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error)

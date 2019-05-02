@@ -4,6 +4,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
+          type="number"
           :label="
             'offer-creation-form.price-per-asset' | globalize({
               asset: assetPair.base
@@ -16,7 +17,8 @@
             'form.price', {
               from: config.MIN_AMOUNT,
               to: config.MAX_AMOUNT,
-              available: quoteAssetBalance
+              available: quoteAssetBalance,
+              maxDecimalDigitsCount: trailingDigitsCount,
             }
           )"
           @blur="touchField('form.price')"
@@ -28,6 +30,7 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.amount"
+          type="number"
           :label="'offer-creation-form.amount' | globalize({
             asset: assetPair.base
           })"
@@ -42,6 +45,7 @@
               available: baseAssetBalance,
               from: config.MIN_AMOUNT,
               to: config.MAX_AMOUNT,
+              maxDecimalDigitsCount: trailingDigitsCount,
             }
           )"
           @blur="touchField('form.amount')"
@@ -133,7 +137,7 @@ export default {
   components: { FormConfirmation },
   mixins: [FormMixin, OfferManagerMixin],
   props: {
-    assetPair: { type: Object, require: true, default: () => {} },
+    assetPair: { type: Object, require: true, default: () => ({}) },
     isBuy: { type: Boolean, require: false, default: true },
   },
   data: () => ({
@@ -141,7 +145,6 @@ export default {
       price: '',
       amount: '',
     },
-    baseDigitsCount: 0,
     config,
     isOfferCreating: false,
   }),
@@ -151,10 +154,13 @@ export default {
         price: {
           required,
           decimal,
-          amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          amountRange: amountRange(
+            config.MIN_AMOUNT,
+            config.MAX_AMOUNT
+          ),
           maxDecimalDigitsCount:
             maxDecimalDigitsCount(
-              this.baseDigitsCount
+              '0'
             ),
         },
         amount: {
@@ -167,7 +173,7 @@ export default {
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
           maxDecimalDigitsCount:
             maxDecimalDigitsCount(
-              this.baseDigitsCount
+              this.trailingDigitsCount
             ),
         },
       },
@@ -197,6 +203,11 @@ export default {
     assets () {
       return this.userTransferableAssets.map(asset => asset.assetDetails)
     },
+    trailingDigitsCount () {
+      return this.assets
+        .find(asset => asset.code === this.assetPair.base)
+        .trailingDigitsCount || config.MIN_AMOUNT
+    },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
     },
@@ -206,12 +217,6 @@ export default {
   },
   async created () {
     await this.loadBalances()
-    const asset = this.assets.find(asset => {
-      if (asset.code === this.assetPair.base) {
-        return asset
-      }
-    })
-    this.baseDigitsCount = asset.trailingDigitsCount
   },
   methods: {
     ...mapActions({
