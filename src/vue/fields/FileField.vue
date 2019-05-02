@@ -5,15 +5,39 @@
     </div>
     <div
       class="file-input"
-      :class="{ 'file-input--disabled': $attrs.disabled }"
+      :class="{
+        'file-input--disabled': $attrs.disabled,
+        'file-input--highlighted': isFileDragged
+      }"
     >
-      <div
-        class="file-input__file-preview"
-        v-if="document"
-      >
-        {{ 'file-field.selected-file' | globalize({ name: document.name }) }}
-      </div>
+      <template v-if="document">
+        <button
+          class="app__button-icon file-field__reset-btn"
+          type="button"
+          :disabled="$attrs.disabled"
+          @click="resetField"
+        >
+          <i class="mdi mdi-close file-field__reset-icon" />
+        </button>
+
+        <div
+          v-if="url && isImageSelected"
+          class="file-field__img-preview-wrp"
+        >
+          <img class="file-field__img-preview" :src="url">
+        </div>
+
+        <div v-else class="file-field__icon-preview-wrp">
+          <i class="mdi mdi-file file-field__icon-preview" />
+        </div>
+
+        <div class="file-input__file-preview">
+          {{ 'file-field.selected-file' | globalize({ name: document.name }) }}
+        </div>
+      </template>
+
       <div class="file-input__input-inner">
+        <i class="mdi mdi-upload file-field__upload-icon" />
         <div class="file-input__text">
           <p class="file-input__title">
             <template v-if="$attrs.disabled">
@@ -42,6 +66,9 @@
         :accept="accept"
         title=""
         @change="onChange"
+        @dragenter="highlightField"
+        @dragleave="isFileDragged = false"
+        @drop="isFileDragged = false"
       >
     </div>
     <div
@@ -60,7 +87,10 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import config from '@/config'
+
 const MAX_FILE_MEGABYTES = 5
+const DEFAULT_FILE_TYPES = ['jpg', 'png']
 
 export default {
   name: 'file-field',
@@ -68,18 +98,23 @@ export default {
     value: { type: Object, default: null },
     label: { type: String, default: '' },
     documentType: { type: String, default: 'default' },
-    accept: { type: String, default: '*' },
+    accept: { type: Array, default: _ => DEFAULT_FILE_TYPES },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
     errorMessage: { type: String, default: undefined },
   },
   data: _ => ({
     document: null,
+    isFileDragged: false,
+    url: ''
   }),
   computed: {
     maxSizeBytes () {
       return this.maxSize * 1024 * 1024
     },
+    isImageSelected () {
+      return this.document.mimeType.includes('image')
+    }
   },
   watch: {
     'value': function (value) {
@@ -87,25 +122,33 @@ export default {
     },
   },
   created () {
-    if (this.value) {
+    if (this.value instanceof DocumentContainer) {
       this.document = this.value
+      this.url = `${config.FILE_STORAGE}/${this.value.key}`
     }
   },
   methods: {
-    onChange (event) {
+    highlightField (event) {
+      this.isFileDragged = true
+    },
+    resetField () {
+      this.document = null
+      this.url = ''
+      this.$emit('input', this.document)
+    },
+    async onChange (event) {
       let file
       try {
         file = FileUtil.getFileFromEvent(event)
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
-          Bus.error('file-field.file-not-uploaded-err')
-          this.document = null
-          this.$emit('input', this.document)
+          this.resetField()
           return
         }
         ErrorHandler.process(e)
       }
       if (this.isValidFileSize(file)) {
+        this.url = await FileUtil.getDataUrl(file)
         this.document = new DocumentContainer({
           mimeType: file.type,
           type: this.documentType,
@@ -130,6 +173,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "scss/variables";
+@import "~@scss/mixins";
 
 .file-field {
   display: flex;
@@ -167,6 +211,11 @@ export default {
   }
 }
 
+.file-input--highlighted {
+  border-color: black;
+  background-color: white;
+}
+
 .file-input--disabled {
   filter: grayscale(100%);
 
@@ -181,7 +230,6 @@ export default {
 }
 
 .file-input__text {
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -200,7 +248,8 @@ export default {
 }
 
 .file-input__file-preview {
-  margin-top: 1rem;
+  color: $file-field-note-color;
+  font-size: 1.2rem;
 }
 
 .file-field__err-mes {
@@ -208,5 +257,46 @@ export default {
   margin-top: $field-error-margin-top;
   font-size: $field-error-font-size;
   line-height: $field-error-line-height;
+}
+
+.file-field__upload-icon {
+  color: $file-field-note-color;
+  font-size: 4.2rem;
+}
+
+.file-field__img-preview-wrp {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.file-field__img-preview {
+  padding: 0rem 5rem;
+  object-fit: contain;
+  width: 100%;
+  height: 15rem;
+  margin: auto;
+}
+
+.file-field__reset-btn {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  min-width: 3rem;
+  min-height: 3rem;
+  margin: 0.6rem;
+}
+
+.file-field__reset-icon {
+  font-size: 2.4rem;
+
+  &:before {
+    font-weight: bold;
+    vertical-align: middle;
+  }
+}
+
+.file-field__icon-preview {
+  font-size: 8rem;
 }
 </style>
