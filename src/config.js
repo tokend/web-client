@@ -96,6 +96,11 @@ export default Object.assign(
      * Link to iOS application manifest file.
      */
     IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
+
+    /**
+     * Default application title that displaying in the browser tab.
+     */
+    DEFAULT_APPLICATION_TITLE: 'TokenD',
   },
   process.env,
   document.ENV

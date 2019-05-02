@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import config from '@/config'
 import { vuexTypes } from '@/vuex'
 
 import { resolveRedirect } from '@/vue-router/redirect'
@@ -16,7 +17,7 @@ export function buildRouter (store) {
   const userRoutes = SchemeRegistry.current.pages
     .map(page => page.routerEntry)
 
-  return new Router({
+  const router = new Router({
     mode: 'history',
     routes: [
       {
@@ -91,6 +92,28 @@ export function buildRouter (store) {
     ],
     scrollBehavior: _ => ({ x: 0, y: 0 }),
   })
+
+  router.beforeEach((to, from, next) => {
+    setDocumentTitle(to, from, next)
+  })
+
+  return router
+}
+
+// sets browser tab title for appropriate page depends on existed meta tag
+// defined in "vueRoutes". If appropriate meta tag does not exist, title value
+// takes from "DEFAULT_APPLICATION_TITLE" defined in the main config
+function setDocumentTitle (to, from, next) {
+  const defaultTitle = config.DEFAULT_APPLICATION_TITLE
+  const nearestWithTitle = to.matched.slice().reverse()
+    .find(r => r.meta && r.meta.title)
+
+  if (nearestWithTitle) {
+    document.title = `${defaultTitle} | ${nearestWithTitle.meta.title}`
+  } else {
+    document.title = defaultTitle
+  }
+  next()
 }
 
 // doesn't allow to visit auth page if user is already logged in
