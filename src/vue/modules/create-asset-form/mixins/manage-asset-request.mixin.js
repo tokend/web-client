@@ -37,7 +37,7 @@ export default {
         requestID: this.requestId || NEW_CREATE_ASSET_REQUEST_ID,
         code: this.informationStepForm.code,
         assetType: String(this.informationStepForm.assetType.value),
-        preissuedAssetSigner: this.preissuedAssetSigner,
+        preissuedAssetSigner: this.preIssuanceAssetSigner,
         trailingDigitsCount: +this.informationStepForm.trailingDigitsCount,
         initialPreissuedAmount: this.initialPreissuedAmount,
         maxIssuanceAmount: this.informationStepForm.maxIssuanceAmount,
