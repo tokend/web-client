@@ -171,6 +171,10 @@ export default {
       type: Number,
       required: true,
     },
+    securityAssetType: {
+      type: Number,
+      required: true,
+    },
   },
 
   data: _ => ({
@@ -228,6 +232,10 @@ export default {
         {
           labelTranslationId: 'create-asset-form.verification-required-lbl',
           value: this.kycRequiredAssetType,
+        },
+        {
+          labelTranslationId: 'create-asset-form.security-asset-lbl',
+          value: this.securityAssetType,
         },
       ]
     },

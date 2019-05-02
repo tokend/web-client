@@ -18,10 +18,10 @@ export default {
   mixins: [UploadDocumentsMixin],
 
   computed: {
-    preissuedAssetSigner () {
+    preIssuanceAssetSigner () {
       return this.advancedStepForm.isPreissuanceDisabled
         ? config().NULL_ASSET_SIGNER
-        : this.advancedStepForm.preissuedAssetSigner
+        : this.advancedStepForm.preIssuanceAssetSigner
     },
 
     initialPreissuedAmount () {
@@ -70,7 +70,6 @@ export default {
         this.advancedStepForm.terms,
       ]
       await this.uploadDocuments(assetDocuments)
-
       const operation =
           base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
       await api().postOperations(operation)

@@ -160,6 +160,9 @@ export default {
     asset: {
       deep: true,
       handler (value) {
+        this.$router.push({
+          query: { asset: value.code },
+        })
         this.$emit(EVENTS.assetUpdated, value)
       },
     },
@@ -182,7 +185,9 @@ export default {
       loadAssets: types.LOAD_ASSETS,
     }),
     setDefaultAsset () {
-      this.asset = this.assets[0]
+      this.asset = this.assets
+        .find(item => item.code === this.$route.query.asset) ||
+        this.assets[0]
     },
   },
 }

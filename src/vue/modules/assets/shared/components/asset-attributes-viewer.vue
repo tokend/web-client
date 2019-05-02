@@ -90,6 +90,20 @@
             </td>
           </tr>
           <tr>
+            <td>
+              {{ 'assets.security-asset-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.type === securityAssetType">
+                {{ 'assets.present-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.absent-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
               <terms-viewer :asset="asset" :storage-url="storageUrl" />

@@ -144,12 +144,15 @@ describe('Create asset requests module', () => {
       })
 
       describe('loadAssetTypes', () => {
-        it('calls loadKycRequiredAssetType method', async () => {
+        it('calls proper methods to load asset types', async () => {
           sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
+          sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
 
           await wrapper.vm.loadAssetTypes()
 
-          expect(wrapper.vm.loadKycRequiredAssetType)
+          expect(wrapper.vm.loadSecurityAssetType, 'loadSecurityAssetType')
+            .to.have.been.calledOnce
+          expect(wrapper.vm.loadKycRequiredAssetType, 'loadKycRequiredAssetType')
             .to.have.been.calledOnce
         })
 
