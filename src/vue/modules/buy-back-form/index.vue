@@ -115,9 +115,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
@@ -193,9 +192,6 @@ export default {
       assetsInBalance: types.assetsInBalance,
       allowedToBuy: types.allowedToBuy,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
   watch: {
     async 'form.asset' (asset) {
@@ -213,16 +209,12 @@ export default {
     },
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('buy-back-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('buy-back-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,

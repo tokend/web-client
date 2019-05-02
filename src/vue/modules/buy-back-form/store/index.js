@@ -5,17 +5,14 @@ import { api } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 import { SaleRecord } from '../wrappers/sale.record'
 import { MathUtil } from '@/js/utils'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   balances: [],
   assets: [],
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_BALANCES] (state, balances) {
     state.balances = balances
   },
@@ -25,8 +22,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/v3/accounts/${getters[types.accountId]}`
+  async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
+    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -61,11 +58,11 @@ export const actions = {
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
-  [types.assets]: state => state.assets
+  [types.assets]: (state, rootGetters) => state.assets
     .map(a => new AssetRecord(a))
-    .filter(a => a.isAllowedToBuyBack && a.owner.id === state.accountId),
+    .filter(a => a.isAllowedToBuyBack && a.owner.id ===
+      rootGetters[vuexTypes.accountId]),
   [types.assetsInBalance]: (state, getters) => {
     const balancesCodes = getters[types.balances].map(i => i.assetCode)
     return getters[types.assets].filter(a => balancesCodes.includes(a.code))
