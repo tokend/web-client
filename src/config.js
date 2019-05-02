@@ -23,26 +23,6 @@ export default Object.assign(
     SKIP_EMAIL_CONFIRMATION_STEP: false,
 
     /**
-     * Disables certain features of the application. Set a property to false to
-     * restrict usage of the feature by all users of the system
-     */
-    featureFlags: {
-      dashboard: true,
-      fees: true,
-      trade: true,
-      movements: true,
-      loyaltyPoints: true,
-      issuance: true,
-      assets: false,
-      requests: false,
-      settings: true,
-      limits: true,
-      sales: true,
-      saleDetails: true,
-      documents: true,
-    },
-
-    /**
      * Sets the logging level, for more options visit
      * https://www.npmjs.com/package/loglevel#documentation
      */
@@ -61,12 +41,6 @@ export default Object.assign(
     MAX_AMOUNT: String(base.Operation.MAX_INT64_AMOUNT),
 
     // deprecated constants
-
-    /**
-     * Default asset code for converting token's price,
-     * trade and sale offers
-     */
-    DEFAULT_QUOTE_ASSET: 'USD',
 
     /**
      * Default limit of the number of transactions per a page
@@ -102,10 +76,21 @@ export default Object.assign(
     BUILD_VERSION: 'dev: ' + packageJson.version,
 
     /**
+     * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
+     * inactivity
+     */
+    IDLE_TIMEOUT: 1000 * 60 * 15,
+
+    /**
      * Module scheme to use. The module scheme will be used to combine module
      * set of the application.
      */
     MODULE_SCHEME_NAME: 'vanilla',
+
+    /**
+     * Data reload interval
+     */
+    RELOAD_DATA_TICKER_INTERVAL_MS: 10000,
 
     /**
      * Link to iOS application manifest file.

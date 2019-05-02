@@ -22,7 +22,6 @@
               name="issuance-asset"
               key-as-value-text="nameAndCode"
               :label="'issuance-form.asset-lbl' | globalize"
-              id="issuance-asset"
               @blur="touchField('form.asset')"
               :disabled="formMixin.isDisabled"
             />
@@ -36,7 +35,6 @@
                 type="number"
                 v-model="form.amount"
                 @blur="touchField('form.amount')"
-                id="issuance-amount"
                 name="issuance-amount"
                 :label="'issuance-form.amount-lbl' | globalize"
                 :error-message="getFieldErrorMessage(
@@ -71,7 +69,6 @@
               white-autofill
               v-model="form.receiver"
               @blur="touchField('form.receiver')"
-              id="issuance-receiver"
               name="issuance-receiver"
               :label="'issuance-form.receiver-lbl' | globalize"
               :error-message="getFieldErrorMessage('form.receiver')"
@@ -85,7 +82,6 @@
               white-autofill
               v-model="form.reference"
               @blur="touchField('form.reference')"
-              id="issuance-reference"
               name="issuance-reference"
               :error-message="getFieldErrorMessage(
                 'form.reference',
@@ -107,7 +103,7 @@
             v-else
             v-ripple
             type="submit"
-            class="issuance-form__submit-btn"
+            class="issuance-form__submit-btn app__button-raised"
             :disabled="formMixin.isDisabled"
           >
             {{ 'issuance-form.issue-btn' | globalize }}
@@ -278,8 +274,6 @@ export default {
 @import "./app-form";
 
 .issuance-form__submit-btn {
-  @include button-raised();
-
   margin-bottom: 2rem;
   width: 18rem;
 }

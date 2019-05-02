@@ -86,7 +86,7 @@
         <button
           v-ripple
           type="submit"
-          class="app__form-submit-btn"
+          class="app__form-submit-btn app__button-raised"
           :disabled="!+formQuoteAmount || formMixin.isDisabled"
         >
           <template v-if="isBuy">
@@ -121,7 +121,7 @@ import {
 } from '@validators'
 
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const EVENTS = {
   closeDrawer: 'close-drawer',
@@ -188,7 +188,13 @@ export default {
       return +this.formQuoteAmount ? this.formQuoteAmount : ''
     },
   },
+  async created () {
+    await this.loadBalances()
+  },
   methods: {
+    ...mapActions({
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     async submit () {
       this.disableForm()
       this.isOfferCreating = true

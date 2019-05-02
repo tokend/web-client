@@ -22,7 +22,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__button-raised"
@@ -33,12 +33,39 @@
           </button>
         </template>
 
+        <template
+          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
+            && asset.isCoinpayments
+            && asset.isWithdrawable"
+        >
+          <button
+            v-ripple
+            class="app__button-raised movements-top-bar-reit__button-raised"
+            @click="isWithdrawalDrawerShown = true"
+          >
+            <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
+            {{ 'op-pages.withdraw' | globalize }}
+          </button>
+        </template>
+
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__button-raised"
             @click="isFiatDepositFormShown = true"
+          >
+            <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
+            {{ 'op-pages.deposit' | globalize }}
+          </button>
+        </template>
+
+        <!-- eslint-disable-next-line max-len -->
+        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
+          <button
+            v-ripple
+            class="app__button-raised movements-top-bar-reit__button-raised"
+            @click="isCoinpaymentsDepositFormShown = true"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
@@ -58,8 +85,11 @@
           </button>
         </template>
 
-        <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(RedeemFormModule) && asset.isBond && !isOwnedAsset">
+        <template
+          v-if="getModule().canRenderSubmodule(RedeemFormModule)
+            && asset.isBond
+            && !isOwnedAsset"
+        >
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__button-raised"
@@ -89,6 +119,23 @@
       </drawer>
     </template>
 
+    <template
+      v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
+        && asset.isCoinpayments
+        && asset.isWithdrawable">
+      <drawer :is-shown.sync="isWithdrawalDrawerShown">
+        <template slot="heading">
+          {{ 'withdrawal-form.withdrawal' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(WithdrawalDrawerPseudoModule)"
+          :config="withdrawalFiatConfig"
+          :wallet="wallet"
+          @withdrawn="withdrawalFiatModuleWithdrawn"
+        />
+      </drawer>
+    </template>
+
     <!-- eslint-disable-next-line max-len -->
     <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
       <drawer :is-shown.sync="isFiatDepositFormShown">
@@ -101,6 +148,28 @@
           :wallet="wallet"
           @deposited="depositFiatModuleDeposited"
         />
+      </drawer>
+    </template>
+
+    <!-- eslint-disable-next-line max-len -->
+    <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
+      <drawer :is-shown.sync="isCoinpaymentsDepositFormShown">
+        <template slot="heading">
+          {{ 'deposit-form.deposit-lbl' | globalize }}
+        </template>
+        <div>
+          <p class="movements-top-bar-reit__deposit-help-msg">
+            {{ 'deposit-form.how-to' | globalize }}
+          </p>
+          <submodule-importer
+            :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
+            :asset="asset"
+            :balance-id="asset.balance.id"
+            :wallet="wallet"
+            :account-id="accountId"
+            :config="{horizonURL: config.horizonURL}"
+          />
+        </div>
       </drawer>
     </template>
 
@@ -147,6 +216,7 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 import { DepositFiatModule } from '@/vue/modules/deposit-fiat/module'
 import { WithdrawalFiatModule } from '@/vue/modules/withdrawal-fiat/module'
 import { RedeemFormModule } from '@/vue/modules/redeem-form/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 
 const EVENTS = {
   withdrawn: 'withdrawn',
@@ -185,9 +255,11 @@ export default {
     isInitialized: false,
     isTransferDrawerShown: false,
     isFiatDepositFormShown: false,
+    isCoinpaymentsDepositFormShown: false,
     isReedemDrawerShown: false,
     isDepositDrawerShown: false,
     isFiatWithdrawalFormShown: false,
+    isWithdrawalFormShown: false,
     isWithdrawalDrawerShown: false,
     withdrawalFiatConfig: {},
     depositFiatConfig: {},
@@ -198,6 +270,7 @@ export default {
     DepositFiatModule,
     WithdrawalFiatModule,
     RedeemFormModule,
+    CoinpaymentsDepositModule,
     asset: {},
   }),
   computed: {
@@ -311,5 +384,11 @@ export default {
 .movements-top-bar-reit__filters-prefix {
   margin-right: 1.5rem;
   line-height: 1;
+}
+
+.movements-top-bar-reit__deposit-help-msg {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  margin-bottom: 2rem;
 }
 </style>

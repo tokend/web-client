@@ -23,7 +23,6 @@ export default {
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC,
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
     async createKycBlob (blobType) {
       const { data } = await Sdk.api.blobs.create(
@@ -38,7 +37,7 @@ export default {
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.accountId,
-        accountRoleToSet: accountRole,
+        accountRoleToSet: String(accountRole),
         creatorDetails: {
           blob_id: kycBlobId,
         },

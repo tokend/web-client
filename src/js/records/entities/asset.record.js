@@ -40,10 +40,11 @@ export class AssetRecord {
     this.policy = this._policy()
 
     this.balance = this._getBalance(balances)
+    this.convertedBalance = this._getConvertedBalance(balances)
   }
 
   logoUrl (storageUrl) {
-    if (this.details.logoUrl) {
+    if (_get(this.details, 'logoUrl')) {
       return this.details.logoUrl
     } else {
       return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
@@ -61,6 +62,18 @@ export class AssetRecord {
         value: balance.balance,
         currency: balance.asset,
         id: balance.balanceId,
+      }
+    } else {
+      return {}
+    }
+  }
+
+  _getConvertedBalance (balances) {
+    const balance = balances.find(balance => balance.asset === this.code)
+    if (balance) {
+      return {
+        value: balance.convertedBalance,
+        currency: balance.convertedToAsset,
       }
     } else {
       return {}

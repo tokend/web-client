@@ -1,4 +1,3 @@
-'use strict'
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -29,6 +28,7 @@ module.exports = {
       '@static': resolve('static'),
       '@scss': resolve('src/scss'),
       '@modules': resolve('src/vue/modules'),
+      '@test': resolve('src/test'),
     },
   },
   module: {
@@ -37,7 +37,7 @@ module.exports = {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
+        include: [resolve('src'), resolve('karma')],
         options: {
           formatter: require('eslint-friendly-formatter'),
         },
@@ -49,7 +49,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')],
+        include: [resolve('src'), resolve('karma')],
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

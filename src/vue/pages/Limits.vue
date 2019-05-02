@@ -6,10 +6,7 @@
           <span>{{ 'limits.explore-limits' | globalize }}</span>
         </router-link>
       </template>
-      <template
-        v-if="isAccountCorporate"
-        slot="extra"
-      >
+      <template slot="extra">
         <button
           v-ripple
           class="app__button-raised"
@@ -19,28 +16,9 @@
         </button>
       </template>
     </top-bar>
-    <div class="limits__asset-selector">
-      <!--
-        :key is a hack to ensure that the component will be updated
-        after computed calculated
-      -->
-      <select-field
-        v-model="selectedAsset"
-        :values="accountBalancesAssetsCodes"
-        :key="`limits-asset-selector-${selectedAsset}`"
-        class="limits__assets-select app__select--no-border"
-      />
-    </div>
-
-    <limits-table-renderer
-      :is-loading="isLimitsLoading"
-      :is-loading-failed="isLimitsLoadingFailed"
-      :limits="selectedLimitsList"
-      @limits-reload-ask="loadLimits"
-    />
 
     <div class="limits__requests">
-      <h3 class="limits__requests-title">
+      <h3 class="limits__subheading">
         {{ 'limits.requests-subheading' | globalize }}
       </h3>
 
@@ -61,15 +39,40 @@
       </div>
     </div>
 
-    <drawer :is-shown.sync="isLimitsChangeDrawerShown">
-      <template slot="heading">
-        {{ 'limits.limits-form-heading' | globalize }}
-      </template>
-      <limits-form
-        @limits-changed="limitsChanged"
+    <div class="limits__actual-limits">
+      <h3 class="limits__subheading">
+        {{ 'limits.actual-limits-subheading' | globalize }}
+      </h3>
+      <div class="limits__asset-selector">
+        <!--
+          :key is a hack to ensure that the component will be updated
+          after computed calculated
+        -->
+        <select-field
+          v-model="selectedAsset"
+          :values="accountBalancesAssetsCodes"
+          :key="`limits-asset-selector-${selectedAsset}`"
+          class="limits__assets-select app__select--no-border"
+        />
+      </div>
+
+      <limits-table-renderer
+        :is-loading="isLimitsLoading"
+        :is-loading-failed="isLimitsLoadingFailed"
         :limits="selectedLimitsList"
+        @limits-reload-ask="loadLimits"
       />
-    </drawer>
+
+      <drawer :is-shown.sync="isLimitsChangeDrawerShown">
+        <template slot="heading">
+          {{ 'limits.limits-form-heading' | globalize }}
+        </template>
+        <limits-form
+          @limits-changed="limitsChanged"
+          :limits="selectedLimitsList"
+        />
+      </drawer>
+    </div>
   </div>
   <div v-else>
     <no-data-message
@@ -130,7 +133,6 @@ export default {
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
-      isAccountCorporate: vuexTypes.isAccountCorporate,
       accountId: vuexTypes.accountId,
     }),
     accountBalancesAssetsCodes () {
@@ -138,6 +140,13 @@ export default {
     },
     selectedLimitsList () {
       return this.formattedAccountLimits[this.selectedAsset] || {}
+    },
+  },
+  watch: {
+    selectedAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
     },
   },
   async created () {
@@ -244,7 +253,9 @@ export default {
       this.setLimitsRequestsLoader()
     },
     setDefaultAssetCode () {
-      this.selectedAsset = this.accountBalancesAssetsCodes[0]
+      this.selectedAsset = this.accountBalancesAssetsCodes
+        .find(item => item === this.$route.query.asset) ||
+        this.accountBalancesAssetsCodes[0]
     },
     setLimitsRequestsLoader () {
       this.limitsRequestsLoader = this.getLimitsRequestsLoader()
@@ -275,7 +286,7 @@ export default {
   width: auto;
 }
 
-.limits__requests-title {
+.limits__subheading {
   color: $col-text-page-heading;
   font-size: 1.6rem;
   font-weight: bold;

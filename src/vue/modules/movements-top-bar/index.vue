@@ -22,7 +22,7 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule) && asset.isWithdrawable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"
@@ -34,7 +34,7 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule) && asset.isDepositable">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__button-raised"
@@ -64,7 +64,9 @@
       <template slot="heading">
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
-      <withdrawal-form />
+      <withdrawal-form
+        @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+      />
     </drawer>
 
     <drawer :is-shown.sync="isDepositDrawerShown">
@@ -80,7 +82,9 @@
       <template slot="heading">
         {{ 'transfer-form.form-heading' | globalize }}
       </template>
-      <transfer-form />
+      <transfer-form
+        @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+      />
     </drawer>
   </div>
 </template>
@@ -106,6 +110,7 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 
 const EVENTS = {
   assetUpdated: 'asset-updated',
+  movementsUpdateRequired: 'movements-update-required',
 }
 
 export default {
@@ -142,6 +147,7 @@ export default {
     DepositFormPseudoModule,
     TransferDrawerPseudoModule,
     asset: {},
+    EVENTS,
   }),
   computed: {
     ...mapGetters('movements-top-bar', {
@@ -153,6 +159,9 @@ export default {
     asset: {
       deep: true,
       handler (value) {
+        this.$router.push({
+          query: { asset: value.code },
+        })
         this.$emit(EVENTS.assetUpdated, value)
       },
     },
@@ -175,7 +184,9 @@ export default {
       loadAssets: types.LOAD_ASSETS,
     }),
     setDefaultAsset () {
-      this.asset = this.assets[0]
+      this.asset = this.assets
+        .find(item => item.code === this.$route.query.asset) ||
+        this.assets[0]
     },
   },
 }

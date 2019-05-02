@@ -23,10 +23,6 @@ describe('UpdateKycRequestRecord', () => {
       .not
       .equal(undefined)
 
-    expect(+record.accountRoleToSet)
-      .to
-      .equal(updateKycJSON.included[0].attributes.account_role_to_set)
-
     expect(record.accountRoleToSet)
       .to
       .not
@@ -37,19 +33,6 @@ describe('UpdateKycRequestRecord', () => {
       .equal(updateKycJSON.included[0].attributes.creator_details.blob_id)
 
     expect(record.blobId)
-      .to
-      .not
-      .equal(undefined)
-  })
-
-  it('externalDetails.rejector field', () => {
-    const record = getRecord()
-
-    expect(record.rejector)
-      .to
-      .equal(updateKycJSON.data[0].attributes.external_details.data[0].rejector)
-
-    expect(record.rejector)
       .to
       .not
       .equal(undefined)

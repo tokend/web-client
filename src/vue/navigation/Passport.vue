@@ -28,7 +28,10 @@
         />
       </button>
 
-      <div class="passport__account-type">
+      <div
+        class="passport__account-type"
+        :class="{ 'passport__account-type--blocked': isAccountBlocked }"
+      >
         {{ accountRoleTranslationId | globalize }}
       </div>
     </div>
@@ -68,9 +71,10 @@
 
 <script>
 import { vuexTypes } from '@/vuex'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 
 export default {
@@ -78,6 +82,7 @@ export default {
 
   data: () => ({
     isDropdownOpen: false,
+    loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
   }),
 
@@ -87,8 +92,12 @@ export default {
       kycAvatarKey: vuexTypes.kycAvatarKey,
 
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
+      isAccountUsVerified: vuexTypes.isAccountUsVerified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountGeneral: vuexTypes.isAccountGeneral,
+      isAccountBlocked: vuexTypes.isAccountBlocked,
+      accountId: vuexTypes.accountId,
     }),
 
     accountRoleTranslationId () {
@@ -96,6 +105,12 @@ export default {
         return 'passport.account-general'
       } else if (this.isAccountCorporate) {
         return 'passport.account-corporate'
+      } else if (this.isAccountUsAccredited) {
+        return 'passport.account-us-accredited'
+      } else if (this.isAccountUsVerified) {
+        return 'passport.account-us-verified'
+      } else if (this.isAccountBlocked) {
+        return 'passport.account-blocked'
       } else {
         return 'passport.account-unverified'
       }
@@ -108,10 +123,37 @@ export default {
     },
   },
 
+  async created () {
+    this.createLoadAccountDetailsTicker()
+    this.loadAccountDetails()
+  },
+
   methods: {
+    ...mapActions({
+      loadKyc: vuexTypes.LOAD_KYC,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
+    }),
+
     ...mapMutations({
       clearState: vuexTypes.CLEAR_STATE,
     }),
+
+    async createLoadAccountDetailsTicker () {
+      setInterval(() => {
+        this.loadAccountDetails()
+      }, this.loadAccountDetailsTickerTimeout)
+    },
+
+    async loadAccountDetails () {
+      try {
+        await Promise.all([
+          this.loadAccount(this.accountId),
+          this.loadKyc(),
+        ])
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
 
     toggleDropdown () {
       if (this.isDropdownOpen) {
@@ -214,6 +256,11 @@ $dropdown-item-side-padding: 2.4rem;
   color: $col-text;
   font-size: 1.2rem;
   line-height: 1.5;
+}
+
+.passport__account-type--blocked {
+  color: $col-error;
+  font-weight: bold;
 }
 
 .passport__dropdown {

@@ -6,9 +6,19 @@
       "account-corporate": "Merchant"
     },
 
+    "movements-history": {
+      "effects": {
+        "issued": "Funded"
+      },
+      "operations": {
+        "create-issuance-request": "External System Payment"
+      },
+      "reference-lbl": "Invoice ID"
+    },
+
     "loyalty-points": {
       "create-invoice-btn": "Create invoice",
-      "create-invoice-form-title": "Create invoice",
+      "create-invoice-form-title": "New invoice",
       "create-issuance-btn": "Create issuance",
       "create-issuance-form-title": "Create issuance",
       "invoices-page": "Invoices"
@@ -20,20 +30,29 @@
 
     "create-invoice-form": {
       "amount-lbl": "Amount {{asset}}",
-      "balance": "Balance: {{balance, money}}",
-      "close": "Close",
-      "waiting-for-payment": "Waiting for payment…",
-      "acceptable-asset-pairs-title": "Acceptable points",
-      "qr-code-description": "Use your loyalty app to perform the payment",
-      "price": "Price",
-      "asset": "Asset",
-      "total-amount": "Total amount",
+      "subject-lbl": "Subject",
+      "account-number-lbl": "Loyalty account number",
+      "quote-asset-lbl": "Point for payment",
+      "price-hint": "Price for **1 {{baseAsset}}** = **{{amount, money}}**",
+      "total-price": "Total price: **{{amount, money}}**",
+      "waiting-for-payment-btn": "Waiting for payment…",
+      "close-btn": "Close",
+      "payment-pending-state": "Waiting for payment",
+      "payment-successful-state": "Successful",
       "create-invoice": "Create invoice",
       "no-pairs-message": "No pairs found",
       "here-will-pairs-list": "After creation one of the asset pair, you will able to create an invoice",
-      "loading-msg": "Loading...",
-      "invoice-url": "Invoice URL",
-      "payment-successful-msg": "Payment successful"
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "payment-successful-msg": "Payment successful",
+      "confirmations-count": "{{current}}/{{total}} confirmations",
+      "summary-title": "Invoice summary",
+      "state-th": "State",
+      "total-price-th": "Total price",
+      "subject-th": "Subject",
+      "point-th": "Point",
+      "system-th": "System",
+      "invalid-account-number-err": "You've entered invalid account number. Please, try another one"
     }
   }
 }

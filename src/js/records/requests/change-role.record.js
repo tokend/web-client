@@ -9,6 +9,19 @@ export class ChangeRoleRequestRecord {
     this.reviewer = _get(record, 'reviewer.id')
     this.reference = record.reference
     this.rejectReason = record.rejectReason
+    this.resetReason = _get(
+      record, 'requestDetails.creatorDetails.resetReason'
+    )
+    this.blockReason = _get(
+      record, 'requestDetails.creatorDetails.blockReason'
+    )
+
+    this.relatedRequestId = _get(
+      record, 'requestDetails.creatorDetails.latestApprovedRequestId'
+    )
+
+    this.creatorDetails = _get(record, 'requestDetails.creatorDetails')
+
     this.hash = record.hash
     this.createdAt = record.createdAt
     this.updatedAt = record.updatedAt
@@ -25,20 +38,10 @@ export class ChangeRoleRequestRecord {
       record, 'requestDetails.accountToUpdateRole.id'
     )
 
-    this.accountRoleToSet = String(
-      _get(record, 'requestDetails.accountRoleToSet')
-    )
+    this.accountRoleToSet = _get(record, 'requestDetails.accountRoleToSet')
     this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
-    this.externalDetails = _get(record, 'externalDetails.data')
-  }
-
-  get rejector () {
-    if (!this.externalDetails || !this.externalDetails.length) return
-    for (const detail of this.externalDetails.slice().reverse()) {
-      if (detail.rejector) {
-        return detail.rejector
-      }
-    }
-    return ''
+    this.externalDetails = (_get(record, 'externalDetails.data') || [])
+      .slice() // to avoid modifying record itself
+      .pop() // because only the last object in external details is actual
   }
 }

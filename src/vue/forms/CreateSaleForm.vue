@@ -19,7 +19,6 @@
                   white-autofill
                   v-model="form.saleInformation.name"
                   @blur="touchField('form.saleInformation.name')"
-                  id="sale-name"
                   name="create-sale-name"
                   :label="'create-sale-form.sale-name' | globalize"
                   :error-message="getFieldErrorMessage(
@@ -45,6 +44,42 @@
             </div>
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
+                <input-field
+                  white-autofill
+                  v-model="form.saleInformation.requiredBaseAssetForHardCap"
+                  @blur="touchField(
+                    'form.saleInformation.requiredBaseAssetForHardCap'
+                  )"
+                  name="create-sale-base-asset-for-hard-cap"
+                  type="number"
+                  :label="'create-sale-form.base-asset-hard-cap-to-sell' |
+                    globalize({
+                      asset: form.saleInformation.baseAsset.code
+                    })"
+                  :error-message="getFieldErrorMessage(
+                    'form.saleInformation.requiredBaseAssetForHardCap',
+                    {
+                      available: availableForIssuance
+                    }
+                  )"
+                  :disabled="formMixin.isDisabled"
+                />
+                <template v-if="form.saleInformation.baseAsset">
+                  <p class="app__form-field-description">
+                    {{
+                      'create-sale-form.available-amount' | globalize({
+                        amount: {
+                          value: availableForIssuance,
+                          currency: form.saleInformation.baseAsset.code,
+                        }
+                      })
+                    }}
+                  </p>
+                </template>
+              </div>
+            </div>
+            <div class="app__form-row create-sale__form-row">
+              <div class="app__form-field">
                 <date-field
                   v-model="form.saleInformation.startTime"
                   name="create-sale-start-time"
@@ -52,7 +87,6 @@
                   :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.startTime')"
                   @blur="touchField('form.saleInformation.startTime')"
-                  id="sale-start-time"
                   :label="'create-sale-form.start-time' | globalize"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.startTime', {
@@ -71,7 +105,6 @@
                   :disable-before="moment().subtract(1, 'days').toString()"
                   @input="touchField('form.saleInformation.endTime')"
                   @blur="touchField('form.saleInformation.endTime')"
-                  id="sale-end-time"
                   name="create-sale-end-time"
                   :label="'create-sale-form.close-time' | globalize"
                   :error-message="getFieldErrorMessage(
@@ -91,10 +124,9 @@
                   type="number"
                   v-model="form.saleInformation.softCap"
                   @blur="touchField('form.saleInformation.softCap')"
-                  id="soft-cap"
                   name="create-sale-soft-cap"
                   :label="'create-sale-form.soft-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.softCap',
@@ -114,10 +146,9 @@
                   type="number"
                   v-model="form.saleInformation.hardCap"
                   @blur="touchField('form.saleInformation.hardCap')"
-                  id="hard-cap"
                   name="create-sale-hard-cap"
                   :label="'create-sale-form.hard-cap' | globalize({
-                    asset: config.DEFAULT_QUOTE_ASSET
+                    asset: defaultQuoteAsset
                   })"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.hardCap',
@@ -132,39 +163,13 @@
             </div>
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
-                <input-field
-                  white-autofill
-                  v-model="form.saleInformation.requiredBaseAssetForHardCap"
-                  @blur="touchField(
-                    'form.saleInformation.requiredBaseAssetForHardCap'
-                  )"
-                  id="base-asset-for-hard-cap"
-                  name="create-sale-base-asset-for-hard-cap"
-                  type="number"
-                  :label="'create-sale-form.base-asset-hard-cap-to-sell' |
-                    globalize({
-                      asset: form.saleInformation.baseAsset.code
-                    })"
-                  :error-message="getFieldErrorMessage(
-                    'form.saleInformation.requiredBaseAssetForHardCap',
-                    {
-                      from:MIN_AMOUNT,
-                      to:availableForIssuance
-                    }
-                  )"
-                  :disabled="formMixin.isDisabled"
-                />
-              </div>
-            </div>
-            <div class="app__form-row create-sale__form-row">
-              <div class="app__form-field">
                 <p class="create-sale__price">
                   {{ 'create-sale-form.price' | globalize({
                     base: form.saleInformation.baseAsset.code,
-                    quote: config.DEFAULT_QUOTE_ASSET
+                    quote: defaultQuoteAsset
                   }) }}
                   <!-- eslint-disable-next-line max-len -->
-                  {{ { value: price, currency: config.DEFAULT_QUOTE_ASSET } | formatMoney }}
+                  {{ { value: price, currency: defaultQuoteAsset } | formatMoney }}
                 </p>
               </div>
             </div>
@@ -227,7 +232,6 @@
               <div class="app__form-field">
                 {{ 'create-sale-form.short-description' | globalize }}
                 <textarea-field
-                  id="sale-short-description"
                   name="create-sale-short-description"
                   v-model="form.shortBlurb.shortDescription"
                   @blur="touchField('form.shortBlurb.shortDescription')"
@@ -264,8 +268,7 @@
               <div class="app__form-field">
                 <input-field
                   white-autofill
-                  v-model="form.fullDescription.youtubeId"
-                  id="youtube-id"
+                  v-model="form.fullDescription.youtubeVideo"
                   name="create-sale-youtube-id"
                   :label="'create-sale-form.insert-youtube-video' | globalize"
                   :disabled="formMixin.isDisabled"
@@ -275,9 +278,10 @@
             <div class="app__form-row create-sale__form-row">
               <div class="app__form-field">
                 <iframe
-                  v-if="form.fullDescription.youtubeId"
-                  :src="`https://www.youtube.com/embed/${form.fullDescription.youtubeId}`"
-                  class="create-sale__iframe" />
+                  v-if="form.fullDescription.youtubeVideo"
+                  :src="`https://www.youtube.com/embed/${youtubeId}`"
+                  class="create-sale__iframe"
+                />
                 <div v-else class="create-sale__youtub-video">
                   <i class="mdi mdi-youtube create-sale__video-icon" />
                   <span>
@@ -346,17 +350,16 @@ import {
   amountRange,
   requiredAtLeastOne,
   minDate,
+  noMoreThanAvailableForIssuance,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
-import { SALE_TYPES } from '@tokend/js-sdk'
+import { SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { SaleRequestRecord } from '@/js/records/requests/sale-create.record'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
 
 const STEPS = {
   saleInformation: {
@@ -390,8 +393,9 @@ export default {
   mixins: [FormMixin],
   props: {
     request: {
-      type: SaleRequestRecord,
-      default: _ => (new SaleRequestRecord()) },
+      type: Object,
+      default: _ => ({}),
+    },
   },
   data () {
     return {
@@ -422,7 +426,7 @@ export default {
           shortDescription: '',
         },
         fullDescription: {
-          youtubeId: '',
+          youtubeVideo: '',
           description: '',
         },
       },
@@ -445,8 +449,9 @@ export default {
           },
           endTime: {
             required,
-            minDate: minDate(this.form.saleInformation.startTime ||
-              moment().toString()),
+            minDate: minDate(
+              this.form.saleInformation.startTime || moment().toString()
+            ),
           },
           softCap: {
             required,
@@ -454,13 +459,16 @@ export default {
           },
           hardCap: {
             required,
-            amountRange: amountRange(this.form.saleInformation.softCap,
-              this.MAX_AMOUNT),
+            amountRange: amountRange(
+              this.form.saleInformation.softCap,
+              this.MAX_AMOUNT
+            ),
           },
           requiredBaseAssetForHardCap: {
             required,
-            amountRange: amountRange(this.MIN_AMOUNT,
-              this.availableForIssuance),
+            noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
+              this.availableForIssuance
+            ),
           },
           quoteAssets: {
             requiredAtLeastOne,
@@ -481,6 +489,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
@@ -491,19 +500,22 @@ export default {
     availableForIssuance () {
       return this.form.saleInformation.baseAsset.availableForIssuance
     },
-    isUpdateMode () {
-      return +this.request.id !== 0
-    },
     price () {
       return MathUtil.divide(this.form.saleInformation.hardCap,
         this.form.saleInformation.requiredBaseAssetForHardCap)
+    },
+    youtubeId () {
+      const inputtedValue = this.form.fullDescription.youtubeVideo
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#]*).*/
+      const match = inputtedValue.match(regExp)
+      return match ? match[2] : inputtedValue
     },
   },
   async created () {
     try {
       const { data: assets } = await Sdk.horizon.assets.getAll()
       this.assets = assets.map(item => new AssetRecord(item))
-      if (this.isUpdateMode) {
+      if (this.request.id) {
         await this.populateForm(this.request)
       } else {
         this.form.saleInformation.baseAsset = this.accountOwnedAssets[0]
@@ -529,7 +541,7 @@ export default {
       try {
         await this.uploadDocuments()
         const { data: blob } = await Sdk.api.blobs.create(
-          BLOB_TYPES.fundOverview,
+          BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
         )
         await Sdk.horizon.transactions.submitOperations(
@@ -549,9 +561,9 @@ export default {
     },
     getOperation (saleDescriptionBlobId) {
       const operation = {
-        requestID: this.isUpdateMode ? this.request.id : '0',
+        requestID: this.request.id || '0',
         baseAsset: this.form.saleInformation.baseAsset.code,
-        defaultQuoteAsset: config.DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         startTime: DateUtil.toTimestamp(this.form.saleInformation.startTime),
         endTime: DateUtil.toTimestamp(this.form.saleInformation.endTime),
         softCap: this.form.saleInformation.softCap,
@@ -561,7 +573,7 @@ export default {
           short_description: this.form.shortBlurb.shortDescription,
           description: saleDescriptionBlobId,
           logo: this.form.shortBlurb.saleLogo.getDetailsForSave(),
-          youtube_video_id: this.form.fullDescription.youtubeId,
+          youtube_video_id: this.youtubeId,
         },
         // eslint-disable-next-line
         requiredBaseAssetForHardCap: this.form.saleInformation.requiredBaseAssetForHardCap,
@@ -603,7 +615,7 @@ export default {
         ? new DocumentContainer(request.logo)
         : null
       this.form.shortBlurb.shortDescription = request.shortDescription
-      this.form.fullDescription.youtubeId = request.youtubeVideoId
+      this.form.fullDescription.youtubeVideo = request.youtubeVideoId
       this.form.fullDescription.description =
         await this.getSaleDescription(request)
     },

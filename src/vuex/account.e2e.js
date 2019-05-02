@@ -14,7 +14,7 @@ describe('account.module', () => {
   let store
 
   const id = 'GDEDN7XAPJK4GL4AAYV7LJ7NWNKJI7NZAZPKGYHZJGJMCKN2CRTVRAPR'
-  const roleId = '2'
+  const roleId = 2
 
   beforeEach(async () => {
     mockHelper = new MockHelper()
@@ -27,7 +27,7 @@ describe('account.module', () => {
     })
 
     mockHelper.useMockWallet()
-    mockHelper.mockEndpoint(`/v3/accounts/${id}?include=external_system_ids%2Cbalances`, accountJSON)
+    mockHelper.mockEndpoint(`/v3/accounts/${id}?include=external_system_ids%2Cbalances%2Cbalances.state`, accountJSON)
 
     await store.dispatch(vuexTypes.LOAD_ACCOUNT, id)
   })

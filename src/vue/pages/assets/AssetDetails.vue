@@ -25,6 +25,14 @@
               {{ asset.balance | formatMoney }}
             </td>
           </tr>
+          <tr v-if="asset.balance.value">
+            <td>
+              {{ 'asset-details.converted-balance-title' | globalize }}
+            </td>
+            <td>
+              {{ asset.convertedBalance | formatMoney }}
+            </td>
+          </tr>
           <tr>
             <td>
               {{ 'asset-details.maximum-title' | globalize }}
@@ -137,7 +145,7 @@
       <button
         v-ripple
         v-if="asset.owner !== accountId"
-        class="asset-details__update-btn"
+        class="asset-details__update-btn app__button-raised"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
@@ -151,7 +159,7 @@
       <button
         v-else
         v-ripple
-        class="asset-details__update-btn"
+        class="asset-details__update-btn app__button-raised"
         @click="$emit(EVENTS.updateAsk)"
       >
         {{ 'asset-details.update-btn' | globalize }}
@@ -202,6 +210,7 @@ export default {
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
@@ -210,16 +219,27 @@ export default {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
     isBalanceCreationAllowed () {
-      return this.asset.assetType === this.kvAssetTypeKycRequired &&
-        this.isAccountUnverified
+      switch (this.asset.assetType) {
+        case this.kycRequiredAssetType:
+          return !this.isAccountUnverified
+        case this.securityAssetType:
+          return this.isAccountGeneral ||
+                 this.isAccountUsAccredited ||
+                 this.isAccountCorporate
+        default:
+          return true
+      }
     },
+  },
+  async created () {
+    await this.loadBalances()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
-      if (this.isBalanceCreationAllowed) {
+      if (!this.isBalanceCreationAllowed) {
         Bus.error('asset-details.verification-required-err')
         return
       }
@@ -291,18 +311,7 @@ $media-small-height: 460px;
 }
 
 .asset-details__update-btn {
-  @include button-raised();
-
-  width: 18rem;
-}
-
-.asset-details__cancel-btn {
-  @include button();
-
-  padding-left: .1rem;
-  padding-right: .1rem;
-  margin-bottom: 2rem;
-  font-weight: normal;
+  width: 20rem;
 }
 
 .asset-details__header {

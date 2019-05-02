@@ -40,7 +40,7 @@
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+          v-if="currentAsset !== defaultQuoteAsset &&
             getModule().getSubmodule(DashboardChartPseudoModule)
           "
           class="dashboard__chart"
@@ -48,7 +48,7 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
             :base-asset="currentAsset"
-            :quote-asset="config.DEFAULT_QUOTE_ASSET"
+            :quote-asset="defaultQuoteAsset"
           />
         </div>
         <div
@@ -62,6 +62,7 @@
             :asset-code="currentAsset"
             :config="{ horizonURL: config.HORIZON_SERVER }"
             :wallet="wallet"
+            :ref="REFS.movementsHistory"
           />
         </div>
       </template>
@@ -77,7 +78,10 @@
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>
-        <transfer :asset-to-transfer="currentAsset" />
+        <transfer
+          @operation-submitted="updateBalancesAndList()"
+          :asset-to-transfer="currentAsset"
+        />
       </template>
     </drawer>
   </div>
@@ -99,6 +103,10 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+
+const REFS = {
+  movementsHistory: 'movements-history',
+}
 
 export default {
   name: 'dashboard',
@@ -122,12 +130,14 @@ export default {
     IssuanceDrawerPseudoModule,
     TransferDrawerPseudoModule,
     DashboardChartPseudoModule,
+    REFS,
   }),
   computed: {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
       vuexTypes.wallet,
+      vuexTypes.defaultQuoteAsset,
     ]),
   },
   watch: {
@@ -143,7 +153,10 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    currentAsset () {
+    currentAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
       this.loadBalances()
     },
   },
@@ -163,8 +176,24 @@ export default {
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.find(a => a === 'ETH') || keys[0] || ''
+          keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
+    },
+
+    // TODO: find a better way to execute child’s reload-list method
+    updateList () {
+      if (!this.$refs[REFS.movementsHistory]) {
+        return
+      }
+      return this.$refs[REFS.movementsHistory].$children[0]
+        .reloadCollectionLoader()
+    },
+
+    updateBalancesAndList () {
+      return Promise.all([
+        this.loadBalances(),
+        this.updateList(),
+      ])
     },
   },
 }

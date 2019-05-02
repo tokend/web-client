@@ -9,9 +9,8 @@ import { LoyaltyPointsStatisticsModule } from '@/vue/modules/loyalty-points/loya
 import { StatisticsPageModule } from '@/vue/pages/statistics-page'
 import { RequestsPageModule } from '@/vue/pages/requests-page-module'
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
-import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
+import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
-import { DepositFormPseudoModule } from '@/modules-arch/pseudo-modules/deposit-form-pseudo-module'
 import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
 import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
 
@@ -34,8 +33,6 @@ export default {
           new MovementsTopBarModule({
             submodules: [
               new WithdrawalDrawerPseudoModule(),
-              new DepositFormPseudoModule(),
-              new TransferDrawerPseudoModule(),
             ],
           }),
         ],
@@ -94,6 +91,9 @@ export default {
               path: '/requests/incoming-withdrawal',
               name: vueRoutes.incomingWithdrawalRequests.name,
             },
+            submodules: [
+              new IncomingWithdrawalRequestsModule(),
+            ],
           }),
         ],
       },

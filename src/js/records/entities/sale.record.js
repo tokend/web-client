@@ -14,24 +14,20 @@ export class SaleRecord {
     this._record = record
 
     this.id = record.id
-    this.owner = _get(record, 'ownerId')
-    this.baseAsset = _get(record, 'baseAsset')
-    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset')
-    this.quoteAssets = _get(record, 'quoteAssets.quoteAssets') || []
-    this.baseHardCap = _get(record, 'baseHardCap')
+    this.owner = _get(record, 'owner.id')
+    this.baseAsset = _get(record, 'baseAsset.id')
+    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.id')
+    this.quoteAssets = _get(record, 'quoteAssets') || []
+    this.baseHardCap = _get(record, 'baseAsset.pendingIssuance')
     this.startTime = _get(record, 'startTime')
     this.endTime = _get(record, 'endTime')
-    this.softCap = _get(record, 'softCap')
-    this.hardCap = _get(record, 'hardCap')
-    this.currentCap = _get(record, 'currentCap')
+    this.softCap = _get(record, 'defaultQuoteAsset.softCap')
+    this.hardCap = _get(record, 'defaultQuoteAsset.hardCap')
+    this.currentCap = _get(record, 'defaultQuoteAsset.currentCap')
 
-    this.statistics = _get(record, 'statistics')
-    this.investors = _get(record, 'statistics.investors')
-    this.averageInvestment = _get(record, 'statistics.averageAmount')
-
-    this.state = _get(record, 'state')
-    this.stateValue = _get(record, 'state.value')
-    this.stateStr = _get(record, 'state.name')
+    this.state = _get(record, 'saleState')
+    this.stateValue = _get(record, 'saleState.value')
+    this.stateStr = _get(record, 'saleState.name')
 
     this.details = _get(this._record, 'details')
     this.name = _get(record, 'details.name')
@@ -67,7 +63,7 @@ export class SaleRecord {
   get quoteAssetPrices () {
     return this.quoteAssets.reduce(
       (prices, asset) => {
-        prices[asset.asset] = asset.price; return prices
+        prices[asset.id] = asset.price; return prices
       }, {})
   }
 
@@ -117,14 +113,18 @@ export class SaleRecord {
   /** progress info: **/
 
   get daysToGo () {
+    return moment(this.startTime).diff(moment(), 'days')
+  }
+
+  get daysToEnd () {
     return moment(this.endTime).diff(moment(), 'days')
   }
 
   get daysAfterEnd () {
-    if (this.daysToGo >= 0) {
+    if (this.daysToEnd >= 0) {
       return 0
     } else {
-      return Math.abs(this.daysToGo)
+      return Math.abs(this.daysToEnd)
     }
   }
 
