@@ -62,7 +62,6 @@ import { initConfig } from './_config'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -97,22 +96,16 @@ export default {
     ...mapGetters('create-asset-requests', {
       requests: types.requests,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
 
   async created () {
     initConfig(this.storageUrl)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadAssetTypes()
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('create-asset-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

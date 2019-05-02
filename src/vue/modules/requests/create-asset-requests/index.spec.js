@@ -22,13 +22,6 @@ describe('Create asset requests module', () => {
     store = new Vuex.Store({
       modules: {
         'create-asset-requests': createAssetRequestsModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })
@@ -40,7 +33,6 @@ describe('Create asset requests module', () => {
   describe('created hook', () => {
     beforeEach(() => {
       sandbox.stub(Config, 'initConfig')
-      sandbox.stub(CreateAssetRequestsModule.methods, 'setAccountId')
       sandbox.stub(CreateAssetRequestsModule.methods, 'loadAssetTypes')
       sandbox.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
     })
@@ -56,19 +48,6 @@ describe('Create asset requests module', () => {
 
       expect(Config.initConfig)
         .to.have.been.calledOnceWithExactly('https://storage.com')
-    })
-
-    it('calls setAccountId method', async () => {
-      await shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
-      })
-
-      expect(CreateAssetRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls loadAssetTypes method', async () => {
