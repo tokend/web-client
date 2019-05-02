@@ -6,8 +6,6 @@ import { updateAssetRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Config from './_config'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -39,35 +37,7 @@ describe('Update asset requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Config, 'initConfig')
-      sandbox.stub(UpdateAssetRequestsModule.methods, 'setAccountId')
       sandbox.stub(UpdateAssetRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls initConfig function with correct params', () => {
-      shallowMount(UpdateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
-      })
-
-      expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly('https://storage.com')
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(UpdateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          storageURL: 'https://storage.com',
-        },
-      })
-
-      expect(UpdateAssetRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {
@@ -75,7 +45,7 @@ describe('Update asset requests module', () => {
         localVue,
         store,
         propsData: {
-          storageURL: 'https://storage.com',
+          storageUrl: 'https://storage.com',
         },
       })
 
