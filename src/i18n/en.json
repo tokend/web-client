@@ -1296,11 +1296,11 @@
       "upload-file-title": "Drag a file here or click to browse",
       "upload-another-file-title": "Drag another file here or click to browse",
       "no-file-selected-title": "No file selected",
-      "drop-file-title": "Drop file here",
+      "drop-file-title": "Drop the file here",
       "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
-      "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
-      "file-not-uploaded-err": "A file was not uploaded",
+      "max-size-exceeded-err": "You cannot upload a file exceeding {{maxSize}} MB",
+      "incorrect-file-type-err": "You cannot upload a {{type}} file. Allowed types: {{allowedTypes}}",
       "disabled-msg": "This field is disabled"
     },
     "sales": {

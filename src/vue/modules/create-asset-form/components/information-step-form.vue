@@ -100,7 +100,7 @@
           name="create-asset-logo"
           v-model="form.logo"
           :note="'create-asset-form.logo-note' | globalize"
-          accept=".jpg, .png"
+          :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.assetLogo"
           :label="'create-asset-form.logo-lbl' | globalize"
         />
