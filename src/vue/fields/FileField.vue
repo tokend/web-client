@@ -1,20 +1,24 @@
 <template>
   <div class="file-field">
-    <div class="file-field__label">
+    <div
+      class="file-field__label"
+      :class="{ 'file-field__label--disabled': $attrs.disabled }"
+    >
       {{ label }}
     </div>
     <div
-      class="file-input"
+      class="file-field__content"
       :class="{
-        'file-input--disabled': $attrs.disabled,
-        'file-input--highlighted': isFileDragged
+        'file-field__content--disabled': $attrs.disabled,
+        'file-field__content--highlighted': isFileDragged,
+        'file-field__content--error': errorMessage
       }"
     >
       <template v-if="document">
         <button
+          v-if="!$attrs.disabled"
           class="app__button-icon file-field__reset-btn"
           type="button"
-          :disabled="$attrs.disabled"
           @click="resetField"
         >
           <i class="mdi mdi-close file-field__reset-icon" />
@@ -31,27 +35,49 @@
           <i class="mdi mdi-file file-field__icon-preview" />
         </div>
 
-        <div class="file-input__file-preview">
+        <div class="file-field__selected-file">
           {{ 'file-field.selected-file' | globalize({ name: document.name }) }}
         </div>
       </template>
 
-      <div class="file-input__input-inner">
-        <i class="mdi mdi-upload file-field__upload-icon" />
-        <div class="file-input__text">
-          <p class="file-input__title">
-            <template v-if="$attrs.disabled">
-              {{ 'file-field.disabled-msg' | globalize }}
-            </template>
-            <template v-else>
-              {{ 'file-field.title' | globalize }}
-            </template>
-          </p>
-          <div class="file-input__note">
-            {{ note }}
+      <div class="file-field__inner">
+        <template v-if="!$attrs.disabled">
+          <i
+            v-if="!document"
+            class="mdi mdi-upload file-field__icon"
+          />
+
+          <div class="file-field__text">
+            <p class="file-field__title">
+              <template v-if="isFileDragged">
+                {{ 'file-field.drop-file-title' | globalize }}
+              </template>
+              <template v-else-if="document">
+                {{ 'file-field.upload-another-file-title' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'file-field.upload-file-title' | globalize }}
+              </template>
+            </p>
+
+            <div class="file-field__note">
+              {{ note }}
+            </div>
           </div>
-        </div>
+        </template>
+
+        <template v-else-if="!document">
+          <i class="mdi mdi-file-hidden file-field__icon" />
+
+          <div class="file-field__text">
+            <p class="file-field__title">
+              {{ 'file-field.no-file-selected-title' | globalize }}
+            </p>
+          </div>
+        </template>
       </div>
+
       <!--
         title is set to empty string to avoid ambiguity concerning
         the selected file. When we set document programmatically
@@ -62,15 +88,16 @@
       <input
         v-bind="$attrs"
         type="file"
-        class="file-field__file-input"
+        class="file-field__input"
         :accept="accept"
         title=""
         @change="onChange"
-        @dragenter="highlightField"
+        @dragenter="isFileDragged = true"
         @dragleave="isFileDragged = false"
         @drop="isFileDragged = false"
       >
     </div>
+
     <div
       class="file-field__err-mes"
       v-if="errorMessage"
@@ -98,7 +125,7 @@ export default {
     value: { type: Object, default: null },
     label: { type: String, default: '' },
     documentType: { type: String, default: 'default' },
-    accept: { type: Array, default: _ => DEFAULT_FILE_TYPES },
+    fileExtensions: { type: Array, default: _ => DEFAULT_FILE_TYPES },
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
     errorMessage: { type: String, default: undefined },
@@ -106,7 +133,7 @@ export default {
   data: _ => ({
     document: null,
     isFileDragged: false,
-    url: ''
+    url: '',
   }),
   computed: {
     maxSizeBytes () {
@@ -114,7 +141,10 @@ export default {
     },
     isImageSelected () {
       return this.document.mimeType.includes('image')
-    }
+    },
+    accept () {
+      return this.fileExtensions.map(item => `.${item}`).join(', ')
+    },
   },
   watch: {
     'value': function (value) {
@@ -128,10 +158,8 @@ export default {
     }
   },
   methods: {
-    highlightField (event) {
-      this.isFileDragged = true
-    },
     resetField () {
+      this.$el.querySelector('input').value = ''
       this.document = null
       this.url = ''
       this.$emit('input', this.document)
@@ -158,14 +186,11 @@ export default {
         this.$emit('input', this.document)
       } else {
         Bus.error('file-field.max-size-exceeded-err')
-        this.dropFile()
+        this.resetField()
       }
     },
     isValidFileSize (file) {
       return file.size <= this.maxSizeBytes
-    },
-    dropFile () {
-      this.$el.querySelector('input').value = ''
     },
   },
 }
@@ -182,11 +207,12 @@ export default {
 
 .file-field__label {
   font-size: 1.1rem;
-  color: $field-color-text;
-  margin-bottom: 1.2rem;
+  color: $field-color-unfocused;
+  @include label-font-sizes;
 }
 
-.file-input {
+.file-field__content {
+  margin-top: 0.6rem;
   border: .2rem dashed $file-field-border-color;
   background-color: $file-field-background-color;
   border-radius: .4rem;
@@ -206,17 +232,17 @@ export default {
     width: 100%;
   }
 
-  &:not(.file-input--disabled):hover {
+  &:not(.file-field__content--disabled):hover {
     border-color: $field-color-text;
   }
 }
 
-.file-input--highlighted {
+.file-field__content--highlighted {
   border-color: black;
   background-color: white;
 }
 
-.file-input--disabled {
+.file-field__content--disabled, .file-field__label--disabled {
   filter: grayscale(100%);
 
   input[type='file'] {
@@ -224,32 +250,33 @@ export default {
   }
 }
 
-.file-input__input-inner {
+.file-field__inner {
+  margin: 1rem 0rem;
   overflow: hidden;
-  margin-bottom: 1rem;
 }
 
-.file-input__text {
+.file-field__text {
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  .file-input__title {
+  .file-field__title {
     color: $field-color-text;
     font-size: 1.6rem;
     margin-bottom: .8rem;
   }
 }
 
-.file-input__note {
+.file-field__note {
   color: $file-field-note-color;
   font-size: 1.4rem;
   line-height: 2.2rem;
 }
 
-.file-input__file-preview {
+.file-field__selected-file {
   color: $file-field-note-color;
   font-size: 1.2rem;
+  margin-bottom: 2rem;
 }
 
 .file-field__err-mes {
@@ -259,7 +286,7 @@ export default {
   line-height: $field-error-line-height;
 }
 
-.file-field__upload-icon {
+.file-field__icon {
   color: $file-field-note-color;
   font-size: 4.2rem;
 }

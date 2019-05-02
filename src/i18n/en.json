@@ -1293,7 +1293,10 @@
       "verification-required-err": "You need to verify your account to add this asset to your balances"
     },
     "file-field": {
-      "title": "Drop a file here or click to browse",
+      "upload-file-title": "Drag a file here or click to browse",
+      "upload-another-file-title": "Drag another file here or click to browse",
+      "no-file-selected-title": "No file selected",
+      "drop-file-title": "Drop file here",
       "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
       "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
