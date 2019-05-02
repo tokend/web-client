@@ -202,7 +202,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
@@ -284,7 +284,6 @@ export default {
     },
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -293,9 +292,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('deposit-fiat-bank', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('deposit-fiat-bank', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
