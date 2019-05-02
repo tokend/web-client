@@ -46,7 +46,6 @@ import RequestsTable from './components/requests-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -72,13 +71,9 @@ export default {
     ...mapGetters('incoming-withdrawal-requests', {
       requests: types.requests,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
 
   created () {
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 

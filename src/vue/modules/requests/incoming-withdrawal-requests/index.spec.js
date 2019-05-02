@@ -37,23 +37,9 @@ describe('Incoming withdrawal requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(IncomingWitdrawalRequestsModule.methods, 'setAccountId')
       sandbox.stub(
         IncomingWitdrawalRequestsModule.methods, 'initFirstPageLoader'
       )
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(IncomingWitdrawalRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
-      })
-
-      expect(IncomingWitdrawalRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {
