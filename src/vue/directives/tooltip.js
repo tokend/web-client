@@ -1,25 +1,53 @@
-import { globalize } from '@/vue/filters/globalize'
-
 /**
  * Tooltip directive
- *
- * @param {string} [type='hover'] - 'click' or 'hover' to summon tooltip
- * @param {string} [width='120px'] - width of tooltip, 120 by default
- * @param {string} position - position of tooltip where it will be placed
- * @param {string} text - text of tooltip
- * @param {string} [bgColor='#000'] - background color of tooltip
- * @param {string} [textColor='#fff'] - text color
- * @param {string} [fontSize='1.4rem'] - font size of text
+ * 
+ * Draw element used in conjunction with the cursor or mouse pointer to display 
+ * information about an item.
+ * - Can be activated as by mouse click or mouse hover.
+ * - Can calculate free space for placement of tooltip, depenping on user's
+ *   position desire
+ * - Styles are customizable
+ * Example of usage is described below.
+ *  <element
+ *    v-tooltip="{
+ *      type: 'hover'
+        text: 'Lorem ipsum',
+        position: 'top',
+        style: {
+          width: '500',
+          height: '900',
+          bgColor: 'red',
+          textColor: 'green',
+          fontSize: '14px'
+        }
+      }>
+ * 
+ * @param {Object} binding.value - passed params
+ * @param {string} binding.value.text - text of tooltip
+ * @param {string} [binding.value.type] - 'click' or 'hover' to summon tooltip
+ * @param {string} [binding.value.position] - position of tooltip,
+ * where it will be placed
+ * @param {string} [binding.value.style.width] - tooltip's width,120px default
+ * @param {string} [binding.value.style.height] - tooltip's height,120px default
+ * @param {string} [binding.value.style.bgColor] - tooltip's background color,
+ *  '#000' by default
+ * @param {string} [binding.value.style.textColor] - tooltip's text color,
+ *  #fff by default
+ * @param {string} [binding.value.style.fontSize] - tooltip's text font size,
+ *  '1.4rem' by default
  *
  */
+
 export const tooltip = (() => {
   const COLOR_BLACK = '#000'
   const COLOR_WHITE = '#fff'
   const MARGIN_SIZE = 8
   const PADDING_SIZE = 8
-  const WIDTH = '120px'
+  const TRIANGLE_SIZE = 8
+  const WIDTH = 'auto'
   const HEIGHT = 'auto'
   const FONT_SIZE = '1.4rem'
+  const Z_INDEX = '120'
   const DIRECTIONS = {
     top: 'top',
     right: 'right',
@@ -29,12 +57,13 @@ export const tooltip = (() => {
   let tooltipText
   let tooltipWrapper
   let tooltipArrow
-  let targetHeight
+  let tooltipBridge
   let twRect
   let target
   let targetRect
   let tooltipArrowRect
   let position
+  let positionStyle
   let currentPosition
   let bgColor
   let textColor
@@ -52,262 +81,294 @@ export const tooltip = (() => {
     twRect = tooltipWrapper.getBoundingClientRect()
   }
 
-  function alignTooltip (e) {
-    const target = e.target ? e.target : e
-    const targetRect = target.getBoundingClientRect()
-    const appDiv = document.getElementsByClassName('app__main-content')[0]
-    let spaceToRight = window.innerWidth - (targetRect.left + targetRect.width)
-    let rectHeight = tooltipWrapper.offsetHeight + MARGIN_SIZE
-    let spaceToLeft = appDiv.clientWidth - spaceToRight - targetRect.width
-    let spaceToBottom = window.innerHeight - targetRect.bottom
-    // check if there is enough space for tw on left side
-    if (twRect.width > spaceToLeft && position !== DIRECTIONS.right) {
-      let top
-      if (position === DIRECTIONS.top) {
-        top = -(targetRect.height + MARGIN_SIZE + (PADDING_SIZE * 2)) + 'px'
-        tooltipWrapper.style.right = ''
-        tooltipWrapper.style.left = '50%'
-        tooltipWrapper.style.marginLeft = '-' + (twRect.width / 4) + 'px'
-        currentPosition = DIRECTIONS.top
-      } else if (twRect.width < spaceToRight &&
-          position !== DIRECTIONS.bottom) {
-        tooltipWrapper.style.top = '0'
-        tooltipWrapper.style.left = (0 + targetRect.width) + (2 * MARGIN_SIZE) + 'px'
-        currentPosition = DIRECTIONS.right
-      } else {
-        tooltipWrapper.style.top = '0'
-        tooltipWrapper.style.left = ''
-        top = targetRect.height + MARGIN_SIZE + PADDING_SIZE + 'px'
-        currentPosition = DIRECTIONS.bottom
-      }
-      tooltipWrapper.style.transform = `translateY(${top})`
-      refreshPositions()
-    }
-    // check if there is enough space for tw on right side
-    if (twRect.width > spaceToRight && position !== DIRECTIONS.left) {
-      let top
-      if (position === DIRECTIONS.top) {
-        tooltipWrapper.style.top = ''
-        tooltipWrapper.style.left = ''
-        tooltipWrapper.style.right = '50%'
-        tooltipWrapper.style.marginRight = '-' + (twRect.width / 4) + 'px'
-        top = -(targetRect.height + MARGIN_SIZE +
-          PADDING_SIZE) + 'px'
-        currentPosition = DIRECTIONS.top
-      } else if (twRect.width < spaceToLeft &&
-          position !== DIRECTIONS.bottom) {
-        tooltipWrapper.style.top = ''
-        tooltipWrapper.style.left = (0 - targetRect.width) + (2 * MARGIN_SIZE) + 'px'
-        currentPosition = DIRECTIONS.left
-      } else {
-        tooltipWrapper.style.top = '0'
-        top = targetRect.height + (PADDING_SIZE * 2) + 'px'
-        currentPosition = DIRECTIONS.bottom
-      }
-      tooltipWrapper.style.transform = `translateY(${top})`
-      refreshPositions()
-    }
+  //
+  function changePosition () {
+    tooltipWrapper.style.top = positionStyle[currentPosition].top + 'px'
+    tooltipWrapper.style.left = positionStyle[currentPosition].left + 'px'
+  }
 
-    // check if there is enough space for tw on top side
-    if (rectHeight > targetRect.top && position === DIRECTIONS.top) {
-      let bottom = rectHeight + 'px'
-      tooltipWrapper.style.top = '0'
-      tooltipWrapper.style.transform = `translateY(${bottom})`
-      currentPosition = DIRECTIONS.bottom
-      refreshPositions()
-    }
-    // check if there is enough space for tw on bottom
-    if (rectHeight > spaceToBottom) {
-      let bottom = -rectHeight + 'px'
-      tooltipWrapper.style.top = '0'
-      tooltipWrapper.style.left = '0'
-      tooltipWrapper.style.right = '0'
-      tooltipWrapper.style.margin = 'auto'
-      tooltipWrapper.style.transform = `translateY(${bottom})`
-      currentPosition = DIRECTIONS.top
-      refreshPositions()
-    }
-
-    // check if tw overflows left side
-    if (twRect.left < 0) {
-      tooltipWrapper.style.right = ''
-      tooltipWrapper.style.left = '50%'
-      refreshPositions()
-    }
-    // check if tw overflows right side
-    if (twRect.right > window.innerWidth) {
-      tooltipWrapper.style.left = '-50%'
-      refreshPositions()
-    }
-
-    // if tw still overflows, place it window center
-    if (twRect.left < 0 || twRect.right > window.innerWidth) {
-      const freeWindowSpace = (window.innerWidth - twRect.width) / 2
-      const centeredStartPoint = targetRect.left - freeWindowSpace
-      tooltipWrapper.style.left = -centeredStartPoint + 'px'
-    }
-
-    // if tw doesnt fit left or right sides
-    if (targetRect.width > spaceToLeft && targetRect.width > spaceToRight) {
-      if (currentPosition === DIRECTIONS.bottom) {
-        tooltipWrapper.style.left = '50%'
-        tooltipWrapper.style.transform = 'translate(-50%, 0)'
-      }
-      if (currentPosition === DIRECTIONS.top) {
-        tooltipWrapper.style.top = -(twRect.height + PADDING_SIZE * 2) + 'px'
-      }
-      refreshPositions()
-    }
-    // check if tw width wider than window
-    if (twRect.width > window.innerWidth) {
-      tooltipWrapper.style.margin = '0'
-      tooltipWrapper.style.width = appDiv.clientWidth + 'px'
-      tooltipWrapper.style.left = (0 - targetRect.left) + 'px'
-      refreshPositions()
-    }
-
-    // add animation to left or right directions
-    if (currentPosition === DIRECTIONS.left) {
-      let left = -(twRect.width + PADDING_SIZE) + 'px'
-      tooltipWrapper.style.transform = `translateX(${left})`
-      tooltipWrapper.style.left = '0'
-      tooltipWrapper.style.top = '0'
-    } else if (currentPosition === DIRECTIONS.right) {
-      let right = targetRect.width + PADDING_SIZE + 'px'
-      tooltipWrapper.style.transform = `translateX(${right})`
-      tooltipWrapper.style.left = '0'
-      tooltipWrapper.style.top = '0'
-    }
+  function alignTooltip () {
     refreshPositions()
-    renderArrow(target)
+    const documentWidth = document.body.clientWidth
+    let spaceToRight = documentWidth - targetRect.right
+    let spaceToTop = targetRect.top
+    let spaceToLeft = targetRect.left + MARGIN_SIZE
+    let spaceToBottom = window.innerHeight - targetRect.bottom
+    let tooltipHeight = twRect.height + MARGIN_SIZE
+
+    // check free space for left placement
+    if (twRect.width > spaceToLeft && position === DIRECTIONS.left) {
+      currentPosition = DIRECTIONS.right
+      changePosition()
+      refreshPositions()
+    }
+
+    // check free space for right placement
+    if (twRect.width > spaceToRight && position === DIRECTIONS.right) {
+      currentPosition = DIRECTIONS.left
+      changePosition()
+      refreshPositions()
+    }
+
+    // check free space for top placement
+    if (tooltipHeight > spaceToTop && position === DIRECTIONS.top) {
+      currentPosition = DIRECTIONS.bottom
+      changePosition()
+      refreshPositions()
+    }
+
+    // check free space for bottom placement
+    if (tooltipHeight > spaceToBottom && position === DIRECTIONS.bottom) {
+      currentPosition = DIRECTIONS.top
+      changePosition()
+      refreshPositions()
+    }
+
+    // check if overflow on sides for top/bottom positions
+    if (currentPosition === DIRECTIONS.top ||
+      currentPosition === DIRECTIONS.bottom) {
+      if (twRect.right > documentWidth) {
+        const overflowWidth = twRect.right - documentWidth
+        const moveLeftValue = twRect.left - overflowWidth - MARGIN_SIZE
+        tooltipWrapper.style.left = moveLeftValue + 'px'
+        refreshPositions()
+      }
+
+      if (twRect.left < 0) {
+        tooltipWrapper.style.left = MARGIN_SIZE + 'px'
+        refreshPositions()
+      }
+
+      if (twRect.width > documentWidth) {
+        tooltipWrapper.style.left = '0'
+        tooltipWrapper.style.width = documentWidth + 'px'
+        refreshPositions()
+      }
+
+      if (twRect.top < 0) {
+        currentPosition = DIRECTIONS.bottom
+        changePosition()
+        refreshPositions()
+      } else if (twRect.bottom > window.innerHeight) {
+        currentPosition = DIRECTIONS.top
+        changePosition()
+        refreshPositions()
+      }
+
+      if (twRect.top < 0 || twRect.bottom > window.innerHeight) {
+        tooltipWrapper.style.maxHeight = '300px'
+        tooltipWrapper.style.height = 'auto'
+        tooltipText.style.overflow = 'scroll'
+        currentPosition = DIRECTIONS.bottom
+        changePosition()
+        refreshPositions()
+      }
+    }
+
+    // check if overflow on sides for left/right positions
+    if (currentPosition === DIRECTIONS.left ||
+      currentPosition === DIRECTIONS.right) {
+      if (twRect.left < 0) {
+        currentPosition = DIRECTIONS.bottom
+        tooltipWrapper.style.top = positionStyle[currentPosition].top + 'px'
+        tooltipWrapper.style.left = MARGIN_SIZE + 'px'
+        refreshPositions()
+      } else if (twRect.right > documentWidth) {
+        currentPosition = DIRECTIONS.bottom
+        changePosition()
+        refreshPositions()
+      }
+
+      if (twRect.left < 0 || twRect.right > documentWidth) {
+        if (twRect.width > documentWidth) {
+          tooltipWrapper.style.width = documentWidth + 'px'
+          refreshPositions()
+        } else {
+          const freeWindowSpace = (documentWidth - twRect.width) / 2
+          const centeredStartPoint = targetRect.left - freeWindowSpace
+          tooltipWrapper.style.left = -centeredStartPoint + 'px'
+          refreshPositions()
+        }
+      }
+
+      if (twRect.top < 0) {
+        currentPosition = DIRECTIONS.bottom
+        changePosition()
+        refreshPositions()
+      } else if (twRect.bottom > window.innerHeight) {
+        currentPosition = DIRECTIONS.top
+        changePosition()
+        refreshPositions()
+      }
+
+      if (twRect.top < 0 || twRect.bottom > window.innerHeight) {
+        if (twRect.height > window.innerHeight) {
+          tooltipWrapper.style.width = documentWidth + 'px'
+          tooltipWrapper.style.height = 'auto'
+          refreshPositions()
+        } else {
+          const freeWindowSpace = (window.innerHeight - twRect.height) / 2
+          const centeredStartPoint = targetRect.top - freeWindowSpace
+          tooltipWrapper.style.top = -centeredStartPoint + 'px'
+          refreshPositions()
+        }
+      }
+    }
+
+    // add animation depending on current position
+    if (currentPosition === DIRECTIONS.top) {
+      tooltipWrapper.style.transform = `translateY(-${MARGIN_SIZE / 2}px)`
+    } else if (currentPosition === DIRECTIONS.right) {
+      tooltipWrapper.style.transform = `translateX(${MARGIN_SIZE / 2}px)`
+    } else if (currentPosition === DIRECTIONS.bottom) {
+      tooltipWrapper.style.transform = `translateY(${MARGIN_SIZE / 2}px)`
+    } else {
+      tooltipWrapper.style.transform = `translateX(-${MARGIN_SIZE / 2}px)`
+    }
+
+    renderUtilityElements(target)
   }
 
   function getPositionStyle (twRect) {
-    let positionStyle
-    switch (position) {
-      case DIRECTIONS.top:
-        positionStyle = {
-          top: targetHeight + MARGIN_SIZE,
-        }
-        break
-      case DIRECTIONS.right:
-        positionStyle = {
-          left: twRect.width + MARGIN_SIZE,
-        }
-        break
-      case DIRECTIONS.left:
-        positionStyle = {
-          left: 0 - twRect.width - MARGIN_SIZE,
-        }
-        break
-      case DIRECTIONS.bottom:
-      default:
-        positionStyle = {
-          top: 0 - targetHeight - MARGIN_SIZE,
-        }
-        break
+    const xTargetMidPoint = targetRect.left + (targetRect.width / 2)
+    const yTargetMidPoint = targetRect.top + (targetRect.height / 2)
+    const xTooltipMidPoint = targetRect.left + (twRect.width / 2)
+    return {
+      [DIRECTIONS.top]: {
+        top: targetRect.top - twRect.height - (MARGIN_SIZE / 2),
+        left: targetRect.left - (xTooltipMidPoint - xTargetMidPoint),
+      },
+      [DIRECTIONS.right]: {
+        top: yTargetMidPoint - (twRect.height / 2),
+        left: targetRect.left + targetRect.width + (MARGIN_SIZE / 2),
+      },
+      [DIRECTIONS.left]: {
+        top: yTargetMidPoint - (twRect.height / 2),
+        left: targetRect.left - twRect.width - (MARGIN_SIZE / 2),
+      },
+      [DIRECTIONS.bottom]: {
+        top: targetRect.top + targetRect.height + (MARGIN_SIZE / 2),
+        left: targetRect.left - (xTooltipMidPoint - xTargetMidPoint),
+      },
     }
-    return positionStyle
   }
 
   function renderTooltip (e, binding) {
+    const appContainer = document.getElementById('app')
     target = e.target ? e.target : e
     targetRect = target.getBoundingClientRect()
-    targetHeight = targetRect.height
-    position = binding.value.position
+    position = binding.value.position || DIRECTIONS.TOP
     currentPosition = position
-    bgColor = binding.value.bgColor || COLOR_BLACK
-    textColor = binding.value.textColor || COLOR_WHITE
-    fontSize = binding.value.fontSize || FONT_SIZE
-    width = binding.value.width || WIDTH
-    height = binding.value.height || HEIGHT
+    bgColor = binding.value.style.bgColor || COLOR_BLACK
+    textColor = binding.value.style.textColor || COLOR_WHITE
+    fontSize = binding.value.style.fontSize || FONT_SIZE
+    width = `${binding.value.style.width}px` || WIDTH
+    height = `${binding.value.style.height}px` || HEIGHT
     tooltipWrapper = document.createElement('div')
-    tooltipText = document.createElement('div')
+    // tooltip arrow, that shows source of tooltip
     tooltipArrow = document.createElement('div')
-    tooltipWrapper.appendChild(tooltipText)
-    tooltipWrapper.appendChild(tooltipArrow)
-    target.appendChild(tooltipWrapper)
-    target.classList.add('tooltip-container')
+    // utility area, so mouse can catch tooltip when hover
+    tooltipBridge = document.createElement('div')
+
+    tooltipText = document.createElement('div')
+    tooltipText.className = 'tooltip-wrapper-text'
+    tooltipText.innerText = binding.value.text
+    tooltipText.style.fontSize = fontSize
+    tooltipText.style.color = textColor
 
     tooltipWrapper.className = 'tooltip-wrapper'
     tooltipWrapper.style.position = 'absolute'
     tooltipWrapper.style.width = width
     tooltipWrapper.style.height = height
+    tooltipWrapper.style.padding = `${PADDING_SIZE}px`
 
-    tooltipText.className = 'tooltip-wrapper-text'
-    tooltipText.innerText = globalize(binding.value.text)
-    tooltipText.style.fontSize = fontSize
-    tooltipText.style.color = textColor
+    tooltipWrapper.appendChild(tooltipText)
+    tooltipWrapper.appendChild(tooltipArrow)
+    tooltipWrapper.appendChild(tooltipBridge)
+    appContainer.appendChild(tooltipWrapper)
+    target.classList.add('tooltip-container')
 
     twRect = tooltipWrapper.getBoundingClientRect()
-    const positionStyle = getPositionStyle(twRect)
+    positionStyle = getPositionStyle(twRect)
 
-    tooltipWrapper.style.pointerEvents = 'none'
-    tooltipWrapper.style.top = positionStyle.top + 'px'
-    tooltipWrapper.style.right = positionStyle.right + 'px'
-    tooltipWrapper.style.bottom = positionStyle.bottom + 'px'
-    tooltipWrapper.style.left = positionStyle.left + 'px'
+    tooltipWrapper.style.top = positionStyle[position].top + 'px'
+    tooltipWrapper.style.left = positionStyle[position].left + 'px'
     tooltipWrapper.style.backgroundColor = bgColor
     tooltipWrapper.style.display = 'flex'
     tooltipWrapper.style.justifyContent = 'center'
     tooltipWrapper.style.alignItems = 'center'
-    tooltipWrapper.style.padding = '8px'
-    tooltipWrapper.style.transition = 'transform 350ms ease-in-out'
+    tooltipWrapper.style.transition = 'transform 250ms ease-in-out'
     tooltipWrapper.style.opacity = '0'
-    tooltipWrapper.style.zIndex = '120'
+    tooltipWrapper.style.zIndex = Z_INDEX
     tooltipWrapper.style.borderRadius = '4px'
-
-    if (target.style.position !== 'relative') {
-      target.style.position = 'relative'
-    }
 
     alignTooltip(target)
     opacity = 0
     animateFadeEffect()
 
-    tooltipWrapper.addEventListener('transitionend', function initRenderArrow () {
-      renderArrow(target)
-      tooltipWrapper.removeEventListener('transitionend', initRenderArrow)
-    })
+    tooltipWrapper.addEventListener('transitionend',
+      function initRenderUtility () {
+        renderUtilityElements(target)
+        tooltipWrapper.removeEventListener('transitionend', initRenderUtility)
+      }
+    )
   }
 
   function animateFadeEffect () {
     if (tooltipWrapper.style.opacity < 1) {
-      opacity += 0.1
+      opacity += 0.3
       setTimeout(animateFadeEffect, 100)
     }
     tooltipWrapper.style.opacity = opacity
   }
 
-  function renderArrow (target) {
-    tooltipArrow.style.borderLeft = tooltipArrow.style.borderRight = '8px solid transparent'
-    tooltipArrow.style.borderBottom = `8px solid ${bgColor}`
+  // render arrow and area, where mouse can move to on hover
+  function renderUtilityElements (target) {
+    // arrow styles
+    tooltipArrow.style.borderLeft = `${TRIANGLE_SIZE}px solid transparent`
+    tooltipArrow.style.borderRight = `${TRIANGLE_SIZE}px solid transparent`
+    tooltipArrow.style.borderBottom = `${TRIANGLE_SIZE}px solid ${bgColor}`
     tooltipArrow.style.borderTop = '0'
     tooltipArrow.style.borderRadius = '0'
     tooltipArrow.style.position = 'absolute'
+    tooltipBridge.style.position = 'absolute'
     const twRect = tooltipWrapper.getBoundingClientRect()
     const targetRect = target.getBoundingClientRect()
     const startPointX = targetRect.left - twRect.left
     tooltipArrowRect = tooltipArrow.getBoundingClientRect()
     switch (currentPosition) {
       case DIRECTIONS.top:
-        tooltipArrow.style.bottom = '-8px'
+        tooltipArrow.style.bottom = `-${TRIANGLE_SIZE}px`
         tooltipArrow.style.transform = 'rotate(180deg)'
         tooltipArrow.style.left = startPointX + (targetRect.width / 2) -
           (tooltipArrowRect.width / 2) + 'px'
+        tooltipBridge.style.bottom = `-${MARGIN_SIZE}px`
+        tooltipBridge.style.left = `${startPointX}px`
+        tooltipBridge.style.height = `${MARGIN_SIZE}px`
+        tooltipBridge.style.width = `${targetRect.width}px`
         break
       case DIRECTIONS.bottom:
-        tooltipArrow.style.top = '-8px'
+        tooltipArrow.style.top = `-${TRIANGLE_SIZE}px`
         tooltipArrow.style.left = startPointX + (targetRect.width / 2) -
           (tooltipArrowRect.width / 2) + 'px'
+        tooltipBridge.style.top = `-${MARGIN_SIZE}px`
+        tooltipBridge.style.left = `${startPointX}px`
+        tooltipBridge.style.height = `${MARGIN_SIZE}px`
+        tooltipBridge.style.width = `${targetRect.width}px`
         break
       case DIRECTIONS.left:
-        tooltipArrow.style.right = '-12px'
+        tooltipArrow.style.right = `-${TRIANGLE_SIZE + (TRIANGLE_SIZE / 2)}px`
         tooltipArrow.style.transform = 'rotate(90deg)'
+        tooltipBridge.style.right = `-${MARGIN_SIZE}px`
+        tooltipBridge.style.height = `${targetRect.height}px`
+        tooltipBridge.style.width = `${MARGIN_SIZE}px`
         break
       case DIRECTIONS.right:
-        tooltipArrow.style.left = '-12px'
+        tooltipArrow.style.left = `-${TRIANGLE_SIZE + (TRIANGLE_SIZE / 2)}px`
         tooltipArrow.style.transform = 'rotate(-90deg)'
+        tooltipBridge.style.left = `-${MARGIN_SIZE}px`
+        tooltipBridge.style.height = `${targetRect.height}px`
+        tooltipBridge.style.width = `${MARGIN_SIZE}px`
         break
     }
   }
@@ -324,6 +385,7 @@ export const tooltip = (() => {
     document.addEventListener('click', listener)
   }
 
+  // remove tooltip from DOM
   function removeTooltip () {
     if (tooltipWrapper.parentNode) {
       tooltipWrapper.parentNode.removeChild(tooltipWrapper)
@@ -356,7 +418,8 @@ export const tooltip = (() => {
           }
         })
       } else {
-        el.addEventListener('mouseover', (e) => {
+        el.addEventListener('mouseenter', (e) => {
+          // workaround, if user add multiple tooltips with different actions
           currentTarget = currentTarget || e.target
           if (currentTarget !== e.target) {
             currentTarget = e.target
@@ -366,12 +429,16 @@ export const tooltip = (() => {
           renderTooltip(e, binding)
         })
 
-        el.addEventListener('mouseout', (e) => {
-          removeTooltip()
+        el.addEventListener('mouseleave', (e) => {
+          if (!tooltipWrapper.contains(e.toElement)) {
+            // removeTooltip()
+          } else {
+            tooltipWrapper.addEventListener('mouseleave', removeTooltip)
+          }
         })
       }
     },
-    componentUpdate (el) {
+    componentUpdate () {
       if (bindedOpts.value.type === 'click') {
         detectOpenedTooltips()
       }
@@ -379,8 +446,6 @@ export const tooltip = (() => {
     unbind (el) {
       if (bindedOpts.value.type === 'click') {
         window.removeEventListener('resize', resizeHandler)
-      } else {
-        el.removeEventListener('mouseover', renderTooltip)
       }
     },
   }
