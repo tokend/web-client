@@ -19,13 +19,6 @@ describe('Pre issuance requests module', () => {
     store = new Vuex.Store({
       modules: {
         'pre-issuance-requests': preIssuanceRequestsModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })
@@ -36,18 +29,7 @@ describe('Pre issuance requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(PreIssuanceRequestsModule.methods, 'setAccountId')
       sandbox.stub(PreIssuanceRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(PreIssuanceRequestsModule, {
-        localVue,
-        store,
-      })
-
-      expect(PreIssuanceRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {

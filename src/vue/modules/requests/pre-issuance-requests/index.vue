@@ -28,7 +28,6 @@ import RequestsTable from './components/requests-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -50,19 +49,14 @@ export default {
     ...mapGetters('pre-issuance-requests', {
       requests: types.requests,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
 
   created () {
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('pre-issuance-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),
