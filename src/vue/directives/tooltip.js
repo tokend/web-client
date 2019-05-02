@@ -1,7 +1,7 @@
 /**
  * Tooltip directive
- * 
- * Draw element used in conjunction with the cursor or mouse pointer to display 
+ *
+ * Draw element used in conjunction with the cursor or mouse pointer to display
  * information about an item.
  * - Can be activated as by mouse click or mouse hover.
  * - Can calculate free space for placement of tooltip, depenping on user's
@@ -21,7 +21,7 @@
           fontSize: '14px'
         }
       }>
- * 
+ *
  * @param {Object} binding.value - passed params
  * @param {string} binding.value.text - text of tooltip
  * @param {string} [binding.value.type] - 'click' or 'hover' to summon tooltip
