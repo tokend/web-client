@@ -164,12 +164,11 @@
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
@@ -227,9 +226,6 @@ export default {
       balances: types.balances,
       calculatedFees: types.fees,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
   watch: {
     'form.amount' (value) {
@@ -268,7 +264,6 @@ export default {
     }
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -277,9 +272,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('withdrawal-fiat-card', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('withdrawal-fiat-card', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
