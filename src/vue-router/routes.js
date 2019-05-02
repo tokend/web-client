@@ -1,8 +1,18 @@
 export const vueRoutes = Object.freeze({
   app: { name: 'app' },
   auth: { name: 'auth' },
-  login: { name: 'login' },
-  verify: { name: 'verify' },
+  login: {
+    name: 'login',
+    meta: {
+      title: 'Log in',
+    },
+  },
+  verify: {
+    name: 'verify',
+    meta: {
+      title: 'Verify',
+    },
+  },
   fees: { name: 'app.fees' },
   movements: { name: 'app.movements' },
   loyaltyPoints: { name: 'app.loyalty-points' },
@@ -38,7 +48,22 @@ export const vueRoutes = Object.freeze({
   documents: { name: 'app.documents' },
   documentExplorer: { name: 'app.document-explorer' },
   documentManager: { name: 'documents.manager' },
-  terms: { name: 'terms' },
-  downloads: { name: 'downloads' },
-  iosInstallationGuide: { name: 'ios-installation-guide' },
+  terms: {
+    name: 'terms',
+    meta: {
+      title: 'Terms',
+    },
+  },
+  downloads: {
+    name: 'downloads',
+    meta: {
+      title: 'Downloads',
+    },
+  },
+  iosInstallationGuide: {
+    name: 'ios-installation-guide',
+    meta: {
+      title: 'iOS Installation guide',
+    },
+  },
 })

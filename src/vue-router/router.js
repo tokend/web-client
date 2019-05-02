@@ -32,16 +32,25 @@ export function buildRouter (store) {
       {
         path: '/terms',
         name: vueRoutes.terms.name,
+        meta: {
+          title: vueRoutes.terms.meta.title,
+        },
         component: resolve => require(['@/vue/pages/Terms'], resolve),
       },
       {
         path: '/downloads',
         name: vueRoutes.downloads.name,
+        meta: {
+          title: vueRoutes.downloads.meta.title,
+        },
         component: resolve => require(['@/vue/pages/Downloads'], resolve),
       },
       {
         path: '/ios-installation-guide',
         name: vueRoutes.iosInstallationGuide.name,
+        meta: {
+          title: vueRoutes.iosInstallationGuide.meta.title,
+        },
         component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
       },
       {
