@@ -1,7 +1,7 @@
 <template>
   <div class="chart-tabs">
     <button
-      class="chart-tabs__tab"
+      class="chart-tabs__tab app__button-flat"
       @click="$emit(EVENTS.input, tabs.hour)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.hour }"
       :disabled="isPending"
@@ -12,7 +12,7 @@
     </button>
 
     <button
-      class="chart-tabs__tab"
+      class="chart-tabs__tab app__button-flat"
       @click="$emit(EVENTS.input, tabs.day)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.day }"
       :disabled="isPending"
@@ -23,7 +23,7 @@
     </button>
 
     <button
-      class="chart-tabs__tab"
+      class="chart-tabs__tab app__button-flat"
       @click="$emit(EVENTS.input, tabs.month)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.month }"
       :disabled="isPending"
@@ -34,7 +34,7 @@
     </button>
 
     <button
-      class="chart-tabs__tab"
+      class="chart-tabs__tab app__button-flat"
       @click="$emit(EVENTS.input, tabs.year)"
       :class="{ 'chart-tabs__tab--selected': value === tabs.year }"
       :disabled="isPending"
@@ -67,23 +67,18 @@ export default {
       all: 'all',
     },
   }),
-  created () {
-    this.$emit(EVENTS.input, this.tabs.day)
-  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
-  @import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-  .chart-tabs__tab {
-    @include button();
-    @include button-flat();
-    font-weight: 500;
-  }
+.chart-tabs__tab {
+  font-weight: 500;
+}
 
-  .chart-tabs__tab--selected {
-    font-weight: 700;
-  }
+.chart-tabs__tab--selected {
+  font-weight: 700;
+}
 </style>

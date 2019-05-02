@@ -184,36 +184,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .security-page {
   background: $col-block-bg;
+
   @include box-shadow();
+}
 
-  .security-page__row {
-    padding: 2.4rem;
-    height: 7.4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.security-page hr {
+  margin: 0 2.4rem;
+  border: $col-block-line solid 0.05rem;
+}
 
-    .security-page__row-title {
-      font-size: 1.8rem;
-      color: $col-text;
-    }
+.security-page__row {
+  padding: 2.4rem;
+  height: 7.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .security-page__row-action {
-      font-size: 1.3rem;
-      cursor: pointer;
-      color: $col-link;
-    }
-  }
+.security-page__row-title {
+  font-size: 1.8rem;
+  color: $col-text;
+}
 
-  hr {
-    margin: 0 2.4rem;
-    border: $col-block-line solid 0.05rem;
-  }
+.security-page__row-action {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: $col-link;
 }
 
 .secret-seed__description {

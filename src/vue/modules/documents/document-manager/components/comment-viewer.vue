@@ -57,8 +57,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  border-bottom: 1px solid $col-border-comment-viewer-header;
-  padding-bottom: .5rem;
+  border-bottom: 0.1rem solid $col-border-comment-viewer-header;
+  padding-bottom: 0.5rem;
   position: relative;
 }
 
@@ -69,10 +69,12 @@ export default {
 
 .comment-viewer__content-wrp {
   padding: 1rem 5rem;
-  background: linear-gradient(to bottom,
-    lighten($col-comment-content-gradient-to, 1%) 0.05%,
-    $col-comment-content-gradient-to 99%
-  );
+  background:
+    linear-gradient(
+      to bottom,
+      lighten($col-comment-content-gradient-to, 1%) 0.05%,
+      $col-comment-content-gradient-to 99%
+    );
 }
 
 .comment-viewer__author {

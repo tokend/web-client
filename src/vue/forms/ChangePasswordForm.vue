@@ -67,7 +67,7 @@
         v-else
         v-ripple
         type="submit"
-        class="change-password-form__submit-btn"
+        class="change-password-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'change-password-form.change-password-btn' | globalize }}
@@ -224,7 +224,6 @@ export default {
 @import './app-form';
 
 .change-password-form__submit-btn {
-  @include button-raised();
   max-width: 18rem;
   width: 100%;
 }

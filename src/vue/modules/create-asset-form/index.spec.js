@@ -61,6 +61,7 @@ describe('Create asset form module', () => {
             sandbox.stub(Api, 'initApi')
             sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
+            sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
             sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
 
             await wrapper.vm.init()

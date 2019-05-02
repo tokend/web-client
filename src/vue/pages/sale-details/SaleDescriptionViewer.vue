@@ -81,14 +81,15 @@ export default {
 
 .sale-description-viewer__no-data {
   text-align: center;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.6rem;
 }
 </style>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
+/* stylelint-disable selector-nested-pattern */
 .sale-description-viewer__markdown {
   img {
     max-width: 100%;
@@ -118,11 +119,13 @@ export default {
   }
 
   ul {
+    // stylelint-disable-next-line
     list-style-type: disc !important;
     padding-left: 1.6rem;
   }
 
   li {
+    // stylelint-disable-next-line
     list-style-type: disc !important;
     margin-bottom: 0.8rem;
   }

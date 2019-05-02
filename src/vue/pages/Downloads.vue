@@ -1,7 +1,7 @@
 <template>
   <div class="downloads">
     <button
-      class="downloads__link"
+      class="downloads__link app__button"
       @click="$router.go(-1)"
     >
       {{ 'downloads-page.go-back-btn' | globalize }}
@@ -107,8 +107,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .downloads {
   padding: 3.3rem 19.5rem;
@@ -116,42 +116,36 @@ export default {
   @include respond-to($x-medium) {
     padding: 3.3rem 10rem;
   }
-
   @include respond-to($medium) {
     padding: 3.3rem 6rem;
   }
-
   @include respond-to($tablet) {
     padding: 3.3rem 2rem;
   }
 }
 
 .downloads__link {
-  @include button();
-
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 1.3rem;
 }
 
 .downloads__title {
   font-size: 4rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-downloads-title;
 }
 
 .downloads__content {
   margin-top: 3.5rem;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   background-color: $col-downloads-block-bg;
   padding: 4.1rem 10rem;
 
   @include box-shadow();
-
   @include respond-to($medium) {
     padding: 4.1rem 6rem;
   }
-
   @include respond-to($tablet) {
     padding: 2rem;
   }
@@ -167,23 +161,23 @@ export default {
   &:not(:first-child) {
     margin-top: 4.7rem;
   }
+}
 
-  hr {
-    width: 100%;
-    margin-top: 4.8rem;
-    border: $col-downloads-line solid .05rem;
-  }
+.downloads__section hr {
+  width: 100%;
+  margin-top: 4.8rem;
+  border: $col-downloads-line solid 0.05rem;
 }
 
 .downloads__section-header {
   font-size: 2.9rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-downloads-header;
 }
 
 .downloads__section-text {
   font-size: 1.4rem;
-  padding-top: .8rem;
+  padding-top: 0.8rem;
   color: $col-downloads-text;
 }
 
@@ -224,7 +218,9 @@ export default {
   }
 }
 
-.downloads__phone-img, .downloads__android, .downloads_ios {
+.downloads__phone-img,
+.downloads__android,
+.downloads_ios {
   max-width: 16rem;
 
   @include respond-to(small) {

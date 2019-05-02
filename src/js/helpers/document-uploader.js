@@ -45,6 +45,7 @@ export class DocumentUploader {
    * to be uploaded
    * @returns {Promise<object>}
    */
+
   static async uploadSingleDocument (document) {
     const details = document.getDetailsForUpload()
     const key = await this.uploadDocument(details)

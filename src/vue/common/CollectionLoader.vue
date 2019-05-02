@@ -2,7 +2,7 @@
   <div class="collection-loader">
     <button
       v-if="!isCollectionFetched"
-      class="collection-loader__more-button"
+      class="collection-loader__more-button app__button-flat"
       @click="loadNextPage">
       {{ 'common.more-btn' | globalize }}
     </button>
@@ -82,16 +82,12 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@scss/variables';
   @import '~@scss/mixins';
 
   .collection-loader {
     display: flex;
     justify-content: center;
-  }
-
-  .collection-loader__more-button {
-    @include button-flat();
   }
 </style>
