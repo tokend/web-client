@@ -205,7 +205,6 @@ export default {
   async created () {
     try {
       await this.initAssetSelector()
-      this.loadAssets()
       this.isLoaded = true
     } catch (error) {
       ErrorHandler.processWithoutFeedback(error)
