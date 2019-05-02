@@ -12,16 +12,12 @@ import { vuexTypes } from '../../../../vuex'
 const OFFER_FEE_TYPE = 'offerFee'
 
 export const state = {
-  accountId: '',
   balances: [],
   assets: [],
   accountBalances: [],
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_BALANCES] (state, balances) {
     state.balances = balances
   },
@@ -34,8 +30,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/v3/accounts/${getters[types.accountId]}`
+  async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
+    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -68,8 +64,8 @@ export const actions = {
       .find(i => i.baseAsset.id === baseAsset)
   },
 
-  async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
-    const accountId = getters.accountId
+  async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, rootGetters }) {
+    const accountId = rootGetters[vuexTypes.accountId]
     const response = await Sdk.horizon.account.getDetails(accountId)
     const balances = response.data.map(balance => {
       balance.assetDetails = new AssetRecord(balance.assetDetails)
@@ -134,11 +130,11 @@ export const actions = {
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
-  [types.assets]: state => state.assets
+  [types.assets]: (state, rootGetters) => state.assets
     .map(a => new AssetRecord(a))
-    .filter(a => a.isAllowedToRedeem && a.owner.id !== state.accountId),
+    .filter(a => a.isAllowedToRedeem && a.owner.id !==
+      rootGetters[vuexTypes.accountId]),
   [types.assetsInBalance]: (state, getters) => {
     const balancesCodes = getters[types.balances].map(i => i.assetCode)
     return getters[types.assets].filter(a => balancesCodes.includes(a.code))

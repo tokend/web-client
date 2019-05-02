@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
@@ -134,10 +134,9 @@ export default {
       assets: types.assets,
       assetsInBalance: types.assetsInBalance,
       selectedAssetBalance: types.selectedAssetBalance,
-      accountId: types.accountId,
     }),
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
   },
   watch: {
@@ -152,7 +151,6 @@ export default {
     },
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAccountBalances()
     await this.loadAssets()
@@ -160,9 +158,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('redeem-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('redeem-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
