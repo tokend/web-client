@@ -464,69 +464,60 @@ export default {
 </script>
 
 <style lang="scss" >
-  @import "/scss/variables";
+@import '/scss/variables';
 
-  .dividend__fees-container {
-    &.loading {
-      opacity: 0.7;
-    }
+.dividend__form-row {
+  margin-bottom: 2.5rem;
+}
 
-    .dividend__fee-type {
-      color: $col-info;
-    }
-  }
+.dividend__form-field-description {
+  margin-top: 0.4rem;
+  opacity: 0.7;
+}
 
-  .dividend__form-row {
-    margin-bottom: 2.5rem;
-  }
+.dividend__fee-table {
+  width: 100%;
+  font-size: 1.2rem;
+}
 
-  .dividend__form-field-description {
-    margin-top: 0.4rem;
-    opacity: 0.7;
-  }
+.dividend__fee-table tr {
+  height: 2rem;
+}
 
-  .dividend__fee-table {
-    width: 100%;
-    font-size: 1.2rem;
+.dividend__fee-table td:last-child {
+  text-align: right;
+}
 
-    tr {
-      height: 2rem;
-    }
+.dividend__fee-tbody {
+  color: $col-text-secondary;
+}
 
-    td:last-child {
-      text-align: right;
-    }
-  }
+.dividend__total-fee-row {
+  color: $col-text;
+  font-weight: 600;
+}
 
-  .dividend__fee-tbody {
-    color: $col-text-secondary;
-  }
+.dividend__action {
+  margin-top: 2.5rem;
+}
 
-  .dividend__total-fee-row {
-    color: $col-text;
-    font-weight: 600;
-  }
+.dividend__data--loading {
+  opacity: 0.4;
+}
 
-  .dividend__action {
-    margin-top: 2.5rem;
-  }
-  .dividend__data--loading {
-    opacity: 0.4;
-  }
+.dividend__table-description {
+  opacity: 0.6;
+  font-size: 1.2rem;
+}
 
-  .dividend__table-description {
-    opacity: 0.6;
-    font-size: 1.2rem;
-  }
+.dividend__fee-holders-not-found {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 6.4rem;
+  font-size: 1.8rem;
+}
 
-  .dividend__fee-holders-not-found {
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 6.4rem;
-    font-size: 1.8rem;
-  }
-
-  .dividend__fee-holders-loading {
-    justify-content: center;
-  }
+.dividend__fee-holders-loading {
+  justify-content: center;
+}
 </style>

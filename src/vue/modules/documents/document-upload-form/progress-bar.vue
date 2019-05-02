@@ -29,15 +29,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@scss/variables.scss';
+
 .progress-bar__wrp {
   width: 100%;
-  height: .3rem;
+  height: 0.3rem;
   background-color: $col-document-upload-progress-bar-bg;
   position: relative;
+}
 
-  .progress-bar__progress {
-    background: $col-document-upload-progress-bar-value;
-    height: 100%;
-  }
+.progress-bar__progress {
+  background: $col-document-upload-progress-bar-value;
+  height: 100%;
 }
 </style>

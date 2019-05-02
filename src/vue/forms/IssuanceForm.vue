@@ -271,7 +271,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./app-form";
+@import './app-form';
 
 .issuance-form__submit-btn {
   margin-bottom: 2rem;

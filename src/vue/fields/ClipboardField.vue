@@ -41,9 +41,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./scss/variables";
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import './scss/variables';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .clipboard-field {
   background: $col-clipboard-background;
@@ -77,9 +77,10 @@ export default {
   font-size: 0.8rem;
   position: absolute;
   left: 1.2rem;
-  top: .8rem;
+  top: 0.8rem;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include label-font-sizes;
 }
 
