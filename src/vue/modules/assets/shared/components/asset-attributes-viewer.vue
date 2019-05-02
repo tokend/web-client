@@ -69,6 +69,24 @@
           </tr>
           <tr>
             <td>
+              {{ 'assets.deposit-method-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isCoinpayments">
+                {{ 'assets.coinpayments-msg' | globalize }}
+              </template>
+
+              <template v-else-if="asset.externalSystemType">
+                {{ 'assets.default-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'assets.non-depositable-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'assets.verification-required-title' | globalize }}
             </td>
             <td>
