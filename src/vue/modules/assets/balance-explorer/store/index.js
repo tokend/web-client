@@ -2,9 +2,9 @@ import { Asset } from '../../shared/wrappers/asset'
 
 import { api } from '@/api'
 import { types } from './types'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   assets: [],
   balances: [],
   kycRequiredAssetType: null,
@@ -12,9 +12,6 @@ export const state = {
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, id) {
-    state.accountId = id
-  },
   [types.SET_ACCOUNT_BALANCES] (state, balances) {
     state.balances = balances
   },
@@ -30,8 +27,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_ACCOUNT_BALANCES] ({ commit, getters }) {
-    const endpoint = `/v3/accounts/${getters[types.accountId]}`
+  async [types.LOAD_ACCOUNT_BALANCES] ({ commit, rootGetters }) {
+    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state', 'balances.asset'],
     })
@@ -55,7 +52,6 @@ export const actions = {
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.assets]: state => state.assets.map(asset => {
     const balance = state.balances.find(b => b.asset.id === asset.id) || ''
     return new Asset(asset, balance ? balance.state.available : '')

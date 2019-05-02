@@ -22,13 +22,7 @@ describe('Balance explorer module', () => {
     store = new Vuex.Store({
       modules: {
         'balance-explorer': balanceExplorerModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
+        accountId: 'SOME_ACCOUNT_ID',
       },
     })
   })
@@ -39,7 +33,6 @@ describe('Balance explorer module', () => {
 
   describe('created hook', () => {
     it('inits API, sets account ID, and loads balances', async () => {
-      sandbox.stub(BalanceExplorerModule.methods, 'setAccountId')
       sandbox.stub(BalanceExplorerModule.methods, 'load')
 
       await shallowMount(BalanceExplorerModule, {
@@ -50,8 +43,6 @@ describe('Balance explorer module', () => {
         },
       })
 
-      expect(BalanceExplorerModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
       expect(BalanceExplorerModule.methods.load)
         .to.have.been.calledOnce
     })

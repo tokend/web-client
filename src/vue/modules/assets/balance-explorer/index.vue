@@ -9,7 +9,6 @@
 
           <update-asset-form-module
             :asset-code="selectedAsset.code"
-            :wallet="wallet"
             :storage-url="storageUrl"
             @close="isDrawerShown = false"
           />
@@ -27,7 +26,7 @@
           />
 
           <button
-            v-if="selectedAsset.owner === wallet.accountId"
+            v-if="selectedAsset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
             @click="isUpdateMode = true"
@@ -83,7 +82,7 @@ import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
@@ -120,20 +119,15 @@ export default {
       securityAssetType: types.securityAssetType,
     }),
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
   },
 
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.load()
   },
 
   methods: {
-    ...mapMutations('balance-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('balance-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
