@@ -17,7 +17,7 @@
     "test": "karma start --reporters spec",
     "test:watch": "karma start --no-single-run --auto-watch",
     "test:watchVerbose": "karma start --no-single-run --auto-watch --reporters spec",
-    "lint": "npm run lint:styles && npm run lint:scripts",
+    "lint": "yarn lint:styles && yarn lint:scripts",
     "lint:scripts": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0",
     "lint:styles": "stylelint 'src/**/*.{vue,css,scss}' --syntax scss --max-warnings=0",
     "rsc": "node scripts/release-sanity-check.js"
