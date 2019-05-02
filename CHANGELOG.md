@@ -8,6 +8,8 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Fixed
+- Show drawer for isDepositable in movements-top-bar-reit
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
