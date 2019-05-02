@@ -4,7 +4,7 @@ import { base } from '@tokend/js-sdk'
 
 import { types } from './types'
 import { api } from '@/api'
-import {vuexTypes} from "@/vuex";
+import { vuexTypes } from '@/vuex'
 
 export const state = {
   requests: [],

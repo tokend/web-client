@@ -167,7 +167,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import EmailGetter from '@/vue/common/EmailGetter'
@@ -228,14 +228,13 @@ export default {
   }),
   computed: {
     ...mapGetters('dividend-form', {
-      accountId: types.accountId,
       balances: types.balances,
       assets: types.assets,
       ownedAssets: types.ownedAssets,
       signers: types.balanceHolders,
     }),
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
   },
   watch: {
@@ -261,7 +260,6 @@ export default {
     }
   },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -276,9 +274,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('dividend-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('dividend-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,

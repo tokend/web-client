@@ -81,7 +81,6 @@ export default {
   },
   methods: {
     ...mapMutations('issuance-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setIssuances: types.SET_ISSUANCES,
       concatIssuances: types.CONCAT_ISSUANCES,
     }),

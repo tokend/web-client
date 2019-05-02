@@ -4,18 +4,15 @@ import { FEE_TYPES } from '@tokend/js-sdk'
 import { types } from './types'
 import { api, loadingDataViaLoop } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   balances: [],
   assets: [],
   balanceHolders: [],
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_BALANCES] (state, balances) {
     state.balances = balances
   },
@@ -28,8 +25,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/v3/accounts/${getters[types.accountId]}`
+  async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
+    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
     const { data: account } = await api().getWithSignature(endpoint, {
       include: ['balances.state'],
     })
@@ -94,13 +91,12 @@ export const actions = {
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.assets]: state => state.assets.filter(
     item => item.balance.id && item.isTransferable && item.isBaseAsset
   ),
-  [types.ownedAssets]: state => state.assets.filter(item =>
-    item.owner === state.accountId && item.isShareSubtype
+  [types.ownedAssets]: (state, rootGetters) => state.assets.filter(item =>
+    item.owner === rootGetters[vuexTypes.accountId] && item.isShareSubtype
   ),
   [types.balanceHolders]: state => state.balanceHolders
     .map(item => new Balance(item)),

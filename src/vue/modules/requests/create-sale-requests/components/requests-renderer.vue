@@ -106,7 +106,6 @@ export default {
 
   methods: {
     ...mapMutations('create-sale-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),
