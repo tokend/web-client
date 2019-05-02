@@ -43,9 +43,8 @@ import InvoiceConfirmation from './components/invoice-confirmation'
 
 import { config } from './_config'
 
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -88,15 +87,10 @@ export default {
     ...mapGetters('create-invoice-form', {
       assetPairs: types.assetPairs,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
 
   async created () {
     try {
-      this.setAccountId(this.wallet.accountId)
-
       await this.loadAssetPairs({ asset: config.DEFAULT_POINT })
       this.isLoaded = true
     } catch (e) {
@@ -106,10 +100,6 @@ export default {
   },
 
   methods: {
-    ...mapMutations('create-invoice-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('create-invoice-form', {
       loadAssetPairs: types.LOAD_ASSET_PAIRS,
     }),
