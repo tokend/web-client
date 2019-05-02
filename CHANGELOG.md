@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 - Security asset type
 - Show banner for blocked user
 - Validator of available for issuance amount
+- Tooltip directive
 
 #### Changed
 - Show only one QR code on Coinpayments deposit
@@ -393,7 +394,6 @@ for further information about branching and tagging conventions.
 - Custom validation rules for sale's "Soft cap" and "Hard cap" values
 - Custom Movements TopBar for REIT scheme
 - Add coinpayments-deposit module
-- Tooltip directive
 
 ### Changed
 - Now using new account endpoint for loading the fees
