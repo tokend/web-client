@@ -148,6 +148,7 @@
       "can-not-load-assets": "There was an error while loading opportunities. Please try again later"
     },
     "deposit-form": {
+      "deposit-lbl": "Deposit",
       "how-to": "To make a deposit send some opportunities to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only": "The address below accepts {{asset}} only! All the other opportunities will be irretrievably lost.",
       "deposit-no-assets": "Your wallet doesn't contain any opportunities to deposit yet. You can discover some on the opportunity list.",

@@ -1,7 +1,7 @@
 <template>
   <div class="ios-installation-guide">
     <button
-      class="ios-installation-guide__link"
+      class="ios-installation-guide__link app__button"
       @click="$router.go(-1)"
     >
       {{ 'ios-installation-guide.go-back-btn' | globalize }}
@@ -150,8 +150,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .ios-installation-guide {
   padding: 3.3rem 19.5rem;
@@ -159,38 +159,33 @@ export default {
   @include respond-to($x-medium) {
     padding: 3.3rem 10rem;
   }
-
   @include respond-to($medium) {
     padding: 3.3rem 8rem;
   }
-
   @include respond-to($tablet) {
     padding: 3.3rem 2rem;
   }
 }
 
 .ios-installation-guide__link {
-  @include button();
-
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 1.3rem;
 }
 
 .ios-installation-guide__title {
   font-size: 4rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-ios-guide-title;
 }
 
 .ios-installation-guide__content {
   margin-top: 3.5rem;
   padding: 2.7rem 2.4rem 4.4rem;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   background-color: $col-ios-guide-block-bg;
 
   @include box-shadow();
-
   @include respond-to($tablet) {
     padding: 2rem;
   }
@@ -198,7 +193,7 @@ export default {
 
 .ios-installation-guide__header {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
   color: $col-ios-guide-header;
 }
 
@@ -223,27 +218,30 @@ export default {
   background-color: $col-ios-guide-step-number-bg;
   color: $col-ios-guide-step-number-text;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
   min-width: 2.3rem;
   height: 2.3rem;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
   border-radius: 50%;
 }
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .ios-installation-guide__step-description {
   margin-left: 1.6rem;
-  padding-top: .4rem;
+  padding-top: 0.4rem;
 
   a {
     color: $col-ios-guide-link;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .ios-installation-guide__img-steps {
   display: flex;
   flex-wrap: wrap;
-  margin: 2rem -.75rem -.75rem .85rem;
+  margin: 2rem -0.75rem -0.75rem 0.85rem;
 
   @include respond-to(small) {
     min-width: 100%;
@@ -253,12 +251,12 @@ export default {
 
 .ios-installation-guide__img-step {
   flex: 0 1 15.125%;
-  margin: .75rem;
+  margin: 0.75rem;
   min-width: 14rem;
 
   @include respond-to(small) {
     min-width: calc(100% - 1.9rem);
-    margin: 1.65rem 1.6rem 0 1.6rem;
+    margin: 1.65rem 1.6rem 0;
   }
 }
 
@@ -271,7 +269,7 @@ export default {
 }
 
 .ios-installation-guide__img-step-desc {
-  margin-top: .35rem;
+  margin-top: 0.35rem;
   margin-bottom: 2rem;
   font-size: 1.2rem;
   color: $col-ios-guide-substep-text;

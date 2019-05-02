@@ -941,7 +941,7 @@ export default {
 }
 
 .create-opportunity__insert-account-id-btn {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
 }
 
 .create-opportunity__error-text {

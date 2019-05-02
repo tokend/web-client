@@ -51,7 +51,7 @@
           v-else
           v-ripple
           type="submit"
-          class="pre-issuance-form__submit-btn"
+          class="pre-issuance-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'pre-issuance-form.upload-btn' | globalize }}
@@ -176,8 +176,6 @@ export default {
 @import './app-form';
 
 .pre-issuance-form__submit-btn {
-  @include button-raised();
-
   margin-bottom: 2rem;
   width: 18rem;
 }

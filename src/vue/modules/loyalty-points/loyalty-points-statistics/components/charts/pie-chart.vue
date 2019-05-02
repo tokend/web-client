@@ -109,7 +109,8 @@ export default {
       this.renderLabel(pie)
       this.renderLines(pie)
 
-      d3.selectAll('.pie-chart__label text, .pie-chart__slices path')
+      d3.select(this.$refs.chart)
+        .selectAll('.pie-chart__label text, .pie-chart__slices path')
         .call(this.renderToolTip)
     },
 
@@ -134,8 +135,8 @@ export default {
         .data(pie)
         .enter()
         .append('text')
-        .attr('dy', '.35em')
-        .html(item => `${item.data.label}: <tspan>${item.data.value}</tspan>`)
+        .attr('dy', '-0.25em')
+        .html(item => `${item.data.label}<tspan x="0" dy="1.2em">${item.data.value}</tspan>`)
         .attr('transform', item => {
           const labelPosition = SCALE_COEFF * this.radius
           let pos = this.outerArc.centroid(item)
@@ -205,11 +206,12 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
+/* stylelint-disable selector-nested-pattern */
 .pie-chart {
   svg {
-    filter: drop-shadow(0rem 0.3rem 0.3rem $col-pie-chart-shadow);
+    filter: drop-shadow(0 0.3rem 0.3rem $col-pie-chart-shadow);
   }
 
   .pie-chart__lines polyline {
@@ -223,8 +225,9 @@ export default {
     fill: $col-pie-chart-text;
 
     tspan {
-      font-weight: bold;
+      font-weight: 700;
     }
   }
 }
+/* stylelint-enable selector-nested-pattern */
 </style>

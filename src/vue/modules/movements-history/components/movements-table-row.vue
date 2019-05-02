@@ -119,19 +119,20 @@ export default {
 
   &--bold {
     font-weight: 600;
-
   }
 
   &--iconed {
     position: relative;
     padding-left: $movements-table-cell-side-padding + 3rem;
 
+    /* stylelint-disable selector-nested-pattern */
     i {
       left: $movements-table-cell-side-padding + 1rem;
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
     }
+    /* stylelint-enable selector-nested-pattern */
   }
 
   &--direction {
@@ -156,11 +157,11 @@ export default {
   box-shadow: none;
 
   &:hover {
-    background-color: darken($col-app-content-background, 3%);
+    background-color: $movements-table-row-btn-hover-bg;
   }
 
   &:active {
-    background-color: darken($col-app-content-background, 10%);
+    background-color: $movements-table-row-btn-active-bg;
   }
 }
 
@@ -168,7 +169,7 @@ export default {
   font-size: 1.6rem;
 
   &:before {
-    transition: transform .2s ease-out;
+    transition: transform 0.2s ease-out;
   }
 }
 
@@ -179,11 +180,12 @@ export default {
     0.7rem $movements-table-cell-side-padding;
   margin-top: -0.6rem;
   position: relative;
+
   @include box-shadow();
 
   &:before {
     // HACK: to cover sticking out shadow at the top
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     background: $col-block-bg;

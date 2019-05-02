@@ -20,7 +20,7 @@ export class DocumentContainer {
     if (!opts.file && !opts.key) {
       throw new Error('Document initialized without raw file or file key')
     }
-    this.mimeType = opts.mimeType
+    this.mimeType = opts.mimeType || opts.mime_type
     this.file = opts.file
     this.name = opts.name
     this.type = opts.type

@@ -21,7 +21,25 @@
           {{ verificationReasonTranslationId | globalize }}
         </p>
 
-        <p>{{ verificationReason }}</p>
+        <p class="verification-state-message__reason-msg">
+          {{ verificationReason }}
+        </p>
+
+        <div
+          v-if="kycRequestExternalDetails"
+          class="verification-state-message__external-details"
+        >
+          <h4 class="verification-state-message__external-details-title">
+            {{ 'verification-state-message.additional-info-title' | globalize }}
+          </h4>
+          <p
+            v-for="(value, key) in kycRequestExternalDetails"
+            class="verification-state-message__external-detail-msg"
+            :key="key"
+          >
+            {{ key }}: {{ value }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +70,7 @@ export default {
       kycRejectReason: vuexTypes.kycRequestRejectReason,
       kycResetReason: vuexTypes.kycRequestResetReason,
       kycBlockReason: vuexTypes.kycRequestBlockReason,
+      kycRequestExternalDetails: vuexTypes.kycRequestExternalDetails,
 
       isAccountRoleReseted: vuexTypes.isAccountRoleReseted,
       isAccountBlocked: vuexTypes.isAccountBlocked,
@@ -107,13 +126,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .verification-state-message {
-  &--approved { background-color: $col-request-approved }
-  &--pending { background-color: $col-request-pending }
-  &--rejected, &--blocked, &--reset, &--permanently-rejected {
-    background-color: $col-request-rejected
+  &--approved { background-color: $col-request-approved; }
+  &--pending { background-color: $col-request-pending; }
+
+  &--rejected,
+  &--blocked,
+  &--reset,
+  &--permanently-rejected {
+    background-color: $col-request-rejected;
   }
 }
 
@@ -137,7 +160,11 @@ export default {
   margin-top: 1.6rem;
 }
 
+.verification-state-message__reason-msg {
+  margin-bottom: 1rem;
+}
+
 .verification-state-message__reason-title {
-  font-weight: bold;
+  font-weight: 700;
 }
 </style>

@@ -34,6 +34,37 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <input-field
+          white-autofill
+          v-model="form.assetsToSell"
+          @blur="touchField('form.assetsToSell')"
+          name="create-sale-assets-to-sell"
+          type="number"
+          :label="'create-sale-form.assets-to-sell-lbl' |
+            globalize({ asset: form.baseAsset.code })"
+          :error-message="getFieldErrorMessage(
+            'form.assetsToSell',
+            { available: availableForIssuance }
+          )"
+        />
+
+        <template v-if="form.baseAsset">
+          <p class="app__form-field-description">
+            {{
+              'create-sale-form.available-amount-hint' | globalize({
+                amount: {
+                  value: availableForIssuance,
+                  currency: form.baseAsset.code
+                }
+              })
+            }}
+          </p>
+        </template>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <date-field
           v-model="form.startTime"
           name="create-sale-start-time"
@@ -106,37 +137,6 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          white-autofill
-          v-model="form.assetsToSell"
-          @blur="touchField('form.assetsToSell')"
-          name="create-sale-assets-to-sell"
-          type="number"
-          :label="'create-sale-form.assets-to-sell-lbl' |
-            globalize({ asset: form.baseAsset.code })"
-          :error-message="getFieldErrorMessage(
-            'form.assetsToSell',
-            { from: MIN_AMOUNT, to: availableForIssuance }
-          )"
-        />
-
-        <template v-if="form.baseAsset">
-          <p class="app__form-field-description">
-            {{
-              'create-sale-form.available-amount-hint' | globalize({
-                amount: {
-                  value: availableForIssuance,
-                  currency: form.baseAsset.code
-                }
-              })
-            }}
-          </p>
-        </template>
-      </div>
-    </div>
-
-    <div class="app__form-row">
-      <div class="app__form-field">
         <p class="information-step-form__price">
           {{
             'create-sale-form.price-for-asset-hint' | globalize({
@@ -197,11 +197,11 @@ import { MathUtil } from '@/js/utils'
 import {
   required,
   maxLength,
-  amountRange,
   softCapMoreThanHardCap,
   hardCapLessThanSoftCap,
   requiredAtLeastOne,
   minDate,
+  noMoreThanAvailableForIssuance,
 } from '@validators'
 
 import { config } from '../_config'
@@ -270,7 +270,9 @@ export default {
         },
         assetsToSell: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.availableForIssuance),
+          noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
+            this.availableForIssuance
+          ),
         },
         quoteAssets: { requiredAtLeastOne },
       },

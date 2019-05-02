@@ -68,11 +68,11 @@ export default {
 }
 
 .auth__titles {
-  background: $col-auth-titles-background-fallback; /* Old browsers */
-  background: linear-gradient(
+  background:
+    linear-gradient(
       $col-auth-titles-background-light 0%,
       $col-auth-titles-background-dark 65%
-  );
+    );
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -81,7 +81,6 @@ export default {
   @include respond-to(large) {
     padding: 0 7rem;
   }
-
   @include respond-to(medium) {
     display: none;
   }
@@ -114,7 +113,6 @@ export default {
   @include respond-to(large) {
     padding: 6rem 7rem;
   }
-
   @include respond-to(medium) {
     margin: 0 auto;
     max-width: 48rem;
@@ -130,7 +128,6 @@ export default {
   @include respond-to-height(950px) {
     margin-bottom: 12rem;
   }
-
   @include respond-to-height(750px) {
     margin-bottom: 6.4rem;
   }
