@@ -11,19 +11,6 @@ import accountBalancesJSON from '@/test/mocks/account-balances'
 
 describe('movements-history.module', () => {
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-
-      expect(state).to.deep.equal({
-        accountId,
-      })
-    })
-
     it('SET_BALANCES should properly modify state', () => {
       const balances = [
         {
@@ -115,8 +102,8 @@ describe('movements-history.module', () => {
     beforeEach(() => {
       store = {
         state: {},
-        getters: {
-          accountId,
+        rootGetters: {
+          accountId: accountId,
         },
         commit: sinon.stub(),
         dispatch: sinon.stub(),
@@ -145,11 +132,13 @@ describe('movements-history.module', () => {
         await actions[types.LOAD_MOVEMENTS](
           {
             getters: {
-              accountId,
               getBalanceByAssetCode: () => ({
                 id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
                 assetCode: 'BTC',
               }),
+            },
+            rootGetters: {
+              accountId: accountId,
             },
           },
           assetCode
@@ -190,14 +179,6 @@ describe('movements-history.module', () => {
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-      const state = { accountId }
-
-      expect(getters[types.accountId](state))
-        .to.equal(accountId)
-    })
-
     it('movements', () => {
       const movements = [
         {

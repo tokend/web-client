@@ -43,7 +43,7 @@ describe('fees.module', () => {
     beforeEach(() => {
       store = {
         rootGetters: {
-          accountId: 'ewqjkrqweqwejk',
+          accountId: 'SOME_ACCOUNT_ID',
         },
         commit: sinon.stub(),
         dispatch: sinon.stub(),

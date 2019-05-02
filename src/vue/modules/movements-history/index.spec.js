@@ -34,24 +34,11 @@ describe('Movements history module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sinon.stub(MovementsHistoryModule.methods, 'setAccountId')
       sinon.stub(MovementsHistoryModule.methods, 'loadBalances').resolves()
     })
 
     afterEach(() => {
-      MovementsHistoryModule.methods.setAccountId.restore()
       MovementsHistoryModule.methods.loadBalances.restore()
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(MovementsHistoryModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(MovementsHistoryModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls loadBalances action', () => {
