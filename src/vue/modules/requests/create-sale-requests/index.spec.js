@@ -39,7 +39,6 @@ describe('Create sale requests module', () => {
   describe('created hook', () => {
     beforeEach(() => {
       sandbox.stub(Config, 'initConfig')
-      sandbox.stub(CreateSaleRequestsModule.methods, 'setAccountId')
       sandbox.stub(CreateSaleRequestsModule.methods, 'initFirstPageLoader')
     })
 
@@ -54,19 +53,6 @@ describe('Create sale requests module', () => {
 
       expect(Config.initConfig)
         .to.have.been.calledOnceWithExactly('https://storage.com')
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(CreateSaleRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
-      })
-
-      expect(CreateSaleRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {
