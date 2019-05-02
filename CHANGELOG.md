@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this ~project will be documented in this file.
+All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,20 +9,24 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Display fees in invest form
-- General verification form module (included in vanilla scheme only)
-- `usVerified` and `usAccredited` roles to key/value module
-- `Passport` is now able to show US verified and US accredited user roles
-- Users with US verified and US accredited roles will now also be redirected to general form
-- Security asset type
-- Show banner for blocked user
-- Validator of available for issuance amount
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
 
 #### Changed
-- Show only one QR code on Coinpayments deposit
+- Now does not show multiple QR codes on Coinpayments deposit
 
 #### Fixed
-- Invalid opts when submitting create asset request
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
 
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
