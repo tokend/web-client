@@ -2,21 +2,26 @@
   <div class="file-field">
     <div
       class="file-field__label"
-      :class="{ 'file-field__label--disabled': $attrs.disabled }"
+      :class="{
+        'file-field__label--disabled': $attrs.disabled,
+        'file-field__label--error': errorMessage
+      }"
     >
       {{ label }}
     </div>
+
     <div
       class="file-field__content"
       :class="{
         'file-field__content--disabled': $attrs.disabled,
-        'file-field__content--highlighted': isFileDragged,
-        'file-field__content--error': errorMessage
+        'file-field__content--error': errorMessage,
+        'file-field__content--highlighted': isFileDragged
       }"
     >
       <template v-if="document">
         <button
           v-if="!$attrs.disabled"
+          :title="'file-field.reset-btn-hint' | globalize"
           class="app__button-icon file-field__reset-btn"
           type="button"
           @click="reset"
@@ -189,33 +194,16 @@ export default {
       try {
         const file = FileUtil.getFileFromEvent(event)
 
-        if (!this.isValidFileType(file)) {
-          Bus.error({
-            messageId: 'file-field.incorrect-file-type-err',
-            messageArgs: {
-              allowedTypes: this.acceptedExtensions,
-              type: `.${this.getFileExtension(file)}`,
-            },
+        if (this.validateFile(file)) {
+          this.documentUrl = await FileUtil.getDataUrl(file)
+          this.document = new DocumentContainer({
+            mimeType: file.type,
+            type: this.documentType,
+            name: file.name,
+            file: file,
           })
-          return
+          this.$emit('input', this.document)
         }
-
-        if (!this.isValidFileSize(file)) {
-          Bus.error({
-            messageId: 'file-field.max-size-exceeded-err',
-            messageArgs: { maxSize: this.maxSize },
-          })
-          return
-        }
-
-        this.documentUrl = await FileUtil.getDataUrl(file)
-        this.document = new DocumentContainer({
-          mimeType: file.type,
-          type: this.documentType,
-          name: file.name,
-          file: file,
-        })
-        this.$emit('input', this.document)
       } catch (e) {
         if (e instanceof FileNotPresentInEventError) {
           this.reset()
@@ -223,6 +211,29 @@ export default {
           ErrorHandler.process(e)
         }
       }
+    },
+
+    validateFile (file) {
+      if (!this.isValidFileType(file)) {
+        Bus.error({
+          messageId: 'file-field.incorrect-file-type-err',
+          messageArgs: {
+            allowedTypes: this.acceptedExtensions,
+            type: `.${this.getFileExtension(file)}`,
+          },
+        })
+        return false
+      }
+
+      if (!this.isValidFileSize(file)) {
+        Bus.error({
+          messageId: 'file-field.max-size-exceeded-err',
+          messageArgs: { maxSize: this.maxSize },
+        })
+        return false
+      }
+
+      return true
     },
 
     reset () {
@@ -253,6 +264,8 @@ export default {
 @import 'scss/variables';
 @import '~@scss/mixins';
 
+$z-reset-btn: 1;
+
 .file-field {
   display: flex;
   flex-direction: column;
@@ -263,6 +276,10 @@ export default {
   color: $field-color-unfocused;
 
   @include label-font-sizes;
+}
+
+.file-field__label--error {
+  color: $field-color-error;
 }
 
 .file-field__content {
@@ -276,25 +293,13 @@ export default {
   position: relative;
   min-height: 9.8rem;
 
-  &:not(.file-input--disabled):hover {
+  &:not(.file-field__content--disabled):hover {
     border-color: $field-color-text;
   }
 }
 
-input[type='file'] {
-  .file-input & {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-    opacity: 0;
-    height: 100%;
-    width: 100%;
-  }
-
-  &:not(.file-field__content--disabled):hover {
-    border-color: $field-color-text;
-  }
+.file-field__content--error {
+  border-color: $field-color-error;
 }
 
 .file-field__content--highlighted {
@@ -305,6 +310,53 @@ input[type='file'] {
 .file-field__content--disabled,
 .file-field__label--disabled {
   filter: grayscale(100%);
+}
+
+.file-field__icon {
+  color: $file-field-note-color;
+  font-size: 4.2rem;
+}
+
+.file-field__img-preview-wrp {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.file-field__img-preview {
+  padding: 0 5rem;
+  object-fit: contain;
+  width: 100%;
+  height: 15rem;
+  margin: auto;
+}
+
+.file-field__reset-btn {
+  position: absolute;
+  z-index: $z-reset-btn;
+  top: 0;
+  right: 0;
+  min-width: 3rem;
+  min-height: 3rem;
+  margin: 0.6rem;
+}
+
+.file-field__reset-icon {
+  font-size: 2.4rem;
+
+  &:before {
+    font-weight: 700;
+    vertical-align: middle;
+  }
+}
+
+.file-field__icon-preview {
+  font-size: 8rem;
+}
+
+.file-field__selected-file {
+  color: $file-field-note-color;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
 }
 
 .file-field__inner {
@@ -335,10 +387,14 @@ input[type='file'] {
   line-height: 2.2rem;
 }
 
-.file-field__selected-file {
-  color: $file-field-note-color;
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+.file-field__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .file-field__err-mes {
@@ -346,46 +402,5 @@ input[type='file'] {
   margin-top: $field-error-margin-top;
   font-size: $field-error-font-size;
   line-height: $field-error-line-height;
-}
-
-.file-field__icon {
-  color: $file-field-note-color;
-  font-size: 4.2rem;
-}
-
-.file-field__img-preview-wrp {
-  margin-top: 2rem;
-  width: 100%;
-}
-
-.file-field__img-preview {
-  padding: 0 5rem;
-  object-fit: contain;
-  width: 100%;
-  height: 15rem;
-  margin: auto;
-}
-
-.file-field__reset-btn {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  min-width: 3rem;
-  min-height: 3rem;
-  margin: 0.6rem;
-}
-
-.file-field__reset-icon {
-  font-size: 2.4rem;
-
-  &:before {
-    font-weight: 700;
-    vertical-align: middle;
-  }
-}
-
-.file-field__icon-preview {
-  font-size: 8rem;
 }
 </style>

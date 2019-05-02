@@ -1296,6 +1296,7 @@
       "upload-file-title": "Drag a file here or click to browse",
       "upload-another-file-title": "Drag another file here or click to browse",
       "no-file-selected-title": "No file selected",
+      "reset-btn-hint": "Remove file",
       "drop-file-title": "Drop the file here",
       "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
