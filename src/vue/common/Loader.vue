@@ -41,9 +41,10 @@ export default {
   height: 5rem;
   border-radius: 50%;
   position: relative;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 
-  &:after, &:before {
+  &:after,
+  &:before {
     content: '';
     position: absolute;
     left: 0;
@@ -53,8 +54,8 @@ export default {
     margin: auto;
     width: 3rem;
     height: 3rem;
-    border: .5rem solid transparent;
-    border-bottom: .5rem solid $col-loader-icon;
+    border: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid $col-loader-icon;
     border-radius: 50%;
     animation: rotate 1s linear infinite;
   }
@@ -67,7 +68,7 @@ export default {
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg) }
-  to { transform: rotate(360deg) }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>

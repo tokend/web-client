@@ -216,10 +216,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
-$custom-breakpoint: 985px;
+$media-custom-breakpoint: 985px;
 
 .trade-exchange__asset-selector-field {
   display: inline-block;
@@ -243,7 +243,7 @@ $custom-breakpoint: 985px;
 .trade-exchange__chart {
   margin-top: -2.4rem;
 
-  @include respond-to($custom-breakpoint) {
+  @include respond-to($media-custom-breakpoint) {
     margin-top: 0;
   }
 }
@@ -257,7 +257,7 @@ $custom-breakpoint: 985px;
   align-items: flex-start;
   flex-basis: 50%;
 
-  @include respond-to($custom-breakpoint) {
+  @include respond-to($media-custom-breakpoint) {
     flex-direction: column;
   }
 }
@@ -265,7 +265,7 @@ $custom-breakpoint: 985px;
 .trade-exchange__offers-list {
   width: 50%;
 
-  @include respond-to($custom-breakpoint) {
+  @include respond-to($media-custom-breakpoint) {
     max-width: 100%;
     width: 100%;
   }
@@ -273,7 +273,7 @@ $custom-breakpoint: 985px;
   &:not(:last-child) {
     margin-right: 1.6rem;
 
-    @include respond-to($custom-breakpoint) {
+    @include respond-to($media-custom-breakpoint) {
       margin-right: 0;
       margin-bottom: 1.6rem;
     }

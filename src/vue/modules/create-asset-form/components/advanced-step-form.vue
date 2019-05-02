@@ -230,7 +230,7 @@ export default {
 }
 
 .advanced-step-form__insert-account-id-btn {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
 }
 
 .advanced-step-form__pre-issuance-disclaimer {

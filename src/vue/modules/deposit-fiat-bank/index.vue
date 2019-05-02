@@ -356,14 +356,14 @@ export default {
 .deposit-fiat-bank__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.deposit-fiat-bank__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.deposit-fiat-bank__fee-table td:last-child {
+  text-align: right;
 }
 
 .deposit-fiat-bank__fee-tbody {

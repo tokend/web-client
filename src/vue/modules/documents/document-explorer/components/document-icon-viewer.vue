@@ -1,6 +1,6 @@
 <template>
   <p class="document-icon-viewer">
-    <i :class="iconClassName" />
+    <i :class="iconClassName" class="document-icon-viewer__icon" />
   </p>
 </template>
 
@@ -41,10 +41,10 @@ export default {
   justify-content: center;
   background: $col-document-icon-background;
   color: $col-document-icon-text;
+}
 
-  i {
-    font-size: 3.6rem;
-    display: inline-flex;
-  }
+.document-icon-viewer__icon {
+  font-size: 3.6rem;
+  display: inline-flex;
 }
 </style>

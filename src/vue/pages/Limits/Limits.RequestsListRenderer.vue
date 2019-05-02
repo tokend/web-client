@@ -185,10 +185,12 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
+
 .limits-requests-list-renderer__reload-requests-btn {
   margin-top: 1.6rem;
 }
+
 .limits-requests-list-renderer__table-cell-btn {
   // allows buttons to look good on mobile screens
   box-sizing: content-box;

@@ -251,61 +251,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-.document-manager {
-  &__inner {
-    display: flex;
+.document-manager__inner {
+  display: flex;
 
-    @include respond-to(xmedium) {
-      flex-direction: column;
-    }
+  @include respond-to(xmedium) {
+    flex-direction: column;
   }
-
-  &__document-info-wrp {
-    width: 50%;
-    max-width: 55rem;
-    margin-left: 2.5rem;
-    padding-left: 2.5rem;
-    border-left: 1px solid #aaa;
-
-    @include respond-to(xmedium) {
-      flex-direction: column;
-      margin-right: 0;
-      margin-bottom: 5rem;
-      max-width: 100%;
-      width: 100%;
-    }
-  }
-
-  &__header {
-    margin-bottom: 3rem;
-  }
-
-  &__right-section-wrp {
-    width: 50%;
-    max-width: 40rem;
-
-    @include respond-to(xmedium) {
-      width: 100%;
-    }
-  }
-
-  &__document-uploader-viewer-wrp {
-    margin-bottom: 3rem;
-  }
-
-  &__file-preview-wrp {
-    margin-bottom: 3rem;
-
-    @include respond-to(xmedium) {
-      display: none;
-    }
-  }
-
-  &__file-attributes-wrp { margin-bottom: 1.5rem }
-  &__state-checker-wrp { margin-bottom: 3rem }
-  &__comment-list-viewer-wrp { margin-top: 3rem }
-  &__add-comment-form-wrp { margin-top: 5rem }
 }
+
+.document-manager__document-info-wrp {
+  width: 50%;
+  max-width: 55rem;
+  margin-left: 2.5rem;
+  padding-left: 2.5rem;
+  border-left: 0.1rem solid $col-document-manager-border;
+
+  @include respond-to(xmedium) {
+    flex-direction: column;
+    margin-right: 0;
+    margin-bottom: 5rem;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+.document-manager__header { margin-bottom: 3rem; }
+
+.document-manager__right-section-wrp {
+  width: 50%;
+  max-width: 40rem;
+
+  @include respond-to(xmedium) {
+    width: 100%;
+  }
+}
+
+.document-manager__file-preview-wrp {
+  margin-bottom: 3rem;
+
+  @include respond-to(xmedium) {
+    display: none;
+  }
+}
+
+.document-manager__document-uploader-viewer-wrp { margin-bottom: 3rem; }
+.document-manager__file-attributes-wrp { margin-bottom: 1.5rem; }
+.document-manager__state-checker-wrp { margin-bottom: 3rem; }
+.document-manager__comment-list-viewer-wrp { margin-top: 3rem; }
+.document-manager__add-comment-form-wrp { margin-top: 5rem; }
 </style>

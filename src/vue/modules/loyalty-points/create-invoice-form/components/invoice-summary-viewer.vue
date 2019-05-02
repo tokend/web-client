@@ -73,16 +73,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .invoice-summary-viewer__table {
   margin-top: 1rem;
+}
 
-  table {
-    tr td:last-child {
-      text-align: right;
-    }
-  }
+.invoice-summary-viewer__table table tr td:last-child {
+  text-align: right;
 }
 
 .invoice-summary-viewer__link {

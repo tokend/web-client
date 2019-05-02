@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .sale-overview__asset-title {
   margin-bottom: 2rem;

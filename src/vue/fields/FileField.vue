@@ -250,8 +250,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "scss/variables";
-@import "~@scss/mixins";
+@import 'scss/variables';
+@import '~@scss/mixins';
 
 .file-field {
   display: flex;
@@ -261,21 +261,28 @@ export default {
 .file-field__label {
   font-size: 1.1rem;
   color: $field-color-unfocused;
+
   @include label-font-sizes;
 }
 
 .file-field__content {
   margin-top: 0.6rem;
-  border: .2rem dashed $file-field-border-color;
+  border: 0.2rem dashed $file-field-border-color;
   background-color: $file-field-background-color;
-  border-radius: .4rem;
-  transition: .2s;
+  border-radius: 0.4rem;
+  transition: 0.2s;
   width: 100%;
   text-align: center;
   position: relative;
   min-height: 9.8rem;
 
-  input[type='file'] {
+  &:not(.file-input--disabled):hover {
+    border-color: $field-color-text;
+  }
+}
+
+input[type='file'] {
+  .file-input & {
     position: absolute;
     top: 0;
     left: 0;
@@ -295,16 +302,13 @@ export default {
   border-color: $field-color-text;
 }
 
-.file-field__content--disabled, .file-field__label--disabled {
+.file-field__content--disabled,
+.file-field__label--disabled {
   filter: grayscale(100%);
-
-  input[type='file'] {
-    cursor: default;
-  }
 }
 
 .file-field__inner {
-  margin: 1rem 0rem;
+  margin: 1rem 0;
   overflow: hidden;
 }
 
@@ -312,16 +316,16 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
 
-  .file-field__title {
-    color: $field-color-text;
-    font-size: 1.8rem;
-  }
+.file-field__title {
+  color: $field-color-text;
+  font-size: 1.8rem;
+}
 
-  .file-field__subtitle {
-    color: $field-color-text;
-    font-size: 1.6rem;
-  }
+.file-field__subtitle {
+  color: $field-color-text;
+  font-size: 1.6rem;
 }
 
 .file-field__note {
@@ -355,7 +359,7 @@ export default {
 }
 
 .file-field__img-preview {
-  padding: 0rem 5rem;
+  padding: 0 5rem;
   object-fit: contain;
   width: 100%;
   height: 15rem;
@@ -376,7 +380,7 @@ export default {
   font-size: 2.4rem;
 
   &:before {
-    font-weight: bold;
+    font-weight: 700;
     vertical-align: middle;
   }
 }

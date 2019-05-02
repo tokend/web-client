@@ -82,7 +82,7 @@
             }}
           </template>
         </p>
-        <div class="app__form-actions">
+        <div class="submit-trade-offer-form__actions-wrapper">
           <button
             v-ripple
             v-if="isOwner"
@@ -213,13 +213,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './app-form';
+@import './app-form';
 
-  .submit-trade-offer-form__actions {
-    margin-top: 5rem;
+.submit-trade-offer-form__actions {
+  margin-top: 5rem;
+}
 
-    & > .app__form-actions {
-      margin-top: 1.6rem;
-    }
-  }
+.submit-trade-offer-form__actions-wrapper {
+  margin-top: 1.6rem;
+}
 </style>

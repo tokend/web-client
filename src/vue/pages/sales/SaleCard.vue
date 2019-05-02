@@ -128,13 +128,13 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .sale-card {
   cursor: pointer;
-  border-radius: .4rem;
-  box-shadow: 0 .5rem 1rem 0 $col-sale-card-shadow;
+  border-radius: 0.4rem;
+  box-shadow: 0 0.5rem 1rem 0 $col-sale-card-shadow;
   background-color: $col-sale-card-background;
   margin: 1rem;
   text-decoration: none;
@@ -144,7 +144,7 @@ export default {
 
 .sale-card__header {
   position: relative;
-  border-radius: .4rem .4rem 0rem 0rem;
+  border-radius: 0.4rem 0.4rem 0 0;
   height: 16rem;
   width: 100%;
   background-color: $col-sale-card-header-background;
@@ -155,7 +155,7 @@ export default {
 }
 
 .sale-card__logo {
-  border-radius: .4rem .4rem 0rem 0rem;
+  border-radius: 0.4rem 0.4rem 0 0;
   max-height: 100%;
   max-width: 100%;
   width: auto;
@@ -174,18 +174,19 @@ export default {
 
 .sale-card__name {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 700;
   color: $col-sale-card-text-primary;
 }
 
 .sale-card__desc {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-sale-card-text-primary;
 }
 
-.sale-card__name, .sale-card__desc {
+.sale-card__name,
+.sale-card__desc {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -193,20 +194,22 @@ export default {
 .sale-card__progress-bar {
   margin-top: 3rem;
   width: 100%;
-  height: .3rem;
+  height: 0.3rem;
   background-color: $col-sale-card-progress-bar-background;
+}
 
-  .sale-card__progress {
-    background: $col-sale-card-progress-bar-value;
-    height: 100%;
-  }
+.sale-card__progress {
+  background: $col-sale-card-progress-bar-value;
+  height: 100%;
 }
 
 .sale-card__funded {
-  margin-top: .9rem;
+  margin-top: 0.9rem;
 }
 
-.sale-card__funded, .sale-card__invested, .sale-card__days-to-launch {
+.sale-card__funded,
+.sale-card__invested,
+.sale-card__days-to-launch {
   font-size: 1.3rem;
   color: $col-sale-card-text-primary;
   line-height: 1.69;
@@ -217,8 +220,10 @@ export default {
   font-size: 1.4rem;
   color: $col-sale-card-text-primary;
 
+  /* stylelint-disable selector-nested-pattern */
   strong {
     color: $col-sale-card-text-bold;
   }
+  /* stylelint-enable selector-nested-pattern */
 }
 </style>
