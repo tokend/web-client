@@ -48,9 +48,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex/types'
 import Drawer from '@/vue/common/Drawer'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -101,19 +100,10 @@ export default {
     defaultAssetCode: 'PET',
     selectedItem: {},
   }),
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
   },
   methods: {
-    ...mapMutations('loyalty-points-invoices', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('loyalty-points-invoices', {
       loadBalances: types.LOAD_BALANCES,
     }),
