@@ -54,11 +54,9 @@ describe('Fees module', () => {
     store = new Vuex.Store({
       modules: {
         'fees': feesModule,
-        'wallet': {
+        'accountId': {
           getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
+            accountId: 'SOME_ACCOUNT_ID',
           },
         },
       },
@@ -71,24 +69,11 @@ describe('Fees module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sinon.stub(FeesModule.methods, 'setAccountId')
       sinon.stub(FeesModule.methods, 'loadFees')
     })
 
     afterEach(() => {
-      FeesModule.methods.setAccountId.restore()
       FeesModule.methods.loadFees.restore()
-    })
-
-    it('calls setAccountId method with correct params', async () => {
-      await shallowMount(FeesModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(FeesModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls loadFees method', async () => {

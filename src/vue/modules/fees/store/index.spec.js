@@ -6,7 +6,6 @@ import { Wallet } from '@tokend/js-sdk'
 import * as Api from '@/api'
 
 describe('fees.module', () => {
-  const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
   const fees = [
     {
       fixed: '1.000000',
@@ -17,16 +16,6 @@ describe('fees.module', () => {
   ]
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-
-      expect(state).to.deep.equal({ accountId })
-    })
-
     it('SET_ACCOUNT_FEES should properly modify state', () => {
       const state = {
         fees: [],
@@ -53,9 +42,8 @@ describe('fees.module', () => {
 
     beforeEach(() => {
       store = {
-        state: {},
-        getters: {
-          accountId,
+        rootGetters: {
+          accountId: 'ewqjkrqweqwejk',
         },
         commit: sinon.stub(),
         dispatch: sinon.stub(),
@@ -85,13 +73,6 @@ describe('fees.module', () => {
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId }
-
-      expect(getters[types.accountId](state))
-        .to.equal(accountId)
-    })
-
     it('fees', () => {
       const state = { fees }
 

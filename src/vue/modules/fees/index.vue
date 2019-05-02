@@ -22,7 +22,7 @@
 import FeesTable from './components/fees-table'
 import LoadSpinner from '@/vue/common/Loader'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -62,14 +62,9 @@ export default {
   },
 
   async created () {
-    this.setAccountId(this.wallet.accountId)
     await this.loadFees()
   },
   methods: {
-    ...mapMutations('fees', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('fees', {
       loadAccountFees: types.LOAD_ACCOUNT_FEES,
     }),
