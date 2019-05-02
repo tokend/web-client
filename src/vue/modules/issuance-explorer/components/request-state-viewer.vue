@@ -56,14 +56,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .request-state {
   padding-left: 1.5rem;
   position: relative;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 0.6rem;
     height: 0.6rem;

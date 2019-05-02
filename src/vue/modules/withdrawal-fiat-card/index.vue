@@ -357,14 +357,14 @@ export default {
 .withdrawal-fiat-card__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.withdrawal-fiat-card__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.withdrawal-fiat-card__fee-table td:last-child {
+  text-align: right;
 }
 
 .withdrawal-fiat-card__fee-tbody {

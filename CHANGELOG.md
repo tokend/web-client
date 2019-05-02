@@ -12,9 +12,120 @@ for further information about branching and tagging conventions.
 - Modularized:
   - Pre-issuance form
 
+## [1.6.0-rc.0] - 2019-05-02
+#### Added
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
+
+#### Changed
+- Now does not show multiple QR codes on Coinpayments deposit
+
 #### Fixed
-- Fixed a bug when with `defaultQuoteAsset` loading race condition
-- `preissuedAssetSigner` field on the create asset form
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
+
+## [1.6.0-x.2] - 2019-04-29
+#### Added
+- Re-render chart animation
+
+#### Changed
+- Now opening pre-issuance details link in new tab
+
+### Experimental features changes
+#### Fixed
+- Deposit fiat drawer displaying on REIT
+
+## [1.6.0-x.1] - 2019-04-26
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages
+
+#### Changed
+- Now using more modern animation for init loader
+- Now showing all the received points (360) on the chart
+- Now showing zero axis line, if chart has both negative and
+  positive values
+- Now using default d3 ticks calculation on chart axes, so the ticks count and
+  positions are not fixed now and ticks have more user-friendly values
+
+#### Fixed
+- Account verification using received link from e-mail
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-x.0
+- Now using "app__button-..." classes instead of button mixins
+
+### Experimental features changes
+#### Changed
+- Now selecting invoice point by loyalty account number (Loyalty)
+
+## [1.6.0-x.0] - 2019-04-24
+#### Added
+- Copy button next to email values
+
+#### Removed
+- Quitted building sourcemaps for production
+
+#### Fixed
+- Fixed calculating of percent delta on line chart
+- Fixed displaying of negative values on line chart
+- Fixed bunch of date field issues:
+  - Broken "disabled" state
+  - Broken manual input. If the user input invalid date manually the field
+    cleans up
+  - Broken key events (enter, escape, arrow navigation)
+- Fixed margin of Limits page, added "Current limits" subheading
+
+### "Under the hood" changes
+#### Changed
+- Now running WDS on a nearest non-busy port. No more `EADDRINUSE` for us
+- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component),
+  but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
+
+#### Fixed
+- Fixed a bug when with initial app configuration loading at the start if the
+  user was logged in but the session still not expired
+- Fixed a bug with absent preloading of account balance in Coinpayments deposit
+  form
+- Make `<email-getter>` be inlined flex
+
+### Experimental features changes
+#### Added
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+- Account number field to the invoice form (Loyalty)
+
+#### Changed
+- Use select field instead of table for acceptable points on
+  create invoice form (Loyalty)
+- Now sending payment transaction to the external system instead of
+  creating a blob (Loyalty)
+- Corrected statistics charts data (Loyalty)
+
+#### Fixed
+- Polling when creating an invoice (Loyalty)
+- Invoice transaction source account (Loyalty)
+- Displaying incoming withdrawal requests (Loyalty)
+
+## [1.5.0] - 2019-04-19
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0
+>>>>>>> master
 
 ## [1.5.0-rc.3] - 2019-04-19
 ### "Under the hood changes"
@@ -23,16 +134,16 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.2] - 2019-04-19
 #### Added
-! Displaying of limit request details in drawer
+- Displaying of limit request details in drawer
 
 #### Changed
-! Show limits request list on top of other limits on "Limits" page
-! "Issuance" labels on Issuance page renamed to "Issuance requests"
+- Show limits request list on top of other limits on "Limits" page
+- "Issuance" labels on Issuance page renamed to "Issuance requests"
 
 #### Removed
 - Dupe team size and website fields on corporate verification
 - Displaying investors quantity in sale details
-! Opera from noscript
+- Opera from noscript
 
 #### Fixed
 - Fixed a bug with unsubmitted transfer form
@@ -56,8 +167,8 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
-! Displaying of blocked account role
-! Displaying of permanently rejected verification request state
+- Displaying of blocked account role
+- Displaying of permanently rejected verification request state
 
 ### "Under the hood" changes
 #### Changed
@@ -68,42 +179,42 @@ for further information about branching and tagging conventions.
 
 ## [1.5.0-rc.0] - 2019-04-16
 #### Added
-! Displaying of feedback message after successful verification request submitting
+- Displaying of feedback message after successful verification request submitting
 - Displaying of available base asset amount on sale creation form
-! Displaying of issuance status in issuances list
+- Displaying of issuance status in issuances list
 - Polling ticker of order book
 - URL validation of Homepage field of corporate verification form
-! User auto-logout on idle activity
+- User auto-logout on idle activity
 - Auto-populating of limit change request forms
-! Two-factor validation on login & change password forms
-! Enabling/disabling 2FA form in "Settings" page
-! Disclaimer message about pre-issuance asset signer if press "Use mine" button
+- Two-factor validation on login & change password forms
+- Enabling/disabling 2FA form in "Settings" page
+- Disclaimer message about pre-issuance asset signer if press "Use mine" button
 
 #### Changed
-! Movement list items displaying changes:
+- Movement list items displaying changes:
   - Display total fee
   - Display operation summary (type, operation and date)
   - Display fee information only if total fee is bigger than zero
-! Redesigned recovery seed page:
+- Redesigned recovery seed page:
   - Added warning message
   - Some minor design adjustments
   - Use redesigned clipboard field with a bit darken background
-! Redesigned verification state message
-! Redesigned clipboard field
-! Redesigned feedback status message
+- Redesigned verification state message
+- Redesigned clipboard field
+- Redesigned feedback status message
 - Renamed "Fund(s)" to "Sale(s)" and "Token(s)" to "Asset(s)"
 - Renamed "Pre-issued asset signer" to "Pre-issuance asset signer"
-! Hide "Withdraw" and "Deposit" buttons accordingly to selected assets’ policies
+- Hide "Withdraw" and "Deposit" buttons accordingly to selected assets’ policies
   on "Movements" page
 - Increased width of "Already in your balances" to prevent its wrapping
 - Made warning color (orange) a bit brighter
 - Now support inserting both of YouTube video link and YouTube video ID on
   sale creating form
-! Now sorting balances on "Balances" page in desc order by total balance
+- Now sorting balances on "Balances" page in desc order by total balance
   converted to default quote asset
 
 #### Removed
-! "Fee" column from the movements table
+- "Fee" column from the movements table
 
 #### Fixed
 - Fixed disabled state of form stepper tabs, disallow attending of pass steps
@@ -311,7 +422,12 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
+[1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
+[1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
+[1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
+[1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
 [1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
 [1.5.0-rc.2]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...1.5.0-rc.1
@@ -320,6 +436,6 @@ for further information about branching and tagging conventions.
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
-[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
+[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

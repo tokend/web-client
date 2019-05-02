@@ -3,8 +3,6 @@ import { PreIssuanceRequest } from '../wrappers/pre-issuance-request'
 import { types } from './types'
 import { api } from '../_api'
 
-const HORIZON_VERSION_PREFIX = 'v3'
-
 export const state = {
   accountId: '',
   requests: [],
@@ -25,7 +23,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ getters }) {
-    const endpoint = `/${HORIZON_VERSION_PREFIX}/create_pre_issuance_requests`
+    const endpoint = '/v3/create_pre_issuance_requests'
     return api().getWithSignature(endpoint, {
       page: {
         order: 'desc',

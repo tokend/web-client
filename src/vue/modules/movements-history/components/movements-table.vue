@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 @import '../scss/variables';
 
 .movements-table {
@@ -75,7 +75,7 @@ export default {
   border-spacing: 0 0.6rem;
   border-color: transparent;
   overflow-x: auto;
-  padding: 0.4rem 0.4rem;
+  padding: 0.4rem;
 }
 
 .movements-table__head-cell {
@@ -86,7 +86,7 @@ export default {
   text-align: left;
   font-size: 1.4rem;
   color: $col-text-secondary;
-  font-weight: normal;
+  font-weight: 400;
   width: $movements-table-cell-width;
 
   &--direction {

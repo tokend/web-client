@@ -73,8 +73,8 @@ $media-small: 460px;
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: -1;
-  background-color: rgba(0, 0, 0, 0.1)
+  z-index: $z-drawer-backdrop;
+  background-color: $col-drawer-backdrop-bg;
 }
 
 .drawer__close-btn {
@@ -89,7 +89,7 @@ $media-small: 460px;
 .drawer__close-icon {
   display: flex;
   font-size: 2.4rem;
-  margin-top: -.2rem; // magic value to align icon in the center
+  margin-top: -0.2rem; // magic value to align icon in the center
 
   &:before {
     font-weight: 700;
@@ -105,7 +105,7 @@ $media-small: 460px;
   max-width: 100%;
   min-height: 100%;
   height: 100%;
-  box-shadow: 0 1rem 2rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1rem 2rem 0 $col-drawer-backdrop-bg;
   display: flex;
   flex-direction: column;
 }
@@ -144,13 +144,21 @@ $media-small: 460px;
 }
 
 .drawer-transition-enter-active {
-  animation-duration: .2s;
+  animation-duration: 0.2s;
+
+  /*
+    Disabled because with this nesting we can shiny see where this animation
+    used
+  */
+  /* stylelint-disable selector-nested-pattern */
   & > .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out;
   }
+
   & > .drawer__pane {
     animation: drawer-pane-keyframes 0.2s ease-in-out;
   }
+  /* stylelint-enable selector-nested-pattern */
 }
 
 .drawer-transition-leave-active {
@@ -159,29 +167,33 @@ $media-small: 460px;
     to prevent animation flickering after animation ended
     but the element still present
   */
-  animation-duration: .13s;
+  animation-duration: 0.13s;
+
+  /*
+    Disabled because with this nesting we can shiny see where this animation
+    used
+  */
+  /* stylelint-disable selector-nested-pattern */
   & > .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out reverse;
   }
+
   & > .drawer__pane {
     animation: drawer-pane-keyframes 0.2s ease-in-out reverse;
   }
+  /* stylelint-enable selector-nested-pattern */
 }
 
 @keyframes drawer-backdrop-keyframes {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
 @keyframes drawer-pane-keyframes {
   from {
     opacity: 0;
     transform: translateX(100%);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);

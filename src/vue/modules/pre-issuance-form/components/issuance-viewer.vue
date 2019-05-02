@@ -37,11 +37,9 @@ export default {
 <style lang="scss" scoped>
 .issuance-viewer__table {
   margin-top: 1rem;
+}
 
-  table {
-    tr td:last-child {
-      text-align: right;
-    }
-  }
+.issuance-viewer__table table tr td:last-child {
+  text-align: right;
 }
 </style>

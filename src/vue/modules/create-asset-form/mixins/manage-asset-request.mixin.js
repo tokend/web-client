@@ -71,7 +71,6 @@ export default {
         this.advancedStepForm.terms,
       ]
       await this.uploadDocuments(assetDocuments)
-
       const operation =
           base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
       await api().postOperations(operation)
