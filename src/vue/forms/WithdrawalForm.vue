@@ -53,7 +53,7 @@
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
                 available: form.asset.balance.value,
-                maxDecimalDigitsCount: DECIMAL_POINTS,
+                maxDecimalDigitsCount: trailingDigitsCount,
                 minValue: selectedAssetStep
               })"
             />
@@ -244,7 +244,6 @@ export default {
     feesDebouncedRequest: null,
     isFeesLoadPending: false,
     isFeesLoadFailed: false,
-    DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
   }),
   validations () {
@@ -260,7 +259,9 @@ export default {
           noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
             this.form.asset.balance.value
           ),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
+          maxDecimalDigitsCount: maxDecimalDigitsCount(
+            this.trailingDigitsCount
+          ),
           minValue: minValue(this.selectedAssetStep),
         },
         address: this.isMasterAssetOwner ? addressRules : {},
@@ -277,9 +278,16 @@ export default {
       return this.form.asset.owner === Sdk.networkDetails.adminAccountId
     },
 
+    trailingDigitsCount () {
+      return this.assets
+        .find(asset => asset.code === this.form.asset.code)
+        .trailingDigitsCount || config.DECIMAL_POINTS
+    },
+
     selectedAssetStep () {
-      // eslint-disable-next-line
-      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
+      return inputStepByDigitsCount(
+        this.form.asset.trailingDigitsCount
+      ) || config.MIN_AMOUNT
     },
   },
   watch: {
