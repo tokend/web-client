@@ -33,7 +33,6 @@ import IssuancesTable from './components/issuances-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -64,12 +63,8 @@ export default {
 
   computed: {
     ...mapGetters('issuance-explorer', {
-      accountId: types.accountId,
       issuances: types.issuances,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
 
   watch: {
@@ -82,8 +77,6 @@ export default {
   },
 
   created () {
-    this.setAccountId(this.wallet.accountId)
-
     this.initFirstPageLoader()
   },
   methods: {

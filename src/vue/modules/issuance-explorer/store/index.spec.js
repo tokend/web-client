@@ -21,18 +21,6 @@ describe('issuance-explorer.module', () => {
   ]
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-
-      expect(state).to.deep.equal({
-        accountId,
-      })
-    })
-
     it('SET_ISSUANCES should properly modify state', () => {
       const state = {
         issuances: [],
@@ -87,7 +75,7 @@ describe('issuance-explorer.module', () => {
 
         sinon.stub(Api.api(), 'getWithSignature').resolves()
 
-        await actions[types.LOAD_ISSUANCES]({ getters: { accountId } })
+        await actions[types.LOAD_ISSUANCES]({ rootGetters: { accountId } })
 
         expect(Api.api().getWithSignature)
           .to.have.been.calledOnceWithExactly(
@@ -101,13 +89,6 @@ describe('issuance-explorer.module', () => {
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId }
-
-      expect(getters[types.accountId](state))
-        .to.equal(accountId)
-    })
-
     it('issuances', () => {
       const state = { issuances }
 

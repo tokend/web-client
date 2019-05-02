@@ -22,34 +22,11 @@ describe('Issuance explorer module', () => {
     store = new Vuex.Store({
       modules: {
         'issuance-explorer': issuanceExplorerModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })
 
   describe('created hook', () => {
-    it('calls setAccountId method', () => {
-      sinon.stub(IssuanceExplorerModule.methods, 'setAccountId')
-
-      shallowMount(IssuanceExplorerModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(IssuanceExplorerModule.methods.setAccountId
-        .withArgs('SOME_ACCOUNT_ID')
-      ).to.have.been.calledOnce
-
-      IssuanceExplorerModule.methods.setAccountId.restore()
-    })
-
     it('calls initFirstPageLoader method', () => {
       sinon.stub(IssuanceExplorerModule.methods, 'initFirstPageLoader')
 
