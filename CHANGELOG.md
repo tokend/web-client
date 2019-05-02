@@ -8,6 +8,8 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
+## [1.6.0-rc.0] - 2019-05-02
 #### Added
 - Displaying of fees in invest form
 - Displaying of a banner with block reason on every screen (for blocked users only)
@@ -24,6 +26,10 @@ for further information about branching and tagging conventions.
 ### "Under the hood" changes
 #### Added
 - `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
 
 #### Fixed
 - Invalid opts of `preissuedAssetAmount` when creating an asset
@@ -412,7 +418,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
