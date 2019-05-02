@@ -190,7 +190,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 
@@ -264,10 +264,9 @@ export default {
     ...mapGetters('movements-top-bar-reit', {
       balances: types.balances,
       assets: types.assets,
-      accountId: types.accountId,
     }),
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
     isOwnedAsset () {
       return this.asset.owner.id === this.accountId
@@ -285,16 +284,12 @@ export default {
   async created () {
     this.setUpConfigs()
 
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('movements-top-bar-reit', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('movements-top-bar-reit', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
