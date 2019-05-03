@@ -10,6 +10,14 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Lazy loading feedback (nprogress loader)
+- Display fees in invest form
+- General verification form module (included in vanilla scheme only)
+- `usVerified` and `usAccredited` roles to key/value module
+- `Passport` is now able to show US verified and US accredited user roles
+- Users with US verified and US accredited roles will now also be redirected to general form
+- Security asset type
+- Show banner for blocked user
+- Validator of available for issuance amount
 
 #### Changed
 - More cutier animation for init loader 
