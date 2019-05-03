@@ -25,7 +25,7 @@
         <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule) && asset.isWithdrawable">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar__button-raised"
+            class="app__button-raised movements-top-bar__actions-btn"
             @click="isWithdrawalDrawerShown = true"
           >
             <i class="mdi mdi-download movements-top-bar__btn-icon" />
@@ -37,7 +37,7 @@
         <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule) && asset.isDepositable">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar__button-raised"
+            class="app__button-raised movements-top-bar__actions-btn"
             @click="isDepositDrawerShown = true"
           >
             <i class="mdi mdi-upload movements-top-bar__btn-icon" />
@@ -49,11 +49,18 @@
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar__button-raised"
+            class="app__button-raised movements-top-bar__actions-btn"
             @click="isTransferDrawerShown = true"
           >
-            <!-- eslint-disable-next-line max-len -->
-            <i class="mdi mdi-rotate-315 mdi-transfer movements-top-bar__btn-icon" />
+            <i
+              class="
+                mdi
+                mdi-rotate-315
+                mdi-transfer
+                movements-top-bar__btn-icon
+                movements-top-bar__btn-icon--rotate-315
+              "
+            />
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
@@ -194,32 +201,33 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .movements-top-bar__actions {
   display: flex;
   justify-content: space-between;
+}
 
-  button {
-    margin-right: 1.2rem;
-    &:last-child {
-      margin-right: 0;
-    }
+.movements-top-bar__actions-btn {
+  margin-right: 1.2rem;
+
+  &:last-child {
+    margin-right: 0;
   }
 }
 
-.movements-top-bar__button-raised.app__button-raised {
+.movements-top-bar__actions-btn.app__button-raised {
   line-height: 1;
 }
 
 .movements-top-bar__btn-icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
+}
 
-  &.mdi-rotate-315 {
-    transform: translateY(-0.2rem);
-  }
+.movements-top-bar__btn-icon--rotate-315 {
+  transform: translateY(-0.2rem);
 }
 
 .movements-top-bar__filters {

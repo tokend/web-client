@@ -255,8 +255,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "scss/variables";
-@import "@/scss/mixins";
+@import 'scss/variables';
+@import '@/scss/mixins';
 
 .select-field {
   width: 100%;
@@ -278,14 +278,19 @@ export default {
   @include material-border(
     $field-color-focused,
     $field-color-unfocused,
-    "&.select-field__selected--focused"
+    '&.select-field__selected--focused'
   );
-
   @include text-font-sizes;
 
-  &.select-field__selected--padding {
-    padding: $field-input-padding;
+  .select-field--disabled > & {
+    cursor: default;
+
+    @include readonly-material-border($field-color-unfocused);
   }
+}
+
+.select-field__selected--padding {
+  padding: $field-input-padding;
 }
 
 .select-field__selected-icon {
@@ -297,10 +302,10 @@ export default {
   &:before {
     transition: transform 0.2s ease-out;
   }
+}
 
-  &.select-field__selected-icon--active:before {
-    transform: rotate(-180deg);
-  }
+.select-field__selected-icon--active:before {
+  transform: rotate(-180deg);
 }
 
 .select-field__selected-value {
@@ -310,8 +315,13 @@ export default {
   background-color: transparent;
   border: none;
   color: $field-color-text;
-  @include text-font-sizes;
   cursor: pointer;
+
+  @include text-font-sizes;
+
+  .select-field--disabled > .select-field__selected > & {
+    color: $field-color-unfocused;
+  }
 }
 
 .select-field__label {
@@ -327,16 +337,6 @@ export default {
 
 .select-field--disabled {
   filter: grayscale(100%);
-
-  & > .select-field__selected {
-    cursor: default;
-
-    @include readonly-material-border($field-color-unfocused);
-
-    & > .select-field__selected-value {
-      color: $field-color-unfocused;
-    }
-  }
 }
 
 .select-field--focused > .select-field__label {
@@ -364,7 +364,7 @@ export default {
   top: 100%;
   background-color: $col-dropdown-bg;
   border-radius: 0.3rem;
-  z-index: 5;
+  z-index: $z-index-select-field-list;
   max-height: 24.4rem;
   overflow-y: auto;
   padding: 0.8rem 0;
@@ -390,6 +390,7 @@ export default {
   text-overflow: ellipsis;
   text-align: left;
   background-color: transparent;
+
   &:not(.select-field__list-item--selected):hover {
     background-color: $col-select-field-hover-background;
   }

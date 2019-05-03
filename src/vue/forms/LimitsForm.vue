@@ -372,7 +372,7 @@ export default {
 
 .limits-form__form-subheading {
   margin-top: 3.2rem;
-  margin-bottom: -.8rem;
+  margin-bottom: -0.8rem;
 }
 
 .limits__assets-select {

@@ -650,8 +650,8 @@ export default {
 
 <style lang="scss">
 @import './app-form';
-@import "~@scss/variables";
-
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .invest-form__amount-hint {
   p {
     font-size: 1.2rem;
@@ -661,7 +661,10 @@ export default {
     color: $col-text-highlighted;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .invest-form__current-investment {
   margin-top: 2rem;
 
@@ -673,27 +676,28 @@ export default {
     color: $col-text-highlighted;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .invest-form__actions {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: -.5rem;
+  margin: -0.5rem;
 }
 
 .invest-form__submit-btn {
-  margin: .5rem;
+  margin: 0.5rem;
   max-width: 18rem;
   width: 100%;
 }
 
 .invest-form__cancel-btn {
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   max-width: 13rem;
-  margin: .5rem;
+  margin: 0.5rem;
 
-  &[disabled] {
+  &:disabled {
     filter: grayscale(100%);
     cursor: default;
   }
