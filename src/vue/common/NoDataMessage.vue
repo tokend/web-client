@@ -1,8 +1,16 @@
 <template>
   <div class="no-data-message">
-    <i v-if="iconName" :class="`mdi mdi-${iconName}`" />
-    <h2>{{ title }}</h2>
-    <p>{{ message }}</p>
+    <i
+      v-if="iconName"
+      :class="`mdi mdi-${iconName}`"
+      class="no-data-message__icon"
+    />
+    <h2 class="no-data-message__title">
+      {{ title }}
+    </h2>
+    <p class="no-data-message__message">
+      {{ message }}
+    </p>
     <slot />
   </div>
 </template>
@@ -19,23 +27,26 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
+
 .no-data-message {
   text-align: center;
   max-width: 52rem;
   margin: 0 auto;
-  padding: 0 .8rem;
+  padding: 0 0.8rem;
+}
 
-  h2 {
-    margin-bottom: .8rem;
-    color: $col-no-data-message-text;
-  }
-  p {
-    color: $col-no-data-message-description;
-  }
-  i {
-    color: $col-no-data-message-icon-color;
-    font-size: 6.4rem;
-  }
+.no-data-message__title {
+  margin-bottom: 0.8rem;
+  color: $col-no-data-message-text;
+}
+
+.no-data-message__message {
+  color: $col-no-data-message-description;
+}
+
+.no-data-message__icon {
+  color: $col-no-data-message-icon-color;
+  font-size: 6.4rem;
 }
 </style>

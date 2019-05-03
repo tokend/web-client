@@ -37,17 +37,4 @@ describe('UpdateKycRequestRecord', () => {
       .not
       .equal(undefined)
   })
-
-  it('externalDetails.rejector field', () => {
-    const record = getRecord()
-
-    expect(record.rejector)
-      .to
-      .equal(updateKycJSON.data[0].attributes.external_details.data[0].rejector)
-
-    expect(record.rejector)
-      .to
-      .not
-      .equal(undefined)
-  })
 })

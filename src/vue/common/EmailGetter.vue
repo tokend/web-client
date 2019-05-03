@@ -30,7 +30,7 @@
 
     <button
       v-show="isCopyButton && !isMasterAccount && !isLoading"
-      class="email-getter__copy-button"
+      class="email-getter__copy-button  app__button-icon"
       :id="`clipboard-btn-${_uid}`"
       :data-clipboard-text="email || accountId || balanceId"
       @click="changeBtnIcon"
@@ -153,42 +153,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
-  @import "~@scss/mixins";
-  .email-getter {
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: center;
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-    &--justify-end {
-      justify-content: flex-end;
-    }
+.email-getter {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-    &__value {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+.email-getter--justify-end {
+  justify-content: flex-end;
+}
 
-    &__copy-button {
-      @include button-icon();
-      color: $col-primary-inactive;
-      margin-left: .5rem;
-      min-height: 1rem;
-      min-width: 1rem;
-      transition: .1s ease-out;
-      padding: 0;
+.email-getter__value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-      &:hover {
-        color: darken($col-primary-inactive, 20%);
-        background: none;
-      }
-    }
+.email-getter__copy-button {
+  color: $col-primary-inactive;
+  margin-left: 0.5rem;
+  min-height: 1rem;
+  min-width: 1rem;
+  transition: 0.1s ease-out;
+  padding: 0;
 
-    &__icon {
-      &::before {
-        vertical-align: middle;
-      }
-    }
+  &:hover {
+    color: $col-primary-inactive-hover-darken;
+    background: none;
   }
+}
+
+.email-getter__icon {
+  &:before {
+    vertical-align: middle;
+  }
+}
 </style>

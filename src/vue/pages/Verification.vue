@@ -23,7 +23,9 @@
                 | globalize }}
             </p>
             <div class="account-type-selector__selected-icon">
-              <i class="mdi mdi-check" />
+              <i
+                class="mdi mdi-check account-type-selector__selected-icon-tag"
+              />
             </div>
           </router-link>
 
@@ -90,6 +92,10 @@ function verificationGuard (to, from, next) {
   const kycState = store.getters[vuexTypes.kycState]
   const kycAccountRole = store.getters[vuexTypes.kycAccountRoleToSet]
   const kvEntryCorporateRoleId = store.getters[vuexTypes.kvEntryCorporateRoleId]
+  const kvEntryUsVerifiedRoleId =
+    store.getters[vuexTypes.kvEntryUsVerifiedRoleId]
+  const kvEntryUsAccreditedRoleId =
+    store.getters[vuexTypes.kvEntryUsAccreditedRoleId]
   const kvEntryGeneralRoleId = store.getters[vuexTypes.kvEntryGeneralRoleId]
 
   if (!kycState || kycState === REQUEST_STATES_STR.permanentlyRejected) {
@@ -102,6 +108,8 @@ function verificationGuard (to, from, next) {
           : next(vueRoutes.verificationCorporate)
         break
       case kvEntryGeneralRoleId:
+      case kvEntryUsVerifiedRoleId:
+      case kvEntryUsAccreditedRoleId:
         to.name === vueRoutes.verificationGeneral.name
           ? next()
           : next(vueRoutes.verificationGeneral)
@@ -170,8 +178,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .verification__subtitle {
   color: $col-primary;
@@ -182,10 +190,6 @@ export default {
 .account-type-selector {
   margin-top: 1rem;
   display: flex;
-
-  & > :not(:first-child) {
-    margin-left: 1.6rem;
-  }
 }
 
 .account-type-selector__item {
@@ -202,20 +206,20 @@ export default {
 
   @include box-shadow();
 
-  &[disabled] {
+  &:disabled {
     opacity: 0.7;
     cursor: default;
     box-shadow: none;
     filter: grayscale(100%);
   }
+
+  &:not(:first-child) {
+    margin-left: 1.6rem;
+  }
 }
 
 .router-link-exact-active {
-  border: .2rem solid $col-primary-lighten;
-
-  .account-type-selector__selected-icon {
-    visibility: visible;
-  }
+  border: 0.2rem solid $col-primary-lighten;
 }
 
 .account-type-selector__item-title {
@@ -224,7 +228,7 @@ export default {
 }
 
 .account-type-selector__item-description {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
   color: $col-secondary;
   font-size: 1.2rem;
   text-align: center;
@@ -233,19 +237,23 @@ export default {
 .account-type-selector__selected-icon {
   width: 2.4rem;
   height: 2.4rem;
-  padding: .2rem;
+  padding: 0.2rem;
   background-color: $col-block-bg;
-  border: .2rem solid $col-primary-lighten;
+  border: 0.2rem solid $col-primary-lighten;
   border-radius: 2rem;
   top: -1.2rem;
   right: -1.2rem;
   position: absolute;
   visibility: hidden;
 
-  i {
-    font-size: 1.6rem;
-    color: $col-primary-lighten;
+  .router-link-exact-active & {
+    visibility: visible;
   }
+}
+
+.account-type-selector__selected-icon-tag {
+  font-size: 1.6rem;
+  color: $col-primary-lighten;
 }
 
 .verification__form-label {

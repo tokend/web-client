@@ -4,6 +4,7 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const StylelintPlugin = require('stylelint-webpack-plugin')
 const portfinder = require('portfinder')
 const defaultPort = 8095
 
@@ -50,8 +51,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
     }),
+    new StylelintPlugin({
+      files: ['src/**/*.{vue,css,scss}'],
+      syntax: 'scss',
+    }),
     new FriendlyErrorsPlugin(),
-  ]
+  ],
 })
 
 module.exports = async () => {
