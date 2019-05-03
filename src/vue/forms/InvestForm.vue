@@ -42,7 +42,11 @@
               })"
               :error-message="getFieldErrorMessage(
                 'form.amount',
-                { from: MIN_AMOUNT, to: availableAmount.value }
+                {
+                  from: MIN_AMOUNT,
+                  to: availableAmount.value,
+                  maxDecimalDigitsCount: trailingDigitsCount,
+                }
               )"
               :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
@@ -163,7 +167,8 @@
       <div class="app__form-actions">
         <template
           v-if="currentInvestment.offerId &&
-            view.mode === VIEW_MODES.submit">
+            view.mode === VIEW_MODES.submit"
+        >
           <button
             v-ripple
             type="button"
@@ -188,9 +193,10 @@
             v-ripple
             v-if="view.mode === VIEW_MODES.submit"
             click="submit"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="formMixin.isDisabled"
-            form="invest-form">
+            form="invest-form"
+          >
             {{ 'invest-form.continue-btn' | globalize }}
           </button>
         </template>
@@ -255,7 +261,11 @@ import { base, FEE_TYPES } from '@tokend/js-sdk'
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import { required, amountRange } from '@validators'
+import {
+  required,
+  amountRange,
+  maxDecimalDigitsCount,
+} from '@validators'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -325,6 +335,9 @@ export default {
         amount: {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          maxDecimalDigitsCount: maxDecimalDigitsCount(
+            this.trailingDigitsCount
+          ),
         },
       },
     }
@@ -342,6 +355,11 @@ export default {
       isAccountUsVerified: vuexTypes.isAccountUsVerified,
       balances: vuexTypes.accountBalances,
     }),
+    trailingDigitsCount () {
+      return this.quoteAssetListValues
+        .find(asset => this.form.asset === asset)
+        .trailingDigitsCount || 0
+    },
 
     quoteAssetBalances () {
       let quoteAssetBalances = []
@@ -454,7 +472,6 @@ export default {
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }
-
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
