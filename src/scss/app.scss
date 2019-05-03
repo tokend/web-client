@@ -3,6 +3,7 @@
 @import '../../static/fonts/index.css';
 @import '../../node_modules/@mdi/font/css/materialdesignicons.min.css';
 @import '../../node_modules/flatpickr/dist/flatpickr.css';
+@import '../../node_modules/nprogress/nprogress.css';
 
 * {
   box-sizing: border-box;
@@ -401,4 +402,8 @@ h6.app__page-heading {
       background-size: 0 !important;
     }
   }
+}
+
+#nprogress {
+  z-index: 5;
 }

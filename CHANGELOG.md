@@ -8,6 +8,9 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Lazy loading feedback (nprogress loader)
+
 #### Changed
 - More cutier animation for init loader 
 - Now selecting invoice point by loyalty account number (Loyalty)
