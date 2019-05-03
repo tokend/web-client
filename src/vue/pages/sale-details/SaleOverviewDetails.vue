@@ -104,12 +104,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
-.sale-overview-details {
-  tr td:last-child {
-    text-align: right;
-  }
+.sale-overview-details tr td:last-child {
+  text-align: right;
 }
 
 .sale-overview-details__video-btn {

@@ -6,7 +6,7 @@
 
     <form
       novalidate
-      class="app-form"
+      class="app-form verification-corporate-form__tag"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
@@ -120,7 +120,7 @@
           v-ripple
           v-else
           type="submit"
-          class="verification-corporate-form__submit-btn"
+          class="verification-corporate-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'verification-form.submit-btn' | globalize }}
@@ -302,9 +302,15 @@ export default {
   margin-top: 4rem;
 }
 
-.verification-corporate-form__submit-btn {
-  @include button-raised();
+.verification-corporate-form__tag {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
 
+  @include box-shadow();
+}
+
+.verification-corporate-form__submit-btn {
   margin-right: auto;
   width: 100%;
   max-width: 20rem;
@@ -313,15 +319,5 @@ export default {
 .verification-corporate-form__account-info-title {
   color: $col-primary;
   font-size: 1.3rem;
-}
-
-.verification-corporate-form {
-  form {
-    margin-top: 1rem;
-    background-color: $col-block-bg;
-    padding: 2.4rem;
-
-    @include box-shadow();
-  }
 }
 </style>

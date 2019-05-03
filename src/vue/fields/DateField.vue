@@ -242,7 +242,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "scss/variables";
+@import 'scss/variables';
 
 .date-field-flatpickr {
   position: relative;
@@ -290,27 +290,27 @@ export default {
     @include placeholder;
     opacity: 0;
   }
+}
 
-  &.active {
-    &::-webkit-input-placeholder {
-      opacity: 1;
-    }
+.date-field-flatpickr__input.active {
+  &::-webkit-input-placeholder {
+    opacity: 1;
+  }
 
-    &::-moz-placeholder {
-      opacity: 1;
-    }
+  &::-moz-placeholder {
+    opacity: 1;
+  }
 
-    &:-moz-placeholder {
-      opacity: 1;
-    }
+  &:-moz-placeholder {
+    opacity: 1;
+  }
 
-    &:-ms-input-placeholder {
-      opacity: 1;
-    }
+  &:-ms-input-placeholder {
+    opacity: 1;
+  }
 
-    &::placeholder {
-      opacity: 1;
-    }
+  &::placeholder {
+    opacity: 1;
   }
 }
 
@@ -319,10 +319,6 @@ export default {
   filter: grayscale(100%);
   -webkit-text-fill-color: $field-color-unfocused;
   color: $field-color-unfocused;
-
-  & ~ .input-field__label {
-    filter: grayscale(100%);
-  }
 }
 
 .date-field-flatpickr__label {
@@ -332,11 +328,13 @@ export default {
   transition: all $field-transition-duration;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include text-font-sizes;
 }
 
 .date-field-flatpickr__label--focus {
   top: 0;
+
   @include label-font-sizes;
 }
 

@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .invoice-state-viewer--successful {
   color: $col-success;

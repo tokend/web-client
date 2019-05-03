@@ -68,6 +68,7 @@ export default {
 .document-uploader-viewer__uploader {
   line-height: 2rem;
 }
+
 .document-uploader-viewer__lbl {
   color: $col-document-uploader-text-unlighten;
   font-style: italic;

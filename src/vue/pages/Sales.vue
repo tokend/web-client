@@ -139,8 +139,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 /*
  * TODO: break this section down. children modules should know anything
@@ -179,11 +179,9 @@ export default {
   @include respond-to($large) {
     flex: 0 1 calc(33.3% - 2rem);
   }
-
   @include respond-to($x-medium) {
     flex: 0 1 calc(50% - 2rem);
   }
-
   @include respond-to($x-small) {
     flex: 0 1 calc(100% - 2rem);
   }
@@ -193,9 +191,7 @@ export default {
   margin-top: 1rem;
 }
 
-.sales__drawer {
-  & .drawer__pane{
-    width: 50%;
-  }
+.sales__drawer .drawer__pane {
+  width: 50%;
 }
 </style>

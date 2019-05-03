@@ -120,7 +120,7 @@ $avatar-size: 5rem;
 $avatar-margin-right: 1.8rem;
 
 .signer-list-item {
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   padding: 1.5rem 0;
 }
 
@@ -161,11 +161,11 @@ $avatar-margin-right: 1.8rem;
 .signer-list-item__email {
   font-weight: 500;
   font-size: 1.6rem;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
+}
 
-  .signer-list-item__you-lbl {
-    color: $col-signer-list-item-rule-text;
-  }
+.signer-list-item__you-lbl {
+  color: $col-signer-list-item-rule-text;
 }
 
 .signer-list-item__rule {
@@ -181,9 +181,9 @@ $avatar-margin-right: 1.8rem;
 .signer-list-item__rule-icon {
   font-size: 1.4rem;
   position: relative;
-  top: .1rem;
+  top: 0.1rem;
 
-  &--allowed { color: $col-success }
-  &--restricted { color: $col-error }
+  &--allowed { color: $col-success; }
+  &--restricted { color: $col-error; }
 }
 </style>

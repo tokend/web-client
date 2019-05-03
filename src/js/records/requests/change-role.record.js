@@ -40,16 +40,8 @@ export class ChangeRoleRequestRecord {
 
     this.accountRoleToSet = _get(record, 'requestDetails.accountRoleToSet')
     this.blobId = _get(record, 'requestDetails.creatorDetails.blobId')
-    this.externalDetails = _get(record, 'externalDetails.data')
-  }
-
-  get rejector () {
-    if (!this.externalDetails || !this.externalDetails.length) return
-    for (const detail of this.externalDetails.slice().reverse()) {
-      if (detail.rejector) {
-        return detail.rejector
-      }
-    }
-    return ''
+    this.externalDetails = (_get(record, 'externalDetails.data') || [])
+      .slice() // to avoid modifying record itself
+      .pop() // because only the last object in external details is actual
   }
 }

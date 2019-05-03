@@ -33,22 +33,6 @@ describe('Asset actions', () => {
   })
 
   describe('method', () => {
-    it('calls Bus.error if balance creation is not allowed', async () => {
-      const kycRequiredAssetType = 'KYC_REQUIRED'
-      wrapper.setProps({
-        kycRequiredAssetType,
-        asset: new Asset({
-          type: kycRequiredAssetType,
-        }),
-        isAccountUnverified: true,
-      })
-      sandbox.stub(Bus, 'error')
-
-      await wrapper.vm.addBalance()
-
-      expect(Bus.error).to.have.been.calledOnce
-    })
-
     it('creates new balance, reloads all of them, and emit proper event if balance creation was successfull', async () => {
       wrapper.setProps({
         asset: new Asset({ id: 'USD' }),

@@ -82,14 +82,18 @@ export default {
 @import '~simplemde/dist/simplemde.min.css';
 @import 'scss/variables';
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .markdown-field {
   width: 100%;
+
   textarea {
     opacity: 0;
     width: 0;
     height: 0;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .markdown-field__err-mes {
   color: $field-color-error;

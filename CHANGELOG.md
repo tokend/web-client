@@ -8,10 +8,67 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
+## [1.6.0-rc.0] - 2019-05-02
+#### Added
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
+
 #### Changed
-- More cutier animation for init loader 
-- Now selecting invoice point by loyalty account number (Loyalty)
+- Now does not show multiple QR codes on Coinpayments deposit
+
+#### Fixed
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
+
+## [1.6.0-x.2] - 2019-04-29
+#### Added
+- Re-render chart animation
+
+#### Changed
+- Now opening pre-issuance details link in new tab
+
+### Experimental features changes
+#### Fixed
+- Deposit fiat drawer displaying on REIT
+
+## [1.6.0-x.1] - 2019-04-26
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages
+
+#### Changed
+- Now using more modern animation for init loader
 - Now showing all the received points (360) on the chart
+- Now showing zero axis line, if chart has both negative and
+  positive values
+- Now using default d3 ticks calculation on chart axes, so the ticks count and
+  positions are not fixed now and ticks have more user-friendly values
+
+#### Fixed
+- Account verification using received link from e-mail
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-x.0
+- Now using "app__button-..." classes instead of button mixins
+
+### Experimental features changes
+#### Changed
+- Now selecting invoice point by loyalty account number (Loyalty)
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
@@ -61,7 +118,7 @@ for further information about branching and tagging conventions.
 - Invoice transaction source account (Loyalty)
 - Displaying incoming withdrawal requests (Loyalty)
 
-## [1.5.0]
+## [1.5.0] - 2019-04-19
 ### "Under the hood changes"
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
@@ -361,7 +418,10 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
+[1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
+[1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
 [1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
 [1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
@@ -372,6 +432,6 @@ for further information about branching and tagging conventions.
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
-[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
+[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0
