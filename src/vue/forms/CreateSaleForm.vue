@@ -59,7 +59,8 @@
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.requiredBaseAssetForHardCap',
                     {
-                      available: availableForIssuance
+                      available: availableForIssuance,
+                      maxDecimalDigitsCount: baseAssetTrailingDigitsCount,
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -90,7 +91,7 @@
                   :label="'create-sale-form.start-time' | globalize"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.startTime', {
-                      minDate: formatDate(moment().toString())
+                      minDate: formatDate(moment().toString()),
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -132,7 +133,8 @@
                     'form.saleInformation.softCap',
                     {
                       from:MIN_AMOUNT,
-                      to:MAX_AMOUNT
+                      to:MAX_AMOUNT,
+                      maxDecimalDigitsCount: quoteAssetTrailingDigitsCount,
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -154,7 +156,8 @@
                     'form.saleInformation.hardCap',
                     {
                       from:form.saleInformation.softCap,
-                      to:MAX_AMOUNT
+                      to:MAX_AMOUNT,
+                      maxDecimalDigitsCount: quoteAssetTrailingDigitsCount,
                     }
                   )"
                   :disabled="formMixin.isDisabled"
@@ -351,6 +354,7 @@ import {
   requiredAtLeastOne,
   minDate,
   noMoreThanAvailableForIssuance,
+  maxDecimalDigitsCount,
 } from '@validators'
 import { formatDate } from '@/vue/filters/formatDate'
 import { SALE_TYPES, BLOB_TYPES } from '@tokend/js-sdk'
@@ -456,6 +460,9 @@ export default {
           softCap: {
             required,
             amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
+            maxDecimalDigitsCount: maxDecimalDigitsCount(
+              this.quoteAssetTrailingDigitsCount
+            ),
           },
           hardCap: {
             required,
@@ -463,11 +470,17 @@ export default {
               this.form.saleInformation.softCap,
               this.MAX_AMOUNT
             ),
+            maxDecimalDigitsCount: maxDecimalDigitsCount(
+              this.quoteAssetTrailingDigitsCount
+            ),
           },
           requiredBaseAssetForHardCap: {
             required,
             noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
               this.availableForIssuance
+            ),
+            maxDecimalDigitsCount: maxDecimalDigitsCount(
+              this.baseAssetTrailingDigitsCount
             ),
           },
           quoteAssets: {
@@ -491,6 +504,16 @@ export default {
       accountId: vuexTypes.accountId,
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
+    quoteAssetTrailingDigitsCount () {
+      return this.assets
+        .find(asset => asset.code === this.defaultQuoteAsset)
+        .trailingDigitsCount || config.DECIMAL_POINTS
+    },
+    baseAssetTrailingDigitsCount () {
+      return this.assets
+        .find(asset => asset.code === this.form.saleInformation.baseAsset.code)
+        .trailingDigitsCount || config.DECIMAL_POINTS
+    },
     baseAssets () {
       return this.assets.filter(item => item.isBaseAsset)
     },
