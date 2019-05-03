@@ -171,7 +171,7 @@ $media-small: 460px;
 
 .drawer-v-if-transition-enter-active,
 .drawer-v-show-transition-enter-active {
-  animation-duration: .2s;
+  animation-duration: 0.2s;
   /*
     Disabled because with this nesting we can shiny see where this animation
     used
@@ -180,7 +180,8 @@ $media-small: 460px;
   .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out;
   }
-   .drawer__pane {
+
+  .drawer__pane {
     animation: drawer-pane-keyframes 0.2s ease-in-out;
   }
   /* stylelint-enable selector-nested-pattern */
@@ -193,16 +194,17 @@ $media-small: 460px;
     to prevent animation flickering after animation ended
     but the element still present
   */
-  animation-duration: .13s;
+  animation-duration: 0.13s;
   /*
     Disabled because with this nesting we can shiny see where this animation
     used
   */
   /* stylelint-disable selector-nested-pattern */
-   .drawer__backdrop {
+  .drawer__backdrop {
     animation: drawer-backdrop-keyframes 0.2s ease-in-out reverse;
   }
-   .drawer__pane {
+
+  .drawer__pane {
     animation: drawer-pane-keyframes 0.2s ease-in-out reverse;
   }
   /* stylelint-enable selector-nested-pattern */
