@@ -77,10 +77,8 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.request-attributes-viewer {
-  tr td:last-child {
-    text-align: right;
-  }
+.request-attributes-viewer tr td:last-child {
+  text-align: right;
 }
 
 .request-attributes-viewer__terms {

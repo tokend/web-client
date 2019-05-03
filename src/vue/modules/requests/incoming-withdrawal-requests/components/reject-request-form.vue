@@ -38,7 +38,11 @@
         <button
           v-ripple
           type="submit"
-          class="reject-request-form__reject-btn app__button-raised"
+          class="
+            reject-request-form__action-btn
+            reject-request-form__action-btn--reject
+            app__button-raised
+          "
         >
           {{ 'incoming-withdrawal-requests.reject-action-btn' | globalize }}
         </button>
@@ -46,7 +50,7 @@
         <button
           v-ripple
           type="button"
-          class="reject-request-form__cancel-btn app__button-flat"
+          class="reject-request-form__action-btn app__button-flat"
           @click="$emit(EVENTS.close)"
         >
           {{ 'incoming-withdrawal-requests.cancel-btn' | globalize }}
@@ -129,14 +133,16 @@ export default {
 .reject-request-form__actions {
   margin-top: 2rem;
   display: flex;
+}
 
-  .reject-request-form__reject-btn {
-    max-width: 18rem;
-    width: 100%;
-  }
-
-  button + button {
+.reject-request-form__action-btn {
+  & + & {
     margin-left: auto;
   }
+}
+
+.reject-request-form__action-btn--reject {
+  max-width: 18rem;
+  width: 100%;
 }
 </style>
