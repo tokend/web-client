@@ -639,6 +639,7 @@
     "limits-form": {
       "operation-type": "Operation type limit",
       "type-lbl": "Type",
+      "asset-lbl": "Asset",
       "limit-lbl": "Limit",
       "not-set-lbl": "Not set",
       "daily-limit-lbl": "Daily Limit",

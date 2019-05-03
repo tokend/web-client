@@ -12,6 +12,15 @@
           :key="`limits-asset-selector-${selectedOpType.value}`"
           class="limits__assets-select app__select--no-border"
         />
+        <select-field
+          name="limits-asset"
+          v-model="asset"
+          :values="assets"
+          key-as-value-text="label"
+          :is-value-translatable="true"
+          :label="'limits-form.asset-lbl' | globalize"
+          class="limits__assets-select app__select--no-border limits__assets"
+        />
       </div>
     </div>
     <div class="limits-form__table app__table">
@@ -61,12 +70,14 @@
           :label="'limits-form.daily-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.dailyOut')"
+          type="number"
+          :step="inputStepByDigitsCount"
           :error-message="getFieldErrorMessage(
             'form.dailyOut',
             {
               maxValue: config.MAX_AMOUNT,
               minValue: minValidDailyOutValue,
-              quantity: config.DECIMAL_POINTS,
+              quantity: trailingDigitsCount,
             }
           )"
         />
@@ -78,6 +89,8 @@
           :label="'limits-form.weekly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.weeklyOut')"
+          type="number"
+          :step="inputStepByDigitsCount"
           :error-message="getFieldErrorMessage(
             'form.weeklyOut',
             {
@@ -97,6 +110,8 @@
           :label="'limits-form.monthly-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.monthlyOut')"
+          type="number"
+          :step="inputStepByDigitsCount"
           :error-message="getFieldErrorMessage(
             'form.monthlyOut',
             {
@@ -114,6 +129,8 @@
           :label="'limits-form.annual-limit-lbl' | globalize"
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.annualOut')"
+          type="number"
+          :step="inputStepByDigitsCount"
           :error-message="getFieldErrorMessage(
             'form.annualOut',
             {
@@ -177,7 +194,12 @@ import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
+import {
+  inputStepByDigitsCount,
+} from '@/js/helpers/input-trailing-digits-count'
 import config from '@/config'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const STATS_OPERATION_TYPES_KEY_NAMES = {
   [STATS_OPERATION_TYPES.deposit]: 'deposit',
@@ -214,7 +236,7 @@ export default {
   name: 'limits-form',
   mixins: [FormMixin],
   props: {
-    limits: { type: Object, required: true, default: () => ({}) },
+    limits: { type: Object, default: () => ({}) },
   },
   data: () => ({
     form: {
@@ -224,6 +246,7 @@ export default {
       annualOut: '',
       note: '',
     },
+    asset: null,
     selectedOpType: {},
     opts: [],
     FORMATTED_STATS_OPERATION_TYPES,
@@ -240,25 +263,25 @@ export default {
         dailyOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
-          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          maxDecimalPoints: maxDecimalPoints(this.trailingDigitsCount),
           minValue: minValue(this.minValidDailyOutValue),
         },
         weeklyOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
-          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          maxDecimalPoints: maxDecimalPoints(this.trailingDigitsCount),
           minValue: minValue(this.minValidWeeklyOutValue),
         },
         monthlyOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
-          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          maxDecimalPoints: maxDecimalPoints(this.trailingDigitsCount),
           minValue: minValue(this.minValidMonthlyOutValue),
         },
         annualOut: {
           decimal,
           maxValue: maxValue(config.MAX_AMOUNT),
-          maxDecimalPoints: maxDecimalPoints(config.DECIMAL_POINTS),
+          maxDecimalPoints: maxDecimalPoints(this.trailingDigitsCount),
           minValue: minValue(this.minValidAnnualOutValue),
         },
         note: {
@@ -268,6 +291,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      vuexTypes.accountBalances,
+    ]),
     selectedLimitsByOpType () {
       // eslint-disable-next-line
       return this.limits[STATS_OPERATION_TYPES_KEY_NAMES[this.selectedOpType.value]]
@@ -286,6 +312,22 @@ export default {
         MIN_VALID_LIMIT_VALUE,
         +this.form.dailyOut,
         +this.form.weeklyOut,
+      )
+    },
+    assetsDetails () {
+      return this.accountBalances.map(asset => asset.assetDetails)
+    },
+    assets () {
+      return this.assetsDetails.map(asset => asset.code)
+    },
+    trailingDigitsCount () {
+      return this.assetsDetails
+        .find(asset => asset.code === this.asset)
+        .trailingDigitsCount || config.MIN_AMOUNT
+    },
+    inputStepByDigitsCount () {
+      return inputStepByDigitsCount(
+        this.trailingDigitsCount
       )
     },
     minValidAnnualOutValue () {
@@ -307,6 +349,7 @@ export default {
   },
   created () {
     this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
+    this.asset = this.selectedLimitsByOpType.assetCode
   },
   methods: {
     tryToSubmit () {
@@ -336,7 +379,7 @@ export default {
       this.$emit(EVENTS.limitsChanged)
     },
     async createRequest () {
-      const asset = this.selectedLimitsByOpType.assetCode
+      const asset = this.asset
       const limits = {
         annualOut: this.form.annualOut,
         dailyOut: this.form.dailyOut,
@@ -369,6 +412,10 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
+
+.limits__assets {
+  margin-left: 3rem;
+}
 
 .limits-form__form-subheading {
   margin-top: 3.2rem;
