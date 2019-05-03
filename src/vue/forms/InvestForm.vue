@@ -358,7 +358,7 @@ export default {
     trailingDigitsCount () {
       return this.quoteAssetListValues
         .find(asset => this.form.asset === asset)
-        .trailingDigitsCount || 0
+        .trailingDigitsCount || config.DECIMAL_POINTS
     },
 
     quoteAssetBalances () {
