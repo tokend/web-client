@@ -23,6 +23,7 @@
             :asset="selectedAsset"
             :storage-url="config.storageURL"
             :kyc-required-asset-type="kycRequiredAssetType"
+            :security-asset-type="securityAssetType"
           />
 
           <button
@@ -127,6 +128,7 @@ export default {
     ...mapGetters('balance-explorer', {
       assets: types.assets,
       kycRequiredAssetType: types.kycRequiredAssetType,
+      securityAssetType: types.securityAssetType,
     }),
   },
 
@@ -144,12 +146,14 @@ export default {
     ...mapActions('balance-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
+      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     async load () {
       try {
         await this.loadAccountBalances()
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true
@@ -167,7 +171,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import '~@scss/mixins';
 
 $asset-card-margin: 0.75rem;
 

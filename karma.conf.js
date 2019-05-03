@@ -17,18 +17,17 @@ module.exports = function (config) {
       },
     },
     files: [
-      'test/disallow-console-calls.js',
-      'src/**/*.spec.js',
-      'src/**/*.e2e.js',
+      'karma/test-bundle.js',
     ],
     preprocessors: {
-      'test/disallow-console-calls.js': ['webpack'],
-      'src/**/*.spec.js': [ 'webpack' ],
-      'src/**/*.e2e.js': [ 'webpack' ],
+      'karma/test-bundle.js': ['webpack'],
     },
 
     webpack: webpackConfig,
     frameworks: ['mocha', 'sinon', 'chai', 'sinon-chai'],
-    reporters: ['spec'],
+    captureTimeout: 210000,
+    browserDisconnectTolerance: 3,
+    browserDisconnectTimeout: 210000,
+    browserNoActivityTimeout: 210000,
   })
 }

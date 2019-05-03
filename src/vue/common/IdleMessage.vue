@@ -58,8 +58,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .idle-message {
   align-items: center;
@@ -72,7 +72,7 @@ export default {
   color: $col-text-on-dark-bg;
   font-size: 1.4rem;
   line-height: 1.25;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .idle-message__close-btn {
@@ -84,7 +84,7 @@ export default {
 
   &:after,
   &:before {
-    content: "";
+    content: '';
     height: 60%;
     width: 0.2rem;
     position: absolute;

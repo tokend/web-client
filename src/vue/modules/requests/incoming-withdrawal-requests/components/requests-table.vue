@@ -61,8 +61,8 @@
     <no-data-message
       v-else
       icon-name="trending-up"
-      :title="'create-asset-requests.no-request-history-title' | globalize"
-      :message="'create-asset-requests.no-request-history-desc' | globalize"
+      :title="'incoming-withdrawal-requests.no-history-title' | globalize"
+      :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
     />
   </div>
 </template>
@@ -95,13 +95,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
-.requests-table {
-  tr td:last-child {
-    width: 3rem;
-    text-align: right;
-  }
+.requests-table tr td:last-child {
+  width: 3rem;
+  text-align: right;
 }
 
 .requests-table__review-btn {

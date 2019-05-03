@@ -130,11 +130,13 @@ export default {
     ...mapActions('create-asset-requests', {
       loadCreateAssetRequests: types.LOAD_REQUESTS,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
+      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     async loadAssetTypes () {
       try {
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }

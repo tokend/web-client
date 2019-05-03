@@ -8,21 +8,137 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
+## [1.6.0-rc.0] - 2019-05-02
+#### Added
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
+
+#### Changed
+- Now does not show multiple QR codes on Coinpayments deposit
+
+#### Fixed
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
+
+## [1.6.0-x.2] - 2019-04-29
+#### Added
+- Re-render chart animation
+
+#### Changed
+- Now opening pre-issuance details link in new tab
+
+### Experimental features changes
+#### Fixed
+- Deposit fiat drawer displaying on REIT
+
+## [1.6.0-x.1] - 2019-04-26
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages
+
+#### Changed
+- Now using more modern animation for init loader
+- Now showing all the received points (360) on the chart
+- Now showing zero axis line, if chart has both negative and
+  positive values
+- Now using default d3 ticks calculation on chart axes, so the ticks count and
+  positions are not fixed now and ticks have more user-friendly values
+
+#### Fixed
+- Account verification using received link from e-mail
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-x.0
+- Now using "app__button-..." classes instead of button mixins
+
+### Experimental features changes
+#### Changed
+- Now selecting invoice point by loyalty account number (Loyalty)
+
+## [1.6.0-x.0] - 2019-04-24
+#### Added
+- Copy button next to email values
+
+#### Removed
+- Quitted building sourcemaps for production
+
+#### Fixed
+- Fixed calculating of percent delta on line chart
+- Fixed displaying of negative values on line chart
+- Fixed bunch of date field issues:
+  - Broken "disabled" state
+  - Broken manual input. If the user input invalid date manually the field
+    cleans up
+  - Broken key events (enter, escape, arrow navigation)
+- Fixed margin of Limits page, added "Current limits" subheading
+
+### "Under the hood" changes
+#### Changed
+- Now running WDS on a nearest non-busy port. No more `EADDRINUSE` for us
+- Flatpickr implementation now not via [vue-flatpickr-component](https://www.npmjs.com/package/vue-flatpickr-component),
+  but via pure [flatpickr](https://www.npmjs.com/package/flatpickr) library
+
+#### Fixed
+- Fixed a bug when with initial app configuration loading at the start if the
+  user was logged in but the session still not expired
+- Fixed a bug with absent preloading of account balance in Coinpayments deposit
+  form
+- Make `<email-getter>` be inlined flex
+
+### Experimental features changes
+#### Added
+- Receivable distribution chart (Loyalty)
+- Receivable-payable delta chart (Loyalty)
+- Account number field to the invoice form (Loyalty)
+
+#### Changed
+- Use select field instead of table for acceptable points on
+  create invoice form (Loyalty)
+- Now sending payment transaction to the external system instead of
+  creating a blob (Loyalty)
+- Corrected statistics charts data (Loyalty)
+
+#### Fixed
+- Polling when creating an invoice (Loyalty)
+- Invoice transaction source account (Loyalty)
+- Displaying incoming withdrawal requests (Loyalty)
+
+## [1.5.0] - 2019-04-19
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0
+
+## [1.5.0-rc.3] - 2019-04-19
+### "Under the hood changes"
+#### Changed
+- Now using @tokend/js-sdk@1.5.0-rc.1
+
+## [1.5.0-rc.2] - 2019-04-19
 #### Added
 - Displaying of limit request details in drawer
 
 #### Changed
-- Now getting blob types from SDK
-- Now using /v3 API for getting sales
-- Sale record is now parsing the resource from new API
 - Show limits request list on top of other limits on "Limits" page
 - "Issuance" labels on Issuance page renamed to "Issuance requests"
 - Drawers preserve data entered by user
 
 #### Removed
-- Buttons' "form" attributes
 - Dupe team size and website fields on corporate verification
-- Statistics property from `SaleRecord`
 - Displaying investors quantity in sale details
 - Opera from noscript
 
@@ -31,9 +147,20 @@ for further information about branching and tagging conventions.
 - Fixed a bug with displaying verification state message
 - Fixed a bug with displaying "undefined" instead of quote asset in
   dashboard’s chart
-- Fixed a bug with unreadable QR codes on "Downloads" page
-- Displaying verification code on general KYC form
-- Paying fees for recipient while sending assets
+- Fixed a bug with unreadable QR code on "Downloads" page
+- Fixed a bug with undisplayed verification code on general KYC form
+- Fixed a bug with incorrect displaying of fees paid for recipient while
+  in transfer form
+
+### "Under the hood" changes
+#### Changed
+- Now getting blob types from SDK
+- Now using /v3 API for getting sales
+- `SaleRecord` is now parsing the resource from new API
+
+#### Removed
+- Statistics property from `SaleRecord`
+- Buttons' "form" attributes
 
 ## [1.5.0-rc.1] - 2019-04-17
 #### Added
@@ -292,13 +419,20 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
+[1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
+[1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
+[1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
+[1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
+[1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
+[1.5.0-rc.2]: https://github.com/tokend/web-client/compare/1.5.0-rc.1...1.5.0-rc.2
 [1.5.0-rc.1]: https://github.com/tokend/web-client/compare/1.5.0-rc.0...1.5.0-rc.1
 [1.5.0-rc.0]: https://github.com/tokend/web-client/compare/1.4.0...1.5.0-rc.0
 [1.4.0]: https://github.com/tokend/web-client/compare/1.4.0-rc.3...1.4.0
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
-[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
+[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

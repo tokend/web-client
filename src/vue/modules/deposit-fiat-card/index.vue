@@ -418,14 +418,14 @@ export default {
 .deposit-fiat-card__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.deposit-fiat-card__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.deposit-fiat-card__fee-table td:last-child {
+  text-align: right;
 }
 
 .deposit-fiat-card__fee-tbody {

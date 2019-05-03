@@ -6,7 +6,7 @@
 
     <form
       novalidate
-      class="app-form"
+      class="app-form verification-general-form__tag"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="verification-general-form__block">
@@ -86,7 +86,8 @@
             </p>
             <button
               v-ripple
-              class="verification-general-form__verification-code-btn"
+              class="verification-general-form__verification-code-btn
+                     app__button-raised"
               :disabled="formMixin.isDisabled"
               @click.prevent="isCodeShown = true"
             >
@@ -127,7 +128,7 @@
           v-ripple
           v-else
           type="submit"
-          class="verification-general-form__submit-btn"
+          class="verification-general-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'verification-form.submit-btn' | globalize }}
@@ -242,7 +243,7 @@ export default {
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycGeneral)
         const operation = this.createKycOperation(
           kycBlobId,
-          this.kvEntryGeneralRoleId
+          this.kvEntryGeneralRoleId,
         )
         await Sdk.horizon.transactions.submitOperations(operation)
         do {
@@ -299,7 +300,7 @@ export default {
           idDocument: this.wrapDocument(kycData, DOCUMENT_TYPES.kycIdDocument),
           verificationPhoto: this.wrapDocument(
             kycData,
-            DOCUMENT_TYPES.kycSelfie
+            DOCUMENT_TYPES.kycSelfie,
           ),
         },
       }
@@ -323,16 +324,21 @@ export default {
   margin-top: 4rem;
 }
 
-.verification-general-form__submit-btn {
-  @include button-raised();
+.verification-general-form__tag {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
 
+  @include box-shadow();
+}
+
+.verification-general-form__submit-btn {
   margin-right: auto;
   width: 100%;
   max-width: 20rem;
 }
 
 .verification-general-form__verification-code-btn {
-  @include button-raised();
   margin-top: 1.5rem;
 }
 
@@ -341,15 +347,9 @@ export default {
   font-size: 1.3rem;
 }
 
-.verification-general-form {
-  form {
-    margin-top: 1rem;
-    background-color: $col-block-bg;
-    padding: 2.4rem;
-
-    @include box-shadow();
-
-    & > .verification-general-form__block:not(:first-child) {
+.verification-general-form__block {
+  &:not(:first-child) {
+    .verification-general-form__tag > & {
       margin-top: 6rem;
     }
   }
@@ -357,7 +357,7 @@ export default {
 
 .verification-general-form__block-label {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .verification-general-form__photo-explanation {
