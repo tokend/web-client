@@ -13,6 +13,7 @@
       <button
         type="button"
         class="clipboard-field__button app__button-icon"
+        @click="showHint"
         :id="`clipboard-btn-${_uid}`"
         :data-clipboard-target="`#clipboard-target-${_uid}`"
       >
@@ -24,6 +25,8 @@
 
 <script>
 import Clipboard from 'clipboard'
+import { Bus } from '@/js/helpers/event-bus'
+
 export default {
   name: 'clipboard-field',
   props: {
@@ -36,6 +39,11 @@ export default {
     )
     if (!btn) return
     this.clipboard = new Clipboard(btn)
+  },
+  methods: {
+    showHint () {
+      Bus.success('clipboard-field.copied')
+    },
   },
 }
 </script>

@@ -1696,7 +1696,8 @@
     },
     "email-getter": {
       "loading-msg": "Loading…",
-      "master-account": "Master"
+      "master-account": "Master",
+      "copied": "Copied"
     },
     "downloads-page": {
       "go-back-btn": "Go back",
@@ -1903,6 +1904,9 @@
     },
     "warning-banner": {
       "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
+    },
+    "clipboard-field": {
+      "copied": "Copied"
     }
   }
 }

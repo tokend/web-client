@@ -51,6 +51,7 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   mixins: [IdentityGetterMixin],
@@ -146,7 +147,12 @@ export default {
 
     changeBtnIcon () {
       this.isCopyBtnPressed = true
+      this.showHint()
       setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
+    },
+
+    showHint () {
+      Bus.success('email-getter.copied')
     },
   },
 }
