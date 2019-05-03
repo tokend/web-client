@@ -57,10 +57,17 @@
 
           <div class="app__form-actions">
             <button
+              v-if="isLoading"
+              class="auth-page__submit-btn app__button-raised"
+            >
+              <loader position-center />
+            </button>
+            <button
+              v-else
               v-ripple
               @click="submit"
               :disabled="!isConfirmedSeedCopied || formMixin.isDisabled"
-              class="auth-page__submit-btn"
+              class="auth-page__submit-btn app__button-raised"
             >
               {{ 'auth-pages.continue' | globalize }}
             </button>
@@ -77,6 +84,7 @@ import SignupForm from '@/vue/forms/SignupForm'
 import KeyViewer from '@/vue/common/KeyViewer'
 import TickField from '@/vue/fields/TickField'
 import VueMarkdown from 'vue-markdown'
+import Loader from '@/vue/common/Loader'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -85,6 +93,7 @@ import { Api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'signup',
@@ -93,6 +102,7 @@ export default {
     KeyViewer,
     TickField,
     VueMarkdown,
+    Loader,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -101,6 +111,7 @@ export default {
     email: null,
     vueRoutes,
     isConfirmedSeedCopied: false,
+    isLoading: false,
   }),
   computed: {
     ...mapGetters({
@@ -123,6 +134,7 @@ export default {
     },
     async submit () {
       this.disableForm()
+      this.isLoading = true
       try {
         const { response, wallet } = await Sdk.api.wallets.create(
           this.email.toLowerCase(),
@@ -130,6 +142,8 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
+          this.isLoading = false
+          Bus.success('auth-pages.email-verified')
           Sdk.sdk.useWallet(wallet)
           Api.useWallet(wallet)
           this.storeWallet(wallet)
@@ -158,12 +172,14 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./auth-page";
+@import './auth-page';
 
 .signup__seed-title.auth-page__title {
   margin-top: -4rem;
 }
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .signup__seed-disclaimer {
   margin-bottom: 3rem;
 
@@ -172,6 +188,7 @@ export default {
     font-size: 1.6rem;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .signup__key-viewer /deep/ .clipboard-field {
   background: $col-clipboard-background-darken;
