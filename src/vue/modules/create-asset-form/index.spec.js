@@ -20,17 +20,7 @@ describe('Create asset form module', () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
-    store = new Vuex.Store({
-      modules: {
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
-      },
-    })
+    store = new Vuex.Store({})
   })
 
   afterEach(() => {

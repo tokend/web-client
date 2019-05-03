@@ -21,13 +21,6 @@ describe('Movements history module', () => {
     store = new Vuex.Store({
       modules: {
         'movements-history': movementsHistoryModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })

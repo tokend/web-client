@@ -20,13 +20,6 @@ describe('Incoming withdrawal requests module', () => {
     store = new Vuex.Store({
       modules: {
         'incoming-withdrawal-requests': incomingWithdrawalRequestsModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })

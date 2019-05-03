@@ -21,13 +21,6 @@ describe('Create sale requests module', () => {
     store = new Vuex.Store({
       modules: {
         'create-sale-requests': createSaleRequestsModule,
-        'wallet': {
-          getters: {
-            wallet: _ => ({
-              accountId: 'SOME_ACCOUNT_ID',
-            }),
-          },
-        },
       },
     })
   })
