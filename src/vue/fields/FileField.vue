@@ -83,9 +83,7 @@ export default {
   },
   watch: {
     'value': function (value) {
-      console.log(value)
       this.document = value
-      console.log(value)
     },
   },
   created () {
@@ -99,7 +97,6 @@ export default {
   },
   methods: {
     onChange (event) {
-      console.log(this.$el.querySelector('input').value)
       let file
       try {
         file = FileUtil.getFileFromEvent(event)
@@ -137,7 +134,8 @@ export default {
     // isValidDocumentType (file) {
     //   // const MIMEtype = new RegExp(this.accept.replace('*', '[^\\/,]+'))
     //   console.log(this.$el.querySelector('input'))
-    //   return file.type.toLowerCase().endsWith('/pdf') || file.type.toLowerCase().startsWith('image/')
+    //   return file.type.toLowerCase().endsWith('/pdf')
+    // || file.type.toLowerCase().startsWith('image/')
     //   // return MIMEtype.test(file.type)
     // },
   },
