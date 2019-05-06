@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .warning-banner {
   min-height: 6rem;

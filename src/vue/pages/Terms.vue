@@ -31,8 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .terms {
   padding: 3.3rem 19.5rem;
@@ -40,11 +40,9 @@ export default {
   @include respond-to($x-medium) {
     padding: 3.3rem 10rem;
   }
-
   @include respond-to($medium) {
     padding: 3.3rem 8rem;
   }
-
   @include respond-to($tablet) {
     padding: 3.3rem 2rem;
   }
@@ -52,30 +50,35 @@ export default {
 
 .terms__link {
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 1.3rem;
 }
 
 .terms__title {
   font-size: 4rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-terms-title;
 }
 
 .terms__content {
   margin-top: 3.5rem;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   background-color: $col-terms-block-bg;
   padding: 3.2rem 2.5rem;
 
   @include box-shadow();
 }
 
+/* stylelint-disable selector-nested-pattern */
 .terms__markdown {
   h3 {
     font-size: 2rem;
-    font-weight: bold;
+    font-weight: 700;
     color: $col-terms-header;
+  }
+
+  a {
+    color: $col-terms-link;
   }
 
   ul {
@@ -86,15 +89,15 @@ export default {
       display: flex;
       align-items: center;
       color: $col-terms-header;
-      padding: .6rem 0;
+      padding: 0.6rem 0;
       text-decoration: none;
       width: fit-content;
 
-      &::before {
-        content: "\2022";
+      &:before {
+        content: '\2022';
         color: $col-terms-list-item;
-        font-size: .8rem;
-        margin: -.25rem .9rem 0 .4rem;
+        font-size: 0.8rem;
+        margin: -0.25rem 0.9rem 0 0.4rem;
       }
 
       a:visited {
@@ -113,14 +116,11 @@ export default {
     margin-top: 2.6rem;
     font-size: 1.4rem;
     padding-top: 0;
-    padding-bottom: .3rem;
+    padding-bottom: 0.3rem;
     opacity: 1;
-    font-weight: bold;
+    font-weight: 700;
     color: $col-terms-header;
   }
-
-  a {
-    color: $col-terms-link;
-  }
 }
+/* stylelint-enable selector-nested-pattern */
 </style>

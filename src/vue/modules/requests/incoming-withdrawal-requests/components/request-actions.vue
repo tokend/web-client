@@ -23,7 +23,11 @@
       <template v-else>
         <button
           v-ripple
-          class="request-actions__approve-btn app__button-raised"
+          class="
+            request-actions__button
+            request-actions__button--approve
+            app__button-raised
+          "
           :disabled="!canBeReviewed"
           @click="showConfirmation"
         >
@@ -32,7 +36,11 @@
 
         <button
           v-ripple
-          class="request-actions__reject-btn app__button-flat"
+          class="
+            request-actions__button
+            request-actions__button--reject
+            app__button-flat
+          "
           :disabled="!canBeReviewed"
           @click="isRejectFormShown = true"
         >
@@ -105,19 +113,21 @@ export default {
 <style lang="scss" scoped>
 .request-actions__buttons {
   display: flex;
+}
 
-  button + button {
+.request-actions__button {
+  & + & {
     margin-left: auto;
   }
-}
 
-.request-actions__approve-btn {
-  max-width: 18rem;
-  width: 100%;
-}
+  &--approve {
+    max-width: 18rem;
+    width: 100%;
+  }
 
-.request-actions__reject-btn {
-  font-weight: normal;
+  &--reject {
+    font-weight: 400;
+  }
 }
 
 .request-actions__reject-form {

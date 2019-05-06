@@ -359,9 +359,10 @@ export default {
 
   .submit-trade-offer-form__actions {
     margin-top: 5rem;
-
+    /* stylelint-disable selector-nested-pattern */
     & > .app__form-actions {
       margin-top: 1.6rem;
     }
+    /* stylelint-enable selector-nested-pattern */
   }
 </style>

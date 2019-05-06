@@ -106,7 +106,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .request-actions {
   display: flex;
@@ -121,14 +121,14 @@ export default {
   margin-left: 1.2rem;
   max-width: 14.4rem;
   width: 100%;
-  font-weight: bold;
+  font-weight: 700;
   color: $col-button-flat-light-text;
-  box-shadow: 0 .5rem 1.5rem 0 $col-button-flat-light-shadow;
-  background-color: $col-button-flat-light-bg;;
+  box-shadow: 0 0.5rem 1.5rem 0 $col-button-flat-light-shadow;
+  background-color: $col-button-flat-light-bg;
 }
 
 .request-actions__cancel-btn {
-  font-weight: normal;
+  font-weight: 400;
   margin-left: auto;
 }
 </style>

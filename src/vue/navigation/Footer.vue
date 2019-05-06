@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .footer {
   display: flex;
@@ -57,6 +57,7 @@ export default {
 .footer__link {
   margin: 0 1rem;
   color: $col-link;
+
   &:not(:first-child) {
     margin-left: 0;
   }

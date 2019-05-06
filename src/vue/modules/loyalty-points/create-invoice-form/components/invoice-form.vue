@@ -347,9 +347,11 @@ export default {
 </script>
 
 <style lang='scss'>
-@import "@/vue/forms/_app-form";
+@import '@/vue/forms/_app-form';
 
-.invoice-form__price-per-point, .invoice-form__total-price {
+/* stylelint-disable selector-nested-pattern */
+.invoice-form__price-per-point,
+.invoice-form__total-price {
   strong {
     color: $col-text-highlighted;
   }
@@ -362,4 +364,5 @@ export default {
     font-size: 1.6rem;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 </style>

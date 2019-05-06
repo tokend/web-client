@@ -95,10 +95,10 @@ export default {
 <style lang="scss" scoped>
 .request-actions {
   display: flex;
+}
 
-  button + button {
-    margin-left: auto;
-  }
+.request-actions button + button {
+  margin-left: auto;
 }
 
 .request-actions__update-btn {
@@ -108,6 +108,6 @@ export default {
 
 .request-actions__cancel-btn {
   margin-bottom: 2rem;
-  font-weight: normal;
+  font-weight: 400;
 }
 </style>

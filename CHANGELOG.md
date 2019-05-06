@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this ~project will be documented in this file.
+All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -8,21 +8,31 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+
+## [1.6.0-rc.0] - 2019-05-02
 #### Added
-- Display fees in invest form
-- General verification form module (included in vanilla scheme only)
-- `usVerified` and `usAccredited` roles to key/value module
-- `Passport` is now able to show US verified and US accredited user roles
-- Users with US verified and US accredited roles will now also be redirected to general form
-- Security asset type
-- Show banner for blocked user
-- Validator of available for issuance amount
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
 
 #### Changed
-- Show only one QR code on Coinpayments deposit
+- Now does not show multiple QR codes on Coinpayments deposit
 
 #### Fixed
-- Invalid opts when submitting create asset request
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
 
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
@@ -108,7 +118,7 @@ for further information about branching and tagging conventions.
 - Invoice transaction source account (Loyalty)
 - Displaying incoming withdrawal requests (Loyalty)
 
-## [1.5.0]
+## [1.5.0] - 2019-04-19
 ### "Under the hood changes"
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
@@ -408,7 +418,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
@@ -421,6 +432,6 @@ for further information about branching and tagging conventions.
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
-[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
+[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

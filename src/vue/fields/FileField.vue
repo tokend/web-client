@@ -129,7 +129,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "scss/variables";
+@import 'scss/variables';
 
 .file-field {
   display: flex;
@@ -143,16 +143,22 @@ export default {
 }
 
 .file-input {
-  border: .2rem dashed $file-field-border-color;
+  border: 0.2rem dashed $file-field-border-color;
   background-color: $file-field-background-color;
-  border-radius: .4rem;
-  transition: .2s;
+  border-radius: 0.4rem;
+  transition: 0.2s;
   width: 100%;
   text-align: center;
   position: relative;
   min-height: 9.8rem;
 
-  input[type='file'] {
+  &:not(.file-input--disabled):hover {
+    border-color: $field-color-text;
+  }
+}
+
+input[type='file'] {
+  .file-input & {
     position: absolute;
     top: 0;
     left: 0;
@@ -162,17 +168,13 @@ export default {
     width: 100%;
   }
 
-  &:not(.file-input--disabled):hover {
-    border-color: $field-color-text;
+  .file-input--disabled & {
+    cursor: default;
   }
 }
 
 .file-input--disabled {
   filter: grayscale(100%);
-
-  input[type='file'] {
-    cursor: default;
-  }
 }
 
 .file-input__input-inner {
@@ -185,12 +187,12 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
 
-  .file-input__title {
-    color: $field-color-text;
-    font-size: 1.6rem;
-    margin-bottom: .8rem;
-  }
+.file-input__title {
+  color: $field-color-text;
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
 }
 
 .file-input__note {

@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 .line-chart {
-  flex: 1
+  flex: 1;
 }
 
 .line-chart__tabs {
