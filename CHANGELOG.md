@@ -14,6 +14,8 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
   limits to unlimited ones and not an empty field
+- An error was fixed in which if you exceed the limit for example daily 
+  then the user received an error stating that "Your transaction is invalid."
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
@@ -112,8 +114,6 @@ for further information about branching and tagging conventions.
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
 - "Copy" button to EmailGetter
-- An error was fixed in which if you exceed the limit for example daily 
-  then the user received an error stating that "Your transaction is invalid."
 
 #### Changed
 - Use select field instead of table for acceptable points on
