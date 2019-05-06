@@ -8,6 +8,8 @@ import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
 import IdleVue from 'idle-vue'
+import * as Sentry from '@sentry/browser'
+import * as Integrations from '@sentry/integrations'
 
 import { extendStoreWithScheme } from '@/vuex'
 import { buildRouter } from '@/vue-router'
@@ -63,6 +65,17 @@ async function init () {
   Vue.use(IdleVue, {
     eventEmitter: new Vue(),
     idleTime: config.IDLE_TIMEOUT,
+  })
+
+  Sentry.init({
+    dsn: config.SENTRY_DSN,
+    release: config.BUILD_VERSION,
+    integrations: [
+      new Integrations.Vue({
+        Vue,
+        attachProps: true,
+      }),
+    ],
   })
 
   /* eslint-disable no-new */

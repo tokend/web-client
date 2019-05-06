@@ -96,6 +96,12 @@ export default Object.assign(
      * Link to iOS application manifest file.
      */
     IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
+
+    /**
+     * Senrty DSN. It’s a representation of the configuration required
+     * by the Sentry SDKs
+     */
+    SENTRY_DSN: '',
   },
   process.env,
   document.ENV
