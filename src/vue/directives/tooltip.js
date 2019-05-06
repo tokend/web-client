@@ -13,14 +13,14 @@
  * - Position: 'top', 'right', 'bottom', 'left'; 'top' by default
  * - Width: number, without css units like px/em; 'auto' by default
  * - height: number, without css units like px/em; 'auto' by default
- * - bgColor: hex value of color; #000 by default
- * - textColor: hex value of color; #fff by default
+ * - bgColor: any legal color values; #000 by default
+ * - textColor: any legal color values; #fff by default
  * - fontSize: number with css units like px/em; '1.4rem' by default
  *
  * Example of usage is described below.
  *  <element
  *    v-tooltip="{
- *      type: 'hover'
+ *      type: 'hover',
         text: 'Lorem ipsum',
         position: 'top',
         style: {
@@ -30,7 +30,8 @@
           textColor: 'green',
           fontSize: '14px'
         }
-      }>
+      }"
+    />
  *
  * @param {Object} binding.value - passed params
  * @param {string} binding.value.text - text of tooltip
@@ -445,6 +446,10 @@ export const tooltip = (() => {
           } else {
             tooltipWrapper.addEventListener('mouseleave', removeTooltip)
           }
+        })
+
+        el.addEventListener('click', (e) => {
+          removeTooltip()
         })
       }
     },
