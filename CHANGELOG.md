@@ -11,6 +11,9 @@ for further information about branching and tagging conventions.
 #### Added
 - Lazy loading feedback (nprogress loader)
 
+#### Changed
+- Updated offer creating, updating drawers
+
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
   limits to unlimited ones and not an empty field
