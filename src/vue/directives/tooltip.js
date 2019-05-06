@@ -268,7 +268,7 @@ export const tooltip = (() => {
     const appContainer = document.getElementById('app')
     target = e.target ? e.target : e
     targetRect = target.getBoundingClientRect()
-    position = safeGet(binding, 'value.position', DIRECTIONS.TOP)
+    position = safeGet(binding, 'value.position', DIRECTIONS.top)
     currentPosition = position
     bgColor = safeGet(binding, 'value.style.bgColor', COLOR_BLACK)
     textColor = safeGet(binding, 'value.style.textColor', COLOR_WHITE)
