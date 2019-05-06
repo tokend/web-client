@@ -17,6 +17,9 @@ for further information about branching and tagging conventions.
 - Modularized:
   - Pre-issuance form
   - Issuance form
+  - Create sale form
+- Now formatting `minDate` validation message using i18n date filter
+- Now using `moment().toISOString()` value instead of `moment().toString()`
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing

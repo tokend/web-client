@@ -81,7 +81,7 @@
                 'form.information.maturityDate',
                 {
                   minDate: form.saleInformation.endTime ||
-                    formatDate(moment().toString()),
+                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -246,7 +246,7 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
-                    formatDate(moment().toString()),
+                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -586,12 +586,12 @@ export default {
     let endTime = {
       required,
       minDate: minDate(this.form.saleInformation.startTime ||
-        moment().toString()),
+        moment().toISOString()),
     }
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
-        minDate: minDate(moment().toString()),
+        minDate: minDate(moment().toISOString()),
       }
       startTime.maxDate = maxDate(this.form.information.maturityDate)
       endTime.maxDate = maxDate(this.form.information.maturityDate)
