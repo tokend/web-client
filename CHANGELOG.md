@@ -113,7 +113,6 @@ for further information about branching and tagging conventions.
 - Receivable distribution chart (Loyalty)
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
-- "Copy" button to EmailGetter
 
 #### Changed
 - Use select field instead of table for acceptable points on
