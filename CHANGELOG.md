@@ -8,6 +8,15 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Check for file extension, size & dimensions in file field
+
+#### Changed
+- File field design imp
+  - reactions to drag & drop actions
+  - images preview (just icon for rest files)
+  - grayscaled disabled state
+  - upload icons
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added

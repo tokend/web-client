@@ -103,6 +103,8 @@
           :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.assetLogo"
           :label="'create-asset-form.logo-lbl' | globalize"
+          :min-width="120"
+          :min-height="120"
         />
       </div>
     </div>

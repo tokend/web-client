@@ -140,6 +140,8 @@ export default {
     maxSize: { type: Number, default: MAX_FILE_MEGABYTES },
     note: { type: String, default: 'All files' },
     errorMessage: { type: String, default: undefined },
+    minWidth: { type: Number, default: 0 },
+    minHeight: { type: Number, default: 0 },
   },
 
   data: _ => ({
@@ -154,7 +156,8 @@ export default {
     },
 
     isImageSelected () {
-      return this.document.mimeType.includes('image')
+      const mimeType = this.document.mimeType
+      return mimeType && mimeType.includes('image')
     },
 
     acceptedExtensions () {
@@ -194,7 +197,7 @@ export default {
       try {
         const file = FileUtil.getFileFromEvent(event)
 
-        if (this.validateFile(file)) {
+        if (await this.validateFile(file)) {
           this.documentUrl = await FileUtil.getDataUrl(file)
           this.document = new DocumentContainer({
             mimeType: file.type,
@@ -213,7 +216,7 @@ export default {
       }
     },
 
-    validateFile (file) {
+    async validateFile (file) {
       if (!this.isValidFileType(file)) {
         Bus.error({
           messageId: 'file-field.incorrect-file-type-err',
@@ -229,6 +232,17 @@ export default {
         Bus.error({
           messageId: 'file-field.max-size-exceeded-err',
           messageArgs: { maxSize: this.maxSize },
+        })
+        return false
+      }
+
+      if (!(await this.isValidFileDimensions(file))) {
+        Bus.error({
+          messageId: 'file-field.invalid-dimensions-err',
+          messageArgs: {
+            minHeight: this.minHeight,
+            minWidth: this.minWidth,
+          },
         })
         return false
       }
@@ -251,6 +265,21 @@ export default {
       return Boolean(this.fileExtensions
         .find(item => item.toUpperCase() === this.getFileExtension(file))
       )
+    },
+
+    async isValidFileDimensions (file) {
+      if (!file.type.includes('image')) {
+        return true
+      }
+
+      try {
+        const img = await FileUtil.readImage(file)
+        return img.width >= this.minWidth &&
+          img.height >= this.minHeight
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+        return false
+      }
     },
 
     getFileExtension (file) {
@@ -303,7 +332,7 @@ $z-reset-btn: 1;
 }
 
 .file-field__content--highlighted {
-  background-color: #f5f6ff;
+  background-color: $file-field-drop-bg-color;
   border-color: $field-color-text;
 }
 

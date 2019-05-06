@@ -1302,6 +1302,7 @@
       "file-corrupted-err": "Your file is corrupted",
       "max-size-exceeded-err": "You cannot upload a file exceeding {{maxSize}} MB",
       "incorrect-file-type-err": "You cannot upload a {{type}} file. Allowed types: {{allowedTypes}}",
+      "invalid-dimensions-err": "You cannot upload an image with dimensions less than {{minWidth}}x{{minHeight}}",
       "disabled-msg": "This field is disabled"
     },
     "sales": {
