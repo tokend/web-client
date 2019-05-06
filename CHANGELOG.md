@@ -8,7 +8,14 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Lazy loading feedback (nprogress loader)
+
 #### Fixed
+- Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
+  limits to unlimited ones and not an empty field
+- An error was fixed in which if you exceed the limit for example daily 
+  then the user received an error stating that "Your transaction is invalid."
 - Show drawer for isDepositable in movements-top-bar-reit
 
 ## [1.6.0-rc.0] - 2019-05-02
