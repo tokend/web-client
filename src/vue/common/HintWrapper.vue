@@ -45,26 +45,26 @@ export default {
   position: absolute;
   padding: 0.625rem;
   width: auto;
-  background: rgba(0, 0, 0, 0.92);
-  border-radius: .5rem;
-  color: rgb(248, 248, 248);
+  background: $col-hint-wrapper-box-bg;
+  border-radius: 0.5rem;
+  color: $col-hint-wrapper-box-text;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: $z-hint-wrapper-box;
   transition: opacity 0.2s, bottom 0.2s;
   opacity: 1;
   bottom: calc(100% + 1.1rem);
 
   &:after {
-    content: "";
+    content: '';
     display: block;
     width: 0;
     height: 0;
-    border: .5rem rgba(0, 0, 0, 0.92) solid;
+    border: 0.5rem $col-hint-wrapper-box-bg solid;
     border-top-color: transparent;
     border-left-color: transparent;
     position: absolute;
-    left: calc(50% - (.25rem));
+    left: calc(50% - 0.25rem);
     transform: translate(-50%, 50%) rotate(45deg);
   }
 }

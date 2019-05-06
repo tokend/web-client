@@ -37,9 +37,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+<style lang="scss">
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
 .navbar {
   width: 100%;
@@ -50,18 +50,9 @@ export default {
   justify-content: space-between;
 
   @include respond-to-custom($sidebar-hide-bp) {
-    padding: 3.3rem $content-side-paddings-sm
+    padding:
+      3.3rem $content-side-paddings-sm
       2.1rem $content-side-paddings-sm + 5.2rem;
-  }
-
-  .navbar__title {
-    font-size: 4rem;
-    font-weight: normal;
-    min-width: 15rem;
-
-    @include respond-to-custom($sidebar-hide-bp) {
-      font-size: 3rem;
-    }
   }
 }
 
@@ -70,6 +61,7 @@ export default {
   font-size: 4rem;
   line-height: 1.5;
   font-weight: 400;
+  min-width: 15rem;
 
   @include respond-to-custom($sidebar-hide-bp) {
     font-size: 3.2rem;

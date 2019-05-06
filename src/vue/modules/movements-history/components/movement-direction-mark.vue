@@ -40,10 +40,12 @@ export default {
 .movement-direction-mark {
   font-size: 1.8rem;
 
-  &--in { color: $col-incoming }
-  &--out { color: $col-outgoing }
-  &--locked { color: $col-locked }
-  &--unlocked { color: $col-unlocked }
+  &--in { color: $col-incoming; }
+  &--out { color: $col-outgoing; }
+  &--locked { color: $col-locked; }
+  &--unlocked { color: $col-unlocked; }
+
+  /* stylelint-disable selector-nested-pattern */
 
   &.mdi-account-arrow-left,
   &.mdi-account-arrow-right {
@@ -54,5 +56,6 @@ export default {
   &.mdi-lock-open {
     font-size: 2.15rem;
   }
+  /* stylelint-enable selector-nested-pattern */
 }
 </style>

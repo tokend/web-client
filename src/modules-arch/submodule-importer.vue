@@ -1,6 +1,7 @@
 <template>
   <keep-alive v-if="isLoaded">
     <component
+      ref="component"
       :is="component"
       v-bind="$attrs"
       v-on="$listeners"

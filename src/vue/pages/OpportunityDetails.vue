@@ -273,16 +273,16 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .opportunity-details__name {
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-sale-details-title;
 }
 
 .opportunity-details__short-desc {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
 }

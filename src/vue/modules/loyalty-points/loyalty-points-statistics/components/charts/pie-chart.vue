@@ -206,11 +206,12 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
+/* stylelint-disable selector-nested-pattern */
 .pie-chart {
   svg {
-    filter: drop-shadow(0rem 0.3rem 0.3rem $col-pie-chart-shadow);
+    filter: drop-shadow(0 0.3rem 0.3rem $col-pie-chart-shadow);
   }
 
   .pie-chart__lines polyline {
@@ -224,8 +225,9 @@ export default {
     fill: $col-pie-chart-text;
 
     tspan {
-      font-weight: bold;
+      font-weight: 700;
     }
   }
 }
+/* stylelint-enable selector-nested-pattern */
 </style>

@@ -142,6 +142,13 @@ export default {
       return this.formattedAccountLimits[this.selectedAsset] || {}
     },
   },
+  watch: {
+    selectedAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
+    },
+  },
   async created () {
     if (!this.accountBalances.length) {
       try {
@@ -246,7 +253,9 @@ export default {
       this.setLimitsRequestsLoader()
     },
     setDefaultAssetCode () {
-      this.selectedAsset = this.accountBalancesAssetsCodes[0]
+      this.selectedAsset = this.accountBalancesAssetsCodes
+        .find(item => item === this.$route.query.asset) ||
+        this.accountBalancesAssetsCodes[0]
     },
     setLimitsRequestsLoader () {
       this.limitsRequestsLoader = this.getLimitsRequestsLoader()
@@ -261,8 +270,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .limits {
   width: 100%;
@@ -280,11 +289,11 @@ export default {
 .limits__subheading {
   color: $col-text-page-heading;
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-top: 3.2rem;
   margin-bottom: 1.6rem;
 
-  @include respond-to(medium) { margin-top: 2.4rem }
+  @include respond-to(medium) { margin-top: 2.4rem; }
 }
 
 .limits__requests-collection-loader {

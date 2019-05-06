@@ -12,7 +12,7 @@
       </span>
       <button
         type="button"
-        class="clipboard-field__button"
+        class="clipboard-field__button app__button-icon"
         :id="`clipboard-btn-${_uid}`"
         :data-clipboard-target="`#clipboard-target-${_uid}`"
       >
@@ -41,9 +41,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./scss/variables";
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import './scss/variables';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .clipboard-field {
   background: $col-clipboard-background;
@@ -77,14 +77,14 @@ export default {
   font-size: 0.8rem;
   position: absolute;
   left: 1.2rem;
-  top: .8rem;
+  top: 0.8rem;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include label-font-sizes;
 }
 
 .clipboard-field__button {
-  @include button-icon();
   width: 3.2rem;
   height: 3.2rem;
   margin-right: 0.4rem;
