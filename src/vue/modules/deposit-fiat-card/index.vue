@@ -197,7 +197,7 @@ import { types } from './store/types'
 import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { Wallet, base } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { api } from '@/api'
 import { MathUtil } from '@/js/utils'
 import {
   required,
@@ -270,7 +270,7 @@ export default {
       calculatedFees: types.fees,
     }),
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
     totalFee () {
       return MathUtil.add(this.fees.percentFee, this.fees.fixedFee)
@@ -318,9 +318,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -361,15 +358,12 @@ export default {
           Bus.error('deposit-fiat-card-module.failed-load-fees')
           return false
         }
-        this.reInitApi(MASTER_ACCOUNT_WALLET, this.config)
-
         // eslint-disable-next-line max-len
         const operation = base.CreateIssuanceRequestBuilder.createIssuanceRequest({
           ...this.composeOptions(),
         })
-        await api().postOperations(operation)
 
-        this.reInitApi(this.wallet, this.config)
+        await api().withWallet(MASTER_ACCOUNT_WALLET).postOperations(operation)
         Bus.success('deposit-fiat-card-module.deposit-success')
         this.$emit(EVENTS.deposited)
       } catch (e) {
@@ -404,9 +398,6 @@ export default {
         ref += possible.charAt(Math.floor(Math.random() * possible.length))
       }
       return ref
-    },
-    reInitApi (wallet, config) {
-      initApi(wallet, config)
     },
   },
 }

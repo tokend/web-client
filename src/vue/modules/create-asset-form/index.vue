@@ -155,7 +155,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateAssetRequest(this.account)
+        await this.submitCreateAssetRequest(this.accountId)
         Bus.success('create-asset-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {
