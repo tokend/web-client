@@ -48,6 +48,8 @@
  *
  */
 
+import safeGet from 'lodash/get'
+
 export const tooltip = (() => {
   const COLOR_BLACK = '#000'
   const COLOR_WHITE = '#fff'
@@ -267,13 +269,15 @@ export const tooltip = (() => {
     const appContainer = document.getElementById('app')
     target = e.target ? e.target : e
     targetRect = target.getBoundingClientRect()
-    position = binding.value.position || DIRECTIONS.TOP
+    position = safeGet(binding, 'value.position', DIRECTIONS.TOP)
     currentPosition = position
-    bgColor = binding.value.style.bgColor || COLOR_BLACK
-    textColor = binding.value.style.textColor || COLOR_WHITE
-    fontSize = binding.value.style.fontSize || FONT_SIZE
-    width = `${binding.value.style.width}px` || WIDTH
-    height = `${binding.value.style.height}px` || HEIGHT
+    bgColor = safeGet(binding, 'value.style.bgColor', COLOR_BLACK)
+    textColor = safeGet(binding, 'value.style.textColor', COLOR_WHITE)
+    fontSize = safeGet(binding, 'value.style.fontSize', FONT_SIZE)
+    width = safeGet(binding, 'value.style.width')
+      ? safeGet(binding, 'value.style.width') + 'px' : WIDTH
+    height = safeGet(binding, 'value.style.height')
+      ? safeGet(binding, 'value.style.height') + 'px' : HEIGHT
     tooltipWrapper = document.createElement('div')
     // tooltip arrow, that shows source of tooltip
     tooltipArrow = document.createElement('div')
@@ -282,7 +286,7 @@ export const tooltip = (() => {
 
     tooltipText = document.createElement('div')
     tooltipText.className = 'tooltip-wrapper-text'
-    tooltipText.innerText = binding.value.text
+    tooltipText.innerText = safeGet(binding, 'value.text')
     tooltipText.style.fontSize = fontSize
     tooltipText.style.color = textColor
 
