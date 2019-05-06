@@ -441,7 +441,7 @@ export const tooltip = (() => {
 
         el.addEventListener('mouseleave', (e) => {
           if (!tooltipWrapper.contains(e.toElement)) {
-            // removeTooltip()
+            removeTooltip()
           } else {
             tooltipWrapper.addEventListener('mouseleave', removeTooltip)
           }
