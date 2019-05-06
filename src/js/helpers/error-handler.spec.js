@@ -14,16 +14,21 @@ describe('error-handler helper', () => {
     it('processes the error and shows a feedback to the user', () => {
       const theError = new Error()
       const feedbackTranslationId = 'some-error.translation-id'
+      const sentryReportConfig = {
+        sentryReportTitle: '',
+        skipSentryReport: false
+      }
       sandbox.stub(ErrorHandler, 'processWithoutFeedback')
       sandbox.stub(ErrorHandler, '_getTranslationId')
         .withArgs(theError)
         .returns(feedbackTranslationId)
       sandbox.stub(Bus, 'error')
 
-      ErrorHandler.process(theError)
+      ErrorHandler.process(theError, '', sentryReportConfig)
 
       expect(ErrorHandler.processWithoutFeedback)
-        .to.have.been.calledOnceWithExactly(theError)
+        .to.have.been.calledOnceWithExactly(theError,
+          { ...sentryReportConfig, sentryReportTitle: feedbackTranslationId })
       expect(ErrorHandler._getTranslationId)
         .to.have.been.calledOnceWithExactly(theError)
       expect(Bus.error)
@@ -34,11 +39,16 @@ describe('error-handler helper', () => {
   describe('using processWithoutFeedback()', () => {
     it('logs the error', () => {
       const theError = new Error()
+      const sentryReportConfig = {
+        sentryReportTitle: '',
+        skipSentryReport: false
+      }
       sandbox.stub(log, 'error')
 
-      ErrorHandler.processWithoutFeedback(theError)
+      ErrorHandler.processWithoutFeedback(theError, sentryReportConfig)
 
-      expect(log.error).to.have.been.calledOnceWithExactly(theError)
+      expect(log.error)
+        .to.have.been.calledOnceWithExactly(theError)
     })
   })
 
