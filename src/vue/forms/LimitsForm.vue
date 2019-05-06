@@ -348,12 +348,12 @@ export default {
           }
           return limitByType.weeklyOut
         case 'monthlyOut':
-          if (MAX_VALID_LIMIT_VALUE === limitByType.monthlyOut) {
+          if (limitByType.monthlyOut === MAX_VALID_LIMIT_VALUE) {
             return ''
           }
           return limitByType.monthlyOut
         case 'annualOut':
-          if (MAX_VALID_LIMIT_VALUE === limitByType.annualOut) {
+          if (limitByType.annualOut === MAX_VALID_LIMIT_VALUE) {
             return ''
           }
           return limitByType.annualOut
