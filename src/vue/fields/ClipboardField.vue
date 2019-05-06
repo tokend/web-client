@@ -10,29 +10,40 @@
       >
         {{ value }}
       </span>
-      <button
-        type="button"
-        class="clipboard-field__button app__button-icon"
-        @click="showHint"
-        :id="`clipboard-btn-${_uid}`"
-        :data-clipboard-target="`#clipboard-target-${_uid}`"
+      <tooltip-wrapper
+        :show="showTooltip"
+        :message="'Copied!'"
       >
-        <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
-      </button>
+        <button
+          type="button"
+          class="clipboard-field__button app__button-icon"
+          @click="showHint"
+          :id="`clipboard-btn-${_uid}`"
+          :data-clipboard-target="`#clipboard-target-${_uid}`"
+        >
+          <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
+        </button>
+      </tooltip-wrapper>
     </div>
   </div>
 </template>
 
 <script>
 import Clipboard from 'clipboard'
-import { Bus } from '@/js/helpers/event-bus'
+import TooltipWrapper from '@/vue/common/TooltipWrapper'
 
 export default {
   name: 'clipboard-field',
+  components: {
+    TooltipWrapper,
+  },
   props: {
     value: { type: String, default: '' },
     label: { type: String, default: '' },
   },
+  data: _ => ({
+    showTooltip: false,
+  }),
   mounted () {
     const btn = document.querySelector(
       `#clipboard-btn-${this._uid}`
@@ -42,7 +53,7 @@ export default {
   },
   methods: {
     showHint () {
-      Bus.success('clipboard-field.copied')
+      this.showTooltip = true
     },
   },
 }

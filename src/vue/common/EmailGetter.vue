@@ -28,20 +28,25 @@
       </template>
     </span>
 
-    <button
-      v-show="isCopyButton && !isMasterAccount && !isLoading"
-      class="email-getter__copy-button  app__button-icon"
-      :id="`clipboard-btn-${_uid}`"
-      :data-clipboard-text="email || accountId || balanceId"
-      @click="changeBtnIcon"
+    <tooltip-wrapper
+      :show="showTooltip"
+      :message="'Copied!'"
     >
-      <i
-        class="mdi email-getter__icon"
-        :class="isCopyBtnPressed ?
-          'mdi-clipboard-check' :
-          'mdi-clipboard-text'"
-      />
-    </button>
+      <button
+        v-show="isCopyButton && !isMasterAccount && !isLoading"
+        class="email-getter__copy-button  app__button-icon"
+        :id="`clipboard-btn-${_uid}`"
+        :data-clipboard-text="email || accountId || balanceId"
+        @click="changeBtnIcon"
+      >
+        <i
+          class="mdi email-getter__icon"
+          :class="isCopyBtnPressed ?
+            'mdi-clipboard-check' :
+            'mdi-clipboard-text'"
+        />
+      </button>
+    </tooltip-wrapper>
   </span>
 </template>
 
@@ -51,9 +56,12 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
-import { Bus } from '@/js/helpers/event-bus'
+import TooltipWrapper from '@/vue/common/TooltipWrapper'
 
 export default {
+  components: {
+    TooltipWrapper,
+  },
   mixins: [IdentityGetterMixin],
 
   props: {
@@ -84,6 +92,7 @@ export default {
     isMasterAccount: false,
     isLoading: false,
     isCopyBtnPressed: false,
+    showTooltip: false,
   }),
 
   watch: {
@@ -152,7 +161,7 @@ export default {
     },
 
     showHint () {
-      Bus.success('email-getter.copied')
+      this.showTooltip = true
     },
   },
 }
