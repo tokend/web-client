@@ -60,7 +60,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-const MAX_FILE_MEGABYTES = 5
+const MAX_FILE_MEGABYTES = 32
 
 export default {
   name: 'file-field',
@@ -83,16 +83,23 @@ export default {
   },
   watch: {
     'value': function (value) {
+      console.log(value)
       this.document = value
+      console.log(value)
     },
   },
   created () {
     if (this.value) {
       this.document = this.value
     }
+    // setInterval(() => {
+    //   console.log(this.value)
+    //   console.log(this.$el.querySelector('input').value)
+    // }, 5000)
   },
   methods: {
     onChange (event) {
+      console.log(this.$el.querySelector('input').value)
       let file
       try {
         file = FileUtil.getFileFromEvent(event)
@@ -105,6 +112,7 @@ export default {
         }
         ErrorHandler.process(e)
       }
+      // if (this.isValidFileSize(file) && this.isValidDocumentType(file)) {
       if (this.isValidFileSize(file)) {
         this.document = new DocumentContainer({
           mimeType: file.type,
@@ -114,7 +122,9 @@ export default {
         })
         this.$emit('input', this.document)
       } else {
-        Bus.error('file-field.max-size-exceeded-err')
+        this.isValidFileSize(file)
+          ? Bus.error('file-field.max-size-exceeded-err')
+          : Bus.error('file-field.max-size-exceeded-err')
         this.dropFile()
       }
     },
@@ -124,6 +134,12 @@ export default {
     dropFile () {
       this.$el.querySelector('input').value = ''
     },
+    // isValidDocumentType (file) {
+    //   // const MIMEtype = new RegExp(this.accept.replace('*', '[^\\/,]+'))
+    //   console.log(this.$el.querySelector('input'))
+    //   return file.type.toLowerCase().endsWith('/pdf') || file.type.toLowerCase().startsWith('image/')
+    //   // return MIMEtype.test(file.type)
+    // },
   },
 }
 </script>
