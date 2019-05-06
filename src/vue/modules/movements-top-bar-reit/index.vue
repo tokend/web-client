@@ -144,7 +144,7 @@
     </template>
 
     <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
+    <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
       <drawer :is-shown.sync="isFiatDepositFormShown">
         <template slot="heading">
           {{ 'deposit-fiat-module.form-title' | globalize }}
