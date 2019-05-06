@@ -153,7 +153,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
     completedSteps () {
       if (!this.isPending) {
@@ -218,16 +218,17 @@ export default {
       const docHashBuffer = await this.getDocHashBuffer(this.form.document)
       this.uploadState.isCalculatingHash = false
 
-      const accountId = await this.getAccountIdFromDocHash(docHashBuffer)
+      const accountIdFromDocHash =
+        await this.getAccountIdFromDocHash(docHashBuffer)
 
       this.uploadState.isCreatingAccount = true
-      await this.createAccount(accountId)
+      await this.createAccount(accountIdFromDocHash, this.accountId)
       this.uploadState.isCreatingAccount = false
 
       this.uploadState.isUploadingFile = true
       const fileKey = await this.uploadDocument(
         this.form.document,
-        accountId
+        accountIdFromDocHash
       )
       this.uploadState.isUploadingFile = false
 
@@ -240,7 +241,7 @@ export default {
           mime_type: this.form.document.mimeType,
         },
         description: this.form.description,
-        uploader_account_id: this.wallet.accountId,
+        uploader_account_id: this.accountId,
       })
       this.uploadState.isCreatingBlob = false
 

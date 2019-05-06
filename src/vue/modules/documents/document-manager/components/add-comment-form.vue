@@ -83,7 +83,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
   },
   methods: {
@@ -128,7 +128,7 @@ export default {
         },
         description: this.form.description,
         uploader_account_id: this.metadata.uploaderAccountId,
-        updater_account_id: this.wallet.accountId,
+        updater_account_id: this.accountId,
       }
 
       const { data } = await api().postWithSignature('/blobs', {

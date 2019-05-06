@@ -17,13 +17,13 @@ export default {
   }),
 
   methods: {
-    async createAccount (id) {
+    async createAccount (id, accountId) {
       const operation = base.CreateAccountBuilder.createAccount({
         destination: id,
         roleID: ACCOUNT_ROLE_ID,
         signersData: [{
           roleID: ACCOUNT_ROLE_ID,
-          publicKey: this.wallet.accountId,
+          publicKey: accountId,
           weight: SIGNER_WEIGHT,
           identity: SIGNER_IDENTITY,
           details: {

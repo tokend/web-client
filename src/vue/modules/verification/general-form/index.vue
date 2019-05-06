@@ -110,10 +110,10 @@ export default {
       country: types.country,
     }),
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
     verificationCode () {
-      return this.wallet.accountId.slice(1, 6)
+      return this.accountId.slice(1, 6)
     },
     isUSResident () {
       return isUSResidence(this.countryCode)
@@ -168,7 +168,7 @@ export default {
       this.disableForm()
       try {
         await this.uploadDocuments()
-        const blobId = await this.createBlob(this.wallet.accountId)
+        const blobId = await this.createBlob(this.accountId)
         await this.createRequest(blobId)
         // we duplicating enabling form in try/catch blocks to prevent race
         // condition - the outer component disables the form after submit event
@@ -184,7 +184,7 @@ export default {
       const operation = base.CreateChangeRoleRequestBuilder
         .createChangeRoleRequest({
           requestID: this.requestId,
-          destinationAccount: this.wallet.accountId,
+          destinationAccount: this.accountId,
           accountRoleToSet: this.accountRoleToSet,
           creatorDetails: { blob_id: blobId },
         })

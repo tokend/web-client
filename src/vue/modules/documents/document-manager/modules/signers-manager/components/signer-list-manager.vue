@@ -72,10 +72,10 @@ export default {
   computed: {
     // TODO: rename
     signerWhoManages () {
-      return this.signers.find(s => s.publicKey === this.wallet.accountId)
+      return this.signers.find(s => s.publicKey === this.accountId)
     },
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
   },
   methods: {

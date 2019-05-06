@@ -147,7 +147,7 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.accountId,
     ]),
   },
   async created () {
@@ -167,7 +167,7 @@ export default {
 
       this.signer = signers
         .map(s => new Signer(s))
-        .find(s => s.publicKey === this.wallet.accountId)
+        .find(s => s.publicKey === this.accountId)
     },
     async getMetadataHistory () {
       const { data: changeRoleRequests } = await api().getWithSignature('/v3/change_role_requests', {

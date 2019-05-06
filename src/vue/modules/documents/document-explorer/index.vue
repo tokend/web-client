@@ -82,9 +82,9 @@ export default {
   }),
 
   computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
 
   watch: {
@@ -106,7 +106,7 @@ export default {
       this.documents = []
 
       try {
-        const accounts = await this.loadPublicKeyEntries(this.wallet.accountId)
+        const accounts = await this.loadPublicKeyEntries(this.accountId)
         this.documents = await this.getDocumentsByAccountIds(accounts)
         this.isLoaded = true
       } catch (e) {
