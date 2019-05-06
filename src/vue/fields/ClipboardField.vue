@@ -12,7 +12,7 @@
       </span>
       <button
         type="button"
-        class="clipboard-field__button"
+        class="clipboard-field__button app__button-icon"
         :id="`clipboard-btn-${_uid}`"
         :data-clipboard-target="`#clipboard-target-${_uid}`"
       >
@@ -41,9 +41,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./scss/variables";
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import './scss/variables';
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .clipboard-field {
   background: $col-clipboard-background;
@@ -53,6 +53,7 @@ export default {
 .clipboard-field__content {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: relative;
   width: 100%;
 }
@@ -65,7 +66,7 @@ export default {
   font-size: 1.3rem;
   line-height: 1.25;
   font-family: monospace;
-  white-space: nowrap;
+  word-break: break-word;
 
   @include respond-to($x-medium) {
     font-size: 1.1rem;
@@ -76,21 +77,20 @@ export default {
   font-size: 0.8rem;
   position: absolute;
   left: 1.2rem;
-  top: .8rem;
+  top: 0.8rem;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include label-font-sizes;
 }
 
 .clipboard-field__button {
-  @include button-icon();
   width: 3.2rem;
   height: 3.2rem;
-  margin: .1rem .2rem 0 0;
+  margin-right: 0.4rem;
 }
 
 .clipboard-field__copy-icon {
   font-size: 1.8rem;
-  color: $col-primary-lighten;
 }
 </style>

@@ -18,7 +18,7 @@ const localVue = createLocalVue()
 Vue.use(VueResource)
 
 const Component = {
-  template: `<div></div>`,
+  template: '<div></div>',
   props: ['wallet', 'config'],
 }
 

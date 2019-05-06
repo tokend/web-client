@@ -7,7 +7,7 @@
             {{ 'assets.update-drawer-title' | globalize }}
           </template>
 
-          <asset-update-form-module
+          <update-asset-form-module
             :asset-code="selectedAsset.code"
             :wallet="wallet"
             :config="config"
@@ -24,14 +24,20 @@
             :asset="selectedAsset"
             :storage-url="config.storageURL"
             :kyc-required-asset-type="kycRequiredAssetType"
+            :security-asset-type="securityAssetType"
           />
 
           <div class="assets-renderer__actions">
             <asset-actions
               :asset="selectedAsset"
               :is-account-unverified="isAccountUnverified"
+              :is-account-general="isAccountGeneral"
+              :is-account-us-accredited="isAccountUsAccredited"
+              :is-account-us-verified="isAccountUsVerified"
+              :is-account-corporate="isAccountCorporate"
               :kyc-required-asset-type="kycRequiredAssetType"
-              @update-ask="isUpdateMode = true"
+              :security-asset-type="securityAssetType"
+              @update-click="isUpdateMode = true"
               @balance-added="initFirstPageLoader() || (isDrawerShown = false)"
             />
           </div>
@@ -94,7 +100,7 @@ import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
 import AssetActions from './asset-actions'
 
-import AssetUpdateFormModule from '@modules/update-asset-form'
+import UpdateAssetFormModule from '@modules/update-asset-form'
 
 import { Wallet } from '@tokend/js-sdk'
 
@@ -115,7 +121,7 @@ export default {
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
-    AssetUpdateFormModule,
+    UpdateAssetFormModule,
   },
 
   props: {
@@ -128,6 +134,22 @@ export default {
       required: true,
     },
     isAccountUnverified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsVerified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsAccredited: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountGeneral: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountCorporate: {
       type: Boolean,
       required: true,
     },
@@ -147,6 +169,7 @@ export default {
     ...mapGetters('asset-explorer', {
       assets: types.assets,
       kycRequiredAssetType: types.kycRequiredAssetType,
+      securityAssetType: types.securityAssetType,
     }),
   },
 
@@ -192,7 +215,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import '~@scss/mixins';
 
 $asset-card-margin: 0.75rem;
 $media-small-height: 460px;

@@ -1,7 +1,19 @@
 <template>
   <div class="security-page">
     <drawer :is-shown.sync="isDrawerShown">
-      <template v-if="viewMode === VIEW_MODES.changePassword">
+      <template v-if="viewMode === VIEW_MODES.enableTfa">
+        <template slot="heading">
+          <template v-if="isTotpEnabled">
+            {{ 'security-page.disable-tfa-title' | globalize }}
+          </template>
+          <template v-else>
+            {{ 'security-page.enable-tfa-title' | globalize }}
+          </template>
+        </template>
+        <tfa-form @update="updateTfa" />
+      </template>
+
+      <template v-else-if="viewMode === VIEW_MODES.changePassword">
         <template slot="heading">
           {{ 'security-page.change-password-btn' | globalize }}
         </template>
@@ -33,6 +45,16 @@
         </div>
       </template>
     </drawer>
+
+    <div class="security-page__row">
+      <p class="security-page__row-title">
+        {{ 'security-page.enable-tfa-title' | globalize }}
+      </p>
+      <button @click="showDrawer(VIEW_MODES.enableTfa)">
+        <switch-field :value="isTotpEnabled" />
+      </button>
+    </div>
+    <hr>
 
     <template v-if="getModule().canRenderSubmodule(ChangePasswordPseudoModule)">
       <div class="security-page__row">
@@ -81,21 +103,26 @@
 </template>
 
 <script>
+import SwitchField from '@/vue/fields/SwitchField'
 import ClipboardField from '@/vue/fields/ClipboardField'
 
 import Drawer from '@/vue/common/Drawer'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 import ChangePasswordForm from '@/vue/forms/ChangePasswordForm'
+import TfaForm from '@/vue/forms/TfaForm'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 
 const VIEW_MODES = {
+  enableTfa: 'enableTfa',
   changePassword: 'changePassword',
   viewAccountId: 'viewAccountId',
   viewSecretSeed: 'viewSecretSeed',
@@ -105,10 +132,12 @@ const VIEW_MODES = {
 export default {
   name: 'security',
   components: {
+    SwitchField,
     Drawer,
     KeyViewer,
     ClipboardField,
     ChangePasswordForm,
+    TfaForm,
   },
   data: _ => ({
     isDrawerShown: false,
@@ -122,49 +151,70 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
   },
 
+  async created () {
+    try {
+      await this.loadFactors()
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
+    }
+  },
+
   methods: {
+    ...mapActions({
+      loadFactors: vuexTypes.LOAD_FACTORS,
+    }),
     showDrawer (viewMode) {
       this.viewMode = viewMode
       this.isDrawerShown = true
+    },
+    async updateTfa () {
+      this.isDrawerShown = false
+      try {
+        await this.loadFactors()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .security-page {
   background: $col-block-bg;
+
   @include box-shadow();
+}
 
-  .security-page__row {
-    padding: 2.4rem;
-    height: 7.4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.security-page hr {
+  margin: 0 2.4rem;
+  border: $col-block-line solid 0.05rem;
+}
 
-    .security-page__row-title {
-      font-size: 1.8rem;
-      color: $col-text;
-    }
+.security-page__row {
+  padding: 2.4rem;
+  height: 7.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .security-page__row-action {
-      font-size: 1.3rem;
-      cursor: pointer;
-      color: $col-link;
-    }
-  }
+.security-page__row-title {
+  font-size: 1.8rem;
+  color: $col-text;
+}
 
-  hr {
-    margin: 0 2.4rem;
-    border: $col-block-line solid 0.05rem;
-  }
+.security-page__row-action {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: $col-link;
 }
 
 .secret-seed__description {

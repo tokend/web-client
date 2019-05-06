@@ -40,7 +40,7 @@
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+          v-if="currentAsset !== defaultQuoteAsset &&
             getModule().getSubmodule(DashboardChartPseudoModule)
           "
           class="dashboard__chart"
@@ -48,7 +48,7 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
             :base-asset="currentAsset"
-            :quote-asset="config.DEFAULT_QUOTE_ASSET"
+            :quote-asset="defaultQuoteAsset"
           />
         </div>
         <div
@@ -137,6 +137,7 @@ export default {
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
       vuexTypes.wallet,
+      vuexTypes.defaultQuoteAsset,
     ]),
   },
   watch: {
@@ -152,7 +153,10 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    currentAsset () {
+    currentAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
       this.loadBalances()
     },
   },
@@ -172,7 +176,7 @@ export default {
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.find(a => a === 'ETH') || keys[0] || ''
+          keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
     },
 
@@ -196,8 +200,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .dashboard {
   flex: 1;

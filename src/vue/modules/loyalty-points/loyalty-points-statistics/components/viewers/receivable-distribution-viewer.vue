@@ -2,7 +2,6 @@
   <div class="receivable-distribution-viewer">
     <pie-chart
       v-if="isLoaded"
-      id="requests-chart"
       :data="distributionStatistics"
     />
 

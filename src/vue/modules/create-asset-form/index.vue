@@ -10,6 +10,7 @@
           v-show="currentStep === STEPS.information.number"
           :request="request"
           :kyc-required-asset-type="kycRequiredAssetType"
+          :security-asset-type="securityAssetType"
           @submit="setInformationStepForm($event) || moveToNextStep()"
         />
 
@@ -17,7 +18,7 @@
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :account-id="wallet.accountId"
+          :main-signer-account-id="mainSignerAccountId"
           :max-issuance-amount="informationStepForm.maxIssuanceAmount"
           @submit="setAdvancedStepForm($event) || submit()"
         />
@@ -109,6 +110,16 @@ export default {
     STEPS,
   }),
 
+  computed: {
+    mainSignerAccountId () {
+      if (this.wallet.keypair) {
+        return this.wallet.keypair.accountId()
+      } else {
+        return ''
+      }
+    },
+  },
+
   async created () {
     await this.init()
   },
@@ -120,6 +131,8 @@ export default {
         initConfig(this.config)
 
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
+
         await this.tryLoadRequest()
 
         this.isLoaded = true

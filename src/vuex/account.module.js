@@ -21,7 +21,7 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
-    const response = await Api.getWithSignature(`accounts/${accountId}`, {
+    const response = await Api.getWithSignature(`/v3/accounts/${accountId}`, {
       include: ['external_system_ids', 'balances', 'balances.state'],
     })
     commit(vuexTypes.SET_ACCOUNT, response.data)
@@ -53,12 +53,21 @@ export const getters = {
   [vuexTypes.isAccountGeneral]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountRoleId] ===
     rootGetters[vuexTypes.kvEntryGeneralRoleId],
+  [vuexTypes.isAccountUsAccredited]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryUsAccreditedRoleId],
+  [vuexTypes.isAccountUsVerified]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryUsVerifiedRoleId],
   [vuexTypes.isAccountCorporate]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountRoleId] ===
     rootGetters[vuexTypes.kvEntryCorporateRoleId],
   [vuexTypes.isAccountUnverified]: (a, getters, b, rootGetters) =>
     getters[vuexTypes.accountRoleId] ===
     rootGetters[vuexTypes.kvEntryUnverifiedRoleId],
+  [vuexTypes.isAccountBlocked]: (a, getters, b, rootGetters) =>
+    getters[vuexTypes.accountRoleId] ===
+    rootGetters[vuexTypes.kvEntryBlockedRoleId],
 }
 
 export default {

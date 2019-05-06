@@ -24,107 +24,68 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, i) in limits" :key="`limits-table-row-${i}`">
+        <tr
+          v-for="(item, i) in limits"
+          :key="`limits-table-row-${i}`"
+        >
           <td>
             {{ OPERATION_TYPES_TRANSLATION_ID[item.statsOpType] | globalize }}
           </td>
           <td>
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailyLeft }">
-              <template v-if="item.dailyLeft && item.dailyOut !== MAX_AMOUNT">
+            <template v-if="!item.dailyOut || item.dailyOut === MAX_AMOUNT">
+              <span class="limits-table-renderer__value-placeholder">
+                {{ 'limits-table-renderer.unlimited-lbl' | globalize }}
+              </span>
+            </template>
+            <template v-else>
+              <span class="limits-table-renderer__value">
                 {{ item.dailyLeft | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
-            /
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.dailyOut }">
-              <template v-if="item.dailyOut && item.dailyOut !== MAX_AMOUNT">
+                /
                 {{ item.dailyOut | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
+              </span>
+            </template>
           </td>
           <td>
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklyLeft }">
-              <template
-                v-if="
-                  item.weeklyLeft &&
-                    item.weeklyOut !== MAX_AMOUNT
-                ">
+            <template v-if="!item.weeklyOut || item.weeklyOut === MAX_AMOUNT">
+              <span class="limits-table-renderer__value-placeholder">
+                {{ 'limits-table-renderer.unlimited-lbl' | globalize }}
+              </span>
+            </template>
+            <template v-else>
+              <span class="limits-table-renderer__value">
                 {{ item.weeklyLeft | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
-            /
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.weeklyOut }">
-              <template v-if="item.weeklyOut && item.weeklyOut !== MAX_AMOUNT">
+                /
                 {{ item.weeklyOut | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
+              </span>
+            </template>
           </td>
           <td>
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlyLeft }">
-              <template
-                v-if="
-                  item.monthlyLeft &&
-                    item.monthlyOut !== MAX_AMOUNT">
+            <template v-if="!item.monthlyOut || item.monthlyOut === MAX_AMOUNT">
+              <span class="limits-table-renderer__value-placeholder">
+                {{ 'limits-table-renderer.unlimited-lbl' | globalize }}
+              </span>
+            </template>
+            <template v-else>
+              <span class="limits-table-renderer__value">
                 {{ item.monthlyLeft | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
-            /
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.monthlyOut }">
-              <template
-                v-if="
-                  item.monthlyOut &&
-                    item.monthlyOut !== MAX_AMOUNT
-                ">
+                /
                 {{ item.monthlyOut | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
+              </span>
+            </template>
           </td>
           <td>
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualLeft }">
-              <template
-                v-if="
-                  item.annualLeft &&
-                    item.annualOut !== MAX_AMOUNT">
+            <template v-if="!item.annualOut || item.annualOut === MAX_AMOUNT">
+              <span class="limits-table-renderer__value-placeholder">
+                {{ 'limits-table-renderer.unlimited-lbl' | globalize }}
+              </span>
+            </template>
+            <template v-else>
+              <span>
                 {{ item.annualLeft | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
-            /
-            <!-- eslint-disable-next-line -->
-            <span :class="{ 'limits-table-renderer__table-item--inactive': !item.annualOut }">
-              <template v-if="item.annualOut && item.annualOut !== MAX_AMOUNT">
+                /
                 {{ item.annualOut | formatNumber }}
-              </template>
-              <template v-else>
-                {{ 'limits-table-renderer.not-set-lbl' | globalize }}
-              </template>
-            </span>
+              </span>
+            </template>
           </td>
         </tr>
       </tbody>
@@ -191,9 +152,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
-.limits-table-renderer__table-item--inactive {
+.limits-table-renderer__value-placeholder {
   color: $col-table-cell-text-inactive;
 }
 
@@ -204,5 +165,4 @@ export default {
 .limits-table-renderer__no-data-message {
   margin-top: 3.2rem;
 }
-
 </style>

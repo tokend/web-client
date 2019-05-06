@@ -26,8 +26,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .sale-logo-viewer {
   background-color: $col-sale-details-logo-bg;

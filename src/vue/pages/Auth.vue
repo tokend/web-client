@@ -18,7 +18,13 @@
     </div>
     <div class="auth__form">
       <logo class="auth__logo" />
+
+      <div class="auth__idle-message-wrp">
+        <idle-message />
+      </div>
+
       <router-view />
+
       <section class="auth__footer-section">
         <app-footer />
       </section>
@@ -28,6 +34,7 @@
 
 <script>
 import Logo from '../assets/Logo'
+import IdleMessage from '@/vue/common/IdleMessage'
 import AppFooter from '@/vue/navigation/Footer'
 import config from '@/config'
 
@@ -35,6 +42,7 @@ export default {
   name: 'auth',
   components: {
     Logo,
+    IdleMessage,
     AppFooter,
   },
   data () {
@@ -60,11 +68,11 @@ export default {
 }
 
 .auth__titles {
-  background: $col-auth-titles-background-fallback; /* Old browsers */
-  background: linear-gradient(
+  background:
+    linear-gradient(
       $col-auth-titles-background-light 0%,
       $col-auth-titles-background-dark 65%
-  );
+    );
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,7 +81,6 @@ export default {
   @include respond-to(large) {
     padding: 0 7rem;
   }
-
   @include respond-to(medium) {
     display: none;
   }
@@ -106,7 +113,6 @@ export default {
   @include respond-to(large) {
     padding: 6rem 7rem;
   }
-
   @include respond-to(medium) {
     margin: 0 auto;
     max-width: 48rem;
@@ -122,7 +128,6 @@ export default {
   @include respond-to-height(950px) {
     margin-bottom: 12rem;
   }
-
   @include respond-to-height(750px) {
     margin-bottom: 6.4rem;
   }
@@ -140,5 +145,10 @@ export default {
   font-size: 1.2rem;
   color: $col-text-auth-version;
   margin: 1.2rem 0 0;
+}
+
+.auth__idle-message-wrp {
+  margin-top: -6rem;
+  margin-bottom: 4rem;
 }
 </style>

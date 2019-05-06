@@ -3,7 +3,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="signer-email"
           name="signer-email"
           v-model="form.email"
           :label="'document-signers-manager.signer-email-lbl' | globalize"
@@ -220,5 +219,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/vue/forms/_app-form";
+@import '~@/vue/forms/_app-form';
 </style>

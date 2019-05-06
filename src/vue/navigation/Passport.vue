@@ -28,7 +28,10 @@
         />
       </button>
 
-      <div class="passport__account-type">
+      <div
+        class="passport__account-type"
+        :class="{ 'passport__account-type--blocked': isAccountBlocked }"
+      >
         {{ accountRoleTranslationId | globalize }}
       </div>
     </div>
@@ -89,8 +92,11 @@ export default {
       kycAvatarKey: vuexTypes.kycAvatarKey,
 
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
+      isAccountUsVerified: vuexTypes.isAccountUsVerified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
       isAccountGeneral: vuexTypes.isAccountGeneral,
+      isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
     }),
 
@@ -99,6 +105,12 @@ export default {
         return 'passport.account-general'
       } else if (this.isAccountCorporate) {
         return 'passport.account-corporate'
+      } else if (this.isAccountUsAccredited) {
+        return 'passport.account-us-accredited'
+      } else if (this.isAccountUsVerified) {
+        return 'passport.account-us-verified'
+      } else if (this.isAccountBlocked) {
+        return 'passport.account-blocked'
       } else {
         return 'passport.account-unverified'
       }
@@ -178,11 +190,11 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+<style lang="scss">
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-$hide-account-details-bp: 800px;
+$media-hide-account-details-bp: 800px;
 $dropdown-item-side-padding: 2.4rem;
 
 .passport {
@@ -217,7 +229,8 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__account-details-wrp {
   margin-left: 1.6rem;
-  @include respond-to-custom($hide-account-details-bp) {
+
+  @include respond-to-custom($media-hide-account-details-bp) {
     display: none;
   }
 }
@@ -246,6 +259,11 @@ $dropdown-item-side-padding: 2.4rem;
   line-height: 1.5;
 }
 
+.passport__account-type--blocked {
+  color: $col-error;
+  font-weight: 700;
+}
+
 .passport__dropdown {
   position: absolute;
   right: 0;
@@ -253,40 +271,42 @@ $dropdown-item-side-padding: 2.4rem;
   background: $col-block-bg;
   display: flex;
   flex-direction: column;
+
   @include box-shadow();
 
   &:before {
     // dropdown arrow
-    content: "";
+    content: '';
     position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 0.8rem 0.8rem 0.8rem;
+    border-width: 0 0.8rem 0.8rem;
     border-color: transparent transparent $col-block-bg transparent;
     top: -0.8rem;
     right: 3.9rem;
   }
+}
 
-  &-enter-active {
-    animation-duration: 0.2s;
-    animation: passport-dropdown-keyframes 0.2s ease-in-out;
+.passport__dropdown-enter-active {
+  animation: passport-dropdown-keyframes 0.2s ease-in-out;
+  animation-duration: 0.2s;
+}
+
+.passport__dropdown-leave-active {
+  animation: passport-dropdown-keyframes 0.2s ease-in-out reverse;
+  animation-duration: 0.2s;
+}
+
+@keyframes passport-dropdown-keyframes {
+  from {
+    opacity: 0;
+    margin-top: -1.2rem;
   }
 
-  &-leave-active {
-    animation-duration: 0.2s;
-    animation: passport-dropdown-keyframes 0.2s ease-in-out reverse;
-  }
-
-  @keyframes passport-dropdown-keyframes {
-    from {
-      opacity: 0;
-      margin-top: -1.2rem;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
+  to {
+    opacity: 1;
+    margin-top: 0;
   }
 }
 
@@ -299,7 +319,7 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport__dropdown-signed-in-email {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .passport__dropdown-status-icon {

@@ -4,7 +4,6 @@
       <template v-if="assets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="withdrawal-form"
           novalidate
         >
           <div class="app__form-row withdrawal__form-row">
@@ -157,7 +156,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="withdrawal-form"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
@@ -177,7 +175,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.assets"
           tag="button"
           class="app__button-raised withdrawal__action"
         >
@@ -206,6 +204,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
+import { vueRoutes } from '@/vue-router/routes'
 import { Sdk } from '@/sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -230,26 +229,24 @@ export default {
     EmailGetter,
   },
   mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-        comment: '',
-      },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+    vueRoutes,
+  }),
   validations () {
     const addressRules = {
       required,
@@ -401,17 +398,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
-
-.withdrawal__fees-container {
-  &.loading {
-    opacity: 0.7;
-  }
-
-  .withdrawal__fee-type {
-    color: $col-info;
-  }
-}
+@import '@/scss/variables';
 
 .withdrawal__form-row {
   margin-bottom: 2.5rem;
@@ -425,14 +412,14 @@ export default {
 .withdrawal__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.withdrawal__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.withdrawal__fee-table td:last-child {
+  text-align: right;
 }
 
 .withdrawal__fee-tbody {
@@ -447,12 +434,8 @@ export default {
 .withdrawal__action {
   margin-top: 2.5rem;
 }
+
 .withdrawal__data--loading {
   opacity: 0.4;
-}
-
-.withdrawal__table-description {
-  opacity: 0.6;
-  font-size: 1.2rem;
 }
 </style>

@@ -75,7 +75,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="limit-daily-out"
           name="limit-daily-out"
           v-model="form.dailyOut"
           :label="'limits-form.daily-limit-lbl' | globalize"
@@ -93,7 +92,6 @@
       </div>
       <div class="app__form-field">
         <input-field
-          id="limit-weekly-out"
           name="limit-weekly-out"
           v-model="form.weeklyOut"
           :label="'limits-form.weekly-limit-lbl' | globalize"
@@ -113,7 +111,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="limit-monthly-out"
           name="limit-monthly-out"
           v-model="form.monthlyOut"
           :label="'limits-form.monthly-limit-lbl' | globalize"
@@ -131,7 +128,6 @@
       </div>
       <div class="app__form-field">
         <input-field
-          id="limit-annual-out"
           name="limit-annual-out"
           v-model="form.annualOut"
           :label="'limits-form.annual-limit-lbl' | globalize"
@@ -151,7 +147,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <textarea-field
-          id="limit-note"
           name="limit-note"
           v-model="form.note"
           :label="'limits-form.note-lbl' | globalize"
@@ -326,6 +321,14 @@ export default {
       )
     },
   },
+  watch: {
+    selectedLimitsByOpType () {
+      this.form.dailyOut = this.selectedLimitsByOpType.dailyOut || ''
+      this.form.weeklyOut = this.selectedLimitsByOpType.weeklyOut || ''
+      this.form.monthlyOut = this.selectedLimitsByOpType.monthlyOut || ''
+      this.form.annualOut = this.selectedLimitsByOpType.annualOut || ''
+    },
+  },
   created () {
     this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
   },
@@ -418,7 +421,7 @@ export default {
 
 .limits-form__form-subheading {
   margin-top: 3.2rem;
-  margin-bottom: -.8rem;
+  margin-bottom: -0.8rem;
 }
 
 .limits__assets-select {

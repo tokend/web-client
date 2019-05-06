@@ -14,7 +14,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 const localVue = createLocalVue()
 
 const Component = {
-  template: `<div></div>`,
+  template: '<div></div>',
   props: ['wallet', 'requestId'],
   data: _ => ({
     informationStepForm: {
@@ -27,7 +27,7 @@ const Component = {
     },
     advancedStepForm: {
       isPreissuanceDisabled: false,
-      preissuedAssetSigner: '',
+      preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
     },
@@ -51,7 +51,7 @@ describe('Manage asset request mixin', () => {
   })
 
   describe('computed property', () => {
-    describe('preissuedAssetSigner', () => {
+    describe('preIssuanceAssetSigner', () => {
       it('returns null asset signer ID, if pre-issuance is disabled, or preissued asset signer property otherwise',
         () => {
           sandbox.stub(Config, 'config').returns({
@@ -60,16 +60,16 @@ describe('Manage asset request mixin', () => {
           wrapper.setData({
             advancedStepForm: { isPreissuanceDisabled: true },
           })
-          expect(wrapper.vm.preissuedAssetSigner)
+          expect(wrapper.vm.preIssuanceAssetSigner)
             .to.equal('NULL_ASSET_SIGNER')
 
           wrapper.setData({
             advancedStepForm: {
               isPreissuanceDisabled: false,
-              preissuedAssetSigner: 'SIGNER_ID',
+              preIssuanceAssetSigner: 'SIGNER_ID',
             },
           })
-          expect(wrapper.vm.preissuedAssetSigner).to.equal('SIGNER_ID')
+          expect(wrapper.vm.preIssuanceAssetSigner).to.equal('SIGNER_ID')
         }
       )
     })
@@ -109,7 +109,7 @@ describe('Manage asset request mixin', () => {
           },
           advancedStepForm: {
             isPreissuanceDisabled: false,
-            preissuedAssetSigner: 'SIGNER_ID',
+            preIssuanceAssetSigner: 'SIGNER_ID',
             initialPreissuedAmount: '500.000000',
           },
         })

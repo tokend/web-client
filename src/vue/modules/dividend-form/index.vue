@@ -4,7 +4,6 @@
       <template v-if="ownedAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="dividend-form"
           novalidate
         >
           <div class="app__form-row dividend__form-row">
@@ -73,7 +72,7 @@
                       {{ 'dividend-form.email' | globalize }}
                     </td>
                     <td>
-                      {{ 'dividend-form.token-amount' | globalize }}
+                      {{ 'dividend-form.asset-amount' | globalize }}
                     </td>
                     <td>
                       {{ 'dividend-form.supposed-dividend-amount' | globalize }}
@@ -128,7 +127,6 @@
                 !balanceHolders.length ||
                 !isSignersLoaded
               "
-              form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
             </button>
@@ -149,7 +147,7 @@
           {{ 'dividend-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.sales"
           tag="button"
           class="app__button-raised dividend__action"
         >
@@ -185,6 +183,7 @@ import {
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   transferred: 'transferred',
@@ -229,6 +228,7 @@ export default {
     isSignersLoadPending: false,
     isSignersLoaded: false,
     isDividendSubmitting: false,
+    vueRoutes,
   }),
   computed: {
     ...mapGetters('dividend-form', {
@@ -464,69 +464,60 @@ export default {
 </script>
 
 <style lang="scss" >
-  @import "/scss/variables";
+@import '/scss/variables';
 
-  .dividend__fees-container {
-    &.loading {
-      opacity: 0.7;
-    }
+.dividend__form-row {
+  margin-bottom: 2.5rem;
+}
 
-    .dividend__fee-type {
-      color: $col-info;
-    }
-  }
+.dividend__form-field-description {
+  margin-top: 0.4rem;
+  opacity: 0.7;
+}
 
-  .dividend__form-row {
-    margin-bottom: 2.5rem;
-  }
+.dividend__fee-table {
+  width: 100%;
+  font-size: 1.2rem;
+}
 
-  .dividend__form-field-description {
-    margin-top: 0.4rem;
-    opacity: 0.7;
-  }
+.dividend__fee-table tr {
+  height: 2rem;
+}
 
-  .dividend__fee-table {
-    width: 100%;
-    font-size: 1.2rem;
+.dividend__fee-table td:last-child {
+  text-align: right;
+}
 
-    tr {
-      height: 2rem;
-    }
+.dividend__fee-tbody {
+  color: $col-text-secondary;
+}
 
-    td:last-child {
-      text-align: right;
-    }
-  }
+.dividend__total-fee-row {
+  color: $col-text;
+  font-weight: 600;
+}
 
-  .dividend__fee-tbody {
-    color: $col-text-secondary;
-  }
+.dividend__action {
+  margin-top: 2.5rem;
+}
 
-  .dividend__total-fee-row {
-    color: $col-text;
-    font-weight: 600;
-  }
+.dividend__data--loading {
+  opacity: 0.4;
+}
 
-  .dividend__action {
-    margin-top: 2.5rem;
-  }
-  .dividend__data--loading {
-    opacity: 0.4;
-  }
+.dividend__table-description {
+  opacity: 0.6;
+  font-size: 1.2rem;
+}
 
-  .dividend__table-description {
-    opacity: 0.6;
-    font-size: 1.2rem;
-  }
+.dividend__fee-holders-not-found {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 6.4rem;
+  font-size: 1.8rem;
+}
 
-  .dividend__fee-holders-not-found {
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 6.4rem;
-    font-size: 1.8rem;
-  }
-
-  .dividend__fee-holders-loading {
-    justify-content: center;
-  }
+.dividend__fee-holders-loading {
+  justify-content: center;
+}
 </style>

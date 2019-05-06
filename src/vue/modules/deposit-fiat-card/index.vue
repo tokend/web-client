@@ -3,7 +3,6 @@
     v-if="form.asset && isInitialized"
     @submit.prevent="isFormValid() && showConfirmation()"
     class="deposit-fiat-card-module"
-    id="deposit-fiat-card-module"
   >
     <div class="app__form-row deposit-fiat-card__form-row">
       <div class="app__form-field">
@@ -167,7 +166,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="deposit-fiat-card-module"
       >
         {{ 'deposit-fiat-card-module.deposit' | globalize }}
       </button>
@@ -420,14 +418,14 @@ export default {
 .deposit-fiat-card__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.deposit-fiat-card__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.deposit-fiat-card__fee-table td:last-child {
+  text-align: right;
 }
 
 .deposit-fiat-card__fee-tbody {

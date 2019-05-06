@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="signup-email"
           name="signup-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,7 +17,6 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="signup-password"
           name="signup-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
@@ -32,8 +30,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          id="signup-confirm-password"
-          name="signup-password-confirm"
+          name="signup-confirm-password"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :white-autofill="false"
@@ -46,7 +43,7 @@
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}

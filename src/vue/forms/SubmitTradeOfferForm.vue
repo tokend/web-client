@@ -65,7 +65,7 @@
         >
           <template v-if="offerBalance.balance">
             {{
-              'submit-trade-offers-form.insufficient-funds-msg' | globalize({
+              'submit-trade-offers-form.insufficient-sales-msg' | globalize({
                 amount: {
                   value: offerBalance.balance,
                   currency: offerAssetCode
@@ -82,13 +82,13 @@
             }}
           </template>
         </p>
-        <div class="app__form-actions">
+        <div class="submit-trade-offer-form__actions-wrapper">
           <button
             v-ripple
             v-if="isOwner"
             type="button"
             @click="showConfirmation"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="formMixin.isDisabled"
           >
             {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
@@ -98,7 +98,7 @@
             v-else
             type="button"
             @click="showConfirmation"
-            class="app__form-submit-btn"
+            class="app__form-submit-btn app__button-raised"
             :disabled="!isEnoughOnBalance || formMixin.isDisabled"
           >
             <template v-if="isBuy">
@@ -213,13 +213,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import './app-form';
+@import './app-form';
 
-  .submit-trade-offer-form__actions {
-    margin-top: 5rem;
+.submit-trade-offer-form__actions {
+  margin-top: 5rem;
+}
 
-    & > .app__form-actions {
-      margin-top: 1.6rem;
-    }
-  }
+.submit-trade-offer-form__actions-wrapper {
+  margin-top: 1.6rem;
+}
 </style>

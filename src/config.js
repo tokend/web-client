@@ -43,12 +43,6 @@ export default Object.assign(
     // deprecated constants
 
     /**
-     * Default asset code for converting token's price,
-     * trade and sale offers
-     */
-    DEFAULT_QUOTE_ASSET: 'USD',
-
-    /**
      * Default limit of the number of transactions per a page
      */
     TRANSACTIONS_PER_PAGE: 12,
@@ -80,6 +74,12 @@ export default Object.assign(
      * The field being displayed on login screen.
      */
     BUILD_VERSION: 'dev: ' + packageJson.version,
+
+    /**
+     * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
+     * inactivity
+     */
+    IDLE_TIMEOUT: 1000 * 60 * 15,
 
     /**
      * Module scheme to use. The module scheme will be used to combine module

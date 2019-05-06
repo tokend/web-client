@@ -3,7 +3,6 @@
     v-if="form.asset && isInitialized"
     @submit.prevent="isFormValid() && showConfirmation()"
     class="withdrawal-fiat-bank-module"
-    id="withdrawal-fiat-bank-module"
   >
     <div class="app__form-row withdrawal-fiat-bank__form-row">
       <div class="app__form-field">
@@ -166,7 +165,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="withdrawal-fiat-bank-module"
       >
         {{ 'withdrawal-fiat-bank-module.withdrawal' | globalize }}
       </button>
@@ -398,14 +396,14 @@ export default {
 .withdrawal-fiat-bank__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.withdrawal-fiat-bank__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.withdrawal-fiat-bank__fee-table td:last-child {
+  text-align: right;
 }
 
 .withdrawal-fiat-bank__fee-tbody {

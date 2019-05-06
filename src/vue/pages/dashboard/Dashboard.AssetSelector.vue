@@ -1,6 +1,6 @@
 <template>
   <div class="asset-selector">
-    <template v-if="tokens.length">
+    <template v-if="assets.length">
       <div
         class="asset-selector__wrapper"
         v-if="currentAsset"
@@ -9,7 +9,7 @@
           <div class="asset-selector__select-picture">
             <img
               v-if="imgUrl"
-              class="asset-selector__asset-logo"
+              class="asset-selector__select-picture-tag"
               :src="imgUrl"
             >
             <p
@@ -22,7 +22,7 @@
           <div>
             <select-field
               :value="currentAssetForSelect"
-              :values="tokensList"
+              :values="assetsList"
               :key="currentAssetForSelect.code"
               key-as-value-text="nameAndCode"
               @input="$emit(EVENTS.assetChange, $event)"
@@ -48,10 +48,11 @@
               <span class="asset-selector__asset-value-secondary">
                 {{
                   currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: config.DEFAULT_QUOTE_ASSET, symbolAllowed: true
+                    currency: currentAssetBalanceDetails.convertedToAsset,
+                    symbolAllowed: true
                   })
                 }}
-                {{ config.DEFAULT_QUOTE_ASSET }}
+                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>
@@ -60,7 +61,7 @@
       <template v-if="!currentAsset">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
-          :message="'dashboard.here-will-be-the-tokens' | globalize"
+          :message="'dashboard.here-will-be-the-assets' | globalize"
         />
       </template>
     </template>
@@ -100,13 +101,13 @@ export default {
   },
   props: {
     currentAsset: {
-      type: [String, Object],
-      default: config.DEFAULT_QUOTE_ASSET,
+      type: [String],
+      default: '',
     },
   },
   data: () => ({
     EVENTS,
-    tokens: [],
+    assets: [],
     isLoadingFailed: false,
     config,
     ASSET_POLICIES,
@@ -114,22 +115,23 @@ export default {
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
-    tokensList () {
+    assetsList () {
       const balancesAssetCodes = this.balances.map(i => i.asset)
-      const tokens = this.tokens
-        .filter(token => balancesAssetCodes.includes(token.code))
+      const assets = this.assets
+        .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
-      // correcty in the list of all tokens: baseAssets should be displayed at
+      // correcty in the list of all assets: baseAssets should be displayed at
       // the beginning and otherAssets after baseAssets
 
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
-      const baseAssets = tokens
-        .filter(token => token.isBaseAsset)
+      const baseAssets = assets
+        .filter(asset => asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
-      const otherAssets = tokens
-        .filter(token => !token.isBaseAsset)
+      const otherAssets = assets
+        .filter(asset => !asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
         ...baseAssets,
@@ -137,7 +139,7 @@ export default {
       ]
     },
     currentAssetForSelect () {
-      return this.tokens.find(t => t.code === this.currentAsset) || {}
+      return this.assets.find(t => t.code === this.currentAsset) || {}
     },
     currentAssetBalanceDetails () {
       return this.balances
@@ -149,17 +151,17 @@ export default {
     },
   },
   async created () {
-    await this.loadTokens()
+    await this.loadAssets()
     await this.loadBalances()
   },
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
-    async loadTokens () {
+    async loadAssets () {
       try {
         const response = await Sdk.horizon.assets.getAll()
-        this.tokens = response.data.map(asset => new AssetRecord(asset))
+        this.assets = response.data.map(asset => new AssetRecord(asset))
       } catch (error) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -170,15 +172,15 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables.scss";
-@import "~@scss/mixins.scss";
+@import '~@scss/variables.scss';
+@import '~@scss/mixins.scss';
 
-$custom-breakpoint-small: 540px;
-$custom-breakpoint: 800px;
-$custom-breakpoint-medium: 870px;
+$media-custom-breakpoint-small: 540px;
+$media-custom-breakpoint: 800px;
+$media-custom-breakpoint-medium: 870px;
 
 .asset-selector {
-  @include respond-to-custom($custom-breakpoint-medium) {
+  @include respond-to-custom($media-custom-breakpoint-medium) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -190,17 +192,15 @@ $custom-breakpoint-medium: 870px;
   justify-content: space-between;
   align-items: center;
 
-  @include respond-to-custom($custom-breakpoint-medium) {
+  @include respond-to-custom($media-custom-breakpoint-medium) {
     flex-direction: column;
     align-items: flex-start;
   }
-
   @include respond-to(tablet) {
     flex-direction: row;
     align-items: center;
   }
-
-  @include respond-to-custom($custom-breakpoint-small) {
+  @include respond-to-custom($media-custom-breakpoint-small) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -212,8 +212,7 @@ $custom-breakpoint-medium: 870px;
   @include respond-to(medium) {
     align-items: flex-end;
   }
-
-  @include respond-to-custom($custom-breakpoint) {
+  @include respond-to-custom($media-custom-breakpoint) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -224,15 +223,13 @@ $custom-breakpoint-medium: 870px;
   align-items: center;
   margin-right: 1.6rem;
 
-  @include respond-to-custom($custom-breakpoint-medium) {
+  @include respond-to-custom($media-custom-breakpoint-medium) {
     margin-bottom: 2.4rem;
   }
-
   @include respond-to(tablet) {
     margin-bottom: 0;
   }
-
-  @include respond-to-custom($custom-breakpoint-small) {
+  @include respond-to-custom($media-custom-breakpoint-small) {
     margin-bottom: 2.4rem;
   }
 }
@@ -240,31 +237,31 @@ $custom-breakpoint-medium: 870px;
 .asset-selector__select-picture {
   margin-right: 1.6rem;
   display: flex;
+}
 
-  & > * {
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: .2rem;
-    @include box-shadow();
+.asset-selector__select-picture > * {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.2rem;
 
-    @include respond-to(small) {
-      width: 4rem;
-      height: 4rem;
-    }
+  @include box-shadow();
+  @include respond-to(small) {
+    width: 4rem;
+    height: 4rem;
   }
+}
 
-  img {
-    object-fit: contain;
-  }
+.asset-selector__select-picture-tag {
+  object-fit: contain;
+}
 
-  .asset-selector__asset-code-abbr {
-    font-size: 2.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: $col-asset-logo-background;
-    color: $col-asset-logo-text;
-  }
+.asset-selector__asset-code-abbr {
+  font-size: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $col-asset-logo-background;
+  color: $col-asset-logo-text;
 }
 
 .asset-selector__asset-available {
@@ -277,7 +274,7 @@ $custom-breakpoint-medium: 870px;
 }
 
 .asset-selector__asset-subvalue {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
   font-size: 1.6rem;
   color: $col-details-label;
 }
