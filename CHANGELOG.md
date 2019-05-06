@@ -13,6 +13,8 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Updated offer creating, updating drawers
+- Modularized:
+  - Pre-issuance form
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
