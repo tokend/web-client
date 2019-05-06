@@ -119,7 +119,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletEmail: vuexTypes.walletEmail,
       isTotpEnabled: vuexTypes.isTotpEnabled,
       accountId: vuexTypes.accountId,
     }),
@@ -195,7 +195,7 @@ export default {
       let newWallet
       try {
         newWallet = await Sdk.api.wallets.get(
-          this.wallet.email,
+          this.walletEmail,
           this.form.newPassword
         )
       } catch (e) {
@@ -206,7 +206,7 @@ export default {
             this.form.tfaCode
           )
           newWallet = await Sdk.api.wallets.get(
-            this.wallet.email,
+            this.walletEmail,
             this.form.newPassword
           )
         } else {

@@ -105,7 +105,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      storedWallet: vuexTypes.wallet,
+      accountId: vuexTypes.accountId,
     }),
   },
   methods: {
@@ -134,7 +134,7 @@ export default {
           Sdk.sdk.useWallet(wallet)
           initApi(wallet, config.HORIZON_SERVER)
           this.storeWallet(wallet)
-          await this.loadAccount(this.storedWallet.accountId)
+          await this.loadAccount(this.accountId)
           await this.loadKyc()
           this.$router.push(vueRoutes.app)
         } else {
