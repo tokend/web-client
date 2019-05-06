@@ -106,7 +106,8 @@ for further information about branching and tagging conventions.
 - Receivable-payable delta chart (Loyalty)
 - Account number field to the invoice form (Loyalty)
 - "Copy" button to EmailGetter
-- Fix for handling a "400" errors
+- An error was fixed in which if you exceed the limit for example daily 
+  then the user received an error stating that "Your transaction is invalid."
 
 #### Changed
 - Use select field instead of table for acceptable points on
