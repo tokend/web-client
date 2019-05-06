@@ -1753,6 +1753,8 @@
       "withdrawable-title": "Withdrawable",
       "deposit-method-title": "Deposit method",
       "verification-required-title": "Requires verification",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
       "security-asset-title": "Is security (requires accreditation for US residents)",
       "present-msg": "Yes",
       "absent-msg": "No",

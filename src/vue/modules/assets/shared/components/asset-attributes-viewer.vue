@@ -87,29 +87,19 @@
           </tr>
           <tr>
             <td>
-              {{ 'assets.verification-required-title' | globalize }}
+              {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
               <template v-if="asset.type === kycRequiredAssetType">
-                {{ 'assets.present-msg' | globalize }}
+                {{ 'assets.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.type === securityAssetType">
+                {{ 'assets.security-asset-title' | globalize }}
               </template>
 
               <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'assets.security-asset-title' | globalize }}
-            </td>
-            <td>
-              <template v-if="asset.type === securityAssetType">
-                {{ 'assets.present-msg' | globalize }}
-              </template>
-
-              <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
+                {{ 'assets.does-not-require-verification-title' | globalize }}
               </template>
             </td>
           </tr>
