@@ -32,8 +32,8 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
-import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
+import { PreIssuanceFormModule } from '@/vue/modules/pre-issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
@@ -65,7 +65,7 @@ export default {
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
           new TransferDrawerPseudoModule(),
@@ -185,10 +185,10 @@ export default {
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
-          new PreIssuanceDrawerPseudoModule({
+          new PreIssuanceFormModule({
             isCorporateOnly: true,
           }),
         ],
