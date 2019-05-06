@@ -21,12 +21,12 @@
         </button>
 
         <button
-          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
         >
-          {{ 'issuance-page.create-issuance' | globalize }}
+          {{ 'issuance-page.create-issuance-btn' | globalize }}
         </button>
       </template>
     </top-bar>
@@ -48,17 +48,18 @@
     </drawer>
 
     <drawer
-      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
       :is-shown.sync="isIssuanceDrawerShown"
     >
       <template slot="heading">
-        {{ 'issuance-page.create-issuance' | globalize }}
+        {{ 'issuance-page.create-issuance-title' | globalize }}
       </template>
 
       <submodule-importer
-        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
-        @submit="isIssuanceCreated = true"
-        @close="isIssuanceDrawerShown = false"
+        :submodule="getModule().getSubmodule(IssuanceFormModule)"
+        :wallet="wallet"
+        :config="config"
+        @issuance-created="setIssuanceCreated() || closeIssuanceDrawer()"
       />
     </drawer>
 
@@ -85,7 +86,7 @@ import config from '@/config'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { PreIssuanceFormModule } from '@modules/pre-issuance-form/module'
 
 export default {
@@ -105,7 +106,7 @@ export default {
     },
     vueRoutes,
     IssuanceExplorerModule,
-    IssuanceDrawerPseudoModule,
+    IssuanceFormModule,
     PreIssuanceFormModule,
   }),
 
@@ -114,6 +115,16 @@ export default {
       isAccountCorporate: vuexTypes.isAccountCorporate,
       wallet: vuexTypes.wallet,
     }),
+  },
+
+  methods: {
+    setIssuanceCreated () {
+      this.isIssuanceCreated = true
+    },
+
+    closeIssuanceDrawer () {
+      this.isIssuanceDrawerShown = false
+    },
   },
 }
 </script>
