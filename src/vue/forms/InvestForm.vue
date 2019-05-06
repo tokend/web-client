@@ -40,6 +40,7 @@
               :label="'invest-form.amount-lbl' | globalize({
                 asset: form.asset.code
               })"
+              :step="selectedAssetStep(trailingDigitsCount)"
               :error-message="getFieldErrorMessage(
                 'form.amount',
                 {

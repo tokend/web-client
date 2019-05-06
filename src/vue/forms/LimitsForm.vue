@@ -71,7 +71,7 @@
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.dailyOut')"
           type="number"
-          :step="inputStepByDigitsCount"
+          :step="selectedAssetStep(trailingDigitsCount)"
           :error-message="getFieldErrorMessage(
             'form.dailyOut',
             {
@@ -90,7 +90,7 @@
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.weeklyOut')"
           type="number"
-          :step="inputStepByDigitsCount"
+          :step="selectedAssetStep(trailingDigitsCount)"
           :error-message="getFieldErrorMessage(
             'form.weeklyOut',
             {
@@ -111,7 +111,7 @@
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.monthlyOut')"
           type="number"
-          :step="inputStepByDigitsCount"
+          :step="selectedAssetStep(trailingDigitsCount)"
           :error-message="getFieldErrorMessage(
             'form.monthlyOut',
             {
@@ -130,7 +130,7 @@
           :readonly="formMixin.isDisabled"
           @blur="touchField('form.annualOut')"
           type="number"
-          :step="inputStepByDigitsCount"
+          :step="selectedAssetStep(trailingDigitsCount)"
           :error-message="getFieldErrorMessage(
             'form.annualOut',
             {
@@ -194,9 +194,6 @@ import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
-import {
-  inputStepByDigitsCount,
-} from '@/js/helpers/input-trailing-digits-count'
 import config from '@/config'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -324,11 +321,6 @@ export default {
       return this.assetsDetails
         .find(asset => asset.code === this.asset)
         .trailingDigitsCount || config.MIN_AMOUNT
-    },
-    inputStepByDigitsCount () {
-      return inputStepByDigitsCount(
-        this.trailingDigitsCount
-      )
     },
     minValidAnnualOutValue () {
       return Math.max(

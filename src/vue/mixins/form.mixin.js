@@ -104,8 +104,8 @@ export default {
         }
       }
     },
-    selectedAssetStep (asset) {
-      return inputStepByDigitsCount(asset.trailingDigitsCount) ||
+    selectedAssetStep (trailingDigitsCount) {
+      return inputStepByDigitsCount(trailingDigitsCount) ||
         config.MIN_AMOUNT
     },
     clearFields () {

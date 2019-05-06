@@ -56,6 +56,7 @@
                     globalize({
                       asset: form.saleInformation.baseAsset.code
                     })"
+                  :step="selectedAssetStep(baseAssetTrailingDigitsCount)"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.requiredBaseAssetForHardCap',
                     {
@@ -129,6 +130,7 @@
                   :label="'create-sale-form.soft-cap' | globalize({
                     asset: defaultQuoteAsset
                   })"
+                  :step="selectedAssetStep(quoteAssetTrailingDigitsCount)"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.softCap',
                     {
@@ -152,6 +154,7 @@
                   :label="'create-sale-form.hard-cap' | globalize({
                     asset: defaultQuoteAsset
                   })"
+                  :step="selectedAssetStep(quoteAssetTrailingDigitsCount)"
                   :error-message="getFieldErrorMessage(
                     'form.saleInformation.hardCap',
                     {

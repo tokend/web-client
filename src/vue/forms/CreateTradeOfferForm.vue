@@ -10,7 +10,7 @@
               asset: assetPair.base
             })
           "
-          :step="inputStepByDigitsCount"
+          :step="selectedAssetStep(trailingDigitsCount)"
           name="trade-offer-price"
           :white-autofill="true"
           :disabled="formMixin.isDisabled"
@@ -36,7 +36,7 @@
             asset: assetPair.base
           })"
           name="trade-offer-amount"
-          :step="inputStepByDigitsCount"
+          :step="selectedAssetStep(trailingDigitsCount)"
           :white-autofill="true"
           :max="baseAssetBalance"
           :disabled="formMixin.isDisabled"
@@ -111,7 +111,6 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
-import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 
 import { MathUtil } from '@/js/utils/math.util'
@@ -215,11 +214,6 @@ export default {
       return this.assets
         .find(asset => asset.code === this.assetPair.base)
         .trailingDigitsCount || config.MIN_AMOUNT
-    },
-    inputStepByDigitsCount () {
-      return inputStepByDigitsCount(
-        this.trailingDigitsCount
-      )
     },
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
