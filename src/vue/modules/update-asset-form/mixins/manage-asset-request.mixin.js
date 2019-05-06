@@ -43,11 +43,11 @@ export default {
   },
 
   methods: {
-    async getUpdateAssetRequestById (id) {
+    async getUpdateAssetRequestById (id, accountId) {
       const endpoint = `/v3/update_asset_requests/${id}`
       const { data: record } = await api().getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details'],
       })
@@ -55,18 +55,20 @@ export default {
       return new UpdateAssetRequest(record)
     },
 
-    async getUpdatableRequest () {
+    async getUpdatableRequest (accountId) {
       const pendingRequest = await this.getLatestUpdateAssetRequest(
-        REQUEST_STATES.pending
+        REQUEST_STATES.pending,
+        accountId
       )
       const rejectedRequest = await this.getLatestUpdateAssetRequest(
-        REQUEST_STATES.rejected
+        REQUEST_STATES.rejected,
+        accountId
       )
 
       return pendingRequest || rejectedRequest
     },
 
-    async getLatestUpdateAssetRequest (requestState) {
+    async getLatestUpdateAssetRequest (requestState, accountId) {
       const endpoint = '/v3/update_asset_requests'
       const { data: requests } = await api().getWithSignature(endpoint, {
         page: {
@@ -74,7 +76,7 @@ export default {
           order: 'desc',
         },
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
           state: requestState,
         },
         include: ['request_details'],

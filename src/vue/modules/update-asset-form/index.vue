@@ -46,6 +46,9 @@ import LoadSpinner from '@/vue/common/Loader'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 import { initConfig } from './_config'
 
 const STEPS = {
@@ -99,6 +102,12 @@ export default {
     STEPS,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
+
   async created () {
     await this.init()
   },
@@ -129,9 +138,12 @@ export default {
       let request
 
       if (this.requestId) {
-        request = await this.getUpdateAssetRequestById(this.requestId)
+        request = await this.getUpdateAssetRequestById(
+          this.requestId,
+          this.accountId
+        )
       } else if (this.assetCode) {
-        request = await this.getUpdatableRequest()
+        request = await this.getUpdatableRequest(this.accountId)
       }
 
       return request

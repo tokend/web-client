@@ -20,7 +20,15 @@ describe('Create asset form module', () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
-    store = new Vuex.Store({})
+    store = new Vuex.Store({
+      modules: {
+        account: {
+          getters: {
+            accountId: () => ('SOME_ACCOUNT_ID'),
+          },
+        },
+      },
+    })
   })
 
   afterEach(() => {
@@ -114,7 +122,7 @@ describe('Create asset form module', () => {
             await wrapper.vm.tryLoadRequest()
 
             expect(wrapper.vm.getCreateAssetRequestById)
-              .to.have.been.calledOnceWithExactly('1')
+              .to.have.been.calledOnceWithExactly('1', 'SOME_ACCOUNT_ID')
             expect(wrapper.vm.request).to.equal(request)
           }
         )

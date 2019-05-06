@@ -130,7 +130,10 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.getCreateAssetRequestById(this.requestId)
+        this.request = await this.getCreateAssetRequestById(
+          this.requestId,
+          this.accountId
+        )
       }
     },
 
@@ -152,7 +155,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateAssetRequest()
+        await this.submitCreateAssetRequest(this.account)
         Bus.success('create-asset-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {

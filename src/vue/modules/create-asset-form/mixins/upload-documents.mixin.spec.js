@@ -17,7 +17,6 @@ Vue.use(VueResource)
 
 const Component = {
   template: '<div></div>',
-  props: ['wallet', 'config'],
 }
 
 describe('Upload documents mixin', () => {
@@ -49,12 +48,12 @@ describe('Upload documents mixin', () => {
             {},
           ]
 
-          await wrapper.vm.uploadDocuments(documents)
+          await wrapper.vm.uploadDocuments(documents, 'SOME_ACCOUNT_ID')
 
           expect(wrapper.vm.uploadDocument)
-            .calledWithExactly({ id: 'doc' })
+            .calledWithExactly({ id: 'doc' }, 'SOME_ACCOUNT_ID')
           expect(wrapper.vm.uploadDocument)
-            .calledWithExactly({})
+            .calledWithExactly({}, 'SOME_ACCOUNT_ID')
           expect(wrapper.vm.uploadDocument).callCount(2)
         }
       )
@@ -79,12 +78,13 @@ describe('Upload documents mixin', () => {
           sandbox.stub(wrapper.vm, 'uploadFile').resolves()
           sandbox.stub(document, 'setKey')
 
-          await wrapper.vm.uploadDocument(document)
+          await wrapper.vm.uploadDocument(document, 'SOME_ACCOUNT_ID')
 
           expect(wrapper.vm.createDocumentAnchorConfig)
             .calledOnceWithExactly(
               DOCUMENT_POLICIES[DOCUMENT_TYPES.assetLogo],
-              'mime-type'
+              'mime-type',
+              'SOME_ACCOUNT_ID'
             )
           expect(wrapper.vm.uploadFile)
             .calledOnceWithExactly(
@@ -99,16 +99,12 @@ describe('Upload documents mixin', () => {
 
     describe('createDocumentAnchorConfig', () => {
       it('calls Api.postWithSignature method with provided params', async () => {
-        wrapper.setProps({
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        })
         sandbox.stub(Api.api(), 'postWithSignature')
           .resolves({ data: { key: 'doc-key' } })
 
         const result = await wrapper.vm.createDocumentAnchorConfig(
-          'doc-type', 'mime-type'
+          'doc-type', 'mime-type', 'SOME_ACCOUNT_ID'
         )
-
         expect(Api.api().postWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/documents',

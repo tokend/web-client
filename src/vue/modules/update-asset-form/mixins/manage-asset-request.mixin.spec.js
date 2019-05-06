@@ -15,7 +15,7 @@ const localVue = createLocalVue()
 
 const Component = {
   template: `<div></div>`,
-  props: ['wallet', 'requestId'],
+  props: ['requestId'],
   data: _ => ({
     request: null,
     informationStepForm: {
@@ -114,14 +114,11 @@ describe('Manage asset request mixin', () => {
     describe('getUpdateAssetRequestById', () => {
       it('returns UpdateAssetRequest record loaded using API.getWithSignature',
         async () => {
-          wrapper.setProps({
-            wallet: { accountId: 'SOME_ACCOUNT_ID' },
-          })
           sandbox.stub(Api.api(), 'getWithSignature').resolves({
             data: {},
           })
 
-          const result = await wrapper.vm.getUpdateAssetRequestById('10')
+          const result = await wrapper.vm.getUpdateAssetRequestById('10', 'SOME_ACCOUNT_ID')
 
           expect(Api.api().getWithSignature)
             .to.have.been.calledOnceWithExactly(
@@ -137,19 +134,13 @@ describe('Manage asset request mixin', () => {
     })
 
     describe('getLatestUpdateAssetRequest', () => {
-      beforeEach(() => {
-        wrapper.setProps({
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        })
-      })
-
       it('returns UpdateAssetRequest record loaded using API.getWithSignature',
         async () => {
           sandbox.stub(Api.api(), 'getWithSignature').resolves({
             data: [{}],
           })
 
-          const result = await wrapper.vm.getLatestUpdateAssetRequest(1)
+          const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID')
 
           expect(Api.api().getWithSignature)
             .to.have.been.calledOnceWithExactly(
@@ -175,7 +166,7 @@ describe('Manage asset request mixin', () => {
           data: [],
         })
 
-        const result = await wrapper.vm.getLatestUpdateAssetRequest(1)
+        const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID')
 
         expect(result).to.be.null
       })
@@ -188,14 +179,14 @@ describe('Manage asset request mixin', () => {
           sandbox.stub(wrapper.vm, 'getLatestUpdateAssetRequest')
             .resolves(request)
 
-          const result = await wrapper.vm.getUpdatableRequest()
+          const result = await wrapper.vm.getUpdatableRequest('SOME_ACCOUNT_ID')
 
           expect(wrapper.vm.getLatestUpdateAssetRequest)
             .to.have.been.calledTwice
           expect(wrapper.vm.getLatestUpdateAssetRequest)
-            .to.have.been.calledWithExactly(REQUEST_STATES.pending)
+            .to.have.been.calledWithExactly(REQUEST_STATES.pending, 'SOME_ACCOUNT_ID')
           expect(wrapper.vm.getLatestUpdateAssetRequest)
-            .to.have.been.calledWithExactly(REQUEST_STATES.rejected)
+            .to.have.been.calledWithExactly(REQUEST_STATES.rejected, 'SOME_ACCOUNT_ID')
           expect(result).to.equal(request)
         }
       )
