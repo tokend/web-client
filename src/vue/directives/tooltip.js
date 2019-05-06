@@ -7,6 +7,16 @@
  * - Can calculate free space for placement of tooltip, depenping on user's
  *   position desire
  * - Styles are customizable
+ *
+ * Value variants:
+ * - Type: 'click', 'hover': 'hover' by default
+ * - Position: 'top', 'right', 'bottom', 'left'; 'top' by default
+ * - Width: number, without css units like px/em; 'auto' by default
+ * - height: number, without css units like px/em; 'auto' by default
+ * - bgColor: hex value of color; #000 by default
+ * - textColor: hex value of color; #fff by default
+ * - fontSize: number with css units like px/em; '1.4rem' by default
+ *
  * Example of usage is described below.
  *  <element
  *    v-tooltip="{
@@ -26,7 +36,7 @@
  * @param {string} binding.value.text - text of tooltip
  * @param {string} [binding.value.type] - 'click' or 'hover' to summon tooltip
  * @param {string} [binding.value.position] - position of tooltip,
- * where it will be placed
+ * where it will be placed.
  * @param {string} [binding.value.style.width] - tooltip's width,120px default
  * @param {string} [binding.value.style.height] - tooltip's height,120px default
  * @param {string} [binding.value.style.bgColor] - tooltip's background color,
