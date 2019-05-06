@@ -12,7 +12,7 @@ import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withd
 import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
-import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
+import { PreIssuanceFormModule } from '@/vue/modules/pre-issuance-form/module'
 
 export default {
   importEnLocaleFile () {
@@ -53,7 +53,7 @@ export default {
           new IssuanceFormModule({
             isCorporateOnly: true,
           }),
-          new PreIssuanceDrawerPseudoModule({
+          new PreIssuanceFormModule({
             isCorporateOnly: true,
           }),
         ],

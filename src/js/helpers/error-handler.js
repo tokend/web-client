@@ -2,6 +2,7 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
+import _get from 'lodash/get'
 
 export class ErrorHandler {
   static process (error, translationId = '') {
@@ -60,7 +61,14 @@ export class ErrorHandler {
         translationId = 'errors.user-exists'
         break
       case errors.TransactionError:
-        translationId = `transaction-errors.${error.errorResults[0].errorCode}`
+        let errorCode
+        const errorResults = error.errorResults
+        if (!errorResults) {
+          errorCode = _get(error, '_resultCodes.operations[0]')
+        } else {
+          errorCode = _get(errorResults[0], 'errorCode')
+        }
+        translationId = `transaction-errors.${errorCode}`
         if (!i18next.exists(translationId)) {
           // If there is no localized error code, display the message
           // that came from the backend

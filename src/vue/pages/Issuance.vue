@@ -12,7 +12,7 @@
         slot="extra"
       >
         <button
-          v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isPreIssuanceDrawerShown = true"
@@ -32,7 +32,7 @@
     </top-bar>
 
     <drawer
-      v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
       :is-shown.sync="isPreIssuanceDrawerShown"
     >
       <template slot="heading">
@@ -40,8 +40,10 @@
       </template>
 
       <submodule-importer
-        :submodule="getModule().getSubmodule(PreIssuanceDrawerPseudoModule)"
-        @close="isPreIssuanceDrawerShown = false"
+        :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
+        :wallet="wallet"
+        :config="config"
+        @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>
 
@@ -85,7 +87,7 @@ import config from '@/config'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
-import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
+import { PreIssuanceFormModule } from '@modules/pre-issuance-form/module'
 
 export default {
   name: 'issuance-page',
@@ -105,7 +107,7 @@ export default {
     vueRoutes,
     IssuanceExplorerModule,
     IssuanceFormModule,
-    PreIssuanceDrawerPseudoModule,
+    PreIssuanceFormModule,
   }),
 
   computed: {
