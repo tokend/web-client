@@ -86,7 +86,6 @@ export const tooltip = (() => {
   let tooltipOn = false
   let currentTarget
   let bindedOpts
-  let opacity = 0
 
   // update TooltipWrapper client rect
   function refreshPositions () {
@@ -311,13 +310,12 @@ export const tooltip = (() => {
     tooltipWrapper.style.display = 'flex'
     tooltipWrapper.style.justifyContent = 'center'
     tooltipWrapper.style.alignItems = 'center'
-    tooltipWrapper.style.transition = 'transform 250ms ease-in-out'
+    tooltipWrapper.style.transition = `transform 250ms ease-in-out`
     tooltipWrapper.style.opacity = '0'
     tooltipWrapper.style.zIndex = Z_INDEX
     tooltipWrapper.style.borderRadius = '4px'
 
     alignTooltip(target)
-    opacity = 0
     animateFadeEffect()
 
     tooltipWrapper.addEventListener('transitionend',
@@ -329,11 +327,9 @@ export const tooltip = (() => {
   }
 
   function animateFadeEffect () {
-    if (tooltipWrapper.style.opacity < 1) {
-      opacity += 0.3
-      setTimeout(animateFadeEffect, 100)
-    }
-    tooltipWrapper.style.opacity = opacity
+    tooltipWrapper.style.transition = tooltipWrapper.style.transition +
+      ', opacity 250ms ease-in-out'
+    tooltipWrapper.style.opacity = 1
   }
 
   // render arrow and area, where mouse can move to on hover
