@@ -122,6 +122,8 @@ for further information about branching and tagging conventions.
 - Invalid start date for sales that are already started
 - Fixed a bug with impossible order cancelling if user has insufficient balance
 - Fixed a bug with chart line rendering
+- Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
+  limits to unlimited ones and not an empty field
 
 ### "Under the hood" changes
 #### Added
