@@ -53,7 +53,7 @@
         />
       </div>
     </div>
-    <!-- TODO: Revome v-if when trailingDigitsCount add to api -->
+    <!-- TODO: Add step and validation when trailingDigitsCount add to api -->
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
