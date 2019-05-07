@@ -369,7 +369,7 @@ export default {
 
       const availableBalance = this.currentInvestment.quoteAmount
         ? Number(quoteBalance.balance) +
-            Number(this.currentInvestment.quoteAmount)
+        Number(this.currentInvestment.quoteAmount)
         : quoteBalance.balance
 
       return {
@@ -590,7 +590,7 @@ export default {
           this.form.amount,
           // TODO: remove DEFAULT_QUOTE_PRICE
           this.sale.quoteAssetPrices[this.form.asset.code] ||
-            DEFAULT_QUOTE_PRICE
+          DEFAULT_QUOTE_PRICE
         ),
         // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||
@@ -625,7 +625,7 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const { data: fees } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
+        const { data: fees } = await Sdk.horizon.fees.get(FEE_TYPES.investFee, {
           asset: this.form.asset.code,
           account: this.accountId,
           amount: this.form.amount,
