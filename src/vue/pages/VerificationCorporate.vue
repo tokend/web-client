@@ -258,7 +258,9 @@ export default {
     async uploadAvatar () {
       let document = this.form.avatar
       if (document && !document.key) {
-        document = await DocumentUploader.uploadSingleDocument(document)
+        document = await DocumentUploader.uploadSingleDocument(
+          document, this.accountId
+        )
       }
     },
 

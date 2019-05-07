@@ -31,7 +31,7 @@
 import Loader from '@/vue/common/Loader'
 import VueMarkdown from 'vue-markdown'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -61,8 +61,12 @@ export default {
   methods: {
     async loadSaleDescription () {
       try {
-        const { data: blob } =
-          await Sdk.api.blobs.get(this.sale.description, this.sale.owner)
+        const accountId = this.sale.owner
+        const blobId = this.sale.description
+
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+        const { data: blob } = await Api.getWithSignature(endpoint)
+
         this.saleDescription = JSON.parse(blob.value)
         this.isLoaded = true
       } catch (e) {

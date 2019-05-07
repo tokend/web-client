@@ -142,7 +142,7 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import _get from 'lodash/get'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -245,7 +245,7 @@ export default {
           kycBlobId,
           this.kvEntryGeneralRoleId,
         )
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)
@@ -267,7 +267,9 @@ export default {
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
         if (document && !document.key) {
-          document = await DocumentUploader.uploadSingleDocument(document)
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
+          )
         }
       }
     },
