@@ -152,7 +152,9 @@
           </h3>
 
           <p class="invest-form__fee">
-            - {{ totalAmount | formatNumber }} {{ form.asset.code }}
+            - {{
+              { value: totalAmount, currency: form.asset.code } | formatMoney
+            }}
             <span class="invest-form__fee-type">
               {{ 'invest-form.total-amount-label' | globalize }}
             </span>
