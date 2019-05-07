@@ -51,23 +51,11 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
+        <readonly-field
           :label="'offer-creation-form.total' | globalize({
             asset: assetPair.quote
           })"
-          v-model="totalValue"
-          name="trade-offer-total"
-          :error-message="getFieldErrorMessage(
-            'totalValue',
-            {
-              minValue: config.MIN_AMOUNT,
-              available: isBuy ? quoteAssetBalance : baseAssetBalance,
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-            }
-          )"
-          @change="touchField('totalValue')"
-          :readonly="true"
+          :value="totalValue"
         />
       </div>
     </div>
@@ -105,6 +93,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
+import ReadonlyField from '@/vue/fields/ReadonlyField'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
 
@@ -129,7 +118,7 @@ const EVENTS = {
 
 export default {
   name: 'create-trade-offer-form',
-  components: { FormConfirmation },
+  components: { FormConfirmation, ReadonlyField },
   mixins: [FormMixin, OfferManagerMixin],
   props: {
     assetPair: { type: Object, require: true, default: () => {} },
