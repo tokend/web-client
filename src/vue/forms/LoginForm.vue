@@ -89,6 +89,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.wallet,
+      vuexTypes.walletEmail,
     ]),
   },
   methods: {
