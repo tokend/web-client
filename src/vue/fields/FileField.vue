@@ -285,13 +285,6 @@ export default {
     getFileExtension (file) {
       return file.name.split('.').pop().toUpperCase()
     },
-    // isValidDocumentType (file) {
-    //   // const MIMEtype = new RegExp(this.accept.replace('*', '[^\\/,]+'))
-    //   console.log(this.$el.querySelector('input'))
-    //   return file.type.toLowerCase().endsWith('/pdf')
-    // || file.type.toLowerCase().startsWith('image/')
-    //   // return MIMEtype.test(file.type)
-    // },
   },
 }
 </script>
