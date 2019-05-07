@@ -68,13 +68,13 @@
       </template>
     </template>
     <drawer :is-shown.sync="showDrawer">
-      <template v-if="createIssuanceFormIsShown">
+      <template v-show="createIssuanceFormIsShown">
         <template slot="heading">
           {{ 'dashboard.create-issuance-lbl' | globalize }}
         </template>
         <issuance-form @close="showDrawer = false" />
       </template>
-      <template v-if="transferFormIsShown">
+      <template v-show="transferFormIsShown">
         <template slot="heading">
           {{ 'transfer-form.form-heading' | globalize }}
         </template>

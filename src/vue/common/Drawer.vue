@@ -59,12 +59,12 @@ export default {
     isDeleted: true,
   }),
   watch: {
-    'isShown': function () {
-      if (this.isShown) {
+    'isShown': function (value) {
+      if (value) {
         this.isHidden = false
         this.isDeleted = false
       }
-      if (!this.isShown && !this.isHidden) {
+      if (!value && !this.isHidden) {
         this.isDeleted = true
       }
     },
