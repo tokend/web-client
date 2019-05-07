@@ -1,6 +1,5 @@
 import { vuexTypes } from './types'
 
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 
@@ -113,14 +112,18 @@ export const actions = {
     commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
-  async [vuexTypes.LOAD_KYC_DATA] ({ state, getters, commit }) {
+  async [vuexTypes.LOAD_KYC_DATA] ({ getters, rootGetters, commit }) {
     const latestBlobId = getters[vuexTypes.kycLatestBlobId]
     if (!latestBlobId) {
       return
     }
 
-    const latestBlobResponse = await Sdk.api.blobs.get(latestBlobId)
+    const accountId = rootGetters[vuexTypes.accountId]
+    const endpoint = `/accounts/${accountId}/blobs/${latestBlobId}`
+
+    const latestBlobResponse = await Api.getWithSignature(endpoint)
     const latestData = latestBlobResponse.data.value
+
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
   },
 }

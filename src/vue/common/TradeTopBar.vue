@@ -107,10 +107,10 @@ import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
-import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
+import CreateTradeOfferForm from '@/vue/forms/market-orders/CreateTradeOfferForm'
 
-import { Sdk } from '@/sdk'
-import { errors } from '@tokend/js-sdk'
+import { Api } from '@/api'
+import { errors, ASSET_PAIR_POLICIES } from '@tokend/js-sdk'
 
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
 
@@ -196,10 +196,11 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async loadTradablePairs () {
-      const { data } = await Sdk.horizon.assetPairs.getAll()
-      const tradablePairs = data
-        .map(assetPair => new AssetPairRecord(assetPair))
-        .filter(pair => pair.isTradable)
+      const { data } = await Api.get('/v3/asset_pairs', {
+        filter: { policy: ASSET_PAIR_POLICIES.tradeableSecondaryMarket },
+        page: { limit: 100 },
+      })
+      const tradablePairs = data.map(item => new AssetPairRecord(item))
       this.formattedPairs = tradablePairs.map(item => item.baseAndQuote)
       this.setDefaultSelectedPair(tradablePairs)
     },

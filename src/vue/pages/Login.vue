@@ -31,7 +31,7 @@ import LoginForm from '@/vue/forms/LoginForm'
 import { vueRoutes } from '@/vue-router/routes'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
@@ -47,7 +47,7 @@ export default {
       // Verifying email if user came here from email link
       const verificationCode = this.$route.params.encodedVerificationCode
       if (verificationCode) {
-        await Sdk.api.wallets.verifyEmail(verificationCode)
+        await Api.walletsManager.verifyEmail(verificationCode)
         Bus.success('auth-pages.email-verified')
       }
     } catch (e) {

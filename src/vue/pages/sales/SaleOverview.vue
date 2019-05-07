@@ -120,7 +120,7 @@
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 import Loader from '@/vue/common/Loader'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 import config from '@/config'
 
@@ -149,7 +149,9 @@ export default {
   }),
   async created () {
     try {
-      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+      const endpoint = `/v3/assets/${this.sale.baseAsset}`
+      const { data } = await Api.get(endpoint)
+
       this.asset = new AssetRecord(data)
       this.isLoaded = true
     } catch (e) {

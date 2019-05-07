@@ -773,10 +773,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@tokend/js-sdk@1.6.0-rc.0":
-  version "1.6.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.6.0-rc.0.tgz#49d1c15af2e99e326cd03b63d6daa79c21094fcd"
-  integrity sha512-UXQNURVe7THgIxb0p+jhn1qIdZbmOcqnCBH9zziKXKDN4PMwqRJ2gTfp5qr6lseq6exgqmXgTf7/vAGo6fD0Ew==
+"@tokend/js-sdk@1.7.0-x.1":
+  version "1.7.0-x.1"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.7.0-x.1.tgz#c56ac912e468e5a7f396a57ce3f00f4be0664af2"
+  integrity sha512-QpD+9moy1nqRoXA5b+YiALPJpJpbkFyoNWSbzZB38KB8BC+NZZmwank1A6DDLEOi2Wya5X+1wAh4kHEHFUpdcA==
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
@@ -7093,6 +7093,11 @@ npm-run-path@^2.0.0:
     console-control-strings "~1.1.0"
     gauge "~2.7.3"
     set-blocking "~2.0.0"
+
+nprogress@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
 
 nth-check@^1.0.2, nth-check@~1.0.1:
   version "1.0.2"

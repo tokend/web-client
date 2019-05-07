@@ -29,23 +29,42 @@
         <tbody>
           <tr>
             <td>{{ 'limits-form.daily-limit-lbl' | globalize }}</td>
-            <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.dailyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('dailyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.weekly-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.weeklyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('weeklyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.monthly-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.monthlyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('monthlyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.annual-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.annualOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('annualOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -173,7 +192,7 @@ import {
   maxDecimalPoints,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
@@ -209,12 +228,17 @@ const EVENTS = {
 }
 
 const MIN_VALID_LIMIT_VALUE = 0
+const MAX_VALID_LIMIT_VALUE = config.MAX_AMOUNT
 
 export default {
   name: 'limits-form',
   mixins: [FormMixin],
   props: {
-    limits: { type: Object, required: true, default: () => ({}) },
+    limits: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
   },
   data: () => ({
     form: {
@@ -313,6 +337,31 @@ export default {
       if (!this.isFormValid()) return
       this.showConfirmation()
     },
+    getLimitByScope (period) {
+      const limitByType = this.selectedLimitsByOpType
+      switch (period) {
+        case 'dailyOut':
+          if (limitByType.dailyOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.dailyOut
+        case 'weeklyOut':
+          if (limitByType.weeklyOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.weeklyOut
+        case 'monthlyOut':
+          if (limitByType.monthlyOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.monthlyOut
+        case 'annualOut':
+          if (limitByType.annualOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.annualOut
+      }
+    },
     async submit () {
       this.disableForm()
       this.isRequestCreating = true
@@ -361,7 +410,7 @@ export default {
             note,
           },
         })
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await Api.api.postOperations(operation)
     },
   },
 }
