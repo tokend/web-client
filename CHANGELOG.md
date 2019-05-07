@@ -9,14 +9,31 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Lazy loading feedback (nprogress loader)
+- `BalanceNotFoundError` to the runtime errors
 - Check for file extension, size & dimensions in file field
 
 #### Changed
-- File field design imp
+- Updated offer creating, updating drawers
+- Modularized:
+  - Pre-issuance form
+  - Issuance form
+  - Create sale form
+- Now formatting `minDate` validation message using i18n date filter
+- Now using `moment().toISOString()` value instead of `moment().toString()`
+- File field design improvements:
   - reactions to drag & drop actions
-  - images preview (just icon for rest files)
+  - images preview (+ icon for rest types of files)
   - grayscaled disabled state
   - upload icons
+
+#### Fixed
+- Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
+  limits to unlimited ones and not an empty field
+- An error was fixed in which if you exceed the limit for example daily 
+  then the user received an error stating that "Your transaction is invalid."
+- Show drawer for isDepositable in movements-top-bar-reit
+- Dashboard loading flow
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
