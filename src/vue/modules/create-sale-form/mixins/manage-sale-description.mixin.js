@@ -6,7 +6,7 @@ export default {
     async createSaleDescriptionBlob (description) {
       const { data: blob } = await api().postWithSignature('/blobs', {
         data: {
-          type: BLOB_TYPES.fundOverview,
+          type: BLOB_TYPES.saleOverview,
           attributes: {
             value: JSON.stringify(description),
           },

@@ -11,7 +11,7 @@
         </router-link>
 
         <router-link
-          :to="vueRoutes.userOwnedSales.name"
+          :to="vueRoutes.userOwnedSales"
         >
           <span>
             {{ 'sales.my-sales' | globalize }}

@@ -10,7 +10,7 @@
           v-model="avatar"
           name="verification-general-avatar"
           :note="'general-form.image-type-note' | globalize"
-          accept="image/*"
+          :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.kycAvatar"
           :label="'general-form.avatar-lbl' | globalize"
           :disabled="isDisabled"

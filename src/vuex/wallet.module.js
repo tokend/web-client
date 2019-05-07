@@ -1,5 +1,5 @@
 import { vuexTypes } from './types'
-import { Sdk } from '../sdk'
+import { Api } from '../api'
 import { Wallet } from '@tokend/js-sdk'
 
 import isEmpty from 'lodash/isEmpty'
@@ -31,7 +31,7 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
-    commit(vuexTypes.SET_WALLET, await Sdk.api.wallets.get(email, password))
+    commit(vuexTypes.SET_WALLET, await Api.walletsManager.get(email, password))
   },
   [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
     commit(vuexTypes.SET_WALLET, wallet)

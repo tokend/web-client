@@ -1,23 +1,21 @@
 import { ASSET_PAIR_POLICIES } from '@tokend/js-sdk'
+import safeGet from 'lodash/get'
 
 export class AssetPairRecord {
   constructor (record = {}) {
     this._record = record
 
-    this.baseAssetCode = record.base
-    this.quoteAssetCode = record.quote
+    this.baseAssetCode = safeGet(record, 'baseAsset.id')
+    this.quoteAssetCode = safeGet(record, 'quoteAsset.id')
 
-    this.currentPrice = record.currentPrice
-    this.maxPriceStep = record.maxPriceStep
-    this.physicalPrice = record.physicalPrice
-    this.physicalPriceCorrection = record.physicalPriceCorrection
+    this.price = record.price
 
     this.policies = this._policies()
     this.policy = this._policy()
   }
 
   _policies () {
-    const policies = this._record.policies || []
+    const policies = safeGet(this._record, 'policies.flags') || []
     return policies.map(policy => policy.value)
   }
 

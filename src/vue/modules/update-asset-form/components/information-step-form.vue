@@ -49,7 +49,7 @@
           name="update-asset-logo"
           v-model="form.logo"
           :note="'update-asset-form.logo-note' | globalize"
-          accept=".jpg, .png"
+          :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.assetLogo"
           :label="'update-asset-form.logo-lbl' | globalize"
         />
