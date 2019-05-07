@@ -23,7 +23,7 @@
  * Example:
  *
  * <collection-loader
- *    :first-page-loader="Sdk.horizon.transactions.getAll"
+ *    :first-page-loader="somePageableFuncWrapper"
  *    :page-limit="10"
  *    @first-page-load="onFirstPageLoad"/>
  *    @next-page-load="onNextPageLoad"

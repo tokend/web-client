@@ -47,7 +47,7 @@
               v-model="proofOfInvestor"
               name="verification-general-proof-of-investor"
               :note="'general-form.file-type-note' | globalize"
-              accept="image/*, .pdf"
+              :file-extensions="['jpg', 'png', 'pdf']"
               :document-type="DOCUMENT_TYPES.kycProofOfInvestor"
               :label="'general-form.document-poi-lbl' | globalize"
               :disabled="isDisabled"

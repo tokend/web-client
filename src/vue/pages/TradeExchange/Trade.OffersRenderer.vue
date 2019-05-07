@@ -77,7 +77,8 @@
 </template>
 
 <script>
-import SubmitTradeOfferForm from '@/vue/forms/SubmitTradeOfferForm'
+import SubmitTradeOfferForm from '@/vue/forms/market-orders/SubmitTradeOfferForm'
+
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
@@ -97,16 +98,26 @@ export default {
     Drawer,
     SubmitTradeOfferForm,
   },
-  mixins: [FormMixin],
+  mixins: [
+    FormMixin,
+  ],
   props: {
     assetPair: {
       type: Object,
       required: true,
       default: () => ({ base: '', quote: '' }),
     },
-    isLoading: { type: Boolean, required: true },
-    isBuy: { type: Boolean, required: true },
-    offersList: { type: Array, required: true },
+    isLoading: {
+      type: Boolean, required: true,
+    },
+    isBuy: {
+      type: Boolean,
+      required: true,
+    },
+    offersList: {
+      type: Array,
+      required: true,
+    },
   },
   data: () => ({
     isSubmitOfferDrawerShown: false,

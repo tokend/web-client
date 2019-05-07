@@ -1,14 +1,18 @@
 [
   {
-    "balance_id": "BC4KJXXXGWLOZPKOMFNV33XS3WWPD2STKMFWE5YBSL5P6AVWTJ4OLAZZ",
+    "id": "BC4KJXXXGWLOZPKOMFNV33XS3WWPD2STKMFWE5YBSL5P6AVWTJ4OLAZZ",
     "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
     "asset": "USD",
-    "balance": "0.000000",
+    "state": {
+      "available": "0.000000"
+    },
     "locked": "0.000000",
     "require_review": false,
     "asset_details": {
-      "code": "USD",
-      "owner": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP",
+      "id": "USD",
+      "owner": {
+        "id": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP"
+      },
       "available_for_issuance": "1000000000.000000",
       "preissued_asset_signer": "GBZHP5662QGSAQITTND2VRMMEH5LCTUMGKQWZGG2BJ54IKWXVVTBT2HD",
       "max_issuance_amount": "1000000000.000000",
@@ -44,15 +48,19 @@
     "converted_to_asset": "USD"
   },
   {
-    "balance_id": "BDZJQYMTKEHA3GDTJJSR5XPY22WHIOIRXWJMPZORZCDFD2EPDOJCROMJ",
+    "id": "BDZJQYMTKEHA3GDTJJSR5XPY22WHIOIRXWJMPZORZCDFD2EPDOJCROMJ",
     "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
     "asset": "ETH",
-    "balance": "67.599908",
+    "state": {
+      "available": "67.485200"
+    },
     "locked": "17.300000",
     "require_review": false,
     "asset_details": {
-      "code": "ETH",
-      "owner": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP",
+      "id": "ETH",
+      "owner": {
+        "id": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP"
+      },
       "available_for_issuance": "999996133.930000",
       "preissued_asset_signer": "GBZHP5662QGSAQITTND2VRMMEH5LCTUMGKQWZGG2BJ54IKWXVVTBT2HD",
       "max_issuance_amount": "1000000000.000000",
@@ -97,15 +105,19 @@
     "converted_to_asset": "USD"
   },
   {
-    "balance_id": "BBHGNOTSAF5Y6K7C3YDBV2SKGBTKDWQVJ2ATPRTOU764RRY3N5E2K3LK",
+    "id": "BBHGNOTSAF5Y6K7C3YDBV2SKGBTKDWQVJ2ATPRTOU764RRY3N5E2K3LK",
     "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
     "asset": "QTK",
-    "balance": "0.000000",
+    "state": {
+      "available": "0.000000"
+    },
     "locked": "0.000000",
     "require_review": false,
     "asset_details": {
-      "code": "QTK",
-      "owner": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
+      "id": "QTK",
+      "owner": {
+        "id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3"
+      },
       "available_for_issuance": "0.000000",
       "preissued_asset_signer": "GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4",
       "max_issuance_amount": "149680.000000",

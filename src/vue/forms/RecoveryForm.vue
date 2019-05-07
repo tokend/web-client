@@ -124,7 +124,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.recovery(
+        await Api.walletsManager.recovery(
           this.form.email.toLowerCase(),
           this.form.recoverySeed,
           this.form.password

@@ -5,23 +5,33 @@
       :asset-pair="assetPair"
       :is-loading="isOpenOffersLoading"
       :open-offers="openOffers"
-      @reload-offers="loadOffersHistory"
+      @reload-offers="initFirstPageLoader"
+    />
+
+    <collection-loader
+      v-show="!isOpenOffersLoading && openOffers.length"
+      class="trade-user-offers__collection-loader"
+      :first-page-loader="firstPageLoader"
+      @first-page-load="setOpenOffers"
+      @next-page-load="concatOpenOffers"
     />
   </div>
 </template>
 
 <script>
+import CollectionLoader from '@/vue/common/CollectionLoader'
 import TradeOpenOffers from '@/vue/pages/TradeUserOffers/Trade.OpenOffers'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
-import { Sdk } from '@/sdk'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { Api } from '../../api'
 
 export default {
   name: 'trade-user-offers',
   components: {
     TradeOpenOffers,
+    CollectionLoader,
   },
   props: {
     isLoading: { type: Boolean, default: false },
@@ -29,6 +39,7 @@ export default {
   data: () => ({
     openOffers: [],
     isOpenOffersLoading: false,
+    firstPageLoader: _ => {},
   }),
   computed: {
     ...mapGetters([
@@ -44,10 +55,10 @@ export default {
   watch: {
     'assetPair': {
       deep: true,
-      handler: async function (assetPair) {
+      handler: function (assetPair) {
         this.setSelectedAssets(assetPair)
         if (assetPair.base && assetPair.quote) {
-          await this.loadOffersHistory()
+          this.initFirstPageLoader()
         }
       },
     },
@@ -56,13 +67,22 @@ export default {
       this.$emit('update:isLoading', false)
     },
   },
-  async created () {
+  created () {
     this.setSelectedAssets(this.assetPair)
     if (this.assetPair.base) {
-      await this.loadOffersHistory()
+      this.initFirstPageLoader()
     }
   },
   methods: {
+    initFirstPageLoader () {
+      this.firstPageLoader = _ => this.loadOffersHistory()
+    },
+    setOpenOffers (offers) {
+      this.openOffers = offers
+    },
+    concatOpenOffers (offers) {
+      this.openOffers = this.openOffers.concat(offers)
+    },
     setSelectedAssets ({ base, quote }) {
       this.assetPair.base = base
       this.assetPair.quote = quote
@@ -70,20 +90,19 @@ export default {
     async loadOffersHistory () {
       this.isOpenOffersLoading = true
       try {
-        const response = await Sdk.horizon.account.getOffers(
-          this.accountId,
-          {
+        const response = await Api.getWithSignature('/v3/offers', {
+          filter: {
             base_asset: this.assetPair.base,
             quote_asset: this.assetPair.quote,
-            is_buy: '', // buy and sell
-            order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
+            order_book: SECONDARY_MARKET_ORDER_BOOK_ID,
+            owner: this.accountId,
           },
-        )
-        this.openOffers = response.data
+        })
+        this.isOpenOffersLoading = false
+        return response
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)
       }
-      this.isOpenOffersLoading = false
     },
   },
 }
@@ -92,5 +111,9 @@ export default {
 <style lang="scss">
 .trade-user-offers__open-orders {
   margin-top: 4.8rem;
+}
+
+.trade-user-offers__collection-loader {
+  margin-top: 1rem;
 }
 </style>
