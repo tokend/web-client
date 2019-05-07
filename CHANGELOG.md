@@ -28,6 +28,8 @@ for further information about branching and tagging conventions.
   then the user received an error stating that "Your transaction is invalid."
 - Show drawer for isDepositable in movements-top-bar-reit
 - Dashboard loading flow
+- Filtering owned sales on back-end side using API filters
+- Displaying "My sales" page
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
