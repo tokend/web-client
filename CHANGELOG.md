@@ -12,6 +12,11 @@ for further information about branching and tagging conventions.
 - Lazy loading feedback (nprogress loader)
 - `BalanceNotFoundError` to the runtime errors
 - Check for file extension, size & dimensions in file field
+- File field design improvements:
+  - reactions to drag & drop actions
+  - images preview (+ icon for rest types of files)
+  - grayscaled disabled state
+  - upload icons
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -21,11 +26,6 @@ for further information about branching and tagging conventions.
   - Create sale form
 - Now formatting `minDate` validation message using i18n date filter
 - Now using `moment().toISOString()` value instead of `moment().toString()`
-- File field design improvements:
-  - reactions to drag & drop actions
-  - images preview (+ icon for rest types of files)
-  - grayscaled disabled state
-  - upload icons
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
