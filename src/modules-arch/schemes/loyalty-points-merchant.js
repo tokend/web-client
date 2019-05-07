@@ -4,7 +4,7 @@ import { LoyaltyPointsPageModule } from '@/vue/pages/loyalty-points-page-module'
 import { LoyaltyPointsInvoicesModule } from '@/vue/modules/loyalty-points/loyalty-points-invoices/module'
 import { LoyaltyPointsInvoicesPageModule } from '@/vue/pages/loyalty-points-invoices-page'
 import { CreateInvoiceFormModule } from '@/vue/modules/loyalty-points/create-invoice-form/module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export default {
@@ -34,7 +34,7 @@ export default {
             ],
           }),
           new CreateInvoiceFormModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
           new MovementsHistoryModule(),

@@ -1,5 +1,19 @@
 <template>
-  <form @submit.prevent="isFormValid() && showConfirmation()">
+  <form
+    @submit.prevent="isFormValid() && showConfirmation()"
+    v-if="isLoadedInfo"
+  >
+    <div class="app__form-row">
+      <div class="app__form-field">
+        <select-field
+          :values="accountAssets"
+          v-model="form.asset"
+          name="create-sale-base-asset"
+          :disabled="formMixin.isDisabled"
+          :label="'create-sale-form.base-asset' | globalize"
+        />
+      </div>
+    </div>
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -7,7 +21,7 @@
           type="number"
           :label="
             'offer-creation-form.price-per-asset' | globalize({
-              asset: assetPair.base
+              asset: form.asset
             })
           "
           :step="selectedAssetStep(trailingDigitsCount)"
@@ -33,7 +47,7 @@
           v-model.trim="form.amount"
           type="number"
           :label="'offer-creation-form.amount' | globalize({
-            asset: assetPair.base
+            asset: form.asset
           })"
           name="trade-offer-amount"
           :step="selectedAssetStep(trailingDigitsCount)"
@@ -63,6 +77,7 @@
           })"
           v-model="totalValue"
           name="trade-offer-total"
+          :white-autofill="true"
           :error-message="getFieldErrorMessage(
             'totalValue',
             {
@@ -112,9 +127,8 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
-
+import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
-
 import config from '@/config'
 
 import {
@@ -135,8 +149,13 @@ const EVENTS = {
 
 export default {
   name: 'create-trade-offer-form',
-  components: { FormConfirmation },
-  mixins: [FormMixin, OfferManagerMixin],
+  components: {
+    FormConfirmation,
+  },
+  mixins: [
+    FormMixin,
+    OfferManagerMixin,
+  ],
   props: {
     assetPair: {
       type: Object,
@@ -144,17 +163,54 @@ export default {
     },
     isBuy: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data: () => ({
     form: {
       price: '',
       amount: '',
+      asset: '',
     },
     config,
     isOfferCreating: false,
+    isLoadedInfo: false,
   }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountBalances,
+    ]),
+    baseAssetBalance () {
+      return (this.accountBalances
+        .find(balance => balance.asset === this.assetPair.base) || {}).balance
+    },
+    quoteAssetBalance () {
+      return (this.accountBalances
+        .find(balance => balance.asset === this.assetPairq.quote) || {}).balance
+    },
+    userTransferableAssets () {
+      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
+    },
+    assets () {
+      return this.userTransferableAssets.map(asset => asset.assetDetails)
+    },
+    accountAssets () {
+      return this.accountBalances
+        .map(balance => balance.asset)
+        .filter(asset => asset !== this.assetPair.quote)
+    },
+    trailingDigitsCount () {
+      return this.assets
+        .find(asset => asset.code === this.assetPair.base)
+        .trailingDigitsCount || config.MIN_AMOUNT
+    },
+    formQuoteAmount () {
+      return MathUtil.multiply(this.form.price, this.form.amount)
+    },
+    totalValue () {
+      return +this.formQuoteAmount ? this.formQuoteAmount : ''
+    },
+  },
   validations () {
     return {
       form: {
@@ -175,7 +231,7 @@ export default {
           decimal,
           minValue: minValue(config.MIN_AMOUNT),
           noMoreThanAvailableOnBalance: this.isBuy
-            ? true
+            ? this.isBuy
             : noMoreThanAvailableOnBalance(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
           maxDecimalDigitsCount:
@@ -187,43 +243,22 @@ export default {
       totalValue: {
         noMoreThanAvailableOnBalance: this.isBuy
           ? noMoreThanAvailableOnBalance(this.quoteAssetBalance)
-          : true,
-        amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
+          : !this.isBuy,
+        amountRange: amountRange(
+          config.MIN_AMOUNT,
+          config.MAX_AMOUNT
+        ),
       },
     }
   },
-  computed: {
-    ...mapGetters([
-      vuexTypes.accountBalances,
-    ]),
-    baseAssetBalance () {
-      return (this.accountBalances
-        .find(i => i.asset === this.assetPair.base) || {}).balance
-    },
-    quoteAssetBalance () {
-      return (this.accountBalances
-        .find(i => i.asset === this.assetPair.quote) || {}).balance
-    },
-    userTransferableAssets () {
-      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
-    },
-    assets () {
-      return this.userTransferableAssets.map(asset => asset.assetDetails)
-    },
-    trailingDigitsCount () {
-      return this.assets
-        .find(asset => asset.code === this.assetPair.base)
-        .trailingDigitsCount || config.MIN_AMOUNT
-    },
-    formQuoteAmount () {
-      return MathUtil.multiply(this.form.price, this.form.amount)
-    },
-    totalValue () {
-      return +this.formQuoteAmount ? this.formQuoteAmount : ''
-    },
-  },
   async created () {
-    await this.loadBalances()
+    try {
+      await this.loadBalances()
+      this.form.asset = this.assetPair.base
+      this.isLoadedInfo = true
+    } catch (error) {
+      ErrorHandler.processWithoutFeedback(error)
+    }
   },
   methods: {
     ...mapActions({
@@ -232,7 +267,13 @@ export default {
     async submit () {
       this.disableForm()
       this.isOfferCreating = true
-      await this.createOffer(this.getCreateOfferOpts())
+      try {
+        await this.createOffer(
+          this.getCreateOfferOpts()
+        )
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
       this.isOfferCreating = false
       this.enableForm()
       this.hideConfirmation()
@@ -241,7 +282,7 @@ export default {
     getCreateOfferOpts () {
       return {
         pair: {
-          base: this.assetPair.base,
+          base: this.form.asset,
           quote: this.assetPair.quote,
         },
         baseAmount: this.form.amount,
@@ -255,5 +296,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './app-form';
+@import '../app-form';
 </style>

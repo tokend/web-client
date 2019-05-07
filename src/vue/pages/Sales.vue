@@ -3,9 +3,7 @@
     <top-bar>
       <template slot="main">
         <router-link
-          :to="{
-            name: vueRoutes.allSales.name,
-          }"
+          :to="vueRoutes.allSales"
         >
           <span>
             {{ 'sales.all-sales' | globalize }}
@@ -13,9 +11,7 @@
         </router-link>
 
         <router-link
-          :to="{
-            name: vueRoutes.userOwnedSales.name,
-          }"
+          :to="vueRoutes.userOwnedSales.name"
         >
           <span>
             {{ 'sales.my-sales' | globalize }}
@@ -24,7 +20,7 @@
       </template>
 
       <template
-        v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)"
+        v-if="getModule().canRenderSubmodule(CreateSaleFormModule)"
         slot="extra"
       >
         <button
@@ -52,26 +48,13 @@
       </template>
     </top-bar>
 
-    <template v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)">
-      <drawer
-        :is-shown.sync="isCreateSaleDrawerShown"
-        :close-by-click-outside="false"
-      >
-        <template slot="heading">
-          {{ 'sales.create-sale' | globalize }}
-        </template>
-        <create-sale-form @close="isCreateSaleDrawerShown = false" />
-      </drawer>
-    </template>
-
     <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
       <drawer
         :is-shown.sync="isAssetSaleDrawerShown"
         :close-by-click-outside="false"
-        class="sales__drawer"
       >
         <template slot="heading">
-          {{ 'sales.new-sale' | globalize }}
+          {{ 'sales.create-sale' | globalize }}
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateOpportunityModule)"
@@ -82,6 +65,24 @@
           :min-amount="MIN_AMOUNT"
           :max-amount="MAX_AMOUNT"
           :decimal-pints="DECIMAL_POINTS"
+        />
+      </drawer>
+    </template>
+
+    <template v-if="getModule().canRenderSubmodule(CreateSaleFormModule)">
+      <drawer
+        :is-shown.sync="isCreateSaleDrawerShown"
+        :close-by-click-outside="false"
+        class="sales__drawer"
+      >
+        <template slot="heading">
+          {{ 'sales.new-sale' | globalize }}
+        </template>
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateSaleFormModule)"
+          :config="config"
+          :wallet="wallet"
+          @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
     </template>
@@ -99,8 +100,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module.js'
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
@@ -110,7 +110,6 @@ export default {
   components: {
     TopBar,
     Drawer,
-    CreateSaleForm,
     SubmoduleImporter,
   },
 
@@ -123,8 +122,9 @@ export default {
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     config: {
       horizonURL: config.HORIZON_SERVER,
+      storageURL: config.FILE_STORAGE,
     },
-    CreateSalePseudoModule,
+    CreateSaleFormModule,
     vueRoutes,
     CreateOpportunityModule,
   }),
@@ -151,6 +151,7 @@ export default {
   display: flex;
   font-size: 1.8rem;
   margin-right: 0.5rem;
+  margin-top: -0.4rem;
 }
 
 .sales__asset-filter {
@@ -189,9 +190,5 @@ export default {
 
 .sales__loader {
   margin-top: 1rem;
-}
-
-.sales__drawer .drawer__pane {
-  width: 50%;
 }
 </style>
