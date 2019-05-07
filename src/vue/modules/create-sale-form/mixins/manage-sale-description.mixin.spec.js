@@ -50,7 +50,7 @@ describe('Manage sale description mixin', () => {
           expect(Api.api().postWithSignature)
             .to.have.been.calledOnceWithExactly('/blobs', {
               data: {
-                type: BLOB_TYPES.fundOverview,
+                type: BLOB_TYPES.saleOverview,
                 attributes: { value: JSON.stringify('Some description') },
                 relationships: {
                   owner: { data: { id: 'SOME_ACCOUNT_ID' } },

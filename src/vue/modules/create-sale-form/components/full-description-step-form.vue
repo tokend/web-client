@@ -88,7 +88,7 @@ export default {
   data: _ => ({
     form: {
       youtubeVideo: '',
-      description: 'hello',
+      description: '',
     },
   }),
 
