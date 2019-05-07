@@ -11,6 +11,12 @@ for further information about branching and tagging conventions.
 #### Added
 - Lazy loading feedback (nprogress loader)
 - `BalanceNotFoundError` to the runtime errors
+- Check for file extension, size & dimensions in file field
+- File field design improvements:
+  - reactions to drag & drop actions
+  - images preview (+ icon for rest types of files)
+  - grayscaled disabled state
+  - upload icons
 
 #### Changed
 - Updated offer creating, updating drawers

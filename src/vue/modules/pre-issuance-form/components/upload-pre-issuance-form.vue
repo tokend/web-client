@@ -8,7 +8,7 @@
         <file-field
           :label="'pre-issuance-form.pre-issuance-lbl' | globalize"
           :note="'pre-issuance-form.file-type-note' | globalize"
-          accept=".iss"
+          :file-extensions="['iss']"
           v-model="preIssuanceDocument"
           :disabled="formMixin.isDisabled"
           :error-message="getFieldErrorMessage('preIssuanceDocument')"
