@@ -30,7 +30,7 @@
           <file-field
             v-model="form.documents[doc.label]"
             :note="'limits-documents-uploader-form.file-type-note' | globalize"
-            accept="image/*, .pdf"
+            :file-extensions="['jpg', 'png', 'pdf']"
             :error-message="getFieldErrorMessage(
               `form.documents.${doc.label}`
             )"

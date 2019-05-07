@@ -10,7 +10,7 @@
           :label="'create-sale-form.sale-logo-lbl' | globalize"
           :note="'create-sale-form.sale-logo-note' | globalize"
           name="create-sale-logo"
-          accept=".jpg, .png"
+          :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.saleLogo"
           v-model="form.saleLogo"
           :error-message="getFieldErrorMessage('form.saleLogo')"
