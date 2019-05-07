@@ -4,7 +4,6 @@
       <submodule-importer
         :submodule="getModule().getSubmodule(BalanceExplorerModule)"
         :storage-url="storageUrl"
-        :wallet="wallet"
       />
     </template>
   </div>
@@ -16,9 +15,6 @@ import { BalanceExplorerModule } from '@modules/assets/balance-explorer/module'
 
 import config from '@/config'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-
 export default {
   name: 'balances',
   components: {
@@ -29,10 +25,5 @@ export default {
     BalanceExplorerModule,
     storageUrl: config.FILE_STORAGE,
   }),
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
 }
 </script>

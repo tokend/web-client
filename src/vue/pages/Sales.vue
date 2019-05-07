@@ -127,7 +127,6 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      wallet: vuexTypes.wallet,
     }),
   },
 }

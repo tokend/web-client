@@ -18,7 +18,6 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import SignerListManager from './components/signer-list-manager'
 import CollectionLoader from '@/vue/common/CollectionLoader'
@@ -46,9 +45,6 @@ export default {
     ...mapGetters('document-signers-manager', {
       signers: types.signers,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
   },
   async created () {
     LocalBus.onSignersUpdate(this.rerenderList)

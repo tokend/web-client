@@ -50,6 +50,7 @@ import {
 import { Sdk } from '@/sdk'
 import { initApi, api } from '@/api'
 import { vuexTypes } from '@/vuex'
+import { Wallet } from '@tokend/js-sdk'
 
 import config from '@/config'
 
@@ -72,8 +73,10 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
-      vuexTypes.isLoggedIn,
+      vuexTypes.walletEmail,
+      vuexTypes.walletSeed,
+      vuexTypes.walletAccountId,
+      vuexTypes.walletId,
       vuexTypes.isAccountBlocked,
       vuexTypes.kycRequestBlockReason,
     ]),
@@ -102,8 +105,14 @@ export default {
       await this.loadDefaultQuoteAsset()
 
       if (this[vuexTypes.isLoggedIn]) {
-        Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        api().useWallet(this[vuexTypes.wallet])
+        const wallet = new Wallet(
+          this.walletEmail,
+          this.walletSeed,
+          this.walletAccountId,
+          this.walletId
+        )
+        Sdk.sdk.useWallet(wallet)
+        api().useWallet(wallet)
       }
     },
     detectIE () {

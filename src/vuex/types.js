@@ -92,8 +92,6 @@ const getters = {
   walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',
-  walletKeypair: 'walletKeypair',
-  walletPublicKey: 'walletPublicKey',
 
   // factors
   factors: 'factors',

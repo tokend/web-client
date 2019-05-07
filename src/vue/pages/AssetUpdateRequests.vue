@@ -12,9 +12,6 @@
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-
 import config from '@/config'
 
 export default {
@@ -27,11 +24,5 @@ export default {
     UpdateAssetRequestsModule,
     storageUrl: config.FILE_STORAGE,
   }),
-
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
 }
 </script>

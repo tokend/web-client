@@ -31,7 +31,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
   },

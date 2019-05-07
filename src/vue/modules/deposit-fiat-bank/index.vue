@@ -204,7 +204,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
@@ -271,9 +270,6 @@ export default {
       balances: types.balances,
       calculatedFees: types.fees,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
     totalFee () {
       return MathUtil.add(this.fees.percentFee, this.fees.fixedFee)
     },

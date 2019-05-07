@@ -15,7 +15,7 @@ localVue.use(Vuelidate)
 localVue.use(VueRouter)
 localVue.filter('globalize', globalize)
 
-// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
+// HACK: https://githu.b.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
 Vue.config.silent = true
 

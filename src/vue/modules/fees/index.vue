@@ -24,7 +24,6 @@ import LoadSpinner from '@/vue/common/Loader'
 
 import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-import { vuexTypes } from '@/vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
@@ -49,9 +48,6 @@ export default {
     ...mapGetters('fees', {
       fees: types.fees,
     }),
-    ...mapGetters([
-      vuexTypes.wallet,
-    ]),
 
     valuableFeesByAssetCode () {
       return this.fees.filter(item => {

@@ -35,7 +35,6 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountUsVerified: vuexTypes.isAccountUsVerified,

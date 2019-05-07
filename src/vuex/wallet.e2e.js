@@ -1,8 +1,6 @@
 import { MockHelper } from '../test'
 import { vuexTypes } from './types'
 
-import { base } from '@tokend/js-sdk'
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -15,7 +13,6 @@ describe('wallet.module end-to-end test', () => {
     const email = 'foo@bar.com'
     const password = 'qqq123'
     const accountId = 'GA466LXRPTTXV2JGDCVAWBB54SW4MGSYFABNUOYYKPJULF64DEPVOMMR'
-    const publicKey = 'GA6VATF6Z2UB3CI5WQF3UMXHYRSTV5Z5ET5NEDNEGMEXEMOYWUJ246KO'
     const seed = 'SBMI5HFNBRFIA66G2HZWVOVQRPOXZA537DEZR3ZIWX7NVSSKVGAQC4K2'
 
     // Manually calculated:
@@ -78,17 +75,6 @@ describe('wallet.module end-to-end test', () => {
       expect(store.getters[vuexTypes.walletSeed])
         .to
         .equal(seed)
-    })
-    it('walletKeypair', () => {
-      expect(store.getters[vuexTypes.walletKeypair])
-        .to
-        .deep
-        .equal(base.Keypair.fromSecret(seed))
-    })
-    it('walletPublicKey', () => {
-      expect(store.getters[vuexTypes.walletPublicKey])
-        .to
-        .equal(publicKey)
     })
   })
 })

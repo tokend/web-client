@@ -56,12 +56,6 @@ export const getters = {
   [vuexTypes.walletEmail]: (state, getters) => state.wallet.email,
   [vuexTypes.walletSeed]: (state, getters) =>
     state.wallet.secretSeed,
-  [vuexTypes.walletKeypair]: (state, getters) =>
-    state.wallet.keypair,
-  [vuexTypes.walletPublicKey]: (state, getters) =>
-    state.wallet.keypair
-      ? state.wallet.keypair.accountId()
-      : '',
 }
 
 export default {

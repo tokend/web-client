@@ -12,9 +12,6 @@
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-
 import config from '@/config'
 
 export default {
@@ -27,11 +24,5 @@ export default {
     CreateSaleRequestsModule,
     storageUrl: config.FILE_STORAGE,
   }),
-
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
 }
 </script>
