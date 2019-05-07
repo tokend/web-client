@@ -2,7 +2,7 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 import log from 'loglevel'
-
+import i18next from 'i18next'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 describe('error-handler helper', () => {
@@ -16,7 +16,7 @@ describe('error-handler helper', () => {
       const feedbackTranslationId = 'some-error.translation-id'
       const sentryReportConfig = {
         sentryReportTitle: '',
-        skipSentryReport: false
+        skipSentryReport: false,
       }
       sandbox.stub(ErrorHandler, 'processWithoutFeedback')
       sandbox.stub(ErrorHandler, '_getTranslationId')
@@ -27,8 +27,7 @@ describe('error-handler helper', () => {
       ErrorHandler.process(theError, '', sentryReportConfig)
 
       expect(ErrorHandler.processWithoutFeedback)
-        .to.have.been.calledOnceWithExactly(theError,
-          { ...sentryReportConfig, sentryReportTitle: feedbackTranslationId })
+        .to.have.been.calledOnceWithExactly(theError, sentryReportConfig)
       expect(ErrorHandler._getTranslationId)
         .to.have.been.calledOnceWithExactly(theError)
       expect(Bus.error)
@@ -37,18 +36,55 @@ describe('error-handler helper', () => {
   })
 
   describe('using processWithoutFeedback()', () => {
+    it('captures Sentry message', () => {
+      const theError = new Error()
+      const sentryReportConfig = {
+        sentryReportTitle: '',
+        skipSentryReport: false,
+      }
+      sandbox.stub(ErrorHandler, 'captureSentryMessage')
+      sandbox.stub(log, 'error')
+      ErrorHandler.processWithoutFeedback(theError, sentryReportConfig)
+
+      expect(ErrorHandler.captureSentryMessage)
+        .to.have.been.calledOnceWithExactly(theError, sentryReportConfig)
+    })
+
     it('logs the error', () => {
       const theError = new Error()
       const sentryReportConfig = {
         sentryReportTitle: '',
-        skipSentryReport: false
+        skipSentryReport: false,
       }
+      sandbox.stub(ErrorHandler, 'captureSentryMessage')
       sandbox.stub(log, 'error')
-
       ErrorHandler.processWithoutFeedback(theError, sentryReportConfig)
 
       expect(log.error)
         .to.have.been.calledOnceWithExactly(theError)
+    })
+  })
+
+  describe('using captureSentryMessage()', () => {
+    it('it capture message if skipSentryReport is false', () => {
+      const theError = new Error()
+      const sentryReportConfig = {
+        sentryReportTitle: '',
+        skipSentryReport: false,
+      }
+      const feedbackTranslationId = 'some-error.translation-id'
+      sandbox.stub(i18next, 'getFixedT')
+        .withArgs('en')
+        .returns(() => {
+          return 'some-error.translation-id'
+        })
+      sandbox.stub(ErrorHandler, '_getTranslationId')
+        .withArgs(theError)
+        .returns(feedbackTranslationId)
+
+      sandbox.stub(ErrorHandler, '_captureSentryReport')
+      ErrorHandler.captureSentryMessage(theError, sentryReportConfig)
+      expect(ErrorHandler._captureSentryReport).to.have.been.calledOnce
     })
   })
 

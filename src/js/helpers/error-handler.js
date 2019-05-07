@@ -2,22 +2,31 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
-import * as Sentry from '@sentry/browser'
+import * as sentry from '@sentry/browser'
 
 export class ErrorHandler {
   static process (error, translationId = '', sentryReportConfig = {}) {
     const msg = translationId || ErrorHandler._getTranslationId(error)
-    ErrorHandler.processWithoutFeedback(error,
-      { ...sentryReportConfig, sentryReportTitle: msg })
+    ErrorHandler.processWithoutFeedback(error, sentryReportConfig)
     Bus.error(msg)
   }
 
-  static processWithoutFeedback (error, { sentryReportTitle = '', skipSentryReport = false }) {
+  static processWithoutFeedback (error, sentryReportConfig = {}) {
+    ErrorHandler.captureSentryMessage(error, sentryReportConfig)
+    log.error(error)
+  }
+
+  static _captureSentryReport (...args) {
+    sentry.captureMessage(...args)
+  }
+
+  static captureSentryMessage (error, opts = {}) {
+    const { sentryReportTitle = '', skipSentryReport = false } = opts
     if (!skipSentryReport) {
       const englify = i18next.getFixedT('en')
-      Sentry.captureMessage(englify(sentryReportTitle))
+      const msg = sentryReportTitle || ErrorHandler._getTranslationId(error)
+      ErrorHandler._captureSentryReport(englify(msg))
     }
-    log.error(error)
   }
 
   static _getTranslationId (error) {
