@@ -28,7 +28,7 @@
       </template>
     </span>
 
-    <tooltip-wrapper
+    <tooltip
       :show="showTooltip"
       :message="'Copied!'"
     >
@@ -46,7 +46,7 @@
             'mdi-clipboard-text'"
         />
       </button>
-    </tooltip-wrapper>
+    </tooltip>
   </span>
 </template>
 
@@ -56,11 +56,11 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
-import TooltipWrapper from '@/vue/common/TooltipWrapper'
+import Tooltip from '@/vue/common/Tooltip'
 
 export default {
   components: {
-    TooltipWrapper,
+    Tooltip,
   },
   mixins: [IdentityGetterMixin],
 

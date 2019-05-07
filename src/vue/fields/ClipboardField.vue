@@ -10,7 +10,7 @@
       >
         {{ value }}
       </span>
-      <tooltip-wrapper
+      <tooltip
         :show="showTooltip"
         :message="'Copied!'"
       >
@@ -23,19 +23,19 @@
         >
           <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
         </button>
-      </tooltip-wrapper>
+      </tooltip>
     </div>
   </div>
 </template>
 
 <script>
 import Clipboard from 'clipboard'
-import TooltipWrapper from '@/vue/common/TooltipWrapper'
+import Tooltip from '@/vue/common/Tooltip'
 
 export default {
   name: 'clipboard-field',
   components: {
-    TooltipWrapper,
+    Tooltip,
   },
   props: {
     value: { type: String, default: '' },
