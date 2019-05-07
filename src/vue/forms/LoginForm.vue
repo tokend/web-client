@@ -64,7 +64,7 @@ import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
-import * as Sentry from '@sentry/browser'
+import { ErrorTracking } from '@/js/helpers/error-tracking'
 
 export default {
   name: 'login-form',
@@ -112,11 +112,9 @@ export default {
 
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        Sentry.configureScope((scope) => {
-          scope.setUser({
-            'accountId': accountId,
-            'email': this[vuexTypes.walletEmail],
-          })
+        ErrorTracking.setLoggedInUser({
+          'accountId': accountId,
+          'email': this[vuexTypes.walletEmail],
         })
 
         await this.loadAccount(accountId)

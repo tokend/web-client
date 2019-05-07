@@ -2,7 +2,7 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
-import * as sentry from '@sentry/browser'
+import { ErrorTracking } from '@/js/helpers/error-tracking'
 
 export class ErrorHandler {
   static process (error, translationId = '', sentryReportConfig = {}) {
@@ -16,16 +16,12 @@ export class ErrorHandler {
     log.error(error)
   }
 
-  static _captureSentryReport (...args) {
-    sentry.captureMessage(...args)
-  }
-
   static captureSentryMessage (error, opts = {}) {
     const { sentryReportTitle = '', skipSentryReport = false } = opts
     if (!skipSentryReport) {
       const englify = i18next.getFixedT('en')
       const msg = sentryReportTitle || ErrorHandler._getTranslationId(error)
-      ErrorHandler._captureSentryReport(englify(msg))
+      ErrorTracking.trackMessage(englify(msg))
     }
   }
 

@@ -50,9 +50,9 @@ import {
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { vuexTypes } from '@/vuex'
+import { ErrorTracking } from '@/js/helpers/error-tracking'
 
 import config from '@/config'
-import * as Sentry from '@sentry/browser'
 
 export default {
   name: 'app',
@@ -108,11 +108,9 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        Sentry.configureScope((scope) => {
-          scope.setUser({
-            'accountId': this[vuexTypes.accountId],
-            'email': this[vuexTypes.walletEmail],
-          })
+        ErrorTracking.setLoggedInUser({
+          'accountId': this[vuexTypes.accountId],
+          'email': this[vuexTypes.walletEmail],
         })
       }
     },

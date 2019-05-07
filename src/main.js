@@ -8,8 +8,6 @@ import VueResource from 'vue-resource'
 import log from 'loglevel'
 import config from './config'
 import IdleVue from 'idle-vue'
-import * as Sentry from '@sentry/browser'
-import * as Integrations from '@sentry/integrations'
 
 import { extendStoreWithScheme } from '@/vuex'
 import { buildRouter } from '@/vue-router'
@@ -28,6 +26,7 @@ import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+import { ErrorTracking } from '@/js/helpers/error-tracking'
 
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
@@ -67,16 +66,7 @@ async function init () {
     idleTime: config.IDLE_TIMEOUT,
   })
 
-  Sentry.init({
-    dsn: config.SENTRY_DSN,
-    release: config.BUILD_VERSION,
-    integrations: [
-      new Integrations.Vue({
-        Vue,
-        attachProps: true,
-      }),
-    ],
-  })
+  ErrorTracking.init(config)
 
   /* eslint-disable no-new */
   new Vue({
