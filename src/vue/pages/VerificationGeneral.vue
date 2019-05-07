@@ -131,7 +131,10 @@
           class="verification-general-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'verification-form.submit-btn' | globalize }}
+          {{ (isUpdatableKycRequest
+            ? 'verification-form.update-btn'
+            : 'verification-form.create-btn'
+          ) | globalize }}
         </button>
       </div>
     </form>

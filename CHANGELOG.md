@@ -8,6 +8,14 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+
+#### Changed
+- Enabled updating of pending and approved corporate kyc requests
+- "Submit" btn on verification changed to "Create request" or "Update", depends
+  on whether the request updatable or not
+
+
 #### Fixed
 - Fetching of investment fees in investing forms
 

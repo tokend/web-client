@@ -49,7 +49,10 @@
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'verification-form.submit-btn' | globalize }}
+          {{ (Number(requestId) > 0
+            ? 'verification-form.create-btn'
+            : 'verification-form.update-btn'
+          ) | globalize }}
         </button>
       </div>
     </form>

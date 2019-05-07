@@ -536,7 +536,8 @@
     },
     "verification-form": {
       "account-information-lbl": "Account information",
-      "submit-btn": "Submit",
+      "create-btn": "Create request",
+      "update-btn": "Update",
       "personal-details-lbl": "Personal details",
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
