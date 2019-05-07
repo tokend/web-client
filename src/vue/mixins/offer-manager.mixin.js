@@ -100,7 +100,7 @@ export default {
     /**
      * @param {object} opts
      * @param {object} opts.baseBalance - balance id of the base asset
-     * @param {string} opts.quoteBalance - balace id of the quote asset
+     * @param {string} opts.quoteBalance - balance id of the quote asset
      * @param {string} opts.offerId - offer id
      * @param {string} opts.price - offer price
      * @returns {Promise<void>}

@@ -6,7 +6,7 @@
 
     <form
       novalidate
-      class="app-form"
+      class="app-form verification-general-form__tag"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="verification-general-form__block">
@@ -326,6 +326,14 @@ export default {
   margin-top: 4rem;
 }
 
+.verification-general-form__tag {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
+
+  @include box-shadow();
+}
+
 .verification-general-form__submit-btn {
   margin-right: auto;
   width: 100%;
@@ -341,15 +349,9 @@ export default {
   font-size: 1.3rem;
 }
 
-.verification-general-form {
-  form {
-    margin-top: 1rem;
-    background-color: $col-block-bg;
-    padding: 2.4rem;
-
-    @include box-shadow();
-
-    & > .verification-general-form__block:not(:first-child) {
+.verification-general-form__block {
+  &:not(:first-child) {
+    .verification-general-form__tag > & {
       margin-top: 6rem;
     }
   }
@@ -357,7 +359,7 @@ export default {
 
 .verification-general-form__block-label {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .verification-general-form__photo-explanation {

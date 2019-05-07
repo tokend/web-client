@@ -136,27 +136,21 @@ $media-custom-breakpoint: 1100px;
   cursor: pointer;
   border-radius: 0;
   position: relative;
+}
 
-  &.app-tabs__tab--active:after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: $col-tabs-indicator;
-    height: 0.2rem;
-  }
+.app-tabs__tab--active:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $col-tabs-indicator;
+  height: 0.2rem;
+}
 
-  &.app-tabs__tab--disabled {
-    cursor: default;
-
-    .app-tabs__tab-btn {
-      pointer-events: none;
-      opacity: 0.5;
-      cursor: default;
-    }
-  }
+.app-tabs__tab--disabled {
+  cursor: default;
 }
 
 .app-tabs__tab-btn {
@@ -173,16 +167,22 @@ $media-custom-breakpoint: 1100px;
 
   &:hover {
     background-color: $col-tabs-hover-bg;
-    text-decoration: none !important;
+    text-decoration: none;
     color: $col-tabs-txt;
+  }
+
+  .app-tabs__tab--disabled & {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+
+    &:hover {
+      color: $col-tabs-txt;
+    }
   }
 
   @include respond-to-custom($media-custom-breakpoint) {
     font-size: 1.2rem;
   }
-}
-
-.app-tabs__tab--disabled .app-tabs__tab-btn:hover {
-  color: $col-tabs-txt;
 }
 </style>

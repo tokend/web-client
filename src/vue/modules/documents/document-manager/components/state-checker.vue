@@ -105,15 +105,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .state-checker {
   padding: 1rem 0;
 
   @mixin state-checker ($color) {
-    background: rgba($color, .15);
-    border-top: 1px solid $color;
-    border-bottom: 1px solid $color;
+    background: rgba($color, 0.15);
+    border-top: 0.1rem solid $color;
+    border-bottom: 0.1rem solid $color;
     color: $color;
 
     .state-checker__icon i {
@@ -121,12 +121,12 @@ export default {
     }
   }
 
-  &--verified { @include state-checker($col-success) }
-  &--not-verified { @include state-checker($col-error) }
+  &--verified { @include state-checker($col-success); }
+  &--not-verified { @include state-checker($col-error); }
 }
 
 .state-checker__heading {
-  margin-bottom: .35rem;
+  margin-bottom: 0.35rem;
 }
 
 .state-checker__inner {

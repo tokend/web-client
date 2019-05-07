@@ -11,7 +11,7 @@
       class="sidebar__burger-btn"
       :class="{ 'sidebar__burger-btn--sidebar-active': isOpened }"
     >
-      <i class="mdi mdi-menu" />
+      <i class="mdi mdi-menu sidebar__burger-btn-icon" />
     </button>
 
     <aside
@@ -165,8 +165,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 // we cannot wrap all the the contents into a wrapper because the links should
 // take the full width of the aside when recolored
@@ -185,19 +185,19 @@ $content-item-right-padding: 2.4rem;
     position: fixed;
     left: -100%;
     top: 0;
-    z-index: 115;
+    z-index: $z-sidebar-backdrop;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     opacity: 0;
     transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
+}
 
-  &.sidebar__backdrop--active {
-    left: $sidebar-width;
-    opacity: 1;
-    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
-  }
+.sidebar__backdrop--active {
+  left: $sidebar-width;
+  opacity: 1;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
 }
 
 .sidebar__burger-btn {
@@ -217,23 +217,24 @@ $content-item-right-padding: 2.4rem;
   opacity: 0;
   cursor: pointer;
   color: $col-sidebar-burger-icon-color;
-  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   @include respond-to-custom($sidebar-hide-bp) {
     opacity: 1;
     transform: translateX(0);
   }
+}
 
-  i {
-    display: flex;
-    justify-content: center;
-    font-size: 2.4rem;
-  }
+.sidebar__burger-btn-icon {
+  display: flex;
+  justify-content: center;
+  font-size: 2.4rem;
+}
 
-  &.sidebar__burger-btn--sidebar-active {
-    transform: translateX($sidebar-width);
-  }
+.sidebar__burger-btn--sidebar-active {
+  transform: translateX($sidebar-width);
 }
 
 .sidebar__aside {
@@ -251,13 +252,13 @@ $content-item-right-padding: 2.4rem;
     background-color: $col-sidebar-background-media-small;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
+}
 
-  &.sidebar__aside--closed {
-    @include respond-to-custom($sidebar-hide-bp) {
-      opacity: 0;
-      width: 0;
-      visibility: hidden;
-    }
+.sidebar__aside--closed {
+  @include respond-to-custom($sidebar-hide-bp) {
+    opacity: 0;
+    width: 0;
+    visibility: hidden;
   }
 }
 
@@ -285,8 +286,8 @@ $content-item-right-padding: 2.4rem;
 .sidebar__scheme-label {
   font-size: 1.2rem;
   text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: .08rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
   color: $col-sidebar-scheme-label;
 }
 
@@ -303,6 +304,7 @@ $content-item-right-padding: 2.4rem;
 
 .sidebar__links-group {
   margin-bottom: 4rem;
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -323,12 +325,12 @@ $content-item-right-padding: 2.4rem;
   cursor: pointer;
   color: $col-sidebar-text;
   text-decoration: none;
+}
 
-  &.router-link-active {
-    background-color: $col-sidebar-active-elem-background;
-    color: $col-sidebar-active-elem-text;
-    pointer-events: none;
-  }
+.sidebar__link.router-link-active {
+  background-color: $col-sidebar-active-elem-background;
+  color: $col-sidebar-active-elem-text;
+  pointer-events: none;
 }
 
 .sidebar__link-icon {

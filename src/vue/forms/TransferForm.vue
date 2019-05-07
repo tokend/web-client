@@ -532,7 +532,7 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .transfer__fee-box {
   margin-top: 4rem;
@@ -543,7 +543,7 @@ export default {
 .transfer__fee-box-heading {
   margin-top: 0;
   margin-bottom: 1rem;
-  font-weight: normal;
+  font-weight: 400;
   display: block;
   font-size: 1.6rem;
   color: $col-text-page-heading;

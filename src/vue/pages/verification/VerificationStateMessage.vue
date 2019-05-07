@@ -126,13 +126,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .verification-state-message {
-  &--approved { background-color: $col-request-approved }
-  &--pending { background-color: $col-request-pending }
-  &--rejected, &--blocked, &--reset, &--permanently-rejected {
-    background-color: $col-request-rejected
+  &--approved { background-color: $col-request-approved; }
+  &--pending { background-color: $col-request-pending; }
+
+  &--rejected,
+  &--blocked,
+  &--reset,
+  &--permanently-rejected {
+    background-color: $col-request-rejected;
   }
 }
 
@@ -161,6 +165,6 @@ export default {
 }
 
 .verification-state-message__reason-title {
-  font-weight: bold;
+  font-weight: 700;
 }
 </style>

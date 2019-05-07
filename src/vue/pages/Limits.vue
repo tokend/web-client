@@ -272,8 +272,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .limits {
   width: 100%;
@@ -291,11 +291,11 @@ export default {
 .limits__subheading {
   color: $col-text-page-heading;
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-top: 3.2rem;
   margin-bottom: 1.6rem;
 
-  @include respond-to(medium) { margin-top: 2.4rem }
+  @include respond-to(medium) { margin-top: 2.4rem; }
 }
 
 .limits__requests-collection-loader {

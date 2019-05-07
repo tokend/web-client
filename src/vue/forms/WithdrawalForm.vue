@@ -409,17 +409,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
-
-.withdrawal__fees-container {
-  &.loading {
-    opacity: 0.7;
-  }
-
-  .withdrawal__fee-type {
-    color: $col-info;
-  }
-}
+@import '@/scss/variables';
 
 .withdrawal__form-row {
   margin-bottom: 2.5rem;
@@ -433,14 +423,14 @@ export default {
 .withdrawal__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.withdrawal__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.withdrawal__fee-table td:last-child {
+  text-align: right;
 }
 
 .withdrawal__fee-tbody {
@@ -455,12 +445,8 @@ export default {
 .withdrawal__action {
   margin-top: 2.5rem;
 }
+
 .withdrawal__data--loading {
   opacity: 0.4;
-}
-
-.withdrawal__table-description {
-  opacity: 0.6;
-  font-size: 1.2rem;
 }
 </style>
