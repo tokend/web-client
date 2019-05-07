@@ -78,7 +78,6 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import config from '@/config'
 
 import { required, requiredIf, password, sameAs } from '@validators'
 
@@ -86,7 +85,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
 import { Sdk } from '@/sdk'
-import { initApi } from '@/api'
 import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
@@ -213,8 +211,6 @@ export default {
           throw e
         }
       }
-      initApi(newWallet, config.HORIZON_SERVER)
-      Sdk.sdk.useWallet(newWallet)
       this.storeWallet(newWallet)
     },
   },

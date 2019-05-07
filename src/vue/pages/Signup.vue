@@ -77,12 +77,10 @@ import SignupForm from '@/vue/forms/SignupForm'
 import KeyViewer from '@/vue/common/KeyViewer'
 import TickField from '@/vue/fields/TickField'
 import VueMarkdown from 'vue-markdown'
-import config from '@/config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
 import { Sdk } from '@/sdk'
-import { initApi } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -105,7 +103,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      accountId: vuexTypes.accountId,
+      walletAccountId: vuexTypes.walletAccountId,
     }),
   },
   methods: {
@@ -131,10 +129,8 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
-          Sdk.sdk.useWallet(wallet)
-          initApi(wallet, config.HORIZON_SERVER)
           this.storeWallet(wallet)
-          await this.loadAccount(this.accountId)
+          await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
           this.$router.push(vueRoutes.app)
         } else {

@@ -67,7 +67,6 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import config from '@/config'
 import {
   required,
   password,
@@ -76,7 +75,6 @@ import {
   seed,
 } from '@validators'
 import { Sdk } from '@/sdk'
-import { initApi } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -109,7 +107,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletAccountId: vuexTypes.walletAccountId,
     }),
   },
   methods: {
@@ -153,11 +151,7 @@ export default {
         email: this.form.email,
         password: this.form.password,
       })
-      const accountId = this.wallet.accountId
-      Sdk.sdk.useWallet(this.wallet)
-      initApi(this.wallet, config.HORIZON_SERVER)
-
-      await this.loadAccount(accountId)
+      await this.loadAccount(this.walletAccountId)
       await this.loadKvEntries()
       await this.loadKyc()
     },
