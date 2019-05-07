@@ -1,9 +1,6 @@
 <template>
   <div class="dashboard">
-    <template v-if="isLoading">
-      <loader message-id="dashboard.data-loading" />
-    </template>
-    <template v-else>
+    <template v-if="isLoaded">
       <div class="dashboard__toolbar">
         <asset-selector
           class="dashboard__asset-selector"
@@ -13,13 +10,13 @@
         />
         <div class="dashboard__actions">
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)">
+          <template v-if="getModule().canRenderSubmodule(IssuanceFormModule)">
             <button
               class="app__button-raised dashboard__action"
               @click="createIssuanceFormIsShown = true"
             >
               <i class="mdi mdi-plus dashboard__plus-icon" />
-              {{ 'dashboard.create-issuance-lbl' | globalize }}
+              {{ 'dashboard.create-issuance-btn' | globalize }}
             </button>
           </template>
 
@@ -66,30 +63,44 @@
           />
         </div>
       </template>
+
+      <drawer :is-shown.sync="showDrawer">
+        <template
+          v-show="createIssuanceFormIsShown &&
+            getModule().canRenderSubmodule(IssuanceFormModule)"
+        >
+          <template slot="heading">
+            {{ 'dashboard.create-issuance-title' | globalize }}
+          </template>
+
+          <submodule-importer
+            :submodule="getModule().getSubmodule(IssuanceFormModule)"
+            :config="{ horizonURL: config.HORIZON_SERVER }"
+            :wallet="wallet"
+            @issuance-created="showDrawer = false"
+          />
+        </template>
+
+        <template v-show="transferFormIsShown">
+          <template slot="heading">
+            {{ 'transfer-form.form-heading' | globalize }}
+          </template>
+          <transfer
+            @operation-submitted="updateBalancesAndList()"
+            :asset-to-transfer="currentAsset"
+          />
+        </template>
+      </drawer>
     </template>
-    <drawer :is-shown.sync="showDrawer">
-      <template v-show="createIssuanceFormIsShown">
-        <template slot="heading">
-          {{ 'dashboard.create-issuance-lbl' | globalize }}
-        </template>
-        <issuance-form @close="showDrawer = false" />
-      </template>
-      <template v-show="transferFormIsShown">
-        <template slot="heading">
-          {{ 'transfer-form.form-heading' | globalize }}
-        </template>
-        <transfer
-          @operation-submitted="updateBalancesAndList()"
-          :asset-to-transfer="currentAsset"
-        />
-      </template>
-    </drawer>
+
+    <template v-else>
+      <loader message-id="dashboard.data-loading" />
+    </template>
   </div>
 </template>
 
 <script>
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
-import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -100,7 +111,7 @@ import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
@@ -112,7 +123,6 @@ export default {
   name: 'dashboard',
   components: {
     AssetSelector,
-    IssuanceForm,
     Transfer,
     Loader,
     Drawer,
@@ -120,14 +130,14 @@ export default {
   },
   data: () => ({
     currentAsset: null,
-    isLoading: false,
+    isLoaded: false,
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'day',
     config,
     MovementsHistoryModule,
-    IssuanceDrawerPseudoModule,
+    IssuanceFormModule,
     TransferDrawerPseudoModule,
     DashboardChartPseudoModule,
     REFS,
@@ -161,10 +171,9 @@ export default {
     },
   },
   async created () {
-    this.isLoading = true
     await this.loadBalances()
     this.setCurrentAsset()
-    this.isLoading = false
+    this.isLoaded = true
   },
   methods: {
     ...mapActions({

@@ -1,9 +1,9 @@
 import { ModuleDescriptor } from '@/modules-arch/module-descriptor'
 
-export class IssuanceDrawerPseudoModule extends ModuleDescriptor {
+export class CreateSaleFormModule extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
-      importComponentFn: _ => import('@/vue/forms/IssuanceForm'),
+      importComponentFn: _ => import('@modules/create-sale-form'),
       ...opts,
     })
   }
