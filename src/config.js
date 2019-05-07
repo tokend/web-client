@@ -98,8 +98,8 @@ export default Object.assign(
     IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
 
     /**
-     * Senrty DSN. It’s a representation of the configuration required
-     * by the Sentry SDKs
+     * URL of the Sentry DSN. It’s a representation of the configuration
+     * required by the Sentry SDKs.
      */
     SENTRY_DSN: '',
   },
