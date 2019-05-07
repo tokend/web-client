@@ -24,6 +24,7 @@ for further information about branching and tagging conventions.
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
+- Now using @tokend/js-sdk@1.7.0-x.1
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -57,7 +58,6 @@ for further information about branching and tagging conventions.
 
 #### Changed
 - Now using @tokend/js-sdk@1.6.0-rc.0
->>>>>>> master
 
 #### Fixed
 - Invalid opts of `preissuedAssetAmount` when creating an asset
