@@ -216,33 +216,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
+@import '@/scss/variables';
 
 .fees-renderer {
   width: 100%;
   font-size: 1.2rem;
+  /* stylelint-disable selector-nested-pattern */
   tr {
     height: 2rem;
   }
+
   td:last-child {
     text-align: right;
   }
+
+  /* stylelint-enable selector-nested-pattern */
 }
+
 .fees-renderer__tbody {
   color: $col-text-secondary;
 }
+
 .fees-renderer__total-fee-row {
   color: $col-text;
   font-weight: 600;
 }
+
 .fees-renderer__data--loading {
   opacity: 0.4;
 }
+
 .fees-renderer__tick-field {
-  padding: 1.2rem 0rem;
+  padding: 1.2rem 0;
 }
+
 .fees-renderer__strong {
   font-weight: 600;
   color: $col-text;
 }
+
 </style>
