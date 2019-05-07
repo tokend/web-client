@@ -1,5 +1,5 @@
 import { ModuleDescriptor } from '@/modules-arch/module-descriptor'
-import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
+import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 
 export class CreateOpportunityModule extends ModuleDescriptor {
   constructor (opts = {}) {
@@ -12,7 +12,7 @@ export class CreateOpportunityModule extends ModuleDescriptor {
         return createAssetSaleModule
       },
       incompatibles: [
-        CreateSalePseudoModule,
+        CreateSaleFormModule,
       ],
       ...opts,
     })

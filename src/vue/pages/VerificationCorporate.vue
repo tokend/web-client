@@ -43,7 +43,7 @@
             v-model="form.avatar"
             name="verification-corporate-avatar"
             :note="'verification-form.image-type-note' | globalize"
-            accept="image/*"
+            :file-extensions="['jpg', 'png']"
             :document-type="DOCUMENT_TYPES.kycAvatar"
             :label="'verification-form.avatar-lbl' | globalize"
             :disabled="formMixin.isDisabled"

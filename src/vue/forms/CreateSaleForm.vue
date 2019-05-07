@@ -218,7 +218,7 @@
                   :label="'create-sale-form.upload-image' | globalize"
                   :note="'create-sale-form.upload-image' | globalize"
                   name="create-sale-sale-logo"
-                  accept=".jpg, .png"
+                  :file-extensions="['jpg', 'png']"
                   :document-type="DOCUMENT_TYPES.saleLogo"
                   v-model="form.shortBlurb.saleLogo"
                   :disabled="formMixin.isDisabled"
