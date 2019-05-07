@@ -17,7 +17,6 @@ for further information about branching and tagging conventions.
   - images preview (+ icon for rest types of files)
   - grayscaled disabled state
   - upload icons
-- Correct error message on KYC files upload
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -27,6 +26,7 @@ for further information about branching and tagging conventions.
   - Create sale form
 - Now formatting `minDate` validation message using i18n date filter
 - Now using `moment().toISOString()` value instead of `moment().toString()`
+- Corrected max weight for upload files
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing

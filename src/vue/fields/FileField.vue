@@ -125,14 +125,10 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-<<<<<<< HEAD
-const MAX_FILE_MEGABYTES = 32
-=======
 import config from '@/config'
 
-const MAX_FILE_MEGABYTES = 5
+const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
->>>>>>> master
 
 export default {
   name: 'file-field',
@@ -186,10 +182,6 @@ export default {
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
     }
-    // setInterval(() => {
-    //   console.log(this.value)
-    //   console.log(this.$el.querySelector('input').value)
-    // }, 5000)
   },
 
   methods: {
@@ -222,22 +214,6 @@ export default {
           ErrorHandler.process(e)
         }
       }
-<<<<<<< HEAD
-      // if (this.isValidFileSize(file) && this.isValidDocumentType(file)) {
-      if (this.isValidFileSize(file)) {
-        this.document = new DocumentContainer({
-          mimeType: file.type,
-          type: this.documentType,
-          name: file.name,
-          file: file,
-        })
-        this.$emit('input', this.document)
-      } else {
-        this.isValidFileSize(file)
-          ? Bus.error('file-field.max-size-exceeded-err')
-          : Bus.error('file-field.max-size-exceeded-err')
-        this.dropFile()
-=======
     },
 
     async validateFile (file) {
@@ -269,7 +245,6 @@ export default {
           },
         })
         return false
->>>>>>> master
       }
 
       return true
