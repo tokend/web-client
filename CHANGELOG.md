@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
   - images preview (+ icon for rest types of files)
   - grayscaled disabled state
   - upload icons
+- `initSync()` method to Api class
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -25,8 +26,15 @@ for further information about branching and tagging conventions.
   - Issuance form
   - Create sale form
 - Now formatting `minDate` validation message using i18n date filter
-- Now using `moment().toISOString()` value instead of `moment().toString()`
+- Now using `moment().toISOString()` value instead of `moment().toString()
+- Moved horizon resources to "/v3" endpoints
+- Now processing documents & blobs using new ApiCaller
+- Now performing actions with wallets & factors using relevant managers
+- Now using @tokend/js-sdk@1.7.0-x.1
 - Corrected max weight for upload files
+
+#### Removed
+- Unused methods from `DocumentContainer` class
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing

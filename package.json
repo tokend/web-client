@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
-    "@tokend/js-sdk": "1.6.0-rc.0",
+    "@tokend/js-sdk": "1.7.0-x.1",
     "bignumber.js": "8.0.1",
     "card-validator": "6.1.0",
     "clipboard": "2.0.4",

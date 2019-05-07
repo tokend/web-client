@@ -201,11 +201,12 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { FEE_TYPES } from '@tokend/js-sdk'
+import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
+
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
@@ -274,7 +275,7 @@ export default {
     }),
 
     isMasterAssetOwner () {
-      return this.form.asset.owner === Sdk.networkDetails.adminAccountId
+      return this.form.asset.owner === Api.networkDetails.adminAccountId
     },
 
     selectedAssetStep () {
@@ -317,9 +318,9 @@ export default {
           Bus.error('withdrawal-form.failed-load-fees')
           return false
         }
-        const operation = Sdk.base.CreateWithdrawRequestBuilder
+        const operation = base.CreateWithdrawRequestBuilder
           .createWithdrawWithAutoConversion(this.composeOptions())
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
         this.$emit(EVENTS.operationSubmitted)
@@ -330,13 +331,18 @@ export default {
     },
     async getFees () {
       try {
-        const fees = await Sdk.horizon.fees.get(FEE_TYPES.withdrawalFee, {
-          account: this.accountId,
-          asset: this.form.asset.code,
-          amount: this.form.amount,
-        })
-        this.fixedFee = fees.data.fixed
-        this.percentFee = fees.data.percent
+        const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+        const params = [
+          `asset=${this.form.asset.code}`,
+          `fee_type=${FEE_TYPES.withdrawalFee}`,
+          `amount=${this.form.amount}`,
+        ]
+
+        const endpoint = `${baseEndpoint}?${params.join('&')}`
+        const { data: fees } = await Api.get(endpoint)
+
+        this.fixedFee = fees.fixed
+        this.percentFee = fees.calculatedPercent
         this.isFeesLoadFailed = false
       } catch (e) {
         this.isFeesLoadFailed = true
@@ -388,8 +394,13 @@ export default {
     },
     async loadAssets () {
       await this.loadBalances()
-      const { data: assets } = await Sdk.horizon.assets.getAll()
-      this.assets = assets
+      const endpoint = `/v3/accounts/${this.accountId}`
+      const { data: account } = await Api.get(endpoint, {
+        include: ['balances.asset'],
+      })
+
+      this.assets = account.balances
+        .map(b => b.asset)
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.isWithdrawable && item.balance.id)
     },
