@@ -5,6 +5,10 @@
         :wallet="wallet"
         :config="config"
         :is-account-unverified="isAccountUnverified"
+        :is-account-us-accredited="isAccountUsAccredited"
+        :is-account-us-verified="isAccountUsVerified"
+        :is-account-general="isAccountGeneral"
+        :is-account-corporate="isAccountCorporate"
       />
     </template>
 
@@ -58,6 +62,22 @@ export default {
       type: Boolean,
       required: true,
     },
+    isAccountUsAccredited: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountUsVerified: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountGeneral: {
+      type: Boolean,
+      required: true,
+    },
+    isAccountCorporate: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   data: _ => ({
@@ -80,12 +100,14 @@ export default {
     ...mapActions('asset-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
+      loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
 
     async load () {
       try {
         await this.loadAccountBalances()
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
         this.isLoaded = true
       } catch (e) {
         this.isLoadFailed = true

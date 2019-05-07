@@ -95,10 +95,10 @@ export default {
 
 .request-attributes-viewer__table {
   margin-top: 2rem;
+}
 
-  tr td:last-child {
-    text-align: right;
-  }
+.request-attributes-viewer__table tr td:last-child {
+  text-align: right;
 }
 
 .request-attributes-viewer__video-btn {

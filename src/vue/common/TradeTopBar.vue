@@ -107,7 +107,7 @@ import TopBar from '@/vue/common/TopBar'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import SelectField from '@/vue/fields/SelectField'
-import CreateTradeOfferForm from '@/vue/forms/CreateTradeOfferForm'
+import CreateTradeOfferForm from '@/vue/forms/market-orders/CreateTradeOfferForm'
 
 import { Sdk } from '@/sdk'
 import { errors } from '@tokend/js-sdk'
@@ -258,10 +258,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
-$custom-breakpoint: 450px;
+$media-custom-breakpoint: 450px;
 
 .trade-asset-selector__field {
   display: inline-block;
@@ -276,7 +276,7 @@ $custom-breakpoint: 450px;
   font-size: 2.8rem;
   font-weight: 400;
 
-  @include respond-to-custom ($custom-breakpoint) {
+  @include respond-to-custom ($media-custom-breakpoint) {
     font-size: 2.2rem;
   }
 }
@@ -285,7 +285,7 @@ $custom-breakpoint: 450px;
   font-size: 1.6rem;
   color: $col-text-secondary;
 
-  @include respond-to-custom ($custom-breakpoint) {
+  @include respond-to-custom ($media-custom-breakpoint) {
     font-size: 1.4rem;
   }
 }

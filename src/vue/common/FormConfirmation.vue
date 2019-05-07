@@ -81,8 +81,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables.scss";
-@import "~@scss/mixins.scss";
+@import '~@scss/variables.scss';
+@import '~@scss/mixins.scss';
 
 .form-confirmation {
   display: flex;
@@ -104,15 +104,6 @@ export default {
   margin-left: auto;
 }
 
-.form-confirmation__ok-btn,
-.form-confirmation__cancel-btn {
-  flex: 0.5;
-
-  &:not(:first-child) {
-    margin-left: 0.5rem;
-  }
-}
-
 .form-confirmation__ok-btn {
   position: relative;
   height: 2.1rem;
@@ -121,6 +112,15 @@ export default {
 .form-confirmation__cancel-btn {
   position: relative;
   height: 2.1rem;
+}
+
+.form-confirmation__ok-btn,
+.form-confirmation__cancel-btn {
+  flex: 0.5;
+
+  &:not(:first-child) {
+    margin-left: 0.5rem;
+  }
 }
 
 .form-confirmation__transition-enter-active {
@@ -133,11 +133,7 @@ export default {
 }
 
 @keyframes form-confirmation__transition-keyframes {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>

@@ -1,7 +1,7 @@
 import { PageModuleDescriptor } from '@/modules-arch/page-module-descriptor'
 import { LoyaltyPointsInvoicesPageModule } from './loyalty-points-invoices-page'
 import { CreateInvoiceFormModule } from '@modules/loyalty-points/create-invoice-form/module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 
 export class LoyaltyPointsPageModule extends PageModuleDescriptor {
@@ -12,7 +12,7 @@ export class LoyaltyPointsPageModule extends PageModuleDescriptor {
       allowedSubmodules: [
         LoyaltyPointsInvoicesPageModule,
         CreateInvoiceFormModule,
-        IssuanceDrawerPseudoModule,
+        IssuanceFormModule,
         MovementsHistoryModule,
       ],
     })

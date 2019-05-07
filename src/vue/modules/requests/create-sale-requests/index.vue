@@ -6,8 +6,10 @@
           <template slot="heading">
             {{ 'create-sale-requests.update-sale-title' | globalize }}
           </template>
-          <create-sale-form
-            :request="selectedRequest"
+          <create-sale-form-module
+            :request-id="selectedRequest.id"
+            :wallet="wallet"
+            :config="config"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -52,9 +54,10 @@ import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
-import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
+import RequestViewer from './components/request-viewer'
+
+import CreateSaleFormModule from '@modules/create-sale-form'
 
 import { Wallet } from '@tokend/js-sdk'
 
@@ -73,8 +76,8 @@ export default {
     Drawer,
     CollectionLoader,
     RequestsTable,
-    CreateSaleForm,
     RequestViewer,
+    CreateSaleFormModule,
   },
 
   props: {

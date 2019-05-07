@@ -128,7 +128,7 @@
     </div>
     <div class="limits-request-details-viewer__buttons">
       <button
-        class="app__button-raised limits-request-details-viewer__upload-btn"
+        class="app__button-raised limits-request-details-viewer__button"
         :disabled="!request.isRejected"
         @click="$emit(EVENTS.upload)"
       >
@@ -174,46 +174,52 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
-  .limits-request-details-viewer__request-state {
-    min-height: 6.4rem;
-    width: 100%;
-    margin-top: 2rem;
-    display: none;
+@import '~@scss/variables';
 
-    .limits-request-details-viewer__request-state-content {
-      padding: 2.4rem;
-      font-size: 1.3rem;
-      font-weight: normal;
-      color: $col-primary-txt;
-    }
+.limits-request-details-viewer__request-state {
+  min-height: 6.4rem;
+  width: 100%;
+  margin-top: 2rem;
+  display: none;
 
-    @mixin apply-theme ($col-msg-background) {
-      background-color: $col-msg-background;
-      display: block;
-    }
-
-    &--approved { @include apply-theme($col-request-approved) }
-    &--pending { @include apply-theme($col-request-pending) }
-    &--rejected, &--canceled, &--permanently-rejected {
-      @include apply-theme($col-request-rejected)
-    }
+  @mixin apply-theme ($col-msg-background) {
+    background-color: $col-msg-background;
+    display: block;
   }
 
-  .limits-request-details-viewer__table {
-    margin-top: 2rem;
+  &--approved { @include apply-theme($col-request-approved); }
+  &--pending { @include apply-theme($col-request-pending); }
 
-    tr td:last-child {
-      text-align: right;
-    }
+  &--rejected,
+  &--canceled,
+  &--permanently-rejected {
+    @include apply-theme($col-request-rejected);
   }
+}
 
-  .limits-request-details-viewer__buttons {
-    margin-top: 4.9rem;
-    display: flex;
+.limits-request-details-viewer__request-state-content {
+  padding: 2.4rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: $col-primary-txt;
+}
 
-    button + button {
-      margin-left: auto;
-    }
+.limits-request-details-viewer__table {
+  margin-top: 2rem;
+}
+
+.limits-request-details-viewer__table tr td:last-child {
+  text-align: right;
+}
+
+.limits-request-details-viewer__buttons {
+  margin-top: 4.9rem;
+  display: flex;
+}
+
+.limits-request-details-viewer__button {
+  & + & {
+    margin-left: auto;
   }
+}
 </style>

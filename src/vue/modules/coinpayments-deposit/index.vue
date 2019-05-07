@@ -3,11 +3,13 @@
     <coinpayments-form
       :asset="asset"
       :balance-id="balanceId"
+      @submitted="handleCoinpaymentsFormSubmitted"
     />
     <div class="coinpayments-deposit__pending-issuances-table-wrp">
       <pending-issuances-table
         v-if="!isLoading"
         :pending-issuances="pendingIssuances"
+        ref="table"
       />
       <template v-else-if="isFailed">
         <p>
@@ -67,6 +69,7 @@ export default {
     return {
       isLoading: true,
       isFailed: false,
+      isSubmitted: false,
       pendingIssuances: [],
     }
   },
@@ -111,6 +114,9 @@ export default {
       const endpoint = '/v3/create_issuance_requests'
       const response = await api().getWithSignature(endpoint, params)
       return response
+    },
+    handleCoinpaymentsFormSubmitted () {
+      this.$refs.table.resetIssuanceSelection()
     },
   },
 }

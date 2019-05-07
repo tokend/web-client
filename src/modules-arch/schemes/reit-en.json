@@ -137,10 +137,9 @@
       "requires-verification-desc": "Investments in this opportunity requires verification"
     },
     "create-sale-form": {
-      "create-sale-header": "Create opportunity",
-      "provide-sale-information": "Provide opportunity information",
-      "sale-name": "Opportunity name",
-      "asset-not-available-yet": "Please create opportunity before creating opportunity"
+      "sale-name-lbl": "Opportunity name",
+      "no-owned-assets-title": "No owned opportunities yet",
+      "no-owned-assets-desc": "Please create opportunity before creating opportunity"
     },
     "withdrawal-form": {
       "asset": "Opportunity",
@@ -149,6 +148,7 @@
       "can-not-load-assets": "There was an error while loading opportunities. Please try again later"
     },
     "deposit-form": {
+      "deposit-lbl": "Deposit",
       "how-to": "To make a deposit send some opportunities to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only": "The address below accepts {{asset}} only! All the other opportunities will be irretrievably lost.",
       "deposit-no-assets": "Your wallet doesn't contain any opportunities to deposit yet. You can discover some on the opportunity list.",

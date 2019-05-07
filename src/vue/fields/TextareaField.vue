@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "scss/variables";
+@import 'scss/variables';
 
 .text-field {
   width: 100%;
@@ -103,32 +103,41 @@ export default {
   padding-top: 2.6rem;
   caret-color: $field-color-text;
   background-color: $textarea-background-color;
-  border: .2rem solid rgba($field-color-unfocused, 0.5);
-  border-radius: .4rem;
-  transition: all 0s, border-color .2s ease-out;
+  border: 0.2rem solid rgba($field-color-unfocused, 0.5);
+  border-radius: 0.4rem;
+  transition: all 0s, border-color 0.2s ease-out;
   overflow: hidden;
 
-  &:hover, &--dirty {
+  &:hover {
+    border-color: $field-color-focused;
+  }
+
+  &--dirty {
     border-color: $field-color-focused;
   }
 }
 
 .text-field__label {
   cursor: default;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   display: block;
   position: absolute;
   top: 1.6rem;
   left: 1.6rem;
   color: $field-color-unfocused;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
   font-size: 1.6rem;
   pointer-events: none;
 
-  .text-field__input:focus ~ &,
   .text-field--dirty & {
     color: $field-color-text;
-    top: .8rem;
+    top: 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  .text-field__input:focus ~ & {
+    color: $field-color-text;
+    top: 0.8rem;
     font-size: 1.2rem;
   }
 }
@@ -151,7 +160,7 @@ export default {
 
 .text-field__length {
   position: absolute;
-  bottom: .8rem;
+  bottom: 0.8rem;
   right: 1.6rem;
   font-size: 1.2rem;
   color: $field-color-text;
@@ -159,7 +168,7 @@ export default {
 
 .text-field__err-mes {
   position: absolute;
-  bottom: .8rem;
+  bottom: 0.8rem;
   left: 1.6rem;
   max-width: 70%;
   font-size: 1.2rem;

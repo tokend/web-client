@@ -72,6 +72,7 @@ describe('Dashboard component', () => {
       routes: [],
     })
 
+    sinon.stub(Dashboard, 'created').resolves()
     wrapper = shallowMount(Dashboard, {
       store,
       localVue,

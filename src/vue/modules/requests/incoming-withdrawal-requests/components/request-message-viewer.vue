@@ -67,22 +67,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .request-message-viewer {
   min-height: 6.4rem;
 
-  &--approved { background-color: $col-request-approved }
-  &--pending { background-color: $col-request-pending }
-  &--rejected, &--canceled, &--permanently-rejected {
+  &--approved { background-color: $col-request-approved; }
+  &--pending { background-color: $col-request-pending; }
+
+  &--rejected,
+  &--canceled,
+  &--permanently-rejected {
     background-color: $col-request-rejected;
   }
+}
 
-  .request-message-viewer__content {
-    padding: 2.4rem;
-    font-size: 1.3rem;
-    font-weight: normal;
-    color: $col-primary-txt;
-  }
+.request-message-viewer__content {
+  padding: 2.4rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: $col-primary-txt;
 }
 </style>

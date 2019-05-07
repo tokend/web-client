@@ -35,33 +35,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .asset-summary-viewer {
   display: flex;
   align-items: center;
+}
 
-  .asset-summary-viewer__logo {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%
-  }
+.asset-summary-viewer__logo {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
 
-  .asset-summary-viewer__info {
-    margin-left: 1.8rem;
+.asset-summary-viewer__info {
+  margin-left: 1.8rem;
+}
 
-    .asset-summary-viewer__code {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: $col-primary;
-    }
+.asset-summary-viewer__code {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $col-primary;
+}
 
-    .asset-summary-viewer__name {
-      margin-top: .1rem;
-      font-size: 1.4rem;
-      line-height: 1.29;
-      color: $col-primary;
-    }
-  }
+.asset-summary-viewer__name {
+  margin-top: 0.1rem;
+  font-size: 1.4rem;
+  line-height: 1.29;
+  color: $col-primary;
 }
 </style>

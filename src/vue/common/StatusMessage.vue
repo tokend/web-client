@@ -89,8 +89,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $payload-padding: 2.4rem;
 
@@ -123,7 +123,6 @@ $payload-padding: 2.4rem;
   @include respond-to($tablet) {
     min-width: auto;
   }
-
   @include respond-to-custom($status-message-reposition-bp) {
     right: $content-side-paddings-sm;
     left: $content-side-paddings-sm;
@@ -143,7 +142,7 @@ $payload-padding: 2.4rem;
 
 .status-message__title {
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 0.4rem;
   color: $col-status-msg-text;
 }
@@ -168,12 +167,15 @@ $payload-padding: 2.4rem;
   &:after {
     transition: 0.2s;
 
-    content: "";
+    content: '';
     position: absolute;
     height: $cross-stroke-height;
     width: $cross-stroke-width;
     top: $payload-padding - 0.2rem;
-    left: calc(50% - #{$cross-stroke-width / 2});
+    // wait for 10.0.2 stylelint version
+    /* stylelint-disable function-calc-no-invalid */
+    left: calc(50% - (#{$cross-stroke-width} / 2));
+    /* stylelint-enable function-calc-no-invalid */
     background-color: $col-button-raised-txt;
   }
 
@@ -188,7 +190,10 @@ $payload-padding: 2.4rem;
   &:hover:after,
   &:hover:before {
     transition: 0.2s;
-    top: calc(50% - #{$cross-stroke-height / 2});
+    // wait for 10.0.2 stylelint version
+    /* stylelint-disable function-calc-no-invalid */
+    top: calc(50% - (#{$cross-stroke-height} / 2));
+    /* stylelint-enable function-calc-no-invalid */
   }
   /* /cross */
 }

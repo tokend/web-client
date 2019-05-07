@@ -14,7 +14,7 @@ $x-large: 1920px;
   justify-content: center;
   align-items: center;
   border: none;
-  padding: .8rem 1.6rem;
+  padding: 0.8rem 1.6rem;
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
@@ -25,14 +25,13 @@ $x-large: 1920px;
     cursor: pointer;
   }
 }
-
 @mixin button-icon () {
   @include button();
 
-  padding: .5rem;
+  padding: 0.5rem;
   min-width: 3.6rem;
   border-radius: 50%;
-  transition: .3s ease-out;
+  transition: 0.3s ease-out;
   box-sizing: content-box;
   min-width: 3.6rem;
 
@@ -40,26 +39,24 @@ $x-large: 1920px;
     background-color: $col-button-flat-hover;
   }
 }
-
 @mixin button-raised () {
   @include button();
 
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   background-color: $col-button-raised;
-  box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, .15);
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.15);
   color: $col-button-raised-txt;
 
   &[disabled] {
     box-shadow: none;
-    opacity: .5;
+    opacity: 0.5;
     cursor: default;
     pointer-events: none;
   }
 }
-
 @mixin button-accent () {
   @include button();
-  transition: .3s ease-out;
+  transition: 0.3s ease-out;
   color: $col-button-flat-accent-txt;
 
   &[disabled] {
@@ -71,12 +68,11 @@ $x-large: 1920px;
     background-color: $col-button-flat-accent-hover;
   }
 }
-
 @mixin button-flat () {
   @include button();
 
   color: $col-button-flat-txt;
-  transition: .3s ease-out;
+  transition: 0.3s ease-out;
 
   &[disabled] {
     color: $col-button-flat-disabled-txt;
@@ -87,53 +83,57 @@ $x-large: 1920px;
     background-color: $col-button-flat-hover;
   }
 }
-
 @mixin box-shadow () {
-  box-shadow: 0 .4rem 1rem 0 rgba(0, 0, 0, .15)
+  box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.15);
 }
-
 @mixin respond-to($media) {
   @if $media == xsmall {
     @media only screen and (max-width: $x-small - 1px) {
       @content;
     }
-  } @else if $media == small {
+  }
+
+  @else if $media == small {
     @media only screen and (max-width: $small - 1px) {
       @content;
     }
-  } @else if $media == tablet {
+  }
+  @else if $media == tablet {
     @media only screen and (max-width: $tablet - 1px) {
       @content;
     }
-  } @else if $media == medium {
+  }
+  @else if $media == medium {
     @media only screen and (max-width: $medium) {
       @content;
     }
-  } @else if $media == xmedium {
+  }
+  @else if $media == xmedium {
     @media only screen and (max-width: $x-medium - 1px) {
       @content;
     }
-  } @else if $media == large {
+  }
+  @else if $media == large {
     @media only screen and (max-width: $large - 1px) {
       @content;
     }
-  } @else if $media == xlarge {
+  }
+  @else if $media == xlarge {
     @media only screen and (max-width: $x-large - 1px) {
       @content;
     }
-  } @else {
+  }
+  @else {
     @media only screen and (max-width: $media) {
       @content;
     }
   }
 }
-
 @mixin respond-to-height($media) {
   @media only screen and (max-height: $media) {
     @content;
   }
 }
-
 @mixin respond-to-custom($media) {
   @media only screen and (max-width: $media) {
     @content;
