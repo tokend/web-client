@@ -2,7 +2,7 @@
   <div class="movements-history">
     <template v-if="isInitialized && assetCode">
       <template v-if="isMovementsLoaded">
-        <h2 class="app__table-title" v-if="movements.length && latestActivity">
+        <h2 class="app__table-title" v-if="latestActivity">
           {{ 'movements-history.latest-activity' | globalize }}
         </h2>
         <div class="movements-history__list-wrp">
