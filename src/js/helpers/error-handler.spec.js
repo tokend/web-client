@@ -4,7 +4,7 @@ import { TestHelper } from '@/test/test-helper'
 import log from 'loglevel'
 import i18next from 'i18next'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { ErrorTracking } from '@/js/helpers/error-tracking'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 describe('error-handler helper', () => {
   let sandbox
@@ -83,9 +83,9 @@ describe('error-handler helper', () => {
         .withArgs(theError)
         .returns(feedbackTranslationId)
 
-      sandbox.stub(ErrorTracking, 'trackMessage')
+      sandbox.stub(ErrorTracker, 'trackMessage')
       ErrorHandler.captureSentryMessage(theError, sentryReportConfig)
-      expect(ErrorTracking.trackMessage).to.have.been.calledOnce
+      expect(ErrorTracker.trackMessage).to.have.been.calledOnce
     })
   })
 

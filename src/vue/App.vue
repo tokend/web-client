@@ -50,7 +50,7 @@ import {
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { vuexTypes } from '@/vuex'
-import { ErrorTracking } from '@/js/helpers/error-tracking'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 import config from '@/config'
 
@@ -108,7 +108,7 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        ErrorTracking.setLoggedInUser({
+        ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.accountId],
           'email': this[vuexTypes.walletEmail],
         })

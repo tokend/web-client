@@ -2,7 +2,7 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
-import { ErrorTracking } from '@/js/helpers/error-tracking'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export class ErrorHandler {
   static process (error, translationId = '', sentryReportConfig = {}) {
@@ -21,7 +21,7 @@ export class ErrorHandler {
     if (!skipSentryReport) {
       const englify = i18next.getFixedT('en')
       const msg = sentryReportTitle || ErrorHandler._getTranslationId(error)
-      ErrorTracking.trackMessage(englify(msg))
+      ErrorTracker.trackMessage(englify(msg))
     }
   }
 

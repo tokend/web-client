@@ -64,7 +64,7 @@ import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
-import { ErrorTracking } from '@/js/helpers/error-tracking'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export default {
   name: 'login-form',
@@ -112,7 +112,7 @@ export default {
 
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
-        ErrorTracking.setLoggedInUser({
+        ErrorTracker.setLoggedInUser({
           'accountId': accountId,
           'email': this[vuexTypes.walletEmail],
         })

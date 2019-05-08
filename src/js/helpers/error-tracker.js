@@ -2,7 +2,7 @@ import * as sentry from '@sentry/browser'
 import * as Integrations from '@sentry/integrations'
 import Vue from 'vue'
 
-export class ErrorTracking {
+export class ErrorTracker {
   static init (config) {
     sentry.init({
       dsn: config.SENTRY_DSN,
@@ -18,10 +18,7 @@ export class ErrorTracking {
 
   static setLoggedInUser ({ accountId = '', email = '' }) {
     sentry.configureScope((scope) => {
-      scope.setUser({
-        'accountId': accountId,
-        'email': email,
-      })
+      scope.setUser({ accountId, email })
     })
   }
 
