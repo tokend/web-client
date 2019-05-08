@@ -19,6 +19,11 @@ for further information about branching and tagging conventions.
   - grayscaled disabled state
   - upload icons
 - `initSync()` method to Api class
+- Balances on passport dropdown
+- Tooltip with 'Copied' message for email-getter and clipboard-field
+- Add 'Latest activity' label for 'Movements' history
+- Deposit method field
+- Readonly field for total field by offer create
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -34,9 +39,14 @@ for further information about branching and tagging conventions.
 - Now using @tokend/js-sdk@1.7.0-x.1
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
+- Show only latest 10 latest operations on 'Movements' page
+- Merge 'Requires verification' and 'Is security (requires accreditation for US residents)'
+  in 'Deposit type' field
+- New displayed 'no-data' message for Movements, Fees and Limits tables
 
 #### Removed
 - Unused methods from `DocumentContainer` class
+- More button for 'Movements' history
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
