@@ -11,7 +11,7 @@
             {{ label }}
           </td>
           <td>
-            {{ value || '0.00' }}
+            {{ value || '0.00' }} {{ asset }}
           </td>
         </tr>
       </tbody>
@@ -25,6 +25,7 @@ export default {
   props: {
     label: { type: String, default: 'Label' },
     value: { type: [String, Number], default: undefined },
+    asset: { type: String, require: true, default: '' },
   },
 }
 </script>

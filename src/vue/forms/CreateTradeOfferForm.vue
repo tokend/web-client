@@ -52,9 +52,8 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <readonly-field
-          :label="'offer-creation-form.total' | globalize({
-            asset: assetPair.quote
-          })"
+          :label="'offer-creation-form.total' | globalize"
+          :asset="assetPair.quote"
           :value="totalValue"
         />
       </div>
@@ -70,7 +69,10 @@
     </template>
 
     <template v-else>
-      <div class="app__form-actions">
+      <div
+        class="app__form-actions
+               app__form-submit-btn--margin_small"
+      >
         <button
           v-ripple
           type="submit"
@@ -211,4 +213,9 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
+
+.app__form-submit-btn--margin_small {
+  // stylelint-disable-next-line
+  margin-top: 3rem !important;
+}
 </style>
