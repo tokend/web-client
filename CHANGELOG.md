@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Lazy loading feedback (nprogress loader)
 - `BalanceNotFoundError` to the runtime errors
+- Fonts/images/SVGs optimize
 - Check for file extension, size & dimensions in file field
 - File field design improvements:
   - reactions to drag & drop actions
