@@ -30,7 +30,7 @@
 
     <tooltip
       :show="showTooltip"
-      :message="'Copied!'"
+      :message="'email-getter.copied' | globalize"
     >
       <button
         v-show="isCopyButton && !isMasterAccount && !isLoading"
@@ -156,12 +156,16 @@ export default {
 
     changeBtnIcon () {
       this.isCopyBtnPressed = true
-      this.showHint()
+      this.showTooltipWrapper()
       setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
     },
 
-    showHint () {
+    showTooltipWrapper () {
+      let hideTooltipTimeout = 2000
       this.showTooltip = true
+      setTimeout(() => {
+        this.showTooltip = false
+      }, hideTooltipTimeout)
     },
   },
 }

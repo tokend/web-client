@@ -12,12 +12,12 @@
       </span>
       <tooltip
         :show="showTooltip"
-        :message="'Copied!'"
+        :message="'clipboard-field.copied' | globalize"
       >
         <button
           type="button"
           class="clipboard-field__button app__button-icon"
-          @click="showHint"
+          @click="showTooltipWrapper"
           :id="`clipboard-btn-${_uid}`"
           :data-clipboard-target="`#clipboard-target-${_uid}`"
         >
@@ -52,8 +52,12 @@ export default {
     this.clipboard = new Clipboard(btn)
   },
   methods: {
-    showHint () {
+    showTooltipWrapper () {
+      let hideTooltipTimeout = 2000
       this.showTooltip = true
+      setTimeout(() => {
+        this.showTooltip = false
+      }, hideTooltipTimeout)
     },
   },
 }
