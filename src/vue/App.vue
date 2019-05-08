@@ -44,6 +44,8 @@ import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
 import IdleHandlerMixin from '@/vue/mixins/idle-handler'
 
+import { isCompatibleBrowser } from '@/js/helpers/is-compatible-browser'
+
 import {
   mapGetters,
   mapActions,
@@ -86,7 +88,7 @@ export default {
   async created () {
     await this.initApp()
 
-    this.detectIE()
+    this.detectUnсompatibleBrowser()
 
     this.isAppInitialized = true
   },
@@ -108,10 +110,8 @@ export default {
         Api.useWallet(this[vuexTypes.wallet])
       }
     },
-    detectIE () {
-      const edge = window.navigator.userAgent.indexOf('Edge/')
-
-      if (edge > 0) this.isNotSupportedBrowser = true
+    detectUnсompatibleBrowser () {
+      this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
   },
 }
