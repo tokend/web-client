@@ -51,6 +51,27 @@
           </span>
         </div>
 
+        <div
+          class="passport__dropdown-balances-wrp
+                 passport__dropdown-balances-wrp--direction-column"
+        >
+          <span class="passport__dropdown-balances-label">
+            {{ 'passport.balances' | globalize }}
+          </span>
+          <span
+            v-for="(item, index) in baseAssets"
+            :key="index"
+            class="passport__dropdown-balances-asset"
+          >
+            {{ item.balance }} {{ item.asset }}
+          </span>
+          <router-link
+            class="passport__dropdown-balances-link"
+            :to="vueRoutes.balances"
+          >
+            {{ 'passport.show-more' | globalize }}
+          </router-link>
+        </div>
         <button
           class="app__button-flat"
           @click="goSettings"
@@ -76,14 +97,17 @@ import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 export default {
   name: 'passport',
 
   data: () => ({
+    vueRoutes,
     isDropdownOpen: false,
     loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
+    assetsPerPage: 3,
   }),
 
   computed: {
@@ -98,7 +122,15 @@ export default {
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
+      accountBalances: vuexTypes.accountBalances,
     }),
+
+    baseAssets () {
+      return this.accountBalances
+        .filter(asset => {
+          return asset.assetDetails.policies.includes(ASSET_POLICIES.baseAsset)
+        }).slice(0, this.assetsPerPage)
+    },
 
     accountRoleTranslationId () {
       if (this.isAccountGeneral) {
@@ -196,6 +228,18 @@ export default {
 
 $media-hide-account-details-bp: 800px;
 $dropdown-item-side-padding: 2.4rem;
+
+.passport__dropdown-balances-link {
+  padding-top: 0.4rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: $col-link;
+}
+
+.passport__dropdown-balances-wrp--direction-column {
+  display: flex;
+  flex-direction: column;
+}
 
 .passport {
   width: 100%;
@@ -310,7 +354,8 @@ $dropdown-item-side-padding: 2.4rem;
   }
 }
 
-.passport__dropdown-signed-in-wrp {
+.passport__dropdown-signed-in-wrp,
+.passport__dropdown-balances-wrp {
   padding: 1.6rem $dropdown-item-side-padding 0.8rem;
   line-height: 1.5;
   text-align: center;
@@ -318,7 +363,8 @@ $dropdown-item-side-padding: 2.4rem;
   font-size: 1.4rem;
 }
 
-.passport__dropdown-signed-in-email {
+.passport__dropdown-signed-in-email,
+.passport__dropdown-balances-asset {
   font-weight: 700;
 }
 

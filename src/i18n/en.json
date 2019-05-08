@@ -713,7 +713,9 @@
       "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "sign-out-btn": "Sign out"
+      "sign-out-btn": "Sign out",
+      "balances": "Balances",
+      "show-more": "Show more"
     },
     "sidebar": {
       "section-explore": "Explorations",
