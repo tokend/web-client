@@ -3,6 +3,7 @@
     <warning-banner
       v-if="isNotSupportedBrowser"
       :message="'common.browser-not-supported' | globalize"
+      message-type="warning"
     />
 
     <template v-if="isLoggedIn && isNavigationRendered">
