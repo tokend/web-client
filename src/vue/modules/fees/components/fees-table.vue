@@ -1,7 +1,6 @@
 <template>
   <div class="fees-table">
     <div
-      v-if="fees.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -27,7 +26,6 @@
             </th>
           </tr>
         </thead>
-
         <tbody>
           <tr
             v-for="(fee, i) in fees"
@@ -60,29 +58,31 @@
               {{ { value: fee.upperBound, currency: fee.asset } | formatMoney }}
             </td>
           </tr>
+          <tr
+            :key="'no-data'"
+            v-if="!fees.length"
+          >
+            <td
+              class="fees-table__cell--align-center"
+              colspan="6"
+            >
+              <!-- eslint-disable-next-line -->
+              {{ 'fees.no-valuable-fees-msg' | globalize({ asset: assetCode }) }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'fees.no-valuable-fees-title' | globalize"
-      :message="'fees.no-valuable-fees-msg' | globalize({ asset: assetCode })"
-    />
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
-
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
 
 export default {
   name: 'fees-table',
   components: {
-    NoDataMessage,
     FeeTypeViewer,
     FeeSubtypeViewer,
   },
@@ -99,3 +99,9 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+  .fees-table__cell--align-center {
+    text-align: center;
+  }
+</style>

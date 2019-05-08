@@ -1,7 +1,7 @@
 <template>
   <div class="limits-requests-list-renderer">
     <div
-      v-if="!isLoading && !isLoadingFailed && requests.length"
+      v-if="!isLoading && !isLoadingFailed"
       class="limits-requests-list-renderer__table
             app__table
             app__table--with-shadow"
@@ -56,18 +56,21 @@
               </a>
             </td>
           </tr>
+          <tr
+            v-if="!requests.length"
+            :key="'no-data'"
+          >
+            <td
+              class="limits-requests-list-renderer__table-cell--align-center"
+              colspan="5"
+            >
+              <!-- eslint-disable-next-line -->
+              {{ 'limits-requests-table-renderer.here-will-requests-list' | globalize }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
-
-    <template v-else-if="!isLoading && !isLoadingFailed && !requests.length">
-      <!-- eslint-disable max-len -->
-      <no-data-message
-        :title="'limits-requests-table-renderer.no-requests-history' | globalize"
-        :message="'limits-requests-table-renderer.here-will-requests-list' | globalize"
-      />
-      <!-- eslint-enable max-len -->
-    </template>
 
     <template v-else-if="isLoading && !isLoadingFailed">
       <loader :message-id="'limits-requests-table-renderer.data-loading'" />
@@ -115,7 +118,6 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
 import LimitsRequestDetailsViewer from './Limits.RequestDetailsViewer.vue'
 import Drawer from '@/vue/common/Drawer'
@@ -146,7 +148,6 @@ export default {
   components: {
     Loader,
     Drawer,
-    NoDataMessage,
     LimitsDocumentsUploaderForm,
     LimitsRequestDetailsViewer,
   },
@@ -186,6 +187,10 @@ export default {
 
 <style lang="scss">
 @import '~@scss/variables';
+
+.limits-requests-list-renderer__table-cell--align-center {
+  text-align: center;
+}
 
 .limits-requests-list-renderer__reload-requests-btn {
   margin-top: 1.6rem;

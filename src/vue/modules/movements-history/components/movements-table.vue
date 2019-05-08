@@ -1,5 +1,5 @@
 <template>
-  <table class="movements-table" v-if="movements.length">
+  <table class="movements-table">
     <thead>
       <tr class="movements-table__head-row">
         <th
@@ -38,23 +38,21 @@
       :movement="movement"
       :key="movement.id"
     />
+    <movements-table-row
+      v-if="!movements.length"
+      :is-empty-movements="!movements.length"
+      :key="'no-data'"
+    />
   </table>
-  <no-data-message
-    v-else
-    :title="'movements-history.no-movements-title' | globalize"
-    :message="'movements-history.no-movements-msg' | globalize"
-  />
 </template>
 
 <script>
 import MovementsTableRow from './movements-table-row'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 
 export default {
   name: 'movement-list-renderer',
   components: {
     MovementsTableRow,
-    NoDataMessage,
   },
   props: {
     movements: {
