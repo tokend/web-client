@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Lazy loading feedback (nprogress loader)
 - `BalanceNotFoundError` to the runtime errors
+- Fonts/images/SVGs optimize
 - Check for file extension, size & dimensions in file field
 - File field design improvements:
   - reactions to drag & drop actions
@@ -31,7 +32,8 @@ for further information about branching and tagging conventions.
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
 - Now using @tokend/js-sdk@1.7.0-x.1
-- Corrected max weight for upload files
+- .babelrc: babel target to allowed browsers
+- Max size of uploaded file changed to 32mb
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -39,7 +41,7 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
   limits to unlimited ones and not an empty field
-- An error was fixed in which if you exceed the limit for example daily 
+- An error was fixed in which if you exceed the limit for example daily
   then the user received an error stating that "Your transaction is invalid."
 - Show drawer for isDepositable in movements-top-bar-reit
 - Dashboard loading flow
