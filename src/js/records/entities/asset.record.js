@@ -1,40 +1,40 @@
 import { ASSET_POLICIES } from '@tokend/js-sdk'
-import _get from 'lodash/get'
+import safeGet from 'lodash/get'
 
 export class AssetRecord {
   constructor (record = {}, balances = []) {
     this._record = record
 
-    this.code = record.code
-    this.owner = record.owner
+    this.code = record.id
+    this.owner = safeGet(record, 'owner.id')
     this.assetType = record.assetType || record.type
-    this.preissuedAssetSigner = record.preissuedAssetSigner
+    this.preissuedAssetSigner = record.preIssuanceAssetSigner
 
     this.availableForIssuance = record.availableForIssuance
     this.issued = record.issued
     this.maxIssuanceAmount = record.maxIssuanceAmount
     this.initialPreissuedAmount = record.initialPreissuedAmount
     this.pendingIssuance = record.pendingIssuance
-    this.trailingDigitsCount = record.trailingDigitsCount
+    this.trailingDigitsCount = record.trailingDigits
 
     this.details = record.details
-    this.name = _get(record, 'details.name')
-    this.externalSystemType = _get(record, 'details.externalSystemType')
-    this.isCoinpayments = _get(record, 'details.isCoinpayments')
+    this.name = safeGet(record, 'details.name')
+    this.externalSystemType = safeGet(record, 'details.externalSystemType')
+    this.isCoinpayments = safeGet(record, 'details.isCoinpayments')
 
-    this.logo = _get(record, 'details.logo')
-    this.logoKey = _get(record, 'details.logo.key')
-    this.logoName = _get(record, 'details.logo.name')
-    this.logoType = _get(record, 'details.logo.type')
+    this.logo = safeGet(record, 'details.logo')
+    this.logoKey = safeGet(record, 'details.logo.key')
+    this.logoName = safeGet(record, 'details.logo.name')
+    this.logoType = safeGet(record, 'details.logo.type')
 
-    this.maturityDate = _get(record, 'details.maturityDate')
-    this.annualReturn = _get(record, 'details.annualReturn')
-    this.subtype = _get(record, 'details.subtype')
+    this.maturityDate = safeGet(record, 'details.maturityDate')
+    this.annualReturn = safeGet(record, 'details.annualReturn')
+    this.subtype = safeGet(record, 'details.subtype')
 
-    this.terms = _get(record, 'details.terms')
-    this.termsKey = _get(record, 'details.terms.key')
-    this.termsName = _get(record, 'details.terms.name')
-    this.termsType = _get(record, 'details.terms.type')
+    this.terms = safeGet(record, 'details.terms')
+    this.termsKey = safeGet(record, 'details.terms.key')
+    this.termsName = safeGet(record, 'details.terms.name')
+    this.termsType = safeGet(record, 'details.terms.type')
 
     this.policies = this._policies()
     this.policy = this._policy()
@@ -44,7 +44,7 @@ export class AssetRecord {
   }
 
   logoUrl (storageUrl) {
-    if (_get(this.details, 'logoUrl')) {
+    if (safeGet(this.details, 'logoUrl')) {
       return this.details.logoUrl
     } else {
       return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
@@ -61,7 +61,7 @@ export class AssetRecord {
       return {
         value: balance.balance,
         currency: balance.asset,
-        id: balance.balanceId,
+        id: balance.id,
       }
     } else {
       return {}
@@ -81,7 +81,7 @@ export class AssetRecord {
   }
 
   _policies () {
-    const policies = this._record.policies || []
+    const policies = safeGet(this._record, 'policies.flags') || []
     return policies.map(policy => policy.value)
   }
 

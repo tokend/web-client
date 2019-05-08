@@ -53,10 +53,12 @@
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
 import Tooltip from '@/vue/common/Tooltip'
+
+import safeGet from 'lodash/get'
 
 export default {
   components: {
@@ -122,7 +124,7 @@ export default {
     async init () {
       this.isMasterAccount = false
 
-      if (this.accountId === Sdk.networkDetails.adminAccountId) {
+      if (this.accountId === Api.networkDetails.adminAccountId) {
         this.isMasterAccount = true
         return
       }
@@ -147,8 +149,8 @@ export default {
       if (this.accountId) {
         return this.accountId
       } else if (this.balanceId) {
-        const { data } = await Sdk.horizon.balances.getAccount(this.balanceId)
-        return data.accountId
+        const { data } = await Api.get(`/v3/balances/${this.balanceId}`)
+        return safeGet(data, 'owner.id')
       } else {
         return ''
       }

@@ -191,7 +191,7 @@ import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
 import config from '@/config'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 import { base } from '@tokend/js-sdk'
 
@@ -269,7 +269,7 @@ export default {
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         await this.loadBalances()
         this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')

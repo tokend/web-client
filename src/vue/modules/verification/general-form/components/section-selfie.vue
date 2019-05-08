@@ -30,7 +30,7 @@
           v-model="selfie"
           name="verification-general-verification-photo"
           :note="'general-form.image-type-note' | globalize"
-          accept="image/*"
+          :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.kycSelfie"
           :label="'general-form.photo-lbl' | globalize"
           :disabled="isDisabled"

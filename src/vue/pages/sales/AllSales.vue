@@ -127,14 +127,6 @@ export default {
     // A workaround for filtering sales by base asset, since sales.getPage
     // method loads all the existing sales.
     filteredSales () {
-      if (this.isUserSales) {
-        return this.filteredSalesOwned
-      } else {
-        return this.filteredAllSales
-      }
-    },
-
-    filteredAllSales () {
       if (this.filters.baseAsset === '') {
         return this.saleRecords
       } else {
@@ -146,33 +138,27 @@ export default {
       }
     },
 
-    filteredSalesOwned () {
-      return this.saleRecords
-        .filter(sale => {
-          return sale.owner === this.accountId
-        })
-    },
-
     recordsLoader () {
       const saleState = this.filters.state.value
-      const opts = {
-        page: {
-          order: 'desc',
-        },
+      let opts = {
+        page: { order: 'desc' },
+        filter: {},
         include: ['base_asset', 'quote_assets', 'default_quote_asset'],
       }
+
       switch (saleState) {
         case SALE_STATES.live.value:
-          opts.filter = {
-            state: SALE_STATES.live.state,
-          }
+          opts.filter.state = SALE_STATES.live.state
           break
         case SALE_STATES.upcoming.value:
-          opts.filter = {
-            min_start_time: new Date().toISOString(),
-          }
+          opts.filter.min_start_time = new Date().toISOString()
           break
       }
+
+      if (this.isUserSales) {
+        opts.filter.owner = this.accountId
+      }
+
       return function () {
         return Api.getWithSignature('/v3/sales', opts)
       }
@@ -204,4 +190,7 @@ export default {
 </script>
 
 <style lang="scss">
+.sales-asset-selector__field {
+  width: auto;
+}
 </style>

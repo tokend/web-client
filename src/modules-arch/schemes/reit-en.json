@@ -138,10 +138,9 @@
       "requires-verification-desc": "Investments in this opportunity requires verification"
     },
     "create-sale-form": {
-      "create-sale-header": "Create opportunity",
-      "provide-sale-information": "Provide opportunity information",
-      "sale-name": "Opportunity name",
-      "asset-not-available-yet": "Please create opportunity before creating opportunity"
+      "sale-name-lbl": "Opportunity name",
+      "no-owned-assets-title": "No owned opportunities yet",
+      "no-owned-assets-desc": "Please create opportunity before creating opportunity"
     },
     "withdrawal-form": {
       "asset": "Opportunity",
