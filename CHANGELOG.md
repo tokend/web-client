@@ -33,6 +33,7 @@ for further information about branching and tagging conventions.
 - Now performing actions with wallets & factors using relevant managers
 - Now using @tokend/js-sdk@1.7.0-x.1
 - .babelrc: babel target to allowed browsers
+- Max size of uploaded file changed to 32mb
 
 #### Removed
 - Unused methods from `DocumentContainer` class
