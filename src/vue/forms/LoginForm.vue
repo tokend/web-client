@@ -55,7 +55,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, requiredIf } from '@validators'
+import { required, requiredIf, email } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -79,7 +79,7 @@ export default {
   }),
   validations: {
     form: {
-      email: { required },
+      email: { required, email },
       password: { required },
       tfaCode: {
         required: requiredIf(function () { return this.tfaError }),

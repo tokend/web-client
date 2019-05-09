@@ -20,6 +20,7 @@ for further information about branching and tagging conventions.
   - upload icons
 - `initSync()` method to Api class
 - Sentry integration
+- Email validation on login form
 
 #### Changed
 - Updated offer creating, updating drawers
