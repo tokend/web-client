@@ -81,7 +81,7 @@
                 'form.information.maturityDate',
                 {
                   minDate: form.saleInformation.endTime ||
-                    formatDate(moment().toString()),
+                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -140,7 +140,7 @@
               v-model="form.information.terms"
               name="asset-create-terms"
               :note="'create-opportunity.terms-note' | globalize"
-              accept=".jpg, .png, .pdf"
+              :file-extensions="['jpg', 'png', 'pdf']"
               :document-type="DOCUMENT_TYPES.assetTerms"
               :label="'create-opportunity.terms-lbl' | globalize"
               :disabled="formMixin.isDisabled"
@@ -246,7 +246,7 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
-                    formatDate(moment().toString()),
+                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -349,7 +349,7 @@
               :label="'create-opportunity.cover-logo' | globalize"
               :note="'create-opportunity.upload-image' | globalize"
               name="create-sale-sale-logo"
-              accept=".jpg, .png"
+              :file-extensions="['jpg', 'png']"
               :document-type="DOCUMENT_TYPES.saleLogo"
               v-model="form.shortBlurb.saleLogo"
               :disabled="formMixin.isDisabled"
@@ -586,12 +586,12 @@ export default {
     let endTime = {
       required,
       minDate: minDate(this.form.saleInformation.startTime ||
-        moment().toString()),
+        moment().toISOString()),
     }
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
-        minDate: minDate(moment().toString()),
+        minDate: minDate(moment().toISOString()),
       }
       startTime.maxDate = maxDate(this.form.information.maturityDate)
       endTime.maxDate = maxDate(this.form.information.maturityDate)
@@ -838,10 +838,9 @@ export default {
       ]
       for (let document of documents) {
         if (document && !document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
           )
-          document.setKey(documentKey)
         }
       }
     },
