@@ -5,9 +5,10 @@ import Vuelidate from 'vuelidate'
 import VueRouter from 'vue-router'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
-import { MockHelper } from '@/test'
 import { globalize } from '@/vue/filters/globalize'
 import { vueRoutes } from '@/vue-router/routes'
+
+import { Api } from '@/api'
 
 const localVue = createLocalVue()
 
@@ -72,11 +73,10 @@ describe('RecoveryForm component test', () => {
   })
 
   describe('submit method', () => {
-    let mockHelper
     let wrapper
 
     beforeEach(() => {
-      mockHelper = new MockHelper()
+      Api.initSync({ horizonURL: 'https://test.api.com' })
 
       const router = new VueRouter({
         mode: 'history',
@@ -93,8 +93,7 @@ describe('RecoveryForm component test', () => {
     })
 
     it('calls SDK wallets.recovery with proper set of params and logs in the user', async () => {
-      const resource = mockHelper.getApiResourcePrototype('wallets')
-      const recoveryStub = sinon.stub(resource, 'recovery').resolves()
+      const recoveryStub = sinon.stub(Api.walletsManager, 'recovery').resolves()
       const loginStub = sinon.stub(wrapper.vm, 'login').resolves()
 
       const form = {

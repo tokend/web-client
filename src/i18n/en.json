@@ -523,8 +523,8 @@
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
       "avatar-lbl": "Avatar",
-      "image-type-note": "image (Max 5mb)",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -544,8 +544,8 @@
       "last-name-lbl": "Last name",
       "avatar-lbl": "Avatar",
       "id-document-lbl": "ID document",
-      "image-type-note": "image (Max 5mb)",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -561,7 +561,7 @@
       "caps-lock-warning": "Warning: Caps-Lock is ON"
     },
     "limits-documents-uploader-form": {
-      "file-type-note": "image/pdf (Max 5mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "form-subheading": "Requirements",
       "document-type-lbl": "Document type",
       "note-lbl": "Note",
@@ -1297,11 +1297,16 @@
       "verification-required-err": "You need to verify your account to add this asset to your balances"
     },
     "file-field": {
-      "title": "Drop a file here or click to browse",
+      "upload-file-title": "Drag a file here or click to browse",
+      "upload-another-file-title": "Drag another file here or click to browse",
+      "no-file-selected-title": "No file selected",
+      "reset-btn-hint": "Remove file",
+      "drop-file-title": "Drop the file here",
       "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
-      "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
-      "file-not-uploaded-err": "A file was not uploaded",
+      "max-size-exceeded-err": "You cannot upload a file exceeding {{maxSize}} MB",
+      "incorrect-file-type-err": "You cannot upload a {{type}} file. Allowed types: {{allowedTypes}}",
+      "invalid-dimensions-err": "You cannot upload an image with dimensions less than {{minWidth}}x{{minHeight}}",
       "disabled-msg": "This field is disabled"
     },
     "sales": {
@@ -1842,7 +1847,7 @@
     },
     "document-upload-form": {
       "document-lbl": "Select your document. You cannot upload the same file twice",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "description-lbl": "Description",
       "upload-btn": "Upload",
       "uploaded-msg": "Your document was successfully uploaded",

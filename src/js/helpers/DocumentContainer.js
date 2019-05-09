@@ -1,5 +1,4 @@
 import config from '@/config'
-import { Sdk } from '@/sdk'
 import { FileUtil } from '@/js/utils/file.util'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
@@ -60,24 +59,13 @@ export class DocumentContainer {
 
   /**
    * URL from where the public file can be downloaded.
-   * (!! works only with public files, private urls should be derived
-   * by {@link derivePrivateUrl}
+   * (!! works only with public files)
    *
    * @returns {string} publicUrl
    */
   get publicUrl () {
     if (!this.key) return ''
     return `${config.FILE_STORAGE}/${this.key}`
-  }
-
-  /**
-   * URL from where the private file can be downloaded.
-   * Call {@link derivePrivateUrl} before using this getter
-   *
-   * @returns {string} privateURL
-   */
-  get privateUrl () {
-    return this._privateUrl
   }
 
   /**
@@ -98,17 +86,6 @@ export class DocumentContainer {
    */
   get arrayBuffer () {
     return this._arrayBuffer
-  }
-
-  async derivePrivateUrl () {
-    if (!this.key) {
-      throw new Error(`
-        To derive private url file must be already uploaded and contain
-        the key
-      `)
-    }
-    const details = await Sdk.api.documents.get(this.key)
-    this._privateUrl = details.data('url')
   }
 
   async deriveDataUrl () {

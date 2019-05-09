@@ -20,6 +20,7 @@ import {
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { Api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -55,21 +56,25 @@ describe('TransferForm component', () => {
         asset: 'BTC',
         balance: '1',
         assetDetails: new AssetRecord({
-          policies: [
-            { value: ASSET_POLICIES.transferable },
-            { value: ASSET_POLICIES.baseAsset },
-          ],
+          policies: {
+            flags: [
+              { value: ASSET_POLICIES.transferable },
+              { value: ASSET_POLICIES.baseAsset },
+            ],
+          },
         }),
       },
       {
         asset: 'USD',
         balance: '3',
         assetDetails: new AssetRecord({
-          policies: [
-            { value: ASSET_POLICIES.transferable },
-            { value: ASSET_POLICIES.baseAsset },
-            { value: ASSET_POLICIES.statsQuoteAsset },
-          ],
+          policies: {
+            flags: [
+              { value: ASSET_POLICIES.transferable },
+              { value: ASSET_POLICIES.baseAsset },
+              { value: ASSET_POLICIES.statsQuoteAsset },
+            ],
+          },
         }),
       },
       {
@@ -338,7 +343,7 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
-      expect(transactionsResource.submitOperations.calledOnce).to.be.true
+      expect(Api.api.postOperations.calledOnce).to.be.true
       expect(Bus.success.calledOnce).to.be.true
       expect(accountModule.actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS]
         .calledOnce).to.be.true
@@ -351,9 +356,7 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'enableForm')
       sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
 
-      const transactionsResource =
-        mockHelper.getHorizonResourcePrototype('transactions')
-      sinon.stub(transactionsResource, 'submitOperations')
+      sinon.stub(Api.api, 'postOperations')
         .withArgs(true)
         .throws(TestHelper.getError(errors.NotFoundError))
       sinon.stub(ErrorHandler, 'process')
@@ -362,7 +365,7 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
-      expect(transactionsResource.submitOperations.calledOnce).to.be.true
+      expect(Api.api.postOperations.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
       expect(wrapper.vm.enableForm.calledOnce).to.be.true
     })
