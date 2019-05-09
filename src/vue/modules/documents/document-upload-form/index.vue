@@ -9,7 +9,7 @@
           <file-field
             :label="'document-upload-form.document-lbl' | globalize"
             :note="'document-upload-form.file-type-note' | globalize"
-            accept="image/*, .pdf"
+            :file-extensions="['jpg', 'png', 'pdf']"
             :document-type="DOCUMENT_TYPES.healthcareDocument"
             v-model="form.document"
             :disabled="formMixin.isDisabled"
@@ -40,7 +40,7 @@
           <button
             v-ripple
             type="submit"
-            class="app__button-raised"
+            class="app__button-raised document-upload-form__actions-btn"
             :disabled="formMixin.isDisabled"
           >
             {{ 'document-upload-form.upload-btn' | globalize }}
@@ -220,7 +220,6 @@ export default {
 
       const accountIdFromDocHash =
         await this.getAccountIdFromDocHash(docHashBuffer)
-
       this.uploadState.isCreatingAccount = true
       await this.createAccount(accountIdFromDocHash, this.accountId)
       this.uploadState.isCreatingAccount = false
@@ -288,17 +287,18 @@ export default {
   display: flex;
   align-items: center;
   margin-top: 4.9rem;
+}
 
-  button {
-    max-width: 18rem;
-    width: 100%;
-  }
+.document-upload-form__actions-btn {
+  max-width: 18rem;
+  width: 100%;
 }
 
 .document-upload-form__upload-state-msg {
   margin-left: 2rem;
   width: 100%;
 }
+
 .document-upload-form__progress-bar-wrp {
   margin-top: 1rem;
   width: 100%;

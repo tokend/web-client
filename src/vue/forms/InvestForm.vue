@@ -49,7 +49,7 @@
 
             <p class="app__form-field-description">
               <vue-markdown
-                v-if="isConvertedAmountLoaded"
+                v-if="isAssetPairPriceLoaded"
                 class="app__form-field-description invest-form__amount-hint"
                 :source="'invest-form.converted-amount-hint' | globalize({
                   amount: {
@@ -59,7 +59,7 @@
                 })"
               />
 
-              <template v-else-if="isConvertingFailed">
+              <template v-else-if="isPriceLoadFailed">
                 {{ 'invest-form.converting-error-msg' | globalize }}
               </template>
 
@@ -76,7 +76,7 @@
           :source="'invest-form.current-investment' | globalize({
             amount: {
               value: currentInvestment.quoteAmount,
-              currency: currentInvestment.quoteAssetCode
+              currency: currentInvestment.quoteAsset.id
             }
           })"
         />
@@ -162,7 +162,7 @@
 
       <div class="app__form-actions">
         <template
-          v-if="currentInvestment.offerId &&
+          v-if="currentInvestment.id &&
             view.mode === VIEW_MODES.submit">
           <button
             v-ripple
@@ -188,7 +188,7 @@
             v-ripple
             v-if="view.mode === VIEW_MODES.submit"
             click="submit"
-            class="app__form-submit-btn"
+            class="app__button-raised"
             :disabled="formMixin.isDisabled"
             form="invest-form">
             {{ 'invest-form.continue-btn' | globalize }}
@@ -249,7 +249,7 @@ import config from '@/config'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
@@ -261,8 +261,6 @@ import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 import { MathUtil } from '@/js/utils'
-
-import _throttle from 'lodash/throttle'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -277,7 +275,6 @@ const VIEW_MODES = {
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
-const CONVERTING_DELAY = 1000
 
 export default {
   name: 'invest-form',
@@ -297,6 +294,8 @@ export default {
       asset: {},
       amount: '',
     },
+    assetPairPrice: '',
+    currentInvestment: {},
     view: {
       mode: VIEW_MODES.submit,
     },
@@ -304,14 +303,12 @@ export default {
       fixed: '',
       percent: '',
     },
-    offers: [],
     saleBaseAsset: null,
     isLoaded: false,
     isLoadingFailed: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
-    convertedAmount: 0,
-    isConvertedAmountLoaded: true,
-    isConvertingFailed: false,
+    isAssetPairPriceLoaded: true,
+    isPriceLoadFailed: false,
     isFeesLoaded: false,
     isSubmitting: false,
     VIEW_MODES,
@@ -342,6 +339,14 @@ export default {
       isAccountUsVerified: vuexTypes.isAccountUsVerified,
       balances: vuexTypes.accountBalances,
     }),
+
+    convertedAmount () {
+      if (this.form.asset.code === this.sale.defaultQuoteAsset) {
+        return this.form.amount
+      } else {
+        return MathUtil.multiply(this.form.amount, this.assetPairPrice)
+      }
+    },
 
     quoteAssetBalances () {
       let quoteAssetBalances = []
@@ -376,15 +381,6 @@ export default {
         value: availableBalance,
         currency: this.form.asset.code,
       }
-    },
-
-    convertAmountLoader () {
-      return _throttle(this.loadConvertedAmount, CONVERTING_DELAY)
-    },
-
-    currentInvestment () {
-      return this.offers
-        .find(offer => offer.quoteAssetCode === this.form.asset.code) || {}
     },
 
     isCapExceeded () {
@@ -425,7 +421,7 @@ export default {
     canSubmit () {
       return this.canUpdateOffer &&
         !this.isCapExceeded &&
-        this.isConvertedAmountLoaded
+        this.isAssetPairPriceLoaded
     },
 
     totalAmount () {
@@ -436,12 +432,16 @@ export default {
   },
 
   watch: {
-    'form.amount': function () {
-      this.setConvertedAmount()
-    },
+    'form.asset': async function () {
+      try {
+        if (this.form.asset.code !== this.sale.defaultQuoteAsset) {
+          await this.loadAssetPairPrice()
+        }
 
-    'form.asset': function () {
-      this.setConvertedAmount()
+        await this.loadCurrentInvestment()
+      } catch (e) {
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
   },
 
@@ -449,11 +449,12 @@ export default {
     try {
       await this.loadSaleBaseAsset()
       await this.loadBalances()
-      await this.loadOffers()
 
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }
+
+      await this.loadCurrentInvestment()
 
       this.isLoaded = true
     } catch (e) {
@@ -468,43 +469,41 @@ export default {
     }),
 
     async loadSaleBaseAsset () {
-      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+      const endpoint = `/v3/assets/${this.sale.baseAsset}`
+      const { data } = await api().get(endpoint)
 
       this.saleBaseAsset = new AssetRecord(data)
     },
 
-    async loadOffers () {
-      const { data } = await Sdk.horizon.account.getOffers(this.accountId, {
-        is_buy: true,
-        order_book_id: this.sale.id,
+    async loadCurrentInvestment () {
+      const { data: offers } = await api().getWithSignature('/v3/offers', {
+        filter: {
+          order_book: this.sale.id,
+          owner: this.accountId,
+          is_buy: 1,
+          quote_asset: this.form.asset.code,
+          base_asset: this.sale.baseAsset,
+        },
       })
-      this.offers = data
+
+      this.currentInvestment = offers[0] || {}
     },
 
-    setConvertedAmount () {
-      if (this.form.asset.code === this.sale.defaultQuoteAsset) {
-        this.convertedAmount = this.form.amount
-      } else if (this.form.amount === '') {
-        this.convertedAmount = 0
-      } else {
-        this.convertAmountLoader()
-      }
-    },
-
-    async loadConvertedAmount () {
-      this.isConvertingFailed = false
-      this.isConvertedAmountLoaded = false
+    async loadAssetPairPrice () {
+      this.isPriceLoadFailed = false
+      this.isAssetPairPriceLoaded = false
 
       try {
-        const { data } = await Sdk.horizon.assetPairs.convert({
-          source_asset: this.form.asset.code,
-          dest_asset: this.sale.defaultQuoteAsset,
-          amount: this.form.amount,
-        })
-        this.convertedAmount = data.amount
-        this.isConvertedAmountLoaded = true
+        const sourceAsset = this.form.asset.code
+        const destAsset = this.sale.defaultQuoteAsset
+
+        const endpoint = `/v3/asset_pairs/${sourceAsset}:${destAsset}`
+        const { data: assetPair } = await api().get(endpoint)
+
+        this.assetPairPrice = assetPair.price
+        this.isAssetPairPriceLoaded = true
       } catch (e) {
-        this.isConvertingFailed = true
+        this.isPriceLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
     },
@@ -523,7 +522,7 @@ export default {
         }
 
         const operations = await this.getOfferOperations()
-        await Sdk.horizon.transactions.submitOperations(...operations)
+        await api().postOperations(...operations)
         await this.loadBalances()
 
         Bus.success({
@@ -548,43 +547,53 @@ export default {
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
 
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await api().postOperations(operation)
       await this.loadBalances()
     },
 
     async getOfferOperations () {
-      const { data: fee } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-        asset: this.form.asset.code,
-        account: this.accountId,
-        amount: this.form.amount,
-      })
+      const fee = await this.getOfferFee()
 
       let operations = []
 
-      if (this.currentInvestment.offerId) {
+      if (this.currentInvestment.id) {
         operations.push(base.ManageOfferBuilder.cancelOffer(
           this.getOfferOpts(
-            String(this.currentInvestment.offerId),
+            String(this.currentInvestment.id),
             CANCEL_OFFER_FEE
           )
         ))
       }
       operations.push(
         base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts(OFFER_CREATE_ID, fee.percent)
+          this.getOfferOpts(OFFER_CREATE_ID, fee.calculatedPercent)
         ),
       )
 
       return operations
     },
 
-    getOfferOpts (offerId, offerFee) {
+    async getOfferFee () {
+      const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+      const params = [
+        `asset=${this.form.asset.code}`,
+        `fee_type=${FEE_TYPES.offerFee}`,
+        `amount=${this.form.amount}`,
+      ]
+
+      const endpoint = `${baseEndpoint}?${params.join('&')}`
+      const { data: fee } = await api().get(endpoint)
+
+      return fee
+    },
+
+    getOfferOpts (id, offerFee) {
       return {
-        offerID: offerId,
+        offerID: id,
         baseBalance: this.balances
-          .find(balance => balance.asset === this.sale.baseAsset).balanceId,
+          .find(balance => balance.asset === this.sale.baseAsset).id,
         quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset.code).balanceId,
+          .find(balance => balance.asset === this.form.asset.code).id,
         isBuy: true,
         amount: MathUtil.divide(
           this.form.amount,
@@ -606,11 +615,11 @@ export default {
       try {
         const operation = base.ManageOfferBuilder.cancelOffer(
           this.getOfferOpts(
-            String(this.currentInvestment.offerId),
+            String(this.currentInvestment.id),
             CANCEL_OFFER_FEE
           )
         )
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await api().postOperations(operation)
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
@@ -625,13 +634,9 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const { data: fees } = await Sdk.horizon.fees.get(FEE_TYPES.offerFee, {
-          asset: this.form.asset.code,
-          account: this.accountId,
-          amount: this.form.amount,
-        })
-        this.fees.fixed = fees.fixed
-        this.fees.percent = fees.percent
+        const fee = await this.getOfferFee()
+        this.fees.fixed = fee.fixed
+        this.fees.percent = fee.calculatedPercent
         this.isFeesLoaded = true
         this.updateView(VIEW_MODES.confirm)
       } catch (error) {
@@ -650,8 +655,8 @@ export default {
 
 <style lang="scss">
 @import './app-form';
-@import "~@scss/variables";
-
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .invest-form__amount-hint {
   p {
     font-size: 1.2rem;
@@ -661,7 +666,10 @@ export default {
     color: $col-text-highlighted;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .invest-form__current-investment {
   margin-top: 2rem;
 
@@ -673,27 +681,28 @@ export default {
     color: $col-text-highlighted;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .invest-form__actions {
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: -.5rem;
+  margin: -0.5rem;
 }
 
 .invest-form__submit-btn {
-  margin: .5rem;
+  margin: 0.5rem;
   max-width: 18rem;
   width: 100%;
 }
 
 .invest-form__cancel-btn {
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   max-width: 13rem;
-  margin: .5rem;
+  margin: 0.5rem;
 
-  &[disabled] {
+  &:disabled {
     filter: grayscale(100%);
     cursor: default;
   }

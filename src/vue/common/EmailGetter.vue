@@ -48,9 +48,11 @@
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import { Sdk } from '@/sdk'
+import { api, networkDetails } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
+
+import safeGet from 'lodash/get'
 
 export default {
   mixins: [IdentityGetterMixin],
@@ -112,7 +114,7 @@ export default {
     async init () {
       this.isMasterAccount = false
 
-      if (this.accountId === Sdk.networkDetails.adminAccountId) {
+      if (this.accountId === networkDetails().adminAccountId) {
         this.isMasterAccount = true
         return
       }
@@ -137,8 +139,8 @@ export default {
       if (this.accountId) {
         return this.accountId
       } else if (this.balanceId) {
-        const { data } = await Sdk.horizon.balances.getAccount(this.balanceId)
-        return data.accountId
+        const { data } = await api().get(`/v3/balances/${this.balanceId}`)
+        return safeGet(data, 'owner.id')
       } else {
         return ''
       }
@@ -153,41 +155,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
-  @import "~@scss/mixins";
-  .email-getter {
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: center;
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-    &--justify-end {
-      justify-content: flex-end;
-    }
+.email-getter {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-    &__value {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+.email-getter--justify-end {
+  justify-content: flex-end;
+}
 
-    &__copy-button {
-      color: $col-primary-inactive;
-      margin-left: .5rem;
-      min-height: 1rem;
-      min-width: 1rem;
-      transition: .1s ease-out;
-      padding: 0;
+.email-getter__value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-      &:hover {
-        color: darken($col-primary-inactive, 20%);
-        background: none;
-      }
-    }
+.email-getter__copy-button {
+  color: $col-primary-inactive;
+  margin-left: 0.5rem;
+  min-height: 1rem;
+  min-width: 1rem;
+  transition: 0.1s ease-out;
+  padding: 0;
 
-    &__icon {
-      &::before {
-        vertical-align: middle;
-      }
-    }
+  &:hover {
+    color: $col-primary-inactive-hover-darken;
+    background: none;
   }
+}
+
+.email-getter__icon {
+  &:before {
+    vertical-align: middle;
+  }
+}
 </style>

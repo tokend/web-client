@@ -15,21 +15,27 @@ $content-padding-right: 6.5rem;
 $content-side-paddings-sm: 2rem;
 
 // z-indexes
+$z-app-navbar: 4;
 $z-sidebar-burger: 10;
 $z-status-message: 10;
 $z-drawer: 10;
+$z-drawer-backdrop: -1;
+$z-hint-wrapper-box: 100;
+$z-sidebar-backdrop: 115;
 $z-sidebar: 120;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
 $_white: #ffffff;
+$_concrete: #f2f2f2;
+$_black: #000000;
 $_gray: #e2e3e3;
 $_silverChalice: #aeaeae;
 $_cyan: #0ea7ba;
 $_thinGray: #f2f2f4;
 $_thinBlue: #f6f8fb;
 $_lightGray: #c6c6c6;
-$_mediumGray: #ccc;
+$_mediumGray: #cccccc;
 $_lightRed: #ef5350;
 $_darkRed: #d6244a;
 $_cornflowerBlue: #7b6eff;
@@ -43,6 +49,8 @@ $_lightPurple: #837fa1;
 $_ghostWhite: #c4c8cb;
 $_thinPurple: #c1bfd0;
 $_alto: #e0e0e0;
+$_silverChalice: #aaaaaa;
+$_aliceBlue: #f5f6ff;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -52,8 +60,9 @@ $col-primary-txt: $_white;
 $col-link: $col-primary-lighten;
 $col-text-on-dark-bg: $_white;
 
-$col-primary-inactive: rgba($col-primary, .7);
-$col-primary-flat-hover: rgba($col-primary, .2);
+$col-primary-inactive: rgba($col-primary, 0.7);
+$col-primary-inactive-hover-darken: darken($col-primary-inactive, 20%);
+$col-primary-flat-hover: rgba($col-primary, 0.2);
 
 // status colors:
 $col-accent: $_lightRed;
@@ -68,6 +77,7 @@ $col-danger: $_darkRed;
 $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
 $col-link: $_cornflowerBlue;
+$col-border: $_ghostWhite;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinBlue;
@@ -90,7 +100,7 @@ $col-button-flat-txt: $col-primary;
 $col-button-flat-txt-inactive: $col-primary-inactive;
 $col-button-flat-disabled-txt: $_lightGray;
 
-$col-button-flat-accent-hover: rgba($col-accent, .2);
+$col-button-flat-accent-hover: rgba($col-accent, 0.2);
 $col-button-flat-accent-txt: $col-accent;
 $col-button-flat-accent-disabled-txt: $_lightGray;
 
@@ -116,6 +126,7 @@ $col-status-close-btn-hover: rgba(0, 0, 0, 0.1);
 
 // drawer colors:
 $col-drawer-bg: $col-block-bg;
+$col-drawer-backdrop-bg: rgba(0, 0, 0, 0.1);
 $col-drawer-head-bg: $_athensGray;
 $col-drawer-head-text: $_eastBay;
 
@@ -130,7 +141,7 @@ $col-sidebar-active-elem-background: $_thinGray;
 
 // passport (signed in user details in bg)
 $col-passport-email-abbr-text: $col-text-on-dark-bg;
-$col-passport-email-abbr-bg: rgba($_eastBay, .15);
+$col-passport-email-abbr-bg: rgba($_eastBay, 0.15);
 
 // fields colors
 $col-text-field-hint: $col-primary;
@@ -138,6 +149,7 @@ $col-text-field-hint-inactive: $col-primary-inactive;
 $col-field-background: $col-block-bg;
 $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
+$col-file-field-drop-bg: $_aliceBlue;
 $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
 $col-tick-field-shadow: rgba($_eastBay, 0.6);
@@ -168,6 +180,9 @@ $col-table-row-disabled: $_alto;
 $col-table-shadow: rgba(0, 0, 0, 0.1);
 $col-table-scroll-side-shadow: rgba(0, 0, 0, 0.2);
 
+// document manager
+$col-document-manager-border: $_silverChalice;
+
 // loader colors:
 $col-loader-text: $col-primary;
 $col-loader-icon: $col-primary-inactive;
@@ -175,18 +190,18 @@ $col-loader-icon: $col-primary-inactive;
 // details colors:
 $col-details-label: $col-primary-inactive;
 $col-details-value: $col-primary;
-$col-details-border: rgba($col-primary, .2);
+$col-details-border: rgba($col-primary, 0.2);
 
 // no-data-message colors:
 $col-no-data-message-text: $col-primary;
 $col-no-data-message-description: $col-primary-inactive;
-$col-no-data-message-icon-color: rgba($col-primary, .4);
+$col-no-data-message-icon-color: rgba($col-primary, 0.4);
 
 // list colors:
 $col-list-text: $col-primary;
 $col-list-block-background: $col-block-bg;
 $col-list-btn-details-text: $col-primary;
-$col-list-btn-details-background: rgba($col-primary, .1);
+$col-list-btn-details-background: rgba($col-primary, 0.1);
 
 // top bar colors
 $col-top-bar-background: $_white;
@@ -206,8 +221,8 @@ $col-chart-tip-line-active: $col-primary-lighten;
 $col-chart-tip-text-box: $_white;
 $col-chart-tip-text-price: $col-primary;
 $col-chart-tip-date-dd: $col-primary;
-$col-chart-tip-date-mm: rgba($col-primary, .6);
-$col-chart-message-wrapper: rgba($col-app-content-background, .25);
+$col-chart-tip-date-mm: rgba($col-primary, 0.6);
+$col-chart-message-wrapper: rgba($col-app-content-background, 0.25);
 $col-chart-message-background: $_white;
 $col-chart-message-text: $col-primary;
 
@@ -232,8 +247,8 @@ $col-invoices-card-header-background: $_athensGray;
 $col-tabs-txt: $col-primary;
 $col-tabs-disabled-txt: $col-primary-inactive;
 $col-tabs-indicator: $col-secondary;
-$col-tabs-default-border-bottom: rgba($col-tabs-indicator, .1);
-$col-tabs-hover-bg: rgba($col-secondary, .05);
+$col-tabs-default-border-bottom: rgba($col-tabs-indicator, 0.1);
+$col-tabs-hover-bg: rgba($col-secondary, 0.05);
 
 // sale card colors
 $col-sale-card-background: $_white;
@@ -337,3 +352,7 @@ $col-document-uploader-text-unlighten: $_lightPurple;
 $col-border-comment-viewer-header: $_eastBay;
 $col-comment-content-gradient-from: $_eastBay;
 $col-comment-content-gradient-to: $_gray;
+
+// hint-wrapepr
+$col-hint-wrapper-box-bg: rgba($_black, 0.9);
+$col-hint-wrapper-box-text: $_concrete;

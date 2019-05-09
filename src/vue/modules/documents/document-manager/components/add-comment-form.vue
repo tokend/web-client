@@ -153,6 +153,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/vue/forms/_app-form';
+
 .add-comment-form__actions {
   margin-top: 1.5rem;
   display: flex;

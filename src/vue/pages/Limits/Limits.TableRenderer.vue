@@ -152,7 +152,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .limits-table-renderer__value-placeholder {
   color: $col-table-cell-text-inactive;

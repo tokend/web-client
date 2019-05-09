@@ -100,7 +100,7 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      initApi(null, config.HORIZON_SERVER)
+      await initApi(null, config.HORIZON_SERVER)
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()
 
@@ -125,8 +125,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
 .app__container {
   display: flex;
@@ -142,16 +142,27 @@ export default {
 
 .app__navbar {
   position: relative;
-  z-index: 4;
+  z-index: $z-app-navbar;
   min-height: 6.4rem;
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: space-between;
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-property: opacity, background-color, box-shadow, transform, color,
-    min-height, -webkit-transform;
-  will-change: opacity, background-color, box-shadow, transform, color,
+  transition-property:
+    opacity,
+    background-color,
+    box-shadow,
+    transform,
+    color,
+    min-height,
+    -webkit-transform;
+  will-change:
+    opacity,
+    background-color,
+    box-shadow,
+    transform,
+    color,
     min-height;
 }
 
@@ -161,8 +172,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: $content-padding-top $content-padding-right
-    $content-padding-bottom $content-padding-left;
+  padding:
+    $content-padding-top
+    $content-padding-right
+    $content-padding-bottom
+    $content-padding-left;
   background-color: $col-app-content-background;
 
   @include respond-to-custom($sidebar-hide-bp) {

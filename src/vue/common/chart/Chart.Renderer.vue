@@ -456,111 +456,134 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~@scss/variables";
-  .chart-renderer {
-    position: relative;
+@import '~@scss/variables';
+
+.chart-renderer {
+  position: relative;
+}
+
+.chart-renderer__wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: $col-chart-message-wrapper;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-renderer__wrapper-message {
+  background-color: $col-chart-message-background;
+  padding: 1.6rem 2.8rem;
+  min-width: 20rem;
+  color: $col-chart-message-text;
+  text-align: center;
+  box-shadow: 0 0 1.4rem 0.1rem $col-chart-message-background;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.chart-renderer__chart,
+.chart-renderer__chart svg {
+  transition: 0.2s;
+
+  @media (min-width: 76.7rem) {
+    min-height: 20rem;
   }
-  .chart-renderer__wrapper {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background-color: $col-chart-message-wrapper;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .chart-renderer__wrapper-message {
-    background-color: $col-chart-message-background;
-    padding: 1.6rem 2.8rem;
-    min-width: 20rem;
-    color: $col-chart-message-text;
-    text-align: center;
-    box-shadow: 0 0 1.4rem .1rem $col-chart-message-background;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .chart-renderer__chart,
-  .chart-renderer__chart svg {
-    transition: .2s;
-    @media (min-width: 76.7rem) {
-      min-height: 20rem;
-    }
-  }
-  svg.chart {
-    display: block;
-    overflow: visible;
-    * { font-family: inherit; }
-    & > g { overflow: hidden; }
-    &--overflow-hidden { overflow: hidden; }
-  }
-  .chart__area {
-    fill: $col-chart-fill;
-    opacity: 0;
-  }
-  .chart__line {
-    fill: none;
-    stroke-width: .1rem;
-    stroke: $col-chart-line;
-    stroke-linecap: round;
-  }
-  .chart__x-axis {
-    text {
-      font-size: 1rem;
-      fill: $col-chart-text;
-    }
-    .domain { display: none; }
-  }
-  .chart__y-axis, .chart__y-axis-zero {
-    text {
-      font-size: 1.6rem;
-      fill: $col-chart-text;
-    }
-    line {
-      stroke-dasharray: 3 3;
-      stroke: $col-chart-ticks;
-      opacity: .55;
-    }
-    .domain { display: none; }
-  }
-  .chart__y-axis-zero {
-    line {
-      opacity: 1;
-    }
-  }
-  .chart__tip {
-    transition: opacity .2s;
-    opacity: 0;
-    &--show { opacity: 1; }
-    &--hidden { opacity: 0 !important; }
-  }
-  .chart__tip-line {
-    stroke-width: .1rem;
-    stroke: $col-chart-tip-line-inactive;
-  }
-  .chart__tip-circle {
-    stroke-width: .5rem;
-    stroke: $col-chart-tip-circle-border;
-    fill: $col-chart-tip-circle;
-  }
-  .chart__tip-text-box { fill: $col-chart-tip-text-box }
-  .chart__tip-text-price {
-    font-size: 1.6rem;
-    fill: $col-chart-tip-text-price;
-    font-weight: 800;
-  }
-  .chart__tip-text-price-change {
-    fill: $col-chart-tip-text-price;
-    font-weight: 400;
-  }
-  .chart__tip-text-time-dd {
-    font-size: 1.8rem;
-    fill: $col-chart-tip-date-dd;
-  }
-  .chart__tip-text-time-mm {
-    font-size: 1.2rem;
-    fill: $col-chart-tip-date-mm;
-  }
-  .chart__tip-motion-capture-area { opacity: 0 }
+}
+
+svg.chart {
+  display: block;
+  overflow: visible;
+  &--overflow-hidden { overflow: hidden; }
+}
+
+svg.chart * { font-family: inherit; }
+svg.chart > g { overflow: hidden; }
+
+.chart__area {
+  fill: $col-chart-fill;
+  opacity: 0;
+}
+
+.chart__line {
+  fill: none;
+  stroke-width: 0.1rem;
+  stroke: $col-chart-line;
+  stroke-linecap: round;
+}
+
+.chart__x-axis text {
+  font-size: 1rem;
+  fill: $col-chart-text;
+}
+.chart__x-axis .domain { display: none; }
+
+.chart__y-axis text,
+.chart__y-axis-zero text {
+  font-size: 1.6rem;
+  fill: $col-chart-text;
+}
+
+.chart__y-axis line,
+.chart__y-axis-zero line {
+  stroke-dasharray: 3 3;
+  stroke: $col-chart-ticks;
+  opacity: 0.55;
+}
+
+.chart__y-axis .domain,
+.chart__y-axis-zero .domain {
+  display: none;
+}
+
+.chart__y-axis-zero line {
+  opacity: 1;
+}
+
+.chart__tip {
+  transition: opacity 0.2s;
+  opacity: 0;
+  &--show { opacity: 1; }
+  // stylelint-disable-next-line
+  &--hidden { opacity: 0 !important; }
+}
+
+.chart__tip-line {
+  stroke-width: 0.1rem;
+  stroke: $col-chart-tip-line-inactive;
+}
+
+.chart__tip-circle {
+  stroke-width: 0.5rem;
+  stroke: $col-chart-tip-circle-border;
+  fill: $col-chart-tip-circle;
+}
+
+.chart__tip-text-box { fill: $col-chart-tip-text-box; }
+
+.chart__tip-text-price {
+  font-size: 1.6rem;
+  fill: $col-chart-tip-text-price;
+  font-weight: 800;
+}
+
+.chart__tip-text-price-change {
+  fill: $col-chart-tip-text-price;
+  font-weight: 400;
+}
+
+.chart__tip-text-time-dd {
+  font-size: 1.8rem;
+  fill: $col-chart-tip-date-dd;
+}
+
+.chart__tip-text-time-mm {
+  font-size: 1.2rem;
+  fill: $col-chart-tip-date-mm;
+}
+
+.chart__tip-motion-capture-area { opacity: 0; }
 </style>

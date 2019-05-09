@@ -3,7 +3,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
@@ -25,11 +25,17 @@ export default {
       loadKyc: vuexTypes.LOAD_KYC,
     }),
     async createKycBlob (blobType) {
-      const { data } = await Sdk.api.blobs.create(
-        blobType,
-        JSON.stringify(this.createKycData())
-      )
-      return data.id
+      const { data: blob } = await api().postWithSignature('/blobs', {
+        data: {
+          type: blobType,
+          attributes: { value: JSON.stringify(this.createKycData()) },
+          relationships: {
+            owner: { data: { id: this.accountId } },
+          },
+        },
+      })
+
+      return blob.id
     },
     createKycOperation (kycBlobId, accountRole) {
       return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest({

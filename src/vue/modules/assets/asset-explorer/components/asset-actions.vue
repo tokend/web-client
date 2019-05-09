@@ -102,13 +102,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@scss/variables';
+
 .asset-actions__btn {
   max-width: 18rem;
   width: 100%;
 }
 
 .asset-actions__not-allowed-msg {
-  padding: .25rem 1.5rem;
+  padding: 0.25rem 1.5rem;
   color: $col-text-secondary;
   font-style: italic;
 }

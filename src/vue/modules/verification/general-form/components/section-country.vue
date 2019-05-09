@@ -47,7 +47,7 @@
               v-model="proofOfInvestor"
               name="verification-general-proof-of-investor"
               :note="'general-form.file-type-note' | globalize"
-              accept="image/*, .pdf"
+              :file-extensions="['jpg', 'png', 'pdf']"
               :document-type="DOCUMENT_TYPES.kycProofOfInvestor"
               :label="'general-form.document-poi-lbl' | globalize"
               :disabled="isDisabled"
@@ -125,16 +125,14 @@ export default {
 <style lang="scss" scoped>
 @import '../scss/styles';
 
-.verification-general-form {
-  &__usa-warning-msg {
-    color: $col-warning;
-    margin-top: .5rem;
-  }
+.verification-general-form__usa-warning-msg {
+  color: $col-warning;
+  margin-top: 0.5rem;
+}
 
-  &__usa-accredited-explain-msg {
-    margin-bottom: 1rem;
-    color: $col-text-secondary;
-    font-style: italic;
-  }
+.verification-general-form__usa-accredited-explain-msg {
+  margin-bottom: 1rem;
+  color: $col-text-secondary;
+  font-style: italic;
 }
 </style>

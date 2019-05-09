@@ -117,7 +117,7 @@ import VueMarkdown from 'vue-markdown'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required, minValue, maxDecimalDigitsCount } from '@validators'
 
-import { api } from '@/api'
+import { api, networkDetails } from '@/api'
 import { config } from '../_config'
 import { Wallet, base } from '@tokend/js-sdk'
 
@@ -330,7 +330,7 @@ export default {
       if (this.systemIdentifier === this.merchantSystem) {
         return config.MERCHANT_ACCOUNT_ID
       } else {
-        return api().networkDetails.adminAccountId
+        return networkDetails().adminAccountId
       }
     },
   },
@@ -338,9 +338,11 @@ export default {
 </script>
 
 <style lang='scss'>
-@import "@/vue/forms/_app-form";
+@import '@/vue/forms/_app-form';
 
-.invoice-form__price-per-point, .invoice-form__total-price {
+/* stylelint-disable selector-nested-pattern */
+.invoice-form__price-per-point,
+.invoice-form__total-price {
   strong {
     color: $col-text-highlighted;
   }
@@ -353,4 +355,5 @@ export default {
     font-size: 1.6rem;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 </style>

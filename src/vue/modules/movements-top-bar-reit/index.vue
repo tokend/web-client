@@ -25,7 +25,7 @@
         <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatWithdrawalFormShown = true"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
@@ -40,7 +40,7 @@
         >
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isWithdrawalDrawerShown = true"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
@@ -52,7 +52,7 @@
         <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatDepositFormShown = true"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
@@ -64,7 +64,7 @@
         <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isCoinpaymentsDepositFormShown = true"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
@@ -76,11 +76,18 @@
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isTransferDrawerShown = true"
           >
-            <!-- eslint-disable-next-line max-len -->
-            <i class="mdi mdi-rotate-315 mdi-transfer movements-top-bar-reit__btn-icon" />
+            <i
+              class="
+                mdi
+                mdi-rotate-315
+                mdi-transfer
+                movements-top-bar-reit__btn-icon
+                movements-top-bar-reit__btn-icon--rotate-315
+              "
+            />
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
@@ -92,7 +99,7 @@
         >
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isReedemDrawerShown = true"
           >
             <i
@@ -134,7 +141,7 @@
     </template>
 
     <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
+    <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
       <drawer :is-shown.sync="isFiatDepositFormShown">
         <template slot="heading">
           {{ 'deposit-fiat-module.form-title' | globalize }}
@@ -330,32 +337,33 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .movements-top-bar-reit__actions {
   display: flex;
   justify-content: space-between;
+}
 
-  button {
-    margin-right: 1.2rem;
-    &:last-child {
-      margin-right: 0;
-    }
+.movements-top-bar-reit__actions-btn {
+  margin-right: 1.2rem;
+
+  &:last-child {
+    margin-right: 0;
   }
 }
 
-.movements-top-bar-reit__button-raised.app__button-raised {
+.movements-top-bar-reit__actions-btn.app__button-raised {
   line-height: 1;
 }
 
 .movements-top-bar-reit__btn-icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
+}
 
-  &.mdi-rotate-315 {
-    transform: translateY(-0.2rem);
-  }
+.movements-top-bar-reit__btn-icon--rotate-315 {
+  transform: translateY(-0.2rem);
 }
 
 .movements-top-bar-reit__filters {

@@ -64,7 +64,7 @@ import {
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
-import { Sdk } from '@/sdk'
+import { walletsManager } from '@/api'
 
 export default {
   name: 'signup-form',
@@ -100,7 +100,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.getKdfParams(this.form.email.toLowerCase())
+        await walletsManager.getKdfParams(this.form.email.toLowerCase())
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
         throw new errors.UserExistsError()

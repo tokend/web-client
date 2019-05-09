@@ -1,15 +1,19 @@
-import { ApiCaller } from '@tokend/js-sdk'
+import { ApiCaller, WalletsManager, FactorsManager } from '@tokend/js-sdk'
 
 let _api = null
+let _walletsManager = null
+let _factorsManager = null
 
 /**
  * @param {Wallet} wallet - wallet to sign the requests
  * @param {String} horizonURL - the url of the horizon server
  * (without version prefix)
  */
-export function initApi (wallet = null, horizonURL) {
-  _api = ApiCaller.getInstance(horizonURL)
+export async function initApi (wallet = null, horizonURL) {
+  _api = await ApiCaller.getInstanceWithPassphrase(horizonURL)
   if (wallet) _api.useWallet(wallet)
+  _walletsManager = new WalletsManager(_api)
+  _factorsManager = new FactorsManager(_api)
 }
 
 /**
@@ -35,4 +39,26 @@ export async function loadingDataViaLoop (response) {
     data = [...data, ...response.data]
   }
   return data
+}
+
+/* ------------------------- */
+
+export function networkDetails () {
+  return this.api().networkDetails
+}
+
+export function walletsManager () {
+  if (!_walletsManager) {
+    throw new Error('WalletsManager is not initialized')
+  }
+
+  return _walletsManager
+}
+
+export function factorsManager () {
+  if (!_factorsManager) {
+    throw new Error('FactorsManager is not initialized')
+  }
+
+  return _factorsManager
 }

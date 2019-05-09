@@ -23,7 +23,7 @@
  * Example:
  *
  * <collection-loader
- *    :first-page-loader="Sdk.horizon.transactions.getAll"
+ *    :first-page-loader="somePageableFuncWrapper"
  *    :page-limit="10"
  *    @first-page-load="onFirstPageLoad"/>
  *    @next-page-load="onNextPageLoad"
@@ -82,7 +82,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@scss/variables';
   @import '~@scss/mixins';
 

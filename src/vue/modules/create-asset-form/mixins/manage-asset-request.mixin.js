@@ -72,7 +72,7 @@ export default {
       ]
       await this.uploadDocuments(assetDocuments, accountId)
       const operation =
-          base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
+        base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
       await api().postOperations(operation)
     },
   },

@@ -1,8 +1,7 @@
 import config from '@/config'
-import { initApi } from '@/api'
+import { initApi, walletsManager } from '@/api'
 
 import { vuexTypes } from './types'
-import { Sdk } from '../sdk'
 import { Wallet } from '@tokend/js-sdk'
 
 export const state = {
@@ -32,20 +31,18 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
-    const wallet = await Sdk.api.wallets.get(email, password)
-    initApi(wallet, config.HORIZON_SERVER)
-    Sdk.sdk.useWallet(wallet)
+    const wallet = await walletsManager().get(email, password)
+    await initApi(wallet, config.HORIZON_SERVER)
     commit(vuexTypes.SET_WALLET, wallet)
   },
-  [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
+  async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
     const newWallet = new Wallet(
       wallet.email,
       wallet.secretSeed,
       wallet.accountId,
       wallet.id
     )
-    initApi(newWallet, config.HORIZON_SERVER)
-    Sdk.sdk.useWallet(newWallet)
+    await initApi(newWallet, config.HORIZON_SERVER)
     commit(vuexTypes.SET_WALLET, wallet)
   },
 }

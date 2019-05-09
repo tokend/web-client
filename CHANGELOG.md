@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this ~project will be documented in this file.
+All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,24 +9,70 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
-- Display fees in invest form
-- General verification form module (included in vanilla scheme only)
-- `usVerified` and `usAccredited` roles to key/value module
-- `Passport` is now able to show US verified and US accredited user roles
-- Users with US verified and US accredited roles will now also be redirected to general form
-- Security asset type
-- Show banner for blocked user
-- Validator of available for issuance amount
+- Lazy loading feedback (nprogress loader)
+- `BalanceNotFoundError` to the runtime errors
+- Check for file extension, size & dimensions in file field
+- File field design improvements:
+  - reactions to drag & drop actions
+  - images preview (+ icon for rest types of files)
+  - grayscaled disabled state
+  - upload icons
+- `initSync()` method to Api class
 
 #### Changed
 - Show only one QR code on Coinpayments deposit
+- Updated offer creating, updating drawers
+- Modularized:
+  - Pre-issuance form
+  - Issuance form
+  - Create sale form
+- Now formatting `minDate` validation message using i18n date filter
+- Now using `moment().toISOString()` value instead of `moment().toString()
+- Moved horizon resources to "/v3" endpoints
+- Now processing documents & blobs using new ApiCaller
+- Now performing actions with wallets & factors using relevant managers
+- Now using @tokend/js-sdk@1.7.0-x.1
 - Use global api.js in all modules
 - Removed wallet transfer to each module.
 - Use global Api in all modules
 
+#### Removed
+- Unused methods from `DocumentContainer` class
 
 #### Fixed
-- Invalid opts when submitting create asset request
+- Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
+  limits to unlimited ones and not an empty field
+- An error was fixed in which if you exceed the limit for example daily 
+  then the user received an error stating that "Your transaction is invalid."
+- Show drawer for isDepositable in movements-top-bar-reit
+- Dashboard loading flow
+- Filtering owned sales on back-end side using API filters
+- Displaying "My sales" page
+
+## [1.6.0-rc.0] - 2019-05-02
+#### Added
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
+
+#### Changed
+- Now does not show multiple QR codes on Coinpayments deposit
+
+#### Fixed
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
 
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
@@ -112,7 +158,7 @@ for further information about branching and tagging conventions.
 - Invoice transaction source account (Loyalty)
 - Displaying incoming withdrawal requests (Loyalty)
 
-## [1.5.0]
+## [1.5.0] - 2019-04-19
 ### "Under the hood changes"
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
@@ -412,7 +458,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
@@ -425,6 +472,6 @@ for further information about branching and tagging conventions.
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
-[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
+[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

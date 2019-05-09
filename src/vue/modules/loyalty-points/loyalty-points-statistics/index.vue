@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import '~@scss/mixins';
 
 .loyalty-points-statistics__overall,
 .loyalty-points-statistics__overtimes {

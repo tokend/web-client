@@ -1,4 +1,4 @@
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -17,10 +17,15 @@ export default {
   methods: {
     async loadOwnedAssets () {
       try {
-        const { data } = await Sdk.horizon.assets.getAll({
-          owner: this.accountId,
+        const endpoint = `/v3/accounts/${this.accountId}`
+        const { data: account } = await api().get(endpoint, {
+          include: ['balances.asset'],
         })
-        this.ownedAssets = data.map(item => new AssetRecord(item))
+
+        this.ownedAssets = account.balances
+          .map(b => b.asset)
+          .map(a => new AssetRecord(a))
+          .filter(a => a.owner === this.accountId)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }

@@ -1,6 +1,6 @@
 import { MockWrapper } from './index'
 import { Sdk } from '../sdk'
-import { api, initApi } from '../api'
+import { api, initApi } from '@/api'
 import { Wallet } from '@tokend/js-sdk'
 import mock from 'xhr-mock'
 
@@ -15,7 +15,7 @@ export class MockHelper {
     initApi(null, HORIZON_URL)
 
     sdkInstance = Sdk.getInstance()
-    apiInstance = api
+    apiInstance = api()
 
     mock.setup()
     mock.reset()

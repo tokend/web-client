@@ -5,7 +5,6 @@ import { api } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 import { SaleRecord } from '../wrappers/sale.record'
 import { base, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
-import { Sdk } from '../../../../sdk'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { vuexTypes } from '../../../../vuex'
 
@@ -64,13 +63,22 @@ export const actions = {
       .find(i => i.baseAsset.id === baseAsset)
   },
 
-  async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, rootGetters }) {
-    const accountId = rootGetters[vuexTypes.accountId]
-    const response = await Sdk.horizon.account.getDetails(accountId)
-    const balances = response.data.map(balance => {
-      balance.assetDetails = new AssetRecord(balance.assetDetails)
-      return balance
+  async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
+    const accountId = getters.accountId
+    const endpoint = `/v3/accounts/${accountId}`
+    const { data: account } = await api().getWithSignature(endpoint, {
+      include: ['balances.asset', 'balances.state'],
     })
+
+    const balances = account.balances
+      .map(item => {
+        item.assetDetails = new AssetRecord(item.asset)
+        item.asset = item.assetDetails.code
+        item.balance = item.state.available
+        return item
+      })
+      .sort((a, b) => b.convertedBalance - a.convertedBalance)
+
     commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
   },
   /**
@@ -119,8 +127,8 @@ export const actions = {
       price: opts.price,
       orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
       isBuy: opts.isBuy,
-      baseBalance: getters.assetDetails(opts.pair.base).balanceId,
-      quoteBalance: getters.assetDetails(opts.pair.quote).balanceId,
+      baseBalance: getters.assetDetails(opts.pair.base).id,
+      quoteBalance: getters.assetDetails(opts.pair.quote).id,
       fee: fee.calculatedPercent,
     }
     const operation = base.ManageOfferBuilder.manageOffer(operationOpts)

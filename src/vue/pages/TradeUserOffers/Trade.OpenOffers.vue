@@ -39,7 +39,7 @@
               v-for="(offer, i) in openOffers"
               :key="`trade-open-offers-row-${i}`"
               @click="selectOffer(offer)">
-              <td>{{ offer.offerId }}</td>
+              <td>{{ offer.id }}</td>
               <td>{{ offer.createdAt | formatCalendar }}</td>
               <td>
                 <template v-if="offer.isBuy">
@@ -64,7 +64,7 @@
             {{ 'trade-open-offers.your-sell-offer' | globalize }}
           </template>
         </template>
-        <submit-trade-offer-form
+        <your-sale-offer-form
           :asset-pair="assetPair"
           :offer="selectedOffer"
           @close-drawer="closeDrawer"
@@ -89,7 +89,7 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import SubmitTradeOfferForm from '@/vue/forms/SubmitTradeOfferForm'
+import YourSaleOfferForm from '@/vue/forms/market-orders/YourSaleOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
@@ -102,7 +102,7 @@ export default {
   name: 'trade-open-offers',
   components: {
     NoDataMessage,
-    SubmitTradeOfferForm,
+    YourSaleOfferForm,
     Loader,
     Drawer,
   },

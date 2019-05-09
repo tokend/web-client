@@ -6,7 +6,7 @@
 
     <form
       novalidate
-      class="app-form"
+      class="app-form verification-general-form__tag"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="verification-general-form__block">
@@ -49,7 +49,7 @@
               v-model="form.documents.idDocument"
               name="verification-general-id-document"
               :note="'verification-form.file-type-note' | globalize"
-              accept="image/*, .pdf"
+              :file-extensions="['jpg', 'png', 'pdf']"
               :document-type="DOCUMENT_TYPES.kycIdDocument"
               :label="'verification-form.id-document-lbl' | globalize"
               :disabled="formMixin.isDisabled"
@@ -65,7 +65,7 @@
               v-model="form.documents.avatar"
               name="verification-general-avatar"
               :note="'verification-form.image-type-note' | globalize"
-              accept="image/*"
+              :file-extensions="['jpg', 'png']"
               :document-type="DOCUMENT_TYPES.kycAvatar"
               :label="'verification-form.avatar-lbl' | globalize"
               :disabled="formMixin.isDisabled"
@@ -106,7 +106,7 @@
               v-model="form.documents.verificationPhoto"
               name="verification-general-verification-photo"
               :note="'verification-form.image-type-note' | globalize"
-              accept="image/*"
+              :file-extensions="['jpg', 'png']"
               :document-type="DOCUMENT_TYPES.kycSelfie"
               :label="'verification-form.photo-lbl' | globalize"
               :disabled="formMixin.isDisabled"
@@ -142,7 +142,7 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import _get from 'lodash/get'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -245,7 +245,7 @@ export default {
           kycBlobId,
           this.kvEntryGeneralRoleId,
         )
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await api().postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)
@@ -267,7 +267,9 @@ export default {
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
         if (document && !document.key) {
-          document = await DocumentUploader.uploadSingleDocument(document)
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
+          )
         }
       }
     },
@@ -324,6 +326,14 @@ export default {
   margin-top: 4rem;
 }
 
+.verification-general-form__tag {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
+
+  @include box-shadow();
+}
+
 .verification-general-form__submit-btn {
   margin-right: auto;
   width: 100%;
@@ -339,15 +349,9 @@ export default {
   font-size: 1.3rem;
 }
 
-.verification-general-form {
-  form {
-    margin-top: 1rem;
-    background-color: $col-block-bg;
-    padding: 2.4rem;
-
-    @include box-shadow();
-
-    & > .verification-general-form__block:not(:first-child) {
+.verification-general-form__block {
+  &:not(:first-child) {
+    .verification-general-form__tag > & {
       margin-top: 6rem;
     }
   }
@@ -355,7 +359,7 @@ export default {
 
 .verification-general-form__block-label {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .verification-general-form__photo-explanation {

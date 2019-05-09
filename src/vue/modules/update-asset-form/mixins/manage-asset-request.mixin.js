@@ -93,7 +93,7 @@ export default {
       await this.uploadDocuments(assetDocuments)
 
       const operation =
-          base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
+        base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
       await api().postOperations(operation)
     },
   },

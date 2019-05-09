@@ -60,7 +60,7 @@ import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { Sdk } from '@/sdk'
+import { factorsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 
@@ -121,7 +121,7 @@ export default {
     },
     async verifyTfaFactor () {
       if (this.tfaError) {
-        await Sdk.api.factors.verifyTotpFactor(
+        await factorsManager().verifyTotpFactor(
           this.tfaError,
           this.form.tfaCode
         )

@@ -74,7 +74,7 @@ import {
   email,
   seed,
 } from '@validators'
-import { Sdk } from '@/sdk'
+import { walletsManager } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -123,7 +123,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.recovery(
+        await walletsManager.recovery(
           this.form.email.toLowerCase(),
           this.form.recoverySeed,
           this.form.password

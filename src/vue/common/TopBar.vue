@@ -36,8 +36,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .top-bar {
   display: flex;
@@ -52,38 +52,6 @@ export default {
     -1 * $content-padding-left;
   padding: 1.4rem $content-padding-right 1.4rem $content-padding-left;
 
-  .top-bar__main {
-    display: flex;
-
-    a {
-      color: $col-top-bar-tab;
-      text-decoration: none;
-
-      span {
-        font-size: 1.7rem;
-      }
-    }
-
-    .router-link-active {
-      font-weight: bold;
-      color: $col-top-bar-tab-active;
-    }
-
-    & > :not(:first-child) {
-      margin-left: 3rem;
-    }
-  }
-
-  .top-bar__extra {
-    display: flex;
-    margin-left: auto;
-    padding-left: 2rem;
-
-    & > :not(:first-child) {
-      margin-left: 1.2rem;
-    }
-  }
-
   @include respond-to($sidebar-hide-bp) {
     padding: 1.4rem $content-side-paddings-sm;
     margin:
@@ -94,17 +62,51 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: start;
+  }
+}
 
-    .top-bar__extra {
-      margin-left: -1.2rem;
-      padding-left: 0;
-      flex-wrap: wrap;
+.top-bar__main {
+  display: flex;
+}
 
-      & > * {
-        margin-top: 1.4rem;
-        margin-left: 1.2rem;
-      }
-    }
+.top-bar__main a {
+  color: $col-top-bar-tab;
+  text-decoration: none;
+}
+
+.top-bar__main a span {
+  font-size: 1.7rem;
+}
+
+.top-bar__main .router-link-active {
+  font-weight: 700;
+  color: $col-top-bar-tab-active;
+}
+
+.top-bar__main > :not(:first-child) {
+  margin-left: 3rem;
+}
+
+.top-bar__extra {
+  display: flex;
+  margin-left: auto;
+  padding-left: 2rem;
+
+  @include respond-to($sidebar-hide-bp) {
+    margin-left: -1.2rem;
+    padding-left: 0;
+    flex-wrap: wrap;
+  }
+}
+
+.top-bar__extra > :not(:first-child) {
+  margin-left: 1.2rem;
+}
+
+.top-bar__extra > * {
+  @include respond-to($sidebar-hide-bp) {
+    margin-top: 1.4rem;
+    margin-left: 1.2rem;
   }
 }
 </style>

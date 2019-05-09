@@ -1,4 +1,4 @@
-import { Sdk } from '../sdk'
+import { api } from '@/api'
 import { vuexTypes } from './types'
 
 const FACTOR_TYPES = Object.freeze({
@@ -28,22 +28,23 @@ export const mutations = {
 }
 
 export const actions = {
-  async [vuexTypes.LOAD_FACTORS] ({ commit }) {
-    const response = await Sdk.api.factors.getAll()
-    commit(vuexTypes.SET_FACTORS, response.data)
+  async [vuexTypes.LOAD_FACTORS] ({ commit, rootGetters }) {
+    const endpoint = `/wallets/${rootGetters[vuexTypes.walletId]}/factors`
+    const { data } = await api().getWithSignature(endpoint)
+    commit(vuexTypes.SET_FACTORS, data)
   },
 }
 
 export const getters = {
   [vuexTypes.factors]: state => state.factors,
   [vuexTypes.factorsTotp]: state => state.factors.filter(
-    factor => factor.resourceType === FACTOR_TYPES.totp
+    factor => factor.type === FACTOR_TYPES.totp
   ),
   [vuexTypes.factorsPassword]: state => state.factors.filter(
-    factor => factor.resourceType === FACTOR_TYPES.password
+    factor => factor.type === FACTOR_TYPES.password
   ),
   [vuexTypes.factorsEmail]: state => state.factors.filter(
-    factor => factor.resourceType === FACTOR_TYPES.email
+    factor => factor.type === FACTOR_TYPES.email
   ),
   [vuexTypes.factorsTotpEnabled]: (_, getters) =>
     getters[vuexTypes.factorsTotp].filter(

@@ -12,7 +12,7 @@
         slot="extra"
       >
         <button
-          v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isPreIssuanceDrawerShown = true"
@@ -21,18 +21,18 @@
         </button>
 
         <button
-          v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+          v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
           v-ripple
           class="app__button-raised"
           @click="isIssuanceDrawerShown = true"
         >
-          {{ 'issuance-page.create-issuance' | globalize }}
+          {{ 'issuance-page.create-issuance-btn' | globalize }}
         </button>
       </template>
     </top-bar>
 
     <drawer
-      v-if="getModule().canRenderSubmodule(PreIssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(PreIssuanceFormModule)"
       :is-shown.sync="isPreIssuanceDrawerShown"
     >
       <template slot="heading">
@@ -40,23 +40,24 @@
       </template>
 
       <submodule-importer
-        :submodule="getModule().getSubmodule(PreIssuanceDrawerPseudoModule)"
-        @close="isPreIssuanceDrawerShown = false"
+        :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
+        :wallet="wallet"
+        :config="config"
+        @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>
 
     <drawer
-      v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)"
+      v-if="getModule().canRenderSubmodule(IssuanceFormModule)"
       :is-shown.sync="isIssuanceDrawerShown"
     >
       <template slot="heading">
-        {{ 'issuance-page.create-issuance' | globalize }}
+        {{ 'issuance-page.create-issuance-title' | globalize }}
       </template>
 
       <submodule-importer
-        :submodule="getModule().getSubmodule(IssuanceDrawerPseudoModule)"
-        @submit="isIssuanceCreated = true"
-        @close="isIssuanceDrawerShown = false"
+        :submodule="getModule().getSubmodule(IssuanceFormModule)"
+        @issuance-created="setIssuanceCreated() || closeIssuanceDrawer()"
       />
     </drawer>
 
@@ -79,8 +80,8 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
-import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
+import { PreIssuanceFormModule } from '@modules/pre-issuance-form/module'
 
 export default {
   name: 'issuance-page',
@@ -96,8 +97,8 @@ export default {
     isIssuanceCreated: false,
     vueRoutes,
     IssuanceExplorerModule,
-    IssuanceDrawerPseudoModule,
-    PreIssuanceDrawerPseudoModule,
+    IssuanceFormModule,
+    PreIssuanceFormModule,
   }),
 
   computed: {
@@ -105,8 +106,15 @@ export default {
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
+
+  methods: {
+    setIssuanceCreated () {
+      this.isIssuanceCreated = true
+    },
+
+    closeIssuanceDrawer () {
+      this.isIssuanceDrawerShown = false
+    },
+  },
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

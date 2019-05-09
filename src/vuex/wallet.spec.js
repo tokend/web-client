@@ -1,4 +1,4 @@
-import { MockHelper } from '../test'
+import { Api } from '@/api'
 
 import { mutations, actions, getters } from './wallet.module'
 import { vuexTypes } from './types'
@@ -37,11 +37,9 @@ describe('wallet.module', () => {
   })
 
   describe('actions', () => {
-    let mockHelper
     let store
 
     beforeEach(() => {
-      mockHelper = new MockHelper()
       store = {
         state: {},
         getters: {},
@@ -51,7 +49,7 @@ describe('wallet.module', () => {
     })
 
     it('LOAD_WALLET commits proper set of mutations', async () => {
-      mockHelper.mockMethod('api', 'wallets', 'get', mockWallet)
+      sinon.stub(Api.walletsManager, 'get').resolves(mockWallet)
 
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
       const expectedMutations = { [vuexTypes.SET_WALLET]: mockWallet }

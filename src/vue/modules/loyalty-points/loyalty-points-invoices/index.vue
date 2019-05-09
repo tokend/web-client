@@ -116,7 +116,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .loyalty-points-invoices-module__cards {
   display: flex;
@@ -134,7 +134,7 @@ export default {
 }
 
 .loyalty-points-invoices-module__card-img-wrp {
-  border-radius: 0.4rem 0.4rem 0rem 0rem;
+  border-radius: 0.4rem 0.4rem 0 0;
   padding-top: calc(9 / 16 * 100%);
   background-color: $col-invoices-card-header-background;
   display: flex;
@@ -162,7 +162,7 @@ export default {
 
 .loyalty-points-invoices-module__card-name {
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .loyalty-points-invoices-module__card-price {
