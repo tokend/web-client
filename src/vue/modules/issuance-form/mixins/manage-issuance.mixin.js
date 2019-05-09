@@ -1,7 +1,7 @@
 import GetReceiverAccountMixin from './get-receiver-account.mixin'
 
 import { base } from '@tokend/js-sdk'
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { errors } from '@/js/errors'
 

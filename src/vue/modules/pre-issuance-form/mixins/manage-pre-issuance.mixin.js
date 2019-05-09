@@ -1,5 +1,5 @@
 import { base } from '@tokend/js-sdk'
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { FileUtil } from '@/js/utils/file.util'
 

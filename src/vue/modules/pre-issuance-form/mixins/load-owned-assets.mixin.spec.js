@@ -4,7 +4,7 @@ import { ApiCaller } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 import { Asset } from '../wrappers/asset'
 
 const localVue = createLocalVue()

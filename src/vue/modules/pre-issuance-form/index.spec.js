@@ -6,7 +6,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from './_api'
+import * as Api from '@/api'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)

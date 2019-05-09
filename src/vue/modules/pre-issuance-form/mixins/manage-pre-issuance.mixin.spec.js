@@ -6,7 +6,7 @@ import { mount, createLocalVue } from '@vue/test-utils'
 
 import { FileUtil } from '@/js/utils/file.util'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 import { AssetNotOwnedError, FileCorruptedError } from '../_errors'
 import { Issuance } from '../wrappers/issuance'
 

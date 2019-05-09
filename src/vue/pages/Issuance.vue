@@ -41,8 +41,6 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
-        :wallet="wallet"
-        :config="config"
         @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>

@@ -6,7 +6,7 @@ import { errors } from '@/js/errors'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import * as Api from '@/api'
 
 const localVue = createLocalVue()
 

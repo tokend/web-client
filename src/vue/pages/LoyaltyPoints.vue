@@ -78,7 +78,7 @@ export default {
   components: {
     TopBar,
     Drawer,
-    SubmoduleImporter
+    SubmoduleImporter,
   },
   data: _ => ({
     vueRoutes,

@@ -1,7 +1,7 @@
 import { errors } from '@/js/errors'
 
 import { email } from '@validators'
-import { api } from '../_api'
+import { api } from '@/api'
 
 export default {
   methods: {
