@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
   - grayscaled disabled state
   - upload icons
 - `initSync()` method to Api class
+- Sentry integration
 
 #### Changed
 - Updated offer creating, updating drawers
