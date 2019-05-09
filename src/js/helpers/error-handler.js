@@ -5,22 +5,22 @@ import i18next from 'i18next'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export class ErrorHandler {
-  static process (error, translationId = '', sentryReportConfig = {}) {
+  static process (error, translationId = '', errorTrackerConfig = {}) {
     const msg = translationId || ErrorHandler._getTranslationId(error)
-    ErrorHandler.processWithoutFeedback(error, sentryReportConfig)
+    ErrorHandler.processWithoutFeedback(error, errorTrackerConfig)
     Bus.error(msg)
   }
 
-  static processWithoutFeedback (error, sentryReportConfig = {}) {
-    ErrorHandler.captureSentryMessage(error, sentryReportConfig)
+  static processWithoutFeedback (error, errorTrackerConfig = {}) {
+    ErrorHandler.trackMessage(error, errorTrackerConfig)
     log.error(error)
   }
 
-  static captureSentryMessage (error, opts = {}) {
-    const { sentryReportTitle = '', skipSentryReport = false } = opts
-    if (!skipSentryReport) {
+  static trackMessage (error, opts = {}) {
+    const { message = '', skipTrack = false } = opts
+    if (!skipTrack) {
       const englify = i18next.getFixedT('en')
-      const msg = sentryReportTitle || ErrorHandler._getTranslationId(error)
+      const msg = message || ErrorHandler._getTranslationId(error)
       ErrorTracker.trackMessage(englify(msg))
     }
   }

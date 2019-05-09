@@ -37,55 +37,78 @@ describe('error-handler helper', () => {
   })
 
   describe('using processWithoutFeedback()', () => {
-    it('captures Sentry message', () => {
+    it('tracks message', () => {
       const theError = new Error()
-      const sentryReportConfig = {
-        sentryReportTitle: '',
-        skipSentryReport: false,
+      const errorTrackerConfig = {
+        errorTrackMsg: '',
+        skipErrorTracking: false,
       }
-      sandbox.stub(ErrorHandler, 'captureSentryMessage')
+      sandbox.stub(ErrorHandler, 'trackMessage')
       sandbox.stub(log, 'error')
-      ErrorHandler.processWithoutFeedback(theError, sentryReportConfig)
+      ErrorHandler.processWithoutFeedback(theError, errorTrackerConfig)
 
-      expect(ErrorHandler.captureSentryMessage)
-        .to.have.been.calledOnceWithExactly(theError, sentryReportConfig)
+      expect(ErrorHandler.trackMessage)
+        .to.have.been.calledOnceWithExactly(theError, errorTrackerConfig)
     })
 
     it('logs the error', () => {
       const theError = new Error()
-      const sentryReportConfig = {
-        sentryReportTitle: '',
-        skipSentryReport: false,
+      const errorTrackerConfig = {
+        errorTrackMsg: '',
+        skipErrorTracking: false,
       }
-      sandbox.stub(ErrorHandler, 'captureSentryMessage')
+      sandbox.stub(ErrorHandler, 'trackMessage')
       sandbox.stub(log, 'error')
-      ErrorHandler.processWithoutFeedback(theError, sentryReportConfig)
+      ErrorHandler.processWithoutFeedback(theError, errorTrackerConfig)
 
       expect(log.error)
         .to.have.been.calledOnceWithExactly(theError)
     })
   })
 
-  describe('using captureSentryMessage()', () => {
-    it('it capture message if skipSentryReport is false', () => {
+  describe('using trackMessage()', () => {
+    it('it tracks message with default params', () => {
       const theError = new Error()
-      const sentryReportConfig = {
-        sentryReportTitle: '',
-        skipSentryReport: false,
-      }
-      const feedbackTranslationId = 'some-error.translation-id'
+      const englifyStub = sinon.fake.returns('some message')
       sandbox.stub(i18next, 'getFixedT')
         .withArgs('en')
-        .returns(() => {
-          return 'some-error.translation-id'
-        })
+        .returns(englifyStub)
       sandbox.stub(ErrorHandler, '_getTranslationId')
         .withArgs(theError)
-        .returns(feedbackTranslationId)
+        .returns('some-error.translation-id')
+      sandbox.stub(ErrorTracker, 'trackMessage')
+      ErrorHandler.trackMessage(theError)
+      expect(ErrorTracker.trackMessage).to.have.been.calledOnceWithExactly(
+        englifyStub('some-error.translation-id')
+      )
+    })
+
+    it('it tracks message with custom params', () => {
+      const theError = new Error()
+      const errorTrackerConfig = {
+        message: 'some-error.translation-id',
+        skipTrack: false,
+      }
+      const englifyStub = sinon.fake.returns('some message')
+      sandbox.stub(i18next, 'getFixedT')
+        .withArgs('en')
+        .returns(englifyStub)
 
       sandbox.stub(ErrorTracker, 'trackMessage')
-      ErrorHandler.captureSentryMessage(theError, sentryReportConfig)
-      expect(ErrorTracker.trackMessage).to.have.been.calledOnce
+      ErrorHandler.trackMessage(theError, errorTrackerConfig)
+      expect(ErrorTracker.trackMessage).to.have.been.calledOnceWithExactly(
+        englifyStub('some-error.translation-id')
+      )
+    })
+    it('it doesn`t track message if skipTrack = true', () => {
+      const theError = new Error()
+      const errorTrackerConfig = {
+        message: '',
+        skipTrack: true,
+      }
+      sandbox.stub(ErrorTracker, 'trackMessage')
+      ErrorHandler.trackMessage(theError, errorTrackerConfig)
+      expect(ErrorTracker.trackMessage).not.to.have.been.called
     })
   })
 
