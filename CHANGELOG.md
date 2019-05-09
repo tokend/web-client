@@ -7,17 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
-#### Added
-
+## [1.6.0] - 2019-05-09
 #### Changed
 - Enabled updating of pending and approved corporate kyc requests
 - "Submit" btn on verification changed to "Create request" or "Update", depends
   on whether the request updatable or not
 
-
 #### Fixed
 - Fetching of investment fees in investing forms
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
@@ -428,7 +429,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...1.6.0
 [1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
