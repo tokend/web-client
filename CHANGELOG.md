@@ -47,6 +47,7 @@ for further information about branching and tagging conventions.
 - Dashboard loading flow
 - Filtering owned sales on back-end side using API filters
 - Displaying "My sales" page
+- `event.getModifierState` error on auth page
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
