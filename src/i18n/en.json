@@ -1443,6 +1443,8 @@
       "campaign-tab": "Campaign",
       "all-sales-tab": "All sales",
       "invest": "Invest",
+      "statistics": "Statistics",
+      "whitelist": "Whitelist management",
       "overview-title": "Sale overview",
       "sale-not-found-title": "Sale not found",
       "sale-not-found-desc": "There are no sales with the provided ID",
@@ -1488,6 +1490,11 @@
       "no-video-msg": "No video",
       "view-video-btn": "View",
       "owner-lbl": "Owner"
+    },
+    "sale-whitelist-manager": {
+      "invite-tab": "Invite",
+      "unregistered-users-tab": "Unregistered",
+      "registered-users-tab": "Registered"
     },
     "invest-form": {
       "asset-lbl": "Asset",

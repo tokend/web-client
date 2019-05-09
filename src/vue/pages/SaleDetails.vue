@@ -7,22 +7,36 @@
             HACK: we don't need any active-class here, so empty "active-class"
             attr prevents adding any active-class
            -->
-          <router-link :to="{ ...vueRoutes.sales }" active-class>
-            <span>
-              {{ 'sale-details.all-sales-tab' | globalize }}
-            </span>
+          <router-link :to="vueRoutes.sales" active-class>
+            <span>{{ 'sale-details.all-sales-tab' | globalize }}</span>
           </router-link>
 
-          <router-link
-            :to="{ ...vueRoutes.saleCampaign, params: { id: id } }"
-          >
-            <span>
-              {{ 'sale-details.campaign-tab' | globalize }}
-            </span>
+          <router-link :to="vueRoutes.userOwnedSales">
+            <span>{{ 'sales.my-sales' | globalize }}</span>
+          </router-link>
+
+          <router-link :to="{ ...vueRoutes.saleCampaign, params: { id } }">
+            <span>{{ 'sale-details.campaign-tab' | globalize }}</span>
           </router-link>
         </template>
 
         <template slot="extra">
+          <button
+            v-ripple
+            class="app__button-raised sale-details__invest-btn"
+            @click="isWhitelistDrawerShown = true"
+          >
+            {{ 'sale-details.whitelist' | globalize }}
+          </button>
+
+          <button
+            v-ripple
+            class="app__button-raised sale-details__invest-btn"
+            @click="isStatisticsDrawerShown = true"
+          >
+            {{ 'sale-details.statistics' | globalize }}
+          </button>
+
           <button
             v-ripple
             class="app__button-raised sale-details__invest-btn"
@@ -32,6 +46,22 @@
           </button>
         </template>
       </top-bar>
+
+      <drawer :is-shown.sync="isStatisticsDrawerShown">
+        <template slot="heading">
+          {{ 'sale-details.statistics' | globalize }}
+        </template>
+
+        <sale-statistics-viewer :sale="sale" />
+      </drawer>
+
+      <drawer :is-shown.sync="isWhitelistDrawerShown">
+        <template slot="heading">
+          {{ 'sale-details.whitelist' | globalize }}
+        </template>
+
+        <sale-whitelist-manager :sale="sale" />
+      </drawer>
 
       <drawer :is-shown.sync="isInvestDrawerShown">
         <template slot="heading">
@@ -85,6 +115,8 @@ import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
 import InvestForm from '@/vue/forms/InvestForm'
+import SaleStatisticsViewer from './sale-details/SaleStatisticsViewer'
+import SaleWhitelistManager from './sale-details/SaleWhitelistManager'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -103,6 +135,8 @@ export default {
     Drawer,
     NoDataMessage,
     InvestForm,
+    SaleStatisticsViewer,
+    SaleWhitelistManager,
   },
 
   props: {
@@ -114,6 +148,8 @@ export default {
     isSaleNotFound: false,
     isLoadingFailed: false,
     isInvestDrawerShown: false,
+    isStatisticsDrawerShown: false,
+    isWhitelistDrawerShown: false,
     vueRoutes,
   }),
 
