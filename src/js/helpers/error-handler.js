@@ -6,9 +6,11 @@ import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export class ErrorHandler {
   static process (error, translationId = '', errorTrackerConfig = {}) {
-    const msg = translationId || ErrorHandler._getTranslationId(error)
+    const msgTrId = translationId || ErrorHandler._getTranslationId(error)
+    Bus.error(msgTrId)
+
+    errorTrackerConfig.translationId = msgTrId
     ErrorHandler.processWithoutFeedback(error, errorTrackerConfig)
-    Bus.error(msg)
   }
 
   static processWithoutFeedback (error, errorTrackerConfig = {}) {
@@ -17,11 +19,13 @@ export class ErrorHandler {
   }
 
   static trackMessage (error, opts = {}) {
-    const { message = '', skipTrack = false } = opts
+    const { translationId = '', skipTrack = false } = opts
+
     if (!skipTrack) {
+      const msgTrId = translationId || ErrorHandler._getTranslationId(error)
+
       const englify = i18next.getFixedT('en')
-      const msg = message || ErrorHandler._getTranslationId(error)
-      ErrorTracker.trackMessage(englify(msg))
+      ErrorTracker.trackMessage(englify(msgTrId))
     }
   }
 
