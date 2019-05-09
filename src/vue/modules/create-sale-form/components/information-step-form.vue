@@ -106,7 +106,7 @@
           @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
-            asset: DEFAULT_QUOTE_ASSET
+            asset: defaultQuoteAsset
           })"
           :error-message="getFieldErrorMessage(
             'form.softCap',
@@ -125,7 +125,7 @@
           @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
-            asset: DEFAULT_QUOTE_ASSET
+            asset: defaultQuoteAsset
           })"
           :error-message="getFieldErrorMessage(
             'form.hardCap',
@@ -141,7 +141,7 @@
           {{
             'create-sale-form.price-for-asset-hint' | globalize({
               base: form.baseAsset.code,
-              quote: DEFAULT_QUOTE_ASSET,
+              quote: defaultQuoteAsset,
               value: priceForAsset
             })
           }}
@@ -220,6 +220,7 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
+    defaultQuoteAsset: { type: String, required: true },
   },
 
   data: _ => ({
@@ -235,7 +236,6 @@ export default {
     },
     MIN_AMOUNT: config().MIN_AMOUNT,
     MAX_AMOUNT: config().MAX_AMOUNT,
-    DEFAULT_QUOTE_ASSET: config().DEFAULT_QUOTE_ASSET,
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
@@ -286,7 +286,7 @@ export default {
           this.form.hardCap,
           this.form.assetsToSell
         ),
-        currency: this.DEFAULT_QUOTE_ASSET,
+        currency: this.defaultQuoteAsset,
       }
     },
 

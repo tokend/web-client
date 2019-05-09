@@ -15,6 +15,10 @@ export class Asset {
     return Boolean(this.policy & ASSET_POLICIES.baseAsset)
   }
 
+  get isDefaultQuoteAsset () {
+    return Boolean(this.policy & ASSET_POLICIES.statsQuoteAsset)
+  }
+
   get nameAndCode () {
     const name = this.name || this.code
     return `${name} (${this.code})`

@@ -96,6 +96,25 @@ describe('Load assets mixin', () => {
         ])
       })
     })
+
+    describe('defaultQuoteAsset', () => {
+      it('returns default quote asset code', () => {
+        wrapper.setData({
+          assets: [
+            new Asset({
+              id: 'BTC',
+              policies: { value: ASSET_POLICIES.baseAsset },
+            }),
+            new Asset({
+              id: 'USD',
+              policies: { value: ASSET_POLICIES.statsQuoteAsset },
+            }),
+          ],
+        })
+
+        expect(wrapper.vm.defaultQuoteAsset).to.equal('USD')
+      })
+    })
   })
 
   describe('method', () => {

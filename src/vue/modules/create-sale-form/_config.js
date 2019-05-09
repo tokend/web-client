@@ -12,12 +12,6 @@ let _config = {
    * dropped one day
    */
   MAX_AMOUNT: String(base.Operation.MAX_INT64_AMOUNT),
-
-  /**
-   * Default asset code for converting token's price,
-   * trade and sale offers
-   */
-  DEFAULT_QUOTE_ASSET: 'USD',
 }
 
 /**

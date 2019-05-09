@@ -38,6 +38,20 @@ describe('Asset', () => {
       })
     })
 
+    describe('isDefaultQuoteAsset', () => {
+      it('returns proper value', () => {
+        const defaultQuoteAsset = new Asset({
+          policies: { value: ASSET_POLICIES.statsQuoteAsset },
+        })
+        const notDefaultQuoteAsset = new Asset({
+          policies: { value: 0 },
+        })
+
+        expect(defaultQuoteAsset.isDefaultQuoteAsset).to.be.true
+        expect(notDefaultQuoteAsset.isDefaultQuoteAsset).to.be.false
+      })
+    })
+
     describe('nameAndCode', () => {
       it('returns asset code and name in the format [name (code)] if name is present', () => {
         const asset = new Asset({

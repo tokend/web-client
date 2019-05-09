@@ -4,7 +4,6 @@ import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 import { base, SALE_TYPES } from '@tokend/js-sdk'
 
 import { api } from '../_api'
-import { config } from '../_config'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
@@ -36,7 +35,7 @@ export default {
         startTime: DateUtil.toTimestamp(this.informationStepForm.startTime),
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
         baseAsset: this.informationStepForm.baseAsset.code,
-        defaultQuoteAsset: config().DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,

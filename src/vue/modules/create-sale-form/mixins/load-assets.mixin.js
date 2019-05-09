@@ -15,6 +15,11 @@ export default {
     baseAssets () {
       return this.assets.filter(a => a.isBaseAsset)
     },
+
+    defaultQuoteAsset () {
+      const asset = this.assets.find(a => a.isDefaultQuoteAsset)
+      return asset ? asset.code : ''
+    },
   },
 
   methods: {
