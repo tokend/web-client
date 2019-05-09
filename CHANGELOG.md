@@ -50,6 +50,7 @@ for further information about branching and tagging conventions.
 - Displaying "My sales" page
 - Uploading documents on general verification form
 - Disabled state for account type selector on verification page
+- `event.getModifierState` error on auth page
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
