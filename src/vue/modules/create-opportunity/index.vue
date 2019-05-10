@@ -79,7 +79,6 @@
               :error-message="getFieldErrorMessage(
                 'form.information.maturityDate',
                 {
-                  minDate: form.saleInformation.endTime,
                   maxDate: form.information.maturityDate
                 }
               )"
