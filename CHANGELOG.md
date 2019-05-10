@@ -38,6 +38,7 @@ for further information about branching and tagging conventions.
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
 - Now loading converted balances on the balances page
+- Now asset value and code formatted with formatMoney
 
 #### Removed
 - Unused methods from `DocumentContainer` class
