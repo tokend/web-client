@@ -53,7 +53,7 @@ export default {
         case CreateWithdrawRequestOp:
           return 'movements-history.operations.create-withdraw-request'
         case ManageOfferOp:
-          if (operationDetails.orderBookId) {
+          if (+operationDetails.orderBookId) {
             return 'movements-history.operations.investment'
           }
           return 'movements-history.operations.manage-offer'
