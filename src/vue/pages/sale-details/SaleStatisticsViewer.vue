@@ -1,27 +1,27 @@
 <template>
   <div class="sale-statistics-viewer">
     <template v-if="isLoaded">
-      <template v-if="participations.length">
+      <template v-if="investments.length">
         <h3>{{ 'sale-statistics.participation-title' | globalize }}</h3>
         <div class="app__table">
           <table>
             <thead>
               <th>{{ 'sale-statistics.participant-th' | globalize }}</th>
-              <th>{{ 'sale-statistics.amount-th' | globalize }}</th>
+              <th>{{ 'sale-statistics.investment-th' | globalize }}</th>
             </thead>
             <tbody>
               <tr
-                v-for="participation in participations"
-                :key="participation.id"
+                v-for="investment in investments"
+                :key="investment.id"
               >
                 <td>
-                  <email-getter :account-id="participation.participant.id" />
+                  <email-getter :account-id="investment.participant.id" />
                 </td>
                 <td>
                   {{
                     {
-                      value: participation.amount,
-                      currency: participation.quoteAsset.id
+                      value: investment.amount,
+                      currency: investment.quoteAsset.id
                     } | formatMoney
                   }}
                 </td>
@@ -51,10 +51,10 @@
 
     <div class="sale-statistics-viewer__collection-loader-wrp">
       <collection-loader
-        v-show="isLoaded && participations.length"
+        v-show="isLoaded && investments.length"
         :first-page-loader="firstPageLoader"
-        @first-page-load="setParticipations"
-        @next-page-load="concatParticipations"
+        @first-page-load="setInvestments"
+        @next-page-load="concatInvestments"
       />
     </div>
   </div>
@@ -87,7 +87,7 @@ export default {
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
-    participations: [],
+    investments: [],
     firstPageLoader: _ => {},
   }),
 
@@ -114,12 +114,12 @@ export default {
       }
     },
 
-    setParticipations (participations) {
-      this.participations = participations
+    setInvestments (investments) {
+      this.investments = investments
     },
 
-    concatParticipations (participations) {
-      this.participations = this.participations.concat(participations)
+    concatInvestments (investments) {
+      this.investments = this.investments.concat(investments)
     },
   },
 }
