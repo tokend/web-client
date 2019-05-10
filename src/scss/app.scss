@@ -3,6 +3,7 @@
 @import '../../static/fonts/index.css';
 @import '../../node_modules/@mdi/font/css/materialdesignicons.min.css';
 @import '../../node_modules/flatpickr/dist/flatpickr.css';
+@import '../../node_modules/nprogress/nprogress.css';
 
 * {
   box-sizing: border-box;
@@ -78,7 +79,7 @@ html {
   // Fixes the bug:
   // https://www.igorkromin.net/index.php/2016/05/20/mobile-safari-scrolling-problem-with-an-input-field-inside-a-fixed-div/
   overflow: auto !important;
-  -webkit-overflow-scrolling : touch !important;
+  -webkit-overflow-scrolling: touch !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -109,14 +110,18 @@ body {
     margin: 0 auto;
   }
 
-  & ul, li {
+  & ul,
+  li {
     list-style-type: none;
   }
 
   & .markdown-formatter,
   & .editor-preview {
 
-    p, ul, ol, li {
+    p,
+    ul,
+    ol,
+    li {
       font-size: 1em;
       line-height: 1.5;
     }
@@ -175,14 +180,14 @@ body {
 
     h5 {
       display: block;
-      font-size: .83em;
+      font-size: 0.83em;
       margin: 1.67em 0;
       font-weight: bold;
     }
 
     h6 {
       display: block;
-      font-size: .67em;
+      font-size: 0.67em;
       margin: 2.33em 0;
       font-weight: bold;
     }
@@ -206,37 +211,37 @@ h6.app__page-heading {
 
 h1.app__page-heading {
   font-size: 2em;
-  margin: 0 0 0.67em 0;
+  margin: 0 0 0.67em;
   font-weight: 300;
 }
 
 h2.app__page-heading {
   font-size: 1.5em;
-  margin: 0 0  1.5em 0;
+  margin: 0 0 1.5em;
   font-weight: 300;
 }
 
 h3.app__page-heading {
   font-size: 1.17em;
-  margin: 0 0 1em 0;
+  margin: 0 0 1em;
   font-weight: bold;
 }
 
 h4.app__page-heading {
   font-size: 1em;
-  margin: 0 0 1.33em 0;
+  margin: 0 0 1.33em;
   font-weight: bold;
 }
 
 h5.app__page-heading {
-  font-size: .83em;
-  margin: 0 0 1.67em 0;
+  font-size: 0.83em;
+  margin: 0 0 1.67em;
   font-weight: bold;
 }
 
 h6.app__page-heading {
-  font-size: .67em;
-  margin: 0 0 2.33em 0;
+  font-size: 0.67em;
+  margin: 0 0 2.33em;
   font-weight: bold;
 }
 
@@ -275,7 +280,6 @@ h6.app__page-heading {
   @include respond-to(medium) {
     padding: 2.4rem;
   }
-
   @include respond-to(small) {
     padding: 1.2rem 1.6rem;
   }
@@ -287,11 +291,10 @@ h6.app__page-heading {
   justify-content: flex-end;
 
   @include respond-to(medium) {
-    padding: .8rem 2.4rem 2.4rem;
+    padding: 0.8rem 2.4rem 2.4rem;
   }
-
   @include respond-to(small) {
-    padding: .8rem 1.6rem 1.6rem;
+    padding: 0.8rem 1.6rem 1.6rem;
   }
 }
 
@@ -307,11 +310,7 @@ h6.app__page-heading {
       th {
         font-size: 1.2rem;
         text-align: left;
-        padding:
-          1.6rem
-          1.6rem
-          1.1rem
-          1.6rem;
+        padding: 1.6rem 1.6rem 1.1rem;
         overflow: hidden;
         max-width: 12rem;
         text-overflow: ellipsis;
@@ -324,7 +323,7 @@ h6.app__page-heading {
     tbody {
       tr {
         &:nth-child(odd) {
-          background-color: $col-table-alt-row-background;;
+          background-color: $col-table-alt-row-background;
         }
 
         &:not([disabled]):hover {
@@ -332,7 +331,7 @@ h6.app__page-heading {
         }
 
         &[disabled] {
-          background-color: #e0e0e0;
+          background-color: $col-table-row-disabled;
         }
 
         td {
@@ -373,7 +372,7 @@ h6.app__page-heading {
     bottom: -1rem;
     left: 0;
     width: 0.8rem;
-    box-shadow: inset .5rem -.6rem .6rem 0 $col-table-scroll-side-shadow;
+    box-shadow: inset 0.5rem -0.6rem 0.6rem 0 $col-table-scroll-side-shadow;
   }
 }
 
@@ -386,8 +385,8 @@ h6.app__page-heading {
     top: -1rem;
     bottom: -1rem;
     right: 0;
-    width: .8rem;
-    box-shadow: inset -.5rem -.6rem .6rem 0 $col-table-scroll-side-shadow;
+    width: 0.8rem;
+    box-shadow: inset -0.5rem -0.6rem 0.6rem 0 $col-table-scroll-side-shadow;
   }
 }
 
@@ -401,4 +400,8 @@ h6.app__page-heading {
       background-size: 0 !important;
     }
   }
+}
+
+#nprogress {
+  z-index: 5;
 }

@@ -43,7 +43,7 @@
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-in' | globalize }}
@@ -55,7 +55,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required, requiredIf } from '@validators'
+import { required, requiredIf, email } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -64,6 +64,7 @@ import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export default {
   name: 'login-form',
@@ -78,7 +79,7 @@ export default {
   }),
   validations: {
     form: {
-      email: { required },
+      email: { required, email },
       password: { required },
       tfaCode: {
         required: requiredIf(function () { return this.tfaError }),
@@ -88,6 +89,7 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.wallet,
+      vuexTypes.walletEmail,
     ]),
   },
   methods: {
@@ -110,6 +112,10 @@ export default {
 
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
+        ErrorTracker.setLoggedInUser({
+          'accountId': accountId,
+          'email': this[vuexTypes.walletEmail],
+        })
 
         await this.loadAccount(accountId)
         await this.loadKvEntries()
@@ -126,7 +132,7 @@ export default {
     },
     async verifyTfaFactor () {
       if (this.tfaError) {
-        await Sdk.api.factors.verifyTotpFactor(
+        await Api.factorsManager.verifyTotpFactor(
           this.tfaError,
           this.form.tfaCode
         )

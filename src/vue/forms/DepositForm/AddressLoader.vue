@@ -32,10 +32,13 @@
 import LoadSpinner from '@/vue/common/Loader'
 import KeyViewer from '@/vue/common/KeyViewer'
 
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { Sdk } from '@/sdk'
+
+import { Api } from '@/api'
+import { base } from '@tokend/js-sdk'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   ready: 'ready',
@@ -83,12 +86,11 @@ export default {
     }),
     async tryBindAddress () {
       try {
-        const operation = Sdk.base.BindExternalSystemAccountIdBuilder
+        const operation = base.BindExternalSystemAccountIdBuilder
           .createBindExternalSystemAccountIdOp({
             externalSystemType: +this.externalSystemType,
           })
-        await Sdk.horizon.transactions
-          .submitOperations(operation)
+        await Api.api.postOperations(operation)
         await this.loadAccount(this.accountId)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
@@ -99,17 +101,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/scss/variables";
+@import '@/scss/variables';
 
-  .address-loader__key-viewer-wrp {
-    border: solid 0.1rem $col-form-stepper-tab-border;
-    border-radius: 0.2rem;
-    margin: 0.5rem 0 1rem 0;
-    padding: 1.5rem 1rem 1rem 1rem;
-  }
+.address-loader__key-viewer-wrp {
+  border: solid 0.1rem $col-form-stepper-tab-border;
+  border-radius: 0.2rem;
+  margin: 0.5rem 0 1rem;
+  padding: 1.5rem 1rem 1rem;
+}
 
-  .address-loader__help-message {
-    font-size: 1.2rem;
-    opacity: 0.7;
-  }
+.address-loader__help-message {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
 </style>

@@ -101,12 +101,12 @@
               </h3>
 
               <!-- eslint-disable-next-line -->
-              <template v-if=" +fees.source.fixed || +fees.source.percent || form.isPaidForRecipient ">
+              <template v-if=" +fees.source.fixed || +fees.source.calculatedPercent || form.isPaidForRecipient ">
                 <p
                   class="transfer__fee"
                   v-if="fees.source.fixed">
                   - {{ fees.source.fixed | formatNumber }}
-                  {{ fees.source.asset }}
+                  {{ form.asset.code }}
                   <span class="transfer__fee-type">
                     {{ 'transfer-form.sender-fixed-fee' | globalize }}
                   </span>
@@ -114,9 +114,9 @@
 
                 <p
                   class="transfer__fee"
-                  v-if="fees.source.percent">
-                  - {{ fees.source.percent | formatNumber }}
-                  {{ fees.source.asset }}
+                  v-if="fees.source.calculatedPercent">
+                  - {{ fees.source.calculatedPercent | formatNumber }}
+                  {{ form.asset.code }}
                   <span class="transfer__fee-type">
                     {{ 'transfer-form.sender-percent-fee' | globalize }}
                   </span>
@@ -126,21 +126,23 @@
                   class="transfer__fee"
                   v-if="form.isPaidForRecipient && +fees.destination.fixed">
                   - {{ fees.destination.fixed | formatNumber }}
-                  {{ fees.destination.asset }}
+                  {{ form.asset.code }}
                   <span class="transfer__fee-type">
                     {{ 'transfer-form.recipient-fixed-fee' | globalize }}
                   </span>
                 </p>
 
+                <!-- eslint-disable max-len -->
                 <p
                   class="transfer__fee"
-                  v-if="form.isPaidForRecipient && +fees.destination.percent">
-                  - {{ fees.destination.percent | formatNumber }}
-                  {{ fees.destination.asset }}
+                  v-if="form.isPaidForRecipient && +fees.destination.calculatedPercent">
+                  - {{ fees.destination.calculatedPercent | formatNumber }}
+                  {{ form.asset.code }}
                   <span class="transfer__fee-type">
                     {{ 'transfer-form.recipient-percent-fee' | globalize }}
                   </span>
                 </p>
+                <!-- eslint-enable max-len -->
               </template>
 
               <template v-else>
@@ -154,12 +156,12 @@
               </h3>
 
               <!-- eslint-disable-next-line max-len -->
-              <template v-if="(+fees.destination.fixed || +fees.destination.percent) && !form.isPaidForRecipient">
+              <template v-if="(+fees.destination.fixed || +fees.destination.calculatedPercent) && !form.isPaidForRecipient">
                 <p
                   class="transfer__fee"
                   v-if="fees.destination.fixed">
                   - {{ fees.destination.fixed | formatNumber }}
-                  {{ fees.destination.asset }}
+                  {{ form.asset.code }}
                   <span class="transfer__fee-type">
                     {{ 'transfer-form.recipient-fixed-fee' | globalize }}
                   </span>
@@ -167,9 +169,9 @@
 
                 <p
                   class="transfer__fee"
-                  v-if="fees.destination.percent">
-                  - {{ fees.destination.percent | formatNumber }}
-                  {{ fees.destination.asset }}
+                  v-if="fees.destination.calculatedPercent">
+                  - {{ fees.destination.calculatedPercent | formatNumber }}
+                  {{ form.asset.code }}
                   <span class="transfer__fee-type">
                     {{ 'transfer-form.recipient-percent-fee' | globalize }}
                   </span>
@@ -188,7 +190,7 @@
 
               <p class="transfer__fee">
                 - {{ totalSenderFee | formatNumber }}
-                {{ fees.source.asset }}
+                {{ form.asset.code }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.total-sender-fee' | globalize }}
                 </span>
@@ -196,7 +198,7 @@
 
               <p class="transfer__fee">
                 - {{ totalReceiverFee | formatNumber }}
-                {{ fees.destination.asset }}
+                {{ form.asset.code }}
                 <span class="transfer__fee-type">
                   {{ 'transfer-form.total-receiver-fee' | globalize }}
                 </span>
@@ -209,15 +211,16 @@
                 </span>
               </p>
 
-              <!-- eslint-disable-next-line -->
+              <!-- eslint-disable max-len -->
               <div
                 class="app__form-row"
-                v-if="+fees.destination.fixed || +fees.destination.percent"
+                v-if="+fees.destination.fixed || +fees.destination.calculatedPercent"
               >
                 <tick-field v-model="form.isPaidForRecipient">
                   {{ 'transfer-form.pay-fees-for-recipient' | globalize }}
                 </tick-field>
               </div>
+              <!-- eslint-enable max-len -->
             </div>
           </transition>
 
@@ -226,7 +229,7 @@
               v-ripple
               v-if="view.mode === VIEW_MODES.submit"
               type="submit"
-              class="app__form-submit-btn"
+              class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled"
             >
               {{ 'transfer-form.continue-btn' | globalize }}
@@ -273,7 +276,7 @@ import {
 } from '@tokend/js-sdk'
 import { MathUtil } from '@/js/utils'
 import config from '@/config'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
@@ -316,13 +319,11 @@ export default {
     fees: {
       source: {
         fixed: '',
-        percent: '',
-        feeAsset: '',
+        calculatedPercent: '',
       },
       destination: {
         fixed: '',
-        percent: '',
-        feeAsset: '',
+        calculatedPercent: '',
       },
     },
     isLoaded: false,
@@ -361,11 +362,16 @@ export default {
         .find(i => i.asset === this.form.asset.code) || {}
     },
     totalSenderFee () {
-      return MathUtil.add(this.fees.source.fixed, this.fees.source.percent)
+      return MathUtil.add(
+        this.fees.source.fixed,
+        this.fees.source.calculatedPercent
+      )
     },
     totalReceiverFee () {
-      return MathUtil
-        .add(this.fees.destination.fixed, this.fees.destination.percent)
+      return MathUtil.add(
+        this.fees.destination.fixed,
+        this.fees.destination.calculatedPercent
+      )
     },
     totalAmount () {
       const fees = this.form.isPaidForRecipient
@@ -394,8 +400,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await Sdk.horizon.transactions
-          .submitOperations(this.buildPaymentOperation())
+        await Api.api.postOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
@@ -421,12 +426,12 @@ export default {
           amount: this.form.amount,
           destinationAccountId: recipientAccountId,
           destinationFixedFee: fees.destination.fixed,
-          destinationPercentFee: fees.destination.percent,
-          destinationFeeAsset: fees.destination.feeAsset,
-          sourceBalanceId: this.balance.balanceId,
+          destinationPercentFee: fees.destination.calculatedPercent,
+          destinationFeeAsset: this.form.asset.code,
+          sourceBalanceId: this.balance.id,
           sourceFixedFee: fees.source.fixed,
-          sourcePercentFee: fees.source.percent,
-          sourceFeeAsset: fees.source.feeAsset,
+          sourcePercentFee: fees.source.calculatedPercent,
+          sourceFeeAsset: this.form.asset.code,
           subject: this.form.subject,
           assetCode: this.form.asset.code,
         }
@@ -465,10 +470,18 @@ export default {
     },
     async loadPaymentFee ({ asset, amount, account, subtype }) {
       try {
-        const response = await Sdk.horizon.fees
-          .get(FEE_TYPES.paymentFee, { asset, amount, account, subtype })
+        const baseEndpoint = `/v3/accounts/${account}/calculated_fees`
+        const params = [
+          `asset=${asset}`,
+          `fee_type=${FEE_TYPES.paymentFee}`,
+          `subtype=${subtype}`,
+          `amount=${amount}`,
+        ]
 
-        return response.data
+        const endpoint = `${baseEndpoint}?${params.join('&')}`
+        const { data: fees } = await Api.get(endpoint)
+
+        return fees
       } catch (e) {
         ErrorHandler.process(e)
         return {}
@@ -519,7 +532,7 @@ export default {
 
 <style lang="scss" scoped>
 @import './app-form';
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .transfer__fee-box {
   margin-top: 4rem;
@@ -530,7 +543,7 @@ export default {
 .transfer__fee-box-heading {
   margin-top: 0;
   margin-bottom: 1rem;
-  font-weight: normal;
+  font-weight: 400;
   display: block;
   font-size: 1.6rem;
   color: $col-text-page-heading;

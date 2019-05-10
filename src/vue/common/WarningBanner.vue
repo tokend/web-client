@@ -1,15 +1,27 @@
 <template>
-  <div class="warning-banner">
+  <div :class="`warning-banner warning-banner--${messageType}`">
     <p class="warning-banner__message">
-      {{ messageId | globalize }}
+      {{ message }}
     </p>
   </div>
 </template>
 
 <script>
+const MESSAGE_TYPES = {
+  warning: 'warning',
+  danger: 'danger',
+}
+
 export default {
   props: {
-    messageId: { type: String, required: true },
+    message: { type: String, required: true },
+    messageType: {
+      type: String,
+      required: true,
+      validator (value) {
+        return Object.keys(MESSAGE_TYPES).includes(value)
+      },
+    },
   },
 }
 </script>
@@ -18,21 +30,23 @@ export default {
 @import '~@scss/variables';
 
 .warning-banner {
-  min-height: 8rem;
-  padding: 1.6rem 4.8rem;
-  background-color: $col-warning;
-  font-size: 1.6rem;
-  color: #fff;
+  min-height: 6rem;
+  padding: 1.2rem 4.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &--warning {
+    background-color: $col-warning;
+  }
+
+  &--danger {
+    background-color: $col-error;
+  }
 }
 
-.warning-banner__message-link {
-  color: #fff;
-  cursor: pointer;
-  text-decoration: underline;
-
-  &:hover { color: #fff }
+.warning-banner__message {
+  font-size: 1.6rem;
+  color: $col-status-msg-text;
 }
 </style>

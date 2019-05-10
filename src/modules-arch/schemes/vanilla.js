@@ -26,16 +26,16 @@ import { PreIssuanceRequestsModule } from '@/vue/modules/requests/pre-issuance-r
 import { IncomingWithdrawalRequestsPageModule } from '@/vue/pages/incoming-withdrawal-requests-page'
 import { IncomingWithdrawalRequestsModule } from '@/vue/modules/requests/incoming-withdrawal-requests/module'
 import { VerificationPageModule } from '@/vue/pages/verification-page-module'
-import { VerificationGeneralPageModule } from '@/vue/pages/verification-general-page-module'
+import { VerificationGeneralAdvancedPageModule } from '@/vue/pages/verification-general-advanced-page-module'
 import { VerificationCorporatePageModule } from '@/vue/pages/verification-corporate-page-module'
 import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
-import { PreIssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/pre-issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
+import { PreIssuanceFormModule } from '@/vue/modules/pre-issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
-import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module'
+import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
@@ -50,6 +50,8 @@ import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
 
+import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
+
 export default {
   pages: [
     new DashboardPageModule(
@@ -63,7 +65,7 @@ export default {
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
           new TransferDrawerPseudoModule(),
@@ -183,10 +185,10 @@ export default {
         menuButtonMdiName: 'poll',
         submodules: [
           new IssuanceExplorerModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
-          new PreIssuanceDrawerPseudoModule({
+          new PreIssuanceFormModule({
             isCorporateOnly: true,
           }),
         ],
@@ -224,7 +226,7 @@ export default {
               },
             },
           }),
-          new CreateSalePseudoModule({
+          new CreateSaleFormModule({
             isCorporateOnly: true,
           }),
         ],
@@ -338,11 +340,14 @@ export default {
               name: vueRoutes.verification.name,
             },
             submodules: [
-              new VerificationGeneralPageModule({
+              new VerificationGeneralAdvancedPageModule({
                 routerEntry: {
                   path: '/settings/verification/general',
                   name: vueRoutes.verificationGeneral.name,
                 },
+                submodules: [
+                  new VerificationGeneralFormModule(),
+                ],
               }),
               new VerificationCorporatePageModule({
                 routerEntry: {

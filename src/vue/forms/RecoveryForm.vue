@@ -56,7 +56,7 @@
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.recover-lbl' | globalize }}
@@ -124,7 +124,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.recovery(
+        await Api.walletsManager.recovery(
           this.form.email.toLowerCase(),
           this.form.recoverySeed,
           this.form.password

@@ -3,7 +3,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { base, errors, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes'
 
@@ -42,7 +42,7 @@ export default {
             asset: opts.pair.base,
             action: base.xdr.ManageBalanceAction.createUnique(),
           })
-          await Sdk.horizon.transactions.submitOperations(operation)
+          await Api.api.postOperations(operation)
           await this.loadBalances(this.accountId)
         }
 
@@ -52,33 +52,38 @@ export default {
             asset: opts.pair.quote,
             action: base.xdr.ManageBalanceAction.createUnique(),
           })
-          await Sdk.horizon.transactions.submitOperations(operation)
+          await Api.api.postOperations(operation)
           await this.loadBalances(this.accountId)
         }
 
         const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value
-        const feeOpts = {
-          asset: opts.pair.quote,
-          amount: opts.quoteAmount,
-          subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-          account: this.accountId,
-        }
-        const fee = (await Sdk.horizon.fees.get(feeType, feeOpts)).data
+
+        const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+        const params = [
+          `asset=${opts.pair.quote}`,
+          `fee_type=${feeType}`,
+          `subtype=${PAYMENT_FEE_SUBTYPES.outgoing}`,
+          `amount=${opts.quoteAmount}`,
+        ]
+
+        const endpoint = `${baseEndpoint}?${params.join('&')}`
+        const { data: fee } = await Api.get(endpoint)
+
         const operationOpts = {
           amount: opts.baseAmount,
           price: opts.price,
           orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
           isBuy: opts.isBuy,
-          baseBalance: this.getAssetDetails(opts.pair.base).balanceId,
-          quoteBalance: this.getAssetDetails(opts.pair.quote).balanceId,
+          baseBalance: this.getAssetDetails(opts.pair.base).id,
+          quoteBalance: this.getAssetDetails(opts.pair.quote).id,
           // For this operation, back-end creates a "calculated fee", that
           // calculates as amount * percent fee. We can ignore the fixed fee
           // because of this is a back-end business
-          fee: fee.percent,
+          fee: fee.calculatedPercent,
         }
         const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
 
         Bus.success('offer-manager.success-creating')
       } catch (error) {
@@ -95,7 +100,7 @@ export default {
     /**
      * @param {object} opts
      * @param {object} opts.baseBalance - balance id of the base asset
-     * @param {string} opts.quoteBalance - balace id of the quote asset
+     * @param {string} opts.quoteBalance - balance id of the quote asset
      * @param {string} opts.offerId - offer id
      * @param {string} opts.price - offer price
      * @returns {Promise<void>}
@@ -108,7 +113,7 @@ export default {
           price: opts.price,
           orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
         })
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await Api.api.postOperations(operation)
         Bus.success('offer-manager.success-cancelling')
       } catch (error) {
         ErrorHandler.process(error)

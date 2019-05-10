@@ -2,10 +2,17 @@
   <div id="app" v-if="isAppInitialized">
     <warning-banner
       v-if="isNotSupportedBrowser"
-      :message-id="'common.browser-not-supported'"
+      :message="'common.browser-not-supported' | globalize"
     />
 
     <template v-if="isLoggedIn && isNavigationRendered">
+      <warning-banner
+        v-if="isAccountBlocked"
+        :message="'warning-banner.blocked-desc' | globalize({
+          reason: kycRequestBlockReason
+        })"
+        message-type="danger"
+      />
       <div class="app__container">
         <sidebar />
 
@@ -43,6 +50,7 @@ import {
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { vuexTypes } from '@/vuex'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 import config from '@/config'
 
@@ -66,7 +74,11 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.wallet,
+      vuexTypes.walletEmail,
+      vuexTypes.accountId,
       vuexTypes.isLoggedIn,
+      vuexTypes.isAccountBlocked,
+      vuexTypes.kycRequestBlockReason,
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)
@@ -88,7 +100,7 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      Api.init({ horizonURL: config.HORIZON_SERVER })
+      await Api.init({ horizonURL: config.HORIZON_SERVER })
 
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()
@@ -96,6 +108,10 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
+        ErrorTracker.setLoggedInUser({
+          'accountId': this[vuexTypes.accountId],
+          'email': this[vuexTypes.walletEmail],
+        })
       }
     },
     detectIE () {
@@ -108,8 +124,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
 .app__container {
   display: flex;
@@ -125,16 +141,27 @@ export default {
 
 .app__navbar {
   position: relative;
-  z-index: 4;
+  z-index: $z-app-navbar;
   min-height: 6.4rem;
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: space-between;
   transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-property: opacity, background-color, box-shadow, transform, color,
-    min-height, -webkit-transform;
-  will-change: opacity, background-color, box-shadow, transform, color,
+  transition-property:
+    opacity,
+    background-color,
+    box-shadow,
+    transform,
+    color,
+    min-height,
+    -webkit-transform;
+  will-change:
+    opacity,
+    background-color,
+    box-shadow,
+    transform,
+    color,
     min-height;
 }
 
@@ -144,8 +171,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: $content-padding-top $content-padding-right
-    $content-padding-bottom $content-padding-left;
+  padding:
+    $content-padding-top
+    $content-padding-right
+    $content-padding-bottom
+    $content-padding-left;
   background-color: $col-app-content-background;
 
   @include respond-to-custom($sidebar-hide-bp) {

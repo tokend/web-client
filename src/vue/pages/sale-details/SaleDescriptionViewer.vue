@@ -31,7 +31,7 @@
 import Loader from '@/vue/common/Loader'
 import VueMarkdown from 'vue-markdown'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -61,8 +61,12 @@ export default {
   methods: {
     async loadSaleDescription () {
       try {
-        const { data: blob } =
-          await Sdk.api.blobs.get(this.sale.description, this.sale.owner)
+        const accountId = this.sale.owner
+        const blobId = this.sale.description
+
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
+        const { data: blob } = await Api.getWithSignature(endpoint)
+
         this.saleDescription = JSON.parse(blob.value)
         this.isLoaded = true
       } catch (e) {
@@ -81,14 +85,15 @@ export default {
 
 .sale-description-viewer__no-data {
   text-align: center;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.6rem;
 }
 </style>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
+/* stylelint-disable selector-nested-pattern */
 .sale-description-viewer__markdown {
   img {
     max-width: 100%;
@@ -118,11 +123,13 @@ export default {
   }
 
   ul {
+    // stylelint-disable-next-line
     list-style-type: disc !important;
     padding-left: 1.6rem;
   }
 
   li {
+    // stylelint-disable-next-line
     list-style-type: disc !important;
     margin-bottom: 0.8rem;
   }

@@ -45,8 +45,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .sale-campaign-viewer {
   margin-top: 2.4rem;
@@ -66,7 +66,7 @@ export default {
 .sale-campaign-viewer__description {
   flex-basis: 64%;
   background-color: $col-sale-details-block;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   margin: 1.6rem;
   overflow: auto;
 
@@ -78,7 +78,7 @@ export default {
 .sale-campaign-viewer__state {
   flex-basis: 36%;
   background-color: $col-sale-details-block;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   margin: 1.6rem;
   padding: 3.3rem 3.4rem 2.2rem 2.4rem;
 

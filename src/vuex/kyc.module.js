@@ -1,6 +1,5 @@
 import { vuexTypes } from './types'
 
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 
@@ -113,14 +112,18 @@ export const actions = {
     commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
-  async [vuexTypes.LOAD_KYC_DATA] ({ state, commit }) {
-    const latestBlobId = state.request.blobId || state.relatedRequest.blobId
+  async [vuexTypes.LOAD_KYC_DATA] ({ getters, rootGetters, commit }) {
+    const latestBlobId = getters[vuexTypes.kycLatestBlobId]
     if (!latestBlobId) {
       return
     }
 
-    const latestBlobResponse = await Sdk.api.blobs.get(latestBlobId)
+    const accountId = rootGetters[vuexTypes.accountId]
+    const endpoint = `/accounts/${accountId}/blobs/${latestBlobId}`
+
+    const latestBlobResponse = await Api.getWithSignature(endpoint)
     const latestData = latestBlobResponse.data.value
+
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
   },
 }
@@ -132,6 +135,7 @@ export const getters = {
   [vuexTypes.kycRequestRejectReason]: state => state.request.rejectReason,
   [vuexTypes.kycRequestResetReason]: state => state.request.resetReason,
   [vuexTypes.kycRequestBlockReason]: state => state.request.blockReason,
+  [vuexTypes.kycRequestExternalDetails]: state => state.request.externalDetails,
 
   [vuexTypes.isAccountRoleReseted]: state => state.isAccountRoleReseted,
   [vuexTypes.kycAccountRoleToSet]: state => state.isAccountRoleReseted
@@ -142,6 +146,8 @@ export const getters = {
   },
 
   [vuexTypes.kycRequestId]: state => state.request.id,
+  [vuexTypes.kycLatestBlobId]:
+      state => state.request.blobId || state.relatedRequest.blobId,
   [vuexTypes.kycLatestData]: state => JSON.parse(state.latestData),
   [vuexTypes.kycAvatarKey]: state => safeGet(
     JSON.parse(state.latestData),

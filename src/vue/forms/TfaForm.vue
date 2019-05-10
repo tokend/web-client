@@ -21,7 +21,7 @@
         <button
           v-ripple
           type="button"
-          class="tfa-form__btn"
+          class="tfa-form__btn app__button-raised"
           @click="toggleFactor"
           :disabled="formMixin.isDisabled"
         >
@@ -66,7 +66,7 @@
         <button
           v-ripple
           type="submit"
-          class="tfa-form__btn"
+          class="tfa-form__btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
           {{ 'tfa-form.enable-btn' | globalize }}
@@ -86,7 +86,7 @@ import { required, password } from '@validators'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
@@ -121,6 +121,7 @@ export default {
     ...mapGetters({
       isTotpEnabled: vuexTypes.isTotpEnabled,
       totpFactors: vuexTypes.factorsTotp,
+      walletId: vuexTypes.walletId,
     }),
   },
   async created () {
@@ -147,16 +148,22 @@ export default {
       this.enableForm()
     },
     async createTotpFactor () {
+      const endpoint = `/wallets/${this.walletId}/factors`
       try {
         await this.deleteTotpFactor()
-        await Sdk.api.factors.createTotpFactor()
+
+        await Api.api.postWithSignature(endpoint, {
+          data: { type: 'totp' },
+        })
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            const { data } =
-              await Sdk.api.factors.verifyPasswordFactorAndRetry(error,
-                this.form.password
-              )
+            await Api.factorsManager.verifyPasswordFactor(
+              error, this.form.password
+            )
+            const { data } = await Api.api.postWithSignature(endpoint, {
+              data: { type: 'totp' },
+            })
             this.factor = data
           } catch (e) {
             ErrorHandler.process(e, 'tfa-form.wrong-password-err')
@@ -169,12 +176,15 @@ export default {
     async deleteTotpFactor () {
       try {
         if (this.totpFactors[0]) {
-          await Sdk.api.factors.delete(this.totpFactors[0].id)
+          const factorId = this.totpFactors[0].id
+          const endpoint = `/wallets/${this.walletId}/factors/${factorId}`
+
+          await Api.api.deleteWithSignature(endpoint)
         }
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Sdk.api.factors.verifyPasswordFactorAndRetry(error,
+            await Api.factorsManager.verifyPasswordFactorAndRetry(error,
               this.form.password
             )
             Bus.success('tfa-form.tfa-disabled-msg')
@@ -193,18 +203,13 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.factors.changePriority(this.factor.id,
-          ENABLED_FACTOR_PRIORITY
-        )
+        await this.changeFactorPriority()
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Sdk.api.factors.verifyTotpFactor(error,
-              this.form.code
-            )
-            await Sdk.api.factors.changePriority(this.factor.id,
-              ENABLED_FACTOR_PRIORITY
-            )
+            await Api.factorsManager.verifyTotpFactor(error, this.form.code)
+            await this.changeFactorPriority()
+
             this.$emit(EVENTS.update)
             Bus.success('tfa-form.tfa-enabled-msg')
           } catch (e) {
@@ -216,6 +221,12 @@ export default {
       }
       this.enableForm()
     },
+    async changeFactorPriority () {
+      const endpoint = `/wallets/${this.walletId}/factors/${this.factor.id}`
+      await Api.api.patchWithSignature(endpoint, {
+        data: { attributes: { priority: ENABLED_FACTOR_PRIORITY } },
+      })
+    },
   },
 }
 </script>
@@ -224,7 +235,6 @@ export default {
 @import './app-form';
 
 .tfa-form__btn {
-  @include button-raised();
   max-width: 18rem;
   width: 100%;
 }

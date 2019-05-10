@@ -128,75 +128,65 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./scss/variables";
-@import "~@scss/variables";
+@import './scss/variables';
+@import '~@scss/variables';
+
+// HACK: fix cut of transforms on some browsers (chrome)
+$z-index-tick-field: 0;
 
 .tick-field {
   position: relative;
   display: flex;
   width: fit-content;
-  z-index: 0; // HACK: fix cut of transforms on some browsers (chrome)
+  z-index: $z-index-tick-field;
 }
 
 .tick-field__label {
   font-size: 1.4rem;
   color: $field-color-focused;
   padding-left: 2.8rem;
-}
-
-.tick-field__tick,
-.tick-field__label {
   cursor: pointer;
+
+  .tick-field__input:disabled ~ & {
+    filter: grayscale(100%);
+    cursor: default;
+    color: $field-color-unfocused;
+  }
 }
 
 .tick-field__tick {
   width: 2rem;
   min-width: 2rem;
   height: 2rem;
-  margin: -.3rem 1.3rem 0 0;
-  z-index: 0;
-  border: solid .1rem;
-  border-radius: .2rem;
+  cursor: pointer;
+  margin: -0.3rem 1.3rem 0 0;
+  z-index: $z-index-tick-field;
+  border: solid 0.1rem;
+  border-radius: 0.2rem;
   border-color: $col-tick-field-unfocused;
   position: absolute;
   left: 0;
   display: block;
   pointer-events: none;
-  outline: .25rem solid transparent;
-  outline-offset: -.1rem;
+  outline: 0.25rem solid transparent;
+  outline-offset: -0.1rem;
   transition: outline-color $field-transition-duration;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translateY(-.1rem) rotate(45deg);
+    transform: translate(-50%, -50%) translateY(-0.1rem) rotate(45deg);
     display: block;
     height: 1rem;
-    width: .6rem;
+    width: 0.6rem;
     border: solid white;
-    border-width: 0 .2rem .2rem 0;
-
+    border-width: 0 0.2rem 0.2rem 0;
     opacity: 0;
   }
-}
 
-.tick-field__input:checked ~ .tick-field__tick {
-  border: none;
-  background-color: $field-color-focused;
-
-  &:after {
-    opacity: 1;
-  }
-}
-
-.tick-field__input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-
-  &:checked ~ .tick-field__tick {
+  .tick-field__input:checked ~ & {
     border: none;
     background-color: $field-color-focused;
 
@@ -205,16 +195,24 @@ export default {
     }
   }
 
-  &:disabled ~ .tick-field__tick,
-  &:disabled ~ .tick-field__label {
+  .tick-field__input:disabled ~ & {
     filter: grayscale(100%);
     cursor: default;
     color: $field-color-unfocused;
   }
+
+  .tick-field:hover > & {
+    outline-color: $field-color-unfocused;
+  }
+
+  .tick-field__input:focus ~ & {
+    outline-color: $field-color-unfocused;
+  }
 }
 
-.tick-field:hover > .tick-field__tick,
-.tick-field__input:focus ~ .tick-field__tick {
-  outline-color: $field-color-unfocused;
+.tick-field__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 </style>

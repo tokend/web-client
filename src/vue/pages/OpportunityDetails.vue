@@ -146,7 +146,6 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
-import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -237,7 +236,8 @@ export default {
 
     async loadAsset (assetCode) {
       try {
-        const { data } = await Sdk.horizon.assets.get(assetCode)
+        const endpoint = `/v3/assets/${assetCode}`
+        const { data } = await Api.get(endpoint)
         this.asset = new AssetRecord(data)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
@@ -273,16 +273,16 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .opportunity-details__name {
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-sale-details-title;
 }
 
 .opportunity-details__short-desc {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
 }

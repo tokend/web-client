@@ -73,7 +73,7 @@
           v-model="form.terms"
           name="create-asset-terms"
           :note="'create-asset-form.terms-note' | globalize"
-          accept=".jpg, .png, .pdf"
+          :file-extensions="['jpg', 'png', 'pdf']"
           :document-type="DOCUMENT_TYPES.assetTerms"
           :label="'create-asset-form.terms-lbl' | globalize"
           :disabled="isDisabled"
@@ -230,7 +230,7 @@ export default {
 }
 
 .advanced-step-form__insert-account-id-btn {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
 }
 
 .advanced-step-form__pre-issuance-disclaimer {

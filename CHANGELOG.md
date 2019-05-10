@@ -8,12 +8,113 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
+#### Added
+- Lazy loading feedback (nprogress loader)
+- `BalanceNotFoundError` to the runtime errors
+- Fonts/images/SVGs optimize
+- Check for file extension, size & dimensions in file field
+- File field design improvements:
+  - reactions to drag & drop actions
+  - images preview (+ icon for rest types of files)
+  - grayscaled disabled state
+  - upload icons
+- `initSync()` method to Api class
+- Sentry integration
+- Email validation on login form
+
 #### Changed
-- More cutier animation for init loader 
-- Now selecting invoice point by loyalty account number (Loyalty)
-- Now showing all the received points (360) on the chart
+- Updated offer creating, updating drawers
+- Modularized:
+  - Pre-issuance form
+  - Issuance form
+  - Create sale form
+- Now formatting `minDate` validation message using i18n date filter
+- Now using `moment().toISOString()` value instead of `moment().toString()
+- Moved horizon resources to "/v3" endpoints
+- Now processing documents & blobs using new ApiCaller
+- Now performing actions with wallets & factors using relevant managers
+- Now using @tokend/js-sdk@1.7.0-x.1
+- .babelrc: babel target to allowed browsers
+- Max size of uploaded file changed to 32mb
 - Now sorting asset list on balances page descending
   by converted balance amount
+
+#### Removed
+- Unused methods from `DocumentContainer` class
+
+#### Fixed
+- Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
+  limits to unlimited ones and not an empty field
+- An error was fixed in which if you exceed the limit for example daily
+  then the user received an error stating that "Your transaction is invalid."
+- Show drawer for isDepositable in movements-top-bar-reit
+- Dashboard loading flow
+- Filtering owned sales on back-end side using API filters
+- Displaying "My sales" page
+- Uploading documents on general verification form
+- Disabled state for account type selector on verification page
+- `event.getModifierState` error on auth page
+
+## [1.6.0-rc.0] - 2019-05-02
+#### Added
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
+
+#### Changed
+- Now does not show multiple QR codes on Coinpayments deposit
+
+#### Fixed
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
+
+## [1.6.0-x.2] - 2019-04-29
+#### Added
+- Re-render chart animation
+
+#### Changed
+- Now opening pre-issuance details link in new tab
+
+### Experimental features changes
+#### Fixed
+- Deposit fiat drawer displaying on REIT
+
+## [1.6.0-x.1] - 2019-04-26
+#### Added
+- Selected asset query parameter to URL on dashboard, movements,
+  limits, and fees pages
+
+#### Changed
+- Now using more modern animation for init loader
+- Now showing all the received points (360) on the chart
+- Now showing zero axis line, if chart has both negative and
+  positive values
+- Now using default d3 ticks calculation on chart axes, so the ticks count and
+  positions are not fixed now and ticks have more user-friendly values
+
+#### Fixed
+- Account verification using received link from e-mail
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-x.0
+- Now using "app__button-..." classes instead of button mixins
+
+### Experimental features changes
+#### Changed
+- Now selecting invoice point by loyalty account number (Loyalty)
 
 ## [1.6.0-x.0] - 2019-04-24
 #### Added
@@ -63,7 +164,7 @@ for further information about branching and tagging conventions.
 - Invoice transaction source account (Loyalty)
 - Displaying incoming withdrawal requests (Loyalty)
 
-## [1.5.0]
+## [1.5.0] - 2019-04-19
 ### "Under the hood changes"
 #### Changed
 - Now using @tokend/js-sdk@1.5.0
@@ -360,10 +461,15 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Not handling 'manage-asset-pair' operation details
+- Fixed bug when user invested in sales but in history
+  instead of 'Investment' was 'Offer'
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
+[1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
+[1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0
 [1.5.0]: https://github.com/tokend/web-client/compare/1.5.0-rc.3...1.5.0
 [1.5.0-rc.3]: https://github.com/tokend/web-client/compare/1.5.0-rc.2...1.5.0-rc.3
@@ -374,6 +480,6 @@ for further information about branching and tagging conventions.
 [1.4.0-rc.3]: https://github.com/tokend/web-client/compare/1.4.0-rc.2...1.4.0-rc.3
 [1.4.0-rc.2]: https://github.com/tokend/web-client/compare/1.4.0-rc.1...1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/tokend/web-client/compare/1.4.0-rc.0...1.4.0-rc.1
-[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.0-rc.0...1.4.0-rc.0
+[1.4.0-rc.0]: https://github.com/tokend/web-client/compare/1.3.1-rc.0...1.4.0-rc.0
 [1.3.1-rc.0]: https://github.com/tokend/web-client/compare/1.3.0...1.3.1-rc.0
 [1.3.0]: https://github.com/tokend/web-client/releases/tag/1.3.0

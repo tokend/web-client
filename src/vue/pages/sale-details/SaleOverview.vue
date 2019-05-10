@@ -39,7 +39,7 @@ import Loader from '@/vue/common/Loader'
 
 import SaleOverviewDetails from './SaleOverviewDetails'
 
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import config from '@/config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -68,7 +68,9 @@ export default {
 
   async created () {
     try {
-      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+      const endpoint = `/v3/assets/${this.sale.baseAsset}`
+      const { data } = await Api.get(endpoint)
+
       this.asset = new AssetRecord(data)
       this.isLoaded = true
     } catch (e) {
@@ -80,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .sale-overview__asset-title {
   margin-bottom: 2rem;

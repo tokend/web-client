@@ -13,14 +13,14 @@
       <button
         v-ripple
         @click="submit"
-        class="auth-page__submit-btn"
+        class="auth-page__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.request-new-email' | globalize }}
       </button>
       <router-link
         v-ripple
-        class="auth-page__cancel-btn"
+        class="auth-page__cancel-btn app__button"
         :to="vueRoutes.login"
         tag="button"
       >
@@ -36,7 +36,7 @@ import { vueRoutes } from '@/vue-router/routes'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 
 export default {
   name: 'verify',
@@ -56,7 +56,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (from.name === vueRoutes.login.name) {
-        Sdk.api.wallets.resendEmail(vm.walletId)
+        Api.walletsManager.resendEmail(vm.walletId)
       }
     })
   },
@@ -69,7 +69,7 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await Sdk.api.wallets.resendEmail(this.walletId)
+        await Api.walletsManager.resendEmail(this.walletId)
         Bus.success('auth-pages.email-requested')
       } catch (e) {
         ErrorHandler.process(e)

@@ -2,15 +2,32 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
+import _get from 'lodash/get'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export class ErrorHandler {
-  static process (error, translationId = '') {
-    ErrorHandler.processWithoutFeedback(error)
-    Bus.error(translationId || ErrorHandler._getTranslationId(error))
+  static process (error, translationId = '', errorTrackerConfig = {}) {
+    const msgTrId = translationId || ErrorHandler._getTranslationId(error)
+    Bus.error(msgTrId)
+
+    errorTrackerConfig.translationId = msgTrId
+    ErrorHandler.processWithoutFeedback(error, errorTrackerConfig)
   }
 
-  static processWithoutFeedback (error) {
+  static processWithoutFeedback (error, errorTrackerConfig = {}) {
+    ErrorHandler.trackMessage(error, errorTrackerConfig)
     log.error(error)
+  }
+
+  static trackMessage (error, opts = {}) {
+    const { translationId = '', skipTrack = false } = opts
+
+    if (!skipTrack) {
+      const msgTrId = translationId || ErrorHandler._getTranslationId(error)
+
+      const englify = i18next.getFixedT('en')
+      ErrorTracker.trackMessage(englify(msgTrId))
+    }
   }
 
   static _getTranslationId (error) {
@@ -22,6 +39,9 @@ export class ErrorHandler {
         break
       case errors.UserDoesntExistError:
         translationId = 'errors.user-doesnt-exist'
+        break
+      case errors.BalanceNotFoundError:
+        translationId = 'errors.balance-not-found'
         break
       case errors.TimeoutError:
         translationId = 'errors.timeout'
@@ -57,7 +77,14 @@ export class ErrorHandler {
         translationId = 'errors.user-exists'
         break
       case errors.TransactionError:
-        translationId = `transaction-errors.${error.errorResults[0].errorCode}`
+        let errorCode
+        const errorResults = error.errorResults
+        if (!errorResults) {
+          errorCode = _get(error, '_resultCodes.operations[0]')
+        } else {
+          errorCode = _get(errorResults[0], 'errorCode')
+        }
+        translationId = `transaction-errors.${errorCode}`
         if (!i18next.exists(translationId)) {
           // If there is no localized error code, display the message
           // that came from the backend
