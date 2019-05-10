@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Lazy loading feedback (nprogress loader)
 - `BalanceNotFoundError` to the runtime errors
+- Fonts/images/SVGs optimize
 - Check for file extension, size & dimensions in file field
 - File field design improvements:
   - reactions to drag & drop actions
@@ -18,6 +19,9 @@ for further information about branching and tagging conventions.
   - grayscaled disabled state
   - upload icons
 - `initSync()` method to Api class
+- Ability to create sale and opportunity in the past
+- Sentry integration
+- Email validation on login form
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -31,6 +35,9 @@ for further information about branching and tagging conventions.
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
 - Now using @tokend/js-sdk@1.7.0-x.1
+- .babelrc: babel target to allowed browsers
+- Max size of uploaded file changed to 32mb
+- Now loading converted balances on the balances page
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -38,12 +45,15 @@ for further information about branching and tagging conventions.
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
   limits to unlimited ones and not an empty field
-- An error was fixed in which if you exceed the limit for example daily 
+- An error was fixed in which if you exceed the limit for example daily
   then the user received an error stating that "Your transaction is invalid."
 - Show drawer for isDepositable in movements-top-bar-reit
 - Dashboard loading flow
 - Filtering owned sales on back-end side using API filters
 - Displaying "My sales" page
+- Uploading documents on general verification form
+- Disabled state for account type selector on verification page
+- `event.getModifierState` error on auth page
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
@@ -451,6 +461,8 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Not handling 'manage-asset-pair' operation details
+- Fixed bug when user invested in sales but in history
+  instead of 'Investment' was 'Offer'
 
 ## [1.3.0] - 2019-03-01
 

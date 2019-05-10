@@ -523,8 +523,8 @@
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
       "avatar-lbl": "Avatar",
-      "image-type-note": "image (Max 5mb)",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -544,8 +544,8 @@
       "last-name-lbl": "Last name",
       "avatar-lbl": "Avatar",
       "id-document-lbl": "ID document",
-      "image-type-note": "image (Max 5mb)",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -561,7 +561,7 @@
       "caps-lock-warning": "Warning: Caps-Lock is ON"
     },
     "limits-documents-uploader-form": {
-      "file-type-note": "image/pdf (Max 5mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "form-subheading": "Requirements",
       "document-type-lbl": "Document type",
       "note-lbl": "Note",
@@ -869,7 +869,8 @@
         "manage-asset-pair": "Pair updated",
         "manage-offer": "Offer",
         "payment": "Payment",
-        "unknown": "Unknown type"
+        "unknown": "Unknown type",
+        "investment": "Investment"
       },
       "type-th": "Type",
       "amount-th": "Amount",
@@ -1835,7 +1836,7 @@
     },
     "document-upload-form": {
       "document-lbl": "Select your document. You cannot upload the same file twice",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "description-lbl": "Description",
       "upload-btn": "Upload",
       "uploaded-msg": "Your document was successfully uploaded",

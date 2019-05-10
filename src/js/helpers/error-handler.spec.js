@@ -2,8 +2,9 @@ import { errors } from '@/js/errors'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 import log from 'loglevel'
-
+import i18next from 'i18next'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 describe('error-handler helper', () => {
   let sandbox
@@ -12,33 +13,114 @@ describe('error-handler helper', () => {
 
   describe('using process()', () => {
     it('processes the error and shows a feedback to the user', () => {
-      const theError = new Error()
-      const feedbackTranslationId = 'some-error.translation-id'
+      const theError = new Error('Some error')
       sandbox.stub(ErrorHandler, 'processWithoutFeedback')
       sandbox.stub(ErrorHandler, '_getTranslationId')
         .withArgs(theError)
-        .returns(feedbackTranslationId)
+        .returns('some-error.translation-id')
       sandbox.stub(Bus, 'error')
 
-      ErrorHandler.process(theError)
+      ErrorHandler.process(theError, '', { someParam: 42 })
 
       expect(ErrorHandler.processWithoutFeedback)
-        .to.have.been.calledOnceWithExactly(theError)
-      expect(ErrorHandler._getTranslationId)
-        .to.have.been.calledOnceWithExactly(theError)
+        .to.have.been.calledOnceWithExactly(theError, {
+          someParam: 42,
+          translationId: 'some-error.translation-id',
+        })
       expect(Bus.error)
-        .to.have.been.calledOnceWithExactly(feedbackTranslationId)
+        .to.have.been.calledOnceWithExactly('some-error.translation-id')
     })
   })
 
+  it('processes the error and rewrites the error tracker config message id', () => {
+    const theError = new Error('Some error')
+    sandbox.stub(ErrorHandler, 'processWithoutFeedback')
+    sandbox.stub(ErrorHandler, '_getTranslationId')
+      .withArgs(theError)
+      .returns('some-error.translation-id')
+    sandbox.stub(Bus, 'error')
+
+    ErrorHandler.process(theError, 'custom-translation-id', { someParam: 42 })
+
+    expect(ErrorHandler.processWithoutFeedback)
+      .to.have.been.calledOnceWithExactly(theError, {
+        someParam: 42,
+        translationId: 'custom-translation-id',
+      })
+    expect(Bus.error)
+      .to.have.been.calledOnceWithExactly('custom-translation-id')
+  })
+
   describe('using processWithoutFeedback()', () => {
-    it('logs the error', () => {
-      const theError = new Error()
+    it('tracks message', () => {
+      const theError = new Error('Some error')
+      sandbox.stub(ErrorHandler, 'trackMessage')
       sandbox.stub(log, 'error')
 
-      ErrorHandler.processWithoutFeedback(theError)
+      ErrorHandler.processWithoutFeedback(theError, { someParam: 42 })
 
-      expect(log.error).to.have.been.calledOnceWithExactly(theError)
+      expect(ErrorHandler.trackMessage, 'tracks the error')
+        .to.have.been.calledOnceWithExactly(theError, { someParam: 42 })
+      expect(log.error, 'logs the error')
+        .to.have.been.calledOnceWithExactly(theError)
+    })
+  })
+
+  describe('using trackMessage()', () => {
+    it('it tracks message with default params', () => {
+      const theError = new Error('Some error')
+      const englifyStub = sinon.stub()
+      sandbox.stub(ErrorHandler, '_getTranslationId')
+        .withArgs(theError)
+        .returns('some-error.translation-id')
+      englifyStub
+        .withArgs('some-error.translation-id')
+        .returns('some message')
+      sandbox.stub(i18next, 'getFixedT')
+        .withArgs('en')
+        .returns(englifyStub)
+      sandbox.stub(ErrorTracker, 'trackMessage')
+
+      ErrorHandler.trackMessage(theError)
+
+      expect(ErrorTracker.trackMessage).to.have.been
+        .calledOnceWithExactly('some message')
+    })
+
+    it('it tracks message with custom tranlslationId provided', () => {
+      const englifyStub = sinon.stub()
+      sandbox.stub(ErrorHandler, '_getTranslationId')
+      englifyStub
+        .withArgs('custom-translation-id')
+        .returns('some message')
+      sandbox.stub(i18next, 'getFixedT')
+        .withArgs('en')
+        .returns(englifyStub)
+      sandbox.stub(ErrorTracker, 'trackMessage')
+
+      ErrorHandler.trackMessage(
+        new Error('Some message'),
+        { translationId: 'custom-translation-id' },
+      )
+
+      expect(ErrorHandler._getTranslationId).to.have.not.been.called
+      expect(ErrorTracker.trackMessage).to.have.been
+        .calledOnceWithExactly('some message')
+    })
+
+    it('it does not track message if skipTrack = true', () => {
+      sandbox.stub(ErrorHandler, '_getTranslationId')
+      sandbox.stub(i18next, 'getFixedT').returns(sinon.spy())
+      sandbox.stub(ErrorTracker, 'trackMessage')
+
+      ErrorHandler.trackMessage(
+        new Error('Some message'),
+        { skipTrack: true },
+      )
+
+      expect(ErrorHandler._getTranslationId).to.have.not.been.called
+      expect(i18next.getFixedT).to.have.not.been.called
+      expect(ErrorTracker.trackMessage).to.have.not.been.called
     })
   })
 

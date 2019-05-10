@@ -12,7 +12,7 @@
             :to="vueRoutes.verificationGeneral"
             class="account-type-selector__item"
             :disabled="kycState && kycAccountRole &&
-              kycAccountRole !== kvEntryGeneralRoleId &&
+              !isKycTypeGeneral &&
               kycState !== REQUEST_STATES_STR.permanentlyRejected"
           >
             <p class="account-type-selector__item-title">
@@ -146,7 +146,19 @@ export default {
 
       kvEntryCorporateRoleId: vuexTypes.kvEntryCorporateRoleId,
       kvEntryGeneralRoleId: vuexTypes.kvEntryGeneralRoleId,
+      kvEntryUsVerifiedRoleId: vuexTypes.kvEntryUsVerifiedRoleId,
+      kvEntryUsAccreditedRoleId: vuexTypes.kvEntryUsAccreditedRoleId,
     }),
+
+    isKycTypeGeneral () {
+      const generalTypeRoles = [
+        this.kvEntryGeneralRoleId,
+        this.kvEntryUsVerifiedRoleId,
+        this.kvEntryUsAccreditedRoleId,
+      ]
+
+      return generalTypeRoles.includes(this.kycAccountRole)
+    },
   },
 
   async beforeRouteEnter (to, from, next) {
@@ -206,7 +218,7 @@ export default {
 
   @include box-shadow();
 
-  &:disabled {
+  &[disabled] {
     opacity: 0.7;
     cursor: default;
     box-shadow: none;

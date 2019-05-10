@@ -69,13 +69,10 @@
           v-model="form.startTime"
           name="create-sale-start-time"
           :enable-time="true"
-          :disable-before="yesterday"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
           :label="'create-sale-form.start-time-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.startTime', { minDate: getCurrentDate() }
-          )"
+          :error-message="getFieldErrorMessage('form.startTime')"
         />
       </div>
     </div>
@@ -250,7 +247,6 @@ export default {
         baseAsset: { required },
         startTime: {
           required,
-          minDate: minDate(moment().toISOString()),
         },
         endTime: {
           required,
