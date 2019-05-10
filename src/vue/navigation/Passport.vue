@@ -53,6 +53,7 @@
 
         <div
           class="passport__dropdown-balances-wrp
+                 passport__dropdown-balances-wrp--align-left
                  passport__dropdown-balances-wrp--direction-column"
         >
           <span class="passport__dropdown-balances-label">
@@ -63,28 +64,35 @@
             :key="index"
             class="passport__dropdown-balances-asset"
           >
-            {{ item.balance }} {{ item.asset }}
+            {{ { value: item.balance, currency: item.asset } | formatMoney }}
           </span>
           <router-link
             class="passport__dropdown-balances-link"
             :to="vueRoutes.balances"
+            @click.native="toggleDropdown"
           >
             {{ 'passport.show-more' | globalize }}
           </router-link>
         </div>
-        <button
-          class="app__button-flat"
-          @click="goSettings"
+        <div
+          class="passport__dropdown-actions-wrp"
         >
-          {{ 'passport.settings-btn' | globalize }}
-        </button>
+          <button
+            class="app__button-flat
+                   passport__dropdown-btn"
+            @click="goSettings"
+          >
+            {{ 'passport.settings-btn' | globalize }}
+          </button>
 
-        <button
-          class="app__button-flat"
-          @click="logOut"
-        >
-          {{ 'passport.sign-out-btn' | globalize }}
-        </button>
+          <button
+            class="app__button-flat
+                   passport__dropdown-btn"
+            @click="logOut"
+          >
+            {{ 'passport.sign-out-btn' | globalize }}
+          </button>
+        </div>
       </div>
     </transition>
   </div>
@@ -229,9 +237,18 @@ export default {
 $media-hide-account-details-bp: 800px;
 $dropdown-item-side-padding: 2.4rem;
 
+.passport__dropdown-btn {
+  width: 100%;
+}
+
+.passport__dropdown-balances-label,
+.passport__dropdown-signed-in-email-prefix {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
 .passport__dropdown-balances-link {
-  padding-top: 0.4rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   cursor: pointer;
   color: $col-link;
 }
@@ -356,16 +373,20 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__dropdown-signed-in-wrp,
 .passport__dropdown-balances-wrp {
-  padding: 1.6rem $dropdown-item-side-padding 0.8rem;
+  padding: 1.6rem $dropdown-item-side-padding 0;
   line-height: 1.5;
-  text-align: center;
+  text-align: left;
   color: $col-text-secondary;
   font-size: 1.4rem;
 }
 
-.passport__dropdown-signed-in-email,
-.passport__dropdown-balances-asset {
-  font-weight: 700;
+.passport__dropdown-balances-wrp {
+  padding-top: 1.6rem;
+}
+
+.passport__dropdown-actions-wrp {
+  padding-top: 1.6rem;
+  padding-bottom: 0.6rem;
 }
 
 .passport__dropdown-status-icon {
