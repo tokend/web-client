@@ -869,7 +869,8 @@
         "manage-asset-pair": "Pair updated",
         "manage-offer": "Offer",
         "payment": "Payment",
-        "unknown": "Unknown type"
+        "unknown": "Unknown type",
+        "investment": "Investment"
       },
       "type-th": "Type",
       "amount-th": "Amount",
