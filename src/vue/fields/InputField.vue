@@ -99,7 +99,8 @@ export default {
        *
        * @return {Boolean}
        */
-      this.isCapsLockOn = event.getModifierState('CapsLock')
+      this.isCapsLockOn = event.getModifierState &&
+        event.getModifierState('CapsLock')
     },
   },
 }

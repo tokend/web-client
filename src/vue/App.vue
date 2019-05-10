@@ -50,6 +50,7 @@ import {
 import { Sdk } from '@/sdk'
 import { Api } from '@/api'
 import { vuexTypes } from '@/vuex'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 import config from '@/config'
 
@@ -73,6 +74,8 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.wallet,
+      vuexTypes.walletEmail,
+      vuexTypes.accountId,
       vuexTypes.isLoggedIn,
       vuexTypes.isAccountBlocked,
       vuexTypes.kycRequestBlockReason,
@@ -105,6 +108,10 @@ export default {
       if (this[vuexTypes.isLoggedIn]) {
         Sdk.sdk.useWallet(this[vuexTypes.wallet])
         Api.useWallet(this[vuexTypes.wallet])
+        ErrorTracker.setLoggedInUser({
+          'accountId': this[vuexTypes.accountId],
+          'email': this[vuexTypes.walletEmail],
+        })
       }
     },
     detectIE () {
