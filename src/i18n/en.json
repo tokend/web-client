@@ -1491,6 +1491,15 @@
       "view-video-btn": "View",
       "owner-lbl": "Owner"
     },
+    "sale-statistics": {
+      "loading-msg": "Loading sale participations…",
+      "loading-error-msg": "There was an error while loading.",
+      "participation-title": "Participation",
+      "participant-th": "Participant",
+      "amount-th": "Amount",
+      "no-investments-title": "No investments yet",
+      "no-investments-msg": "This sale has no investments yet"
+    },
     "sale-whitelist-manager": {
       "invite-tab": "Invite",
       "unregistered-users-tab": "Unregistered",
