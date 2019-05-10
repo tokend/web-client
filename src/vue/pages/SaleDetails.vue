@@ -23,6 +23,7 @@
         <template slot="extra">
           <button
             v-ripple
+            v-if="sale.owner === accountId"
             class="app__button-raised sale-details__invest-btn"
             @click="isWhitelistDrawerShown = true"
           >
@@ -31,6 +32,7 @@
 
           <button
             v-ripple
+            v-if="sale.owner === accountId"
             class="app__button-raised sale-details__invest-btn"
             @click="isStatisticsDrawerShown = true"
           >
@@ -127,6 +129,9 @@ import { errors } from '@/js/errors'
 
 import { vueRoutes } from '@/vue-router/routes'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 export default {
   name: 'sale-details',
   components: {
@@ -152,6 +157,12 @@ export default {
     isWhitelistDrawerShown: false,
     vueRoutes,
   }),
+
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
+  },
 
   async created () {
     await this.loadSale(this.id)
