@@ -36,8 +36,7 @@ for further information about branching and tagging conventions.
 - Now using @tokend/js-sdk@1.7.0-x.1
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
-- Now sorting asset list on balances page descending
-  by converted balance amount
+- Now loading converted balances on the balances page
 
 #### Removed
 - Unused methods from `DocumentContainer` class

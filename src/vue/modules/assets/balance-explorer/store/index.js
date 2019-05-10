@@ -30,14 +30,14 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_ACCOUNT_BALANCES] ({ commit, getters }) {
-    const endpoint = `/v3/accounts/${getters[types.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
-      include: ['balances.state', 'balances.asset'],
+  async [types.LOAD_ACCOUNT_BALANCES] ({ commit, getters }, quoteAssetCode) {
+    const endpoint = `/v3/accounts/${getters[types.accountId]}/converted_balances/${quoteAssetCode}`
+    const { data } = await api().getWithSignature(endpoint, {
+      include: ['states', 'balance', 'balance.state', 'balance.asset'],
     })
 
-    commit(types.SET_ACCOUNT_BALANCES, account.balances)
-    commit(types.SET_ASSETS, account.balances.map(b => b.asset))
+    commit(types.SET_ACCOUNT_BALANCES, data.states.map(s => s.balance))
+    commit(types.SET_ASSETS, data.states.map(s => s.asset))
   },
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
@@ -60,8 +60,7 @@ export const getters = {
     .map(asset => {
       const balance = state.balances.find(b => b.asset.id === asset.id)
       return new Asset(asset, balance ? balance.state.available : '')
-    })
-    .sort((a, b) => b.balance - a.balance),
+    }),
   [types.kycRequiredAssetType]: state => state.kycRequiredAssetType,
   [types.securityAssetType]: state => state.securityAssetType,
 }
