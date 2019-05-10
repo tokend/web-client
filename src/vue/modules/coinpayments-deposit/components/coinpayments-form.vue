@@ -131,7 +131,7 @@ export default {
     },
     async loadDeposit (params) {
       const endpoint = '/integrations/coinpayments/deposit'
-      const response = await api().postWithSignature(endpoint, {
+      const response = await api.postWithSignature(endpoint, {
         data: {
           type: 'coinpayments_deposit',
           attributes: params,

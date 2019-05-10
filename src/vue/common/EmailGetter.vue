@@ -139,7 +139,7 @@ export default {
       if (this.accountId) {
         return this.accountId
       } else if (this.balanceId) {
-        const { data } = await api().get(`/v3/balances/${this.balanceId}`)
+        const { data } = await api.get(`/v3/balances/${this.balanceId}`)
         return safeGet(data, 'owner.id')
       } else {
         return ''

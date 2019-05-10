@@ -41,15 +41,15 @@ describe('Load assets mixin', () => {
 
       it('calls Api.get method with provided params and returns instance of Asset record',
         async () => {
-          sinon.stub(Api.api(), 'get').resolves({ data: {} })
+          sinon.stub(Api.api, 'get').resolves({ data: {} })
 
           const result = await wrapper.vm.getAssetByCode('USD')
 
-          expect(Api.api().get)
+          expect(Api.api.get)
             .to.have.been.calledOnceWithExactly('/v3/assets/USD')
           expect(result).to.be.instanceOf(Asset)
 
-          Api.api().get.restore()
+          Api.api.get.restore()
         })
     })
   })

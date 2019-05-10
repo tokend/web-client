@@ -1,5 +1,4 @@
-import config from '@/config'
-import { initApi, walletsManager } from '@/api'
+import { walletsManager, useWallet } from '@/api'
 
 import { vuexTypes } from './types'
 import { Wallet } from '@tokend/js-sdk'
@@ -31,8 +30,8 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
-    const wallet = await walletsManager().get(email, password)
-    await initApi(wallet, config.HORIZON_SERVER)
+    const wallet = await walletsManager.get(email, password)
+    useWallet(wallet)
     commit(vuexTypes.SET_WALLET, wallet)
   },
   async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
@@ -42,7 +41,7 @@ export const actions = {
       wallet.accountId,
       wallet.id
     )
-    await initApi(newWallet, config.HORIZON_SERVER)
+    useWallet(newWallet)
     commit(vuexTypes.SET_WALLET, wallet)
   },
 }

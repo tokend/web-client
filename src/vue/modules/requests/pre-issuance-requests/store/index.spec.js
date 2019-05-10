@@ -101,13 +101,13 @@ describe('pre-issuance-requests.module', () => {
 
     describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(Api.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
           rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api().getWithSignature)
+        expect(Api.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_pre_issuance_requests',
             {
@@ -121,7 +121,7 @@ describe('pre-issuance-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
   })

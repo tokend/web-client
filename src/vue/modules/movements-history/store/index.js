@@ -30,7 +30,7 @@ export const actions = {
       throw new Error(`No balance found for ${assetCode}`)
     }
 
-    return api().getWithSignature('/v3/history', {
+    return api.getWithSignature('/v3/history', {
       page: {
         order: 'desc',
       },
@@ -44,7 +44,7 @@ export const actions = {
 
   async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 

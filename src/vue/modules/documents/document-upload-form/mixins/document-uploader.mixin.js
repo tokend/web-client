@@ -9,7 +9,7 @@ export default {
   methods: {
     async uploadDocument (document, accountId) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const { data: config } = await api().postWithSignature('/documents', {
+      const { data: config } = await api.postWithSignature('/documents', {
         data: {
           type,
           attributes: { content_type: mimeType },

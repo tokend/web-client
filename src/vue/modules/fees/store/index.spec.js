@@ -53,7 +53,7 @@ describe('fees.module', () => {
     })
 
     it('LOAD_ACCOUNT_FEES properly commit its set of mutations', async () => {
-      sinon.stub(Api.api(), 'getWithSignature').resolves({
+      sinon.stub(Api.api, 'getWithSignature').resolves({
         data: {
           fees: [{ foo: 'bar' }],
         },
@@ -68,7 +68,7 @@ describe('fees.module', () => {
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
 
-      Api.api().getWithSignature.restore()
+      Api.api.getWithSignature.restore()
     })
   })
 

@@ -90,7 +90,7 @@ export default {
     async loadOffersHistory () {
       this.isOpenOffersLoading = true
       try {
-        const response = await api().getWithSignature('/v3/offers', {
+        const response = await api.getWithSignature('/v3/offers', {
           filter: {
             base_asset: this.assetPair.base,
             quote_asset: this.assetPair.quote,

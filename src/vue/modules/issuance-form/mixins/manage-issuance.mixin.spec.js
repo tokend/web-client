@@ -89,7 +89,7 @@ describe('Manage issuance mixin', () => {
     describe('getReceiverBalanceId', () => {
       it('calls Api.get method and returns balance by provided asset code',
         async () => {
-          sandbox.stub(Api.api(), 'get').resolves({
+          sandbox.stub(Api.api, 'get').resolves({
             data: {
               balances: [
                 { id: 'SOME_BALANCE_ID', asset: { id: 'USD' } },
@@ -102,7 +102,7 @@ describe('Manage issuance mixin', () => {
             'SOME_ACCOUNT_ID', 'USD'
           )
 
-          expect(Api.api().get).to.have.been.calledOnceWithExactly(
+          expect(Api.api.get).to.have.been.calledOnceWithExactly(
             '/v3/accounts/SOME_ACCOUNT_ID',
             { include: ['balances.asset'] }
           )
@@ -111,7 +111,7 @@ describe('Manage issuance mixin', () => {
       )
 
       it('returns empty string if specified balance was not found', async () => {
-        sandbox.stub(Api.api(), 'get').resolves({
+        sandbox.stub(Api.api, 'get').resolves({
           data: {
             balances: [{ id: 'OTHER_BALANCE_ID', asset: { id: 'BTC' } }],
           },
@@ -137,7 +137,7 @@ describe('Manage issuance mixin', () => {
         sandbox.stub(
           base.CreateIssuanceRequestBuilder, 'createIssuanceRequest'
         ).returns('ISSUANCE_OPERATION')
-        sandbox.stub(Api.api(), 'postOperations').resolves()
+        sandbox.stub(Api.api, 'postOperations').resolves()
 
         await wrapper.vm.postIssuanceOperation('SOME_BALANCE_ID')
 
@@ -149,7 +149,7 @@ describe('Manage issuance mixin', () => {
             reference: 'SOME_REFERENCE',
             creatorDetails: {},
           })
-        expect(Api.api().postOperations)
+        expect(Api.api.postOperations)
           .to.have.been.calledOnceWithExactly('ISSUANCE_OPERATION')
       })
     })

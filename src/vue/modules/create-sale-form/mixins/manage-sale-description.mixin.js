@@ -4,7 +4,7 @@ import { api } from '@/api'
 export default {
   methods: {
     async createSaleDescriptionBlob (description) {
-      const { data: blob } = await api().postWithSignature('/blobs', {
+      const { data: blob } = await api.postWithSignature('/blobs', {
         data: {
           type: BLOB_TYPES.saleOverview,
           attributes: {
@@ -24,7 +24,7 @@ export default {
     async getSaleDescription (blobId) {
       try {
         const endpoint = `/accounts/${this.wallet.accountId}/blobs/${blobId}`
-        const { data: blob } = await api().getWithSignature(endpoint)
+        const { data: blob } = await api.getWithSignature(endpoint)
 
         return JSON.parse(blob.value)
       } catch {

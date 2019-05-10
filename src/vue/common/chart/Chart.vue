@@ -101,10 +101,10 @@ export default {
       try {
         this.isActualData = true
         const response = this.quoteAsset
-          ? await api().getRaw(
+          ? await api.getRaw(
             `/charts/${this.lockedAssets.base}-${this.lockedAssets.quote}`
           )
-          : await api().getRaw(`/charts/${this.lockedAssets.base}`)
+          : await api.getRaw(`/charts/${this.lockedAssets.base}`)
         this.data = response.data
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)

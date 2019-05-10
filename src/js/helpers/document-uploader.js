@@ -51,7 +51,7 @@ export class DocumentUploader {
   }
 
   static async _createDocumentAnchorConfig ({ type, mimeType, accountId }) {
-    const { data: config } = await api().postWithSignature('/documents', {
+    const { data: config } = await api.postWithSignature('/documents', {
       data: {
         type,
         attributes: { content_type: mimeType },

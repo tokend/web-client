@@ -122,13 +122,13 @@ describe('create-asset-requests.module', () => {
 
     describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(Api.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
           rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api().getWithSignature)
+        expect(Api.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_asset_requests',
             {
@@ -142,13 +142,13 @@ describe('create-asset-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
 
     describe('LOAD_KYC_REQUIRED_ASSET_TYPE', () => {
       it('properly commit its set of mutations', async () => {
-        sinon.stub(Api.api(), 'get').resolves({
+        sinon.stub(Api.api, 'get').resolves({
           data: { value: { u32: 1 } },
         })
 
@@ -161,17 +161,17 @@ describe('create-asset-requests.module', () => {
         expect(store.commit.args)
           .to.deep.equal(Object.entries(expectedMutations))
 
-        Api.api().get.restore()
+        Api.api.get.restore()
       })
     })
 
     describe('CANCEL_REQUEST', () => {
       beforeEach(() => {
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(Api.api, 'postOperations').resolves()
       })
 
       afterEach(() => {
-        Api.api().postOperations.restore()
+        Api.api.postOperations.restore()
       })
 
       it('calls base.ManageAssetBuilder.cancelAssetRequest with provided params', async () => {
@@ -187,10 +187,10 @@ describe('create-asset-requests.module', () => {
         base.ManageAssetBuilder.cancelAssetRequest.restore()
       })
 
-      it('calls api().postOperations with correct params', async () => {
+      it('calls api.postOperations with correct params', async () => {
         await actions[types.CANCEL_REQUEST]({}, '1')
 
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(Api.api.postOperations).to.have.been.calledOnce
       })
     })
   })

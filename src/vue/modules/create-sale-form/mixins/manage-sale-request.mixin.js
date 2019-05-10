@@ -59,7 +59,7 @@ export default {
   methods: {
     async getCreateSaleRequestById (id) {
       const endpoint = `/v3/create_sale_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
           requestor: this.wallet.accountId,
         },
@@ -80,7 +80,7 @@ export default {
 
       const operation =
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

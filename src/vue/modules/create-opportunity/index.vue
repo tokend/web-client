@@ -731,7 +731,7 @@ export default {
         })
         const assetCreationOperation = this.buildAssetRequestOperation()
         const saleCreationOperation = this.buildSaleCreationOperation(blobId)
-        await api().postOperations(
+        await api.postOperations(
           assetCreationOperation,
           saleCreationOperation
         )

@@ -27,7 +27,7 @@ export const mutations = {
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 
@@ -41,7 +41,7 @@ export const actions = {
    */
   async [types.LOAD_ASSET_PAIRS] ({ commit, getters }, opts) {
     const endpoint = '/v3/asset_pairs'
-    const { data: pairs } = await api().getWithSignature(endpoint, {
+    const { data: pairs } = await api.getWithSignature(endpoint, {
       filter: {
         asset: opts.asset,
       },
@@ -78,7 +78,7 @@ export const actions = {
     }
 
     const endpoint = '/v3/history'
-    const { data: movements } = await api().getWithSignature(endpoint, {
+    const { data: movements } = await api.getWithSignature(endpoint, {
       page: {
         order: 'desc',
       },

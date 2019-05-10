@@ -25,7 +25,7 @@ export default {
       loadKyc: vuexTypes.LOAD_KYC,
     }),
     async createKycBlob (blobType) {
-      const { data: blob } = await api().postWithSignature('/blobs', {
+      const { data: blob } = await api.postWithSignature('/blobs', {
         data: {
           type: blobType,
           attributes: { value: JSON.stringify(this.createKycData()) },

@@ -25,12 +25,12 @@ export const mutations = {
 export const actions = {
   async [types.LOAD_ASSET_BY_ID] (_, id) {
     const endpoint = `/v3/assets/${id}`
-    const { data: record } = await api().get(endpoint)
+    const { data: record } = await api.get(endpoint)
     return new Asset(record)
   },
 
   [types.LOAD_REQUESTS] ({ rootGetters }) {
-    return api().getWithSignature('/v3/create_sale_requests', {
+    return api.getWithSignature('/v3/create_sale_requests', {
       page: {
         order: 'desc',
       },
@@ -45,7 +45,7 @@ export const actions = {
     const operation = base.SaleRequestBuilder.cancelSaleCreationRequest({
       requestID: requestId,
     })
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 

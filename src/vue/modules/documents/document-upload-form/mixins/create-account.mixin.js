@@ -33,7 +33,7 @@ export default {
         }],
       })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
 
       this.documentAccountId = id
     },
@@ -49,11 +49,11 @@ export default {
           },
         })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
 
     async createBlob (details) {
-      const { data } = await api().postWithSignature('/blobs', {
+      const { data } = await api.postWithSignature('/blobs', {
         data: {
           type: BLOB_TYPE,
           attributes: {

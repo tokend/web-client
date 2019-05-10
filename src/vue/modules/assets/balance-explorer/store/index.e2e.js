@@ -27,7 +27,7 @@ describe('balance explorer module end-to-end test', () => {
     store = new Vuex.Store(balanceExplorerModule)
 
     Api.initApi(wallet, config)
-    sinon.stub(Api.api(), 'getWithSignature').resolves({
+    sinon.stub(Api.api, 'getWithSignature').resolves({
       data: {
         balances: [
           {
@@ -46,7 +46,7 @@ describe('balance explorer module end-to-end test', () => {
   })
 
   afterEach(() => {
-    Api.api().getWithSignature.restore()
+    Api.api.getWithSignature.restore()
   })
 
   it('assets', () => {

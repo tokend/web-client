@@ -45,7 +45,7 @@ export default {
   methods: {
     async getUpdateAssetRequestById (id, accountId) {
       const endpoint = `/v3/update_asset_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
           requestor: accountId,
         },
@@ -70,7 +70,7 @@ export default {
 
     async getLatestUpdateAssetRequest (requestState, accountId) {
       const endpoint = '/v3/update_asset_requests'
-      const { data: requests } = await api().getWithSignature(endpoint, {
+      const { data: requests } = await api.getWithSignature(endpoint, {
         page: {
           limit: 1,
           order: 'desc',
@@ -94,7 +94,7 @@ export default {
 
       const operation =
         base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

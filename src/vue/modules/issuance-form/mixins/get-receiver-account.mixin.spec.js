@@ -60,7 +60,7 @@ describe('Get receiver account mixin', () => {
     describe('getAccountIdByEmail', () => {
       it('calls Api.get method and returns first found element if it exists',
         async () => {
-          sandbox.stub(Api.api(), 'get').resolves({
+          sandbox.stub(Api.api, 'get').resolves({
             data: [
               { address: 'SOME_ACCOUNT_ID' },
               { address: 'OTHER_ACCOUNT_ID' },
@@ -69,7 +69,7 @@ describe('Get receiver account mixin', () => {
 
           const result = await wrapper.vm.getAccountIdByEmail('foo@bar.com')
 
-          expect(Api.api().get).to.have.been.calledOnceWithExactly(
+          expect(Api.api.get).to.have.been.calledOnceWithExactly(
             '/identities',
             {
               filter: { email: 'foo@bar.com' },
@@ -81,7 +81,7 @@ describe('Get receiver account mixin', () => {
       )
 
       it('throws an error if response data was empty', async () => {
-        sandbox.stub(Api.api(), 'get').resolves({ data: [] })
+        sandbox.stub(Api.api, 'get').resolves({ data: [] })
 
         try {
           await wrapper.vm.getAccountIdByEmail('foo@bar.com')

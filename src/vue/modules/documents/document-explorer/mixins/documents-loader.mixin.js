@@ -9,7 +9,7 @@ export default {
   methods: {
     async loadPublicKeyEntries (accountId) {
       const endpoint = `/v3/public_key_entries/${accountId}`
-      const { data } = await api().getWithSignature(endpoint)
+      const { data } = await api.getWithSignature(endpoint)
 
       return data.accounts.filter(item => item.id !== accountId)
     },
@@ -46,7 +46,7 @@ export default {
       const order = 'desc'
       const endpoint = '/v3/change_role_requests'
 
-      const { data } = await api().getWithSignature(endpoint, {
+      const { data } = await api.getWithSignature(endpoint, {
         filter: {
           requestor: accountId,
         },
@@ -66,7 +66,7 @@ export default {
 
     async getBlobById (blobId, accountId) {
       const endpoint = `/accounts/${accountId}/blobs/${blobId}`
-      const { data: blob } = await api().getWithSignature(endpoint)
+      const { data: blob } = await api.getWithSignature(endpoint)
 
       return blob
     },

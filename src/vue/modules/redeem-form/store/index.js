@@ -31,14 +31,14 @@ export const mutations = {
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 
     commit(types.SET_BALANCES, account.balances)
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    let response = await api().get('/v3/assets')
+    let response = await api.get('/v3/assets')
     let assets = response.data
     while (response.data.length) {
       response = await response.fetchNext()
@@ -52,7 +52,7 @@ export const actions = {
    * @param {String} baseAsset - filter sales by base asset code
    */
   async [types.LOAD_SALE_BY_BASE_ASSET] ({ getters }, baseAsset) {
-    let { data: sales } = await api().get('/v3/sales', {
+    let { data: sales } = await api.get('/v3/sales', {
       filter: {
         base_asset: baseAsset,
       },
@@ -66,7 +66,7 @@ export const actions = {
   async [types.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
     const accountId = getters.accountId
     const endpoint = `/v3/accounts/${accountId}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.asset', 'balances.state'],
     })
 
@@ -99,7 +99,7 @@ export const actions = {
         asset: opts.pair.base,
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
-      await api().postOperations(operation)
+      await api.postOperations(operation)
       dispatch(types.LOAD_ACCOUNT_BALANCES_DETAILS)
     }
 
@@ -109,7 +109,7 @@ export const actions = {
         asset: opts.pair.quote,
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
-      await api().postOperations(operation)
+      await api.postOperations(operation)
       dispatch(types.LOAD_ACCOUNT_BALANCES_DETAILS)
     }
 
@@ -121,7 +121,7 @@ export const actions = {
       fee_type: feeType,
     }
     const endpoint = `/accounts/${opts.accountId}/calculated_fees`
-    const { data: fee } = await api().getWithSignature(endpoint, feeOpts)
+    const { data: fee } = await api.getWithSignature(endpoint, feeOpts)
     const operationOpts = {
       amount: opts.baseAmount,
       price: opts.price,
@@ -133,7 +133,7 @@ export const actions = {
     }
     const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 

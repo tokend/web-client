@@ -73,17 +73,17 @@ describe('issuance-explorer.module', () => {
           include: ['request_details'],
         }
 
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(Api.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_ISSUANCES]({ rootGetters: { accountId } })
 
-        expect(Api.api().getWithSignature)
+        expect(Api.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_issuance_requests',
             expectedParams
           )
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
   })

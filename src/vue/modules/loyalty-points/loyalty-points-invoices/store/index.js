@@ -17,7 +17,7 @@ export const mutations = {
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 

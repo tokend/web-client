@@ -65,7 +65,7 @@ export default {
         const blobId = this.sale.description
 
         const endpoint = `/accounts/${accountId}/blobs/${blobId}`
-        const { data: blob } = await api().getWithSignature(endpoint)
+        const { data: blob } = await api.getWithSignature(endpoint)
 
         this.saleDescription = JSON.parse(blob.value)
         this.isLoaded = true

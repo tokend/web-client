@@ -64,7 +64,7 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await api().getWithSignature(`/v3/change_role_requests`, {
+    const response = await api.getWithSignature(`/v3/change_role_requests`, {
       filter: { requestor },
       page: { limit, order },
       include: ['request_details'],
@@ -97,7 +97,7 @@ export const actions = {
     { state, commit, rootGetters },
     requestId
   ) {
-    const { data } = await api().getWithSignature(
+    const { data } = await api.getWithSignature(
       `/v3/change_role_requests/${requestId}`,
       {
         filter: { requestor: rootGetters[vuexTypes.accountId] },
@@ -121,7 +121,7 @@ export const actions = {
     const accountId = rootGetters[vuexTypes.accountId]
     const endpoint = `/accounts/${accountId}/blobs/${latestBlobId}`
 
-    const latestBlobResponse = await api().getWithSignature(endpoint)
+    const latestBlobResponse = await api.getWithSignature(endpoint)
     const latestData = latestBlobResponse.data.value
 
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)

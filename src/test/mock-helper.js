@@ -1,6 +1,6 @@
 import { MockWrapper } from './index'
 import { Sdk } from '../sdk'
-import { api, initApi } from '@/api'
+import { api } from '@/api'
 import { Wallet } from '@tokend/js-sdk'
 import mock from 'xhr-mock'
 
@@ -12,10 +12,9 @@ const HORIZON_URL = 'https://test.api.com'
 export class MockHelper {
   constructor () {
     Sdk.initSync(HORIZON_URL)
-    initApi(null, HORIZON_URL)
 
     sdkInstance = Sdk.getInstance()
-    apiInstance = api()
+    apiInstance = api
 
     mock.setup()
     mock.reset()
@@ -55,7 +54,7 @@ export class MockHelper {
 
   useMockWallet ({ walletId, accountId } = {}) {
     sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
-    api().useWallet(this.getMockWallet({ walletId, accountId }))
+    api.useWallet(this.getMockWallet({ walletId, accountId }))
   }
 
   mockEndpoint (endpoint, response) {

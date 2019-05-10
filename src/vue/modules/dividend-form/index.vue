@@ -290,7 +290,7 @@ export default {
           return false
         }
         const operations = await this.getTransferOperations()
-        await api().postOperations(...operations)
+        await api.postOperations(...operations)
         Bus.success('dividend-form.dividend-success')
         this.$emit(EVENTS.transferred)
       } catch (e) {

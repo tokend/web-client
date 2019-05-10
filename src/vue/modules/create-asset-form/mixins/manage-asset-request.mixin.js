@@ -55,7 +55,7 @@ export default {
   methods: {
     async getCreateAssetRequestById (id, accountId) {
       const endpoint = `/v3/create_asset_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
           requestor: accountId,
         },
@@ -73,7 +73,7 @@ export default {
       await this.uploadDocuments(assetDocuments, accountId)
       const operation =
         base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

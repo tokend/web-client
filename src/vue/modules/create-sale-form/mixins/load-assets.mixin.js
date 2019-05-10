@@ -20,7 +20,7 @@ export default {
   methods: {
     async loadAssets () {
       const endpoint = `/v3/accounts/${this.wallet.accountId}`
-      const { data: account } = await api().getWithSignature(endpoint, {
+      const { data: account } = await api.getWithSignature(endpoint, {
         include: ['balances.asset'],
       })
 

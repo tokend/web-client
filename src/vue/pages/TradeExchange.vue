@@ -152,7 +152,7 @@ export default {
         const orderBookId = SECONDARY_MARKET_ORDER_BOOK_ID
 
         const endpoint = `/v3/order_books/${baseAsset}:${quoteAsset}:${orderBookId}`
-        const { data: orderBook } = await api().get(endpoint, {
+        const { data: orderBook } = await api.get(endpoint, {
           include: ['buy_entries', 'sell_entries'],
         })
 

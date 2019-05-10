@@ -18,7 +18,7 @@ export default {
     },
 
     async getAccountIdByEmail (email) {
-      const { data } = await api().get('/identities', {
+      const { data } = await api.get('/identities', {
         filter: { email },
         page: { limit: 1 },
       })

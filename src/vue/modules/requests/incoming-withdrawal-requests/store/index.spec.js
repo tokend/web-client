@@ -101,13 +101,13 @@ describe('incoming-withdrawals-requests.module', () => {
 
     describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(Api.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
           rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api().getWithSignature)
+        expect(Api.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_withdraw_requests',
             {
@@ -117,18 +117,18 @@ describe('incoming-withdrawals-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
 
     describe('APPROVE_REQUEST', () => {
       beforeEach(() => {
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(Api.api, 'postOperations').resolves()
         sinon.stub(base.ReviewRequestBuilder, 'reviewWithdrawRequest')
       })
 
       afterEach(() => {
-        Api.api().postOperations.restore()
+        Api.api.postOperations.restore()
         base.ReviewRequestBuilder.reviewWithdrawRequest.restore()
       })
 
@@ -156,21 +156,21 @@ describe('incoming-withdrawals-requests.module', () => {
           })
       })
 
-      it('calls api().postOperations', async () => {
+      it('calls api.postOperations', async () => {
         await actions[types.APPROVE_REQUEST]({}, {})
 
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(Api.api.postOperations).to.have.been.calledOnce
       })
     })
 
     describe('REJECT_REQUEST', () => {
       beforeEach(() => {
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(Api.api, 'postOperations').resolves()
         sinon.stub(base.ReviewRequestBuilder, 'reviewWithdrawRequest')
       })
 
       afterEach(() => {
-        Api.api().postOperations.restore()
+        Api.api.postOperations.restore()
         base.ReviewRequestBuilder.reviewWithdrawRequest.restore()
       })
 
@@ -201,10 +201,10 @@ describe('incoming-withdrawals-requests.module', () => {
           })
       })
 
-      it('calls api().postOperations', async () => {
+      it('calls api.postOperations', async () => {
         await actions[types.REJECT_REQUEST]({}, { request: {}, reason: '' })
 
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(Api.api.postOperations).to.have.been.calledOnce
       })
     })
   })

@@ -38,7 +38,7 @@ describe('Load assets mixin', () => {
 
       it('calls Api.getWithSignature method with provided params and sets assets property',
         async () => {
-          sandbox.stub(Api.api(), 'get').resolves({
+          sandbox.stub(Api.api, 'get').resolves({
             data: {
               balances: [
                 { asset: { id: 'USD', owner: { id: 'SOME_ACCOUNT_ID' } } },
@@ -49,7 +49,7 @@ describe('Load assets mixin', () => {
 
           await wrapper.vm.loadOwnedAssets('SOME_ACCOUNT_ID')
 
-          expect(Api.api().get)
+          expect(Api.api.get)
             .to.have.been.calledOnceWithExactly(
               '/v3/accounts/SOME_ACCOUNT_ID',
               { include: ['balances.asset'] }

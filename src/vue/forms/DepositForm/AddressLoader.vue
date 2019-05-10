@@ -90,7 +90,7 @@ export default {
           .createBindExternalSystemAccountIdOp({
             externalSystemType: +this.externalSystemType,
           })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         await this.loadAccount(this.accountId)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)

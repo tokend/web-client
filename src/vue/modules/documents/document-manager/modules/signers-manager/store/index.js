@@ -18,7 +18,7 @@ const mutations = {
 const actions = {
   [types.LOAD_SIGNERS] (_, attachedAccountId) {
     const endpoint = `/v3/accounts/${attachedAccountId}/signers`
-    return api().getWithSignature(endpoint, {
+    return api.getWithSignature(endpoint, {
       include: ['role.rules'],
     })
   },

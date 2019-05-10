@@ -40,7 +40,7 @@ describe('Load asset types mixin', () => {
 
       it('loads kycRequiredAssetType property using Api.get method',
         async () => {
-          sinon.stub(Api.api(), 'get').resolves({
+          sinon.stub(Api.api, 'get').resolves({
             data: {
               value: { u32: 1 },
             },
@@ -48,12 +48,12 @@ describe('Load asset types mixin', () => {
 
           await wrapper.vm.loadKycRequiredAssetType()
 
-          expect(Api.api().get).to.have.been.calledOnceWithExactly(
+          expect(Api.api.get).to.have.been.calledOnceWithExactly(
             '/v3/key_values/asset_type:kyc_required'
           )
           expect(wrapper.vm.kycRequiredAssetType).to.equal(1)
 
-          Api.api().get.restore()
+          Api.api.get.restore()
         })
     })
   })

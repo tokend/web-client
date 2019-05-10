@@ -25,7 +25,7 @@ export default {
         .createPreIssuanceRequestOp({
           request: this.issuance.xdr,
         })
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
 
     async extractPreIssuance (file) {

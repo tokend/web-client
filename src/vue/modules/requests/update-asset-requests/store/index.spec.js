@@ -101,13 +101,13 @@ describe('asset-update-requests.module', () => {
 
     describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(Api.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
           rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api().getWithSignature)
+        expect(Api.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/update_asset_requests',
             {
@@ -121,14 +121,14 @@ describe('asset-update-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
 
     describe('CANCEL_REQUEST', () => {
-      it('creates cancel asset request operation and calls api().postOperations', async () => {
+      it('creates cancel asset request operation and calls api.postOperations', async () => {
         sinon.stub(base.ManageAssetBuilder, 'cancelAssetRequest')
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(Api.api, 'postOperations').resolves()
 
         await actions[types.CANCEL_REQUEST]({}, '1')
 
@@ -136,10 +136,10 @@ describe('asset-update-requests.module', () => {
           .to.have.been.calledOnceWithExactly({
             requestID: '1',
           })
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(Api.api.postOperations).to.have.been.calledOnce
 
         base.ManageAssetBuilder.cancelAssetRequest.restore()
-        Api.api().postOperations.restore()
+        Api.api.postOperations.restore()
       })
     })
   })

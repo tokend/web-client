@@ -215,7 +215,7 @@ export default {
   methods: {
     async loadOpportunity (opportunityId) {
       try {
-        const { data } = await api().get(`/v3/sales/${opportunityId}`, {
+        const { data } = await api.get(`/v3/sales/${opportunityId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.opportunity = new SaleRecord(data)
@@ -232,7 +232,7 @@ export default {
     async loadAsset (assetCode) {
       try {
         const endpoint = `/v3/assets/${assetCode}`
-        const { data } = await api().get(endpoint)
+        const { data } = await api.get(endpoint)
         this.asset = new AssetRecord(data)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)

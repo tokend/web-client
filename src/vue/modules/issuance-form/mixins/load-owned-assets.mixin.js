@@ -9,7 +9,7 @@ export default {
   methods: {
     async loadOwnedAssets (ownerAccountId) {
       const endpoint = `/v3/accounts/${ownerAccountId}`
-      const { data: account } = await api().get(endpoint, {
+      const { data: account } = await api.get(endpoint, {
         include: ['balances.asset'],
       })
 

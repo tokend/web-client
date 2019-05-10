@@ -131,13 +131,13 @@ describe('Manage sale request mixin', () => {
           wrapper.setProps({
             wallet: { accountId: 'SOME_ACCOUNT_ID' },
           })
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api, 'getWithSignature').resolves({
             data: {},
           })
 
           const result = await wrapper.vm.getCreateSaleRequestById('10')
 
-          expect(Api.api().getWithSignature)
+          expect(Api.api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/create_sale_requests/10',
               {
@@ -164,7 +164,7 @@ describe('Manage sale request mixin', () => {
           sandbox.stub(wrapper.vm, 'createSaleDescriptionBlob')
             .resolves('BLOB_ID')
           sandbox.stub(base.SaleRequestBuilder, 'createSaleCreationRequest')
-          sandbox.stub(Api.api(), 'postOperations').resolves()
+          sandbox.stub(Api.api, 'postOperations').resolves()
 
           await wrapper.vm.submitCreateSaleRequest()
 
@@ -176,7 +176,7 @@ describe('Manage sale request mixin', () => {
 
           expect(base.SaleRequestBuilder.createSaleCreationRequest)
             .to.have.been.calledOnce
-          expect(Api.api().postOperations)
+          expect(Api.api.postOperations)
             .to.have.been.calledOnce
         }
       )

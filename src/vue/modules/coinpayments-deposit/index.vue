@@ -96,7 +96,7 @@ export default {
         include: ['request_details'],
       }
       const endpoint = '/v3/create_issuance_requests'
-      const response = await api().getWithSignature(endpoint, params)
+      const response = await api.getWithSignature(endpoint, params)
       return response
     },
     handleCoinpaymentsFormSubmitted () {

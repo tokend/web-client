@@ -400,7 +400,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await api().postOperations(this.buildPaymentOperation())
+        await api.postOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
@@ -479,7 +479,7 @@ export default {
         ]
 
         const endpoint = `${baseEndpoint}?${params.join('&')}`
-        const { data: fees } = await api().get(endpoint)
+        const { data: fees } = await api.get(endpoint)
 
         return fees
       } catch (e) {

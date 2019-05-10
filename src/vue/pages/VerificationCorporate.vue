@@ -236,7 +236,7 @@ export default {
           kycBlobId,
           this.kvEntryCorporateRoleId
         )
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)

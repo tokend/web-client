@@ -30,7 +30,7 @@ export const mutations = {
 export const actions = {
   async [vuexTypes.LOAD_FACTORS] ({ commit, rootGetters }) {
     const endpoint = `/wallets/${rootGetters[vuexTypes.walletId]}/factors`
-    const { data } = await api().getWithSignature(endpoint)
+    const { data } = await api.getWithSignature(endpoint)
     commit(vuexTypes.SET_FACTORS, data)
   },
 }

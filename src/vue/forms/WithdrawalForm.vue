@@ -320,7 +320,7 @@ export default {
         }
         const operation = base.CreateWithdrawRequestBuilder
           .createWithdrawWithAutoConversion(this.composeOptions())
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
         this.$emit(EVENTS.operationSubmitted)
@@ -339,7 +339,7 @@ export default {
         ]
 
         const endpoint = `${baseEndpoint}?${params.join('&')}`
-        const { data: fees } = await api().get(endpoint)
+        const { data: fees } = await api.get(endpoint)
 
         this.fixedFee = fees.fixed
         this.percentFee = fees.calculatedPercent
@@ -395,7 +395,7 @@ export default {
     async loadAssets () {
       await this.loadBalances()
       const endpoint = `/v3/accounts/${this.accountId}`
-      const { data: account } = await api().get(endpoint, {
+      const { data: account } = await api.get(endpoint, {
         include: ['balances.asset'],
       })
 

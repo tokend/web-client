@@ -152,16 +152,16 @@ export default {
       try {
         await this.deleteTotpFactor()
 
-        await api().postWithSignature(endpoint, {
+        await api.postWithSignature(endpoint, {
           data: { type: 'totp' },
         })
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await factorsManager().verifyPasswordFactor(
+            await factorsManager.verifyPasswordFactor(
               error, this.form.password
             )
-            const { data } = await api().postWithSignature(endpoint, {
+            const { data } = await api.postWithSignature(endpoint, {
               data: { type: 'totp' },
             })
             this.factor = data
@@ -179,12 +179,12 @@ export default {
           const factorId = this.totpFactors[0].id
           const endpoint = `/wallets/${this.walletId}/factors/${factorId}`
 
-          await api().deleteWithSignature(endpoint)
+          await api.deleteWithSignature(endpoint)
         }
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await factorsManager().verifyPasswordFactorAndRetry(error,
+            await factorsManager.verifyPasswordFactorAndRetry(error,
               this.form.password
             )
             Bus.success('tfa-form.tfa-disabled-msg')
@@ -207,7 +207,7 @@ export default {
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await factorsManager().verifyTotpFactor(error, this.form.code)
+            await factorsManager.verifyTotpFactor(error, this.form.code)
             await this.changeFactorPriority()
 
             this.$emit(EVENTS.update)
@@ -223,7 +223,7 @@ export default {
     },
     async changeFactorPriority () {
       const endpoint = `/wallets/${this.walletId}/factors/${this.factor.id}`
-      await api().patchWithSignature(endpoint, {
+      await api.patchWithSignature(endpoint, {
         data: { attributes: { priority: ENABLED_FACTOR_PRIORITY } },
       })
     },

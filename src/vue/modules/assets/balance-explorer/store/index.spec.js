@@ -108,7 +108,7 @@ describe('balance explorer module', () => {
 
     describe('LOAD_ACCOUNT_BALANCES', () => {
       it('properly commit its set of mutations', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves({
+        sinon.stub(Api.api, 'getWithSignature').resolves({
           data: {
             balances: [
               { asset: { id: 'USD' } },
@@ -133,13 +133,13 @@ describe('balance explorer module', () => {
         expect(store.commit.args)
           .to.deep.equal(Object.entries(expectedMutations))
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
 
     describe('LOAD_KYC_REQUIRED_ASSET_TYPE', () => {
       it('properly commit its set of mutations', async () => {
-        sinon.stub(Api.api(), 'get').resolves({
+        sinon.stub(Api.api, 'get').resolves({
           data: { value: { u32: 1 } },
         })
 
@@ -152,7 +152,7 @@ describe('balance explorer module', () => {
         expect(store.commit.args)
           .to.deep.equal(Object.entries(expectedMutations))
 
-        Api.api().get.restore()
+        Api.api.get.restore()
       })
     })
   })

@@ -21,7 +21,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ rootGetters }) {
-    return api().getWithSignature('/v3/create_withdraw_requests', {
+    return api.getWithSignature('/v3/create_withdraw_requests', {
       page: {
         order: 'desc',
       },
@@ -39,7 +39,7 @@ export const actions = {
       action: base.xdr.ReviewRequestOpAction.approve().value,
     })
 
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 
   async [types.REJECT_REQUEST] (_, { request, reason }) {
@@ -49,7 +49,7 @@ export const actions = {
       action: base.xdr.ReviewRequestOpAction.permanentReject().value,
     })
 
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 

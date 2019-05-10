@@ -196,7 +196,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async loadTradablePairs () {
-      const { data } = await api().get('/v3/asset_pairs', {
+      const { data } = await api.get('/v3/asset_pairs', {
         filter: { policy: ASSET_PAIR_POLICIES.tradeableSecondaryMarket },
         page: { limit: 100 },
       })

@@ -107,7 +107,7 @@ describe('Load assets mixin', () => {
       it('calls Api.getWithSignature method with provided params and sets assets property',
         async () => {
           wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api, 'getWithSignature').resolves({
             data: {
               balances: [
                 { asset: { id: 'USD' } },
@@ -118,7 +118,7 @@ describe('Load assets mixin', () => {
 
           await wrapper.vm.loadAssets()
 
-          expect(Api.api().getWithSignature)
+          expect(Api.api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/accounts/SOME_ACCOUNT_ID',
               { include: ['balances.asset'] }

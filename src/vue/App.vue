@@ -48,7 +48,7 @@ import {
   mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { initApi, api } from '@/api'
+import { api, walletsManager, factorsManager } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 
@@ -100,7 +100,9 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      await initApi(null, config.HORIZON_SERVER)
+      api.useBaseURL(config.HORIZON_SERVER)
+      const { data: networkDetails } = await api.getRaw('/')
+      api.useNetworkDetails(networkDetails)
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()
 
@@ -112,8 +114,10 @@ export default {
           this.walletId
         )
         Sdk.sdk.useWallet(wallet)
-        api().useWallet(wallet)
+        api.useWallet(wallet)
       }
+      walletsManager.useApi(api)
+      factorsManager.useApi(api)
     },
     detectIE () {
       const edge = window.navigator.userAgent.indexOf('Edge/')

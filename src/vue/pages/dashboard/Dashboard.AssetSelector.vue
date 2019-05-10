@@ -162,7 +162,7 @@ export default {
     async loadAssets () {
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await api().get(endpoint, {
+        const { data: account } = await api.get(endpoint, {
           include: ['balances.asset'],
         })
 

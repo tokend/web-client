@@ -363,7 +363,7 @@ export default {
           ...this.composeOptions(),
         })
 
-        await api().withWallet(MASTER_ACCOUNT_WALLET).postOperations(operation)
+        await api.withWallet(MASTER_ACCOUNT_WALLET).postOperations(operation)
         Bus.success('deposit-fiat-card-module.deposit-success')
         this.$emit(EVENTS.deposited)
       } catch (e) {

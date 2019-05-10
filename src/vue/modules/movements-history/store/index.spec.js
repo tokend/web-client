@@ -127,7 +127,7 @@ describe('movements-history.module', () => {
           include: ['effect', 'operation.details'],
         }
 
-        sinon.stub(ApiImporter.api(), 'getWithSignature').resolves()
+        sinon.stub(ApiImporter.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_MOVEMENTS](
           {
@@ -144,18 +144,18 @@ describe('movements-history.module', () => {
           assetCode
         )
 
-        expect(ApiImporter.api().getWithSignature)
+        expect(ApiImporter.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/history',
             expectedParams
           )
 
-        ApiImporter.api().getWithSignature.restore()
+        ApiImporter.api.getWithSignature.restore()
       })
     })
     describe('LOAD_BALANCES', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(ApiImporter.api(), 'getWithSignature')
+        sinon.stub(ApiImporter.api, 'getWithSignature')
           .resolves({
             data: {
               balances: accountBalancesJSON,
@@ -173,7 +173,7 @@ describe('movements-history.module', () => {
           .deep
           .equal(Object.entries(expectedMutations))
 
-        ApiImporter.api().getWithSignature.restore()
+        ApiImporter.api.getWithSignature.restore()
       })
     })
   })

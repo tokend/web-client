@@ -97,7 +97,7 @@ const mutations = {
 
 const actions = {
   async [types.GET_BLOB_DATA] (v, blobId) {
-    const { data } = await api().getWithSignature(`/blobs/${blobId}`)
+    const { data } = await api.getWithSignature(`/blobs/${blobId}`)
 
     return JSON.parse(data.value)
   },
@@ -163,7 +163,7 @@ const actions = {
   },
 
   async [types.CREATE_BLOB] ({ getters }, ownerAccountId) {
-    const { data } = await api().postWithSignature('/blobs', {
+    const { data } = await api.postWithSignature('/blobs', {
       data: {
         type: BLOB_TYPES.kycGeneral,
         attributes: {

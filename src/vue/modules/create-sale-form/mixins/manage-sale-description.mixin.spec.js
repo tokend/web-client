@@ -39,7 +39,7 @@ describe('Manage sale description mixin', () => {
       it('calls Api.postWithSignature method with provided params and returns blob ID from response',
         async () => {
           wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sandbox.stub(Api.api(), 'postWithSignature').resolves({
+          sandbox.stub(Api.api, 'postWithSignature').resolves({
             data: { id: 'BLOB_ID' },
           })
 
@@ -47,7 +47,7 @@ describe('Manage sale description mixin', () => {
             'Some description'
           )
 
-          expect(Api.api().postWithSignature)
+          expect(Api.api.postWithSignature)
             .to.have.been.calledOnceWithExactly('/blobs', {
               data: {
                 type: BLOB_TYPES.saleOverview,
@@ -66,13 +66,13 @@ describe('Manage sale description mixin', () => {
       it('calls Api.getWithSignature method with provided params and returns parsed response if loading succeded',
         async () => {
           wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api, 'getWithSignature').resolves({
             data: { value: '"Some value"' },
           })
 
           const result = await wrapper.vm.getSaleDescription('BLOB_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(Api.api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/accounts/SOME_ACCOUNT_ID/blobs/BLOB_ID'
             )
@@ -82,7 +82,7 @@ describe('Manage sale description mixin', () => {
 
       it('returns empty string if loading failed',
         async () => {
-          sandbox.stub(Api.api(), 'getWithSignature').rejects()
+          sandbox.stub(Api.api, 'getWithSignature').rejects()
 
           const result = await wrapper.vm.getSaleDescription('BLOB_ID')
 

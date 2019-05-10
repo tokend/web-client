@@ -109,14 +109,14 @@ describe('Upload documents mixin', () => {
         wrapper.setProps({
           wallet: { accountId: 'SOME_ACCOUNT_ID' },
         })
-        sandbox.stub(Api.api(), 'postWithSignature')
+        sandbox.stub(Api.api, 'postWithSignature')
           .resolves({ data: { key: 'doc-key' } })
 
         const result = await wrapper.vm.createDocumentAnchorConfig(
           'doc-type', 'mime-type'
         )
 
-        expect(Api.api().postWithSignature)
+        expect(Api.api.postWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/documents',
             {

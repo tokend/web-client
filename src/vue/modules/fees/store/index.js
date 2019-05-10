@@ -17,7 +17,7 @@ export const actions = {
   async [types.LOAD_ACCOUNT_FEES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
 
-    const { data } = await api().getWithSignature(endpoint, {
+    const { data } = await api.getWithSignature(endpoint, {
       include: ['fees'],
     })
 

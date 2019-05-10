@@ -69,7 +69,7 @@ export default {
   async created () {
     try {
       const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await api().get(endpoint)
+      const { data } = await api.get(endpoint)
 
       this.asset = new AssetRecord(data)
       this.isLoaded = true

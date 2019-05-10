@@ -305,7 +305,7 @@ export default {
         const operation = base.CreateWithdrawRequestBuilder.createWithdrawWithAutoConversion({
           ...this.composeOptions(),
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         Bus.success('withdrawal-fiat-card-module.withdraw-success')
         this.$emit(EVENTS.withdrawn)
       } catch (e) {

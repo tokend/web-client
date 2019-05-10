@@ -22,7 +22,7 @@ export const mutations = {
 
 export const actions = {
   [types.LOAD_REQUESTS] ({ rootGetters }) {
-    return api().getWithSignature('/v3/update_asset_requests', {
+    return api.getWithSignature('/v3/update_asset_requests', {
       page: {
         order: 'desc',
       },
@@ -37,7 +37,7 @@ export const actions = {
     const operation = base.ManageAssetBuilder.cancelAssetRequest({
       requestID: requestId,
     })
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 

@@ -115,7 +115,7 @@ export default {
           },
         })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
 
     async createBlob () {
@@ -131,7 +131,7 @@ export default {
         updater_account_id: this.accountId,
       }
 
-      const { data } = await api().postWithSignature('/blobs', {
+      const { data } = await api.postWithSignature('/blobs', {
         data: {
           type: BLOB_TYPE,
           attributes: {

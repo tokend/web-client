@@ -189,7 +189,7 @@ export default {
           creatorDetails: { blob_id: blobId },
         })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

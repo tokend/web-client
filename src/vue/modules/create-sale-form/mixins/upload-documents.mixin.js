@@ -25,7 +25,7 @@ export default {
     },
 
     async createDocumentAnchorConfig (documentType, mimeType) {
-      const { data: config } = await api().postWithSignature('/documents', {
+      const { data: config } = await api.postWithSignature('/documents', {
         data: {
           type: documentType,
           attributes: { content_type: mimeType },

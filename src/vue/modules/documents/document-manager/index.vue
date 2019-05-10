@@ -159,7 +159,7 @@ export default {
   methods: {
     async loadSigner () {
       const endpoint = `/v3/accounts/${this.attachedAccountId}/signers`
-      const { data: signers } = await api().getWithSignature(endpoint, {
+      const { data: signers } = await api.getWithSignature(endpoint, {
         page: {
           limit: 100,
         },
@@ -170,7 +170,7 @@ export default {
         .find(s => s.publicKey === this.accountId)
     },
     async getMetadataHistory () {
-      const { data: changeRoleRequests } = await api().getWithSignature('/v3/change_role_requests', {
+      const { data: changeRoleRequests } = await api.getWithSignature('/v3/change_role_requests', {
         include: ['request_details'],
         filter: {
           state: REQUEST_STATES.approved,
@@ -228,12 +228,12 @@ export default {
     async getBlob (blobId) {
       // TODO: legacy endpoint, new one currently has problems with sign check
       const endpoint = `/accounts/${this.attachedAccountId}/blobs/${blobId}`
-      const { data } = await api().getWithSignature(endpoint)
+      const { data } = await api.getWithSignature(endpoint)
 
       return JSON.parse(data.value)
     },
     async getDownloadLink (fileKey) {
-      const { data: { url } } = await api().getWithSignature(`/documents/${fileKey}`)
+      const { data: { url } } = await api.getWithSignature(`/documents/${fileKey}`)
       return url
     },
   },

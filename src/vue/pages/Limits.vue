@@ -170,7 +170,7 @@ export default {
       this.isLimitsLoadingFailed = false
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await api().getWithSignature(endpoint, {
+        const { data: account } = await api.getWithSignature(endpoint, {
           include: ['limits'],
         })
         this.formatLimits(account.limits)
@@ -185,7 +185,7 @@ export default {
       this.isLimitsRequestsLoadingFailed = false
       let response = {}
       try {
-        response = await api().getWithSignature('/v3/update_limits_requests', {
+        response = await api.getWithSignature('/v3/update_limits_requests', {
           filter: { requestor: this.accountId },
           page: { ...this.limitsRequestsQueries },
           include: ['request_details'],

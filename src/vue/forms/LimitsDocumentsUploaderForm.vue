@@ -157,7 +157,7 @@ export default {
             documents: this.formatDocumentsForRequest(),
           },
         })
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {

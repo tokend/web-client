@@ -27,7 +27,7 @@ export const mutations = {
 export const actions = {
   async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 
@@ -35,7 +35,7 @@ export const actions = {
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
     const endpoint = '/v3/assets'
-    let response = await api().getWithSignature(endpoint)
+    let response = await api.getWithSignature(endpoint)
     let assets = await loadingDataViaLoop(response)
 
     commit(
@@ -50,7 +50,7 @@ export const actions = {
    */
   async [types.LOAD_BALANCE_HOLDERS] ({ commit }, opts) {
     const endpoint = '/v3/balances'
-    const { data: holders } = await api().getWithSignature(endpoint, {
+    const { data: holders } = await api.getWithSignature(endpoint, {
       filter: {
         asset: opts.assetCode,
       },
@@ -69,7 +69,7 @@ export const actions = {
    */
   async [types.LOAD_FEES] ({ commit }, opts) {
     const endpoint = `/v3/accounts/${opts.accountId}/calculated_fees`
-    const { data: fees } = await api().getWithSignature(endpoint, {
+    const { data: fees } = await api.getWithSignature(endpoint, {
       asset: opts.assetCode,
       fee_type: FEE_TYPES.paymentFee,
       subtype: opts.subtype,
@@ -84,7 +84,7 @@ export const actions = {
    */
   async [types.LOAD_ACCOUNT_ID] ({ commit }, opts) {
     const endpoint = `/balances/${opts.accountId}/account`
-    const { _rawResponse: account } = await api().getWithSignature(endpoint, {})
+    const { _rawResponse: account } = await api.getWithSignature(endpoint, {})
 
     return account.data.account_id
   },

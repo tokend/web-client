@@ -69,7 +69,7 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS] ({ commit }) {
-    const { data } = await api().get(`/v3/key_values`)
+    const { data } = await api.get(`/v3/key_values`)
 
     const generalRoleId = getRole(KEY_VALUE_ENTRY_KEYS.general)
     const corporateRoleId = getRole(KEY_VALUE_ENTRY_KEYS.corporate)
@@ -97,15 +97,15 @@ export const actions = {
   },
 
   async [vuexTypes.LOAD_KV_KYC_REQUIRED] ({ commit }) {
-    const { data } = await api().get('/v3/key_values/asset_type:kyc_required')
+    const { data } = await api.get('/v3/key_values/asset_type:kyc_required')
     commit(vuexTypes.SET_KV_KYC_REQUIRED, data.value.u32)
   },
   async [vuexTypes.LOAD_KV_ASSET_TYPE_SECURITY] ({ commit }) {
-    const { data } = await api().get('/v3/key_values/asset_type:security')
+    const { data } = await api.get('/v3/key_values/asset_type:security')
     commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, data.value.u32)
   },
   async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {
-    const { data } = await api().get('/v3/assets', {
+    const { data } = await api.get('/v3/assets', {
       filter: {
         policy: ASSET_POLICIES.statsQuoteAsset,
       },

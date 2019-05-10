@@ -52,7 +52,7 @@ describe('Manage pre-issuance mixin', () => {
           sandbox.stub(
             base.PreIssuanceRequestOpBuilder, 'createPreIssuanceRequestOp'
           ).returns('SOME_OPERATION')
-          sandbox.stub(Api.api(), 'postOperations').resolves()
+          sandbox.stub(Api.api, 'postOperations').resolves()
 
           await wrapper.vm.createPreIssuanceRequest()
 
@@ -60,7 +60,7 @@ describe('Manage pre-issuance mixin', () => {
             .to.have.been.calledOnceWithExactly({
               request: 'SOME_XDR_VALUE',
             })
-          expect(Api.api().postOperations)
+          expect(Api.api.postOperations)
             .to.have.been.calledOnceWithExactly('SOME_OPERATION')
         }
       )

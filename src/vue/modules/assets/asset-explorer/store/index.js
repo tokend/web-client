@@ -33,7 +33,7 @@ export const mutations = {
 export const actions = {
   async [types.LOAD_ACCOUNT_BALANCES] ({ commit, rootGetters }) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 
@@ -41,19 +41,19 @@ export const actions = {
   },
 
   async [types.LOAD_ASSETS] (_, query) {
-    return api().get('/v3/assets', query)
+    return api.get('/v3/assets', query)
   },
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
     const endpoint = '/v3/key_values/asset_type:kyc_required'
-    const { data } = await api().get(endpoint)
+    const { data } = await api.get(endpoint)
 
     commit(types.SET_KYC_REQUIRED_ASSET_TYPE, data.value.u32)
   },
 
   async [types.LOAD_SECURITY_ASSET_TYPE] ({ commit }) {
     const endpoint = `/v3/key_values/asset_type:security`
-    const { data } = await api().get(endpoint)
+    const { data } = await api.get(endpoint)
 
     commit(types.SET_SECURITY_ASSET_TYPE, data.value.u32)
   },
@@ -65,7 +65,7 @@ export const actions = {
       action: base.xdr.ManageBalanceAction.createUnique(),
     })
 
-    await api().postOperations(operation)
+    await api.postOperations(operation)
   },
 }
 

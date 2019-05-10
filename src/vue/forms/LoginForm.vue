@@ -121,7 +121,7 @@ export default {
     },
     async verifyTfaFactor () {
       if (this.tfaError) {
-        await factorsManager().verifyTotpFactor(
+        await factorsManager.verifyTotpFactor(
           this.tfaError,
           this.form.tfaCode
         )

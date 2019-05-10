@@ -251,7 +251,7 @@ export default {
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         await this.loadBalances()
         this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')

@@ -167,7 +167,7 @@ export default {
             isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
           },
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-added-msg')
         this.$emit('close')
@@ -189,7 +189,7 @@ export default {
             isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
           },
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-updated-msg')
         this.$emit('close')
@@ -205,7 +205,7 @@ export default {
           publicKey: this.signerToManage.publicKey,
           source: this.sourceAccountId,
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-deleted-msg')
         this.$emit('close')

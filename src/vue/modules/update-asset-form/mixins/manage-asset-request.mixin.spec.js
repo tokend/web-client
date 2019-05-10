@@ -114,13 +114,13 @@ describe('Manage asset request mixin', () => {
     describe('getUpdateAssetRequestById', () => {
       it('returns UpdateAssetRequest record loaded using API.getWithSignature',
         async () => {
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api, 'getWithSignature').resolves({
             data: {},
           })
 
           const result = await wrapper.vm.getUpdateAssetRequestById('10', 'SOME_ACCOUNT_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(Api.api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/update_asset_requests/10',
               {
@@ -136,13 +136,13 @@ describe('Manage asset request mixin', () => {
     describe('getLatestUpdateAssetRequest', () => {
       it('returns UpdateAssetRequest record loaded using API.getWithSignature',
         async () => {
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api, 'getWithSignature').resolves({
             data: [{}],
           })
 
           const result = await wrapper.vm.getLatestUpdateAssetRequest(1, 'SOME_ACCOUNT_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(Api.api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/update_asset_requests',
               {
@@ -162,7 +162,7 @@ describe('Manage asset request mixin', () => {
       )
 
       it('returns null if API returned empty data array', async () => {
-        sandbox.stub(Api.api(), 'getWithSignature').resolves({
+        sandbox.stub(Api.api, 'getWithSignature').resolves({
           data: [],
         })
 
@@ -205,7 +205,7 @@ describe('Manage asset request mixin', () => {
 
           sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
           sandbox.stub(base.ManageAssetBuilder, 'assetUpdateRequest')
-          sandbox.stub(Api.api(), 'postOperations').resolves()
+          sandbox.stub(Api.api, 'postOperations').resolves()
 
           await wrapper.vm.submitUpdateAssetRequest()
 
@@ -216,7 +216,7 @@ describe('Manage asset request mixin', () => {
             ])
           expect(base.ManageAssetBuilder.assetUpdateRequest)
             .to.have.been.calledOnce
-          expect(Api.api().postOperations)
+          expect(Api.api.postOperations)
             .to.have.been.calledOnce
         }
       )

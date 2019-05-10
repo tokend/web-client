@@ -160,7 +160,7 @@ export default {
       }
 
       return function () {
-        return api().getWithSignature('/v3/sales', opts)
+        return api.getWithSignature('/v3/sales', opts)
       }
     },
   },

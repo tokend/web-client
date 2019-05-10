@@ -1,4 +1,4 @@
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 import { vuexTypes } from './types'
 import { Wallet } from '@tokend/js-sdk'
 import Vue from 'vue'
@@ -21,8 +21,6 @@ describe('wallet.module end-to-end test', () => {
     let store
 
     beforeEach(async () => {
-      Api.initSync({ horizonURL: 'https://test.api.com' })
-
       store = new Vuex.Store({
         actions: {},
         getters: {},
@@ -30,7 +28,7 @@ describe('wallet.module end-to-end test', () => {
         state: {},
         modules: { wallet },
       })
-      sinon.stub(Api.walletsManager, 'getKdfParams').resolves({
+      sinon.stub(walletsManager, 'getKdfParams').resolves({
         data: {
           type: 'kdf',
           id: '2',
@@ -44,10 +42,14 @@ describe('wallet.module end-to-end test', () => {
           },
         },
       })
-      sinon.stub(Api.walletsManager, 'get').resolves(
+      sinon.stub(walletsManager, 'get').resolves(
         new Wallet(email, seed, accountId, walletId)
       )
       await store.dispatch(vuexTypes.LOAD_WALLET, { email, password })
+    })
+
+    afterEach(() => {
+      sinon.restore()
     })
 
     it('walletId', () => {

@@ -97,13 +97,13 @@ describe('create-sale-requests.module', () => {
 
     describe('LOAD_REQUESTS', () => {
       it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(Api.api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS](
           { rootGetters: { accountId: 'SOME_ACCOUNT_ID' } }
         )
 
-        expect(Api.api().getWithSignature)
+        expect(Api.api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_sale_requests',
             {
@@ -116,17 +116,17 @@ describe('create-sale-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        Api.api.getWithSignature.restore()
       })
     })
 
     describe('CANCEL_REQUEST', () => {
       beforeEach(() => {
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(Api.api, 'postOperations').resolves()
       })
 
       afterEach(() => {
-        Api.api().postOperations.restore()
+        Api.api.postOperations.restore()
       })
 
       it('calls base.SaleRequestBuilder.cancelSaleCreationRequest with provided params', async () => {
@@ -142,10 +142,10 @@ describe('create-sale-requests.module', () => {
         base.SaleRequestBuilder.cancelSaleCreationRequest.restore()
       })
 
-      it('calls api().postOperations with correct params', async () => {
+      it('calls api.postOperations with correct params', async () => {
         await actions[types.CANCEL_REQUEST]({}, '1')
 
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(Api.api.postOperations).to.have.been.calledOnce
       })
     })
   })

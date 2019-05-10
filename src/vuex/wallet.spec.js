@@ -1,4 +1,4 @@
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 
 import { mutations, actions, getters } from './wallet.module'
 import { vuexTypes } from './types'
@@ -49,7 +49,7 @@ describe('wallet.module', () => {
     })
 
     it('LOAD_WALLET commits proper set of mutations', async () => {
-      sinon.stub(Api.walletsManager, 'get').resolves(mockWallet)
+      sinon.stub(walletsManager, 'get').resolves(mockWallet)
 
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
       const expectedMutations = { [vuexTypes.SET_WALLET]: mockWallet }

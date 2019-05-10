@@ -179,13 +179,13 @@ describe('Manage asset request mixin', () => {
     describe('getCreateAssetRequestById', () => {
       it('calls Api.getWithSignature method with provided params and returns an instance of CreateAssetRequest record',
         async () => {
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(Api.api, 'getWithSignature').resolves({
             data: {},
           })
 
           const result = await wrapper.vm.getCreateAssetRequestById('10', 'SOME_ACCOUNT_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(Api.api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/create_asset_requests/10',
               {
@@ -211,7 +211,7 @@ describe('Manage asset request mixin', () => {
 
           sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
           sandbox.stub(base.ManageAssetBuilder, 'assetCreationRequest')
-          sandbox.stub(Api.api(), 'postOperations').resolves()
+          sandbox.stub(Api.api, 'postOperations').resolves()
 
           await wrapper.vm.submitCreateAssetRequest('SOME_ACCOUNT_ID')
 
@@ -222,7 +222,7 @@ describe('Manage asset request mixin', () => {
             ], 'SOME_ACCOUNT_ID')
           expect(base.ManageAssetBuilder.assetCreationRequest)
             .to.have.been.calledOnce
-          expect(Api.api().postOperations)
+          expect(Api.api.postOperations)
             .to.have.been.calledOnce
         }
       )

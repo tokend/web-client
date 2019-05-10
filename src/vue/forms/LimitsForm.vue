@@ -410,7 +410,7 @@ export default {
             note,
           },
         })
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }
