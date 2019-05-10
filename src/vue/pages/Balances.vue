@@ -5,6 +5,7 @@
         :submodule="getModule().getSubmodule(BalanceExplorerModule)"
         :config="config"
         :wallet="wallet"
+        :default-quote-asset="defaultQuoteAsset"
       />
     </template>
   </div>
@@ -35,6 +36,7 @@ export default {
   computed: {
     ...mapGetters({
       wallet: vuexTypes.wallet,
+      defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
   },
 }
