@@ -28,7 +28,7 @@ describe('Information step form', () => {
     const expectedResults = {
       name: ['required', 'maxLength'],
       baseAsset: ['required'],
-      startTime: ['required', 'minDate'],
+      startTime: ['required'],
       endTime: ['required', 'minDate'],
       softCap: ['required', 'softCapMoreThanHardCap'],
       hardCap: ['required', 'hardCapLessThanSoftCap'],

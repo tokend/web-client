@@ -19,6 +19,7 @@ for further information about branching and tagging conventions.
   - grayscaled disabled state
   - upload icons
 - `initSync()` method to Api class
+- Ability to create sale and opportunity in the past
 - Sentry integration
 - Email validation on login form
 
