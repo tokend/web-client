@@ -1,6 +1,6 @@
 <template>
   <div class="assets-renderer">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -40,7 +40,6 @@
 
       <div class="assets-renderer__asset-list-wrp">
         <div
-          v-if="assets.length"
           class="assets-renderer__asset-list"
         >
           <template v-for="asset in assets">
@@ -51,10 +50,17 @@
               @click="selectAsset(asset)"
             />
           </template>
+          <template v-for="item in itemsPerSkeletonLoader">
+            <skeleton-loader
+              :key="item"
+              v-if="!isLoaded && !assets.length"
+              template="cardViewer"
+            />
+          </template>
         </div>
 
         <no-data-message
-          v-else
+          v-if="isLoaded && !assets.length"
           icon-name="trending-up"
           :title="'assets.no-assets-title' | globalize"
           :message="'assets.no-assets-msg' | globalize"
@@ -62,14 +68,10 @@
       </div>
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="assets-renderer__error-msg">
         {{ 'assets.loading-error-msg' | globalize }}
       </p>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="assets.assets-loading-msg" />
     </template>
 
     <div class="assets-renderer__collection-loader-wrp">
@@ -86,9 +88,9 @@
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
@@ -109,13 +111,13 @@ export default {
   name: 'assets-renderer',
   components: {
     Drawer,
-    LoadSpinner,
     NoDataMessage,
     CollectionLoader,
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
     AssetUpdateFormModule,
+    SkeletonLoader,
   },
 
   props: {
@@ -141,6 +143,7 @@ export default {
     selectedAsset: {},
     firstPageLoader: _ => {},
     ASSETS_PER_PAGE,
+    itemsPerSkeletonLoader: 3,
   }),
 
   computed: {

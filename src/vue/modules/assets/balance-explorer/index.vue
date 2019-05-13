@@ -1,6 +1,6 @@
 <template>
   <div class="balance-explorer">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -38,7 +38,6 @@
 
       <div class="balance-explorer__asset-list-wrp">
         <div
-          v-if="assets.length"
           class="balance-explorer__asset-list"
         >
           <template v-for="asset in assets">
@@ -49,10 +48,17 @@
               @click="selectAsset(asset)"
             />
           </template>
+          <template v-for="item in itemsPerSkeletonLoader">
+            <skeleton-loader
+              :key="item"
+              v-if="!isLoaded && !assets.length"
+              template="cardViewer"
+            />
+          </template>
         </div>
 
         <no-data-message
-          v-else
+          v-if="isLoaded && !assets.length"
           icon-name="trending-up"
           :title="'assets.no-balances-title' | globalize"
           :message="'assets.no-balances-msg' | globalize"
@@ -60,22 +66,18 @@
       </div>
     </template>
 
-    <template v-else-if="isLoadFailed">
+    <template v-if="isLoadFailed">
       <p class="balance-explorer__error-msg">
         {{ 'assets.loading-error-msg' | globalize }}
       </p>
-    </template>
-
-    <template v-else>
-      <load-spinner message-id="assets.balances-loading-msg" />
     </template>
   </div>
 </template>
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import CardViewer from '../shared/components/card-viewer'
 import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
@@ -94,11 +96,11 @@ export default {
   name: 'balance-explorer',
   components: {
     Drawer,
-    LoadSpinner,
     NoDataMessage,
     CardViewer,
     AssetAttributesViewer,
     AssetUpdateFormModule,
+    SkeletonLoader,
   },
   props: {
     wallet: {
@@ -121,6 +123,7 @@ export default {
     isDrawerShown: false,
     isUpdateMode: false,
     selectedAsset: {},
+    itemsPerSkeletonLoader: 3,
   }),
 
   computed: {
