@@ -3,7 +3,7 @@ import { types } from './types'
 import { Fee } from '../wrappers/fee'
 
 import { Wallet } from '@tokend/js-sdk'
-import * as Api from '@/api'
+import { api, useWallet } from '@/api'
 
 describe('fees.module', () => {
   const fees = [
@@ -28,9 +28,6 @@ describe('fees.module', () => {
   })
 
   describe('actions', () => {
-    const config = {
-      horizonUrl: 'https://test.api.com',
-    }
     const wallet = new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
@@ -49,11 +46,12 @@ describe('fees.module', () => {
         dispatch: sinon.stub(),
       }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     it('LOAD_ACCOUNT_FEES properly commit its set of mutations', async () => {
-      sinon.stub(Api.api, 'getWithSignature').resolves({
+      sinon.stub(api, 'getWithSignature').resolves({
         data: {
           fees: [{ foo: 'bar' }],
         },
@@ -68,7 +66,7 @@ describe('fees.module', () => {
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
 
-      Api.api.getWithSignature.restore()
+      api.getWithSignature.restore()
     })
   })
 
