@@ -1,12 +1,12 @@
 import ManagePreIssuanceMixin from './manage-pre-issuance.mixin'
 
-import { ApiCaller, base } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import { FileUtil } from '@/js/utils/file.util'
 
-import * as Api from '@/api'
+import { api } from '@/api'
 import { AssetNotOwnedError, FileCorruptedError } from '../_errors'
 import { Issuance } from '../wrappers/issuance'
 
@@ -36,10 +36,6 @@ describe('Manage pre-issuance mixin', () => {
 
   describe('method', () => {
     describe('createPreIssuanceRequest', () => {
-      beforeEach(() => {
-        sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
-      })
-
       it('creates and posts pre-issuance operation if issuance asset is owned by user',
         async () => {
           wrapper.setProps({
@@ -52,7 +48,7 @@ describe('Manage pre-issuance mixin', () => {
           sandbox.stub(
             base.PreIssuanceRequestOpBuilder, 'createPreIssuanceRequestOp'
           ).returns('SOME_OPERATION')
-          sandbox.stub(Api.api, 'postOperations').resolves()
+          sandbox.stub(api, 'postOperations').resolves()
 
           await wrapper.vm.createPreIssuanceRequest()
 
@@ -60,7 +56,7 @@ describe('Manage pre-issuance mixin', () => {
             .to.have.been.calledOnceWithExactly({
               request: 'SOME_XDR_VALUE',
             })
-          expect(Api.api.postOperations)
+          expect(api.postOperations)
             .to.have.been.calledOnceWithExactly('SOME_OPERATION')
         }
       )
