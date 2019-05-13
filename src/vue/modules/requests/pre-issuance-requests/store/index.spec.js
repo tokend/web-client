@@ -10,7 +10,7 @@ import { Wallet } from '@tokend/js-sdk'
 
 import { PreIssuanceRequest } from '../wrappers/pre-issuance-request'
 
-import * as Api from '@/api'
+import { api, useWallet } from '@/api'
 
 describe('pre-issuance-requests.module', () => {
   describe('vuex types', () => {
@@ -92,22 +92,20 @@ describe('pre-issuance-requests.module', () => {
         'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
         '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
       )
-      const config = {
-        horizonURL: 'https://test.api.com',
-      }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('LOAD_REQUESTS', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api, 'getWithSignature').resolves()
+      it('calls api.getWithSignature method with provided params', async () => {
+        sinon.stub(api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
           rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api.getWithSignature)
+        expect(api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_pre_issuance_requests',
             {
@@ -121,7 +119,7 @@ describe('pre-issuance-requests.module', () => {
             }
           )
 
-        Api.api.getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
   })
