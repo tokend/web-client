@@ -19,11 +19,19 @@ export default {
       kycRequestId: vuexTypes.kycRequestId,
       accountId: vuexTypes.accountId,
     }),
+
+    isUpdatableKycRequest () {
+      return (
+        this.kycState === REQUEST_STATES_STR.rejected ||
+        this.kycState === REQUEST_STATES_STR.pending
+      )
+    },
   },
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC,
     }),
+
     async createKycBlob (blobType) {
       const { data: blob } = await Api.api.postWithSignature('/blobs', {
         data: {
@@ -37,9 +45,10 @@ export default {
 
       return blob.id
     },
+
     createKycOperation (kycBlobId, accountRole) {
       return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest({
-        requestID: this.kycState === REQUEST_STATES_STR.rejected
+        requestID: this.isUpdatableKycRequest
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.accountId,
@@ -48,6 +57,13 @@ export default {
           blob_id: kycBlobId,
         },
       })
+    },
+
+    getKycOperationRequestId () {
+      const isExistingRequest =
+        this.kycState === REQUEST_STATES_STR.rejected ||
+        this.kycState === REQUEST_STATES_STR.pending
+      return isExistingRequest ? this.kycRequestId : KYC_CREATION_REQUEST_ID
     },
   },
 }
