@@ -11,13 +11,13 @@
         {{ value }}
       </span>
       <tooltip
-        :show="showTooltip"
+        :show="isCopiedTooltipShown"
         :message="'clipboard-field.copied' | globalize"
       >
         <button
           type="button"
           class="clipboard-field__button app__button-icon"
-          @click="showTooltipWrapper"
+          @click="showCopiedTooltip"
           :id="`clipboard-btn-${_uid}`"
           :data-clipboard-target="`#clipboard-target-${_uid}`"
         >
@@ -42,7 +42,7 @@ export default {
     label: { type: String, default: '' },
   },
   data: _ => ({
-    showTooltip: false,
+    isCopiedTooltipShown: false,
   }),
   mounted () {
     const btn = document.querySelector(
@@ -52,11 +52,11 @@ export default {
     this.clipboard = new Clipboard(btn)
   },
   methods: {
-    showTooltipWrapper () {
+    showCopiedTooltip () {
       let hideTooltipTimeout = 2000
-      this.showTooltip = true
+      this.isCopiedTooltipShown = true
       setTimeout(() => {
-        this.showTooltip = false
+        this.isCopiedTooltipShown = false
       }, hideTooltipTimeout)
     },
   },

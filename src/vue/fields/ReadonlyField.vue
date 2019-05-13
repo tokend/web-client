@@ -1,21 +1,13 @@
 <template>
   <div
-    class="readonly-field__form-row"
+    class="readonly-field"
   >
-    <table class="readonly-field__fee-table">
-      <tbody
-        class="readonly-field__fee-tbody"
-      >
-        <tr>
-          <td>
-            {{ label }}
-          </td>
-          <td>
-            {{ value || '0.00' }} {{ asset }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <span class="readonly-field__label">
+      {{ label }}
+    </span>
+    <span class="readonly-field__value">
+      {{ value }}
+    </span>
   </div>
 </template>
 
@@ -24,23 +16,16 @@ export default {
   name: 'readonly-field',
   props: {
     label: { type: String, default: 'Label' },
-    value: { type: [String, Number], default: undefined },
-    asset: { type: String, require: true, default: '' },
+    value: { type: String, default: undefined },
   },
 }
 </script>
 
 <style scoped lang="scss">
-.readonly-field__fee-table {
+.readonly-field {
   width: 100%;
   font-size: 1.4rem;
-}
-
-.readonly-field__fee-table tr {
-  height: 2rem;
-}
-
-.readonly-field__fee-table td:last-child {
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

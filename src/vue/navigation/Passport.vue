@@ -52,27 +52,11 @@
         </div>
 
         <div
-          class="passport__dropdown-balances-wrp
-                 passport__dropdown-balances-wrp--align-left
-                 passport__dropdown-balances-wrp--direction-column"
+          class="passport__dropdown-balances-wrp"
         >
-          <span class="passport__dropdown-balances-label">
-            {{ 'passport.balances' | globalize }}
-          </span>
-          <span
-            v-for="(item, index) in baseAssets"
-            :key="index"
-            class="passport__dropdown-balances-asset"
-          >
-            {{ { value: item.balance, currency: item.asset } | formatMoney }}
-          </span>
-          <router-link
-            class="passport__dropdown-balances-link"
-            :to="vueRoutes.balances"
-            @click.native="toggleDropdown"
-          >
-            {{ 'passport.show-more' | globalize }}
-          </router-link>
+          <balance-viewer
+            @show-more="toggleDropdown"
+          />
         </div>
         <div
           class="passport__dropdown-actions-wrp"
@@ -105,17 +89,21 @@ import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
-import { ASSET_POLICIES } from '@tokend/js-sdk'
+// eslint-disable-next-line
+import BalanceViewer from '@/vue/modules/assets/shared/components/balance-viewer'
 
 export default {
   name: 'passport',
+
+  components: {
+    BalanceViewer,
+  },
 
   data: () => ({
     vueRoutes,
     isDropdownOpen: false,
     loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
-    assetsPerPage: 3,
   }),
 
   computed: {
@@ -130,16 +118,7 @@ export default {
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
-      accountBalances: vuexTypes.accountBalances,
     }),
-
-    baseAssets () {
-      return this.accountBalances
-        .filter(asset => {
-          return asset.assetDetails.policies.includes(ASSET_POLICIES.baseAsset)
-        }).slice(0, this.assetsPerPage)
-    },
-
     accountRoleTranslationId () {
       if (this.isAccountGeneral) {
         return 'passport.account-general'
@@ -241,21 +220,9 @@ $dropdown-item-side-padding: 2.4rem;
   width: 100%;
 }
 
-.passport__dropdown-balances-label,
 .passport__dropdown-signed-in-email-prefix {
   font-weight: 700;
   font-size: 1.2rem;
-}
-
-.passport__dropdown-balances-link {
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: $col-link;
-}
-
-.passport__dropdown-balances-wrp--direction-column {
-  display: flex;
-  flex-direction: column;
 }
 
 .passport {
@@ -378,10 +345,6 @@ $dropdown-item-side-padding: 2.4rem;
   text-align: left;
   color: $col-text-secondary;
   font-size: 1.4rem;
-}
-
-.passport__dropdown-balances-wrp {
-  padding-top: 1.6rem;
 }
 
 .passport__dropdown-actions-wrp {

@@ -105,6 +105,25 @@
           </tr>
           <tr>
             <td>
+              {{ 'assets.asset-type' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.assetType === kvAssetTypeSecurity">
+                {{ 'asset-details.security-asset-title' | globalize }}
+              </template>
+
+              <template v-else>
+                <!-- eslint-disable-next-line -->
+                {{ 'asset-details.does-not-require-verification-title' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'asset-details.requires-kyc-title' | globalize }}
             </td>
             <td>
@@ -227,6 +246,7 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),

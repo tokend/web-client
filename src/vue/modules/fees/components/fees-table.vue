@@ -26,7 +26,9 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody
+          v-if="fees.length"
+        >
           <tr
             v-for="(fee, i) in fees"
             :key="i"
@@ -58,12 +60,13 @@
               {{ { value: fee.upperBound, currency: fee.asset } | formatMoney }}
             </td>
           </tr>
-          <tr
-            :key="'no-data'"
-            v-if="!fees.length"
-          >
+        </tbody>
+        <tbody
+          v-else
+        >
+          <tr>
             <td
-              class="fees-table__cell--align-center"
+              class="fees-table__empty-list-placeholder"
               colspan="6"
             >
               <!-- eslint-disable-next-line -->
@@ -101,7 +104,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .fees-table__cell--align-center {
+  .fees-table__empty-list-placeholder {
     text-align: center;
   }
 </style>

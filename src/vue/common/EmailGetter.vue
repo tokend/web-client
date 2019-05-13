@@ -29,7 +29,7 @@
     </span>
 
     <tooltip
-      :show="showTooltip"
+      :show="isCopiedTooltipShown"
       :message="'email-getter.copied' | globalize"
     >
       <button
@@ -94,7 +94,7 @@ export default {
     isMasterAccount: false,
     isLoading: false,
     isCopyBtnPressed: false,
-    showTooltip: false,
+    isCopiedTooltipShown: false,
   }),
 
   watch: {
@@ -158,15 +158,15 @@ export default {
 
     changeBtnIcon () {
       this.isCopyBtnPressed = true
-      this.showTooltipWrapper()
+      this.showCopiedTooltip()
       setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
     },
 
-    showTooltipWrapper () {
+    showCopiedTooltip () {
       let hideTooltipTimeout = 2000
-      this.showTooltip = true
+      this.isCopiedTooltipShown = true
       setTimeout(() => {
-        this.showTooltip = false
+        this.isCopiedTooltipShown = false
       }, hideTooltipTimeout)
     },
   },

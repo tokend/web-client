@@ -67,8 +67,7 @@
       <div class="app__form-field">
         <readonly-field
           :label="'offer-creation-form.total' | globalize"
-          :asset="assetPair.quote"
-          :value="totalValue"
+          :value="totalValue | formatMoney"
         />
       </div>
     </div>
@@ -164,6 +163,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
     ]),
+
     accountAssets () {
       return this.accountBalances
         .map(balance => balance.asset)
@@ -181,7 +181,11 @@ export default {
       return MathUtil.multiply(this.form.price, this.form.amount)
     },
     totalValue () {
-      return +this.formQuoteAmount ? this.formQuoteAmount : ''
+      return +this.formQuoteAmount
+        ? {
+          value: this.formQuoteAmount,
+          currency: this.assetPair.quote,
+        } : ''
     },
   },
   validations () {
@@ -267,6 +271,7 @@ export default {
 @import '../app-form';
 
 .app__form-submit-btn--margin_small {
+  // need override margin for case with readonly field
   // stylelint-disable-next-line
   margin-top: 3rem !important;
 }

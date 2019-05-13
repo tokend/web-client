@@ -1,22 +1,6 @@
 <template>
   <tbody class="movements-table-row">
-    <tr
-      v-if="isEmptyMovements"
-      class="movements-table-row__brief
-             movements-table-row__no-data"
-    >
-      <td
-        colspan="5"
-        class="movements-table-row__cell
-               movements-table-row__cell--align-center"
-      >
-        {{ 'movements-history.no-movements-msg' | globalize }}
-      </td>
-    </tr>
-    <tr
-      v-else
-      class="movements-table-row__brief"
-    >
+    <tr class="movements-table-row__brief">
       <td
         class="movements-table-row__cell
                movements-table-row__cell--bold
@@ -106,8 +90,7 @@ export default {
   mixins: [TranslationFiltersMixin],
 
   props: {
-    movement: { type: Movement, default: () => null },
-    isEmptyMovements: { type: Boolean, default: false },
+    movement: { type: Movement, required: true },
   },
 
   data: () => ({
@@ -120,14 +103,6 @@ export default {
 @import '~@scss/mixins';
 @import '~@scss/variables';
 @import '../scss/variables';
-
-.movements-table-row__no-data {
-  height: 5.1rem;
-}
-
-.movements-table-row__cell--align-center {
-  text-align: center;
-}
 
 .movements-table-row__brief {
   background-color: $col-block-bg;

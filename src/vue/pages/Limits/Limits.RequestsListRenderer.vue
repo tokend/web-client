@@ -25,7 +25,9 @@
             <th />
           </tr>
         </thead>
-        <tbody>
+        <tbody
+          v-if="requests.length"
+        >
           <tr
             v-for="(request, i) in requests"
             :request="request"
@@ -56,10 +58,11 @@
               </a>
             </td>
           </tr>
-          <tr
-            v-if="!requests.length"
-            :key="'no-data'"
-          >
+        </tbody>
+        <tbody
+          v-else
+        >
+          <tr>
             <td
               class="limits-requests-list-renderer__table-cell--align-center"
               colspan="5"

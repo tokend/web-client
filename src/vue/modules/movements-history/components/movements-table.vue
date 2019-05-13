@@ -38,21 +38,21 @@
       :movement="movement"
       :key="movement.id"
     />
-    <movements-table-row
+    <empty-list-placeholder
       v-if="!movements.length"
-      :is-empty-movements="!movements.length"
-      :key="'no-data'"
     />
   </table>
 </template>
 
 <script>
 import MovementsTableRow from './movements-table-row'
+import EmptyListPlaceholder from './movements-empty-list-placeholder.vue'
 
 export default {
   name: 'movement-list-renderer',
   components: {
     MovementsTableRow,
+    EmptyListPlaceholder,
   },
   props: {
     movements: {
