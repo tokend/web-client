@@ -117,7 +117,7 @@ import VueMarkdown from 'vue-markdown'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required, minValue, maxDecimalDigitsCount } from '@validators'
 
-import { api, networkDetails } from '@/api'
+import { api } from '@/api'
 import { config } from '../_config'
 import { Wallet, base } from '@tokend/js-sdk'
 
@@ -330,7 +330,7 @@ export default {
       if (this.systemIdentifier === this.merchantSystem) {
         return config.MERCHANT_ACCOUNT_ID
       } else {
-        return networkDetails().adminAccountId
+        return api.networkDetails.adminAccountId
       }
     },
   },

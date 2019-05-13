@@ -171,12 +171,15 @@ describe('Manage sale request mixin', () => {
           sandbox.stub(base.SaleRequestBuilder, 'createSaleCreationRequest')
           sandbox.stub(api, 'postOperations').resolves()
 
-          await wrapper.vm.submitCreateSaleRequest()
+          await wrapper.vm.submitCreateSaleRequest('SOME_ACCOUNT_ID')
 
           expect(wrapper.vm.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([saleLogo])
+            .to.have.been.calledOnceWithExactly([saleLogo], 'SOME_ACCOUNT_ID')
           expect(wrapper.vm.createSaleDescriptionBlob)
-            .to.have.been.calledOnceWithExactly('Sale description')
+            .to.have.been.calledOnceWithExactly(
+              'Sale description',
+              'SOME_ACCOUNT_ID'
+            )
           expect(wrapper.vm.saleDescriptionBlobId).to.equal('BLOB_ID')
 
           expect(base.SaleRequestBuilder.createSaleCreationRequest)

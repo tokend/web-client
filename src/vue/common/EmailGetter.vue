@@ -48,7 +48,7 @@
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import { api, networkDetails } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
 
@@ -114,7 +114,7 @@ export default {
     async init () {
       this.isMasterAccount = false
 
-      if (this.accountId === networkDetails().adminAccountId) {
+      if (this.accountId === api.networkDetails.adminAccountId) {
         this.isMasterAccount = true
         return
       }

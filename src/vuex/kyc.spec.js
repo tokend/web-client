@@ -4,6 +4,7 @@ import {
 } from '../js/const/request-states.const'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 import { MockHelper, MockWrapper } from '../test'
+import { api } from '@/api'
 import { mutations, actions, getters } from './kyc.module'
 import { vuexTypes } from './types'
 
@@ -83,7 +84,7 @@ describe('kyc.module', () => {
     })
 
     it('LOAD_KYC_LATEST_REQUEST commits the proper set of mutations', async () => {
-      sinon.stub(mockHelper.apiInstance(), 'getWithSignature')
+      sinon.stub(api, 'getWithSignature')
         .resolves(MockWrapper.makeJsonapiResponse(responseJSON))
 
       const expectedRequest = MockWrapper

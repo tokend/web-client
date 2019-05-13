@@ -205,7 +205,7 @@ import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
-import { api, networkDetails } from '@/api'
+import { api } from '@/api'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -275,7 +275,7 @@ export default {
     }),
 
     isMasterAssetOwner () {
-      return this.form.asset.owner === networkDetails().adminAccountId
+      return this.form.asset.owner === api.networkDetails.adminAccountId
     },
 
     selectedAssetStep () {
