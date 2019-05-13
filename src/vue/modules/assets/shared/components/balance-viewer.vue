@@ -3,7 +3,7 @@
     class="balance-viewer__balances-wrp--direction-column"
   >
     <span class="balance-viewer__balances-label">
-      {{ 'passport.balances' | globalize }}
+      {{ 'assets.balances' | globalize }}
     </span>
     <span
       v-for="(item, index) in baseAssets"
@@ -16,7 +16,7 @@
       :to="vueRoutes.balances"
       @click.native="showMoreBalances"
     >
-      {{ 'passport.show-more' | globalize }}
+      {{ 'assets.show-more' | globalize }}
     </router-link>
   </div>
 </template>

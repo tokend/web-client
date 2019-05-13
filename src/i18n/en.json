@@ -714,9 +714,7 @@
       "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "sign-out-btn": "Sign out",
-      "balances": "Balances",
-      "show-more": "Show more"
+      "sign-out-btn": "Sign out"
     },
     "sidebar": {
       "section-explore": "Explorations",
@@ -1783,7 +1781,9 @@
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "balances": "Balances",
+      "show-more": "Show more"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
