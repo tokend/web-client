@@ -55,6 +55,7 @@ for further information about branching and tagging conventions.
 - Uploading documents on general verification form
 - Disabled state for account type selector on verification page
 - `event.getModifierState` error on auth page
+- Some typos in EN translations
 
 ## [1.6.0] - 2019-05-09
 #### Changed
