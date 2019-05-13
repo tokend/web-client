@@ -3,7 +3,7 @@
     class="balance-viewer__balances-wrp--direction-column"
   >
     <span class="balance-viewer__balances-label">
-      {{ 'assets.balances' | globalize }}
+      {{ 'assets.balances-subheading' | globalize }}
     </span>
     <span
       v-for="(item, index) in baseAssets"
@@ -12,11 +12,11 @@
       {{ { value: item.balance, currency: item.asset } | formatMoney }}
     </span>
     <router-link
-      class="balance-viewer__balances-link"
+      class="balance-viewer__more-link"
       :to="vueRoutes.balances"
       @click.native="showMoreBalances"
     >
-      {{ 'assets.show-more' | globalize }}
+      {{ 'assets.show-more-link' | globalize }}
     </router-link>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     showMoreBalances () {
-      this.$emit('show-more')
+      this.$emit('more-link-followed')
     },
   },
 }
@@ -63,7 +63,6 @@ export default {
 @import '~@scss/mixins';
 
 $media-hide-account-details-bp: 800px;
-$dropdown-item-side-padding: 2.4rem;
 
 .balance-viewer__balances-wrp--direction-column {
   display: flex;
@@ -83,7 +82,7 @@ $dropdown-item-side-padding: 2.4rem;
   font-size: 1.2rem;
 }
 
-.balance-viewer__balances-link {
+.balance-viewer__more-link {
   font-size: 1.2rem;
   cursor: pointer;
   color: $col-link;

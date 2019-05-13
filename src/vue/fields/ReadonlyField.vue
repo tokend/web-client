@@ -24,7 +24,7 @@ export default {
   name: 'readonly-field',
   props: {
     label: { type: String, default: 'Label' },
-    value: { type: String, default: undefined },
+    value: { type: String, default: '' },
   },
 }
 </script>

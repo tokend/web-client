@@ -55,7 +55,7 @@
           class="passport__dropdown-balances-wrp"
         >
           <balance-viewer
-            @show-more="toggleDropdown"
+            @more-link-followed="toggleDropdown"
           />
         </div>
         <div
@@ -89,7 +89,6 @@ import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
-// eslint-disable-next-line
 import BalanceViewer from '@/vue/modules/assets/shared/components/balance-viewer'
 
 export default {
@@ -348,8 +347,7 @@ $dropdown-item-side-padding: 2.4rem;
 }
 
 .passport__dropdown-actions-wrp {
-  padding-top: 1.6rem;
-  padding-bottom: 0.6rem;
+  padding: 1.6rem 0 0.6rem;
 }
 
 .passport__dropdown-status-icon {

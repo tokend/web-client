@@ -67,7 +67,7 @@
               class="limits-requests-list-renderer__table-cell--align-center"
               colspan="5"
             >
-              <!-- eslint-disable-next-line -->
+              <!-- eslint-disable-next-line max-len -->
               {{ 'limits-requests-table-renderer.here-will-requests-list' | globalize }}
             </td>
           </tr>

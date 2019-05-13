@@ -1784,8 +1784,8 @@
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
       "owner-lbl": "Owner",
-      "balances": "Balances",
-      "show-more": "Show more"
+      "balances-subheading": "Balances",
+      "show-more-link": "Show more"
     },
     "create-opportunity": {
       "maturity-date": "Maturity Date",
