@@ -3,7 +3,7 @@ import { api } from '@/api'
 
 export default {
   methods: {
-    async createSaleDescriptionBlob (description) {
+    async createSaleDescriptionBlob (description, accountId) {
       const { data: blob } = await api.postWithSignature('/blobs', {
         data: {
           type: BLOB_TYPES.saleOverview,
@@ -12,7 +12,7 @@ export default {
           },
           relationships: {
             owner: {
-              data: { id: this.wallet.accountId },
+              data: { id: accountId },
             },
           },
         },
@@ -21,9 +21,9 @@ export default {
       return blob.id
     },
 
-    async getSaleDescription (blobId) {
+    async getSaleDescription (blobId, accountId) {
       try {
-        const endpoint = `/accounts/${this.wallet.accountId}/blobs/${blobId}`
+        const endpoint = `/accounts/${accountId}/blobs/${blobId}`
         const { data: blob } = await api.getWithSignature(endpoint)
 
         return JSON.parse(blob.value)

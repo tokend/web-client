@@ -8,30 +8,34 @@ import { config } from '../_config'
 
 export default {
   methods: {
-    async uploadDocuments (documents) {
+    async uploadDocuments (documents, accountId) {
       for (const document of documents) {
         if (document && !document.key) {
-          await this.uploadDocument(document)
+          await this.uploadDocument(document, accountId)
         }
       }
     },
 
-    async uploadDocument (document) {
+    async uploadDocument (document, accountId) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const config = await this.createDocumentAnchorConfig(type, mimeType)
+      const config = await this.createDocumentAnchorConfig(
+        type,
+        mimeType,
+        accountId
+      )
 
       await this.uploadFile(file, _omit(config, ['id', 'url', 'type']), mimeType)
       document.setKey(config.key)
     },
 
-    async createDocumentAnchorConfig (documentType, mimeType) {
+    async createDocumentAnchorConfig (documentType, mimeType, accountId) {
       const { data: config } = await api.postWithSignature('/documents', {
         data: {
           type: documentType,
           attributes: { content_type: mimeType },
           relationships: {
             owner: {
-              data: { id: this.wallet.accountId },
+              data: { id: accountId },
             },
           },
         },

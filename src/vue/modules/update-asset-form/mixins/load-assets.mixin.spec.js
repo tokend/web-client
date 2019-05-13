@@ -4,7 +4,7 @@ import { Wallet } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '@/api'
+import { api, useWallet } from '@/api'
 import { Asset } from '../wrappers/asset'
 
 const localVue = createLocalVue()
@@ -32,24 +32,22 @@ describe('Load assets mixin', () => {
           'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
           '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
         )
-        const config = {
-          horizonURL: 'https://test.api.com',
-        }
 
-        Api.initApi(wallet, config)
+        api.useBaseURL('https://test.api.com')
+        useWallet(wallet)
       })
 
-      it('calls Api.get method with provided params and returns instance of Asset record',
+      it('calls api.get method with provided params and returns instance of Asset record',
         async () => {
-          sinon.stub(Api.api, 'get').resolves({ data: {} })
+          sinon.stub(api, 'get').resolves({ data: {} })
 
           const result = await wrapper.vm.getAssetByCode('USD')
 
-          expect(Api.api.get)
+          expect(api.get)
             .to.have.been.calledOnceWithExactly('/v3/assets/USD')
           expect(result).to.be.instanceOf(Asset)
 
-          Api.api.get.restore()
+          api.get.restore()
         })
     })
   })

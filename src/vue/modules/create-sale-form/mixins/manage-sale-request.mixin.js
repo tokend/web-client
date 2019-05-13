@@ -57,11 +57,11 @@ export default {
   },
 
   methods: {
-    async getCreateSaleRequestById (id) {
+    async getCreateSaleRequestById (id, accountId) {
       const endpoint = `/v3/create_sale_requests/${id}`
       const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details', 'request_details.default_quote_asset'],
       })
@@ -69,13 +69,14 @@ export default {
       return new CreateSaleRequest(record)
     },
 
-    async submitCreateSaleRequest () {
+    async submitCreateSaleRequest (accountId) {
       const saleDocuments = [
         this.shortBlurbStepForm.saleLogo,
       ]
-      await this.uploadDocuments(saleDocuments)
+      await this.uploadDocuments(saleDocuments, accountId)
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
-        this.fullDescriptionStepForm.description
+        this.fullDescriptionStepForm.description,
+        accountId
       )
 
       const operation =

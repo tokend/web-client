@@ -7,7 +7,6 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from '@/api'
 import * as Config from './_config'
 import Vuex from 'vuex'
 
@@ -90,7 +89,6 @@ describe('Create asset form module', () => {
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(Api, 'initApi').throws()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()

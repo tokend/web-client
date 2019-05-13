@@ -67,6 +67,9 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 import { initConfig } from './_config'
 
 const STEPS = {
@@ -123,6 +126,12 @@ export default {
     STEPS,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
+
   async created () {
     await this.init()
   },
@@ -132,7 +141,7 @@ export default {
       try {
         initConfig(this.storageUrl)
 
-        await this.loadAssets()
+        await this.loadAssets(this.accountId)
         await this.tryLoadRequest()
 
         this.isLoaded = true
@@ -144,9 +153,13 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.getCreateSaleRequestById(this.requestId)
+        this.request = await this.getCreateSaleRequestById(
+          this.requestId,
+          this.accountId
+        )
         this.saleDescription = await this.getSaleDescription(
-          this.request.descriptionBlobId
+          this.request.descriptionBlobId,
+          this.accountId
         )
       }
     },
@@ -173,7 +186,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateSaleRequest()
+        await this.submitCreateSaleRequest(this.accountId)
         Bus.success('create-sale-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {

@@ -8,7 +8,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
-import * as Api from '@/api'
+import { api } from '@/api'
 import * as Config from '../_config'
 
 const localVue = createLocalVue()
@@ -98,14 +98,14 @@ describe('Upload documents mixin', () => {
     })
 
     describe('createDocumentAnchorConfig', () => {
-      it('calls Api.postWithSignature method with provided params', async () => {
-        sandbox.stub(Api.api, 'postWithSignature')
+      it('calls api.postWithSignature method with provided params', async () => {
+        sandbox.stub(api, 'postWithSignature')
           .resolves({ data: { key: 'doc-key' } })
 
         const result = await wrapper.vm.createDocumentAnchorConfig(
           'doc-type', 'mime-type', 'SOME_ACCOUNT_ID'
         )
-        expect(Api.api.postWithSignature)
+        expect(api.postWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/documents',
             {

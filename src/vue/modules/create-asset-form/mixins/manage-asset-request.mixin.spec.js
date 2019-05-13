@@ -5,7 +5,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '@/api'
+import { api, useWallet } from '@/api'
 import * as Config from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
@@ -169,23 +169,21 @@ describe('Manage asset request mixin', () => {
         'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
         '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
       )
-      const config = {
-        horizonURL: 'https://test.api.com',
-      }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('getCreateAssetRequestById', () => {
-      it('calls Api.getWithSignature method with provided params and returns an instance of CreateAssetRequest record',
+      it('calls api.getWithSignature method with provided params and returns an instance of CreateAssetRequest record',
         async () => {
-          sandbox.stub(Api.api, 'getWithSignature').resolves({
+          sandbox.stub(api, 'getWithSignature').resolves({
             data: {},
           })
 
           const result = await wrapper.vm.getCreateAssetRequestById('10', 'SOME_ACCOUNT_ID')
 
-          expect(Api.api.getWithSignature)
+          expect(api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/create_asset_requests/10',
               {
@@ -211,7 +209,7 @@ describe('Manage asset request mixin', () => {
 
           sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
           sandbox.stub(base.ManageAssetBuilder, 'assetCreationRequest')
-          sandbox.stub(Api.api, 'postOperations').resolves()
+          sandbox.stub(api, 'postOperations').resolves()
 
           await wrapper.vm.submitCreateAssetRequest('SOME_ACCOUNT_ID')
 
@@ -222,7 +220,7 @@ describe('Manage asset request mixin', () => {
             ], 'SOME_ACCOUNT_ID')
           expect(base.ManageAssetBuilder.assetCreationRequest)
             .to.have.been.calledOnce
-          expect(Api.api.postOperations)
+          expect(api.postOperations)
             .to.have.been.calledOnce
         }
       )

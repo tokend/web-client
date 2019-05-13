@@ -1,6 +1,6 @@
 import { ApiCaller, WalletsManager, FactorsManager } from '@tokend/js-sdk'
 
-export const api = new ApiCaller({})
+export const api = new ApiCaller()
 export const walletsManager = new WalletsManager()
 export const factorsManager = new FactorsManager()
 

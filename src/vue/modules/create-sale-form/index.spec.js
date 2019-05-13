@@ -9,6 +9,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { api } from '@/api'
 import * as Config from './_config'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -40,11 +41,22 @@ describe('Create sale form module', () => {
 
   describe('component', () => {
     let wrapper
+    let store
 
     beforeEach(() => {
       sandbox.stub(CreateSaleFormModule, 'created').resolves()
+      store = new Vuex.Store({
+        modules: {
+          account: {
+            getters: {
+              accountId: () => ('SOME_ACCOUNT_ID'),
+            },
+          },
+        },
+      })
 
       wrapper = shallowMount(CreateSaleFormModule, {
+        store,
         localVue,
       })
     })
@@ -113,9 +125,9 @@ describe('Create sale form module', () => {
             await wrapper.vm.tryLoadRequest()
 
             expect(wrapper.vm.getCreateSaleRequestById)
-              .to.have.been.calledOnceWithExactly('1')
+              .to.have.been.calledOnceWithExactly('1', 'SOME_ACCOUNT_ID')
             expect(wrapper.vm.getSaleDescription)
-              .to.have.been.calledOnceWithExactly('BLOB_ID')
+              .to.have.been.calledOnceWithExactly('BLOB_ID', 'SOME_ACCOUNT_ID')
 
             expect(wrapper.vm.request).to.equal(request)
             expect(wrapper.vm.saleDescription).to.equal('Some description')

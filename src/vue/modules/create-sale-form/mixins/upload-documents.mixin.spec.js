@@ -1,7 +1,5 @@
 import UploadDocumentsMixin from './upload-documents.mixin'
 
-import { ApiCaller } from '@tokend/js-sdk'
-
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import { mount, createLocalVue } from '@vue/test-utils'
@@ -10,7 +8,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
-import * as Api from '@/api'
+import { api } from '@/api'
 import * as Config from '../_config'
 
 const localVue = createLocalVue()
@@ -101,22 +99,18 @@ describe('Upload documents mixin', () => {
     })
 
     describe('createDocumentAnchorConfig', () => {
-      beforeEach(() => {
-        sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
-      })
-
-      it('calls Api.postWithSignature method with provided params', async () => {
+      it('calls api.postWithSignature method with provided params', async () => {
         wrapper.setProps({
           wallet: { accountId: 'SOME_ACCOUNT_ID' },
         })
-        sandbox.stub(Api.api, 'postWithSignature')
+        sandbox.stub(api, 'postWithSignature')
           .resolves({ data: { key: 'doc-key' } })
 
         const result = await wrapper.vm.createDocumentAnchorConfig(
           'doc-type', 'mime-type'
         )
 
-        expect(Api.api.postWithSignature)
+        expect(api.postWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/documents',
             {
@@ -137,7 +131,7 @@ describe('Upload documents mixin', () => {
 
     describe('uploadFile', () => {
       it('creates and posts file form data', async () => {
-        Config.initConfig({ storageURL: 'https://storage.com' })
+        Config.initConfig('https://storage.com')
         sandbox.stub(wrapper.vm, 'createFileFormData')
           .returns({ 'some-policy': 'Some policy' })
         sandbox.stub(Vue.http, 'post')
