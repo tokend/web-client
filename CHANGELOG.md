@@ -24,6 +24,9 @@ for further information about branching and tagging conventions.
 - Add 'Latest activity' label for 'Movements' history
 - Deposit method field
 - Readonly field for total field by offer create
+- Ability to create sale and opportunity in the past
+- Sentry integration
+- Email validation on login form
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -43,6 +46,7 @@ for further information about branching and tagging conventions.
 - Merge 'Requires verification' and 'Is security (requires accreditation for US residents)'
   in 'Deposit type' field
 - New displayed 'no-data' message for Movements, Fees and Limits tables
+- Now loading converted balances on the balances page
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -57,6 +61,22 @@ for further information about branching and tagging conventions.
 - Dashboard loading flow
 - Filtering owned sales on back-end side using API filters
 - Displaying "My sales" page
+- Uploading documents on general verification form
+- Disabled state for account type selector on verification page
+- `event.getModifierState` error on auth page
+
+## [1.6.0] - 2019-05-09
+#### Changed
+- Enabled updating of pending and approved corporate kyc requests
+- "Submit" btn on verification changed to "Create request" or "Update", depends
+  on whether the request updatable or not
+
+#### Fixed
+- Fetching of investment fees in investing forms
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
@@ -464,10 +484,13 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Not handling 'manage-asset-pair' operation details
+- Fixed bug when user invested in sales but in history
+  instead of 'Investment' was 'Offer'
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...1.6.0
 [1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1

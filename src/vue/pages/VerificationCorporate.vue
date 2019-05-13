@@ -113,7 +113,8 @@
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
-          @ok="hideConfirmation() || submit()"
+          :is-pending="isFormSubmitting"
+          @ok="submit"
           @cancel="hideConfirmation"
         />
         <button
@@ -123,7 +124,10 @@
           class="verification-corporate-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'verification-form.submit-btn' | globalize }}
+          {{ (isUpdatableKycRequest
+            ? 'verification-form.update-btn'
+            : 'verification-form.create-btn'
+          ) | globalize }}
         </button>
       </div>
     </form>
@@ -174,6 +178,7 @@ export default {
       teamSize: '0',
       website: '',
     },
+    isFormSubmitting: false,
     MIN_TEAM_SIZE,
     DOCUMENT_TYPES,
   }),
@@ -203,11 +208,6 @@ export default {
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
-    isFormDisabled () {
-      return !this.isAccountRoleReseted && this.kycState &&
-        this.kycState !== REQUEST_STATES_STR.rejected &&
-        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
-    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
@@ -218,10 +218,6 @@ export default {
   created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-
-      if (this.isFormDisabled) {
-        this.disableForm()
-      }
     }
   },
 
@@ -229,6 +225,7 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+      this.isFormSubmitting = true
       try {
         await this.uploadAvatar()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
@@ -243,9 +240,11 @@ export default {
         } while (this.kycState !== REQUEST_STATES_STR.pending)
         Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
-        this.enableForm()
         ErrorHandler.process(e)
       }
+      this.isFormSubmitting = false
+      this.hideConfirmation()
+      this.enableForm()
     },
 
     delay (ms) {

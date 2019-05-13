@@ -49,7 +49,10 @@
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'verification-form.submit-btn' | globalize }}
+          {{ (Number(requestId) > 0
+            ? 'verification-form.create-btn'
+            : 'verification-form.update-btn'
+          ) | globalize }}
         </button>
       </div>
     </form>
@@ -172,7 +175,7 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await this.uploadDocuments()
+        await this.uploadDocuments(this.wallet.accountId)
         const blobId = await this.createBlob(this.wallet.accountId)
         await this.createRequest(blobId)
         // we duplicating enabling form in try/catch blocks to prevent race
