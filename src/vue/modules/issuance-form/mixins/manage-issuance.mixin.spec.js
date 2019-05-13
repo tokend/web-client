@@ -12,7 +12,7 @@ const localVue = createLocalVue()
 
 const Component = {
   template: '<div></div>',
-  props: ['wallet', 'requestId'],
+  props: ['requestId'],
   data: _ => ({
     form: {
       asset: {},

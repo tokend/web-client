@@ -1,12 +1,10 @@
 import GetReceiverAccountMixin from './get-receiver-account.mixin'
 
-import { ApiCaller } from '@tokend/js-sdk'
-
 import { errors } from '@/js/errors'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '@/api'
+import { api } from '@/api'
 
 const localVue = createLocalVue()
 
@@ -32,10 +30,6 @@ describe('Get receiver account mixin', () => {
   })
 
   describe('method', () => {
-    beforeEach(() => {
-      sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
-    })
-
     describe('getReceiverAccountId', () => {
       it('calls getAccountIdByEmail method and returns its result if receiver is valid email',
         async () => {
@@ -58,9 +52,9 @@ describe('Get receiver account mixin', () => {
     })
 
     describe('getAccountIdByEmail', () => {
-      it('calls Api.get method and returns first found element if it exists',
+      it('calls api.get method and returns first found element if it exists',
         async () => {
-          sandbox.stub(Api.api, 'get').resolves({
+          sandbox.stub(api, 'get').resolves({
             data: [
               { address: 'SOME_ACCOUNT_ID' },
               { address: 'OTHER_ACCOUNT_ID' },
@@ -69,7 +63,7 @@ describe('Get receiver account mixin', () => {
 
           const result = await wrapper.vm.getAccountIdByEmail('foo@bar.com')
 
-          expect(Api.api.get).to.have.been.calledOnceWithExactly(
+          expect(api.get).to.have.been.calledOnceWithExactly(
             '/identities',
             {
               filter: { email: 'foo@bar.com' },
@@ -81,7 +75,7 @@ describe('Get receiver account mixin', () => {
       )
 
       it('throws an error if response data was empty', async () => {
-        sandbox.stub(Api.api, 'get').resolves({ data: [] })
+        sandbox.stub(api, 'get').resolves({ data: [] })
 
         try {
           await wrapper.vm.getAccountIdByEmail('foo@bar.com')
