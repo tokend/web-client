@@ -96,6 +96,7 @@ describe('pre-issuance-requests.module', () => {
       api.useBaseURL('https://test.api.com')
       useWallet(wallet)
     })
+    afterEach(() => { sinon.restore() })
 
     describe('LOAD_REQUESTS', () => {
       it('calls api.getWithSignature method with provided params', async () => {
