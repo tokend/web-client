@@ -6,7 +6,7 @@ import { Wallet } from '@tokend/js-sdk'
 import { Movement } from '../wrappers/movement'
 import { Balance } from '../wrappers/balance'
 
-import * as ApiImporter from '@/api'
+import { api, useWallet } from '@/api'
 import accountBalancesJSON from '@/test/mocks/account-balances'
 
 describe('movements-history.module', () => {
@@ -93,9 +93,6 @@ describe('movements-history.module', () => {
       'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
       '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
     )
-    const config = {
-      horizonURL: 'https://test.api.com',
-    }
 
     let store
 
@@ -109,11 +106,12 @@ describe('movements-history.module', () => {
         dispatch: sinon.stub(),
       }
 
-      ApiImporter.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('LOAD_MOVEMENTS', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
+      it('calls api.getWithSignature method with provided params', async () => {
         const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
         const assetCode = 'BTC'
         const expectedParams = {
@@ -127,7 +125,7 @@ describe('movements-history.module', () => {
           include: ['effect', 'operation.details'],
         }
 
-        sinon.stub(ApiImporter.api, 'getWithSignature').resolves()
+        sinon.stub(api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_MOVEMENTS](
           {
@@ -144,18 +142,18 @@ describe('movements-history.module', () => {
           assetCode
         )
 
-        expect(ApiImporter.api.getWithSignature)
+        expect(api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/history',
             expectedParams
           )
 
-        ApiImporter.api.getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
     describe('LOAD_BALANCES', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(ApiImporter.api, 'getWithSignature')
+      it('calls api.getWithSignature method with provided params', async () => {
+        sinon.stub(api, 'getWithSignature')
           .resolves({
             data: {
               balances: accountBalancesJSON,
@@ -173,7 +171,7 @@ describe('movements-history.module', () => {
           .deep
           .equal(Object.entries(expectedMutations))
 
-        ApiImporter.api.getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
   })
