@@ -5,8 +5,16 @@
     <span class="readonly-field__label">
       {{ label }}
     </span>
-    <span class="readonly-field__value">
+    <span
+      class="readonly-field__value"
+      v-if="value"
+    >
       {{ value }}
+    </span>
+    <span
+      v-else
+    >
+      &mdash;
     </span>
   </div>
 </template>
