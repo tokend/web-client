@@ -5,7 +5,7 @@
         :name="'sale-whitelist.invite-tab' | globalize"
         id="sale-whitelist-manager-invite-tab"
       >
-        Invite tab
+        <whitelist-invite-form :sale="sale" />
       </tab>
 
       <tab
@@ -28,6 +28,8 @@
 <script>
 import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
+
+import WhitelistInviteForm from '@/vue/forms/WhitelistInviteForm'
 import SaleWhitelistRegisteredUsers from './whitelist/SaleWhitelistRegisteredUsers'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
@@ -37,6 +39,7 @@ export default {
   components: {
     Tabs,
     Tab,
+    WhitelistInviteForm,
     SaleWhitelistRegisteredUsers,
   },
 
