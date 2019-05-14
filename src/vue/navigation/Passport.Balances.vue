@@ -1,8 +1,9 @@
 <template>
   <div
-    class="balance-viewer__balances-wrp--direction-column"
+    class="passport-balances
+           passport-balances--direction-column"
   >
-    <span class="balance-viewer__balances-label">
+    <span class="passport-balances__label">
       {{ 'assets.balances-subheading' | globalize }}
     </span>
     <span
@@ -12,7 +13,7 @@
       {{ { value: item.balance, currency: item.asset } | formatMoney }}
     </span>
     <router-link
-      class="balance-viewer__more-link"
+      class="passport-balances__more-link"
       :to="vueRoutes.balances"
       @click.native="showMoreBalances"
     >
@@ -28,7 +29,7 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 export default {
-  name: 'balance-viewer',
+  name: 'passport-balances',
   data: () => ({
     vueRoutes,
     assetsPerPage: 3,
@@ -60,29 +61,18 @@ export default {
 
 <style scoped lang="scss">
 @import '~@scss/variables';
-@import '~@scss/mixins';
 
-$media-hide-account-details-bp: 800px;
-
-.balance-viewer__balances-wrp--direction-column {
+.passport-balances--direction-column {
   display: flex;
   flex-direction: column;
 }
 
-.passport__account-details-wrp {
-  margin-left: 1.6rem;
-
-  @include respond-to-custom($media-hide-account-details-bp) {
-    display: none;
-  }
-}
-
-.balance-viewer__balances-label {
+.passport-balances__label {
   font-weight: 700;
   font-size: 1.2rem;
 }
 
-.balance-viewer__more-link {
+.passport-balances__more-link {
   font-size: 1.2rem;
   cursor: pointer;
   color: $col-link;

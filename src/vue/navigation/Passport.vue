@@ -54,7 +54,7 @@
         <div
           class="passport__dropdown-balances-wrp"
         >
-          <balance-viewer
+          <passport-balances
             @more-link-followed="toggleDropdown"
           />
         </div>
@@ -89,13 +89,13 @@ import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
-import BalanceViewer from '@/vue/modules/assets/shared/components/balance-viewer'
+import PassportBalances from './Passport.Balances'
 
 export default {
   name: 'passport',
 
   components: {
-    BalanceViewer,
+    PassportBalances,
   },
 
   data: () => ({
