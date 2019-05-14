@@ -49,6 +49,7 @@ import { AssetExplorerPageModule } from '@/vue/pages/asset-explorer-page'
 import { BalancesPageModule } from '@/vue/pages/balances-page'
 import { AssetExplorerModule } from '@/vue/modules/assets/asset-explorer/module'
 import { BalanceExplorerModule } from '@/vue/modules/assets/balance-explorer/module'
+import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 
 import { VerificationGeneralFormModule } from '@/vue/modules/verification/general-form/module'
 
@@ -367,6 +368,7 @@ export default {
               new ChangePasswordPseudoModule(),
               new ShowAccountIdPseudoModule(),
               new ShowSeedPseudoModule(),
+              new ShowNetworkPassphrasePseudoModule(),
             ],
           }),
         ],
