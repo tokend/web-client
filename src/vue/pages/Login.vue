@@ -38,6 +38,7 @@
 import LoginForm from '@/vue/forms/LoginForm'
 import { vueRoutes } from '@/vue-router/routes'
 import { Bus } from '@/js/helpers/event-bus'
+import Loader from '@/vue/common/Loader'
 
 import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -46,6 +47,7 @@ export default {
   name: 'login',
   components: {
     LoginForm,
+    Loader,
   },
   data: _ => ({
     vueRoutes,
