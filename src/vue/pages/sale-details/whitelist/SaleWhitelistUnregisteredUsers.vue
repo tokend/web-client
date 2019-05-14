@@ -103,6 +103,10 @@ import { Bus } from '@/js/helpers/event-bus'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
+const EVENTS = {
+  shouldUpdate: 'update:shouldUpdate',
+}
+
 export default {
   name: 'sale-whitelist-unregistered-users',
   components: {
@@ -114,6 +118,7 @@ export default {
 
   props: {
     sale: { type: SaleRecord, required: true },
+    shouldUpdate: { type: Boolean, default: false },
   },
 
   data: _ => ({
@@ -122,6 +127,15 @@ export default {
     unregisteredUsers: [],
     firstPageLoader: _ => {},
   }),
+
+  watch: {
+    shouldUpdate: function (value) {
+      if (value) {
+        this.initFirstPageLoader()
+        this.$emit(EVENTS.shouldUpdate, false)
+      }
+    },
+  },
 
   created () {
     this.initFirstPageLoader()

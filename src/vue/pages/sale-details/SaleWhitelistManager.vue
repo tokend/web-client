@@ -5,21 +5,30 @@
         :name="'sale-whitelist.invite-tab' | globalize"
         id="sale-whitelist-manager-invite-tab"
       >
-        <whitelist-invite-form :sale="sale" />
+        <whitelist-invite-form
+          :sale="sale"
+          @invited="initUsersUpdate"
+        />
       </tab>
 
       <tab
         :name="'sale-whitelist.unregistered-users-tab' | globalize"
         id="sale-whitelist-manager-unregistered-users-tab"
       >
-        <sale-whitelist-unregistered-users :sale="sale" />
+        <sale-whitelist-unregistered-users
+          :sale="sale"
+          :should-update.sync="shouldUnregisteredUsersUpdate"
+        />
       </tab>
 
       <tab
         :name="'sale-whitelist.registered-users-tab' | globalize"
         id="sale-whitelist-manager-registered-users-tab"
       >
-        <sale-whitelist-registered-users :sale="sale" />
+        <sale-whitelist-registered-users
+          :sale="sale"
+          :should-update.sync="shouldRegisteredUsersUpdate"
+        />
       </tab>
     </tabs>
   </div>
@@ -47,6 +56,18 @@ export default {
 
   props: {
     sale: { type: SaleRecord, required: true },
+  },
+
+  data: _ => ({
+    shouldRegisteredUsersUpdate: false,
+    shouldUnregisteredUsersUpdate: false,
+  }),
+
+  methods: {
+    initUsersUpdate () {
+      this.shouldRegisteredUsersUpdate = true
+      this.shouldUnregisteredUsersUpdate = true
+    },
   },
 }
 </script>
