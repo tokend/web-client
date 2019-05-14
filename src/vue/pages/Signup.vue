@@ -57,13 +57,6 @@
 
           <div class="app__form-actions">
             <button
-              v-if="isLoading"
-              class="auth-page__submit-btn app__button-raised"
-            >
-              <loader position-center />
-            </button>
-            <button
-              v-else
               v-ripple
               @click="submit"
               :disabled="!isConfirmedSeedCopied || formMixin.isDisabled"
@@ -84,7 +77,6 @@ import SignupForm from '@/vue/forms/SignupForm'
 import KeyViewer from '@/vue/common/KeyViewer'
 import TickField from '@/vue/fields/TickField'
 import VueMarkdown from 'vue-markdown'
-import Loader from '@/vue/common/Loader'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
@@ -93,7 +85,6 @@ import { Api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Bus } from '@/js/helpers/event-bus'
 
 export default {
   name: 'signup',
@@ -102,7 +93,6 @@ export default {
     KeyViewer,
     TickField,
     VueMarkdown,
-    Loader,
   },
   mixins: [FormMixin],
   data: _ => ({
@@ -111,7 +101,6 @@ export default {
     email: null,
     vueRoutes,
     isConfirmedSeedCopied: false,
-    isLoading: false,
   }),
   computed: {
     ...mapGetters({
@@ -134,7 +123,6 @@ export default {
     },
     async submit () {
       this.disableForm()
-      this.isLoading = true
       try {
         const { response, wallet } = await Api.walletsManager.create(
           this.email.toLowerCase(),
@@ -142,8 +130,6 @@ export default {
           this.recoveryKeypair
         )
         if (response.data.verified) {
-          this.isLoading = false
-          Bus.success('auth-pages.email-verified')
           Sdk.sdk.useWallet(wallet)
           Api.useWallet(wallet)
           this.storeWallet(wallet)

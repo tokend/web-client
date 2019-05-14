@@ -36,9 +36,10 @@
 
 <script>
 import LoginForm from '@/vue/forms/LoginForm'
+import Loader from '@/vue/common/Loader'
+
 import { vueRoutes } from '@/vue-router/routes'
 import { Bus } from '@/js/helpers/event-bus'
-import Loader from '@/vue/common/Loader'
 
 import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
