@@ -426,7 +426,8 @@
       "know-credentials-question": "Know your credentials?",
       "know-credentials-answer": "Sign in now",
       "have-an-account-question": "Already have an account?",
-      "have-an-account-answer": "Sign in now"
+      "have-an-account-answer": "Sign in now",
+      "verifying-email-msg": "Please wait while we verifying your email address."
     },
     "settings-page": {
       "verification-tab": "Verification",
