@@ -1498,12 +1498,19 @@
       "participant-th": "Participant",
       "investment-th": "Investment",
       "no-investments-title": "No investments yet",
-      "no-investments-msg": "This sale has no investments yet"
+      "no-investments-msg": "No one has invested in this sale yet"
     },
-    "sale-whitelist-manager": {
+    "sale-whitelist": {
       "invite-tab": "Invite",
       "unregistered-users-tab": "Unregistered",
-      "registered-users-tab": "Registered"
+      "registered-users-tab": "Registered",
+      "loading-msg": "Loading…",
+      "loading-error-msg": "There was an error while loading.",
+      "registered-users-title": "The whitelist for registered users",
+      "no-registered-users-title": "No registered users yet",
+      "no-registered-users-msg": "The sale whitelist has no registered users yet",
+      "user-th": "User",
+      "user-removed-msg": "The user was successfully removed from the whitelist"
     },
     "invest-form": {
       "asset-lbl": "Asset",
