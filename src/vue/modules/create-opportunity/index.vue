@@ -72,7 +72,6 @@
             <date-field
               v-model="form.information.maturityDate"
               :enable-time="true"
-              :disable-before="moment().subtract(1, 'days').toString()"
               @input="touchField('form.information.maturityDate')"
               @blur="touchField('form.information.maturityDate')"
               name="create-sale-end-time"
@@ -80,8 +79,6 @@
               :error-message="getFieldErrorMessage(
                 'form.information.maturityDate',
                 {
-                  minDate: form.saleInformation.endTime ||
-                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -578,7 +575,6 @@ export default {
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
-        minDate: minDate(moment().toISOString()),
       }
       startTime.maxDate = maxDate(this.form.information.maturityDate)
       endTime.maxDate = maxDate(this.form.information.maturityDate)

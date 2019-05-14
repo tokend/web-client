@@ -27,13 +27,19 @@ describe('balance explorer module end-to-end test', () => {
     useWallet(wallet)
     sinon.stub(api, 'getWithSignature').resolves({
       data: {
-        balances: [
+        states: [
           {
-            state: { available: '10.000000' },
+            balance: {
+              asset: { id: 'USD' },
+              state: { available: '10.000000' },
+            },
             asset: { id: 'USD' },
           },
           {
-            state: { available: '1.000000' },
+            balance: {
+              asset: { id: 'BTC' },
+              state: { available: '1.000000' },
+            },
             asset: { id: 'BTC' },
           },
         ],

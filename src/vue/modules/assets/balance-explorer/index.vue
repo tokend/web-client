@@ -103,6 +103,10 @@ export default {
       type: String,
       required: true,
     },
+    defaultQuoteAsset: {
+      type: String,
+      required: true,
+    },
   },
   data: _ => ({
     isLoaded: false,
@@ -136,7 +140,7 @@ export default {
 
     async load () {
       try {
-        await this.loadAccountBalances()
+        await this.loadAccountBalances(this.defaultQuoteAsset)
         await this.loadKycRequiredAssetType()
         await this.loadSecurityAssetType()
         this.isLoaded = true

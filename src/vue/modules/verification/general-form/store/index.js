@@ -151,14 +151,14 @@ const actions = {
     }
   },
 
-  async [types.UPLOAD_DOCUMENTS] ({ state }) {
+  async [types.UPLOAD_DOCUMENTS] ({ state }, accountId) {
     await Promise.all([
       // it modifies the state intentionally
-      uploadDocumentIfNeeded(state.documents.avatar),
-      uploadDocumentIfNeeded(state.documents.selfie),
-      uploadDocumentIfNeeded(state.documents.idDocumentFace),
-      uploadDocumentIfNeeded(state.documents.idDocumentBack),
-      uploadDocumentIfNeeded(state.documents.proofOfInvestor),
+      uploadDocumentIfNeeded(state.documents.avatar, accountId),
+      uploadDocumentIfNeeded(state.documents.selfie, accountId),
+      uploadDocumentIfNeeded(state.documents.idDocumentFace, accountId),
+      uploadDocumentIfNeeded(state.documents.idDocumentBack, accountId),
+      uploadDocumentIfNeeded(state.documents.proofOfInvestor, accountId),
     ])
   },
 

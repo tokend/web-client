@@ -29,15 +29,26 @@
           </tr>
           <tr>
             <td>{{ 'assets.maximum-title' | globalize }}</td>
-            <td>{{ asset.maxIssuanceAmount | formatMoney }}</td>
+            <td>
+              {{
+                { value: asset.maxIssuanceAmount, currency: asset.code } |
+                  formatMoney
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'assets.issued-title' | globalize }}</td>
-            <td>{{ asset.issued | formatMoney }}</td>
+            <td>
+              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'assets.available-title' | globalize }}</td>
-            <td>{{ asset.availableForIssuance | formatMoney }}</td>
+            <td>
+              {{ { value: asset.availableForIssuance, currency: asset.code } |
+                formatMoney
+              }}
+            </td>
           </tr>
           <tr>
             <td>

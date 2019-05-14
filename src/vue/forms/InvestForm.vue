@@ -152,7 +152,9 @@
           </h3>
 
           <p class="invest-form__fee">
-            - {{ totalAmount | formatNumber }} {{ form.asset.code }}
+            - {{
+              { value: totalAmount, currency: form.asset.code } | formatMoney
+            }}
             <span class="invest-form__fee-type">
               {{ 'invest-form.total-amount-label' | globalize }}
             </span>
@@ -374,7 +376,7 @@ export default {
 
       const availableBalance = this.currentInvestment.quoteAmount
         ? Number(quoteBalance.balance) +
-            Number(this.currentInvestment.quoteAmount)
+        Number(this.currentInvestment.quoteAmount)
         : quoteBalance.balance
 
       return {
@@ -577,7 +579,7 @@ export default {
       const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
       const params = [
         `asset=${this.form.asset.code}`,
-        `fee_type=${FEE_TYPES.offerFee}`,
+        `fee_type=${FEE_TYPES.investFee}`,
         `amount=${this.form.amount}`,
       ]
 
@@ -599,7 +601,7 @@ export default {
           this.form.amount,
           // TODO: remove DEFAULT_QUOTE_PRICE
           this.sale.quoteAssetPrices[this.form.asset.code] ||
-            DEFAULT_QUOTE_PRICE
+          DEFAULT_QUOTE_PRICE
         ),
         // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||

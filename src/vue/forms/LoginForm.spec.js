@@ -37,7 +37,7 @@ describe('LoginForm component unit test', () => {
     })
 
     const expectedResults = {
-      email: ['required'],
+      email: ['required', 'email'],
       password: ['required'],
     }
 

@@ -108,17 +108,23 @@ describe('balance explorer module', () => {
       it('properly commit its set of mutations', async () => {
         sinon.stub(api, 'getWithSignature').resolves({
           data: {
-            balances: [
-              { asset: { id: 'USD' } },
-              { asset: { id: 'BTC' } },
+            states: [
+              {
+                balance: { id: 'BALANCE_1' },
+                asset: { id: 'USD' },
+              },
+              {
+                balance: { id: 'BALANCE_2' },
+                asset: { id: 'BTC' },
+              },
             ],
           },
         })
 
         const expectedMutations = {
           [types.SET_ACCOUNT_BALANCES]: [
-            { asset: { id: 'USD' } },
-            { asset: { id: 'BTC' } },
+            { id: 'BALANCE_1' },
+            { id: 'BALANCE_2' },
           ],
           [types.SET_ASSETS]: [
             { id: 'USD' },
@@ -168,7 +174,7 @@ describe('balance explorer module', () => {
             asset: { id: 'USD' },
           },
           {
-            state: { available: '1.000000' },
+            state: { available: '100.000000' },
             asset: { id: 'BTC' },
           },
         ],
@@ -177,7 +183,7 @@ describe('balance explorer module', () => {
       expect(getters[types.assets](state))
         .to.deep.equal([
           new Asset({ id: 'USD' }, '10.000000'),
-          new Asset({ id: 'BTC' }, '1.000000'),
+          new Asset({ id: 'BTC' }, '100.000000'),
         ])
     })
 
