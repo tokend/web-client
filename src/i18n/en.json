@@ -1513,7 +1513,14 @@
       "registered-users-title": "The whitelist for registered users",
       "no-registered-users-title": "No registered users yet",
       "no-registered-users-msg": "The sale whitelist has no registered users yet",
+      "unregistered-users-title": "The whitelist for non-registered users",
+      "no-unregistered-users-title": "No non-registered users yet",
+      "no-unregistered-users-msg": "The sale whitelist has no non-registered users yet",
       "user-th": "User",
+      "email-th": "Email",
+      "remove-btn": "Remove",
+      "confirm-btn": "Confirm",
+      "cancel-btn": "Cancel",
       "user-removed-msg": "The user was successfully removed from the whitelist"
     },
     "invest-form": {

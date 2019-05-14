@@ -1,21 +1,21 @@
 <template>
-  <div class="sale-whitelist-registered-users">
+  <div class="sale-whitelist-unregistered-users">
     <template v-if="isLoaded">
-      <template v-if="registeredUsers.length">
-        <h3>{{ 'sale-whitelist.registered-users-title' | globalize }}</h3>
+      <template v-if="unregisteredUsers.length">
+        <h3>{{ 'sale-whitelist.unregistered-users-title' | globalize }}</h3>
         <div class="app__table">
           <table>
             <thead>
-              <th>{{ 'sale-whitelist.user-th' | globalize }}</th>
+              <th>{{ 'sale-whitelist.email-th' | globalize }}</th>
             </thead>
             <tbody>
               <!--
                 <tr
-                  v-for="user in registeredUsers"
+                  v-for="user in unregisteredUsers"
                   :key="user.id"
                 >
                   <td>
-                    <email-getter :account-id="user.id" />
+                    {{ user.email }}
                   </td>
                   <td>
                     <whitelist-table-actions
@@ -64,13 +64,13 @@
       <no-data-message
         v-else
         icon-name="trending-up"
-        :title="'sale-whitelist.no-registered-users-title' | globalize"
-        :message="'sale-whitelist.no-registered-users-msg' | globalize"
+        :title="'sale-whitelist.no-unregistered-users-title' | globalize"
+        :message="'sale-whitelist.no-unregistered-users-msg' | globalize"
       />
     </template>
 
     <template v-else-if="isLoadFailed">
-      <p class="sale-whitelist-registered-users-msg">
+      <p class="sale-whitelist-unregistered-users-msg">
         {{ 'sale-whitelist.loading-error-msg' | globalize }}
       </p>
     </template>
@@ -79,19 +79,18 @@
       <load-spinner message-id="sale-whitelist.loading-msg" />
     </template>
 
-    <div class="sale-whitelist-registered-users__collection-loader-wrp">
+    <div class="sale-whitelist-unregistered-users__collection-loader-wrp">
       <collection-loader
-        v-show="isLoaded && registeredUsers.length"
+        v-show="isLoaded && unregisteredUsers.length"
         :first-page-loader="firstPageLoader"
-        @first-page-load="setRegisteredUsers"
-        @next-page-load="concatRegisteredUsers"
+        @first-page-load="setUnregisteredUsers"
+        @next-page-load="concatUnregisteredUsers"
       />
     </div>
   </div>
 </template>
 
 <script>
-// import EmailGetter from '@/vue/common/EmailGetter'
 import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
@@ -105,9 +104,8 @@ import { Bus } from '@/js/helpers/event-bus'
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
 export default {
-  name: 'sale-whitelist-registered-users',
+  name: 'sale-whitelist-unregistered-users',
   components: {
-    // EmailGetter,
     LoadSpinner,
     NoDataMessage,
     CollectionLoader,
@@ -121,7 +119,7 @@ export default {
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
-    registeredUsers: [],
+    unregisteredUsers: [],
     firstPageLoader: _ => {},
   }),
 
@@ -131,12 +129,13 @@ export default {
 
   methods: {
     initFirstPageLoader () {
-      this.firstPageLoader = _ => this.loadRegisteredUsersWhitelist()
+      this.firstPageLoader = _ => this.loadUnregisteredUsersWhitelist()
     },
 
-    async loadRegisteredUsersWhitelist () {
+    async loadUnregisteredUsersWhitelist () {
       this.isLoaded = false
       try {
+        // TODO: endpoint to be provided
         const endpoint = `/v3/sales/${this.sale.id}/relationships/whitelist`
         const response = await Api.getWithSignature(endpoint)
         this.isLoaded = true
@@ -148,12 +147,12 @@ export default {
       }
     },
 
-    setRegisteredUsers (registeredUsers) {
-      this.registeredUsers = registeredUsers
+    setUnregisteredUsers (users) {
+      this.unregisteredUsers = users
     },
 
-    concatRegisteredUsers (registeredUsers) {
-      this.registeredUsers = this.registeredUsers.concat(registeredUsers)
+    concatUnregisteredUsers (users) {
+      this.unregisteredUsers = this.unregisteredUsers.concat(users)
     },
 
     async removeUserFromWhitelist (user) {

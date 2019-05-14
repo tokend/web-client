@@ -1,27 +1,27 @@
 <template>
-  <div class="user-table-actions">
+  <div class="whitelist-table-actions">
     <template v-if="isConfirmationShown">
       <button
-        class="app__button-raised user-table-actions__btn"
+        class="app__button-raised whitelist-table-actions__btn"
         @click="$emit(EVENTS.removeClick)"
       >
-        Confirm
+        {{ 'sale-whitelist.confirm-btn' | globalize }}
       </button>
 
       <button
-        class="app__button-flat user-table-actions__btn"
+        class="app__button-flat whitelist-table-actions__btn"
         @click="isConfirmationShown = false"
       >
-        Cancel
+        {{ 'sale-whitelist.cancel-btn' | globalize }}
       </button>
     </template>
 
     <template v-else>
       <button
-        class="app__button-raised user-table-actions__btn"
+        class="app__button-raised whitelist-table-actions__btn"
         @click="isConfirmationShown = true"
       >
-        Remove
+        {{ 'sale-whitelist.remove-btn' | globalize }}
       </button>
     </template>
   </div>
@@ -33,7 +33,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'user-table-actions',
+  name: 'whitelist-table-actions',
 
   data: _ => ({
     isConfirmationShown: false,
@@ -43,13 +43,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-table-actions {
+.whitelist-table-actions {
   display: flex;
   justify-content: flex-end;
   margin: 0 -0.6rem;
 }
 
-.user-table-actions__btn {
+.whitelist-table-actions__btn {
   margin: 0 0.6rem;
 }
 </style>

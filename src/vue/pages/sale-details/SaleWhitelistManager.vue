@@ -12,7 +12,7 @@
         :name="'sale-whitelist.unregistered-users-tab' | globalize"
         id="sale-whitelist-manager-unregistered-users-tab"
       >
-        Unregistered users
+        <sale-whitelist-unregistered-users :sale="sale" />
       </tab>
 
       <tab
@@ -31,6 +31,7 @@ import Tab from '@/vue/common/tabs/Tab'
 
 import WhitelistInviteForm from '@/vue/forms/WhitelistInviteForm'
 import SaleWhitelistRegisteredUsers from './whitelist/SaleWhitelistRegisteredUsers'
+import SaleWhitelistUnregisteredUsers from './whitelist/SaleWhitelistUnregisteredUsers'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -41,6 +42,7 @@ export default {
     Tab,
     WhitelistInviteForm,
     SaleWhitelistRegisteredUsers,
+    SaleWhitelistUnregisteredUsers,
   },
 
   props: {
