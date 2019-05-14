@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
 - Ability to create sale and opportunity in the past
 - Sentry integration
 - Email validation on login form
+- Waiting email verification
 
 #### Changed
 - Updated offer creating, updating drawers
