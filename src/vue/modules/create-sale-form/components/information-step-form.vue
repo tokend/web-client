@@ -65,6 +65,17 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <tick-field
+          :name="`create-sale-whitelisted`"
+          v-model="form.isWhitelisted"
+        >
+          {{ 'create-sale-form.whitelisted-lbl' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <date-field
           v-model="form.startTime"
           name="create-sale-start-time"
@@ -233,6 +244,7 @@ export default {
       hardCap: '',
       assetsToSell: '',
       quoteAssets: [],
+      isWhitelisted: false,
     },
     MIN_AMOUNT: config().MIN_AMOUNT,
     MAX_AMOUNT: config().MAX_AMOUNT,

@@ -159,8 +159,9 @@ export default {
         opts.filter.owner = this.accountId
       }
 
+      const accountId = this.accountId
       return function () {
-        return Api.getWithSignature('/v3/sales', opts)
+        return Api.getWithSignature(`/v3/accounts/${accountId}/sales`, opts)
       }
     },
   },

@@ -1547,6 +1547,7 @@
       "full-description-step-title": "Full description",
       "sale-name-lbl": "Sale name",
       "base-asset-lbl": "Base asset",
+      "whitelisted-lbl": "Whitelisted",
       "start-time-lbl": "Start time",
       "close-time-lbl": "Close time",
       "soft-cap-lbl": "Soft cap ({{asset}})",
