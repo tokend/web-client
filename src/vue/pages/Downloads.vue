@@ -61,6 +61,59 @@
       </section>
       <section class="downloads__section">
         <h3 class="downloads__section-header">
+          {{ 'downloads-page.pre-issuance-apps-header' | globalize }}
+        </h3>
+        <p class="downloads__section-text">
+          {{ 'downloads-page.pre-issuance-apps-desc' | globalize }}
+          <router-link
+            :to="vueRoutes.preIssuanceGuide"
+          >
+            {{ 'downloads-page.learn-more' | globalize }}
+          </router-link>
+        </p>
+        <div class="downloads__operation-systems-wrapper">
+          <img
+            class="downloads__pre-issuance-app-img"
+            src="@static/pre-issuance-app.png"
+          >
+          <div class="downloads__operation-systems">
+            <div class="downloads__windows">
+              <a
+                href="https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-win32-x64.zip"
+                target="_blank"
+                rel="noopener"
+              >
+                <img
+                  class="downloads__os-store-img"
+                  src="@static/windows_cropped.png"
+                >
+              </a>
+            </div>
+            <div class="downloads__macosx">
+              <a
+                href="https://s3-eu-west-1.amazonaws.com/881e65d1943e42/pu/TokenD+pre-issuance+tool-darwin-x64.zip"
+                target="_blank"
+                rel="noopener"
+              >
+                <img
+                  class="downloads__os-store-img"
+                  src="@static/macosx_cropped.png"
+                >
+              </a>
+            </div>
+          </div>
+          <a
+            href="https://github.com/tokend/offline-issuance"
+            class="downloads__source-code-link"
+            target="_blank">
+            {{ 'downloads-page.source-code' | globalize }}
+          </a>
+        </div>
+
+        <hr>
+      </section>
+      <section class="downloads__section">
+        <h3 class="downloads__section-header">
           {{ 'downloads-page.config-header' | globalize }}
         </h3>
         <p class="downloads__section-text">
@@ -192,6 +245,14 @@ export default {
   }
 }
 
+.downloads__operation-systems-wrapper {
+  height: 47rem;
+
+  @include respond-to(small) {
+    height: 100%;
+  }
+}
+
 .downloads__phones-overlay {
   margin: 8.3rem auto 0;
   display: block;
@@ -199,6 +260,18 @@ export default {
 
   @include respond-to(small) {
     display: none;
+  }
+}
+
+.downloads__pre-issuance-app-img {
+  display: block;
+  max-width: 52.7rem;
+
+  @include respond-to(small) {
+    max-width: 46.7rem;
+  }
+  @include respond-to(xsmall) {
+    width: 100%;
   }
 }
 
@@ -218,9 +291,22 @@ export default {
   }
 }
 
+.downloads__operation-systems {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.downloads__source-code-link {
+  color: $col-downloads-link;
+}
+
 .downloads__phone-img,
 .downloads__android,
-.downloads_ios {
+.downloads__ios,
+.downloads__windows,
+.downloads__macosx {
   max-width: 16rem;
 
   @include respond-to(small) {
@@ -228,7 +314,8 @@ export default {
   }
 }
 
-.downloads__ios {
+.downloads__ios,
+.downloads__macosx {
   margin-left: 2.9rem;
 
   @include respond-to(small) {
@@ -239,6 +326,15 @@ export default {
 
 .downloads__store-img {
   margin-top: 3.9rem;
+  max-width: 16rem;
+
+  @include respond-to(small) {
+    max-width: 24rem;
+    width: 100%;
+  }
+}
+
+.downloads__os-store-img {
   max-width: 16rem;
 
   @include respond-to(small) {
