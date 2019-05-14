@@ -15,6 +15,7 @@ const TEMPLATES = {
   bigIcon: 'big-icon',
   bigString: 'big-string',
   cardViewer: 'card-viewer',
+  saleViewer: 'sale-viewer',
 }
 
 export default {
@@ -78,6 +79,9 @@ export default {
         @include asset-card-width(100);
       }
     }
+    &--sale-viewer {
+      margin: 1rem;
+    }
   }
 
   .skeleton-loader__stub {
@@ -113,7 +117,11 @@ export default {
 
     &--card-viewer {
       min-height: 19rem;
+    }
+
+    &--sale-viewer {
       border-radius: 0.4rem;
+      height: 40rem;
     }
   }
 

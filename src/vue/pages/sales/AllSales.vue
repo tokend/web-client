@@ -10,7 +10,7 @@
         class="sales-asset-selector__field app__select app__select--no-border"
       />
     </div>
-    <template v-if="filteredSales.length">
+    <template>
       <div class="sales__sale-cards">
         <drawer :is-shown.sync="isDetailsDrawerShown">
           <template slot="heading">
@@ -26,19 +26,23 @@
             :sale="sale"
           />
         </template>
+        <template v-for="item in itemsPerSkeletonLoader">
+          <skeleton-loader
+            :key="`skeleton-loader-${item}`"
+            class="sales__sale-card"
+            v-if="!isLoaded && !filteredSales.length"
+            template="saleViewer"
+          />
+        </template>
       </div>
     </template>
 
-    <template v-else-if="isLoaded">
+    <template v-if="isLoaded && !filteredSales.length">
       <no-data-message
         icon-name="inbox"
         :title="'sales.no-sales-title' | globalize"
         :message="'sales.no-sales-desc' | globalize"
       />
-    </template>
-
-    <template v-else>
-      <loader :message-id="'sales.loading-msg'" />
     </template>
 
     <!--
@@ -57,10 +61,10 @@
 
 <script>
 import Drawer from '@/vue/common/Drawer'
-import Loader from '@/vue/common/Loader'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
@@ -91,12 +95,12 @@ export default {
   name: 'all-sales',
   components: {
     Drawer,
-    Loader,
     CollectionLoader,
     NoDataMessage,
     SaleOverview,
     SaleCard,
     SelectField,
+    SkeletonLoader,
   },
   props: {
     isUserSales: {
@@ -114,6 +118,7 @@ export default {
     isLoaded: false,
     isDetailsDrawerShown: false,
     selectedSale: null,
+    itemsPerSkeletonLoader: 3,
     SALE_STATES,
     vueRoutes,
   }),
