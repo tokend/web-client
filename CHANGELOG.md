@@ -21,6 +21,7 @@ for further information about branching and tagging conventions.
 - `initSync()` method to Api class
 - Sentry integration
 - Email validation on login form
+- Pre-issuance guide
 
 #### Changed
 - Updated offer creating, updating drawers
