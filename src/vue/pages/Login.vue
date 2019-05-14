@@ -6,7 +6,10 @@
 
     <div class="auth-page__content">
       <template v-if="isVerifyingEmail">
-        <loader message-id="auth-pages.verifying-email-msg" />
+        <loader
+          class="auth-page__verification-loader"
+          message-id="auth-pages.verifying-email-msg"
+        />
       </template>
 
       <template v-else>
@@ -67,4 +70,8 @@ export default {
 
 <style lang="scss" scoped>
 @import './auth-page';
+
+.auth-page__verification-loader {
+  margin-top: 5rem;
+}
 </style>
