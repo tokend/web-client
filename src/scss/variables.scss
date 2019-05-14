@@ -50,6 +50,7 @@ $_ghostWhite: #c4c8cb;
 $_thinPurple: #c1bfd0;
 $_alto: #e0e0e0;
 $_silverChalice: #aaaaaa;
+$_aliceBlue: #f5f6ff;
 
 // base colors:
 $col-primary: $_eastBay;
@@ -76,6 +77,7 @@ $col-danger: $_darkRed;
 $col-text: $_eastBay;
 $col-text-secondary: $_lightPurple;
 $col-link: $_cornflowerBlue;
+$col-border: $_ghostWhite;
 $col-block-bg: $_white;
 $col-app-background: $_gray;
 $col-app-content-background: $_thinBlue;
@@ -147,6 +149,7 @@ $col-text-field-hint-inactive: $col-primary-inactive;
 $col-field-background: $col-block-bg;
 $col-file-field-background: $_whiteSmoke;
 $col-file-field-border: $_ghostWhite;
+$col-file-field-drop-bg: $_aliceBlue;
 $col-field-text-secondary: $_lightPurple;
 $col-field-shadow: rgba(0, 0, 0, 0.1);
 $col-tick-field-shadow: rgba($_eastBay, 0.6);

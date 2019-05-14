@@ -37,22 +37,25 @@
             <div class="asset-selector__asset-value">
               <span class="asset-selector__asset-value-main">
                 {{
-                  currentAssetBalanceDetails.balance | formatMoney({
+                  {
+                    value: currentAssetBalanceDetails.balance,
                     currency: currentAsset
-                  })
+                  } | formatMoney
                 }}
-                {{ currentAsset }}
               </span>
             </div>
-            <div class="asset-selector__asset-subvalue">
+
+            <div
+              class="asset-selector__asset-converted"
+              v-if="currentAssetBalanceDetails.convertedBalance"
+            >
               <span class="asset-selector__asset-value-secondary">
                 {{
-                  currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: currentAssetBalanceDetails.convertedToAsset,
-                    symbolAllowed: true
-                  })
+                  {
+                    value: currentAssetBalanceDetails.convertedBalance,
+                    currency: currentAssetBalanceDetails.convertedToAsset
+                  } | formatMoney
                 }}
-                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>
@@ -84,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Sdk } from '@/sdk'
+import { Api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -114,6 +117,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
@@ -160,8 +164,14 @@ export default {
     }),
     async loadAssets () {
       try {
-        const response = await Sdk.horizon.assets.getAll()
-        this.assets = response.data.map(asset => new AssetRecord(asset))
+        const endpoint = `/v3/accounts/${this.accountId}`
+        const { data: account } = await Api.get(endpoint, {
+          include: ['balances.asset'],
+        })
+
+        this.assets = account.balances
+          .map(b => b.asset)
+          .map(a => new AssetRecord(a))
       } catch (error) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -273,7 +283,7 @@ $media-custom-breakpoint-medium: 870px;
   color: $col-details-value;
 }
 
-.asset-selector__asset-subvalue {
+.asset-selector__asset-converted {
   margin-top: 0.8rem;
   font-size: 1.6rem;
   color: $col-details-label;

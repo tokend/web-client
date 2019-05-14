@@ -84,7 +84,6 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -112,14 +111,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-      vuexTypes.account,
-      vuexTypes.wallet,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      accountBalances: vuexTypes.accountBalances,
+      wallet: vuexTypes.wallet,
+    }),
     balanceId () {
-      return this.account.balances.find(item => {
-        return item.asset.id === this.selectedAsset.code
+      return this.accountBalances.find(item => {
+        return item.asset === this.selectedAsset.code
       }).id
     },
   },
@@ -134,12 +133,11 @@ export default {
   },
   async created () {
     try {
-      await this.loadAccount(this.accountId)
-      const { data: assets } = await Sdk.horizon.account
-        .getDetails(this.accountId)
-      this.assets = assets
+      await this.loadBalances()
+      this.assets = this.accountBalances
         .map(item => new AssetRecord(item.assetDetails))
         .filter(item => item.isDepositable)
+
       if (this.assets.length) {
         this.selectedAsset = this.assets[0]
       }
@@ -149,6 +147,7 @@ export default {
       this.isLoadingFailed = true
     }
   },
+
   methods: {
     ...mapActions({
       loadAccount: vuexTypes.LOAD_ACCOUNT,

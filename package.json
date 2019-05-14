@@ -1,6 +1,6 @@
 {
   "name": "tokend-web-client",
-  "version": "1.6.0-rc.0",
+  "version": "1.6.0",
   "description": "TokenD web-client",
   "author": "Distributed Lab <contact@distributedlab.com>",
   "private": true,
@@ -24,7 +24,9 @@
   },
   "dependencies": {
     "@mdi/font": "3.3.92",
-    "@tokend/js-sdk": "1.6.0-rc.0",
+    "@sentry/browser": "5.1.1",
+    "@sentry/integrations": "5.1.2",
+    "@tokend/js-sdk": "1.7.0-x.1",
     "bignumber.js": "8.0.1",
     "card-validator": "6.1.0",
     "clipboard": "2.0.4",
@@ -38,6 +40,7 @@
     "lodash": "4.17.11",
     "loglevel": "1.6.1",
     "moment": "2.23.0",
+    "nprogress": "0.2.0",
     "numeral": "2.0.6",
     "qrcode.vue": "1.6.1",
     "vue": "2.5.21",

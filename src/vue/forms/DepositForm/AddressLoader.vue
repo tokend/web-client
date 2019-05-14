@@ -32,10 +32,13 @@
 import LoadSpinner from '@/vue/common/Loader'
 import KeyViewer from '@/vue/common/KeyViewer'
 
-import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { Sdk } from '@/sdk'
+
+import { Api } from '@/api'
+import { base } from '@tokend/js-sdk'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const EVENTS = {
   ready: 'ready',
@@ -83,12 +86,11 @@ export default {
     }),
     async tryBindAddress () {
       try {
-        const operation = Sdk.base.BindExternalSystemAccountIdBuilder
+        const operation = base.BindExternalSystemAccountIdBuilder
           .createBindExternalSystemAccountIdOp({
             externalSystemType: +this.externalSystemType,
           })
-        await Sdk.horizon.transactions
-          .submitOperations(operation)
+        await Api.api.postOperations(operation)
         await this.loadAccount(this.accountId)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)

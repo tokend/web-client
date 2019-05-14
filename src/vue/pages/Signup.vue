@@ -136,7 +136,7 @@ export default {
       this.disableForm()
       this.isLoading = true
       try {
-        const { response, wallet } = await Sdk.api.wallets.create(
+        const { response, wallet } = await Api.walletsManager.create(
           this.email.toLowerCase(),
           this.password,
           this.recoveryKeypair

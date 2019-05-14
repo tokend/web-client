@@ -9,7 +9,7 @@
           <file-field
             :label="'document-upload-form.document-lbl' | globalize"
             :note="'document-upload-form.file-type-note' | globalize"
-            accept="image/*, .pdf"
+            :file-extensions="['jpg', 'png', 'pdf']"
             :document-type="DOCUMENT_TYPES.healthcareDocument"
             v-model="form.document"
             :disabled="formMixin.isDisabled"
