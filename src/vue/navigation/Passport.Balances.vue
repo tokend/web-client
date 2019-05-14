@@ -4,7 +4,7 @@
            passport-balances--direction-column"
   >
     <span class="passport-balances__label">
-      {{ 'assets.balances-subheading' | globalize }}
+      {{ 'passport.balances-subheading' | globalize }}
     </span>
     <span
       v-for="(item, index) in baseAssets"
@@ -17,7 +17,7 @@
       :to="vueRoutes.balances"
       @click.native="showMoreBalances"
     >
-      {{ 'assets.show-more-link' | globalize }}
+      {{ 'passport.show-more-link' | globalize }}
     </router-link>
   </div>
 </template>
