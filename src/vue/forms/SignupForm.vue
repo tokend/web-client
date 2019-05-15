@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="signup-email"
           name="signup-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,7 +17,6 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="signup-password"
           name="signup-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
@@ -32,8 +30,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          id="signup-confirm-password"
-          name="signup-password-confirm"
+          name="signup-confirm-password"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :white-autofill="false"
@@ -46,7 +43,7 @@
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-up' | globalize }}
@@ -67,7 +64,7 @@ import {
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
-import { Sdk } from '@/sdk'
+import { walletsManager } from '@/api'
 
 export default {
   name: 'signup-form',
@@ -103,7 +100,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.getKdfParams(this.form.email.toLowerCase())
+        await walletsManager.getKdfParams(this.form.email.toLowerCase())
         // If no error came - the user exists - we obviously won't succeed in
         // sign-up flow
         throw new errors.UserExistsError()

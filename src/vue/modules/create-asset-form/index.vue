@@ -10,6 +10,7 @@
           v-show="currentStep === STEPS.information.number"
           :request="request"
           :kyc-required-asset-type="kycRequiredAssetType"
+          :security-asset-type="securityAssetType"
           @submit="setInformationStepForm($event) || moveToNextStep()"
         />
 
@@ -17,7 +18,7 @@
           v-show="currentStep === STEPS.advanced.number"
           :request="request"
           :is-disabled.sync="isDisabled"
-          :account-id="wallet.accountId"
+          :main-signer-account-id="accountId"
           :max-issuance-amount="informationStepForm.maxIssuanceAmount"
           @submit="setAdvancedStepForm($event) || submit()"
         />
@@ -49,9 +50,9 @@ import LoadSpinner from '@/vue/common/Loader'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
-import { initApi } from './_api'
 import { initConfig } from './_config'
 
 const STEPS = {
@@ -79,17 +80,8 @@ export default {
   },
   mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of file storage server
-     */
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
     requestId: {
@@ -109,6 +101,12 @@ export default {
     STEPS,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
+
   async created () {
     await this.init()
   },
@@ -116,10 +114,11 @@ export default {
   methods: {
     async init () {
       try {
-        initApi(this.wallet, this.config)
-        initConfig(this.config)
+        initConfig(this.storageUrl)
 
         await this.loadKycRequiredAssetType()
+        await this.loadSecurityAssetType()
+
         await this.tryLoadRequest()
 
         this.isLoaded = true
@@ -131,7 +130,10 @@ export default {
 
     async tryLoadRequest () {
       if (this.requestId) {
-        this.request = await this.getCreateAssetRequestById(this.requestId)
+        this.request = await this.getCreateAssetRequestById(
+          this.requestId,
+          this.accountId
+        )
       }
     },
 
@@ -153,7 +155,7 @@ export default {
     async submit () {
       this.isDisabled = true
       try {
-        await this.submitCreateAssetRequest()
+        await this.submitCreateAssetRequest(this.accountId)
         Bus.success('create-asset-form.request-submitted-msg')
         this.emitSubmitEvents()
       } catch (e) {

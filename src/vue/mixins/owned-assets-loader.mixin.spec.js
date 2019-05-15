@@ -4,10 +4,11 @@ import Vuex from 'vuex'
 
 import { createLocalVue, mount } from '@vue/test-utils'
 
-import { MockHelper, MockWrapper } from '@/test'
+import { MockHelper } from '@/test'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
+import { api } from '@/api'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -18,8 +19,7 @@ describe('asset-loader.mixin unit test', () => {
     let mockHelper
     let assetsSpy
 
-    let assetsResource
-    let sampleAssetsData
+    let sampleBalancesData
     let store
 
     afterEach(() => {
@@ -32,15 +32,16 @@ describe('asset-loader.mixin unit test', () => {
       }
 
       mockHelper = new MockHelper()
-      assetsResource = mockHelper.getHorizonResourcePrototype('assets')
-      sampleAssetsData = [{
-        code: 'BTC',
-        availableForIssuance: 100,
-        owner: mockHelper.getMockWallet().accountId,
-      }]
-      assetsSpy = sinon.stub(assetsResource, 'getAll').resolves(
-        MockWrapper.makeHorizonResponse(sampleAssetsData)
-      )
+      sampleBalancesData = {
+        balances: [{
+          id: 'BTC',
+          availableForIssuance: 100,
+          owner: { id: mockHelper.getMockWallet().accountId },
+        }],
+      }
+      assetsSpy = sinon.stub(api, 'get').resolves({
+        data: sampleBalancesData,
+      })
 
       const getters = accountModule.getters
       sinon.stub(getters, vuexTypes.accountId)
@@ -57,13 +58,10 @@ describe('asset-loader.mixin unit test', () => {
     })
 
     describe('loadOwnedAssets', () => {
-      it('calls the horizon.assets.getAll() with the correct params', async () => {
+      it('calls the api.get with the correct params', async () => {
         await wrapper.vm.loadOwnedAssets()
 
-        expect(assetsSpy
-          .withArgs({ owner: mockHelper.getMockWallet().accountId })
-          .calledOnce
-        ).to.be.true
+        expect(assetsSpy).to.have.been.calledOnce
       })
 
       it('changes owned assets data after loading', async () => {

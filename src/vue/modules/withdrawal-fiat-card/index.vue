@@ -3,7 +3,6 @@
     v-if="form.asset && isInitialized"
     @submit.prevent="isFormValid() && showConfirmation()"
     class="withdrawal-fiat-card-module"
-    id="withdrawal-fiat-card-module"
   >
     <div class="app__form-row withdrawal-fiat-card__form-row">
       <div class="app__form-field">
@@ -142,7 +141,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="withdrawal-fiat-card-module"
       >
         {{ 'withdrawal-fiat-card-module.withdrawal' | globalize }}
       </button>
@@ -166,14 +164,14 @@
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 import { Bus } from '@/js/helpers/event-bus'
-import { Wallet, base } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import {
   required,
   noMoreThanAvailableOnBalance,
@@ -195,13 +193,8 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
      */
@@ -271,9 +264,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -282,9 +272,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('withdrawal-fiat-card', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('withdrawal-fiat-card', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -318,7 +305,7 @@ export default {
         const operation = base.CreateWithdrawRequestBuilder.createWithdrawWithAutoConversion({
           ...this.composeOptions(),
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         Bus.success('withdrawal-fiat-card-module.withdraw-success')
         this.$emit(EVENTS.withdrawn)
       } catch (e) {
@@ -359,14 +346,14 @@ export default {
 .withdrawal-fiat-card__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.withdrawal-fiat-card__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.withdrawal-fiat-card__fee-table td:last-child {
+  text-align: right;
 }
 
 .withdrawal-fiat-card__fee-tbody {

@@ -1,7 +1,6 @@
 <template>
   <div class="fees-table">
     <div
-      v-if="fees.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -27,8 +26,9 @@
             </th>
           </tr>
         </thead>
-
-        <tbody>
+        <tbody
+          v-if="fees.length"
+        >
           <tr
             v-for="(fee, i) in fees"
             :key="i"
@@ -50,37 +50,42 @@
               {{ fee.percent | formatPercent }}
             </td>
 
-            <td :title="fee.lowerBound | formatMoney">
-              {{ fee.lowerBound | formatMoney }}
+            <!-- eslint-disable-next-line -->
+            <td :title="{ value: fee.lowerBound, currency: fee.asset } | formatMoney">
+              {{ { value: fee.lowerBound, currency: fee.asset } | formatMoney }}
             </td>
 
-            <td :title="fee.upperBound | formatMoney">
-              {{ fee.upperBound | formatMoney }}
+            <!-- eslint-disable-next-line -->
+            <td :title="{ value: fee.upperBound, currency: fee.asset } | formatMoney">
+              {{ { value: fee.upperBound, currency: fee.asset } | formatMoney }}
+            </td>
+          </tr>
+        </tbody>
+        <tbody
+          v-else
+        >
+          <tr>
+            <td
+              class="fees-table__empty-list-placeholder"
+              colspan="6"
+            >
+              <!-- eslint-disable-next-line -->
+              {{ 'fees.no-valuable-fees-msg' | globalize({ asset: assetCode }) }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'fees.no-valuable-fees-title' | globalize"
-      :message="'fees.no-valuable-fees-msg' | globalize({ asset: assetCode })"
-    />
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
-
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
 
 export default {
   name: 'fees-table',
   components: {
-    NoDataMessage,
     FeeTypeViewer,
     FeeSubtypeViewer,
   },
@@ -98,6 +103,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped lang="scss">
+  .fees-table__empty-list-placeholder {
+    text-align: center;
+  }
 </style>

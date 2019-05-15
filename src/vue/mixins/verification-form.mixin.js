@@ -3,7 +3,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
@@ -19,22 +19,36 @@ export default {
       kycRequestId: vuexTypes.kycRequestId,
       accountId: vuexTypes.accountId,
     }),
+
+    isUpdatableKycRequest () {
+      return (
+        this.kycState === REQUEST_STATES_STR.rejected ||
+        this.kycState === REQUEST_STATES_STR.pending
+      )
+    },
   },
   methods: {
     ...mapActions({
       loadKyc: vuexTypes.LOAD_KYC,
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
+
     async createKycBlob (blobType) {
-      const { data } = await Sdk.api.blobs.create(
-        blobType,
-        JSON.stringify(this.createKycData())
-      )
-      return data.id
+      const { data: blob } = await api.postWithSignature('/blobs', {
+        data: {
+          type: blobType,
+          attributes: { value: JSON.stringify(this.createKycData()) },
+          relationships: {
+            owner: { data: { id: this.accountId } },
+          },
+        },
+      })
+
+      return blob.id
     },
+
     createKycOperation (kycBlobId, accountRole) {
       return base.CreateChangeRoleRequestBuilder.createChangeRoleRequest({
-        requestID: this.kycState === REQUEST_STATES_STR.rejected
+        requestID: this.isUpdatableKycRequest
           ? this.kycRequestId
           : KYC_CREATION_REQUEST_ID,
         destinationAccount: this.accountId,
@@ -43,6 +57,13 @@ export default {
           blob_id: kycBlobId,
         },
       })
+    },
+
+    getKycOperationRequestId () {
+      const isExistingRequest =
+        this.kycState === REQUEST_STATES_STR.rejected ||
+        this.kycState === REQUEST_STATES_STR.pending
+      return isExistingRequest ? this.kycRequestId : KYC_CREATION_REQUEST_ID
     },
   },
 }

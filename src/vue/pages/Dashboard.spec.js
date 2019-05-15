@@ -2,6 +2,7 @@ import Dashboard from './Dashboard'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueRouter from 'vue-router'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
@@ -15,6 +16,7 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
+localVue.use(VueRouter)
 localVue.filter('globalize', globalize)
 
 describe('Dashboard component', () => {
@@ -65,10 +67,16 @@ describe('Dashboard component', () => {
       getters: accountModule.getters,
       actions: accountModule.actions,
     })
+    const router = new VueRouter({
+      mode: 'history',
+      routes: [],
+    })
 
+    sinon.stub(Dashboard, 'created').resolves()
     wrapper = shallowMount(Dashboard, {
       store,
       localVue,
+      router,
     })
   }
 
@@ -85,14 +93,18 @@ describe('Dashboard component', () => {
     })
 
     describe('set default currentAsset =>', () => {
-      it('set ETH if accountBalances has one', () => {
+      it('set router query asset if accountBalances has one', () => {
         mountComponentWithSpecifiedAccountBalances(mockedAccountBalances)
+        wrapper.vm.$router.push({
+          query: { asset: 'ETH' },
+        })
+
         wrapper.vm.setCurrentAsset()
 
         expect(wrapper.vm.currentAsset).to.equal('ETH')
       })
 
-      it('set first asset code in accountBalances list if ETH balance does not exists', () => {
+      it('set first asset code in accountBalances list route query asset does not exists', () => {
         const mockedAccountBalances = [
           {
             asset: 'BTC',

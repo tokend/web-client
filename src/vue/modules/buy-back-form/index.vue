@@ -18,7 +18,7 @@
         </div>
         <p class="app__form-field-description">
           {{
-            'buy-back-form.issued-tokens-msg' | globalize({
+            'buy-back-form.issued-assets-msg' | globalize({
               value: allowedToBuy(form.asset.code)
             })
           }}
@@ -94,7 +94,7 @@
             <button
               v-ripple
               type="submit"
-              class="app__form-submit-btn"
+              class="app__form-submit-btn app__button-raised"
               :disabled="formMixin.isDisabled"
             >
               <template>
@@ -115,11 +115,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
@@ -150,13 +147,8 @@ export default {
   },
   mixins: [FormMixin, OfferManagerMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property config.minAmount - min allowed amount
      * @property config.decimalPoints - default max allowed points after dot
      * @property [config.defaultAssetCode] - prefills the asset-selector with
@@ -217,18 +209,12 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('buy-back-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('buy-back-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,

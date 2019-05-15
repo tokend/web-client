@@ -3,7 +3,7 @@ import UploadDocumentsMixin from './upload-documents.mixin'
 import { base } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
@@ -43,11 +43,11 @@ export default {
   },
 
   methods: {
-    async getUpdateAssetRequestById (id) {
+    async getUpdateAssetRequestById (id, accountId) {
       const endpoint = `/v3/update_asset_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details'],
       })
@@ -55,26 +55,28 @@ export default {
       return new UpdateAssetRequest(record)
     },
 
-    async getUpdatableRequest () {
+    async getUpdatableRequest (accountId) {
       const pendingRequest = await this.getLatestUpdateAssetRequest(
-        REQUEST_STATES.pending
+        REQUEST_STATES.pending,
+        accountId
       )
       const rejectedRequest = await this.getLatestUpdateAssetRequest(
-        REQUEST_STATES.rejected
+        REQUEST_STATES.rejected,
+        accountId
       )
 
       return pendingRequest || rejectedRequest
     },
 
-    async getLatestUpdateAssetRequest (requestState) {
-      const endpoint = `/v3/update_asset_requests`
-      const { data: requests } = await api().getWithSignature(endpoint, {
+    async getLatestUpdateAssetRequest (requestState, accountId) {
+      const endpoint = '/v3/update_asset_requests'
+      const { data: requests } = await api.getWithSignature(endpoint, {
         page: {
           limit: 1,
           order: 'desc',
         },
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
           state: requestState,
         },
         include: ['request_details'],
@@ -91,8 +93,8 @@ export default {
       await this.uploadDocuments(assetDocuments)
 
       const operation =
-          base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
-      await api().postOperations(operation)
+        base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)
+      await api.postOperations(operation)
     },
   },
 }

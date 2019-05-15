@@ -4,7 +4,6 @@
       <template v-if="ownedAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="dividend-form"
           novalidate
         >
           <div class="app__form-row dividend__form-row">
@@ -73,7 +72,7 @@
                       {{ 'dividend-form.email' | globalize }}
                     </td>
                     <td>
-                      {{ 'dividend-form.token-amount' | globalize }}
+                      {{ 'dividend-form.asset-amount' | globalize }}
                     </td>
                     <td>
                       {{ 'dividend-form.supposed-dividend-amount' | globalize }}
@@ -128,7 +127,6 @@
                 !balanceHolders.length ||
                 !isSignersLoaded
               "
-              form="dividend-form"
             >
               {{ 'dividend-form.dividend-btn' | globalize }}
             </button>
@@ -149,7 +147,7 @@
           {{ 'dividend-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.sales"
           tag="button"
           class="app__button-raised dividend__action"
         >
@@ -169,14 +167,15 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
-import { PAYMENT_FEE_SUBTYPES, Wallet, base } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
+import { PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import {
   amount,
   maxDecimalDigitsCount,
@@ -185,6 +184,7 @@ import {
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
 import { globalize } from '@/vue/filters/globalize'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   transferred: 'transferred',
@@ -199,15 +199,10 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property [config.defaultAssetCode] - prefills the asset-selector with
      *           this asset code
      */
@@ -229,15 +224,18 @@ export default {
     isSignersLoadPending: false,
     isSignersLoaded: false,
     isDividendSubmitting: false,
+    vueRoutes,
   }),
   computed: {
     ...mapGetters('dividend-form', {
-      accountId: types.accountId,
       balances: types.balances,
       assets: types.assets,
       ownedAssets: types.ownedAssets,
       signers: types.balanceHolders,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
   watch: {
     'form.ownedAsset.code' () {
@@ -262,9 +260,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -279,9 +274,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('dividend-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('dividend-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -298,7 +290,7 @@ export default {
           return false
         }
         const operations = await this.getTransferOperations()
-        await api().postOperations(...operations)
+        await api.postOperations(...operations)
         Bus.success('dividend-form.dividend-success')
         this.$emit(EVENTS.transferred)
       } catch (e) {
@@ -464,69 +456,60 @@ export default {
 </script>
 
 <style lang="scss" >
-  @import "/scss/variables";
+@import '/scss/variables';
 
-  .dividend__fees-container {
-    &.loading {
-      opacity: 0.7;
-    }
+.dividend__form-row {
+  margin-bottom: 2.5rem;
+}
 
-    .dividend__fee-type {
-      color: $col-info;
-    }
-  }
+.dividend__form-field-description {
+  margin-top: 0.4rem;
+  opacity: 0.7;
+}
 
-  .dividend__form-row {
-    margin-bottom: 2.5rem;
-  }
+.dividend__fee-table {
+  width: 100%;
+  font-size: 1.2rem;
+}
 
-  .dividend__form-field-description {
-    margin-top: 0.4rem;
-    opacity: 0.7;
-  }
+.dividend__fee-table tr {
+  height: 2rem;
+}
 
-  .dividend__fee-table {
-    width: 100%;
-    font-size: 1.2rem;
+.dividend__fee-table td:last-child {
+  text-align: right;
+}
 
-    tr {
-      height: 2rem;
-    }
+.dividend__fee-tbody {
+  color: $col-text-secondary;
+}
 
-    td:last-child {
-      text-align: right;
-    }
-  }
+.dividend__total-fee-row {
+  color: $col-text;
+  font-weight: 600;
+}
 
-  .dividend__fee-tbody {
-    color: $col-text-secondary;
-  }
+.dividend__action {
+  margin-top: 2.5rem;
+}
 
-  .dividend__total-fee-row {
-    color: $col-text;
-    font-weight: 600;
-  }
+.dividend__data--loading {
+  opacity: 0.4;
+}
 
-  .dividend__action {
-    margin-top: 2.5rem;
-  }
-  .dividend__data--loading {
-    opacity: 0.4;
-  }
+.dividend__table-description {
+  opacity: 0.6;
+  font-size: 1.2rem;
+}
 
-  .dividend__table-description {
-    opacity: 0.6;
-    font-size: 1.2rem;
-  }
+.dividend__fee-holders-not-found {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 6.4rem;
+  font-size: 1.8rem;
+}
 
-  .dividend__fee-holders-not-found {
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 6.4rem;
-    font-size: 1.8rem;
-  }
-
-  .dividend__fee-holders-loading {
-    justify-content: center;
-  }
+.dividend__fee-holders-loading {
+  justify-content: center;
+}
 </style>

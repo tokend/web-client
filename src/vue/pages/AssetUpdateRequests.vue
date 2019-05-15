@@ -1,0 +1,28 @@
+<template>
+  <div class="asset-update-requests-page">
+    <submodule-importer
+      v-if="getModule().canRenderSubmodule(UpdateAssetRequestsModule)"
+      :submodule="getModule().getSubmodule(UpdateAssetRequestsModule)"
+      :storage-url="storageUrl"
+    />
+  </div>
+</template>
+
+<script>
+import SubmoduleImporter from '@/modules-arch/submodule-importer'
+import { UpdateAssetRequestsModule } from '@/vue/modules/requests/update-asset-requests/module'
+
+import config from '@/config'
+
+export default {
+  name: 'asset-update-requests-page',
+  components: {
+    SubmoduleImporter,
+  },
+
+  data: _ => ({
+    UpdateAssetRequestsModule,
+    storageUrl: config.FILE_STORAGE,
+  }),
+}
+</script>

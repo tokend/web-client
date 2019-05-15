@@ -7,17 +7,27 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from './_api'
 import * as Config from './_config'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 
 describe('Create asset form module', () => {
   let sandbox
+  let store
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
+    store = new Vuex.Store({
+      modules: {
+        account: {
+          getters: {
+            accountId: () => ('SOME_ACCOUNT_ID'),
+          },
+        },
+      },
+    })
   })
 
   afterEach(() => {
@@ -31,6 +41,7 @@ describe('Create asset form module', () => {
 
         await shallowMount(CreateAssetForm, {
           localVue,
+          store,
         })
 
         expect(CreateAssetForm.methods.init).to.have.been.calledOnce
@@ -46,6 +57,7 @@ describe('Create asset form module', () => {
 
       wrapper = shallowMount(CreateAssetForm, {
         localVue,
+        store,
       })
     })
 
@@ -54,21 +66,18 @@ describe('Create asset form module', () => {
         it('initializes API and config, calls load methods, and sets isLoaded property to true',
           async () => {
             wrapper.setProps({
-              config: 'SOME_CONFIG',
-              wallet: 'SOME_WALLET',
+              storageUrl: 'https://storage.com',
             })
 
-            sandbox.stub(Api, 'initApi')
             sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
+            sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
             sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
 
             await wrapper.vm.init()
 
-            expect(Api.initApi)
-              .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
             expect(Config.initConfig)
-              .to.have.been.calledOnceWithExactly('SOME_CONFIG')
+              .to.have.been.calledOnceWithExactly('https://storage.com')
 
             expect(wrapper.vm.loadKycRequiredAssetType)
               .to.have.been.calledOnce
@@ -80,7 +89,6 @@ describe('Create asset form module', () => {
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(Api, 'initApi').throws()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()
@@ -112,7 +120,7 @@ describe('Create asset form module', () => {
             await wrapper.vm.tryLoadRequest()
 
             expect(wrapper.vm.getCreateAssetRequestById)
-              .to.have.been.calledOnceWithExactly('1')
+              .to.have.been.calledOnceWithExactly('1', 'SOME_ACCOUNT_ID')
             expect(wrapper.vm.request).to.equal(request)
           }
         )

@@ -4,7 +4,6 @@
       <template v-if="assets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="withdrawal-form"
           novalidate
         >
           <div class="app__form-row withdrawal__form-row">
@@ -29,7 +28,6 @@
                   }}
                 </p>
               </div>
-
               <div class="withdrawal__form-field-description">
                 <p>
                   <span>{{ 'withdrawal-form.reviewer' | globalize }}</span>
@@ -157,7 +155,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="withdrawal-form"
             >
               {{ 'withdrawal-form.withdraw-btn' | globalize }}
             </button>
@@ -177,7 +174,7 @@
           {{ 'withdrawal-form.no-assets' | globalize }}
         </p>
         <router-link
-          to="/tokens"
+          :to="vueRoutes.assets"
           tag="button"
           class="app__button-raised withdrawal__action"
         >
@@ -203,10 +200,12 @@ import EmailGetter from '@/vue/common/EmailGetter'
 
 import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { FEE_TYPES } from '@tokend/js-sdk'
+import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { Sdk } from '@/sdk'
+import { vueRoutes } from '@/vue-router/routes'
+import { api } from '@/api'
+
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
@@ -230,26 +229,24 @@ export default {
     EmailGetter,
   },
   mixins: [FormMixin],
-  data () {
-    return {
-      isLoaded: false,
-      isFailed: false,
-      form: {
-        asset: {},
-        amount: '',
-        address: '',
-        comment: '',
-      },
-      assets: [],
-      MIN_AMOUNT: config.MIN_AMOUNT,
-      fixedFee: EMPTY_FEE,
-      percentFee: EMPTY_FEE,
-      feesDebouncedRequest: null,
-      isFeesLoadPending: false,
-      isFeesLoadFailed: false,
-      DECIMAL_POINTS: config.DECIMAL_POINTS,
-    }
-  },
+  data: () => ({
+    isLoaded: false,
+    isFailed: false,
+    form: {
+      asset: {},
+      amount: '',
+      address: '',
+    },
+    assets: [],
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    fixedFee: EMPTY_FEE,
+    percentFee: EMPTY_FEE,
+    feesDebouncedRequest: null,
+    isFeesLoadPending: false,
+    isFeesLoadFailed: false,
+    DECIMAL_POINTS: config.DECIMAL_POINTS,
+    vueRoutes,
+  }),
   validations () {
     const addressRules = {
       required,
@@ -277,7 +274,7 @@ export default {
     }),
 
     isMasterAssetOwner () {
-      return this.form.asset.owner === Sdk.networkDetails.adminAccountId
+      return this.form.asset.owner === api.networkDetails.adminAccountId
     },
 
     selectedAssetStep () {
@@ -320,9 +317,9 @@ export default {
           Bus.error('withdrawal-form.failed-load-fees')
           return false
         }
-        const operation = Sdk.base.CreateWithdrawRequestBuilder
+        const operation = base.CreateWithdrawRequestBuilder
           .createWithdrawWithAutoConversion(this.composeOptions())
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
         this.$emit(EVENTS.operationSubmitted)
@@ -333,13 +330,18 @@ export default {
     },
     async getFees () {
       try {
-        const fees = await Sdk.horizon.fees.get(FEE_TYPES.withdrawalFee, {
-          account: this.accountId,
-          asset: this.form.asset.code,
-          amount: this.form.amount,
-        })
-        this.fixedFee = fees.data.fixed
-        this.percentFee = fees.data.percent
+        const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+        const params = [
+          `asset=${this.form.asset.code}`,
+          `fee_type=${FEE_TYPES.withdrawalFee}`,
+          `amount=${this.form.amount}`,
+        ]
+
+        const endpoint = `${baseEndpoint}?${params.join('&')}`
+        const { data: fees } = await api.get(endpoint)
+
+        this.fixedFee = fees.fixed
+        this.percentFee = fees.calculatedPercent
         this.isFeesLoadFailed = false
       } catch (e) {
         this.isFeesLoadFailed = true
@@ -391,8 +393,13 @@ export default {
     },
     async loadAssets () {
       await this.loadBalances()
-      const { data: assets } = await Sdk.horizon.assets.getAll()
-      this.assets = assets
+      const endpoint = `/v3/accounts/${this.accountId}`
+      const { data: account } = await api.get(endpoint, {
+        include: ['balances.asset'],
+      })
+
+      this.assets = account.balances
+        .map(b => b.asset)
         .map(item => new AssetRecord(item, this.balances))
         .filter(item => item.isWithdrawable && item.balance.id)
     },
@@ -401,17 +408,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/variables";
-
-.withdrawal__fees-container {
-  &.loading {
-    opacity: 0.7;
-  }
-
-  .withdrawal__fee-type {
-    color: $col-info;
-  }
-}
+@import '@/scss/variables';
 
 .withdrawal__form-row {
   margin-bottom: 2.5rem;
@@ -425,14 +422,14 @@ export default {
 .withdrawal__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.withdrawal__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.withdrawal__fee-table td:last-child {
+  text-align: right;
 }
 
 .withdrawal__fee-tbody {
@@ -447,12 +444,8 @@ export default {
 .withdrawal__action {
   margin-top: 2.5rem;
 }
+
 .withdrawal__data--loading {
   opacity: 0.4;
-}
-
-.withdrawal__table-description {
-  opacity: 0.6;
-  font-size: 1.2rem;
 }
 </style>

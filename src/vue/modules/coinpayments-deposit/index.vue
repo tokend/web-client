@@ -3,11 +3,13 @@
     <coinpayments-form
       :asset="asset"
       :balance-id="balanceId"
+      @submitted="handleCoinpaymentsFormSubmitted"
     />
     <div class="coinpayments-deposit__pending-issuances-table-wrp">
       <pending-issuances-table
         v-if="!isLoading"
         :pending-issuances="pendingIssuances"
+        ref="table"
       />
       <template v-else-if="isFailed">
         <p>
@@ -33,12 +35,9 @@ import PendingIssuancesTable from './components/pending-issuances-table'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import Loader from '@/vue/common/Loader'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { api } from '@/api'
 import { IssuanceRecord } from './wrappers/issuance.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-
-const HORIZON_VERSION_PREFIX = 'v3'
 
 export default {
   name: 'coinpayments-deposit',
@@ -49,18 +48,6 @@ export default {
     Loader,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     asset: { type: Object, required: true },
     balanceId: { type: String, required: true },
     accountId: { type: String, required: true },
@@ -69,6 +56,7 @@ export default {
     return {
       isLoading: true,
       isFailed: false,
+      isSubmitted: false,
       pendingIssuances: [],
     }
   },
@@ -76,9 +64,6 @@ export default {
     firstPageLoader () {
       return _ => this.loadFirstPage()
     },
-  },
-  created () {
-    initApi(this.wallet, this.config)
   },
   methods: {
     setPendingIssuances (records) {
@@ -110,9 +95,12 @@ export default {
         },
         include: ['request_details'],
       }
-      const endpoint = `/${HORIZON_VERSION_PREFIX}/create_issuance_requests`
-      const response = await api().getWithSignature(endpoint, params)
+      const endpoint = '/v3/create_issuance_requests'
+      const response = await api.getWithSignature(endpoint, params)
       return response
+    },
+    handleCoinpaymentsFormSubmitted () {
+      this.$refs.table.resetIssuanceSelection()
     },
   },
 }

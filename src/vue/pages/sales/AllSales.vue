@@ -69,7 +69,7 @@ import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -80,6 +80,7 @@ const SALE_STATES = {
   live: {
     labelTranslationId: 'sales.sale-live-state',
     value: 'live',
+    state: 1,
   },
   upcoming: {
     labelTranslationId: 'sales.sale-upcoming-state',
@@ -131,14 +132,6 @@ export default {
     // A workaround for filtering sales by base asset, since sales.getPage
     // method loads all the existing sales.
     filteredSales () {
-      if (this.isUserSales) {
-        return this.filteredSalesOwned
-      } else {
-        return this.filteredAllSales
-      }
-    },
-
-    filteredAllSales () {
       if (this.filters.baseAsset === '') {
         return this.saleRecords
       } else {
@@ -150,25 +143,29 @@ export default {
       }
     },
 
-    filteredSalesOwned () {
-      return this.saleRecords
-        .filter(sale => {
-          return sale.owner === this.accountId
-        })
-    },
-
     recordsLoader () {
       const saleState = this.filters.state.value
-      const opts = {
-        open_only: saleState === SALE_STATES.upcoming.value ||
-          saleState === SALE_STATES.live.value,
-        upcoming: saleState === SALE_STATES.upcoming.value,
+      let opts = {
+        page: { order: 'desc' },
+        filter: {},
+        include: ['base_asset', 'quote_assets', 'default_quote_asset'],
       }
+
+      switch (saleState) {
+        case SALE_STATES.live.value:
+          opts.filter.state = SALE_STATES.live.state
+          break
+        case SALE_STATES.upcoming.value:
+          opts.filter.min_start_time = new Date().toISOString()
+          break
+      }
+
       if (this.isUserSales) {
-        opts.owner = this.accountId
+        opts.filter.owner = this.accountId
       }
+
       return function () {
-        return Sdk.horizon.sales.getPage(opts)
+        return api.getWithSignature('/v3/sales', opts)
       }
     },
   },
@@ -198,4 +195,7 @@ export default {
 </script>
 
 <style lang="scss">
+.sales-asset-selector__field {
+  width: auto;
+}
 </style>

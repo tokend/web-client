@@ -9,7 +9,7 @@
           <file-field
             :label="'document-upload-form.document-lbl' | globalize"
             :note="'document-upload-form.file-type-note' | globalize"
-            accept="image/*, .pdf"
+            :file-extensions="['jpg', 'png', 'pdf']"
             :document-type="DOCUMENT_TYPES.healthcareDocument"
             v-model="form.document"
             :disabled="formMixin.isDisabled"
@@ -40,7 +40,7 @@
           <button
             v-ripple
             type="submit"
-            class="app__button-raised"
+            class="app__button-raised document-upload-form__actions-btn"
             :disabled="formMixin.isDisabled"
           >
             {{ 'document-upload-form.upload-btn' | globalize }}
@@ -88,12 +88,11 @@ import CreateAccountMixin from './mixins/create-account.mixin'
 
 import ProgressBar from './progress-bar'
 
-import { Wallet, base, errors } from '@tokend/js-sdk'
+import { base, errors } from '@tokend/js-sdk'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { documentContainer, required } from '@validators'
 
-import { initApi } from './_api'
 import { initConfig } from './_config'
 
 import { Bus } from '@/js/helpers/event-bus'
@@ -101,6 +100,9 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { FileUtil } from '@/js/utils/file.util'
 import { CryptoUtil } from './utils/crypto.util'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -120,17 +122,8 @@ export default {
   ],
 
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of file storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-    wallet: {
-      type: Wallet,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },
@@ -159,6 +152,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     completedSteps () {
       if (!this.isPending) {
         return 0
@@ -189,8 +185,7 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
+    initConfig(this.storageUrl)
   },
 
   methods: {
@@ -223,16 +218,16 @@ export default {
       const docHashBuffer = await this.getDocHashBuffer(this.form.document)
       this.uploadState.isCalculatingHash = false
 
-      const accountId = await this.getAccountIdFromDocHash(docHashBuffer)
-
+      const accountIdFromDocHash =
+        await this.getAccountIdFromDocHash(docHashBuffer)
       this.uploadState.isCreatingAccount = true
-      await this.createAccount(accountId)
+      await this.createAccount(accountIdFromDocHash, this.accountId)
       this.uploadState.isCreatingAccount = false
 
       this.uploadState.isUploadingFile = true
       const fileKey = await this.uploadDocument(
         this.form.document,
-        accountId
+        accountIdFromDocHash
       )
       this.uploadState.isUploadingFile = false
 
@@ -245,7 +240,7 @@ export default {
           mime_type: this.form.document.mimeType,
         },
         description: this.form.description,
-        uploader_account_id: this.wallet.accountId,
+        uploader_account_id: this.accountId,
       })
       this.uploadState.isCreatingBlob = false
 
@@ -292,17 +287,18 @@ export default {
   display: flex;
   align-items: center;
   margin-top: 4.9rem;
+}
 
-  button {
-    max-width: 18rem;
-    width: 100%;
-  }
+.document-upload-form__actions-btn {
+  max-width: 18rem;
+  width: 100%;
 }
 
 .document-upload-form__upload-state-msg {
   margin-left: 2rem;
   width: 100%;
 }
+
 .document-upload-form__progress-bar-wrp {
   margin-top: 1rem;
   width: 100%;

@@ -8,10 +8,10 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 import accountModule from '@/vuex/account.module'
 import { vuexTypes } from '@/vuex'
-import { MockHelper } from '@/test'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { api } from '@/api'
 
 Vue.config.silent = true
 
@@ -21,18 +21,16 @@ localVue.use(Vuex)
 localVue.filter('globalize', globalize)
 
 describe('Dashboard.AssetSelector component', () => {
-  let mockHelper
   let store
   let wrapper
   let mockedAccountBalances
-  let mockedTokens
+  let mockedAssets
 
   afterEach(() => {
     sinon.restore()
   })
 
   beforeEach(() => {
-    mockHelper = new MockHelper()
     mockedAccountBalances = [
       {
         asset: 'BTC',
@@ -66,9 +64,9 @@ describe('Dashboard.AssetSelector component', () => {
         }),
       },
     ]
-    mockedTokens = [
+    mockedAssets = [
       new AssetRecord({
-        code: 'USD',
+        id: 'USD',
         details: {
           name: 'Dollar',
         },
@@ -85,7 +83,7 @@ describe('Dashboard.AssetSelector component', () => {
         ],
       }),
       new AssetRecord({
-        code: 'BTC',
+        id: 'BTC',
         details: {
           name: 'Bitcoin',
         },
@@ -99,7 +97,7 @@ describe('Dashboard.AssetSelector component', () => {
         ],
       }),
       new AssetRecord({
-        code: 'ETH',
+        id: 'ETH',
         details: {
           name: 'Ethereum',
         },
@@ -115,6 +113,8 @@ describe('Dashboard.AssetSelector component', () => {
     ]
     sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
+    sinon.stub(accountModule.getters, vuexTypes.accountId)
+      .returns('SOME_ACCOUNT_ID')
 
     store = new Vuex.Store({
       getters: accountModule.getters,
@@ -127,61 +127,63 @@ describe('Dashboard.AssetSelector component', () => {
       localVue,
     })
   })
+  afterEach(() => { sinon.restore() })
 
-  describe('loadTokens()', () => {
-    let assetsResource
-
+  describe('loadAssets()', () => {
     beforeEach(() => {
-      assetsResource = mockHelper.getHorizonResourcePrototype('assets')
       sinon.stub(ErrorHandler, 'processWithoutFeedback')
     })
 
+    afterEach(() => { sinon.restore() })
+
     it('is called inside created hook', () => {
       AssetSelector.created.restore()
-      sinon.stub(AssetSelector.methods, 'loadTokens')
+      sinon.stub(AssetSelector.methods, 'loadAssets')
+      sinon.stub(AssetSelector.methods, 'loadBalances')
 
       shallowMount(AssetSelector, {
         store,
         localVue,
       })
 
-      expect(AssetSelector.methods.loadTokens.calledOnce).to.be.true
+      expect(AssetSelector.methods.loadAssets.calledOnce).to.be.true
     })
 
     it('works correctly', async () => {
-      const expectAssets = { data: [] }
-      sinon.stub(assetsResource, 'getAll').resolves(expectAssets)
+      const expectAssets = { data: { balances: [] } }
+      sinon.stub(api, 'get').resolves(expectAssets)
+      sinon.stub(AssetSelector.methods, 'loadBalances')
 
-      await wrapper.vm.loadTokens()
+      await wrapper.vm.loadAssets()
 
-      expect(wrapper.vm.tokens).to.deep.equal(expectAssets.data)
-      expect(assetsResource.getAll.calledOnce).to.be.true
+      expect(wrapper.vm.assets).to.deep.equal(expectAssets.data.balances)
+      expect(api.get.calledOnce).to.be.true
       expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.false
     })
 
     it('handle errors', async () => {
-      sinon.stub(assetsResource, 'getAll').rejects()
+      sinon.stub(api, 'get').rejects()
 
-      await wrapper.vm.loadTokens()
+      await wrapper.vm.loadAssets()
 
-      expect(assetsResource.getAll.calledOnce).to.be.true
-      expect(wrapper.vm.tokens).to.deep.equal([])
+      expect(api.get.calledOnce).to.be.true
+      expect(wrapper.vm.assets).to.deep.equal([])
       expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.true
     })
   })
 
   describe('computed properties', () => {
     describe('currentAssetForSelect()', () => {
-      it('returns asset if this.tokens list is not empty', () => {
+      it('returns asset if this.assets list is not empty', () => {
         wrapper.vm.currentAsset = 'ETH'
-        wrapper.vm.tokens = mockedTokens
+        wrapper.vm.assets = mockedAssets
 
-        expect(wrapper.vm.currentAssetForSelect).to.equal(mockedTokens[2])
+        expect(wrapper.vm.currentAssetForSelect).to.equal(mockedAssets[2])
       })
 
-      it('returns empty object if this.tokens list is empty', () => {
+      it('returns empty object if this.assets list is empty', () => {
         wrapper.vm.currentAsset = 'ETH'
-        wrapper.vm.tokens = []
+        wrapper.vm.assets = []
 
         expect(wrapper.vm.currentAssetForSelect).to.deep.equal({})
       })
@@ -204,13 +206,13 @@ describe('Dashboard.AssetSelector component', () => {
         expect(wrapper.vm.currentAssetBalanceDetails).to.deep.equal({})
       })
     })
-    it('tokensList()', () => {
-      wrapper.vm.tokens = mockedTokens
-      const sortedTokens = mockedTokens
+    it('assetsList()', () => {
+      wrapper.vm.assets = mockedAssets
+      const sortedAssets = mockedAssets
         .sort((a, b) => a.code.localeCompare(b.code))
 
-      expect(wrapper.vm.tokensList)
-        .to.deep.equal(sortedTokens)
+      expect(wrapper.vm.assetsList)
+        .to.deep.equal(sortedAssets)
     })
   })
 })

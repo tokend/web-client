@@ -3,7 +3,6 @@
     v-if="form.asset && isInitialized"
     @submit.prevent="isFormValid() && showConfirmation()"
     class="deposit-fiat-card-module"
-    id="deposit-fiat-card-module"
   >
     <div class="app__form-row deposit-fiat-card__form-row">
       <div class="app__form-field">
@@ -167,7 +166,6 @@
         type="submit"
         class="app__button-raised"
         :disabled="formMixin.isDisabled"
-        form="deposit-fiat-card-module"
       >
         {{ 'deposit-fiat-card-module.deposit' | globalize }}
       </button>
@@ -196,9 +194,10 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { Wallet, base } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { api } from '@/api'
 import { MathUtil } from '@/js/utils'
 import {
   required,
@@ -234,10 +233,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
@@ -274,6 +269,9 @@ export default {
       balances: types.balances,
       calculatedFees: types.fees,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     totalFee () {
       return MathUtil.add(this.fees.percentFee, this.fees.fixedFee)
     },
@@ -320,9 +318,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -363,15 +358,12 @@ export default {
           Bus.error('deposit-fiat-card-module.failed-load-fees')
           return false
         }
-        this.reInitApi(MASTER_ACCOUNT_WALLET, this.config)
-
         // eslint-disable-next-line max-len
         const operation = base.CreateIssuanceRequestBuilder.createIssuanceRequest({
           ...this.composeOptions(),
         })
-        await api().postOperations(operation)
 
-        this.reInitApi(this.wallet, this.config)
+        await api.withWallet(MASTER_ACCOUNT_WALLET).postOperations(operation)
         Bus.success('deposit-fiat-card-module.deposit-success')
         this.$emit(EVENTS.deposited)
       } catch (e) {
@@ -407,9 +399,6 @@ export default {
       }
       return ref
     },
-    reInitApi (wallet, config) {
-      initApi(wallet, config)
-    },
   },
 }
 </script>
@@ -420,14 +409,14 @@ export default {
 .deposit-fiat-card__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.deposit-fiat-card__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.deposit-fiat-card__fee-table td:last-child {
+  text-align: right;
 }
 
 .deposit-fiat-card__fee-tbody {

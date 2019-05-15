@@ -1,9 +1,9 @@
-import { MockHelper } from '../test'
+import { walletsManager } from '@/api'
 
 import { mutations, actions, getters } from './wallet.module'
 import { vuexTypes } from './types'
 
-import { Wallet, base } from '@tokend/js-sdk'
+import { Wallet } from '@tokend/js-sdk'
 
 describe('wallet.module', () => {
   const mockSeed = 'SAG3O2PBA3KAAUP3E3WRHRI5NM5GFKQIOXBNHP7B4VMWYYOAN6OFAHA4'
@@ -37,11 +37,9 @@ describe('wallet.module', () => {
   })
 
   describe('actions', () => {
-    let mockHelper
     let store
 
     beforeEach(() => {
-      mockHelper = new MockHelper()
       store = {
         state: {},
         getters: {},
@@ -51,7 +49,7 @@ describe('wallet.module', () => {
     })
 
     it('LOAD_WALLET commits proper set of mutations', async () => {
-      mockHelper.mockMethod('api', 'wallets', 'get', mockWallet)
+      sinon.stub(walletsManager, 'get').resolves(mockWallet)
 
       const credentials = { email: 'bob@mail.com', password: 'qweqweqwe' }
       const expectedMutations = { [vuexTypes.SET_WALLET]: mockWallet }
@@ -65,69 +63,41 @@ describe('wallet.module', () => {
   describe('getters', () => {
     it('walletId', () => {
       const id = '0a0dc11el4lkf845d828c45dbd68d5d1196c3a182b08cd22f05c51fcf15w153c'
-      const _getters = {
+      const _state = {
         wallet: {
           id,
         },
       }
 
-      expect(getters[vuexTypes.walletId]({}, _getters))
+      expect(getters[vuexTypes.walletId](_state, {}))
         .to
         .equal(id)
     })
 
     it('walletEmail', () => {
       const email = 'foo@bar.com'
-      const _getters = {
+      const _state = {
         wallet: {
           email,
         },
       }
 
-      expect(getters[vuexTypes.walletEmail]({}, _getters))
+      expect(getters[vuexTypes.walletEmail](_state, {}))
         .to
         .equal(email)
     })
 
     it('walletSeed', () => {
       const secretSeed = 'SB5N5RG66UKMZWPY6WRHFCASAIUHGNA3TIG5TOLGROLN67XQDCLWFVPG'
-      const _getters = {
+      const _state = {
         wallet: {
           secretSeed,
         },
       }
 
-      expect(getters[vuexTypes.walletSeed]({}, _getters))
+      expect(getters[vuexTypes.walletSeed](_state, {}))
         .to
         .equal(secretSeed)
-    })
-
-    it('walletKeypair', () => {
-      const keypair = base.Keypair.fromSecret('SBMS7EEEK3BSUWLSJL5OZY7VA5U6Y2PRSZO437RTVHFRGDZV6PGFMBYX')
-      const _getters = {
-        wallet: {
-          keypair,
-        },
-      }
-
-      expect(getters[vuexTypes.walletKeypair]({}, _getters))
-        .to
-        .deep
-        .equal(keypair)
-    })
-
-    it('walletPublicKey', () => {
-      const keypair = base.Keypair.fromSecret('SDCDTZL6DTEZQSJRPFKVY4FYBX7V2HR2IRE6ZS7ADMADAVYZCZ2N62T5')
-      const publicKey = 'GBYRGB5VPMGTT76PHRFJYVT4TV2UB5SXGWHCHQVT7MYLPMQ4FZY3EGVU' // manually calculated
-      const _getters = {
-        wallet: {
-          keypair,
-        },
-      }
-
-      expect(getters[vuexTypes.walletPublicKey]({}, _getters))
-        .to
-        .equal(publicKey)
     })
   })
 })

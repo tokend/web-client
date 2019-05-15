@@ -88,7 +88,7 @@ import InvestForm from '@/vue/forms/InvestForm'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -124,7 +124,9 @@ export default {
   methods: {
     async loadSale (saleId) {
       try {
-        const { data } = await Sdk.horizon.sales.get(saleId)
+        const { data } = await api.get(`/v3/sales/${saleId}`, {
+          include: ['base_asset', 'default_quote_asset', 'quote_assets'],
+        })
         this.sale = new SaleRecord(data)
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
@@ -149,16 +151,16 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .sale-details__name {
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-sale-details-title;
 }
 
 .sale-details__short-desc {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
   word-wrap: break-word;

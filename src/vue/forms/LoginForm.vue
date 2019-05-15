@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="login-email"
           name="login-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,7 +17,6 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="login-password"
           name="login-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
@@ -27,11 +25,25 @@
         />
       </div>
     </div>
+    <div
+      v-if="tfaError"
+      class="app__form-row"
+    >
+      <div class="app__form-field">
+        <input-field
+          v-model="form.tfaCode"
+          @blur="touchField('form.tfaCode')"
+          :error-message="getFieldErrorMessage('form.tfaCode')"
+          :white-autofill="false"
+          :label="'auth-pages.tfa-code' | globalize"
+        />
+      </div>
+    </div>
     <div class="app__form-actions">
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
         {{ 'auth-pages.sign-in' | globalize }}
@@ -43,15 +55,15 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { required } from '@validators'
+import { required, requiredIf, email } from '@validators'
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { factorsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export default {
   name: 'login-form',
@@ -60,17 +72,23 @@ export default {
     form: {
       email: '',
       password: '',
+      tfaCode: '',
     },
+    tfaError: null,
   }),
   validations: {
     form: {
-      email: { required },
+      email: { required, email },
       password: { required },
+      tfaCode: {
+        required: requiredIf(function () { return this.tfaError }),
+      },
     },
   },
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.walletAccountId,
+      vuexTypes.walletEmail,
     ]),
   },
   methods: {
@@ -84,15 +102,16 @@ export default {
       if (!this.isFormValid()) return
       this.disableForm()
       try {
+        await this.verifyTfaFactor()
         await this.loadWallet({
           email: this.form.email.toLowerCase(),
           password: this.form.password,
         })
-        const accountId = this[vuexTypes.wallet].accountId
-
-        Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        Api.useWallet(this[vuexTypes.wallet])
-
+        const accountId = this[vuexTypes.walletAccountId]
+        ErrorTracker.setLoggedInUser({
+          'accountId': this[vuexTypes.walletAccountId],
+          'email': this[vuexTypes.walletEmail],
+        })
         await this.loadAccount(accountId)
         await this.loadKvEntries()
         await this.loadKyc()
@@ -105,6 +124,14 @@ export default {
         this.processAuthError(e)
       }
       this.enableForm()
+    },
+    async verifyTfaFactor () {
+      if (this.tfaError) {
+        await factorsManager.verifyTotpFactor(
+          this.tfaError,
+          this.form.tfaCode
+        )
+      }
     },
     processAuthError (error) {
       switch (error.constructor) {
@@ -119,10 +146,19 @@ export default {
             },
           })
           break
+        case errors.TFARequiredError:
+          this.tfaError = error
+          break
         case errors.NotFoundError:
           ErrorHandler.process(
             error,
             'auth-pages.wrong-email-or-password-err'
+          )
+          break
+        case errors.BadRequestError:
+          ErrorHandler.process(
+            error,
+            'auth-pages.wrong-tfa-code-err'
           )
           break
         default:

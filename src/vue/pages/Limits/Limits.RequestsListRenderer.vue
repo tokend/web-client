@@ -1,7 +1,7 @@
 <template>
   <div class="limits-requests-list-renderer">
     <div
-      v-if="!isLoading && !isLoadingFailed && requests.length"
+      v-if="!isLoading && !isLoadingFailed"
       class="limits-requests-list-renderer__table
             app__table
             app__table--with-shadow"
@@ -25,50 +25,55 @@
             <th />
           </tr>
         </thead>
-        <tbody>
+        <tbody
+          v-if="requests.length"
+        >
           <tr
-            v-for="(item, i) in requests"
-            :key="`limits-requests-table-row-${i}`"
-          >
-            <td :title="item.updatedAt | formatDate">
-              {{ item.updatedAt | formatDate }}
+            v-for="(request, i) in requests"
+            :request="request"
+            :key="i">
+            <td :title="request.updatedAt | formatDate">
+              {{ request.updatedAt | formatDate }}
             </td>
             <!-- eslint-disable-next-line -->
-            <td :title="LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.limitsRequestType] | globalize">
+            <td :title="LIMITS_REQUEST_TYPE_TRANSLATION_ID[request.limitsRequestType] | globalize">
               <!-- eslint-disable-next-line -->
-              {{ LIMITS_REQUEST_TYPE_TRANSLATE_ID[item.limitsRequestType] | globalize }}
+              {{ LIMITS_REQUEST_TYPE_TRANSLATION_ID[request.limitsRequestType] | globalize }}
             </td>
             <!-- eslint-disable-next-line -->
-            <td :title="LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize">
+            <td :title="LIMITS_REQUEST_STATES_STR_TRANSLATION_ID[request.state] | globalize">
               <!-- eslint-disable-next-line -->
-              {{ LIMITS_REQUEST_STATES_STR_TRANSLATE_ID[item.state] | globalize }}
+              {{ LIMITS_REQUEST_STATES_STR_TRANSLATION_ID[request.state] | globalize }}
             </td>
-            <td :title="item.asset">
-              {{ item.asset }}
+            <td :title="request.asset">
+              {{ request.asset }}
             </td>
-            <td class="limits-requests-list-renderer__table-cell-btn">
-              <button
-                class="app__button-raised"
-                @click="openDocumentsUploaderForm(item)"
-                :disabled="!item.requestedDocs.length"
+            <td class="limits-requests-list-renderer__show-details-cell">
+              <a
+                class="request-details-btn
+                  limits-requests-list-renderer__show-details-btn"
+                @click="showRequestDetails (request)"
               >
-                <!-- eslint-disable-next-line -->
-                {{ 'limits-requests-table-renderer.upload-documents-btn' | globalize }}
-              </button>
+                {{ 'limits-requests-table-renderer.details-btn' | globalize }}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        <tbody
+          v-else
+        >
+          <tr>
+            <td
+              class="limits-requests-list-renderer__table-cell--align-center"
+              colspan="5"
+            >
+              <!-- eslint-disable-next-line max-len -->
+              {{ 'limits-requests-table-renderer.here-will-requests-list' | globalize }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <template v-else-if="!isLoading && !isLoadingFailed && !requests.length">
-      <!-- eslint-disable max-len -->
-      <no-data-message
-        :title="'limits-requests-table-renderer.no-requests-history' | globalize"
-        :message="'limits-requests-table-renderer.here-will-requests-list' | globalize"
-      />
-      <!-- eslint-enable max-len -->
-    </template>
 
     <template v-else-if="isLoading && !isLoadingFailed">
       <loader :message-id="'limits-requests-table-renderer.data-loading'" />
@@ -98,6 +103,16 @@
       </template>
       <limits-documents-uploader-form
         @request-uploaded="requestUploaded"
+        :request="selectedRequest" />
+    </drawer>
+
+    <drawer :is-shown.sync="isDetailsDrawerShown">
+      <template slot="heading">
+        <!-- eslint-disable-next-line -->
+        {{ 'limits-requests-table-renderer.request-details-drawer-heading' | globalize }}
+      </template>
+      <limits-request-details-viewer
+        @upload="showDocumentUploadForm"
         :request="selectedRequest"
       />
     </drawer>
@@ -106,15 +121,19 @@
 
 <script>
 import Loader from '@/vue/common/Loader'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
+import LimitsRequestDetailsViewer from './Limits.RequestDetailsViewer.vue'
 import Drawer from '@/vue/common/Drawer'
 import {
   LIMITS_REQUEST_STATES_STR,
   LIMITS_REQUEST_TYPE,
 } from '@/js/const/limits.const'
 
-const LIMITS_REQUEST_STATES_STR_TRANSLATE_ID = Object.freeze({
+const EVENTS = Object.freeze({
+  requestsReloadAsk: 'requests-reload-ask',
+})
+
+const LIMITS_REQUEST_STATES_STR_TRANSLATION_ID = Object.freeze({
   [LIMITS_REQUEST_STATES_STR.pending]: 'limits-requests-table-renderer.request-state-pending',
   [LIMITS_REQUEST_STATES_STR.cancelled]: 'limits-requests-table-renderer.request-state-cancelled',
   [LIMITS_REQUEST_STATES_STR.approved]: 'limits-requests-table-renderer.request-state-approved',
@@ -122,13 +141,9 @@ const LIMITS_REQUEST_STATES_STR_TRANSLATE_ID = Object.freeze({
   [LIMITS_REQUEST_STATES_STR.permanentlyRejected]: 'limits-requests-table-renderer.request-state-permanently-rejected',
 })
 
-const LIMITS_REQUEST_TYPE_TRANSLATE_ID = Object.freeze({
+const LIMITS_REQUEST_TYPE_TRANSLATION_ID = Object.freeze({
   [LIMITS_REQUEST_TYPE.initial]: 'limits-requests-table-renderer.request-type-initial',
   [LIMITS_REQUEST_TYPE.docsUploading]: 'limits-requests-table-renderer.request-type-docs-uploading',
-})
-
-const EVENTS = Object.freeze({
-  requestsReloadAsk: 'requests-reload-ask',
 })
 
 export default {
@@ -137,7 +152,7 @@ export default {
     Loader,
     Drawer,
     LimitsDocumentsUploaderForm,
-    NoDataMessage,
+    LimitsRequestDetailsViewer,
   },
   props: {
     requests: { type: Array, required: true, default: () => [] },
@@ -146,9 +161,10 @@ export default {
   },
   data: () => ({
     LIMITS_REQUEST_STATES_STR,
-    LIMITS_REQUEST_STATES_STR_TRANSLATE_ID,
-    LIMITS_REQUEST_TYPE_TRANSLATE_ID,
+    LIMITS_REQUEST_TYPE_TRANSLATION_ID,
+    LIMITS_REQUEST_STATES_STR_TRANSLATION_ID,
     isDocumentsUploaderFormShown: false,
+    isDetailsDrawerShown: false,
     selectedRequest: null,
   }),
   methods: {
@@ -160,21 +176,46 @@ export default {
     askRequestsReload () {
       this.$emit(EVENTS.requestsReloadAsk)
     },
-    openDocumentsUploaderForm (request) {
+    showRequestDetails (request) {
       this.selectedRequest = request
+      this.isDetailsDrawerShown = true
+    },
+    showDocumentUploadForm () {
       this.isDocumentsUploaderFormShown = true
+      this.isDetailsDrawerShown = false
     },
   },
 }
 </script>
 
 <style lang="scss">
+@import '~@scss/variables';
+
+.limits-requests-list-renderer__table-cell--align-center {
+  text-align: center;
+}
+
 .limits-requests-list-renderer__reload-requests-btn {
   margin-top: 1.6rem;
 }
+
 .limits-requests-list-renderer__table-cell-btn {
   // allows buttons to look good on mobile screens
   box-sizing: content-box;
   min-width: 13rem;
+}
+
+.limits-requests-list-renderer__upload-btn {
+  margin: auto;
+}
+
+.limits-requests-list-renderer__show-details-cell {
+  text-align: center;
+}
+
+.limits-requests-list-renderer__show-details-btn {
+  font-size: 1.2rem;
+  color: $col-primary-lighten;
+  cursor: pointer;
 }
 </style>

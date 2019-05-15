@@ -34,7 +34,6 @@
               white-autofill
               v-model="form.information.name"
               @blur="touchField('form.information.name')"
-              id="asset-name"
               name="asset-create-name"
               :label="'create-opportunity.opportunity-name' | globalize"
               :error-message="getFieldErrorMessage(
@@ -53,7 +52,6 @@
               white-autofill
               v-model="form.information.code"
               @blur="touchField('form.information.code')"
-              id="asset-code"
               name="asset-create-asset-code"
               :label="'create-opportunity.opportunity-code' | globalize"
               :error-message="getFieldErrorMessage(
@@ -74,17 +72,13 @@
             <date-field
               v-model="form.information.maturityDate"
               :enable-time="true"
-              :disable-before="moment().subtract(1, 'days').toString()"
               @input="touchField('form.information.maturityDate')"
               @blur="touchField('form.information.maturityDate')"
-              id="sale-end-time"
               name="create-sale-end-time"
               :label="'create-opportunity.maturity-date' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.information.maturityDate',
                 {
-                  minDate: form.saleInformation.endTime ||
-                    formatDate(moment().toString()),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -99,7 +93,6 @@
               type="number"
               v-model="form.saleInformation.annualReturn"
               @blur="touchField('form.saleInformation.annualReturn')"
-              id="anual-return"
               name="create-sale-anual-return"
               :label="
                 form.information.formType.value ===
@@ -125,7 +118,6 @@
               type="number"
               v-model="form.information.maxIssuanceAmount"
               @blur="touchField('form.information.maxIssuanceAmount')"
-              id="max-issuance-amount"
               name="create-sale-max-issuance-amount"
               :label="'create-opportunity.max-issuance-amount' | globalize"
               :error-message="getFieldErrorMessage(
@@ -145,7 +137,7 @@
               v-model="form.information.terms"
               name="asset-create-terms"
               :note="'create-opportunity.terms-note' | globalize"
-              accept=".jpg, .png, .pdf"
+              :file-extensions="['jpg', 'png', 'pdf']"
               :document-type="DOCUMENT_TYPES.assetTerms"
               :label="'create-opportunity.terms-lbl' | globalize"
               :disabled="formMixin.isDisabled"
@@ -226,7 +218,6 @@
                   .subtract(1, 'days').toString() : ''"
               @input="touchField('form.saleInformation.startTime')"
               @blur="touchField('form.saleInformation.startTime')"
-              id="sale-start-time"
               :label="'create-opportunity.start-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.startTime', {
@@ -247,13 +238,12 @@
                 .subtract(1, 'days').toString()"
               @input="touchField('form.saleInformation.endTime')"
               @blur="touchField('form.saleInformation.endTime')"
-              id="sale-end-time"
               name="create-sale-end-time"
               :label="'create-opportunity.close-time' | globalize"
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.endTime', {
                   minDate: form.saleInformation.startTime ||
-                    formatDate(moment().toString()),
+                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -268,7 +258,6 @@
               type="number"
               v-model="form.saleInformation.softCap"
               @blur="touchField('form.saleInformation.softCap')"
-              id="soft-cap"
               name="create-sale-soft-cap"
               :label="'create-opportunity.soft-cap' | globalize({
                 asset: form.saleInformation.defaultQuoteAsset
@@ -290,7 +279,6 @@
               type="number"
               v-model="form.saleInformation.hardCap"
               @blur="touchField('form.saleInformation.hardCap')"
-              id="hard-cap"
               name="create-sale-hard-cap"
               :label="'create-opportunity.hard-cap' | globalize({
                 asset: form.saleInformation.defaultQuoteAsset
@@ -358,7 +346,7 @@
               :label="'create-opportunity.cover-logo' | globalize"
               :note="'create-opportunity.upload-image' | globalize"
               name="create-sale-sale-logo"
-              accept=".jpg, .png"
+              :file-extensions="['jpg', 'png']"
               :document-type="DOCUMENT_TYPES.saleLogo"
               v-model="form.shortBlurb.saleLogo"
               :disabled="formMixin.isDisabled"
@@ -372,7 +360,6 @@
           <div class="app__form-field">
             {{ 'create-opportunity.short-description' | globalize }}
             <textarea-field
-              id="sale-short-description"
               name="create-sale-short-description"
               v-model="form.shortBlurb.shortDescription"
               @blur="touchField('form.shortBlurb.shortDescription')"
@@ -432,9 +419,15 @@ import moment from 'moment'
 
 import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
-import { Wallet, base, ASSET_POLICIES, SALE_TYPES } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
-import { BLOB_TYPES } from '@/js/const/blob-types.const'
+
+import {
+  base,
+  ASSET_POLICIES,
+  SALE_TYPES,
+  BLOB_TYPES,
+} from '@tokend/js-sdk'
+
+import { api } from '@/api'
 import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.const'
 
 import { DateUtil } from '@/js/utils'
@@ -507,18 +500,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-    */
-    config: {
-      type: Object,
-      required: true,
-    },
     accountId: {
       type: String,
       required: true,
@@ -545,11 +526,11 @@ export default {
           maxIssuanceAmount: '',
           formType: {},
           terms: null,
+          maturityDate: '',
         },
         saleInformation: {
           startTime: '',
           endTime: '',
-          maturityDate: '',
           softCap: '',
           hardCap: '',
           annualReturn: '',
@@ -589,12 +570,11 @@ export default {
     let endTime = {
       required,
       minDate: minDate(this.form.saleInformation.startTime ||
-        moment().toString()),
+        moment().toISOString()),
     }
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
-        minDate: minDate(moment().toString()),
       }
       startTime.maxDate = maxDate(this.form.information.maturityDate)
       endTime.maxDate = maxDate(this.form.information.maturityDate)
@@ -705,7 +685,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
     this.form.information.formType = this.FORM_TYPES[0]
     await this.loadAssets()
     await this.loadBaseAssetsPairs()
@@ -734,7 +713,7 @@ export default {
       try {
         await this.uploadDocuments()
         const blobId = await this.getBlobId({
-          type: BLOB_TYPES.fundOverview,
+          type: BLOB_TYPES.saleOverview,
           attributes: {
             value: JSON.stringify(this.form.shortBlurb.description),
           },
@@ -748,7 +727,7 @@ export default {
         })
         const assetCreationOperation = this.buildAssetRequestOperation()
         const saleCreationOperation = this.buildSaleCreationOperation(blobId)
-        await api().postOperations(
+        await api.postOperations(
           assetCreationOperation,
           saleCreationOperation
         )
@@ -817,7 +796,7 @@ export default {
         operation.creatorDetails.maturityDate = DateUtil
           .toMs(this.form.information.maturityDate)
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.bondLogo
-        operation.creatorDetails.investmentToken = {
+        operation.creatorDetails.investmentAsset = {
           asset: this.form.saleInformation.quoteAssets,
           price: this.salePriceRatioStatsQuoteAsset,
         }
@@ -841,10 +820,9 @@ export default {
       ]
       for (let document of documents) {
         if (document && !document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
+          document = await DocumentUploader.uploadSingleDocument(
+            document, this.accountId
           )
-          document.setKey(documentKey)
         }
       }
     },
@@ -899,15 +877,27 @@ export default {
       if (asset === this.statsQuoteAsset.code) {
         return this.salePriceRatioStatsQuoteAsset
       } else {
-        const assetPrice = this.pairs.find(item =>
-          item.baseAsset.id === asset &&
-          item.quoteAsset.id === this.statsQuoteAsset.code
-        ).price || '1'
-
         return MathUtil.divide(
           this.salePriceRatioStatsQuoteAsset,
-          assetPrice
+          this.getAssetPairPrice(asset, this.statsQuoteAsset.code) || '1'
         )
+      }
+    },
+    getAssetPairPrice (baseAsset, quoteAsset) {
+      const assetPair = this.pairs.find(item =>
+        item.baseAsset.id === baseAsset &&
+        item.quoteAsset.id === quoteAsset
+      )
+      if (assetPair) {
+        return assetPair.price
+      }
+
+      const reversedAssetPair = this.pairs.find(item =>
+        item.quoteAsset.id === baseAsset &&
+          item.baseAsset.id === quoteAsset
+      )
+      if (reversedAssetPair) {
+        return MathUtil.divide(1, reversedAssetPair.price)
       }
     },
   },
@@ -932,7 +922,7 @@ export default {
 }
 
 .create-opportunity__insert-account-id-btn {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
 }
 
 .create-opportunity__error-text {

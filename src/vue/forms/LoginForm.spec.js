@@ -14,8 +14,6 @@ import walletModule from '@/vuex/wallet.module'
 import accountModule from '@/vuex/account.module'
 import kycModule from '@/vuex/kyc.module'
 
-import { MockHelper } from '@/test'
-
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
 Vue.config.silent = true
@@ -39,7 +37,7 @@ describe('LoginForm component unit test', () => {
     })
 
     const expectedResults = {
-      email: ['required'],
+      email: ['required', 'email'],
       password: ['required'],
     }
 
@@ -53,8 +51,8 @@ describe('LoginForm component unit test', () => {
     }
 
     const fieldBindings = {
-      '#login-email': 'email',
-      '#login-password': 'password',
+      '[name=login-email]': 'email',
+      '[name=login-password]': 'password',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -76,12 +74,10 @@ describe('LoginForm component unit test', () => {
 
   describe('methods', () => {
     let wrapper
-    let mockHelper
 
     let spyLoadWallet
 
     beforeEach(() => {
-      mockHelper = new MockHelper()
       const actions = {
         ...walletModule.actions,
         ...accountModule.actions,
@@ -90,9 +86,10 @@ describe('LoginForm component unit test', () => {
       const getters = walletModule.getters
 
       spyLoadWallet = sinon.stub(actions, vuexTypes.LOAD_WALLET).resolves()
-      sinon.stub(getters, vuexTypes.wallet).returns(mockHelper.getMockWallet())
       sinon.stub(actions, vuexTypes.LOAD_ACCOUNT).resolves()
       sinon.stub(actions, vuexTypes.LOAD_KYC).resolves()
+      sinon.stub(getters, vuexTypes.walletAccountId).returns('SOME_ACCOUNT_ID')
+      sinon.stub(getters, vuexTypes.walletEmail).returns('SOME_EMAIL')
 
       const store = new Vuex.Store({
         actions,

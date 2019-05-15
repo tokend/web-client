@@ -29,23 +29,42 @@
         <tbody>
           <tr>
             <td>{{ 'limits-form.daily-limit-lbl' | globalize }}</td>
-            <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.dailyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('dailyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.weekly-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.weeklyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('weeklyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.monthly-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.monthlyOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('monthlyOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'limits-form.annual-limit-lbl' | globalize }}</td>
             <!-- eslint-disable-next-line -->
-            <td>{{ selectedLimitsByOpType.annualOut || 'limits-form.not-set-lbl' | globalize }}</td>
+            <td>
+              {{
+                getLimitByScope('annualOut') ||
+                  'limits-form.not-set-lbl' | globalize
+              }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -56,7 +75,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="limit-daily-out"
           name="limit-daily-out"
           v-model="form.dailyOut"
           :label="'limits-form.daily-limit-lbl' | globalize"
@@ -74,7 +92,6 @@
       </div>
       <div class="app__form-field">
         <input-field
-          id="limit-weekly-out"
           name="limit-weekly-out"
           v-model="form.weeklyOut"
           :label="'limits-form.weekly-limit-lbl' | globalize"
@@ -94,7 +111,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          id="limit-monthly-out"
           name="limit-monthly-out"
           v-model="form.monthlyOut"
           :label="'limits-form.monthly-limit-lbl' | globalize"
@@ -112,7 +128,6 @@
       </div>
       <div class="app__form-field">
         <input-field
-          id="limit-annual-out"
           name="limit-annual-out"
           v-model="form.annualOut"
           :label="'limits-form.annual-limit-lbl' | globalize"
@@ -132,7 +147,6 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <textarea-field
-          id="limit-note"
           name="limit-note"
           v-model="form.note"
           :label="'limits-form.note-lbl' | globalize"
@@ -178,7 +192,7 @@ import {
   maxDecimalPoints,
 } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors, STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
@@ -214,12 +228,17 @@ const EVENTS = {
 }
 
 const MIN_VALID_LIMIT_VALUE = 0
+const MAX_VALID_LIMIT_VALUE = config.MAX_AMOUNT
 
 export default {
   name: 'limits-form',
   mixins: [FormMixin],
   props: {
-    limits: { type: Object, required: true, default: () => ({}) },
+    limits: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
   },
   data: () => ({
     form: {
@@ -302,6 +321,14 @@ export default {
       )
     },
   },
+  watch: {
+    selectedLimitsByOpType () {
+      this.form.dailyOut = this.selectedLimitsByOpType.dailyOut || ''
+      this.form.weeklyOut = this.selectedLimitsByOpType.weeklyOut || ''
+      this.form.monthlyOut = this.selectedLimitsByOpType.monthlyOut || ''
+      this.form.annualOut = this.selectedLimitsByOpType.annualOut || ''
+    },
+  },
   created () {
     this.selectedOpType = this.FORMATTED_STATS_OPERATION_TYPES[0]
   },
@@ -309,6 +336,31 @@ export default {
     tryToSubmit () {
       if (!this.isFormValid()) return
       this.showConfirmation()
+    },
+    getLimitByScope (period) {
+      const limitByType = this.selectedLimitsByOpType
+      switch (period) {
+        case 'dailyOut':
+          if (limitByType.dailyOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.dailyOut
+        case 'weeklyOut':
+          if (limitByType.weeklyOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.weeklyOut
+        case 'monthlyOut':
+          if (limitByType.monthlyOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.monthlyOut
+        case 'annualOut':
+          if (limitByType.annualOut === MAX_VALID_LIMIT_VALUE) {
+            return ''
+          }
+          return limitByType.annualOut
+      }
     },
     async submit () {
       this.disableForm()
@@ -358,7 +410,7 @@ export default {
             note,
           },
         })
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }
@@ -369,7 +421,7 @@ export default {
 
 .limits-form__form-subheading {
   margin-top: 3.2rem;
-  margin-bottom: -.8rem;
+  margin-bottom: -0.8rem;
 }
 
 .limits__assets-select {

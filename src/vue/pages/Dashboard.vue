@@ -10,13 +10,13 @@
         />
         <div class="dashboard__actions">
           <!-- eslint-disable-next-line max-len -->
-          <template v-if="getModule().canRenderSubmodule(IssuanceDrawerPseudoModule)">
+          <template v-if="getModule().canRenderSubmodule(IssuanceFormModule)">
             <button
               class="app__button-raised dashboard__action"
               @click="createIssuanceFormIsShown = true"
             >
               <i class="mdi mdi-plus dashboard__plus-icon" />
-              {{ 'dashboard.create-issuance-lbl' | globalize }}
+              {{ 'dashboard.create-issuance-btn' | globalize }}
             </button>
           </template>
 
@@ -37,7 +37,7 @@
       </div>
       <template v-if="currentAsset">
         <div
-          v-if="currentAsset !== config.DEFAULT_QUOTE_ASSET &&
+          v-if="currentAsset !== defaultQuoteAsset &&
             getModule().getSubmodule(DashboardChartPseudoModule)
           "
           class="dashboard__chart"
@@ -45,7 +45,7 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
             :base-asset="currentAsset"
-            :quote-asset="config.DEFAULT_QUOTE_ASSET"
+            :quote-asset="defaultQuoteAsset"
           />
         </div>
         <div
@@ -57,46 +57,52 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(MovementsHistoryModule)"
             :asset-code="currentAsset"
-            :config="{ horizonURL: config.HORIZON_SERVER }"
-            :wallet="wallet"
             :ref="REFS.movementsHistory"
+            :latest-activity="true"
           />
         </div>
       </template>
+
+      <drawer :is-shown.sync="showDrawer">
+        <template
+          v-if="createIssuanceFormIsShown &&
+            getModule().canRenderSubmodule(IssuanceFormModule)"
+        >
+          <template slot="heading">
+            {{ 'dashboard.create-issuance-title' | globalize }}
+          </template>
+
+          <submodule-importer
+            :submodule="getModule().getSubmodule(IssuanceFormModule)"
+            @issuance-created="showDrawer = false"
+          />
+        </template>
+
+        <template v-if="transferFormIsShown">
+          <template slot="heading">
+            {{ 'transfer-form.form-heading' | globalize }}
+          </template>
+          <transfer
+            @operation-submitted="updateBalancesAndList()"
+            :asset-to-transfer="currentAsset"
+          />
+        </template>
+      </drawer>
     </template>
-    <drawer :is-shown.sync="showDrawer">
-      <template v-if="createIssuanceFormIsShown">
-        <template slot="heading">
-          {{ 'dashboard.create-issuance-lbl' | globalize }}
-        </template>
-        <issuance-form @close="showDrawer = false" />
-      </template>
-      <template v-if="transferFormIsShown">
-        <template slot="heading">
-          {{ 'transfer-form.form-heading' | globalize }}
-        </template>
-        <transfer
-          @operation-submitted="updateBalancesAndList()"
-          :asset-to-transfer="currentAsset"
-        />
-      </template>
-    </drawer>
   </div>
 </template>
 
 <script>
 import AssetSelector from '@/vue/pages/dashboard/Dashboard.AssetSelector.vue'
-import IssuanceForm from '@/vue/forms/IssuanceForm'
 import Transfer from '@/vue/forms/TransferForm'
 
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
@@ -108,21 +114,19 @@ export default {
   name: 'dashboard',
   components: {
     AssetSelector,
-    IssuanceForm,
     Transfer,
     Drawer,
     SubmoduleImporter,
   },
   data: () => ({
     currentAsset: null,
-    isLoading: false,
+    isLoaded: false,
     createIssuanceFormIsShown: false,
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'day',
-    config,
     MovementsHistoryModule,
-    IssuanceDrawerPseudoModule,
+    IssuanceFormModule,
     TransferDrawerPseudoModule,
     DashboardChartPseudoModule,
     REFS,
@@ -131,7 +135,7 @@ export default {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
-      vuexTypes.wallet,
+      vuexTypes.defaultQuoteAsset,
     ]),
   },
   watch: {
@@ -147,15 +151,17 @@ export default {
     transferFormIsShown (status) {
       this.showDrawer = status
     },
-    currentAsset () {
+    currentAsset (value) {
+      this.$router.push({
+        query: { asset: value },
+      })
       this.loadBalances()
     },
   },
   async created () {
-    this.isLoading = true
     await this.loadBalances()
     this.setCurrentAsset()
-    this.isLoading = false
+    this.isLoaded = true
   },
   methods: {
     ...mapActions({
@@ -167,7 +173,7 @@ export default {
       } else {
         const keys = this.accountBalances.map(i => i.asset)
         this.currentAsset =
-          keys.find(a => a === 'ETH') || keys[0] || ''
+          keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
     },
 
@@ -191,8 +197,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .dashboard {
   flex: 1;

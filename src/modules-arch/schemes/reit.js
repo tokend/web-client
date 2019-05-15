@@ -19,7 +19,7 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DividendFormModule } from '@modules/dividend-form/module'
 import { BuyBackFormModule } from '@modules/buy-back-form/module'
@@ -36,6 +36,8 @@ import { WithdrawalFiatModule } from '@modules/withdrawal-fiat/module'
 import { WithdrawalFiatCardModule } from '@modules/withdrawal-fiat-card/module'
 import { WithdrawalFiatBankModule } from '@modules/withdrawal-fiat-bank/module'
 import { RedeemFormModule } from '@modules/redeem-form/module'
+import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
+import { WithdrawalDrawerPseudoModule } from '@/modules-arch/pseudo-modules/withdrawal-drawer-pseudo-module'
 
 export default {
   importEnLocaleFile () {
@@ -53,7 +55,7 @@ export default {
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
           new TransferDrawerPseudoModule(),
@@ -66,9 +68,9 @@ export default {
         routerEntry: {
           path: '/opportunities',
           name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.funds' },
+          meta: { pageNameTranslationId: 'pages-names.sales' },
         },
-        menuButtonTranslationId: 'pages-names.funds',
+        menuButtonTranslationId: 'pages-names.sales',
         menuButtonMdiName: 'trending-up',
         isAutoRedirectToFirstChild: true,
         submodules: [
@@ -118,6 +120,8 @@ export default {
                   new WithdrawalFiatBankModule(),
                 ],
               }),
+              new WithdrawalDrawerPseudoModule(),
+              new CoinpaymentsDepositModule(),
               new DepositFiatModule({
                 submodules: [
                   new DepositFiatCardModule(),
@@ -191,7 +195,7 @@ export default {
         routerEntry: {
           path: '/opportunities/:id',
           name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.fund-details' },
+          meta: { pageNameTranslationId: 'pages-names.sale-details' },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           props: true,
         },

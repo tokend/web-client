@@ -23,8 +23,8 @@
         </template>
 
         <template slot="extra">
-          <template v-if="isOpportunityOwner && token">
-            <template v-if="token.details.subtype === ASSET_SUBTYPE.bond">
+          <template v-if="isOpportunityOwner && asset">
+            <template v-if="asset.details.subtype === ASSET_SUBTYPE.bond">
               <button
                 v-ripple
                 :disabled="!isOpportunityClosed"
@@ -34,7 +34,7 @@
                 {{ 'opportunity-details.buy-back' | globalize }}
               </button>
             </template>
-            <template v-else-if="token.details.subtype === ASSET_SUBTYPE.share">
+            <template v-else-if="asset.details.subtype === ASSET_SUBTYPE.share">
               <button
                 v-ripple
                 :disabled="!isOpportunityClosed"
@@ -76,7 +76,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(DividendFormModule)"
-            :wallet="wallet"
             :config="dividendConfig"
             @transferred="dividendModuleTransferred"
           />
@@ -90,7 +89,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(BuyBackFormModule)"
-            :wallet="wallet"
             :config="buyBackConfig"
             @submitted="buyBackModuleSubmitted"
           />
@@ -146,7 +144,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -173,7 +171,7 @@ export default {
 
   data: _ => ({
     opportunity: null,
-    token: null,
+    asset: null,
     isOpportunityNotFound: false,
     isLoadingFailed: false,
     isDividendDrawerShown: false,
@@ -185,13 +183,11 @@ export default {
     BuyBackFormModule,
     dividendConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
     buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
@@ -199,7 +195,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       accountId: vuexTypes.accountId,
     }),
     isOpportunityOwner () {
@@ -212,7 +207,7 @@ export default {
 
   async created () {
     await this.loadOpportunity(this.id)
-    await this.loadToken(this.opportunity.baseAsset)
+    await this.loadAsset(this.opportunity.baseAsset)
     this.setDefaultDividendAssetCode()
     this.setDefaultBuyBackAssetCode()
   },
@@ -220,7 +215,9 @@ export default {
   methods: {
     async loadOpportunity (opportunityId) {
       try {
-        const { data } = await Sdk.horizon.sales.get(opportunityId)
+        const { data } = await api.get(`/v3/sales/${opportunityId}`, {
+          include: ['base_asset', 'default_quote_asset', 'quote_assets'],
+        })
         this.opportunity = new SaleRecord(data)
       } catch (e) {
         if (e instanceof errors.NotFoundError) {
@@ -232,10 +229,11 @@ export default {
       }
     },
 
-    async loadToken (assetCode) {
+    async loadAsset (assetCode) {
       try {
-        const { data } = await Sdk.horizon.assets.get(assetCode)
-        this.token = new AssetRecord(data)
+        const endpoint = `/v3/assets/${assetCode}`
+        const { data } = await api.get(endpoint)
+        this.asset = new AssetRecord(data)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
       }
@@ -270,16 +268,16 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .opportunity-details__name {
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-sale-details-title;
 }
 
 .opportunity-details__short-desc {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
 }

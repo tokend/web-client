@@ -4,7 +4,6 @@
       <template v-if="!depositDetails">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
-          id="coinpayments-form"
           novalidate
         >
           <div class="app__form-row">
@@ -13,7 +12,6 @@
               class="app__form-field"
               v-model.trim="form.amount"
               name="coinpayments-amount"
-              id="coinpayments-amount"
               @blur="touchField('form.amount')"
               :error-message="getFieldErrorMessage(
                 'form.amount',
@@ -31,7 +29,6 @@
               type="submit"
               class="app__button-raised"
               :disabled="formMixin.isDisabled"
-              form="coinpayments-form"
             >
               {{ 'coinpayments-deposit.request-address-lbl' | globalize }}
             </button>
@@ -68,12 +65,16 @@ import moment from 'moment'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
   amountRange,
 } from '@validators'
+
+const EVENTS = {
+  submitted: 'submitted',
+}
 
 const TRANSACTION_TIME_MARGIN = 600 // seconds
 
@@ -121,6 +122,7 @@ export default {
         )
         this.depositDetails.endTime = moment().unix() +
           this.depositDetails.timeout - TRANSACTION_TIME_MARGIN
+        this.$emit(EVENTS.submitted)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)
         this.isFailed = true
@@ -128,8 +130,8 @@ export default {
       this.enableForm()
     },
     async loadDeposit (params) {
-      const endpoint = `/integrations/coinpayments/deposit`
-      const response = await api().postWithSignature(endpoint, {
+      const endpoint = '/integrations/coinpayments/deposit'
+      const response = await api.postWithSignature(endpoint, {
         data: {
           type: 'coinpayments_deposit',
           attributes: params,

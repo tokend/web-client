@@ -99,14 +99,15 @@ export default {
        *
        * @return {Boolean}
        */
-      this.isCapsLockOn = event.getModifierState('CapsLock')
+      this.isCapsLockOn = event.getModifierState &&
+        event.getModifierState('CapsLock')
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import "scss/variables";
+@import 'scss/variables';
 
 .input-field {
   position: relative;
@@ -114,6 +115,7 @@ export default {
   flex: 1;
 }
 
+/* stylelint-disable no-descending-specificity */
 .input-field__input {
   -webkit-text-fill-color: $field-color-text; // autofill hack
   width: 100%;
@@ -125,21 +127,15 @@ export default {
 
   // will work only when field not in the focus
   text-overflow: ellipsis;
+
   @include material-border($field-color-focused, $field-color-unfocused);
   @include text-font-sizes;
 
-  &:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 5rem $field-color-background
-    // autofill hack
-  }
-
-  &--autofill-white:not([readonly]) {
-    -webkit-box-shadow: inset 0 0 0 5rem $col-block-bg;
-  }
-
-  @mixin placeholder {
-    color: $field-placeholer-color;
-    transition: opacity $field-transition-duration;
+  &:disabled {
+    cursor: default;
+    filter: grayscale(100%);
+    -webkit-text-fill-color: $field-color-unfocused;
+    color: $field-color-unfocused;
   }
 
   &::-webkit-input-placeholder {
@@ -162,6 +158,15 @@ export default {
     @include placeholder;
   }
 
+  &:not([readonly]) {
+    box-shadow: inset 0 0 0 5rem $field-color-background;
+    // autofill hack
+  }
+
+  &--autofill-white:not([readonly]) {
+    box-shadow: inset 0 0 0 5rem $col-block-bg;
+  }
+
   &:placeholder-shown:not(:focus)::-webkit-input-placeholder {
     opacity: 0;
   }
@@ -181,6 +186,38 @@ export default {
   &:placeholder-shown:not(:focus)::placeholder {
     opacity: 0;
   }
+
+  // Hide number arrows
+  &[type='number']:not(:hover):not(:focus) {
+    // autoprefixer does not help us here
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -moz-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      // autoprefixer does not help us here
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  .input-field--monospaced > & {
+    font-family: 'SourceCodePro', 'Courier', monospace;
+    font-weight: 500;
+  }
+
+  // TODO: fix issue when decimal number entered in the input that have
+  // mismatched "step" attribute
+  //.input-field__input:not(:placeholder-shown):invalid,
+  .input-field--error > & {
+    @include material-border($field-color-error, $field-color-error);
+  }
+
+  .input-field--readonly > &,
+  .input-field--disabled > & {
+    @include readonly-material-border($field-color-unfocused);
+  }
 }
 
 .input-field__label {
@@ -190,41 +227,46 @@ export default {
   transition: all $field-transition-duration;
   pointer-events: none;
   color: $field-color-unfocused;
+
   @include label-font-sizes;
 
-  .input-field__input:not(:focus):placeholder-shown ~ &,
+  .input-field__input:not(:focus):placeholder-shown ~ & {
+    top: $field-input-padding-top;
+
+    @include text-font-sizes;
+  }
+
+  .input-field__input:focus ~ & {
+    color: $field-color-focused;
+  }
+
+  .input-field--readonly > .input-field__input:focus ~ &,
+  .input-field--disabled > .input-field__input:focus ~ & {
+    color: $field-color-unfocused;
+  }
+
+  // TODO: fix issue when decimal number entered in the input that have
+  // mismatched "step" attribute
+  //.input-field__input:not(:placeholder-shown):invalid ~ .input-field__label,
+  .input-field--error > &,
+  .input-field--error > .input-field__input:focus ~ & {
+    color: $field-color-error;
+  }
+
+  .input-field__input:disabled ~ & {
+    filter: grayscale(100%);
+  }
+
+  // HACK: Minimize label on autocomplete (Chrome).
+  // Do not merge with selector above.
   .input-field__input:not(:focus):placeholder-shown:-webkit-autofill ~ & {
     top: $field-input-padding-top;
+
     @include text-font-sizes;
   }
 }
 
-.input-field__input:focus ~ .input-field__label {
-  color: $field-color-focused;
-}
-
-.input-field__input:disabled {
-  cursor: default;
-  filter: grayscale(100%);
-  -webkit-text-fill-color: $field-color-unfocused;
-  color: $field-color-unfocused;
-
-  & ~ .input-field__label {
-    filter: grayscale(100%);
-  }
-}
-
-// Hide number spinner
-.input-field__input[type="number"]:not(:hover):not(:focus),
-.input-field__input[type="number"]:not(:hover):not(:focus) {
-  -moz-appearance: textfield;
-
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-}
+/* stylelint-enable no-descending-specificity */
 
 .input-field__err-mes {
   color: $field-color-error;
@@ -233,44 +275,19 @@ export default {
   line-height: $field-error-line-height;
 }
 
-.input-field--monospaced > .input-field__input {
-  font-family: 'SourceCodePro', Courier, monospace;
-  font-weight: 500;
-}
-
-// TODO: fix issue when decimal number entered in the input that have
-// mismatched "step" attribute
-//.input-field__input:not(:placeholder-shown):invalid,
-.input-field--error > .input-field__input {
-  @include material-border($field-color-error, $field-color-error);
-}
-
-// TODO: fix issue when decimal number entered in the input that have
-// mismatched "step" attribute
-//.input-field__input:not(:placeholder-shown):invalid ~ .input-field__label,
-.input-field--error > .input-field__label,
-.input-field--error > .input-field__input:focus ~ .input-field__label {
-  color: $field-color-error;
-}
-
-.input-field--readonly > .input-field__input,
-.input-field--disabled > .input-field__input {
-  @include readonly-material-border($field-color-unfocused);
-}
-
-.input-field--readonly > .input-field__input:focus ~ .input-field__label,
-.input-field--disabled > .input-field__input:focus ~ .input-field__label {
-  color: $field-color-unfocused;
-}
-
 .input-field__err-transition-enter-active {
-  animation: input-field__err-transition-keyframes $field-transition-duration
+  animation:
+    input-field__err-transition-keyframes
+    $field-transition-duration
     ease-in-out;
 }
 
 .input-field__err-transition-leave-active {
-  animation: input-field__err-transition-keyframes $field-transition-duration
-    ease-in-out reverse;
+  animation:
+    input-field__err-transition-keyframes
+    $field-transition-duration
+    ease-in-out
+    reverse;
 }
 
 @keyframes input-field__err-transition-keyframes {
@@ -279,6 +296,7 @@ export default {
     margin-top: 0;
     overflow: hidden;
   }
+
   to {
     max-height: $field-error-font-size * $field-error-line-height;
     margin-top: $field-error-margin-top;

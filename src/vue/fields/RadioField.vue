@@ -70,8 +70,17 @@ export default {
 
 .radio-field__input {
   display: none;
+}
 
-  &:checked + .radio-field__input-custom {
+.radio-field__input-custom {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: $col-radio-field-background;
+  border: 0.1rem solid $col-radio-field-border;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+
+  .radio-field__input:checked + & {
     position: relative;
 
     &:after {
@@ -85,14 +94,5 @@ export default {
       border-radius: 50%;
     }
   }
-}
-
-.radio-field__input-custom {
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: $col-radio-field-background;
-  border: 0.1rem solid $col-radio-field-border;
-  border-radius: 50%;
-  margin-right: 0.8rem;
 }
 </style>

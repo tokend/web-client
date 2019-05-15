@@ -3,10 +3,9 @@ import { types } from './types'
 import { Fee } from '../wrappers/fee'
 
 import { Wallet } from '@tokend/js-sdk'
-import * as Api from '../_api'
+import { api, useWallet } from '@/api'
 
 describe('fees.module', () => {
-  const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
   const fees = [
     {
       fixed: '1.000000',
@@ -17,16 +16,6 @@ describe('fees.module', () => {
   ]
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-
-      expect(state).to.deep.equal({ accountId })
-    })
-
     it('SET_ACCOUNT_FEES should properly modify state', () => {
       const state = {
         fees: [],
@@ -39,9 +28,6 @@ describe('fees.module', () => {
   })
 
   describe('actions', () => {
-    const config = {
-      horizonUrl: 'https://test.api.com',
-    }
     const wallet = new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
@@ -53,19 +39,19 @@ describe('fees.module', () => {
 
     beforeEach(() => {
       store = {
-        state: {},
-        getters: {
-          accountId,
+        rootGetters: {
+          accountId: 'SOME_ACCOUNT_ID',
         },
         commit: sinon.stub(),
         dispatch: sinon.stub(),
       }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     it('LOAD_ACCOUNT_FEES properly commit its set of mutations', async () => {
-      sinon.stub(Api.api(), 'getWithSignature').resolves({
+      sinon.stub(api, 'getWithSignature').resolves({
         data: {
           fees: [{ foo: 'bar' }],
         },
@@ -80,18 +66,11 @@ describe('fees.module', () => {
 
       expect(store.commit.args).to.deep.equal(Object.entries(expectedMutations))
 
-      Api.api().getWithSignature.restore()
+      api.getWithSignature.restore()
     })
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId }
-
-      expect(getters[types.accountId](state))
-        .to.equal(accountId)
-    })
-
     it('fees', () => {
       const state = { fees }
 

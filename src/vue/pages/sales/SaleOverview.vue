@@ -120,7 +120,7 @@
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 import Loader from '@/vue/common/Loader'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 
 import config from '@/config'
 
@@ -149,7 +149,9 @@ export default {
   }),
   async created () {
     try {
-      const { data } = await Sdk.horizon.assets.get(this.sale.baseAsset)
+      const endpoint = `/v3/assets/${this.sale.baseAsset}`
+      const { data } = await api.get(endpoint)
+
       this.asset = new AssetRecord(data)
       this.isLoaded = true
     } catch (e) {
@@ -161,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .sale-overview__short-description {
   margin-top: 4rem;
@@ -171,10 +173,10 @@ export default {
 
 .sale-overview__table {
   margin-top: 2rem;
+}
 
-  tr td:last-child {
-    text-align: right;
-  }
+.sale-overview__table tr td:last-child {
+  text-align: right;
 }
 
 .sale-overview__video-btn {
@@ -189,28 +191,28 @@ export default {
 .sale-overview__asset {
   display: flex;
   align-items: center;
+}
 
-  .sale-overview__asset-logo {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%
-  }
+.sale-overview__asset-logo {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
 
-  .sale-overview__asset-info {
-    margin-left: 1.8rem;
+.sale-overview__asset-info {
+  margin-left: 1.8rem;
+}
 
-    .sale-overview__asset-code {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: $col-text;
-    }
+.sale-overview__asset-code {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $col-text;
+}
 
-    .sale-overview__asset-name {
-      margin-top: .1rem;
-      font-size: 1.4rem;
-      line-height: 1.29;
-      color: $col-text;
-    }
-  }
+.sale-overview__asset-name {
+  margin-top: 0.1rem;
+  font-size: 1.4rem;
+  line-height: 1.29;
+  color: $col-text;
 }
 </style>

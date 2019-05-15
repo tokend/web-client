@@ -7,7 +7,6 @@
 
     <chart-renderer
       class="line-chart__renderer"
-      :id="id"
       :scale="scale"
       :data="history"
       :currency="currency"
@@ -29,11 +28,10 @@ export default {
   props: {
     data: { type: Object, default: _ => ({}) },
     currency: { type: String, default: ' ' },
-    id: { type: String, required: true },
   },
 
   data: _ => ({
-    scale: 'month',
+    scale: 'year',
   }),
 
   computed: {
@@ -46,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 .line-chart {
-  flex: 1
+  flex: 1;
 }
 
 .line-chart__tabs {

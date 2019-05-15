@@ -6,11 +6,19 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
+          class="advanced-step-form__pre-issuance-enablement-tick-field"
           v-model="form.isPreissuanceDisabled"
           :disabled="isDisabled"
         >
           {{ 'create-asset-form.additional-issuance-check' | globalize }}
         </tick-field>
+        <router-link
+          class="advanced-step-form__pre-issuance-guide-link"
+          :to="vueRoutes.preIssuanceGuide"
+          target="_blank"
+        >
+          {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
+        </router-link>
       </div>
     </div>
 
@@ -20,12 +28,12 @@
           <div class="advanced-step-form__pre-issued-asset-signer-wrp">
             <input-field
               white-autofill
-              v-model="form.preissuedAssetSigner"
-              @blur="touchField('form.preissuedAssetSigner')"
-              name="create-asset-preissued-asset-signer"
-              :label="'create-asset-form.preissued-signer-lbl' | globalize"
+              v-model="form.preIssuanceAssetSigner"
+              @blur="touchField('form.preIssuanceAssetSigner')"
+              name="create-asset-pre-issuance-asset-signer"
+              :label="'create-asset-form.pre-issuance-signer-lbl' | globalize"
               :error-message="getFieldErrorMessage(
-                'form.preissuedAssetSigner',
+                'form.preIssuanceAssetSigner',
               )"
               :disabled="isDisabled"
             />
@@ -34,11 +42,17 @@
               type="button"
               class="app__button-flat advanced-step-form__insert-account-id-btn"
               :disabled="isDisabled"
-              @click="form.preissuedAssetSigner = accountId"
+              @click="form.preIssuanceAssetSigner = mainSignerAccountId"
             >
               {{ 'create-asset-form.use-my-account-id-btn' | globalize }}
             </button>
           </div>
+
+          <vue-markdown
+            v-if="form.preIssuanceAssetSigner === mainSignerAccountId"
+            class="advanced-step-form__pre-issuance-disclaimer"
+            :source="'create-asset-form.pre-issuance-disclaimer' | globalize"
+          />
         </div>
       </div>
 
@@ -67,7 +81,7 @@
           v-model="form.terms"
           name="create-asset-terms"
           :note="'create-asset-form.terms-note' | globalize"
-          accept=".jpg, .png, .pdf"
+          :file-extensions="['jpg', 'png', 'pdf']"
           :document-type="DOCUMENT_TYPES.assetTerms"
           :label="'create-asset-form.terms-lbl' | globalize"
           :disabled="isDisabled"
@@ -104,8 +118,9 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
+import VueMarkdown from 'vue-markdown'
 
+import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
@@ -113,6 +128,7 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { config } from '../_config'
 
 import { requiredUnless, amountRange } from '@validators'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
@@ -121,29 +137,31 @@ const EVENTS = {
 
 export default {
   name: 'advanced-step-form',
+  components: { VueMarkdown },
   mixins: [FormMixin],
   props: {
     request: { type: CreateAssetRequest, default: null },
     isDisabled: { type: Boolean, default: false },
-    accountId: { type: String, required: true },
+    mainSignerAccountId: { type: String, required: true },
     maxIssuanceAmount: { type: String, default: '0' },
   },
 
   data: _ => ({
     form: {
       isPreissuanceDisabled: false,
-      preissuedAssetSigner: '',
+      preIssuanceAssetSigner: '',
       initialPreissuedAmount: '',
       terms: null,
     },
     MIN_AMOUNT: config().MIN_AMOUNT,
     DOCUMENT_TYPES,
+    vueRoutes,
   }),
 
   validations () {
     return {
       form: {
-        preissuedAssetSigner: {
+        preIssuanceAssetSigner: {
           required: requiredUnless(function () {
             return this.form.isPreissuanceDisabled
           }),
@@ -170,13 +188,13 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preissuedAssetSigner === config().NULL_ASSET_SIGNER
+        this.request.preIssuanceAssetSigner === config().NULL_ASSET_SIGNER
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,
-        preissuedAssetSigner: isPreissuanceDisabled
+        preIssuanceAssetSigner: isPreissuanceDisabled
           ? ''
-          : this.request.preissuedAssetSigner,
+          : this.request.preIssuanceAssetSigner,
         initialPreissuedAmount: isPreissuanceDisabled
           ? ''
           : this.request.initialPreissuedAmount,
@@ -222,6 +240,15 @@ export default {
 }
 
 .advanced-step-form__insert-account-id-btn {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
+}
+
+.advanced-step-form__pre-issuance-disclaimer {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+}
+
+.advanced-step-form__pre-issuance-enablement-tick-field {
+  margin-bottom: 1rem;
 }
 </style>

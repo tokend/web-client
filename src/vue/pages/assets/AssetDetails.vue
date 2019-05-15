@@ -87,6 +87,43 @@
           </tr>
           <tr>
             <td>
+              {{ 'asset-details.deposit-method-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isCoinpayments">
+                {{ 'asset-details.coinpayments-msg' | globalize }}
+              </template>
+
+              <template v-else-if="asset.externalSystemType">
+                {{ 'asset-details.default-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.non-depositable-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'assets.asset-type' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.assetType === kvAssetTypeSecurity">
+                {{ 'asset-details.security-asset-title' | globalize }}
+              </template>
+
+              <template v-else>
+                <!-- eslint-disable-next-line -->
+                {{ 'asset-details.does-not-require-verification-title' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'asset-details.requires-kyc-title' | globalize }}
             </td>
             <td>
@@ -145,7 +182,7 @@
       <button
         v-ripple
         v-if="asset.owner !== accountId"
-        class="asset-details__update-btn"
+        class="asset-details__button app__button-raised"
         :disabled="asset.balance.value || isBalanceCreating"
         @click="createBalance"
       >
@@ -159,7 +196,7 @@
       <button
         v-else
         v-ripple
-        class="asset-details__update-btn"
+        class="asset-details__button app__button-raised"
         @click="$emit(EVENTS.updateAsk)"
       >
         {{ 'asset-details.update-btn' | globalize }}
@@ -173,7 +210,7 @@ import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
 import config from '@/config'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 
 import { base } from '@tokend/js-sdk'
 
@@ -209,7 +246,9 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
       isAccountUnverified: vuexTypes.isAccountUnverified,
+      isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
     assetTermsUrl () {
       return this.asset.termsUrl(config.FILE_STORAGE)
@@ -218,8 +257,16 @@ export default {
       return !!this.balances.find(item => item.asset === this.asset.code)
     },
     isBalanceCreationAllowed () {
-      return this.asset.assetType === this.kvAssetTypeKycRequired &&
-        this.isAccountUnverified
+      switch (this.asset.assetType) {
+        case this.kycRequiredAssetType:
+          return !this.isAccountUnverified
+        case this.securityAssetType:
+          return this.isAccountGeneral ||
+                 this.isAccountUsAccredited ||
+                 this.isAccountCorporate
+        default:
+          return true
+      }
     },
   },
   async created () {
@@ -230,7 +277,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async createBalance () {
-      if (this.isBalanceCreationAllowed) {
+      if (!this.isBalanceCreationAllowed) {
         Bus.error('asset-details.verification-required-err')
         return
       }
@@ -242,7 +289,7 @@ export default {
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
-        await Sdk.horizon.transactions.submitOperations(operation)
+        await api.postOperations(operation)
         await this.loadBalances()
         this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')
@@ -256,8 +303,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $media-xsmall-height: 375px;
 $media-small-height: 460px;
@@ -268,14 +315,13 @@ $media-small-height: 460px;
   @include respond-to-height($media-small-height) {
     margin-top: 2.4rem;
   }
-
   @include respond-to-height($media-xsmall-height) {
     margin-top: 0.8rem;
   }
+}
 
-  tr td:last-child {
-    text-align: right;
-  }
+.asset-details__table tr td:last-child {
+  text-align: right;
 }
 
 .asset-details__terms {
@@ -292,55 +338,44 @@ $media-small-height: 460px;
   margin-top: 4.9rem;
   display: flex;
 
-  button + button {
-    margin-left: auto;
-  }
-
   @include respond-to-height($media-small-height) {
     margin-top: 2.4rem;
   }
 }
 
-.asset-details__update-btn {
-  @include button-raised();
+.asset-details__button {
+  width: 20rem;
 
-  width: 18rem;
-}
-
-.asset-details__cancel-btn {
-  @include button();
-
-  padding-left: .1rem;
-  padding-right: .1rem;
-  margin-bottom: 2rem;
-  font-weight: normal;
+  & + & {
+    margin-left: auto;
+  }
 }
 
 .asset-details__header {
   display: flex;
   align-items: center;
+}
 
-  .asset-details__logo {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%
-  }
+.asset-details__logo {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
 
-  .asset-details__info {
-    margin-left: 1.8rem;
+.asset-details__info {
+  margin-left: 1.8rem;
+}
 
-    .asset-details__code {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: $col-primary;
-    }
+.asset-details__code {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $col-primary;
+}
 
-    .asset-details__name {
-      margin-top: .1rem;
-      font-size: 1.4rem;
-      line-height: 1.29;
-      color: $col-primary;
-    }
-  }
+.asset-details__name {
+  margin-top: 0.1rem;
+  font-size: 1.4rem;
+  line-height: 1.29;
+  color: $col-primary;
 }
 </style>

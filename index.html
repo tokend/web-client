@@ -13,55 +13,22 @@
     </style>
   </noscript>
 
-  <style>
-    .app__init {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translateY(-50%) translateX(-50%);
-      width: 80%;
-      max-width: 320px;
-    }
-
-    .app__init-logo {
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .app__init-load-spinner {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto;
-    }
-
-    .app__init-load-spinner:after {
-      content: "";
-      display: block;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 8px solid;
-      border-color: #3a4180 transparent;
-      animation: init-load-spinner 1.2s linear infinite;
-    }
-
-    @keyframes init-load-spinner {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
-
   <link href="/static/favicon-64.png" rel="icon" type="image/x-icon">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
   <link href="/static/noscript/style.css" type="text/css" rel="stylesheet">
+  <link href="/static/init-loader/style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
   <script type="text/javascript" src="/static/env.js"></script>
   <div id="app">
     <div id="noscript" class="app__init">
-      <div class="app__init-load-spinner"></div>
-      <img class="app__init-logo" src="/static/logo.svg">
+      <div class="app__init-logo">
+        <img class="app__init-logo-text" src="/static/init-loader/logo-text.svg">
+        <img class="app__init-left-face-logo" src="/static/init-loader/left-face-of-logo.svg">
+        <img class="app__init-top-face-logo" src="/static/init-loader/top-face-of-logo.svg">
+        <img class="app__init-right-face-logo" src="/static/init-loader/right-face-of-logo.svg">
+      </div>
     </div>
   </div>
   <!-- built files will be auto injected -->
@@ -76,12 +43,6 @@
             <img class="noscript__image" src="/static/noscript/chrome.jpg" width="138px" height="138px">
           </a>
           <span class="noscript__browser-name">Google Chrome</span>
-        </liclass>
-        <li class="noscript__list-item">
-          <a class="noscript__link" href="http://www.opera.com/download/get/">
-            <img class="noscript__image" src="/static/noscript/opera.png" width="138px" height="138px">
-          </a>
-          <span class="noscript__browser-name">Opera</span>
         </li>
         <li class="noscript__list-item">
           <a class="noscript__link" href="https://www.mozilla.com/firefox/">

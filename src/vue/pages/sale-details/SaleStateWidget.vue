@@ -33,11 +33,6 @@
       />
     </div>
 
-    <div class="sale-state-widget__investors">
-      <h3>{{ sale.investors }}</h3>
-      <p>{{ 'sale-details.investors' | globalize }}</p>
-    </div>
-
     <template v-if="sale.daysToGo >= 0">
       <div class="sale-state-widget__days-to-go">
         <h3>{{ sale.daysToGo }}</h3>
@@ -116,18 +111,18 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .sale-state-widget__progress-bar {
   margin-top: 3rem;
   width: 100%;
-  height: .3rem;
+  height: 0.3rem;
   background-color: $col-sale-details-progress-bar-bg;
+}
 
-  .sale-state-widget__progress {
-    background: $col-sale-details-progress-bar-funded;
-    height: 100%;
-  }
+.sale-state-widget__progress {
+  background: $col-sale-details-progress-bar-funded;
+  height: 100%;
 }
 
 .sale-state-widget__invested {
@@ -140,13 +135,14 @@ export default {
   color: $col-sale-details-text-secondary;
 }
 
+/* stylelint-disable selector-nested-pattern */
 .sale-state-widget__investors,
 .sale-state-widget__days-to-go,
 .sale-state-widget__days-after-end,
 .sale-state-widget__days-to-end {
   h3 {
     font-size: 2.4rem;
-    font-weight: normal;
+    font-weight: 400;
     color: $col-sale-details-text-primary;
   }
 
@@ -155,6 +151,7 @@ export default {
     color: $col-sale-details-text-secondary;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .sale-state-widget__investors {
   margin-top: 2.4rem;

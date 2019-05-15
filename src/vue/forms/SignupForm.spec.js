@@ -6,7 +6,7 @@ import Vuelidate from 'vuelidate'
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { TestHelper } from '@/test/test-helper'
-import { MockHelper } from '@/test'
+import { walletsManager } from '@/api'
 import { globalize } from '@/vue/filters/globalize'
 import { errors } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -48,9 +48,9 @@ describe('SignupForm component test', () => {
     }
 
     const fieldBindings = {
-      '#signup-email': 'email',
-      '#signup-password': 'password',
-      '#signup-confirm-password': 'confirmPassword',
+      '[name=signup-email]': 'email',
+      '[name=signup-password]': 'password',
+      '[name=signup-confirm-password]': 'confirmPassword',
     }
 
     for (const [selector, model] of Object.entries(fieldBindings)) {
@@ -71,11 +71,9 @@ describe('SignupForm component test', () => {
   })
 
   describe('submit method', () => {
-    let mockHelper
     let wrapper
 
     beforeEach(() => {
-      mockHelper = new MockHelper()
       wrapper = shallowMount(SignupForm, {
         localVue,
         propsData: {
@@ -92,9 +90,8 @@ describe('SignupForm component test', () => {
     })
 
     it('loads kdf params for provided email', async () => {
-      const resource = mockHelper.getApiResourcePrototype('wallets')
       sinon.stub(ErrorHandler, 'process')
-      const spy = sinon.stub(resource, 'getKdfParams').resolves()
+      const spy = sinon.stub(walletsManager, 'getKdfParams').resolves()
 
       await wrapper.vm.submit()
 
@@ -105,8 +102,7 @@ describe('SignupForm component test', () => {
     })
 
     it('emits the global error event if user exist', async () => {
-      const resource = mockHelper.getApiResourcePrototype('wallets')
-      sinon.stub(resource, 'getKdfParams').resolves()
+      sinon.stub(walletsManager, 'getKdfParams').resolves()
       sinon.stub(ErrorHandler, 'processWithoutFeedback')
       const spy = sinon.stub(Bus, 'error')
 
@@ -117,7 +113,6 @@ describe('SignupForm component test', () => {
     })
 
     it('properly emits the submitted event if user doesn\'t exist', async () => {
-      const resource = mockHelper.getApiResourcePrototype('wallets')
       const form = {
         email: 'foo@bar.com',
         password: 'Nwr2mW21m',
@@ -127,7 +122,7 @@ describe('SignupForm component test', () => {
       wrapper.setData({ form })
 
       sinon.stub(ErrorHandler, 'process')
-      sinon.stub(resource, 'getKdfParams')
+      sinon.stub(walletsManager, 'getKdfParams')
         .throws(TestHelper.getError(errors.NotFoundError))
 
       await wrapper.vm.submit()

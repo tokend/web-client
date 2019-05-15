@@ -5,7 +5,6 @@
         <input-field
           v-model="form.email"
           @blur="touchField('form.email')"
-          id="recovery-email"
           name="recovery-email"
           :label="'auth-pages.email' | globalize"
           :error-message="getFieldErrorMessage('form.email')"
@@ -18,7 +17,6 @@
         <input-field
           v-model="form.password"
           @blur="touchField('form.password')"
-          id="recovery-password"
           name="recovery-password"
           type="password"
           :error-message="getFieldErrorMessage('form.password')"
@@ -32,8 +30,7 @@
         <input-field
           v-model="form.confirmPassword"
           @blur="touchField('form.confirmPassword')"
-          id="recovery-confirm-password"
-          name="recovery-password-confirm"
+          name="recovery-confirm-password"
           type="password"
           :error-message="getFieldErrorMessage('form.confirmPassword')"
           :label="'auth-pages.confirm-password' | globalize"
@@ -46,7 +43,6 @@
         <input-field
           v-model="form.recoverySeed"
           @blur="touchField('form.recoverySeed')"
-          id="recovery-seed"
           name="recovery-seed"
           type="password"
           :error-message="getFieldErrorMessage('form.recoverySeed')"
@@ -60,10 +56,10 @@
       <button
         v-ripple
         type="submit"
-        class="auth-form__submit-btn"
+        class="auth-form__submit-btn app__button-raised"
         :disabled="formMixin.isDisabled"
       >
-        {{ 'auth-pages.recover' | globalize }}
+        {{ 'auth-pages.recover-lbl' | globalize }}
       </button>
     </div>
   </form>
@@ -78,8 +74,7 @@ import {
   email,
   seed,
 } from '@validators'
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -112,7 +107,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletAccountId: vuexTypes.walletAccountId,
     }),
   },
   methods: {
@@ -120,7 +115,7 @@ export default {
       loadWallet: vuexTypes.LOAD_WALLET,
       loadAccount: vuexTypes.LOAD_ACCOUNT,
       loadKyc: vuexTypes.LOAD_KYC,
-      loadKvEntriesAccountRoleIds: vuexTypes.LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS,
+      loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
     }),
     async submit () {
       if (!this.isFormValid()) {
@@ -128,7 +123,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.recovery(
+        await walletsManager.recovery(
           this.form.email.toLowerCase(),
           this.form.recoverySeed,
           this.form.password
@@ -156,12 +151,8 @@ export default {
         email: this.form.email,
         password: this.form.password,
       })
-      const accountId = this.wallet.accountId
-      Sdk.sdk.useWallet(this.wallet)
-      Api.useWallet(this.wallet)
-
-      await this.loadAccount(accountId)
-      await this.loadKvEntriesAccountRoleIds()
+      await this.loadAccount(this.walletAccountId)
+      await this.loadKvEntries()
       await this.loadKyc()
     },
   },
