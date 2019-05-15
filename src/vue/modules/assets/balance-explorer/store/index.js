@@ -31,7 +31,7 @@ export const actions = {
     { commit, rootGetters }, quoteAssetCode
   ) {
     const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}/converted_balances/${quoteAssetCode}`
-    const { data } = await api().getWithSignature(endpoint, {
+    const { data } = await api.getWithSignature(endpoint, {
       include: ['states', 'balance', 'balance.state', 'balance.asset'],
     })
 

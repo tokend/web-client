@@ -104,7 +104,7 @@ export default {
   mixins: [LoadAssetsMixin, ManageSaleRequestMixin],
   props: {
     storageUrl: {
-      type: Object,
+      type: String,
       required: true,
     },
     requestId: {

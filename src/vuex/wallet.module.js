@@ -49,7 +49,9 @@ export const actions = {
 export const getters = {
   [vuexTypes.walletId]: (state, getters) => state.wallet.id,
   [vuexTypes.walletAccountId]: (state, getters) => state.wallet.accountId,
-  [vuexTypes.walletEmail]: (state, getters) => state.wallet.email,
+  [vuexTypes.walletEmail]: (state, getters) => {
+    return state.wallet.email
+  },
   [vuexTypes.walletSeed]: (state, getters) =>
     state.wallet.secretSeed,
 }

@@ -193,7 +193,7 @@ export default {
       let newWallet
       try {
         newWallet = await walletsManager.get(
-          this.wallet.email,
+          this.walletEmail,
           this.form.newPassword
         )
       } catch (e) {
@@ -204,7 +204,7 @@ export default {
             this.form.tfaCode
           )
           newWallet = await walletsManager.get(
-            this.wallet.email,
+            this.walletEmail,
             this.form.newPassword
           )
         } else {

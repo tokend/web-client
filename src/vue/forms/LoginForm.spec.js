@@ -89,6 +89,7 @@ describe('LoginForm component unit test', () => {
       sinon.stub(actions, vuexTypes.LOAD_ACCOUNT).resolves()
       sinon.stub(actions, vuexTypes.LOAD_KYC).resolves()
       sinon.stub(getters, vuexTypes.walletAccountId).returns('SOME_ACCOUNT_ID')
+      sinon.stub(getters, vuexTypes.walletEmail).returns('SOME_EMAIL')
 
       const store = new Vuex.Store({
         actions,
