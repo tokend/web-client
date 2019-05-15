@@ -24,7 +24,6 @@ for further information about branching and tagging conventions.
 - Email validation on login form
 
 #### Changed
-- Show only one QR code on Coinpayments deposit
 - Updated offer creating, updating drawers
 - Modularized:
   - Pre-issuance form
@@ -41,8 +40,8 @@ for further information about branching and tagging conventions.
 - Now loading converted balances on the balances page
 - Now asset value and code formatted with formatMoney
 - Use global api.js in all modules
-- Removed wallet transfer to each module.
-- Version `@tokend/js-sdk` to 1.7.0-x.2
+- Removed wallet providing to each module.
+- Now using @tokend/js-sdk@1.7.0-x.2
 
 #### Removed
 - Unused methods from `DocumentContainer` class
