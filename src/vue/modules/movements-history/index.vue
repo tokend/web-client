@@ -2,6 +2,9 @@
   <div class="movements-history">
     <template v-if="isInitialized && assetCode">
       <template v-if="isMovementsLoaded">
+        <h2 class="app__table-title" v-if="latestActivity">
+          {{ 'movements-history.latest-activity' | globalize }}
+        </h2>
         <div class="movements-history__list-wrp">
           <movements-table :movements="movements" />
         </div>
@@ -18,7 +21,7 @@
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
           v-if="!isMovementsLoadFailed"
-          v-show="isMovementsLoaded"
+          v-show="isMovementsLoaded && !latestActivity"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
           @next-page-load="concatMovements"
@@ -57,6 +60,10 @@ export default {
     assetCode: {
       type: String,
       default: '',
+    },
+    latestActivity: {
+      type: Boolean,
+      default: false,
     },
   },
   data: _ => ({

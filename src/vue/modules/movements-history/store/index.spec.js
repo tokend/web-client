@@ -117,6 +117,7 @@ describe('movements-history.module', () => {
         const expectedParams = {
           page: {
             order: 'desc',
+            limit: 10,
           },
           filter: {
             account: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',

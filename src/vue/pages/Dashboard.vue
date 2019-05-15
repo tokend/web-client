@@ -58,6 +58,7 @@
             :submodule="getModule().getSubmodule(MovementsHistoryModule)"
             :asset-code="currentAsset"
             :ref="REFS.movementsHistory"
+            :latest-activity="true"
           />
         </div>
       </template>

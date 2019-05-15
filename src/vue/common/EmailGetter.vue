@@ -28,20 +28,25 @@
       </template>
     </span>
 
-    <button
-      v-show="isCopyButton && !isMasterAccount && !isLoading"
-      class="email-getter__copy-button  app__button-icon"
-      :id="`clipboard-btn-${_uid}`"
-      :data-clipboard-text="email || accountId || balanceId"
-      @click="changeBtnIcon"
+    <tooltip
+      :show="isCopiedTooltipShown"
+      :message="'email-getter.copied' | globalize"
     >
-      <i
-        class="mdi email-getter__icon"
-        :class="isCopyBtnPressed ?
-          'mdi-clipboard-check' :
-          'mdi-clipboard-text'"
-      />
-    </button>
+      <button
+        v-show="isCopyButton && !isMasterAccount && !isLoading"
+        class="email-getter__copy-button  app__button-icon"
+        :id="`clipboard-btn-${_uid}`"
+        :data-clipboard-text="email || accountId || balanceId"
+        @click="changeBtnIcon"
+      >
+        <i
+          class="mdi email-getter__icon"
+          :class="isCopyBtnPressed ?
+            'mdi-clipboard-check' :
+            'mdi-clipboard-text'"
+        />
+      </button>
+    </tooltip>
   </span>
 </template>
 
@@ -51,10 +56,14 @@ import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
+import Tooltip from '@/vue/common/Tooltip'
 
 import safeGet from 'lodash/get'
 
 export default {
+  components: {
+    Tooltip,
+  },
   mixins: [IdentityGetterMixin],
 
   props: {
@@ -85,6 +94,7 @@ export default {
     isMasterAccount: false,
     isLoading: false,
     isCopyBtnPressed: false,
+    isCopiedTooltipShown: false,
   }),
 
   watch: {
@@ -148,7 +158,16 @@ export default {
 
     changeBtnIcon () {
       this.isCopyBtnPressed = true
+      this.showCopiedTooltip()
       setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
+    },
+
+    showCopiedTooltip () {
+      let hideTooltipTimeout = 2000
+      this.isCopiedTooltipShown = true
+      setTimeout(() => {
+        this.isCopiedTooltipShown = false
+      }, hideTooltipTimeout)
     },
   },
 }

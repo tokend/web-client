@@ -65,24 +65,9 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <input-field
-          :label="'offer-creation-form.total' | globalize({
-            asset: assetPair.quote
-          })"
-          v-model="totalValue"
-          name="trade-offer-total"
-          :white-autofill="true"
-          :error-message="getFieldErrorMessage(
-            'totalValue',
-            {
-              minValue: config.MIN_AMOUNT,
-              available: isBuy ? quoteAssetBalance : baseAssetBalance,
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-            }
-          )"
-          @change="touchField('totalValue')"
-          :readonly="true"
+        <readonly-field
+          :label="'offer-creation-form.total' | globalize"
+          :value="totalValue | formatMoney"
         />
       </div>
     </div>
@@ -97,7 +82,10 @@
     </template>
 
     <template v-else>
-      <div class="app__form-actions">
+      <div
+        class="app__form-actions
+               app__form-submit-btn--margin_small"
+      >
         <button
           v-ripple
           type="submit"
@@ -120,6 +108,7 @@
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
+import ReadonlyField from '@/vue/fields/ReadonlyField'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
@@ -144,6 +133,7 @@ export default {
   name: 'create-trade-offer-form',
   components: {
     FormConfirmation,
+    ReadonlyField,
   },
   mixins: [
     FormMixin,
@@ -173,6 +163,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
     ]),
+
     accountAssets () {
       return this.accountBalances
         .map(balance => balance.asset)
@@ -190,7 +181,11 @@ export default {
       return MathUtil.multiply(this.form.price, this.form.amount)
     },
     totalValue () {
-      return +this.formQuoteAmount ? this.formQuoteAmount : ''
+      return +this.formQuoteAmount
+        ? {
+          value: this.formQuoteAmount,
+          currency: this.assetPair.quote,
+        } : ''
     },
   },
   validations () {
@@ -274,4 +269,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '../app-form';
+
+.app__form-submit-btn--margin_small {
+  // need override margin for case with readonly field
+  // stylelint-disable-next-line
+  margin-top: 3rem !important;
+}
 </style>
