@@ -66,7 +66,7 @@ import LoadSpinner from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
@@ -104,7 +104,7 @@ export default {
       this.isLoaded = false
       try {
         const endpoint = `/v3/sales/${this.sale.id}/relationships/participation`
-        const response = await Api.getWithSignature(endpoint)
+        const response = await api.getWithSignature(endpoint)
         this.isLoaded = true
 
         return response

@@ -739,6 +739,74 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@sentry/browser@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.1.1.tgz#f2bd3ac3d242c7aa670e4f02293d6808d60ff481"
+  integrity sha512-a8RCE+Ej7cHP+1BLlxMaa5BofILlojXdjBvA0bwbXsr5ZCVLLL6d0UB1FCW1oUg32NriZpCxD06iolUa+iRG8Q==
+  dependencies:
+    "@sentry/core" "5.1.0"
+    "@sentry/types" "5.1.0"
+    "@sentry/utils" "5.1.0"
+    tslib "^1.9.3"
+
+"@sentry/core@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.1.0.tgz#c2a5522593cf8fe07c1da8d6af8d5fbaff3300df"
+  integrity sha512-i7kDqpJuSv4FBs3UvexPvt8Tr1jrbJqHxMeWKoURbMd4btd/sgv7lCXLKOuiRVy2V2IZ3NAPiCikVqK2rEdKKA==
+  dependencies:
+    "@sentry/hub" "5.1.0"
+    "@sentry/minimal" "5.1.0"
+    "@sentry/types" "5.1.0"
+    "@sentry/utils" "5.1.0"
+    tslib "^1.9.3"
+
+"@sentry/hub@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.1.0.tgz#edcff4b85c10e6f44c603202da23776af36aeca0"
+  integrity sha512-gz46z4u65Uywn9ZrSuWNDJRjBgllA1pqov27fhdSPu5yvSr7dwdUCKO/5pvuXNQrBl79OxKzsXwUySX/9p5M1g==
+  dependencies:
+    "@sentry/types" "5.1.0"
+    "@sentry/utils" "5.1.0"
+    tslib "^1.9.3"
+
+"@sentry/integrations@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-5.1.2.tgz#326da67444c1cf8ee4550b50aef13d6ca350721b"
+  integrity sha512-4/t41XrPkOM3GFo+kXBp7t5Ef3FYUmjAOK00YyUA8mSRTF1TYrTVaaDx1ZRJue0n3YTFsWc0/7LBGtX7euq63w==
+  dependencies:
+    "@sentry/types" "5.1.0"
+    "@sentry/utils" "5.1.2"
+
+"@sentry/minimal@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.1.0.tgz#7892908c70d4f9f85b79eb861e561b82a170bfc2"
+  integrity sha512-+TySfvc6DiZ/06m5HePBNkIoDiWsRQClYWrVMysHRz1GzJhvWLmPdCikMXrfSZinlyrGIZGZAuNkd3LhmmtUrQ==
+  dependencies:
+    "@sentry/hub" "5.1.0"
+    "@sentry/types" "5.1.0"
+    tslib "^1.9.3"
+
+"@sentry/types@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.1.0.tgz#2acda336c73c996b42ca03887679599c78751f10"
+  integrity sha512-Uo5Fla1RjCfmliQWsV4ehZ1Q4z4taMC66ZGrqrUWx7FyQsaps+TJfQE5QiTIs+jWD6CbgVRf/N+pNMmpIK8JVA==
+
+"@sentry/utils@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.1.0.tgz#15067fe64248948379518c23fe9949aae430cf78"
+  integrity sha512-p2W9Zg6IAtVFd2ejk850ixcv/01++eXA4y1t9YT+feocV3GyhHirz6aGFviPFGcOjSeAai+uuV2rvzFeLJtmkg==
+  dependencies:
+    "@sentry/types" "5.1.0"
+    tslib "^1.9.3"
+
+"@sentry/utils@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.1.2.tgz#f2b0ba7b97d01baafc705eed8f2b31005cb01e36"
+  integrity sha512-0KYr75d7SR28lx+s2ZbLBjdgKwVeJLxoX8l6fBxYGXkDiMaWfi4f6JOf4Wd96Mh4ZvdzVLLhOGkGak/HYKa7Yw==
+  dependencies:
+    "@sentry/types" "5.1.0"
+    tslib "^1.9.3"
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
@@ -773,10 +841,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@tokend/js-sdk@1.7.0-x.1":
-  version "1.7.0-x.1"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.7.0-x.1.tgz#c56ac912e468e5a7f396a57ce3f00f4be0664af2"
-  integrity sha512-QpD+9moy1nqRoXA5b+YiALPJpJpbkFyoNWSbzZB38KB8BC+NZZmwank1A6DDLEOi2Wya5X+1wAh4kHEHFUpdcA==
+"@tokend/js-sdk@1.7.0-x.2":
+  version "1.7.0-x.2"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.7.0-x.2.tgz#09044a0d6d7833e1a4a2ae36393bc66b1e654f12"
+  integrity sha512-oOBcbqPwXKOb0viaieCk4ZiIaUzHfDllnVXwM6tvb4Cf7BZ8qJhpZ7d3W/0ukn5u6N50bGDZCwcSqKuq61x3PA==
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
@@ -9914,7 +9982,7 @@ tryer@^1.0.0:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
-tslib@^1.9.0:
+tslib@^1.9.0, tslib@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==

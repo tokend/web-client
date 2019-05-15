@@ -1,5 +1,4 @@
 const mutations = {
-  SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
   SET_ACCOUNT_FEES: 'SET_ACCOUNT_FEES',
 }
 
@@ -8,7 +7,6 @@ const actions = {
 }
 
 const getters = {
-  accountId: 'accountId',
   fees: 'fees',
 }
 

@@ -6,7 +6,7 @@ import Vuelidate from 'vuelidate'
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { TestHelper } from '@/test/test-helper'
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 import { globalize } from '@/vue/filters/globalize'
 import { errors } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
@@ -74,7 +74,6 @@ describe('SignupForm component test', () => {
     let wrapper
 
     beforeEach(() => {
-      Api.initSync({ horizonURL: 'https://test.api.com' })
       wrapper = shallowMount(SignupForm, {
         localVue,
         propsData: {
@@ -92,7 +91,7 @@ describe('SignupForm component test', () => {
 
     it('loads kdf params for provided email', async () => {
       sinon.stub(ErrorHandler, 'process')
-      const spy = sinon.stub(Api.walletsManager, 'getKdfParams').resolves()
+      const spy = sinon.stub(walletsManager, 'getKdfParams').resolves()
 
       await wrapper.vm.submit()
 
@@ -103,7 +102,7 @@ describe('SignupForm component test', () => {
     })
 
     it('emits the global error event if user exist', async () => {
-      sinon.stub(Api.walletsManager, 'getKdfParams').resolves()
+      sinon.stub(walletsManager, 'getKdfParams').resolves()
       sinon.stub(ErrorHandler, 'processWithoutFeedback')
       const spy = sinon.stub(Bus, 'error')
 
@@ -123,7 +122,7 @@ describe('SignupForm component test', () => {
       wrapper.setData({ form })
 
       sinon.stub(ErrorHandler, 'process')
-      sinon.stub(Api.walletsManager, 'getKdfParams')
+      sinon.stub(walletsManager, 'getKdfParams')
         .throws(TestHelper.getError(errors.NotFoundError))
 
       await wrapper.vm.submit()

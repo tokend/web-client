@@ -10,32 +10,55 @@
       >
         {{ value }}
       </span>
-      <button
-        type="button"
-        class="clipboard-field__button app__button-icon"
-        :id="`clipboard-btn-${_uid}`"
-        :data-clipboard-target="`#clipboard-target-${_uid}`"
+      <tooltip
+        :show="isCopiedTooltipShown"
+        :message="'clipboard-field.copied' | globalize"
       >
-        <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
-      </button>
+        <button
+          type="button"
+          class="clipboard-field__button app__button-icon"
+          @click="showCopiedTooltip"
+          :id="`clipboard-btn-${_uid}`"
+          :data-clipboard-target="`#clipboard-target-${_uid}`"
+        >
+          <i class="mdi mdi-content-copy clipboard-field__copy-icon" />
+        </button>
+      </tooltip>
     </div>
   </div>
 </template>
 
 <script>
 import Clipboard from 'clipboard'
+import Tooltip from '@/vue/common/Tooltip'
+
 export default {
   name: 'clipboard-field',
+  components: {
+    Tooltip,
+  },
   props: {
     value: { type: String, default: '' },
     label: { type: String, default: '' },
   },
+  data: _ => ({
+    isCopiedTooltipShown: false,
+  }),
   mounted () {
     const btn = document.querySelector(
       `#clipboard-btn-${this._uid}`
     )
     if (!btn) return
     this.clipboard = new Clipboard(btn)
+  },
+  methods: {
+    showCopiedTooltip () {
+      let hideTooltipTimeout = 2000
+      this.isCopiedTooltipShown = true
+      setTimeout(() => {
+        this.isCopiedTooltipShown = false
+      }, hideTooltipTimeout)
+    },
   },
 }
 </script>

@@ -65,7 +65,7 @@ import moment from 'moment'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
@@ -131,7 +131,7 @@ export default {
     },
     async loadDeposit (params) {
       const endpoint = '/integrations/coinpayments/deposit'
-      const response = await api().postWithSignature(endpoint, {
+      const response = await api.postWithSignature(endpoint, {
         data: {
           type: 'coinpayments_deposit',
           attributes: params,

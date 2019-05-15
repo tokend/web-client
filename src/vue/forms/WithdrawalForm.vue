@@ -28,7 +28,6 @@
                   }}
                 </p>
               </div>
-
               <div class="withdrawal__form-field-description">
                 <p>
                   <span>{{ 'withdrawal-form.reviewer' | globalize }}</span>
@@ -205,7 +204,7 @@ import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -275,7 +274,7 @@ export default {
     }),
 
     isMasterAssetOwner () {
-      return this.form.asset.owner === Api.networkDetails.adminAccountId
+      return this.form.asset.owner === api.networkDetails.adminAccountId
     },
 
     selectedAssetStep () {
@@ -320,7 +319,7 @@ export default {
         }
         const operation = base.CreateWithdrawRequestBuilder
           .createWithdrawWithAutoConversion(this.composeOptions())
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         await this.reinitAssetSelector()
         Bus.success('withdrawal-form.withdraw-success')
         this.$emit(EVENTS.operationSubmitted)
@@ -339,7 +338,7 @@ export default {
         ]
 
         const endpoint = `${baseEndpoint}?${params.join('&')}`
-        const { data: fees } = await Api.get(endpoint)
+        const { data: fees } = await api.get(endpoint)
 
         this.fixedFee = fees.fixed
         this.percentFee = fees.calculatedPercent
@@ -395,7 +394,7 @@ export default {
     async loadAssets () {
       await this.loadBalances()
       const endpoint = `/v3/accounts/${this.accountId}`
-      const { data: account } = await Api.get(endpoint, {
+      const { data: account } = await api.get(endpoint, {
         include: ['balances.asset'],
       })
 

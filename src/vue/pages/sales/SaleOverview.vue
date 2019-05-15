@@ -120,7 +120,7 @@
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 import Loader from '@/vue/common/Loader'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import config from '@/config'
 
@@ -150,7 +150,7 @@ export default {
   async created () {
     try {
       const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await Api.get(endpoint)
+      const { data } = await api.get(endpoint)
 
       this.asset = new AssetRecord(data)
       this.isLoaded = true

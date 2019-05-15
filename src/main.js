@@ -27,6 +27,7 @@ import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 async function init () {
   await SchemeRegistry.useScheme(config.MODULE_SCHEME_NAME)
@@ -77,6 +78,8 @@ async function init () {
     eventEmitter: new Vue(),
     idleTime: config.IDLE_TIMEOUT,
   })
+
+  ErrorTracker.init(config)
 
   /* eslint-disable no-new */
   new Vue({

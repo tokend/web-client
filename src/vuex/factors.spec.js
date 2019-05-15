@@ -2,7 +2,7 @@ import { MockWrapper } from '../test'
 import { mutations, actions, getters } from './factors.module'
 import { vuexTypes } from './types'
 import factorsJSON from '../test/mocks/factors'
-import { Api } from '../api'
+import { api } from '../api'
 
 describe('factors.module', () => {
   afterEach(() => {
@@ -43,7 +43,7 @@ describe('factors.module', () => {
     })
 
     it('LOAD_FACTORS should commit the proper set of mutations', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse(factorsJSON)
       )
 

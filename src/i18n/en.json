@@ -83,7 +83,8 @@
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
-      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
+      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -122,7 +123,7 @@
       "tx_fee_incorrect_precision": "Cannot charge the fee for the transaction. The fee is charged with a non-divisible asset, and the total calculated amount of the fee would cause this asset to split",
       "tx_no_role_permission": "Source account does not have rule which allows him send transaction, or such rule forbid to do this",
       "op_inner": "Op inner",
-      "op_bad_auth": "You dont have permission to complete this action",
+      "op_bad_auth": "You don’t have permission to complete this action",
       "op_no_account": "Target account does not exist",
       "op_no_entry": "There is no entry which is tried to get by specified id in operation",
       "op_not_supported": "Such operation currently is not supported",
@@ -502,8 +503,8 @@
     "general-form": {
       "address-postal-code-lbl'": "Postal code",
       "documents-lbl": "Documents",
-      "id-document-face-lbl": "Idenity document (face side)",
-      "id-document-back-lbl": "Idenity document (back side)",
+      "id-document-face-lbl": "Identity document (face side)",
+      "id-document-back-lbl": "Identity document (back side)",
       "address-details-lbl": "Address details",
       "date-of-birth-lbl": "Date of birth",
       "address-line-1-lbl": "Line 1",
@@ -537,7 +538,8 @@
     },
     "verification-form": {
       "account-information-lbl": "Account information",
-      "submit-btn": "Submit",
+      "create-btn": "Create request",
+      "update-btn": "Update",
       "personal-details-lbl": "Personal details",
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
@@ -714,7 +716,9 @@
       "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "sign-out-btn": "Sign out"
+      "sign-out-btn": "Sign out",
+      "balances-subheading": "Balances",
+      "show-more-link": "Show more"
     },
     "sidebar": {
       "section-explore": "Explorations",
@@ -869,7 +873,8 @@
         "manage-asset-pair": "Pair updated",
         "manage-offer": "Offer",
         "payment": "Payment",
-        "unknown": "Unknown type"
+        "unknown": "Unknown type",
+        "investment": "Investment"
       },
       "type-th": "Type",
       "amount-th": "Amount",
@@ -878,8 +883,9 @@
       "initializing-msg": "Initializing…",
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",
+      "latest-activity": "Latest activity",
       "no-movements-title": "No movements history",
-      "no-movements-msg": "Nothing happened with your balances yet",
+      "no-movements-msg": "No items here yet",
       "type-lbl": "Type",
       "operation-lbl": "Operation",
       "date-lbl": "Date",
@@ -1281,9 +1287,16 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "deposit-method-title": "Deposit method",
       "requires-kyc-title": "Requires KYC",
       "present-msg": "Yes",
       "absent-msg": "No",
+      "default-msg": "Default",
+      "coinpayments-msg": "Coinpayments",
+      "non-depositable-msg": "Non-depositable",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
+      "security-asset-title": "Is security (requires accreditation for US residents)",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
@@ -1361,8 +1374,8 @@
     },
     "trade-offers": {
       "title": "Open orders",
-      "subtitle-ask": "Ask",
-      "subtitle-bid": "Bid",
+      "subtitle-ask": "Asks",
+      "subtitle-bid": "Bids",
       "submit-bid-offer-title": "Submit bid order",
       "submit-ask-offer-title": "Submit ask order",
       "table-want-lbl": "Want ({{asset}})",
@@ -1553,7 +1566,8 @@
       "continue-btn": "Continue",
       "recheck-form-msg": "Please recheck the form before proceeding",
       "transaction-fees-heading": "Transaction fees",
-      "no-transaction-fees-msg": "No fees for this transaction"
+      "no-transaction-fees-msg": "No fees for this transaction",
+      "investment-disabled-title": "Cannot invest in this sale"
     },
     "create-sale-form": {
       "loading-msg": "Loading...",
@@ -1739,7 +1753,8 @@
     },
     "email-getter": {
       "loading-msg": "Loading…",
-      "master-account": "Master"
+      "master-account": "Master",
+      "copied": "Copied"
     },
     "downloads-page": {
       "go-back-btn": "Go back",
@@ -1794,10 +1809,16 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "deposit-method-title": "Deposit method",
       "verification-required-title": "Requires verification",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
       "security-asset-title": "Is security (requires accreditation for US residents)",
       "present-msg": "Yes",
       "absent-msg": "No",
+      "default-msg": "Default",
+      "coinpayments-msg": "Coinpayments",
+      "non-depositable-msg": "Non-depositable",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
@@ -1942,6 +1963,9 @@
     },
     "warning-banner": {
       "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
+    },
+    "clipboard-field": {
+      "copied": "Copied"
     }
   }
 }

@@ -5,7 +5,6 @@ import { createSaleRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
 import * as Config from './_config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -20,7 +19,9 @@ describe('Create sale requests module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'create-sale-requests': createSaleRequestsModule },
+      modules: {
+        'create-sale-requests': createSaleRequestsModule,
+      },
     })
   })
 
@@ -30,24 +31,8 @@ describe('Create sale requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Api, 'initApi')
       sandbox.stub(Config, 'initConfig')
-      sandbox.stub(CreateSaleRequestsModule.methods, 'setAccountId')
       sandbox.stub(CreateSaleRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls initApi function with correct params', () => {
-      shallowMount(CreateSaleRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          config: 'SOME_CONFIG',
-          wallet: 'SOME_WALLET',
-        },
-      })
-
-      expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
     it('calls initConfig function with correct params', () => {
@@ -55,26 +40,12 @@ describe('Create sale requests module', () => {
         localVue,
         store,
         propsData: {
-          config: 'SOME_CONFIG',
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 
       expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly('SOME_CONFIG')
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(CreateSaleRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
-      })
-
-      expect(CreateSaleRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
+        .to.have.been.calledOnceWithExactly('https://storage.com')
     })
 
     it('calls initFirstPageLoader method', () => {
@@ -82,7 +53,7 @@ describe('Create sale requests module', () => {
         localVue,
         store,
         propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 

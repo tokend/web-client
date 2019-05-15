@@ -1,6 +1,8 @@
-
-import { api } from '../_api'
+import { api } from '@/api'
 import { Asset } from '../wrappers/asset'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   data: _ => ({
@@ -8,8 +10,11 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     ownedAssets () {
-      return this.assets.filter(a => a.owner === this.wallet.accountId)
+      return this.assets.filter(a => a.owner === this.accountId)
     },
 
     baseAssets () {
@@ -23,9 +28,9 @@ export default {
   },
 
   methods: {
-    async loadAssets () {
-      const endpoint = `/v3/accounts/${this.wallet.accountId}`
-      const { data: account } = await api().getWithSignature(endpoint, {
+    async loadAssets (accountId) {
+      const endpoint = `/v3/accounts/${accountId}`
+      const { data: account } = await api.getWithSignature(endpoint, {
         include: ['balances.asset'],
       })
 

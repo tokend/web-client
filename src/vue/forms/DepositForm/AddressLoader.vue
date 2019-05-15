@@ -35,7 +35,7 @@ import KeyViewer from '@/vue/common/KeyViewer'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -90,7 +90,7 @@ export default {
           .createBindExternalSystemAccountIdOp({
             externalSystemType: +this.externalSystemType,
           })
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         await this.loadAccount(this.accountId)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)

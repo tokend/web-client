@@ -65,7 +65,7 @@ import SelectField from '@/vue/fields/SelectField'
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -161,7 +161,7 @@ export default {
 
       const accountId = this.accountId
       return function () {
-        return Api.getWithSignature(`/v3/accounts/${accountId}/sales`, opts)
+        return api.getWithSignature(`/v3/accounts/${accountId}/sales`, opts)
       }
     },
   },

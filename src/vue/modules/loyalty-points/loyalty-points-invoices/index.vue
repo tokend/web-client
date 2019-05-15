@@ -31,8 +31,6 @@
       <movements-history-module
         v-if="defaultAssetCode"
         :asset-code="defaultAssetCode"
-        :wallet="wallet"
-        :config="config"
       />
     </div>
     <drawer :is-shown.sync="isInvoiceRequestFormShown">
@@ -40,8 +38,7 @@
         {{ 'loyalty-points.create-invoice-form-title' | globalize }}
       </template>
       <create-invoice-form-module
-        :config="config"
-        :wallet="wallet"
+        :horizon-url="horizonUrl"
         :amount="selectedItem.price"
         :subject="selectedItem.name"
         @close="isInvoiceRequestFormShown = false"
@@ -51,16 +48,13 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import { types } from './store/types'
 import Drawer from '@/vue/common/Drawer'
 import { vueRoutes } from '@/vue-router/routes'
 
 import CreateInvoiceFormModule from '@modules/loyalty-points/create-invoice-form'
 import MovementsHistoryModule from '@modules/movements-history'
-
-import { initApi } from './_api'
-import { Wallet } from '@tokend/js-sdk'
 
 const PETS = [
   {
@@ -94,16 +88,8 @@ export default {
     Drawer,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
+    horizonUrl: {
+      type: String,
       required: true,
     },
   },
@@ -115,15 +101,9 @@ export default {
     selectedItem: {},
   }),
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
   },
   methods: {
-    ...mapMutations('loyalty-points-invoices', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('loyalty-points-invoices', {
       loadBalances: types.LOAD_BALANCES,
     }),

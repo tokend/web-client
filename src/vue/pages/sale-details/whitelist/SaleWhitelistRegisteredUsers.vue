@@ -98,7 +98,7 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 
 import WhitelistTableActions from './WhitelistTableActions'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
@@ -152,7 +152,7 @@ export default {
       this.isLoaded = false
       try {
         const endpoint = `/v3/sales/${this.sale.id}/relationships/whitelist`
-        const response = await Api.getWithSignature(endpoint)
+        const response = await api.getWithSignature(endpoint)
         this.isLoaded = true
 
         return response

@@ -48,8 +48,10 @@ import {
   mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { api, walletsManager, factorsManager } from '@/api'
 import { vuexTypes } from '@/vuex'
+import { Wallet } from '@tokend/js-sdk'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 import config from '@/config'
 
@@ -72,7 +74,10 @@ export default {
 
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.walletEmail,
+      vuexTypes.walletSeed,
+      vuexTypes.walletAccountId,
+      vuexTypes.walletId,
       vuexTypes.isLoggedIn,
       vuexTypes.isAccountBlocked,
       vuexTypes.kycRequestBlockReason,
@@ -97,15 +102,28 @@ export default {
     }),
     async initApp () {
       await Sdk.init(config.HORIZON_SERVER)
-      await Api.init({ horizonURL: config.HORIZON_SERVER })
-
+      api.useBaseURL(config.HORIZON_SERVER)
+      const { data: networkDetails } = await api.getRaw('/')
+      api.useNetworkDetails(networkDetails)
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()
 
       if (this[vuexTypes.isLoggedIn]) {
-        Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        Api.useWallet(this[vuexTypes.wallet])
+        const wallet = new Wallet(
+          this.walletEmail,
+          this.walletSeed,
+          this.walletAccountId,
+          this.walletId
+        )
+        Sdk.sdk.useWallet(wallet)
+        api.useWallet(wallet)
+        ErrorTracker.setLoggedInUser({
+          'accountId': this[vuexTypes.walletAccountId],
+          'email': this[vuexTypes.walletEmail],
+        })
       }
+      walletsManager.useApi(api)
+      factorsManager.useApi(api)
     },
     detectIE () {
       const edge = window.navigator.userAgent.indexOf('Edge/')
