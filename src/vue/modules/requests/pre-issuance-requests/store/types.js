@@ -1,5 +1,4 @@
 const mutations = {
-  SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
   SET_REQUESTS: 'SET_REQUESTS',
   CONCAT_REQUESTS: 'CONCAT_REQUESTS',
 }
@@ -9,7 +8,6 @@ const actions = {
 }
 
 const getters = {
-  accountId: 'accountId',
   requests: 'requests',
 }
 

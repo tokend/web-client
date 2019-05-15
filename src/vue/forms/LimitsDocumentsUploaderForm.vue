@@ -71,7 +71,7 @@ import { required, documentContainer } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors } from '@tokend/js-sdk'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
 
@@ -157,7 +157,7 @@ export default {
             documents: this.formatDocumentsForRequest(),
           },
         })
-      await Api.api.postOperations(operation)
+      await api.postOperations(operation)
     },
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {

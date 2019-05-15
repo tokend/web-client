@@ -20,10 +20,7 @@ describe('Update asset request attributes viewer', () => {
 
   describe('computed property', () => {
     beforeEach(() => {
-      Config.initConfig({
-        horizonURL: 'https://horizon.com',
-        storageURL: 'https://storage.com',
-      })
+      Config.initConfig('https://storage.com')
     })
 
     describe('assetTermsUrl', () => {

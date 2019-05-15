@@ -10,7 +10,7 @@
           v-model="form.asset"
           name="create-sale-base-asset"
           :disabled="formMixin.isDisabled"
-          :label="'create-sale-form.base-asset' | globalize"
+          :label="'create-sale-form.base-asset-lbl' | globalize"
         />
       </div>
     </div>

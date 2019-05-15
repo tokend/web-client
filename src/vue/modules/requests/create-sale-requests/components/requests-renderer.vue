@@ -1,14 +1,13 @@
 <template>
-  <div class="update-asset-requests">
+  <div class="requests-renderer">
     <template v-if="isLoaded">
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
-            {{ 'update-asset-requests.update-asset-title' | globalize }}
+            {{ 'create-sale-requests.update-sale-title' | globalize }}
           </template>
-          <update-asset-form-module
-            :request-id="selectedRequest.id"
-            :storage-url="storageUrl"
+          <create-sale-form
+            :request="selectedRequest"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -16,10 +15,11 @@
 
         <template v-else>
           <template slot="heading">
-            {{ 'update-asset-requests.details-title' | globalize }}
+            {{ 'create-sale-requests.details-title' | globalize }}
           </template>
           <request-viewer
             :request="selectedRequest"
+            :base-asset="baseAsset"
             @update-click="isUpdateMode = true"
             @cancel="(isDrawerShown = false) || initFirstPageLoader()"
           />
@@ -33,13 +33,13 @@
     </template>
 
     <p v-else-if="isLoadingFailed">
-      {{ 'update-asset-requests.loading-error-msg' | globalize }}
+      {{ 'create-sale-requests.loading-error-msg' | globalize }}
     </p>
 
-    <load-spinner v-else message-id="update-asset-requests.loading-msg" />
+    <load-spinner v-else message-id="create-sale-requests.loading-msg" />
 
     <collection-loader
-      class="update-asset-requests__loader"
+      class="requests-renderer__loader"
       v-show="requests.length && isLoaded"
       :first-page-loader="firstPageLoader"
       @first-page-load="setRequests"
@@ -53,34 +53,30 @@ import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import RequestViewer from './components/request-viewer'
-import RequestsTable from './components/requests-table'
-
-import UpdateAssetFormModule from '@modules/update-asset-form'
-
-import { initConfig } from './_config'
+import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+import RequestViewer from './request-viewer'
+import RequestsTable from './requests-table'
 
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { types } from '../store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { Asset } from '../wrappers/asset'
+
 export default {
-  name: 'update-asset-requests-module',
+  name: 'requests-renderer',
   components: {
     LoadSpinner,
     Drawer,
     CollectionLoader,
     RequestsTable,
+    CreateSaleForm,
     RequestViewer,
-    UpdateAssetFormModule,
   },
 
   props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
+    baseAsset: { type: Asset, required: true },
   },
 
   data: _ => ({
@@ -93,30 +89,35 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('update-asset-requests', {
+    ...mapGetters('create-sale-requests', {
       requests: types.requests,
     }),
   },
 
+  watch: {
+    baseAsset: function (value) {
+      this.initFirstPageLoader()
+    },
+  },
+
   created () {
-    initConfig(this.storageUrl)
     this.initFirstPageLoader()
   },
 
   methods: {
-    ...mapMutations('update-asset-requests', {
+    ...mapMutations('create-sale-requests', {
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),
 
-    ...mapActions('update-asset-requests', {
-      loadUpdateAssetRequests: types.LOAD_REQUESTS,
+    ...mapActions('create-sale-requests', {
+      loadCreateSaleRequests: types.LOAD_REQUESTS,
     }),
 
     async loadRequests () {
       this.isLoaded = false
       try {
-        const response = await this.loadUpdateAssetRequests()
+        const response = await this.loadCreateSaleRequests()
         this.isLoaded = true
         return response
       } catch (e) {
@@ -139,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.update-asset-requests__loader {
+.requests-renderer__loader {
   margin-top: 1rem;
 }
 </style>

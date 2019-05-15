@@ -45,9 +45,6 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
-
 const REFS = {
   collectionLoader: 'collection-loader',
 }
@@ -60,18 +57,6 @@ export default {
     CollectionLoader,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     assetCode: {
       type: String,
       default: '',
@@ -100,16 +85,12 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     this.isInitialized = true
   },
   methods: {
     ...mapMutations('movements-history', {
       setMovements: types.SET_MOVEMENTS,
-      setAccountId: types.SET_ACCOUNT_ID,
       concatMovements: types.CONCAT_MOVEMENTS,
     }),
     ...mapActions('movements-history', {

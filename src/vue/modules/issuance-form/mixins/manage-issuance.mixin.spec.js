@@ -1,18 +1,18 @@
 import ManageIssuanceMixin from './manage-issuance.mixin'
 
-import { ApiCaller, base } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { errors } from '@/js/errors'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import { api } from '@/api'
 
 const localVue = createLocalVue()
 
 const Component = {
   template: '<div></div>',
-  props: ['wallet', 'requestId'],
+  props: ['requestId'],
   data: _ => ({
     form: {
       asset: {},
@@ -40,10 +40,6 @@ describe('Manage issuance mixin', () => {
   })
 
   describe('method', () => {
-    beforeEach(() => {
-      sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
-    })
-
     describe('createIssuance', () => {
       it('calls proper methods to post issuance operation if receiver balance ID is not empty',
         async () => {
@@ -87,9 +83,9 @@ describe('Manage issuance mixin', () => {
     })
 
     describe('getReceiverBalanceId', () => {
-      it('calls Api.get method and returns balance by provided asset code',
+      it('calls api.get method and returns balance by provided asset code',
         async () => {
-          sandbox.stub(Api.api(), 'get').resolves({
+          sandbox.stub(api, 'get').resolves({
             data: {
               balances: [
                 { id: 'SOME_BALANCE_ID', asset: { id: 'USD' } },
@@ -102,7 +98,7 @@ describe('Manage issuance mixin', () => {
             'SOME_ACCOUNT_ID', 'USD'
           )
 
-          expect(Api.api().get).to.have.been.calledOnceWithExactly(
+          expect(api.get).to.have.been.calledOnceWithExactly(
             '/v3/accounts/SOME_ACCOUNT_ID',
             { include: ['balances.asset'] }
           )
@@ -111,7 +107,7 @@ describe('Manage issuance mixin', () => {
       )
 
       it('returns empty string if specified balance was not found', async () => {
-        sandbox.stub(Api.api(), 'get').resolves({
+        sandbox.stub(api, 'get').resolves({
           data: {
             balances: [{ id: 'OTHER_BALANCE_ID', asset: { id: 'BTC' } }],
           },
@@ -137,7 +133,7 @@ describe('Manage issuance mixin', () => {
         sandbox.stub(
           base.CreateIssuanceRequestBuilder, 'createIssuanceRequest'
         ).returns('ISSUANCE_OPERATION')
-        sandbox.stub(Api.api(), 'postOperations').resolves()
+        sandbox.stub(api, 'postOperations').resolves()
 
         await wrapper.vm.postIssuanceOperation('SOME_BALANCE_ID')
 
@@ -149,7 +145,7 @@ describe('Manage issuance mixin', () => {
             reference: 'SOME_REFERENCE',
             creatorDetails: {},
           })
-        expect(Api.api().postOperations)
+        expect(api.postOperations)
           .to.have.been.calledOnceWithExactly('ISSUANCE_OPERATION')
       })
     })

@@ -3,7 +3,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { base } from '@tokend/js-sdk'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
@@ -33,7 +33,7 @@ export default {
     }),
 
     async createKycBlob (blobType) {
-      const { data: blob } = await Api.api.postWithSignature('/blobs', {
+      const { data: blob } = await api.postWithSignature('/blobs', {
         data: {
           type: blobType,
           attributes: { value: JSON.stringify(this.createKycData()) },

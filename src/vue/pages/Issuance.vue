@@ -41,8 +41,6 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(PreIssuanceFormModule)"
-        :wallet="wallet"
-        :config="config"
         @pre-issuance-created="isPreIssuanceDrawerShown = false"
       />
     </drawer>
@@ -57,8 +55,6 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(IssuanceFormModule)"
-        :wallet="wallet"
-        :config="config"
         @issuance-created="setIssuanceCreated() || closeIssuanceDrawer()"
       />
     </drawer>
@@ -66,8 +62,6 @@
     <submodule-importer
       v-if="getModule().canRenderSubmodule(IssuanceExplorerModule)"
       :submodule="getModule().getSubmodule(IssuanceExplorerModule)"
-      :wallet="wallet"
-      :config="config"
       :should-update.sync="isIssuanceCreated"
     />
   </div>
@@ -81,8 +75,6 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
-
-import config from '@/config'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceExplorerModule } from '@modules/issuance-explorer/module'
@@ -101,9 +93,6 @@ export default {
     isIssuanceDrawerShown: false,
     isPreIssuanceDrawerShown: false,
     isIssuanceCreated: false,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
     vueRoutes,
     IssuanceExplorerModule,
     IssuanceFormModule,
@@ -113,7 +102,6 @@ export default {
   computed: {
     ...mapGetters({
       isAccountCorporate: vuexTypes.isAccountCorporate,
-      wallet: vuexTypes.wallet,
     }),
   },
 

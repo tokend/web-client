@@ -25,7 +25,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Api } from '../../api'
+import { api } from '@/api'
 
 export default {
   name: 'trade-user-offers',
@@ -90,7 +90,7 @@ export default {
     async loadOffersHistory () {
       this.isOpenOffersLoading = true
       try {
-        const response = await Api.getWithSignature('/v3/offers', {
+        const response = await api.getWithSignature('/v3/offers', {
           filter: {
             base_asset: this.assetPair.base,
             quote_asset: this.assetPair.quote,

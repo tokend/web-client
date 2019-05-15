@@ -1,21 +1,20 @@
 import { MockWrapper } from './index'
 import { Sdk } from '../sdk'
-import { Api } from '../api'
+import { api } from '@/api'
 import { Wallet } from '@tokend/js-sdk'
 import mock from 'xhr-mock'
 
 let sdkInstance = null
 let apiInstance = null
 
+const HORIZON_URL = 'https://test.api.com'
+
 export class MockHelper {
   constructor () {
-    Sdk.initSync('https://test.api.com')
-    Api.initSync({
-      horizonURL: 'https://test.api.com',
-    })
+    Sdk.initSync(HORIZON_URL)
 
     sdkInstance = Sdk.getInstance()
-    apiInstance = Api.api
+    apiInstance = api
 
     mock.setup()
     mock.reset()
@@ -55,11 +54,11 @@ export class MockHelper {
 
   useMockWallet ({ walletId, accountId } = {}) {
     sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
-    apiInstance.useWallet(this.getMockWallet({ walletId, accountId }))
+    api.useWallet(this.getMockWallet({ walletId, accountId }))
   }
 
   mockEndpoint (endpoint, response) {
-    const url = `https://test.api.com${endpoint}`
+    const url = `${HORIZON_URL}${endpoint}`
       .replace('@', '%40') // FIXME sorry
 
     mock.get(url, {

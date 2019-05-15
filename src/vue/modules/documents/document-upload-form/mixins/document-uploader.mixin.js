@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { config } from '../_config'
 
 import _omit from 'lodash/omit'
@@ -9,7 +9,7 @@ export default {
   methods: {
     async uploadDocument (document, accountId) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const { data: config } = await api().postWithSignature('/documents', {
+      const { data: config } = await api.postWithSignature('/documents', {
         data: {
           type,
           attributes: { content_type: mimeType },

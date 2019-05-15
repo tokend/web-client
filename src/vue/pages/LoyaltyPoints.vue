@@ -40,8 +40,6 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(IssuanceFormModule)"
-        :wallet="wallet"
-        :config="config"
         @issuance-created="isIssuanceDrawerShown = false"
       />
     </drawer>
@@ -56,9 +54,8 @@
 
       <submodule-importer
         :submodule="getModule().getSubmodule(CreateInvoiceFormModule)"
-        :config="config"
-        :wallet="wallet"
         @close="isInvoiceRequestFormShown = false"
+        :horizon-url="horizonUrl"
       />
     </drawer>
   </div>
@@ -74,9 +71,6 @@ import { CreateInvoiceFormModule } from '@modules/loyalty-points/create-invoice-
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex/types'
-
 import config from '@/config'
 
 export default {
@@ -90,17 +84,10 @@ export default {
     vueRoutes,
     isIssuanceDrawerShown: false,
     isInvoiceRequestFormShown: false,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
     IssuanceFormModule,
     CreateInvoiceFormModule,
+    horizonUrl: config.HORIZON_SERVER,
   }),
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
 }
 </script>
 
