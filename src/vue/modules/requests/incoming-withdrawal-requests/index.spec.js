@@ -6,8 +6,6 @@ import { incomingWithdrawalRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -32,38 +30,9 @@ describe('Incoming withdrawal requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Api, 'initApi')
-      sandbox.stub(IncomingWitdrawalRequestsModule.methods, 'setAccountId')
       sandbox.stub(
         IncomingWitdrawalRequestsModule.methods, 'initFirstPageLoader'
       )
-    })
-
-    it('calls initApi function with correct params', () => {
-      shallowMount(IncomingWitdrawalRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          config: 'SOME_CONFIG',
-          wallet: 'SOME_WALLET',
-        },
-      })
-
-      expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(IncomingWitdrawalRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
-      })
-
-      expect(IncomingWitdrawalRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
     })
 
     it('calls initFirstPageLoader method', () => {

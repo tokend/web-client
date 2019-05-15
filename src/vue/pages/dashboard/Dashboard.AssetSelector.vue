@@ -87,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -165,7 +165,7 @@ export default {
     async loadAssets () {
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await Api.get(endpoint, {
+        const { data: account } = await api.get(endpoint, {
           include: ['balances.asset'],
         })
 

@@ -2,7 +2,7 @@ import { types } from './types'
 import { balanceExplorerModule } from './index'
 
 import { Wallet } from '@tokend/js-sdk'
-import * as Api from '../_api'
+import { api, useWallet } from '@/api'
 
 import Vuex from 'vuex'
 import Vue from 'vue'
@@ -15,9 +15,6 @@ describe('balance explorer module end-to-end test', () => {
   let store
 
   beforeEach(async () => {
-    const config = {
-      horizonUrl: 'https://test.api.com',
-    }
     const wallet = new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
@@ -26,8 +23,9 @@ describe('balance explorer module end-to-end test', () => {
     )
     store = new Vuex.Store(balanceExplorerModule)
 
-    Api.initApi(wallet, config)
-    sinon.stub(Api.api(), 'getWithSignature').resolves({
+    api.useBaseURL('https://test.api.com')
+    useWallet(wallet)
+    sinon.stub(api, 'getWithSignature').resolves({
       data: {
         states: [
           {
@@ -52,7 +50,7 @@ describe('balance explorer module end-to-end test', () => {
   })
 
   afterEach(() => {
-    Api.api().getWithSignature.restore()
+    api.getWithSignature.restore()
   })
 
   it('assets', () => {

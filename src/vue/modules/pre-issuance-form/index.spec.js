@@ -6,7 +6,8 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from './_api'
+import { api } from '@/api'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -38,33 +39,39 @@ describe('Issuance form module', () => {
 
   describe('component', () => {
     let wrapper
+    let store
 
     beforeEach(() => {
       sandbox.stub(PreIssuanceFormModule, 'created').resolves()
+      store = new Vuex.Store({
+        modules: {
+          account: {
+            getters: {
+              accountId: () => ('SOME_ACCOUNT_ID'),
+            },
+          },
+        },
+      })
 
       wrapper = shallowMount(PreIssuanceFormModule, {
+        store,
         localVue,
       })
     })
 
     describe('method', () => {
       describe('init', () => {
-        it('initializes API, calls load assets method, and sets isLoaded property to true',
+        it('calls load assets method, and sets isLoaded property to true',
           async () => {
             wrapper.setProps({
               config: 'SOME_CONFIG',
               wallet: { accountId: 'SOME_ACCOUNT_ID' },
             })
 
-            sandbox.stub(Api, 'initApi')
             sandbox.stub(wrapper.vm, 'loadOwnedAssets').resolves()
 
             await wrapper.vm.init()
 
-            expect(Api.initApi).to.have.been.calledOnceWithExactly(
-              { accountId: 'SOME_ACCOUNT_ID' },
-              'SOME_CONFIG'
-            )
             expect(wrapper.vm.loadOwnedAssets)
               .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
             expect(wrapper.vm.isLoaded).to.be.true
@@ -73,7 +80,7 @@ describe('Issuance form module', () => {
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(Api, 'initApi').throws()
+            sandbox.stub(api, 'get').throws()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()

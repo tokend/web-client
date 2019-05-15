@@ -6,11 +6,11 @@ import {
 } from './index'
 import { types } from './types'
 
-import { Wallet, base } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 
-import * as Api from '../_api'
+import { api } from '@/api'
 
 describe('incoming-withdrawals-requests.module', () => {
   describe('vuex types', () => {
@@ -40,16 +40,6 @@ describe('incoming-withdrawals-requests.module', () => {
   })
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
-
-      expect(state).to.deep.equal({ accountId: 'SOME_ACCOUNT_ID' })
-    })
-
     it('SET_REQUESTS should properly modify state', () => {
       const state = {
         requests: [],
@@ -95,29 +85,15 @@ describe('incoming-withdrawals-requests.module', () => {
   })
 
   describe('actions', () => {
-    const wallet = new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    )
-    const config = {
-      horizonURL: 'https://test.api.com',
-    }
-
-    beforeEach(() => {
-      Api.initApi(wallet, config)
-    })
-
     describe('LOAD_REQUESTS', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+      it('calls api.getWithSignature method with provided params', async () => {
+        sinon.stub(api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
-          getters: { accountId: 'SOME_ACCOUNT_ID' },
+          rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api().getWithSignature)
+        expect(api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_withdraw_requests',
             {
@@ -127,18 +103,18 @@ describe('incoming-withdrawals-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
 
     describe('APPROVE_REQUEST', () => {
       beforeEach(() => {
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(api, 'postOperations').resolves()
         sinon.stub(base.ReviewRequestBuilder, 'reviewWithdrawRequest')
       })
 
       afterEach(() => {
-        Api.api().postOperations.restore()
+        api.postOperations.restore()
         base.ReviewRequestBuilder.reviewWithdrawRequest.restore()
       })
 
@@ -166,21 +142,21 @@ describe('incoming-withdrawals-requests.module', () => {
           })
       })
 
-      it('calls api().postOperations', async () => {
+      it('calls api.postOperations', async () => {
         await actions[types.APPROVE_REQUEST]({}, {})
 
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(api.postOperations).to.have.been.calledOnce
       })
     })
 
     describe('REJECT_REQUEST', () => {
       beforeEach(() => {
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(api, 'postOperations').resolves()
         sinon.stub(base.ReviewRequestBuilder, 'reviewWithdrawRequest')
       })
 
       afterEach(() => {
-        Api.api().postOperations.restore()
+        api.postOperations.restore()
         base.ReviewRequestBuilder.reviewWithdrawRequest.restore()
       })
 
@@ -211,22 +187,15 @@ describe('incoming-withdrawals-requests.module', () => {
           })
       })
 
-      it('calls api().postOperations', async () => {
+      it('calls api.postOperations', async () => {
         await actions[types.REJECT_REQUEST]({}, { request: {}, reason: '' })
 
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(api.postOperations).to.have.been.calledOnce
       })
     })
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId: 'SOME_ACCOUNT_ID' }
-
-      expect(getters[types.accountId](state))
-        .to.equal('SOME_ACCOUNT_ID')
-    })
-
     it('requests', () => {
       const state = {
         requests: [

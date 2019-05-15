@@ -1,5 +1,5 @@
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 import { AssetRecord } from '../wrappers/asset.record'
 
 export const state = {
@@ -18,11 +18,11 @@ export const mutations = {
 
 export const actions = {
   async [types.LOAD_KV_KYC_REQUIRED] ({ commit, getters }) {
-    const { data } = await api().get('/v3/key_values/asset_type:kyc_required')
+    const { data } = await api.get('/v3/key_values/asset_type:kyc_required')
     return data.value.u32
   },
   async [types.LOAD_ASSETS] ({ commit, getters }) {
-    let response = await api().get('/v3/assets')
+    let response = await api.get('/v3/assets')
     let assets = response.data
     while (response.data.length) {
       response = await response.fetchNext()
@@ -32,7 +32,7 @@ export const actions = {
     commit(types.SET_ASSETS, assets.map(a => new AssetRecord(a)))
   },
   async [types.LOAD_BLOB_ID] ({ commit }, data) {
-    const response = await api()
+    const response = await api
       .postWithSignature('/blobs', {
         data: data,
       })
@@ -41,7 +41,7 @@ export const actions = {
   async [types.LOAD_BASE_ASSETS_PAIRS_BY_STATS_QUOTE_ASSET] (
     { commit, getters }
   ) {
-    const { data } = await api().get('/v3/asset_pairs', {
+    const { data } = await api.get('/v3/asset_pairs', {
       filter: {
         quote_asset: getters[types.statsQuoteAsset].code,
       },

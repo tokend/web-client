@@ -29,9 +29,7 @@
               :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
               :asset="item"
               :balance-id="balanceId"
-              :wallet="wallet"
               :account-id="accountId"
-              :config="config"
               :key="item.code"
             />
           </template>
@@ -79,7 +77,6 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import config from '@/config'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters, mapActions } from 'vuex'
@@ -100,9 +97,6 @@ export default {
   data () {
     return {
       CoinpaymentsDepositModule,
-      config: {
-        horizonURL: config.HORIZON_SERVER,
-      },
       isLoaded: false,
       isLoadingFailed: false,
       assets: [],
@@ -114,7 +108,6 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       accountBalances: vuexTypes.accountBalances,
-      wallet: vuexTypes.wallet,
     }),
     balanceId () {
       return this.accountBalances.find(item => {

@@ -35,11 +35,13 @@ for further information about branching and tagging conventions.
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
-- Now using @tokend/js-sdk@1.7.0-x.1
+- Now using @tokend/js-sdk@1.7.0-x.2
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
 - Now loading converted balances on the balances page
 - Now asset value and code formatted with formatMoney
+- Use global api.js in all modules
+- Removed wallet providing to each module
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
 
@@ -60,6 +62,7 @@ for further information about branching and tagging conventions.
 - `event.getModifierState` error on auth page
 - Some typos in EN translations
 - Fixed issue with 0 instead of converted balance on Dashboard
+- Displaying quote asset as currency on the line chart
 
 ## [1.6.0] - 2019-05-09
 #### Changed

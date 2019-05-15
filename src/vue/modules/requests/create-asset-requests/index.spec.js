@@ -6,7 +6,6 @@ import { createAssetRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Api from './_api'
 import * as Config from './_config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -21,7 +20,9 @@ describe('Create asset requests module', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     store = new Vuex.Store({
-      modules: { 'create-asset-requests': createAssetRequestsModule },
+      modules: {
+        'create-asset-requests': createAssetRequestsModule,
+      },
     })
   })
 
@@ -31,25 +32,9 @@ describe('Create asset requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Api, 'initApi')
       sandbox.stub(Config, 'initConfig')
-      sandbox.stub(CreateAssetRequestsModule.methods, 'setAccountId')
       sandbox.stub(CreateAssetRequestsModule.methods, 'loadAssetTypes')
       sandbox.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls initApi function with correct params', async () => {
-      await shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          config: 'SOME_CONFIG',
-          wallet: 'SOME_WALLET',
-        },
-      })
-
-      expect(Api.initApi)
-        .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
     })
 
     it('calls initConfig function with correct params', async () => {
@@ -57,26 +42,12 @@ describe('Create asset requests module', () => {
         localVue,
         store,
         propsData: {
-          config: 'SOME_CONFIG',
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 
       expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly('SOME_CONFIG')
-    })
-
-    it('calls setAccountId method', async () => {
-      await shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
-      })
-
-      expect(CreateAssetRequestsModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly('SOME_ACCOUNT_ID')
+        .to.have.been.calledOnceWithExactly('https://storage.com')
     })
 
     it('calls loadAssetTypes method', async () => {
@@ -84,7 +55,7 @@ describe('Create asset requests module', () => {
         localVue,
         store,
         propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 
@@ -97,7 +68,7 @@ describe('Create asset requests module', () => {
         localVue,
         store,
         propsData: {
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
+          storageUrl: 'https://storage.com',
         },
       })
 

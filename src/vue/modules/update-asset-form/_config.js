@@ -3,7 +3,7 @@ let _config = null
 /**
  * @param {string} storageURL - the URL of the storage server
  */
-export function initConfig ({ storageURL }) {
+export function initConfig (storageURL) {
   if (!storageURL) {
     throw new Error('storageURL is not provided')
   }

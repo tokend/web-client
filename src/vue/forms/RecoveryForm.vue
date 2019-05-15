@@ -74,8 +74,7 @@ import {
   email,
   seed,
 } from '@validators'
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { errors } from '@/js/errors'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -108,7 +107,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletAccountId: vuexTypes.walletAccountId,
     }),
   },
   methods: {
@@ -124,7 +123,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Api.walletsManager.recovery(
+        await walletsManager.recovery(
           this.form.email.toLowerCase(),
           this.form.recoverySeed,
           this.form.password
@@ -152,11 +151,7 @@ export default {
         email: this.form.email,
         password: this.form.password,
       })
-      const accountId = this.wallet.accountId
-      Sdk.sdk.useWallet(this.wallet)
-      Api.useWallet(this.wallet)
-
-      await this.loadAccount(accountId)
+      await this.loadAccount(this.walletAccountId)
       await this.loadKvEntries()
       await this.loadKyc()
     },

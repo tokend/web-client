@@ -7,17 +7,27 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from './_api'
 import * as Config from './_config'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 
 describe('Update asset form module', () => {
   let sandbox
+  let store
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
+    store = new Vuex.Store({
+      modules: {
+        account: {
+          getters: {
+            accountId: () => ('SOME_ACCOUNT_ID'),
+          },
+        },
+      },
+    })
   })
 
   afterEach(() => {
@@ -29,7 +39,7 @@ describe('Update asset form module', () => {
       async () => {
         sandbox.stub(UpdateAssetForm.methods, 'init').resolves()
 
-        await shallowMount(UpdateAssetForm, { localVue })
+        await shallowMount(UpdateAssetForm, { localVue, store })
 
         expect(UpdateAssetForm.methods.init).to.have.been.calledOnce
       }
@@ -42,7 +52,7 @@ describe('Update asset form module', () => {
     beforeEach(() => {
       sandbox.stub(UpdateAssetForm, 'created').resolves()
 
-      wrapper = shallowMount(UpdateAssetForm, { localVue })
+      wrapper = shallowMount(UpdateAssetForm, { localVue, store })
     })
 
     describe('method', () => {
@@ -50,20 +60,16 @@ describe('Update asset form module', () => {
         it('initializes API and config, call load method, and sets isLoaded property to true',
           async () => {
             wrapper.setProps({
-              config: 'SOME_CONFIG',
-              wallet: 'SOME_WALLET',
+              storageUrl: 'https://storage.com',
             })
 
-            sandbox.stub(Api, 'initApi')
             sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadUpdateAssetRecord').resolves()
 
             await wrapper.vm.init()
 
-            expect(Api.initApi)
-              .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
             expect(Config.initConfig)
-              .to.have.been.calledOnceWithExactly('SOME_CONFIG')
+              .to.have.been.calledOnceWithExactly('https://storage.com')
 
             expect(wrapper.vm.loadUpdateAssetRecord).to.have.been.calledOnce
             expect(wrapper.vm.isLoaded).to.be.true
@@ -72,7 +78,7 @@ describe('Update asset form module', () => {
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(Api, 'initApi').throws()
+            sandbox.stub(Config, 'initConfig').throws()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()
@@ -127,7 +133,7 @@ describe('Update asset form module', () => {
             const result = await wrapper.vm.getUpdateRequest()
 
             expect(wrapper.vm.getUpdateAssetRequestById)
-              .to.have.been.calledOnceWithExactly('1')
+              .to.have.been.calledOnceWithExactly('1', 'SOME_ACCOUNT_ID')
             expect(result).to.equal(request)
           }
         )
@@ -142,7 +148,7 @@ describe('Update asset form module', () => {
               assetCode: 'USD',
             })
 
-            const result = await wrapper.vm.getUpdateRequest()
+            const result = await wrapper.vm.getUpdateRequest('SOME_ACCOUNT_ID')
 
             expect(wrapper.vm.getUpdatableRequest)
               .to.have.been.calledOnce

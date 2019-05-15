@@ -23,7 +23,9 @@ describe('Update asset request actions', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     const store = new Vuex.Store({
-      modules: { 'update-asset-requests': updateAssetRequestsModule },
+      modules: {
+        'update-asset-requests': updateAssetRequestsModule,
+      },
     })
 
     wrapper = shallowMount(RequestActions, {

@@ -276,7 +276,7 @@ import {
 } from '@tokend/js-sdk'
 import { MathUtil } from '@/js/utils'
 import config from '@/config'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
@@ -400,7 +400,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await Api.api.postOperations(this.buildPaymentOperation())
+        await api.postOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
@@ -479,7 +479,7 @@ export default {
         ]
 
         const endpoint = `${baseEndpoint}?${params.join('&')}`
-        const { data: fees } = await Api.get(endpoint)
+        const { data: fees } = await api.get(endpoint)
 
         return fees
       } catch (e) {

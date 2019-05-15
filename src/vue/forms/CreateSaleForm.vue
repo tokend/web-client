@@ -38,7 +38,7 @@
                   :disabled="formMixin.isDisabled"
                   v-model="form.saleInformation.baseAsset"
                   key-as-value-text="nameAndCode"
-                  :label="'create-sale-form.base-asset' | globalize"
+                  :label="'create-sale-form.base-asset-lbl' | globalize"
                 />
               </div>
             </div>
