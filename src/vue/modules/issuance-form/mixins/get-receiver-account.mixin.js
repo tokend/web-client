@@ -1,7 +1,7 @@
 import { errors } from '@/js/errors'
 
 import { email } from '@validators'
-import { api } from '../_api'
+import { api } from '@/api'
 
 export default {
   methods: {
@@ -18,7 +18,7 @@ export default {
     },
 
     async getAccountIdByEmail (email) {
-      const { data } = await api().get('/identities', {
+      const { data } = await api.get('/identities', {
         filter: { email },
         page: { limit: 1 },
       })

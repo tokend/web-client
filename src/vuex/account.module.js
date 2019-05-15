@@ -1,6 +1,6 @@
 import _get from 'lodash/get'
 import { vuexTypes } from './types'
-import { Api } from '../api'
+import { api } from '../api'
 import { AssetRecord } from '../js/records/entities/asset.record'
 
 export const state = {
@@ -20,7 +20,7 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
-    const response = await Api.getWithSignature(`/v3/accounts/${accountId}`, {
+    const response = await api.getWithSignature(`/v3/accounts/${accountId}`, {
       include: ['external_system_ids', 'balances', 'balances.state'],
     })
     commit(vuexTypes.SET_ACCOUNT, response.data)
@@ -29,7 +29,7 @@ export const actions = {
   async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
     const accountId = getters[vuexTypes.accountId]
     const endpoint = `/v3/accounts/${accountId}`
-    const { data: account } = await Api.getWithSignature(endpoint, {
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.asset', 'balances.state'],
     })
 

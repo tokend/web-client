@@ -46,11 +46,12 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import DocumentCardViewer from './components/document-card-viewer'
 import DocumentsLoaderMixin from './mixins/documents-loader.mixin'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vueRoutes } from '@/vue-router/routes'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   shouldUpdate: 'update:shouldUpdate',
@@ -66,18 +67,6 @@ export default {
   mixins: [DocumentsLoaderMixin],
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-    * @property config - the config for component to use
-    * @property config.horizonURL - the url of horizon server (without version)
-    */
-    config: {
-      type: Object,
-      required: true,
-    },
     shouldUpdate: {
       type: Boolean,
       default: false,
@@ -92,6 +81,12 @@ export default {
     vueRoutes,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
+
   watch: {
     shouldUpdate: async function (value) {
       if (value) {
@@ -102,7 +97,6 @@ export default {
   },
 
   async created () {
-    initApi(this.wallet, this.config)
     await this.loadDocuments()
   },
 
@@ -112,7 +106,7 @@ export default {
       this.documents = []
 
       try {
-        const accounts = await this.loadPublicKeyEntries(this.wallet.accountId)
+        const accounts = await this.loadPublicKeyEntries(this.accountId)
         this.documents = await this.getDocumentsByAccountIds(accounts)
         this.isLoaded = true
       } catch (e) {

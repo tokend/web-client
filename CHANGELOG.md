@@ -39,6 +39,9 @@ for further information about branching and tagging conventions.
 - Max size of uploaded file changed to 32mb
 - Now loading converted balances on the balances page
 - Now asset value and code formatted with formatMoney
+- Use global api.js in all modules
+- Removed wallet providing to each module.
+- Now using @tokend/js-sdk@1.7.0-x.2
 
 #### Removed
 - Unused methods from `DocumentContainer` class

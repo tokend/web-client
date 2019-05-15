@@ -48,7 +48,7 @@
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
 
@@ -114,7 +114,7 @@ export default {
     async init () {
       this.isMasterAccount = false
 
-      if (this.accountId === Api.networkDetails.adminAccountId) {
+      if (this.accountId === api.networkDetails.adminAccountId) {
         this.isMasterAccount = true
         return
       }
@@ -139,7 +139,7 @@ export default {
       if (this.accountId) {
         return this.accountId
       } else if (this.balanceId) {
-        const { data } = await Api.get(`/v3/balances/${this.balanceId}`)
+        const { data } = await api.get(`/v3/balances/${this.balanceId}`)
         return safeGet(data, 'owner.id')
       } else {
         return ''

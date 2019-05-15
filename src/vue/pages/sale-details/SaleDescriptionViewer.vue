@@ -31,7 +31,7 @@
 import Loader from '@/vue/common/Loader'
 import VueMarkdown from 'vue-markdown'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -65,7 +65,7 @@ export default {
         const blobId = this.sale.description
 
         const endpoint = `/accounts/${accountId}/blobs/${blobId}`
-        const { data: blob } = await Api.getWithSignature(endpoint)
+        const { data: blob } = await api.getWithSignature(endpoint)
 
         this.saleDescription = JSON.parse(blob.value)
         this.isLoaded = true

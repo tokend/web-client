@@ -36,9 +36,6 @@ import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
-
 const EVENTS = {
   shouldUpdate: 'update:shouldUpdate',
 }
@@ -52,18 +49,6 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     shouldUpdate: {
       type: Boolean,
       default: false,
@@ -78,7 +63,6 @@ export default {
 
   computed: {
     ...mapGetters('issuance-explorer', {
-      accountId: types.accountId,
       issuances: types.issuances,
     }),
   },
@@ -93,14 +77,10 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-    this.setAccountId(this.wallet.accountId)
-
     this.initFirstPageLoader()
   },
   methods: {
     ...mapMutations('issuance-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setIssuances: types.SET_ISSUANCES,
       concatIssuances: types.CONCAT_ISSUANCES,
     }),

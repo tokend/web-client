@@ -5,7 +5,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { Asset } from '../../shared/wrappers/asset'
 
-import * as Api from '../_api'
+import { api, useWallet } from '@/api'
 
 describe('Asset explorer module', () => {
   describe('vuex-types', () => {
@@ -35,16 +35,6 @@ describe('Asset explorer module', () => {
   })
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
-
-      expect(state).to.deep.equal({ accountId: 'SOME_ACCOUNT_ID' })
-    })
-
     it('SET_ACCOUNT_BALANCES should properly modify state', () => {
       const state = {
         balances: [],
@@ -116,9 +106,6 @@ describe('Asset explorer module', () => {
   })
 
   describe('actions', () => {
-    const config = {
-      horizonUrl: 'https://test.api.com',
-    }
     const wallet = new Wallet(
       'test@mail.com',
       'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
@@ -131,19 +118,20 @@ describe('Asset explorer module', () => {
     beforeEach(() => {
       store = {
         state: {},
-        getters: {
+        rootGetters: {
           accountId: 'SOME_ACCOUNT_ID',
         },
         commit: sinon.stub(),
         dispatch: sinon.stub(),
       }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('LOAD_ACCOUNT_BALANCES', () => {
       it('properly commit its set of mutations', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves({
+        sinon.stub(api, 'getWithSignature').resolves({
           data: {
             balances: [
               { asset: { id: 'USD' } },
@@ -164,13 +152,13 @@ describe('Asset explorer module', () => {
         expect(store.commit.args)
           .to.deep.equal(Object.entries(expectedMutations))
 
-        Api.api().getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
 
     describe('LOAD_KYC_REQUIRED_ASSET_TYPE', () => {
       it('properly commit its set of mutations', async () => {
-        sinon.stub(Api.api(), 'get').resolves({
+        sinon.stub(api, 'get').resolves({
           data: { value: { u32: 1 } },
         })
 
@@ -183,7 +171,7 @@ describe('Asset explorer module', () => {
         expect(store.commit.args)
           .to.deep.equal(Object.entries(expectedMutations))
 
-        Api.api().get.restore()
+        api.get.restore()
       })
     })
 
@@ -191,7 +179,7 @@ describe('Asset explorer module', () => {
       it('creates ManageBalance operation and calls postOperations method', async () => {
         const assetCode = 'USD'
         sinon.stub(base.Operation, 'manageBalance')
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(api, 'postOperations').resolves()
 
         await actions[types.CREATE_BALANCE](store, assetCode)
 
@@ -201,22 +189,15 @@ describe('Asset explorer module', () => {
             destination: 'SOME_ACCOUNT_ID',
             action: base.xdr.ManageBalanceAction.createUnique(),
           })
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(api.postOperations).to.have.been.calledOnce
 
         base.Operation.manageBalance.restore()
-        Api.api().postOperations.restore()
+        api.postOperations.restore()
       })
     })
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId: 'SOME_ACCOUNT_ID' }
-
-      expect(getters[types.accountId](state))
-        .to.equal('SOME_ACCOUNT_ID')
-    })
-
     it('assets', () => {
       const state = {
         assets: [

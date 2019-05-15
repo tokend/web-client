@@ -117,7 +117,7 @@ import VueMarkdown from 'vue-markdown'
 import FormMixin from '@/vue/mixins/form.mixin'
 import { required, minValue, maxDecimalDigitsCount } from '@validators'
 
-import { initApi, api } from '../_api'
+import { api } from '@/api'
 import { config } from '../_config'
 import { Wallet, base } from '@tokend/js-sdk'
 
@@ -283,7 +283,6 @@ export default {
 
       this.isFormSubmitting = true
       try {
-        await this.initExternalSystemApi()
         await this.sendTransaction()
         this.$emit(EVENTS.submit, this.invoiceRecord)
       } catch (error) {
@@ -291,19 +290,6 @@ export default {
         this.hideConfirmation()
         ErrorHandler.process(error)
       }
-    },
-
-    async initExternalSystemApi () {
-      const newWallet = new Wallet(
-        this.merchantEmail,
-        this.loyaltyAccount.secretSeed,
-        this.loyaltyAccount.accountId
-      )
-      const newConfig = {
-        horizonURL: this.systemIdentifier,
-      }
-
-      await initApi(newWallet, newConfig)
     },
 
     async sendTransaction () {
@@ -319,13 +305,18 @@ export default {
         asset: this.selectedQuoteAsset.code,
         reference: this.reference,
       })
+      const newWallet = new Wallet(
+        this.merchantEmail,
+        this.loyaltyAccount.secretSeed,
+        this.loyaltyAccount.accountId
+      )
 
-      await api().postOperations(operation)
+      await api.withWallet(newWallet).postOperations(operation)
     },
 
     async getQuoteAssetBalanceId () {
       const endpoint = `/v3/accounts/${this.loyaltyAccount.accountId}`
-      const { data: account } = await api().get(endpoint, {
+      const { data: account } = await api.get(endpoint, {
         include: ['balances'],
       })
 
@@ -339,7 +330,7 @@ export default {
       if (this.systemIdentifier === this.merchantSystem) {
         return config.MERCHANT_ACCOUNT_ID
       } else {
-        return api().networkDetails.adminAccountId
+        return api.networkDetails.adminAccountId
       }
     },
   },

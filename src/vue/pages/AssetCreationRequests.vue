@@ -3,8 +3,7 @@
     <submodule-importer
       v-if="getModule().canRenderSubmodule(CreateAssetRequestsModule)"
       :submodule="getModule().getSubmodule(CreateAssetRequestsModule)"
-      :wallet="wallet"
-      :config="config"
+      :storage-url="storageUrl"
       :kyc-required-asset-type="kvAssetTypeKycRequired"
     />
   </div>
@@ -27,15 +26,11 @@ export default {
 
   data: _ => ({
     CreateAssetRequestsModule,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
+    storageUrl: config.FILE_STORAGE,
   }),
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
     }),
   },

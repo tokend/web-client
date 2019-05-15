@@ -9,8 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedAsset.code"
-            :wallet="wallet"
-            :config="config"
+            :storage-url="storageUrl"
             @close="isDrawerShown = false"
           />
         </template>
@@ -21,13 +20,13 @@
           </template>
           <asset-attributes-viewer
             :asset="selectedAsset"
-            :storage-url="config.storageURL"
+            :storage-url="storageUrl"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
 
           <button
-            v-if="selectedAsset.owner === wallet.accountId"
+            v-if="selectedAsset.owner === accountId"
             v-ripple
             class="app__button-raised balance-explorer__update-btn"
             @click="isUpdateMode = true"
@@ -45,7 +44,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :storage-url="config.storageURL"
+              :storage-url="storageUrl"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -83,11 +82,9 @@ import AssetAttributesViewer from '../shared/components/asset-attributes-viewer'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -102,17 +99,8 @@ export default {
     UpdateAssetFormModule,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-    * @property config - the config for component to use
-    * @property config.horizonURL - the url of horizon server (without version)
-    * @property config.storageURL - the url of storage server
-    */
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
     defaultQuoteAsset: {
@@ -134,19 +122,16 @@ export default {
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    this.setAccountId(this.wallet.accountId)
     await this.load()
   },
 
   methods: {
-    ...mapMutations('balance-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('balance-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,

@@ -61,7 +61,7 @@ import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
 import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
@@ -152,7 +152,7 @@ export default {
         const orderBookId = SECONDARY_MARKET_ORDER_BOOK_ID
 
         const endpoint = `/v3/order_books/${baseAsset}:${quoteAsset}:${orderBookId}`
-        const { data: orderBook } = await Api.get(endpoint, {
+        const { data: orderBook } = await api.get(endpoint, {
           include: ['buy_entries', 'sell_entries'],
         })
 

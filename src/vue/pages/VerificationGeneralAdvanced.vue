@@ -1,8 +1,6 @@
 <template>
   <div class="verification-general-2">
     <submodule-importer
-      :config="config"
-      :wallet="wallet"
       :submodule="getModule().getSubmodule(VerificationGeneralFormModule)"
       :blob-id="isFormPopulatable ? kycLatestBlobId : ''"
       :request-id="isRequestUpdatable ? String(kycRequestId) : '0'"
@@ -26,23 +24,16 @@ import { vuexTypes } from '@/vuex'
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { Bus } from '@/js/helpers/event-bus'
 
-import config from '@/config'
-
 export default {
   name: 'verification-general-2',
   components: {
     SubmoduleImporter,
   },
   data: _ => ({
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
     VerificationGeneralFormModule,
   }),
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
-
       kycState: vuexTypes.kycState,
       kycRequestId: vuexTypes.kycRequestId,
       kycLatestBlobId: vuexTypes.kycLatestBlobId,

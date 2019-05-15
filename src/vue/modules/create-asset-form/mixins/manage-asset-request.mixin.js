@@ -2,7 +2,7 @@ import UploadDocumentsMixin from './upload-documents.mixin'
 
 import { base } from '@tokend/js-sdk'
 
-import { api } from '../_api'
+import { api } from '@/api'
 import { config } from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
@@ -53,11 +53,11 @@ export default {
   },
 
   methods: {
-    async getCreateAssetRequestById (id) {
+    async getCreateAssetRequestById (id, accountId) {
       const endpoint = `/v3/create_asset_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details'],
       })
@@ -65,15 +65,15 @@ export default {
       return new CreateAssetRequest(record)
     },
 
-    async submitCreateAssetRequest () {
+    async submitCreateAssetRequest (accountId) {
       const assetDocuments = [
         this.informationStepForm.logo,
         this.advancedStepForm.terms,
       ]
-      await this.uploadDocuments(assetDocuments)
+      await this.uploadDocuments(assetDocuments, accountId)
       const operation =
         base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

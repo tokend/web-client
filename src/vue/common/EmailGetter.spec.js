@@ -4,7 +4,7 @@ import Vue from 'vue'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -34,14 +34,16 @@ describe('EmailGetter\'s', () => {
       sandbox.stub(EmailGetter, 'created').resolves()
       wrapper = await shallowMount(EmailGetter, { localVue })
     })
+    afterEach(() => sandbox.restore())
 
     describe('init()', () => {
       beforeEach(() => {
         sandbox.stub(wrapper.vm, 'loadEmail')
-        sandbox.stub(Api, 'networkDetails').value({
+        sandbox.stub(api, 'networkDetails').value({
           adminAccountId: 'MASTER_ACCOUNT_ID',
         })
       })
+      afterEach(() => sandbox.restore())
 
       it('does not fetch email if provided accountId is master', async () => {
         wrapper.setProps({ accountId: 'MASTER_ACCOUNT_ID' })
@@ -107,6 +109,9 @@ describe('EmailGetter\'s', () => {
     })
 
     describe('getAccountId()', () => {
+      beforeEach(async () => {
+        sandbox.stub(wrapper.vm, 'init')
+      })
       it('simply returns account ID if present', async () => {
         wrapper.setProps({ accountId: 'SOME_ACCOUNT_ID' })
 
@@ -116,7 +121,7 @@ describe('EmailGetter\'s', () => {
       })
 
       it('fetches account id if balance id present but account id is not', async () => {
-        sandbox.stub(Api, 'get')
+        sandbox.stub(api, 'get')
           .withArgs('/v3/balances/SOME_BALANCE_ID')
           .resolves({ data: { owner: { id: 'FETCHED_ACCOUNT_ID' } } })
         wrapper.setProps({ balanceId: 'SOME_BALANCE_ID' })

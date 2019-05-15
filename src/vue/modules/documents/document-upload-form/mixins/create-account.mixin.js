@@ -1,4 +1,4 @@
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { base } from '@tokend/js-sdk'
 
@@ -17,13 +17,13 @@ export default {
   }),
 
   methods: {
-    async createAccount (id) {
+    async createAccount (id, accountId) {
       const operation = base.CreateAccountBuilder.createAccount({
         destination: id,
         roleID: ACCOUNT_ROLE_ID,
         signersData: [{
           roleID: ACCOUNT_ROLE_ID,
-          publicKey: this.wallet.accountId,
+          publicKey: accountId,
           weight: SIGNER_WEIGHT,
           identity: SIGNER_IDENTITY,
           details: {
@@ -33,7 +33,7 @@ export default {
         }],
       })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
 
       this.documentAccountId = id
     },
@@ -49,11 +49,11 @@ export default {
           },
         })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
 
     async createBlob (details) {
-      const { data } = await api().postWithSignature('/blobs', {
+      const { data } = await api.postWithSignature('/blobs', {
         data: {
           type: BLOB_TYPE,
           attributes: {

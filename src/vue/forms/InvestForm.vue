@@ -251,7 +251,7 @@ import config from '@/config'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
@@ -472,13 +472,13 @@ export default {
 
     async loadSaleBaseAsset () {
       const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await Api.get(endpoint)
+      const { data } = await api.get(endpoint)
 
       this.saleBaseAsset = new AssetRecord(data)
     },
 
     async loadCurrentInvestment () {
-      const { data: offers } = await Api.getWithSignature('/v3/offers', {
+      const { data: offers } = await api.getWithSignature('/v3/offers', {
         filter: {
           order_book: this.sale.id,
           owner: this.accountId,
@@ -500,7 +500,7 @@ export default {
         const destAsset = this.sale.defaultQuoteAsset
 
         const endpoint = `/v3/asset_pairs/${sourceAsset}:${destAsset}`
-        const { data: assetPair } = await Api.get(endpoint)
+        const { data: assetPair } = await api.get(endpoint)
 
         this.assetPairPrice = assetPair.price
         this.isAssetPairPriceLoaded = true
@@ -524,7 +524,7 @@ export default {
         }
 
         const operations = await this.getOfferOperations()
-        await Api.api.postOperations(...operations)
+        await api.postOperations(...operations)
         await this.loadBalances()
 
         Bus.success({
@@ -549,7 +549,7 @@ export default {
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
 
-      await Api.api.postOperations(operation)
+      await api.postOperations(operation)
       await this.loadBalances()
     },
 
@@ -584,7 +584,7 @@ export default {
       ]
 
       const endpoint = `${baseEndpoint}?${params.join('&')}`
-      const { data: fee } = await Api.get(endpoint)
+      const { data: fee } = await api.get(endpoint)
 
       return fee
     },
@@ -621,7 +621,7 @@ export default {
             CANCEL_OFFER_FEE
           )
         )
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')

@@ -3,8 +3,7 @@
     <template v-if="getModule().canRenderSubmodule(BalanceExplorerModule)">
       <submodule-importer
         :submodule="getModule().getSubmodule(BalanceExplorerModule)"
-        :config="config"
-        :wallet="wallet"
+        :storage-url="storageUrl"
         :default-quote-asset="defaultQuoteAsset"
       />
     </template>
@@ -15,10 +14,10 @@
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { BalanceExplorerModule } from '@modules/assets/balance-explorer/module'
 
-import config from '../../config'
-
-import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
+
+import config from '@/config'
 
 export default {
   name: 'balances',
@@ -28,14 +27,10 @@ export default {
 
   data: _ => ({
     BalanceExplorerModule,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
+    storageUrl: config.FILE_STORAGE,
   }),
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
   },

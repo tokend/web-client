@@ -57,8 +57,6 @@
           <submodule-importer
             :submodule="getModule().getSubmodule(MovementsHistoryModule)"
             :asset-code="currentAsset"
-            :config="{ horizonURL: config.HORIZON_SERVER }"
-            :wallet="wallet"
             :ref="REFS.movementsHistory"
           />
         </div>
@@ -75,8 +73,6 @@
 
           <submodule-importer
             :submodule="getModule().getSubmodule(IssuanceFormModule)"
-            :config="{ horizonURL: config.HORIZON_SERVER }"
-            :wallet="wallet"
             @issuance-created="showDrawer = false"
           />
         </template>
@@ -106,7 +102,6 @@ import Transfer from '@/vue/forms/TransferForm'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import Loader from '@/vue/common/Loader'
-import config from '@/config'
 import Drawer from '@/vue/common/Drawer'
 import { MovementsHistoryModule } from '@/vue/modules/movements-history/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
@@ -135,7 +130,6 @@ export default {
     transferFormIsShown: false,
     showDrawer: false,
     scale: 'day',
-    config,
     MovementsHistoryModule,
     IssuanceFormModule,
     TransferDrawerPseudoModule,
@@ -146,7 +140,6 @@ export default {
     ...mapGetters([
       vuexTypes.isAccountCorporate,
       vuexTypes.accountBalances,
-      vuexTypes.wallet,
       vuexTypes.defaultQuoteAsset,
     ]),
   },
