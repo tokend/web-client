@@ -105,8 +105,9 @@
           <a
             href="https://github.com/tokend/offline-issuance"
             class="downloads__source-code-link"
-            target="_blank">
+            target="_blank"
             rel="noopener"
+          >
             {{ 'downloads-page.pre-issuance-app-sources-link' | globalize }}
           </a>
         </div>
