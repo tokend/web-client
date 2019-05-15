@@ -83,7 +83,8 @@
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
-      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
+      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -1521,7 +1522,8 @@
       "continue-btn": "Continue",
       "recheck-form-msg": "Please recheck the form before proceeding",
       "transaction-fees-heading": "Transaction fees",
-      "no-transaction-fees-msg": "No fees for this transaction"
+      "no-transaction-fees-msg": "No fees for this transaction",
+      "investment-disabled-title": "Cannot invest in this sale"
     },
     "create-sale-form": {
       "loading-msg": "Loading...",

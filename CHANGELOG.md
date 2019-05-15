@@ -22,6 +22,7 @@ for further information about branching and tagging conventions.
 - Ability to create sale and opportunity in the past
 - Sentry integration
 - Email validation on login form
+- "MessageBox" component for displaying titled messages
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -39,6 +40,8 @@ for further information about branching and tagging conventions.
 - Max size of uploaded file changed to 32mb
 - Now loading converted balances on the balances page
 - Now asset value and code formatted with formatMoney
+- Now displaying disabled investing reason using "MessageBox" component
+- Moved exceeding sale cap message to vuelidate error messages
 
 #### Removed
 - Unused methods from `DocumentContainer` class
