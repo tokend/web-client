@@ -16,6 +16,7 @@
       :is-ticks-shown="showTicks"
       :data="history"
       :precision="common.precision"
+      :currency="quoteAsset"
     />
   </div>
 </template>
