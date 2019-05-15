@@ -1,4 +1,4 @@
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -18,7 +18,7 @@ export default {
     async loadOwnedAssets () {
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await Api.get(endpoint, {
+        const { data: account } = await api.get(endpoint, {
           include: ['balances.asset'],
         })
 

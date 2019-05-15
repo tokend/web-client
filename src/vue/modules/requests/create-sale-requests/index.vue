@@ -8,8 +8,7 @@
           </template>
           <create-sale-form-module
             :request-id="selectedRequest.id"
-            :wallet="wallet"
-            :config="config"
+            :storage-url="storageUrl"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -59,9 +58,6 @@ import RequestViewer from './components/request-viewer'
 
 import CreateSaleFormModule from '@modules/create-sale-form'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
 import { initConfig } from './_config'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
@@ -81,17 +77,8 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
   },
@@ -112,16 +99,12 @@ export default {
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
-
-    this.setAccountId(this.wallet.accountId)
+    initConfig(this.storageUrl)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('create-sale-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

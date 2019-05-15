@@ -44,10 +44,6 @@ import CollectionLoader from '@/vue/common/CollectionLoader'
 import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
 
-import { initApi } from './_api'
-
-import { Wallet } from '@tokend/js-sdk'
-
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
@@ -61,21 +57,6 @@ export default {
     CollectionLoader,
     RequestsTable,
     RequestViewer,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -93,15 +74,11 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('incoming-withdrawal-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

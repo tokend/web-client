@@ -4,7 +4,7 @@ import { Wallet } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import { api, useWallet } from '@/api'
 
 const localVue = createLocalVue()
 
@@ -31,16 +31,14 @@ describe('Load asset types mixin', () => {
           'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
           '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
         )
-        const config = {
-          horizonURL: 'https://test.api.com',
-        }
 
-        Api.initApi(wallet, config)
+        api.useBaseURL('https://test.api.com')
+        useWallet(wallet)
       })
 
-      it('loads kycRequiredAssetType property using Api.get method',
+      it('loads kycRequiredAssetType property using api.get method',
         async () => {
-          sinon.stub(Api.api(), 'get').resolves({
+          sinon.stub(api, 'get').resolves({
             data: {
               value: { u32: 1 },
             },
@@ -48,12 +46,12 @@ describe('Load asset types mixin', () => {
 
           await wrapper.vm.loadKycRequiredAssetType()
 
-          expect(Api.api().get).to.have.been.calledOnceWithExactly(
+          expect(api.get).to.have.been.calledOnceWithExactly(
             '/v3/key_values/asset_type:kyc_required'
           )
           expect(wrapper.vm.kycRequiredAssetType).to.equal(1)
 
-          Api.api().get.restore()
+          api.get.restore()
         })
     })
   })

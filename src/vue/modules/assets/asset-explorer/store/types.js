@@ -1,5 +1,4 @@
 const mutations = {
-  SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
   SET_ACCOUNT_BALANCES: 'SET_ACCOUNT_BALANCES',
   SET_ASSETS: 'SET_ASSETS',
   CONCAT_ASSETS: 'CONCAT_ASSETS',
@@ -16,7 +15,6 @@ const actions = {
 }
 
 const getters = {
-  accountId: 'accountId',
   assets: 'assets',
   kycRequiredAssetType: 'kycRequiredAssetType',
   securityAssetType: 'securityAssetType',

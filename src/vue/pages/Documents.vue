@@ -28,8 +28,7 @@
       </template>
 
       <document-upload-form-module
-        :wallet="wallet"
-        :config="config"
+        :storage-url="storageUrl"
         @submit="(isDrawerShown = false) || (isDocumentUploaded = true)"
       />
     </drawer>
@@ -43,9 +42,6 @@ import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
 
 import DocumentUploadFormModule from '@modules/documents/document-upload-form'
-
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
 
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -62,17 +58,8 @@ export default {
   data: _ => ({
     isDrawerShown: false,
     isDocumentUploaded: false,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
+    storageUrl: config.FILE_STORAGE,
     vueRoutes,
   }),
-
-  computed: {
-    ...mapGetters({
-      wallet: vuexTypes.wallet,
-    }),
-  },
 }
 </script>

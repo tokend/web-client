@@ -11,7 +11,7 @@ import { vuexTypes } from '@/vuex'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 Vue.config.silent = true
 
@@ -127,15 +127,19 @@ describe('Dashboard.AssetSelector component', () => {
       localVue,
     })
   })
+  afterEach(() => { sinon.restore() })
 
   describe('loadAssets()', () => {
     beforeEach(() => {
       sinon.stub(ErrorHandler, 'processWithoutFeedback')
     })
 
+    afterEach(() => { sinon.restore() })
+
     it('is called inside created hook', () => {
       AssetSelector.created.restore()
       sinon.stub(AssetSelector.methods, 'loadAssets')
+      sinon.stub(AssetSelector.methods, 'loadBalances')
 
       shallowMount(AssetSelector, {
         store,
@@ -147,21 +151,22 @@ describe('Dashboard.AssetSelector component', () => {
 
     it('works correctly', async () => {
       const expectAssets = { data: { balances: [] } }
-      sinon.stub(Api, 'get').resolves(expectAssets)
+      sinon.stub(api, 'get').resolves(expectAssets)
+      sinon.stub(AssetSelector.methods, 'loadBalances')
 
       await wrapper.vm.loadAssets()
 
       expect(wrapper.vm.assets).to.deep.equal(expectAssets.data.balances)
-      expect(Api.get.calledOnce).to.be.true
+      expect(api.get.calledOnce).to.be.true
       expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.false
     })
 
     it('handle errors', async () => {
-      sinon.stub(Api, 'get').rejects()
+      sinon.stub(api, 'get').rejects()
 
       await wrapper.vm.loadAssets()
 
-      expect(Api.get.calledOnce).to.be.true
+      expect(api.get.calledOnce).to.be.true
       expect(wrapper.vm.assets).to.deep.equal([])
       expect(ErrorHandler.processWithoutFeedback.calledOnce).to.be.true
     })

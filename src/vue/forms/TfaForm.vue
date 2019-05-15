@@ -86,7 +86,7 @@ import { required, password } from '@validators'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { Api } from '@/api'
+import { api, factorsManager } from '@/api'
 import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
@@ -152,16 +152,16 @@ export default {
       try {
         await this.deleteTotpFactor()
 
-        await Api.api.postWithSignature(endpoint, {
+        await api.postWithSignature(endpoint, {
           data: { type: 'totp' },
         })
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Api.factorsManager.verifyPasswordFactor(
+            await factorsManager.verifyPasswordFactor(
               error, this.form.password
             )
-            const { data } = await Api.api.postWithSignature(endpoint, {
+            const { data } = await api.postWithSignature(endpoint, {
               data: { type: 'totp' },
             })
             this.factor = data
@@ -179,12 +179,12 @@ export default {
           const factorId = this.totpFactors[0].id
           const endpoint = `/wallets/${this.walletId}/factors/${factorId}`
 
-          await Api.api.deleteWithSignature(endpoint)
+          await api.deleteWithSignature(endpoint)
         }
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Api.factorsManager.verifyPasswordFactorAndRetry(error,
+            await factorsManager.verifyPasswordFactorAndRetry(error,
               this.form.password
             )
             Bus.success('tfa-form.tfa-disabled-msg')
@@ -207,7 +207,7 @@ export default {
       } catch (error) {
         if (error instanceof errors.TFARequiredError) {
           try {
-            await Api.factorsManager.verifyTotpFactor(error, this.form.code)
+            await factorsManager.verifyTotpFactor(error, this.form.code)
             await this.changeFactorPriority()
 
             this.$emit(EVENTS.update)
@@ -223,7 +223,7 @@ export default {
     },
     async changeFactorPriority () {
       const endpoint = `/wallets/${this.walletId}/factors/${this.factor.id}`
-      await Api.api.patchWithSignature(endpoint, {
+      await api.patchWithSignature(endpoint, {
         data: { attributes: { priority: ENABLED_FACTOR_PRIORITY } },
       })
     },

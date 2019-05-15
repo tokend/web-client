@@ -19,8 +19,15 @@ for further information about branching and tagging conventions.
   - grayscaled disabled state
   - upload icons
 - `initSync()` method to Api class
+- Balances on passport dropdown
+- Tooltip with 'Copied' message for email-getter and clipboard-field
+- Add 'Latest activity' label for 'Movements' history
+- Deposit method field
+- Readonly field for total field by offer create
+- Ability to create sale and opportunity in the past
 - Sentry integration
 - Email validation on login form
+- "MessageBox" component for displaying titled messages
 - Pre-issuance guide
 
 #### Changed
@@ -34,12 +41,23 @@ for further information about branching and tagging conventions.
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
-- Now using @tokend/js-sdk@1.7.0-x.1
+- Now using @tokend/js-sdk@1.7.0-x.2
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
+- Show only latest 10 latest operations on 'Movements' page
+- Merge 'Requires verification' and 'Is security (requires accreditation for US residents)'
+  in 'Deposit type' field
+- New displayed 'no-data' message for Movements, Fees and Limits tables
+- Now loading converted balances on the balances page
+- Now asset value and code formatted with formatMoney
+- Use global api.js in all modules
+- Removed wallet providing to each module
+- Now displaying disabled investing reason using "MessageBox" component
+- Moved exceeding sale cap message to vuelidate error messages
 
 #### Removed
 - Unused methods from `DocumentContainer` class
+- More button for 'Movements' history
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
@@ -53,6 +71,22 @@ for further information about branching and tagging conventions.
 - Uploading documents on general verification form
 - Disabled state for account type selector on verification page
 - `event.getModifierState` error on auth page
+- Some typos in EN translations
+- Fixed issue with 0 instead of converted balance on Dashboard
+- Displaying quote asset as currency on the line chart
+
+## [1.6.0] - 2019-05-09
+#### Changed
+- Enabled updating of pending and approved corporate kyc requests
+- "Submit" btn on verification changed to "Create request" or "Update", depends
+  on whether the request updatable or not
+
+#### Fixed
+- Fetching of investment fees in investing forms
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0
 
 ## [1.6.0-rc.0] - 2019-05-02
 #### Added
@@ -460,10 +494,13 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Not handling 'manage-asset-pair' operation details
+- Fixed bug when user invested in sales but in history
+  instead of 'Investment' was 'Offer'
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...1.6.0
 [1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1

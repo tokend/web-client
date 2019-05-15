@@ -13,6 +13,8 @@ export class Asset {
 
     this.logo = safeGet(record, 'details.logo')
     this.logoKey = safeGet(record, 'details.logo.key')
+    this.isCoinpayments = Boolean(safeGet(record, 'details.isCoinpayments'))
+    this.externalSystemType = safeGet(record, 'details.externalSystemType') || null
 
     this.terms = safeGet(record, 'details.terms')
     this.termsKey = safeGet(record, 'details.terms.key')

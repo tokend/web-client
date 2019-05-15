@@ -2,6 +2,9 @@
   <div class="movements-history">
     <template v-if="isInitialized && assetCode">
       <template v-if="isMovementsLoaded">
+        <h2 class="app__table-title" v-if="latestActivity">
+          {{ 'movements-history.latest-activity' | globalize }}
+        </h2>
         <div class="movements-history__list-wrp">
           <movements-table :movements="movements" />
         </div>
@@ -18,7 +21,7 @@
       <div class="movements-history__collection-loader-wrp">
         <collection-loader
           v-if="!isMovementsLoadFailed"
-          v-show="isMovementsLoaded"
+          v-show="isMovementsLoaded && !latestActivity"
           :first-page-loader="firstPageLoader"
           @first-page-load="setMovements"
           @next-page-load="concatMovements"
@@ -42,9 +45,6 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { types } from './store/types'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
-
 const REFS = {
   collectionLoader: 'collection-loader',
 }
@@ -57,21 +57,13 @@ export default {
     CollectionLoader,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     assetCode: {
       type: String,
       default: '',
+    },
+    latestActivity: {
+      type: Boolean,
+      default: false,
     },
   },
   data: _ => ({
@@ -93,16 +85,12 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     this.isInitialized = true
   },
   methods: {
     ...mapMutations('movements-history', {
       setMovements: types.SET_MOVEMENTS,
-      setAccountId: types.SET_ACCOUNT_ID,
       concatMovements: types.CONCAT_MOVEMENTS,
     }),
     ...mapActions('movements-history', {

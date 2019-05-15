@@ -23,6 +23,7 @@ $z-drawer-backdrop: -1;
 $z-hint-wrapper-box: 100;
 $z-sidebar-backdrop: 115;
 $z-sidebar: 120;
+$z-tooltip-wrapper: 1;
 
 $_athensGray: #e9eaed;
 $_eastBay: #3a4180;
@@ -365,3 +366,8 @@ $col-comment-content-gradient-to: $_gray;
 // hint-wrapepr
 $col-hint-wrapper-box-bg: rgba($_black, 0.9);
 $col-hint-wrapper-box-text: $_concrete;
+
+// tooltip-wrapper
+$col-tooltip-wrapper-msg-bg: rgba($_black, 0.9);
+$col-tooltip-wrapper-msg-text: $_white;
+$col-tooltip-wrapper-border-style: transparent transparent $col-tooltip-wrapper-msg-bg transparent;

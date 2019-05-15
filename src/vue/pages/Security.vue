@@ -25,7 +25,7 @@
           {{ 'security-page.account-id-title' | globalize }}
         </template>
         <key-viewer
-          :value="wallet.accountId"
+          :value="accountId"
           :label="'security-page.account-address-label' | globalize"
         />
       </template>
@@ -39,7 +39,7 @@
             {{ 'security-page.secret-seed-desc' | globalize }}
           </p>
           <clipboard-field
-            :value="wallet.secretSeed"
+            :value="walletSeed"
             :label="'security-page.secret-seed-title' | globalize"
           />
         </div>
@@ -185,7 +185,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletSeed: vuexTypes.walletSeed,
+      accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
   },

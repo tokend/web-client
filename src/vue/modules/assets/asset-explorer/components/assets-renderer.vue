@@ -9,8 +9,7 @@
 
           <update-asset-form-module
             :asset-code="selectedAsset.code"
-            :wallet="wallet"
-            :config="config"
+            :storage-url="storageUrl"
             @close="isDrawerShown = false"
           />
         </template>
@@ -22,7 +21,7 @@
 
           <asset-attributes-viewer
             :asset="selectedAsset"
-            :storage-url="config.storageURL"
+            :storage-url="storageUrl"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
@@ -52,7 +51,7 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :storage-url="config.storageURL"
+              :storage-url="storageUrl"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -102,8 +101,6 @@ import AssetActions from './asset-actions'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { types } from '../store/types'
 
@@ -125,12 +122,8 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    config: {
-      type: Object,
+    storageUrl: {
+      type: String,
       required: true,
     },
     isAccountUnverified: {
