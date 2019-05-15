@@ -68,7 +68,7 @@
           <router-link
             :to="vueRoutes.preIssuanceGuide"
           >
-            {{ 'downloads-page.learn-more' | globalize }}
+            {{ 'downloads-page.pre-issuance-learn-more-link' | globalize }}
           </router-link>
         </p>
         <div class="downloads__operation-systems-wrapper">
@@ -106,7 +106,8 @@
             href="https://github.com/tokend/offline-issuance"
             class="downloads__source-code-link"
             target="_blank">
-            {{ 'downloads-page.source-code' | globalize }}
+            rel="noopener"
+            {{ 'downloads-page.pre-issuance-app-sources-link' | globalize }}
           </a>
         </div>
 

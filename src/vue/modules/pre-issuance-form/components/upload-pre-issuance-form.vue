@@ -8,7 +8,7 @@
       :to="vueRoutes.preIssuanceGuide"
       target="_blank"
     >
-      {{ 'pre-issuance-form.learn-more-about-pre-issuance' | globalize }}
+      {{ 'pre-issuance-form.pre-issuance-guide-link' | globalize }}
     </router-link>
     <div class="app__form-row">
       <div class="app__form-field">

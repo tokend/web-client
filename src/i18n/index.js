@@ -11,7 +11,7 @@ function buildI18n (language, ...localesJson) {
       result = _merge(
         require(`./en`),
         require(`./en.terms`),
-        require(`./en.preIssuanceGuide`),
+        require(`./en.pre-issuance-guide`),
         ...localesJson
       )
       break

@@ -17,7 +17,7 @@
           :to="vueRoutes.preIssuanceGuide"
           target="_blank"
         >
-          {{ 'create-asset-form.learn-more-about-pre-issuance' | globalize }}
+          {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
         </router-link>
       </div>
     </div>
