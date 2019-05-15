@@ -39,17 +39,18 @@ export default {
 @import '~@scss/variables.scss';
 @import '~@scss/mixins.scss';
 
+// TODO: refactoring variables name
 $asset-card-header-height: 8.5rem;
 $asset-card-margin: 0.75rem;
-
 $media-desktop: 1130px;
 $media-small-desktop: 960px;
 
-// width in percentage
+/* stylelint-disable function-calc-no-invalid */
 @mixin asset-card-width ($width) {
-  flex: 0 1 calc(#{$width}% - (0.75rem * 2));
-  max-width: calc(#{$width}% - (0.75rem * 2));
+  flex: 0 1 calc(#{$width}% - (#{$asset-card-margin} * 2));
+  max-width: calc(#{$width}% - (#{$asset-card-margin} * 2));
 }
+/* stylelint-enable function-calc-no-invalid */
 
 .skeleton-loader {
   z-index: $z-skeleton-loader;
