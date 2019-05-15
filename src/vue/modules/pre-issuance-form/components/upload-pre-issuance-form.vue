@@ -3,6 +3,13 @@
     class="app__form upload-pre-issuance-form"
     @submit.prevent="isFormValid() && showConfirmation()"
   >
+    <router-link
+      class="upload-pre-issuance-form__pre-issuance-guide-link"
+      :to="vueRoutes.preIssuanceGuide"
+      target="_blank"
+    >
+      {{ 'pre-issuance-form.pre-issuance-guide-link' | globalize }}
+    </router-link>
     <div class="app__form-row">
       <div class="app__form-field">
         <file-field
@@ -54,6 +61,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetNotOwnedError } from '../_errors'
 
 import { documentContainer } from '@validators'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
@@ -71,6 +79,7 @@ export default {
   data: _ => ({
     preIssuanceDocument: null,
     isFormSubmitting: false,
+    vueRoutes,
   }),
 
   validations: {

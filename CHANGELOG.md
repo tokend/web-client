@@ -28,6 +28,7 @@ for further information about branching and tagging conventions.
 - Sentry integration
 - Email validation on login form
 - "MessageBox" component for displaying titled messages
+- Pre-issuance guide
 
 #### Changed
 - Updated offer creating, updating drawers
