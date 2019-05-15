@@ -7,7 +7,7 @@
         <div class="asset-selector__select">
           <skeleton-loader
             v-if="imgUrl === null || !currentAsset ||
-              tokens.length === 0"
+              assets.length === 0"
             template="bigIcon"
             class="asset-selector__select-picture"
           />
@@ -27,7 +27,7 @@
           <div>
             <skeleton-loader
               v-if="imgUrl === null || !currentAsset ||
-                tokens.length === 0"
+                assets.length === 0"
               class="app__select"
               template="bigString"
             />
@@ -85,7 +85,7 @@
           </div>
         </div>
       </template>
-      <template v-if="tokens.length && !currentAsset">
+      <template v-if="assets.length && !currentAsset">
         <no-data-message
           :title="'dashboard.no-assets-in-your-wallet' | globalize"
           :message="'dashboard.here-will-be-the-assets' | globalize"
