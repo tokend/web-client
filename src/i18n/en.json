@@ -1406,8 +1406,7 @@
     },
     "offer-manager": {
       "success-creating": "Order successfully created",
-      "success-cancelling": "Order successfully cancelled",
-      "error-operation-cross-self": "Current order crosses your existing order"
+      "success-cancelling": "Order successfully cancelled"
     },
     "redeem-form": {
       "title": "Redeem",
@@ -1432,9 +1431,11 @@
       "issued-assets-msg": "Issued {{value}}"
     },
     "offer-creation-form": {
-      "price-per-asset": "Price per {{asset}}",
-      "amount": "Amount {{asset}}",
-      "total": "Total {{asset}}",
+      "price-per-asset": "Price per 1 {{asset}}",
+      "amount": "Amount of {{asset}}",
+      "total": "Total amount",
+      "asset-to-buy-lbl": "Asset to buy",
+      "asset-to-sell-lbl": "Asset to sell",
       "submit-buy-btn": "Buy",
       "submit-sell-btn": "Sell"
     },
