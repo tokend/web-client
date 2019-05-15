@@ -42,6 +42,7 @@ for further information about branching and tagging conventions.
 - Now asset value and code formatted with formatMoney
 - Use global api.js in all modules
 - Removed wallet transfer to each module.
+- Version `@tokend/js-sdk` to 1.7.0-x.2
 
 #### Removed
 - Unused methods from `DocumentContainer` class
