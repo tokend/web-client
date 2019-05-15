@@ -58,6 +58,7 @@ for further information about branching and tagging conventions.
 - `event.getModifierState` error on auth page
 - Some typos in EN translations
 - Fixed issue with 0 instead of converted balance on Dashboard
+- Displaying quote asset as currency on the line chart
 
 ## [1.6.0] - 2019-05-09
 #### Changed
