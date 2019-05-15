@@ -27,6 +27,7 @@ for further information about branching and tagging conventions.
 - Ability to create sale and opportunity in the past
 - Sentry integration
 - Email validation on login form
+- "MessageBox" component for displaying titled messages
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -39,7 +40,7 @@ for further information about branching and tagging conventions.
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
-- Now using @tokend/js-sdk@1.7.0-x.1
+- Now using @tokend/js-sdk@1.7.0-x.2
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
 - Show only latest 10 latest operations on 'Movements' page
@@ -49,8 +50,9 @@ for further information about branching and tagging conventions.
 - Now loading converted balances on the balances page
 - Now asset value and code formatted with formatMoney
 - Use global api.js in all modules
-- Removed wallet providing to each module.
-- Now using @tokend/js-sdk@1.7.0-x.2
+- Removed wallet providing to each module
+- Now displaying disabled investing reason using "MessageBox" component
+- Moved exceeding sale cap message to vuelidate error messages
 
 #### Removed
 - Unused methods from `DocumentContainer` class

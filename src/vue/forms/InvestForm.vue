@@ -8,6 +8,13 @@
         class="app__form"
         @submit.prevent="processInvestment"
       >
+        <message-box
+          v-if="!canUpdateOffer"
+          type="danger"
+          :title="'invest-form.investment-disabled-title' | globalize"
+          :message="investmentDisabledMessageId | globalize"
+        />
+
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
@@ -42,7 +49,14 @@
               })"
               :error-message="getFieldErrorMessage(
                 'form.amount',
-                { from: MIN_AMOUNT, to: availableAmount.value }
+                {
+                  from: MIN_AMOUNT,
+                  to: availableAmount.value,
+                  saleCap: {
+                    value: investedCap,
+                    currency: sale.defaultQuoteAsset
+                  }
+                }
               )"
               :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
@@ -80,36 +94,6 @@
             }
           })"
         />
-
-        <p class="app__form-field-description">
-          <template v-if="sale.owner === accountId">
-            {{ 'invest-form.sale-owner-msg' | globalize }}
-          </template>
-
-          <template v-else-if="sale.isClosed">
-            {{ 'invest-form.closed-sale-msg' | globalize }}
-          </template>
-
-          <template v-else-if="sale.isUpcoming">
-            {{ 'invest-form.upcoming-sale-msg' | globalize }}
-          </template>
-
-          <template v-else-if="sale.isCanceled">
-            {{ 'invest-form.canceled-sale-msg' | globalize }}
-          </template>
-
-          <template v-else-if="isCapExceeded">
-            <vue-markdown
-              class="invest-form__amount-hint"
-              :source="'invest-form.cap-exceeded-msg' | globalize({
-                amount: {
-                  value: investedCap,
-                  currency: sale.defaultQuoteAsset
-                }
-              })"
-            />
-          </template>
-        </p>
       </form>
 
       <transition name="app__fade-in">
@@ -191,7 +175,7 @@
             v-if="view.mode === VIEW_MODES.submit"
             click="submit"
             class="app__button-raised"
-            :disabled="formMixin.isDisabled"
+            :disabled="formMixin.isDisabled || !canSubmit"
             form="invest-form">
             {{ 'invest-form.continue-btn' | globalize }}
           </button>
@@ -245,6 +229,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import MessageBox from '@/vue/common/MessageBox'
 
 import config from '@/config'
 
@@ -284,6 +269,7 @@ export default {
     VueMarkdown,
     Loader,
     NoDataMessage,
+    MessageBox,
   },
   mixins: [FormMixin],
 
@@ -324,6 +310,7 @@ export default {
         amount: {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          noMoreThanSaleCap: _ => !this.isCapExceeded,
         },
       },
     }
@@ -430,6 +417,22 @@ export default {
       const fees = MathUtil
         .add(this.fees.fixed, this.fees.percent)
       return MathUtil.add(fees, this.form.amount)
+    },
+
+    investmentDisabledMessageId () {
+      let messageId
+
+      if (this.sale.owner === this.accountId) {
+        messageId = 'invest-form.sale-owner-msg'
+      } else if (this.sale.isClosed) {
+        messageId = 'invest-form.closed-sale-msg'
+      } else if (this.sale.isUpcoming) {
+        messageId = 'invest-form.upcoming-sale-msg'
+      } else if (this.sale.isCanceled) {
+        messageId = 'invest-form.canceled-sale-msg'
+      }
+
+      return messageId
     },
   },
 
@@ -657,6 +660,7 @@ export default {
 
 <style lang="scss">
 @import './app-form';
+
 // Disabled because vue-markdown
 /* stylelint-disable selector-nested-pattern */
 .invest-form__amount-hint {
