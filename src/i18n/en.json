@@ -715,7 +715,9 @@
       "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "sign-out-btn": "Sign out"
+      "sign-out-btn": "Sign out",
+      "balances-subheading": "Balances",
+      "show-more-link": "Show more"
     },
     "sidebar": {
       "section-explore": "Explorations",
@@ -880,8 +882,9 @@
       "initializing-msg": "Initializing…",
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",
+      "latest-activity": "Latest activity",
       "no-movements-title": "No movements history",
-      "no-movements-msg": "Nothing happened with your balances yet",
+      "no-movements-msg": "No items here yet",
       "type-lbl": "Type",
       "operation-lbl": "Operation",
       "date-lbl": "Date",
@@ -1283,9 +1286,16 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "deposit-method-title": "Deposit method",
       "requires-kyc-title": "Requires KYC",
       "present-msg": "Yes",
       "absent-msg": "No",
+      "default-msg": "Default",
+      "coinpayments-msg": "Coinpayments",
+      "non-depositable-msg": "Non-depositable",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
+      "security-asset-title": "Is security (requires accreditation for US residents)",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
@@ -1706,7 +1716,8 @@
     },
     "email-getter": {
       "loading-msg": "Loading…",
-      "master-account": "Master"
+      "master-account": "Master",
+      "copied": "Copied"
     },
     "downloads-page": {
       "go-back-btn": "Go back",
@@ -1761,10 +1772,16 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "deposit-method-title": "Deposit method",
       "verification-required-title": "Requires verification",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
       "security-asset-title": "Is security (requires accreditation for US residents)",
       "present-msg": "Yes",
       "absent-msg": "No",
+      "default-msg": "Default",
+      "coinpayments-msg": "Coinpayments",
+      "non-depositable-msg": "Non-depositable",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
@@ -1909,6 +1926,9 @@
     },
     "warning-banner": {
       "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
+    },
+    "clipboard-field": {
+      "copied": "Copied"
     }
   }
 }

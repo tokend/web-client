@@ -28,7 +28,6 @@
                   }}
                 </p>
               </div>
-
               <div class="withdrawal__form-field-description">
                 <p>
                   <span>{{ 'withdrawal-form.reviewer' | globalize }}</span>
