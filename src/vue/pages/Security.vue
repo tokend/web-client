@@ -54,7 +54,7 @@
             {{ 'security-page.network-passphrase-desc' | globalize }}
           </p>
           <clipboard-field
-            :value="Api.networkDetails.networkPassphrase"
+            :value="api.networkDetails.networkPassphrase"
             :label="'security-page.network-passphrase-title' | globalize"
           />
         </div>
@@ -144,7 +144,7 @@ import TfaForm from '@/vue/forms/TfaForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -180,7 +180,7 @@ export default {
     ShowSeedPseudoModule,
     ChangePasswordPseudoModule,
     ShowNetworkPassphrasePseudoModule,
-    Api,
+    api,
   }),
 
   computed: {
