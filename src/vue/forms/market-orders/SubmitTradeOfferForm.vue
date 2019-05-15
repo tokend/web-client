@@ -231,12 +231,12 @@ export default {
     await this.loadBalances()
     this.form = {
       baseAmount: this.offer.baseAmount,
-      baseAssetCode: this.offer.baseAssetCode,
+      baseAssetCode: this.offer.baseAsset.id,
       offerId: this.offer.offerId,
       ownerId: this.offer.ownerId,
       price: this.offer.price,
       quoteAmount: this.offer.quoteAmount,
-      quoteAssetCode: this.offer.quoteAssetCode,
+      quoteAssetCode: this.offer.quoteAsset.id,
       quoteBalanceId: this.offer.quoteBalanceId,
     }
   },
@@ -299,7 +299,7 @@ export default {
         baseAmount: this.form.baseAmount,
         quoteAmount: this.form.quoteAmount,
         price: this.form.price,
-        isBuy: !this.form.isBuy,
+        isBuy: !this.isBuy,
       }
     },
     getCancelOfferOpts () {

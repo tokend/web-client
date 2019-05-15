@@ -14,6 +14,7 @@
         />
       </div>
     </div>
+
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
@@ -67,7 +68,18 @@
       <div class="app__form-field">
         <readonly-field
           :label="'offer-creation-form.total' | globalize"
-          :value="totalValue | formatMoney"
+          :value="{
+            value: totalValue,
+            currency: assetPair.quote,
+          } | formatMoney"
+          :error-message="getFieldErrorMessage(
+            'totalValue',
+            {
+              available: quoteAssetBalance,
+              from: config.MIN_AMOUNT,
+              to: config.MAX_AMOUNT,
+            }
+          )"
         />
       </div>
     </div>
@@ -106,12 +118,14 @@
 </template>
 
 <script>
+import ReadonlyField from '@/vue/fields/ReadonlyField'
+
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
-import ReadonlyField from '@/vue/fields/ReadonlyField'
-import FormConfirmation from '@/vue/common/FormConfirmation'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { MathUtil } from '@/js/utils/math.util'
+
 import config from '@/config'
 
 import {
@@ -132,13 +146,13 @@ const EVENTS = {
 export default {
   name: 'create-trade-offer-form',
   components: {
-    FormConfirmation,
     ReadonlyField,
   },
   mixins: [
     FormMixin,
     OfferManagerMixin,
   ],
+
   props: {
     assetPair: {
       type: Object,
@@ -149,6 +163,7 @@ export default {
       default: false,
     },
   },
+
   data: () => ({
     form: {
       price: '',
@@ -159,6 +174,7 @@ export default {
     isOfferCreating: false,
     isLoadedInfo: false,
   }),
+
   computed: {
     ...mapGetters([
       vuexTypes.accountBalances,
@@ -169,25 +185,26 @@ export default {
         .map(balance => balance.asset)
         .filter(asset => asset !== this.assetPair.quote)
     },
+
     baseAssetBalance () {
       return (this.accountBalances
         .find(balance => balance.asset === this.form.asset) || {}).balance
     },
+
     quoteAssetBalance () {
       return (this.accountBalances
         .find(balance => balance.asset === this.assetPair.quote) || {}).balance
     },
+
     formQuoteAmount () {
       return MathUtil.multiply(this.form.price, this.form.amount)
     },
+
     totalValue () {
-      return +this.formQuoteAmount
-        ? {
-          value: this.formQuoteAmount,
-          currency: this.assetPair.quote,
-        } : ''
+      return +this.formQuoteAmount ? this.formQuoteAmount : ''
     },
   },
+
   validations () {
     return {
       form: {
@@ -223,6 +240,7 @@ export default {
       },
     }
   },
+
   async created () {
     try {
       await this.loadBalances()
@@ -232,10 +250,12 @@ export default {
       ErrorHandler.processWithoutFeedback(error)
     }
   },
+
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
     async submit () {
       this.disableForm()
       this.isOfferCreating = true
@@ -251,6 +271,7 @@ export default {
       this.hideConfirmation()
       this.$emit(EVENTS.closeDrawer)
     },
+
     getCreateOfferOpts () {
       return {
         pair: {

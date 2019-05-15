@@ -246,13 +246,13 @@ export default {
       await this.loadBalances()
       this.form = {
         baseAmount: this.offer.baseAmount,
-        baseAssetCode: this.offer.baseAssetCode,
-        offerId: this.offer.offerId,
-        ownerId: this.offer.ownerId,
+        baseAssetCode: this.offer.baseAsset.id,
+        offerId: this.offer.id,
+        ownerId: this.offer.owner.id,
         price: this.offer.price,
         quoteAmount: this.offer.quoteAmount,
-        quoteAssetCode: this.offer.quoteAssetCode,
-        quoteBalanceId: this.offer.quoteBalanceId,
+        quoteAssetCode: this.offer.quoteAsset.id,
+        quoteBalanceId: this.offer.quoteBalance.id,
       }
       this.isLoadedInfo = true
     } catch (error) {
@@ -345,8 +345,8 @@ export default {
     getCancelOfferOpts () {
       return {
         price: this.form.price,
-        baseBalance: this.baseAssetBalance.balanceId,
-        quoteBalance: this.quoteAssetBalance.balanceId,
+        baseBalance: this.baseAssetBalance.id,
+        quoteBalance: this.quoteAssetBalance.id,
         offerId: this.form.offerId,
       }
     },
