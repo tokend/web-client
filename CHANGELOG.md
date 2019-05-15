@@ -47,6 +47,7 @@ for further information about branching and tagging conventions.
   in 'Deposit type' field
 - New displayed 'no-data' message for Movements, Fees and Limits tables
 - Now loading converted balances on the balances page
+- Now asset value and code formatted with formatMoney
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -64,6 +65,8 @@ for further information about branching and tagging conventions.
 - Uploading documents on general verification form
 - Disabled state for account type selector on verification page
 - `event.getModifierState` error on auth page
+- Some typos in EN translations
+- Fixed issue with 0 instead of converted balance on Dashboard
 
 ## [1.6.0] - 2019-05-09
 #### Changed
