@@ -15,13 +15,27 @@
       :class="{
         'input-field__input--autofill-white': whiteAutofill
       }"
-      :type="type"
+      :type="inputType"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
       @focus="onFocus"
       @blur="onBlur"
     >
+
+    <span
+      v-if="isVisibleBtn"
+      class="input-field__password-toggling"
+      :class="{
+        'input-field__password-toggling--autofill-white': whiteAutofill
+      }"
+      @click="togglePasswordDisplay"
+    >
+      <i
+        class="mdi input-field__password-toggling-icon"
+        :class="isShownPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+      />
+    </span>
 
     <span class="input-field__label">
       {{ label }}
@@ -56,7 +70,10 @@ export default {
   },
 
   data: () => ({
+    inputType: '',
     isCapsLockOn: false,
+    isVisibleBtn: false,
+    isShownPassword: false,
   }),
 
   computed: {
@@ -68,6 +85,11 @@ export default {
         },
       }
     },
+  },
+
+  created () {
+    this.setInputType()
+    this.displayPasswordToggleButton()
   },
 
   methods: {
@@ -101,6 +123,21 @@ export default {
        */
       this.isCapsLockOn = event.getModifierState &&
         event.getModifierState('CapsLock')
+    },
+    togglePasswordDisplay () {
+      if (this.inputType === 'password') {
+        this.inputType = 'text'
+        this.isShownPassword = true
+      } else if (this.inputType === 'text') {
+        this.inputType = 'password'
+        this.isShownPassword = false
+      }
+    },
+    displayPasswordToggleButton () {
+      this.isVisibleBtn = this.type === 'password' ? 1 : 0
+    },
+    setInputType () {
+      this.inputType = this.type
     },
   },
 }
@@ -218,6 +255,23 @@ export default {
   .input-field--disabled > & {
     @include readonly-material-border($field-color-unfocused);
   }
+}
+
+.input-field__password-toggling {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 1.5rem 1rem 0;
+  background-color: $col-app-content-background;
+  cursor: pointer;
+
+  &--autofill-white {
+    background-color: $col-block-bg;
+  }
+}
+
+.input-field__password-toggling-icon {
+  font-size: 2.1rem;
 }
 
 .input-field__label {
