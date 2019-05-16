@@ -27,6 +27,24 @@ export default {
 
     /**
      * @param {object} opts
+     * @param {object} opts.baseBalance - balance id of the base asset
+     * @param {string} opts.quoteBalance - balance id of the quote asset
+     * @param {string} opts.offerId - offer id
+     * @param {string} opts.price - offer price
+     * @returns {Promise<void>}
+     */
+    async cancelOffer (opts) {
+      const operation = base.ManageOfferBuilder.cancelOffer({
+        ...opts,
+        offerID: String(opts.offerId),
+        price: opts.price,
+        orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
+      })
+      await api.postOperations(operation)
+    },
+
+    /**
+     * @param {object} opts
      * @param {object} opts.pair - pair to create offer for
      * @param {string} opts.pair.base
      * @param {string} opts.pair.quote
@@ -37,38 +55,9 @@ export default {
      * @returns {Promise<void>}
      */
     async createOffer (opts) {
-      if (!this.getAssetDetails(opts.pair.base)) {
-        const operation = base.Operation.manageBalance({
-          destination: this.accountId,
-          asset: opts.pair.base,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-        await this.loadBalances()
-      }
+      await this.createAssetPairBalances(opts.pair)
 
-      if (!this.getAssetDetails(opts.pair.quote)) {
-        const operation = base.Operation.manageBalance({
-          destination: this.accountId,
-          asset: opts.pair.quote,
-          action: base.xdr.ManageBalanceAction.createUnique(),
-        })
-        await api.postOperations(operation)
-        await this.loadBalances()
-      }
-
-      const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value
-
-      const endpoint = `/v3/accounts/${this.accountId}/calculated_fees`
-      const query = {
-        asset: opts.pair.quote,
-        fee_type: feeType,
-        subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-        amount: opts.quoteAmount,
-      }
-
-      const { data: fee } = await api.get(endpoint, query)
-
+      const fee = await this.getOfferFee(opts.pair.quote, opts.quoteAmount)
       const operationOpts = {
         amount: opts.baseAmount,
         price: opts.price,
@@ -86,22 +75,42 @@ export default {
       await api.postOperations(operation)
     },
 
-    /**
-     * @param {object} opts
-     * @param {object} opts.baseBalance - balance id of the base asset
-     * @param {string} opts.quoteBalance - balance id of the quote asset
-     * @param {string} opts.offerId - offer id
-     * @param {string} opts.price - offer price
-     * @returns {Promise<void>}
-     */
-    async cancelOffer (opts) {
-      const operation = base.ManageOfferBuilder.cancelOffer({
-        ...opts,
-        offerID: String(opts.offerId),
-        price: opts.price,
-        orderBookID: SECONDARY_MARKET_ORDER_BOOK_ID,
-      })
-      await api.postOperations(operation)
+    async createAssetPairBalances (assetPair) {
+      if (!this.getAssetDetails(assetPair.base)) {
+        const operation = base.Operation.manageBalance({
+          destination: this.accountId,
+          asset: assetPair.base,
+          action: base.xdr.ManageBalanceAction.createUnique(),
+        })
+        await api.postOperations(operation)
+        await this.loadBalances()
+      }
+
+      if (!this.getAssetDetails(assetPair.quote)) {
+        const operation = base.Operation.manageBalance({
+          destination: this.accountId,
+          asset: assetPair.quote,
+          action: base.xdr.ManageBalanceAction.createUnique(),
+        })
+        await api.postOperations(operation)
+        await this.loadBalances()
+      }
+    },
+
+    async getOfferFee (asset, amount) {
+      const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value
+
+      const endpoint = `/v3/accounts/${this.accountId}/calculated_fees`
+      const query = {
+        asset,
+        fee_type: feeType,
+        subtype: PAYMENT_FEE_SUBTYPES.outgoing,
+        amount,
+      }
+
+      const { data: fee } = await api.get(endpoint, query)
+
+      return fee
     },
   },
 }
