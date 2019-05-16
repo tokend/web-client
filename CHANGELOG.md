@@ -55,7 +55,6 @@ for further information about branching and tagging conventions.
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
 - Import api instead of Api in security page
-- Fixed wordings
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -76,6 +75,7 @@ for further information about branching and tagging conventions.
 - Some typos in EN translations
 - Fixed issue with 0 instead of converted balance on Dashboard
 - Displaying quote asset as currency on the line chart
+- Fixed wordings
 
 ## [1.6.0] - 2019-05-09
 #### Changed
