@@ -26,7 +26,7 @@
         </template>
         <key-viewer
           :value="accountId"
-          :label="'security-page.account-address-label' | globalize"
+          :label="'security-page.account-id-title' | globalize"
         />
       </template>
 
