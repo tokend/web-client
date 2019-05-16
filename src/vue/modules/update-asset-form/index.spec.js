@@ -7,7 +7,6 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Config from './_config'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()
@@ -57,19 +56,15 @@ describe('Update asset form module', () => {
 
     describe('method', () => {
       describe('init', () => {
-        it('initializes API and config, call load method, and sets isLoaded property to true',
+        it('initializes API, call load method, and sets isLoaded property to true',
           async () => {
             wrapper.setProps({
               storageUrl: 'https://storage.com',
             })
 
-            sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadUpdateAssetRecord').resolves()
 
             await wrapper.vm.init()
-
-            expect(Config.initConfig)
-              .to.have.been.calledOnceWithExactly('https://storage.com')
 
             expect(wrapper.vm.loadUpdateAssetRecord).to.have.been.calledOnce
             expect(wrapper.vm.isLoaded).to.be.true
@@ -78,7 +73,7 @@ describe('Update asset form module', () => {
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(Config, 'initConfig').throws()
+            sandbox.stub(wrapper.vm, 'loadUpdateAssetRecord').throws()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()
