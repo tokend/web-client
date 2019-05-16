@@ -36,9 +36,6 @@ describe('Create sale requests module', () => {
       shallowMount(CreateSaleRequestsModule, {
         localVue,
         store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
       })
 
       expect(CreateSaleRequestsModule.methods.initFirstPageLoader)

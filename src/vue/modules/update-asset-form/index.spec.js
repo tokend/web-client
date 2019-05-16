@@ -58,10 +58,6 @@ describe('Update asset form module', () => {
       describe('init', () => {
         it('initializes API, call load method, and sets isLoaded property to true',
           async () => {
-            wrapper.setProps({
-              storageUrl: 'https://storage.com',
-            })
-
             sandbox.stub(wrapper.vm, 'loadUpdateAssetRecord').resolves()
 
             await wrapper.vm.init()

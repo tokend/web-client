@@ -34,9 +34,6 @@ describe('Asset explorer module', () => {
       shallowMount(AssetExplorerModule, {
         localVue,
         store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
       })
 
       expect(AssetExplorerModule.methods.load)
@@ -53,10 +50,6 @@ describe('Asset explorer module', () => {
       wrapper = shallowMount(AssetExplorerModule, {
         store,
         localVue,
-        propsData: {
-          config: { storageURL: 'https://storage.com' },
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
     })
 

@@ -28,7 +28,6 @@
       </template>
 
       <document-upload-form-module
-        :storage-url="storageUrl"
         @submit="(isDrawerShown = false) || (isDocumentUploaded = true)"
       />
     </drawer>
@@ -45,8 +44,6 @@ import DocumentUploadFormModule from '@modules/documents/document-upload-form'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import config from '@/config'
-
 export default {
   name: 'documents-page',
   components: {
@@ -58,7 +55,6 @@ export default {
   data: _ => ({
     isDrawerShown: false,
     isDocumentUploaded: false,
-    storageUrl: config.FILE_STORAGE,
     vueRoutes,
   }),
 }
