@@ -5,12 +5,24 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
+        <div class="app__form-field">
+          <readonly-field
+            :label="baseAssetLabelTranslationId | globalize"
+            :value="offer.baseAsset.id"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
           name="submit-trade-offer-price"
           :label="
-            'submit-trade-offers-form.price-label' | globalize({
-              asset: assetPair.quote
+            'submit-trade-offer-form.price-lbl' | globalize({
+              baseAsset: assetPair.base,
+              quoteAsset: assetPair.quote,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -31,7 +43,7 @@
         <input-field
           v-model.trim="form.baseAmount"
           name="submit-trade-offer-base-amount"
-          :label="'submit-trade-offers-form.base-amount-label' | globalize({
+          :label="'submit-trade-offer-form.base-amount-lbl' | globalize({
             asset: assetPair.base
           })"
           :error-message="getFieldErrorMessage(
@@ -52,7 +64,7 @@
       <div class="app__form-field">
         <readonly-field
           :label="
-            'submit-trade-offers-form.offer-label' | globalize({
+            'submit-trade-offer-form.total-amount-lbl' | globalize({
               asset: assetPair.quote
             })
           "
@@ -85,16 +97,16 @@
       <div class="app__form-actions">
         <button
           v-ripple
-          class="app__form-submit-btn app__button-raised"
+          class="app__button-raised submit-trade-offer-form__btn"
           type="submit"
           :disabled="formMixin.isDisabled"
         >
           <template v-if="isBuy">
-            {{ 'submit-trade-offers-form.submit-buy-btn' | globalize }}
+            {{ 'submit-trade-offer-form.buy-btn' | globalize }}
           </template>
 
           <template v-else>
-            {{ 'submit-trade-offers-form.submit-sell-btn' | globalize }}
+            {{ 'submit-trade-offer-form.sell-btn' | globalize }}
           </template>
         </button>
       </div>
@@ -175,6 +187,12 @@ export default {
   },
 
   computed: {
+    baseAssetLabelTranslationId () {
+      return this.isBuy
+        ? 'submit-trade-offer-form.asset-to-buy-lbl'
+        : 'submit-trade-offer-form.asset-to-sell-lbl'
+    },
+
     baseAssetBalance () {
       const balanceItem = this.accountBalances
         .find(balance => balance.asset === this.assetPair.base)
@@ -230,7 +248,7 @@ export default {
       try {
         await this.createOffer(this.createOfferOpts)
 
-        Bus.success('offer-manager.success-creating')
+        Bus.success('submit-trade-offer-form.order-submitted-msg')
         this.$emit(EVENTS.offerSubmitted)
       } catch (e) {
         ErrorHandler.process(e)
@@ -244,4 +262,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../app-form';
+
+.submit-trade-offer-form__btn {
+  max-width: 14rem;
+  width: 100%;
+}
 </style>

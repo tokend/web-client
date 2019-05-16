@@ -7,7 +7,7 @@
       <div class="app__form-field">
         <div class="app__form-field">
           <readonly-field
-            :label="'your-sale-offer-form.base-asset-lbl' | globalize"
+            :label="baseAssetLabelTranslationId | globalize"
             :value="offer.baseAsset.id"
           />
         </div>
@@ -18,10 +18,11 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
-          name="your-sale-offer-price"
+          name="your-trade-offer-price"
           :label="
-            'your-sale-offer-form.price-label' | globalize({
-              asset: assetPair.quote
+            'your-trade-offer-form.price-lbl' | globalize({
+              baseAsset: assetPair.base,
+              quoteAsset: assetPair.quote,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -41,8 +42,8 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.baseAmount"
-          name="your-sale-offer-base-amount"
-          :label="'your-sale-offer.base-amount-label' | globalize({
+          name="your-trade-offer-base-amount"
+          :label="'your-trade-offer-form.base-amount-lbl' | globalize({
             asset: offer.baseAsset.id
           })"
           :error-message="getFieldErrorMessage(
@@ -63,7 +64,7 @@
       <div class="app__form-field">
         <readonly-field
           :label="
-            'your-sale-offer-form.offer-label' | globalize({
+            'your-trade-offer-form.total-amount-lbl' | globalize({
               asset: assetPair.quote
             })
           "
@@ -98,20 +99,20 @@
           v-ripple
           type="submit"
           @click="setUpdateSubmitMode"
-          class="app__form-submit-btn app__button-raised"
+          class="app__button-raised your-trade-offer-form__btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'submit-trade-offers-form.update-offer-btn' | globalize }}
+          {{ 'your-trade-offer-form.update-order-btn' | globalize }}
         </button>
 
         <button
           v-ripple
           type="submit"
           @click="setCancelSubmitMode"
-          class="app__form-submit-btn app__button-flat"
+          class="app__button-flat your-trade-offer-form__btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'submit-trade-offers-form.cancel-offer-btn' | globalize }}
+          {{ 'your-trade-offer-form.cancel-order-btn' | globalize }}
         </button>
       </div>
     </template>
@@ -148,7 +149,7 @@ const SUBMIT_MODES = {
 }
 
 export default {
-  name: 'your-sale-offer-form',
+  name: 'your-trade-offer-form',
   components: { ReadonlyField },
   mixins: [
     FormMixin,
@@ -198,6 +199,12 @@ export default {
   },
 
   computed: {
+    baseAssetLabelTranslationId () {
+      return this.isBuy
+        ? 'your-trade-offer-form.asset-to-buy-lbl'
+        : 'your-trade-offer-form.asset-to-sell-lbl'
+    },
+
     accountAssets () {
       return this.accountBalances
         .map(balance => balance.asset)
@@ -292,7 +299,7 @@ export default {
           case SUBMIT_MODES.cancel:
             await this.cancelOffer(this.cancelOfferOpts)
 
-            Bus.success()
+            Bus.success('your-trade-offer-form.order-canceled-msg')
             this.$emit(EVENTS.offerCanceled)
 
             break
@@ -300,7 +307,7 @@ export default {
             await this.cancelOffer(this.cancelOfferOpts)
             await this.createOffer(this.createOfferOpts)
 
-            Bus.success()
+            Bus.success('your-trade-offer-form.order-updated-msg')
             this.$emit(EVENTS.offerUpdated)
 
             break
@@ -318,4 +325,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../app-form';
+
+.your-trade-offer-form__btn {
+  max-width: 16rem;
+  width: 100%;
+}
 </style>

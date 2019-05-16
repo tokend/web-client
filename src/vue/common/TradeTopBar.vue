@@ -80,7 +80,7 @@
         <create-trade-offer-form
           is-buy
           :asset-pair="assetPair"
-          @close-drawer="closeBuyOfferDrawer"
+          @offer-created="closeBuyOfferDrawer"
         />
       </drawer>
       <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
@@ -89,7 +89,7 @@
         </template>
         <create-trade-offer-form
           :asset-pair="assetPair"
-          @close-drawer="closeSellOfferDrawer"
+          @offer-created="closeSellOfferDrawer"
         />
       </drawer>
     </template>

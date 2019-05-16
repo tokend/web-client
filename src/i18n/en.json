@@ -1374,8 +1374,8 @@
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
       "buy-lbl": "Buy",
       "sell-lbl": "Sell",
-      "your-buy-offer": "Your buy offer",
-      "your-sell-offer": "Your sell offer"
+      "your-buy-order": "Your buy order",
+      "your-sell-order": "Your sell order"
     },
     "trade-offers": {
       "title": "Open orders",
@@ -1390,23 +1390,6 @@
       "no-data-title": "No orders",
       "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
       "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
-    },
-    "submit-trade-offers-form": {
-      "want-label": "Want ({{asset}})",
-      "offer-label": "Order ({{asset}})",
-      "price-label": "Price ({{asset}})",
-      "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell",
-      "cancel-offer-btn": "Cancel order",
-      "insufficient-funds": "Insufficient balance. You have {{amount}}",
-      "warning-updating-order": "Current order will be canceled",
-      "update-offer-btn": "Update",
-      "insufficient-sales-msg": "Insufficient balance. You have {{amount, money}}",
-      "no-balance-msg": "You do not have {{asset}} balance yet"
-    },
-    "offer-manager": {
-      "success-creating": "Order successfully created",
-      "success-cancelling": "Order successfully cancelled"
     },
     "redeem-form": {
       "title": "Redeem",
@@ -1430,14 +1413,37 @@
       "loading-msg": "Loading...",
       "issued-assets-msg": "Issued {{value}}"
     },
-    "offer-creation-form": {
-      "price-per-asset": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
-      "amount": "Amount of {{asset}}",
-      "total": "Total amount",
+    "create-trade-offer-form": {
+      "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
+      "amount-lbl": "Amount of {{asset}}",
+      "total-amount-lbl": "Total amount",
       "asset-to-buy-lbl": "Asset to buy",
       "asset-to-sell-lbl": "Asset to sell",
-      "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell"
+      "buy-btn": "Buy",
+      "sell-btn": "Sell",
+      "order-created-msg": "Your order was successfully created" 
+    },
+    "submit-trade-offer-form": {
+      "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
+      "base-amount-lbl": "Amount of {{asset}}",
+      "total-amount-lbl": "Total amount",
+      "asset-to-buy-lbl": "Asset to buy",
+      "asset-to-sell-lbl": "Asset to sell",
+      "buy-btn": "Buy",
+      "sell-btn": "Sell",
+      "order-submitted-msg": "Your order was successfully submitted"
+    },
+    "your-trade-offer-form": {
+      "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
+      "base-amount-lbl": "Amount of {{asset}}",
+      "total-amount-lbl": "Total amount",
+      "asset-to-buy-lbl": "Asset to buy",
+      "asset-to-sell-lbl": "Asset to sell",
+      "update-order-btn": "Update order",
+      "cancel-order-btn": "Cancel order",
+      "order-updated-msg": "Your order was successfully updated",
+      "order-canceled-msg": "Your order was successfully cancelled"
+
     },
     "trade-exchange": {
       "offers-section-title": "Open orders"

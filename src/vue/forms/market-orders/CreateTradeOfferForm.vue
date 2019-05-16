@@ -21,7 +21,7 @@
           v-model.trim="form.price"
           name="trade-offer-price"
           :label="
-            'offer-creation-form.price-per-asset' | globalize({
+            'create-trade-offer-form.price-lbl' | globalize({
               baseAsset: form.asset,
               quoteAsset: assetPair.quote
             })
@@ -44,7 +44,7 @@
         <input-field
           v-model.trim="form.amount"
           name="trade-offer-amount"
-          :label="'offer-creation-form.amount' | globalize({
+          :label="'create-trade-offer-form.amount-lbl' | globalize({
             asset: form.asset
           })"
           :error-message="getFieldErrorMessage(
@@ -64,7 +64,7 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <readonly-field
-          :label="'offer-creation-form.total' | globalize"
+          :label="'create-trade-offer-form.total-amount-lbl' | globalize"
           :value="{
             value: quoteAmount,
             currency: assetPair.quote,
@@ -95,15 +95,15 @@
         <button
           v-ripple
           type="submit"
-          class="app__form-submit-btn app__button-raised"
+          class="app__button-raised create-trade-offer-form__btn"
           :disabled="formMixin.isDisabled"
         >
           <template v-if="isBuy">
-            {{ 'offer-creation-form.submit-buy-btn' | globalize }}
+            {{ 'create-trade-offer-form.buy-btn' | globalize }}
           </template>
 
           <template v-else>
-            {{ 'offer-creation-form.submit-sell-btn' | globalize }}
+            {{ 'create-trade-offer-form.sell-btn' | globalize }}
           </template>
         </button>
       </div>
@@ -186,8 +186,8 @@ export default {
   computed: {
     baseAssetLabelTranslationId () {
       return this.isBuy
-        ? 'offer-creation-form.asset-to-buy-lbl'
-        : 'offer-creation-form.asset-to-sell-lbl'
+        ? 'create-trade-offer-form.asset-to-buy-lbl'
+        : 'create-trade-offer-form.asset-to-sell-lbl'
     },
 
     accountAssets () {
@@ -247,7 +247,7 @@ export default {
       try {
         await this.createOffer(this.createOfferOpts)
 
-        Bus.success('offer-manager.success-creating')
+        Bus.success('create-trade-offer-form.order-created-msg')
         this.$emit(EVENTS.offerCreated)
       } catch (e) {
         ErrorHandler.process(e)
@@ -261,4 +261,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../app-form';
+
+.create-trade-offer-form__btn {
+  max-width: 14rem;
+  width: 100%;
+}
 </style>

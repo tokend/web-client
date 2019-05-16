@@ -70,7 +70,7 @@
         :is-buy="!isBuy"
         :asset-pair="assetPair"
         :offer="selectedOffer"
-        @close-drawer="closeDrawer"
+        @offer-submitted="closeDrawer"
       />
     </drawer>
   </div>
