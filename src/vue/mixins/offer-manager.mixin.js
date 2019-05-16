@@ -44,7 +44,7 @@ export default {
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
         await api.postOperations(operation)
-        await this.loadBalances(this.accountId)
+        await this.loadBalances()
       }
 
       if (!this.getAssetDetails(opts.pair.quote)) {
@@ -54,7 +54,7 @@ export default {
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
         await api.postOperations(operation)
-        await this.loadBalances(this.accountId)
+        await this.loadBalances()
       }
 
       const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value

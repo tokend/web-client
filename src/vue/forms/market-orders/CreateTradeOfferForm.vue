@@ -22,7 +22,8 @@
           name="trade-offer-price"
           :label="
             'offer-creation-form.price-per-asset' | globalize({
-              asset: form.asset
+              baseAsset: form.asset,
+              quoteAsset: assetPair.quote
             })
           "
           :error-message="getFieldErrorMessage(
@@ -129,9 +130,6 @@ import {
   decimal,
 } from '@validators'
 
-import { vuexTypes } from '@/vuex'
-import { mapGetters, mapActions } from 'vuex'
-
 const EVENTS = {
   offerCreated: 'offer-created',
 }
@@ -155,8 +153,8 @@ export default {
       amount: '',
       asset: '',
     },
-    isOfferCreating: false,
     isLoaded: false,
+    isOfferCreating: false,
     config,
   }),
 
@@ -186,10 +184,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      accountBalances: vuexTypes.accountBalances,
-    }),
-
     baseAssetLabelTranslationId () {
       return this.isBuy
         ? 'offer-creation-form.asset-to-buy-lbl'
@@ -242,16 +236,12 @@ export default {
       await this.loadBalances()
       this.form.asset = this.assetPair.base
       this.isLoaded = true
-    } catch (error) {
-      ErrorHandler.processWithoutFeedback(error)
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
     }
   },
 
   methods: {
-    ...mapActions({
-      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
-    }),
-
     async submit () {
       this.isOfferCreating = true
       try {

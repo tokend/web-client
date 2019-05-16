@@ -1431,7 +1431,7 @@
       "issued-assets-msg": "Issued {{value}}"
     },
     "offer-creation-form": {
-      "price-per-asset": "Price per 1 {{asset}}",
+      "price-per-asset": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
       "amount": "Amount of {{asset}}",
       "total": "Total amount",
       "asset-to-buy-lbl": "Asset to buy",
