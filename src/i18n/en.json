@@ -1650,7 +1650,7 @@
     "deposit-form": {
       "deposit": "Deposit",
       "asset": "Asset",
-      "how-to": "To make a deposit send some assets to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
+      "how-to": "To make a deposit, send your desired amount of asset to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only-prefix": "Attention:",
       "asset-only": "The address below accepts {{asset}} only! All the other assets will be irretrievably lost.",
       "where-to": "{{asset}} address to deposit",
