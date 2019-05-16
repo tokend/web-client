@@ -54,6 +54,8 @@ for further information about branching and tagging conventions.
 - Removed wallet providing to each module
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
+- Remove _config.js from modules
+- Remove storageUrl from modules
 
 #### Removed
 - Unused methods from `DocumentContainer` class
