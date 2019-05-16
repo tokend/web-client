@@ -451,7 +451,7 @@
     },
     "tfa-form": {
       "password-lbl": "Current password",
-      "qr-desc": "Scan the QR with your 2FA app",
+      "qr-desc": "Scan the QR with your 2FA app. We recommend Google Authenticator for most users. It doesn’t require an internet connection or phone service to use, and is more secure than SMS due to being offline and local to your device.",
       "code-lbl": "2FA code",
       "secret-code-desc": "Or manually set the secret code",
       "tfa-code-desc": "And enter your 2FA code to continue",
