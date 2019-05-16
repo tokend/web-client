@@ -55,6 +55,7 @@ for further information about branching and tagging conventions.
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
 - Import api instead of Api in security page
+- Fixed wordings
 
 #### Removed
 - Unused methods from `DocumentContainer` class
