@@ -1,4 +1,3 @@
-import UploadDocumentsMixin from './upload-documents.mixin'
 import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
 import { base, SALE_TYPES } from '@tokend/js-sdk'
@@ -6,6 +5,7 @@ import { base, SALE_TYPES } from '@tokend/js-sdk'
 import { api } from '@/api'
 import { config } from '../_config'
 
+import { uploadDocument } from '@/js/helpers/upload-documents'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
 
@@ -20,7 +20,7 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [UploadDocumentsMixin, ManageSaleDescriptionMixin],
+  mixins: [ManageSaleDescriptionMixin],
   data: _ => ({
     saleDescriptionBlobId: '',
   }),
@@ -70,10 +70,7 @@ export default {
     },
 
     async submitCreateSaleRequest (accountId) {
-      const saleDocuments = [
-        this.shortBlurbStepForm.saleLogo,
-      ]
-      await this.uploadDocuments(saleDocuments, accountId)
+      await uploadDocument(this.shortBlurbStepForm.saleLogo)
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
         this.fullDescriptionStepForm.description,
         accountId

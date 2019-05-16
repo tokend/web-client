@@ -1,6 +1,15 @@
-import { ApiCaller, WalletsManager, FactorsManager } from '@tokend/js-sdk'
+import {
+  ApiCaller,
+  DocumentUploader,
+  WalletsManager,
+  FactorsManager,
+} from '@tokend/js-sdk'
 
 export const api = new ApiCaller()
+export const documentUploader = new DocumentUploader({
+  apiCaller: api,
+})
+
 export const walletsManager = new WalletsManager()
 export const factorsManager = new FactorsManager()
 

@@ -83,7 +83,6 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
-import DocumentUploaderMixin from './mixins/document-uploader.mixin'
 import CreateAccountMixin from './mixins/create-account.mixin'
 
 import ProgressBar from './progress-bar'
@@ -98,6 +97,7 @@ import { initConfig } from './_config'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { uploadDocument } from '@/js/helpers/upload-documents'
 import { FileUtil } from '@/js/utils/file.util'
 import { CryptoUtil } from './utils/crypto.util'
 
@@ -117,7 +117,6 @@ export default {
   },
   mixins: [
     FormMixin,
-    DocumentUploaderMixin,
     CreateAccountMixin,
   ],
 
@@ -225,7 +224,7 @@ export default {
       this.uploadState.isCreatingAccount = false
 
       this.uploadState.isUploadingFile = true
-      const fileKey = await this.uploadDocument(
+      const fileKey = await uploadDocument(
         this.form.document,
         accountIdFromDocHash
       )

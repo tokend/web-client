@@ -358,7 +358,7 @@ import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
-import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { uploadDocument } from '@/js/helpers/upload-documents'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 const STEPS = {
@@ -539,7 +539,7 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await this.uploadDocuments()
+        await uploadDocument(this.form.shortBlurb.saleLogo)
         const { data: blob } = await Sdk.api.blobs.create(
           BLOB_TYPES.saleOverview,
           JSON.stringify(this.form.fullDescription.description)
@@ -586,19 +586,6 @@ export default {
         saleType: DEFAULT_SALE_TYPE,
       }
       return Sdk.base.SaleRequestBuilder.createSaleCreationRequest(operation)
-    },
-    async uploadDocuments () {
-      const documents = [
-        this.form.shortBlurb.saleLogo,
-      ]
-      for (let document of documents) {
-        if (document && !document.key) {
-          const documentKey = await DocumentUploader.uploadDocument(
-            document.getDetailsForUpload()
-          )
-          document.setKey(documentKey)
-        }
-      }
     },
     async populateForm (request) {
       this.form.saleInformation.name = request.name
