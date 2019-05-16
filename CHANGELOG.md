@@ -55,6 +55,7 @@ for further information about branching and tagging conventions.
 - Removed wallet providing to each module
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
+- Import api instead of Api in security page
 - Refactored trade offer forms & related mixin:
   - "CreateTradeOfferForm"
   - "SubmitTradeOfferForm"
