@@ -65,7 +65,8 @@
             </div>
             <div class="asset-selector__asset-subvalue">
               <skeleton-loader
-                v-if="!currentAsset"
+                v-if="!currentAsset &&
+                  currentAssetBalanceDetails.convertedBalance"
                 template="bigString"
               />
               <div

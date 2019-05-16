@@ -13,6 +13,7 @@
 <script>
 const TEMPLATES = {
   bigIcon: 'big-icon',
+  smallIcon: 'small-icon',
   bigString: 'big-string',
   cardViewer: 'card-viewer',
   saleViewer: 'sale-viewer',
@@ -111,6 +112,12 @@ $media-small-desktop: 960px;
   &--big-icon {
     height: 5.5rem;
     width: 5.5rem;
+  }
+
+  &--small-icon {
+    height: 3.7rem;
+    width: 3.7rem;
+    border-radius: 0.4rem;
   }
 
   &--card-viewer {
