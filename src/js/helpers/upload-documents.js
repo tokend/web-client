@@ -1,4 +1,4 @@
-import { documentUploader } from '@/api'
+import { documentsManager } from '@/api'
 
 /**
  * Uploads an array of documents to the storage.
@@ -24,7 +24,7 @@ export async function uploadDocument (document, accountId) {
   if (document && !document.key) {
     const details = document.getDetailsForUpload()
 
-    const key = await documentUploader.uploadDocument({ ...details, accountId })
+    const key = await documentsManager.uploadDocument({ ...details, accountId })
     document.setKey(key)
 
     return key
