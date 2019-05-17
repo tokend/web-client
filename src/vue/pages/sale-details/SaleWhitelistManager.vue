@@ -12,10 +12,10 @@
       </tab>
 
       <tab
-        :name="'sale-whitelist.invites-list-tab' | globalize"
+        :name="'sale-whitelist.invitations-list-tab' | globalize"
         id="sale-whitelist-manager-invites-list-tab"
       >
-        <whitelist-invites
+        <whitelist-invitations
           :sale="sale"
           :should-update.sync="shouldInvitesUpdate"
         />
@@ -29,7 +29,7 @@ import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
 
 import WhitelistInviteForm from '@/vue/forms/WhitelistInviteForm'
-import WhitelistInvites from './whitelist/WhitelistInvites'
+import WhitelistInvitations from './whitelist/WhitelistInvitations'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -39,7 +39,7 @@ export default {
     Tabs,
     Tab,
     WhitelistInviteForm,
-    WhitelistInvites,
+    WhitelistInvitations,
   },
 
   props: {

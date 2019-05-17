@@ -1,8 +1,9 @@
 <template>
   <div class="whitelist-invite-form">
-    <h3 class="whitelist-invite-form__title">
-      {{ 'sale-whitelist.invite-title' | globalize }}
-    </h3>
+    <p class="whitelist-invite-form__hint">
+      {{ 'whitelist-invite-form.invite-hint' | globalize }}
+    </p>
+
     <form
       novalidate
       class="app__form"
@@ -11,11 +12,10 @@
       <div class="app__form-row">
         <div class="app__form-field">
           <input-field
-            white-autofill
             v-model="form.email"
             @blur="touchField('form.email')"
             name="whitelist-invite-email"
-            :label="'sale-whitelist.email-lbl' | globalize"
+            :label="'whitelist-invite-form.email-lbl' | globalize"
             :error-message="getFieldErrorMessage('form.email')"
             :disabled="formMixin.isDisabled"
           />
@@ -37,7 +37,7 @@
           class="app__button-raised"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'sale-whitelist.invite-btn' | globalize }}
+          {{ 'whitelist-invite-form.invite-btn' | globalize }}
         </button>
       </div>
     </form>
@@ -103,7 +103,7 @@ export default {
           },
         })
 
-        Bus.success('sale-whitelist.user-invited-msg')
+        Bus.success('whitelist-invite-form.user-invited-msg')
         this.$emit(EVENTS.invited)
       } catch (e) {
         ErrorHandler.process(e)
@@ -119,7 +119,8 @@ export default {
 <style lang="scss" scoped>
 @import './app-form';
 
-.whitelist-invite-form__title {
+.whitelist-invite-form__hint {
+  font-size: 1.6rem;
   margin-bottom: 2.4rem;
 }
 </style>
