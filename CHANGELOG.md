@@ -68,6 +68,7 @@ for further information about branching and tagging conventions.
 #### Removed
 - Unused methods from `DocumentContainer` class
 - More button for 'Movements' history
+- sdk.js
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
