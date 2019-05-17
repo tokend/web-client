@@ -1,16 +1,19 @@
 import { documentUploader } from '@/api'
 
 /**
- * @param {DocumentContainer} document - instance of {@link DocumentContainer}
- * to be uploaded
- * @param {string} [accountId] - documents' owner account ID
+ * Uploads an array of documents to the storage.
  *
+ * @param {DocumentContainer[]} documents - array of {@link DocumentContainer}
+ * instances to be uploaded
+ * @param {string} [accountId] - documents' owner account ID
  */
 export async function uploadDocuments (documents, accountId) {
   await Promise.all(documents.map(doc => uploadDocument(doc, accountId)))
 }
 
 /**
+ * Uploads a document to the storage.
+ *
  * @param {DocumentContainer} document - instance of {@link DocumentContainer}
  * to be uploaded
  * @param {string} [accountId] - document's owner account ID
