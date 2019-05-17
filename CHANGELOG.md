@@ -61,6 +61,8 @@ for further information about branching and tagging conventions.
   - "SubmitTradeOfferForm"
   - "YourTradeOfferForm"
   - "ManageOfferMixin"
+- Remove _config.js from modules
+- Remove storageUrl from modules
 
 #### Removed
 - Unused methods from `DocumentContainer` class

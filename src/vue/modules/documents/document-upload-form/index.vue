@@ -93,8 +93,6 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import { documentContainer, required } from '@validators'
 
-import { initConfig } from './_config'
-
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -120,13 +118,6 @@ export default {
     DocumentUploaderMixin,
     CreateAccountMixin,
   ],
-
-  props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
-  },
 
   data: _ => ({
     form: {
@@ -182,10 +173,6 @@ export default {
 
       return 0
     },
-  },
-
-  created () {
-    initConfig(this.storageUrl)
   },
 
   methods: {

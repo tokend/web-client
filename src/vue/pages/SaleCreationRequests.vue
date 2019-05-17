@@ -3,7 +3,6 @@
     <submodule-importer
       v-if="getModule().canRenderSubmodule(CreateSaleRequestsModule)"
       :submodule="getModule().getSubmodule(CreateSaleRequestsModule)"
-      :storage-url="storageUrl"
     />
   </div>
 </template>
@@ -11,8 +10,6 @@
 <script>
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateSaleRequestsModule } from '@/vue/modules/requests/create-sale-requests/module'
-
-import config from '@/config'
 
 export default {
   name: 'sale-creation-requests-page',
@@ -22,7 +19,6 @@ export default {
 
   data: _ => ({
     CreateSaleRequestsModule,
-    storageUrl: config.FILE_STORAGE,
   }),
 }
 </script>
