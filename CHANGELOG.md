@@ -29,6 +29,7 @@ for further information about branching and tagging conventions.
 - Email validation on login form
 - "MessageBox" component for displaying titled messages
 - Pre-issuance guide
+- Error message to the "ReadonlyField"
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -55,6 +56,11 @@ for further information about branching and tagging conventions.
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
 - Import api instead of Api in security page
+- Refactored trade offer forms & related mixin:
+  - "CreateTradeOfferForm"
+  - "SubmitTradeOfferForm"
+  - "YourTradeOfferForm"
+  - "ManageOfferMixin"
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -75,6 +81,7 @@ for further information about branching and tagging conventions.
 - Some typos in EN translations
 - Fixed issue with 0 instead of converted balance on Dashboard
 - Displaying quote asset as currency on the line chart
+- Trade forms translations
 
 ## [1.6.0] - 2019-05-09
 #### Changed
