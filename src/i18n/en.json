@@ -1334,7 +1334,7 @@
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
       "new-sale": "New sale",
-      "all-sales": "All sales",
+      "investable-sales": "Investable sales",
       "my-sales": "My sales"
     },
     "sale-card": {
@@ -1454,7 +1454,7 @@
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "campaign-tab": "Campaign",
-      "all-sales-tab": "All sales",
+      "investable-sales-tab": "Investable sales",
       "invest": "Invest",
       "statistics-title": "Statistics",
       "whitelist-title": "Whitelist management",

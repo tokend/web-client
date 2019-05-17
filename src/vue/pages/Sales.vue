@@ -3,10 +3,10 @@
     <top-bar>
       <template slot="main">
         <router-link
-          :to="vueRoutes.allSales"
+          :to="vueRoutes.investableSales"
         >
           <span>
-            {{ 'sales.all-sales' | globalize }}
+            {{ 'sales.investable-sales' | globalize }}
           </span>
         </router-link>
 

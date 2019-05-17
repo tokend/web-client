@@ -1,5 +1,5 @@
 <template>
-  <div class="all-sales">
+  <div class="sales-list">
     <div class="sales__state-filter">
       <select-field
         :is-value-translatable="true"
@@ -89,7 +89,7 @@ const SALE_STATES = {
 }
 
 export default {
-  name: 'all-sales',
+  name: 'sales-list',
   components: {
     Drawer,
     Loader,

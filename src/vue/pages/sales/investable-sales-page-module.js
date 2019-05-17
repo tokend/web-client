@@ -4,7 +4,7 @@ export class SalesListPageModule extends PageModuleDescriptor {
   constructor (opts = {}) {
     super({
       ...opts,
-      importComponentFn: _ => import('@/vue/pages/sales/AllSales'),
+      importComponentFn: _ => import('@/vue/pages/sales/SalesList'),
     })
   }
 }

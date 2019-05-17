@@ -8,7 +8,7 @@
             attr prevents adding any active-class
            -->
           <router-link :to="vueRoutes.sales" active-class>
-            <span>{{ 'sale-details.all-sales-tab' | globalize }}</span>
+            <span>{{ 'sale-details.investable-sales-tab' | globalize }}</span>
           </router-link>
 
           <router-link :to="vueRoutes.userOwnedSales">
