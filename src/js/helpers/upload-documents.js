@@ -1,7 +1,13 @@
 import { documentUploader } from '@/api'
 
-export async function uploadDocuments (documents) {
-  return Promise.all(documents.map(document => uploadDocument(document)))
+/**
+ * @param {DocumentContainer} document - instance of {@link DocumentContainer}
+ * to be uploaded
+ * @param {string} [accountId] - documents' owner account ID
+ *
+ */
+export async function uploadDocuments (documents, accountId) {
+  await Promise.all(documents.map(doc => uploadDocument(doc, accountId)))
 }
 
 /**

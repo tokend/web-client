@@ -5,6 +5,7 @@ import { base } from '@tokend/js-sdk'
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import { api } from '@/api'
+import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -165,7 +166,7 @@ describe('Manage sale request mixin', () => {
             fullDescriptionStepForm: { description: 'Sale description' },
           })
 
-          sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
+          sandbox.stub(DocumentUploader, 'uploadDocument').resolves()
           sandbox.stub(wrapper.vm, 'createSaleDescriptionBlob')
             .resolves('BLOB_ID')
           sandbox.stub(base.SaleRequestBuilder, 'createSaleCreationRequest')
@@ -173,8 +174,8 @@ describe('Manage sale request mixin', () => {
 
           await wrapper.vm.submitCreateSaleRequest('SOME_ACCOUNT_ID')
 
-          expect(wrapper.vm.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([saleLogo], 'SOME_ACCOUNT_ID')
+          expect(DocumentUploader.uploadDocument)
+            .to.have.been.calledOnceWithExactly(saleLogo)
           expect(wrapper.vm.createSaleDescriptionBlob)
             .to.have.been.calledOnceWithExactly(
               'Sale description',
