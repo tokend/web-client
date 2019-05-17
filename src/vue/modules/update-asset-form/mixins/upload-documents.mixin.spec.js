@@ -9,7 +9,6 @@ import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 import { DOCUMENT_POLICIES } from '@/js/const/document-policies.const'
 
 import { api } from '@/api'
-import * as Config from '../_config'
 
 const localVue = createLocalVue()
 
@@ -126,7 +125,6 @@ describe('Upload documents mixin', () => {
 
     describe('uploadFile', () => {
       it('creates and posts file form data', async () => {
-        Config.initConfig('https://storage.com')
         sandbox.stub(wrapper.vm, 'createFileFormData')
           .returns({ 'some-policy': 'Some policy' })
         sandbox.stub(Vue.http, 'post')
@@ -141,10 +139,6 @@ describe('Upload documents mixin', () => {
           { id: 'file' },
           { somePolicy: 'Some policy' },
           'mime-type'
-        )
-        expect(Vue.http.post).calledOnceWithExactly(
-          'https://storage.com',
-          { 'some-policy': 'Some policy' },
         )
       })
     })

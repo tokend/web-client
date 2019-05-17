@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import { api } from '@/api'
-import { config } from '../_config'
+import config from '@/config'
 
 import _omit from 'lodash/omit'
 
@@ -39,7 +39,7 @@ export default {
       formData.append('file', blob)
 
       // TODO: posting should not be on this lvl of abstraction
-      return Vue.http.post(config().storageURL, formData)
+      return Vue.http.post(config.FILE_STORAGE, formData)
     },
   },
 }

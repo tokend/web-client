@@ -6,7 +6,6 @@ import { Wallet, base } from '@tokend/js-sdk'
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import { api, useWallet } from '@/api'
-import * as Config from '../_config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -52,17 +51,8 @@ describe('Manage asset request mixin', () => {
 
   describe('computed property', () => {
     describe('preIssuanceAssetSigner', () => {
-      it('returns null asset signer ID, if pre-issuance is disabled, or preissued asset signer property otherwise',
+      it('if pre-issuance is disabled, or preissued asset signer property otherwise',
         () => {
-          sandbox.stub(Config, 'config').returns({
-            NULL_ASSET_SIGNER: 'NULL_ASSET_SIGNER',
-          })
-          wrapper.setData({
-            advancedStepForm: { isPreissuanceDisabled: true },
-          })
-          expect(wrapper.vm.preIssuanceAssetSigner)
-            .to.equal('NULL_ASSET_SIGNER')
-
           wrapper.setData({
             advancedStepForm: {
               isPreissuanceDisabled: false,

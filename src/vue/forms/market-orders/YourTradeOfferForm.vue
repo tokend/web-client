@@ -5,12 +5,9 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
-        <select-field
-          :values="accountAssets"
-          v-model="form.asset"
-          name="trade-offer-base-asset"
-          :disabled="formMixin.isDisabled"
+        <readonly-field
           :label="baseAssetLabelTranslationId | globalize"
+          :value="offer.baseAsset.id"
         />
       </div>
     </div>
@@ -19,11 +16,11 @@
       <div class="app__form-field">
         <input-field
           v-model.trim="form.price"
-          name="trade-offer-price"
+          name="your-trade-offer-price"
           :label="
-            'create-trade-offer-form.price-lbl' | globalize({
-              baseAsset: form.asset,
-              quoteAsset: assetPair.quote
+            'your-trade-offer-form.price-lbl' | globalize({
+              baseAsset: assetPair.base,
+              quoteAsset: assetPair.quote,
             })
           "
           :error-message="getFieldErrorMessage(
@@ -42,13 +39,13 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model.trim="form.amount"
-          name="trade-offer-amount"
-          :label="'create-trade-offer-form.amount-lbl' | globalize({
-            asset: form.asset
+          v-model.trim="form.baseAmount"
+          name="your-trade-offer-base-amount"
+          :label="'your-trade-offer-form.base-amount-lbl' | globalize({
+            asset: offer.baseAsset.id
           })"
           :error-message="getFieldErrorMessage(
-            'form.amount',
+            'form.baseAmount',
             {
               available: baseAssetBalance,
               from: config.MIN_AMOUNT,
@@ -64,7 +61,11 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <readonly-field
-          :label="'create-trade-offer-form.total-amount-lbl' | globalize"
+          :label="
+            'your-trade-offer-form.total-amount-lbl' | globalize({
+              asset: assetPair.quote
+            })
+          "
           :value="{
             value: quoteAmount,
             currency: assetPair.quote,
@@ -83,10 +84,10 @@
 
     <template v-if="formMixin.isConfirmationShown">
       <form-confirmation
-        @cancel="hideConfirmation"
-        @ok="submit"
-        :is-pending="isOfferCreating"
         class="app__form-confirmation"
+        :is-pending="isFormSubmitting"
+        @ok="submit"
+        @cancel="hideConfirmation"
       />
     </template>
 
@@ -95,16 +96,21 @@
         <button
           v-ripple
           type="submit"
-          class="app__button-raised create-trade-offer-form__btn"
+          @click="setUpdateSubmitMode"
+          class="app__button-raised your-trade-offer-form__btn"
           :disabled="formMixin.isDisabled"
         >
-          <template v-if="isBuy">
-            {{ 'create-trade-offer-form.buy-btn' | globalize }}
-          </template>
+          {{ 'your-trade-offer-form.update-order-btn' | globalize }}
+        </button>
 
-          <template v-else>
-            {{ 'create-trade-offer-form.sell-btn' | globalize }}
-          </template>
+        <button
+          v-ripple
+          type="submit"
+          @click="setCancelSubmitMode"
+          class="app__button-flat your-trade-offer-form__btn"
+          :disabled="formMixin.isDisabled"
+        >
+          {{ 'your-trade-offer-form.cancel-order-btn' | globalize }}
         </button>
       </div>
     </template>
@@ -131,11 +137,17 @@ import {
 } from '@validators'
 
 const EVENTS = {
-  offerCreated: 'offer-created',
+  offerCanceled: 'offer-canceled',
+  offerUpdated: 'offer-updated',
+}
+
+const SUBMIT_MODES = {
+  cancel: 'cancel',
+  update: 'update',
 }
 
 export default {
-  name: 'create-trade-offer-form',
+  name: 'your-trade-offer-form',
   components: { ReadonlyField },
   mixins: [
     FormMixin,
@@ -145,16 +157,17 @@ export default {
   props: {
     assetPair: { type: Object, required: true },
     isBuy: { type: Boolean, default: false },
+    offer: { type: Object, required: true },
   },
 
   data: () => ({
     form: {
       price: '',
-      amount: '',
-      asset: '',
+      baseAmount: '',
     },
     isLoaded: false,
-    isOfferCreating: false,
+    submitMode: '',
+    isFormSubmitting: false,
     config,
   }),
 
@@ -166,7 +179,7 @@ export default {
           decimal,
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
-        amount: {
+        baseAmount: {
           required,
           decimal,
           noMoreThanAvailableOnBalance: this.isBuy ||
@@ -186,8 +199,8 @@ export default {
   computed: {
     baseAssetLabelTranslationId () {
       return this.isBuy
-        ? 'create-trade-offer-form.asset-to-buy-lbl'
-        : 'create-trade-offer-form.asset-to-sell-lbl'
+        ? 'your-trade-offer-form.asset-to-buy-lbl'
+        : 'your-trade-offer-form.asset-to-sell-lbl'
     },
 
     accountAssets () {
@@ -198,20 +211,33 @@ export default {
 
     baseAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset === this.form.asset)
+        .find(balance => balance.asset === this.offer.baseAsset.id)
 
-      return balanceItem ? balanceItem.balance : ''
+      if (balanceItem) {
+        return this.isBuy
+          ? balanceItem.balance
+          : MathUtil.add(balanceItem.balance, this.offer.baseAmount)
+      } else {
+        return ''
+      }
     },
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
         .find(balance => balance.asset === this.assetPair.quote)
-      return balanceItem ? balanceItem.balance : ''
+
+      if (balanceItem) {
+        return this.isBuy
+          ? balanceItem.balance
+          : MathUtil.add(balanceItem.balance, this.offer.quoteAmount)
+      } else {
+        return ''
+      }
     },
 
     quoteAmount () {
-      if (this.form.price && this.form.amount) {
-        return MathUtil.multiply(this.form.price, this.form.amount)
+      if (this.form.price && this.form.baseAmount) {
+        return MathUtil.multiply(this.form.price, this.form.baseAmount)
       } else {
         return ''
       }
@@ -220,13 +246,22 @@ export default {
     createOfferOpts () {
       return {
         pair: {
-          base: this.form.asset,
+          base: this.offer.baseAsset.id,
           quote: this.assetPair.quote,
         },
-        baseAmount: this.form.amount,
+        baseAmount: this.form.baseAmount,
         quoteAmount: this.quoteAmount,
         price: this.form.price,
         isBuy: this.isBuy,
+      }
+    },
+
+    cancelOfferOpts () {
+      return {
+        offerId: this.offer.id,
+        baseBalance: this.offer.baseBalance.id,
+        quoteBalance: this.offer.quoteBalance.id,
+        price: this.offer.price,
       }
     },
   },
@@ -234,7 +269,7 @@ export default {
   async created () {
     try {
       await this.loadBalances()
-      this.form.asset = this.assetPair.base
+      this.populateForm()
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -242,17 +277,44 @@ export default {
   },
 
   methods: {
-    async submit () {
-      this.isOfferCreating = true
-      try {
-        await this.createOffer(this.createOfferOpts)
+    populateForm () {
+      this.form.baseAmount = this.offer.baseAmount
+      this.form.price = this.offer.price
+    },
 
-        Bus.success('create-trade-offer-form.order-created-msg')
-        this.$emit(EVENTS.offerCreated)
+    setUpdateSubmitMode () {
+      this.submitMode = SUBMIT_MODES.update
+    },
+
+    setCancelSubmitMode () {
+      this.submitMode = SUBMIT_MODES.cancel
+    },
+
+    async submit () {
+      this.isFormSubmitting = true
+      try {
+        switch (this.submitMode) {
+          case SUBMIT_MODES.cancel:
+            await this.cancelOffer(this.cancelOfferOpts)
+
+            Bus.success('your-trade-offer-form.order-canceled-msg')
+            this.$emit(EVENTS.offerCanceled)
+
+            break
+          case SUBMIT_MODES.update:
+            await this.cancelOffer(this.cancelOfferOpts)
+            await this.createOffer(this.createOfferOpts)
+
+            Bus.success('your-trade-offer-form.order-updated-msg')
+            this.$emit(EVENTS.offerUpdated)
+
+            break
+        }
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.isOfferCreating = false
+
+      this.isFormSubmitting = false
       this.hideConfirmation()
     },
   },
@@ -262,8 +324,8 @@ export default {
 <style lang="scss" scoped>
 @import '../app-form';
 
-.create-trade-offer-form__btn {
-  max-width: 14rem;
+.your-trade-offer-form__btn {
+  max-width: 16rem;
   width: 100%;
 }
 </style>

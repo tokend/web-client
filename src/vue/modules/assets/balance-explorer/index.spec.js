@@ -38,9 +38,6 @@ describe('Balance explorer module', () => {
       await shallowMount(BalanceExplorerModule, {
         localVue,
         store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
       })
 
       expect(BalanceExplorerModule.methods.load)
@@ -57,10 +54,6 @@ describe('Balance explorer module', () => {
       wrapper = shallowMount(BalanceExplorerModule, {
         store,
         localVue,
-        propsData: {
-          config: { storageURL: 'https://storage.com' },
-          wallet: { accountId: 'SOME_ACCOUNT_ID' },
-        },
       })
     })
 

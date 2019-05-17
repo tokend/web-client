@@ -2,7 +2,6 @@
   <div class="asset-explorer">
     <template v-if="isLoaded">
       <assets-renderer
-        :storage-url="storageUrl"
         :is-account-unverified="isAccountUnverified"
         :is-account-us-accredited="isAccountUsAccredited"
         :is-account-us-verified="isAccountUsVerified"
@@ -41,10 +40,6 @@ export default {
   },
 
   props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
     isAccountUnverified: {
       type: Boolean,
       required: true,

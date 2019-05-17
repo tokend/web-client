@@ -8,7 +8,6 @@
           </template>
           <update-asset-form-module
             :request-id="selectedRequest.id"
-            :storage-url="storageUrl"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -58,8 +57,6 @@ import RequestsTable from './components/requests-table'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
-import { initConfig } from './_config'
-
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
@@ -74,13 +71,6 @@ export default {
     RequestsTable,
     RequestViewer,
     UpdateAssetFormModule,
-  },
-
-  props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -99,7 +89,6 @@ export default {
   },
 
   created () {
-    initConfig(this.storageUrl)
     this.initFirstPageLoader()
   },
 
