@@ -7,27 +7,17 @@
       >
         <whitelist-invite-form
           :sale="sale"
-          @invited="initUsersUpdate"
+          @invited="shouldInvitesUpdate = true"
         />
       </tab>
 
       <tab
-        :name="'sale-whitelist.unregistered-users-tab' | globalize"
-        id="sale-whitelist-manager-unregistered-users-tab"
+        :name="'sale-whitelist.invites-list-tab' | globalize"
+        id="sale-whitelist-manager-invites-list-tab"
       >
-        <sale-whitelist-unregistered-users
+        <whitelist-invites
           :sale="sale"
-          :should-update.sync="shouldUnregisteredUsersUpdate"
-        />
-      </tab>
-
-      <tab
-        :name="'sale-whitelist.registered-users-tab' | globalize"
-        id="sale-whitelist-manager-registered-users-tab"
-      >
-        <sale-whitelist-registered-users
-          :sale="sale"
-          :should-update.sync="shouldRegisteredUsersUpdate"
+          :should-update.sync="shouldInvitesUpdate"
         />
       </tab>
     </tabs>
@@ -39,8 +29,7 @@ import Tabs from '@/vue/common/tabs/Tabs'
 import Tab from '@/vue/common/tabs/Tab'
 
 import WhitelistInviteForm from '@/vue/forms/WhitelistInviteForm'
-import SaleWhitelistRegisteredUsers from './whitelist/SaleWhitelistRegisteredUsers'
-import SaleWhitelistUnregisteredUsers from './whitelist/SaleWhitelistUnregisteredUsers'
+import WhitelistInvites from './whitelist/WhitelistInvites'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -50,8 +39,7 @@ export default {
     Tabs,
     Tab,
     WhitelistInviteForm,
-    SaleWhitelistRegisteredUsers,
-    SaleWhitelistUnregisteredUsers,
+    WhitelistInvites,
   },
 
   props: {
@@ -59,15 +47,7 @@ export default {
   },
 
   data: _ => ({
-    shouldRegisteredUsersUpdate: false,
-    shouldUnregisteredUsersUpdate: false,
+    shouldInvitesUpdate: false,
   }),
-
-  methods: {
-    initUsersUpdate () {
-      this.shouldRegisteredUsersUpdate = true
-      this.shouldUnregisteredUsersUpdate = true
-    },
-  },
 }
 </script>

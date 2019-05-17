@@ -50,7 +50,11 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { api } from '@/api'
+
 import { required, email } from '@validators'
+
+import { SaleRecord } from '@/js/records/entities/sale.record'
 
 const EVENTS = {
   invited: 'invited',
@@ -58,6 +62,10 @@ const EVENTS = {
 export default {
   name: 'whitelist-invite-form',
   mixins: [FormMixin],
+
+  props: {
+    sale: { type: SaleRecord, required: true },
+  },
 
   data: _ => ({
     form: {
@@ -78,6 +86,23 @@ export default {
     async submit () {
       this.isFormSubmitting = true
       try {
+        await api.postWithSignature('/invites', {
+          data: {
+            type: 'whitelist-invite',
+            attributes: {
+              email: this.form.email,
+            },
+            relationships: {
+              sales: {
+                data: {
+                  type: 'sale',
+                  id: this.sale.id,
+                },
+              },
+            },
+          },
+        })
+
         Bus.success('sale-whitelist.user-invited-msg')
         this.$emit(EVENTS.invited)
       } catch (e) {

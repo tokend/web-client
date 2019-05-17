@@ -1515,8 +1515,7 @@
     },
     "sale-whitelist": {
       "invite-tab": "Invite",
-      "unregistered-users-tab": "Unregistered",
-      "registered-users-tab": "Registered",
+      "invites-list-tab": "Invites list",
       "invite-title": "Invite a user to the sale whitelist",
       "email-lbl": "User's email",
       "invite-btn": "Invite",
@@ -1531,9 +1530,11 @@
       "no-unregistered-users-msg": "The sale whitelist has no non-registered users yet",
       "user-th": "User",
       "email-th": "Email",
+      "registered-th": "Registered",
       "remove-btn": "Remove",
       "confirm-btn": "Confirm",
       "cancel-btn": "Cancel",
+      "processing-btn": "Processing…",
       "user-removed-msg": "The user was successfully removed from the whitelist"
     },
     "invest-form": {
