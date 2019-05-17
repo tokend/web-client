@@ -63,6 +63,7 @@ for further information about branching and tagging conventions.
   - "ManageOfferMixin"
 - Remove _config.js from modules
 - Remove storageUrl from modules
+- Use v3 for trade
 
 #### Removed
 - Unused methods from `DocumentContainer` class
