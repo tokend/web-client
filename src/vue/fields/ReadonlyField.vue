@@ -27,7 +27,7 @@ export default {
   props: {
     label: { type: String, default: 'Label' },
     value: { type: String, default: '' },
-    errorMessage: { type: String, default: undefined },
+    errorMessage: { type: String, default: '' },
   },
 }
 </script>
