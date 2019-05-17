@@ -5,12 +5,10 @@
   >
     <div class="app__form-row">
       <div class="app__form-field">
-        <div class="app__form-field">
-          <readonly-field
-            :label="baseAssetLabelTranslationId | globalize"
-            :value="offer.baseAsset.id"
-          />
-        </div>
+        <readonly-field
+          :label="baseAssetLabelTranslationId | globalize"
+          :value="offer.baseAsset.id"
+        />
       </div>
     </div>
 
