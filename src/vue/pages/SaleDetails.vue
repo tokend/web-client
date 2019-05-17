@@ -19,63 +19,7 @@
             <span>{{ 'sale-details.campaign-tab' | globalize }}</span>
           </router-link>
         </template>
-
-        <template slot="extra">
-          <button
-            v-ripple
-            v-if="sale.owner === accountId"
-            class="app__button-raised sale-details__invest-btn"
-            @click="isWhitelistDrawerShown = true"
-          >
-            {{ 'sale-details.whitelist' | globalize }}
-          </button>
-
-          <button
-            v-ripple
-            v-if="sale.owner === accountId"
-            class="app__button-raised sale-details__invest-btn"
-            @click="isStatisticsDrawerShown = true"
-          >
-            {{ 'sale-details.statistics' | globalize }}
-          </button>
-
-          <button
-            v-ripple
-            class="app__button-raised sale-details__invest-btn"
-            @click="isInvestDrawerShown = true"
-          >
-            {{ 'sale-details.invest' | globalize }}
-          </button>
-        </template>
       </top-bar>
-
-      <drawer :is-shown.sync="isStatisticsDrawerShown">
-        <template slot="heading">
-          {{ 'sale-details.statistics' | globalize }}
-        </template>
-
-        <sale-statistics-viewer :sale="sale" />
-      </drawer>
-
-      <drawer :is-shown.sync="isWhitelistDrawerShown">
-        <template slot="heading">
-          {{ 'sale-details.whitelist' | globalize }}
-        </template>
-
-        <sale-whitelist-manager :sale="sale" />
-      </drawer>
-
-      <drawer :is-shown.sync="isInvestDrawerShown">
-        <template slot="heading">
-          {{ 'sale-details.invest' | globalize }}
-        </template>
-
-        <invest-form
-          :sale="sale"
-          @submitted="hideInvestDrawer() || refreshSale()"
-          @canceled="hideInvestDrawer() || refreshSale()"
-        />
-      </drawer>
 
       <div class="sale-details__title">
         <h2 class="sale-details__name">
@@ -87,7 +31,10 @@
         </p>
       </div>
 
-      <router-view :sale="sale" />
+      <router-view
+        :sale="sale"
+        @sale-updated="refreshSale"
+      />
     </template>
 
     <template v-else-if="isSaleNotFound">
@@ -113,12 +60,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
-import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-
-import InvestForm from '@/vue/forms/InvestForm'
-import SaleStatisticsViewer from './sale-details/SaleStatisticsViewer'
-import SaleWhitelistManager from './sale-details/SaleWhitelistManager'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
@@ -129,19 +71,12 @@ import { errors } from '@/js/errors'
 
 import { vueRoutes } from '@/vue-router/routes'
 
-import { mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
-
 export default {
   name: 'sale-details',
   components: {
     TopBar,
     Loader,
-    Drawer,
     NoDataMessage,
-    InvestForm,
-    SaleStatisticsViewer,
-    SaleWhitelistManager,
   },
 
   props: {
@@ -152,17 +87,8 @@ export default {
     sale: null,
     isSaleNotFound: false,
     isLoadingFailed: false,
-    isInvestDrawerShown: false,
-    isStatisticsDrawerShown: false,
-    isWhitelistDrawerShown: false,
     vueRoutes,
   }),
-
-  computed: {
-    ...mapGetters({
-      accountId: vuexTypes.accountId,
-    }),
-  },
 
   async created () {
     await this.loadSale(this.id)
@@ -188,10 +114,6 @@ export default {
     async refreshSale () {
       this.sale = null
       await this.loadSale(this.id)
-    },
-
-    hideInvestDrawer () {
-      this.isInvestDrawerShown = false
     },
   },
 }

@@ -105,6 +105,7 @@ export default {
 
         Bus.success('whitelist-invite-form.user-invited-msg')
         this.$emit(EVENTS.invited)
+        this.clearFields()
       } catch (e) {
         ErrorHandler.process(e)
       }

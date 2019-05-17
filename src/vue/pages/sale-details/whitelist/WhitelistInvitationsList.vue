@@ -1,17 +1,17 @@
 <template>
-  <div class="whitelist-invitations">
+  <div class="whitelist-invitations-list">
     <template v-if="isLoaded">
-      <template v-if="invites.length">
-        <div class="whitelist-invitations__actions-wrp">
-          <template v-if="isDeletingMode">
+      <template v-if="invitations.length">
+        <div class="whitelist-invitations-list__actions-wrp">
+          <template v-if="isRemovalMode">
             <button
               class="app__button-raised
                      app__button-raised--danger
-                     whitelist-invitations__action"
-              @click="removeInvites"
-              :disabled="!invitesToRemove.length || isInvitesRemoving"
+                     whitelist-invitations-list__action"
+              @click="removeInvitations"
+              :disabled="!invitationsToRemove.length || isInvitationsRemoving"
             >
-              <template v-if="isInvitesRemoving">
+              <template v-if="isInvitationsRemoving">
                 {{ 'sale-whitelist.processing-btn' | globalize }}
               </template>
 
@@ -21,9 +21,9 @@
             </button>
 
             <button
-              class="app__button-raised whitelist-invitations__action"
-              @click="cancelDeleting"
-              :disabled="isInvitesRemoving"
+              class="app__button-raised whitelist-invitations-list__action"
+              @click="cancelRemovalMode"
+              :disabled="isInvitationsRemoving"
             >
               {{ 'sale-whitelist.cancel-removal-btn' | globalize }}
             </button>
@@ -31,36 +31,38 @@
 
           <template v-else>
             <button
-              class="app__button-raised whitelist-invitations__action"
-              @click="isDeletingMode = true"
+              class="app__button-raised whitelist-invitations-list__action"
+              @click="isRemovalMode = true"
             >
               {{ 'sale-whitelist.edit-invitations-btn' | globalize }}
             </button>
           </template>
         </div>
 
-        <div class="app__table whitelist-invitations__table">
+        <div class="app__table whitelist-invitations-list__table">
           <table>
             <thead>
-              <th v-if="isDeletingMode" />
+              <th v-if="isRemovalMode" />
               <th>{{ 'sale-whitelist.email-th' | globalize }}</th>
               <th>{{ 'sale-whitelist.registered-th' | globalize }}</th>
             </thead>
             <tbody>
               <tr
-                v-for="invite in invites"
-                :key="invite.id"
+                v-for="invitation in invitations"
+                :key="invitation.id"
               >
-                <td v-if="isDeletingMode">
-                  <tick-field v-model="invite.isDeleting">
+                <td v-if="isRemovalMode">
+                  <tick-field v-model="invitation.shouldBeRemoved">
                     &nbsp;
                   </tick-field>
                 </td>
+
                 <td>
-                  {{ invite.email }}
+                  {{ invitation.email }}
                 </td>
+
                 <td>
-                  <template v-if="invite.accounts">
+                  <template v-if="invitation.accounts">
                     {{ 'sale-whitelist.yes-msg' | globalize }}
                   </template>
 
@@ -77,13 +79,13 @@
       <no-data-message
         v-else
         icon-name="trending-up"
-        :title="'sale-whitelist.no-unregistered-users-title' | globalize"
-        :message="'sale-whitelist.no-unregistered-users-msg' | globalize"
+        :title="'sale-whitelist.no-invitations-title' | globalize"
+        :message="'sale-whitelist.no-invitations-msg' | globalize"
       />
     </template>
 
     <template v-else-if="isLoadFailed">
-      <p class="whitelist-invitations-msg">
+      <p class="whitelist-invitations-list-msg">
         {{ 'sale-whitelist.loading-error-msg' | globalize }}
       </p>
     </template>
@@ -92,12 +94,12 @@
       <load-spinner message-id="sale-whitelist.loading-msg" />
     </template>
 
-    <div class="whitelist-invitations__collection-loader-wrp">
+    <div class="whitelist-invitations-list__collection-loader-wrp">
       <collection-loader
-        v-show="isLoaded && invites.length"
+        v-show="isLoaded && invitations.length"
         :first-page-loader="firstPageLoader"
-        @first-page-load="setInvites"
-        @next-page-load="concatInvites"
+        @first-page-load="setInvitations"
+        @next-page-load="concatInvitations"
       />
     </div>
   </div>
@@ -120,7 +122,7 @@ const EVENTS = {
 }
 
 export default {
-  name: 'whitelist-invitations',
+  name: 'whitelist-invitations-list',
   components: {
     LoadSpinner,
     NoDataMessage,
@@ -136,16 +138,16 @@ export default {
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
-    isDeletingMode: false,
-    isInvitesRemoving: false,
-    invites: [],
+    isRemovalMode: false,
+    isInvitationsRemoving: false,
+    invitations: [],
     firstPageLoader: _ => {},
   }),
 
   computed: {
-    invitesToRemove () {
-      return this.invites
-        .filter(item => item.isDeleting)
+    invitationsToRemove () {
+      return this.invitations
+        .filter(item => item.shouldBeRemoved)
         .map(item => ({
           type: 'whitelist-invite',
           id: item.id,
@@ -168,10 +170,10 @@ export default {
 
   methods: {
     initFirstPageLoader () {
-      this.firstPageLoader = _ => this.loadInvitesWhitelist()
+      this.firstPageLoader = _ => this.loadInvitations()
     },
 
-    async loadInvitesWhitelist () {
+    async loadInvitations () {
       this.isLoaded = false
       try {
         const response = await api.getWithSignature('/invites', {
@@ -186,43 +188,43 @@ export default {
       }
     },
 
-    setInvites (invites) {
-      this.invites = invites.map(item => {
-        item.isDeleting = false
+    setInvitations (invitations) {
+      this.invitations = invitations.map(item => {
+        item.shouldBeRemoved = false
         return item
       })
     },
 
-    concatInvites (invites) {
-      this.invites = this.invites.concat(
-        invites.map(item => {
-          item.isDeleting = false
+    concatInvitations (invitations) {
+      this.invitations = this.invitations.concat(
+        invitations.map(item => {
+          item.shouldBeRemoved = false
           return item
         })
       )
     },
 
-    cancelDeleting () {
-      this.invites.forEach(item => {
-        item.isDeleting = false
+    cancelRemovalMode () {
+      this.invitations.forEach(item => {
+        item.shouldBeRemoved = false
       })
-      this.isDeletingMode = false
+      this.isRemovalMode = false
     },
 
-    async removeInvites () {
-      this.isInvitesRemoving = true
+    async removeInvitations () {
+      this.isInvitationsRemoving = true
       try {
         await api.deleteWithSignature('/invites', {
-          data: this.invitesToRemove,
+          data: this.invitationsToRemove,
         })
         Bus.success('sale-whitelist.users-removed-msg')
-        this.isDeletingMode = false
+        this.isRemovalMode = false
         this.initFirstPageLoader()
       } catch (e) {
         ErrorHandler.process(e)
       }
-      this.isInvitesRemoving = false
-    }
+      this.isInvitationsRemoving = false
+    },
   },
 }
 </script>
@@ -230,25 +232,16 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.whitelist-invitations__icon {
-  &:before {
-    font-size: 2.4rem;
-  }
-
-  &--present { color: $col-success; }
-  &--absent { color: $col-error; }
-}
-
-.whitelist-invitations__actions-wrp {
+.whitelist-invitations-list__actions-wrp {
   display: flex;
   margin: -1rem;
 }
 
-.whitelist-invitations__action {
+.whitelist-invitations-list__action {
   margin: 1rem;
 }
 
-.whitelist-invitations__table {
+.whitelist-invitations-list__table {
   margin-top: 2rem;
 }
 </style>
