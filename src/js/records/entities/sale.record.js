@@ -16,9 +16,9 @@ export class SaleRecord {
     this.id = record.id
     this.owner = _get(record, 'owner.id')
     this.baseAsset = _get(record, 'baseAsset.id')
-    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.id')
+    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.asset.id')
     this.quoteAssets = _get(record, 'quoteAssets') || []
-    this.baseHardCap = _get(record, 'baseAsset.pendingIssuance')
+    this.baseHardCap = _get(record, 'baseHardCap')
     this.startTime = _get(record, 'startTime')
     this.endTime = _get(record, 'endTime')
     this.softCap = _get(record, 'defaultQuoteAsset.softCap')
