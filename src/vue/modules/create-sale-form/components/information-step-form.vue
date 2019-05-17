@@ -211,8 +211,10 @@ import {
   minDate,
   noMoreThanAvailableForIssuance,
 } from '@validators'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
-import { config } from '../_config'
+import config from '@/config'
 
 const EVENTS = {
   submit: 'submit',
@@ -243,8 +245,8 @@ export default {
       quoteAssets: [],
       isWhitelisted: false,
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
-    MAX_AMOUNT: config().MAX_AMOUNT,
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
@@ -288,6 +290,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      vuexTypes.defaultQuoteAsset,
+    ]),
     priceForAsset () {
       return {
         value: MathUtil.divide(

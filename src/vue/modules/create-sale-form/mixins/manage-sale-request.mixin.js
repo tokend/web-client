@@ -8,6 +8,9 @@ import { api } from '@/api'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
 
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
+
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
 const DEFAULT_QUOTE_ASSET_PRICE = '1'
@@ -25,6 +28,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      vuexTypes.defaultQuoteAsset,
+    ]),
     saleRequestOpts () {
       const saleLogo = this.shortBlurbStepForm.saleLogo
 

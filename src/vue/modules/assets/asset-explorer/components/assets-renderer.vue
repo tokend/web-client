@@ -9,7 +9,6 @@
 
           <update-asset-form-module
             :asset-code="selectedAsset.code"
-            :storage-url="storageUrl"
             @close="isDrawerShown = false"
           />
         </template>
@@ -21,7 +20,6 @@
 
           <asset-attributes-viewer
             :asset="selectedAsset"
-            :storage-url="storageUrl"
             :kyc-required-asset-type="kycRequiredAssetType"
             :security-asset-type="securityAssetType"
           />
@@ -51,7 +49,6 @@
           <template v-for="asset in assets">
             <card-viewer
               :asset="asset"
-              :storage-url="storageUrl"
               :key="asset.code"
               @click="selectAsset(asset)"
             />
@@ -122,10 +119,6 @@ export default {
   },
 
   props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
     isAccountUnverified: {
       type: Boolean,
       required: true,

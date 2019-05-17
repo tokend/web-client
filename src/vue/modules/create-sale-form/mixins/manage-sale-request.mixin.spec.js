@@ -14,7 +14,7 @@ const localVue = createLocalVue()
 
 const Component = {
   template: `<div></div>`,
-  props: ['storageUrl', 'requestId'],
+  props: ['requestId'],
   data: _ => ({
     informationStepForm: {
       name: '',
@@ -49,6 +49,11 @@ describe('Manage sale request mixin', () => {
         account: {
           getters: {
             accountId: () => ('SOME_ACCOUNT_ID'),
+          },
+        },
+        keyValue: {
+          getters: {
+            defaultQuoteAsset: () => ('USD'),
           },
         },
       },

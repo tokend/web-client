@@ -28,6 +28,8 @@ for further information about branching and tagging conventions.
 - Sentry integration
 - Email validation on login form
 - "MessageBox" component for displaying titled messages
+- Pre-issuance guide
+- Error message to the "ReadonlyField"
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -53,6 +55,14 @@ for further information about branching and tagging conventions.
 - Removed wallet providing to each module
 - Now displaying disabled investing reason using "MessageBox" component
 - Moved exceeding sale cap message to vuelidate error messages
+- Import api instead of Api in security page
+- Refactored trade offer forms & related mixin:
+  - "CreateTradeOfferForm"
+  - "SubmitTradeOfferForm"
+  - "YourTradeOfferForm"
+  - "ManageOfferMixin"
+- Remove _config.js from modules
+- Remove storageUrl from modules
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -73,6 +83,9 @@ for further information about branching and tagging conventions.
 - Some typos in EN translations
 - Fixed issue with 0 instead of converted balance on Dashboard
 - Displaying quote asset as currency on the line chart
+- Trade forms translations
+- Account balances mapping in deposit form
+- Issue with "Update" button that was not shown on "Assets" page
 
 ## [1.6.0] - 2019-05-09
 #### Changed

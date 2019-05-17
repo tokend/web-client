@@ -8,7 +8,6 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { api } from '@/api'
-import * as Config from './_config'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()
@@ -65,18 +64,10 @@ describe('Create sale form module', () => {
       describe('init', () => {
         it('initializes config, calls load methods, and sets isLoaded property to true',
           async () => {
-            wrapper.setProps({
-              storageUrl: 'SOME_CONFIG',
-            })
-
-            sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadAssets').resolves()
             sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
 
             await wrapper.vm.init()
-
-            expect(Config.initConfig)
-              .to.have.been.calledOnceWithExactly('SOME_CONFIG')
 
             expect(wrapper.vm.loadAssets).to.have.been.calledOnce
             expect(wrapper.vm.tryLoadRequest).to.have.been.calledOnce

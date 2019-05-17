@@ -6,8 +6,6 @@ import { createAssetRequestsModule } from './store/index'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
-import * as Config from './_config'
-
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -32,31 +30,14 @@ describe('Create asset requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(Config, 'initConfig')
       sandbox.stub(CreateAssetRequestsModule.methods, 'loadAssetTypes')
       sandbox.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls initConfig function with correct params', async () => {
-      await shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
-      })
-
-      expect(Config.initConfig)
-        .to.have.been.calledOnceWithExactly('https://storage.com')
     })
 
     it('calls loadAssetTypes method', async () => {
       await shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
       })
 
       expect(CreateAssetRequestsModule.methods.loadAssetTypes)
@@ -67,9 +48,6 @@ describe('Create asset requests module', () => {
       await shallowMount(CreateAssetRequestsModule, {
         localVue,
         store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
       })
 
       expect(CreateAssetRequestsModule.methods.initFirstPageLoader)

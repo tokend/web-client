@@ -44,6 +44,21 @@
           />
         </div>
       </template>
+
+      <template v-else-if="viewMode === VIEW_MODES.viewNetworkPassphrase">
+        <template slot="heading">
+          {{ 'security-page.network-passphrase-title' | globalize }}
+        </template>
+        <div class="network-passphrase">
+          <p class="network-passphrase__description">
+            {{ 'security-page.network-passphrase-desc' | globalize }}
+          </p>
+          <clipboard-field
+            :value="api.networkDetails.networkPassphrase"
+            :label="'security-page.network-passphrase-title' | globalize"
+          />
+        </div>
+      </template>
     </drawer>
 
     <div class="security-page__row">
@@ -98,6 +113,21 @@
           {{ 'security-page.view-secret-seed-btn' | globalize }}
         </a>
       </div>
+      <hr>
+    </template>
+    <template
+      v-if="getModule().canRenderSubmodule(ShowNetworkPassphrasePseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.network-passphrase-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.viewNetworkPassphrase)"
+        >
+          {{ 'security-page.view-network-passphrase-btn' | globalize }}
+        </a>
+      </div>
     </template>
   </div>
 </template>
@@ -114,18 +144,21 @@ import TfaForm from '@/vue/forms/TfaForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
+import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
   changePassword: 'changePassword',
   viewAccountId: 'viewAccountId',
   viewSecretSeed: 'viewSecretSeed',
+  viewNetworkPassphrase: 'viewNetworkPassphrase',
   default: '',
 }
 
@@ -146,6 +179,8 @@ export default {
     ShowAccountIdPseudoModule,
     ShowSeedPseudoModule,
     ChangePasswordPseudoModule,
+    ShowNetworkPassphrasePseudoModule,
+    api,
   }),
 
   computed: {
@@ -218,7 +253,8 @@ export default {
   color: $col-link;
 }
 
-.secret-seed__description {
+.secret-seed__description,
+.network-passphrase__description {
   font-size: 1.2rem;
   line-height: 1.25;
   color: $col-text-secondary;

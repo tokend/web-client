@@ -4,7 +4,7 @@ import { api } from '@/api'
 
 import _omit from 'lodash/omit'
 
-import { config } from '../_config'
+import config from '@/config'
 
 export default {
   methods: {
@@ -47,7 +47,7 @@ export default {
       const formData = this.createFileFormData(file, policy, mimeType)
 
       // TODO: posting should not be on this level of abstraction
-      await Vue.http.post(config().storageURL, formData)
+      await Vue.http.post(config.FILE_STORAGE, formData)
     },
 
     createFileFormData (file, policy, mimeType) {

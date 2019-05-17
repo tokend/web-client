@@ -37,9 +37,6 @@ describe('Update asset requests module', () => {
       shallowMount(UpdateAssetRequestsModule, {
         localVue,
         store,
-        propsData: {
-          storageUrl: 'https://storage.com',
-        },
       })
 
       expect(UpdateAssetRequestsModule.methods.initFirstPageLoader)
