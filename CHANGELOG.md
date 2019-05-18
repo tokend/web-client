@@ -64,6 +64,7 @@ for further information about branching and tagging conventions.
 - Remove _config.js from modules
 - Remove storageUrl from modules
 - Now using `DocumentsManager` from SDK to upload documents to the storage
+- Now getting document URL using documentsManager
 
 #### Removed
 - Unused methods from `DocumentContainer` class

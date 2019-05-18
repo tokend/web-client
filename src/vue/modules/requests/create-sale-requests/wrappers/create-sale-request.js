@@ -46,10 +46,6 @@ export class CreateSaleRequest extends Request {
     }
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
   _getQuoteAssets (record) {
     return safeGet(record, 'requestDetails.quoteAssets', [])
       .map(asset => asset.id)

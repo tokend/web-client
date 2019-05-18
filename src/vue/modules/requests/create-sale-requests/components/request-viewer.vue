@@ -43,7 +43,7 @@ import RequestActions from './request-actions'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -79,7 +79,7 @@ export default {
   computed: {
     assetLogoUrl () {
       if (this.baseAsset) {
-        return this.baseAsset.logoUrl(config.FILE_STORAGE)
+        return documentsManager.getDocumentUrlByKey(this.baseAsset.logoKey)
       } else {
         return ''
       }

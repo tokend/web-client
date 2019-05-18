@@ -26,14 +26,6 @@ export class Asset {
     this.balance = balance
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
-  termsUrl (storageUrl) {
-    return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
-  }
-
   get isTransferable () {
     return Boolean(this.policy & ASSET_POLICIES.transferable)
   }

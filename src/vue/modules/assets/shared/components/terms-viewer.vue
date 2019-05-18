@@ -16,7 +16,7 @@
 <script>
 import { Asset } from '../wrappers/asset'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 
 export default {
   name: 'terms-viewer',
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     href () {
-      return this.asset.termsUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(this.asset.termsKey)
     },
   },
 }
