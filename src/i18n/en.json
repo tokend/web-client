@@ -104,7 +104,8 @@
       "transaction": "The transaction you sent is invalid",
       "account-blocked": "Your account is blocked",
       "user-doesnt-exist": "This user doesn't exist in system",
-      "balance-not-found": "The user does not have this asset balance yet"
+      "balance-not-found": "The user does not have this asset balance yet",
+      "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later"
     },
     "transaction-errors": {
       "tx_failed": "Transaction failed",

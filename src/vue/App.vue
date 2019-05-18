@@ -48,7 +48,7 @@ import {
   mapActions,
 } from 'vuex'
 import { Sdk } from '@/sdk'
-import { api, documentsManager, walletsManager, factorsManager } from '@/api'
+import { api, useWallet, documentsManager } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
@@ -119,14 +119,12 @@ export default {
           this.walletId
         )
         Sdk.sdk.useWallet(wallet)
-        api.useWallet(wallet)
+        useWallet(wallet)
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
         })
       }
-      walletsManager.useApi(api)
-      factorsManager.useApi(api)
     },
     detectIE () {
       const edge = window.navigator.userAgent.indexOf('Edge/')
