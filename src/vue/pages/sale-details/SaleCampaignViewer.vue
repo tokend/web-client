@@ -130,12 +130,12 @@ export default {
 @import '~@scss/mixins';
 
 .sale-campaign-viewer {
-  margin-top: 1.6rem;
+  margin-top: 2rem;
 }
 
 .sale-campaign-viewer__actions-wrp {
   display: flex;
-  margin: -1rem -1rem 1rem;
+  margin: -1rem -1rem 1.4rem;
 }
 
 .sale-campaign-viewer__action-btn {
