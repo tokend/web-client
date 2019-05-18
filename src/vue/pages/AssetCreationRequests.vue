@@ -3,7 +3,6 @@
     <submodule-importer
       v-if="getModule().canRenderSubmodule(CreateAssetRequestsModule)"
       :submodule="getModule().getSubmodule(CreateAssetRequestsModule)"
-      :storage-url="storageUrl"
       :kyc-required-asset-type="kvAssetTypeKycRequired"
     />
   </div>
@@ -16,8 +15,6 @@ import { CreateAssetRequestsModule } from '@/vue/modules/requests/create-asset-r
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import config from '@/config'
-
 export default {
   name: 'asset-creation-requests-page',
   components: {
@@ -26,7 +23,6 @@ export default {
 
   data: _ => ({
     CreateAssetRequestsModule,
-    storageUrl: config.FILE_STORAGE,
   }),
 
   computed: {

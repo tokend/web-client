@@ -125,7 +125,7 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { config } from '../_config'
+import config from '@/config'
 
 import { requiredUnless, amountRange } from '@validators'
 import { vueRoutes } from '@/vue-router/routes'
@@ -153,7 +153,7 @@ export default {
       initialPreissuedAmount: '',
       terms: null,
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
+    MIN_AMOUNT: config.MIN_AMOUNT,
     DOCUMENT_TYPES,
     vueRoutes,
   }),
@@ -188,7 +188,7 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preIssuanceAssetSigner === config().NULL_ASSET_SIGNER
+        this.request.preIssuanceAssetSigner === config.NULL_ASSET_SIGNER
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,

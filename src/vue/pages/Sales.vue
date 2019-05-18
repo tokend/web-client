@@ -78,7 +78,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModule)"
-          :storage-url="storageUrl"
           @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
@@ -117,7 +116,6 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    storageUrl: config.FILE_STORAGE,
     CreateSaleFormModule,
     vueRoutes,
     CreateOpportunityModule,

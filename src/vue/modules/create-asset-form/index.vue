@@ -53,8 +53,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
-import { initConfig } from './_config'
-
 const STEPS = {
   information: {
     number: 1,
@@ -80,10 +78,6 @@ export default {
   },
   mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
   props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
     requestId: {
       type: String,
       default: '',
@@ -114,8 +108,6 @@ export default {
   methods: {
     async init () {
       try {
-        initConfig(this.storageUrl)
-
         await this.loadKycRequiredAssetType()
         await this.loadSecurityAssetType()
 

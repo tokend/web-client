@@ -3,7 +3,6 @@
     <div class="asset-attributes-viewer__header">
       <logo-viewer
         :asset="asset"
-        :storage-url="storageUrl"
         :dark-mode="true"
       />
 
@@ -117,7 +116,7 @@
           <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
-              <terms-viewer :asset="asset" :storage-url="storageUrl" />
+              <terms-viewer :asset="asset" />
             </td>
           </tr>
           <tr>
@@ -151,7 +150,6 @@ export default {
   },
   props: {
     asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },
