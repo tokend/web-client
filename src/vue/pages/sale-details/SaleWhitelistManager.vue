@@ -7,7 +7,7 @@
       >
         <whitelist-invite-form
           :sale="sale"
-          @invited="$refs.whitelistInvitationsList.initFirstPageLoader()"
+          @invited="$refs.whitelistInvitationsList.reloadInvitations()"
         />
       </tab>
 

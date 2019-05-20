@@ -150,6 +150,11 @@ export default {
   },
 
   methods: {
+    // Public method for calling it via ref attributes
+    reloadInvitations () {
+      this.initFirstPageLoader()
+    },
+
     initFirstPageLoader () {
       this.firstPageLoader = _ => this.loadInvitations()
     },
