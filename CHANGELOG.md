@@ -64,8 +64,11 @@ for further information about branching and tagging conventions.
 - Remove _config.js from modules
 - Remove storageUrl from modules
 - Now taking matches from v3/matches instead of legacy /trades API endpoint
-- Fixed wordings
-- Refactored 'DepositForm'
+- Changed wordings:
+  - Change "Account address" to "Account ID" on "Settings" page
+  - Add recommendtaion of using Google Authenticator to 2FA screen
+  - Fix typo with "some assets" on the Deposit form
+- Show expiration date of deposit address on the Deposit form
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -93,7 +96,6 @@ for further information about branching and tagging conventions.
 - Displaying quote asset as currency on the line chart
 - Trade forms translations
 - Account balances mapping in deposit form
-- Fixed wordings
 - Issue with "Update" button that was not shown on "Assets" page
 
 ## [1.6.0] - 2019-05-09
