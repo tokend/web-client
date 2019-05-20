@@ -64,6 +64,7 @@ for further information about branching and tagging conventions.
 - Remove _config.js from modules
 - Remove storageUrl from modules
 - Now taking matches from v3/matches instead of legacy /trades API endpoint
+-`tipPriceChangeText` when price up from 0 to some value.
 
 #### Removed
 - Unused methods from `DocumentContainer` class
