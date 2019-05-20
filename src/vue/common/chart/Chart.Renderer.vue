@@ -413,7 +413,7 @@ export default {
             const currentValue = nearestPoint.value
             if (prevValue === 0) {
               if (prevValue < currentValue) {
-                tipPriceChangeText.text('+ 100%')
+                tipPriceChangeText.text('+100%')
               } else {
                 tipPriceChangeText.text('+0%')
               }
