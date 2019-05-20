@@ -63,12 +63,16 @@ for further information about branching and tagging conventions.
   - "ManageOfferMixin"
 - Remove _config.js from modules
 - Remove storageUrl from modules
-- Use v3 for trade
+- Now taking matches from v3/matches instead of legacy /trades API endpoint
 
 #### Removed
 - Unused methods from `DocumentContainer` class
 - More button for 'Movements' history
-- sdk.js
+- Unused global SDK instance
+- Unused mock-helper methods
+- `CreateSaleForm` component
+- `PreIssuanceForm` component
+- `requests-renderer` component
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
