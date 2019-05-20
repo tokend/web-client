@@ -64,6 +64,11 @@ for further information about branching and tagging conventions.
 - Remove _config.js from modules
 - Remove storageUrl from modules
 - Now taking matches from v3/matches instead of legacy /trades API endpoint
+- Changed wordings:
+  - Change "Account address" to "Account ID" on "Settings" page
+  - Add recommendtaion of using Google Authenticator to 2FA screen
+  - Fix typo with "some assets" on the Deposit form
+- Show expiration date of deposit address on the Deposit form
 
 #### Removed
 - Unused methods from `DocumentContainer` class
