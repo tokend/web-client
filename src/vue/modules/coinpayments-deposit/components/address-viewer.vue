@@ -19,7 +19,7 @@
 
 <script>
 import KeyViewer from '@/vue/common/KeyViewer'
-import TimeoutTicker from './timeout-ticker'
+import TimeoutTicker from '@/vue/common/TimeoutTicker'
 
 export default {
   name: 'address-viewer',
