@@ -1,0 +1,40 @@
+<template>
+  <tbody>
+    <tr
+      v-for="index in rows"
+      :key="index"
+    >
+      <td
+        v-for="item in cells"
+        :key="item"
+      >
+        <skeleton-loader
+          template="bigString"
+        />
+      </td>
+    </tr>
+  </tbody>
+</template>
+
+<script>
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
+
+export default {
+  name: 'skeleton-loader-table-row',
+  components: {
+    SkeletonLoader,
+  },
+  props: {
+    cells: {
+      type: Number,
+      default: 5,
+    },
+    rows: {
+      type: Number,
+      default: 3,
+    },
+  },
+}
+</script>
+
+<style scoped lang="scss" />

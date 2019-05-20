@@ -74,6 +74,9 @@
             </td>
           </tr>
         </tbody>
+        <skeleton-loader
+          v-if="true"
+        />
       </table>
     </div>
   </div>
@@ -82,12 +85,14 @@
 <script>
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
+import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
 
 export default {
   name: 'fees-table',
   components: {
     FeeTypeViewer,
     FeeSubtypeViewer,
+    SkeletonLoader,
   },
 
   props: {
@@ -98,6 +103,10 @@ export default {
     assetCode: {
       type: String,
       default: '',
+    },
+    isLoaded: {
+      type: Boolean,
+      require: true,
     },
   },
 }
