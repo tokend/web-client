@@ -63,10 +63,17 @@ for further information about branching and tagging conventions.
   - "ManageOfferMixin"
 - Remove _config.js from modules
 - Remove storageUrl from modules
+- Now taking matches from v3/matches instead of legacy /trades API endpoint
+- Refactored "DepositForm"
 
 #### Removed
 - Unused methods from `DocumentContainer` class
 - More button for 'Movements' history
+- Unused global SDK instance
+- Unused mock-helper methods
+- `CreateSaleForm` component
+- `PreIssuanceForm` component
+- `requests-renderer` component
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
@@ -86,6 +93,7 @@ for further information about branching and tagging conventions.
 - Trade forms translations
 - Account balances mapping in deposit form
 - Fixed wordings
+- Issue with "Update" button that was not shown on "Assets" page
 
 ## [1.6.0] - 2019-05-09
 #### Changed
