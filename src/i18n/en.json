@@ -447,7 +447,8 @@
       "secret-seed-desc": "Secret seed is private information that proves you own your account.",
       "network-passphrase-title": "Network passphrase",
       "view-network-passphrase-btn": "View network passphrase",
-      "network-passphrase-desc": "Network passphrase is a sequence of words or other text used to control access to a system"
+      "network-passphrase-desc": "Network passphrase is a sequence of words or other text used to control access to a system",
+      "account-id-label": "Account ID"
     },
     "tfa-form": {
       "password-lbl": "Current password",
@@ -1420,7 +1421,7 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-created-msg": "Your order was successfully created" 
+      "order-created-msg": "Your order was successfully created"
     },
     "submit-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1652,7 +1653,7 @@
       "asset": "Asset",
       "how-to": "To make a deposit, send your desired amount of asset to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only-prefix": "Attention:",
-      "asset-only": "The address below accepts {{asset}} only! All the other assets will be irretrievably lost.",
+      "asset-only": "The address above accepts {{asset}} only! All the other assets will be irretrievably lost.",
       "where-to": "{{asset}} address to deposit",
       "binding-address": "Please wait while we are trying to bind the address for you...",
       "no-address": "No available addresses to deposit yet. Please try again later.",
@@ -1660,7 +1661,9 @@
       "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the asset list.",
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
-      "loading-msg": "Loading…"
+      "loading-msg": "Loading…",
+      "generate-new-address-btn": "Generate new",
+      "address-lbl": "Address"
     },
     "deposit-fiat-module": {
       "form-title": "Deposit fiat",
