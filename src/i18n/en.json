@@ -1516,7 +1516,10 @@
       "video-about-sale-title": "Video about sale",
       "no-video-msg": "No video",
       "view-video-btn": "View",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "whitelisted-title": "Whitelisted",
+      "yes-msg": "Yes",
+      "no-msg": "No"
     },
     "sale-statistics": {
       "loading-msg": "Loading sale participations…",

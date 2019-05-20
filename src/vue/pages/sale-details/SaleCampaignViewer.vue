@@ -20,7 +20,7 @@
 
       <button
         v-ripple
-        v-if="sale.owner === accountId"
+        v-if="sale.owner === accountId && sale.isWhitelisted"
         class="app__button-raised sale-campaign-viewer__action-btn"
         @click="isWhitelistDrawerShown = true"
       >

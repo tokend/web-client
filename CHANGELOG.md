@@ -34,6 +34,8 @@ for further information about branching and tagging conventions.
 - "Whitelisted" checkbox on create sale form
 - Whitelist invite form component
 - Whitelist invitations list component
+- Sale definition types constant
+- "Whitelisted" row to sale details table
 
 #### Changed
 - Updated offer creating, updating drawers

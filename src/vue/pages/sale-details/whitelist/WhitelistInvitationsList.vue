@@ -146,12 +146,7 @@ export default {
 
   computed: {
     invitationsToRemove () {
-      return this.invitations
-        .filter(item => item.shouldBeRemoved)
-        .map(item => ({
-          type: 'whitelist-invite',
-          id: item.id,
-        }))
+      return this.invitations.filter(item => item.shouldBeRemoved)
     },
   },
 
@@ -215,7 +210,10 @@ export default {
       this.isInvitationsRemoving = true
       try {
         await api.deleteWithSignature('/invites', {
-          data: this.invitationsToRemove,
+          data: this.invitationsToRemove.map(item => ({
+            type: 'whitelist-invite',
+            id: item.id,
+          })),
         })
         Bus.success('sale-whitelist.users-removed-msg')
         this.isRemovalMode = false

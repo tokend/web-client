@@ -1,6 +1,8 @@
 import moment from 'moment'
 import _get from 'lodash/get'
 
+import { SALE_DEFINITION_TYPES } from '@/js/const/sale-definition-types.const'
+
 const STATES = {
   Open: 1,
   Closed: 2,
@@ -29,6 +31,8 @@ export class SaleRecord {
     this.stateValue = _get(record, 'saleState.value')
     this.stateStr = _get(record, 'saleState.name')
 
+    this.definitionType = _get(record, 'accessDefinitionType.value')
+
     this.details = _get(this._record, 'details')
     this.name = _get(record, 'details.name')
     this.description = _get(record, 'details.description')
@@ -52,6 +56,10 @@ export class SaleRecord {
 
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+  }
+
+  get isWhitelisted () {
+    return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }
 
   /** quote assets: **/
