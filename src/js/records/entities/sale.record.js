@@ -16,7 +16,7 @@ export class SaleRecord {
     this.id = record.id
     this.owner = _get(record, 'owner.id')
     this.baseAsset = _get(record, 'baseAsset.id')
-    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.id')
+    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.asset.id')
     this.quoteAssets = _get(record, 'quoteAssets') || []
     this.baseHardCap = _get(record, 'baseAsset.pendingIssuance')
     this.startTime = _get(record, 'startTime')
@@ -56,7 +56,7 @@ export class SaleRecord {
 
   /** quote assets: **/
 
-  get quoteAssetCodes () {
+  get quoteAssetCodesquoteAssetCodes () {
     return this.quoteAssets.map(asset => asset.asset)
   }
 
