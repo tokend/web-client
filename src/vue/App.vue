@@ -4,7 +4,15 @@
       v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"
       message-type="warning"
-    />
+    >
+      <router-link
+        tag="a"
+        :to="vueRoutes.supportedBrowsers.name"
+        class="app__warning-message-link"
+      >
+        {{ 'warning-banner.supported-browsers-list' | globalize }}
+      </router-link>
+    </warning-banner>
 
     <template v-if="isLoggedIn && isNavigationRendered">
       <warning-banner
@@ -74,6 +82,7 @@ export default {
   data: () => ({
     isNotSupportedBrowser: false,
     isAppInitialized: false,
+    vueRoutes,
   }),
 
   computed: {
@@ -198,5 +207,11 @@ export default {
     width: 100vw;
     padding: 0 $content-side-paddings-sm 3rem;
   }
+}
+
+.app__warning-message-link {
+  margin-left: 0.4rem;
+  color: $col-primary-txt;
+  font-size: 1.6rem;
 }
 </style>

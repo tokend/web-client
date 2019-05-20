@@ -39,7 +39,7 @@
       "percent": "{{value, percent}}"
     },
     "common": {
-      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work",
+      "browser-not-supported": "It seems your browser is not supported. Some of the features may not work.",
       "more-btn": "More"
     },
     "status-message": {
@@ -1965,7 +1965,8 @@
       "signer-email-lbl": "Email address"
     },
     "warning-banner": {
-      "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
+      "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}",
+      "supported-browsers-list": "Supported browsers list"
     },
     "clipboard-field": {
       "copied": "Copied"
