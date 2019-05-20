@@ -15,7 +15,7 @@
       :class="{
         'input-field__input--autofill-white': whiteAutofill
       }"
-      :type="inputType"
+      :type="type"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
@@ -24,16 +24,16 @@
     >
 
     <span
-      v-if="isVisibleBtn"
-      class="input-field__password-toggling"
+      v-if="isPasswordSwitcherShown"
+      class="input-field__password-toggle"
       :class="{
-        'input-field__password-toggling--autofill-white': whiteAutofill
+        'input-field__password-toggle--autofill-white': whiteAutofill
       }"
       @click="togglePasswordDisplay"
     >
       <i
-        class="mdi input-field__password-toggling-icon"
-        :class="isShownPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+        class="mdi input-field__password-toggle-icon"
+        :class="isPasswordShown ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
       />
     </span>
 
@@ -70,10 +70,9 @@ export default {
   },
 
   data: () => ({
-    inputType: '',
     isCapsLockOn: false,
-    isVisibleBtn: false,
-    isShownPassword: false,
+    isPasswordSwitcherShown: false,
+    isPasswordShown: false,
   }),
 
   computed: {
@@ -88,7 +87,6 @@ export default {
   },
 
   created () {
-    this.setInputType()
     this.displayPasswordToggleButton()
   },
 
@@ -124,20 +122,18 @@ export default {
       this.isCapsLockOn = event.getModifierState &&
         event.getModifierState('CapsLock')
     },
-    togglePasswordDisplay () {
-      if (this.inputType === 'password') {
-        this.inputType = 'text'
-        this.isShownPassword = true
-      } else if (this.inputType === 'text') {
-        this.inputType = 'password'
-        this.isShownPassword = false
+    togglePasswordDisplay (event) {
+      const input = event.target.parentNode.previousElementSibling
+      if (!this.isPasswordShown) {
+        input.setAttribute('type', 'text')
+        this.isPasswordShown = true
+      } else if (this.isPasswordShown) {
+        input.setAttribute('type', 'password')
+        this.isPasswordShown = false
       }
     },
     displayPasswordToggleButton () {
-      this.isVisibleBtn = this.type === 'password' ? 1 : 0
-    },
-    setInputType () {
-      this.inputType = this.type
+      this.isPasswordSwitcherShown = this.type === 'password' ? 1 : 0
     },
   },
 }
@@ -257,7 +253,7 @@ export default {
   }
 }
 
-.input-field__password-toggling {
+.input-field__password-toggle {
   position: absolute;
   right: 0;
   top: 0;
@@ -270,7 +266,7 @@ export default {
   }
 }
 
-.input-field__password-toggling-icon {
+.input-field__password-toggle-icon {
   font-size: 2.1rem;
 }
 
