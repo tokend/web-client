@@ -56,7 +56,7 @@ export class SaleRecord {
 
   /** quote assets: **/
 
-  get quoteAssetCodesquoteAssetCodes () {
+  get quoteAssetCodes () {
     return this.quoteAssets.map(asset => asset.asset)
   }
 
