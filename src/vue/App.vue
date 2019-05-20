@@ -1,7 +1,7 @@
 <template>
   <div id="app" v-if="isAppInitialized">
     <warning-banner
-      v-if="isNotSupportedBrowser"
+      v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"
       message-type="warning"
     />
@@ -55,6 +55,7 @@ import { api, walletsManager, factorsManager } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
+import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 
@@ -87,6 +88,9 @@ export default {
     ]),
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)
+    },
+    isSupportedBrowsersPage () {
+      return this.$route.name === vueRoutes.supportedBrowsers.name
     },
   },
 
