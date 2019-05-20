@@ -117,10 +117,6 @@ import { Bus } from '@/js/helpers/event-bus'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-const EVENTS = {
-  shouldUpdate: 'update:shouldUpdate',
-}
-
 export default {
   name: 'whitelist-invitations-list',
   components: {
@@ -132,7 +128,6 @@ export default {
 
   props: {
     sale: { type: SaleRecord, required: true },
-    shouldUpdate: { type: Boolean, default: false },
   },
 
   data: _ => ({
@@ -147,15 +142,6 @@ export default {
   computed: {
     invitationsToRemove () {
       return this.invitations.filter(item => item.shouldBeRemoved)
-    },
-  },
-
-  watch: {
-    shouldUpdate: function (value) {
-      if (value) {
-        this.initFirstPageLoader()
-        this.$emit(EVENTS.shouldUpdate, false)
-      }
     },
   },
 

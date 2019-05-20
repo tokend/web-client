@@ -7,17 +7,17 @@
       >
         <whitelist-invite-form
           :sale="sale"
-          @invited="shouldInvitesUpdate = true"
+          @invited="$refs.whitelistInvitationsList.initFirstPageLoader()"
         />
       </tab>
 
       <tab
         :name="'sale-whitelist.invitations-list-tab' | globalize"
-        id="sale-whitelist-manager-invites-list-tab"
+        id="sale-whitelist-manager-invitations-list-tab"
       >
         <whitelist-invitations-list
           :sale="sale"
-          :should-update.sync="shouldInvitesUpdate"
+          ref="whitelistInvitationsList"
         />
       </tab>
     </tabs>
