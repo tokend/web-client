@@ -97,6 +97,7 @@ for further information about branching and tagging conventions.
 - Trade forms translations
 - Account balances mapping in deposit form
 - Issue with "Update" button that was not shown on "Assets" page
+- Flickering on "Trade" page
 
 ## [1.6.0] - 2019-05-09
 #### Changed
