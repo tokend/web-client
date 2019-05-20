@@ -91,6 +91,10 @@ for further information about branching and tagging conventions.
 - Some typos in EN translations
 - Fixed issue with 0 instead of converted balance on Dashboard
 - Displaying quote asset as currency on the line chart
+- Trade forms translations
+- Account balances mapping in deposit form
+- Fixed wordings
+- Issue with "Update" button that was not shown on "Assets" page
 
 ## [1.6.0] - 2019-05-09
 #### Changed
