@@ -3,12 +3,10 @@
     <div class="supported-browsers__wrapper">
       <logo class="supported-browsers__logotype" />
       <h1 class="supported-browsers__title">
-        Browsers that support all of our features
+        {{ 'supported-browsers.title' | globalize }}
       </h1>
       <h2 class="supported-browsers__description">
-        Some browsers can not support some our features. You need to update
-        your current browser or download browser that supports all of our
-        features by following links below.
+        {{ 'supported-browsers.description' | globalize }}
       </h2>
 
       <div class="supported-browsers__browsers">
@@ -20,28 +18,28 @@
                 ${defaultSrc}/chrome/chrome_256x256.png 2x
               `"
               :src="`${defaultSrc}/chrome/chrome_128x128.png`"
-              alt="Chrome logotype"
+              :alt="'supported-browsers.google-chrome-img-alt' | globalize"
             >
           </picture>
           <h3 class="supported-browsers__browser-name">
-            Google Chrome (68+)
+            {{ 'supported-browsers.google-chrome-title' | globalize }}
           </h3>
           <div class="supported-browsers__browser-link">
             <template v-if="browserType === BROWSER_TYPES.ios">
               <a href="https://itunes.apple.com/ua/app/google-chrome/id535886823?mt=8" target="_blank">
-                App store
+                {{ 'supported-browsers.app-store' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
             <template v-else-if="browserType === BROWSER_TYPES.android">
               <a href="https://itunes.apple.com/ua/app/google-chrome/id535886823?mt=8" target="_blank">
-                Google play
+                {{ 'supported-browsers.google-play' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
             <template v-else>
               <a href="https://www.google.com/chrome" target="_blank">
-                Go to website
+                {{ 'supported-browsers.go-to-website' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
@@ -55,28 +53,28 @@
                 ${defaultSrc}/firefox/firefox_256x256.png 2x
               `"
               :src="`${defaultSrc}/firefox/firefox_128x128.png`"
-              alt="Firefox logotype"
+              :alt="'supported-browsers.mozilla-firefox-img-alt' | globalize"
             >
           </picture>
           <h3 class="supported-browsers__browser-name">
-            Mozilla Firefox (61+)
+            {{ 'supported-browsers.mozilla-firefox-title' | globalize }}
           </h3>
           <div class="supported-browsers__browser-link">
             <template v-if="browserType === BROWSER_TYPES.ios">
               <a href="https://itunes.apple.com/app/id989804926?mt=8" target="_blank">
-                App store
+                {{ 'supported-browsers.app-store' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
             <template v-else-if="browserType === BROWSER_TYPES.android">
               <a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox" target="_blank">
-                Google play
+                {{ 'supported-browsers.google-play' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
             <template v-else>
               <a href="https://www.firefox.com/" target="_blank">
-                Go to website
+                {{ 'supported-browsers.go-to-website' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
@@ -90,14 +88,14 @@
                 ${defaultSrc}/safari/safari_256x256.png 2x
               `"
               :src="`${defaultSrc}/safari/safari_128x128.png`"
-              alt="Safari logotype"
+              :alt="'supported-browsers.safari-img-alt' | globalize"
             >
           </picture>
           <h3 class="supported-browsers__browser-name">
-            Safari (10+)
+            {{ 'supported-browsers.safari-title' | globalize }}
           </h3>
           <div v-if="isSafari" class="supported-browsers__browser-link">
-            System update required
+            {{ 'supported-browsers.system-update-required' | globalize }}
           </div>
         </div>
         <div v-if="isWindows" class="supported-browsers__browser">
@@ -108,14 +106,14 @@
                 ${defaultSrc}/edge/edge_256x256.png 2x
               `"
               :src="`${defaultSrc}/edge/edge_128x128.png`"
-              alt="Edge logotype"
+              :alt="'supported-browsers.edge-img-alt' | globalize"
             >
           </picture>
           <h3 class="supported-browsers__browser-name">
-            Edge (17+)
+            {{ 'supported-browsers.edge-title' | globalize }}
           </h3>
           <div v-if="isEdge" class="supported-browsers__browser-link">
-            System update required
+            {{ 'supported-browsers.system-update-required' | globalize }}
           </div>
         </div>
         <div class="supported-browsers__browser">
@@ -126,28 +124,28 @@
                 ${defaultSrc}/opera/opera_256x256.png 2x
               `"
               :src="`${defaultSrc}/opera/opera_128x128.png`"
-              alt="Opera logotype"
+              :alt="'supported-browsers.opera-img-alt' | globalize"
             >
           </picture>
           <h3 class="supported-browsers__browser-name">
-            Opera (54+)
+            {{ 'supported-browsers.opera-title' | globalize }}
           </h3>
           <div class="supported-browsers__browser-link">
             <template v-if="browserType === BROWSER_TYPES.ios">
               <a href="https://itunes.apple.com/app/id1411869974?mt=8&pt=341230&ct=ose_google_via_opera_com_opera_touch_download_on_the_app_store" target="_blank">
-                App store
+                {{ 'supported-browsers.app-store' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
             <template v-else-if="browserType === BROWSER_TYPES.android">
               <a href="https://play.google.com/store/apps/details?id=com.opera.touch&referrer=utm_source%3Dgoogle_via_opera_com%26utm_medium%3Dose%26utm_campaign%3Dgoogle_ose_via_opera_com%26utm_content%3D%2Fru%2Fdownload_via_opera_touch_android" target="_blank">
-                Google play
+                {{ 'supported-browsers.google-play' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
             <template v-else>
               <a href="https://www.opera.com/" target="_blank">
-                Go to website
+                {{ 'supported-browsers.go-to-website' | globalize }}
                 <i class="mdi mdi-open-in-new" />
               </a>
             </template>
