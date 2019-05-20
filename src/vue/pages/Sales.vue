@@ -59,8 +59,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateOpportunityModule)"
           @close="isAssetSaleDrawerShown = false"
-          :config="config"
-          :wallet="wallet"
           :account-id="accountId"
           :min-amount="MIN_AMOUNT"
           :max-amount="MAX_AMOUNT"
@@ -80,8 +78,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModule)"
-          :config="config"
-          :wallet="wallet"
           @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
@@ -120,10 +116,6 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
     CreateSaleFormModule,
     vueRoutes,
     CreateOpportunityModule,
@@ -132,7 +124,6 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      wallet: vuexTypes.wallet,
     }),
   },
 }

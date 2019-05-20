@@ -78,8 +78,9 @@
           {{ 'trade-top-bar.create-buy-offer-form-title' | globalize }}
         </template>
         <create-trade-offer-form
+          is-buy
           :asset-pair="assetPair"
-          @close-drawer="closeBuyOfferDrawer"
+          @offer-created="closeBuyOfferDrawer"
         />
       </drawer>
       <drawer :is-shown.sync="isCreateSellOfferDrawerShown">
@@ -88,8 +89,7 @@
         </template>
         <create-trade-offer-form
           :asset-pair="assetPair"
-          :is-buy="false"
-          @close-drawer="closeSellOfferDrawer"
+          @offer-created="closeSellOfferDrawer"
         />
       </drawer>
     </template>
@@ -109,7 +109,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
 import CreateTradeOfferForm from '@/vue/forms/market-orders/CreateTradeOfferForm'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { errors, ASSET_PAIR_POLICIES } from '@tokend/js-sdk'
 
 import { AssetPairRecord } from '@/js/records/entities/asset-pair.record'
@@ -196,7 +196,7 @@ export default {
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     async loadTradablePairs () {
-      const { data } = await Api.get('/v3/asset_pairs', {
+      const { data } = await api.get('/v3/asset_pairs', {
         filter: { policy: ASSET_PAIR_POLICIES.tradeableSecondaryMarket },
         page: { limit: 100 },
       })

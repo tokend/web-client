@@ -39,6 +39,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
+import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -62,8 +63,8 @@ export default {
     EVENTS,
   }),
   computed: {
-    ...mapGetters('asset-explorer', {
-      accountId: types.accountId,
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
     }),
     isBalanceCreationAllowed () {
       switch (this.asset.type) {

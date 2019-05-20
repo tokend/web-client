@@ -88,12 +88,10 @@ const getters = {
   isAccountBlocked: 'isAccountBlocked',
 
   // wallet
-  wallet: 'wallet',
   walletId: 'walletId',
+  walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',
-  walletKeypair: 'walletKeypair',
-  walletPublicKey: 'walletPublicKey',
 
   // factors
   factors: 'factors',

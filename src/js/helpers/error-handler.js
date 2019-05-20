@@ -3,15 +3,31 @@ import { Bus } from '@/js/helpers/event-bus'
 import log from 'loglevel'
 import i18next from 'i18next'
 import _get from 'lodash/get'
+import { ErrorTracker } from '@/js/helpers/error-tracker'
 
 export class ErrorHandler {
-  static process (error, translationId = '') {
-    ErrorHandler.processWithoutFeedback(error)
-    Bus.error(translationId || ErrorHandler._getTranslationId(error))
+  static process (error, translationId = '', errorTrackerConfig = {}) {
+    const msgTrId = translationId || ErrorHandler._getTranslationId(error)
+    Bus.error(msgTrId)
+
+    errorTrackerConfig.translationId = msgTrId
+    ErrorHandler.processWithoutFeedback(error, errorTrackerConfig)
   }
 
-  static processWithoutFeedback (error) {
+  static processWithoutFeedback (error, errorTrackerConfig = {}) {
+    ErrorHandler.trackMessage(error, errorTrackerConfig)
     log.error(error)
+  }
+
+  static trackMessage (error, opts = {}) {
+    const { translationId = '', skipTrack = false } = opts
+
+    if (!skipTrack) {
+      const msgTrId = translationId || ErrorHandler._getTranslationId(error)
+
+      const englify = i18next.getFixedT('en')
+      ErrorTracker.trackMessage(englify(msgTrId))
+    }
   }
 
   static _getTranslationId (error) {

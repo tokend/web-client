@@ -127,7 +127,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import config from '@/config'
 
-const MAX_FILE_MEGABYTES = 5
+const MAX_FILE_MEGABYTES = 32
 const IMAGE_FILE_EXTENSIONS = ['jpg', 'png']
 
 export default {

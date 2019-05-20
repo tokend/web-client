@@ -4,8 +4,6 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
-import * as Config from '../_config'
-
 const localVue = createLocalVue()
 
 describe('Update asset request attributes viewer', () => {
@@ -19,13 +17,6 @@ describe('Update asset request attributes viewer', () => {
   })
 
   describe('computed property', () => {
-    beforeEach(() => {
-      Config.initConfig({
-        horizonURL: 'https://horizon.com',
-        storageURL: 'https://storage.com',
-      })
-    })
-
     describe('assetTermsUrl', () => {
       it('returns request.termsUrl', () => {
         sinon.stub(wrapper.vm.request, 'termsUrl')

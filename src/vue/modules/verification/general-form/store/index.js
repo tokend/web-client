@@ -3,7 +3,7 @@ import { ID_DOCUMENT_TYPES } from '../id-document-types'
 import { COUNTRIES } from '../countries'
 import { BLOB_TYPES } from '@tokend/js-sdk'
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
 
 import { wrapDocument } from './wrap-document'
 
@@ -97,7 +97,7 @@ const mutations = {
 
 const actions = {
   async [types.GET_BLOB_DATA] (v, blobId) {
-    const { data } = await api().getWithSignature(`/blobs/${blobId}`)
+    const { data } = await api.getWithSignature(`/blobs/${blobId}`)
 
     return JSON.parse(data.value)
   },
@@ -151,19 +151,19 @@ const actions = {
     }
   },
 
-  async [types.UPLOAD_DOCUMENTS] ({ state }) {
+  async [types.UPLOAD_DOCUMENTS] ({ state }, accountId) {
     await Promise.all([
       // it modifies the state intentionally
-      uploadDocumentIfNeeded(state.documents.avatar),
-      uploadDocumentIfNeeded(state.documents.selfie),
-      uploadDocumentIfNeeded(state.documents.idDocumentFace),
-      uploadDocumentIfNeeded(state.documents.idDocumentBack),
-      uploadDocumentIfNeeded(state.documents.proofOfInvestor),
+      uploadDocumentIfNeeded(state.documents.avatar, accountId),
+      uploadDocumentIfNeeded(state.documents.selfie, accountId),
+      uploadDocumentIfNeeded(state.documents.idDocumentFace, accountId),
+      uploadDocumentIfNeeded(state.documents.idDocumentBack, accountId),
+      uploadDocumentIfNeeded(state.documents.proofOfInvestor, accountId),
     ])
   },
 
   async [types.CREATE_BLOB] ({ getters }, ownerAccountId) {
-    const { data } = await api().postWithSignature('/blobs', {
+    const { data } = await api.postWithSignature('/blobs', {
       data: {
         type: BLOB_TYPES.kycGeneral,
         attributes: {

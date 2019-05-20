@@ -87,6 +87,43 @@
           </tr>
           <tr>
             <td>
+              {{ 'asset-details.deposit-method-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.isCoinpayments">
+                {{ 'asset-details.coinpayments-msg' | globalize }}
+              </template>
+
+              <template v-else-if="asset.externalSystemType">
+                {{ 'asset-details.default-msg' | globalize }}
+              </template>
+
+              <template v-else>
+                {{ 'asset-details.non-depositable-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'assets.asset-type' | globalize }}
+            </td>
+            <td>
+              <template v-if="asset.assetType === kvAssetTypeKycRequired">
+                {{ 'asset-details.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.assetType === kvAssetTypeSecurity">
+                {{ 'asset-details.security-asset-title' | globalize }}
+              </template>
+
+              <template v-else>
+                <!-- eslint-disable-next-line -->
+                {{ 'asset-details.does-not-require-verification-title' | globalize }}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>
               {{ 'asset-details.requires-kyc-title' | globalize }}
             </td>
             <td>
@@ -173,7 +210,7 @@ import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
 import config from '@/config'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { base } from '@tokend/js-sdk'
 
@@ -209,6 +246,7 @@ export default {
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       kvAssetTypeKycRequired: vuexTypes.kvAssetTypeKycRequired,
+      kvAssetTypeSecurity: vuexTypes.kvAssetTypeSecurity,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
@@ -251,7 +289,7 @@ export default {
           asset: this.asset.code,
           action: base.xdr.ManageBalanceAction.createUnique(),
         })
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         await this.loadBalances()
         this.$emit(EVENTS.balanceAdded)
         Bus.success('asset-details.balance-added-msg')

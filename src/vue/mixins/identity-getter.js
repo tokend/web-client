@@ -1,10 +1,10 @@
-import { Api } from '@/api'
+import { api } from '@/api'
 import { errors } from '@/js/errors'
 
 export default {
   methods: {
     async getAccountIdByEmail (email) {
-      const { data } = await Api.api.get('/identities', {
+      const { data } = await api.get('/identities', {
         filter: {
           email: email,
         },
@@ -20,7 +20,7 @@ export default {
       }
     },
     async getEmailByAccountId (accountId) {
-      const { data } = await Api.api.get('/identities', {
+      const { data } = await api.get('/identities', {
         filter: {
           address: accountId,
         },

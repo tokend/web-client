@@ -8,6 +8,13 @@
         class="app__form"
         @submit.prevent="processInvestment"
       >
+        <message-box
+          v-if="!canUpdateOffer"
+          type="danger"
+          :title="'invest-form.investment-disabled-title' | globalize"
+          :message="investmentDisabledMessageId | globalize"
+        />
+
         <div class="app__form-row">
           <div class="app__form-field">
             <select-field
@@ -42,7 +49,14 @@
               })"
               :error-message="getFieldErrorMessage(
                 'form.amount',
-                { from: MIN_AMOUNT, to: availableAmount.value }
+                {
+                  from: MIN_AMOUNT,
+                  to: availableAmount.value,
+                  saleCap: {
+                    value: investedCap,
+                    currency: sale.defaultQuoteAsset
+                  }
+                }
               )"
               :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
             />
@@ -80,36 +94,6 @@
             }
           })"
         />
-
-        <p class="app__form-field-description">
-          <template v-if="sale.owner === accountId">
-            {{ 'invest-form.sale-owner-msg' | globalize }}
-          </template>
-
-          <template v-else-if="sale.isClosed">
-            {{ 'invest-form.closed-sale-msg' | globalize }}
-          </template>
-
-          <template v-else-if="sale.isUpcoming">
-            {{ 'invest-form.upcoming-sale-msg' | globalize }}
-          </template>
-
-          <template v-else-if="sale.isCanceled">
-            {{ 'invest-form.canceled-sale-msg' | globalize }}
-          </template>
-
-          <template v-else-if="isCapExceeded">
-            <vue-markdown
-              class="invest-form__amount-hint"
-              :source="'invest-form.cap-exceeded-msg' | globalize({
-                amount: {
-                  value: investedCap,
-                  currency: sale.defaultQuoteAsset
-                }
-              })"
-            />
-          </template>
-        </p>
       </form>
 
       <transition name="app__fade-in">
@@ -152,7 +136,9 @@
           </h3>
 
           <p class="invest-form__fee">
-            - {{ totalAmount | formatNumber }} {{ form.asset.code }}
+            - {{
+              { value: totalAmount, currency: form.asset.code } | formatMoney
+            }}
             <span class="invest-form__fee-type">
               {{ 'invest-form.total-amount-label' | globalize }}
             </span>
@@ -189,7 +175,7 @@
             v-if="view.mode === VIEW_MODES.submit"
             click="submit"
             class="app__button-raised"
-            :disabled="formMixin.isDisabled"
+            :disabled="formMixin.isDisabled || !canSubmit"
             form="invest-form">
             {{ 'invest-form.continue-btn' | globalize }}
           </button>
@@ -243,13 +229,14 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
+import MessageBox from '@/vue/common/MessageBox'
 
 import config from '@/config'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
@@ -282,6 +269,7 @@ export default {
     VueMarkdown,
     Loader,
     NoDataMessage,
+    MessageBox,
   },
   mixins: [FormMixin],
 
@@ -322,6 +310,7 @@ export default {
         amount: {
           required,
           amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          noMoreThanSaleCap: _ => !this.isCapExceeded,
         },
       },
     }
@@ -374,7 +363,7 @@ export default {
 
       const availableBalance = this.currentInvestment.quoteAmount
         ? Number(quoteBalance.balance) +
-            Number(this.currentInvestment.quoteAmount)
+        Number(this.currentInvestment.quoteAmount)
         : quoteBalance.balance
 
       return {
@@ -429,6 +418,22 @@ export default {
         .add(this.fees.fixed, this.fees.percent)
       return MathUtil.add(fees, this.form.amount)
     },
+
+    investmentDisabledMessageId () {
+      let messageId
+
+      if (this.sale.owner === this.accountId) {
+        messageId = 'invest-form.sale-owner-msg'
+      } else if (this.sale.isClosed) {
+        messageId = 'invest-form.closed-sale-msg'
+      } else if (this.sale.isUpcoming) {
+        messageId = 'invest-form.upcoming-sale-msg'
+      } else if (this.sale.isCanceled) {
+        messageId = 'invest-form.canceled-sale-msg'
+      }
+
+      return messageId
+    },
   },
 
   watch: {
@@ -470,13 +475,13 @@ export default {
 
     async loadSaleBaseAsset () {
       const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await Api.get(endpoint)
+      const { data } = await api.get(endpoint)
 
       this.saleBaseAsset = new AssetRecord(data)
     },
 
     async loadCurrentInvestment () {
-      const { data: offers } = await Api.getWithSignature('/v3/offers', {
+      const { data: offers } = await api.getWithSignature('/v3/offers', {
         filter: {
           order_book: this.sale.id,
           owner: this.accountId,
@@ -498,7 +503,7 @@ export default {
         const destAsset = this.sale.defaultQuoteAsset
 
         const endpoint = `/v3/asset_pairs/${sourceAsset}:${destAsset}`
-        const { data: assetPair } = await Api.get(endpoint)
+        const { data: assetPair } = await api.get(endpoint)
 
         this.assetPairPrice = assetPair.price
         this.isAssetPairPriceLoaded = true
@@ -522,7 +527,7 @@ export default {
         }
 
         const operations = await this.getOfferOperations()
-        await Api.api.postOperations(...operations)
+        await api.postOperations(...operations)
         await this.loadBalances()
 
         Bus.success({
@@ -547,7 +552,7 @@ export default {
         action: base.xdr.ManageBalanceAction.createUnique(),
       })
 
-      await Api.api.postOperations(operation)
+      await api.postOperations(operation)
       await this.loadBalances()
     },
 
@@ -577,12 +582,12 @@ export default {
       const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
       const params = [
         `asset=${this.form.asset.code}`,
-        `fee_type=${FEE_TYPES.offerFee}`,
+        `fee_type=${FEE_TYPES.investFee}`,
         `amount=${this.form.amount}`,
       ]
 
       const endpoint = `${baseEndpoint}?${params.join('&')}`
-      const { data: fee } = await Api.get(endpoint)
+      const { data: fee } = await api.get(endpoint)
 
       return fee
     },
@@ -599,7 +604,7 @@ export default {
           this.form.amount,
           // TODO: remove DEFAULT_QUOTE_PRICE
           this.sale.quoteAssetPrices[this.form.asset.code] ||
-            DEFAULT_QUOTE_PRICE
+          DEFAULT_QUOTE_PRICE
         ),
         // TODO: remove DEFAULT_QUOTE_PRICE
         price: this.sale.quoteAssetPrices[this.form.asset.code] ||
@@ -619,7 +624,7 @@ export default {
             CANCEL_OFFER_FEE
           )
         )
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
@@ -655,6 +660,7 @@ export default {
 
 <style lang="scss">
 @import './app-form';
+
 // Disabled because vue-markdown
 /* stylelint-disable selector-nested-pattern */
 .invest-form__amount-hint {

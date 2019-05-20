@@ -69,13 +69,10 @@
           v-model="form.startTime"
           name="create-sale-start-time"
           :enable-time="true"
-          :disable-before="yesterday"
           @input="touchField('form.startTime')"
           @blur="touchField('form.startTime')"
           :label="'create-sale-form.start-time-lbl' | globalize"
-          :error-message="getFieldErrorMessage(
-            'form.startTime', { minDate: getCurrentDate() }
-          )"
+          :error-message="getFieldErrorMessage('form.startTime')"
         />
       </div>
     </div>
@@ -106,7 +103,7 @@
           @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
-            asset: DEFAULT_QUOTE_ASSET
+            asset: defaultQuoteAsset
           })"
           :error-message="getFieldErrorMessage(
             'form.softCap',
@@ -125,7 +122,7 @@
           @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
-            asset: DEFAULT_QUOTE_ASSET
+            asset: defaultQuoteAsset
           })"
           :error-message="getFieldErrorMessage(
             'form.hardCap',
@@ -141,7 +138,7 @@
           {{
             'create-sale-form.price-for-asset-hint' | globalize({
               base: form.baseAsset.code,
-              quote: DEFAULT_QUOTE_ASSET,
+              quote: defaultQuoteAsset,
               value: priceForAsset
             })
           }}
@@ -203,8 +200,10 @@ import {
   minDate,
   noMoreThanAvailableForIssuance,
 } from '@validators'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
-import { config } from '../_config'
+import config from '@/config'
 
 const EVENTS = {
   submit: 'submit',
@@ -233,9 +232,8 @@ export default {
       assetsToSell: '',
       quoteAssets: [],
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
-    MAX_AMOUNT: config().MAX_AMOUNT,
-    DEFAULT_QUOTE_ASSET: config().DEFAULT_QUOTE_ASSET,
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
@@ -250,7 +248,6 @@ export default {
         baseAsset: { required },
         startTime: {
           required,
-          minDate: minDate(moment().toISOString()),
         },
         endTime: {
           required,
@@ -280,13 +277,16 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      vuexTypes.defaultQuoteAsset,
+    ]),
     priceForAsset () {
       return {
         value: MathUtil.divide(
           this.form.hardCap,
           this.form.assetsToSell
         ),
-        currency: this.DEFAULT_QUOTE_ASSET,
+        currency: this.defaultQuoteAsset,
       }
     },
 

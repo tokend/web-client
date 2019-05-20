@@ -8,7 +8,7 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import { globalize } from '@/vue/filters/globalize'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 
 const localVue = createLocalVue()
 
@@ -16,7 +16,7 @@ localVue.use(Vuelidate)
 localVue.use(VueRouter)
 localVue.filter('globalize', globalize)
 
-// HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
+// HACK: https://githu.b.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
 Vue.config.silent = true
 
@@ -76,8 +76,6 @@ describe('RecoveryForm component test', () => {
     let wrapper
 
     beforeEach(() => {
-      Api.initSync({ horizonURL: 'https://test.api.com' })
-
       const router = new VueRouter({
         mode: 'history',
         routes: [{
@@ -93,7 +91,7 @@ describe('RecoveryForm component test', () => {
     })
 
     it('calls SDK wallets.recovery with proper set of params and logs in the user', async () => {
-      const recoveryStub = sinon.stub(Api.walletsManager, 'recovery').resolves()
+      const recoveryStub = sinon.stub(walletsManager, 'recovery').resolves()
       const loginStub = sinon.stub(wrapper.vm, 'login').resolves()
 
       const form = {

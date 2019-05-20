@@ -37,22 +37,25 @@
             <div class="asset-selector__asset-value">
               <span class="asset-selector__asset-value-main">
                 {{
-                  currentAssetBalanceDetails.balance | formatMoney({
+                  {
+                    value: currentAssetBalanceDetails.balance,
                     currency: currentAsset
-                  })
+                  } | formatMoney
                 }}
-                {{ currentAsset }}
               </span>
             </div>
-            <div class="asset-selector__asset-subvalue">
+
+            <div
+              class="asset-selector__asset-converted"
+              v-if="currentAssetBalanceDetails.convertedBalance"
+            >
               <span class="asset-selector__asset-value-secondary">
                 {{
-                  currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: currentAssetBalanceDetails.convertedToAsset,
-                    symbolAllowed: true
-                  })
+                  {
+                    value: currentAssetBalanceDetails.convertedBalance,
+                    currency: currentAssetBalanceDetails.convertedToAsset
+                  } | formatMoney
                 }}
-                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>
@@ -84,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -162,7 +165,7 @@ export default {
     async loadAssets () {
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await Api.get(endpoint, {
+        const { data: account } = await api.get(endpoint, {
           include: ['balances.asset'],
         })
 
@@ -280,7 +283,7 @@ $media-custom-breakpoint-medium: 870px;
   color: $col-details-value;
 }
 
-.asset-selector__asset-subvalue {
+.asset-selector__asset-converted {
   margin-top: 0.8rem;
   font-size: 1.6rem;
   color: $col-details-label;

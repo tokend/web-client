@@ -49,7 +49,10 @@
           class="verification-general-form__submit-btn"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'verification-form.submit-btn' | globalize }}
+          {{ (Number(requestId) > 0
+            ? 'verification-form.create-btn'
+            : 'verification-form.update-btn'
+          ) | globalize }}
         </button>
       </div>
     </form>
@@ -66,12 +69,13 @@ import SectionDocuments from './components/section-documents'
 import SectionSelfie from './components/section-selfie'
 import SectionAvatar from './components/section-avatar'
 
+import { vuexTypes } from '@/vuex'
 import { types } from './store/types'
 import { mapActions, mapGetters } from 'vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import { Wallet, base } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
+import { base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import { isUSResidence } from './is-us-residence'
 
 const EVENTS = {
@@ -90,13 +94,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: { type: Object, required: true },
-    wallet: { type: Wallet, required: true },
-
     blobId: { type: String, default: '' },
     requestId: { type: String, required: true },
 
@@ -115,8 +112,11 @@ export default {
       blobData: types.blobData,
       country: types.country,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     verificationCode () {
-      return this.wallet.accountId.slice(1, 6)
+      return this.accountId.slice(1, 6)
     },
     isUSResident () {
       return isUSResidence(this.countryCode)
@@ -132,8 +132,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
     if (this.blobId) {
       try {
         this.populateForm(await this.getBlobData(this.blobId))
@@ -172,8 +170,8 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await this.uploadDocuments()
-        const blobId = await this.createBlob(this.wallet.accountId)
+        await this.uploadDocuments(this.accountId)
+        const blobId = await this.createBlob(this.accountId)
         await this.createRequest(blobId)
         // we duplicating enabling form in try/catch blocks to prevent race
         // condition - the outer component disables the form after submit event
@@ -189,12 +187,12 @@ export default {
       const operation = base.CreateChangeRoleRequestBuilder
         .createChangeRoleRequest({
           requestID: this.requestId,
-          destinationAccount: this.wallet.accountId,
+          destinationAccount: this.accountId,
           accountRoleToSet: this.accountRoleToSet,
           creatorDetails: { blob_id: blobId },
         })
 
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

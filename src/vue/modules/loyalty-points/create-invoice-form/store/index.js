@@ -3,19 +3,16 @@ import { Movement } from '../wrappers/movement'
 import { AssetPair } from '../wrappers/asset-pair'
 
 import { types } from './types'
-import { api } from '../_api'
+import { api } from '@/api'
+import { vuexTypes } from '@/vuex'
 
 export const state = {
-  accountId: '',
   balances: [],
   assetPairs: [],
   movements: [],
 }
 
 export const mutations = {
-  [types.SET_ACCOUNT_ID] (state, accountId) {
-    state.accountId = accountId
-  },
   [types.SET_BALANCES] (state, balances) {
     state.balances = balances
   },
@@ -28,9 +25,9 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_BALANCES] ({ commit, getters }) {
-    const endpoint = `/v3/accounts/${getters[types.accountId]}`
-    const { data: account } = await api().getWithSignature(endpoint, {
+  async [types.LOAD_BALANCES] ({ commit, rootGetters }) {
+    const endpoint = `/v3/accounts/${rootGetters[vuexTypes.accountId]}`
+    const { data: account } = await api.getWithSignature(endpoint, {
       include: ['balances.state'],
     })
 
@@ -44,7 +41,7 @@ export const actions = {
    */
   async [types.LOAD_ASSET_PAIRS] ({ commit, getters }, opts) {
     const endpoint = '/v3/asset_pairs'
-    const { data: pairs } = await api().getWithSignature(endpoint, {
+    const { data: pairs } = await api.getWithSignature(endpoint, {
       filter: {
         asset: opts.asset,
       },
@@ -69,7 +66,7 @@ export const actions = {
     commit(types.SET_ASSET_PAIRS, pairs)
   },
 
-  async [types.LOAD_MOVEMENTS] ({ getters, commit }, assetCode) {
+  async [types.LOAD_MOVEMENTS] ({ getters, commit, rootGetters }, assetCode) {
     if (!getters[types.balances].length) {
       await actions[types.LOAD_BALANCES]({ getters, commit })
     }
@@ -81,12 +78,12 @@ export const actions = {
     }
 
     const endpoint = '/v3/history'
-    const { data: movements } = await api().getWithSignature(endpoint, {
+    const { data: movements } = await api.getWithSignature(endpoint, {
       page: {
         order: 'desc',
       },
       filter: {
-        account: getters[types.accountId],
+        account: rootGetters[vuexTypes.accountId],
         balance: balance.id,
       },
       include: ['effect', 'operation.details'],
@@ -97,7 +94,6 @@ export const actions = {
 }
 
 export const getters = {
-  [types.accountId]: state => state.accountId,
   [types.balances]: state => state.balances.map(b => new Balance(b)),
   [types.movements]: state => state.movements.map(m => new Movement(m)),
   [types.assetPairs]: state => state.assetPairs.map(p => new AssetPair(p)),

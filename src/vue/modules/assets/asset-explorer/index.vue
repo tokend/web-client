@@ -2,8 +2,6 @@
   <div class="asset-explorer">
     <template v-if="isLoaded">
       <assets-renderer
-        :wallet="wallet"
-        :config="config"
         :is-account-unverified="isAccountUnverified"
         :is-account-us-accredited="isAccountUsAccredited"
         :is-account-us-verified="isAccountUsVerified"
@@ -29,11 +27,8 @@ import LoadSpinner from '@/vue/common/Loader'
 
 import AssetsRenderer from './components/assets-renderer'
 
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -45,19 +40,6 @@ export default {
   },
 
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-    * @property config - the config for component to use
-    * @property config.horizonURL - the url of horizon server (without version)
-    * @property config.storageURL - the url of storage server
-    */
-    config: {
-      type: Object,
-      required: true,
-    },
     isAccountUnverified: {
       type: Boolean,
       required: true,
@@ -86,17 +68,10 @@ export default {
   }),
 
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.load()
   },
 
   methods: {
-    ...mapMutations('asset-explorer', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('asset-explorer', {
       loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,

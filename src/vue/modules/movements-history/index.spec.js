@@ -4,9 +4,7 @@ import { movementsHistoryModule } from './store/index'
 import Vuex from 'vuex'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-import { Wallet } from '@tokend/js-sdk'
 
-import * as ApiImporter from './_api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 const localVue = createLocalVue()
@@ -14,15 +12,6 @@ localVue.use(Vuex)
 
 describe('Movements history module', () => {
   const props = {
-    wallet: new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    ),
-    config: {
-      horizonUrl: 'https://test.api.com',
-    },
     assetCode: 'BTC',
   }
 
@@ -30,43 +19,19 @@ describe('Movements history module', () => {
 
   beforeEach(() => {
     store = new Vuex.Store({
-      modules: { 'movements-history': movementsHistoryModule },
+      modules: {
+        'movements-history': movementsHistoryModule,
+      },
     })
   })
 
   describe('created hook', () => {
     beforeEach(() => {
-      sinon.stub(ApiImporter, 'initApi')
-      sinon.stub(MovementsHistoryModule.methods, 'setAccountId')
       sinon.stub(MovementsHistoryModule.methods, 'loadBalances').resolves()
     })
 
     afterEach(() => {
-      ApiImporter.initApi.restore()
-      MovementsHistoryModule.methods.setAccountId.restore()
       MovementsHistoryModule.methods.loadBalances.restore()
-    })
-
-    it('calls initApi function', () => {
-      shallowMount(MovementsHistoryModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(ApiImporter.initApi.withArgs(props.wallet, props.config))
-        .to.have.been.calledOnce
-    })
-
-    it('calls setAccountId method', () => {
-      shallowMount(MovementsHistoryModule, {
-        localVue,
-        store,
-        propsData: props,
-      })
-
-      expect(MovementsHistoryModule.methods.setAccountId)
-        .to.have.been.calledOnceWithExactly(props.wallet.accountId)
     })
 
     it('calls loadBalances action', () => {

@@ -120,7 +120,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalFiatModule)"
           :config="withdrawalFiatConfig"
-          :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
         />
       </drawer>
@@ -136,8 +135,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalDrawerPseudoModule)"
-          :config="withdrawalFiatConfig"
-          :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
         />
       </drawer>
@@ -152,7 +149,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(DepositFiatModule)"
           :config="depositFiatConfig"
-          :wallet="wallet"
           @deposited="depositFiatModuleDeposited"
         />
       </drawer>
@@ -172,9 +168,7 @@
             :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
             :asset="asset"
             :balance-id="asset.balance.id"
-            :wallet="wallet"
             :account-id="accountId"
-            :config="{horizonURL: config.horizonURL}"
           />
         </div>
       </drawer>
@@ -194,7 +188,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(RedeemFormModule)"
-          :wallet="wallet"
           :config="redeemConfig"
           @redeemed="redeemModuleSubmitted"
         />
@@ -204,11 +197,9 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -242,10 +233,6 @@ export default {
     SubmoduleImporter,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
@@ -284,8 +271,10 @@ export default {
     ...mapGetters('movements-top-bar-reit', {
       balances: types.balances,
       assets: types.assets,
-      accountId: types.accountId,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     isOwnedAsset () {
       return this.asset.owner.id === this.accountId
     },
@@ -301,18 +290,13 @@ export default {
   },
   async created () {
     this.setUpConfigs()
-    initApi(this.wallet, this.config)
 
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('movements-top-bar-reit', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('movements-top-bar-reit', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -334,7 +318,6 @@ export default {
     },
     setUpConfigs () {
       this.withdrawalFiatConfig = {
-        horizonURL: this.config.horizonURL,
         decimalPoints: this.config.decimalPoints,
         minAmount: this.config.minAmount,
       }
@@ -344,7 +327,6 @@ export default {
         minAmount: this.config.minAmount,
       }
       this.redeemConfig = {
-        horizonURL: this.config.horizonURL,
         minAmount: this.config.minAmount,
         maxAmount: this.config.maxAmount,
         defaultAssetCode: null,

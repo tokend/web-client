@@ -42,4 +42,5 @@ export const vueRoutes = Object.freeze({
   downloads: { name: 'downloads' },
   iosInstallationGuide: { name: 'ios-installation-guide' },
   supportedBrowsers: { name: 'supported-browsers' },
+  preIssuanceGuide: { name: 'pre-issuance-guide' },
 })

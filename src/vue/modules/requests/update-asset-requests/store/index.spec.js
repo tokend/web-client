@@ -10,7 +10,7 @@ import { Wallet, base } from '@tokend/js-sdk'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
-import * as Api from '../_api'
+import { api, useWallet } from '@/api'
 
 describe('asset-update-requests.module', () => {
   describe('vuex types', () => {
@@ -40,18 +40,6 @@ describe('asset-update-requests.module', () => {
   })
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, 'SOME_ACCOUNT_ID')
-
-      expect(state).to.deep.equal({
-        accountId: 'SOME_ACCOUNT_ID',
-      })
-    })
-
     it('SET_REQUESTS should properly modify state', () => {
       const state = {
         requests: [],
@@ -104,22 +92,20 @@ describe('asset-update-requests.module', () => {
         'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
         '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
       )
-      const config = {
-        horizonURL: 'https://test.api.com',
-      }
 
-      Api.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('LOAD_REQUESTS', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+      it('calls api.getWithSignature method with provided params', async () => {
+        sinon.stub(api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_REQUESTS]({
-          getters: { accountId: 'SOME_ACCOUNT_ID' },
+          rootGetters: { accountId: 'SOME_ACCOUNT_ID' },
         })
 
-        expect(Api.api().getWithSignature)
+        expect(api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/update_asset_requests',
             {
@@ -133,14 +119,14 @@ describe('asset-update-requests.module', () => {
             }
           )
 
-        Api.api().getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
 
     describe('CANCEL_REQUEST', () => {
-      it('creates cancel asset request operation and calls api().postOperations', async () => {
+      it('creates cancel asset request operation and calls api.postOperations', async () => {
         sinon.stub(base.ManageAssetBuilder, 'cancelAssetRequest')
-        sinon.stub(Api.api(), 'postOperations').resolves()
+        sinon.stub(api, 'postOperations').resolves()
 
         await actions[types.CANCEL_REQUEST]({}, '1')
 
@@ -148,22 +134,15 @@ describe('asset-update-requests.module', () => {
           .to.have.been.calledOnceWithExactly({
             requestID: '1',
           })
-        expect(Api.api().postOperations).to.have.been.calledOnce
+        expect(api.postOperations).to.have.been.calledOnce
 
         base.ManageAssetBuilder.cancelAssetRequest.restore()
-        Api.api().postOperations.restore()
+        api.postOperations.restore()
       })
     })
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId: 'SOME_ACCOUNT_ID' }
-
-      expect(getters[types.accountId](state))
-        .to.equal('SOME_ACCOUNT_ID')
-    })
-
     it('requests', () => {
       const state = {
         requests: [

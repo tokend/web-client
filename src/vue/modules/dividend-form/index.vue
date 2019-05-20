@@ -167,14 +167,15 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import FormConfirmation from '@/vue/common/FormConfirmation'
 import Loader from '@/vue/common/Loader'
 
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import EmailGetter from '@/vue/common/EmailGetter'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
-import { PAYMENT_FEE_SUBTYPES, Wallet, base } from '@tokend/js-sdk'
-import { api, initApi } from './_api'
+import { PAYMENT_FEE_SUBTYPES, base } from '@tokend/js-sdk'
+import { api } from '@/api'
 import {
   amount,
   maxDecimalDigitsCount,
@@ -198,15 +199,10 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.decimalPoints - count of allowed decimal points
      * @property config.minAmount - minimal allowed amount
-     * @property config.horizonURL - the url of horizon server (without version)
      * @property [config.defaultAssetCode] - prefills the asset-selector with
      *           this asset code
      */
@@ -232,12 +228,14 @@ export default {
   }),
   computed: {
     ...mapGetters('dividend-form', {
-      accountId: types.accountId,
       balances: types.balances,
       assets: types.assets,
       ownedAssets: types.ownedAssets,
       signers: types.balanceHolders,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
   watch: {
     'form.ownedAsset.code' () {
@@ -262,9 +260,6 @@ export default {
     }
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -279,9 +274,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('dividend-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('dividend-form', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -298,7 +290,7 @@ export default {
           return false
         }
         const operations = await this.getTransferOperations()
-        await api().postOperations(...operations)
+        await api.postOperations(...operations)
         Bus.success('dividend-form.dividend-success')
         this.$emit(EVENTS.transferred)
       } catch (e) {

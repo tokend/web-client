@@ -49,6 +49,11 @@ export function buildRouter (store) {
         component: resolve => require(['@/vue/pages/IosInstallationGuide'], resolve),
       },
       {
+        path: '/pre-issuance-guide',
+        name: vueRoutes.preIssuanceGuide.name,
+        component: resolve => require(['@/vue/pages/PreIssuanceGuide'], resolve),
+      },
+      {
         path: '/auth',
         name: vueRoutes.auth.name,
         redirect: vueRoutes.login,

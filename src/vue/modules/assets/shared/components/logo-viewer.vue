@@ -16,16 +16,17 @@
 <script>
 import { Asset } from '../wrappers/asset'
 
+import config from '@/config'
+
 export default {
   name: 'logo-viewer',
   props: {
     asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
     darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
-      return this.asset.logoUrl(this.storageUrl)
+      return this.asset.logoUrl(config.FILE_STORAGE)
     },
   },
 }

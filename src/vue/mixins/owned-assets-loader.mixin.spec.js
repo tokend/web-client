@@ -8,7 +8,7 @@ import { MockHelper } from '@/test'
 
 import { vuexTypes } from '@/vuex'
 import accountModule from '@/vuex/account.module'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -39,7 +39,7 @@ describe('asset-loader.mixin unit test', () => {
           owner: { id: mockHelper.getMockWallet().accountId },
         }],
       }
-      assetsSpy = sinon.stub(Api, 'get').resolves({
+      assetsSpy = sinon.stub(api, 'get').resolves({
         data: sampleBalancesData,
       })
 
@@ -58,7 +58,7 @@ describe('asset-loader.mixin unit test', () => {
     })
 
     describe('loadOwnedAssets', () => {
-      it('calls the Api.get with the correct params', async () => {
+      it('calls the api.get with the correct params', async () => {
         await wrapper.vm.loadOwnedAssets()
 
         expect(assetsSpy).to.have.been.calledOnce
