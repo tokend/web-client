@@ -69,6 +69,13 @@ for further information about branching and tagging conventions.
   - "ManageOfferMixin"
 - Remove _config.js from modules
 - Remove storageUrl from modules
+- Now taking matches from v3/matches instead of legacy /trades API endpoint
+- Changed wordings:
+  - Change "Account address" to "Account ID" on "Settings" page
+  - Add recommendtaion of using Google Authenticator to 2FA screen
+  - Fix typo with "some assets" on the Deposit form
+- Show expiration date of deposit address on the Deposit form
+-`tipPriceChangeText` when price up from 0 to some value.
 - Moved sale view buttons to sale campaign viewer
 - Renamed "All sales" -> "Investable sales"
 - Now loading default quote asset in create sale form
@@ -78,6 +85,11 @@ for further information about branching and tagging conventions.
 #### Removed
 - Unused methods from `DocumentContainer` class
 - More button for 'Movements' history
+- Unused global SDK instance
+- Unused mock-helper methods
+- `CreateSaleForm` component
+- `PreIssuanceForm` component
+- `requests-renderer` component
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing

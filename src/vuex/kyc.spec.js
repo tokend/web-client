@@ -3,7 +3,7 @@ import {
   REQUEST_STATES_STR,
 } from '../js/const/request-states.const'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
-import { MockHelper, MockWrapper } from '../test'
+import { MockWrapper } from '../test'
 import { api } from '@/api'
 import { mutations, actions, getters } from './kyc.module'
 import { vuexTypes } from './types'
@@ -60,7 +60,6 @@ describe('kyc.module', () => {
 
   describe('actions', () => {
     let store
-    let mockHelper
 
     beforeEach(() => {
       store = {
@@ -69,7 +68,6 @@ describe('kyc.module', () => {
         commit: sinon.stub(),
         dispatch: sinon.stub(),
       }
-      mockHelper = new MockHelper()
     })
 
     it('LOAD_KYC should dispatch the proper set of actions', async () => {
@@ -112,15 +110,6 @@ describe('kyc.module', () => {
       })
 
       let store
-      const resource = mockHelper.getApiResourcePrototype('blobs')
-
-      sinon.stub(resource, 'get')
-        .withArgs(blobId)
-        .resolves({
-          data: {
-            value: latestDataPayload,
-          },
-        })
 
       store = {
         state: {
