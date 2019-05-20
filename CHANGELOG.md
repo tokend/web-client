@@ -69,6 +69,7 @@ for further information about branching and tagging conventions.
   - Add recommendtaion of using Google Authenticator to 2FA screen
   - Fix typo with "some assets" on the Deposit form
 - Show expiration date of deposit address on the Deposit form
+-`tipPriceChangeText` when price up from 0 to some value.
 
 #### Removed
 - Unused methods from `DocumentContainer` class
