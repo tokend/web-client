@@ -65,6 +65,7 @@ for further information about branching and tagging conventions.
 - Remove storageUrl from modules
 - Now taking matches from v3/matches instead of legacy /trades API endpoint
 - Fixed wordings
+- Refactored 'DepositForm'
 
 #### Removed
 - Unused methods from `DocumentContainer` class
