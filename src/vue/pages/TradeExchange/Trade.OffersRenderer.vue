@@ -10,7 +10,7 @@
     </h3>
     <div
       class="trade-offers-wrapper"
-      :class="{'trade-offers__data-wrapper--loading': isLoading}"
+      :class="{'trade-offers-wrapper--loading': isLoading}"
     >
       <template v-if="offersList.length">
         <div
@@ -56,7 +56,7 @@
           :message="noDataMessage.messageId | globalize(
             noDataMessage.messageIdKeys
           )"
-          class="trade-offers__no-message-wrapper"
+          class="trade-offers__no-data-message-wrapper"
         />
       </template>
     </div>
@@ -160,7 +160,7 @@ export default {
   font-size: 1.4rem;
 }
 
-.trade-offers__data-wrapper {
+.trade-offers-wrapper {
   min-height: 5.3rem;
 
   &--loading {
