@@ -1,7 +1,6 @@
 <template>
   <div class="requests-table">
     <div
-      v-if="requests.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -24,7 +23,9 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody
+          v-if="requests.length"
+        >
           <tr
             v-for="(request, index) in requests"
             :key="index"
@@ -55,22 +56,20 @@
             </td>
           </tr>
         </tbody>
+        <empty-list-placeholder
+          v-else
+          :colspan="5"
+          :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
+        />
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'incoming-withdrawal-requests.no-history-title' | globalize"
-      :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
-    />
   </div>
 </template>
 
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import RequestStateViewer from '../../shared/components/request-state-viewer'
+import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
 
 const EVENTS = {
   select: 'select',
@@ -80,8 +79,8 @@ export default {
   name: 'requests-table',
   components: {
     EmailGetter,
-    NoDataMessage,
     RequestStateViewer,
+    EmptyListPlaceholder,
   },
 
   props: {

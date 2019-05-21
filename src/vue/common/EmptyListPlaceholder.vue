@@ -1,11 +1,11 @@
 <template>
-  <tbody class="trade-empty-list-placeholder">
+  <tbody class="empty-list-placeholder">
     <tr
-      class="trade-empty-list-placeholder__brief"
+      class="empty-list-placeholder__brief"
     >
       <td
         :colspan="colspan"
-        class="trade-empty-list-placeholder__cell--align-center"
+        class="empty-list-placeholder__cell--align-center"
       >
         {{ message }}
       </td>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'trade-empty-list-placeholder',
+  name: 'empty-list-placeholder',
   props: {
     message: {
       type: String,
@@ -33,13 +33,13 @@ export default {
 @import '~@scss/mixins';
 @import '~@scss/variables';
 
-.trade-empty-list-placeholder__brief {
+.empty-list-placeholder__brief {
   background-color: $col-block-bg;
 
   @include box-shadow;
 }
 
-.trade-empty-list-placeholder__cell--align-center {
+.empty-list-placeholder__cell--align-center {
   text-align: center;
 }
 </style>

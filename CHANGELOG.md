@@ -36,7 +36,7 @@ for further information about branching and tagging conventions.
 - Whitelist invitations list component
 - Sale definition types constant
 - "Whitelisted" row to sale details table
-- Placeholder of empty list for trade page
+- Placeholder of empty list for Trade, Issuance requests and Requests pages
 
 #### Changed
 - Updated offer creating, updating drawers
