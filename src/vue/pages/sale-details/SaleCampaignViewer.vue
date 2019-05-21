@@ -12,7 +12,9 @@
       <button
         v-ripple
         v-if="sale.owner === accountId"
-        class="app__button-raised sale-campaign-viewer__action-btn"
+        class="
+          app__button-raised
+          sale-campaign-viewer__action-btn"
         @click="isStatisticsDrawerShown = true"
       >
         {{ 'sale-details.view-statistics-btn' | globalize }}
