@@ -1,5 +1,5 @@
 <template>
-  <div class="all-sales">
+  <div class="sales-list">
     <div class="sales__state-filter">
       <select-field
         :is-value-translatable="true"
@@ -89,7 +89,7 @@ const SALE_STATES = {
 }
 
 export default {
-  name: 'all-sales',
+  name: 'sales-list',
   components: {
     Drawer,
     Loader,
@@ -140,10 +140,19 @@ export default {
 
     recordsLoader () {
       const saleState = this.filters.state.value
+
       let opts = {
         page: { order: 'desc' },
         filter: {},
         include: ['base_asset', 'quote_assets', 'default_quote_asset'],
+      }
+      let endpoint
+
+      if (this.isUserSales) {
+        opts.filter.owner = this.accountId
+        endpoint = `/v3/sales`
+      } else {
+        endpoint = `/v3/accounts/${this.accountId}/sales`
       }
 
       switch (saleState) {
@@ -155,12 +164,8 @@ export default {
           break
       }
 
-      if (this.isUserSales) {
-        opts.filter.owner = this.accountId
-      }
-
       return function () {
-        return api.getWithSignature('/v3/sales', opts)
+        return api.getWithSignature(endpoint, opts)
       }
     },
   },

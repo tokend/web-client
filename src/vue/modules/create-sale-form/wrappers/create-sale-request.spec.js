@@ -6,11 +6,9 @@ describe('Create sale request', () => {
       const record = {
         requestDetails: {
           baseAsset: { id: 'TKN' },
-          defaultQuoteAsset: {
-            softCap: '100.000000',
-            hardCap: '200.000000',
-          },
           baseAssetForHardCap: '10.000000',
+          softCap: '100.000000',
+          hardCap: '200.000000',
           startTime: '2019-03-18T10:22:00Z',
           endTime: '2019-04-18T15:25:00Z',
           creatorDetails: {
