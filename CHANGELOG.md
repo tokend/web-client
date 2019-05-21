@@ -42,7 +42,7 @@ for further information about branching and tagging conventions.
 - Moved horizon resources to "/v3" endpoints
 - Now processing documents & blobs using new ApiCaller
 - Now performing actions with wallets & factors using relevant managers
-- Now using @tokend/js-sdk@1.7.0-x.2
+- Now using @tokend/js-sdk@1.7.0-rc.0
 - .babelrc: babel target to allowed browsers
 - Max size of uploaded file changed to 32mb
 - Show only latest 10 latest operations on 'Movements' page
