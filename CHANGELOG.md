@@ -30,6 +30,12 @@ for further information about branching and tagging conventions.
 - "MessageBox" component for displaying titled messages
 - Pre-issuance guide
 - Error message to the "ReadonlyField"
+- Sale participation statistics component
+- "Whitelisted" checkbox on create sale form
+- Whitelist invite form component
+- Whitelist invitations list component
+- Sale definition types constant
+- "Whitelisted" row to sale details table
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -70,6 +76,11 @@ for further information about branching and tagging conventions.
   - Fix typo with "some assets" on the Deposit form
 - Show expiration date of deposit address on the Deposit form
 -`tipPriceChangeText` when price up from 0 to some value.
+- Moved sale view buttons to sale campaign viewer
+- Renamed "All sales" -> "Investable sales"
+- Now loading default quote asset in create sale form
+- Now loading investable sales from the /v3/accounts/{accountId}/sales
+  endpoint
 
 #### Removed
 - Unused methods from `DocumentContainer` class
@@ -98,6 +109,8 @@ for further information about branching and tagging conventions.
 - Trade forms translations
 - Account balances mapping in deposit form
 - Issue with "Update" button that was not shown on "Assets" page
+- Displaying sale & create sale request caps
+- Displaying sale base hard cap
 
 ## [1.6.0] - 2019-05-09
 #### Changed

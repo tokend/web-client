@@ -25,6 +25,7 @@ const Component = {
       hardCap: '',
       assetsToSell: '',
       quoteAssets: [],
+      isWhitelisted: false,
     },
     shortBlurbStepForm: {
       saleLogo: null,
@@ -83,6 +84,7 @@ describe('Manage sale request mixin', () => {
             hardCap: '200.000000',
             assetsToSell: '10.000000',
             quoteAssets: ['BTC', 'USD'],
+            isWhitelisted: true,
           },
           shortBlurbStepForm: { shortDescription: 'Some description' },
           fullDescriptionStepForm: { youtubeId: 'youtube-video-id' },
@@ -110,6 +112,9 @@ describe('Manage sale request mixin', () => {
           .to.equal('BLOB_ID')
         expect(wrapper.vm.saleRequestOpts.creatorDetails.youtube_video_id)
           .to.equal('youtube-video-id')
+
+        expect(wrapper.vm.saleRequestOpts.saleRules)
+          .to.deep.equal([{ forbids: true }])
       })
 
       it('returns opts with default request ID if requestId prop is empty',
