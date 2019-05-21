@@ -454,7 +454,6 @@ export default {
     try {
       await this.loadSaleBaseAsset()
       await this.loadBalances()
-
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }

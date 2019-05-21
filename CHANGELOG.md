@@ -111,6 +111,7 @@ for further information about branching and tagging conventions.
 - Issue with "Update" button that was not shown on "Assets" page
 - Displaying sale & create sale request caps
 - Displaying sale base hard cap
+- Bug with getting 'defaultQuoteAsset' code in sale
 
 ## [1.6.0] - 2019-05-09
 #### Changed
