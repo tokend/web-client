@@ -36,6 +36,7 @@ for further information about branching and tagging conventions.
 - Whitelist invitations list component
 - Sale definition types constant
 - "Whitelisted" row to sale details table
+- Usage of Unix line endings rule
 
 #### Changed
 - Updated offer creating, updating drawers
