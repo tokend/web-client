@@ -113,15 +113,7 @@ export default {
       }).id
     },
   },
-  watch: {
-    'selectedAsset.code' () {
-      // Transferred to the disabled state before receiving the address,
-      // in order to avoid a large number of requests
-      if (!this.selectedAsset.isCoinpayments) {
-        this.disableForm()
-      }
-    },
-  },
+
   async created () {
     try {
       await this.loadBalances()

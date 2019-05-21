@@ -31,7 +31,6 @@ describe('kyc.module end-to-end test', () => {
         state: {},
         modules: { kyc },
       })
-      mockHelper.useMockWallet({ accountId })
       mockHelper.mockEndpoint(`/accounts/${accountId}/blobs/${latestBlobId}`, {
         data:
           {

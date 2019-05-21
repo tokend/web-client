@@ -13,8 +13,8 @@ export class CreateSaleRequest {
     this.startTime = safeGet(record, 'requestDetails.startTime')
     this.endTime = safeGet(record, 'requestDetails.endTime')
 
-    this.softCap = safeGet(record, 'requestDetails.defaultQuoteAsset.softCap')
-    this.hardCap = safeGet(record, 'requestDetails.defaultQuoteAsset.hardCap')
+    this.softCap = safeGet(record, 'requestDetails.softCap')
+    this.hardCap = safeGet(record, 'requestDetails.hardCap')
 
     this.descriptionBlobId = safeGet(
       record, 'requestDetails.creatorDetails.description'

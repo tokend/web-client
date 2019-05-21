@@ -131,7 +131,7 @@ $media-custom-breakpoint: 1100px;
 
 .app-tabs__tab {
   min-width: 7.2rem;
-  height: 4.8rem;
+  height: 4rem;
   margin: 0;
   cursor: pointer;
   border-radius: 0;
@@ -155,15 +155,14 @@ $media-custom-breakpoint: 1100px;
 
 .app-tabs__tab-btn {
   padding: 0 1.6rem;
-  font-size: 1.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.8rem;
+  font-size: 1.6rem;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: $col-tabs-txt;
   text-decoration: none;
+  font-weight: 700;
 
   &:hover {
     background-color: $col-tabs-hover-bg;
@@ -182,7 +181,7 @@ $media-custom-breakpoint: 1100px;
   }
 
   @include respond-to-custom($media-custom-breakpoint) {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 }
 </style>
