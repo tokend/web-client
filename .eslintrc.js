@@ -41,6 +41,7 @@ module.exports = {
       },
     }],
     'comma-dangle': [1, 'always-multiline'],
+    'linebreak-style': ['error', 'unix'],
   },
   env: {
     mocha: true,
