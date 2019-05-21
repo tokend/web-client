@@ -12,7 +12,7 @@
       class="trade-offers-wrapper"
       :class="{'trade-offers-wrapper--loading': isLoading}"
     >
-      <template v-if="offersList.length">
+      <template>
         <div
           class="app__table
                 app__table--with-shadow
@@ -35,7 +35,9 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              v-if="offersList.length"
+            >
               <tr
                 v-for="(offer, o) in offersList"
                 :key="`trade-offers-row-${o}`"
@@ -46,18 +48,13 @@
                 <td>{{ offer.price | formatMoney }}</td>
               </tr>
             </tbody>
+            <trade-empty-list-placeholder
+              v-else
+              :message="'trade-offers.no-data-title' | globalize"
+              :colspan="3"
+            />
           </table>
         </div>
-      </template>
-
-      <template v-else>
-        <no-data-message
-          :title="'trade-offers.no-data-title' | globalize"
-          :message="noDataMessage.messageId | globalize(
-            noDataMessage.messageIdKeys
-          )"
-          class="trade-offers__no-data-message-wrapper"
-        />
       </template>
     </div>
     <drawer :is-shown.sync="isSubmitOfferDrawerShown">
@@ -82,11 +79,11 @@
 <script>
 import SubmitTradeOfferForm from '@/vue/forms/market-orders/SubmitTradeOfferForm'
 
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import FormMixin from '@/vue/mixins/form.mixin'
 import Drawer from '@/vue/common/Drawer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import TradeEmptyListPlaceholder from './Trade.EmptyListPlaceholder'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
@@ -95,9 +92,9 @@ const EVENTS = {
 export default {
   name: 'trade-offers-renderer',
   components: {
-    NoDataMessage,
     Drawer,
     SubmitTradeOfferForm,
+    TradeEmptyListPlaceholder,
   },
   mixins: [
     FormMixin,
