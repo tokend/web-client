@@ -2,12 +2,7 @@
 
 set -ex
 
-if [ -z "$CI_COMMIT_TAG" ];
-then
-  BUILD_VERSION=$CI_COMMIT_SHORT_SHA
-else
-  BUILD_VERSION=$CI_COMMIT_TAG
-fi
+version=$(test -z $CI_COMMIT_TAG && echo $CI_COMMIT_SHORT_SHA || echo $CI_COMMIT_TAG \($CI_COMMIT_SHORT_SHA\))
 
-docker build --build-arg BUILD_VERSION=$CI_COMMIT_REF_NAME --pull -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+docker build --build-arg BUILD_VERSION=$version --pull -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
 docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA

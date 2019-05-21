@@ -57,6 +57,9 @@ export default {
           logo: saleLogo ? saleLogo.getDetailsForSave() : EMPTY_DOCUMENT,
           youtube_video_id: this.fullDescriptionStepForm.youtubeId,
         },
+        saleRules: [{
+          forbids: this.informationStepForm.isWhitelisted,
+        }],
       }
     },
   },

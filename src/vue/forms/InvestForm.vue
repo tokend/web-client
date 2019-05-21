@@ -342,7 +342,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset === quote.id
+          return balanceItem.asset === quote.asset.id
         })
 
         if (balance) {
@@ -454,7 +454,6 @@ export default {
     try {
       await this.loadSaleBaseAsset()
       await this.loadBalances()
-
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
       }
