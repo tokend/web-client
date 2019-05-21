@@ -65,6 +65,17 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <tick-field
+          :name="`create-sale-whitelisted`"
+          v-model="form.isWhitelisted"
+        >
+          {{ 'create-sale-form.whitelisted-lbl' | globalize }}
+        </tick-field>
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <date-field
           v-model="form.startTime"
           name="create-sale-start-time"
@@ -103,7 +114,7 @@
           @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
-            asset: DEFAULT_QUOTE_ASSET
+            asset: defaultQuoteAsset
           })"
           :error-message="getFieldErrorMessage(
             'form.softCap',
@@ -122,7 +133,7 @@
           @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
-            asset: DEFAULT_QUOTE_ASSET
+            asset: defaultQuoteAsset
           })"
           :error-message="getFieldErrorMessage(
             'form.hardCap',
@@ -138,7 +149,7 @@
           {{
             'create-sale-form.price-for-asset-hint' | globalize({
               base: form.baseAsset.code,
-              quote: DEFAULT_QUOTE_ASSET,
+              quote: defaultQuoteAsset,
               value: priceForAsset
             })
           }}
@@ -200,8 +211,10 @@ import {
   minDate,
   noMoreThanAvailableForIssuance,
 } from '@validators'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
-import { config } from '../_config'
+import config from '@/config'
 
 const EVENTS = {
   submit: 'submit',
@@ -217,6 +230,7 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
+    defaultQuoteAsset: { type: String, required: true },
   },
 
   data: _ => ({
@@ -229,10 +243,10 @@ export default {
       hardCap: '',
       assetsToSell: '',
       quoteAssets: [],
+      isWhitelisted: false,
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
-    MAX_AMOUNT: config().MAX_AMOUNT,
-    DEFAULT_QUOTE_ASSET: config().DEFAULT_QUOTE_ASSET,
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
     CODE_MAX_LENGTH,
     NAME_MAX_LENGTH,
   }),
@@ -276,13 +290,16 @@ export default {
   },
 
   computed: {
+    ...mapGetters([
+      vuexTypes.defaultQuoteAsset,
+    ]),
     priceForAsset () {
       return {
         value: MathUtil.divide(
           this.form.hardCap,
           this.form.assetsToSell
         ),
-        currency: this.DEFAULT_QUOTE_ASSET,
+        currency: this.defaultQuoteAsset,
       }
     },
 

@@ -3,7 +3,7 @@ import UploadDocumentsMixin from './upload-documents.mixin'
 import { base } from '@tokend/js-sdk'
 
 import { api } from '@/api'
-import { config } from '../_config'
+import config from '@/config'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
@@ -20,7 +20,7 @@ export default {
   computed: {
     preIssuanceAssetSigner () {
       return this.advancedStepForm.isPreissuanceDisabled
-        ? config().NULL_ASSET_SIGNER
+        ? config.NULL_ASSET_SIGNER
         : this.advancedStepForm.preIssuanceAssetSigner
     },
 
@@ -39,7 +39,7 @@ export default {
         code: this.informationStepForm.code,
         assetType: String(this.informationStepForm.assetType.value),
         preissuedAssetSigner: this.preIssuanceAssetSigner,
-        trailingDigitsCount: config().DECIMAL_POINTS,
+        trailingDigitsCount: config.DECIMAL_POINTS,
         initialPreissuedAmount: this.initialPreissuedAmount,
         maxIssuanceAmount: this.informationStepForm.maxIssuanceAmount,
         policies: this.informationStepForm.policies,

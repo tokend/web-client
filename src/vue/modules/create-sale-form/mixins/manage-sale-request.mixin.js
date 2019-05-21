@@ -4,10 +4,12 @@ import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 import { base, SALE_TYPES } from '@tokend/js-sdk'
 
 import { api } from '@/api'
-import { config } from '../_config'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
+
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
@@ -26,6 +28,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      vuexTypes.defaultQuoteAsset,
+    ]),
     saleRequestOpts () {
       const saleLogo = this.shortBlurbStepForm.saleLogo
 
@@ -36,7 +41,7 @@ export default {
         startTime: DateUtil.toTimestamp(this.informationStepForm.startTime),
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
         baseAsset: this.informationStepForm.baseAsset.code,
-        defaultQuoteAsset: config().DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
@@ -52,6 +57,9 @@ export default {
           logo: saleLogo ? saleLogo.getDetailsForSave() : EMPTY_DOCUMENT,
           youtube_video_id: this.fullDescriptionStepForm.youtubeId,
         },
+        saleRules: [{
+          forbids: this.informationStepForm.isWhitelisted,
+        }],
       }
     },
   },

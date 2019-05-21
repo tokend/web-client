@@ -120,7 +120,7 @@
 import FormMixin from '@/vue/mixins/form.mixin'
 import ManageIssuanceMixin from '../mixins/manage-issuance.mixin'
 
-import { config } from '../_config'
+import config from '@/config'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'

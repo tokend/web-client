@@ -58,16 +58,17 @@
       <drawer :is-shown.sync="isSubmitOfferDrawerShown">
         <template slot="heading">
           <template v-if="selectedOffer.isBuy">
-            {{ 'trade-open-offers.your-buy-offer' | globalize }}
+            {{ 'trade-open-offers.your-buy-order' | globalize }}
           </template>
           <template v-else>
-            {{ 'trade-open-offers.your-sell-offer' | globalize }}
+            {{ 'trade-open-offers.your-sell-order' | globalize }}
           </template>
         </template>
-        <your-sale-offer-form
+        <your-trade-offer-form
           :asset-pair="assetPair"
           :offer="selectedOffer"
-          @close-drawer="closeDrawer"
+          @offer-canceled="closeDrawer"
+          @offer-updated="closeDrawer"
         />
       </drawer>
     </template>
@@ -89,7 +90,7 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import YourSaleOfferForm from '@/vue/forms/market-orders/YourSaleOfferForm'
+import YourTradeOfferForm from '@/vue/forms/market-orders/YourTradeOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
@@ -102,7 +103,7 @@ export default {
   name: 'trade-open-offers',
   components: {
     NoDataMessage,
-    YourSaleOfferForm,
+    YourTradeOfferForm,
     Loader,
     Drawer,
   },

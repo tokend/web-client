@@ -24,7 +24,7 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 import { DividendFormModule } from '@modules/dividend-form/module'
 import { BuyBackFormModule } from '@modules/buy-back-form/module'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
-import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
+import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
 import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
@@ -77,7 +77,7 @@ export default {
           new SalesListPageModule({
             routerEntry: {
               path: '/opportunities/all',
-              name: vueRoutes.allSales.name,
+              name: vueRoutes.investableSales.name,
               props: {
                 default: true,
                 isUserSales: false,

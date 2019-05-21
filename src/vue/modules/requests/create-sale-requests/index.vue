@@ -8,7 +8,6 @@
           </template>
           <create-sale-form-module
             :request-id="selectedRequest.id"
-            :storage-url="storageUrl"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -58,8 +57,6 @@ import RequestViewer from './components/request-viewer'
 
 import CreateSaleFormModule from '@modules/create-sale-form'
 
-import { initConfig } from './_config'
-
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
 
@@ -74,13 +71,6 @@ export default {
     RequestsTable,
     RequestViewer,
     CreateSaleFormModule,
-  },
-
-  props: {
-    storageUrl: {
-      type: String,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -99,7 +89,6 @@ export default {
   },
 
   async created () {
-    initConfig(this.storageUrl)
     this.initFirstPageLoader()
   },
 

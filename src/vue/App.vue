@@ -47,7 +47,6 @@ import {
   mapGetters,
   mapActions,
 } from 'vuex'
-import { Sdk } from '@/sdk'
 import { api, walletsManager, factorsManager } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
@@ -101,7 +100,6 @@ export default {
       loadDefaultQuoteAsset: vuexTypes.LOAD_DEFAULT_QUOTE_ASSET,
     }),
     async initApp () {
-      await Sdk.init(config.HORIZON_SERVER)
       api.useBaseURL(config.HORIZON_SERVER)
       const { data: networkDetails } = await api.getRaw('/')
       api.useNetworkDetails(networkDetails)
@@ -115,7 +113,6 @@ export default {
           this.walletAccountId,
           this.walletId
         )
-        Sdk.sdk.useWallet(wallet)
         api.useWallet(wallet)
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],
