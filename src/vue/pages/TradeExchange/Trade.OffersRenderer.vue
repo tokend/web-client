@@ -8,55 +8,58 @@
         {{ 'trade-offers.subtitle-bid' | globalize }}
       </template>
     </h3>
-    <template v-if="offersList.length && !isLoading">
-      <div
-        class="app__table
-              app__table--with-shadow
-              app__table--clickable-rows"
-      >
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <!-- eslint-disable-next-line -->
-                {{ 'trade-offers.table-want-lbl' | globalize({ asset: assetPair.base }) }}
-              </th>
-              <th>
-                <!-- eslint-disable-next-line -->
-                {{ 'trade-offers.table-offer-lbl' | globalize({ asset: assetPair.quote }) }}
-              </th>
-              <th>
-                <!-- eslint-disable-next-line -->
-                {{ 'trade-offers.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(offer, o) in offersList"
-              :key="`trade-offers-row-${o}`"
-              @click="selectOffer(offer)"
-              :disabled="offer.ownerId === accountId">
-              <td>{{ offer.baseAmount | formatMoney }}</td>
-              <td>{{ offer.quoteAmount | formatMoney }}</td>
-              <td>{{ offer.price | formatMoney }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </template>
-    <template v-else-if="isLoading">
-      <loader :message-id="'trade-offers.loading-msg'" />
-    </template>
-    <template v-else>
-      <no-data-message
-        :title="'trade-offers.no-data-title' | globalize"
-        :message="noDataMessage.messageId | globalize(
-          noDataMessage.messageIdKeys
-        )"
-      />
-    </template>
+    <div
+      class="trade-offers-wrapper"
+      :class="{'trade-offers-wrapper--loading': isLoading}"
+    >
+      <template v-if="offersList.length">
+        <div
+          class="app__table
+                app__table--with-shadow
+                app__table--clickable-rows"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <!-- eslint-disable-next-line -->
+                  {{ 'trade-offers.table-want-lbl' | globalize({ asset: assetPair.base }) }}
+                </th>
+                <th>
+                  <!-- eslint-disable-next-line -->
+                  {{ 'trade-offers.table-offer-lbl' | globalize({ asset: assetPair.quote }) }}
+                </th>
+                <th>
+                  <!-- eslint-disable-next-line -->
+                  {{ 'trade-offers.table-price-lbl' | globalize({ asset: assetPair.quote }) }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(offer, o) in offersList"
+                :key="`trade-offers-row-${o}`"
+                @click="selectOffer(offer)"
+                :disabled="offer.ownerId === accountId">
+                <td>{{ offer.baseAmount | formatMoney }}</td>
+                <td>{{ offer.quoteAmount | formatMoney }}</td>
+                <td>{{ offer.price | formatMoney }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
 
+      <template v-else>
+        <no-data-message
+          :title="'trade-offers.no-data-title' | globalize"
+          :message="noDataMessage.messageId | globalize(
+            noDataMessage.messageIdKeys
+          )"
+          class="trade-offers__no-data-message-wrapper"
+        />
+      </template>
+    </div>
     <drawer :is-shown.sync="isSubmitOfferDrawerShown">
       <template slot="heading">
         <template v-if="isBuy">
@@ -80,7 +83,6 @@
 import SubmitTradeOfferForm from '@/vue/forms/market-orders/SubmitTradeOfferForm'
 
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import Loader from '@/vue/common/Loader'
 import FormMixin from '@/vue/mixins/form.mixin'
 import Drawer from '@/vue/common/Drawer'
 import { vuexTypes } from '@/vuex'
@@ -94,7 +96,6 @@ export default {
   name: 'trade-offers-renderer',
   components: {
     NoDataMessage,
-    Loader,
     Drawer,
     SubmitTradeOfferForm,
   },
@@ -157,5 +158,14 @@ export default {
 <style lang="scss">
 .trade-offers__title {
   font-size: 1.4rem;
+}
+
+.trade-offers-wrapper {
+  min-height: 5.3rem;
+
+  &--loading {
+    filter: blur(1rem);
+    transition: 0.3s -webkit-filter linear; // works on Safari v12.1
+  }
 }
 </style>

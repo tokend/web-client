@@ -175,7 +175,12 @@ export default {
           order: this.recordsOrder,
         },
       }
-      const response = await api.get('/v3/matches', params)
+      let response
+      try {
+        response = await api.get('/v3/matches', params)
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
       this.isTradeHistoryLoading = false
       return response
     },

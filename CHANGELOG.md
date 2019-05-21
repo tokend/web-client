@@ -112,6 +112,7 @@ for further information about branching and tagging conventions.
 - Displaying sale & create sale request caps
 - Displaying sale base hard cap
 - Bug with getting 'defaultQuoteAsset' code in sale
+- Flickering on "Trade" page
 
 ## [1.6.0] - 2019-05-09
 #### Changed
