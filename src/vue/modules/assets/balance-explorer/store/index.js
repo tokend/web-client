@@ -36,7 +36,7 @@ export const actions = {
     })
 
     commit(types.SET_ACCOUNT_BALANCES, data.states.map(s => s.balance))
-    commit(types.SET_ASSETS, data.states.map(s => s.asset))
+    commit(types.SET_ASSETS, data.states.map(s => s.balance.asset))
   },
 
   async [types.LOAD_KYC_REQUIRED_ASSET_TYPE] ({ commit }) {
