@@ -1,7 +1,6 @@
 <template>
   <div class="requests-table">
     <div
-      v-if="requests.length"
       class="app__table app__table--with-shadow"
     >
       <table>
@@ -27,7 +26,9 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody
+          v-if="requests.length"
+        >
           <tr
             v-for="request in requests"
             :key="request.id"
@@ -62,21 +63,19 @@
             </td>
           </tr>
         </tbody>
+        <empty-list-placeholder
+          v-else
+          :colspan="6"
+          :message="'create-sale-requests.no-request-history-desc' | globalize"
+        />
       </table>
     </div>
-
-    <no-data-message
-      v-else
-      icon-name="trending-up"
-      :title="'create-sale-requests.no-request-history-title' | globalize"
-      :message="'create-sale-requests.no-request-history-desc' | globalize"
-    />
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import RequestStateViewer from '../../shared/components/request-state-viewer'
+import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
 
 const EVENTS = {
   select: 'select',
@@ -85,8 +84,8 @@ const EVENTS = {
 export default {
   name: 'requests-table',
   components: {
-    NoDataMessage,
     RequestStateViewer,
+    EmptyListPlaceholder,
   },
 
   props: {
