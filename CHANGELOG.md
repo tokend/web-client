@@ -88,7 +88,7 @@ for further information about branching and tagging conventions.
   - Pre-issuance form
   - Issuance form
   - Create sale form
-- Now using @tokend/js-sdk@1.7.0-rc.0
+- Now using @tokend/js-sdk@1.7.0-rc.1
 - Split offer creating drawer to three new drawers
 - Optimized fonts, images, SVGs
 - Now using `moment().toISOString()` value instead of `moment().toString()
