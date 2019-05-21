@@ -47,7 +47,6 @@ import {
   mapGetters,
   mapActions,
 } from 'vuex'
-import { Sdk } from '@/sdk'
 import {
   api,
   documentsManager,
@@ -106,7 +105,6 @@ export default {
       loadDefaultQuoteAsset: vuexTypes.LOAD_DEFAULT_QUOTE_ASSET,
     }),
     async initApp () {
-      await Sdk.init(config.HORIZON_SERVER)
       api.useBaseURL(config.HORIZON_SERVER)
       documentsManager.useStorageURL(config.FILE_STORAGE)
 
@@ -123,7 +121,6 @@ export default {
           this.walletAccountId,
           this.walletId
         )
-        Sdk.sdk.useWallet(wallet)
         api.useWallet(wallet)
         ErrorTracker.setLoggedInUser({
           'accountId': this[vuexTypes.walletAccountId],

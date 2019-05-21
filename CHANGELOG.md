@@ -30,6 +30,12 @@ for further information about branching and tagging conventions.
 - "MessageBox" component for displaying titled messages
 - Pre-issuance guide
 - Error message to the "ReadonlyField"
+- Sale participation statistics component
+- "Whitelisted" checkbox on create sale form
+- Whitelist invite form component
+- Whitelist invitations list component
+- Sale definition types constant
+- "Whitelisted" row to sale details table
 
 #### Changed
 - Updated offer creating, updating drawers
@@ -63,12 +69,29 @@ for further information about branching and tagging conventions.
   - "ManageOfferMixin"
 - Remove _config.js from modules
 - Remove storageUrl from modules
+- Now taking matches from v3/matches instead of legacy /trades API endpoint
+- Changed wordings:
+  - Change "Account address" to "Account ID" on "Settings" page
+  - Add recommendtaion of using Google Authenticator to 2FA screen
+  - Fix typo with "some assets" on the Deposit form
+- Show expiration date of deposit address on the Deposit form
+-`tipPriceChangeText` when price up from 0 to some value.
+- Moved sale view buttons to sale campaign viewer
+- Renamed "All sales" -> "Investable sales"
+- Now loading default quote asset in create sale form
+- Now loading investable sales from the /v3/accounts/{accountId}/sales
+  endpoint
 - Now using `DocumentsManager` from SDK to upload documents to the storage
 - Now getting document URL using documentsManager
 
 #### Removed
 - Unused methods from `DocumentContainer` class
 - More button for 'Movements' history
+- Unused global SDK instance
+- Unused mock-helper methods
+- `CreateSaleForm` component
+- `PreIssuanceForm` component
+- `requests-renderer` component
 
 #### Fixed
 - Fixed a bug when we received MAX_VALID_LIMIT_VALUE when changing
@@ -88,6 +111,10 @@ for further information about branching and tagging conventions.
 - Trade forms translations
 - Account balances mapping in deposit form
 - Issue with "Update" button that was not shown on "Assets" page
+- Displaying sale & create sale request caps
+- Displaying sale base hard cap
+- Bug with getting 'defaultQuoteAsset' code in sale
+- Flickering on "Trade" page
 
 ## [1.6.0] - 2019-05-09
 #### Changed
