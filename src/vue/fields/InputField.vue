@@ -23,7 +23,7 @@
       @blur="onBlur"
     >
 
-    <span
+    <button
       v-if="isPasswordSwitcherShown"
       class="input-field__password-toggle"
       :class="{
@@ -35,7 +35,7 @@
         class="mdi input-field__password-toggle-icon"
         :class="isPasswordShown ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
       />
-    </span>
+    </button>
 
     <span class="input-field__label">
       {{ label }}
@@ -124,13 +124,8 @@ export default {
     },
     togglePasswordDisplay (event) {
       const input = event.target.parentNode.previousElementSibling
-      if (!this.isPasswordShown) {
-        input.setAttribute('type', 'text')
-        this.isPasswordShown = true
-      } else if (this.isPasswordShown) {
-        input.setAttribute('type', 'password')
-        this.isPasswordShown = false
-      }
+      input.type = this.isPasswordShown ? this.type : 'text'
+      this.isPasswordShown = this.isPasswordShown ? 0 : 1
     },
     displayPasswordToggleButton () {
       this.isPasswordSwitcherShown = this.type === 'password' ? 1 : 0
