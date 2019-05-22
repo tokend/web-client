@@ -8,7 +8,7 @@
         })
       }}
     </h2>
-    <template v-if="openOffers.length && !isLoading">
+    <template>
       <div
         class="app__table
               app__table--with-shadow
@@ -34,7 +34,9 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            v-if="openOffers.length && !isLoading"
+          >
             <tr
               v-for="(offer, i) in openOffers"
               :key="`trade-open-offers-row-${i}`"
@@ -53,6 +55,14 @@
               <td>{{ offer.price | formatMoney }}</td>
             </tr>
           </tbody>
+          <empty-list-placeholder
+            v-else
+            :colspan="5"
+            :message="'trade-open-offers.no-data-message' | globalize({
+              base: assetPair.base,
+              quote: assetPair.quote
+            })"
+          />
         </table>
       </div>
       <drawer :is-shown.sync="isSubmitOfferDrawerShown">
@@ -72,28 +82,18 @@
         />
       </drawer>
     </template>
-    <template v-else-if="isLoading">
+    <template v-if="isLoading">
       <loader :message-id="'trade-open-offers.loading-msg'" />
-    </template>
-    <template v-else>
-      <no-data-message
-        icon-name="trending-up"
-        :title="'trade-open-offers.no-data-title' | globalize"
-        :message="'trade-open-offers.no-data-message' | globalize({
-          base: assetPair.base,
-          quote: assetPair.quote
-        })"
-      />
     </template>
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import YourTradeOfferForm from '@/vue/forms/market-orders/YourTradeOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
+import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
 
 const EVENTS = {
   reloadOffers: 'reload-offers',
@@ -102,10 +102,10 @@ const EVENTS = {
 export default {
   name: 'trade-open-offers',
   components: {
-    NoDataMessage,
     YourTradeOfferForm,
     Loader,
     Drawer,
+    EmptyListPlaceholder,
   },
   props: {
     openOffers: { type: Array, required: true, default: () => [] },
