@@ -9,7 +9,7 @@
         :key="item"
       >
         <skeleton-loader
-          template="bigString"
+          :template="template"
         />
       </td>
     </tr>
@@ -32,6 +32,10 @@ export default {
     rows: {
       type: Number,
       default: 3,
+    },
+    template: {
+      type: String,
+      default: 'bigString',
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="incoming-withdrawal-requests">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template slot="heading">
           {{ 'incoming-withdrawal-requests.details-title' | globalize }}
@@ -13,18 +13,14 @@
 
       <requests-table
         :requests="requests"
+        :is-loaded="isLoaded"
         @select="showRequestDetails"
       />
     </template>
 
-    <p v-else-if="isLoadingFailed">
+    <p v-if="isLoadingFailed">
       {{ 'incoming-withdrawal-requests.loading-error-msg' | globalize }}
     </p>
-
-    <load-spinner
-      v-else
-      message-id="incoming-withdrawal-requests.loading-msg"
-    />
 
     <collection-loader
       class="incoming-withdrawal-requests__loader"
@@ -37,7 +33,6 @@
 </template>
 
 <script>
-import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
@@ -52,7 +47,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'incoming-withdrawal-requests-module',
   components: {
-    LoadSpinner,
     Drawer,
     CollectionLoader,
     RequestsTable,

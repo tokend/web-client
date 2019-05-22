@@ -15,6 +15,7 @@ const TEMPLATES = {
   bigIcon: 'big-icon',
   smallIcon: 'small-icon',
   bigString: 'big-string',
+  smallString: 'small-string',
   cardViewer: 'card-viewer',
   saleViewer: 'sale-viewer',
 }
@@ -107,6 +108,11 @@ $media-small-desktop: 960px;
   &--big-string {
     height: 2.2rem;
     width: 15rem;
+  }
+
+  &--small-string {
+    height: 2.2rem;
+    width: 10rem;
   }
 
   &--big-icon {

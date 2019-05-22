@@ -30,7 +30,7 @@
               </tr>
             </thead>
             <tbody
-              v-if="tradeHistory.length"
+              v-if="tradeHistory.length && !isLoading"
             >
               <tr
                 v-for="(item, i) in tradeHistory"
@@ -42,12 +42,16 @@
               </tr>
             </tbody>
             <empty-list-placeholder
-              v-else
+              v-else-if="!tradeHistory.length && !isLoading"
               :message="'trade-history.no-data-message' | globalize({
                 base: assetPair.base,
                 quote: assetPair.quote
               })"
               :colspan="4"
+            />
+            <skeleton-loader-row
+              v-else-if="isLoading"
+              :cells="4"
             />
           </table>
         </div>
@@ -58,11 +62,13 @@
 
 <script>
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import SkeletonLoaderRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
 
 export default {
   name: 'trade-history-renderer',
   components: {
     EmptyListPlaceholder,
+    SkeletonLoaderRow,
   },
   props: {
     assetPair: {

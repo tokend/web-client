@@ -1,6 +1,6 @@
 <template>
   <div class="create-asset-requests">
-    <template v-if="isLoaded">
+    <template>
       <drawer :is-shown.sync="isDrawerShown">
         <template v-if="isUpdateMode">
           <template slot="heading">
@@ -27,15 +27,14 @@
 
       <requests-table
         :requests="requests"
+        :is-loaded="isLoaded"
         @select="showRequestDetails"
       />
     </template>
 
-    <p v-else-if="isLoadingFailed">
+    <p v-if="isLoadingFailed">
       {{ 'create-asset-requests.loading-error-msg' | globalize }}
     </p>
-
-    <load-spinner v-else message-id="create-asset-requests.loading-msg" />
 
     <collection-loader
       class="create-asset-requests__loader"
@@ -48,7 +47,6 @@
 </template>
 
 <script>
-import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
@@ -65,7 +63,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 export default {
   name: 'create-asset-requests-module',
   components: {
-    LoadSpinner,
     Drawer,
     CollectionLoader,
     RequestsTable,

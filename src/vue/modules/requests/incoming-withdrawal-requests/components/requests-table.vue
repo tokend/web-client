@@ -24,7 +24,7 @@
         </thead>
 
         <tbody
-          v-if="requests.length"
+          v-if="requests.length && isLoaded"
         >
           <tr
             v-for="(request, index) in requests"
@@ -57,9 +57,13 @@
           </tr>
         </tbody>
         <empty-list-placeholder
-          v-else
+          v-else-if="!requests.length && isLoaded"
           :colspan="5"
           :message="'incoming-withdrawal-requests.no-history-desc' | globalize"
+        />
+        <skeleton-loader-row
+          v-else
+          :cells="5"
         />
       </table>
     </div>
@@ -70,6 +74,7 @@
 import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from '../../shared/components/request-state-viewer'
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import SkeletonLoaderRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
 
 const EVENTS = {
   select: 'select',
@@ -81,10 +86,12 @@ export default {
     EmailGetter,
     RequestStateViewer,
     EmptyListPlaceholder,
+    SkeletonLoaderRow,
   },
 
   props: {
     requests: { type: Array, required: true },
+    isLoaded: { type: Boolean, required: true },
   },
 
   data: _ => ({

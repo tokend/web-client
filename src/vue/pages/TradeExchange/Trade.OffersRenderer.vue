@@ -36,7 +36,7 @@
               </tr>
             </thead>
             <tbody
-              v-if="offersList.length"
+              v-if="offersList.length && !isLoading"
             >
               <tr
                 v-for="(offer, o) in offersList"
@@ -49,9 +49,13 @@
               </tr>
             </tbody>
             <empty-list-placeholder
-              v-else
+              v-else-if="!offersList.length && !isLoading"
               :message="'trade-offers.no-data-title' | globalize"
               :colspan="3"
+            />
+            <skeleton-loader-row
+              v-else-if="isLoading"
+              :cells="3"
             />
           </table>
         </div>
@@ -84,6 +88,7 @@ import Drawer from '@/vue/common/Drawer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import SkeletonLoaderRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
@@ -95,6 +100,7 @@ export default {
     Drawer,
     SubmitTradeOfferForm,
     EmptyListPlaceholder,
+    SkeletonLoaderRow,
   },
   mixins: [
     FormMixin,
