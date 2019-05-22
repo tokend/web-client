@@ -2016,6 +2016,10 @@
     },
     "clipboard-field": {
       "copied": "Copied"
+    },
+    "asset-select-field": {
+      "failed-loading-msg": "Assets loading failed!",
+      "no-assets-for-select": "No assets for select"
     }
   }
 }
