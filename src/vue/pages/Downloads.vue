@@ -56,6 +56,7 @@
             src="@static/phones_overlay.png"
           >
         </div>
+
         <hr>
       </section>
       <section class="downloads__section">
@@ -110,6 +111,7 @@
             {{ 'downloads-page.pre-issuance-app-sources-link' | globalize }}
           </a>
         </div>
+
         <hr>
       </section>
       <section class="downloads__section">
