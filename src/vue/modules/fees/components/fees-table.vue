@@ -61,6 +61,10 @@
             </td>
           </tr>
         </tbody>
+        <skeleton-loader
+          v-if="!isLoaded"
+          :cells="6"
+        />
         <tbody
           v-else
         >
@@ -74,9 +78,6 @@
             </td>
           </tr>
         </tbody>
-        <skeleton-loader
-          v-if="true"
-        />
       </table>
     </div>
   </div>

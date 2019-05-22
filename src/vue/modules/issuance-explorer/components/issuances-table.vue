@@ -54,6 +54,10 @@
               </td>
             </tr>
           </tbody>
+          <skeleton-loader-table-row
+            v-else-if="!isLoaded"
+            :cells="6"
+          />
           <empty-list-placeholder
             v-else
             :colspan="6"
@@ -69,6 +73,7 @@
 import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from './request-state-viewer'
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import SkeletonLoaderTableRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
 
 export default {
   name: 'issuanes-table',
@@ -76,11 +81,16 @@ export default {
     EmailGetter,
     RequestStateViewer,
     EmptyListPlaceholder,
+    SkeletonLoaderTableRow,
   },
 
   props: {
     issuances: {
       type: Array, /** {@link Issuance} **/
+      required: true,
+    },
+    isLoaded: {
+      type: Boolean,
       required: true,
     },
   },
