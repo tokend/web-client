@@ -187,14 +187,6 @@ $payload-padding: 2.4rem;
     transform: rotate(-45deg);
   }
 
-  &:hover:before {
-    transform: rotate(135deg);
-  }
-
-  &:hover:after {
-    transform: rotate(45deg);
-  }
-
   &:hover:after,
   &:hover:before {
     transition: 0.2s;
