@@ -252,11 +252,7 @@ export default {
               props: true,
             },
             submodules: [
-              new SaleStateWidgetModule({
-                submodules: [
-                  new DashboardChartPseudoModule(),
-                ],
-              }),
+              new SaleStateWidgetModule(),
             ],
           }),
         ],
