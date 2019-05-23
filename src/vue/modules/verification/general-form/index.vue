@@ -50,8 +50,8 @@
           :disabled="formMixin.isDisabled"
         >
           {{ (Number(requestId) > 0
-            ? 'verification-form.create-btn'
-            : 'verification-form.update-btn'
+            ? 'verification-form.update-btn'
+            : 'verification-form.create-btn'
           ) | globalize }}
         </button>
       </div>
