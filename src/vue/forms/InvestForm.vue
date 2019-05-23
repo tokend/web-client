@@ -101,19 +101,9 @@
           class="invest-form__fee-box"
           v-if="isFeesLoaded">
           <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.transaction-fees-heading' | globalize }}
+            {{ 'invest-form.investment-fees-heading' | globalize }}
           </h3>
-          <template v-if="+fees.fixed || +fees.percent">
-            <p
-              class="invest-form__fee"
-              v-if="fees.fixed">
-              - {{ fees.fixed | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.fixed-fee-label' | globalize }}
-              </span>
-            </p>
-
+          <template v-if="+fees.percent">
             <p
               class="invest-form__fee"
               v-if="fees.percent">
@@ -361,10 +351,19 @@ export default {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset === this.form.asset.code)
 
-      const availableBalance = this.currentInvestment.quoteAmount
-        ? Number(quoteBalance.balance) +
-        Number(this.currentInvestment.quoteAmount)
-        : quoteBalance.balance
+      let availableBalance
+      if (this.currentInvestment.quoteAmount) {
+        const convertedAmount = MathUtil.add(
+          this.currentInvestment.quoteAmount,
+          this.currentInvestment.fee.calculatedPercent
+        )
+        availableBalance = MathUtil.add(
+          convertedAmount,
+          quoteBalance.balance,
+        )
+      } else {
+        availableBalance = quoteBalance.balance
+      }
 
       return {
         value: availableBalance,
@@ -414,9 +413,7 @@ export default {
     },
 
     totalAmount () {
-      const fees = MathUtil
-        .add(this.fees.fixed, this.fees.percent)
-      return MathUtil.add(fees, this.form.amount)
+      return MathUtil.add(this.form.amount, this.fees.percent)
     },
 
     investmentDisabledMessageId () {
