@@ -22,11 +22,12 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatWithdrawalFormShown = true"
+            :disabled="!asset.isFiat && !asset.isWithdrawable"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -34,14 +35,13 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
-            && asset.isCoinpayments
-            && asset.isWithdrawable"
+          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)"
         >
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isWithdrawalDrawerShown = true"
+            :disabled="!asset.isCoinpayments && !asset.isWithdrawable"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -49,23 +49,24 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatDepositFormShown = true"
+            :disabled="!asset.isFiat && !asset.isDepositable"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
           </button>
         </template>
-
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
+        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isCoinpaymentsDepositFormShown = true"
+            :disabled="!asset.isCoinpayments"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
@@ -78,6 +79,7 @@
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isTransferDrawerShown = true"
+            :disabled="!asset.isTransferable"
           >
             <i
               class="
@@ -93,14 +95,13 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(RedeemFormModule)
-            && asset.isBond
-            && !isOwnedAsset"
+          v-if="getModule().canRenderSubmodule(RedeemFormModule)"
         >
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isReedemDrawerShown = true"
+            :disabled="!asset.isBond && isOwnedAsset"
           >
             <i
               class="mdi mdi-wallet-giftcard movements-top-bar-reit__btn-icon"

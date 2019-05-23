@@ -22,11 +22,12 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule) && asset.isWithdrawable">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isWithdrawalDrawerShown = true"
+            :disabled="!asset.isWithdrawable"
           >
             <i class="mdi mdi-download movements-top-bar__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -34,11 +35,12 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule) && asset.isDepositable">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isDepositDrawerShown = true"
+            :disabled="!asset.isDepositable"
           >
             <i class="mdi mdi-upload movements-top-bar__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
@@ -51,6 +53,7 @@
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isTransferDrawerShown = true"
+            :disabled="!asset.isTransferable"
           >
             <i
               class="
