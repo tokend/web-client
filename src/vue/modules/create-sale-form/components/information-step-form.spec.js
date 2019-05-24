@@ -80,7 +80,6 @@ describe('Information step form', () => {
   describe('created hook', () => {
     it('calls populateForm only if request was passed as a prop', () => {
       sandbox.stub(InformationStepForm.methods, 'populateForm')
-      sandbox.stub(InformationStepForm.computed, 'defaultQuoteAsset')
 
       shallowMount(InformationStepForm, { localVue })
       expect(InformationStepForm.methods.populateForm)
