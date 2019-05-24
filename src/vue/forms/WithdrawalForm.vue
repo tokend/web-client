@@ -88,14 +88,17 @@
             </template>
           </div>
 
-          <div
-            class="app__form-row withdrawal__form-row"
-            v-if="!isFeesLoadPending"
-          >
-            <fees-renderer :fees="fees" />
+          <div class="app__form-row withdrawal__form-row">
+            <template v-if="isFeesLoaded">
+              <fees-renderer :fees="fees" />
+            </template>
+
+            <template v-else>
+              <loader message-id="withdrawal-form.loading-msg" />
+            </template>
           </div>
 
-          <div class="app__form-actions withdrawal__action">
+          <div class="app__form-actions">
             <button
               v-ripple
               v-if="!formMixin.isConfirmationShown"
@@ -123,7 +126,7 @@
         <router-link
           :to="vueRoutes.assets"
           tag="button"
-          class="app__button-raised withdrawal__action"
+          class="app__button-raised"
         >
           {{ 'withdrawal-form.discover-assets-btn' | globalize }}
         </router-link>
@@ -169,8 +172,6 @@ const EVENTS = {
   operationSubmitted: 'operation-submitted',
 }
 
-const EMPTY_FEE = '0.000000'
-
 export default {
   name: 'withdrawal-form',
   components: {
@@ -186,22 +187,11 @@ export default {
       amount: '',
       address: '',
     },
-    fees: {
-      destination: {
-        fixed: 0,
-        calculatedPercent: 0,
-      },
-      source: {
-        fixed: 0,
-        calculatedPercent: 0,
-      },
-    },
+    fees: {},
     assets: [],
     MIN_AMOUNT: config.MIN_AMOUNT,
-    fixedFee: EMPTY_FEE,
-    percentFee: EMPTY_FEE,
     feesDebouncedRequest: null,
-    isFeesLoadPending: false,
+    isFeesLoaded: false,
     isFeesLoadFailed: false,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
     vueRoutes,
@@ -244,21 +234,17 @@ export default {
   },
   watch: {
     'form.amount' (value) {
-      if (value === '' || value < +this.MIN_AMOUNT) {
-        this.fixedFee = EMPTY_FEE
-        this.percentFee = EMPTY_FEE
-        return
-      }
-      this.tryGetFees()
+      this.tryLoadFees()
     },
     'form.asset.code' () {
-      this.tryGetFees()
+      this.tryLoadFees()
     },
   },
   async created () {
     try {
       await this.loadBalances()
       await this.initAssetSelector()
+      await this.loadFees()
       this.isLoaded = true
     } catch (error) {
       this.isFailed = true
@@ -288,32 +274,29 @@ export default {
       }
       this.enableForm()
     },
-    async getFees () {
+    tryLoadFees () {
+      this.isFeesLoaded = false
+      this.isFeesLoadFailed = false
+
+      if (!this.feesDebouncedRequest) {
+        this.feesDebouncedRequest = debounce(() => this.loadFees(), 300)
+      }
+      return this.feesDebouncedRequest()
+    },
+    async loadFees () {
       try {
-        const fees = await this.calculateFees({
-          type: FEE_TYPES.withdrawalFee,
-          assetCode: this.form.asset.code,
+        this.fees = await this.calculateFees({
+          asset: this.form.asset,
           amount: this.form.amount || 0,
           senderAccountId: this.accountId,
-          recipientAccountId: this.accountId,
+          type: FEE_TYPES.withdrawalFee,
         })
-        this.fees = fees
-        this.fixedFee = fees.source.fixed
-        this.percentFee = fees.destination.calculatedPercent
 
-        this.isFeesLoadFailed = false
+        this.isFeesLoaded = true
       } catch (e) {
         this.isFeesLoadFailed = true
         ErrorHandler.processWithoutFeedback(e)
       }
-      this.isFeesLoadPending = false
-    },
-    tryGetFees () {
-      this.isFeesLoadPending = true
-      if (!this.feesDebouncedRequest) {
-        this.feesDebouncedRequest = debounce(() => this.getFees(), 300)
-      }
-      return this.feesDebouncedRequest()
     },
     composeOptions () {
       const creatorDetails = {}
@@ -331,8 +314,8 @@ export default {
         destAsset: this.form.asset.code,
         expectedDestAssetAmount: this.form.amount,
         fee: {
-          fixed: this.fixedFee,
-          percent: this.percentFee,
+          fixed: this.fees.sourceFee.fixed,
+          percent: this.fees.sourceFee.calculatedPercent,
         },
       }
     },
@@ -398,10 +381,6 @@ export default {
 .withdrawal__total-fee-row {
   color: $col-text;
   font-weight: 600;
-}
-
-.withdrawal__action {
-  margin-top: 2.5rem;
 }
 
 .withdrawal__data--loading {

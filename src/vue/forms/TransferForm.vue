@@ -95,7 +95,7 @@
 
           <div
             class="transfer__fee-box"
-            v-if="isFeesLoaded"
+            v-if="isFeesLoaded && view.mode === VIEW_MODES.confirm"
           >
             <fees-renderer
               :fees="fees"
@@ -270,15 +270,14 @@ export default {
       try {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
-        const feesParams = {
+
+        this.fees = await this.calculateFees({
           asset: this.form.asset,
           amount: this.form.amount,
           recipientAccountId: recipientAccountId,
           senderAccountId: this.accountId,
           type: FEE_TYPES.paymentFee,
-        }
-
-        this.fees = await this.calculateFees(feesParams)
+        })
         this.isFeesLoaded = true
 
         const opts = {
@@ -287,7 +286,7 @@ export default {
           destinationFixedFee: this.fees.destinationFee.fixed,
           destinationPercentFee: this.fees.destinationFee.calculatedPercent,
           destinationFeeAsset: this.form.asset,
-          sourceBalanceId: this.balance.balanceId,
+          sourceBalanceId: this.balance.id,
           sourceFixedFee: this.fees.sourceFee.fixed,
           sourcePercentFee: this.fees.sourceFee.calculatedPercent,
           sourceFeeAsset: this.form.asset,

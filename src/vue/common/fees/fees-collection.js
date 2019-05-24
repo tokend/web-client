@@ -28,6 +28,12 @@ export class FeesCollection {
 
   set isPaidForDestination (value) {
     this._isPaidForDestination = value
+
+    if (value) {
+      this._outgoingFee.setAdditional(this._incomingFee.total)
+    } else {
+      this._outgoingFee.resetAdditional()
+    }
   }
 
   get isExternalFeePresent () {
@@ -50,21 +56,11 @@ export class FeesCollection {
 
   get fees () {
     return [this.sourceFee, this.destinationFee, ...this.additionalFees]
+      .filter(f => f !== undefined)
   }
 
   get sourceFee () {
-    if (this.isPaidForDestination) {
-      return new Fee({
-        ...this._outgoingFee,
-        fixed: MathUtil.add(this._outgoingFee.fixed, this._incomingFee.fixed),
-        calculatedPercent: MathUtil.add(
-          this._outgoingFee.calculatedPercent,
-          this._incomingFee.calculatedPercent
-        ),
-      })
-    } else {
-      return this._outgoingFee
-    }
+    return this._outgoingFee
   }
 
   get destinationFee () {
