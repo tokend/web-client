@@ -510,7 +510,7 @@ for further information about branching and tagging conventions.
 - Movements history modules unit tests
 - `record` getter to the `AssetRecord`
 
-### Changed
+#### Changed
 - Use @tokend/js-sdk@1.3.1-x.2
 - Now using new account endpoint for loading fees
 - Renamed `DescriptionEditor` => `MarkdownField`. Also moved to the fields
