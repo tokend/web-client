@@ -1,17 +1,10 @@
 import { FEE_TYPES } from '@tokend/js-sdk'
-export class FeesRecord {
-  constructor ({ fixed = '', calculatedPercent = '', assetCode, type }) {
-    this.fixed = fixed
-    this.calculatedPercent = calculatedPercent
-    this.assetCode = assetCode
-    this.type = type
-  }
-}
+import { FeeRecord } from './fee-record'
 
-export class CoupledFeesRecord {
+export class FeesCollection {
   constructor ({ destination, source, assetCode }) {
-    const isFeesValid = destination instanceof FeesRecord &&
-      source instanceof FeesRecord
+    const isFeesValid = destination instanceof FeeRecord &&
+      source instanceof FeeRecord
 
     if (!isFeesValid) {
       throw new Error('Destination and source must be FeesRecord instances')

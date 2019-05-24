@@ -135,9 +135,9 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
+import TickField from '@/vue/fields/TickField'
 
-import { CoupledFeesRecord } from './fees.record'
+import { FeesCollection } from './fees-collection'
 
 const EVENTS = {
   updatePaidForDestination: 'update:paidForDestination',
@@ -145,10 +145,10 @@ const EVENTS = {
 
 export default {
   name: 'fees-renderer',
-  mixins: [FormMixin],
+  components: { TickField },
 
   props: {
-    fees: { type: CoupledFeesRecord, required: true },
+    fees: { type: FeesCollection, required: true },
     paidForDestination: { type: Boolean, default: false },
   },
 

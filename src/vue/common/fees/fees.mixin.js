@@ -3,7 +3,8 @@ import { api } from '@/api'
 
 import FeesRenderer from './FeesRenderer.vue'
 
-import { FeesRecord, CoupledFeesRecord } from './fees.record'
+import { FeeRecord } from './fee-record'
+import { FeesCollection } from './fees-collection'
 
 export default {
   components: { FeesRenderer },
@@ -36,18 +37,18 @@ export default {
       senderFees.assetCode = opts.assetCode
       senderFees.type = opts.type
 
-      const coupledFeesRecord = new CoupledFeesRecord({
+      const feesCollection = new FeesCollection({
         destination: recipientFees,
         source: senderFees,
         assetCode: opts.assetCode,
       })
-      coupledFeesRecord.setIsAnyExternalFee = {
+      feesCollection.setIsAnyExternalFee = {
         feeType: opts.type,
         masterAccountId: masterAccountId,
         asset: asset,
       }
 
-      return coupledFeesRecord
+      return feesCollection
     },
 
     async calculateSenderFees ({ accountId, type, assetCode, amount }) {
@@ -61,7 +62,7 @@ export default {
         }
       )
 
-      return new FeesRecord(result.data)
+      return new FeeRecord(result.data)
     },
 
     async calculateRecipientFees ({ accountId, type, assetCode, amount }) {
@@ -75,7 +76,7 @@ export default {
         }
       )
 
-      return new FeesRecord(result.data)
+      return new FeeRecord(result.data)
     },
   },
 }
