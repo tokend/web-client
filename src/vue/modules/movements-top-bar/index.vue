@@ -28,6 +28,9 @@
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isWithdrawalDrawerShown = true"
             :disabled="!asset.isWithdrawable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-download movements-top-bar__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -41,6 +44,9 @@
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isDepositDrawerShown = true"
             :disabled="!asset.isDepositable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-upload movements-top-bar__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
@@ -54,6 +60,9 @@
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isTransferDrawerShown = true"
             :disabled="!asset.isTransferable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i
               class="
@@ -120,6 +129,12 @@ const EVENTS = {
   movementsUpdateRequired: 'movements-update-required',
 }
 
+const ASSET_POLICIES_STR = {
+  isDepositable: 'isDepositable',
+  isWithdrawable: 'isWithdrawable',
+  isTransferable: 'isTransferable',
+}
+
 export default {
   name: 'movements-top-bar',
   components: {
@@ -141,6 +156,7 @@ export default {
     TransferDrawerPseudoModule,
     asset: {},
     EVENTS,
+    ASSET_POLICIES_STR,
   }),
   computed: {
     ...mapGetters('movements-top-bar', {
@@ -174,6 +190,19 @@ export default {
       this.asset = this.assets
         .find(item => item.code === this.$route.query.asset) ||
         this.assets[0]
+    },
+    getMessageIdForPolicy (policy) {
+      let messageId = ''
+      if (!this.asset[policy]) {
+        if (policy === ASSET_POLICIES_STR.isDepositable) {
+          messageId = 'op-pages.not-depositable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
+          messageId = 'op-pages.not-withdrawable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isTransferable) {
+          messageId = 'op-pages.not-transferable-msg'
+        }
+      }
+      return messageId
     },
   },
 }

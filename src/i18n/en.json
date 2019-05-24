@@ -787,7 +787,11 @@
       "send": "Send",
       "redeem": "Redeem",
       "no-data-title": "No balance movements yet",
-      "no-data-msg": "Here will be your balance movements history"
+      "no-data-msg": "Here will be your balance movements history",
+      "not-depositable-msg": "{{asset}} is not depositable",
+      "not-withdrawable-msg": "{{asset}} is not withdrawable",
+      "not-transferable-msg": "{{asset}} is not transferable",
+      "not-redeemable-msg": "{{asset}} is not redeemable"
     },
     "op-details": {
       "fixed-fee-lbl": "Fixed fee",
