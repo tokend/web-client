@@ -1,12 +1,12 @@
 import { PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { api } from '@/api'
 
-import FeesViewer from './FeesViewer.vue'
+import FeesRenderer from './FeesRenderer.vue'
 
 import { FeesRecord, CoupledFeesRecord } from './fees.record'
 
 export default {
-  components: { FeesViewer },
+  components: { FeesRenderer },
 
   methods: {
     async getFeeAssetByCode (assetCode) {

@@ -97,7 +97,7 @@
             class="transfer__fee-box"
             v-if="isFeesLoaded"
           >
-            <fees
+            <fees-renderer
               :fees="fees"
               :paid-for-destination.sync="form.isPaidForRecipient"
             />
@@ -291,7 +291,6 @@ export default {
           sourcePercentFee: fees.source.calculatedPercent,
           sourceFeeAsset: this.form.asset,
           subject: this.form.subject,
-          tokenCode: this.form.asset.code,
         }
         this.updateView(VIEW_MODES.confirm, opts)
       } catch (error) {
@@ -341,7 +340,7 @@ export default {
     },
     setAsset () {
       this.form.asset =
-        this.assets.find(token => token.code === this.assetToTransfer) ||
+        this.assets.find(asset => asset.code === this.assetToTransfer) ||
         this.assets[0] ||
         {}
     },

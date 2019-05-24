@@ -20,7 +20,7 @@ export class CoupledFeesRecord {
     this.destination = destination
     this.source = source
     this.assetCode = assetCode
-    this.IsAnyExternalFee = false
+    this.isAnyExternalFee = false
   }
 
   get isAnyDestinationFee () {
@@ -42,7 +42,7 @@ export class CoupledFeesRecord {
     if (opts.feeType !== FEE_TYPES.withdrawalFee) {
       return false
     }
-    this.IsAnyExternalFee = opts.asset.externalSystemType &&
+    this.isAnyExternalFee = opts.asset.externalSystemType &&
     opts.asset.owner === opts.masterAccountId
   }
 }

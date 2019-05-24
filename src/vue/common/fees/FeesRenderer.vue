@@ -3,9 +3,9 @@
     v-if="isFeesLoaded"
     class="fees-renderer"
   >
-    <tbody class="fees-component__tbody">
+    <tbody class="fees-renderer__tbody">
       <tr
-        v-if="fees.IsAnyExternalFee"
+        v-if="fees.isAnyExternalFee"
         class="fees-renderer__strong"
       >
         <td>{{ 'fees-renderer.network-fee-lbl' | globalize }}</td>
@@ -135,45 +135,27 @@
 </template>
 
 <script>
-import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
+
+import { CoupledFeesRecord } from './fees.record'
 
 const EVENTS = {
   updatePaidForDestination: 'update:paidForDestination',
 }
 
 export default {
-  name: 'fees-viewer',
-  mixins: [FormMixin, IdentityGetterMixin],
+  name: 'fees-renderer',
+  mixins: [FormMixin],
 
   props: {
-    fees: { type: Object, default: () => ({}) },
+    fees: { type: CoupledFeesRecord, required: true },
     paidForDestination: { type: Boolean, default: false },
-  },
-
-  data () {
-    return {
-      isPaidForRecipient: false,
-    }
   },
 
   computed: {
     isFeesLoaded () {
       return Boolean(Object.keys(this.fees).length)
     },
-  },
-
-  watch: {
-    paidForDestination () {
-      this.$emit(
-        EVENTS.updatePaidForDestination,
-        this.isPaidForRecipient
-      )
-    },
-  },
-
-  created () {
-    this.isPaidForRecipient = this.paidForDestination
   },
 
   methods: {
@@ -186,9 +168,8 @@ export default {
         value: fee,
         currency: this.fees.assetCode,
       }
-      return this.$options.filters.formatMoney(
-        fees
-      )
+
+      return this.$options.filters.formatMoney(fees)
     },
 
     formatFeeSum (...fees) {

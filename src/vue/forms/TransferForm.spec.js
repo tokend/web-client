@@ -240,7 +240,7 @@ describe('TransferForm component', () => {
       sinon.stub(ErrorHandler, 'process')
     })
 
-    it('try to process transfer - valid', async () => {
+    it('try to process transfer if the form is valid', async () => {
       sinon
         .stub(wrapper.vm, 'calculateFees')
         .resolves(expectedFees)

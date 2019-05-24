@@ -92,7 +92,7 @@
             class="app__form-row withdrawal__form-row"
             v-if="!isFeesLoadPending"
           >
-            <fees :fees="fees" />
+            <fees-renderer :fees="fees" />
           </div>
 
           <div class="app__form-actions withdrawal__action">
