@@ -33,6 +33,10 @@
       }"
     />
  *
+ * Known issues:
+ * Directive doesn't work on disabled elements as mouse events can't be
+ * registered, use title attribute instead
+ *
  * @param {Object} binding.value - passed params
  * @param {string} binding.value.text - text of tooltip
  * @param {string} [binding.value.type] - 'click' or 'hover' to summon tooltip
