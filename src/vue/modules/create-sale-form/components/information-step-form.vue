@@ -338,6 +338,7 @@ export default {
         hardCap: this.request.hardCap,
         assetsToSell: this.request.assetsToSell,
         quoteAssets: this.request.quoteAssets,
+        isWhitelisted: this.request.isWhitelisted,
       }
     },
 

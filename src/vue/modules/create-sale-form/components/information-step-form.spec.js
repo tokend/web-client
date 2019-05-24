@@ -165,6 +165,7 @@ describe('Information step form', () => {
               hardCap: '200.000000',
               assetsToSell: '10.000000',
               quoteAssets: ['BTC', 'USD'],
+              isWhitelisted: true,
             },
             ownedAssets: [{ code: 'USD' }],
           })
@@ -182,6 +183,7 @@ describe('Information step form', () => {
 
           expect(wrapper.vm.form.assetsToSell).to.equal('10.000000')
           expect(wrapper.vm.form.quoteAssets).to.deep.equal(['BTC', 'USD'])
+          expect(wrapper.vm.form.isWhitelisted).to.be.true
         })
       })
 

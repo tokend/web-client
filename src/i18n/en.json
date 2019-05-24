@@ -1240,7 +1240,8 @@
       "view-btn": "View the sale",
       "update-btn": "Update",
       "cancel-btn": "CANCEL",
-      "request-canceled-msg": "Your request was successfully cancelled"
+      "request-canceled-msg": "Your request was successfully cancelled",
+      "whitelisted-title": "Whitelisted"
     },
     "pre-issuance-requests": {
       "loading-msg": "Loading your requests…",
