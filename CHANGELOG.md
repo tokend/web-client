@@ -13,14 +13,21 @@ for further information about branching and tagging conventions.
 
 ## [1.7.0-rc.0] - 2019-05-21
 #### Added
-- Display fees in invest form
-- General verification form module (included in vanilla scheme only)
-- `usVerified` and `usAccredited` roles to key/value module
-- `Passport` is now able to show US verified and US accredited user roles
-- Users with US verified and US accredited roles will now also be redirected to general form
-- Security asset type
-- Show banner for blocked user
-- Validator of available for issuance amount
+- New sale whitelist support:
+  - New "Whitelisted" checkbox on create sale form
+  - New "Whitelisted" row to sale details drawer
+  - New whitelist invitation form (shown only for the sale owner)
+  - New whitelist invitations drawer
+- New loading feedback when moving from one route to another (nprogress loader)
+- New validation of file extension, size and dimensions in file field
+- New "Copied" tooltip message to copy icon-buttons
+- New "Total" read-only field in offer creation form
+- New Sentry error tracking integration
+- New pre-issuance guide and links to it from pre-issuance related features
+- New sale participation statistics drawer, shown only for the sale owner
+- Now displaying up to three user balances in dropdown when click on user’s
+  avatar at top-right of the screen
+- Restored email validation on login form
 
 #### Changed
 - File field look improvements:
@@ -502,38 +509,8 @@ for further information about branching and tagging conventions.
   - `resetReason` field to the `ChangeRoleRequestRecord`
 - Movements history modules unit tests
 - `record` getter to the `AssetRecord`
-- Added confirmation to cancel token creation request
-- CLI config passing
-- Added module enabling/disabling
-- Added module schemes
-- Healthcare document type
-- Document explorer page
-- Document explorer module
-- Withdrawal fiat by the bank information form module
-- Withdrawal fiat by the card information form module
-- Added noscript tag with message for users with JavaScript switched off or browsers that don't support JavaScript
-- Show destination address holder email in the Withdrawal creation form
-- Loyalty points statistics module
-- Pre-issuance drawer pseudo module
-- Avatar field on verification forms
-- Application logo URL for module scheme
-- Displaying user avatar in passport
-- Loyalty points merchant & reconcillation schemes
-- Subject info `Dividend for <token-name>` for every payment operation in dividends
-- `All opportunities(All sales)` and `My opportunities(My sales)` pages on the `Opportunities(Funds)` page
-- For sales that were ended show highlighted text like a "Closed [days] ago"
-- Reword create opportunity label "KYC Required" => "Verification required"
-- Asset loading via the loop where was `filter[limit]=100`
-- Correct base/quote price calculating for Opportunities
-- Custom validation rules for sale's "Soft cap" and "Hard cap" values
-- Custom Movements TopBar for REIT scheme
-- Add coinpayments-deposit module
 
 ### Changed
-- Now using new account endpoint for loading the fees
-- Moved fees filters to the corresponding viewers
-- Renamed `DescriptionEditor` -> `MarkdownField`
-- Moved `MarkdownField` to the fields & included it to the form mixin components
 - Use @tokend/js-sdk@1.3.1-x.2
 - Now using new account endpoint for loading fees
 - Renamed `DescriptionEditor` => `MarkdownField`. Also moved to the fields
