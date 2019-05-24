@@ -2,13 +2,12 @@
   {
     "id": "BC4KJXXXGWLOZPKOMFNV33XS3WWPD2STKMFWE5YBSL5P6AVWTJ4OLAZZ",
     "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
-    "asset": "USD",
     "state": {
       "available": "0.000000"
     },
     "locked": "0.000000",
     "require_review": false,
-    "asset_details": {
+    "asset": {
       "id": "USD",
       "owner": {
         "id": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP"
@@ -50,13 +49,12 @@
   {
     "id": "BDZJQYMTKEHA3GDTJJSR5XPY22WHIOIRXWJMPZORZCDFD2EPDOJCROMJ",
     "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
-    "asset": "ETH",
     "state": {
       "available": "67.485200"
     },
     "locked": "17.300000",
     "require_review": false,
-    "asset_details": {
+    "asset": {
       "id": "ETH",
       "owner": {
         "id": "GA4CZMOLWKO6RBKT77V2W4JGKVKYHSUAATVDJYPUYVGTYQ7BLTVH5CBP"
@@ -107,13 +105,12 @@
   {
     "id": "BBHGNOTSAF5Y6K7C3YDBV2SKGBTKDWQVJ2ATPRTOU764RRY3N5E2K3LK",
     "account_id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3",
-    "asset": "QTK",
     "state": {
       "available": "0.000000"
     },
     "locked": "0.000000",
     "require_review": false,
-    "asset_details": {
+    "asset": {
       "id": "QTK",
       "owner": {
         "id": "GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3"

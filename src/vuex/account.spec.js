@@ -76,8 +76,11 @@ describe('account.module', () => {
         sinon.stub(api, 'getWithSignature').resolves({
           data: { balances: balancesDetailsJSON },
         })
-        const type = vuexTypes.SET_ACCOUNT_BALANCES_DETAILS
-        const payload = balancesDetailsJSON
+        const assetsPayload = balancesDetailsJSON.map(b => b.asset)
+
+        await actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS](store)
+
+        const balancesPayload = balancesDetailsJSON
           .map(item => {
             item.assetDetails = new AssetRecord(item.asset)
             item.asset = item.assetDetails.code
@@ -85,16 +88,11 @@ describe('account.module', () => {
             return item
           })
           .sort((a, b) => b.convertedBalance - a.convertedBalance)
-        const expectedMutations = {
-          [type]: payload,
-        }
 
-        await actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS](store)
-
-        expect(store.commit.args)
-          .to
-          .deep
-          .equal(Object.entries(expectedMutations))
+        expect(store.commit.args).to.deep.equal([
+          [vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true }],
+          [vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balancesPayload],
+        ])
       })
   })
 

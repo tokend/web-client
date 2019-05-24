@@ -14,7 +14,7 @@ export const mutations = {
   },
 
   [vuexTypes.UPDATE_ASSETS] (state, newAssets) {
-    for (const asset in newAssets) {
+    for (const asset of newAssets) {
       const foundIndex = state.assets
         .findIndex(item => item.id === asset.id)
 

@@ -33,6 +33,12 @@ export const actions = {
       include: ['balances.asset', 'balances.state'],
     })
 
+    commit(
+      vuexTypes.UPDATE_ASSETS,
+      account.balances.map(b => b.asset),
+      { root: true }
+    )
+
     const balances = account.balances
       .map(item => {
         item.assetDetails = new AssetRecord(item.asset)
