@@ -195,12 +195,12 @@ describe('TransferForm component', () => {
 
   describe('processTransfer()', () => {
     const expectedFees = {
-      destination: {
+      destinationFee: {
         fixed: '0.000001',
         calculatedPercent: '0.01',
         feeAsset: 'BTC',
       },
-      source: {
+      sourceFee: {
         fixed: '0.000001',
         calculatedPercent: '0.01',
         feeAsset: 'BTC',

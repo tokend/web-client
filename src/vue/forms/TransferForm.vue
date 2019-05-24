@@ -271,24 +271,25 @@ export default {
         const recipientAccountId =
           await this.getCounterparty(this.form.recipient)
         const feesParams = {
-          assetCode: this.form.asset.code,
+          asset: this.form.asset,
           amount: this.form.amount,
           recipientAccountId: recipientAccountId,
           senderAccountId: this.accountId,
           type: FEE_TYPES.paymentFee,
         }
-        const fees = await this.calculateFees(feesParams)
-        this.fees = fees
+
+        this.fees = await this.calculateFees(feesParams)
         this.isFeesLoaded = true
+
         const opts = {
           amount: this.form.amount,
           destinationAccountId: recipientAccountId,
-          destinationFixedFee: fees.destination.fixed,
-          destinationPercentFee: fees.destination.calculatedPercent,
+          destinationFixedFee: this.fees.destinationFee.fixed,
+          destinationPercentFee: this.fees.destinationFee.calculatedPercent,
           destinationFeeAsset: this.form.asset,
           sourceBalanceId: this.balance.balanceId,
-          sourceFixedFee: fees.source.fixed,
-          sourcePercentFee: fees.source.calculatedPercent,
+          sourceFixedFee: this.fees.sourceFee.fixed,
+          sourcePercentFee: this.fees.sourceFee.calculatedPercent,
           sourceFeeAsset: this.form.asset,
           subject: this.form.subject,
         }

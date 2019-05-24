@@ -1,41 +1,90 @@
-import { FEE_TYPES } from '@tokend/js-sdk'
-import { FeeRecord } from './fee-record'
+import { Fee } from './fee'
+import { MathUtil } from '@/js/utils'
+
+const EMPTY_FEE = {
+  fixed: '0',
+  calculatedPercent: '0',
+}
 
 export class FeesCollection {
-  constructor ({ destination, source, assetCode }) {
-    const isFeesValid = destination instanceof FeeRecord &&
-      source instanceof FeeRecord
-
-    if (!isFeesValid) {
-      throw new Error('Destination and source must be FeesRecord instances')
+  constructor ({ fees, asset, masterAccountId }) {
+    if (!fees.every(f => f instanceof Fee)) {
+      throw new Error('opts.fees must be array of Fee instances')
     }
 
-    this.destination = destination
-    this.source = source
-    this.assetCode = assetCode
-    this.isAnyExternalFee = false
+    this._isPaidForDestination = false
+    this._fees = fees
+    this._asset = asset
+    this._masterAccountId = masterAccountId
   }
 
-  get isAnyDestinationFee () {
-    return Boolean(+this.destination.calculatedPercent) ||
-      Boolean(+this.destination.fixed)
+  [Symbol.iterator] () {
+    return this.fees
   }
 
-  get isAnySourceFee () {
-    return Boolean(this.source.calculatedPercent) ||
-      Boolean(this.source.fixed)
+  get isPaidForDestination () {
+    return this._isPaidForDestination
   }
 
-  get isWithdrawable () {
-    return this.type === FEE_TYPES.withdrawalFee
+  set isPaidForDestination (value) {
+    this._isPaidForDestination = value
   }
 
-  set setIsAnyExternalFee (opts) {
-    // WARNING: Wait for update back-end about externalSystemType
-    if (opts.feeType !== FEE_TYPES.withdrawalFee) {
-      return false
+  get isExternalFeePresent () {
+    return this._asset.externalSystemType &&
+      this._asset.owner === this._masterAccountId &&
+      this._fees.some(fee => fee.isWithdrawal)
+  }
+
+  get assetCode () {
+    return this._asset.code
+  }
+
+  get totalFee () {
+    return this.fees.reduce((sum, item) => MathUtil.add(sum, item))
+  }
+
+  get valuableFees () {
+    return this.fees.filter(f => !f.isEmpty)
+  }
+
+  get fees () {
+    return [this.sourceFee, this.destinationFee, ...this.additionalFees]
+  }
+
+  get sourceFee () {
+    if (this.isPaidForDestination) {
+      return new Fee({
+        ...this._outgoingFee,
+        fixed: MathUtil.add(this._outgoingFee.fixed, this._incomingFee.fixed),
+        calculatedPercent: MathUtil.add(
+          this._outgoingFee.calculatedPercent,
+          this._incomingFee.calculatedPercent
+        ),
+      })
+    } else {
+      return this._outgoingFee
     }
-    this.isAnyExternalFee = opts.asset.externalSystemType &&
-    opts.asset.owner === opts.masterAccountId
+  }
+
+  get destinationFee () {
+    if (this.isPaidForDestination) {
+      return new Fee({ ...this._incomingFee, ...EMPTY_FEE })
+    } else {
+      return this._incomingFee
+    }
+  }
+
+  get _incomingFee () {
+    return this._fees.find(f => f.isIncoming)
+  }
+
+  get _outgoingFee () {
+    return this._fees.find(f => f.isOutgoing)
+  }
+
+  get additionalFees () {
+    return this._fees
+      .filter(f => ![this._incomingFee, this._outgoingFee].includes(f))
   }
 }
