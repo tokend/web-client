@@ -151,7 +151,7 @@ import { vuexTypes } from '@/vuex'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
 import config from '@/config'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
@@ -186,9 +186,9 @@ export default {
   data: () => ({
     form: {
       asset: {},
-      amount: '1',
-      recipient: 'second_user@mail.com',
-      subject: '<3',
+      amount: '',
+      recipient: '',
+      subject: '',
       isPaidForRecipient: false,
     },
     fees: {},
@@ -252,7 +252,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await Api.api.postOperations(this.buildPaymentOperation())
+        await api.postOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)

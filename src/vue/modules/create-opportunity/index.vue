@@ -72,7 +72,6 @@
             <date-field
               v-model="form.information.maturityDate"
               :enable-time="true"
-              :disable-before="moment().subtract(1, 'days').toString()"
               @input="touchField('form.information.maturityDate')"
               @blur="touchField('form.information.maturityDate')"
               name="create-sale-end-time"
@@ -80,8 +79,6 @@
               :error-message="getFieldErrorMessage(
                 'form.information.maturityDate',
                 {
-                  minDate: form.saleInformation.endTime ||
-                    moment().toISOString(),
                   maxDate: form.information.maturityDate
                 }
               )"
@@ -424,14 +421,13 @@ import { DocumentUploader } from '@/js/helpers/document-uploader'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import {
-  Wallet,
   base,
   ASSET_POLICIES,
   SALE_TYPES,
   BLOB_TYPES,
 } from '@tokend/js-sdk'
 
-import { api, initApi } from './_api'
+import { api } from '@/api'
 import { ASSET_SUBTYPE, ASSET_SUBTYPE_IMG_URL } from '@/js/const/asset-subtypes.const'
 
 import { DateUtil } from '@/js/utils'
@@ -504,18 +500,6 @@ export default {
   },
   mixins: [FormMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-    */
-    config: {
-      type: Object,
-      required: true,
-    },
     accountId: {
       type: String,
       required: true,
@@ -591,7 +575,6 @@ export default {
     if (this.form.information.formType.value === ASSET_SUBTYPE.bond) {
       maturityDate = {
         required,
-        minDate: minDate(moment().toISOString()),
       }
       startTime.maxDate = maxDate(this.form.information.maturityDate)
       endTime.maxDate = maxDate(this.form.information.maturityDate)
@@ -702,7 +685,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
     this.form.information.formType = this.FORM_TYPES[0]
     await this.loadAssets()
     await this.loadBaseAssetsPairs()
@@ -745,7 +727,7 @@ export default {
         })
         const assetCreationOperation = this.buildAssetRequestOperation()
         const saleCreationOperation = this.buildSaleCreationOperation(blobId)
-        await api().postOperations(
+        await api.postOperations(
           assetCreationOperation,
           saleCreationOperation
         )

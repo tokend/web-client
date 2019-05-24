@@ -1,4 +1,4 @@
-import { Api } from '../api'
+import { api } from '@/api'
 import { vuexTypes } from './types'
 
 import factors from './factors.module'
@@ -28,8 +28,6 @@ describe('factors.module end-to-end test', () => {
     let store
 
     beforeEach(() => {
-      Api.initSync({ horizonURL: 'https://test.api.com' })
-
       store = new Vuex.Store({
         actions: {},
         getters: {},
@@ -44,7 +42,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factors', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
 
@@ -57,7 +55,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsTotp', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
 
@@ -70,7 +68,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsPassword', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
 
@@ -83,7 +81,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsEmail', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
 
@@ -96,7 +94,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsTotpEnabled with enabled totp factor', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse({
           data: [
             { type: 'email', id: 785, attributes: { priority: 1 } },
@@ -117,7 +115,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsTotpEnabled when no enabled totp factor', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse({
           data: [
             { type: 'password', id: 652, attributes: { priority: 1 } },
@@ -135,7 +133,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('isTotpEnabled with enabled totp factor', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse({
           data: [
             { type: 'email', id: 785, attributes: { priority: 1 } },
@@ -153,7 +151,7 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('isTotpEnabled whe no enabled totp factor', async () => {
-      sinon.stub(Api, 'getWithSignature').resolves(
+      sinon.stub(api, 'getWithSignature').resolves(
         MockWrapper.makeJsonapiResponse({
           data: [
             { type: 'password', id: 652, attributes: { priority: 1 } },

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import TimeoutTicker from './timeout-ticker'
+import TimeoutTicker from '@/vue/common/TimeoutTicker'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 const EVENTS = {

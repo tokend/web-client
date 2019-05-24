@@ -60,8 +60,7 @@ import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRendere
 import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
@@ -152,7 +151,7 @@ export default {
         const orderBookId = SECONDARY_MARKET_ORDER_BOOK_ID
 
         const endpoint = `/v3/order_books/${baseAsset}:${quoteAsset}:${orderBookId}`
-        const { data: orderBook } = await Api.get(endpoint, {
+        const { data: orderBook } = await api.get(endpoint, {
           include: ['buy_entries', 'sell_entries'],
         })
 
@@ -166,14 +165,22 @@ export default {
       this.isSellOffersLoading = false
     },
     async loadTradeHistory () {
-      // TODO: No /v3 endpoint for trades yet
-      const response = await Sdk.horizon.trades.getPage({
-        base_asset: this.assetPair.base,
-        quote_asset: this.assetPair.quote,
-        order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
-        order: this.recordsOrder,
-        limit: this.recordsToShow,
-      })
+      const params = {
+        filter: {
+          base_asset: this.assetPair.base,
+          quote_asset: this.assetPair.quote,
+        },
+        page: {
+          limit: this.recordsToShow,
+          order: this.recordsOrder,
+        },
+      }
+      let response
+      try {
+        response = await api.get('/v3/matches', params)
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
       this.isTradeHistoryLoading = false
       return response
     },

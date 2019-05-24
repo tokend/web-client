@@ -3,11 +3,13 @@ import ManageSaleDescriptionMixin from './manage-sale-description.mixin'
 
 import { base, SALE_TYPES } from '@tokend/js-sdk'
 
-import { api } from '../_api'
-import { config } from '../_config'
+import { api } from '@/api'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
+
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
@@ -26,6 +28,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      vuexTypes.defaultQuoteAsset,
+    ]),
     saleRequestOpts () {
       const saleLogo = this.shortBlurbStepForm.saleLogo
 
@@ -36,7 +41,7 @@ export default {
         startTime: DateUtil.toTimestamp(this.informationStepForm.startTime),
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
         baseAsset: this.informationStepForm.baseAsset.code,
-        defaultQuoteAsset: config().DEFAULT_QUOTE_ASSET,
+        defaultQuoteAsset: this.defaultQuoteAsset,
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
@@ -52,16 +57,19 @@ export default {
           logo: saleLogo ? saleLogo.getDetailsForSave() : EMPTY_DOCUMENT,
           youtube_video_id: this.fullDescriptionStepForm.youtubeId,
         },
+        saleRules: [{
+          forbids: this.informationStepForm.isWhitelisted,
+        }],
       }
     },
   },
 
   methods: {
-    async getCreateSaleRequestById (id) {
+    async getCreateSaleRequestById (id, accountId) {
       const endpoint = `/v3/create_sale_requests/${id}`
-      const { data: record } = await api().getWithSignature(endpoint, {
+      const { data: record } = await api.getWithSignature(endpoint, {
         filter: {
-          requestor: this.wallet.accountId,
+          requestor: accountId,
         },
         include: ['request_details', 'request_details.default_quote_asset'],
       })
@@ -69,18 +77,19 @@ export default {
       return new CreateSaleRequest(record)
     },
 
-    async submitCreateSaleRequest () {
+    async submitCreateSaleRequest (accountId) {
       const saleDocuments = [
         this.shortBlurbStepForm.saleLogo,
       ]
-      await this.uploadDocuments(saleDocuments)
+      await this.uploadDocuments(saleDocuments, accountId)
       this.saleDescriptionBlobId = await this.createSaleDescriptionBlob(
-        this.fullDescriptionStepForm.description
+        this.fullDescriptionStepForm.description,
+        accountId
       )
 
       const operation =
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)
-      await api().postOperations(operation)
+      await api.postOperations(operation)
     },
   },
 }

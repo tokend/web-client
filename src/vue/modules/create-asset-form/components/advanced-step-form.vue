@@ -6,11 +6,19 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
+          class="advanced-step-form__pre-issuance-enablement-tick-field"
           v-model="form.isPreissuanceDisabled"
           :disabled="isDisabled"
         >
           {{ 'create-asset-form.additional-issuance-check' | globalize }}
         </tick-field>
+        <router-link
+          class="advanced-step-form__pre-issuance-guide-link"
+          :to="vueRoutes.preIssuanceGuide"
+          target="_blank"
+        >
+          {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
+        </router-link>
       </div>
     </div>
 
@@ -117,9 +125,10 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { config } from '../_config'
+import config from '@/config'
 
 import { requiredUnless, amountRange } from '@validators'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
@@ -144,8 +153,9 @@ export default {
       initialPreissuedAmount: '',
       terms: null,
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
+    MIN_AMOUNT: config.MIN_AMOUNT,
     DOCUMENT_TYPES,
+    vueRoutes,
   }),
 
   validations () {
@@ -178,7 +188,7 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preIssuanceAssetSigner === config().NULL_ASSET_SIGNER
+        this.request.preIssuanceAssetSigner === config.NULL_ASSET_SIGNER
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,
@@ -236,5 +246,9 @@ export default {
 .advanced-step-form__pre-issuance-disclaimer {
   font-size: 1.4rem;
   margin-top: 1rem;
+}
+
+.advanced-step-form__pre-issuance-enablement-tick-field {
+  margin-bottom: 1rem;
 }
 </style>

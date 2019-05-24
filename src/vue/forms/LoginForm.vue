@@ -60,8 +60,7 @@ import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { factorsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
@@ -88,7 +87,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      vuexTypes.wallet,
+      vuexTypes.walletAccountId,
       vuexTypes.walletEmail,
     ]),
   },
@@ -108,15 +107,11 @@ export default {
           email: this.form.email.toLowerCase(),
           password: this.form.password,
         })
-        const accountId = this[vuexTypes.wallet].accountId
-
-        Sdk.sdk.useWallet(this[vuexTypes.wallet])
-        Api.useWallet(this[vuexTypes.wallet])
+        const accountId = this[vuexTypes.walletAccountId]
         ErrorTracker.setLoggedInUser({
-          'accountId': accountId,
+          'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
         })
-
         await this.loadAccount(accountId)
         await this.loadKvEntries()
         await this.loadKyc()
@@ -132,7 +127,7 @@ export default {
     },
     async verifyTfaFactor () {
       if (this.tfaError) {
-        await Api.factorsManager.verifyTotpFactor(
+        await factorsManager.verifyTotpFactor(
           this.tfaError,
           this.form.tfaCode
         )

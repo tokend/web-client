@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import config from '@/config'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import _omit from 'lodash/omit'
 
@@ -51,7 +51,7 @@ export class DocumentUploader {
   }
 
   static async _createDocumentAnchorConfig ({ type, mimeType, accountId }) {
-    const { data: config } = await Api.api.postWithSignature('/documents', {
+    const { data: config } = await api.postWithSignature('/documents', {
       data: {
         type,
         attributes: { content_type: mimeType },

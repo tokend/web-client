@@ -3,6 +3,7 @@ import InformationStepForm from './information-step-form'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -20,15 +21,28 @@ describe('Information step form', () => {
 
   describe('validation rules assigned correctly', () => {
     let wrapper
+    let store
 
     beforeEach(() => {
-      wrapper = mount(InformationStepForm, { localVue })
+      store = new Vuex.Store({
+        modules: {
+          keyValue: {
+            getters: {
+              defaultQuoteAsset: () => ('USD'),
+            },
+          },
+        },
+      })
+      wrapper = mount(InformationStepForm, {
+        store,
+        localVue,
+      })
     })
 
     const expectedResults = {
       name: ['required', 'maxLength'],
       baseAsset: ['required'],
-      startTime: ['required', 'minDate'],
+      startTime: ['required'],
       endTime: ['required', 'minDate'],
       softCap: ['required', 'softCapMoreThanHardCap'],
       hardCap: ['required', 'hardCapLessThanSoftCap'],
@@ -66,6 +80,7 @@ describe('Information step form', () => {
   describe('created hook', () => {
     it('calls populateForm only if request was passed as a prop', () => {
       sandbox.stub(InformationStepForm.methods, 'populateForm')
+      sandbox.stub(InformationStepForm.computed, 'defaultQuoteAsset')
 
       shallowMount(InformationStepForm, { localVue })
       expect(InformationStepForm.methods.populateForm)
@@ -81,7 +96,17 @@ describe('Information step form', () => {
 
     it('sets base asset property from owned assets array if request was not passed',
       () => {
+        const store = new Vuex.Store({
+          modules: {
+            keyValue: {
+              getters: {
+                defaultQuoteAsset: () => ('USD'),
+              },
+            },
+          },
+        })
         const wrapper = shallowMount(InformationStepForm, {
+          store,
           localVue,
           propsData: {
             ownedAssets: [
@@ -100,7 +125,16 @@ describe('Information step form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(InformationStepForm, { localVue })
+      const store = new Vuex.Store({
+        modules: {
+          keyValue: {
+            getters: {
+              defaultQuoteAsset: () => ('USD'),
+            },
+          },
+        },
+      })
+      wrapper = shallowMount(InformationStepForm, { store, localVue })
     })
 
     describe('computed property', () => {

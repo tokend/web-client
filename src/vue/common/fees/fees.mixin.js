@@ -6,8 +6,7 @@ import {
   CoupledFeesRecord,
 } from './fees.record'
 import Fees from './FeesViewer.vue'
-import { Api } from '@/api'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 
 export default {
   components: {
@@ -15,13 +14,13 @@ export default {
   },
   methods: {
     async getFeeAssetById (assetCode) {
-      const asset = await Api.api.get(
+      const asset = await api.get(
         `/v3/assets/${assetCode}`
       )
       return asset.data
     },
     async calculateFees (opts) {
-      const masterAccountId = Sdk.networkDetails.adminAccountId
+      const masterAccountId = api.networkDetails.adminAccountId
       const asset = await this.getFeeAssetById(opts.assetCode)
       const recipientFees = await this.calculateRecipientFees({
         accountId: opts.recipientAccountId,
@@ -53,7 +52,7 @@ export default {
     },
 
     async calculateSenderFees ({ accountId, type, assetCode, amount }) {
-      const result = await Api.api.get(
+      const result = await api.get(
         `/v3/accounts/${accountId}/calculated_fees`,
         {
           asset: assetCode,
@@ -66,7 +65,7 @@ export default {
     },
 
     async calculateRecipientFees ({ accountId, type, assetCode, amount }) {
-      const result = await Api.api.get(
+      const result = await api.get(
         `/v3/accounts/${accountId}/calculated_fees`,
         {
           asset: assetCode,

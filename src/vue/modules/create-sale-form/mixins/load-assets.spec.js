@@ -1,28 +1,39 @@
 import LoadAssetsMixin from './load-assets.mixin'
 
-import { ApiCaller, ASSET_POLICIES } from '@tokend/js-sdk'
+import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 import { mount, createLocalVue } from '@vue/test-utils'
 
-import * as Api from '../_api'
+import { api } from '@/api'
 import { Asset } from '../wrappers/asset'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 
 const Component = {
   template: `<div></div>`,
-  props: ['wallet'],
 }
 
 describe('Load assets mixin', () => {
   let sandbox
   let wrapper
+  let store
 
   beforeEach(() => {
     sandbox = sinon.createSandbox()
+    store = new Vuex.Store({
+      modules: {
+        account: {
+          getters: {
+            accountId: () => ('SOME_ACCOUNT_ID'),
+          },
+        },
+      },
+    })
 
     wrapper = mount(Component, {
       mixins: [LoadAssetsMixin],
+      store,
       localVue,
     })
   })
@@ -34,7 +45,6 @@ describe('Load assets mixin', () => {
   describe('computed property', () => {
     describe('ownedAssets', () => {
       it('returns only owned assets', () => {
-        wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
         wrapper.setData({
           assets: [
             new Asset({
@@ -96,18 +106,32 @@ describe('Load assets mixin', () => {
         ])
       })
     })
+
+    describe('defaultQuoteAsset', () => {
+      it('returns default quote asset code', () => {
+        wrapper.setData({
+          assets: [
+            new Asset({
+              id: 'BTC',
+              policies: { value: ASSET_POLICIES.baseAsset },
+            }),
+            new Asset({
+              id: 'USD',
+              policies: { value: ASSET_POLICIES.statsQuoteAsset },
+            }),
+          ],
+        })
+
+        expect(wrapper.vm.defaultQuoteAsset).to.equal('USD')
+      })
+    })
   })
 
   describe('method', () => {
     describe('loadAssets', () => {
-      beforeEach(() => {
-        sandbox.stub(Api, 'api').returns(ApiCaller.getInstance())
-      })
-
-      it('calls Api.getWithSignature method with provided params and sets assets property',
+      it('calls api.getWithSignature method with provided params and sets assets property',
         async () => {
-          wrapper.setProps({ wallet: { accountId: 'SOME_ACCOUNT_ID' } })
-          sandbox.stub(Api.api(), 'getWithSignature').resolves({
+          sandbox.stub(api, 'getWithSignature').resolves({
             data: {
               balances: [
                 { asset: { id: 'USD' } },
@@ -116,9 +140,9 @@ describe('Load assets mixin', () => {
             },
           })
 
-          await wrapper.vm.loadAssets()
+          await wrapper.vm.loadAssets('SOME_ACCOUNT_ID')
 
-          expect(Api.api().getWithSignature)
+          expect(api.getWithSignature)
             .to.have.been.calledOnceWithExactly(
               '/v3/accounts/SOME_ACCOUNT_ID',
               { include: ['balances.asset'] }
