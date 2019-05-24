@@ -39,7 +39,7 @@ export class FeesCollection {
   get isExternalFeePresent () {
     return this._asset.externalSystemType &&
       this._asset.owner === this._masterAccountId &&
-      this._fees.some(fee => fee.isWithdrawal)
+      this._fees.find(fee => fee.isWithdrawal)
   }
 
   get assetCode () {

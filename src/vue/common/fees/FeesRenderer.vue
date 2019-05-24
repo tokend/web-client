@@ -1,13 +1,18 @@
 <template>
   <div class="fees-renderer">
-    <!-- currently disabled -->
-    <!-- <tr
-      v-if="false"
-      class="fees-renderer__strong"
+    <p
+      v-if="fees.isExternalFeePresent"
+      class="fee-renderer__network-fee"
     >
-      <td>{{ 'fees-renderer.network-fee-lbl' | globalize }}</td>
-      <td>{{ 'fees-renderer.network-fee-unknown-lbl' | globalize }}</td>
-    </tr> -->
+      <span class="fee-renderer__network-fee-text">
+        {{ 'fees-renderer.network-fee-lbl' | globalize }}
+      </span>
+
+      <span class="fee-renderer__network-fee-text">
+        {{ 'fees-renderer.network-fee-unknown-lbl' | globalize }}
+      </span>
+    </p>
+
     <div
       v-for="(fee, i) in fees.fees"
       :key="i"
@@ -71,11 +76,16 @@ export default {
   margin-top: 2rem;
 }
 
-.fees-renderer__strong {
-  font-weight: 600;
-  color: $col-text;
+.fee-renderer__network-fee {
+  display: flex;
+  justify-content: space-between;
 }
 
+.fee-renderer__network-fee-text {
+  font-size: 1.6rem;
+}
+
+.fee-renderer__network-fee,
 .fees-renderer__fee-block {
   margin-bottom: 1rem;
 }
