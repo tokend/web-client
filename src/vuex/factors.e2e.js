@@ -1,10 +1,11 @@
-import { MockHelper } from '../test'
+import { api } from '@/api'
 import { vuexTypes } from './types'
 
 import factors from './factors.module'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { MockWrapper } from '@/test'
 
 Vue.use(Vuex)
 
@@ -19,17 +20,14 @@ describe('factors.module end-to-end test', () => {
     }
 
     const responseDefaultParsed = [
-      { resourceType: 'email', id: 785, priority: 1 },
-      { resourceType: 'password', id: 652, priority: 1 },
-      { resourceType: 'totp', id: 991, priority: 1 },
+      { type: 'email', id: 785, priority: 1 },
+      { type: 'password', id: 652, priority: 1 },
+      { type: 'totp', id: 991, priority: 1 },
     ]
 
-    const walletId = '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-
-    let store, mockHelper
+    let store
 
     beforeEach(() => {
-      mockHelper = new MockHelper()
       store = new Vuex.Store({
         actions: {},
         getters: {},
@@ -37,14 +35,17 @@ describe('factors.module end-to-end test', () => {
         state: {},
         modules: { factors },
       })
-      mockHelper.useMockWallet({ walletId })
+    })
+
+    afterEach(() => {
+      sinon.restore()
     })
 
     it('factors', async () => {
-      mockHelper.mockEndpoint(
-        `/wallets/${walletId}/factors`,
-        responseDefaultRaw
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
+
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
       expect(store.getters[vuexTypes.factors])
@@ -54,10 +55,10 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsTotp', async () => {
-      mockHelper.mockEndpoint(
-        `/wallets/${walletId}/factors`,
-        responseDefaultRaw
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
+
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
       expect(store.getters[vuexTypes.factorsTotp])
@@ -67,10 +68,10 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsPassword', async () => {
-      mockHelper.mockEndpoint(
-        `/wallets/${walletId}/factors`,
-        responseDefaultRaw
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
+
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
       expect(store.getters[vuexTypes.factorsPassword])
@@ -80,10 +81,10 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsEmail', async () => {
-      mockHelper.mockEndpoint(
-        `/wallets/${walletId}/factors`,
-        responseDefaultRaw
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse(responseDefaultRaw)
       )
+
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
       expect(store.getters[vuexTypes.factorsEmail])
@@ -93,30 +94,35 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('factorsTotpEnabled with enabled totp factor', async () => {
-      mockHelper.mockEndpoint(`/wallets/${walletId}/factors`, {
-        data: [
-          { type: 'email', id: 785, attributes: { priority: 1 } },
-          { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 1 } },
-        ],
-      })
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse({
+          data: [
+            { type: 'email', id: 785, attributes: { priority: 1 } },
+            { type: 'password', id: 652, attributes: { priority: 1 } },
+            { type: 'totp', id: 991, attributes: { priority: 1 } },
+          ],
+        })
+      )
+
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
       expect(store.getters[vuexTypes.factorsTotpEnabled])
         .to
         .deep
         .equal([
-          { resourceType: 'totp', id: 991, priority: 1 },
+          { type: 'totp', id: 991, priority: 1 },
         ])
     })
 
     it('factorsTotpEnabled when no enabled totp factor', async () => {
-      mockHelper.mockEndpoint(`/wallets/${walletId}/factors`, {
-        data: [
-          { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 0 } },
-        ],
-      })
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse({
+          data: [
+            { type: 'password', id: 652, attributes: { priority: 1 } },
+            { type: 'totp', id: 991, attributes: { priority: 0 } },
+          ],
+        })
+      )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
@@ -127,13 +133,15 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('isTotpEnabled with enabled totp factor', async () => {
-      mockHelper.mockEndpoint(`/wallets/${walletId}/factors`, {
-        data: [
-          { type: 'email', id: 785, attributes: { priority: 1 } },
-          { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 1 } },
-        ],
-      })
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse({
+          data: [
+            { type: 'email', id: 785, attributes: { priority: 1 } },
+            { type: 'password', id: 652, attributes: { priority: 1 } },
+            { type: 'totp', id: 991, attributes: { priority: 1 } },
+          ],
+        })
+      )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 
@@ -143,12 +151,14 @@ describe('factors.module end-to-end test', () => {
     })
 
     it('isTotpEnabled whe no enabled totp factor', async () => {
-      mockHelper.mockEndpoint(`/wallets/${walletId}/factors`, {
-        data: [
-          { type: 'password', id: 652, attributes: { priority: 1 } },
-          { type: 'totp', id: 991, attributes: { priority: 0 } },
-        ],
-      })
+      sinon.stub(api, 'getWithSignature').resolves(
+        MockWrapper.makeJsonapiResponse({
+          data: [
+            { type: 'password', id: 652, attributes: { priority: 1 } },
+            { type: 'totp', id: 991, attributes: { priority: 0 } },
+          ],
+        })
+      )
 
       await store.dispatch(vuexTypes.LOAD_FACTORS)
 

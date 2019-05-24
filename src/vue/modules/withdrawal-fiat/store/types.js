@@ -1,6 +1,5 @@
 const mutations = {
   SET_BALANCES: 'SET_BALANCES',
-  SET_ACCOUNT_ID: 'SET_ACCOUNT_ID',
 }
 
 const actions = {
@@ -8,7 +7,6 @@ const actions = {
 }
 
 const getters = {
-  accountId: 'accountId',
   balances: 'balances',
 }
 

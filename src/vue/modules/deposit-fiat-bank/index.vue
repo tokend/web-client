@@ -202,11 +202,9 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
 import FormMixin from '@/vue/mixins/form.mixin'
 import debounce from 'lodash/debounce'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -238,22 +236,6 @@ export default {
     NoDataMessage,
   },
   mixins: [FormMixin],
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.decimalPoints - count of allowed decimal points
-     * @property config.minAmount - minimal allowed amount
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
   data: _ => ({
     isInitialized: false,
     form: {
@@ -298,9 +280,6 @@ export default {
     },
   },
   async created () {
-    initApi(this.wallet, this.config)
-
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
 
@@ -309,9 +288,6 @@ export default {
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('deposit-fiat-bank', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('deposit-fiat-bank', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -356,14 +332,14 @@ export default {
 .deposit-fiat-bank__fee-table {
   width: 100%;
   font-size: 1.2rem;
+}
 
-  tr {
-    height: 2rem;
-  }
+.deposit-fiat-bank__fee-table tr {
+  height: 2rem;
+}
 
-  td:last-child {
-    text-align: right;
-  }
+.deposit-fiat-bank__fee-table td:last-child {
+  text-align: right;
 }
 
 .deposit-fiat-bank__fee-tbody {

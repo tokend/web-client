@@ -100,9 +100,11 @@
           name="create-asset-logo"
           v-model="form.logo"
           :note="'create-asset-form.logo-note' | globalize"
-          accept=".jpg, .png"
+          :file-extensions="['jpg', 'png']"
           :document-type="DOCUMENT_TYPES.assetLogo"
           :label="'create-asset-form.logo-lbl' | globalize"
+          :min-width="120"
+          :min-height="120"
         />
       </div>
     </div>
@@ -131,7 +133,7 @@ import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
 import { required, amountRange, maxLength } from '@validators'
 
-import { config } from '../_config'
+import config from '@/config'
 
 const EVENTS = {
   submit: 'submit',
@@ -158,8 +160,8 @@ export default {
       policies: 0,
       assetType: '',
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
-    MAX_AMOUNT: config().MAX_AMOUNT,
+    MIN_AMOUNT: config.MIN_AMOUNT,
+    MAX_AMOUNT: config.MAX_AMOUNT,
     ASSET_POLICIES,
     DOCUMENT_TYPES,
     CODE_MAX_LENGTH,

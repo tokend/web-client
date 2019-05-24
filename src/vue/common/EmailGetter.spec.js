@@ -2,10 +2,9 @@ import EmailGetter from './EmailGetter'
 
 import Vue from 'vue'
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-import { MockHelper } from '@/test'
 
-import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+import { api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -35,14 +34,16 @@ describe('EmailGetter\'s', () => {
       sandbox.stub(EmailGetter, 'created').resolves()
       wrapper = await shallowMount(EmailGetter, { localVue })
     })
+    afterEach(() => sandbox.restore())
 
     describe('init()', () => {
       beforeEach(() => {
         sandbox.stub(wrapper.vm, 'loadEmail')
-        sandbox.stub(Sdk, 'networkDetails').value({
+        sandbox.stub(api, 'networkDetails').value({
           adminAccountId: 'MASTER_ACCOUNT_ID',
         })
       })
+      afterEach(() => sandbox.restore())
 
       it('does not fetch email if provided accountId is master', async () => {
         wrapper.setProps({ accountId: 'MASTER_ACCOUNT_ID' })
@@ -108,6 +109,9 @@ describe('EmailGetter\'s', () => {
     })
 
     describe('getAccountId()', () => {
+      beforeEach(async () => {
+        sandbox.stub(wrapper.vm, 'init')
+      })
       it('simply returns account ID if present', async () => {
         wrapper.setProps({ accountId: 'SOME_ACCOUNT_ID' })
 
@@ -117,11 +121,9 @@ describe('EmailGetter\'s', () => {
       })
 
       it('fetches account id if balance id present but account id is not', async () => {
-        const balancesResource = new MockHelper()
-          .getHorizonResourcePrototype('balances')
-        sandbox.stub(balancesResource, 'getAccount')
-          .withArgs('SOME_BALANCE_ID')
-          .resolves({ data: { accountId: 'FETCHED_ACCOUNT_ID' } })
+        sandbox.stub(api, 'get')
+          .withArgs('/v3/balances/SOME_BALANCE_ID')
+          .resolves({ data: { owner: { id: 'FETCHED_ACCOUNT_ID' } } })
         wrapper.setProps({ balanceId: 'SOME_BALANCE_ID' })
 
         const result = await wrapper.vm.getAccountId()

@@ -1,6 +1,9 @@
 import Vue from 'vue'
+
 import config from '@/config'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
+
+import _omit from 'lodash/omit'
 
 export class DocumentUploader {
   /**
@@ -12,16 +15,20 @@ export class DocumentUploader {
    * document (!! nothing common with MIME-type)
    * @param opts.mimeType - MIME-type of the file being uploaded
    * @param opts.file {ArrayBuffer} - file itself
+   * @param opts.accountId {string} - document's owner account ID
    *
    * @return {string}
    */
   static async uploadDocument (opts) {
-    const { type, mimeType, file } = opts
-    const configResponse = await Sdk.api.documents.create(type, mimeType)
-    const config = {
-      ...configResponse.formData,
-    }
-    await this._uploadFile(file, config, mimeType)
+    const { type, mimeType, file, accountId } = opts
+    const config = await this._createDocumentAnchorConfig(
+      { type, mimeType, accountId }
+    )
+
+    await this._uploadFile(
+      file, _omit(config, ['id', 'url', 'type']), mimeType
+    )
+
     return config.key
   }
 
@@ -30,46 +37,62 @@ export class DocumentUploader {
   }
 
   /**
-   * @async
-   * Loads file by specified URL
-   * @param url {string} - full URL where document is placed
-   * @return {Blob}
-   */
-  static async loadFileByURL (url) {
-    const response = await Vue.http.get(url, { responseType: 'blob' })
-    return response.body
-  }
-
-  /**
    * @param {DocumentContainer} document - instance of {@link DocumentContainer}
    * to be uploaded
+   * @param {string} accountId - document's owner account ID
+   *
    * @returns {Promise<object>}
    */
-
-  static async uploadSingleDocument (document) {
+  static async uploadSingleDocument (document, accountId) {
     const details = document.getDetailsForUpload()
-    const key = await this.uploadDocument(details)
+    const key = await this.uploadDocument({ ...details, accountId })
     document.setKey(key)
     return document
+  }
+
+  static async _createDocumentAnchorConfig ({ type, mimeType, accountId }) {
+    const { data: config } = await api.postWithSignature('/documents', {
+      data: {
+        type,
+        attributes: { content_type: mimeType },
+        relationships: {
+          owner: {
+            data: { id: accountId },
+          },
+        },
+      },
+    })
+
+    return config
   }
 
   /**
    * Uploads file sending multipart/form-data request to the server
    * @param file {ArrayBuffer}
    * @param policy {policy}
-   * @param mimeString
+   * @param mimeType
    * @return {*}
    * @private
    */
-  static _uploadFile (file, policy, mimeString) {
+  static async _uploadFile (file, policy, mimeType) {
+    const formData = this._createFileFormData(file, policy, mimeType)
+
+    // TODO: posting should not be on this level of abstraction
+    await Vue.http.post(config.FILE_STORAGE, formData)
+  }
+
+  static _createFileFormData (file, policy, mimeType) {
     const formData = new FormData()
+
     for (const key in policy) {
-      // FIXME: Fix config method in SDK
-      formData.append(key.replace(/_/g, '-'), policy[key])
+      // converts camelCase policy to kebab-case
+      const convertedPolicy = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+      formData.append(convertedPolicy, policy[key])
     }
-    const blob = new Blob([file], { type: mimeString })
+
+    const blob = new Blob([file], { type: mimeType })
     formData.append('file', blob)
-    // TODO: posting should not be on this lvl of abstraction
-    return Vue.http.post(config.FILE_STORAGE, formData)
+
+    return formData
   }
 }

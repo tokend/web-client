@@ -25,7 +25,7 @@
         <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatWithdrawalFormShown = true"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
@@ -40,7 +40,7 @@
         >
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isWithdrawalDrawerShown = true"
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
@@ -52,7 +52,7 @@
         <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatDepositFormShown = true"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
@@ -64,7 +64,7 @@
         <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isCoinpaymentsDepositFormShown = true"
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
@@ -76,11 +76,18 @@
         <template v-if="getModule().canRenderSubmodule(TransferDrawerPseudoModule)">
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isTransferDrawerShown = true"
           >
-            <!-- eslint-disable-next-line max-len -->
-            <i class="mdi mdi-rotate-315 mdi-transfer movements-top-bar-reit__btn-icon" />
+            <i
+              class="
+                mdi
+                mdi-rotate-315
+                mdi-transfer
+                movements-top-bar-reit__btn-icon
+                movements-top-bar-reit__btn-icon--rotate-315
+              "
+            />
             {{ 'op-pages.send' | globalize }}
           </button>
         </template>
@@ -92,7 +99,7 @@
         >
           <button
             v-ripple
-            class="app__button-raised movements-top-bar-reit__button-raised"
+            class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isReedemDrawerShown = true"
           >
             <i
@@ -113,7 +120,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalFiatModule)"
           :config="withdrawalFiatConfig"
-          :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
         />
       </drawer>
@@ -129,15 +135,13 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalDrawerPseudoModule)"
-          :config="withdrawalFiatConfig"
-          :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
         />
       </drawer>
     </template>
 
     <!-- eslint-disable-next-line max-len -->
-    <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat">
+    <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
       <drawer :is-shown.sync="isFiatDepositFormShown">
         <template slot="heading">
           {{ 'deposit-fiat-module.form-title' | globalize }}
@@ -145,7 +149,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(DepositFiatModule)"
           :config="depositFiatConfig"
-          :wallet="wallet"
           @deposited="depositFiatModuleDeposited"
         />
       </drawer>
@@ -165,9 +168,7 @@
             :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
             :asset="asset"
             :balance-id="asset.balance.id"
-            :wallet="wallet"
             :account-id="accountId"
-            :config="{horizonURL: config.horizonURL}"
           />
         </div>
       </drawer>
@@ -187,7 +188,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(RedeemFormModule)"
-          :wallet="wallet"
           :config="redeemConfig"
           @redeemed="redeemModuleSubmitted"
         />
@@ -197,11 +197,9 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -235,10 +233,6 @@ export default {
     SubmoduleImporter,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
@@ -277,8 +271,10 @@ export default {
     ...mapGetters('movements-top-bar-reit', {
       balances: types.balances,
       assets: types.assets,
-      accountId: types.accountId,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     isOwnedAsset () {
       return this.asset.owner.id === this.accountId
     },
@@ -294,18 +290,13 @@ export default {
   },
   async created () {
     this.setUpConfigs()
-    initApi(this.wallet, this.config)
 
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('movements-top-bar-reit', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('movements-top-bar-reit', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -327,7 +318,6 @@ export default {
     },
     setUpConfigs () {
       this.withdrawalFiatConfig = {
-        horizonURL: this.config.horizonURL,
         decimalPoints: this.config.decimalPoints,
         minAmount: this.config.minAmount,
       }
@@ -337,7 +327,6 @@ export default {
         minAmount: this.config.minAmount,
       }
       this.redeemConfig = {
-        horizonURL: this.config.horizonURL,
         minAmount: this.config.minAmount,
         maxAmount: this.config.maxAmount,
         defaultAssetCode: null,
@@ -348,32 +337,33 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .movements-top-bar-reit__actions {
   display: flex;
   justify-content: space-between;
+}
 
-  button {
-    margin-right: 1.2rem;
-    &:last-child {
-      margin-right: 0;
-    }
+.movements-top-bar-reit__actions-btn {
+  margin-right: 1.2rem;
+
+  &:last-child {
+    margin-right: 0;
   }
 }
 
-.movements-top-bar-reit__button-raised.app__button-raised {
+.movements-top-bar-reit__actions-btn.app__button-raised {
   line-height: 1;
 }
 
 .movements-top-bar-reit__btn-icon {
   font-size: 1.8rem;
   margin-right: 0.5rem;
+}
 
-  &.mdi-rotate-315 {
-    transform: translateY(-0.2rem);
-  }
+.movements-top-bar-reit__btn-icon--rotate-315 {
+  transform: translateY(-0.2rem);
 }
 
 .movements-top-bar-reit__filters {

@@ -53,6 +53,21 @@
 
         <tr>
           <td>
+            {{ 'sale-overview.whitelisted-title' | globalize }}
+          </td>
+          <td>
+            <template v-if="sale.isWhitelisted">
+              {{ 'sale-overview.yes-msg' | globalize }}
+            </template>
+
+            <template v-else>
+              {{ 'sale-overview.no-msg' | globalize }}
+            </template>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
             <!-- eslint-disable-next-line max-len -->
             {{ 'sale-overview.owner-lbl' | globalize({ asset: sale.baseAsset }) }}
           </td>
@@ -104,12 +119,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
-.sale-overview-details {
-  tr td:last-child {
-    text-align: right;
-  }
+.sale-overview-details tr td:last-child {
+  text-align: right;
 }
 
 .sale-overview-details__video-btn {

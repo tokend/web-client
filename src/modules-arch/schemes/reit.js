@@ -19,12 +19,12 @@ import { SecurityPageModule } from '@/vue/pages/security-page-module'
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
-import { IssuanceDrawerPseudoModule } from '@/modules-arch/pseudo-modules/issuance-drawer-pseudo-module'
+import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DividendFormModule } from '@modules/dividend-form/module'
 import { BuyBackFormModule } from '@modules/buy-back-form/module'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
-import { SalesListPageModule } from '@/vue/pages/sales/all-sales-page-module'
+import { SalesListPageModule } from '@/vue/pages/sales/investable-sales-page-module'
 import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 import { SaleCampaignViewerPageModule } from '@/vue/pages/sale-details/sale-campaign-viewer-page-module'
 import { SaleStateWidgetModule } from '@/vue/pages/sale-details/sale-sate-widget-module'
@@ -55,7 +55,7 @@ export default {
         menuButtonMdiName: 'view-dashboard',
         submodules: [
           new MovementsHistoryModule(),
-          new IssuanceDrawerPseudoModule({
+          new IssuanceFormModule({
             isCorporateOnly: true,
           }),
           new TransferDrawerPseudoModule(),
@@ -77,7 +77,7 @@ export default {
           new SalesListPageModule({
             routerEntry: {
               path: '/opportunities/all',
-              name: vueRoutes.allSales.name,
+              name: vueRoutes.investableSales.name,
               props: {
                 default: true,
                 isUserSales: false,

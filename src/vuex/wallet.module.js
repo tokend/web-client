@@ -1,8 +1,7 @@
-import { vuexTypes } from './types'
-import { Sdk } from '../sdk'
-import { Wallet } from '@tokend/js-sdk'
+import { walletsManager, useWallet } from '@/api'
 
-import isEmpty from 'lodash/isEmpty'
+import { vuexTypes } from './types'
+import { Wallet } from '@tokend/js-sdk'
 
 export const state = {
   wallet: {},
@@ -31,30 +30,30 @@ export const mutations = {
 
 export const actions = {
   async [vuexTypes.LOAD_WALLET] ({ commit }, { email, password }) {
-    commit(vuexTypes.SET_WALLET, await Sdk.api.wallets.get(email, password))
+    const wallet = await walletsManager.get(email, password)
+    useWallet(wallet)
+    commit(vuexTypes.SET_WALLET, wallet)
   },
-  [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
+  async [vuexTypes.STORE_WALLET] ({ commit }, wallet) {
+    const newWallet = new Wallet(
+      wallet.email,
+      wallet.secretSeed,
+      wallet.accountId,
+      wallet.id
+    )
+    useWallet(newWallet)
     commit(vuexTypes.SET_WALLET, wallet)
   },
 }
 
 export const getters = {
-  [vuexTypes.wallet]: state => isEmpty(state.wallet) ? {} : new Wallet(
-    state.wallet.email,
-    state.wallet.secretSeed,
-    state.wallet.accountId,
-    state.wallet.id
-  ),
-  [vuexTypes.walletId]: (state, getters) => getters[vuexTypes.wallet].id,
-  [vuexTypes.walletEmail]: (state, getters) => getters[vuexTypes.wallet].email,
+  [vuexTypes.walletId]: (state, getters) => state.wallet.id,
+  [vuexTypes.walletAccountId]: (state, getters) => state.wallet.accountId,
+  [vuexTypes.walletEmail]: (state, getters) => {
+    return state.wallet.email
+  },
   [vuexTypes.walletSeed]: (state, getters) =>
-    getters[vuexTypes.wallet].secretSeed,
-  [vuexTypes.walletKeypair]: (state, getters) =>
-    getters[vuexTypes.wallet].keypair,
-  [vuexTypes.walletPublicKey]: (state, getters) =>
-    getters[vuexTypes.wallet].keypair
-      ? getters[vuexTypes.wallet].keypair.accountId()
-      : '',
+    state.wallet.secretSeed,
 }
 
 export default {

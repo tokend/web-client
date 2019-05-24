@@ -16,23 +16,24 @@
 <script>
 import { Asset } from '../wrappers/asset'
 
+import config from '@/config'
+
 export default {
   name: 'logo-viewer',
   props: {
     asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
     darkMode: { type: Boolean, default: false },
   },
   computed: {
     url () {
-      return this.asset.logoUrl(this.storageUrl)
+      return this.asset.logoUrl(config.FILE_STORAGE)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .logo-viewer {
   width: 5.3rem;

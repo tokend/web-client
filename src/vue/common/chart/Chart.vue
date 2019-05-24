@@ -16,6 +16,7 @@
       :is-ticks-shown="showTicks"
       :data="history"
       :precision="common.precision"
+      :currency="quoteAsset"
     />
   </div>
 </template>
@@ -25,7 +26,7 @@ import ChartRenderer from './Chart.Renderer'
 import ScaleTabs from './Chart.Tabs'
 
 import { errors } from '@tokend/js-sdk'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import config from '@/config'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -101,10 +102,10 @@ export default {
       try {
         this.isActualData = true
         const response = this.quoteAsset
-          ? await Sdk.horizon.charts.get(
-            `${this.lockedAssets.base}-${this.lockedAssets.quote}`
+          ? await api.getRaw(
+            `/charts/${this.lockedAssets.base}-${this.lockedAssets.quote}`
           )
-          : await Sdk.horizon.charts.get(this.lockedAssets.base)
+          : await api.getRaw(`/charts/${this.lockedAssets.base}`)
         this.data = response.data
       } catch (error) {
         ErrorHandler.processWithoutFeedback(error)

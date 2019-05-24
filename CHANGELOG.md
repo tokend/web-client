@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this ~project will be documented in this file.
+All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,6 +9,10 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Tooltip directive
+
+## [1.7.0-rc.0] - 2019-05-21
+#### Added
 - Display fees in invest form
 - General verification form module (included in vanilla scheme only)
 - `usVerified` and `usAccredited` roles to key/value module
@@ -17,13 +21,143 @@ for further information about branching and tagging conventions.
 - Security asset type
 - Show banner for blocked user
 - Validator of available for issuance amount
-- Tooltip directive
 
 #### Changed
-- Show only one QR code on Coinpayments deposit
+- File field look improvements:
+  - Added reactions to drag and drop actions
+  - Added image preview
+  - Added icons for non-image filetypes
+  - Added upload icons
+  - Now gray-scale painting the field when its state is disabled
+- Dashboard movements changes:
+  - Added "Latest activity" label
+  - Now showing only 10 latest operations
+  - Removed "More" button
+- Now formatting date in validation message of fields with min date restriction
+- Now restricting max size of uploaded files to 32mb
+- Merged "Requires verification" and "Is security (requires accreditation for US
+  residents)" into "Deposit method" row in asset details drawer
+- New 'no-data' message for Movements, Fees and Limits table
+- Now showing more highlighted disabled investing reason in Invest form
+- Updated wordings:
+  - Change "Account address" to "Account ID" on "Settings" page
+  - Add recommendation of using Google Authenticator to 2FA screen
+  - Fix typo with "some assets" on the Deposit form
+- Now showing expiration date of deposit address on the Deposit form
+- Moved sale view buttons:
+  - Invest button to the block with investment statistics
+  - View details button to under the sale heading
+- Renamed "All sales" -> "Investable sales"
 
 #### Fixed
-- Invalid opts when submitting create asset request
+- Added missing formatting of asset code and value to asset details drawer
+- Fix a bug with chart on-hover tip when price up from 0 to some value: instead
+  of "+Infinity%" now showing "+100%"
+- Fixed a bug when users requesting limits changing to unlimited values
+- Fixed a bug when users receive "Your transaction is invalid" if the submitted
+  transaction had exceeded limits
+- Fixed a bug of uploading documents on general verification form
+- Fixed a bug of incorrectly shown disabled state of account type selector on
+  verification page
+- Some typos in EN translations
+- Fixed an issue with 0 instead of converted balance on Dashboard
+- Fixed an issue with displaying quote asset as currency on the line chart
+- Fixed a bug that caused "Update" button to never be shown in asset details
+  drawer
+- Fixed displaying of sale & create sale request caps
+- Bug with getting 'defaultQuoteAsset' code in the sale creation form
+- Fixed annoying flickering on update on "Trade" page
+
+#### Removed
+- Removed restriction of creating sales in the past (and opportunities for REIT
+  experimental feature
+- Removed "dev: " prefix from displayed version
+
+### "Under the hood" changes
+#### Added
+- New `BalanceNotFoundError` to the runtime errors
+- New `initSync()` method to Api class
+- New `MessageBox` component for displaying titled messages
+- New `SALE_DEFINITION_TYPES` constant
+
+#### Changed
+- Modularized:
+  - Pre-issuance form
+  - Issuance form
+  - Create sale form
+- Now using @tokend/js-sdk@1.7.0-rc.1
+- Split offer creating drawer to three new drawers
+- Optimized fonts, images, SVGs
+- Now using `moment().toISOString()` value instead of `moment().toString()
+- Now performing actions with wallets & factors using relevant managers
+- Moved horizon resources to "/v3" endpoints
+- .babelrc: babel target to allowed browsers
+- Now loading converted balances on the balances page
+- Moved exceeding sale cap message to vuelidate error messages
+- Now loading default quote asset in create sale form
+  endpoint
+- Clean up:
+  - Now using global api.js in all modules instead of the local analogues
+  - Removed wallet provided via prop to each module
+  - Import api instead of Api in security page
+  - Remove _config.js from modules
+  - Remove storageUrl from modules
+  - Now processing documents & blobs using new ApiCaller
+
+#### Fixed
+- `event.getModifierState` error on auth page
+- Account balances mapping in deposit form
+
+#### Removed
+- Removed unused:
+  - `CreateSaleForm` component
+  - `PreIssuanceForm` component
+  - `requests-renderer` component
+  - `mock-helper.js` unused methods
+  - `DocumentContainer` unused methods
+  - global SDK instance
+
+### Experimental features changes
+#### Fixed
+- Show drawer for `isDepositable` in movements-top-bar-reit
+
+## [1.6.0] - 2019-05-09
+#### Changed
+- Enabled updating of pending and approved corporate kyc requests
+- "Submit" btn on verification changed to "Create request" or "Update", depends
+  on whether the request updatable or not
+
+#### Fixed
+- Fetching of investment fees in investing forms
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.6.0
+
+## [1.6.0-rc.0] - 2019-05-02
+#### Added
+- Displaying of fees in invest form
+- Displaying of a banner with block reason on every screen (for blocked users only)
+- New advanced general verification form (vanilla only)
+- New US verified and US accredited account roles support
+- New "Security" asset type
+
+#### Changed
+- Now does not show multiple QR codes on Coinpayments deposit
+
+#### Fixed
+- Validator of available for issuance amount on sale creation form
+
+### "Under the hood" changes
+#### Added
+- `usVerified` and `usAccredited` roles to key-value module
+- New release sanity check script, run it on pre-push
+
+#### Changed
+- Now using @tokend/js-sdk@1.6.0-rc.0
+
+#### Fixed
+- Invalid opts of `preissuedAssetAmount` when creating an asset
 
 ## [1.6.0-x.2] - 2019-04-29
 #### Added
@@ -436,10 +570,15 @@ for further information about branching and tagging conventions.
 
 #### Fixed
 - Not handling 'manage-asset-pair' operation details
+- Fixed bug when user invested in sales but in history
+  instead of 'Investment' was 'Offer'
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.6.0-x.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.7.0-rc.0...HEAD
+[1.7.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0...1.7.0-rc.0
+[1.6.0]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...1.6.0
+[1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
 [1.6.0-x.2]: https://github.com/tokend/web-client/compare/1.6.0-x.1...1.6.0-x.2
 [1.6.0-x.1]: https://github.com/tokend/web-client/compare/1.6.0-x.0...1.6.0-x.1
 [1.6.0-x.0]: https://github.com/tokend/web-client/compare/1.5.0...1.6.0-x.0

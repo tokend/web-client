@@ -6,23 +6,23 @@ export class LimitsRecord {
     this._record = record
 
     this.assetCode =
-      _get(record, 'limit.assetCode') ||
+      _get(record, 'asset.id') ||
       _get(record, 'statistics.assetCode') ||
       details.assetCode ||
       null
 
-    this.annualOut = _get(record, 'limit.annualOut') || null
-    this.dailyOut = _get(record, 'limit.dailyOut') || null
-    this.weeklyOut = _get(record, 'limit.weeklyOut') || null
-    this.monthlyOut = _get(record, 'limit.monthlyOut') || null
+    this.annualOut = _get(record, 'annualOut') || null
+    this.dailyOut = _get(record, 'dailyOut') || null
+    this.weeklyOut = _get(record, 'weeklyOut') || null
+    this.monthlyOut = _get(record, 'monthlyOut') || null
 
     this.statsOpType =
-      _get(record, 'limit.statsOpType') ||
+      _get(record, 'statsOpType') ||
       _get(record, 'statistics.statsOpType') ||
       details.statsOpType ||
       null
 
-    this.id = _get(record, 'limit.id') || '0'
+    this.id = _get(record, 'id') || '0'
   }
 
   get annualLeft () {

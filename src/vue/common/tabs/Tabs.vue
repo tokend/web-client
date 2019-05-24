@@ -131,58 +131,57 @@ $media-custom-breakpoint: 1100px;
 
 .app-tabs__tab {
   min-width: 7.2rem;
-  height: 4.8rem;
+  height: 4rem;
   margin: 0;
   cursor: pointer;
   border-radius: 0;
   position: relative;
+}
 
-  &.app-tabs__tab--active:after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: $col-tabs-indicator;
-    height: 0.2rem;
-  }
+.app-tabs__tab--active:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $col-tabs-indicator;
+  height: 0.2rem;
+}
 
-  &.app-tabs__tab--disabled {
-    cursor: default;
-
-    .app-tabs__tab-btn {
-      pointer-events: none;
-      opacity: 0.5;
-      cursor: default;
-    }
-  }
+.app-tabs__tab--disabled {
+  cursor: default;
 }
 
 .app-tabs__tab-btn {
   padding: 0 1.6rem;
-  font-size: 1.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.8rem;
+  font-size: 1.6rem;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: $col-tabs-txt;
   text-decoration: none;
+  font-weight: 700;
 
   &:hover {
     background-color: $col-tabs-hover-bg;
-    text-decoration: none !important;
+    text-decoration: none;
     color: $col-tabs-txt;
   }
 
-  @include respond-to-custom($media-custom-breakpoint) {
-    font-size: 1.2rem;
-  }
-}
+  .app-tabs__tab--disabled & {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
 
-.app-tabs__tab--disabled .app-tabs__tab-btn:hover {
-  color: $col-tabs-txt;
+    &:hover {
+      color: $col-tabs-txt;
+    }
+  }
+
+  @include respond-to-custom($media-custom-breakpoint) {
+    font-size: 1.4rem;
+  }
 }
 </style>

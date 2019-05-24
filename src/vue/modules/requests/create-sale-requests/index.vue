@@ -6,8 +6,8 @@
           <template slot="heading">
             {{ 'create-sale-requests.update-sale-title' | globalize }}
           </template>
-          <create-sale-form
-            :request="selectedRequest"
+          <create-sale-form-module
+            :request-id="selectedRequest.id"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -52,14 +52,10 @@ import LoadSpinner from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
-import RequestViewer from './components/request-viewer'
 import RequestsTable from './components/requests-table'
+import RequestViewer from './components/request-viewer'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
-import { initConfig } from './_config'
+import CreateSaleFormModule from '@modules/create-sale-form'
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { types } from './store/types'
@@ -73,24 +69,8 @@ export default {
     Drawer,
     CollectionLoader,
     RequestsTable,
-    CreateSaleForm,
     RequestViewer,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
+    CreateSaleFormModule,
   },
 
   data: _ => ({
@@ -109,16 +89,11 @@ export default {
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
-
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('create-sale-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

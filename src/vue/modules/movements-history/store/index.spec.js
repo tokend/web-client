@@ -6,24 +6,11 @@ import { Wallet } from '@tokend/js-sdk'
 import { Movement } from '../wrappers/movement'
 import { Balance } from '../wrappers/balance'
 
-import * as ApiImporter from '../_api'
+import { api, useWallet } from '@/api'
 import accountBalancesJSON from '@/test/mocks/account-balances'
 
 describe('movements-history.module', () => {
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-
-      expect(state).to.deep.equal({
-        accountId,
-      })
-    })
-
     it('SET_BALANCES should properly modify state', () => {
       const balances = [
         {
@@ -106,32 +93,31 @@ describe('movements-history.module', () => {
       'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
       '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
     )
-    const config = {
-      horizonURL: 'https://test.api.com',
-    }
 
     let store
 
     beforeEach(() => {
       store = {
         state: {},
-        getters: {
-          accountId,
+        rootGetters: {
+          accountId: accountId,
         },
         commit: sinon.stub(),
         dispatch: sinon.stub(),
       }
 
-      ApiImporter.initApi(wallet, config)
+      api.useBaseURL('https://test.api.com')
+      useWallet(wallet)
     })
 
     describe('LOAD_MOVEMENTS', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
+      it('calls api.getWithSignature method with provided params', async () => {
         const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
         const assetCode = 'BTC'
         const expectedParams = {
           page: {
             order: 'desc',
+            limit: 10,
           },
           filter: {
             account: 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
@@ -140,33 +126,35 @@ describe('movements-history.module', () => {
           include: ['effect', 'operation.details'],
         }
 
-        sinon.stub(ApiImporter.api(), 'getWithSignature').resolves()
+        sinon.stub(api, 'getWithSignature').resolves()
 
         await actions[types.LOAD_MOVEMENTS](
           {
             getters: {
-              accountId,
               getBalanceByAssetCode: () => ({
                 id: 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ',
                 assetCode: 'BTC',
               }),
             },
+            rootGetters: {
+              accountId: accountId,
+            },
           },
           assetCode
         )
 
-        expect(ApiImporter.api().getWithSignature)
+        expect(api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/history',
             expectedParams
           )
 
-        ApiImporter.api().getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
     describe('LOAD_BALANCES', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
-        sinon.stub(ApiImporter.api(), 'getWithSignature')
+      it('calls api.getWithSignature method with provided params', async () => {
+        sinon.stub(api, 'getWithSignature')
           .resolves({
             data: {
               balances: accountBalancesJSON,
@@ -184,20 +172,12 @@ describe('movements-history.module', () => {
           .deep
           .equal(Object.entries(expectedMutations))
 
-        ApiImporter.api().getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
-      const state = { accountId }
-
-      expect(getters[types.accountId](state))
-        .to.equal(accountId)
-    })
-
     it('movements', () => {
       const movements = [
         {

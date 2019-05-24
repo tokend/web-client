@@ -16,23 +16,24 @@
 <script>
 import { Asset } from '../wrappers/asset'
 
+import config from '@/config'
+
 export default {
   name: 'terms-viewer',
   props: {
     asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
   },
   computed: {
     href () {
-      return this.asset.termsUrl(this.storageUrl)
+      return this.asset.termsUrl(config.FILE_STORAGE)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .terms-viewer__link {
   font-size: 1.4rem;

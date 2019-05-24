@@ -60,7 +60,7 @@ import TradeHistoryRenderer from '@/vue/pages/TradeExchange/Trade.HistoryRendere
 import TradeOffersRenderer from '@/vue/pages/TradeExchange/Trade.OffersRenderer'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import { mapActions } from 'vuex'
@@ -145,17 +145,42 @@ export default {
       await this.loadTradeHistory()
     },
     async loadTradeOffers () {
-      await this.loadTradeBuyOffers()
-      await this.loadTradeSellOffers()
+      try {
+        const baseAsset = this.assetPair.base
+        const quoteAsset = this.assetPair.quote
+        const orderBookId = SECONDARY_MARKET_ORDER_BOOK_ID
+
+        const endpoint = `/v3/order_books/${baseAsset}:${quoteAsset}:${orderBookId}`
+        const { data: orderBook } = await api.get(endpoint, {
+          include: ['buy_entries', 'sell_entries'],
+        })
+
+        this.buyOffersList = this.sortOffersList(orderBook.buyEntries, 'ask')
+        this.sellOffersList = this.sortOffersList(orderBook.sellEntries, 'bids')
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
+
+      this.isBuyOffersLoading = false
+      this.isSellOffersLoading = false
     },
     async loadTradeHistory () {
-      let response = await Sdk.horizon.trades.getPage({
-        base_asset: this.assetPair.base,
-        quote_asset: this.assetPair.quote,
-        order_book_id: SECONDARY_MARKET_ORDER_BOOK_ID,
-        order: this.recordsOrder,
-        limit: this.recordsToShow,
-      })
+      const params = {
+        filter: {
+          base_asset: this.assetPair.base,
+          quote_asset: this.assetPair.quote,
+        },
+        page: {
+          limit: this.recordsToShow,
+          order: this.recordsOrder,
+        },
+      }
+      let response
+      try {
+        response = await api.get('/v3/matches', params)
+      } catch (error) {
+        ErrorHandler.processWithoutFeedback(error)
+      }
       this.isTradeHistoryLoading = false
       return response
     },
@@ -165,32 +190,6 @@ export default {
     },
     extendTradeHistory (data) {
       this.tradeHistory = this.tradeHistory.concat(data)
-    },
-    async loadTradeBuyOffers () {
-      try {
-        const response = await Sdk.horizon.orderBook.getAll({
-          base_asset: this.assetPair.base,
-          quote_asset: this.assetPair.quote,
-          is_buy: true,
-        })
-        this.buyOffersList = this.sortOffersList(response.data, 'ask')
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
-      }
-      this.isBuyOffersLoading = false
-    },
-    async loadTradeSellOffers () {
-      try {
-        const response = await Sdk.horizon.orderBook.getAll({
-          base_asset: this.assetPair.base,
-          quote_asset: this.assetPair.quote,
-          is_buy: false,
-        })
-        this.sellOffersList = this.sortOffersList(response.data, 'bids')
-      } catch (error) {
-        ErrorHandler.processWithoutFeedback(error)
-      }
-      this.isSellOffersLoading = false
     },
     setCurrentAssets (assetPair) {
       this.assetPair.base = assetPair.base
@@ -216,10 +215,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+@import '~@scss/mixins';
+@import '~@scss/variables';
 
-$custom-breakpoint: 985px;
+$media-custom-breakpoint: 985px;
 
 .trade-exchange__asset-selector-field {
   display: inline-block;
@@ -243,7 +242,7 @@ $custom-breakpoint: 985px;
 .trade-exchange__chart {
   margin-top: -2.4rem;
 
-  @include respond-to($custom-breakpoint) {
+  @include respond-to($media-custom-breakpoint) {
     margin-top: 0;
   }
 }
@@ -257,7 +256,7 @@ $custom-breakpoint: 985px;
   align-items: flex-start;
   flex-basis: 50%;
 
-  @include respond-to($custom-breakpoint) {
+  @include respond-to($media-custom-breakpoint) {
     flex-direction: column;
   }
 }
@@ -265,7 +264,7 @@ $custom-breakpoint: 985px;
 .trade-exchange__offers-list {
   width: 50%;
 
-  @include respond-to($custom-breakpoint) {
+  @include respond-to($media-custom-breakpoint) {
     max-width: 100%;
     width: 100%;
   }
@@ -273,7 +272,7 @@ $custom-breakpoint: 985px;
   &:not(:last-child) {
     margin-right: 1.6rem;
 
-    @include respond-to($custom-breakpoint) {
+    @include respond-to($media-custom-breakpoint) {
       margin-right: 0;
       margin-bottom: 1.6rem;
     }

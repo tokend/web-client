@@ -2,13 +2,13 @@
   <div class="deposit">
     <template v-if="isLoaded">
       <template v-if="selectedAsset.code">
-        <div class="deposit__help-message-wrp">
-          <p class="deposit__help-message">
+        <div class="deposit-form__help-message-wrp">
+          <p class="deposit-form__help-message">
             {{ 'deposit-form.how-to' | globalize }}
           </p>
         </div>
 
-        <div class="deposit__asset-select-wrp">
+        <div class="deposit-form__asset-select-wrp">
           <div class="app__form-row">
             <div class="app__form-field">
               <select-field
@@ -29,9 +29,7 @@
               :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
               :asset="item"
               :balance-id="balanceId"
-              :wallet="wallet"
               :account-id="accountId"
-              :config="config"
               :key="item.code"
             />
           </template>
@@ -55,7 +53,7 @@
         <router-link
           :to="vueRoutes.assets"
           tag="button"
-          class="app__button-raised deposit__discover-asset-btn">
+          class="app__button-raised deposit-form__discover-asset-btn">
           {{ 'deposit-form.discover-assets-btn' | globalize }}
         </router-link>
       </template>
@@ -79,12 +77,9 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 
-import config from '@/config'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 import { CoinpaymentsDepositModule } from '@/vue/modules/coinpayments-deposit/module'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
-import { Sdk } from '@/sdk'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { vueRoutes } from '@/vue-router/routes'
 
@@ -96,14 +91,10 @@ export default {
     SubmoduleImporter,
   },
   mixins: [FormMixin],
-  props: {
-  },
+
   data () {
     return {
       CoinpaymentsDepositModule,
-      config: {
-        horizonURL: config.HORIZON_SERVER,
-      },
       isLoaded: false,
       isLoadingFailed: false,
       assets: [],
@@ -112,34 +103,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-      vuexTypes.account,
-      vuexTypes.wallet,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+      accountBalances: vuexTypes.accountBalances,
+    }),
     balanceId () {
-      return this.account.balances.find(item => {
-        return item.asset.id === this.selectedAsset.code
+      return this.accountBalances.find(item => {
+        return item.asset === this.selectedAsset.code
       }).id
     },
   },
-  watch: {
-    'selectedAsset.code' () {
-      // Transferred to the disabled state before receiving the address,
-      // in order to avoid a large number of requests
-      if (!this.selectedAsset.isCoinpayments) {
-        this.disableForm()
-      }
-    },
-  },
+
   async created () {
     try {
-      await this.loadAccount(this.accountId)
-      const { data: assets } = await Sdk.horizon.account
-        .getDetails(this.accountId)
-      this.assets = assets
-        .map(item => new AssetRecord(item.assetDetails))
+      await this.loadBalances()
+      this.assets = this.accountBalances
+        .map(item => item.assetDetails)
         .filter(item => item.isDepositable)
+
       if (this.assets.length) {
         this.selectedAsset = this.assets[0]
       }
@@ -149,29 +130,30 @@ export default {
       this.isLoadingFailed = true
     }
   },
+
   methods: {
     ...mapActions({
-      loadAccount: vuexTypes.LOAD_ACCOUNT,
+      loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@/scss/variables";
+@import '@/scss/variables';
 
-  .deposit__help-message {
-    font-size: 1.2rem;
-    opacity: 0.7;
-    line-height: 1.25;
-  }
+.deposit-form__help-message {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  line-height: 1.25;
+}
 
-  .deposit__discover-asset-btn {
-    margin-top: 2.5rem;
-  }
+.deposit-form__discover-asset-btn {
+  margin-top: 2.5rem;
+}
 
-  .deposit__help-message-wrp,
-  .deposit__asset-select-wrp {
-    margin-bottom: 2.5rem;
-  }
+.deposit-form__help-message-wrp,
+.deposit-form__asset-select-wrp {
+  margin-bottom: 2.5rem;
+}
 </style>

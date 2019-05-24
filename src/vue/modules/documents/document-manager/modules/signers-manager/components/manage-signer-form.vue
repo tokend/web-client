@@ -70,7 +70,7 @@ import { Bus as GlobalBus } from '@/js/helpers/event-bus'
 import { Bus as LocalBus } from '../event-bus'
 
 import { base } from '@tokend/js-sdk'
-import { api } from '../../../_api'
+import { api } from '@/api'
 import { required, email } from '@validators'
 
 import { Signer } from '../wrappers/signer'
@@ -167,7 +167,7 @@ export default {
             isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
           },
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-added-msg')
         this.$emit('close')
@@ -189,7 +189,7 @@ export default {
             isAllowedToUpdateMetadata: this.form.isAllowedToUpdateMetadata,
           },
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-updated-msg')
         this.$emit('close')
@@ -205,7 +205,7 @@ export default {
           publicKey: this.signerToManage.publicKey,
           source: this.sourceAccountId,
         })
-        await api().postOperations(operation)
+        await api.postOperations(operation)
         LocalBus.emitSignersUpdate()
         GlobalBus.success('document-manager.signer-deleted-msg')
         this.$emit('close')
@@ -219,5 +219,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/vue/forms/_app-form";
+@import '~@/vue/forms/_app-form';
 </style>

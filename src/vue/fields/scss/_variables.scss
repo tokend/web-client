@@ -5,6 +5,8 @@ $col-field-text-unfocused: $col-primary-inactive;
 $col-field-icon: $col-primary;
 $col-dropdown-bg: $_white;
 
+$z-index-select-field-list: 5;
+
 $field-color-background: $_thinBlue;
 $field-color-text: $col-field-text;
 $field-color-focused: $field-color-text;
@@ -16,38 +18,36 @@ $field-text-font-size: 1.8rem;
 $field-text-line-height: 1.25;
 $field-error-font-size: 1.2rem;
 $field-error-line-height: 1.25;
-$field-transition-duration: .2s;
-$field-error-margin-top: .4rem;
+$field-transition-duration: 0.2s;
+$field-error-margin-top: 0.4rem;
 $field-input-padding-top: 1.5rem;
-$field-input-padding-bottom: .6rem;
+$field-input-padding-bottom: 0.6rem;
 $field-input-padding: $field-input-padding-top 0 $field-input-padding-bottom 0;
 $field-placeholer-color: $col-field-text-unfocused;
 $textarea-background-color: #f9fafc;
 $file-field-background-color: $col-file-field-background;
 $file-field-border-color: $col-file-field-border;
 $file-field-note-color: $col-field-text-secondary;
-$col-select-field-hover: rgba($col-primary, .1);
+$file-field-drop-bg-color: $col-file-field-drop-bg;
+$col-select-field-hover: rgba($col-primary, 0.1);
 $col-tick-field-unfocused: $col-primary-lighten;
 
 @mixin input-paddings {
   font-size: $field-text-font-size;
   line-height: $field-text-line-height;
 }
-
 @mixin text-font-sizes {
   font-size: $field-text-font-size;
   line-height: $field-text-line-height;
 }
-
 @mixin label-font-sizes {
   font-size: $field-label-font-size;
   line-height: $field-label-line-height;
 }
-
 @mixin material-border($color-focused, $color-unfocused, $focused-selector:'') {
-  border-bottom: .1rem solid $color-unfocused;
-  background: radial-gradient($color-focused, $color-focused) bottom -.1rem center no-repeat;
-  background-size: 0 .2rem;
+  border-bottom: 0.1rem solid $color-unfocused;
+  background: radial-gradient($color-focused, $color-focused) bottom -0.1rem center no-repeat;
+  background-size: 0 0.2rem;
   -webkit-transition-property: background-size, border-color;
   -moz-transition-property: background-size, border-color;
   -ms-transition-property: background-size, border-color;
@@ -58,17 +58,22 @@ $col-tick-field-unfocused: $col-primary-lighten;
   @if $focused-selector != '' {
     #{$focused-selector},
     &:focus {
-      background-size: 100% .2rem;
+      background-size: 100% 0.2rem;
     }
-  } @else {
+  }
+
+  @else {
     &:focus {
-      background-size: 100% .2rem;
+      background-size: 100% 0.2rem;
     }
   }
 }
-
 @mixin readonly-material-border($color) {
-  border-bottom: .1rem dashed $color;
+  border-bottom: 0.1rem dashed $color;
   background: none;
 }
 
+@mixin placeholder {
+  color: $field-placeholer-color;
+  transition: opacity $field-transition-duration;
+}

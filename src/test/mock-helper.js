@@ -1,47 +1,19 @@
-import { MockWrapper } from './index'
-import { Sdk } from '../sdk'
-import { Api } from '../api'
+import { api } from '@/api'
 import { Wallet } from '@tokend/js-sdk'
 import mock from 'xhr-mock'
 
-let sdkInstance = null
 let apiInstance = null
+
+const HORIZON_URL = 'https://test.api.com'
 
 export class MockHelper {
   constructor () {
-    Sdk.initSync('https://test.api.com')
-    Api.init({
-      horizonURL: 'https://test.api.com',
-    })
-
-    sdkInstance = Sdk.getInstance()
-    apiInstance = Api.api
+    apiInstance = api
 
     mock.setup()
     mock.reset()
     this.defaultAccountId = 'GBLPOFIGESQI7LG4ILTYHOMYTA7FBLG6G76DMNGZJDJSIO7VM3Z4YZ2J'
     this.defaultBalanceId = 'BDPFDXJAL6UY53L52NNWPD7RTAO4EVZL55SWHNYVYJQ44BOEIQKL4FOJ'
-  }
-
-  mockHorizonMethod (resource, method, mock) {
-    this.mockMethod('horizon', resource, method, MockWrapper.makeHorizonResponse(mock))
-  }
-
-  mockApiMethod (resource, method, mock) {
-    this.mockMethod('api', resource, method, MockWrapper.makeApiResponse(mock))
-  }
-
-  mockMethod (server, resource, method, mock, conditionFunc) {
-    sinon.stub(sdkInstance[server][resource].constructor.prototype, method)
-      .resolves(mock)
-  }
-
-  getHorizonResourcePrototype (resource) {
-    return sdkInstance.horizon[resource].constructor.prototype
-  }
-
-  getApiResourcePrototype (resource) {
-    return sdkInstance.api[resource].constructor.prototype
   }
 
   getMockWallet ({ walletId, accountId } = {}) {
@@ -53,13 +25,8 @@ export class MockHelper {
     )
   }
 
-  useMockWallet ({ walletId, accountId } = {}) {
-    sdkInstance.useWallet(this.getMockWallet({ walletId, accountId }))
-    apiInstance.useWallet(this.getMockWallet({ walletId, accountId }))
-  }
-
   mockEndpoint (endpoint, response) {
-    const url = `https://test.api.com${endpoint}`
+    const url = `${HORIZON_URL}${endpoint}`
       .replace('@', '%40') // FIXME sorry
 
     mock.get(url, {

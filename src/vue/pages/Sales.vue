@@ -3,19 +3,15 @@
     <top-bar>
       <template slot="main">
         <router-link
-          :to="{
-            name: vueRoutes.allSales.name,
-          }"
+          :to="vueRoutes.investableSales"
         >
           <span>
-            {{ 'sales.all-sales' | globalize }}
+            {{ 'sales.investable-sales' | globalize }}
           </span>
         </router-link>
 
         <router-link
-          :to="{
-            name: vueRoutes.userOwnedSales.name,
-          }"
+          :to="vueRoutes.userOwnedSales"
         >
           <span>
             {{ 'sales.my-sales' | globalize }}
@@ -24,7 +20,7 @@
       </template>
 
       <template
-        v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)"
+        v-if="getModule().canRenderSubmodule(CreateSaleFormModule)"
         slot="extra"
       >
         <button
@@ -52,21 +48,28 @@
       </template>
     </top-bar>
 
-    <template v-if="getModule().canRenderSubmodule(CreateSalePseudoModule)">
+    <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
       <drawer
-        :is-shown.sync="isCreateSaleDrawerShown"
+        :is-shown.sync="isAssetSaleDrawerShown"
         :close-by-click-outside="false"
       >
         <template slot="heading">
           {{ 'sales.create-sale' | globalize }}
         </template>
-        <create-sale-form @close="isCreateSaleDrawerShown = false" />
+        <submodule-importer
+          :submodule="getModule().getSubmodule(CreateOpportunityModule)"
+          @close="isAssetSaleDrawerShown = false"
+          :account-id="accountId"
+          :min-amount="MIN_AMOUNT"
+          :max-amount="MAX_AMOUNT"
+          :decimal-pints="DECIMAL_POINTS"
+        />
       </drawer>
     </template>
 
-    <template v-if="getModule().canRenderSubmodule(CreateOpportunityModule)">
+    <template v-if="getModule().canRenderSubmodule(CreateSaleFormModule)">
       <drawer
-        :is-shown.sync="isAssetSaleDrawerShown"
+        :is-shown.sync="isCreateSaleDrawerShown"
         :close-by-click-outside="false"
         class="sales__drawer"
       >
@@ -74,14 +77,8 @@
           {{ 'sales.new-sale' | globalize }}
         </template>
         <submodule-importer
-          :submodule="getModule().getSubmodule(CreateOpportunityModule)"
-          @close="isAssetSaleDrawerShown = false"
-          :config="config"
-          :wallet="wallet"
-          :account-id="accountId"
-          :min-amount="MIN_AMOUNT"
-          :max-amount="MAX_AMOUNT"
-          :decimal-pints="DECIMAL_POINTS"
+          :submodule="getModule().getSubmodule(CreateSaleFormModule)"
+          @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
     </template>
@@ -99,8 +96,7 @@ import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
 
-import { CreateSalePseudoModule } from '@/modules-arch/pseudo-modules/create-sale-pseudo-module.js'
-import CreateSaleForm from '@/vue/forms/CreateSaleForm'
+import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
@@ -110,7 +106,6 @@ export default {
   components: {
     TopBar,
     Drawer,
-    CreateSaleForm,
     SubmoduleImporter,
   },
 
@@ -121,10 +116,7 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
-    CreateSalePseudoModule,
+    CreateSaleFormModule,
     vueRoutes,
     CreateOpportunityModule,
   }),
@@ -132,15 +124,14 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      wallet: vuexTypes.wallet,
     }),
   },
 }
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 /*
  * TODO: break this section down. children modules should know anything
@@ -151,6 +142,7 @@ export default {
   display: flex;
   font-size: 1.8rem;
   margin-right: 0.5rem;
+  margin-top: -0.4rem;
 }
 
 .sales__asset-filter {
@@ -179,11 +171,9 @@ export default {
   @include respond-to($large) {
     flex: 0 1 calc(33.3% - 2rem);
   }
-
   @include respond-to($x-medium) {
     flex: 0 1 calc(50% - 2rem);
   }
-
   @include respond-to($x-small) {
     flex: 0 1 calc(100% - 2rem);
   }
@@ -191,11 +181,5 @@ export default {
 
 .sales__loader {
   margin-top: 1rem;
-}
-
-.sales__drawer {
-  & .drawer__pane{
-    width: 50%;
-  }
 }
 </style>

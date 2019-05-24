@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import TimeoutTicker from './timeout-ticker'
+import TimeoutTicker from '@/vue/common/TimeoutTicker'
 import KeyViewer from '@/vue/common/KeyViewer'
 
 const EVENTS = {
@@ -63,44 +63,46 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '~@scss/variables';
+@import '~@scss/variables';
 
-  .pending-issuances-table-row {
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-      td {
-        padding: 0.5rem 1rem;
-      }
-    }
+.pending-issuances-table-row {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
 
-  .pending-issuances-table-row__tr{
-    &:hover{
-      background: $col-table-row-selected;
-    }
+.pending-issuances-table-row td {
+  padding: 0.5rem 1rem;
+}
+
+.pending-issuances-table-row__tr {
+  &:hover {
+    background: $col-table-row-selected;
   }
+}
 
-  .pending-issuances-table-row__amount {
-    max-width: 24rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: right;
-  }
+.pending-issuances-table-row__amount {
+  max-width: 24rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
 
-  .pending-issuances-table-row__key-viewer {
-    padding: 2rem 0;
-  }
+.pending-issuances-table-row__key-viewer {
+  padding: 2rem 0;
+}
 
-  .pending-issuances-table-row__btn {
-    width: 6.4rem;
-  }
+.pending-issuances-table-row__btn {
+  width: 6.4rem;
+}
 
-  .pending-issuances-table-row__key-viewer-wrp {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    td {
-      padding: 0.5rem 0;
-    }
-  }
+.pending-issuances-table-row__key-viewer-wrp {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.pending-issuances-table-row__key-viewer-wrp td {
+  padding: 0.5rem 0;
+}
 </style>

@@ -25,8 +25,8 @@
           {{ 'security-page.account-id-title' | globalize }}
         </template>
         <key-viewer
-          :value="wallet.accountId"
-          :label="'security-page.account-address-label' | globalize"
+          :value="accountId"
+          :label="'security-page.account-id-label' | globalize"
         />
       </template>
 
@@ -39,8 +39,23 @@
             {{ 'security-page.secret-seed-desc' | globalize }}
           </p>
           <clipboard-field
-            :value="wallet.secretSeed"
+            :value="walletSeed"
             :label="'security-page.secret-seed-title' | globalize"
+          />
+        </div>
+      </template>
+
+      <template v-else-if="viewMode === VIEW_MODES.viewNetworkPassphrase">
+        <template slot="heading">
+          {{ 'security-page.network-passphrase-title' | globalize }}
+        </template>
+        <div class="network-passphrase">
+          <p class="network-passphrase__description">
+            {{ 'security-page.network-passphrase-desc' | globalize }}
+          </p>
+          <clipboard-field
+            :value="api.networkDetails.networkPassphrase"
+            :label="'security-page.network-passphrase-title' | globalize"
           />
         </div>
       </template>
@@ -98,6 +113,21 @@
           {{ 'security-page.view-secret-seed-btn' | globalize }}
         </a>
       </div>
+      <hr>
+    </template>
+    <template
+      v-if="getModule().canRenderSubmodule(ShowNetworkPassphrasePseudoModule)">
+      <div class="security-page__row">
+        <p class="security-page__row-title">
+          {{ 'security-page.network-passphrase-title' | globalize }}
+        </p>
+        <a
+          class="security-page__row-action"
+          @click="showDrawer(VIEW_MODES.viewNetworkPassphrase)"
+        >
+          {{ 'security-page.view-network-passphrase-btn' | globalize }}
+        </a>
+      </div>
     </template>
   </div>
 </template>
@@ -114,18 +144,21 @@ import TfaForm from '@/vue/forms/TfaForm'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { api } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 
 import { ShowAccountIdPseudoModule } from '@/modules-arch/pseudo-modules/show-account-id-pseudo-module'
 import { ShowSeedPseudoModule } from '@/modules-arch/pseudo-modules/show-seed-pseudo-module'
 import { ChangePasswordPseudoModule } from '@/modules-arch/pseudo-modules/change-password-pseudo-module'
+import { ShowNetworkPassphrasePseudoModule } from '@/modules-arch/pseudo-modules/show-network-passphrase-pseudo-module'
 
 const VIEW_MODES = {
   enableTfa: 'enableTfa',
   changePassword: 'changePassword',
   viewAccountId: 'viewAccountId',
   viewSecretSeed: 'viewSecretSeed',
+  viewNetworkPassphrase: 'viewNetworkPassphrase',
   default: '',
 }
 
@@ -146,11 +179,14 @@ export default {
     ShowAccountIdPseudoModule,
     ShowSeedPseudoModule,
     ChangePasswordPseudoModule,
+    ShowNetworkPassphrasePseudoModule,
+    api,
   }),
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletSeed: vuexTypes.walletSeed,
+      accountId: vuexTypes.accountId,
       isTotpEnabled: vuexTypes.isTotpEnabled,
     }),
   },
@@ -184,39 +220,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .security-page {
   background: $col-block-bg;
+
   @include box-shadow();
-
-  .security-page__row {
-    padding: 2.4rem;
-    height: 7.4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .security-page__row-title {
-      font-size: 1.8rem;
-      color: $col-text;
-    }
-
-    .security-page__row-action {
-      font-size: 1.3rem;
-      cursor: pointer;
-      color: $col-link;
-    }
-  }
-
-  hr {
-    margin: 0 2.4rem;
-    border: $col-block-line solid 0.05rem;
-  }
 }
 
-.secret-seed__description {
+.security-page hr {
+  margin: 0 2.4rem;
+  border: $col-block-line solid 0.05rem;
+}
+
+.security-page__row {
+  padding: 2.4rem;
+  height: 7.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.security-page__row-title {
+  font-size: 1.8rem;
+  color: $col-text;
+}
+
+.security-page__row-action {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: $col-link;
+}
+
+.secret-seed__description,
+.network-passphrase__description {
   font-size: 1.2rem;
   line-height: 1.25;
   color: $col-text-secondary;

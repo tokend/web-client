@@ -21,8 +21,6 @@
         v-if="asset.code && getModule().canRenderSubmodule(FeesModule)"
         :submodule="getModule().getSubmodule(FeesModule)"
         :asset-code="asset.code"
-        :wallet="wallet"
-        :config="config"
       />
     </template>
 
@@ -61,8 +59,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 import { FeesModule } from '@/vue/modules/fees/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
-import config from '@/config'
-
 export default {
   name: 'fees-page',
   components: {
@@ -78,16 +74,12 @@ export default {
     isLoadingFailed: false,
     assets: [],
     asset: {},
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-    },
     FeesModule,
   }),
 
   computed: {
     ...mapGetters({
       balances: vuexTypes.accountBalances,
-      wallet: vuexTypes.wallet,
     }),
   },
 
@@ -133,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .fees-page {
   width: 100%;

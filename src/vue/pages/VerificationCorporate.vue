@@ -6,7 +6,7 @@
 
     <form
       novalidate
-      class="app-form"
+      class="app-form verification-corporate-form__tag"
       @submit.prevent="isFormValid() && showConfirmation()"
     >
       <div class="app__form-row">
@@ -43,7 +43,7 @@
             v-model="form.avatar"
             name="verification-corporate-avatar"
             :note="'verification-form.image-type-note' | globalize"
-            accept="image/*"
+            :file-extensions="['jpg', 'png']"
             :document-type="DOCUMENT_TYPES.kycAvatar"
             :label="'verification-form.avatar-lbl' | globalize"
             :disabled="formMixin.isDisabled"
@@ -113,7 +113,8 @@
       <div class="app__form-actions">
         <form-confirmation
           v-if="formMixin.isConfirmationShown"
-          @ok="hideConfirmation() || submit()"
+          :is-pending="isFormSubmitting"
+          @ok="submit"
           @cancel="hideConfirmation"
         />
         <button
@@ -123,7 +124,10 @@
           class="verification-corporate-form__submit-btn app__button-raised"
           :disabled="formMixin.isDisabled"
         >
-          {{ 'verification-form.submit-btn' | globalize }}
+          {{ (isUpdatableKycRequest
+            ? 'verification-form.update-btn'
+            : 'verification-form.create-btn'
+          ) | globalize }}
         </button>
       </div>
     </form>
@@ -134,7 +138,7 @@
 import VerificationFormMixin from '@/vue/mixins/verification-form.mixin'
 import _get from 'lodash/get'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { REQUEST_STATES_STR } from '@/js/const/request-states.const'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
@@ -174,6 +178,7 @@ export default {
       teamSize: '0',
       website: '',
     },
+    isFormSubmitting: false,
     MIN_TEAM_SIZE,
     DOCUMENT_TYPES,
   }),
@@ -203,11 +208,6 @@ export default {
       accountRoleToSet: vuexTypes.kycAccountRoleToSet,
       previousAccountRole: vuexTypes.kycPreviousRequestAccountRoleToSet,
     }),
-    isFormDisabled () {
-      return !this.isAccountRoleReseted && this.kycState &&
-        this.kycState !== REQUEST_STATES_STR.rejected &&
-        this.kycState !== REQUEST_STATES_STR.permanentlyRejected
-    },
     isFormPopulatable () {
       return this.isAccountRoleReseted
         ? this.previousAccountRole === this.kvEntryCorporateRoleId
@@ -218,10 +218,6 @@ export default {
   created () {
     if (this.isFormPopulatable) {
       this.form = this.parseKycData(this.kycLatestData)
-
-      if (this.isFormDisabled) {
-        this.disableForm()
-      }
     }
   },
 
@@ -229,6 +225,7 @@ export default {
     async submit () {
       if (!this.isFormValid()) return
       this.disableForm()
+      this.isFormSubmitting = true
       try {
         await this.uploadAvatar()
         const kycBlobId = await this.createKycBlob(BLOB_TYPES.kycCorporate)
@@ -236,16 +233,18 @@ export default {
           kycBlobId,
           this.kvEntryCorporateRoleId
         )
-        await Api.api.postOperations(operation)
+        await api.postOperations(operation)
         do {
           await this.loadKyc()
           await this.delay(3000)
         } while (this.kycState !== REQUEST_STATES_STR.pending)
         Bus.success('verification-form.request-submitted-msg')
       } catch (e) {
-        this.enableForm()
         ErrorHandler.process(e)
       }
+      this.isFormSubmitting = false
+      this.hideConfirmation()
+      this.enableForm()
     },
 
     delay (ms) {
@@ -258,7 +257,9 @@ export default {
     async uploadAvatar () {
       let document = this.form.avatar
       if (document && !document.key) {
-        document = await DocumentUploader.uploadSingleDocument(document)
+        document = await DocumentUploader.uploadSingleDocument(
+          document, this.accountId
+        )
       }
     },
 
@@ -302,6 +303,14 @@ export default {
   margin-top: 4rem;
 }
 
+.verification-corporate-form__tag {
+  margin-top: 1rem;
+  background-color: $col-block-bg;
+  padding: 2.4rem;
+
+  @include box-shadow();
+}
+
 .verification-corporate-form__submit-btn {
   margin-right: auto;
   width: 100%;
@@ -311,15 +320,5 @@ export default {
 .verification-corporate-form__account-info-title {
   color: $col-primary;
   font-size: 1.3rem;
-}
-
-.verification-corporate-form {
-  form {
-    margin-top: 1rem;
-    background-color: $col-block-bg;
-    padding: 2.4rem;
-
-    @include box-shadow();
-  }
 }
 </style>

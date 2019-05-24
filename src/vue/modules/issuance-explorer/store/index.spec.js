@@ -1,11 +1,9 @@
 import { mutations, getters, actions } from './index'
 import { types } from './types'
 
-import { Wallet } from '@tokend/js-sdk'
-
 import { IssuanceRequest } from '../wrappers/issuance'
 
-import * as Api from '../_api'
+import { api } from '@/api'
 
 describe('issuance-explorer.module', () => {
   const accountId = 'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ'
@@ -21,18 +19,6 @@ describe('issuance-explorer.module', () => {
   ]
 
   describe('mutations', () => {
-    it('SET_ACCOUNT_ID should properly modify state', () => {
-      const state = {
-        accountId: '',
-      }
-
-      mutations[types.SET_ACCOUNT_ID](state, accountId)
-
-      expect(state).to.deep.equal({
-        accountId,
-      })
-    })
-
     it('SET_ISSUANCES should properly modify state', () => {
       const state = {
         issuances: [],
@@ -59,22 +45,8 @@ describe('issuance-explorer.module', () => {
   })
 
   describe('actions', () => {
-    const wallet = new Wallet(
-      'test@mail.com',
-      'SCPIPHBIMPBMGN65SDGCLMRN6XYGEV7WD44AIDO7HGEYJUNDKNKEGVYE',
-      'GDIU5OQPAFPNBP75FQKMJTWSUKHTQTBTHXZWIZQR4DG4QRVJFPML6TTJ',
-      '4aadcd4eb44bb845d828c45dbd68d5d1196c3a182b08cd22f05c56fcf15b153c'
-    )
-    const config = {
-      horizonURL: 'https://test.api.com',
-    }
-
-    beforeEach(() => {
-      Api.initApi(wallet, config)
-    })
-
     describe('LOAD_ISSUANCES', () => {
-      it('calls Api.getWithSignature method with provided params', async () => {
+      it('calls api.getWithSignature method with provided params', async () => {
         const expectedParams = {
           page: {
             order: 'desc',
@@ -85,29 +57,22 @@ describe('issuance-explorer.module', () => {
           include: ['request_details'],
         }
 
-        sinon.stub(Api.api(), 'getWithSignature').resolves()
+        sinon.stub(api, 'getWithSignature').resolves()
 
-        await actions[types.LOAD_ISSUANCES]({ getters: { accountId } })
+        await actions[types.LOAD_ISSUANCES]({ rootGetters: { accountId } })
 
-        expect(Api.api().getWithSignature)
+        expect(api.getWithSignature)
           .to.have.been.calledOnceWithExactly(
             '/v3/create_issuance_requests',
             expectedParams
           )
 
-        Api.api().getWithSignature.restore()
+        api.getWithSignature.restore()
       })
     })
   })
 
   describe('getters', () => {
-    it('accountId', () => {
-      const state = { accountId }
-
-      expect(getters[types.accountId](state))
-        .to.equal(accountId)
-    })
-
     it('issuances', () => {
       const state = { issuances }
 

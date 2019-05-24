@@ -90,7 +90,6 @@ import LimitsForm from '@/vue/forms/LimitsForm'
 import LimitsTableRenderer from '@/vue/pages/Limits/Limits.TableRenderer'
 import LimitsRequestsListRenderer from '@/vue/pages/Limits/Limits.RequestsListRenderer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import { Sdk } from '@/sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import { vueRoutes } from '@/vue-router/routes'
@@ -100,6 +99,7 @@ import { LimitsRecord } from '@/js/records/entities/limits.record'
 import { LimitsUpdateRequestRecord } from '@/js/records/requests/limits-update.record'
 import config from '@/config'
 import CollectionLoader from '@/vue/common/CollectionLoader'
+import { api } from '@/api'
 
 export default {
   name: 'limits',
@@ -169,9 +169,11 @@ export default {
       this.isLimitsLoading = true
       this.isLimitsLoadingFailed = false
       try {
-        const response = await Sdk.horizon.account.getLimits(this.accountId)
-
-        this.formatLimits({ limits: response.data.limits })
+        const endpoint = `/v3/accounts/${this.accountId}`
+        const { data: account } = await api.getWithSignature(endpoint, {
+          include: ['limits'],
+        })
+        this.formatLimits(account.limits)
       } catch (error) {
         this.isLimitsLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -183,11 +185,11 @@ export default {
       this.isLimitsRequestsLoadingFailed = false
       let response = {}
       try {
-        response = await Sdk.horizon.request
-          .getAllForLimitsUpdates({
-            ...this.limitsRequestsQueries,
-            requestor: this.accountId,
-          })
+        response = await api.getWithSignature('/v3/update_limits_requests', {
+          filter: { requestor: this.accountId },
+          page: { ...this.limitsRequestsQueries },
+          include: ['request_details'],
+        })
       } catch (error) {
         this.isLimitsRequestsLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -206,14 +208,14 @@ export default {
           new LimitsUpdateRequestRecord(item)
         ))
     },
-    formatLimits ({ limits }) {
+    formatLimits (limits) {
       const formattedLimits = {}
       this.accountBalancesAssetsCodes.forEach(assetCode => {
         if (!limits) limits = []
         formattedLimits[assetCode] = limits
-          .filter(item => item.limit.assetCode === assetCode)
+          .filter(item => item.asset.id === assetCode)
           .reduce((acc, item) => {
-            switch (item.limit.statsOpType) {
+            switch (item.statsOpType) {
               case STATS_OPERATION_TYPES.paymentOut:
                 return { ...acc, payment: new LimitsRecord(item) }
               case STATS_OPERATION_TYPES.withdraw:
@@ -270,8 +272,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 .limits {
   width: 100%;
@@ -289,11 +291,11 @@ export default {
 .limits__subheading {
   color: $col-text-page-heading;
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-top: 3.2rem;
   margin-bottom: 1.6rem;
 
-  @include respond-to(medium) { margin-top: 2.4rem }
+  @include respond-to(medium) { margin-top: 2.4rem; }
 }
 
 .limits__requests-collection-loader {

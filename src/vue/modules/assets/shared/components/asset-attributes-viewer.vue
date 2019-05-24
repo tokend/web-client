@@ -3,7 +3,6 @@
     <div class="asset-attributes-viewer__header">
       <logo-viewer
         :asset="asset"
-        :storage-url="storageUrl"
         :dark-mode="true"
       />
 
@@ -29,15 +28,26 @@
           </tr>
           <tr>
             <td>{{ 'assets.maximum-title' | globalize }}</td>
-            <td>{{ asset.maxIssuanceAmount | formatMoney }}</td>
+            <td>
+              {{
+                { value: asset.maxIssuanceAmount, currency: asset.code } |
+                  formatMoney
+              }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'assets.issued-title' | globalize }}</td>
-            <td>{{ asset.issued | formatMoney }}</td>
+            <td>
+              {{ { value: asset.issued, currency: asset.code } | formatMoney }}
+            </td>
           </tr>
           <tr>
             <td>{{ 'assets.available-title' | globalize }}</td>
-            <td>{{ asset.availableForIssuance | formatMoney }}</td>
+            <td>
+              {{ { value: asset.availableForIssuance, currency: asset.code } |
+                formatMoney
+              }}
+            </td>
           </tr>
           <tr>
             <td>
@@ -69,36 +79,44 @@
           </tr>
           <tr>
             <td>
-              {{ 'assets.verification-required-title' | globalize }}
+              {{ 'assets.deposit-method-title' | globalize }}
             </td>
             <td>
-              <template v-if="asset.type === kycRequiredAssetType">
-                {{ 'assets.present-msg' | globalize }}
+              <template v-if="asset.isCoinpayments">
+                {{ 'assets.coinpayments-msg' | globalize }}
+              </template>
+
+              <template v-else-if="asset.externalSystemType">
+                {{ 'assets.default-msg' | globalize }}
               </template>
 
               <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
+                {{ 'assets.non-depositable-msg' | globalize }}
               </template>
             </td>
           </tr>
           <tr>
             <td>
-              {{ 'assets.security-asset-title' | globalize }}
+              {{ 'assets.asset-type' | globalize }}
             </td>
             <td>
-              <template v-if="asset.type === securityAssetType">
-                {{ 'assets.present-msg' | globalize }}
+              <template v-if="asset.type === kycRequiredAssetType">
+                {{ 'assets.verification-required-title' | globalize }}
+              </template>
+
+              <template v-else-if="asset.type === securityAssetType">
+                {{ 'assets.security-asset-title' | globalize }}
               </template>
 
               <template v-else>
-                {{ 'assets.absent-msg' | globalize }}
+                {{ 'assets.does-not-require-verification-title' | globalize }}
               </template>
             </td>
           </tr>
           <tr>
             <td>{{ 'assets.terms-title' | globalize }}</td>
             <td>
-              <terms-viewer :asset="asset" :storage-url="storageUrl" />
+              <terms-viewer :asset="asset" />
             </td>
           </tr>
           <tr>
@@ -132,7 +150,6 @@ export default {
   },
   props: {
     asset: { type: Asset, required: true },
-    storageUrl: { type: String, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
   },
@@ -140,8 +157,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
 $media-xsmall-height: 375px;
 $media-small-height: 460px;
@@ -149,17 +166,16 @@ $media-small-height: 460px;
 .asset-attributes-viewer__table-wrp {
   margin-top: 4rem;
 
-  table tr td:last-child {
-    text-align: right;
-  }
-
   @include respond-to-height($media-small-height) {
     margin-top: 2.4rem;
   }
-
   @include respond-to-height($media-xsmall-height) {
     margin-top: 0.8rem;
   }
+}
+
+.asset-attributes-viewer__table-wrp table tr td:last-child {
+  text-align: right;
 }
 
 .asset-attributes-viewer__header {
@@ -170,7 +186,7 @@ $media-small-height: 460px;
 .asset-attributes-viewer__logo {
   width: 5rem;
   height: 5rem;
-  border-radius: 50%
+  border-radius: 50%;
 }
 
 .asset-attributes-viewer__info {
@@ -179,12 +195,12 @@ $media-small-height: 460px;
 
 .asset-attributes-viewer__code {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 700;
   color: $col-primary;
 }
 
 .asset-attributes-viewer__name {
-  margin-top: .1rem;
+  margin-top: 0.1rem;
   font-size: 1.4rem;
   line-height: 1.29;
   color: $col-primary;

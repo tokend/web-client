@@ -68,8 +68,8 @@
       "field-error_maxValue": "Value should be less than {{maxValue, number}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
-      "field-error_minDate": "Date should be after {{ minDate }}",
-      "field-error_maxDate": "Date should be before {{ maxDate }}",
+      "field-error_minDate": "Date should be after {{ minDate, date }}",
+      "field-error_maxDate": "Date should be before {{ maxDate, date }}",
       "field-error_emailOrAccountId": "This field should be a valid email or account ID",
       "field-error_maxDecimalPoints": "Only {{quantity}} digits after point are allowed",
       "field-error_noMoreThanAvailableOnBalance": "Insufficient balance. You have {{available, number}}",
@@ -83,7 +83,8 @@
       "field-error_cardCVV3": "Make sure the CVV3 is correct",
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
-      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}"
+      "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
+      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -102,7 +103,8 @@
       "user-exists": "User with such email already exists",
       "transaction": "The transaction you sent is invalid",
       "account-blocked": "Your account is blocked",
-      "user-doesnt-exist": "This user doesn't exist in system"
+      "user-doesnt-exist": "This user doesn't exist in system",
+      "balance-not-found": "The user does not have this asset balance yet"
     },
     "transaction-errors": {
       "tx_failed": "Transaction failed",
@@ -121,7 +123,7 @@
       "tx_fee_incorrect_precision": "Cannot charge the fee for the transaction. The fee is charged with a non-divisible asset, and the total calculated amount of the fee would cause this asset to split",
       "tx_no_role_permission": "Source account does not have rule which allows him send transaction, or such rule forbid to do this",
       "op_inner": "Op inner",
-      "op_bad_auth": "You dont have permission to complete this action",
+      "op_bad_auth": "You don’t have permission to complete this action",
       "op_no_account": "Target account does not exist",
       "op_no_entry": "There is no entry which is tried to get by specified id in operation",
       "op_not_supported": "Such operation currently is not supported",
@@ -169,8 +171,8 @@
       "op_src_balance_not_found": "Source balance not found",
       "op_reference_duplication": "You cannot make two issuances with the same reference",
       "op_stats_overflow": "Overflow during statistics calculation",
-      "op_limits_exceeded": "Limits exceeded",
-      "op_not_allowed_by_asset_policy": "This action is not allowed by asset policy",
+      "op_limits_exceeded": "The operation exceeds limits set to your account. Check \"Limits\" page for your current limits.",
+      "op_not_allowed_by_asset_policy": "This action is not allowed by token policy",
       "op_already_exists": "Entry already exists",
       "op_invalid_asset": "Invalid asset",
       "op_invalid_action": "Invalid action",
@@ -442,12 +444,15 @@
       "view-account-id-btn": "View Account ID",
       "secret-seed-title": "Secret seed",
       "view-secret-seed-btn": "View secret seed",
-      "account-address-label": "Account address",
-      "secret-seed-desc": "Secret seed is private information that proves you own your account."
+      "secret-seed-desc": "Secret seed is private information that proves you own your account.",
+      "network-passphrase-title": "Network passphrase",
+      "view-network-passphrase-btn": "View network passphrase",
+      "network-passphrase-desc": "Network passphrase is a sequence of words or other text used to control access to a system",
+      "account-id-label": "Account ID"
     },
     "tfa-form": {
       "password-lbl": "Current password",
-      "qr-desc": "Scan the QR with your 2FA app",
+      "qr-desc": "Scan the QR with your 2FA app. We recommend Google Authenticator for most users. It doesn’t require an internet connection or phone service to use, and is more secure than SMS due to being offline and local to your device.",
       "code-lbl": "2FA code",
       "secret-code-desc": "Or manually set the secret code",
       "tfa-code-desc": "And enter your 2FA code to continue",
@@ -501,8 +506,8 @@
     "general-form": {
       "address-postal-code-lbl'": "Postal code",
       "documents-lbl": "Documents",
-      "id-document-face-lbl": "Idenity document (face side)",
-      "id-document-back-lbl": "Idenity document (back side)",
+      "id-document-face-lbl": "Identity document (face side)",
+      "id-document-back-lbl": "Identity document (back side)",
       "address-details-lbl": "Address details",
       "date-of-birth-lbl": "Date of birth",
       "address-line-1-lbl": "Line 1",
@@ -522,8 +527,8 @@
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
       "avatar-lbl": "Avatar",
-      "image-type-note": "image (Max 5mb)",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -536,15 +541,16 @@
     },
     "verification-form": {
       "account-information-lbl": "Account information",
-      "submit-btn": "Submit",
+      "create-btn": "Create request",
+      "update-btn": "Update",
       "personal-details-lbl": "Personal details",
       "photo-verification-lbl": "Photo verification",
       "first-name-lbl": "First name",
       "last-name-lbl": "Last name",
       "avatar-lbl": "Avatar",
       "id-document-lbl": "ID document",
-      "image-type-note": "image (Max 5mb)",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "image-type-note": "image (Max 32mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "verification-code-btn": "Show the key",
       "photo-explanation-msg": "To be sure it's you who submits the documents, please make a photo with a unique generated key",
       "photo-lbl": "Selfie with verification code",
@@ -560,7 +566,7 @@
       "caps-lock-warning": "Warning: Caps-Lock is ON"
     },
     "limits-documents-uploader-form": {
-      "file-type-note": "image/pdf (Max 5mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "form-subheading": "Requirements",
       "document-type-lbl": "Document type",
       "note-lbl": "Note",
@@ -713,7 +719,9 @@
       "account-blocked": "Blocked account",
       "signed-in-as": "Signed in as",
       "settings-btn": "Settings",
-      "sign-out-btn": "Sign out"
+      "sign-out-btn": "Sign out",
+      "balances-subheading": "Balances",
+      "show-more-link": "Show more"
     },
     "sidebar": {
       "section-explore": "Explorations",
@@ -868,7 +876,8 @@
         "manage-asset-pair": "Pair updated",
         "manage-offer": "Offer",
         "payment": "Payment",
-        "unknown": "Unknown type"
+        "unknown": "Unknown type",
+        "investment": "Investment"
       },
       "type-th": "Type",
       "amount-th": "Amount",
@@ -877,8 +886,9 @@
       "initializing-msg": "Initializing…",
       "movements-load-failed-msg": "Failed to load account movements. Please try again later",
       "loading-movements-msg": "Please wait while we loading your movements",
+      "latest-activity": "Latest activity",
       "no-movements-title": "No movements history",
-      "no-movements-msg": "Nothing happened with your balances yet",
+      "no-movements-msg": "No items here yet",
       "type-lbl": "Type",
       "operation-lbl": "Operation",
       "date-lbl": "Date",
@@ -936,7 +946,8 @@
       "activity": "Movements",
       "date": "Date",
       "transaction-type": "Transaction type",
-      "create-issuance-lbl": "Create issuance request",
+      "create-issuance-btn": "Create issuance",
+      "create-issuance-title": "New issuance",
       "send-asset-lbl": "Send {{asset}}",
       "asset": "Asset",
       "amount": "Amount",
@@ -989,20 +1000,21 @@
     },
     "issuance-page": {
       "history-title": "History",
-      "create-issuance": "Create issuance request",
+      "create-issuance-btn": "Create issuance",
+      "create-issuance-title": "New issuance",
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
-      "loading-msg": "Loading…",
+      "loading-msg": "Loading your assets…",
+      "load-failed-msg": "There was an error while loading your assets. Please, try again later",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "reference-lbl": "Reference",
-      "available-for-issuance-hint": "Available for issuance: {{value, money}}",
+      "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "receiver-lbl": "Email or account ID",
       "issue-btn": "Issue",
-      "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
-      "not-available": "Issuance creation is available only for corporate users, complete verification to become one",
-      "balance-required-err": "The receiver doesn't have this asset balance",
+      "no-owned-assets-title": "No owned assets yet",
+      "no-owned-assets-msg": "Please create an asset to make an issuance",
       "assets-issued-msg": "Your assets were successfully issued"
     },
     "pre-issuance-form": {
@@ -1013,9 +1025,11 @@
       "pre-issuance-lbl": "Select file(s) with pre-issued asset. You cannot upload the same pre-issuance twice.",
       "file-type-note": "Pre-issuance asset file (.iss)",
       "no-owned-assets-msg": "Your wallet doesn't contain any issuable assets yet. Please create some and get back",
-      "pre-issuance-not-allowed-err": "You cannot upload the asset that is not owned by you",
+      "asset-not-owned-err": "You cannot upload the asset that is not owned by you",
+      "file-corrupted-err": "Your file is corrupted. Please, try to upload another one",
       "pre-issuance-details-title": "Pre-issuance info",
-      "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded"
+      "pre-issuance-uploaded-msg": "Pre-issuance request was successfully uploaded",
+      "pre-issuance-guide-link": "Learn more about pre-issuance"
     },
     "issuance-explorer": {
       "table": {
@@ -1069,7 +1083,8 @@
       "preissued-amount-lbl": "Initial pre-issued amount",
       "terms-lbl": "Upload terms",
       "terms-note": "JPG, PNG, PDF, max 5 mb.",
-      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval",
+      "pre-issuance-guide-link": "Learn more about pre-issuance"
     },
     "update-asset-form": {
       "loading-msg": "Loading…",
@@ -1277,9 +1292,16 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "deposit-method-title": "Deposit method",
       "requires-kyc-title": "Requires KYC",
       "present-msg": "Yes",
       "absent-msg": "No",
+      "default-msg": "Default",
+      "coinpayments-msg": "Coinpayments",
+      "non-depositable-msg": "Non-depositable",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
+      "security-asset-title": "Is security (requires accreditation for US residents)",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "no-terms-msg": "No terms",
@@ -1293,11 +1315,16 @@
       "verification-required-err": "You need to verify your account to add this asset to your balances"
     },
     "file-field": {
-      "title": "Drop a file here or click to browse",
+      "upload-file-title": "Drag a file here or click to browse",
+      "upload-another-file-title": "Drag another file here or click to browse",
+      "no-file-selected-title": "No file selected",
+      "reset-btn-hint": "Remove file",
+      "drop-file-title": "Drop the file here",
       "selected-file": "Selected file: {{name}}",
       "file-corrupted-err": "Your file is corrupted",
-      "max-size-exceeded-err": "You cannot upload a file exceeding maximum file size",
-      "file-not-uploaded-err": "A file was not uploaded",
+      "max-size-exceeded-err": "You cannot upload a file exceeding {{maxSize}} MB",
+      "incorrect-file-type-err": "You cannot upload a {{type}} file. Allowed types: {{allowedTypes}}",
+      "invalid-dimensions-err": "You cannot upload an image with dimensions less than {{minWidth}}x{{minHeight}}",
       "disabled-msg": "This field is disabled"
     },
     "sales": {
@@ -1312,7 +1339,7 @@
       "sale-upcoming-state": "Upcoming only",
       "sale-all-state": "All",
       "new-sale": "New sale",
-      "all-sales": "All sales",
+      "investable-sales": "Investable sales",
       "my-sales": "My sales"
     },
     "sale-card": {
@@ -1347,13 +1374,13 @@
       "no-data-message": "Here will be the list of open orders for {{base}}/{{quote}} pair",
       "buy-lbl": "Buy",
       "sell-lbl": "Sell",
-      "your-buy-offer": "Your buy offer",
-      "your-sell-offer": "Your sell offer"
+      "your-buy-order": "Your buy order",
+      "your-sell-order": "Your sell order"
     },
     "trade-offers": {
       "title": "Open orders",
-      "subtitle-ask": "Ask",
-      "subtitle-bid": "Bid",
+      "subtitle-ask": "Asks",
+      "subtitle-bid": "Bids",
       "submit-bid-offer-title": "Submit bid order",
       "submit-ask-offer-title": "Submit ask order",
       "table-want-lbl": "Want ({{asset}})",
@@ -1363,21 +1390,6 @@
       "no-data-title": "No orders",
       "no-data-for-asks-message": "Here will be the list of current asks for {{base}}/{{quote}} pair",
       "no-data-for-bids-message": "Here will be the list of current bids for {{base}}/{{quote}} pair"
-    },
-    "submit-trade-offers-form": {
-      "want-label": "Want ({{asset}})",
-      "offer-label": "Order ({{asset}})",
-      "price-label": "Price ({{asset}})",
-      "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell",
-      "cancel-offer-btn": "Cancel order",
-      "insufficient-sales-msg": "Insufficient balance. You have {{amount, money}}",
-      "no-balance-msg": "You do not have {{asset}} balance yet"
-    },
-    "offer-manager": {
-      "success-creating": "Order successfully created",
-      "success-cancelling": "Order successfully cancelled",
-      "error-operation-cross-self": "Current order crosses your existing order"
     },
     "redeem-form": {
       "title": "Redeem",
@@ -1401,12 +1413,37 @@
       "loading-msg": "Loading...",
       "issued-assets-msg": "Issued {{value}}"
     },
-    "offer-creation-form": {
-      "price-per-asset": "Price per {{asset}}",
-      "amount": "Amount {{asset}}",
-      "total": "Total {{asset}}",
-      "submit-buy-btn": "Buy",
-      "submit-sell-btn": "Sell"
+    "create-trade-offer-form": {
+      "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
+      "amount-lbl": "Amount of {{asset}}",
+      "total-amount-lbl": "Total amount",
+      "asset-to-buy-lbl": "Asset to buy",
+      "asset-to-sell-lbl": "Asset to sell",
+      "buy-btn": "Buy",
+      "sell-btn": "Sell",
+      "order-created-msg": "Your order was successfully created"
+    },
+    "submit-trade-offer-form": {
+      "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
+      "base-amount-lbl": "Amount of {{asset}}",
+      "total-amount-lbl": "Total amount",
+      "asset-to-buy-lbl": "Asset to buy",
+      "asset-to-sell-lbl": "Asset to sell",
+      "buy-btn": "Buy",
+      "sell-btn": "Sell",
+      "order-submitted-msg": "Your order was successfully submitted"
+    },
+    "your-trade-offer-form": {
+      "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
+      "base-amount-lbl": "Amount of {{asset}}",
+      "total-amount-lbl": "Total amount",
+      "asset-to-buy-lbl": "Asset to buy",
+      "asset-to-sell-lbl": "Asset to sell",
+      "update-order-btn": "Update order",
+      "cancel-order-btn": "Cancel order",
+      "order-updated-msg": "Your order was successfully updated",
+      "order-canceled-msg": "Your order was successfully cancelled"
+
     },
     "trade-exchange": {
       "offers-section-title": "Open orders"
@@ -1429,15 +1466,19 @@
       "loading-msg": "Loading",
       "loading-error-msg": "There was an error while loading.",
       "campaign-tab": "Campaign",
-      "all-sales-tab": "All sales",
+      "investable-sales-tab": "Investable sales",
       "invest": "Invest",
+      "statistics-title": "Statistics",
+      "whitelist-title": "Whitelist management",
       "overview-title": "Sale overview",
+      "view-statistics-btn": "View statistics",
+      "manage-whitelist-btn": "Manage whitelist",
+      "view-details-btn": "View details",
       "sale-not-found-title": "Sale not found",
       "sale-not-found-desc": "There are no sales with the provided ID",
       "no-description-msg": "No description provided",
       "funded": "{{funded, percent}} funded",
       "days-to-go": "days to go",
-      "view-details-btn": "View details",
       "days-after-end": "days after closed",
       "days-to-end": "days to closed",
       "closed": "Closed",
@@ -1475,7 +1516,42 @@
       "video-about-sale-title": "Video about sale",
       "no-video-msg": "No video",
       "view-video-btn": "View",
-      "owner-lbl": "Owner"
+      "owner-lbl": "Owner",
+      "whitelisted-title": "Whitelisted",
+      "yes-msg": "Yes",
+      "no-msg": "No"
+    },
+    "sale-statistics": {
+      "loading-msg": "Loading sale participations…",
+      "loading-error-msg": "There was an error while loading.",
+      "participation-title": "Participation",
+      "participant-th": "Participant",
+      "investment-th": "Investment",
+      "no-investments-title": "No investments yet",
+      "no-investments-msg": "No one has invested in this sale yet"
+    },
+    "sale-whitelist": {
+      "invite-tab": "Invite",
+      "invitations-list-tab": "Invitations list",
+      "loading-msg": "Loading…",
+      "loading-error-msg": "There was an error while loading.",
+      "no-invitations-title": "No invitations yet",
+      "no-invitations-msg": "You haven't invited any user yet",
+      "email-th": "Email",
+      "registered-th": "Registered",
+      "yes-msg": "Yes",
+      "no-msg": "No",
+      "edit-invitations-btn": "Edit invitations",
+      "confirm-removal-btn": "Confirm removal",
+      "cancel-removal-btn": "Cancel removal",
+      "processing-btn": "Processing…",
+      "users-removed-msg": "The users were successfully removed from the whitelist"
+    },
+    "whitelist-invite-form": {
+      "invite-hint": "Invite a user to the sale whitelist. After invitation he/she will be able to invest in the sale",
+      "email-lbl": "User's email",
+      "invite-btn": "Invite",
+      "user-invited-msg": "The user was successfully invited to the sale whitelist"
     },
     "invest-form": {
       "asset-lbl": "Asset",
@@ -1507,34 +1583,38 @@
       "continue-btn": "Continue",
       "recheck-form-msg": "Please recheck the form before proceeding",
       "transaction-fees-heading": "Transaction fees",
-      "no-transaction-fees-msg": "No fees for this transaction"
+      "no-transaction-fees-msg": "No fees for this transaction",
+      "investment-disabled-title": "Cannot invest in this sale"
     },
     "create-sale-form": {
-      "create-sale-header": "Create sale",
-      "provide-sale-information": "Provide sale information",
-      "add-short-blurb": "Add a short blurb",
-      "full-description": "Full description",
-      "short-description": "Short description",
-      "sale-name": "Sale name",
-      "base-asset": "Base asset",
-      "start-time": "Start time",
-      "close-time": "Close time",
-      "soft-cap": "Soft cap ({{asset}})",
-      "hard-cap": "Hard cap ({{asset}})",
-      "base-asset-hard-cap-to-sell": "{{asset}} to sell",
-      "accept-investments-in": "Accept investments in:",
-      "upload-image": "Upload the image users will see first in their searcher",
-      "insert-youtube-video": "Insert YouTube video link or ID",
-      "next-btn": "Next",
-      "submit-btn": "Submit",
-      "request-submitted-msg": "Your request was successfully submitted",
-      "price": "Price ({{quote}} for 1 {{base}}) ≈ ",
-      "not-available": "One last moment",
-      "preview-you-video": "Preview you video",
       "loading-msg": "Loading...",
-      "asset-not-available-yet": "Please create an asset before creating sale",
-      "can-not-load-assets": "There was an error while loading assets. Please try again later",
-      "available-amount": "Available: {{amount, money}}"
+      "load-failed-msg": "There was an error while loading. Please, try again later",
+      "no-owned-assets-title": "No owned assets yet",
+      "no-owned-assets-desc": "Please, create an asset before creating a sale",
+      "main-information-step-title": "Main information",
+      "short-blurb-step-title": "Short blurb",
+      "full-description-step-title": "Full description",
+      "sale-name-lbl": "Sale name",
+      "base-asset-lbl": "Base asset",
+      "whitelisted-lbl": "Whitelisted",
+      "start-time-lbl": "Start time",
+      "close-time-lbl": "Close time",
+      "soft-cap-lbl": "Soft cap ({{asset}})",
+      "hard-cap-lbl": "Hard cap ({{asset}})",
+      "assets-to-sell-lbl": "{{asset}} to sell",
+      "available-amount-hint": "Available: {{amount, money}}",
+      "price-for-asset-hint": "Price ({{quote}} for 1 {{base}}) ≈ {{value, money}}",
+      "accept-investments-msg": "Accept investments in:",
+      "sale-logo-lbl": "Upload the image users will see first in their searcher",
+      "sale-logo-note": "JPG, PNG, max 5 mb.",
+      "short-description-lbl": "Short description",
+      "youtube-video-lbl": "Insert YouTube video link or ID",
+      "preview-video-msg": "Preview your video",
+      "full-description-lbl": "Full description",
+      "next-btn": "Next",
+      "create-request-btn": "Create request",
+      "update-request-btn": "Update request",
+      "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
     },
     "withdrawal-fiat-module": {
       "form-title": "Withdrawal fiat",
@@ -1611,9 +1691,9 @@
     "deposit-form": {
       "deposit": "Deposit",
       "asset": "Asset",
-      "how-to": "To make a deposit send some assets to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
+      "how-to": "To make a deposit, send your desired amount of asset to the wallet address provided below. Coins will be deposited immediately after 6 network confirmations.",
       "asset-only-prefix": "Attention:",
-      "asset-only": "The address below accepts {{asset}} only! All the other assets will be irretrievably lost.",
+      "asset-only": "The address above accepts {{asset}} only! All the other assets will be irretrievably lost.",
       "where-to": "{{asset}} address to deposit",
       "binding-address": "Please wait while we are trying to bind the address for you...",
       "no-address": "No available addresses to deposit yet. Please try again later.",
@@ -1621,7 +1701,9 @@
       "deposit-no-assets": "Your wallet doesn't contain any assets to deposit yet. You can discover some on the asset list.",
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
-      "loading-msg": "Loading…"
+      "loading-msg": "Loading…",
+      "generate-new-address-btn": "Generate new",
+      "address-lbl": "Address"
     },
     "deposit-fiat-module": {
       "form-title": "Deposit fiat",
@@ -1690,7 +1772,8 @@
     },
     "email-getter": {
       "loading-msg": "Loading…",
-      "master-account": "Master"
+      "master-account": "Master",
+      "copied": "Copied"
     },
     "downloads-page": {
       "go-back-btn": "Go back",
@@ -1698,7 +1781,11 @@
       "mobile-apps-header": "All your assets right on your phone",
       "mobile-apps-desc": "To access your assets everywhere, get the TokenD app on your mobile device.",
       "config-header": "One important step",
-      "config-desc": "Scan this QR code with your application to provide correct configuration for TokenD environment"
+      "config-desc": "Scan this QR code with your application to provide correct configuration for TokenD environment",
+      "pre-issuance-learn-more-link": "Learn more",
+      "pre-issuance-apps-header": "Pre-issue your tokens offline",
+      "pre-issuance-apps-desc": "To pre authorize your tokens to be issued, get the Offline Device Pre-issuance tool on your computer.",
+      "pre-issuance-app-sources-link": "Source code"
     },
     "ios-installation-guide": {
       "go-back-btn": "Go back",
@@ -1720,6 +1807,10 @@
     "terms-page": {
       "go-back-btn": "Go back",
       "title": "Terms & conditions"
+    },
+    "pre-issuance-guide": {
+      "go-back-btn": "Go back",
+      "title": "Pre-issuance guide"
     },
     "assets": {
       "balances-loading-msg": "Loading your balances…",
@@ -1745,10 +1836,16 @@
       "available-title": "Available",
       "transferable-title": "Transferable",
       "withdrawable-title": "Withdrawable",
+      "deposit-method-title": "Deposit method",
       "verification-required-title": "Requires verification",
+      "asset-type": "Asset type",
+      "does-not-require-verification-title": "Does not require verification",
       "security-asset-title": "Is security (requires accreditation for US residents)",
       "present-msg": "Yes",
       "absent-msg": "No",
+      "default-msg": "Default",
+      "coinpayments-msg": "Coinpayments",
+      "non-depositable-msg": "Non-depositable",
       "terms-title": "Terms",
       "download-terms-btn": "Download terms",
       "already-in-your-balance-btn": "Already in your balances",
@@ -1821,7 +1918,7 @@
     },
     "document-upload-form": {
       "document-lbl": "Select your document. You cannot upload the same file twice",
-      "file-type-note": "image/pdf (Max 5mb)",
+      "file-type-note": "image/pdf (Max 32mb)",
       "description-lbl": "Description",
       "upload-btn": "Upload",
       "uploaded-msg": "Your document was successfully uploaded",
@@ -1893,6 +1990,9 @@
     },
     "warning-banner": {
       "blocked-desc": "Your account was blocked by administrator. Blocking reason: {{reason}}"
+    },
+    "clipboard-field": {
+      "copied": "Copied"
     }
   }
 }

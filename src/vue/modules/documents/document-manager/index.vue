@@ -18,8 +18,6 @@
         </div>
         <div class="document-manager__signers-manager-wrp">
           <signers-manager-module
-            :config="config"
-            :wallet="wallet"
             :source-account-id="attachedAccountId"
           />
         </div>
@@ -62,7 +60,6 @@
           <add-comment-form
             :document-account-id="attachedAccountId"
             :metadata="metadata"
-            :wallet="wallet"
             @comment-add="loadDocument"
           />
         </div>
@@ -104,8 +101,9 @@ import SignersManagerModule from './modules/signers-manager'
 
 import LoadSpinner from '@/vue/common/Loader'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi, api } from './_api'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+import { api } from '@/api'
 
 import { Metadata } from './wrappers/metadata'
 import { Signer } from './wrappers/signer'
@@ -132,18 +130,6 @@ export default {
     LoadSpinner,
   },
   props: {
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     attachedAccountId: {
       type: String,
       required: true,
@@ -159,8 +145,12 @@ export default {
     isUnauthorized: false,
     isNotFound: false,
   }),
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
   async created () {
-    initApi(this.wallet, this.config)
     await Promise.all([
       this.loadDocument(),
       this.loadSigner(),
@@ -169,7 +159,7 @@ export default {
   methods: {
     async loadSigner () {
       const endpoint = `/v3/accounts/${this.attachedAccountId}/signers`
-      const { data: signers } = await api().getWithSignature(endpoint, {
+      const { data: signers } = await api.getWithSignature(endpoint, {
         page: {
           limit: 100,
         },
@@ -177,10 +167,10 @@ export default {
 
       this.signer = signers
         .map(s => new Signer(s))
-        .find(s => s.publicKey === this.wallet.accountId)
+        .find(s => s.publicKey === this.accountId)
     },
     async getMetadataHistory () {
-      const { data: changeRoleRequests } = await api().getWithSignature('/v3/change_role_requests', {
+      const { data: changeRoleRequests } = await api.getWithSignature('/v3/change_role_requests', {
         include: ['request_details'],
         filter: {
           state: REQUEST_STATES.approved,
@@ -238,12 +228,12 @@ export default {
     async getBlob (blobId) {
       // TODO: legacy endpoint, new one currently has problems with sign check
       const endpoint = `/accounts/${this.attachedAccountId}/blobs/${blobId}`
-      const { data } = await api().getWithSignature(endpoint)
+      const { data } = await api.getWithSignature(endpoint)
 
       return JSON.parse(data.value)
     },
     async getDownloadLink (fileKey) {
-      const { data: { url } } = await api().getWithSignature(`/documents/${fileKey}`)
+      const { data: { url } } = await api.getWithSignature(`/documents/${fileKey}`)
       return url
     },
   },
@@ -251,61 +241,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/mixins";
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-.document-manager {
-  &__inner {
-    display: flex;
+.document-manager__inner {
+  display: flex;
 
-    @include respond-to(xmedium) {
-      flex-direction: column;
-    }
+  @include respond-to(xmedium) {
+    flex-direction: column;
   }
-
-  &__document-info-wrp {
-    width: 50%;
-    max-width: 55rem;
-    margin-left: 2.5rem;
-    padding-left: 2.5rem;
-    border-left: 1px solid #aaa;
-
-    @include respond-to(xmedium) {
-      flex-direction: column;
-      margin-right: 0;
-      margin-bottom: 5rem;
-      max-width: 100%;
-      width: 100%;
-    }
-  }
-
-  &__header {
-    margin-bottom: 3rem;
-  }
-
-  &__right-section-wrp {
-    width: 50%;
-    max-width: 40rem;
-
-    @include respond-to(xmedium) {
-      width: 100%;
-    }
-  }
-
-  &__document-uploader-viewer-wrp {
-    margin-bottom: 3rem;
-  }
-
-  &__file-preview-wrp {
-    margin-bottom: 3rem;
-
-    @include respond-to(xmedium) {
-      display: none;
-    }
-  }
-
-  &__file-attributes-wrp { margin-bottom: 1.5rem }
-  &__state-checker-wrp { margin-bottom: 3rem }
-  &__comment-list-viewer-wrp { margin-top: 3rem }
-  &__add-comment-form-wrp { margin-top: 5rem }
 }
+
+.document-manager__document-info-wrp {
+  width: 50%;
+  max-width: 55rem;
+  margin-left: 2.5rem;
+  padding-left: 2.5rem;
+  border-left: 0.1rem solid $col-document-manager-border;
+
+  @include respond-to(xmedium) {
+    flex-direction: column;
+    margin-right: 0;
+    margin-bottom: 5rem;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+.document-manager__header { margin-bottom: 3rem; }
+
+.document-manager__right-section-wrp {
+  width: 50%;
+  max-width: 40rem;
+
+  @include respond-to(xmedium) {
+    width: 100%;
+  }
+}
+
+.document-manager__file-preview-wrp {
+  margin-bottom: 3rem;
+
+  @include respond-to(xmedium) {
+    display: none;
+  }
+}
+
+.document-manager__document-uploader-viewer-wrp { margin-bottom: 3rem; }
+.document-manager__file-attributes-wrp { margin-bottom: 1.5rem; }
+.document-manager__state-checker-wrp { margin-bottom: 3rem; }
+.document-manager__comment-list-viewer-wrp { margin-top: 3rem; }
+.document-manager__add-comment-form-wrp { margin-top: 5rem; }
 </style>

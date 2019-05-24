@@ -52,6 +52,7 @@
       "order-book-id-lbl": "Order book (Opportunity) ID",
       "movements-load-failed-msg": "Failed to load account activity. Please try again later",
       "loading-movements-msg": "Please wait while we loading your activity",
+      "latest-activity": "Latest activity",
       "no-movements-title": "No activity history"
     },
     "dashboard": {
@@ -110,7 +111,7 @@
       "overview-title": "Opportunity overview",
       "asset-code-label": "Opportunity code",
       "new-sale": "New opportunity",
-      "all-sales": "All opportunities",
+      "investable-sales": "Investable opportunities",
       "my-sales": "My opportunities"
     },
     "trade-open-offers": {
@@ -137,10 +138,9 @@
       "requires-verification-desc": "Investments in this opportunity requires verification"
     },
     "create-sale-form": {
-      "create-sale-header": "Create opportunity",
-      "provide-sale-information": "Provide opportunity information",
-      "sale-name": "Opportunity name",
-      "asset-not-available-yet": "Please create opportunity before creating opportunity"
+      "sale-name-lbl": "Opportunity name",
+      "no-owned-assets-title": "No owned opportunities yet",
+      "no-owned-assets-desc": "Please create opportunity before creating opportunity"
     },
     "withdrawal-form": {
       "asset": "Opportunity",

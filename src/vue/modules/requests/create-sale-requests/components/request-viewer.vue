@@ -43,7 +43,7 @@ import RequestActions from './request-actions'
 
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
-import { config } from '../_config'
+import config from '@/config'
 
 import { mapActions } from 'vuex'
 import { types } from '../store/types'
@@ -73,14 +73,13 @@ export default {
     baseAsset: null,
     isLoaded: false,
     isLoadingFailed: false,
-    config,
     EVENTS,
   }),
 
   computed: {
     assetLogoUrl () {
       if (this.baseAsset) {
-        return this.baseAsset.logoUrl(config().storageURL)
+        return this.baseAsset.logoUrl(config.FILE_STORAGE)
       } else {
         return ''
       }

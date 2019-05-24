@@ -84,8 +84,7 @@ import { required, requiredIf, password, sameAs } from '@validators'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
 
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { walletsManager, factorsManager } from '@/api'
 import { errors } from '@tokend/js-sdk'
 
 import { vuexTypes } from '@/vuex'
@@ -118,7 +117,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
+      walletEmail: vuexTypes.walletEmail,
       isTotpEnabled: vuexTypes.isTotpEnabled,
       accountId: vuexTypes.accountId,
     }),
@@ -133,7 +132,7 @@ export default {
       }
       this.disableForm()
       try {
-        await Sdk.api.wallets.changePassword(this.form.newPassword)
+        await walletsManager.changePassword(this.form.newPassword)
       } catch (e) {
         if (e instanceof errors.TFARequiredError) {
           // To change password we should verify password factor first.
@@ -148,23 +147,23 @@ export default {
 
     async retryPasswordChange (tfaError) {
       try {
-        await Sdk.api.factors.verifyPasswordFactorAndRetry(tfaError,
-          this.form.currentPassword
+        await factorsManager.verifyPasswordFactorAndRetry(
+          tfaError, this.form.currentPassword
         )
       } catch (e) {
         // If 2FA is enabled we should verify TOTP factor
         // (using TFARequiredError instance).
         if (e instanceof errors.TFARequiredError) {
           try {
-            await Sdk.api.factors.verifyTotpFactorAndRetry(e,
-              this.form.tfaCode
+            await factorsManager.verifyTotpFactorAndRetry(
+              e, this.form.tfaCode
             )
           } catch (e) {
             // FIXME: We need to verify password factor again after
             // verifying 2FA factor.
             if (e instanceof errors.TFARequiredError) {
-              await Sdk.api.factors.verifyPasswordFactorAndRetry(e,
-                this.form.currentPassword
+              await factorsManager.verifyPasswordFactorAndRetry(
+                e, this.form.currentPassword
               )
             } else {
               // If verifyTotpFactor threw an error different from
@@ -193,28 +192,26 @@ export default {
     async useNewWallet () {
       let newWallet
       try {
-        newWallet = await Sdk.api.wallets.get(
-          this.wallet.email,
+        newWallet = await walletsManager.get(
+          this.walletEmail,
           this.form.newPassword
         )
       } catch (e) {
         // If 2FA is enabled we should verify TOTP factor
         // to get a user's wallet.
         if (e instanceof errors.TFARequiredError) {
-          await Sdk.api.factors.verifyTotpFactor(e,
+          await factorsManager.verifyTotpFactor(e,
             this.form.tfaCode
           )
-          newWallet = await Sdk.api.wallets.get(
-            this.wallet.email,
+          newWallet = await walletsManager.get(
+            this.walletEmail,
             this.form.newPassword
           )
         } else {
           throw e
         }
       }
-      Api.useWallet(newWallet)
-      Sdk.sdk.useWallet(newWallet)
-      this.storeWallet(newWallet)
+      await this.storeWallet(newWallet)
     },
   },
 }

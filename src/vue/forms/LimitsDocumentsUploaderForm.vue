@@ -30,7 +30,7 @@
           <file-field
             v-model="form.documents[doc.label]"
             :note="'limits-documents-uploader-form.file-type-note' | globalize"
-            accept="image/*, .pdf"
+            :file-extensions="['jpg', 'png', 'pdf']"
             :error-message="getFieldErrorMessage(
               `form.documents.${doc.label}`
             )"
@@ -71,9 +71,12 @@ import { required, documentContainer } from '@validators'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base, errors } from '@tokend/js-sdk'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { LIMITS_REQUEST_TYPE } from '@/js/const/limits.const'
 import { OPERATION_ERROR_CODES } from '@/js/const/operation-error-codes.const'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   requestUploaded: 'request-uploaded',
@@ -92,6 +95,11 @@ export default {
       documents: {},
     },
   }),
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
+  },
   validations () {
     const documents = {}
 
@@ -149,11 +157,13 @@ export default {
             documents: this.formatDocumentsForRequest(),
           },
         })
-      await Sdk.horizon.transactions.submitOperations(operation)
+      await api.postOperations(operation)
     },
     async uploadDocuments () {
       for (let document of Object.values(this.form.documents)) {
-        document = await DocumentUploader.uploadSingleDocument(document)
+        document = await DocumentUploader.uploadSingleDocument(
+          document, this.accountId
+        )
       }
     },
     formatDocumentsForRequest () {

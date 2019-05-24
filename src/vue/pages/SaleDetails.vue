@@ -7,43 +7,19 @@
             HACK: we don't need any active-class here, so empty "active-class"
             attr prevents adding any active-class
            -->
-          <router-link :to="{ ...vueRoutes.sales }" active-class>
-            <span>
-              {{ 'sale-details.all-sales-tab' | globalize }}
-            </span>
+          <router-link :to="vueRoutes.sales" active-class>
+            <span>{{ 'sale-details.investable-sales-tab' | globalize }}</span>
           </router-link>
 
-          <router-link
-            :to="{ ...vueRoutes.saleCampaign, params: { id: id } }"
-          >
-            <span>
-              {{ 'sale-details.campaign-tab' | globalize }}
-            </span>
+          <router-link :to="vueRoutes.userOwnedSales">
+            <span>{{ 'sales.my-sales' | globalize }}</span>
           </router-link>
-        </template>
 
-        <template slot="extra">
-          <button
-            v-ripple
-            class="app__button-raised sale-details__invest-btn"
-            @click="isInvestDrawerShown = true"
-          >
-            {{ 'sale-details.invest' | globalize }}
-          </button>
+          <router-link :to="{ ...vueRoutes.saleCampaign, params: { id } }">
+            <span>{{ 'sale-details.campaign-tab' | globalize }}</span>
+          </router-link>
         </template>
       </top-bar>
-
-      <drawer :is-shown.sync="isInvestDrawerShown">
-        <template slot="heading">
-          {{ 'sale-details.invest' | globalize }}
-        </template>
-
-        <invest-form
-          :sale="sale"
-          @submitted="hideInvestDrawer() || refreshSale()"
-          @canceled="hideInvestDrawer() || refreshSale()"
-        />
-      </drawer>
 
       <div class="sale-details__title">
         <h2 class="sale-details__name">
@@ -55,7 +31,10 @@
         </p>
       </div>
 
-      <router-view :sale="sale" />
+      <router-view
+        :sale="sale"
+        @sale-updated="refreshSale"
+      />
     </template>
 
     <template v-else-if="isSaleNotFound">
@@ -81,14 +60,11 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Loader from '@/vue/common/Loader'
-import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-
-import InvestForm from '@/vue/forms/InvestForm'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -100,9 +76,7 @@ export default {
   components: {
     TopBar,
     Loader,
-    Drawer,
     NoDataMessage,
-    InvestForm,
   },
 
   props: {
@@ -113,7 +87,6 @@ export default {
     sale: null,
     isSaleNotFound: false,
     isLoadingFailed: false,
-    isInvestDrawerShown: false,
     vueRoutes,
   }),
 
@@ -124,7 +97,7 @@ export default {
   methods: {
     async loadSale (saleId) {
       try {
-        const { data } = await Api.get(`/v3/sales/${saleId}`, {
+        const { data } = await api.get(`/v3/sales/${saleId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.sale = new SaleRecord(data)
@@ -142,25 +115,21 @@ export default {
       this.sale = null
       await this.loadSale(this.id)
     },
-
-    hideInvestDrawer () {
-      this.isInvestDrawerShown = false
-    },
   },
 }
 </script>
 
 <style lang="scss">
-@import "~@scss/variables";
+@import '~@scss/variables';
 
 .sale-details__name {
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: 400;
   color: $col-sale-details-title;
 }
 
 .sale-details__short-desc {
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   font-size: 1.6rem;
   color: $col-sale-details-subtitle;
   word-wrap: break-word;

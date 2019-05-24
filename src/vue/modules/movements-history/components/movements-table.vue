@@ -1,5 +1,5 @@
 <template>
-  <table class="movements-table" v-if="movements.length">
+  <table class="movements-table">
     <thead>
       <tr class="movements-table__head-row">
         <th
@@ -38,23 +38,21 @@
       :movement="movement"
       :key="movement.id"
     />
+    <empty-list-placeholder
+      v-if="!movements.length"
+    />
   </table>
-  <no-data-message
-    v-else
-    :title="'movements-history.no-movements-title' | globalize"
-    :message="'movements-history.no-movements-msg' | globalize"
-  />
 </template>
 
 <script>
 import MovementsTableRow from './movements-table-row'
-import NoDataMessage from '@/vue/common/NoDataMessage'
+import EmptyListPlaceholder from './movements-empty-list-placeholder.vue'
 
 export default {
   name: 'movement-list-renderer',
   components: {
     MovementsTableRow,
-    NoDataMessage,
+    EmptyListPlaceholder,
   },
   props: {
     movements: {
@@ -66,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@scss/variables";
+@import '~@scss/variables';
 @import '../scss/variables';
 
 .movements-table {
@@ -75,7 +73,7 @@ export default {
   border-spacing: 0 0.6rem;
   border-color: transparent;
   overflow-x: auto;
-  padding: 0.4rem 0.4rem;
+  padding: 0.4rem;
 }
 
 .movements-table__head-cell {
@@ -86,7 +84,7 @@ export default {
   text-align: left;
   font-size: 1.4rem;
   color: $col-text-secondary;
-  font-weight: normal;
+  font-weight: 400;
   width: $movements-table-cell-width;
 
   &--direction {

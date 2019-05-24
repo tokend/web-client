@@ -9,7 +9,7 @@
           <div class="asset-selector__select-picture">
             <img
               v-if="imgUrl"
-              class="asset-selector__asset-logo"
+              class="asset-selector__select-picture-tag"
               :src="imgUrl"
             >
             <p
@@ -37,22 +37,25 @@
             <div class="asset-selector__asset-value">
               <span class="asset-selector__asset-value-main">
                 {{
-                  currentAssetBalanceDetails.balance | formatMoney({
+                  {
+                    value: currentAssetBalanceDetails.balance,
                     currency: currentAsset
-                  })
+                  } | formatMoney
                 }}
-                {{ currentAsset }}
               </span>
             </div>
-            <div class="asset-selector__asset-subvalue">
+
+            <div
+              class="asset-selector__asset-converted"
+              v-if="currentAssetBalanceDetails.convertedBalance"
+            >
               <span class="asset-selector__asset-value-secondary">
                 {{
-                  currentAssetBalanceDetails.convertedBalance | formatMoney({
-                    currency: currentAssetBalanceDetails.convertedToAsset,
-                    symbolAllowed: true
-                  })
+                  {
+                    value: currentAssetBalanceDetails.convertedBalance,
+                    currency: currentAssetBalanceDetails.convertedToAsset
+                  } | formatMoney
                 }}
-                {{ currentAssetBalanceDetails.convertedToAsset }}
               </span>
             </div>
           </div>
@@ -84,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -114,6 +117,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
+      accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
@@ -160,8 +164,14 @@ export default {
     }),
     async loadAssets () {
       try {
-        const response = await Sdk.horizon.assets.getAll()
-        this.assets = response.data.map(asset => new AssetRecord(asset))
+        const endpoint = `/v3/accounts/${this.accountId}`
+        const { data: account } = await api.get(endpoint, {
+          include: ['balances.asset'],
+        })
+
+        this.assets = account.balances
+          .map(b => b.asset)
+          .map(a => new AssetRecord(a))
       } catch (error) {
         this.isLoadingFailed = true
         ErrorHandler.processWithoutFeedback(error)
@@ -172,15 +182,15 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@scss/variables.scss";
-@import "~@scss/mixins.scss";
+@import '~@scss/variables.scss';
+@import '~@scss/mixins.scss';
 
-$custom-breakpoint-small: 540px;
-$custom-breakpoint: 800px;
-$custom-breakpoint-medium: 870px;
+$media-custom-breakpoint-small: 540px;
+$media-custom-breakpoint: 800px;
+$media-custom-breakpoint-medium: 870px;
 
 .asset-selector {
-  @include respond-to-custom($custom-breakpoint-medium) {
+  @include respond-to-custom($media-custom-breakpoint-medium) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -192,17 +202,15 @@ $custom-breakpoint-medium: 870px;
   justify-content: space-between;
   align-items: center;
 
-  @include respond-to-custom($custom-breakpoint-medium) {
+  @include respond-to-custom($media-custom-breakpoint-medium) {
     flex-direction: column;
     align-items: flex-start;
   }
-
   @include respond-to(tablet) {
     flex-direction: row;
     align-items: center;
   }
-
-  @include respond-to-custom($custom-breakpoint-small) {
+  @include respond-to-custom($media-custom-breakpoint-small) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -214,8 +222,7 @@ $custom-breakpoint-medium: 870px;
   @include respond-to(medium) {
     align-items: flex-end;
   }
-
-  @include respond-to-custom($custom-breakpoint) {
+  @include respond-to-custom($media-custom-breakpoint) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -226,15 +233,13 @@ $custom-breakpoint-medium: 870px;
   align-items: center;
   margin-right: 1.6rem;
 
-  @include respond-to-custom($custom-breakpoint-medium) {
+  @include respond-to-custom($media-custom-breakpoint-medium) {
     margin-bottom: 2.4rem;
   }
-
   @include respond-to(tablet) {
     margin-bottom: 0;
   }
-
-  @include respond-to-custom($custom-breakpoint-small) {
+  @include respond-to-custom($media-custom-breakpoint-small) {
     margin-bottom: 2.4rem;
   }
 }
@@ -242,31 +247,31 @@ $custom-breakpoint-medium: 870px;
 .asset-selector__select-picture {
   margin-right: 1.6rem;
   display: flex;
+}
 
-  & > * {
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: .2rem;
-    @include box-shadow();
+.asset-selector__select-picture > * {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.2rem;
 
-    @include respond-to(small) {
-      width: 4rem;
-      height: 4rem;
-    }
+  @include box-shadow();
+  @include respond-to(small) {
+    width: 4rem;
+    height: 4rem;
   }
+}
 
-  img {
-    object-fit: contain;
-  }
+.asset-selector__select-picture-tag {
+  object-fit: contain;
+}
 
-  .asset-selector__asset-code-abbr {
-    font-size: 2.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: $col-asset-logo-background;
-    color: $col-asset-logo-text;
-  }
+.asset-selector__asset-code-abbr {
+  font-size: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $col-asset-logo-background;
+  color: $col-asset-logo-text;
 }
 
 .asset-selector__asset-available {
@@ -278,8 +283,8 @@ $custom-breakpoint-medium: 870px;
   color: $col-details-value;
 }
 
-.asset-selector__asset-subvalue {
-  margin-top: .8rem;
+.asset-selector__asset-converted {
+  margin-top: 0.8rem;
   font-size: 1.6rem;
   color: $col-details-label;
 }

@@ -28,31 +28,42 @@
       </template>
     </span>
 
-    <button
-      v-show="isCopyButton && !isMasterAccount && !isLoading"
-      class="email-getter__copy-button  app__button-icon"
-      :id="`clipboard-btn-${_uid}`"
-      :data-clipboard-text="email || accountId || balanceId"
-      @click="changeBtnIcon"
+    <tooltip
+      :show="isCopiedTooltipShown"
+      :message="'email-getter.copied' | globalize"
     >
-      <i
-        class="mdi email-getter__icon"
-        :class="isCopyBtnPressed ?
-          'mdi-clipboard-check' :
-          'mdi-clipboard-text'"
-      />
-    </button>
+      <button
+        v-show="isCopyButton && !isMasterAccount && !isLoading"
+        class="email-getter__copy-button  app__button-icon"
+        :id="`clipboard-btn-${_uid}`"
+        :data-clipboard-text="email || accountId || balanceId"
+        @click="changeBtnIcon"
+      >
+        <i
+          class="mdi email-getter__icon"
+          :class="isCopyBtnPressed ?
+            'mdi-clipboard-check' :
+            'mdi-clipboard-text'"
+        />
+      </button>
+    </tooltip>
   </span>
 </template>
 
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 
-import { Sdk } from '@/sdk'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import Clipboard from 'clipboard'
+import Tooltip from '@/vue/common/Tooltip'
+
+import safeGet from 'lodash/get'
 
 export default {
+  components: {
+    Tooltip,
+  },
   mixins: [IdentityGetterMixin],
 
   props: {
@@ -83,6 +94,7 @@ export default {
     isMasterAccount: false,
     isLoading: false,
     isCopyBtnPressed: false,
+    isCopiedTooltipShown: false,
   }),
 
   watch: {
@@ -112,7 +124,7 @@ export default {
     async init () {
       this.isMasterAccount = false
 
-      if (this.accountId === Sdk.networkDetails.adminAccountId) {
+      if (this.accountId === api.networkDetails.adminAccountId) {
         this.isMasterAccount = true
         return
       }
@@ -137,8 +149,8 @@ export default {
       if (this.accountId) {
         return this.accountId
       } else if (this.balanceId) {
-        const { data } = await Sdk.horizon.balances.getAccount(this.balanceId)
-        return data.accountId
+        const { data } = await api.get(`/v3/balances/${this.balanceId}`)
+        return safeGet(data, 'owner.id')
       } else {
         return ''
       }
@@ -146,48 +158,58 @@ export default {
 
     changeBtnIcon () {
       this.isCopyBtnPressed = true
+      this.showCopiedTooltip()
       setTimeout(() => { this.isCopyBtnPressed = false }, 1000)
+    },
+
+    showCopiedTooltip () {
+      let hideTooltipTimeout = 2000
+      this.isCopiedTooltipShown = true
+      setTimeout(() => {
+        this.isCopiedTooltipShown = false
+      }, hideTooltipTimeout)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "~@scss/variables";
-  @import "~@scss/mixins";
-  .email-getter {
-    display: inline-flex;
-    justify-content: flex-start;
-    align-items: center;
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-    &--justify-end {
-      justify-content: flex-end;
-    }
+.email-getter {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-    &__value {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+.email-getter--justify-end {
+  justify-content: flex-end;
+}
 
-    &__copy-button {
-      color: $col-primary-inactive;
-      margin-left: .5rem;
-      min-height: 1rem;
-      min-width: 1rem;
-      transition: .1s ease-out;
-      padding: 0;
+.email-getter__value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-      &:hover {
-        color: darken($col-primary-inactive, 20%);
-        background: none;
-      }
-    }
+.email-getter__copy-button {
+  color: $col-primary-inactive;
+  margin-left: 0.5rem;
+  min-height: 1rem;
+  min-width: 1rem;
+  transition: 0.1s ease-out;
+  padding: 0;
 
-    &__icon {
-      &::before {
-        vertical-align: middle;
-      }
-    }
+  &:hover {
+    color: $col-primary-inactive-hover-darken;
+    background: none;
   }
+}
+
+.email-getter__icon {
+  &:before {
+    vertical-align: middle;
+  }
+}
 </style>

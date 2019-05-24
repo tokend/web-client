@@ -73,7 +73,7 @@ export default Object.assign(
      * Should be populated by DevOps team during the deployment
      * The field being displayed on login screen.
      */
-    BUILD_VERSION: 'dev: ' + packageJson.version,
+    BUILD_VERSION: packageJson.version,
 
     /**
      * User will be logged out after IDLE_TIMEOUT (milliseconds) time of
@@ -96,6 +96,12 @@ export default Object.assign(
      * Link to iOS application manifest file.
      */
     IOS_MANIFEST_LINK: 'itms-services://?action=download-manifest&url=https://s3-eu-west-1.amazonaws.com/ios-tokend-app/manifest.plist',
+
+    /**
+     * URL of the Sentry DSN. It’s a representation of the configuration
+     * required by the Sentry SDKs.
+     */
+    SENTRY_DSN: '',
   },
   process.env,
   document.ENV

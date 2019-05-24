@@ -1,7 +1,6 @@
 import { vuexTypes } from './types'
 
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ChangeRoleRequestRecord } from '@/js/records/requests/change-role.record'
 
 import safeGet from 'lodash/get'
@@ -65,7 +64,7 @@ export const actions = {
     const limit = 1
     const order = 'desc'
 
-    const response = await Api.getWithSignature(`/v3/change_role_requests`, {
+    const response = await api.getWithSignature(`/v3/change_role_requests`, {
       filter: { requestor },
       page: { limit, order },
       include: ['request_details'],
@@ -98,7 +97,7 @@ export const actions = {
     { state, commit, rootGetters },
     requestId
   ) {
-    const { data } = await Api.getWithSignature(
+    const { data } = await api.getWithSignature(
       `/v3/change_role_requests/${requestId}`,
       {
         filter: { requestor: rootGetters[vuexTypes.accountId] },
@@ -113,14 +112,18 @@ export const actions = {
     commit(vuexTypes.SET_KYC_RELATED_REQUEST, request)
   },
 
-  async [vuexTypes.LOAD_KYC_DATA] ({ state, getters, commit }) {
+  async [vuexTypes.LOAD_KYC_DATA] ({ getters, rootGetters, commit }) {
     const latestBlobId = getters[vuexTypes.kycLatestBlobId]
     if (!latestBlobId) {
       return
     }
 
-    const latestBlobResponse = await Sdk.api.blobs.get(latestBlobId)
+    const accountId = rootGetters[vuexTypes.accountId]
+    const endpoint = `/accounts/${accountId}/blobs/${latestBlobId}`
+
+    const latestBlobResponse = await api.getWithSignature(endpoint)
     const latestData = latestBlobResponse.data.value
+
     commit(vuexTypes.SET_KYC_LATEST_DATA, latestData)
   },
 }

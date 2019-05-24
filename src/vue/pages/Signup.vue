@@ -80,8 +80,7 @@ import VueMarkdown from 'vue-markdown'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { base } from '@tokend/js-sdk'
-import { Sdk } from '@/sdk'
-import { Api } from '@/api'
+import { walletsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { mapActions, mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
@@ -104,7 +103,7 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      storedWallet: vuexTypes.wallet,
+      walletAccountId: vuexTypes.walletAccountId,
     }),
   },
   methods: {
@@ -124,16 +123,14 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        const { response, wallet } = await Sdk.api.wallets.create(
+        const { response, wallet } = await walletsManager.create(
           this.email.toLowerCase(),
           this.password,
           this.recoveryKeypair
         )
         if (response.data.verified) {
-          Sdk.sdk.useWallet(wallet)
-          Api.useWallet(wallet)
-          this.storeWallet(wallet)
-          await this.loadAccount(this.storedWallet.accountId)
+          await this.storeWallet(wallet)
+          await this.loadAccount(this.walletAccountId)
           await this.loadKyc()
           this.$router.push(vueRoutes.app)
         } else {
@@ -158,12 +155,14 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./auth-page";
+@import './auth-page';
 
 .signup__seed-title.auth-page__title {
   margin-top: -4rem;
 }
 
+// Disabled because vue-markdown
+/* stylelint-disable selector-nested-pattern */
 .signup__seed-disclaimer {
   margin-bottom: 3rem;
 
@@ -172,6 +171,7 @@ export default {
     font-size: 1.6rem;
   }
 }
+/* stylelint-enable selector-nested-pattern */
 
 .signup__key-viewer /deep/ .clipboard-field {
   background: $col-clipboard-background-darken;

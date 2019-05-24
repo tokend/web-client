@@ -13,13 +13,13 @@ import { vuexTypes } from '@/vuex'
 import {
   errors,
   base,
-  FEE_TYPES,
   PAYMENT_FEE_SUBTYPES,
   ASSET_POLICIES,
 } from '@tokend/js-sdk'
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -52,21 +52,25 @@ describe('TransferForm component', () => {
         asset: 'BTC',
         balance: '1',
         assetDetails: new AssetRecord({
-          policies: [
-            { value: ASSET_POLICIES.transferable },
-            { value: ASSET_POLICIES.baseAsset },
-          ],
+          policies: {
+            flags: [
+              { value: ASSET_POLICIES.transferable },
+              { value: ASSET_POLICIES.baseAsset },
+            ],
+          },
         }),
       },
       {
         asset: 'USD',
         balance: '3',
         assetDetails: new AssetRecord({
-          policies: [
-            { value: ASSET_POLICIES.transferable },
-            { value: ASSET_POLICIES.baseAsset },
-            { value: ASSET_POLICIES.statsQuoteAsset },
-          ],
+          policies: {
+            flags: [
+              { value: ASSET_POLICIES.transferable },
+              { value: ASSET_POLICIES.baseAsset },
+              { value: ASSET_POLICIES.statsQuoteAsset },
+            ],
+          },
         }),
       },
       {
@@ -101,13 +105,10 @@ describe('TransferForm component', () => {
       account: 'SOME_ACCOUNT_ID',
       amount: 10,
     }
-    let feesResource
     let feesStub
 
     beforeEach(() => {
-      feesResource = mockHelper.getHorizonResourcePrototype('fees')
-      feesStub = sinon.stub(feesResource, 'get')
-        .withArgs(FEE_TYPES.paymentFee, paymentDetails)
+      feesStub = sinon.stub(api, 'get')
     })
 
     it('fetches fees', async () => {
@@ -116,7 +117,7 @@ describe('TransferForm component', () => {
 
       const result = await wrapper.vm.loadPaymentFee(paymentDetails)
 
-      expect(feesResource.get.calledOnce).to.be.true
+      expect(feesStub.calledOnce).to.be.true
       expect(result).to.deep.equal(expectedResult)
     })
 
@@ -126,7 +127,7 @@ describe('TransferForm component', () => {
 
       await wrapper.vm.loadPaymentFee(paymentDetails)
 
-      expect(feesResource.get.calledOnce).to.be.true
+      expect(feesStub.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
     })
   })
@@ -368,10 +369,7 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'enableForm')
       sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
 
-      const transactionsResource =
-        mockHelper.getHorizonResourcePrototype('transactions')
-      sinon.stub(transactionsResource, 'submitOperations')
-        .withArgs(true)
+      sinon.stub(api, 'postOperations')
         .resolves()
       sinon.stub(wrapper.vm, 'rerenderForm')
       sinon.stub(Bus, 'success')
@@ -380,7 +378,7 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
-      expect(transactionsResource.submitOperations.calledOnce).to.be.true
+      expect(api.postOperations.calledOnce).to.be.true
       expect(Bus.success.calledOnce).to.be.true
       expect(accountModule.actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS]
         .calledOnce).to.be.true
@@ -393,9 +391,7 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'enableForm')
       sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
 
-      const transactionsResource =
-        mockHelper.getHorizonResourcePrototype('transactions')
-      sinon.stub(transactionsResource, 'submitOperations')
+      sinon.stub(api, 'postOperations')
         .withArgs(true)
         .throws(TestHelper.getError(errors.NotFoundError))
       sinon.stub(ErrorHandler, 'process')
@@ -404,7 +400,7 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
-      expect(transactionsResource.submitOperations.calledOnce).to.be.true
+      expect(api.postOperations.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
       expect(wrapper.vm.enableForm.calledOnce).to.be.true
     })

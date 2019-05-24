@@ -51,19 +51,32 @@
           </span>
         </div>
 
-        <button
-          class="app__button-flat"
-          @click="goSettings"
+        <div
+          class="passport__dropdown-balances-wrp"
         >
-          {{ 'passport.settings-btn' | globalize }}
-        </button>
+          <passport-balances
+            @more-link-followed="toggleDropdown"
+          />
+        </div>
+        <div
+          class="passport__dropdown-actions-wrp"
+        >
+          <button
+            class="app__button-flat
+                   passport__dropdown-btn"
+            @click="goSettings"
+          >
+            {{ 'passport.settings-btn' | globalize }}
+          </button>
 
-        <button
-          class="app__button-flat"
-          @click="logOut"
-        >
-          {{ 'passport.sign-out-btn' | globalize }}
-        </button>
+          <button
+            class="app__button-flat
+                   passport__dropdown-btn"
+            @click="logOut"
+          >
+            {{ 'passport.sign-out-btn' | globalize }}
+          </button>
+        </div>
       </div>
     </transition>
   </div>
@@ -76,11 +89,17 @@ import { vueRoutes } from '@/vue-router/routes'
 import { handleClickOutside } from '@/js/helpers/handle-click-outside'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import config from '@/config'
+import PassportBalances from './Passport.Balances'
 
 export default {
   name: 'passport',
 
+  components: {
+    PassportBalances,
+  },
+
   data: () => ({
+    vueRoutes,
     isDropdownOpen: false,
     loadAccountDetailsTickerTimeout: 45000,
     destructClickOutsideHandler: () => { },
@@ -99,7 +118,6 @@ export default {
       isAccountBlocked: vuexTypes.isAccountBlocked,
       accountId: vuexTypes.accountId,
     }),
-
     accountRoleTranslationId () {
       if (this.isAccountGeneral) {
         return 'passport.account-general'
@@ -190,12 +208,21 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import "~@scss/mixins";
-@import "~@scss/variables";
+<style lang="scss">
+@import '~@scss/variables';
+@import '~@scss/mixins';
 
-$hide-account-details-bp: 800px;
+$media-hide-account-details-bp: 800px;
 $dropdown-item-side-padding: 2.4rem;
+
+.passport__dropdown-btn {
+  width: 100%;
+}
+
+.passport__dropdown-signed-in-email-prefix {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
 
 .passport {
   width: 100%;
@@ -229,7 +256,8 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__account-details-wrp {
   margin-left: 1.6rem;
-  @include respond-to-custom($hide-account-details-bp) {
+
+  @include respond-to-custom($media-hide-account-details-bp) {
     display: none;
   }
 }
@@ -260,7 +288,7 @@ $dropdown-item-side-padding: 2.4rem;
 
 .passport__account-type--blocked {
   color: $col-error;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .passport__dropdown {
@@ -270,53 +298,56 @@ $dropdown-item-side-padding: 2.4rem;
   background: $col-block-bg;
   display: flex;
   flex-direction: column;
+
   @include box-shadow();
 
   &:before {
     // dropdown arrow
-    content: "";
+    content: '';
     position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 0.8rem 0.8rem 0.8rem;
+    border-width: 0 0.8rem 0.8rem;
     border-color: transparent transparent $col-block-bg transparent;
     top: -0.8rem;
     right: 3.9rem;
   }
+}
 
-  &-enter-active {
-    animation-duration: 0.2s;
-    animation: passport-dropdown-keyframes 0.2s ease-in-out;
+.passport__dropdown-enter-active {
+  animation: passport-dropdown-keyframes 0.2s ease-in-out;
+  animation-duration: 0.2s;
+}
+
+.passport__dropdown-leave-active {
+  animation: passport-dropdown-keyframes 0.2s ease-in-out reverse;
+  animation-duration: 0.2s;
+}
+
+@keyframes passport-dropdown-keyframes {
+  from {
+    opacity: 0;
+    margin-top: -1.2rem;
   }
 
-  &-leave-active {
-    animation-duration: 0.2s;
-    animation: passport-dropdown-keyframes 0.2s ease-in-out reverse;
-  }
-
-  @keyframes passport-dropdown-keyframes {
-    from {
-      opacity: 0;
-      margin-top: -1.2rem;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
+  to {
+    opacity: 1;
+    margin-top: 0;
   }
 }
 
-.passport__dropdown-signed-in-wrp {
-  padding: 1.6rem $dropdown-item-side-padding 0.8rem;
+.passport__dropdown-signed-in-wrp,
+.passport__dropdown-balances-wrp {
+  padding: 1.6rem $dropdown-item-side-padding 0;
   line-height: 1.5;
-  text-align: center;
+  text-align: left;
   color: $col-text-secondary;
   font-size: 1.4rem;
 }
 
-.passport__dropdown-signed-in-email {
-  font-weight: bold;
+.passport__dropdown-actions-wrp {
+  padding: 1.6rem 0 0.6rem;
 }
 
 .passport__dropdown-status-icon {

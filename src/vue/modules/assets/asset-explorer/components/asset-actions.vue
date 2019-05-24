@@ -39,6 +39,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { Bus } from '@/js/helpers/event-bus'
+import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   balanceAdded: 'balance-added',
@@ -62,8 +63,8 @@ export default {
     EVENTS,
   }),
   computed: {
-    ...mapGetters('asset-explorer', {
-      accountId: types.accountId,
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
     }),
     isBalanceCreationAllowed () {
       switch (this.asset.type) {
@@ -102,13 +103,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@scss/variables';
+
 .asset-actions__btn {
   max-width: 18rem;
   width: 100%;
 }
 
 .asset-actions__not-allowed-msg {
-  padding: .25rem 1.5rem;
+  padding: 0.25rem 1.5rem;
   color: $col-text-secondary;
   font-style: italic;
 }

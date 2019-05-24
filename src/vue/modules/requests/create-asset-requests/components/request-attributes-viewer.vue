@@ -92,7 +92,7 @@
 <script>
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { config } from '../_config'
+import config from '@/config'
 
 export default {
   name: 'request-attributes-viewer',
@@ -104,7 +104,7 @@ export default {
 
   computed: {
     assetTermsUrl () {
-      return this.request.termsUrl(config().storageURL)
+      return this.request.termsUrl(config.FILE_STORAGE)
     },
   },
 }
@@ -113,10 +113,8 @@ export default {
 <style lang="scss" scoped>
 @import '~@scss/variables';
 
-.request-attributes-viewer {
-  tr td:last-child {
-    text-align: right;
-  }
+.request-attributes-viewer tr td:last-child {
+  text-align: right;
 }
 
 .request-attributes-viewer__terms {
