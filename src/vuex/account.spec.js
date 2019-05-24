@@ -52,6 +52,7 @@ describe('account.module', () => {
         getters: {
           accountId: 'GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O',
         },
+        rootGetters: { defaultWuoteAsset: 'USD' },
         commit: sinon.stub(),
         dispatch: sinon.stub(),
       }
@@ -73,18 +74,19 @@ describe('account.module', () => {
 
     it('LOAD_ACCOUNT_BALANCES_DETAILS commits proper set of mutations',
       async () => {
-        sinon.stub(api, 'getWithSignature').resolves({
-          data: { balances: balancesDetailsJSON },
-        })
+        const balancesMock = MockWrapper
+          .makeJsonapiResponseData(balancesDetailsJSON)
+        sinon.stub(api, 'getWithSignature').resolves({ data: balancesMock })
+
         const type = vuexTypes.SET_ACCOUNT_BALANCES_DETAILS
-        const payload = balancesDetailsJSON
+        const payload = balancesMock.states
+          .map(state => state.balance)
           .map(item => {
             item.assetDetails = new AssetRecord(item.asset)
             item.asset = item.assetDetails.code
             item.balance = item.state.available
             return item
           })
-          .sort((a, b) => b.convertedBalance - a.convertedBalance)
         const expectedMutations = {
           [type]: payload,
         }

@@ -11,6 +11,10 @@ for further information about branching and tagging conventions.
 #### Added
 - Tooltip directive
 
+#### Changed
+- Now loading account converted balances in
+  "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+
 ## [1.7.0-rc.0] - 2019-05-21
 #### Added
 - New sale whitelist support:

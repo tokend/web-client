@@ -26,21 +26,25 @@ export const actions = {
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },
 
-  async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
+  async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] (
+    { commit, rootGetters, getters }
+  ) {
     const accountId = getters[vuexTypes.accountId]
-    const endpoint = `/v3/accounts/${accountId}`
-    const { data: account } = await api.getWithSignature(endpoint, {
-      include: ['balances.asset', 'balances.state'],
+    const defaultQuoteAsset = rootGetters[vuexTypes.defaultQuoteAsset]
+
+    const endpoint = `/v3/accounts/${accountId}/converted_balances/${defaultQuoteAsset}`
+    const { data } = await api.getWithSignature(endpoint, {
+      include: ['states', 'balance', 'balance.state', 'balance.asset'],
     })
 
-    const balances = account.balances
+    const balances = data.states
+      .map(state => state.balance)
       .map(item => {
         item.assetDetails = new AssetRecord(item.asset)
         item.asset = item.assetDetails.code
         item.balance = item.state.available
         return item
       })
-      .sort((a, b) => b.convertedBalance - a.convertedBalance)
     commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
   },
 }
