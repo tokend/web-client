@@ -1,27 +1,23 @@
-import {
-  PAYMENT_FEE_SUBTYPES,
-} from '@tokend/js-sdk'
-import {
-  FeesRecord,
-  CoupledFeesRecord,
-} from './fees.record'
-import Fees from './FeesViewer.vue'
+import { PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
 import { api } from '@/api'
 
+import FeesViewer from './FeesViewer.vue'
+
+import { FeesRecord, CoupledFeesRecord } from './fees.record'
+
 export default {
-  components: {
-    Fees,
-  },
+  components: { FeesViewer },
+
   methods: {
-    async getFeeAssetById (assetCode) {
-      const asset = await api.get(
-        `/v3/assets/${assetCode}`
-      )
-      return asset.data
+    async getFeeAssetByCode (assetCode) {
+      const { data: asset } = await api.get(`/v3/assets/${assetCode}`)
+      return asset
     },
+
     async calculateFees (opts) {
       const masterAccountId = api.networkDetails.adminAccountId
-      const asset = await this.getFeeAssetById(opts.assetCode)
+      const asset = await this.getFeeAssetByCode(opts.assetCode)
+
       const recipientFees = await this.calculateRecipientFees({
         accountId: opts.recipientAccountId,
         type: opts.type,
@@ -30,6 +26,7 @@ export default {
       })
       recipientFees.assetCode = opts.assetCode
       recipientFees.type = opts.type
+
       const senderFees = await this.calculateSenderFees({
         accountId: opts.senderAccountId,
         type: opts.type,
@@ -38,6 +35,7 @@ export default {
       })
       senderFees.assetCode = opts.assetCode
       senderFees.type = opts.type
+
       const coupledFeesRecord = new CoupledFeesRecord({
         destination: recipientFees,
         source: senderFees,
@@ -48,6 +46,7 @@ export default {
         masterAccountId: masterAccountId,
         asset: asset,
       }
+
       return coupledFeesRecord
     },
 
@@ -61,6 +60,7 @@ export default {
           subtype: PAYMENT_FEE_SUBTYPES.outgoing,
         }
       )
+
       return new FeesRecord(result.data)
     },
 
@@ -74,6 +74,7 @@ export default {
           amount: amount,
         }
       )
+
       return new FeesRecord(result.data)
     },
   },

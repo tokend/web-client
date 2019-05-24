@@ -151,39 +151,33 @@
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
-import { CoupledFeesRecord } from './fees.record'
 
 const EVENTS = {
-  paidForDestination: 'paidForDestination',
+  paidForDestination: 'paid-for-destination',
 }
 
 export default {
-  name: 'fees',
-  mixins: [
-    FormMixin,
-    IdentityGetterMixin,
-  ],
+  name: 'fees-viewer',
+  mixins: [FormMixin, IdentityGetterMixin],
+
   props: {
-    fees: {
-      type: Object,
-      default: () => CoupledFeesRecord,
-    },
-    paidForDestination: {
-      type: Boolean,
-      default: () => false,
-    },
+    fees: { type: Object, default: () => ({}) },
+    paidForDestination: { type: Boolean, default: false },
   },
+
   data () {
     return {
       isFeesLoadPending: false,
       isPaidForRecipient: false,
     }
   },
+
   computed: {
     ifFeesDownloaded () {
       return Boolean(Object.keys(this.fees).length)
     },
   },
+
   watch: {
     paidForDestination () {
       this.$emit(
@@ -192,6 +186,7 @@ export default {
       )
     },
   },
+
   created () {
     this.isPaidForRecipient = this.paidForDestination
   },
@@ -206,6 +201,7 @@ export default {
         fees
       )
     },
+
     formatFeeSum (...fees) {
       return this.formatFee(
         fees.reduce((sum, item) => sum + item)
@@ -221,6 +217,7 @@ export default {
 .fees-renderer {
   width: 100%;
   font-size: 1.2rem;
+
   /* stylelint-disable selector-nested-pattern */
   tr {
     height: 2rem;
@@ -229,7 +226,6 @@ export default {
   td:last-child {
     text-align: right;
   }
-
   /* stylelint-enable selector-nested-pattern */
 }
 

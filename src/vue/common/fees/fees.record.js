@@ -26,16 +26,20 @@ export class CoupledFeesRecord {
     return Boolean(+this.destination.calculatedPercent) ||
       Boolean(+this.destination.fixed)
   }
+
   get isAnySourceFee () {
     return !!this.source.calculatedPercent ||
     !!this.source.fixed
   }
+
   get isWithdrawable () {
     return this.type === FEE_TYPES.withdrawalFee
   }
+
   get getIsAnyExternalFee () {
     return this.IsAnyExternalFee
   }
+
   set setIsAnyExternalFee (opts) {
     // WARNING: Wait for update back-end about externalSystemType
     if (opts.feeType !== FEE_TYPES.withdrawalFee) {
