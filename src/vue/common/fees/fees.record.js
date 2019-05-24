@@ -10,12 +10,13 @@ export class FeesRecord {
 
 export class CoupledFeesRecord {
   constructor ({ destination, source, assetCode }) {
-    if (
-      !(destination instanceof FeesRecord) ||
-      !(source instanceof FeesRecord)
-    ) {
-      throw new Error('One of the input objects is not FeesRecord')
+    const isFeesValid = destination instanceof FeesRecord &&
+      source instanceof FeesRecord
+
+    if (!isFeesValid) {
+      throw new Error('Destination and source must be FeesRecord instances')
     }
+
     this.destination = destination
     this.source = source
     this.assetCode = assetCode
@@ -28,16 +29,12 @@ export class CoupledFeesRecord {
   }
 
   get isAnySourceFee () {
-    return !!this.source.calculatedPercent ||
-    !!this.source.fixed
+    return Boolean(this.source.calculatedPercent) ||
+      Boolean(this.source.fixed)
   }
 
   get isWithdrawable () {
     return this.type === FEE_TYPES.withdrawalFee
-  }
-
-  get getIsAnyExternalFee () {
-    return this.IsAnyExternalFee
   }
 
   set setIsAnyExternalFee (opts) {

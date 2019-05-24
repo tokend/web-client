@@ -1,45 +1,32 @@
 <template>
   <table
-    v-if="ifFeesDownloaded"
+    v-if="isFeesLoaded"
     class="fees-renderer"
   >
-    <tbody
-      class="fees-component__tbody"
-      :class="{ 'fees-renderer__data--loading': isFeesLoadPending }"
-    >
+    <tbody class="fees-component__tbody">
       <tr
-        class="fees-renderer__strong"
         v-if="fees.IsAnyExternalFee"
+        class="fees-renderer__strong"
       >
-        <td>
-          {{ 'fees-renderer.network-fee-lbl' | globalize }}
-        </td>
-        <td>
-          {{ 'fees-renderer.network-fee-unknown-lbl' | globalize }}
-        </td>
+        <td>{{ 'fees-renderer.network-fee-lbl' | globalize }}</td>
+        <td>{{ 'fees-renderer.network-fee-unknown-lbl' | globalize }}</td>
       </tr>
+
       <tr>
-        <td>
-          {{ 'fees-renderer.source-fixed-fee-lbl' | globalize }}
-        </td>
+        <td>{{ 'fees-renderer.source-fixed-fee-lbl' | globalize }}</td>
         <td>
           <template v-if="paidForDestination">
-            {{
-              formatFeeSum([
-                fees.source.fixed,
-                fees.destination.fixed
-              ])
-            }}
+            {{ formatFeeSum([fees.source.fixed, fees.destination.fixed]) }}
           </template>
+
           <template v-else>
             {{ formatFee(fees.source.fixed) }}
           </template>
         </td>
       </tr>
+
       <tr>
-        <td>
-          {{ 'fees-renderer.source-percent-fee-lbl' | globalize }}
-        </td>
+        <td>{{ 'fees-renderer.source-percent-fee-lbl' | globalize }}</td>
         <td>
           <template v-if="paidForDestination">
             {{
@@ -49,48 +36,46 @@
               ])
             }}
           </template>
+
           <template v-else>
             {{ formatFee(fees.source.calculatedPercent) }}
           </template>
         </td>
       </tr>
+
       <template v-if="fees.destination.fixed">
         <tr>
-          <td>
-            {{ 'fees-renderer.destination-fixed-fee-lbl' | globalize }}
-          </td>
+          <td>{{ 'fees-renderer.destination-fixed-fee-lbl' | globalize }}</td>
           <td>
             <template v-if="paidForDestination">
               {{ formatFee(0) }}
             </template>
+
             <template v-else>
               {{ formatFee(fees.destination.fixed) }}
             </template>
           </td>
         </tr>
+
         <tr v-if="fees.destination.calculatedPercent">
           <td>
             {{ 'fees-renderer.destination-percent-fee-lbl' | globalize }}
           </td>
+
           <td>
             <template v-if="paidForDestination">
               {{ formatFee(0) }}
             </template>
+
             <template v-else>
-              {{
-                formatFee(
-                  fees.destination.calculatedPercent
-                )
-              }}
+              {{ formatFee(fees.destination.calculatedPercent) }}
             </template>
           </td>
         </tr>
       </template>
 
       <tr class="fees-renderer__total-fee-row">
-        <td>
-          {{ 'fees-renderer.source-fixed-total-fee-lbl' | globalize }}
-        </td>
+        <td>{{ 'fees-renderer.source-fixed-total-fee-lbl' | globalize }}</td>
         <td>
           <template v-if="paidForDestination">
             {{
@@ -102,6 +87,7 @@
               ])
             }}
           </template>
+
           <template v-else>
             {{
               formatFeeSum([
@@ -113,18 +99,16 @@
         </td>
       </tr>
 
-      <tr
-        class="fees-renderer__total-fee-row"
-      >
+      <tr class="fees-renderer__total-fee-row">
         <td>
           {{ 'fees-renderer.destination-fixed-total-fee-lbl' | globalize }}
         </td>
+
         <td>
           <template v-if="paidForDestination">
-            {{
-              formatFeeSum([0])
-            }}
+            {{ formatFeeSum([0]) }}
           </template>
+
           <template v-else>
             {{
               formatFeeSum([
@@ -136,11 +120,12 @@
         </td>
       </tr>
 
-      <tr
-        v-if="fees.isAnyDestinationFee && !fees.isWithdrawalFees"
-      >
+      <tr v-if="fees.isAnyDestinationFee && !fees.isWithdrawalFees">
         <td class="fees-renderer__tick-field">
-          <tick-field v-model="isPaidForRecipient">
+          <tick-field
+            :value="paidForDestination"
+            @input="$emit"
+          >
             {{ 'fees-renderer.pay-fees-for-recipient-lbl' | globalize }}
           </tick-field>
         </td>
@@ -148,12 +133,13 @@
     </tbody>
   </table>
 </template>
+
 <script>
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
 import FormMixin from '@/vue/mixins/form.mixin'
 
 const EVENTS = {
-  paidForDestination: 'paid-for-destination',
+  updatePaidForDestination: 'update:paidForDestination',
 }
 
 export default {
@@ -167,13 +153,12 @@ export default {
 
   data () {
     return {
-      isFeesLoadPending: false,
       isPaidForRecipient: false,
     }
   },
 
   computed: {
-    ifFeesDownloaded () {
+    isFeesLoaded () {
       return Boolean(Object.keys(this.fees).length)
     },
   },
@@ -181,7 +166,7 @@ export default {
   watch: {
     paidForDestination () {
       this.$emit(
-        EVENTS.paidForDestination,
+        EVENTS.updatePaidForDestination,
         this.isPaidForRecipient
       )
     },
@@ -192,6 +177,10 @@ export default {
   },
 
   methods: {
+    updatePaidForDestination (value) {
+      this.$emit(EVENTS.updatePaidForDestination, value)
+    },
+
     formatFee (fee) {
       const fees = {
         value: fee,
