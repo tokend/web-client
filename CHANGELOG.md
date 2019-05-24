@@ -8,7 +8,10 @@ Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
 ## [Unreleased]
-#### Updated
+#### Added
+- Tooltip directive
+
+#### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
 
