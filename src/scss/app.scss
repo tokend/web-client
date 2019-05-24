@@ -404,4 +404,11 @@ h6.app__page-heading {
 
 #nprogress {
   z-index: 5;
+
+  .bar {
+    background: $col-primary-lighten !important;
+    height: 0.3rem !important;
+  }
 }
+
+
