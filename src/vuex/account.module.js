@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
 import { vuexTypes } from './types'
 import { api } from '../api'
-import { AssetRecord } from '../js/records/entities/asset.record'
+import { BalanceRecord } from '@/js/records/entities/balance.record'
 
 export const state = {
   account: {},
@@ -39,22 +39,16 @@ export const actions = {
       { root: true }
     )
 
-    const balances = account.balances
-      .map(item => {
-        item.assetDetails = new AssetRecord(item.asset)
-        item.asset = item.assetDetails.code
-        item.balance = item.state.available
-        return item
-      })
-      .sort((a, b) => b.convertedBalance - a.convertedBalance)
-    commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
+    commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, account.balances)
   },
 }
 
 export const getters = {
   [vuexTypes.account]: state => state.account,
   [vuexTypes.accountId]: state => state.account.id,
-  [vuexTypes.accountBalances]: state => state.balancesDetails,
+  [vuexTypes.accountBalances]: state => state.balancesDetails
+    .map(item => new BalanceRecord(item))
+    .sort((a, b) => b.convertedBalance - a.convertedBalance),
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')
   ),

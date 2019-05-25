@@ -11,7 +11,7 @@ for further information about branching and tagging conventions.
 #### Added
 - Assets vuex module for loading and storing all the assets
 
-#### Updated
+#### Changed
 - Now calling "UPDATE_ASSET" mutation in the
   "LOAD_ACCOUNT_BALANCES_DETAILS" action
 

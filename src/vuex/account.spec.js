@@ -4,7 +4,6 @@ import { vuexTypes } from './types'
 
 import accountJSON from '../test/mocks/account'
 import balancesDetailsJSON from '../test/mocks/account-balances-details'
-import { AssetRecord } from '../js/records/entities/asset.record'
 import { api } from '@/api'
 
 describe('account.module', () => {
@@ -80,19 +79,12 @@ describe('account.module', () => {
 
         await actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS](store)
 
-        const balancesPayload = balancesDetailsJSON
-          .map(item => {
-            item.assetDetails = new AssetRecord(item.asset)
-            item.asset = item.assetDetails.code
-            item.balance = item.state.available
-            return item
-          })
-          .sort((a, b) => b.convertedBalance - a.convertedBalance)
-
-        expect(store.commit.args).to.deep.equal([
-          [vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true }],
-          [vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balancesPayload],
-        ])
+        expect(store.commit).to.have.been.calledWithExactly(
+          vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true }
+        )
+        expect(store.commit).to.have.been.calledWithExactly(
+          vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balancesDetailsJSON
+        )
       })
   })
 

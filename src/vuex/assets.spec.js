@@ -60,23 +60,21 @@ describe('assets.module', () => {
         }),
       })
 
-      const expectedMutations = {
-        [vuexTypes.SET_ASSETS]: [
+      await actions[vuexTypes.LOAD_ASSETS](store)
+
+      expect(store.commit).to.have.been.calledOnceWithExactly(
+        vuexTypes.SET_ASSETS,
+        [
           { id: 'BTC' },
           { id: 'USD' },
           { id: 'ETH' },
-        ],
-      }
-
-      await actions[vuexTypes.LOAD_ASSETS](store)
-
-      expect(store.commit.args)
-        .to.deep.equal(Object.entries(expectedMutations))
+        ]
+      )
     })
   })
 
   describe('getters', () => {
-    it('factors', () => {
+    it('assets', () => {
       const state = {
         assets: [
           { id: 'BTC' },
@@ -91,6 +89,21 @@ describe('assets.module', () => {
           new AssetRecord({ id: 'USD' }),
           new AssetRecord({ id: 'ETH' }),
         ])
+    })
+
+    it('assetByCode', () => {
+      const assetGetters = {
+        [vuexTypes.assets]: getters[vuexTypes.assets]({
+          assets: [
+            { id: 'BTC' },
+            { id: 'USD' },
+            { id: 'ETH' },
+          ],
+        }),
+      }
+
+      expect(getters[vuexTypes.assetByCode](null, assetGetters)('USD'))
+        .to.deep.equal(new AssetRecord({ id: 'USD' }))
     })
   })
 })

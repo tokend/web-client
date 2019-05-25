@@ -46,7 +46,7 @@ export const actions = {
 
 export const getters = {
   [vuexTypes.assets]: state => state.assets.map(a => new AssetRecord(a)),
-  [vuexTypes.getAssetByCode]: (_, getters) => assetCode =>
+  [vuexTypes.assetByCode]: (_, getters) => assetCode =>
     getters[vuexTypes.assets].find(item => item.code === assetCode),
 }
 

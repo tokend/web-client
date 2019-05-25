@@ -125,7 +125,7 @@ const getters = {
 
   // assets
   assets: 'assets',
-  getAssetByCode: 'getAssetByCode',
+  assetByCode: 'assetByCode',
 }
 
 export const vuexTypes = {

@@ -27,7 +27,7 @@ describe('assets.module end-to-end test', () => {
       sinon.restore()
     })
 
-    it('factors', async () => {
+    it('assets', async () => {
       sinon.stub(api, 'get').resolves({
         data: [
           { id: 'BTC' },
