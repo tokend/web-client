@@ -9,11 +9,24 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Tooltip directive
 - Assets vuex module for loading and storing all the assets
 
 #### Changed
+- Now loading account converted balances in
+  "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
 - Now calling "UPDATE_ASSET" mutation in the
   "LOAD_ACCOUNT_BALANCES_DETAILS" action
+
+## [1.7.0-rc.2] - 2019-05-21
+### "Under the hood" changes
+#### Changed
+- Some DevOps stuff changed
+
+## [1.7.0-rc.1] - 2019-05-21
+### "Under the hood" changes
+#### Changed
+- Some DevOps stuff changed
 
 ## [1.7.0-rc.0] - 2019-05-21
 #### Added
@@ -556,7 +569,9 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.7.0-rc.0...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.7.0-rc.2...HEAD
+[1.7.0-rc.2]: https://github.com/tokend/web-client/compare/1.7.0-rc.1...1.7.0-rc.2
+[1.7.0-rc.1]: https://github.com/tokend/web-client/compare/1.7.0-rc.0...1.7.0-rc.1
 [1.7.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0...1.7.0-rc.0
 [1.6.0]: https://github.com/tokend/web-client/compare/1.6.0-rc.0...1.6.0
 [1.6.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0-x.2...1.6.0-rc.0
