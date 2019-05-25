@@ -10,10 +10,27 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- Whitelisted detail on sale related modules
+- isTransferable policy getter to asset records
 
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now top bar buttons in movements page are conditionally disabled
+- Route-to-route progress bar size and color
+- Now hiding "My Sales" tab for non-corporate accounts
+- Update "Learn more about pre-issuance" link style on sale creation form
+
+#### Fixed
+- 'data' error in asset request list
+- Successful investment sale state update
+- Break words in sale description viewer
+- Replace labels for submit general kyc button
+
+#### Removed
+- Cursor pointer on disabled select
+- Price history chart from sale overview page
+- Validation for address line 2
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
