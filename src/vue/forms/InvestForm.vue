@@ -30,7 +30,7 @@
             <vue-markdown
               class="app__form-field-description invest-form__amount-hint"
               :source="'invest-form.balance-hint' | globalize({
-                amount: availableAmount
+                amount: availableBalance
               })"
             />
           </div>
@@ -51,7 +51,7 @@
                 'form.amount',
                 {
                   from: MIN_AMOUNT,
-                  to: availableAmount.value,
+                  to: availableBalance.value,
                   saleCap: {
                     value: investedCap,
                     currency: sale.defaultQuoteAsset
@@ -106,7 +106,8 @@
           <template v-if="+fees.percent">
             <p
               class="invest-form__fee"
-              v-if="fees.percent">
+              v-if="fees.percent"
+            >
               - {{ fees.percent | formatNumber }}
               {{ form.asset.code }}
               <span class="invest-form__fee-type">
@@ -121,16 +122,14 @@
             </p>
           </template>
 
-          <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.total-fee-label' | globalize }}
-          </h3>
-
-          <p class="invest-form__fee">
-            - {{
-              { value: totalAmount, currency: form.asset.code } | formatMoney
-            }}
-            <span class="invest-form__fee-type">
+          <p class="invest-form__total-amount">
+            <span class="invest-form__total-amount-text">
               {{ 'invest-form.total-amount-label' | globalize }}
+            </span>
+            <span class="invest-form__total-amount-text">
+              {{
+                { value: totalAmount, currency: form.asset.code } | formatMoney
+              }}
             </span>
           </p>
         </div>
@@ -299,7 +298,10 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          amountRange: amountRange(
+            this.MIN_AMOUNT,
+            this.availableBalance.value
+          ),
           noMoreThanSaleCap: _ => !this.isCapExceeded,
         },
       },
@@ -347,7 +349,11 @@ export default {
       return this.quoteAssetBalances.map(balance => balance.assetDetails)
     },
 
-    availableAmount () {
+    // Available balance is (currentBalance + currentOffer + currentOfferFee),
+    // 'cause when user updates his offer, it's canceling firstly, so
+    // the old offer amount and fees come back to the user's balance, and
+    // he can spend them again.
+    availableBalance () {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset === this.form.asset.code)
 
@@ -733,6 +739,17 @@ export default {
 
 .invest-form__fee-type {
   color: $col-details-label;
+}
+
+.invest-form__total-amount {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.invest-form__total-amount-text {
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
 .invest-form__no-fee-msg {

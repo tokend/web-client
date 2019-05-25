@@ -1577,7 +1577,6 @@
       "requires-us-accreditation-title": "Accreditation required",
       "requires-us-accreditation-desc": "U.S. citizens are required to verify their accreditation before holding this asset",
       "percent-fee-label": "Percent fee",
-      "total-fee-label": "Total fee",
       "total-amount-label": "Total amount",
       "continue-btn": "Continue",
       "recheck-form-msg": "Please recheck the form before proceeding",
