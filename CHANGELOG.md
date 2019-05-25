@@ -15,6 +15,9 @@ for further information about branching and tagging conventions.
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
 
+#### Fixed
+- Don't show title in kyc status message, if no additional external information
+
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
 #### Changed
