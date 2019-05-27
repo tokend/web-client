@@ -272,7 +272,7 @@ export default {
           await this.getCounterparty(this.form.recipient)
 
         this.fees = await this.calculateFees({
-          asset: this.form.asset,
+          assetCode: this.form.asset.code,
           amount: this.form.amount,
           recipientAccountId: recipientAccountId,
           senderAccountId: this.accountId,

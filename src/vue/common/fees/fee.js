@@ -45,15 +45,15 @@ export class Fee {
   }
 
   get isPayment () {
-    return this.type === FEE_TYPES.withdrawalFee
+    return this.type === FEE_TYPES.paymentFee
   }
 
   get isOffer () {
-    return this.type === FEE_TYPES.withdrawalFee
+    return this.type === FEE_TYPES.offerFee
   }
 
   get isInvest () {
-    return this.type === FEE_TYPES.withdrawalFee
+    return this.type === FEE_TYPES.investFee
   }
 
   get isIssuance () {

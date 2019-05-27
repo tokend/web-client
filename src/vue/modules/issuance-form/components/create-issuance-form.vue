@@ -244,6 +244,7 @@ export default {
     'form.amount' (value) {
       this.tryLoadFees()
     },
+
     'form.asset.code' () {
       this.tryLoadFees()
     },

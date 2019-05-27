@@ -1423,7 +1423,8 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-created-msg": "Your order was successfully created"
+      "order-created-msg": "Your order was successfully created",
+      "loading-msg": "Loading…"
     },
     "submit-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1433,7 +1434,8 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-submitted-msg": "Your order was successfully submitted"
+      "order-submitted-msg": "Your order was successfully submitted",
+      "loading-msg": "Loading…"
     },
     "your-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1444,8 +1446,8 @@
       "update-order-btn": "Update order",
       "cancel-order-btn": "Cancel order",
       "order-updated-msg": "Your order was successfully updated",
-      "order-canceled-msg": "Your order was successfully cancelled"
-
+      "order-canceled-msg": "Your order was successfully cancelled",
+      "loading-msg": "Loading…"
     },
     "trade-exchange": {
       "offers-section-title": "Open orders"
@@ -1697,7 +1699,7 @@
       "calculated-percent-fee-msg": "Calculated percent fee",
       "sender-fee-msg": "Sender fee",
       "recipient-fee-msg": "Recipient fee",
-      "offer-fee-msg": "Offer fee",
+      "order-fee-msg": "Order fee",
       "withdrawal-fee-msg": "Withdrawal fee",
       "invest-fee-msg": "Invest fee",
       "issuance-fee-msg": "Issuance fee",

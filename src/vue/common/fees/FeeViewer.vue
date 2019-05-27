@@ -85,7 +85,7 @@ export default {
       } else if (this.fee.isInvest) {
         result = 'fees-renderer.invest-fee-msg'
       } else if (this.fee.isOffer) {
-        result = 'fees-renderer.offer-fee-msg'
+        result = 'fees-renderer.order-fee-msg'
       } else if (this.fee.isIssuance) {
         result = 'fees-renderer.issuance-fee-msg'
       } else {

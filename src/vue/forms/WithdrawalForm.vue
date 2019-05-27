@@ -286,7 +286,7 @@ export default {
     async loadFees () {
       try {
         this.fees = await this.calculateFees({
-          asset: this.form.asset,
+          assetCode: this.form.asset.code,
           amount: this.form.amount || 0,
           senderAccountId: this.accountId,
           type: FEE_TYPES.withdrawalFee,

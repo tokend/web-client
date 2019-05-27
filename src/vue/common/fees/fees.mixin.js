@@ -5,12 +5,19 @@ import FeesRenderer from './FeesRenderer.vue'
 
 import { Fee } from './fee'
 import { FeesCollection } from './fees-collection'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 export default {
   components: { FeesRenderer },
 
   methods: {
+    async getAssetByCode (assetCode) {
+      const { data: asset } = await api.get(`/v3/assets/${assetCode}`)
+      return new AssetRecord(asset)
+    },
+
     async calculateFees (opts) {
+      const asset = await this.getAssetByCode(opts.assetCode)
       const masterAccountId = api.networkDetails.adminAccountId
       let fees = []
 
@@ -18,7 +25,7 @@ export default {
         accountId: opts.senderAccountId,
         type: opts.type,
         subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-        assetCode: opts.asset.code,
+        assetCode: opts.assetCode,
         amount: opts.amount,
       })
       fees.push(sourceFee)
@@ -28,17 +35,13 @@ export default {
           accountId: opts.recipientAccountId,
           type: opts.type,
           subtype: PAYMENT_FEE_SUBTYPES.incoming,
-          assetCode: opts.asset.code,
+          assetCode: opts.assetCode,
           amount: opts.amount,
         })
         fees.push(destinationFee)
       }
 
-      return new FeesCollection({
-        fees,
-        asset: opts.asset,
-        masterAccountId,
-      })
+      return new FeesCollection({ fees, asset, masterAccountId })
     },
 
     async calculateFee ({ accountId, type, subtype, assetCode, amount }) {
