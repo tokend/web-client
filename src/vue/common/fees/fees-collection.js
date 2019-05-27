@@ -33,9 +33,11 @@ export class FeesCollection {
   }
 
   get isExternalFeePresent () {
-    return this._asset.externalSystemType &&
+    return Boolean(
+      this._asset.externalSystemType &&
       this._asset.owner === this._masterAccountId &&
       this._fees.find(fee => fee.isWithdrawal)
+    )
   }
 
   get assetCode () {
@@ -48,7 +50,12 @@ export class FeesCollection {
   }
 
   get totalFee () {
-    return this.fees.reduce((sum, item) => MathUtil.add(sum, item))
+    return {
+      fixed: this.fees
+        .reduce((sum, item) => MathUtil.add(sum, item.fixed), '0'),
+      calculatedPercent: this.fees
+        .reduce((sum, item) => MathUtil.add(sum, item.calculatedPercent), '0'),
+    }
   }
 
   get valuableFees () {
