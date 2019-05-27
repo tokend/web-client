@@ -163,12 +163,7 @@ $fee-viewer-animation-duration: 0.2s;
 }
 
 @keyframes fee-viewer__details-keyframes {
-  from {
-    max-height: 0;
-  }
-
-  to {
-    max-height: 4rem;
-  }
+  from { max-height: 0; }
+  to { max-height: 4rem; }
 }
 </style>

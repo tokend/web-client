@@ -6,21 +6,19 @@ import Vuelidate from 'vuelidate'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
-import { globalize } from '@/vue/filters/globalize'
-import accountModule from '@/vuex/account.module'
-import { ErrorHandler } from '@/js/helpers/error-handler'
-import FeesMixin from '@/vue/common/fees/fees.mixin'
-import FormMixin from '@/vue/mixins/form.mixin'
+
 import { vuexTypes } from '@/vuex'
-import {
-  errors,
-  base,
-  ASSET_POLICIES,
-} from '@tokend/js-sdk'
-import { Bus } from '@/js/helpers/event-bus'
-import { TestHelper } from '@/test/test-helper'
-import { AssetRecord } from '@/js/records/entities/asset.record'
+import accountModule from '@/vuex/account.module'
+
 import { api } from '@/api'
+import { errors, base, ASSET_POLICIES } from '@tokend/js-sdk'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
+
+import { TestHelper } from '@/test/test-helper'
+
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -29,7 +27,6 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
-localVue.filter('globalize', globalize)
 
 describe('TransferForm component', () => {
   let mockHelper
@@ -44,11 +41,8 @@ describe('TransferForm component', () => {
   beforeEach(() => {
     mockHelper = new MockHelper()
 
-    sinon
-      .stub(TransferForm, 'created')
-      .resolves()
-    sinon
-      .stub(accountModule.getters, vuexTypes.accountId)
+    sinon.stub(TransferForm, 'created').resolves()
+    sinon.stub(accountModule.getters, vuexTypes.accountId)
       .returns(mockHelper.getDefaultAccountId)
 
     mockedAccountBalances = [
@@ -87,25 +81,16 @@ describe('TransferForm component', () => {
         }),
       },
     ]
-    sinon
-      .stub(accountModule.getters, vuexTypes.accountBalances)
+    sinon.stub(accountModule.getters, vuexTypes.accountBalances)
       .returns(mockedAccountBalances)
-    sinon
-      .stub(accountModule.actions, vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
+    sinon.stub(accountModule.actions, vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
       .resolves(mockedAccountBalances)
 
     store = new Vuex.Store({
       getters: accountModule.getters,
       actions: accountModule.actions,
     })
-    wrapper = shallowMount(TransferForm, {
-      store,
-      mixins: [
-        FeesMixin,
-        FormMixin,
-      ],
-      localVue,
-    })
+    wrapper = shallowMount(TransferForm, { store, localVue })
   })
 
   describe('getCounterparty()', () => {
@@ -230,8 +215,7 @@ describe('TransferForm component', () => {
         },
       })
 
-      sinon
-        .stub(wrapper.vm, 'getCounterparty')
+      sinon.stub(wrapper.vm, 'getCounterparty')
         .resolves(mockHelper.getDefaultAccountId)
 
       sinon.stub(wrapper.vm, 'updateView')
@@ -241,8 +225,7 @@ describe('TransferForm component', () => {
     })
 
     it('try to process transfer if the form is valid', async () => {
-      sinon
-        .stub(wrapper.vm, 'calculateFees')
+      sinon.stub(wrapper.vm, 'calculateFees')
         .resolves(expectedFees)
       sinon.stub(wrapper.vm.isFeesLoaded)
 
@@ -263,8 +246,7 @@ describe('TransferForm component', () => {
     })
 
     it('calculateFees handle error', async () => {
-      sinon
-        .stub(wrapper.vm, 'calculateFees')
+      sinon.stub(wrapper.vm, 'calculateFees')
         .rejects()
 
       // make form valid to pass isFormValid()
