@@ -1005,13 +1005,15 @@
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
-      "loading-msg": "Loading your assets…",
-      "load-failed-msg": "There was an error while loading your assets. Please, try again later",
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "reference-lbl": "Reference",
       "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "receiver-lbl": "Email or account ID",
+      "amount-to-receive-msg": "Amount to receive",
+      "amount-to-receive-hint": "Amount to receive should be more than 0",
       "issue-btn": "Issue",
       "no-owned-assets-title": "No owned assets yet",
       "no-owned-assets-msg": "Please create an asset to make an issuance",
@@ -1698,6 +1700,7 @@
       "offer-fee-msg": "Offer fee",
       "withdrawal-fee-msg": "Withdrawal fee",
       "invest-fee-msg": "Invest fee",
+      "issuance-fee-msg": "Issuance fee",
       "unknown-fee-msg": "Unknown fee",
       "pay-for-recipient-lbl": "Pay fees for recipient"
     },

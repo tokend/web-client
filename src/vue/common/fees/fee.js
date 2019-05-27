@@ -56,6 +56,10 @@ export class Fee {
     return this.type === FEE_TYPES.withdrawalFee
   }
 
+  get isIssuance () {
+    return this.type === FEE_TYPES.issuanceFee
+  }
+
   get isIncoming () {
     return this.subtype === PAYMENT_FEE_SUBTYPES.incoming
   }

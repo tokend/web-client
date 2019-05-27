@@ -57,7 +57,6 @@
 
 <script>
 import { Fee } from './fee'
-import { FEE_TYPES } from '@tokend/js-sdk'
 
 export default {
   name: 'fee-viewer',
@@ -75,25 +74,22 @@ export default {
     feeTypeTranslationId () {
       let result
 
-      switch (this.fee.type) {
-        case FEE_TYPES.paymentFee:
-          if (this.fee.isIncoming) {
-            result = 'fees-renderer.recipient-fee-msg'
-          } else {
-            result = 'fees-renderer.sender-fee-msg'
-          }
-          break
-        case FEE_TYPES.investFee:
-          result = 'fees-renderer.invest-fee-msg'
-          break
-        case FEE_TYPES.offerFee:
-          result = 'fees-renderer.offer-fee-msg'
-          break
-        case FEE_TYPES.withdrawalFee:
-          result = 'fees-renderer.withdrawal-fee-msg'
-          break
-        default:
-          result = 'fees-renderer.unknown-fee-msg'
+      if (this.fee.isPayment) {
+        if (this.fee.isIncoming) {
+          result = 'fees-renderer.recipient-fee-msg'
+        } else {
+          result = 'fees-renderer.sender-fee-msg'
+        }
+      } else if (this.fee.isWithdrawal) {
+        result = 'fees-renderer.withdrawal-fee-msg'
+      } else if (this.fee.isInvest) {
+        result = 'fees-renderer.invest-fee-msg'
+      } else if (this.fee.isOffer) {
+        result = 'fees-renderer.offer-fee-msg'
+      } else if (this.fee.isIssuance) {
+        result = 'fees-renderer.issuance-fee-msg'
+      } else {
+        result = 'fees-renderer.unknown-fee-msg'
       }
 
       return result

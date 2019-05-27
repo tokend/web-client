@@ -72,6 +72,10 @@ export default {
 <style lang="scss" scoped>
 @import '@/scss/variables';
 
+.fees-renderer {
+  width: 100%;
+}
+
 .fees-renderer__tick-field {
   margin-top: 2rem;
 }
