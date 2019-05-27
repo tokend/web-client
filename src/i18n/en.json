@@ -1685,7 +1685,8 @@
       "invest-fee-msg": "Invest fee",
       "issuance-fee-msg": "Issuance fee",
       "unknown-fee-msg": "Unknown fee",
-      "pay-for-recipient-lbl": "Pay fees for recipient"
+      "pay-for-recipient-lbl": "Pay fees for recipient",
+      "view-fees-link": "View all fees"
     },
     "deposit-form": {
       "deposit": "Deposit",

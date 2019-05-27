@@ -1,5 +1,14 @@
 <template>
   <div class="fees-renderer">
+    <router-link
+      class="fees-renderer__view-fees-link"
+      :to="vueRoutes.fees"
+      target="_blank"
+    >
+      <span>{{ 'fees-renderer.view-fees-link' | globalize }}</span>
+      <i class="mdi mdi-open-in-new fees-renderer__view-icon" />
+    </router-link>
+
     <p
       v-if="feesCollection.isExternalFeePresent"
       class="fees-renderer__network-fee"
@@ -44,6 +53,8 @@ import FeeViewer from './FeeViewer'
 
 import { FeesCollection } from './fees-collection'
 
+import { vueRoutes } from '@/vue-router/routes'
+
 const EVENTS = {
   updatePaidForDestination: 'update:paidForDestination',
 }
@@ -60,6 +71,10 @@ export default {
     paidForDestination: { type: Boolean, default: false },
   },
 
+  data: _ => ({
+    vueRoutes,
+  }),
+
   methods: {
     updatePaidForDestination (value) {
       this.feesCollection.isPaidForDestination = value
@@ -69,7 +84,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/scss/variables';
 
 .fees-renderer {
@@ -92,5 +107,16 @@ export default {
 .fees-renderer__network-fee,
 .fees-renderer__fee-block {
   margin-bottom: 1rem;
+}
+
+.fees-renderer__view-fees-link {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.6rem;
+  color: $col-link;
+}
+
+.fees-renderer__view-icon {
+  display: flex;
 }
 </style>
