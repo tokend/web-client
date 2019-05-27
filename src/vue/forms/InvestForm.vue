@@ -158,7 +158,7 @@
           :message="'invest-form.recheck-form-msg' | globalize"
           :ok-button="'invest-form.invest-btn' | globalize"
           :is-pending="isSubmitting"
-          @cancel="updateView(VIEW_MODES.submit)"
+          @cancel="updateView(VIEW_MODES.submit) || (isFeesLoaded = false)"
           @ok="submit()"
         />
       </div>
@@ -534,8 +534,6 @@ export default {
     },
 
     async getOfferOperations () {
-      const fee = await this.getOfferFee()
-
       let operations = []
 
       if (this.currentInvestment.id) {
@@ -548,7 +546,10 @@ export default {
       }
       operations.push(
         base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts(OFFER_CREATE_ID, fee.calculatedPercent)
+          this.getOfferOpts(
+            OFFER_CREATE_ID,
+            this.fees.totalFee.calculatedPercent
+          )
         ),
       )
 
