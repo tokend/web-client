@@ -99,37 +99,9 @@
       <transition name="app__fade-in">
         <div
           class="invest-form__fee-box"
-          v-if="isFeesLoaded">
-          <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.transaction-fees-heading' | globalize }}
-          </h3>
-          <template v-if="+fees.fixed || +fees.percent">
-            <p
-              class="invest-form__fee"
-              v-if="fees.fixed">
-              - {{ fees.fixed | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.fixed-fee-label' | globalize }}
-              </span>
-            </p>
-
-            <p
-              class="invest-form__fee"
-              v-if="fees.percent">
-              - {{ fees.percent | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.percent-fee-label' | globalize }}
-              </span>
-            </p>
-          </template>
-
-          <template v-else>
-            <p class="invest-form__no-fee-msg">
-              {{ 'invest-form.no-transaction-fees-msg' | globalize }}
-            </p>
-          </template>
+          v-if="isFeesLoaded"
+        >
+          <fees-renderer :fees-collection="fees" />
 
           <h3 class="invest-form__fee-box-heading">
             {{ 'invest-form.total-fee-label' | globalize }}
@@ -225,11 +197,14 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import MessageBox from '@/vue/common/MessageBox'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer'
+
+import FormMixin from '@/vue/mixins/form.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 
 import config from '@/config'
 
@@ -270,8 +245,9 @@ export default {
     Loader,
     NoDataMessage,
     MessageBox,
+    FeesRenderer,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, FeesMixin],
 
   props: {
     sale: { type: SaleRecord, required: true },
@@ -414,8 +390,10 @@ export default {
     },
 
     totalAmount () {
-      const fees = MathUtil
-        .add(this.fees.fixed, this.fees.percent)
+      const fees = MathUtil.add(
+        this.fees.totalFee.fixed,
+        this.fees.totalFee.calculatedPercent
+      )
       return MathUtil.add(fees, this.form.amount)
     },
 
@@ -577,20 +555,6 @@ export default {
       return operations
     },
 
-    async getOfferFee () {
-      const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
-      const params = [
-        `asset=${this.form.asset.code}`,
-        `fee_type=${FEE_TYPES.investFee}`,
-        `amount=${this.form.amount}`,
-      ]
-
-      const endpoint = `${baseEndpoint}?${params.join('&')}`
-      const { data: fee } = await api.get(endpoint)
-
-      return fee
-    },
-
     getOfferOpts (id, offerFee) {
       return {
         offerID: id,
@@ -638,9 +602,13 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const fee = await this.getOfferFee()
-        this.fees.fixed = fee.fixed
-        this.fees.percent = fee.calculatedPercent
+        this.fees = await this.calculateFees({
+          asset: this.form.asset,
+          amount: this.form.amount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.investFee,
+        })
+
         this.isFeesLoaded = true
         this.updateView(VIEW_MODES.confirm)
       } catch (error) {

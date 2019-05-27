@@ -18,10 +18,6 @@ export class FeesCollection {
     this._masterAccountId = masterAccountId
   }
 
-  [Symbol.iterator] () {
-    return this.fees
-  }
-
   get isPaidForDestination () {
     return this._isPaidForDestination
   }
@@ -32,7 +28,7 @@ export class FeesCollection {
     if (value) {
       this._outgoingFee.setAdditional(this._incomingFee.total)
     } else {
-      this._outgoingFee.resetAdditional()
+      this._outgoingFee.removeAdditional()
     }
   }
 
@@ -46,17 +42,17 @@ export class FeesCollection {
     return this._asset.code
   }
 
+  get fees () {
+    return [this.sourceFee, this.destinationFee, ...this.additionalFees]
+      .filter(f => f !== undefined)
+  }
+
   get totalFee () {
     return this.fees.reduce((sum, item) => MathUtil.add(sum, item))
   }
 
   get valuableFees () {
     return this.fees.filter(f => !f.isEmpty)
-  }
-
-  get fees () {
-    return [this.sourceFee, this.destinationFee, ...this.additionalFees]
-      .filter(f => f !== undefined)
   }
 
   get sourceFee () {
@@ -71,16 +67,16 @@ export class FeesCollection {
     }
   }
 
+  get additionalFees () {
+    return this._fees
+      .filter(f => ![this._incomingFee, this._outgoingFee].includes(f))
+  }
+
   get _incomingFee () {
     return this._fees.find(f => f.isIncoming)
   }
 
   get _outgoingFee () {
     return this._fees.find(f => f.isOutgoing)
-  }
-
-  get additionalFees () {
-    return this._fees
-      .filter(f => ![this._incomingFee, this._outgoingFee].includes(f))
   }
 }

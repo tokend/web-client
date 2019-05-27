@@ -1,38 +1,38 @@
 <template>
   <div class="fees-renderer">
     <p
-      v-if="fees.isExternalFeePresent"
-      class="fee-renderer__network-fee"
+      v-if="feesCollection.isExternalFeePresent"
+      class="fees-renderer__network-fee"
     >
-      <span class="fee-renderer__network-fee-text">
-        {{ 'fees-renderer.network-fee-lbl' | globalize }}
+      <span class="fees-renderer__network-fee-text">
+        {{ 'fees-renderer.network-fee-msg' | globalize }}
       </span>
 
-      <span class="fee-renderer__network-fee-text">
-        {{ 'fees-renderer.network-fee-unknown-lbl' | globalize }}
+      <span class="fees-renderer__network-fee-text">
+        {{ 'fees-renderer.network-fee-unknown-msg' | globalize }}
       </span>
     </p>
 
     <div
-      v-for="(fee, i) in fees.fees"
+      v-for="(fee, i) in feesCollection.fees"
       :key="i"
     >
       <fee-viewer
         class="fees-renderer__fee-block"
         :fee="fee"
-        :asset-code="fees.assetCode"
+        :asset-code="feesCollection.assetCode"
       />
     </div>
 
     <div
-      v-if="fees.destinationFee"
+      v-if="feesCollection.destinationFee"
       class="fees-renderer__tick-field"
     >
       <tick-field
         :value="paidForDestination"
         @input="updatePaidForDestination"
       >
-        {{ 'fees-renderer.pay-fees-for-recipient-lbl' | globalize }}
+        {{ 'fees-renderer.pay-for-recipient-lbl' | globalize }}
       </tick-field>
     </div>
   </div>
@@ -56,13 +56,13 @@ export default {
   },
 
   props: {
-    fees: { type: FeesCollection, required: true },
+    feesCollection: { type: FeesCollection, required: true },
     paidForDestination: { type: Boolean, default: false },
   },
 
   methods: {
     updatePaidForDestination (value) {
-      this.fees.isPaidForDestination = value
+      this.feesCollection.isPaidForDestination = value
       this.$emit(EVENTS.updatePaidForDestination, value)
     },
   },
@@ -76,16 +76,16 @@ export default {
   margin-top: 2rem;
 }
 
-.fee-renderer__network-fee {
+.fees-renderer__network-fee {
   display: flex;
   justify-content: space-between;
 }
 
-.fee-renderer__network-fee-text {
+.fees-renderer__network-fee-text {
   font-size: 1.6rem;
 }
 
-.fee-renderer__network-fee,
+.fees-renderer__network-fee,
 .fees-renderer__fee-block {
   margin-bottom: 1rem;
 }

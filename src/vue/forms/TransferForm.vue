@@ -98,7 +98,7 @@
             v-if="isFeesLoaded && view.mode === VIEW_MODES.confirm"
           >
             <fees-renderer
-              :fees="fees"
+              :fees-collection="fees"
               :paid-for-destination.sync="form.isPaidForRecipient"
             />
           </div>

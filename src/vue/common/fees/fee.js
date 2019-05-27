@@ -14,6 +14,14 @@ export class Fee {
     this.additional = EMPTY_ADDITIONAL_FEE
   }
 
+  setAdditional (value) {
+    this.additional = value
+  }
+
+  removeAdditional () {
+    this.additional = EMPTY_ADDITIONAL_FEE
+  }
+
   get isAdditionalPresent () {
     return this.additional !== EMPTY_ADDITIONAL_FEE
   }
@@ -27,7 +35,25 @@ export class Fee {
   }
 
   get isEmpty () {
-    return Number(this.fixed) === 0 && Number(this.calculatedPercent) === 0
+    return Number(this.fixed) === 0 &&
+      Number(this.calculatedPercent) === 0 &&
+      Number(this.additional) === 0
+  }
+
+  get isWithdrawal () {
+    return this.type === FEE_TYPES.withdrawalFee
+  }
+
+  get isPayment () {
+    return this.type === FEE_TYPES.withdrawalFee
+  }
+
+  get isOffer () {
+    return this.type === FEE_TYPES.withdrawalFee
+  }
+
+  get isInvest () {
+    return this.type === FEE_TYPES.withdrawalFee
   }
 
   get isIncoming () {
@@ -36,17 +62,5 @@ export class Fee {
 
   get isOutgoing () {
     return this.subtype === PAYMENT_FEE_SUBTYPES.outgoing
-  }
-
-  get isWithdrawal () {
-    return this.type === FEE_TYPES.withdrawalFee
-  }
-
-  setAdditional (value) {
-    this.additional = value
-  }
-
-  resetAdditional () {
-    this.additional = EMPTY_ADDITIONAL_FEE
   }
 }

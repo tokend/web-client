@@ -90,7 +90,7 @@
 
           <div class="app__form-row withdrawal__form-row">
             <template v-if="isFeesLoaded">
-              <fees-renderer :fees="fees" />
+              <fees-renderer :fees-collection="fees" />
             </template>
 
             <template v-else>

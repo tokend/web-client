@@ -1689,16 +1689,17 @@
       "withdraw-btn": "Withdraw"
     },
     "fees-renderer": {
-      "network-fee-lbl": "External network fee",
-      "network-fee-unknown-lbl": "Unknown",
-      "source-fixed-fee-lbl": "Sender fixed fee",
-      "source-percent-fee-lbl": "Sender percent fee",
-      "destination-fixed-fee-lbl": "Recipient fixed fee",
-      "destination-percent-fee-lbl": "Recipient percent fee",
-      "source-fixed-total-fee-lbl": "Total sender fee",
-      "destination-fixed-total-fee-lbl": "Total recipient fee",
-      "fee-loading-msg-lbl": "Loading…",
-      "pay-fees-for-recipient-lbl": "Pay fees for recipient"
+      "network-fee-msg": "External network fee",
+      "network-fee-unknown-msg": "Unknown",
+      "fixed-fee-msg": "Fixed fee",
+      "calculated-percent-fee-msg": "Calculated percent fee",
+      "sender-fee-msg": "Sender fee",
+      "recipient-fee-msg": "Recipient fee",
+      "offer-fee-msg": "Offer fee",
+      "withdrawal-fee-msg": "Withdrawal fee",
+      "invest-fee-msg": "Invest fee",
+      "unknown-fee-msg": "Unknown fee",
+      "pay-for-recipient-lbl": "Pay fees for recipient"
     },
     "deposit-form": {
       "deposit": "Deposit",

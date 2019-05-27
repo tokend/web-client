@@ -2,7 +2,7 @@
   <div class="fee-viewer">
     <p class="fee-viewer__direction-title">
       <span class="fee-viewer__direction-title-text">
-        {{ feeDirectionTitle }}
+        {{ feeTypeTranslationId | globalize }}
       </span>
 
       <a
@@ -20,7 +20,7 @@
       >
         <p class="fee-viewer__details-row">
           <span class="fee-viewer__details-row-text">
-            Fixed fee
+            {{ 'fees-renderer.fixed-fee-msg' | globalize }}
           </span>
 
           <span class="fee-viewer__details-row-text">
@@ -30,7 +30,7 @@
 
         <p class="fee-viewer__details-row">
           <span class="fee-viewer__details-row-text">
-            Percent fee
+            {{ 'fees-renderer.calculated-percent-fee-msg' | globalize }}
           </span>
 
           <span class="fee-viewer__details-row-text">
@@ -43,7 +43,7 @@
           class="fee-viewer__details-row"
         >
           <span class="fee-viewer__details-row-text">
-            Recipient fee
+            {{ 'fees-renderer.recipient-fee-msg' | globalize }}
           </span>
 
           <span class="fee-viewer__details-row-text">
@@ -57,6 +57,7 @@
 
 <script>
 import { Fee } from './fee'
+import { FEE_TYPES } from '@tokend/js-sdk'
 
 export default {
   name: 'fee-viewer',
@@ -71,14 +72,31 @@ export default {
   }),
 
   computed: {
-    feeDirectionTitle () {
-      if (this.fee.isIncoming) {
-        return 'Recipient fee'
-      } else if (this.fee.isOutgoing) {
-        return 'Sender fee'
-      } else {
-        return 'Unknown fee'
+    feeTypeTranslationId () {
+      let result
+
+      switch (this.fee.type) {
+        case FEE_TYPES.paymentFee:
+          if (this.fee.isIncoming) {
+            result = 'fees-renderer.recipient-fee-msg'
+          } else {
+            result = 'fees-renderer.sender-fee-msg'
+          }
+          break
+        case FEE_TYPES.investFee:
+          result = 'fees-renderer.invest-fee-msg'
+          break
+        case FEE_TYPES.offerFee:
+          result = 'fees-renderer.offer-fee-msg'
+          break
+        case FEE_TYPES.withdrawalFee:
+          result = 'fees-renderer.withdrawal-fee-msg'
+          break
+        default:
+          result = 'fees-renderer.unknown-fee-msg'
       }
+
+      return result
     },
   },
 
