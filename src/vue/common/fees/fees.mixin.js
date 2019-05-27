@@ -11,11 +11,16 @@ export default {
   components: { FeesRenderer },
 
   methods: {
-    async getAssetByCode (assetCode) {
-      const { data: asset } = await api.get(`/v3/assets/${assetCode}`)
-      return new AssetRecord(asset)
-    },
-
+    /**
+     * @param {object} opts
+     * @param {string} opts.assetCode - Fee asset code.
+     * @param {string} opts.amount - Amount of asset to calculate fees.
+     * @param {FeeType} opts.type - Fee XDR enum type.
+     * @param {string} opts.senderAccountId - Sender account ID.
+     * @param {string} [opts.recipientAccountId] - Recipient account ID
+     *                                             (only for payment type).
+     * @returns {FeesCollection} - Fees collection.
+     */
     async calculateFees (opts) {
       const asset = await this.getAssetByCode(opts.assetCode)
       const masterAccountId = api.networkDetails.adminAccountId
@@ -42,6 +47,11 @@ export default {
       }
 
       return new FeesCollection({ fees, asset, masterAccountId })
+    },
+
+    async getAssetByCode (assetCode) {
+      const { data: asset } = await api.get(`/v3/assets/${assetCode}`)
+      return new AssetRecord(asset)
     },
 
     async calculateFee ({ accountId, type, subtype, assetCode, amount }) {
