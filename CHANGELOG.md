@@ -10,6 +10,8 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- Fees mixin, renderer & wrappers for unified displaying fees
+- Displaying fees on issuance form & trade forms
 
 #### Changed
 - Now loading account converted balances in
