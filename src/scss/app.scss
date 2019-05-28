@@ -406,6 +406,7 @@ h6.app__page-heading {
   z-index: 5;
 
   .bar {
+    // !importants are for overwrite nprogress’ styles
     background: $col-primary-lighten !important;
     height: 0.3rem !important;
   }
