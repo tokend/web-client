@@ -254,7 +254,7 @@ export default {
       return this.asset.termsUrl(config.FILE_STORAGE)
     },
     isExistsInUserBalances () {
-      return !!this.balances.find(item => item.asset === this.asset.code)
+      return !!this.balances.find(item => item.asset.code === this.asset.code)
     },
     isBalanceCreationAllowed () {
       switch (this.asset.assetType) {

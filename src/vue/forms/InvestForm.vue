@@ -342,7 +342,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset === quote.asset.id
+          return balanceItem.asset.code === quote.asset.id
         })
 
         if (balance) {
@@ -354,12 +354,12 @@ export default {
     },
 
     quoteAssetListValues () {
-      return this.quoteAssetBalances.map(balance => balance.assetDetails)
+      return this.quoteAssetBalances.map(balance => balance.asset)
     },
 
     availableAmount () {
       const quoteBalance = this.quoteAssetBalances
-        .find(balance => balance.asset === this.form.asset.code)
+        .find(balance => balance.asset.code === this.form.asset.code)
 
       const availableBalance = this.currentInvestment.quoteAmount
         ? Number(quoteBalance.balance) +
@@ -520,7 +520,7 @@ export default {
 
       try {
         const baseBalance = this.balances
-          .find(balance => balance.asset === this.sale.baseAsset)
+          .find(balance => balance.asset.code === this.sale.baseAsset)
         if (!baseBalance) {
           await this.createBalance(this.sale.baseAsset)
         }
@@ -595,9 +595,9 @@ export default {
       return {
         offerID: id,
         baseBalance: this.balances
-          .find(balance => balance.asset === this.sale.baseAsset).id,
+          .find(balance => balance.asset.code === this.sale.baseAsset).id,
         quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset.code).id,
+          .find(balance => balance.asset.code === this.form.asset.code).id,
         isBuy: true,
         amount: MathUtil.divide(
           this.form.amount,

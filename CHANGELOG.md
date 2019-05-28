@@ -10,10 +10,13 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- Assets vuex module for loading and storing all the assets
 
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now calling "UPDATE_ASSET" mutation in the
+  "LOAD_ACCOUNT_BALANCES_DETAILS" action
 
 #### Fixed
 - Don't show title in kyc status message, if no additional external information
