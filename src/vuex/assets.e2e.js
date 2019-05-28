@@ -33,10 +33,6 @@ describe('assets.module end-to-end test', () => {
           { id: 'BTC' },
           { id: 'USD' },
         ],
-        fetchNext: sinon.stub().resolves({
-          data: [{ id: 'ETH' }],
-          fetchNext: sinon.stub().resolves({ data: [] }),
-        }),
       })
 
       await store.dispatch(vuexTypes.LOAD_ASSETS)
@@ -45,7 +41,6 @@ describe('assets.module end-to-end test', () => {
         .to.deep.equal([
           new AssetRecord({ id: 'BTC' }),
           new AssetRecord({ id: 'USD' }),
-          new AssetRecord({ id: 'ETH' }),
         ])
     })
   })

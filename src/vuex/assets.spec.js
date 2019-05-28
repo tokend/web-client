@@ -54,10 +54,6 @@ describe('assets.module', () => {
           { id: 'BTC' },
           { id: 'USD' },
         ],
-        fetchNext: sinon.stub().resolves({
-          data: [{ id: 'ETH' }],
-          fetchNext: sinon.stub().resolves({ data: [] }),
-        }),
       })
 
       await actions[vuexTypes.LOAD_ASSETS](store)
@@ -67,7 +63,6 @@ describe('assets.module', () => {
         [
           { id: 'BTC' },
           { id: 'USD' },
-          { id: 'ETH' },
         ]
       )
     })

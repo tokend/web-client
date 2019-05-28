@@ -177,7 +177,7 @@ export default {
       if (value) {
         this.currentAsset = value.code
       } else {
-        const keys = this.accountBalances.map(i => i.asset)
+        const keys = this.accountBalances.map(i => i.asset.code)
         this.currentAsset =
           keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }

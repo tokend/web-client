@@ -6,10 +6,9 @@ export class BalanceRecord {
     this._record = record
 
     this.id = record.id
+    this.asset = new AssetRecord(record.asset)
+
     this.balance = safeGet(record, 'state.available')
     this.convertedBalance = record.convertedBalance
-
-    this.assetDetails = new AssetRecord(record.asset)
-    this.asset = this.assetDetails.code
   }
 }
