@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [1.7.0-rc.0] - 2019-05-21
+## [Unreleased]
 #### Added
 - Placeholder of empty list for Trade, Issuance requests and Requests pages
+
+## [1.7.0-rc.0] - 2019-05-21
+#### Added
 - New sale whitelist support:
   - New "Whitelisted" checkbox on create sale form
   - New "Whitelisted" row to sale details drawer
