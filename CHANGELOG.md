@@ -10,18 +10,22 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- Assets vuex module for loading and storing all the assets
 - Whitelisted detail on sale related modules
 - isTransferable policy getter to asset records
 
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now calling "UPDATE_ASSET" mutation in the
+  "LOAD_ACCOUNT_BALANCES_DETAILS" action
 - Now top bar buttons in movements page are conditionally disabled
 - Route-to-route progress bar size and color
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 
 #### Fixed
+- Don't show title in kyc status message, if no additional external information
 - 'data' error in asset request list
 - Successful investment sale state update
 - Break words in sale description viewer
@@ -50,7 +54,6 @@ for further information about branching and tagging conventions.
   - New whitelist invitation form (shown only for the sale owner)
   - New whitelist invitations drawer
 - New loading feedback when moving from one route to another (nprogress loader)
-- New validation of file extension, size and dimensions in file field
 - New "Copied" tooltip message to copy icon-buttons
 - New "Total" read-only field in offer creation form
 - New Sentry error tracking integration
@@ -67,6 +70,7 @@ for further information about branching and tagging conventions.
   - Added icons for non-image filetypes
   - Added upload icons
   - Now gray-scale painting the field when its state is disabled
+  - New validation of file extension, size and dimensions in file field
 - Dashboard movements changes:
   - Added "Latest activity" label
   - Now showing only 10 latest operations

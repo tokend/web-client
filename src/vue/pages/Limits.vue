@@ -136,7 +136,7 @@ export default {
       accountId: vuexTypes.accountId,
     }),
     accountBalancesAssetsCodes () {
-      return this.accountBalances.map(i => i.asset)
+      return this.accountBalances.map(i => i.asset.code)
     },
     selectedLimitsList () {
       return this.formattedAccountLimits[this.selectedAsset] || {}
