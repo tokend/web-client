@@ -26,7 +26,8 @@
         </p>
 
         <div
-          v-if="kycRequestExternalDetails"
+          v-if="kycRequestExternalDetails &&
+            Object.keys(kycRequestExternalDetails).length > 0"
           class="verification-state-message__external-details"
         >
           <h4 class="verification-state-message__external-details-title">

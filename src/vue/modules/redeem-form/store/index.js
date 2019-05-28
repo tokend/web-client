@@ -151,7 +151,7 @@ export const getters = {
     return getters[types.balances].find(b => b.assetCode === assetCode).value
   },
   [types.assetDetails]: (state) => (assetCode) => {
-    return state.accountBalances.find(i => i.asset === assetCode)
+    return state.accountBalances.find(i => i.asset.code === assetCode)
   },
 }
 

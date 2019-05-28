@@ -110,12 +110,16 @@ describe('balance explorer module', () => {
           data: {
             states: [
               {
-                balance: { id: 'BALANCE_1' },
-                asset: { id: 'USD' },
+                balance: {
+                  id: 'BALANCE_1',
+                  asset: { id: 'USD' },
+                },
               },
               {
-                balance: { id: 'BALANCE_2' },
-                asset: { id: 'BTC' },
+                balance: {
+                  id: 'BALANCE_2',
+                  asset: { id: 'BTC' },
+                },
               },
             ],
           },
@@ -123,8 +127,14 @@ describe('balance explorer module', () => {
 
         const expectedMutations = {
           [types.SET_ACCOUNT_BALANCES]: [
-            { id: 'BALANCE_1' },
-            { id: 'BALANCE_2' },
+            {
+              id: 'BALANCE_1',
+              asset: { id: 'USD' },
+            },
+            {
+              id: 'BALANCE_2',
+              asset: { id: 'BTC' },
+            },
           ],
           [types.SET_ASSETS]: [
             { id: 'USD' },
