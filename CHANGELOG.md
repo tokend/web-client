@@ -18,6 +18,9 @@ for further information about branching and tagging conventions.
 - Now calling "UPDATE_ASSET" mutation in the
   "LOAD_ACCOUNT_BALANCES_DETAILS" action
 
+#### Fixed
+- Don't show title in kyc status message, if no additional external information
+
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
 #### Changed
@@ -36,7 +39,6 @@ for further information about branching and tagging conventions.
   - New whitelist invitation form (shown only for the sale owner)
   - New whitelist invitations drawer
 - New loading feedback when moving from one route to another (nprogress loader)
-- New validation of file extension, size and dimensions in file field
 - New "Copied" tooltip message to copy icon-buttons
 - New "Total" read-only field in offer creation form
 - New Sentry error tracking integration
@@ -53,6 +55,7 @@ for further information about branching and tagging conventions.
   - Added icons for non-image filetypes
   - Added upload icons
   - Now gray-scale painting the field when its state is disabled
+  - New validation of file extension, size and dimensions in file field
 - Dashboard movements changes:
   - Added "Latest activity" label
   - Now showing only 10 latest operations
