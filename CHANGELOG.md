@@ -13,6 +13,7 @@ for further information about branching and tagging conventions.
 - Assets vuex module for loading and storing all the assets
 - Whitelisted detail on sale related modules
 - isTransferable policy getter to asset records
+- Usage of Unix line endings rule
 
 #### Changed
 - Now loading account converted balances in
@@ -37,6 +38,7 @@ for further information about branching and tagging conventions.
 - Successful investment sale state update
 - Break words in sale description viewer
 - Replace labels for submit general kyc button
+- Calendar related tests for win32 systems
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
@@ -148,10 +150,6 @@ for further information about branching and tagging conventions.
   - Remove storageUrl from modules
   - Now processing documents & blobs using new ApiCaller
 
-#### Fixed
-- `event.getModifierState` error on auth page
-- Account balances mapping in deposit form
-
 #### Removed
 - Removed unused:
   - `CreateSaleForm` component
@@ -160,6 +158,10 @@ for further information about branching and tagging conventions.
   - `mock-helper.js` unused methods
   - `DocumentContainer` unused methods
   - global SDK instance
+
+#### Fixed
+- `event.getModifierState` error on auth page
+- Account balances mapping in deposit form
 
 ### Experimental features changes
 #### Fixed
