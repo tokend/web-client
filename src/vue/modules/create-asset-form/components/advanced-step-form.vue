@@ -18,9 +18,9 @@
           target="_blank"
         >
           {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
-          <i
-            class="mdi mdi-launch
-              advanced-step-form__pre-issuance-guide-link-launch-icon" />
+          <i class="mdi mdi-launch
+            advanced-step-form__pre-issuance-guide-link-launch-icon"
+          />
         </router-link>
       </div>
     </div>
