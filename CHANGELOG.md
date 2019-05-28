@@ -9,33 +9,6 @@ for further information about branching and tagging conventions.
 
 ## [1.7.0-rc.0] - 2019-05-21
 #### Added
-- Lazy loading feedback (nprogress loader)
-- `BalanceNotFoundError` to the runtime errors
-- Fonts/images/SVGs optimize
-- Check for file extension, size & dimensions in file field
-- File field design improvements:
-  - reactions to drag & drop actions
-  - images preview (+ icon for rest types of files)
-  - grayscaled disabled state
-  - upload icons
-- `initSync()` method to Api class
-- Balances on passport dropdown
-- Tooltip with 'Copied' message for email-getter and clipboard-field
-- Add 'Latest activity' label for 'Movements' history
-- Deposit method field
-- Readonly field for total field by offer create
-- Ability to create sale and opportunity in the past
-- Sentry integration
-- Email validation on login form
-- "MessageBox" component for displaying titled messages
-- Pre-issuance guide
-- Error message to the "ReadonlyField"
-- Sale participation statistics component
-- "Whitelisted" checkbox on create sale form
-- Whitelist invite form component
-- Whitelist invitations list component
-- Sale definition types constant
-- "Whitelisted" row to sale details table
 - Placeholder of empty list for Trade, Issuance requests and Requests pages
 - New sale whitelist support:
   - New "Whitelisted" checkbox on create sale form
