@@ -35,7 +35,7 @@ export const actions = {
     })
     assets = pageResponse.data
 
-    while (pageResponse.data.length) {
+    while (pageResponse.data.length === ASSETS_PAGE_LIMIT) {
       pageResponse = await pageResponse.fetchNext()
       assets.push(...pageResponse.data)
     }
