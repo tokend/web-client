@@ -10,6 +10,7 @@
       v-else-if="isLoaded"
       :value="currentAssetForSelect"
       :values="assetsList"
+      :label="label"
       :key="currentAssetForSelect.code"
       :key-as-value-text="assetsList[0] instanceof AssetRecord ?
         'nameAndCode' :
@@ -17,7 +18,7 @@
       :is-value-translatable="!(assetsList[0] instanceof AssetRecord)"
       :disabled="!(assetsList[0] instanceof AssetRecord)"
       @input="$emit(EVENTS.input, currentAssetForSelect)"
-      class="app__select app__select--no-border"
+      class="app__select"
     />
   </div>
 </template>
@@ -63,6 +64,7 @@ export default {
     isDepositable: { type: String, default: FILTER_STATUS.notCheck },
     isCoinpayments: { type: String, default: FILTER_STATUS.notCheck },
     isFiat: { type: String, default: FILTER_STATUS.notCheck },
+    label: { type: String, default: '' },
   },
   data () {
     return {

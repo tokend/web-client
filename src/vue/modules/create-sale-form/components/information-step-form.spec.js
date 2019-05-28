@@ -46,7 +46,7 @@ describe('Information step form', () => {
       endTime: ['required', 'minDate'],
       softCap: ['required', 'softCapMoreThanHardCap'],
       hardCap: ['required', 'hardCapLessThanSoftCap'],
-      assetsToSell: ['required', 'noMoreThanAvailableForIssuance'],
+      assetsToSell: ['required', 'lessThenMax'],
       quoteAssets: ['requiredAtLeastOne'],
     }
 

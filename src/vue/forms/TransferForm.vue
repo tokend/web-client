@@ -50,19 +50,24 @@
 
           <div class="app__form-row">
             <div class="app__form-field">
-              <input-field
-                name="transfer-amount"
-                :step="config.MINIMAL_NUMBER_INPUT_STEP"
-                type="number"
+              <asset-input-field
                 v-model.trim="form.amount"
-                autocomplete="off"
                 :label="'transfer-form.amount-lbl' | globalize"
-                :readonly="view.mode === VIEW_MODES.confirm"
-                @blur="touchField('form.amount')"
-                :error-message="getFieldErrorMessage('form.amount', {
-                  available: balance.balance
-                })"
+                :asset="form.asset"
               />
+              <!--<input-field-->
+              <!--name="transfer-amount"-->
+              <!--:step="config.MINIMAL_NUMBER_INPUT_STEP"-->
+              <!--type="number"-->
+              <!--v-model.trim="form.amount"-->
+              <!--autocomplete="off"-->
+              <!--:label="'transfer-form.amount-lbl' | globalize"-->
+              <!--:readonly="view.mode === VIEW_MODES.confirm"-->
+              <!--@blur="touchField('form.amount')"-->
+              <!--:error-message="getFieldErrorMessage('form.amount', {-->
+              <!--available: balance.balance-->
+              <!--})"-->
+              <!--/>-->
             </div>
           </div>
 
@@ -158,7 +163,7 @@ import {
   required,
   emailOrAccountId,
   amount,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
 } from '@validators'
 
 const VIEW_MODES = {
@@ -211,7 +216,7 @@ export default {
           required,
           amount,
           noMoreThanAvailableOnBalance:
-            noMoreThanAvailableOnBalance(this.balance.balance),
+            lessThenMax(this.balance.balance),
         },
         recipient: { required, emailOrAccountId },
       },
@@ -221,6 +226,7 @@ export default {
     ...mapGetters([
       vuexTypes.accountBalances,
       vuexTypes.accountId,
+      vuexTypes.assetsWithPolicies,
     ]),
     userTransferableAssets () {
       return this.accountBalances.filter(i => i.asset.isTransferable)
@@ -236,6 +242,7 @@ export default {
   async created () {
     try {
       await this.loadCurrentBalances()
+      await this.loadBalancesAssets(this.accountId)
       this.setAsset()
       this.isLoaded = true
     } catch (e) {
@@ -247,6 +254,7 @@ export default {
     globalize,
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadBalancesAssets: vuexTypes.LOAD_BALANCES_ASSETS,
     }),
     async submit () {
       this.updateView(VIEW_MODES.submit, this.view.opts)

@@ -162,7 +162,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   address,
   minValue,
   maxDecimalDigitsCount,
@@ -207,7 +207,7 @@ export default {
         asset: { required },
         amount: {
           required,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
+          noMoreThanAvailableOnBalance: lessThenMax(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),

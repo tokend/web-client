@@ -61,12 +61,11 @@ export const hardCapLessThanSoftCap = (softCap, max) => value => {
   return amountRange(softCap, max)(value)
 }
 
-export const noMoreThanAvailableOnBalance = balance => value => {
-  return +balance >= +value
+export const moreThenMin = minValue => value => {
+  return +minValue <= +value
 }
-
-export const noMoreThanAvailableForIssuance = available => value => {
-  return +available >= +value
+export const lessThenMax = maxValue => value => {
+  return +maxValue >= +value
 }
 
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
