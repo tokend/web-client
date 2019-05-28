@@ -117,8 +117,7 @@ export default {
 
     async loadAssets () {
       await this.loadBalances()
-      this.assets = this.balances
-        .map(item => item.assetDetails)
+      this.assets = this.balances.map(item => item.asset)
     },
   },
 }
