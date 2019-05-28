@@ -34,6 +34,8 @@
         class="app__form-field"
         v-model.trim="form.amount"
         type="number"
+        :min="config.minAmount"
+        :max="form.asset.balance.value"
         :step="config.minAmount"
         name="withdrawal-fiat-bank-amount"
         @blur="touchField('form.amount')"

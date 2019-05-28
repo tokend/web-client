@@ -8,6 +8,7 @@ import { base } from '@tokend/js-sdk'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import * as validators from 'vuelidate/lib/validators'
+import { MathUtil } from './js/utils'
 
 const ASSETS = {
   btc: 'BTC',
@@ -30,9 +31,8 @@ export const maxDecimalPoints = points => value => {
 }
 export const amountRange = (from, to) => value =>
   !validators.helpers.req(value) || (
-    Number(value) &&
-    Number(value) >= Number(from) &&
-    Number(value) <= Number(to)
+    MathUtil.compare(value, from) >= 0 &&
+    MathUtil.compare(to, value) >= 0
   )
 export const minDate = (minDate) => value => {
   return moment(value).isAfter(moment(minDate))
@@ -62,11 +62,11 @@ export const hardCapLessThanSoftCap = (softCap, max) => value => {
 }
 
 export const noMoreThanAvailableOnBalance = balance => value => {
-  return +balance >= +value
+  return MathUtil.compare(balance, value) >= 0
 }
 
 export const noMoreThanAvailableForIssuance = available => value => {
-  return +available >= +value
+  return MathUtil.compare(available, value) >= 0
 }
 
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {

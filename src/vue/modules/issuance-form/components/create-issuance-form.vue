@@ -24,6 +24,9 @@
           <input-field
             white-autofill
             type="number"
+            :min="MIN_AMOUNT"
+            :max="form.asset.availableForIssuance"
+            :step="MIN_AMOUNT"
             v-model="form.amount"
             @blur="touchField('form.amount')"
             name="create-issuance-amount"

@@ -51,8 +51,10 @@
             <div class="app__form-field">
               <input-field
                 name="transfer-amount"
-                :step="config.MINIMAL_NUMBER_INPUT_STEP"
                 type="number"
+                :min="config.MIN_AMOUNT"
+                :max="balance.balance"
+                :step="config.MINIMAL_NUMBER_INPUT_STEP"
                 v-model.trim="form.amount"
                 autocomplete="off"
                 :label="'transfer-form.amount-lbl' | globalize"

@@ -45,6 +45,8 @@
               v-model="form.amount"
               name="buy-back-amount"
               type="number"
+              :min="0"
+              :max="allowedToBuy(form.asset.code)"
               :step="config.minAmount"
               autocomplete="off"
               @blur="touchField('form.amount')"

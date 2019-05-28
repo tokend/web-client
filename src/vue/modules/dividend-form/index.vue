@@ -47,6 +47,8 @@
               v-model.trim="form.amount"
               type="number"
               name="dividend-amount"
+              :min="config.minAmount"
+              :max="form.asset.balance.value"
               :step="config.minAmount"
               @blur="touchField('form.amount')"
               :label="'dividend-form.amount' | globalize({

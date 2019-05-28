@@ -17,6 +17,10 @@
         <input-field
           v-model.trim="form.price"
           name="your-trade-offer-price"
+          type="number"
+          :min="config.MIN_AMOUNT"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           :label="
             'your-trade-offer-form.price-lbl' | globalize({
               baseAsset: assetPair.base,
@@ -41,6 +45,10 @@
         <input-field
           v-model.trim="form.baseAmount"
           name="your-trade-offer-base-amount"
+          type="number"
+          :min="config.MIN_AMOUNT"
+          :max="config.MAX_AMOUNT"
+          :step="config.MIN_AMOUNT"
           :label="'your-trade-offer-form.base-amount-lbl' | globalize({
             asset: offer.baseAsset.id
           })"

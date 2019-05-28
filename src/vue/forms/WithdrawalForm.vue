@@ -43,12 +43,14 @@
               class="app__form-field"
               v-model.trim="form.amount"
               type="number"
+              :min="MIN_AMOUNT"
+              :max="form.asset.balance.value"
+              :step="selectedAssetStep"
               name="withdrawal-amount"
               @blur="touchField('form.amount')"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
-              :step="selectedAssetStep"
               :disabled="formMixin.isDisabled"
               :error-message="getFieldErrorMessage('form.amount', {
                 available: form.asset.balance.value,

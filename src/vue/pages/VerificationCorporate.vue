@@ -84,6 +84,8 @@
           <input-field
             white-autofill
             type="number"
+            :min="MIN_TEAM_SIZE"
+            :step="1"
             v-model="form.teamSize"
             @blur="touchField('form.teamSize')"
             name="verification-corporate-team-size"

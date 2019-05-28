@@ -34,6 +34,8 @@
         class="app__form-field"
         v-model.trim="form.amount"
         type="number"
+        :min="MIN_AMOUNT"
+        :max="MAX_AMOUNT"
         :step="config.minAmount"
         name="deposit-fiat-card-amount"
         @blur="touchField('form.amount')"
