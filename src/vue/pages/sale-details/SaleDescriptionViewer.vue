@@ -95,6 +95,8 @@ export default {
 
 /* stylelint-disable selector-nested-pattern */
 .sale-description-viewer__markdown {
+  word-break: break-all;
+
   img {
     max-width: 100%;
     margin: 0.8rem 0;

@@ -251,6 +251,7 @@ const VIEW_MODES = {
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
+const INGEST_TIMEOUT_MS = 5000
 
 export default {
   name: 'invest-form',
@@ -334,7 +335,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset === quote.asset.id
+          return balanceItem.asset.code === quote.asset.id
         })
 
         if (balance) {
@@ -346,7 +347,7 @@ export default {
     },
 
     quoteAssetListValues () {
-      return this.quoteAssetBalances.map(balance => balance.assetDetails)
+      return this.quoteAssetBalances.map(balance => balance.asset)
     },
 
     // Available balance is (currentBalance + currentOffer + currentOfferFee),
@@ -355,7 +356,7 @@ export default {
     // he can spend them again.
     availableBalance () {
       const quoteBalance = this.quoteAssetBalances
-        .find(balance => balance.asset === this.form.asset.code)
+        .find(balance => balance.asset.code === this.form.asset.code)
 
       let availableBalance
       if (this.currentInvestment.quoteAmount) {
@@ -523,13 +524,15 @@ export default {
 
       try {
         const baseBalance = this.balances
-          .find(balance => balance.asset === this.sale.baseAsset)
+          .find(balance => balance.asset.code === this.sale.baseAsset)
         if (!baseBalance) {
           await this.createBalance(this.sale.baseAsset)
         }
 
         const operations = await this.getOfferOperations()
         await api.postOperations(...operations)
+        // eslint-disable-next-line
+        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
         await this.loadBalances()
 
         Bus.success({
@@ -598,9 +601,9 @@ export default {
       return {
         offerID: id,
         baseBalance: this.balances
-          .find(balance => balance.asset === this.sale.baseAsset).id,
+          .find(balance => balance.asset.code === this.sale.baseAsset).id,
         quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset.code).id,
+          .find(balance => balance.asset.code === this.form.asset.code).id,
         isBuy: true,
         amount: MathUtil.divide(
           this.form.amount,
@@ -627,6 +630,8 @@ export default {
           )
         )
         await api.postOperations(operation)
+        // eslint-disable-next-line
+        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
