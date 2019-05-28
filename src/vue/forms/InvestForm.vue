@@ -262,6 +262,7 @@ const VIEW_MODES = {
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
+const INGEST_TIMEOUT_MS = 5000
 
 export default {
   name: 'invest-form',
@@ -527,6 +528,8 @@ export default {
 
         const operations = await this.getOfferOperations()
         await api.postOperations(...operations)
+        // eslint-disable-next-line
+        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
         await this.loadBalances()
 
         Bus.success({
@@ -624,6 +627,8 @@ export default {
           )
         )
         await api.postOperations(operation)
+        // eslint-disable-next-line
+        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')

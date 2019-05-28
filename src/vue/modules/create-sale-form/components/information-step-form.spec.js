@@ -80,7 +80,6 @@ describe('Information step form', () => {
   describe('created hook', () => {
     it('calls populateForm only if request was passed as a prop', () => {
       sandbox.stub(InformationStepForm.methods, 'populateForm')
-      sandbox.stub(InformationStepForm.computed, 'defaultQuoteAsset')
 
       shallowMount(InformationStepForm, { localVue })
       expect(InformationStepForm.methods.populateForm)
@@ -165,6 +164,7 @@ describe('Information step form', () => {
               hardCap: '200.000000',
               assetsToSell: '10.000000',
               quoteAssets: ['BTC', 'USD'],
+              isWhitelisted: true,
             },
             ownedAssets: [{ code: 'USD' }],
           })
@@ -182,6 +182,7 @@ describe('Information step form', () => {
 
           expect(wrapper.vm.form.assetsToSell).to.equal('10.000000')
           expect(wrapper.vm.form.quoteAssets).to.deep.equal(['BTC', 'USD'])
+          expect(wrapper.vm.form.isWhitelisted).to.be.true
         })
       })
 

@@ -53,7 +53,6 @@ $x-large: 1920px;
   &[disabled] {
     box-shadow: none;
     opacity: 0.5;
-    pointer-events: none;
   }
 }
 @mixin button-accent () {
@@ -63,7 +62,6 @@ $x-large: 1920px;
 
   &[disabled] {
     color: $col-button-flat-accent-disabled-txt;
-    pointer-events: none;
   }
 
   &:not([disabled]):hover {
@@ -78,7 +76,6 @@ $x-large: 1920px;
 
   &[disabled] {
     color: $col-button-flat-disabled-txt;
-    pointer-events: none;
   }
 
   &:not([disabled]):hover {
