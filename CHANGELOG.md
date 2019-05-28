@@ -14,6 +14,7 @@ for further information about branching and tagging conventions.
 - Whitelisted detail on sale related modules
 - isTransferable policy getter to asset records
 - Usage of Unix line endings rule
+- Browser compatibiility check and unsupported browser page
 
 #### Changed
 - Now loading account converted balances in
