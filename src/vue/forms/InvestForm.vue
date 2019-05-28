@@ -30,7 +30,7 @@
             <vue-markdown
               class="app__form-field-description invest-form__amount-hint"
               :source="'invest-form.balance-hint' | globalize({
-                amount: availableAmount
+                amount: availableBalance
               })"
             />
           </div>
@@ -51,7 +51,7 @@
                 'form.amount',
                 {
                   from: MIN_AMOUNT,
-                  to: availableAmount.value,
+                  to: availableBalance.value,
                   saleCap: {
                     value: investedCap,
                     currency: sale.defaultQuoteAsset
@@ -101,22 +101,13 @@
           class="invest-form__fee-box"
           v-if="isFeesLoaded">
           <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.transaction-fees-heading' | globalize }}
+            {{ 'invest-form.investment-fees-heading' | globalize }}
           </h3>
-          <template v-if="+fees.fixed || +fees.percent">
+          <template v-if="+fees.percent">
             <p
               class="invest-form__fee"
-              v-if="fees.fixed">
-              - {{ fees.fixed | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.fixed-fee-label' | globalize }}
-              </span>
-            </p>
-
-            <p
-              class="invest-form__fee"
-              v-if="fees.percent">
+              v-if="fees.percent"
+            >
               - {{ fees.percent | formatNumber }}
               {{ form.asset.code }}
               <span class="invest-form__fee-type">
@@ -131,16 +122,14 @@
             </p>
           </template>
 
-          <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.total-fee-label' | globalize }}
-          </h3>
-
-          <p class="invest-form__fee">
-            - {{
-              { value: totalAmount, currency: form.asset.code } | formatMoney
-            }}
-            <span class="invest-form__fee-type">
+          <p class="invest-form__total-amount">
+            <span class="invest-form__total-amount-text">
               {{ 'invest-form.total-amount-label' | globalize }}
+            </span>
+            <span class="invest-form__total-amount-text">
+              {{
+                { value: totalAmount, currency: form.asset.code } | formatMoney
+              }}
             </span>
           </p>
         </div>
@@ -310,7 +299,10 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          amountRange: amountRange(
+            this.MIN_AMOUNT,
+            this.availableBalance.value
+          ),
           noMoreThanSaleCap: _ => !this.isCapExceeded,
         },
       },
@@ -358,14 +350,27 @@ export default {
       return this.quoteAssetBalances.map(balance => balance.asset)
     },
 
-    availableAmount () {
+    // Available balance is (currentBalance + currentOffer + currentOfferFee),
+    // 'cause when user updates his offer, it's canceling firstly, so
+    // the old offer amount and fees come back to the user's balance, and
+    // he can spend them again.
+    availableBalance () {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset.code === this.form.asset.code)
 
-      const availableBalance = this.currentInvestment.quoteAmount
-        ? Number(quoteBalance.balance) +
-        Number(this.currentInvestment.quoteAmount)
-        : quoteBalance.balance
+      let availableBalance
+      if (this.currentInvestment.quoteAmount) {
+        const convertedAmount = MathUtil.add(
+          this.currentInvestment.quoteAmount,
+          this.currentInvestment.fee.calculatedPercent
+        )
+        availableBalance = MathUtil.add(
+          convertedAmount,
+          quoteBalance.balance,
+        )
+      } else {
+        availableBalance = quoteBalance.balance
+      }
 
       return {
         value: availableBalance,
@@ -415,9 +420,7 @@ export default {
     },
 
     totalAmount () {
-      const fees = MathUtil
-        .add(this.fees.fixed, this.fees.percent)
-      return MathUtil.add(fees, this.form.amount)
+      return MathUtil.add(this.form.amount, this.fees.percent)
     },
 
     investmentDisabledMessageId () {
@@ -741,6 +744,17 @@ export default {
 
 .invest-form__fee-type {
   color: $col-details-label;
+}
+
+.invest-form__total-amount {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.invest-form__total-amount-text {
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
 .invest-form__no-fee-msg {
