@@ -16,7 +16,7 @@
       :class="{
         'input-field__input--autofill-white': whiteAutofill
       }"
-      :type="isPasswordShown ? 'text' : type"
+      :type="isPasswordType && isPasswordShown ? 'text' : type"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
