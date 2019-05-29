@@ -7,9 +7,9 @@
       v-on="listeners"
       autocomplete="off"
       :label="label"
-      :step="minimalNumberInputStep"
+      :step="minAmount"
       :error-message="getFieldErrorMessage('value', {
-        from: minimalNumberInputStep,
+        from: minAmount,
         to: maxIncomingAmount
       })"
       @blur="touchField('value')"
@@ -20,8 +20,9 @@
 <script>
 import InputField from '@/vue/fields/InputField'
 
-import FieldMixin from '@/vue/mixins/field.mixin'
+import FormValidationMixin from '@/vue/mixins/form-validation.mixin'
 import { AssetRecord } from '@/js/records/entities/asset.record'
+import { MathUtil } from '@/js/utils/math.util'
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 import config from '@/config'
@@ -35,7 +36,7 @@ import {
 const EVENTS = {
   input: 'input',
 }
-const INPUT_FIELD_TYPE = {
+const AMOUNT_VALIDATION_TYPE = {
   incoming: 'incoming',
   outgoing: 'outgoing',
   issuance: 'issuance',
@@ -46,15 +47,12 @@ export default {
   components: {
     InputField,
   },
-  mixins: [FieldMixin],
+  mixins: [FormValidationMixin],
   props: {
     asset: { type: AssetRecord, required: true },
     label: { type: String, default: '' },
     value: { type: [Number, String], default: undefined },
-    inputFieldType: { type: String, default: INPUT_FIELD_TYPE.issuance },
-  },
-  data () {
-    return {}
+    validationType: { type: String, required: true },
   },
   validations () {
     let validations = {
@@ -62,50 +60,49 @@ export default {
         required,
       },
     }
-    switch (this.inputFieldType) {
-      case INPUT_FIELD_TYPE.incoming:
+    switch (this.validationType) {
+      case AMOUNT_VALIDATION_TYPE.incoming:
         validations.value.amountRange = amountRange(
-          this.minimalNumberInputStep,
-          (config.MAX_AMOUNT - this.balance)
+          this.minAmount,
+          MathUtil.subtract(config.MAX_AMOUNT, this.balance)
         )
         break
-      case INPUT_FIELD_TYPE.outgoing:
+      case AMOUNT_VALIDATION_TYPE.outgoing:
         validations.value.amountRange =
-          amountRange(this.minimalNumberInputStep, this.balance)
+          amountRange(this.minAmount, this.balance)
         break
-      case INPUT_FIELD_TYPE.issuance:
+      case AMOUNT_VALIDATION_TYPE.issuance:
         validations.value.maxForIssuance =
           lessThenMax(+this.asset.availableForIssuance)
         validations.value.minForIssuance =
-          moreThenMin(this.minimalNumberInputStep)
+          moreThenMin(this.minAmount)
         break
     }
     return validations
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountBalances,
+      vuexTypes.accountBalanceByCode,
     ]),
-    minimalNumberInputStep () {
+    minAmount () {
       return this.asset.trailingDigitsCount
         ? Math.pow(10, (-1) * this.asset.trailingDigitsCount)
         : Math.pow(10, (-1) * config.DECIMAL_POINTS)
     },
     maxIncomingAmount () {
-      switch (this.inputFieldType) {
-        case INPUT_FIELD_TYPE.incoming:
-          return config.MAX_AMOUNT - this.balance
-        case INPUT_FIELD_TYPE.outgoing:
+      switch (this.validationType) {
+        case AMOUNT_VALIDATION_TYPE.incoming:
+          return MathUtil.subtract(config.MAX_AMOUNT, this.balance)
+        case AMOUNT_VALIDATION_TYPE.outgoing:
           return this.balance
-        case INPUT_FIELD_TYPE.issuance:
-          return +this.asset.availableForIssuance
+        case AMOUNT_VALIDATION_TYPE.issuance:
+          return this.asset.availableForIssuance
         default:
           return config.MAX_AMOUNT
       }
     },
     balance () {
-      return this.accountBalances
-        .find(i => i.asset === this.asset.code).balance || 0
+      return this.accountBalanceByCode(this.asset.code).balance || 0
     },
     listeners () {
       return {
@@ -116,16 +113,6 @@ export default {
       }
     },
   },
-  watch: {
-    value () {
-      // this.isFormValid()
-    },
-  },
-  created () {
-  },
-  destroyed () {
-  },
-  methods: {},
 }
 </script>
 

@@ -50,24 +50,13 @@
 
           <div class="app__form-row">
             <div class="app__form-field">
-              <asset-input-field
-                v-model.trim="form.amount"
+              <amount-input-field
+                v-model="form.amount"
+                name="transfer-amount"
+                validation-type="outgoing"
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
               />
-              <!--<input-field-->
-              <!--name="transfer-amount"-->
-              <!--:step="config.MINIMAL_NUMBER_INPUT_STEP"-->
-              <!--type="number"-->
-              <!--v-model.trim="form.amount"-->
-              <!--autocomplete="off"-->
-              <!--:label="'transfer-form.amount-lbl' | globalize"-->
-              <!--:readonly="view.mode === VIEW_MODES.confirm"-->
-              <!--@blur="touchField('form.amount')"-->
-              <!--:error-message="getFieldErrorMessage('form.amount', {-->
-              <!--available: balance.balance-->
-              <!--})"-->
-              <!--/>-->
             </div>
           </div>
 
@@ -153,8 +142,12 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { base, FEE_TYPES } from '@tokend/js-sdk'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
+import {
+  base,
+  ASSET_POLICIES,
+  FEE_TYPES,
+} from '@tokend/js-sdk'
 import config from '@/config'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
@@ -162,8 +155,6 @@ import { globalize } from '@/vue/filters/globalize'
 import {
   required,
   emailOrAccountId,
-  amount,
-  lessThenMax,
 } from '@validators'
 
 const VIEW_MODES = {
@@ -212,49 +203,37 @@ export default {
   validations () {
     return {
       form: {
-        amount: {
-          required,
-          amount,
-          noMoreThanAvailableOnBalance:
-            lessThenMax(this.balance.balance),
-        },
         recipient: { required, emailOrAccountId },
       },
     }
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountBalances,
       vuexTypes.accountId,
       vuexTypes.assetsWithPolicies,
+      vuexTypes.accountBalanceByCode,
     ]),
-    userTransferableAssets () {
-      return this.accountBalances.filter(i => i.asset.isTransferable)
-    },
     assets () {
-      return this.userTransferableAssets.map(item => item.asset)
+      return this.assetsWithPolicies([ASSET_POLICIES.transferable])
     },
     balance () {
-      return this.accountBalances
-        .find(i => i.asset.code === this.form.asset.code) || {}
+      return this.accountBalanceByCode(this.form.asset.code)
     },
   },
   async created () {
     try {
       await this.loadCurrentBalances()
-      await this.loadBalancesAssets(this.accountId)
       this.setAsset()
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
-      ErrorEvent.processWithoutFeedback(e)
+      ErrorHandler.processWithoutFeedback(e)
     }
   },
   methods: {
     globalize,
     ...mapActions({
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
-      loadBalancesAssets: vuexTypes.LOAD_BALANCES_ASSETS,
     }),
     async submit () {
       this.updateView(VIEW_MODES.submit, this.view.opts)

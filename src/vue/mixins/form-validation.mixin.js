@@ -5,6 +5,40 @@ import isObject from 'lodash/isObject'
 export default {
   methods: {
     /**
+     * isFormValid checks if your form (or a part of it) meets
+     * the validation rules, established for its fields.
+     *
+     * @param {string} [formPart] - the string with the form part name.
+     *                 Works also for nested parts, such as `form.part1`.
+     *
+     * @returns {boolean} True if the form (or its part) meets
+     *                    the validation rules or false if it does not.
+     */
+    isFormValid (formPart) {
+      let isInsideFormValid = true
+      let form
+      if (formPart) {
+        form = safeGet(this.$v, formPart)
+      } else {
+        form = this.$v
+        if (this.$children.length) {
+          isInsideFormValid = this.$children.reduce((isValid, item) => {
+            if (item.isFormValid) {
+              return item.isFormValid() && isValid
+            }
+            return isValid
+          }, true)
+        }
+      }
+      if (!form) {
+        // in case we have no validation rules at all
+        return isInsideFormValid
+      }
+      form.$touch()
+      const isValid = !form.$invalid
+      return isValid && isInsideFormValid
+    },
+    /**
      * getFieldErrorMessage decides if the validation error is present
      * for the field. To be invalid the vuelidate $touch method should
      * be called on it. You have to call $touch on the level of your component,

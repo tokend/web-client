@@ -48,6 +48,35 @@ export const getters = {
   [vuexTypes.assets]: state => state.assets.map(a => new AssetRecord(a)),
   [vuexTypes.assetByCode]: (_, getters) => assetCode =>
     getters[vuexTypes.assets].find(item => item.code === assetCode),
+
+  [vuexTypes.balancesAssets]: (a, getters, b, rootGetters) => {
+    return rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+  },
+  [vuexTypes.fiatAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.isBaseAsset),
+  [vuexTypes.depositableAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.isDepositable),
+  [vuexTypes.coinpaymentsAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.isCoinpayments),
+  [vuexTypes.assetsWithPolicies]: (a, getters, b, rootGetters) => policies => {
+    const filteredAssets = rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .reduce((filteredAssets, asset) => {
+        let isPoliciesValid = policies.reduce(function (result, policy) {
+          return result && !!(asset.policy & policy)
+        }, true)
+        if (isPoliciesValid) filteredAssets.push(asset)
+        return filteredAssets
+      }, [])
+    return filteredAssets
+  },
 }
 
 export default {

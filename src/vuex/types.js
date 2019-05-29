@@ -84,6 +84,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
 
@@ -126,6 +127,11 @@ const getters = {
   // assets
   assets: 'assets',
   assetByCode: 'assetByCode',
+  balancesAssets: 'balancesAssets',
+  fiatAssets: 'fiatAssets',
+  depositableAssets: 'depositableAssets',
+  coinpaymentsAssets: 'coinpaymentsAssets',
+  assetsWithPolicies: 'assetsWithPolicies',
 }
 
 export const vuexTypes = {

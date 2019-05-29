@@ -21,7 +21,7 @@ export const mutations = {
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
     const response = await api.getWithSignature(`/v3/accounts/${accountId}`, {
-      include: ['external_system_ids', 'balances', 'balances.state'],
+      include: ['external_system_ids', 'balances', 'balances.state', 'balances.asset'],
     })
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },
@@ -53,6 +53,9 @@ export const getters = {
   [vuexTypes.accountId]: state => state.account.id,
   [vuexTypes.accountBalances]: state => state.balancesDetails
     .map(item => new BalanceRecord(item)),
+  [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
+    .map(item => new BalanceRecord(item))
+    .find(i => i.asset.code === code) || {},
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')
   ),
