@@ -10,10 +10,20 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- "compare" method to `MathUtil` class
+- Name attributes to 2FA form inputs
+- Emitted value normalizers for input field:
+  - "normalizeRange"
+  - "normalizeDecimalPrecision"
 
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now using `MathUtil.compare` method in validators
+- Now using custom number formatter if numeral returns "NaN"
+
+#### Fixed
+- Translations on sale details drawer
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes

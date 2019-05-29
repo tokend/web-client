@@ -6,9 +6,9 @@ import cardValidator from 'card-validator'
 import { base } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
+import { MathUtil } from './js/utils'
 
 import * as validators from 'vuelidate/lib/validators'
-import { MathUtil } from './js/utils'
 
 const ASSETS = {
   btc: 'BTC',
