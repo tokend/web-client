@@ -12,15 +12,6 @@
       />
     </drawer>
 
-    <template v-if="getModule().canRenderSubmodule(DashboardChartPseudoModule)">
-      <submodule-importer
-        :submodule="getModule().getSubmodule(DashboardChartPseudoModule)"
-        :base-asset="sale.baseAsset"
-        :quote-asset="sale.defaultQuoteAsset"
-        :show-tabs="false"
-        :show-ticks="false"
-      />
-    </template>
     <p class="sale-state-widget__invested">
       <!-- eslint-disable-next-line max-len -->
       {{ { value: sale.currentCap, currency: sale.defaultQuoteAsset } | formatMoney }}
@@ -88,9 +79,6 @@
 import Drawer from '@/vue/common/Drawer'
 
 import InvestForm from '@/vue/forms/InvestForm'
-import SubmoduleImporter from '@/modules-arch/submodule-importer'
-
-import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 import { SALE_STATES } from '@/js/const/sale-states'
@@ -104,7 +92,6 @@ export default {
   components: {
     Drawer,
     InvestForm,
-    SubmoduleImporter,
   },
 
   props: {
@@ -113,7 +100,6 @@ export default {
 
   data: _ => ({
     isInvestDrawerShown: false,
-    DashboardChartPseudoModule,
     SALE_STATES,
     EVENTS,
   }),

@@ -1,4 +1,5 @@
 import safeGet from 'lodash/get'
+import { SALE_DEFINITION_TYPES } from '@/js/const/sale-definition-types.const'
 
 export class CreateSaleRequest {
   constructor (record) {
@@ -29,6 +30,12 @@ export class CreateSaleRequest {
     this.youtubeVideoId = safeGet(
       record, 'requestDetails.creatorDetails.youtubeVideoId'
     )
+
+    this.definitionType = safeGet(record, 'requestDetails.accessDefinitionType.value')
+  }
+
+  get isWhitelisted () {
+    return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }
 
   _getQuoteAssets (record) {

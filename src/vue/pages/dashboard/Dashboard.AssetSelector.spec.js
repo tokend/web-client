@@ -33,9 +33,9 @@ describe('Dashboard.AssetSelector component', () => {
   beforeEach(() => {
     mockedAccountBalances = [
       {
-        asset: 'BTC',
         balance: '1',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'BTC',
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
@@ -44,9 +44,9 @@ describe('Dashboard.AssetSelector component', () => {
         }),
       },
       {
-        asset: 'USD',
         balance: '3',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'USD',
           policies: [
             { value: ASSET_POLICIES.transferable },
             { value: ASSET_POLICIES.baseAsset },
@@ -55,9 +55,9 @@ describe('Dashboard.AssetSelector component', () => {
         }),
       },
       {
-        asset: 'ETH',
         balance: '0',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'ETH',
           policies: [
             { value: ASSET_POLICIES.baseAsset },
           ],
@@ -192,7 +192,7 @@ describe('Dashboard.AssetSelector component', () => {
     describe('currentAssetBalanceDetails()', () => {
       it('returns balance information when current selected asset exists in balances', () => {
         const expectedResult =
-          mockedAccountBalances.find(i => i.asset === 'ETH')
+          mockedAccountBalances.find(i => i.asset.code === 'ETH')
 
         wrapper.vm.currentAsset = 'ETH'
 
@@ -211,8 +211,7 @@ describe('Dashboard.AssetSelector component', () => {
       const sortedAssets = mockedAssets
         .sort((a, b) => a.code.localeCompare(b.code))
 
-      expect(wrapper.vm.assetsList)
-        .to.deep.equal(sortedAssets)
+      expect(wrapper.vm.assetsList).to.deep.equal(sortedAssets)
     })
   })
 })

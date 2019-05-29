@@ -122,7 +122,7 @@ export default {
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
-      const balancesAssetCodes = this.balances.map(i => i.asset)
+      const balancesAssetCodes = this.balances.map(i => i.asset.code)
       const assets = this.assets
         .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
@@ -147,11 +147,12 @@ export default {
     },
     currentAssetBalanceDetails () {
       return this.balances
-        .find(i => i.asset === this.currentAsset) || {}
+        .find(i => i.asset.code === this.currentAsset) || {}
     },
     imgUrl () {
-      const balance = this.balances.find(i => i.asset === this.currentAsset)
-      return documentsManager.getDocumentUrlByKey(balance.assetDetails.logoKey)
+      const balance = this.balances
+        .find(i => i.asset.code === this.currentAsset)
+      return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
     },
   },
   async created () {

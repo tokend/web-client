@@ -841,10 +841,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@tokend/js-sdk@1.7.0-rc.0":
-  version "1.7.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.7.0-rc.0.tgz#ac6b8f9da1d53a49c24ef3c1a6b1ebf5fd3d90a3"
-  integrity sha512-5f0rON0cqzoP7ZnLoq2aftoKQ3TZRTpffu1pGAKaM7ga5113IjOXwnASwNtrUG3VETaIeQ5UE/pr5f3VZclumA==
+"@tokend/js-sdk@1.7.0-rc.1":
+  version "1.7.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@tokend/js-sdk/-/js-sdk-1.7.0-rc.1.tgz#9430faadd49251e531f7e1dad604e21493c9a117"
+  integrity sha512-7Rljqtv8zeyUOpfk/NTqXGUSaFv76xZGCNjndvd6QGVbG89wbJllCWl1zvNhXkWQKsgE1TbAKE0gK3Dch0UZxA==
   dependencies:
     axios "0.16.2"
     base32.js "0.1.0"
@@ -6828,12 +6828,19 @@ mocha@5.2.0:
     mkdirp "0.5.1"
     supports-color "5.4.0"
 
+moment-timezone@0.5.25:
+  version "0.5.25"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.25.tgz#a11bfa2f74e088327f2cd4c08b3e7bdf55957810"
+  integrity sha512-DgEaTyN/z0HFaVcVbSyVCUU6HeFdnNC3vE4c9cgu2dgMTvjBUBdBzWfasTBmAW45u5OIMeCJtU8yNjM22DHucw==
+  dependencies:
+    moment ">= 2.9.0"
+
 moment@2.23.0:
   version "2.23.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.23.0.tgz#759ea491ac97d54bac5ad776996e2a58cc1bc225"
   integrity sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
 
-moment@2.24.0:
+moment@2.24.0, "moment@>= 2.9.0":
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==

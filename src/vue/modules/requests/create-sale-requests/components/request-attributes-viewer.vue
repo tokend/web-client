@@ -67,6 +67,19 @@
               </p>
             </td>
           </tr>
+          <tr>
+            <td>
+              {{ 'create-sale-requests.whitelisted-title' | globalize }}
+            </td>
+            <td>
+              <template v-if="request.isWhitelisted">
+                {{ 'create-sale-requests.yes-msg' | globalize }}
+              </template>
+              <template v-else>
+                {{ 'create-sale-requests.no-msg' | globalize }}
+              </template>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
