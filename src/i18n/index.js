@@ -53,22 +53,30 @@ function buildI18nOptions (language, i18n) {
               sameElse: i18n.config.date.presets.datetime,
             })
           case 'money':
-            const formats = i18n.config.number.formats.amounts
-            if (!_isObject(param)) {
-              return numeral(param)
-                .format(formats.default)
-            } else if (formats[(param.currency || '').toLowerCase()]) {
-              return numeral(param.value)
-                .format(formats[(param.currency || '').toLowerCase()])
-            } else {
-              return numeral(param.value)
-                .format(formats.default)
-                .concat(' ', param.currency)
+            const value = _isObject(param) ? param.value : param
+            const defaultFormat = i18n.config.number.formats.amounts.default
+
+            let result = numeral(value).format(defaultFormat)
+
+            // for very large numbers numeral returns NaN, so
+            // we use custom regex formatter
+            if (result === 'NaN') {
+              result = formatNumberCustom(value)
             }
+
+            return param.currency ? result.concat(' ', param.currency) : result
           case 'number':
-            return numeral(param).format(
+            let formattedNumber = numeral(param).format(
               i18n.config.number.formats.default
             )
+
+            // for very large numbers numeral returns NaN, so
+            // we use custom regex formatter
+            if (formattedNumber === 'NaN') {
+              formattedNumber = formatNumberCustom(value)
+            }
+
+            return formattedNumber
           case 'order_number':
             return numeral(param).format(
               i18n.config.number.formats.order_number
@@ -88,6 +96,22 @@ function buildI18nOptions (language, i18n) {
       },
     },
   }
+}
+
+function formatNumberCustom (value) {
+  const numberParts = value.toString().split('.')
+
+  const fractionalPart = numberParts[0]
+    // remove leading zeros
+    .replace(/^0+(\d)/g, '$1')
+    // separate thousands by ','
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+
+  const decimalPart = numberParts[1] &&
+    // remove trailing zeros
+    numberParts[1].replace(/0+$/g, '')
+
+  return decimalPart ? `${fractionalPart}.${decimalPart}` : fractionalPart
 }
 
 const lang = 'en'

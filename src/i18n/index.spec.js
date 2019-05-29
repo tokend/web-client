@@ -6,9 +6,6 @@ const mockEn = {
     'number': {
       'formats': {
         'amounts': {
-          'usd': '$0,0.[00]',
-          'eur': '0,0.[00]€',
-          'gbp': '0,0.[00]£',
           'default': '0,0.[000000]',
         },
         'default': '0,0.[000000]',
@@ -136,33 +133,6 @@ describe('the i18n is properly configured', () => {
       }
     })
 
-    describe('formats the preset currency', () => {
-      const amounts = {
-        '1': '$1',
-        '15.233': '$15.23',
-        '105.23400': '$105.23',
-        '509.22119821': '$509.22',
-        '152.123000': '$152.12',
-        '1200': '$1,200',
-        '1200.123123': '$1,200.12',
-        '10500': '$10,500',
-        '21500.2300': '$21,500.23',
-        '400000': '$400,000',
-      }
-
-      for (const [given, expected] of Object.entries(amounts)) {
-        it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedCurrency', {
-            amount: {
-              value: given,
-              currency: 'USD',
-            },
-          })
-          expect(result).to.equal(`Your balance is ${expected}`)
-        })
-      }
-    })
-
     describe('formats the currency without the provided code', () => {
       const amounts = {
         '1': '1',
@@ -175,6 +145,7 @@ describe('the i18n is properly configured', () => {
         '10500': '10,500',
         '21500.2300': '21,500.23',
         '400000': '400,000',
+        '85070591730234615847396907.784233': '85,070,591,730,234,615,847,396,907.784233',
       }
 
       for (const [given, expected] of Object.entries(amounts)) {
