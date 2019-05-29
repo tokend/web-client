@@ -3,8 +3,6 @@
     <template v-if="getModule().canRenderSubmodule(AssetExplorerModule)">
       <submodule-importer
         :submodule="getModule().getSubmodule(AssetExplorerModule)"
-        :config="config"
-        :wallet="wallet"
         :is-account-unverified="isAccountUnverified"
         :is-account-general="isAccountGeneral"
         :is-account-us-verified="isAccountUsVerified"
@@ -19,8 +17,6 @@
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { AssetExplorerModule } from '@modules/assets/asset-explorer/module'
 
-import config from '../../config'
-
 import { mapGetters } from 'vuex'
 import { vuexTypes } from '@/vuex'
 
@@ -32,14 +28,9 @@ export default {
 
   data: _ => ({
     AssetExplorerModule,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
   }),
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountGeneral: vuexTypes.isAccountGeneral,
       isAccountUsVerified: vuexTypes.isAccountUsVerified,

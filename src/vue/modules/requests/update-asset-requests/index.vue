@@ -8,8 +8,6 @@
           </template>
           <update-asset-form-module
             :request-id="selectedRequest.id"
-            :wallet="wallet"
-            :config="config"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -59,11 +57,6 @@ import RequestsTable from './components/requests-table'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
-import { initApi } from './_api'
-import { initConfig } from './_config'
-
-import { Wallet } from '@tokend/js-sdk'
-
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
@@ -78,22 +71,6 @@ export default {
     RequestsTable,
     RequestViewer,
     UpdateAssetFormModule,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -112,16 +89,11 @@ export default {
   },
 
   created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
-
-    this.setAccountId(this.wallet.accountId)
     this.initFirstPageLoader()
   },
 
   methods: {
     ...mapMutations('update-asset-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

@@ -35,8 +35,8 @@ import CreateIssuanceForm from './components/create-issuance-form'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 const EVENTS = {
   issuanceCreated: 'issuance-created',
@@ -51,27 +51,17 @@ export default {
   },
   mixins: [LoadOwnedAssetsMixin],
 
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
-
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
     EVENTS,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
   async created () {
     await this.init()
   },
@@ -79,8 +69,7 @@ export default {
   methods: {
     async init () {
       try {
-        initApi(this.wallet, this.config)
-        await this.loadOwnedAssets(this.wallet.accountId)
+        await this.loadOwnedAssets(this.accountId)
         this.isLoaded = true
       } catch (error) {
         this.isLoadFailed = true

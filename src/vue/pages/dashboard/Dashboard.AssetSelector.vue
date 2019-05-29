@@ -87,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -122,7 +122,7 @@ export default {
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
-      const balancesAssetCodes = this.balances.map(i => i.asset)
+      const balancesAssetCodes = this.balances.map(i => i.asset.code)
       const assets = this.assets
         .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
@@ -147,11 +147,12 @@ export default {
     },
     currentAssetBalanceDetails () {
       return this.balances
-        .find(i => i.asset === this.currentAsset) || {}
+        .find(i => i.asset.code === this.currentAsset) || {}
     },
     imgUrl () {
-      const balance = this.balances.find(i => i.asset === this.currentAsset)
-      return balance.assetDetails.logoUrl(config.FILE_STORAGE)
+      const balance = this.balances
+        .find(i => i.asset.code === this.currentAsset)
+      return balance.asset.logoUrl(config.FILE_STORAGE)
     },
   },
   async created () {
@@ -165,7 +166,7 @@ export default {
     async loadAssets () {
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await Api.get(endpoint, {
+        const { data: account } = await api.get(endpoint, {
           include: ['balances.asset'],
         })
 

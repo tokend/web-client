@@ -1,4 +1,5 @@
 import { Request } from '../../shared/wrappers/request'
+import { SALE_DEFINITION_TYPES } from '@/js/const/sale-definition-types.const'
 
 import safeGet from 'lodash/get'
 
@@ -20,8 +21,8 @@ export class CreateSaleRequest extends Request {
     this.startTime = safeGet(record, 'requestDetails.startTime')
     this.endTime = safeGet(record, 'requestDetails.endTime')
 
-    this.softCap = safeGet(record, 'requestDetails.defaultQuoteAsset.softCap')
-    this.hardCap = safeGet(record, 'requestDetails.defaultQuoteAsset.hardCap')
+    this.softCap = safeGet(record, 'requestDetails.softCap')
+    this.hardCap = safeGet(record, 'requestDetails.hardCap')
 
     this.description = safeGet(
       record, 'requestDetails.creatorDetails.description'
@@ -36,6 +37,8 @@ export class CreateSaleRequest extends Request {
     this.youtubeVideoId = safeGet(
       record, 'requestDetails.creatorDetails.youtubeVideoId'
     )
+
+    this.definitionType = safeGet(record, 'requestDetails.accessDefinitionType.value')
   }
 
   get youtubeVideoUrl () {
@@ -44,6 +47,10 @@ export class CreateSaleRequest extends Request {
     } else {
       return ''
     }
+  }
+
+  get isWhitelisted () {
+    return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }
 
   logoUrl (storageUrl) {

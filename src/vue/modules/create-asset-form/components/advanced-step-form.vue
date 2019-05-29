@@ -6,11 +6,22 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <tick-field
+          class="advanced-step-form__pre-issuance-enablement-tick-field"
           v-model="form.isPreissuanceDisabled"
           :disabled="isDisabled"
         >
           {{ 'create-asset-form.additional-issuance-check' | globalize }}
         </tick-field>
+        <router-link
+          class="advanced-step-form__pre-issuance-guide-link"
+          :to="vueRoutes.preIssuanceGuide"
+          target="_blank"
+        >
+          {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
+          <i class="mdi mdi-launch
+            advanced-step-form__pre-issuance-guide-link-launch-icon"
+          />
+        </router-link>
       </div>
     </div>
 
@@ -117,9 +128,10 @@ import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
 import { CreateAssetRequest } from '../wrappers/create-asset-request'
 
-import { config } from '../_config'
+import config from '@/config'
 
 import { requiredUnless, amountRange } from '@validators'
+import { vueRoutes } from '@/vue-router/routes'
 
 const EVENTS = {
   submit: 'submit',
@@ -144,8 +156,9 @@ export default {
       initialPreissuedAmount: '',
       terms: null,
     },
-    MIN_AMOUNT: config().MIN_AMOUNT,
+    MIN_AMOUNT: config.MIN_AMOUNT,
     DOCUMENT_TYPES,
+    vueRoutes,
   }),
 
   validations () {
@@ -178,7 +191,7 @@ export default {
   methods: {
     populateForm () {
       const isPreissuanceDisabled =
-        this.request.preIssuanceAssetSigner === config().NULL_ASSET_SIGNER
+        this.request.preIssuanceAssetSigner === config.NULL_ASSET_SIGNER
 
       this.form = {
         isPreissuanceDisabled: isPreissuanceDisabled,
@@ -218,6 +231,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
+@import '~@scss/variables';
 
 .advanced-step-form__btn {
   max-width: 14.4rem;
@@ -236,5 +250,22 @@ export default {
 .advanced-step-form__pre-issuance-disclaimer {
   font-size: 1.4rem;
   margin-top: 1rem;
+}
+
+.advanced-step-form__pre-issuance-enablement-tick-field {
+  margin-bottom: 1rem;
+}
+
+.advanced-step-form__pre-issuance-guide-link {
+  text-decoration: none;
+  border-bottom: 0.1rem solid $col-link;
+
+  &:visited {
+    color: $col-primary;
+  }
+}
+
+.advanced-step-form__pre-issuance-guide-link-launch-icon {
+  font-size: 1.4rem;
 }
 </style>

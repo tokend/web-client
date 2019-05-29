@@ -276,7 +276,7 @@ import {
 } from '@tokend/js-sdk'
 import { MathUtil } from '@/js/utils'
 import config from '@/config'
-import { Api } from '@/api'
+import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
 import { globalize } from '@/vue/filters/globalize'
 import {
@@ -352,14 +352,14 @@ export default {
       vuexTypes.accountId,
     ]),
     userTransferableAssets () {
-      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
+      return this.accountBalances.filter(i => i.asset.isTransferable)
     },
     assets () {
-      return this.userTransferableAssets.map(asset => asset.assetDetails)
+      return this.userTransferableAssets.map(item => item.asset)
     },
     balance () {
       return this.accountBalances
-        .find(i => i.asset === this.form.asset.code) || {}
+        .find(i => i.asset.code === this.form.asset.code) || {}
     },
     totalSenderFee () {
       return MathUtil.add(
@@ -400,7 +400,7 @@ export default {
       this.updateView(VIEW_MODES.submit, this.view.opts)
       this.disableForm()
       try {
-        await Api.api.postOperations(this.buildPaymentOperation())
+        await api.postOperations(this.buildPaymentOperation())
 
         Bus.success('transfer-form.payment-successful')
         this.$emit(EVENTS.operationSubmitted)
@@ -479,7 +479,7 @@ export default {
         ]
 
         const endpoint = `${baseEndpoint}?${params.join('&')}`
-        const { data: fees } = await Api.get(endpoint)
+        const { data: fees } = await api.get(endpoint)
 
         return fees
       } catch (e) {

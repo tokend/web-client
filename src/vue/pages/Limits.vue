@@ -99,7 +99,7 @@ import { LimitsRecord } from '@/js/records/entities/limits.record'
 import { LimitsUpdateRequestRecord } from '@/js/records/requests/limits-update.record'
 import config from '@/config'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 export default {
   name: 'limits',
@@ -136,7 +136,7 @@ export default {
       accountId: vuexTypes.accountId,
     }),
     accountBalancesAssetsCodes () {
-      return this.accountBalances.map(i => i.asset)
+      return this.accountBalances.map(i => i.asset.code)
     },
     selectedLimitsList () {
       return this.formattedAccountLimits[this.selectedAsset] || {}
@@ -170,7 +170,7 @@ export default {
       this.isLimitsLoadingFailed = false
       try {
         const endpoint = `/v3/accounts/${this.accountId}`
-        const { data: account } = await Api.getWithSignature(endpoint, {
+        const { data: account } = await api.getWithSignature(endpoint, {
           include: ['limits'],
         })
         this.formatLimits(account.limits)
@@ -185,7 +185,7 @@ export default {
       this.isLimitsRequestsLoadingFailed = false
       let response = {}
       try {
-        response = await Api.getWithSignature('/v3/update_limits_requests', {
+        response = await api.getWithSignature('/v3/update_limits_requests', {
           filter: { requestor: this.accountId },
           page: { ...this.limitsRequestsQueries },
           include: ['request_details'],

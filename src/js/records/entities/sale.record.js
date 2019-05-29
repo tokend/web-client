@@ -1,6 +1,8 @@
 import moment from 'moment'
 import _get from 'lodash/get'
 
+import { SALE_DEFINITION_TYPES } from '@/js/const/sale-definition-types.const'
+
 const STATES = {
   Open: 1,
   Closed: 2,
@@ -16,9 +18,9 @@ export class SaleRecord {
     this.id = record.id
     this.owner = _get(record, 'owner.id')
     this.baseAsset = _get(record, 'baseAsset.id')
-    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.id')
+    this.defaultQuoteAsset = _get(record, 'defaultQuoteAsset.asset.id')
     this.quoteAssets = _get(record, 'quoteAssets') || []
-    this.baseHardCap = _get(record, 'baseAsset.pendingIssuance')
+    this.baseHardCap = _get(record, 'baseHardCap')
     this.startTime = _get(record, 'startTime')
     this.endTime = _get(record, 'endTime')
     this.softCap = _get(record, 'defaultQuoteAsset.softCap')
@@ -28,6 +30,8 @@ export class SaleRecord {
     this.state = _get(record, 'saleState')
     this.stateValue = _get(record, 'saleState.value')
     this.stateStr = _get(record, 'saleState.name')
+
+    this.definitionType = _get(record, 'accessDefinitionType.value')
 
     this.details = _get(this._record, 'details')
     this.name = _get(record, 'details.name')
@@ -52,6 +56,10 @@ export class SaleRecord {
 
   logoUrl (storageUrl) {
     return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
+  }
+
+  get isWhitelisted () {
+    return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }
 
   /** quote assets: **/

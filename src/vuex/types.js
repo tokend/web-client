@@ -30,6 +30,10 @@ const mutations = {
   SET_KYC_RELATED_REQUEST: 'SET_KYC_RELATED_REQUEST',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
   SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
+
+  // assets
+  SET_ASSETS: 'SET_ASSETS',
+  UPDATE_ASSETS: 'UPDATE_ASSETS',
 }
 
 const actions = {
@@ -56,6 +60,9 @@ const actions = {
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
   LOAD_KYC_DATA: 'LOAD_KYC_DATA',
+
+  // assets
+  LOAD_ASSETS: 'LOAD_ASSETS',
 }
 
 const getters = {
@@ -88,12 +95,10 @@ const getters = {
   isAccountBlocked: 'isAccountBlocked',
 
   // wallet
-  wallet: 'wallet',
   walletId: 'walletId',
+  walletAccountId: 'walletAccountId',
   walletEmail: 'walletEmail',
   walletSeed: 'walletSeed',
-  walletKeypair: 'walletKeypair',
-  walletPublicKey: 'walletPublicKey',
 
   // factors
   factors: 'factors',
@@ -117,6 +122,10 @@ const getters = {
   kycLatestData: 'kycLatestData',
   kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
+
+  // assets
+  assets: 'assets',
+  assetByCode: 'assetByCode',
 }
 
 export const vuexTypes = {

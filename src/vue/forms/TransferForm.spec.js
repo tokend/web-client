@@ -19,7 +19,7 @@ import {
 import { Bus } from '@/js/helpers/event-bus'
 import { TestHelper } from '@/test/test-helper'
 import { AssetRecord } from '@/js/records/entities/asset.record'
-import { Api } from '@/api'
+import { api } from '@/api'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -49,9 +49,9 @@ describe('TransferForm component', () => {
 
     mockedAccountBalances = [
       {
-        asset: 'BTC',
         balance: '1',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'BTC',
           policies: {
             flags: [
               { value: ASSET_POLICIES.transferable },
@@ -61,9 +61,9 @@ describe('TransferForm component', () => {
         }),
       },
       {
-        asset: 'USD',
         balance: '3',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'USD',
           policies: {
             flags: [
               { value: ASSET_POLICIES.transferable },
@@ -74,9 +74,9 @@ describe('TransferForm component', () => {
         }),
       },
       {
-        asset: 'ETH',
         balance: '0',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'ETH',
           policies: [
             { value: ASSET_POLICIES.baseAsset },
           ],
@@ -108,7 +108,7 @@ describe('TransferForm component', () => {
     let feesStub
 
     beforeEach(() => {
-      feesStub = sinon.stub(Api, 'get')
+      feesStub = sinon.stub(api, 'get')
     })
 
     it('fetches fees', async () => {
@@ -351,8 +351,8 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.assets)
         .to.deep.equal([
-          mockedAccountBalances[0].assetDetails,
-          mockedAccountBalances[1].assetDetails,
+          mockedAccountBalances[0].asset,
+          mockedAccountBalances[1].asset,
         ])
     })
 
@@ -369,7 +369,7 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'enableForm')
       sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
 
-      sinon.stub(Api.api, 'postOperations')
+      sinon.stub(api, 'postOperations')
         .resolves()
       sinon.stub(wrapper.vm, 'rerenderForm')
       sinon.stub(Bus, 'success')
@@ -378,7 +378,7 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
-      expect(Api.api.postOperations.calledOnce).to.be.true
+      expect(api.postOperations.calledOnce).to.be.true
       expect(Bus.success.calledOnce).to.be.true
       expect(accountModule.actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS]
         .calledOnce).to.be.true
@@ -391,7 +391,7 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'enableForm')
       sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
 
-      sinon.stub(Api.api, 'postOperations')
+      sinon.stub(api, 'postOperations')
         .withArgs(true)
         .throws(TestHelper.getError(errors.NotFoundError))
       sinon.stub(ErrorHandler, 'process')
@@ -400,7 +400,7 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.buildPaymentOperation.calledOnce).to.be.true
-      expect(Api.api.postOperations.calledOnce).to.be.true
+      expect(api.postOperations.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
       expect(wrapper.vm.enableForm.calledOnce).to.be.true
     })

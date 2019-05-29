@@ -3,6 +3,7 @@ import InformationStepForm from './information-step-form'
 import Vuelidate from 'vuelidate'
 
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -20,9 +21,22 @@ describe('Information step form', () => {
 
   describe('validation rules assigned correctly', () => {
     let wrapper
+    let store
 
     beforeEach(() => {
-      wrapper = mount(InformationStepForm, { localVue })
+      store = new Vuex.Store({
+        modules: {
+          keyValue: {
+            getters: {
+              defaultQuoteAsset: () => ('USD'),
+            },
+          },
+        },
+      })
+      wrapper = mount(InformationStepForm, {
+        store,
+        localVue,
+      })
     })
 
     const expectedResults = {
@@ -81,7 +95,17 @@ describe('Information step form', () => {
 
     it('sets base asset property from owned assets array if request was not passed',
       () => {
+        const store = new Vuex.Store({
+          modules: {
+            keyValue: {
+              getters: {
+                defaultQuoteAsset: () => ('USD'),
+              },
+            },
+          },
+        })
         const wrapper = shallowMount(InformationStepForm, {
+          store,
           localVue,
           propsData: {
             ownedAssets: [
@@ -100,7 +124,16 @@ describe('Information step form', () => {
     let wrapper
 
     beforeEach(() => {
-      wrapper = shallowMount(InformationStepForm, { localVue })
+      const store = new Vuex.Store({
+        modules: {
+          keyValue: {
+            getters: {
+              defaultQuoteAsset: () => ('USD'),
+            },
+          },
+        },
+      })
+      wrapper = shallowMount(InformationStepForm, { store, localVue })
     })
 
     describe('computed property', () => {
@@ -131,6 +164,7 @@ describe('Information step form', () => {
               hardCap: '200.000000',
               assetsToSell: '10.000000',
               quoteAssets: ['BTC', 'USD'],
+              isWhitelisted: true,
             },
             ownedAssets: [{ code: 'USD' }],
           })
@@ -148,6 +182,7 @@ describe('Information step form', () => {
 
           expect(wrapper.vm.form.assetsToSell).to.equal('10.000000')
           expect(wrapper.vm.form.quoteAssets).to.deep.equal(['BTC', 'USD'])
+          expect(wrapper.vm.form.isWhitelisted).to.be.true
         })
       })
 

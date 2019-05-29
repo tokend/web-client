@@ -22,11 +22,15 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule) && asset.isFiat && asset.isWithdrawable">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalFiatModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatWithdrawalFormShown = true"
+            :disabled="!asset.isFiat && !asset.isWithdrawable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -34,14 +38,16 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)
-            && asset.isCoinpayments
-            && asset.isWithdrawable"
+          v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)"
         >
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isWithdrawalDrawerShown = true"
+            :disabled="!asset.isCoinpayments && !asset.isWithdrawable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-upload movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -49,23 +55,30 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFiatModule) && asset.isFiat && asset.isDepositable">
+        <template v-if="getModule().canRenderSubmodule(DepositFiatModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isFiatDepositFormShown = true"
+            :disabled="!asset.isFiat && !asset.isDepositable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
           </button>
         </template>
-
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule) && asset.isCoinpayments">
+        <template v-if="getModule().canRenderSubmodule(CoinpaymentsDepositModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isCoinpaymentsDepositFormShown = true"
+            :disabled="!asset.isCoinpayments"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-download movements-top-bar-reit__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
@@ -78,6 +91,10 @@
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isTransferDrawerShown = true"
+            :disabled="!asset.isTransferable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i
               class="
@@ -93,14 +110,16 @@
         </template>
 
         <template
-          v-if="getModule().canRenderSubmodule(RedeemFormModule)
-            && asset.isBond
-            && !isOwnedAsset"
+          v-if="getModule().canRenderSubmodule(RedeemFormModule)"
         >
           <button
             v-ripple
             class="app__button-raised movements-top-bar-reit__actions-btn"
             @click="isReedemDrawerShown = true"
+            :disabled="!asset.isBond && isOwnedAsset"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isBond) |
+              globalize({ asset: asset.code })
+            "
           >
             <i
               class="mdi mdi-wallet-giftcard movements-top-bar-reit__btn-icon"
@@ -120,7 +139,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalFiatModule)"
           :config="withdrawalFiatConfig"
-          :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
         />
       </drawer>
@@ -136,8 +154,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(WithdrawalDrawerPseudoModule)"
-          :config="withdrawalFiatConfig"
-          :wallet="wallet"
           @withdrawn="withdrawalFiatModuleWithdrawn"
         />
       </drawer>
@@ -152,7 +168,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(DepositFiatModule)"
           :config="depositFiatConfig"
-          :wallet="wallet"
           @deposited="depositFiatModuleDeposited"
         />
       </drawer>
@@ -172,9 +187,7 @@
             :submodule="getModule().getSubmodule(CoinpaymentsDepositModule)"
             :asset="asset"
             :balance-id="asset.balance.id"
-            :wallet="wallet"
             :account-id="accountId"
-            :config="{horizonURL: config.horizonURL}"
           />
         </div>
       </drawer>
@@ -194,7 +207,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(RedeemFormModule)"
-          :wallet="wallet"
           :config="redeemConfig"
           @redeemed="redeemModuleSubmitted"
         />
@@ -204,11 +216,9 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { types } from './store/types'
-
-import { Wallet } from '@tokend/js-sdk'
-import { initApi } from './_api'
+import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -232,6 +242,13 @@ const EVENTS = {
   assetUpdated: 'asset-updated',
 }
 
+const ASSET_POLICIES_STR = {
+  isDepositable: 'isDepositable',
+  isWithdrawable: 'isWithdrawable',
+  isTransferable: 'isTransferable',
+  isBond: 'isBond',
+}
+
 export default {
   name: 'movements-top-bar-reit',
   components: {
@@ -242,10 +259,6 @@ export default {
     SubmoduleImporter,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
     /**
      * @property config - the config for component to use
      * @property config.horizonURL - the url of horizon server (without version)
@@ -279,13 +292,16 @@ export default {
     RedeemFormModule,
     CoinpaymentsDepositModule,
     asset: {},
+    ASSET_POLICIES_STR,
   }),
   computed: {
     ...mapGetters('movements-top-bar-reit', {
       balances: types.balances,
       assets: types.assets,
-      accountId: types.accountId,
     }),
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
     isOwnedAsset () {
       return this.asset.owner.id === this.accountId
     },
@@ -301,18 +317,13 @@ export default {
   },
   async created () {
     this.setUpConfigs()
-    initApi(this.wallet, this.config)
 
-    this.setAccountId(this.wallet.accountId)
     await this.loadBalances()
     await this.loadAssets()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapMutations('movements-top-bar-reit', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
     ...mapActions('movements-top-bar-reit', {
       loadBalances: types.LOAD_BALANCES,
       loadAssets: types.LOAD_ASSETS,
@@ -334,7 +345,6 @@ export default {
     },
     setUpConfigs () {
       this.withdrawalFiatConfig = {
-        horizonURL: this.config.horizonURL,
         decimalPoints: this.config.decimalPoints,
         minAmount: this.config.minAmount,
       }
@@ -344,11 +354,25 @@ export default {
         minAmount: this.config.minAmount,
       }
       this.redeemConfig = {
-        horizonURL: this.config.horizonURL,
         minAmount: this.config.minAmount,
         maxAmount: this.config.maxAmount,
         defaultAssetCode: null,
       }
+    },
+    getMessageIdForPolicy (policy) {
+      let messageId = ''
+      if (!this.asset[policy]) {
+        if (policy === ASSET_POLICIES_STR.isDepositable) {
+          messageId = 'op-pages.not-depositable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
+          messageId = 'op-pages.not-withdrawable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isTransferable) {
+          messageId = 'op-pages.not-transferable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isBond && this.isOwnedAsset) {
+          messageId = 'op-pages.not-redeemable-msg'
+        }
+      }
+      return messageId
     },
   },
 }

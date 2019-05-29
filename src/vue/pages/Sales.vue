@@ -3,20 +3,23 @@
     <top-bar>
       <template slot="main">
         <router-link
-          :to="vueRoutes.allSales"
+          :to="vueRoutes.investableSales"
         >
           <span>
-            {{ 'sales.all-sales' | globalize }}
+            {{ 'sales.investable-sales' | globalize }}
           </span>
         </router-link>
-
-        <router-link
-          :to="vueRoutes.userOwnedSales"
+        <template
+          v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)"
         >
-          <span>
-            {{ 'sales.my-sales' | globalize }}
-          </span>
-        </router-link>
+          <router-link
+            :to="vueRoutes.userOwnedSales"
+          >
+            <span>
+              {{ 'sales.my-sales' | globalize }}
+            </span>
+          </router-link>
+        </template>
       </template>
 
       <template
@@ -59,8 +62,6 @@
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateOpportunityModule)"
           @close="isAssetSaleDrawerShown = false"
-          :config="config"
-          :wallet="wallet"
           :account-id="accountId"
           :min-amount="MIN_AMOUNT"
           :max-amount="MAX_AMOUNT"
@@ -80,8 +81,6 @@
         </template>
         <submodule-importer
           :submodule="getModule().getSubmodule(CreateSaleFormModule)"
-          :config="config"
-          :wallet="wallet"
           @close="isCreateSaleDrawerShown = false"
         />
       </drawer>
@@ -104,6 +103,7 @@ import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 
 export default {
   name: 'sales',
@@ -120,19 +120,15 @@ export default {
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
-    config: {
-      horizonURL: config.HORIZON_SERVER,
-      storageURL: config.FILE_STORAGE,
-    },
     CreateSaleFormModule,
     vueRoutes,
     CreateOpportunityModule,
+    SalesListOwnedPageModule,
   }),
 
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
-      wallet: vuexTypes.wallet,
     }),
   },
 }

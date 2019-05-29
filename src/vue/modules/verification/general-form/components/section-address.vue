@@ -20,10 +20,8 @@
         <input-field
           white-autofill
           v-model="line2"
-          @blur="touchField('line2')"
           name="verification-general-address-line-2"
           :label="'general-form.address-line-2-lbl' | globalize"
-          :error-message="getFieldErrorMessage('line2')"
           :disabled="isDisabled"
         />
       </div>
@@ -105,7 +103,6 @@ export default {
   },
   validations: {
     line1: { required },
-    line2: { required },
     city: { required },
     state: { required },
     postalCode: { required },

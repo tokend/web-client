@@ -1,37 +1,41 @@
 import Vue from 'vue'
 
-import { api } from '../_api'
+import { api } from '@/api'
 
 import _omit from 'lodash/omit'
 
-import { config } from '../_config'
+import config from '@/config'
 
 export default {
   methods: {
-    async uploadDocuments (documents) {
+    async uploadDocuments (documents, accountId) {
       for (const document of documents) {
         if (document && !document.key) {
-          await this.uploadDocument(document)
+          await this.uploadDocument(document, accountId)
         }
       }
     },
 
-    async uploadDocument (document) {
+    async uploadDocument (document, accountId) {
       const { type, mimeType, file } = document.getDetailsForUpload()
-      const config = await this.createDocumentAnchorConfig(type, mimeType)
+      const config = await this.createDocumentAnchorConfig(
+        type,
+        mimeType,
+        accountId
+      )
 
       await this.uploadFile(file, _omit(config, ['id', 'url', 'type']), mimeType)
       document.setKey(config.key)
     },
 
-    async createDocumentAnchorConfig (documentType, mimeType) {
-      const { data: config } = await api().postWithSignature('/documents', {
+    async createDocumentAnchorConfig (documentType, mimeType, accountId) {
+      const { data: config } = await api.postWithSignature('/documents', {
         data: {
           type: documentType,
           attributes: { content_type: mimeType },
           relationships: {
             owner: {
-              data: { id: this.wallet.accountId },
+              data: { id: accountId },
             },
           },
         },
@@ -44,7 +48,7 @@ export default {
       const formData = this.createFileFormData(file, policy, mimeType)
 
       // TODO: posting should not be on this level of abstraction
-      await Vue.http.post(config().storageURL, formData)
+      await Vue.http.post(config.FILE_STORAGE, formData)
     },
 
     createFileFormData (file, policy, mimeType) {

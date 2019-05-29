@@ -8,8 +8,6 @@
           </template>
           <create-asset-form-module
             :request-id="selectedRequest.id"
-            :wallet="wallet"
-            :config="config"
             @close="isDrawerShown = false"
             @request-updated="initFirstPageLoader"
           />
@@ -59,11 +57,6 @@ import RequestsTable from './components/requests-table'
 
 import CreateAssetFormModule from '@modules/create-asset-form'
 
-import { initApi } from './_api'
-import { initConfig } from './_config'
-
-import { Wallet } from '@tokend/js-sdk'
-
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { types } from './store/types'
 
@@ -78,22 +71,6 @@ export default {
     RequestsTable,
     RequestViewer,
     CreateAssetFormModule,
-  },
-
-  props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
   },
 
   data: _ => ({
@@ -112,17 +89,12 @@ export default {
   },
 
   async created () {
-    initApi(this.wallet, this.config)
-    initConfig(this.config)
-
-    this.setAccountId(this.wallet.accountId)
-    await this.loadAssetTypes()
     this.initFirstPageLoader()
+    await this.loadAssetTypes()
   },
 
   methods: {
     ...mapMutations('create-asset-requests', {
-      setAccountId: types.SET_ACCOUNT_ID,
       setRequests: types.SET_REQUESTS,
       concatRequests: types.CONCAT_REQUESTS,
     }),

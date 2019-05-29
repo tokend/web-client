@@ -76,7 +76,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(DividendFormModule)"
-            :wallet="wallet"
             :config="dividendConfig"
             @transferred="dividendModuleTransferred"
           />
@@ -90,7 +89,6 @@
           </template>
           <submodule-importer
             :submodule="getModule().getSubmodule(BuyBackFormModule)"
-            :wallet="wallet"
             :config="buyBackConfig"
             @submitted="buyBackModuleSubmitted"
           />
@@ -146,7 +144,7 @@ import { SaleRecord } from '@/js/records/entities/sale.record'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
-import { Api } from '@/api'
+import { api } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { errors } from '@/js/errors'
@@ -185,13 +183,11 @@ export default {
     BuyBackFormModule,
     dividendConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
     buyBackConfig: {
       decimalPoints: config.DECIMAL_POINTS,
-      horizonURL: config.HORIZON_SERVER,
       minAmount: config.MIN_AMOUNT,
       defaultAssetCode: null,
     },
@@ -199,7 +195,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      wallet: vuexTypes.wallet,
       accountId: vuexTypes.accountId,
     }),
     isOpportunityOwner () {
@@ -220,7 +215,7 @@ export default {
   methods: {
     async loadOpportunity (opportunityId) {
       try {
-        const { data } = await Api.get(`/v3/sales/${opportunityId}`, {
+        const { data } = await api.get(`/v3/sales/${opportunityId}`, {
           include: ['base_asset', 'default_quote_asset', 'quote_assets'],
         })
         this.opportunity = new SaleRecord(data)
@@ -237,7 +232,7 @@ export default {
     async loadAsset (assetCode) {
       try {
         const endpoint = `/v3/assets/${assetCode}`
-        const { data } = await Api.get(endpoint)
+        const { data } = await api.get(endpoint)
         this.asset = new AssetRecord(data)
       } catch (e) {
         ErrorHandler.processWithoutFeedback(e)

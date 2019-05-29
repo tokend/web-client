@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 import numeral from 'numeral'
 
 import _isObject from 'lodash/isObject'
@@ -11,6 +11,7 @@ function buildI18n (language, ...localesJson) {
       result = _merge(
         require(`./en`),
         require(`./en.terms`),
+        require(`./en.pre-issuance-guide`),
         ...localesJson
       )
       break

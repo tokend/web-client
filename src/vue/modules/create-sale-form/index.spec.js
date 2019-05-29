@@ -7,8 +7,8 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import * as Api from './_api'
-import * as Config from './_config'
+import { api } from '@/api'
+import Vuex from 'vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
@@ -40,35 +40,34 @@ describe('Create sale form module', () => {
 
   describe('component', () => {
     let wrapper
+    let store
 
     beforeEach(() => {
       sandbox.stub(CreateSaleFormModule, 'created').resolves()
+      store = new Vuex.Store({
+        modules: {
+          account: {
+            getters: {
+              accountId: () => ('SOME_ACCOUNT_ID'),
+            },
+          },
+        },
+      })
 
       wrapper = shallowMount(CreateSaleFormModule, {
+        store,
         localVue,
       })
     })
 
     describe('method', () => {
       describe('init', () => {
-        it('initializes API and config, calls load methods, and sets isLoaded property to true',
+        it('initializes config, calls load methods, and sets isLoaded property to true',
           async () => {
-            wrapper.setProps({
-              config: 'SOME_CONFIG',
-              wallet: 'SOME_WALLET',
-            })
-
-            sandbox.stub(Api, 'initApi')
-            sandbox.stub(Config, 'initConfig')
             sandbox.stub(wrapper.vm, 'loadAssets').resolves()
             sandbox.stub(wrapper.vm, 'tryLoadRequest').resolves()
 
             await wrapper.vm.init()
-
-            expect(Api.initApi)
-              .to.have.been.calledOnceWithExactly('SOME_WALLET', 'SOME_CONFIG')
-            expect(Config.initConfig)
-              .to.have.been.calledOnceWithExactly('SOME_CONFIG')
 
             expect(wrapper.vm.loadAssets).to.have.been.calledOnce
             expect(wrapper.vm.tryLoadRequest).to.have.been.calledOnce
@@ -79,7 +78,7 @@ describe('Create sale form module', () => {
 
         it('handles an error if it was thrown, and sets isLoadFailed property to true',
           async () => {
-            sandbox.stub(Api, 'initApi').throws()
+            sandbox.stub(api, 'getWithSignature').throws()
             sandbox.stub(ErrorHandler, 'processWithoutFeedback')
 
             await wrapper.vm.init()
@@ -117,9 +116,9 @@ describe('Create sale form module', () => {
             await wrapper.vm.tryLoadRequest()
 
             expect(wrapper.vm.getCreateSaleRequestById)
-              .to.have.been.calledOnceWithExactly('1')
+              .to.have.been.calledOnceWithExactly('1', 'SOME_ACCOUNT_ID')
             expect(wrapper.vm.getSaleDescription)
-              .to.have.been.calledOnceWithExactly('BLOB_ID')
+              .to.have.been.calledOnceWithExactly('BLOB_ID', 'SOME_ACCOUNT_ID')
 
             expect(wrapper.vm.request).to.equal(request)
             expect(wrapper.vm.saleDescription).to.equal('Some description')

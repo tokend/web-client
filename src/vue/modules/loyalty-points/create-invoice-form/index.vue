@@ -6,7 +6,7 @@
         :amount="amount"
         :subject="subject"
         :merchant-email="wallet.email"
-        :merchant-system="config.horizonURL"
+        :merchant-system="horizonUrl"
         @submit="initConfirmation"
       />
 
@@ -41,11 +41,9 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import InvoiceForm from './components/invoice-form'
 import InvoiceConfirmation from './components/invoice-confirmation'
 
-import { initApi } from './_api'
 import { config } from './_config'
-import { Wallet } from '@tokend/js-sdk'
 
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { types } from './store/types'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -63,16 +61,8 @@ export default {
     InvoiceConfirmation,
   },
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     */
-    config: {
-      type: Object,
+    horizonUrl: {
+      type: String,
       required: true,
     },
     amount: {
@@ -101,9 +91,6 @@ export default {
 
   async created () {
     try {
-      await initApi(this.wallet, this.config)
-      this.setAccountId(this.wallet.accountId)
-
       await this.loadAssetPairs({ asset: config.DEFAULT_POINT })
       this.isLoaded = true
     } catch (e) {
@@ -113,17 +100,12 @@ export default {
   },
 
   methods: {
-    ...mapMutations('create-invoice-form', {
-      setAccountId: types.SET_ACCOUNT_ID,
-    }),
-
     ...mapActions('create-invoice-form', {
       loadAssetPairs: types.LOAD_ASSET_PAIRS,
     }),
 
     async initConfirmation (payload) {
       try {
-        await initApi(this.wallet, this.config)
         this.invoice = payload
         this.isTransactionSent = true
       } catch (e) {

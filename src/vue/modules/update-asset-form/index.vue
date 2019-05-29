@@ -46,10 +46,8 @@ import LoadSpinner from '@/vue/common/Loader'
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
-import { Wallet } from '@tokend/js-sdk'
-
-import { initApi } from './_api'
-import { initConfig } from './_config'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const STEPS = {
   information: {
@@ -76,19 +74,6 @@ export default {
   },
   mixins: [ManageAssetRequestMixin, LoadAssetsMixin],
   props: {
-    wallet: {
-      type: Wallet,
-      required: true,
-    },
-    /**
-     * @property config - the config for component to use
-     * @property config.horizonURL - the url of horizon server (without version)
-     * @property config.storageURL - the url of file storage server
-     */
-    config: {
-      type: Object,
-      required: true,
-    },
     requestId: {
       type: String,
       default: '',
@@ -111,6 +96,12 @@ export default {
     STEPS,
   }),
 
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+  },
+
   async created () {
     await this.init()
   },
@@ -118,8 +109,6 @@ export default {
   methods: {
     async init () {
       try {
-        initApi(this.wallet, this.config)
-        initConfig(this.config)
         await this.loadUpdateAssetRecord()
         this.isLoaded = true
       } catch (e) {
@@ -142,9 +131,12 @@ export default {
       let request
 
       if (this.requestId) {
-        request = await this.getUpdateAssetRequestById(this.requestId)
+        request = await this.getUpdateAssetRequestById(
+          this.requestId,
+          this.accountId
+        )
       } else if (this.assetCode) {
-        request = await this.getUpdatableRequest()
+        request = await this.getUpdatableRequest(this.accountId)
       }
 
       return request

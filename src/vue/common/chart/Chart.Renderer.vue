@@ -411,7 +411,13 @@ export default {
           if (data[data.indexOf(nearestPoint) - 1]) {
             const prevValue = data[data.indexOf(nearestPoint) - 1].value
             const currentValue = nearestPoint.value
-            if (prevValue > currentValue) {
+            if (prevValue === 0) {
+              if (prevValue < currentValue) {
+                tipPriceChangeText.text('+100%')
+              } else {
+                tipPriceChangeText.text('+0%')
+              }
+            } else if (prevValue > currentValue) {
               const val = ((prevValue - currentValue) /
                 Math.abs(prevValue)) * 100
               tipPriceChangeText.text(`-${val.toPrecision(getPrecision(val))}%`)

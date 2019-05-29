@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import account from './account.module'
+import assets from './assets.module'
 import factors from './factors.module'
 import wallet from './wallet.module'
 import kyc from './kyc.module'
@@ -34,6 +35,7 @@ function buildStore (storeModules = []) {
     ...rootModule,
     modules: {
       account,
+      assets,
       factors,
       wallet,
       kyc,

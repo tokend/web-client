@@ -195,8 +195,6 @@ init ()
     v-if="getModule().canRenderSubmodule(History)"
     :submodule="getModule().getSubmodule(History)"
     :asset-code="assetCode"
-    :config="{ horizonURL: config.HORIZON_SERVER }"
-    :wallet="wallet"
   />
 </template>
 
