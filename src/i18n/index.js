@@ -1,8 +1,8 @@
 import moment from 'moment'
-import numeral from 'numeral'
 
 import _isObject from 'lodash/isObject'
 import _merge from 'lodash/merge'
+import { MathUtil } from '@/js/utils'
 
 function buildI18n (language, ...localesJson) {
   let result
@@ -53,41 +53,19 @@ function buildI18nOptions (language, i18n) {
               sameElse: i18n.config.date.presets.datetime,
             })
           case 'money':
-            const value = _isObject(param) ? param.value : param
+            const value = (_isObject(param) ? param.value : param) || '0'
             const defaultFormat = i18n.config.number.formats.amounts.default
 
-            let result = numeral(value).format(defaultFormat)
-
-            // for very large numbers numeral returns NaN, so
-            // we use custom regex formatter
-            if (result === 'NaN') {
-              result = formatNumberCustom(value)
-            }
-
+            const result = MathUtil.format(value, defaultFormat)
             return param.currency ? result.concat(' ', param.currency) : result
           case 'number':
-            let formattedNumber = numeral(param).format(
-              i18n.config.number.formats.default
-            )
-
-            // for very large numbers numeral returns NaN, so
-            // we use custom regex formatter
-            if (formattedNumber === 'NaN') {
-              formattedNumber = formatNumberCustom(value)
-            }
-
-            return formattedNumber
-          case 'order_number':
-            return numeral(param).format(
-              i18n.config.number.formats.order_number
-            )
+            return MathUtil.format(param, i18n.config.number.formats.default)
           case 'integer':
-            return numeral(param).format(
-              i18n.config.number.formats.integer
-            )
+            return MathUtil.format(param, i18n.config.number.formats.integer)
           case 'percent':
-            return numeral(param).format(
-              i18n.config.number.formats.percent
+            const convertedPercent = MathUtil.multiply(param, 100)
+            return MathUtil.format(
+              convertedPercent, i18n.config.number.formats.percent
             )
           default:
             console.warn(`Unknown format: ${format}, skipping..`)
@@ -96,22 +74,6 @@ function buildI18nOptions (language, i18n) {
       },
     },
   }
-}
-
-function formatNumberCustom (value) {
-  const numberParts = value.toString().split('.')
-
-  const fractionalPart = numberParts[0]
-    // remove leading zeros
-    .replace(/^0+(\d)/g, '$1')
-    // separate thousands by ','
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-
-  const decimalPart = numberParts[1] &&
-    // remove trailing zeros
-    numberParts[1].replace(/0+$/g, '')
-
-  return decimalPart ? `${fractionalPart}.${decimalPart}` : fractionalPart
 }
 
 const lang = 'en'

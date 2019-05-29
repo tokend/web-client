@@ -88,6 +88,39 @@ export class MathUtil {
   }
 
   /**
+   * Formats value by provided config.
+   *
+   * @param {Number|String} value Number to format.
+   * @param {Object} config Format config.
+   * @param {Number} config.decimalPlaces Number of decimal places to round.
+   * @param {String} [config.prefix] String to prepend.
+   * @param {String} [config.decimalSeparator] Decimal separator.
+   * @param {String} [config.groupSeparator] Grouping separator of
+   *                                         the integer part.
+   * @param {Number} [config.groupSize] Primary grouping size of
+   *                                    the integer part.
+   * @param {Number} [config.secondaryGroupSize] Secondary grouping size of
+                                                 the integer part.
+   * @param {String} [config.fractionGroupSeparator] Grouping separator of
+                                                     the fraction part.
+   * @param {Number} [config.fractionGroupSize] Grouping size of
+                                                the fraction part.
+   * @param {String} [config.suffix] String to append.
+
+   * @returns {String} Formatted string
+   */
+  static format (value, config) {
+    BigNumber.config({ FORMAT: config })
+
+    const num = new BigNumber(value)
+    const result = new BigNumber(
+      num.toFixed(config.decimalPlaces, ROUNDING_MODES.ROUND_HALF_UP)
+    )
+
+    return result.toFormat()
+  }
+
+  /**
    * Example: value = 200, percent = 15. Return - 30
    *
    * @param {Number|String} value

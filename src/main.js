@@ -24,7 +24,6 @@ import { formatInteger } from '@/vue/filters/formatInteger'
 import { formatPercent } from '@/vue/filters/formatPercent'
 import { formatCalendar } from '@/vue/filters/formatCalendar'
 import { formatDateDMY } from '@/vue/filters/formatDateDMY'
-import { formatOrderNumber } from '@/vue/filters/formatOrderNumber'
 import { abbreviate } from '@/vue/filters/abbreviate'
 import { cropAddress } from '@/vue/filters/cropAddress'
 import { SchemeRegistry } from '@/modules-arch/scheme-registry'
@@ -57,7 +56,6 @@ async function init () {
   Vue.filter('formatPercent', formatPercent)
   Vue.filter('formatInteger', formatInteger)
   Vue.filter('formatCalendar', formatCalendar)
-  Vue.filter('formatOrderNumber', formatOrderNumber)
   Vue.filter('abbreviate', abbreviate)
   Vue.filter('cropAddress', cropAddress)
 

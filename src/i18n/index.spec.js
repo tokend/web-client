@@ -6,12 +6,31 @@ const mockEn = {
     'number': {
       'formats': {
         'amounts': {
-          'default': '0,0.[000000]',
+          'default': {
+            'decimalSeparator': '.',
+            'groupSeparator': ',',
+            'groupSize': 3,
+            'decimalPlaces': 6,
+          },
         },
-        'default': '0,0.[000000]',
-        'integer': '0,0',
-        'percent': '0,0.[00]%',
-        'order_number': '0,0o',
+        'default': {
+          'decimalSeparator': '.',
+          'groupSeparator': ',',
+          'groupSize': 3,
+          'decimalPlaces': 6,
+        },
+        'integer': {
+          'groupSeparator': ',',
+          'groupSize': 3,
+          'decimalPlaces': 0,
+        },
+        'percent': {
+          'decimalSeparator': '.',
+          'groupSeparator': ',',
+          'groupSize': 3,
+          'decimalPlaces': 6,
+          'suffix': '%',
+        },
       },
     },
 
@@ -154,28 +173,6 @@ describe('the i18n is properly configured', () => {
             amount: given,
           })
           expect(result).to.equal(`Your balance is ${expected}`)
-        })
-      }
-    })
-
-    describe('formats the order number', () => {
-      const numbers = {
-        '1': '1st',
-        '2': '2nd',
-        '3': '3rd',
-        '4': '4th',
-        '10': '10th',
-        '126': '126th',
-        '1210': '1,210th',
-        '100500': '100,500th',
-      }
-
-      for (const [given, expected] of Object.entries(numbers)) {
-        it(`given = ${given}`, () => {
-          const result = i18next.t('withFormattedOrderNumber', {
-            place: given,
-          })
-          expect(result).to.equal(`You are in the ${expected} place`)
         })
       }
     })
