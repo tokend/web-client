@@ -203,13 +203,13 @@ export default {
 
     baseAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset === this.assetPair.base)
+        .find(balance => balance.asset.code === this.assetPair.base)
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset === this.assetPair.quote)
+        .find(balance => balance.asset.code === this.assetPair.quote)
       return balanceItem ? balanceItem.balance : ''
     },
 

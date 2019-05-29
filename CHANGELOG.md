@@ -10,6 +10,12 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- Assets vuex module for loading and storing all the assets
+- Whitelisted detail on sale related modules
+- isTransferable policy getter to asset records
+- Usage of Unix line endings rule
+- Browser compatibiility check and unsupported browser page
+- Password toggle button for input fields with type="password"
 - "compare" & "format" methods to `MathUtil` class
 - Name attributes to 2FA form inputs
 - Emitted value normalizers for input field:
@@ -19,15 +25,32 @@ for further information about branching and tagging conventions.
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now calling "UPDATE_ASSET" mutation in the
+  "LOAD_ACCOUNT_BALANCES_DETAILS" action
+- Now top bar buttons in movements page are conditionally disabled
+- Route-to-route progress bar size and color
+- Now hiding "My Sales" tab for non-corporate accounts
+- Update "Learn more about pre-issuance" link style on sale creation form
+- Now including offer fees to account's balance on invest form
 - Now using `MathUtil.compare` method in validators
 - Now using `MathUtil.format` for formatting money, numbers, and percents
 
-#### Fixed
-- Translations on sale details drawer
-
 #### Removed
+- Cursor pointer on disabled select
+- Price history chart from sale overview page
+- Validation for address line 2
+- Fixed fee from invest form
 - "numeral" package
 - Order number format & filter
+
+#### Fixed
+- Don't show title in kyc status message, if no additional external information
+- 'data' error in asset request list
+- Successful investment sale state update
+- Break words in sale description viewer
+- Replace labels for submit general kyc button
+- Calendar related tests for win32 systems
+- Translations on sale details drawer
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
@@ -139,10 +162,6 @@ for further information about branching and tagging conventions.
   - Remove storageUrl from modules
   - Now processing documents & blobs using new ApiCaller
 
-#### Fixed
-- `event.getModifierState` error on auth page
-- Account balances mapping in deposit form
-
 #### Removed
 - Removed unused:
   - `CreateSaleForm` component
@@ -151,6 +170,10 @@ for further information about branching and tagging conventions.
   - `mock-helper.js` unused methods
   - `DocumentContainer` unused methods
   - global SDK instance
+
+#### Fixed
+- `event.getModifierState` error on auth page
+- Account balances mapping in deposit form
 
 ### Experimental features changes
 #### Fixed

@@ -1,9 +1,18 @@
 <template>
   <div id="app" v-if="isAppInitialized">
     <warning-banner
-      v-if="isNotSupportedBrowser"
+      v-if="isNotSupportedBrowser && !isSupportedBrowsersPage"
       :message="'common.browser-not-supported' | globalize"
-    />
+      message-type="warning"
+    >
+      <router-link
+        tag="a"
+        :to="vueRoutes.supportedBrowsers.name"
+        class="app__warning-message-link"
+      >
+        {{ 'warning-banner.supported-browsers-list' | globalize }}
+      </router-link>
+    </warning-banner>
 
     <template v-if="isLoggedIn && isNavigationRendered">
       <warning-banner
@@ -43,6 +52,8 @@ import Sidebar from '@/vue/navigation/Sidebar.vue'
 import WarningBanner from '@/vue/common/WarningBanner'
 import IdleHandlerMixin from '@/vue/mixins/idle-handler'
 
+import { isCompatibleBrowser } from '@/js/helpers/is-compatible-browser'
+
 import {
   mapGetters,
   mapActions,
@@ -51,6 +62,7 @@ import { api, walletsManager, factorsManager } from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
+import { vueRoutes } from '@/vue-router/routes'
 
 import config from '@/config'
 
@@ -69,6 +81,7 @@ export default {
   data: () => ({
     isNotSupportedBrowser: false,
     isAppInitialized: false,
+    vueRoutes,
   }),
 
   computed: {
@@ -84,12 +97,15 @@ export default {
     isNavigationRendered () {
       return this.$route.matched.some(m => m.meta.isNavigationRendered)
     },
+    isSupportedBrowsersPage () {
+      return this.$route.name === vueRoutes.supportedBrowsers.name
+    },
   },
 
   async created () {
     await this.initApp()
 
-    this.detectIE()
+    this.detectUnсompatibleBrowser()
 
     this.isAppInitialized = true
   },
@@ -122,10 +138,8 @@ export default {
       walletsManager.useApi(api)
       factorsManager.useApi(api)
     },
-    detectIE () {
-      const edge = window.navigator.userAgent.indexOf('Edge/')
-
-      if (edge > 0) this.isNotSupportedBrowser = true
+    detectUnсompatibleBrowser () {
+      this.isNotSupportedBrowser = !isCompatibleBrowser()
     },
   },
 }
@@ -190,5 +204,11 @@ export default {
     width: 100vw;
     padding: 0 $content-side-paddings-sm 3rem;
   }
+}
+
+.app__warning-message-link {
+  margin-left: 0.4rem;
+  color: $col-primary-txt;
+  font-size: 1.6rem;
 }
 </style>

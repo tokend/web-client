@@ -3,6 +3,7 @@
     <p class="warning-banner__message">
       {{ message }}
     </p>
+    <slot />
   </div>
 </template>
 

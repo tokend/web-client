@@ -220,8 +220,6 @@ import {
   minDate,
   noMoreThanAvailableForIssuance,
 } from '@validators'
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
 
 import config from '@/config'
 
@@ -299,9 +297,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      vuexTypes.defaultQuoteAsset,
-    ]),
     priceForAsset () {
       return {
         value: MathUtil.divide(
@@ -347,6 +342,7 @@ export default {
         hardCap: this.request.hardCap,
         assetsToSell: this.request.assetsToSell,
         quoteAssets: this.request.quoteAssets,
+        isWhitelisted: this.request.isWhitelisted,
       }
     },
 

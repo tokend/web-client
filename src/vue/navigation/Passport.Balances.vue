@@ -11,7 +11,7 @@
       v-for="(item, index) in filteredBalances"
       :key="index"
     >
-      {{ { value: item.balance, currency: item.asset } | formatMoney }}
+      {{ { value: item.balance, currency: item.asset.code } | formatMoney }}
     </span>
     <router-link
       class="passport-balances__more-link"
@@ -47,7 +47,7 @@ export default {
 
     filteredBalances () {
       return this.accountBalances
-        .filter(asset => asset.assetDetails.isBaseAsset)
+        .filter(item => item.asset.isBaseAsset)
         .slice(0, MAX_BALANCES_COUNT)
     },
   },

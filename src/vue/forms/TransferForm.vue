@@ -354,14 +354,14 @@ export default {
       vuexTypes.accountId,
     ]),
     userTransferableAssets () {
-      return this.accountBalances.filter(i => i.assetDetails.isTransferable)
+      return this.accountBalances.filter(i => i.asset.isTransferable)
     },
     assets () {
-      return this.userTransferableAssets.map(asset => asset.assetDetails)
+      return this.userTransferableAssets.map(item => item.asset)
     },
     balance () {
       return this.accountBalances
-        .find(i => i.asset === this.form.asset.code) || {}
+        .find(i => i.asset.code === this.form.asset.code) || {}
     },
     totalSenderFee () {
       return MathUtil.add(

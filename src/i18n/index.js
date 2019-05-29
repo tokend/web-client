@@ -1,7 +1,8 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import _isObject from 'lodash/isObject'
 import _merge from 'lodash/merge'
+
 import { MathUtil } from '@/js/utils'
 
 function buildI18n (language, ...localesJson) {

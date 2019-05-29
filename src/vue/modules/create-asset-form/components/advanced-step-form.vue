@@ -18,6 +18,10 @@
           target="_blank"
         >
           {{ 'create-asset-form.pre-issuance-guide-link' | globalize }}
+          <i
+            class="mdi mdi-launch
+            advanced-step-form__pre-issuance-guide-link-launch-icon"
+          />
         </router-link>
       </div>
     </div>
@@ -231,6 +235,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/vue/forms/_app-form';
+@import '~@scss/variables';
 
 .advanced-step-form__btn {
   max-width: 14.4rem;
@@ -253,5 +258,18 @@ export default {
 
 .advanced-step-form__pre-issuance-enablement-tick-field {
   margin-bottom: 1rem;
+}
+
+.advanced-step-form__pre-issuance-guide-link {
+  text-decoration: none;
+  border-bottom: 0.1rem solid $col-link;
+
+  &:visited {
+    color: $col-primary;
+  }
+}
+
+.advanced-step-form__pre-issuance-guide-link-launch-icon {
+  font-size: 1.4rem;
 }
 </style>

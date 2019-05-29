@@ -56,7 +56,7 @@ export class AssetRecord {
   }
 
   _getBalance (balances) {
-    const balance = balances.find(balance => balance.asset === this.code)
+    const balance = balances.find(balance => balance.asset.code === this.code)
     if (balance) {
       return {
         value: balance.balance,
@@ -69,7 +69,7 @@ export class AssetRecord {
   }
 
   _getConvertedBalance (balances) {
-    const balance = balances.find(balance => balance.asset === this.code)
+    const balance = balances.find(balance => balance.asset.code === this.code)
     if (balance) {
       return {
         value: balance.convertedBalance,
