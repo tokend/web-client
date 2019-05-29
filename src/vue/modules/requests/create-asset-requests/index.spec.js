@@ -30,18 +30,8 @@ describe('Create asset requests module', () => {
 
   describe('created hook', () => {
     beforeEach(() => {
-      sandbox.stub(CreateAssetRequestsModule.methods, 'loadAssetTypes')
       sandbox.stub(CreateAssetRequestsModule.methods, 'initFirstPageLoader')
-    })
-
-    it('calls loadAssetTypes method', async () => {
-      await shallowMount(CreateAssetRequestsModule, {
-        localVue,
-        store,
-      })
-
-      expect(CreateAssetRequestsModule.methods.loadAssetTypes)
-        .to.have.been.calledOnce
+      sandbox.stub(CreateAssetRequestsModule.methods, 'loadAssetTypes')
     })
 
     it('calls initFirstPageLoader method', async () => {
@@ -51,6 +41,16 @@ describe('Create asset requests module', () => {
       })
 
       expect(CreateAssetRequestsModule.methods.initFirstPageLoader)
+        .to.have.been.calledOnce
+    })
+
+    it('calls loadAssetTypes method', async () => {
+      await shallowMount(CreateAssetRequestsModule, {
+        localVue,
+        store,
+      })
+
+      expect(CreateAssetRequestsModule.methods.loadAssetTypes)
         .to.have.been.calledOnce
     })
   })

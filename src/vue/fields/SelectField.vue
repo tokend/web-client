@@ -315,7 +315,7 @@ export default {
   background-color: transparent;
   border: none;
   color: $field-color-text;
-  cursor: pointer;
+  cursor: default;
 
   @include text-font-sizes;
 
