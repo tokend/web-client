@@ -15,6 +15,7 @@ for further information about branching and tagging conventions.
 - isTransferable policy getter to asset records
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
+- Password toggle button for input fields with type="password"
 
 #### Changed
 - Now loading account converted balances in
