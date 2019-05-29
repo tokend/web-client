@@ -18,8 +18,8 @@
     "test:watch": "karma start --no-single-run --auto-watch",
     "test:watchVerbose": "karma start --no-single-run --auto-watch --reporters spec",
     "lint": "yarn lint:styles && yarn lint:scripts",
-    "lint:scripts": "eslint '{src,config}/**/*.{js,vue}' --cache --fix --max-warnings=0",
-    "lint:styles": "stylelint 'src/**/*.{vue,css,scss}' --syntax scss --max-warnings=0",
+    "lint:scripts": "eslint \"{src,config}/**/*.{js,vue}\" --cache --fix --max-warnings=0",
+    "lint:styles": "stylelint \"src/**/*.{vue,css,scss}\" --syntax scss --max-warnings=0",
     "rsc": "node scripts/release-sanity-check.js"
   },
   "dependencies": {
@@ -40,6 +40,7 @@
     "lodash": "4.17.11",
     "loglevel": "1.6.1",
     "moment": "2.23.0",
+    "moment-timezone": "0.5.25",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
     "qrcode.vue": "1.6.1",

@@ -4,7 +4,6 @@ import { vuexTypes } from './types'
 
 import accountJSON from '../test/mocks/account'
 import balancesDetailsJSON from '../test/mocks/account-balances-details'
-import { AssetRecord } from '../js/records/entities/asset.record'
 import { api } from '@/api'
 
 describe('account.module', () => {
@@ -52,7 +51,7 @@ describe('account.module', () => {
         getters: {
           accountId: 'GAIEBMXUPSGW2J5ELJFOY6PR5IWXXJNHIJSDKTDHK76HHRNYRL2QYU4O',
         },
-        rootGetters: { defaultWuoteAsset: 'USD' },
+        rootGetters: {},
         commit: sinon.stub(),
         dispatch: sinon.stub(),
       }
@@ -78,25 +77,17 @@ describe('account.module', () => {
           .makeJsonapiResponseData(balancesDetailsJSON)
         sinon.stub(api, 'getWithSignature').resolves({ data: balancesMock })
 
-        const type = vuexTypes.SET_ACCOUNT_BALANCES_DETAILS
-        const payload = balancesMock.states
-          .map(state => state.balance)
-          .map(item => {
-            item.assetDetails = new AssetRecord(item.asset)
-            item.asset = item.assetDetails.code
-            item.balance = item.state.available
-            return item
-          })
-        const expectedMutations = {
-          [type]: payload,
-        }
+        const balances = balancesMock.states.map(state => state.balance)
+        const assetsPayload = balances.map(b => b.asset)
 
         await actions[vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS](store)
 
-        expect(store.commit.args)
-          .to
-          .deep
-          .equal(Object.entries(expectedMutations))
+        expect(store.commit).to.have.been.calledWithExactly(
+          vuexTypes.UPDATE_ASSETS, assetsPayload, { root: true }
+        )
+        expect(store.commit).to.have.been.calledWithExactly(
+          vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances
+        )
       })
   })
 

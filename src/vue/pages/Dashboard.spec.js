@@ -25,9 +25,8 @@ describe('Dashboard component', () => {
 
   const mockedAccountBalances = [
     {
-      asset: 'BTC',
       balance: '1',
-      assetDetails: {
+      asset: {
         code: 'BTC',
         policies: [
           { value: ASSET_POLICIES.transferable },
@@ -36,9 +35,8 @@ describe('Dashboard component', () => {
       },
     },
     {
-      asset: 'USD',
       balance: '3',
-      assetDetails: {
+      asset: {
         code: 'USD',
         policies: [
           { value: ASSET_POLICIES.transferable },
@@ -48,9 +46,8 @@ describe('Dashboard component', () => {
       },
     },
     {
-      asset: 'ETH',
       balance: '0',
-      assetDetails: {
+      asset: {
         code: 'ETH',
         policies: [
           { value: ASSET_POLICIES.baseAsset },
@@ -107,9 +104,9 @@ describe('Dashboard component', () => {
       it('set first asset code in accountBalances list route query asset does not exists', () => {
         const mockedAccountBalances = [
           {
-            asset: 'BTC',
             balance: '1',
-            assetDetails: {
+            asset: {
+              code: 'BTC',
               policies: [
                 { value: ASSET_POLICIES.transferable },
                 { value: ASSET_POLICIES.baseAsset },

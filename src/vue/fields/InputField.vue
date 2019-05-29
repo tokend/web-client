@@ -5,7 +5,8 @@
       'input-field--error': errorMessage,
       'input-field--monospaced': monospaced,
       'input-field--readonly': $attrs.readonly,
-      'input-field--disabled': $attrs.disabled
+      'input-field--disabled': $attrs.disabled,
+      'input-field--pwd-toggle-present': isPasswordType,
     }"
   >
     <input
@@ -15,13 +16,28 @@
       :class="{
         'input-field__input--autofill-white': whiteAutofill
       }"
-      :type="type"
+      :type="isPasswordType && isPasswordShown ? 'text' : type"
       :value="value"
       :placeholder="$attrs.placeholder || ' '"
       :tabindex="$attrs.readonly ? -1 : $attrs.tabindex"
       @focus="onFocus"
       @blur="onBlur"
     >
+
+    <button
+      v-if="isPasswordType"
+      type="button"
+      class="input-field__password-toggle"
+      :class="{
+        'input-field__password-toggle--autofill-white': whiteAutofill
+      }"
+      @click="isPasswordShown = !isPasswordShown"
+    >
+      <i
+        class="mdi input-field__password-toggle-icon"
+        :class="isPasswordShown ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+      />
+    </button>
 
     <span class="input-field__label">
       {{ label }}
@@ -57,6 +73,7 @@ export default {
 
   data: () => ({
     isCapsLockOn: false,
+    isPasswordShown: false,
   }),
 
   computed: {
@@ -68,12 +85,16 @@ export default {
         },
       }
     },
+
+    isPasswordType () {
+      return this.type === 'password'
+    },
   },
 
   methods: {
     onInput (event) {},
     onFocus (event) {
-      if (this.type === 'password') {
+      if (this.isPasswordType) {
         /**
          * Use two events to detect Caps Lock up and down.
          * If we will use only 'keydown', we can detect only Caps Lock press to
@@ -86,7 +107,7 @@ export default {
       }
     },
     onBlur (event) {
-      if (this.type === 'password') {
+      if (this.isPasswordType) {
         document.removeEventListener('keydown', this.detectCapsLock)
         document.removeEventListener('keyup', this.detectCapsLock)
 
@@ -108,6 +129,8 @@ export default {
 
 <style lang="scss" scoped>
 @import 'scss/variables';
+
+$pwd-toggle-btn-width: 3.2rem;
 
 .input-field {
   position: relative;
@@ -218,6 +241,30 @@ export default {
   .input-field--disabled > & {
     @include readonly-material-border($field-color-unfocused);
   }
+
+  .input-field--pwd-toggle-present > & {
+    padding-right: $pwd-toggle-btn-width + 0.4rem;
+  }
+}
+
+.input-field__password-toggle {
+  position: absolute;
+  right: 0.2rem;
+  top: $field-input-padding-top - 0.6rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  cursor: pointer;
+
+  &--autofill-white {
+    background-color: $col-block-bg;
+  }
+}
+
+.input-field__password-toggle-icon {
+  position: relative;
+  font-size: 2.4rem;
+  top: 0.2rem;
+  color: $field-color-unfocused;
 }
 
 .input-field__label {

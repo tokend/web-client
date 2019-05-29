@@ -20,7 +20,7 @@ export default {
     }),
 
     getAssetDetails (assetCode) {
-      return this.accountBalances.find(i => i.asset === assetCode)
+      return this.accountBalances.find(i => i.asset.code === assetCode)
     },
 
     /**

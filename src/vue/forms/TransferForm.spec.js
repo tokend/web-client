@@ -47,9 +47,9 @@ describe('TransferForm component', () => {
 
     mockedAccountBalances = [
       {
-        asset: 'BTC',
         balance: '1',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'BTC',
           policies: {
             flags: [
               { value: ASSET_POLICIES.transferable },
@@ -59,9 +59,9 @@ describe('TransferForm component', () => {
         }),
       },
       {
-        asset: 'USD',
         balance: '3',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'USD',
           policies: {
             flags: [
               { value: ASSET_POLICIES.transferable },
@@ -72,9 +72,9 @@ describe('TransferForm component', () => {
         }),
       },
       {
-        asset: 'ETH',
         balance: '0',
-        assetDetails: new AssetRecord({
+        asset: new AssetRecord({
+          id: 'ETH',
           policies: [
             { value: ASSET_POLICIES.baseAsset },
           ],
@@ -292,8 +292,8 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.assets)
         .to.deep.equal([
-          mockedAccountBalances[0].assetDetails,
-          mockedAccountBalances[1].assetDetails,
+          mockedAccountBalances[0].asset,
+          mockedAccountBalances[1].asset,
         ])
     })
 

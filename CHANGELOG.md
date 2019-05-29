@@ -10,12 +10,39 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 #### Added
 - Tooltip directive
+- Assets vuex module for loading and storing all the assets
+- Whitelisted detail on sale related modules
+- isTransferable policy getter to asset records
+- Usage of Unix line endings rule
+- Browser compatibiility check and unsupported browser page
+- Password toggle button for input fields with type="password"
 - Fees mixin, renderer & wrappers for unified displaying fees
 - Displaying fees on issuance form & trade forms
 
 #### Changed
 - Now loading account converted balances in
   "LOAD_ACCOUNT_BALANCES_DETAILS" vuex action
+- Now calling "UPDATE_ASSET" mutation in the
+  "LOAD_ACCOUNT_BALANCES_DETAILS" action
+- Now top bar buttons in movements page are conditionally disabled
+- Route-to-route progress bar size and color
+- Now hiding "My Sales" tab for non-corporate accounts
+- Update "Learn more about pre-issuance" link style on sale creation form
+- Now including offer fees to account's balance on invest form
+
+#### Removed
+- Cursor pointer on disabled select
+- Price history chart from sale overview page
+- Validation for address line 2
+- Fixed fee from invest form
+
+#### Fixed
+- Don't show title in kyc status message, if no additional external information
+- 'data' error in asset request list
+- Successful investment sale state update
+- Break words in sale description viewer
+- Replace labels for submit general kyc button
+- Calendar related tests for win32 systems
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
@@ -35,7 +62,6 @@ for further information about branching and tagging conventions.
   - New whitelist invitation form (shown only for the sale owner)
   - New whitelist invitations drawer
 - New loading feedback when moving from one route to another (nprogress loader)
-- New validation of file extension, size and dimensions in file field
 - New "Copied" tooltip message to copy icon-buttons
 - New "Total" read-only field in offer creation form
 - New Sentry error tracking integration
@@ -52,6 +78,7 @@ for further information about branching and tagging conventions.
   - Added icons for non-image filetypes
   - Added upload icons
   - Now gray-scale painting the field when its state is disabled
+  - New validation of file extension, size and dimensions in file field
 - Dashboard movements changes:
   - Added "Latest activity" label
   - Now showing only 10 latest operations
@@ -127,10 +154,6 @@ for further information about branching and tagging conventions.
   - Remove storageUrl from modules
   - Now processing documents & blobs using new ApiCaller
 
-#### Fixed
-- `event.getModifierState` error on auth page
-- Account balances mapping in deposit form
-
 #### Removed
 - Removed unused:
   - `CreateSaleForm` component
@@ -139,6 +162,10 @@ for further information about branching and tagging conventions.
   - `mock-helper.js` unused methods
   - `DocumentContainer` unused methods
   - global SDK instance
+
+#### Fixed
+- `event.getModifierState` error on auth page
+- Account balances mapping in deposit form
 
 ### Experimental features changes
 #### Fixed

@@ -223,20 +223,20 @@ export default {
 
     accountAssets () {
       return this.accountBalances
-        .map(balance => balance.asset)
+        .map(balance => balance.asset.code)
         .filter(asset => asset !== this.assetPair.quote)
     },
 
     baseAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset === this.form.asset)
+        .find(balance => balance.asset.code === this.form.asset)
 
       return balanceItem ? balanceItem.balance : ''
     },
 
     quoteAssetBalance () {
       const balanceItem = this.accountBalances
-        .find(balance => balance.asset === this.assetPair.quote)
+        .find(balance => balance.asset.code === this.assetPair.quote)
       return balanceItem ? balanceItem.balance : ''
     },
 

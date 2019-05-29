@@ -109,7 +109,7 @@ export default {
     }),
     balanceId () {
       return this.accountBalances.find(item => {
-        return item.asset === this.selectedAsset.code
+        return item.asset.code === this.selectedAsset.code
       }).id
     },
   },
@@ -118,7 +118,7 @@ export default {
     try {
       await this.loadBalances()
       this.assets = this.accountBalances
-        .map(item => item.assetDetails)
+        .map(item => item.asset)
         .filter(item => item.isDepositable)
 
       if (this.assets.length) {

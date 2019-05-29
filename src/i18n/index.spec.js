@@ -1,5 +1,6 @@
 import _cloneDeep from 'lodash/cloneDeep'
 import i18next from 'i18next'
+import moment from 'moment-timezone'
 
 const mockEn = {
   'config': {
@@ -72,6 +73,7 @@ describe('the i18n is properly configured', () => {
     const options = _cloneDeep(i18nOptions)
     options.lng = 'en'
     options.debug = false // Set to true, if something is not working
+    moment.tz.setDefault('UTC') // Set timezone to 'UTC', so tests won't convert to local timezone
     i18next.init(options)
   })
 
