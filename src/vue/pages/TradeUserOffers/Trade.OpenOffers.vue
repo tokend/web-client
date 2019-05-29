@@ -55,7 +55,7 @@
               <td>{{ offer.price | formatMoney }}</td>
             </tr>
           </tbody>
-          <empty-list-placeholder
+          <empty-tbody-placeholder
             v-else
             :colspan="5"
             :message="'trade-open-offers.no-data-message' | globalize({
@@ -93,7 +93,7 @@ import YourTradeOfferForm from '@/vue/forms/market-orders/YourTradeOfferForm'
 import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import { globalize } from '@/vue/filters/globalize'
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   reloadOffers: 'reload-offers',
@@ -105,7 +105,7 @@ export default {
     YourTradeOfferForm,
     Loader,
     Drawer,
-    EmptyListPlaceholder,
+    EmptyTbodyPlaceholder,
   },
   props: {
     openOffers: { type: Array, required: true, default: () => [] },

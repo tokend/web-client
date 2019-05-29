@@ -41,7 +41,7 @@
                 <td>{{ item.createdAt | formatCalendar }}</td>
               </tr>
             </tbody>
-            <empty-list-placeholder
+            <empty-tbody-placeholder
               v-else
               :message="'trade-history.no-data-message' | globalize({
                 base: assetPair.base,
@@ -57,12 +57,12 @@
 </template>
 
 <script>
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
   name: 'trade-history-renderer',
   components: {
-    EmptyListPlaceholder,
+    EmptyTbodyPlaceholder,
   },
   props: {
     assetPair: {

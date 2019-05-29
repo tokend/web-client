@@ -48,7 +48,7 @@
                 <td>{{ offer.price | formatMoney }}</td>
               </tr>
             </tbody>
-            <empty-list-placeholder
+            <empty-tbody-placeholder
               v-else
               :message="'trade-offers.no-data-title' | globalize"
               :colspan="3"
@@ -83,7 +83,7 @@ import FormMixin from '@/vue/mixins/form.mixin'
 import Drawer from '@/vue/common/Drawer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
@@ -94,7 +94,7 @@ export default {
   components: {
     Drawer,
     SubmitTradeOfferForm,
-    EmptyListPlaceholder,
+    EmptyTbodyPlaceholder,
   },
   mixins: [
     FormMixin,

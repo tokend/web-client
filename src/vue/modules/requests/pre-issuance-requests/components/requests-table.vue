@@ -46,7 +46,7 @@
             </td>
           </tr>
         </tbody>
-        <empty-list-placeholder
+        <empty-tbody-placeholder
           v-else
           :colspan="4"
           :message="'pre-issuance-requests.no-request-history-desc' | globalize"
@@ -58,7 +58,7 @@
 
 <script>
 import RequestStateViewer from '../../shared/components/request-state-viewer'
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   select: 'select',
@@ -68,7 +68,7 @@ export default {
   name: 'requests-table',
   components: {
     RequestStateViewer,
-    EmptyListPlaceholder,
+    EmptyTbodyPlaceholder,
   },
 
   props: {

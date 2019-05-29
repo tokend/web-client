@@ -54,7 +54,7 @@
               </td>
             </tr>
           </tbody>
-          <empty-list-placeholder
+          <empty-tbody-placeholder
             v-else
             :colspan="6"
             :message="'issuance-explorer.table.no-issuances-msg' | globalize"
@@ -68,14 +68,14 @@
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from './request-state-viewer'
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
   name: 'issuanes-table',
   components: {
     EmailGetter,
     RequestStateViewer,
-    EmptyListPlaceholder,
+    EmptyTbodyPlaceholder,
   },
 
   props: {
