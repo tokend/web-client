@@ -16,6 +16,8 @@ for further information about branching and tagging conventions.
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
 - Password toggle button for input fields with type="password"
+- State icon to the status message
+- Rotation of status message close icon on hovering
 
 #### Changed
 - Now loading account converted balances in
@@ -27,6 +29,8 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now using light background for status messages with the type
+  "success" of "info"
 
 #### Removed
 - Cursor pointer on disabled select
