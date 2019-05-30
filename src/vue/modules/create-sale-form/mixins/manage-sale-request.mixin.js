@@ -8,9 +8,6 @@ import { api } from '@/api'
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
 import { DateUtil } from '@/js/utils'
 
-import { vuexTypes } from '@/vuex'
-import { mapGetters } from 'vuex'
-
 const NEW_CREATE_SALE_REQUEST_ID = '0'
 const DEFAULT_SALE_TYPE = '0'
 const DEFAULT_QUOTE_ASSET_PRICE = '1'
@@ -28,9 +25,6 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.defaultQuoteAsset,
-    ]),
     saleRequestOpts () {
       const saleLogo = this.shortBlurbStepForm.saleLogo
 
@@ -41,7 +35,7 @@ export default {
         startTime: DateUtil.toTimestamp(this.informationStepForm.startTime),
         endTime: DateUtil.toTimestamp(this.informationStepForm.endTime),
         baseAsset: this.informationStepForm.baseAsset.code,
-        defaultQuoteAsset: this.defaultQuoteAsset,
+        defaultQuoteAsset: this.informationStepForm.capAsset.code,
         softCap: this.informationStepForm.softCap,
         hardCap: this.informationStepForm.hardCap,
         requiredBaseAssetForHardCap: this.informationStepForm.assetsToSell,
@@ -87,9 +81,35 @@ export default {
         accountId
       )
 
+      await this.createBalancesIfNotExist({
+        balanceAssets: this.assets.map(asset => asset.code),
+        quoteAssets: this.informationStepForm.quoteAssets,
+        accountId,
+      })
+
       const operation =
         base.SaleRequestBuilder.createSaleCreationRequest(this.saleRequestOpts)
       await api.postOperations(operation)
+    },
+
+    async createBalancesIfNotExist ({ balanceAssets, quoteAssets, accountId }) {
+      let operations = []
+
+      for (const asset of quoteAssets) {
+        if (!balanceAssets.includes(asset)) {
+          operations.push(
+            base.Operation.manageBalance({
+              asset: asset,
+              destination: accountId,
+              action: base.xdr.ManageBalanceAction.createUnique(),
+            })
+          )
+        }
+      }
+
+      if (operations.length) {
+        await api.postOperations(...operations)
+      }
     },
   },
 }
