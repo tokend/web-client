@@ -360,20 +360,18 @@ export default {
     },
 
     populateForm () {
-      this.form = {
-        name: this.request.name,
-        baseAsset: this.ownedAssets
-          .find(item => item.code === this.request.baseAsset),
-        capAsset: this.baseAssets
-          .find(item => item.code === this.request.defaultQuoteAsset),
-        startTime: this.request.startTime,
-        endTime: this.request.endTime,
-        softCap: this.request.softCap,
-        hardCap: this.request.hardCap,
-        assetsToSell: this.request.assetsToSell,
-        quoteAssets: this.request.quoteAssets,
-        isWhitelisted: this.request.isWhitelisted,
-      }
+      this.form.name = this.request.name
+      this.form.baseAsset = this.ownedAssets
+        .find(item => item.code === this.request.baseAsset)
+      this.form.capAsset = this.baseAssets
+        .find(item => item.code === this.request.defaultQuoteAsset)
+      this.form.startTime = this.request.startTime
+      this.form.endTime = this.request.endTime
+      this.form.softCap = this.request.softCap
+      this.form.hardCap = this.request.hardCap
+      this.form.assetsToSell = this.request.assetsToSell
+      this.form.quoteAssets = this.request.quoteAssets
+      this.form.isWhitelisted = this.request.isWhitelisted
     },
 
     submit () {

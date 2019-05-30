@@ -11,7 +11,7 @@ export default {
       let result
 
       try {
-        let pageResponse = await api.getWithSignature('/v3/asset_pairs', {
+        let pageResponse = await api.get('/v3/asset_pairs', {
           filter: { quote_asset: quoteAssetCode },
           page: { limit: ASSET_PAIRS_PAGE_LIMIT },
           include: ['base_asset'],
