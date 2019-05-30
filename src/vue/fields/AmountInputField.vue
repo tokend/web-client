@@ -117,9 +117,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-  .amount-input-field {
-    width: 100%;
-  }
-</style>

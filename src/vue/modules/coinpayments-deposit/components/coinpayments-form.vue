@@ -9,6 +9,7 @@
           <div class="app__form-row">
             <amount-input-field
               v-model="form.amount"
+              class="app__form-field"
               name="coinpayments-amount"
               validation-type="incoming"
               :label="'coinpayments-deposit.amount-lbl' | globalize"
