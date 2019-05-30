@@ -1300,6 +1300,7 @@
       "coinpayments-msg": "Coinpayments",
       "non-depositable-msg": "Non-depositable",
       "asset-type": "Asset type",
+      "verification-required-title": "Requires verification",
       "does-not-require-verification-title": "Does not require verification",
       "security-asset-title": "Is security (requires accreditation for US residents)",
       "terms-title": "Terms",
