@@ -10,13 +10,17 @@
           </span>
         </router-link>
 
-        <router-link
-          :to="vueRoutes.userOwnedSales"
+        <template
+          v-if="getModule().canRenderSubmodule(SalesListOwnedPageModule)"
         >
-          <span>
-            {{ 'sales.my-sales' | globalize }}
-          </span>
-        </router-link>
+          <router-link
+            :to="vueRoutes.userOwnedSales"
+          >
+            <span>
+              {{ 'sales.my-sales' | globalize }}
+            </span>
+          </router-link>
+        </template>
       </template>
 
       <template
@@ -100,6 +104,7 @@ import { CreateSaleFormModule } from '@modules/create-sale-form/module'
 
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { CreateOpportunityModule } from '@/vue/modules/create-opportunity/module'
+import { SalesListOwnedPageModule } from '@/vue/pages/sales/user-owned-sales-page-module'
 
 export default {
   name: 'sales',
@@ -119,6 +124,7 @@ export default {
     CreateSaleFormModule,
     vueRoutes,
     CreateOpportunityModule,
+    SalesListOwnedPageModule,
   }),
 
   computed: {
