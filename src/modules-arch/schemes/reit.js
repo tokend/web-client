@@ -93,6 +93,7 @@ export default {
                 isUserSales: true,
               },
             },
+            isCorporateOnly: true,
           }),
           new CreateOpportunityModule({
             isCorporateOnly: true,

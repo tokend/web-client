@@ -226,6 +226,7 @@ export default {
                 isUserSales: true,
               },
             },
+            isCorporateOnly: true,
           }),
           new CreateSaleFormModule({
             isCorporateOnly: true,
