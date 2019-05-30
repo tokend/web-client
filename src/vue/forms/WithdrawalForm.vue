@@ -38,23 +38,16 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <input-field
-              white-autofill
+            <amount-input-field
               class="app__form-field"
-              v-model.trim="form.amount"
-              type="number"
+              v-model="form.amount"
               name="withdrawal-amount"
-              @blur="touchField('form.amount')"
+              validation-type="outgoing"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
-              :step="selectedAssetStep"
+              :asset="form.asset"
               :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage('form.amount', {
-                available: form.asset.balance.value,
-                maxDecimalDigitsCount: DECIMAL_POINTS,
-                minValue: selectedAssetStep
-              })"
             />
           </div>
 
@@ -149,10 +142,8 @@ import FeesMixin from '@/vue/common/fees/fees.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { AssetRecord } from '@/js/records/entities/asset.record'
-import { FEE_TYPES, base } from '@tokend/js-sdk'
+import { FEE_TYPES, base, ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
@@ -162,10 +153,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
-  lessThenMax,
   address,
-  minValue,
-  maxDecimalDigitsCount,
 } from '@validators'
 
 const EVENTS = {
@@ -188,7 +176,6 @@ export default {
       address: '',
     },
     fees: {},
-    assets: [],
     MIN_AMOUNT: config.MIN_AMOUNT,
     feesDebouncedRequest: null,
     isFeesLoaded: false,
@@ -205,14 +192,6 @@ export default {
     return {
       form: {
         asset: { required },
-        amount: {
-          required,
-          noMoreThanAvailableOnBalance: lessThenMax(
-            this.form.asset.balance.value
-          ),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
-          minValue: minValue(this.selectedAssetStep),
-        },
         address: this.isMasterAssetOwner ? addressRules : {},
       },
     }
@@ -221,16 +200,15 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      assetsWithPolicies: vuexTypes.assetsWithPolicies,
     }),
 
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
     },
-
-    selectedAssetStep () {
-      // eslint-disable-next-line
-      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
-    },
+    assets () {
+      return this.assetsWithPolicies([ASSET_POLICIES.withdrawable])
+    }
   },
   watch: {
     'form.amount' (value) {
@@ -320,30 +298,16 @@ export default {
       }
     },
     async initAssetSelector () {
-      await this.loadAssets()
       if (this.assets.length) {
         this.form.asset = this.assets[0]
       }
     },
     async reinitAssetSelector () {
-      await this.loadAssets()
       if (this.assets.length) {
         const updatedAsset = this.assets
           .find(item => item.code === this.form.asset.code)
         this.form.asset = updatedAsset || this.assets[0]
       }
-    },
-    async loadAssets () {
-      await this.loadBalances()
-      const endpoint = `/v3/accounts/${this.accountId}`
-      const { data: account } = await api.get(endpoint, {
-        include: ['balances.asset'],
-      })
-
-      this.assets = account.balances
-        .map(b => b.asset)
-        .map(item => new AssetRecord(item, this.balances))
-        .filter(item => item.isWithdrawable && item.balance.id)
     },
   },
 }

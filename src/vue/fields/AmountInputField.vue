@@ -12,6 +12,7 @@
         from: minAmount,
         to: maxIncomingAmount
       })"
+      :disabled="disabled"
       @blur="touchField('value')"
     />
   </div>
@@ -51,6 +52,7 @@ export default {
   props: {
     asset: { type: AssetRecord, required: true },
     label: { type: String, default: '' },
+    disabled: { type: Boolean, default: false },
     value: { type: [Number, String], default: undefined },
     validationType: { type: String, required: true },
   },
@@ -115,6 +117,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-</style>
