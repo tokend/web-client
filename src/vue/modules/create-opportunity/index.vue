@@ -434,6 +434,7 @@ import { DateUtil } from '@/js/utils'
 import { mapActions, mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import {
   required,
   amountRange,
@@ -643,11 +644,13 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      baseAssets: vuexTypes.balancesAssets,
+      assets: vuexTypes.assets,
+      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+    }),
     ...mapGetters('create-opportunity', {
-      assets: types.assets,
       pairs: types.pairs,
-      baseAssets: types.baseAssets,
-      statsQuoteAsset: types.statsQuoteAsset,
     }),
     assetTypes () {
       return [

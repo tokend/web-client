@@ -65,18 +65,19 @@ export const getters = {
     rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
       .filter(item => item.isCoinpayments),
-  [vuexTypes.assetsWithPolicies]: (a, getters, b, rootGetters) => policies => {
-    const filteredAssets = rootGetters[vuexTypes.accountBalances]
+  [vuexTypes.transferableBalancesAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
       .map(item => item.asset)
-      .reduce((filteredAssets, asset) => {
-        let isPoliciesValid = policies.reduce(function (result, policy) {
-          return result && !!(asset.policy & policy)
-        }, true)
-        if (isPoliciesValid) filteredAssets.push(asset)
-        return filteredAssets
-      }, [])
-    return filteredAssets
-  },
+      .filter(item => item.isTransferable),
+  [vuexTypes.withdrawableBalancesAssets]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.accountBalances]
+      .map(item => item.asset)
+      .filter(item => item.isWithdrawable),
+  [vuexTypes.statsQuoteAsset]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.assets]
+      .filter(item => {
+        return item.isStatsQuoteAsset
+      })[0] || {},
 }
 
 export default {

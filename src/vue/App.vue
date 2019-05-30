@@ -118,7 +118,7 @@ export default {
   methods: {
     ...mapActions({
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
-      loadDefaultQuoteAsset: vuexTypes.LOAD_DEFAULT_QUOTE_ASSET,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -128,7 +128,7 @@ export default {
       api.useNetworkDetails(networkDetails)
 
       await this.loadKvEntries()
-      await this.loadDefaultQuoteAsset()
+      await this.loadAssets()
 
       if (this[vuexTypes.isLoggedIn]) {
         const wallet = new Wallet(

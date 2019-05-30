@@ -1,7 +1,7 @@
 <template>
   <div class="transfer app__page-content-wrp">
     <template v-if="isLoaded">
-      <template v-if="!assets.length">
+      <template v-if="!transferableBalancesAssets.length">
         <h2 class="app__page-heading">
           {{ 'transfer-form.no-assets-heading' | globalize }}
         </h2>
@@ -28,7 +28,7 @@
             <div class="app__form-field">
               <select-field
                 name="transfer-asset"
-                :values="assets"
+                :values="transferableBalancesAssets"
                 v-model="form.asset"
                 key-as-value-text="nameAndCode"
                 :label="'transfer-form.asset-lbl' | globalize"
@@ -145,7 +145,6 @@ import { vuexTypes } from '@/vuex'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
 import {
   base,
-  ASSET_POLICIES,
   FEE_TYPES,
 } from '@tokend/js-sdk'
 import config from '@/config'
@@ -210,12 +209,9 @@ export default {
   computed: {
     ...mapGetters([
       vuexTypes.accountId,
-      vuexTypes.assetsWithPolicies,
+      vuexTypes.transferableBalancesAssets,
       vuexTypes.accountBalanceByCode,
     ]),
-    assets () {
-      return this.assetsWithPolicies([ASSET_POLICIES.transferable])
-    },
     balance () {
       return this.accountBalanceByCode(this.form.asset.code)
     },
@@ -327,8 +323,9 @@ export default {
     },
     setAsset () {
       this.form.asset =
-        this.assets.find(asset => asset.code === this.assetToTransfer) ||
-        this.assets[0] ||
+        this.transferableBalancesAssets
+          .find(asset => asset.code === this.assetToTransfer) ||
+        this.transferableBalancesAssets[0] ||
         {}
     },
   },

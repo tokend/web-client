@@ -1,7 +1,7 @@
 <template>
   <div class="withdrawal">
     <template v-if="isLoaded">
-      <template v-if="assets.length">
+      <template v-if="withdrawableBalancesAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           novalidate
@@ -11,7 +11,7 @@
               <select-field
                 name="withdrawal-asset"
                 v-model="form.asset"
-                :values="assets"
+                :values="withdrawableBalancesAssets"
                 key-as-value-text="nameAndCode"
                 :disabled="formMixin.isDisabled"
                 :label="'withdrawal-form.asset' | globalize"
@@ -143,7 +143,7 @@ import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { FEE_TYPES, base, ASSET_POLICIES } from '@tokend/js-sdk'
+import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
 import { vueRoutes } from '@/vue-router/routes'
@@ -200,14 +200,11 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
-      assetsWithPolicies: vuexTypes.assetsWithPolicies,
+      withdrawableBalancesAssets: vuexTypes.withdrawableBalancesAssets,
     }),
 
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
-    },
-    assets () {
-      return this.assetsWithPolicies([ASSET_POLICIES.withdrawable])
     },
   },
   watch: {
@@ -298,15 +295,15 @@ export default {
       }
     },
     async initAssetSelector () {
-      if (this.assets.length) {
-        this.form.asset = this.assets[0]
+      if (this.withdrawableBalancesAssets.length) {
+        this.form.asset = this.withdrawableBalancesAssets[0]
       }
     },
     async reinitAssetSelector () {
-      if (this.assets.length) {
-        const updatedAsset = this.assets
+      if (this.withdrawableBalancesAssets.length) {
+        const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)
-        this.form.asset = updatedAsset || this.assets[0]
+        this.form.asset = updatedAsset || this.withdrawableBalancesAssets[0]
       }
     },
   },
