@@ -208,7 +208,7 @@ export default {
     },
     assets () {
       return this.assetsWithPolicies([ASSET_POLICIES.withdrawable])
-    }
+    },
   },
   watch: {
     'form.amount' (value) {

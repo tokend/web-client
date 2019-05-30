@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="amount-input-field">
     <input-field
       name="transfer-amount"
       type="number"
@@ -117,3 +117,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  .amount-input-field {
+    width: 100%;
+  }
+</style>
