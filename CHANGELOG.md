@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
 - Password toggle button for input fields with type="password"
+- Cap asset field to the create sale form
 
 #### Changed
 - Now loading account converted balances in
@@ -27,6 +28,10 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now using cap asset as default quote asset for create sale request
+- Now creating quote asset balances on create sale form if they don't exist
+- Now displaying accepted investment assets as base assets of pairs where
+  cap asset is quote asset on create sale form
 
 #### Removed
 - Cursor pointer on disabled select
