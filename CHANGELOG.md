@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [1.7.0-rc.3] - 2019-05-30
+#### Fixed
+- Hide "My sales" tab for non-corporate users
+- Fix Create/Update button text on general KYC verification form
+- Add missing asset type translation to sale asset details
+
+### "Under the hood" changes
+#### Changed
+- Now using @tokend/js-sdk@1.7.0-rc.2
+
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
 #### Changed
@@ -558,7 +568,8 @@ for further information about branching and tagging conventions.
 
 ## [1.3.0] - 2019-03-01
 
-[Unreleased]: https://github.com/tokend/web-client/compare/1.7.0-rc.2...HEAD
+[Unreleased]: https://github.com/tokend/web-client/compare/1.7.0-rc.3...HEAD
+[1.7.0-rc.3]: https://github.com/tokend/web-client/compare/1.7.0-rc.2...1.7.0-rc.3
 [1.7.0-rc.2]: https://github.com/tokend/web-client/compare/1.7.0-rc.1...1.7.0-rc.2
 [1.7.0-rc.1]: https://github.com/tokend/web-client/compare/1.7.0-rc.0...1.7.0-rc.1
 [1.7.0-rc.0]: https://github.com/tokend/web-client/compare/1.6.0...1.7.0-rc.0
