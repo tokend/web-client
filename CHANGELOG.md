@@ -27,6 +27,7 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now displaying asset for incoming withdrawal requests
 
 #### Removed
 - Cursor pointer on disabled select

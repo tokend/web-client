@@ -1280,6 +1280,7 @@
       "loading-error-msg": "There was an error while loading.",
       "details-title": "Incoming withdrawal request",
       "requestor-header": "Requestor",
+      "asset-code-header": "Asset code",
       "amount-header": "Amount",
       "request-state-header": "Request state",
       "created-header": "Created",

@@ -1,11 +1,14 @@
 import safeGet from 'lodash/get'
-import { Request } from '../../shared/wrappers/request'
 import { MathUtil } from '@/js/utils'
+
+import { Request } from '../../shared/wrappers/request'
+import { Asset } from './asset'
 
 export class IncomingWithdrawalRequest extends Request {
   constructor (record) {
     super(record)
 
+    this.asset = new Asset(safeGet(record, 'requestDetails.asset') || {})
     this.amount = safeGet(record, 'requestDetails.amount')
     this.fixedFee = safeGet(record, 'requestDetails.fee.fixed')
     this.calculatedPercentFee = safeGet(
