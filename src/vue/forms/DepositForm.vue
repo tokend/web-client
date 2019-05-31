@@ -92,6 +92,10 @@ export default {
   },
   mixins: [FormMixin],
 
+  props: {
+    assetCode: { type: String, default: '' },
+  },
+
   data () {
     return {
       CoinpaymentsDepositModule,
@@ -122,7 +126,8 @@ export default {
         .filter(item => item.isDepositable)
 
       if (this.assets.length) {
-        this.selectedAsset = this.assets[0]
+        this.selectedAsset = this.assets.find(a => a.code === this.assetCode) ||
+          this.assets[0]
       }
       this.isLoaded = true
     } catch (e) {

@@ -229,6 +229,9 @@ export default {
     EmailGetter,
   },
   mixins: [FormMixin],
+  props: {
+    assetCode: { type: String, default: '' },
+  },
   data: () => ({
     isLoaded: false,
     isFailed: false,
@@ -380,7 +383,8 @@ export default {
     async initAssetSelector () {
       await this.loadAssets()
       if (this.assets.length) {
-        this.form.asset = this.assets[0]
+        this.form.asset = this.assets.find(a => a.code === this.assetCode) ||
+          this.assets[0]
       }
     },
     async reinitAssetSelector () {
