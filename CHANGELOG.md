@@ -27,12 +27,14 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now displaying invest form on the sale state widget
 
 #### Removed
 - Cursor pointer on disabled select
 - Price history chart from sale overview page
 - Validation for address line 2
 - Fixed fee from invest form
+- Invest drawer from sale stae widget & opportunity details components
 
 #### Fixed
 - Don't show title in kyc status message, if no additional external information
@@ -41,6 +43,7 @@ for further information about branching and tagging conventions.
 - Break words in sale description viewer
 - Replace labels for submit general kyc button
 - Calendar related tests for win32 systems
+- Disabling invest form while submitting
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes

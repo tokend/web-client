@@ -45,29 +45,8 @@
               </button>
             </template>
           </template>
-          <template v-else>
-            <button
-              v-ripple
-              class="app__button-raised opportunity-details__invest-btn"
-              @click="isInvestDrawerShown = true"
-            >
-              {{ 'opportunity-details.invest' | globalize }}
-            </button>
-          </template>
         </template>
       </top-bar>
-
-      <drawer :is-shown.sync="isInvestDrawerShown">
-        <template slot="heading">
-          {{ 'opportunity-details.invest' | globalize }}
-        </template>
-
-        <invest-form
-          :sale="opportunity"
-          @submitted="hideInvestDrawer() || refreshOpportunity()"
-          @canceled="hideInvestDrawer() || refreshOpportunity()"
-        />
-      </drawer>
 
       <template v-if="getModule().canRenderSubmodule(DividendFormModule)">
         <drawer :is-shown.sync="isDividendDrawerShown">
@@ -134,7 +113,6 @@ import Loader from '@/vue/common/Loader'
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 
-import InvestForm from '@/vue/forms/InvestForm'
 import { DividendFormModule } from '@/vue/modules/dividend-form/module'
 import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 
@@ -161,7 +139,6 @@ export default {
     Loader,
     Drawer,
     NoDataMessage,
-    InvestForm,
     SubmoduleImporter,
   },
 
@@ -176,7 +153,6 @@ export default {
     isLoadingFailed: false,
     isDividendDrawerShown: false,
     isBuyBackDrawerShown: false,
-    isInvestDrawerShown: false,
     vueRoutes,
     ASSET_SUBTYPE,
     DividendFormModule,
@@ -258,10 +234,6 @@ export default {
 
     buyBackModuleSubmitted () {
       this.isBuyBackDrawerShown = false
-    },
-
-    hideInvestDrawer () {
-      this.isInvestDrawerShown = false
     },
   },
 }
