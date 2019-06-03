@@ -41,6 +41,7 @@ export const actions = {
     }
 
     commit(vuexTypes.SET_ASSETS, assets)
+    // throw Error('AAAAAAAAAAAAAAAAWWWWWWWWW')
   },
 }
 

@@ -142,12 +142,12 @@ export default {
           'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
         })
+        await this.loadAccount(this.walletAccountId)
       }
       walletsManager.useApi(api)
       factorsManager.useApi(api)
       documentsManager.useApi(api)
       await this.loadAssets()
-      await this.loadAccount(this.walletAccountId)
     },
     detectUnсompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()

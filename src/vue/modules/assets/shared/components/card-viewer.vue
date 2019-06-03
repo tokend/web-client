@@ -14,7 +14,7 @@
         {{ asset.name || asset.code }}
       </p>
       <p
-        v-if="asset.balance"
+        v-if="balance"
         class="card-viewer__balance"
         :title="
           'assets-list.list-item-balance-line' |
@@ -37,24 +37,33 @@
 <script>
 import LogoViewer from './logo-viewer'
 
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'card-viewer',
   components: { LogoViewer },
   props: {
     asset: {
-      type: Asset,
+      type: AssetRecord,
       required: true,
     },
   },
   computed: {
+    ...mapGetters({
+      getAssetByCode: vuexTypes.assetByCode
+    }),
     assetBalance () {
       return {
-        value: this.asset.balance,
+        value: this.balance,
         currency: this.asset.code,
       }
     },
+    balance () {
+      return this.getAssetByCode(this.asset.code).balance
+    }
   },
 }
 </script>
