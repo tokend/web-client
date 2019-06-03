@@ -83,7 +83,7 @@
             {{ 'transfer-form.form-heading' | globalize }}
           </template>
           <transfer
-            @operation-submitted="updateBalancesAndList()"
+            @operation-submitted="closeDrawerAndUpdateList()"
             :asset-to-transfer="currentAsset"
           />
         </template>
@@ -110,6 +110,7 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
+import { setTimeout } from 'timers'
 
 const REFS = {
   movementsHistory: 'movements-history',
@@ -191,7 +192,12 @@ export default {
       return this.$refs[REFS.movementsHistory].$children[0]
         .reloadCollectionLoader()
     },
-
+    closeDrawerAndUpdateList () {
+      this.showDrawer = false
+      setTimeout(() => {
+        this.updateBalancesAndList()
+      }, 1000)
+    },
     updateBalancesAndList () {
       return Promise.all([
         this.loadBalances(),
