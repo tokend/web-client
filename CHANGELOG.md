@@ -27,6 +27,7 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now using "d3Format" and SI prefixes while formatting chart percent hints
 
 #### Removed
 - Cursor pointer on disabled select
