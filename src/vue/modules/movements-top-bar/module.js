@@ -7,12 +7,6 @@ export class MovementsTopBarModule extends ModuleDescriptor {
   constructor (opts = {}) {
     super({
       importComponentFn: _ => import('@/vue/modules/movements-top-bar'),
-      importStoreFn: async _ => {
-        const { MovementsTopBarModule } = await import(
-          '@/vue/modules/movements-top-bar/store'
-        )
-        return MovementsTopBarModule
-      },
       allowedSubmodules: [
         WithdrawalDrawerPseudoModule,
         DepositFormPseudoModule,

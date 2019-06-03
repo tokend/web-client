@@ -119,6 +119,7 @@ export default {
     ...mapActions({
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
       loadAssets: vuexTypes.LOAD_ASSETS,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
@@ -128,7 +129,6 @@ export default {
       api.useNetworkDetails(networkDetails)
 
       await this.loadKvEntries()
-      await this.loadAssets()
 
       if (this[vuexTypes.isLoggedIn]) {
         const wallet = new Wallet(
@@ -146,6 +146,8 @@ export default {
       walletsManager.useApi(api)
       factorsManager.useApi(api)
       documentsManager.useApi(api)
+      await this.loadAssets()
+      await this.loadAccount(this.walletAccountId)
     },
     detectUnсompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
