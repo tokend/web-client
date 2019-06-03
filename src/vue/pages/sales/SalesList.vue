@@ -26,12 +26,11 @@
             :sale="sale"
           />
         </template>
-        <template v-for="item in itemsPerSkeletonLoader">
-          <skeleton-loader
-            :key="`skeleton-loader-${item}`"
+        <template v-for="index in itemsPerSkeletonLoader">
+          <sale-skeleton-loader
             class="sales__sale-card"
             v-if="!isLoaded && !filteredSales.length"
-            template="saleViewer"
+            :key="`skeleton-loader-${index}`"
           />
         </template>
       </div>
@@ -64,10 +63,10 @@ import Drawer from '@/vue/common/Drawer'
 import CollectionLoader from '@/vue/common/CollectionLoader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import SelectField from '@/vue/fields/SelectField'
-import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import SaleOverview from '@/vue/pages/sales/SaleOverview'
 import SaleCard from '@/vue/pages/sales/SaleCard'
+import SaleSkeletonLoader from './SaleSkeletonLoader'
 
 import { api } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
@@ -101,7 +100,7 @@ export default {
     SaleOverview,
     SaleCard,
     SelectField,
-    SkeletonLoader,
+    SaleSkeletonLoader,
   },
   props: {
     isUserSales: {

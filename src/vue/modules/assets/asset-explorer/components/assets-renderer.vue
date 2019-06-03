@@ -52,11 +52,10 @@
               @click="selectAsset(asset)"
             />
           </template>
-          <template v-for="item in itemsPerSkeletonLoader">
-            <skeleton-loader
-              :key="item"
+          <template v-for="index in itemsPerSkeletonLoader">
+            <asset-skeleton-loader
               v-if="!isLoaded && !assets.length"
-              template="cardViewer"
+              :key="index"
             />
           </template>
         </div>
@@ -92,11 +91,11 @@
 import Drawer from '@/vue/common/Drawer'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import CollectionLoader from '@/vue/common/CollectionLoader'
-import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 import CardViewer from '../../shared/components/card-viewer'
 import AssetAttributesViewer from '../../shared/components/asset-attributes-viewer'
 import AssetActions from './asset-actions'
+import AssetSkeletonLoader from './asset-skeleton-loader'
 
 import UpdateAssetFormModule from '@modules/update-asset-form'
 
@@ -116,8 +115,8 @@ export default {
     CardViewer,
     AssetAttributesViewer,
     AssetActions,
-    SkeletonLoader,
     UpdateAssetFormModule,
+    AssetSkeletonLoader,
   },
 
   props: {

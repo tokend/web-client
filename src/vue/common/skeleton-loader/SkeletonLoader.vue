@@ -18,6 +18,7 @@ const TEMPLATES = {
   smallString: 'small-string',
   cardViewer: 'card-viewer',
   saleViewer: 'sale-viewer',
+  imageViewer: 'image-viewer',
 }
 
 export default {
@@ -56,6 +57,11 @@ $media-small-desktop: 960px;
 
 .skeleton-loader {
   z-index: $z-skeleton-loader;
+
+  &--big-icon {
+    display: flex;
+    justify-content: center;
+  }
 
   &--card-viewer {
     margin: $asset-card-margin;
@@ -106,12 +112,12 @@ $media-small-desktop: 960px;
   }
 
   &--big-string {
-    height: 2.2rem;
+    height: 1.8rem;
     width: 15rem;
   }
 
   &--small-string {
-    height: 2.2rem;
+    height: 1.8rem;
     width: 10rem;
   }
 
@@ -133,6 +139,12 @@ $media-small-desktop: 960px;
   &--sale-viewer {
     border-radius: 0.4rem;
     height: 40rem;
+  }
+
+  &--full-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
   }
 }
 
