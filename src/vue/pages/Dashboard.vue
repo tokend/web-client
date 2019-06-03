@@ -110,7 +110,6 @@ import SubmoduleImporter from '@/modules-arch/submodule-importer'
 import { IssuanceFormModule } from '@/vue/modules/issuance-form/module'
 import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transfer-drawer-pseudo-module'
 import { DashboardChartPseudoModule } from '@/modules-arch/pseudo-modules/dashboard-chart-pseudo-module'
-import { setTimeout } from 'timers'
 
 const REFS = {
   movementsHistory: 'movements-history',
