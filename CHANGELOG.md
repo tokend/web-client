@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
 - Password toggle button for input fields with type="password"
+- Display contract the fee from amount in movements list
 
 #### Changed
 - Now loading account converted balances in
