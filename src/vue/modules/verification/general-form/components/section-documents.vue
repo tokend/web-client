@@ -10,12 +10,19 @@
           v-model="idDocumentType"
           name="id-document-type"
           key-as-value-text="labelTranslationId"
-          :is-value-translatable="true"
           :values="ID_DOCUMENT_TYPES"
           :label="'general-form.id-document-type-lbl' | globalize"
           @blur="touchField('idDocumentType')"
           :error-message="getFieldErrorMessage('idDocumentType')"
-        />
+        >
+          <option
+            v-for="documentType in ID_DOCUMENT_TYPES"
+            :key="documentType.value"
+            :value="documentType"
+          >
+            {{ documentType.labelTranslationId | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
 

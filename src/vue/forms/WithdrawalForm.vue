@@ -11,11 +11,17 @@
               <select-field
                 name="withdrawal-asset"
                 v-model="form.asset"
-                :values="assets"
-                key-as-value-text="nameAndCode"
                 :disabled="formMixin.isDisabled"
                 :label="'withdrawal-form.asset' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in assets"
+                  :key="asset.code"
+                  :value="asset"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <div class="withdrawal__form-field-description">
                 <p>
                   {{

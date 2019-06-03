@@ -11,10 +11,16 @@
           </span>
           <select-field
             v-model="asset"
-            :values="assets"
-            key-as-value-text="nameAndCode"
             class="app__select app__select--no-border"
-          />
+          >
+            <option
+              v-for="asset in assets"
+              :key="asset.code"
+              :value="asset"
+            >
+              {{ asset.nameAndCode }}
+            </option>
+          </select-field>
         </div>
       </template>
       <div

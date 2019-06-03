@@ -19,13 +19,19 @@
           <div class="app__form-field">
             <select-field
               v-model="form.asset"
-              :values="quoteAssetListValues"
-              key-as-value-text="nameAndCode"
               :label="'invest-form.asset-lbl' | globalize"
               name="invest-asset"
               @blur="touchField('form.asset')"
               :disabled="view.mode === VIEW_MODES.confirm || !canUpdateOffer"
-            />
+            >
+              <option
+                v-for="asset in quoteAssetListValues"
+                :key="asset.code"
+                :value="asset"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
 
             <vue-markdown
               class="app__form-field-description invest-form__amount-hint"

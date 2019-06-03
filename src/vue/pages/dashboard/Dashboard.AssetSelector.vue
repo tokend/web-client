@@ -22,12 +22,18 @@
           <div>
             <select-field
               :value="currentAssetForSelect"
-              :values="assetsList"
               :key="currentAssetForSelect.code"
-              key-as-value-text="nameAndCode"
               @input="$emit(EVENTS.assetChange, $event)"
               class="app__select app__select--no-border"
-            />
+            >
+              <option
+                v-for="asset in assetsList"
+                :key="asset.code"
+                :value="asset"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
           </div>
         </div>
       </div>

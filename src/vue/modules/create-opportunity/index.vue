@@ -297,10 +297,7 @@
           <div class="app__form-field">
             <select-field
               v-model="form.saleInformation.assetType"
-              :is-value-translatable="true"
               name="asset-create-asset-type"
-              key-as-value-text="label"
-              :values="assetTypes"
               :label="
                 'create-opportunity.investor-requirements' | globalize
               "
@@ -309,7 +306,15 @@
               :error-message="getFieldErrorMessage(
                 'form.saleInformation.assetType',
               )"
-            />
+            >
+              <option
+                v-for="assetType in assetTypes"
+                :key="assetType.value"
+                :value="assetType"
+              >
+                {{ assetType.label | globalize }}
+              </option>
+            </select-field>
           </div>
         </div>
         <div class="app__form-row">

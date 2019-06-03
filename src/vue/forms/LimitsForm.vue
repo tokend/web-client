@@ -5,13 +5,18 @@
         <select-field
           name="limits-op-type"
           v-model="selectedOpType"
-          :values="FORMATTED_STATS_OPERATION_TYPES"
-          key-as-value-text="label"
-          :is-value-translatable="true"
           :label="'limits-form.operation-type' | globalize"
           :key="`limits-asset-selector-${selectedOpType.value}`"
           class="limits__assets-select app__select--no-border"
-        />
+        >
+          <option
+            v-for="type in FORMATTED_STATS_OPERATION_TYPES"
+            :key="type.value"
+            :value="type"
+          >
+            {{ type.label | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
     <div class="limits-form__table app__table">
@@ -214,11 +219,11 @@ const FORMATTED_STATS_OPERATION_TYPES = [
     label: 'limits-form.op-type-deposit',
   },
   {
-    value: [STATS_OPERATION_TYPES.withdraw],
+    value: STATS_OPERATION_TYPES.withdraw,
     label: 'limits-form.op-type-withdraw',
   },
   {
-    value: [STATS_OPERATION_TYPES.paymentOut],
+    value: STATS_OPERATION_TYPES.paymentOut,
     label: 'limits-form.op-type-payment-out',
   },
 ]

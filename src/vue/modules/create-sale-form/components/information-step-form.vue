@@ -24,11 +24,17 @@
       <div class="app__form-field">
         <select-field
           v-model="form.baseAsset"
-          :values="ownedAssets"
           name="create-sale-base-asset"
-          key-as-value-text="nameAndCode"
           :label="'create-sale-form.base-asset-lbl' | globalize"
-        />
+        >
+          <option
+            v-for="asset in ownedAssets"
+            :key="asset.code"
+            :value="asset"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
       </div>
     </div>
 

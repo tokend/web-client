@@ -9,11 +9,17 @@
           <div class="app__form-field">
             <select-field
               v-model="form.asset"
-              :values="assetsInBalance"
-              key-as-value-text="nameAndCode"
               class="app__select"
               :label="'buy-back-form.opportunity-uniq-code-lbl' | globalize"
-            />
+            >
+              <option
+                v-for="asset in assetsInBalance"
+                :key="asset.code"
+                :value="asset"
+              >
+                {{ asset.nameAndCode }}
+              </option>
+            </select-field>
           </div>
         </div>
         <p class="app__form-field-description">

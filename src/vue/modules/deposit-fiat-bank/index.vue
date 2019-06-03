@@ -5,10 +5,16 @@
         <select-field
           name="deposit-fiat-bank-asset"
           v-model="form.asset"
-          :values="depositableFiatAssets"
-          key-as-value-text="nameAndCode"
           :label="'deposit-fiat-bank-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in depositableFiatAssets"
+            :key="asset.code"
+            :value="asset"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="deposit-fiat-bank__form-field-description">
           <p>
             {{

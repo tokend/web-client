@@ -395,7 +395,7 @@ h6.app__page-heading {
   &--no-border {
     // to remove the borders and background of the asset-selector to use the
     // component outside forms
-    button {
+    div span {
       border-bottom: 0 !important;
       background-size: 0 !important;
     }
@@ -411,5 +411,3 @@ h6.app__page-heading {
     height: 0.3rem !important;
   }
 }
-
-

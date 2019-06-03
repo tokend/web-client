@@ -8,13 +8,19 @@
       <div class="app__form-field">
         <select-field
           v-model="form.asset"
-          :values="ownedAssets"
           name="create-issuance-asset"
-          key-as-value-text="nameAndCode"
           :label="'issuance-form.asset-lbl' | globalize"
           @blur="touchField('form.asset')"
           :disabled="formMixin.isDisabled"
-        />
+        >
+          <option
+            v-for="asset in ownedAssets"
+            :key="asset.code"
+            :value="asset"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
       </div>
     </div>
 

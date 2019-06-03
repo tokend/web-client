@@ -11,11 +11,17 @@
               <select-field
                 name="dividend-asset"
                 v-model="form.ownedAsset"
-                :values="ownedAssets"
-                key-as-value-text="nameAndCode"
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in ownedAssets"
+                  :key="asset.code"
+                  :value="asset"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.ownedAsset.balance.value, asset: form.ownedAsset.code }) }}
@@ -28,11 +34,17 @@
               <select-field
                 name="dividend-asset"
                 v-model="form.asset"
-                :values="assets"
-                key-as-value-text="nameAndCode"
                 :disabled="formMixin.isDisabled"
                 :label="'dividend-form.asset-dividend-pay' | globalize"
-              />
+              >
+                <option
+                  v-for="asset in assets"
+                  :key="asset.code"
+                  :value="asset"
+                >
+                  {{ asset.nameAndCode }}
+                </option>
+              </select-field>
               <p class="app__form-field-description">
                 <!-- eslint-disable-next-line max-len -->
                 {{ 'dividend-form.balance' | globalize({ amount: form.asset.balance.value, asset: form.asset.code }) }}

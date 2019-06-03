@@ -9,13 +9,19 @@
         <select-field
           name="deposit-fiat-card-asset"
           v-model="form.asset"
-          :values="depositableFiatAssets"
-          key-as-value-text="nameAndCode"
           :disabled="formMixin.isDisabled"
           @blur="touchField('form.asset')"
           :error-message="getFieldErrorMessage('form.asset')"
           :label="'deposit-fiat-card-module.asset' | globalize"
-        />
+        >
+          <option
+            v-for="asset in depositableFiatAssets"
+            :key="asset.code"
+            :value="asset"
+          >
+            {{ asset.nameAndCode }}
+          </option>
+        </select-field>
         <div class="deposit-fiat-card__form-field-description">
           <p>
             {{

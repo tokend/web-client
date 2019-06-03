@@ -6,12 +6,19 @@
     <div class="app__form-row">
       <div class="app__form-field">
         <select-field
-          :values="accountAssets"
           v-model="form.asset"
           name="trade-offer-base-asset"
           :disabled="formMixin.isDisabled"
           :label="baseAssetLabelTranslationId | globalize"
-        />
+        >
+          <option
+            v-for="asset in accountAssets"
+            :key="asset"
+            :value="asset"
+          >
+            {{ asset }}
+          </option>
+        </select-field>
       </div>
     </div>
 

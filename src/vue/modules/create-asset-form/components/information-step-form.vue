@@ -60,15 +60,20 @@
         <select-field
           v-model="form.assetType"
           name="create-asset-type"
-          key-as-value-text="labelTranslationId"
-          :is-value-translatable="true"
-          :values="assetTypes"
           :label="'create-asset-form.asset-type-lbl' | globalize"
           @blur="touchField('form.assetType')"
           :error-message="getFieldErrorMessage(
             'form.assetType',
           )"
-        />
+        >
+          <option
+            v-for="assetType in assetTypes"
+            :key="assetType.value"
+            :value="assetType"
+          >
+            {{ assetType.labelTranslationId | globalize }}
+          </option>
+        </select-field>
       </div>
     </div>
 
