@@ -2929,10 +2929,22 @@ cursor@^0.1.5:
   resolved "https://registry.yarnpkg.com/cursor/-/cursor-0.1.5.tgz#ea778c2b09d33c2e564fd92147076750483ebb2c"
   integrity sha1-6neMKwnTPC5WT9khRwdnUEg+uyw=
 
+custom-event-polyfill@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-0.3.0.tgz#99807839be62edb446b645832e0d80ead6fa1888"
+  integrity sha1-mYB4Ob5i7bRGtkWDLg2A6tb6GIg=
+
 custom-event@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.1.tgz#5d02a46850adf1b4a317946a3928fccb5bfd0425"
   integrity sha1-XQKkaFCt8bSjF5RqOSj8y1v9BCU=
+
+custom-select@1.1.15:
+  version "1.1.15"
+  resolved "https://registry.yarnpkg.com/custom-select/-/custom-select-1.1.15.tgz#4f342a405afa00c043afd753f0a578b2862d0b91"
+  integrity sha512-hkxx4atVZ6sj0auhgtPPHa8tKuGGkhwrgBZatxOMSLUAVbljQklMzPAqs/H+t8SYPHRL2AFwUJuRiKtq4MltSA==
+  dependencies:
+    custom-event-polyfill "^0.3.0"
 
 cyclist@~0.2.2:
   version "0.2.2"
