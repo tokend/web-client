@@ -41,6 +41,7 @@ for further information about branching and tagging conventions.
 - Break words in sale description viewer
 - Replace labels for submit general kyc button
 - Calendar related tests for win32 systems
+- Different borders with attribute of readonly on the field
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
