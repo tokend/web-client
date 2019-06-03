@@ -528,6 +528,7 @@
       "id-document-back-lbl": "Identity document (back side)",
       "address-details-lbl": "Address details",
       "date-of-birth-lbl": "Date of birth",
+      "date-of-birth-placeholder": "dd/mm/yyyy, e.g. 25/11/1986",
       "address-line-1-lbl": "Line 1",
       "address-line-2-lbl": "Line 2",
       "address-country-lbl": "Country",

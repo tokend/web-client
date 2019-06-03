@@ -27,6 +27,9 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Date format from 'yyyy-mm-dd' to 'dd/mm/yyyy' in date field
+- Now allowing the user to input birth date manually on general
+  verification form
 
 #### Removed
 - Cursor pointer on disabled select
