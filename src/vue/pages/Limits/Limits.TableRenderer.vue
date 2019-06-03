@@ -89,7 +89,7 @@
           </td>
         </tr>
       </tbody>
-      <skeleton-loader
+      <skeleton-loader-table-body
         v-else
       />
     </table>
@@ -117,7 +117,7 @@
 import { STATS_OPERATION_TYPES } from '@tokend/js-sdk'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 import config from '../../../config'
 
@@ -137,7 +137,7 @@ export default {
   components: {
     Loader,
     NoDataMessage,
-    SkeletonLoader,
+    SkeletonLoaderTableBody,
   },
   props: {
     limits: { type: Object, required: true, default: () => [] },

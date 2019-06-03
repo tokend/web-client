@@ -49,7 +49,7 @@
               })"
               :colspan="4"
             />
-            <skeleton-loader-row
+            <skeleton-loader-table-body
               v-else-if="isLoading"
               :cells="4"
             />
@@ -62,13 +62,13 @@
 
 <script>
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
-import SkeletonLoaderRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 export default {
   name: 'trade-history-renderer',
   components: {
     EmptyListPlaceholder,
-    SkeletonLoaderRow,
+    SkeletonLoaderTableBody,
   },
   props: {
     assetPair: {

@@ -20,7 +20,7 @@
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
 
 export default {
-  name: 'skeleton-loader-table-row',
+  name: 'skeleton-loader-table-body',
   components: {
     SkeletonLoader,
   },

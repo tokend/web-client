@@ -53,7 +53,7 @@
               :message="'trade-offers.no-data-title' | globalize"
               :colspan="3"
             />
-            <skeleton-loader-row
+            <skeleton-loader-table-body
               v-else-if="isLoading"
               :cells="3"
             />
@@ -88,7 +88,7 @@ import Drawer from '@/vue/common/Drawer'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
-import SkeletonLoaderRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 const EVENTS = {
   reloadTrades: 'reload-trades',
@@ -100,7 +100,7 @@ export default {
     Drawer,
     SubmitTradeOfferForm,
     EmptyListPlaceholder,
-    SkeletonLoaderRow,
+    SkeletonLoaderTableBody,
   },
   mixins: [
     FormMixin,

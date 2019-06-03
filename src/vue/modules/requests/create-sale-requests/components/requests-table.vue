@@ -68,7 +68,7 @@
           :colspan="6"
           :message="'create-sale-requests.no-request-history-desc' | globalize"
         />
-        <skeleton-loader-row
+        <skeleton-loader-table-body
           v-else
           :cells="6"
           template="smallString"
@@ -81,7 +81,7 @@
 <script>
 import RequestStateViewer from '../../shared/components/request-state-viewer'
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
-import SkeletonLoaderRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 const EVENTS = {
   select: 'select',
@@ -92,7 +92,7 @@ export default {
   components: {
     RequestStateViewer,
     EmptyListPlaceholder,
-    SkeletonLoaderRow,
+    SkeletonLoaderTableBody,
   },
 
   props: {

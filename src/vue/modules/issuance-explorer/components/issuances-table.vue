@@ -54,7 +54,7 @@
               </td>
             </tr>
           </tbody>
-          <skeleton-loader-table-row
+          <skeleton-loader-table-body
             v-else-if="!isLoaded"
             :cells="6"
           />
@@ -73,7 +73,7 @@
 import EmailGetter from '@/vue/common/EmailGetter'
 import RequestStateViewer from './request-state-viewer'
 import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
-import SkeletonLoaderTableRow from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 export default {
   name: 'issuanes-table',
@@ -81,7 +81,7 @@ export default {
     EmailGetter,
     RequestStateViewer,
     EmptyListPlaceholder,
-    SkeletonLoaderTableRow,
+    SkeletonLoaderTableBody,
   },
 
   props: {

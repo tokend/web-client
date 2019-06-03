@@ -72,7 +72,7 @@
             </td>
           </tr>
         </tbody>
-        <skeleton-loader
+        <skeleton-loader-table-body
           :rows="1"
           v-else
         />
@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 import LimitsDocumentsUploaderForm from '@/vue/forms/LimitsDocumentsUploaderForm.vue'
 import LimitsRequestDetailsViewer from './Limits.RequestDetailsViewer.vue'
 import Drawer from '@/vue/common/Drawer'
@@ -152,7 +152,7 @@ export default {
     Drawer,
     LimitsDocumentsUploaderForm,
     LimitsRequestDetailsViewer,
-    SkeletonLoader,
+    SkeletonLoaderTableBody,
   },
   props: {
     requests: { type: Array, required: true, default: () => [] },

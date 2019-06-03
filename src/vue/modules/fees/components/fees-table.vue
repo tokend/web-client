@@ -61,7 +61,7 @@
             </td>
           </tr>
         </tbody>
-        <skeleton-loader
+        <skeleton-loader-table-body
           v-if="!isLoaded"
           :cells="6"
         />
@@ -86,14 +86,14 @@
 <script>
 import FeeTypeViewer from './viewers/fee-type-viewer'
 import FeeSubtypeViewer from './viewers/fee-subtype-viewer'
-import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader.TableRow'
+import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
 
 export default {
   name: 'fees-table',
   components: {
     FeeTypeViewer,
     FeeSubtypeViewer,
-    SkeletonLoader,
+    SkeletonLoaderTableBody,
   },
 
   props: {
