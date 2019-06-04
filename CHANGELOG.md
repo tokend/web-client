@@ -24,6 +24,7 @@ for further information about branching and tagging conventions.
 - `assets.module`
 - `AmountInputField`
 - Cap asset field to the create sale form
+- Display amount + fee in movements list
 
 #### Changed
 - Now loading account converted balances in
