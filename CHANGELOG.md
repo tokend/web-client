@@ -48,6 +48,7 @@ for further information about branching and tagging conventions.
 - Date format from 'yyyy-mm-dd' to 'dd/mm/yyyy' in date field
 - Now allowing the user to input birth date manually on general
   verification form
+- Now using "d3Format" and SI prefixes while formatting chart percent hints
 
 #### Removed
 - Cursor pointer on disabled select
