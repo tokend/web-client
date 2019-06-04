@@ -7,6 +7,8 @@ import { base } from '@tokend/js-sdk'
 
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
 
+import { MathUtil } from '@/js/utils/math.util'
+
 import * as validators from 'vuelidate/lib/validators'
 
 const ASSETS = {
@@ -62,10 +64,18 @@ export const hardCapLessThanSoftCap = (softCap, max) => value => {
 }
 
 export const moreThenMin = minValue => value => {
-  return +minValue <= +value
+  if (MathUtil.compare(minValue, value) === -1) {
+    return false
+  } else {
+    return true
+  }
 }
 export const lessThenMax = maxValue => value => {
-  return +maxValue >= +value
+  if (MathUtil.compare(value, maxValue) === 1) {
+    return false
+  } else {
+    return true
+  }
 }
 
 export const maxDecimalDigitsCount = maxDecimalDigitsCount => value => {
