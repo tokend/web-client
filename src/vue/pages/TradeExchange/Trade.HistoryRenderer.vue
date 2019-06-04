@@ -5,7 +5,6 @@
     </h2>
     <div
       class="trade-history__data-wrapper"
-      :class="{'trade-history__data-wrapper--loading': isLoading}"
     >
       <template>
         <div class="app__table app__table--with-shadow">

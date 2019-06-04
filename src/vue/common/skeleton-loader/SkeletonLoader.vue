@@ -22,6 +22,7 @@ const TEMPLATES = {
   imageViewer: 'image-viewer',
   fieldViewer: 'field-viewer',
   mediumButton: 'medium-button',
+  fillMode: 'fill-mode',
 }
 
 export default {
@@ -95,6 +96,11 @@ $media-small-desktop: 960px;
     max-width: 18rem;
     width: 100%;
   }
+
+  &--fill-mode {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .skeleton-loader__stub {
@@ -167,6 +173,12 @@ $media-small-desktop: 960px;
 
   &--medium-button {
     height: 2.2rem;
+  }
+
+  &--fill-mode {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.4rem;
   }
 }
 

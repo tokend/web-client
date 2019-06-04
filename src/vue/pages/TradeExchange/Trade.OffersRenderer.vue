@@ -10,7 +10,6 @@
     </h3>
     <div
       class="trade-offers-wrapper"
-      :class="{'trade-offers-wrapper--loading': isLoading}"
     >
       <template>
         <div
