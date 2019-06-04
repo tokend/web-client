@@ -45,6 +45,9 @@ for further information about branching and tagging conventions.
 - Now displaying accepted investment assets as base assets of pairs where
   cap asset is quote asset on create sale form
 - Now displaying invest form on the sale state widget
+- Date format from 'yyyy-mm-dd' to 'dd/mm/yyyy' in date field
+- Now allowing the user to input birth date manually on general
+  verification form
 
 #### Removed
 - Cursor pointer on disabled select
