@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Placeholder of empty list for Trade, Issuance requests and Requests pages
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
 - Whitelisted detail on sale related modules
@@ -16,6 +17,14 @@ for further information about branching and tagging conventions.
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
 - Password toggle button for input fields with type="password"
+- Fees mixin, renderer & wrappers for unified displaying fees
+- Displaying fees on issuance form & trade forms
+- State icon to the status message
+- Rotation of status message close icon on hovering
+- `assets.module`
+- `AmountInputField`
+- Cap asset field to the create sale form
+- Display amount + fee in movements list
 
 #### Changed
 - Now loading account converted balances in
@@ -27,6 +36,15 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now using `DocumentsManager` from SDK to upload documents to the storage
+- Now getting document URL using documentsManager
+- Now using light background for status messages with the type
+  "success" of "info"
+- Now using cap asset as default quote asset for create sale request
+- Now creating quote asset balances on create sale form if they don't exist
+- Now displaying accepted investment assets as base assets of pairs where
+  cap asset is quote asset on create sale form
+- Now displaying invest form on the sale state widget
 - Date format from 'yyyy-mm-dd' to 'dd/mm/yyyy' in date field
 - Now allowing the user to input birth date manually on general
   verification form
@@ -36,6 +54,7 @@ for further information about branching and tagging conventions.
 - Price history chart from sale overview page
 - Validation for address line 2
 - Fixed fee from invest form
+- Invest drawer from sale stae widget & opportunity details components
 
 #### Fixed
 - Don't show title in kyc status message, if no additional external information
@@ -44,6 +63,8 @@ for further information about branching and tagging conventions.
 - Break words in sale description viewer
 - Replace labels for submit general kyc button
 - Calendar related tests for win32 systems
+- Disabling invest form while submitting
+- Different borders with attribute of readonly on the field
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes

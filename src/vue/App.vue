@@ -58,7 +58,12 @@ import {
   mapGetters,
   mapActions,
 } from 'vuex'
-import { api, walletsManager, factorsManager } from '@/api'
+import {
+  api,
+  documentsManager,
+  walletsManager,
+  factorsManager,
+} from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
@@ -113,14 +118,17 @@ export default {
   methods: {
     ...mapActions({
       loadKvEntries: vuexTypes.LOAD_KV_ENTRIES,
-      loadDefaultQuoteAsset: vuexTypes.LOAD_DEFAULT_QUOTE_ASSET,
+      loadAssets: vuexTypes.LOAD_ASSETS,
+      loadAccount: vuexTypes.LOAD_ACCOUNT,
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
+      documentsManager.useStorageURL(config.FILE_STORAGE)
+
       const { data: networkDetails } = await api.getRaw('/')
       api.useNetworkDetails(networkDetails)
+
       await this.loadKvEntries()
-      await this.loadDefaultQuoteAsset()
 
       if (this[vuexTypes.isLoggedIn]) {
         const wallet = new Wallet(
@@ -134,9 +142,12 @@ export default {
           'accountId': this[vuexTypes.walletAccountId],
           'email': this[vuexTypes.walletEmail],
         })
+        await this.loadAccount(this.walletAccountId)
       }
       walletsManager.useApi(api)
       factorsManager.useApi(api)
+      documentsManager.useApi(api)
+      await this.loadAssets()
     },
     detectUnсompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()
