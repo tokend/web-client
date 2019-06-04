@@ -4,6 +4,13 @@
       v-if="isShown"
       :class="`status-message status-message--${messageType}`"
     >
+      <div class="status-message__icon-wrp">
+        <i
+          class="mdi status-message__icon"
+          :class="[`status-message__icon--${messageType}`, messageIconClass]"
+        />
+      </div>
+
       <div class="status-message__payload">
         <h4 class="status-message__title">
           {{ 'status-message.title' | globalize({ context: messageType }) }}
@@ -45,6 +52,23 @@ export default {
     isShown: false,
     timeoutId: -1,
   }),
+
+  computed: {
+    messageIconClass () {
+      switch (this.messageType) {
+        case MESSAGE_TYPES.success:
+          return 'mdi-emoticon-cool-outline'
+        case MESSAGE_TYPES.error:
+          return 'mdi-emoticon-cry-outline'
+        case MESSAGE_TYPES.info:
+          return 'mdi-information-outline'
+        case MESSAGE_TYPES.warning:
+          return 'mdi-alert-outline'
+        default:
+          return ''
+      }
+    },
+  },
 
   created () {
     Bus.on(Bus.eventList.success, payload =>
@@ -93,6 +117,7 @@ export default {
 @import '~@scss/mixins';
 
 $payload-padding: 2.4rem;
+$icon-padding: 2.4rem;
 
 .status-message {
   @include box-shadow();
@@ -109,7 +134,7 @@ $payload-padding: 2.4rem;
   }
 
   &--success {
-    background-color: $col-status-msg-success;
+    background-color: $col-status-msg-light-bg;
   }
 
   &--error {
@@ -117,7 +142,7 @@ $payload-padding: 2.4rem;
   }
 
   &--info {
-    background-color: $col-status-msg-info;
+    background-color: $col-status-msg-light-bg;
   }
 
   @include respond-to($tablet) {
@@ -129,9 +154,39 @@ $payload-padding: 2.4rem;
   }
 }
 
+.status-message__icon-wrp {
+  min-width: 4.2rem;
+  padding: $icon-padding 1.2rem $icon-padding $icon-padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-message__icon {
+  display: flex;
+  font-size: 3.6rem;
+
+  &--success { color: $col-status-msg-success; }
+  &--error { color: $col-status-msg-text; }
+  &--info { color: $col-status-msg-info; }
+  &--warning { color: $col-status-msg-text; }
+}
+
 .status-message__payload {
-  padding: $payload-padding;
+  padding: $payload-padding $payload-padding $payload-padding 1.2rem;
   flex: 1;
+}
+
+.status-message__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: $col-status-msg-text;
+}
+
+.status-message--success .status-message__title,
+.status-message--info .status-message__title {
+  color: $col-text;
 }
 
 .status-message__text {
@@ -140,11 +195,9 @@ $payload-padding: 2.4rem;
   color: $col-status-msg-text;
 }
 
-.status-message__title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-  color: $col-status-msg-text;
+.status-message--success .status-message__text,
+.status-message--info .status-message__text {
+  color: $col-text-secondary;
 }
 
 .status-message__close-btn {
@@ -187,6 +240,14 @@ $payload-padding: 2.4rem;
     transform: rotate(-45deg);
   }
 
+  &:hover:before {
+    transform: rotate(225deg);
+  }
+
+  &:hover:after {
+    transform: rotate(135deg);
+  }
+
   &:hover:after,
   &:hover:before {
     transition: 0.2s;
@@ -196,6 +257,14 @@ $payload-padding: 2.4rem;
     /* stylelint-enable function-calc-no-invalid */
   }
   /* /cross */
+}
+
+.status-message--success .status-message__close-btn,
+.status-message--info .status-message__close-btn {
+  &:before,
+  &:after {
+    background-color: $col-text-secondary;
+  }
 }
 
 .status-message__transition-enter-active,

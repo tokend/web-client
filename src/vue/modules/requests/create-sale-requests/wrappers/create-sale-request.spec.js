@@ -52,45 +52,6 @@ describe('Create sale request', () => {
     })
   })
 
-  describe('methods', () => {
-    describe('logoUrl', () => {
-      it('returns storage logo URL if logo key is present', () => {
-        const request = new CreateSaleRequest({
-          requestDetails: {
-            creatorDetails: {
-              logo: { key: 'logo-key' },
-            },
-          },
-        })
-
-        expect(request.logoUrl('https://storage.com'))
-          .to.equal('https://storage.com/logo-key')
-      })
-
-      it('returns empty string if logo key is absent', () => {
-        const request = new CreateSaleRequest({})
-
-        expect(request.logoUrl('https://storage.com')).to.equal('')
-      })
-    })
-
-    describe('_getQuoteAssets', () => {
-      it('returns quote asset codes array', () => {
-        const record = {
-          requestDetails: {
-            quoteAssets: [
-              { id: 'USD' },
-              { id: 'BTC' },
-            ],
-          },
-        }
-        const request = new CreateSaleRequest(record)
-
-        expect(request._getQuoteAssets(record)).to.deep.equal(['USD', 'BTC'])
-      })
-    })
-  })
-
   describe('getters', () => {
     describe('youtubeVideoUrl', () => {
       it('returns video link if youtube video ID is present', () => {

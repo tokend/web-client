@@ -58,7 +58,12 @@ import {
   mapGetters,
   mapActions,
 } from 'vuex'
-import { api, walletsManager, factorsManager } from '@/api'
+import {
+  api,
+  documentsManager,
+  walletsManager,
+  factorsManager,
+} from '@/api'
 import { vuexTypes } from '@/vuex'
 import { Wallet } from '@tokend/js-sdk'
 import { ErrorTracker } from '@/js/helpers/error-tracker'
@@ -117,8 +122,11 @@ export default {
     }),
     async initApp () {
       api.useBaseURL(config.HORIZON_SERVER)
+      documentsManager.useStorageURL(config.FILE_STORAGE)
+
       const { data: networkDetails } = await api.getRaw('/')
       api.useNetworkDetails(networkDetails)
+
       await this.loadKvEntries()
       await this.loadDefaultQuoteAsset()
 
@@ -137,6 +145,7 @@ export default {
       }
       walletsManager.useApi(api)
       factorsManager.useApi(api)
+      documentsManager.useApi(api)
     },
     detectUnсompatibleBrowser () {
       this.isNotSupportedBrowser = !isCompatibleBrowser()

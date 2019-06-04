@@ -95,9 +95,25 @@
       </div>
     </div>
 
+    <div class="app__form-row create-issuance-form__total">
+      <template v-if="isFeesLoaded">
+        <fees-renderer :fees-collection="fees" />
+
+        <readonly-field
+          :label="'issuance-form.amount-to-receive-msg' | globalize"
+          :value="receivingAmount | formatMoney"
+          :error-message="getFieldErrorMessage('receivingAmount.value')"
+        />
+      </template>
+
+      <template v-else>
+        <loader message-id="issuance-form.loading-msg" />
+      </template>
+    </div>
+
     <div class="app__form-actions">
       <form-confirmation
-        v-if="formMixin.isConfirmationShown"
+        v-if="formMixin.isConfirmationShown && isFeesLoaded"
         :is-pending="isFormSubmitting"
         @ok="submit"
         @cancel="hideConfirmation"
@@ -106,9 +122,8 @@
       <button
         v-else
         v-ripple
-        type="submit"
         class="create-issuance-form__submit-btn app__button-raised"
-        :disabled="formMixin.isDisabled"
+        :disabled="formMixin.isDisabled || !isFeesLoaded"
       >
         {{ 'issuance-form.issue-btn' | globalize }}
       </button>
@@ -117,16 +132,29 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+
+import Loader from '@/vue/common/Loader'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer'
+import ReadonlyField from '@/vue/fields/ReadonlyField'
+
 import FormMixin from '@/vue/mixins/form.mixin'
 import ManageIssuanceMixin from '../mixins/manage-issuance.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 
 import config from '@/config'
+import { FEE_TYPES } from '@tokend/js-sdk'
+import { MathUtil } from '@/js/utils'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
+
 import {
   required,
+  amount,
   amountRange,
   emailOrAccountId,
   maxLength,
@@ -138,9 +166,16 @@ const EVENTS = {
   submit: 'submit',
 }
 
+const FEES_LOADING_DELAY_MS = 300
+
 export default {
   name: 'create-issuance-form',
-  mixins: [FormMixin, ManageIssuanceMixin],
+  components: {
+    Loader,
+    FeesRenderer,
+    ReadonlyField,
+  },
+  mixins: [FormMixin, ManageIssuanceMixin, FeesMixin],
 
   props: {
     ownedAssets: { type: Array, required: true },
@@ -153,6 +188,10 @@ export default {
       receiver: '',
       reference: '',
     },
+    fees: {},
+    feesDebouncedRequest: null,
+    isFeesLoaded: false,
+    isFeesLoadFailed: false,
     isFormSubmitting: false,
     MIN_AMOUNT: config.MIN_AMOUNT,
     DECIMAL_POINTS: config.DECIMAL_POINTS,
@@ -177,14 +216,78 @@ export default {
           maxLength: maxLength(REFERENCE_MAX_LENGTH),
         },
       },
+      receivingAmount: {
+        value: { amount },
+      },
     }
   },
 
+  computed: {
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
+
+    receivingAmount () {
+      const fees = MathUtil.add(
+        this.fees.totalFee.fixed,
+        this.fees.totalFee.calculatedPercent
+      )
+
+      return {
+        value: MathUtil.subtract(this.form.amount, fees),
+        currency: this.form.asset.code,
+      }
+    },
+  },
+
+  watch: {
+    'form.amount' (value) {
+      this.tryLoadFees()
+    },
+
+    'form.asset.code' () {
+      this.tryLoadFees()
+    },
+  },
+
   async created () {
-    this.form.asset = this.ownedAssets[0]
+    if (this.ownedAssets.length) {
+      this.form.asset = this.ownedAssets[0]
+    }
+
+    await this.loadFees()
   },
 
   methods: {
+    tryLoadFees () {
+      this.isFeesLoaded = false
+      this.isFeesLoadFailed = false
+
+      if (!this.feesDebouncedRequest) {
+        this.feesDebouncedRequest = debounce(
+          () => this.loadFees(),
+          FEES_LOADING_DELAY_MS
+        )
+      }
+      return this.feesDebouncedRequest()
+    },
+
+    async loadFees () {
+      try {
+        this.fees = await this.calculateFees({
+          assetCode: this.form.asset.code,
+          amount: this.form.amount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.issuanceFee,
+        })
+
+        this.isFeesLoaded = true
+      } catch (e) {
+        this.isFeesLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
+    },
+
     async submit () {
       this.isFormSubmitting = true
       try {
@@ -218,5 +321,18 @@ export default {
   margin-left: 1rem;
   padding-top: 1.8rem;
   font-size: 1.8rem;
+}
+
+.create-issuance-form__total {
+  flex-direction: column;
+}
+
+.create-issuance-form__receiving {
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-issuance-form__receiving-msg {
+  font-size: 1.6rem;
 }
 </style>

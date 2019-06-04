@@ -33,7 +33,7 @@ import RequestActions from './request-actions'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 
 const EVENTS = {
   updateClick: 'update-click',
@@ -59,7 +59,7 @@ export default {
 
   computed: {
     assetLogoUrl () {
-      return this.request.logoUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(this.request.logoKey)
     },
   },
 }
