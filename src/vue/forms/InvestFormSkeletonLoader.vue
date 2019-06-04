@@ -31,7 +31,7 @@ export default {
   components: {
     SkeletonLoader,
     SkeletonLoaderField,
-  }
+  },
 }
 </script>
 
