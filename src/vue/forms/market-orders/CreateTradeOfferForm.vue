@@ -109,10 +109,14 @@
       </div>
     </template>
   </form>
+  <skeleton-loader-offer-form
+    v-else
+  />
 </template>
 
 <script>
 import ReadonlyField from '@/vue/fields/ReadonlyField'
+import SkeletonLoaderOfferForm from './SkeletonLoaderOfferForm'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
@@ -136,7 +140,10 @@ const EVENTS = {
 
 export default {
   name: 'create-trade-offer-form',
-  components: { ReadonlyField },
+  components: {
+    ReadonlyField,
+    SkeletonLoaderOfferForm,
+  },
   mixins: [
     FormMixin,
     OfferManagerMixin,

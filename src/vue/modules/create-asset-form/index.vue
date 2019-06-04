@@ -32,7 +32,7 @@
     </template>
 
     <template v-else>
-      <load-spinner message-id="create-asset-form.loading-msg" />
+      <skeleton-loader-step-form />
     </template>
   </div>
 </template>
@@ -42,10 +42,10 @@ import LoadAssetTypesMixin from './mixins/load-asset-types.mixin'
 import ManageAssetRequestMixin from './mixins/manage-asset-request.mixin'
 
 import InformationStepForm from './components/information-step-form'
+import SkeletonLoaderStepForm from './components/skeleton-loader-step-form'
 import AdvancedStepForm from './components/advanced-step-form'
 
 import FormStepper from '@/vue/common/FormStepper'
-import LoadSpinner from '@/vue/common/Loader'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -72,9 +72,9 @@ export default {
   name: 'create-asset-form-module',
   components: {
     FormStepper,
-    LoadSpinner,
     InformationStepForm,
     AdvancedStepForm,
+    SkeletonLoaderStepForm,
   },
   mixins: [LoadAssetTypesMixin, ManageAssetRequestMixin],
   props: {

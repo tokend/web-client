@@ -41,4 +41,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss" />
+<style scoped lang="scss">
+  td:last-child {
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

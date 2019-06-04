@@ -248,7 +248,7 @@
     </template>
 
     <template v-else-if="!isLoadingFailed">
-      <loader message-id="transfer-form.loading-msg" />
+      <transfer-form-skeleton-loader />
     </template>
 
     <template v-else>
@@ -260,7 +260,7 @@
 </template>
 
 <script>
-import Loader from '@/vue/common/Loader'
+import TransferFormSkeletonLoader from './TransferFormSkeletonLoader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
@@ -298,7 +298,7 @@ const EVENTS = {
 export default {
   name: 'transfers-form',
   components: {
-    Loader,
+    TransferFormSkeletonLoader,
   },
   mixins: [FormMixin, IdentityGetterMixin],
   props: {

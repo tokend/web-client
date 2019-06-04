@@ -16,9 +16,12 @@ const TEMPLATES = {
   smallIcon: 'small-icon',
   bigString: 'big-string',
   smallString: 'small-string',
+  xSmallString: 'x-small-string',
   cardViewer: 'card-viewer',
   saleViewer: 'sale-viewer',
   imageViewer: 'image-viewer',
+  fieldViewer: 'field-viewer',
+  mediumButton: 'medium-button',
 }
 
 export default {
@@ -87,6 +90,11 @@ $media-small-desktop: 960px;
   &--sale-viewer {
     margin: 1rem;
   }
+
+  &--medium-button {
+    max-width: 18rem;
+    width: 100%;
+  }
 }
 
 .skeleton-loader__stub {
@@ -117,8 +125,13 @@ $media-small-desktop: 960px;
   }
 
   &--small-string {
-    height: 1.8rem;
+    height: 1.4rem;
     width: 10rem;
+  }
+
+  &--x-small-string {
+    height: 1rem;
+    width: 8rem;
   }
 
   &--big-icon {
@@ -141,10 +154,19 @@ $media-small-desktop: 960px;
     height: 40rem;
   }
 
-  &--full-image {
+  &--image-viewer {
     width: 100%;
     height: 100%;
     border-radius: 0;
+  }
+
+  &--field-viewer {
+    width: 100%;
+    height: 1.4rem;
+  }
+
+  &--medium-button {
+    height: 2.2rem;
   }
 }
 
