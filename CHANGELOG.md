@@ -9,6 +9,7 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 #### Added
+- Placeholder of empty list for Trade, Issuance requests and Requests pages
 - Tooltip directive
 - Assets vuex module for loading and storing all the assets
 - Whitelisted detail on sale related modules
