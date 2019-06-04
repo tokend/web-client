@@ -99,28 +99,9 @@
       <transition name="app__fade-in">
         <div
           class="invest-form__fee-box"
-          v-if="isFeesLoaded">
-          <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.investment-fees-heading' | globalize }}
-          </h3>
-          <template v-if="+fees.percent">
-            <p
-              class="invest-form__fee"
-              v-if="fees.percent"
-            >
-              - {{ fees.percent | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.percent-fee-label' | globalize }}
-              </span>
-            </p>
-          </template>
-
-          <template v-else>
-            <p class="invest-form__no-fee-msg">
-              {{ 'invest-form.no-transaction-fees-msg' | globalize }}
-            </p>
-          </template>
+          v-if="isFeesLoaded"
+        >
+          <fees-renderer :fees-collection="fees" />
 
           <p class="invest-form__total-amount">
             <span class="invest-form__total-amount-text">
@@ -175,7 +156,7 @@
           :message="'invest-form.recheck-form-msg' | globalize"
           :ok-button="'invest-form.invest-btn' | globalize"
           :is-pending="isSubmitting"
-          @cancel="updateView(VIEW_MODES.submit)"
+          @cancel="updateView(VIEW_MODES.submit) || (isFeesLoaded = false)"
           @ok="submit()"
         />
       </div>
@@ -214,11 +195,14 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
 import Loader from '@/vue/common/Loader'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import MessageBox from '@/vue/common/MessageBox'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer'
+
+import FormMixin from '@/vue/mixins/form.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 
 import config from '@/config'
 
@@ -260,8 +244,9 @@ export default {
     Loader,
     NoDataMessage,
     MessageBox,
+    FeesRenderer,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, FeesMixin],
 
   props: {
     sale: { type: SaleRecord, required: true },
@@ -420,7 +405,11 @@ export default {
     },
 
     totalAmount () {
-      return MathUtil.add(this.form.amount, this.fees.percent)
+      const fees = MathUtil.add(
+        this.fees.totalFee.fixed,
+        this.fees.totalFee.calculatedPercent
+      )
+      return MathUtil.add(fees, this.form.amount)
     },
 
     investmentDisabledMessageId () {
@@ -562,8 +551,6 @@ export default {
     },
 
     async getOfferOperations () {
-      const fee = await this.getOfferFee()
-
       let operations = []
 
       if (this.currentInvestment.id) {
@@ -576,25 +563,14 @@ export default {
       }
       operations.push(
         base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts(OFFER_CREATE_ID, fee.calculatedPercent)
+          this.getOfferOpts(
+            OFFER_CREATE_ID,
+            this.fees.totalFee.calculatedPercent
+          )
         ),
       )
 
       return operations
-    },
-
-    async getOfferFee () {
-      const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
-      const params = [
-        `asset=${this.form.asset.code}`,
-        `fee_type=${FEE_TYPES.investFee}`,
-        `amount=${this.form.amount}`,
-      ]
-
-      const endpoint = `${baseEndpoint}?${params.join('&')}`
-      const { data: fee } = await api.get(endpoint)
-
-      return fee
     },
 
     getOfferOpts (id, offerFee) {
@@ -646,9 +622,13 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const fee = await this.getOfferFee()
-        this.fees.fixed = fee.fixed
-        this.fees.percent = fee.calculatedPercent
+        this.fees = await this.calculateFees({
+          assetCode: this.form.asset.code,
+          amount: this.form.amount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.investFee,
+        })
+
         this.isFeesLoaded = true
         this.updateView(VIEW_MODES.confirm)
       } catch (error) {
@@ -747,7 +727,7 @@ export default {
 }
 
 .invest-form__total-amount {
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
 }

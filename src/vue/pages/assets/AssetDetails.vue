@@ -3,7 +3,7 @@
     <div class="asset-details__header">
       <asset-logo-dark
         :asset-code="asset.code"
-        :logo-url="asset.logoUrl(config.FILE_STORAGE)"
+        :logo-url="assetLogoUrl"
       />
       <div class="asset-details__info">
         <p class="asset-details__code">
@@ -208,9 +208,7 @@
 <script>
 import AssetLogoDark from '@/vue/common/assets/AssetLogoDark'
 
-import config from '@/config'
-
-import { api } from '@/api'
+import { api, documentsManager } from '@/api'
 
 import { base } from '@tokend/js-sdk'
 
@@ -237,7 +235,6 @@ export default {
   },
   data: _ => ({
     isBalanceCreating: false,
-    config,
     EVENTS,
     ASSET_SUBTYPE,
   }),
@@ -250,8 +247,11 @@ export default {
       isAccountUnverified: vuexTypes.isAccountUnverified,
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
+    assetLogoUrl () {
+      return documentsManager.getDocumentUrlByKey(this.asset.logoKey)
+    },
     assetTermsUrl () {
-      return this.asset.termsUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(this.asset.termsKey)
     },
     isExistsInUserBalances () {
       return !!this.balances.find(item => item.asset.code === this.asset.code)

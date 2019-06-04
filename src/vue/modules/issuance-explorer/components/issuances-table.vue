@@ -1,6 +1,6 @@
 <template>
   <div class="issuances-table">
-    <template v-if="issuances.length">
+    <template>
       <div class="app__table app__table--with-shadow">
         <table>
           <thead>
@@ -27,8 +27,7 @@
               </th>
             </tr>
           </thead>
-
-          <tbody>
+          <tbody v-if="issuances.length">
             <tr v-for="issuance in issuances" :key="issuance.id">
               <td>
                 <email-getter :balance-id="issuance.counterparty" />
@@ -55,31 +54,28 @@
               </td>
             </tr>
           </tbody>
+          <empty-tbody-placeholder
+            v-else
+            :colspan="6"
+            :message="'issuance-explorer.table.no-issuances-msg' | globalize"
+          />
         </table>
       </div>
-    </template>
-
-    <template v-else>
-      <no-data-message
-        icon-name="trending-up"
-        :title="'issuance-explorer.table.no-issuances-title' | globalize"
-        :message="'issuance-explorer.table.no-issuances-msg' | globalize"
-      />
     </template>
   </div>
 </template>
 
 <script>
 import EmailGetter from '@/vue/common/EmailGetter'
-import NoDataMessage from '@/vue/common/NoDataMessage'
 import RequestStateViewer from './request-state-viewer'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
   name: 'issuanes-table',
   components: {
     EmailGetter,
-    NoDataMessage,
     RequestStateViewer,
+    EmptyTbodyPlaceholder,
   },
 
   props: {
