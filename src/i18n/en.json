@@ -64,7 +64,7 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_requiredAtLeastOne": "Choose at least one of the options",
-      "field-error_amount": "Amount must be a number, greater than 0",
+      "field-error_amount": "Amount must be a number, greater than {{ minValue }}",
       "field-error_maxValue": "Value should be less than {{maxValue, number}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
@@ -84,7 +84,9 @@
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
       "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
-      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}"
+      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
+      "field-error_maxForIssuance": "Max amount for issuance: {{to, money}}",
+      "field-error_minForIssuance": "Min amount for issuance: {{from, money}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -104,7 +106,8 @@
       "transaction": "The transaction you sent is invalid",
       "account-blocked": "Your account is blocked",
       "user-doesnt-exist": "This user doesn't exist in system",
-      "balance-not-found": "The user does not have this asset balance yet"
+      "balance-not-found": "The user does not have this asset balance yet",
+      "file-upload": "Cannot upload a file to the storage. Please upload another file or try again later"
     },
     "supported-browsers": {
       "title": "Browsers that support all of our features",
@@ -1001,19 +1004,7 @@
       "insufficient-sales": "Insufficient balance",
       "recipient-lbl": "Recipient email or account ID",
       "subject-lbl": "Add note (under {{length}} symbols)",
-      "sender-fees": "Sender fees",
-      "sender-fixed-fee": "sender’s fixed fee",
-      "sender-percent-fee": "sender’s percent fee",
-      "recipient-fixed-fee": "recipient’s fixed fee",
-      "recipient-percent-fee": "recipient’s percent fee",
-      "source-no-fees": "Sender won’t pay any fees for this transaction.",
-      "recipient-fees": "Recipient fees",
-      "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
-      "total": "Total",
-      "total-sender-fee": "Total sender fee",
-      "total-receiver-fee": "Total receiver fee",
       "total-amount": "Total amount",
-      "pay-fees-for-recipient": "Pay fees for recipient",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",
       "submit-btn": "Send",
@@ -1027,13 +1018,14 @@
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
-      "loading-msg": "Loading your assets…",
-      "load-failed-msg": "There was an error while loading your assets. Please, try again later",
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "reference-lbl": "Reference",
       "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "receiver-lbl": "Email or account ID",
+      "amount-to-receive-msg": "Amount to receive",
       "issue-btn": "Issue",
       "no-owned-assets-title": "No owned assets yet",
       "no-owned-assets-msg": "Please create an asset to make an issuance",
@@ -1444,7 +1436,8 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-created-msg": "Your order was successfully created"
+      "order-created-msg": "Your order was successfully created",
+      "loading-msg": "Loading…"
     },
     "submit-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1454,7 +1447,8 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-submitted-msg": "Your order was successfully submitted"
+      "order-submitted-msg": "Your order was successfully submitted",
+      "loading-msg": "Loading…"
     },
     "your-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1465,8 +1459,8 @@
       "update-order-btn": "Update order",
       "cancel-order-btn": "Cancel order",
       "order-updated-msg": "Your order was successfully updated",
-      "order-canceled-msg": "Your order was successfully cancelled"
-
+      "order-canceled-msg": "Your order was successfully cancelled",
+      "loading-msg": "Loading…"
     },
     "trade-exchange": {
       "offers-section-title": "Open orders"
@@ -1490,7 +1484,7 @@
       "loading-error-msg": "There was an error while loading.",
       "campaign-tab": "Campaign",
       "investable-sales-tab": "Investable sales",
-      "invest": "Invest",
+      "invest-title": "Invest in this sale",
       "statistics-title": "Statistics",
       "whitelist-title": "Whitelist management",
       "overview-title": "Sale overview",
@@ -1601,7 +1595,6 @@
       "requires-us-accreditation-desc": "U.S. citizens are required to verify their accreditation before holding this asset",
       "percent-fee-label": "Percent fee",
       "total-amount-label": "Total amount",
-      "continue-btn": "Continue",
       "recheck-form-msg": "Please recheck the form before proceeding",
       "investment-fees-heading": "Investment fees",
       "no-transaction-fees-msg": "No fees for this transaction",
@@ -1617,6 +1610,7 @@
       "full-description-step-title": "Full description",
       "sale-name-lbl": "Sale name",
       "base-asset-lbl": "Base asset",
+      "cap-asset-lbl": "Cap asset",
       "whitelisted-lbl": "Whitelisted",
       "start-time-lbl": "Start time",
       "close-time-lbl": "Close time",
@@ -1635,6 +1629,7 @@
       "next-btn": "Next",
       "create-request-btn": "Create request",
       "update-request-btn": "Update request",
+      "no-investable-assets-err": "This asset has no acceptable investment assets. Please, select another one",
       "request-submitted-msg": "Your request was successfully processed. Please, wait for approval"
     },
     "withdrawal-fiat-module": {
@@ -1691,12 +1686,7 @@
       "asset": "Asset",
       "balance": "Balance: {{balance, money}}",
       "amount": "Amount ({{asset}})",
-      "network-fee-hint": "External network fee",
-      "network-fee-unknown": "Unknown",
-      "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
       "destination-address": "Destination {{asset}} address",
-      "total-amount-account": "Total fee",
       "withdraw-success": "Withdrawal request successfully created",
       "failed-load-fees": "Failed to load fees. Try again later",
       "no-assets-heading": "Ops!",
@@ -1704,10 +1694,24 @@
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…",
-      "fee-loading-msg": "Loading…",
       "reviewer": "Reviewer:",
       "comment": "Comment",
       "withdraw-btn": "Withdraw"
+    },
+    "fees-renderer": {
+      "network-fee-msg": "External network fee",
+      "network-fee-unknown-msg": "Unknown",
+      "fixed-fee-msg": "Fixed fee",
+      "calculated-percent-fee-msg": "Calculated percent fee",
+      "sender-fee-msg": "Sender fee",
+      "recipient-fee-msg": "Recipient fee",
+      "order-fee-msg": "Order fee",
+      "withdrawal-fee-msg": "Withdrawal fee",
+      "invest-fee-msg": "Invest fee",
+      "issuance-fee-msg": "Issuance fee",
+      "unknown-fee-msg": "Unknown fee",
+      "pay-for-recipient-lbl": "Pay fees for recipient",
+      "view-fees-link": "View all fees"
     },
     "deposit-form": {
       "deposit": "Deposit",
@@ -2015,6 +2019,10 @@
     },
     "clipboard-field": {
       "copied": "Copied"
+    },
+    "asset-select-field": {
+      "failed-loading-msg": "Assets loading failed!",
+      "no-assets-for-select": "No assets for select"
     }
   }
 }

@@ -1,9 +1,8 @@
-import UploadDocumentsMixin from './upload-documents.mixin'
-
 import { base } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
 
 import { api } from '@/api'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 
@@ -15,8 +14,6 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [UploadDocumentsMixin],
-
   computed: {
     assetRequestOpts () {
       const requestId = this.request
@@ -90,7 +87,7 @@ export default {
         this.informationStepForm.logo,
         this.advancedStepForm.terms,
       ]
-      await this.uploadDocuments(assetDocuments)
+      await uploadDocuments(assetDocuments)
 
       const operation =
         base.ManageAssetBuilder.assetUpdateRequest(this.assetRequestOpts)

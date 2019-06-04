@@ -33,54 +33,6 @@ describe('Update asset request', () => {
     })
   })
 
-  describe('methods', () => {
-    describe('logoUrl', () => {
-      it('returns storage logo URL if logo key is present', () => {
-        const storageUrl = 'https://storage.com'
-        const request = new UpdateAssetRequest({
-          requestDetails: {
-            creatorDetails: {
-              logo: { key: 'logo-key' },
-            },
-          },
-        })
-        const expectedUrl = 'https://storage.com/logo-key'
-
-        expect(request.logoUrl(storageUrl)).to.equal(expectedUrl)
-      })
-
-      it('returns empty string if logo key is absent', () => {
-        const storageUrl = 'https://storage.com'
-        const request = new UpdateAssetRequest({})
-
-        expect(request.logoUrl(storageUrl)).to.equal('')
-      })
-    })
-
-    describe('termsUrl', () => {
-      it('returns storage terms URL if logo key is present', () => {
-        const storageUrl = 'https://storage.com'
-        const request = new UpdateAssetRequest({
-          requestDetails: {
-            creatorDetails: {
-              terms: { key: 'terms-key' },
-            },
-          },
-        })
-        const expectedUrl = 'https://storage.com/terms-key'
-
-        expect(request.termsUrl(storageUrl)).to.equal(expectedUrl)
-      })
-
-      it('returns empty string if logo key is absent', () => {
-        const storageUrl = 'https://storage.com'
-        const request = new UpdateAssetRequest({})
-
-        expect(request.termsUrl(storageUrl)).to.equal('')
-      })
-    })
-  })
-
   describe('getters', () => {
     describe('isTransferable', () => {
       it('returns true if the request has transferable policy', () => {

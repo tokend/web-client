@@ -1,5 +1,4 @@
 import { CreateSaleRequest } from '../wrappers/create-sale-request'
-import { Asset } from '../wrappers/asset'
 
 import { base } from '@tokend/js-sdk'
 
@@ -23,12 +22,6 @@ export const mutations = {
 }
 
 export const actions = {
-  async [types.LOAD_ASSET_BY_ID] (_, id) {
-    const endpoint = `/v3/assets/${id}`
-    const { data: record } = await api.get(endpoint)
-    return new Asset(record)
-  },
-
   [types.LOAD_REQUESTS] ({ rootGetters }) {
     return api.getWithSignature('/v3/create_sale_requests', {
       page: {

@@ -21,14 +21,6 @@ export class UpdateAssetRequest extends Request {
     this.logoKey = safeGet(record, 'requestDetails.creatorDetails.logo.key')
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
-  termsUrl (storageUrl) {
-    return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
-  }
-
   get isTransferable () {
     return Boolean(this.policy & ASSET_POLICIES.transferable)
   }
