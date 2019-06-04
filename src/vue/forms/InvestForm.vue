@@ -4,7 +4,6 @@
     <template v-if="isLoaded && isAllowedAccountType">
       <form
         novalidate
-        id="invest-form"
         class="app__form"
         @submit.prevent="processInvestment"
       >
@@ -94,72 +93,70 @@
             }
           })"
         />
-      </form>
 
-      <transition name="app__fade-in">
-        <div
-          class="invest-form__fee-box"
-          v-if="isFeesLoaded"
-        >
-          <fees-renderer :fees-collection="fees" />
+        <transition name="app__fade-in">
+          <div
+            class="invest-form__fee-box"
+            v-if="isFeesLoaded"
+          >
+            <fees-renderer :fees-collection="fees" />
 
-          <p class="invest-form__total-amount">
-            <span class="invest-form__total-amount-text">
-              {{ 'invest-form.total-amount-label' | globalize }}
-            </span>
-            <span class="invest-form__total-amount-text">
-              {{
-                { value: totalAmount, currency: form.asset.code } | formatMoney
-              }}
-            </span>
-          </p>
+            <form-confirmation
+              v-if="view.mode === VIEW_MODES.confirm"
+              :message="'invest-form.recheck-form-msg' | globalize"
+              :ok-button="'invest-form.invest-btn' | globalize"
+              :is-pending="isSubmitting"
+              @cancel="updateView(VIEW_MODES.submit)"
+              @ok="submit"
+            />
+          </div>
+        </transition>
+
+        <div class="app__form-actions">
+          <template
+            v-if="currentInvestment.id &&
+              view.mode === VIEW_MODES.submit">
+            <button
+              v-ripple
+              type="button"
+              @click="processInvestment"
+              class="app__button-raised invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || !canSubmit"
+            >
+              {{ 'invest-form.update-offer-btn' | globalize }}
+            </button>
+            <button
+              v-ripple
+              type="button"
+              @click="cancelOffer"
+              class="app__button-flat"
+              :disabled="formMixin.isDisabled || !canUpdateOffer"
+            >
+              {{ 'invest-form.cancel-offer-btn' | globalize }}
+            </button>
+          </template>
+          <template v-else>
+            <button
+              v-ripple
+              v-if="view.mode === VIEW_MODES.submit"
+              click="submit"
+              class="app__button-raised"
+              :disabled="formMixin.isDisabled || !canSubmit"
+              form="invest-form">
+              {{ 'invest-form.continue-btn' | globalize }}
+            </button>
+          </template>
+
+          <form-confirmation
+            v-if="view.mode === VIEW_MODES.confirm"
+            :message="'invest-form.recheck-form-msg' | globalize"
+            :ok-button="'invest-form.invest-btn' | globalize"
+            :is-pending="isSubmitting"
+            @cancel="updateView(VIEW_MODES.submit) || (isFeesLoaded = false)"
+            @ok="submit()"
+          />
         </div>
-      </transition>
-
-      <div class="app__form-actions">
-        <template
-          v-if="currentInvestment.id &&
-            view.mode === VIEW_MODES.submit">
-          <button
-            v-ripple
-            type="button"
-            @click="processInvestment"
-            class="app__button-raised invest-form__submit-btn"
-            :disabled="formMixin.isDisabled || !canSubmit"
-          >
-            {{ 'invest-form.update-offer-btn' | globalize }}
-          </button>
-          <button
-            v-ripple
-            type="button"
-            @click="cancelOffer"
-            class="app__button-flat"
-            :disabled="formMixin.isDisabled || !canUpdateOffer"
-          >
-            {{ 'invest-form.cancel-offer-btn' | globalize }}
-          </button>
-        </template>
-        <template v-else>
-          <button
-            v-ripple
-            v-if="view.mode === VIEW_MODES.submit"
-            click="submit"
-            class="app__button-raised"
-            :disabled="formMixin.isDisabled || !canSubmit"
-            form="invest-form">
-            {{ 'invest-form.continue-btn' | globalize }}
-          </button>
-        </template>
-
-        <form-confirmation
-          v-if="view.mode === VIEW_MODES.confirm"
-          :message="'invest-form.recheck-form-msg' | globalize"
-          :ok-button="'invest-form.invest-btn' | globalize"
-          :is-pending="isSubmitting"
-          @cancel="updateView(VIEW_MODES.submit) || (isFeesLoaded = false)"
-          @ok="submit()"
-        />
-      </div>
+      </form>
     </template>
 
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
@@ -503,7 +500,6 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
-      this.updateView(VIEW_MODES.submit)
       this.disableForm()
       this.isSubmitting = true
 
@@ -532,6 +528,7 @@ export default {
       }
       this.isSubmitting = false
       this.enableForm()
+      this.updateView(VIEW_MODES.submit)
       this.hideConfirmation()
     },
 
