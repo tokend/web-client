@@ -8,7 +8,7 @@ import { api } from '@/api'
 import { wrapDocument } from './wrap-document'
 
 import { toRFC3339, fromRFC3339 } from '../format-date'
-import { uploadDocumentIfNeeded } from './upload-document-if-needed'
+import { uploadDocument } from '@/js/helpers/upload-documents'
 
 const state = {
   isAccredited: false,
@@ -151,14 +151,14 @@ const actions = {
     }
   },
 
-  async [types.UPLOAD_DOCUMENTS] ({ state }, accountId) {
+  async [types.UPLOAD_DOCUMENTS] ({ state }) {
     await Promise.all([
       // it modifies the state intentionally
-      uploadDocumentIfNeeded(state.documents.avatar, accountId),
-      uploadDocumentIfNeeded(state.documents.selfie, accountId),
-      uploadDocumentIfNeeded(state.documents.idDocumentFace, accountId),
-      uploadDocumentIfNeeded(state.documents.idDocumentBack, accountId),
-      uploadDocumentIfNeeded(state.documents.proofOfInvestor, accountId),
+      uploadDocument(state.documents.avatar),
+      uploadDocument(state.documents.selfie),
+      uploadDocument(state.documents.idDocumentFace),
+      uploadDocument(state.documents.idDocumentBack),
+      uploadDocument(state.documents.proofOfInvestor),
     ])
   },
 

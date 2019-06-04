@@ -29,6 +29,8 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now using `DocumentsManager` from SDK to upload documents to the storage
+- Now getting document URL using documentsManager
 
 #### Removed
 - Cursor pointer on disabled select

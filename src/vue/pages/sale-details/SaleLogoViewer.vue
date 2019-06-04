@@ -2,7 +2,7 @@
   <div class="sale-logo-viewer">
     <img
       class="sale-logo-viewer__img"
-      :src="sale.logoUrl(config.FILE_STORAGE)"
+      :src="saleLogoUrl"
     >
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script>
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 
 export default {
   name: 'sale-logo-viewer',
@@ -19,9 +19,11 @@ export default {
     sale: { type: SaleRecord, required: true },
   },
 
-  data: _ => ({
-    config,
-  }),
+  computed: {
+    saleLogoUrl () {
+      return documentsManager.getDocumentUrlByKey(this.sale.logoKey)
+    },
+  },
 }
 </script>
 

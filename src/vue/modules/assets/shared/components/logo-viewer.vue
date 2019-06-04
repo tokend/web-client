@@ -16,7 +16,7 @@
 <script>
 import { Asset } from '../wrappers/asset'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 
 export default {
   name: 'logo-viewer',
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     url () {
-      return this.asset.logoUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(this.asset.logoKey)
     },
   },
 }

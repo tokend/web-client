@@ -91,6 +91,9 @@ export class ErrorHandler {
           translationId = error.errorResults[0].message
         }
         break
+      case errors.StorageServerError:
+        translationId = 'errors.file-upload'
+        break
       default:
         translationId = 'errors.default'
     }

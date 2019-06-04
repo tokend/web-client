@@ -53,10 +53,6 @@ export class CreateSaleRequest extends Request {
     return this.definitionType === SALE_DEFINITION_TYPES.whitelist
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
   _getQuoteAssets (record) {
     return safeGet(record, 'requestDetails.quoteAssets', [])
       .map(asset => asset.id)
