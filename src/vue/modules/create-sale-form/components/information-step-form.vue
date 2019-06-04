@@ -230,7 +230,7 @@ import {
   hardCapLessThanSoftCap,
   requiredAtLeastOne,
   minDate,
-  noMoreThanAvailableForIssuance,
+  lessThenMax,
 } from '@validators'
 
 import config from '@/config'
@@ -302,7 +302,7 @@ export default {
         },
         assetsToSell: {
           required,
-          noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
+          noMoreThanAvailableForIssuance: lessThenMax(
             this.availableForIssuance
           ),
         },

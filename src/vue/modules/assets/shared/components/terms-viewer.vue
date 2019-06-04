@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { documentsManager } from '@/api'
 
 export default {
   name: 'terms-viewer',
   props: {
-    asset: { type: Asset, required: true },
+    asset: { type: AssetRecord, required: true },
   },
   computed: {
     href () {

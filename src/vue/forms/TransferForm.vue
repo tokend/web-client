@@ -1,7 +1,7 @@
 <template>
   <div class="transfer app__page-content-wrp">
     <template v-if="isLoaded">
-      <template v-if="!assets.length">
+      <template v-if="!transferableBalancesAssets.length">
         <h2 class="app__page-heading">
           {{ 'transfer-form.no-assets-heading' | globalize }}
         </h2>
@@ -28,7 +28,7 @@
             <div class="app__form-field">
               <select-field
                 name="transfer-asset"
-                :values="assets"
+                :values="transferableBalancesAssets"
                 v-model="form.asset"
                 key-as-value-text="nameAndCode"
                 :label="'transfer-form.asset-lbl' | globalize"
@@ -50,18 +50,12 @@
 
           <div class="app__form-row">
             <div class="app__form-field">
-              <input-field
+              <amount-input-field
+                v-model="form.amount"
                 name="transfer-amount"
-                :step="config.MINIMAL_NUMBER_INPUT_STEP"
-                type="number"
-                v-model.trim="form.amount"
-                autocomplete="off"
+                validation-type="outgoing"
                 :label="'transfer-form.amount-lbl' | globalize"
-                :readonly="view.mode === VIEW_MODES.confirm"
-                @blur="touchField('form.amount')"
-                :error-message="getFieldErrorMessage('form.amount', {
-                  available: balance.balance
-                })"
+                :asset="form.asset"
               />
             </div>
           </div>
@@ -148,8 +142,11 @@ import { vueRoutes } from '@/vue-router/routes'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { base, FEE_TYPES } from '@tokend/js-sdk'
 import FeesMixin from '@/vue/common/fees/fees.mixin'
+import {
+  base,
+  FEE_TYPES,
+} from '@tokend/js-sdk'
 import config from '@/config'
 import { api } from '@/api'
 import { Bus } from '@/js/helpers/event-bus'
@@ -157,8 +154,6 @@ import { globalize } from '@/vue/filters/globalize'
 import {
   required,
   emailOrAccountId,
-  amount,
-  noMoreThanAvailableOnBalance,
 } from '@validators'
 
 const VIEW_MODES = {
@@ -207,30 +202,18 @@ export default {
   validations () {
     return {
       form: {
-        amount: {
-          required,
-          amount,
-          noMoreThanAvailableOnBalance:
-            noMoreThanAvailableOnBalance(this.balance.balance),
-        },
         recipient: { required, emailOrAccountId },
       },
     }
   },
   computed: {
     ...mapGetters([
-      vuexTypes.accountBalances,
       vuexTypes.accountId,
+      vuexTypes.transferableBalancesAssets,
+      vuexTypes.accountBalanceByCode,
     ]),
-    userTransferableAssets () {
-      return this.accountBalances.filter(i => i.asset.isTransferable)
-    },
-    assets () {
-      return this.userTransferableAssets.map(item => item.asset)
-    },
     balance () {
-      return this.accountBalances
-        .find(i => i.asset.code === this.form.asset.code) || {}
+      return this.accountBalanceByCode(this.form.asset.code)
     },
   },
   async created () {
@@ -240,7 +223,7 @@ export default {
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
-      ErrorEvent.processWithoutFeedback(e)
+      ErrorHandler.processWithoutFeedback(e)
     }
   },
   methods: {
@@ -340,8 +323,9 @@ export default {
     },
     setAsset () {
       this.form.asset =
-        this.assets.find(asset => asset.code === this.assetToTransfer) ||
-        this.assets[0] ||
+        this.transferableBalancesAssets
+          .find(asset => asset.code === this.assetToTransfer) ||
+        this.transferableBalancesAssets[0] ||
         {}
     },
   },

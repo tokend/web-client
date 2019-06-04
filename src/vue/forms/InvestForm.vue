@@ -213,7 +213,6 @@ import { api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { required, amountRange } from '@validators'
 
@@ -305,6 +304,7 @@ export default {
       isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
       isAccountUsVerified: vuexTypes.isAccountUsVerified,
       balances: vuexTypes.accountBalances,
+      assets: vuexTypes.assets,
     }),
 
     convertedAmount () {
@@ -445,7 +445,9 @@ export default {
 
   async created () {
     try {
-      await this.loadSaleBaseAsset()
+      await this.loadAssets()
+      this.saleBaseAsset = this.assets
+        .find(item => item.code === this.sale.baseAsset)
       await this.loadBalances()
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
@@ -463,14 +465,8 @@ export default {
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
-
-    async loadSaleBaseAsset () {
-      const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await api.get(endpoint)
-
-      this.saleBaseAsset = new AssetRecord(data)
-    },
 
     async loadCurrentInvestment () {
       const { data: offers } = await api.getWithSignature('/v3/offers', {

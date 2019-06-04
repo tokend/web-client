@@ -78,6 +78,15 @@ export class MathUtil {
       .toFixed(DECIMAL_PLACES)
   }
 
+  static compare (a, b) {
+    if (!this._isValidParams('comparedTo', a, b)) return -1
+
+    const one = new BigNumber(a)
+    const two = new BigNumber(b)
+
+    return one.comparedTo(two)
+  }
+
   /**
    * Example: value = 200, percent = 15. Return - 30
    *

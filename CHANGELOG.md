@@ -21,6 +21,8 @@ for further information about branching and tagging conventions.
 - Displaying fees on issuance form & trade forms
 - State icon to the status message
 - Rotation of status message close icon on hovering
+- `assets.module`
+- `AmountInputField`
 - Cap asset field to the create sale form
 
 #### Changed

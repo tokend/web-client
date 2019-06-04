@@ -45,8 +45,8 @@ import { CreateSaleRequest } from '../wrappers/create-sale-request'
 
 import { documentsManager } from '@/api'
 
-import { mapActions } from 'vuex'
-import { types } from '../store/types'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -77,6 +77,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      vuexTypes.accountBalanceByCode,
+    ]),
     assetLogoUrl () {
       if (this.baseAsset) {
         return documentsManager.getDocumentUrlByKey(this.baseAsset.logoKey)
@@ -91,14 +94,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('create-sale-requests', {
-      loadAssetById: types.LOAD_ASSET_BY_ID,
-    }),
-
     async loadBaseAsset () {
       this.isLoaded = false
       try {
-        this.baseAsset = await this.loadAssetById(this.request.baseAsset)
+        this.baseAsset = this.accountBalanceByCode(this.request.baseAsset).asset
         this.isLoaded = true
       } catch (e) {
         this.isLoadingFailed = true

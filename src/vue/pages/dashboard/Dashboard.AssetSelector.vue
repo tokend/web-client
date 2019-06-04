@@ -122,19 +122,16 @@ export default {
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
-      const balancesAssetCodes = this.balances.map(i => i.asset.code)
-      const assets = this.assets
-        .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
       // correcty in the list of all assets: baseAssets should be displayed at
       // the beginning and otherAssets after baseAssets
 
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
-      const baseAssets = assets
+      const baseAssets = this.assets
         .filter(asset => asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
-      const otherAssets = assets
+      const otherAssets = this.assets
         .filter(asset => !asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
