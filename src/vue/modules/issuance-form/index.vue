@@ -58,9 +58,9 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
+    ...mapGetters({
+      accountId: vuexTypes.accountId,
+    }),
   },
   async created () {
     await this.init()

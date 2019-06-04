@@ -18,11 +18,11 @@
     <div class="app__table asset-attributes-viewer__table-wrp">
       <table>
         <tbody>
-          <tr v-if="asset.balance">
+          <tr v-if="balance">
             <td>{{ 'assets.balance-title' | globalize }}</td>
             <td>
               {{
-                { value: asset.balance, currency: asset.code } | formatMoney
+                { value: balance, currency: asset.code } | formatMoney
               }}
             </td>
           </tr>
@@ -139,7 +139,9 @@ import LogoViewer from './logo-viewer'
 import TermsViewer from './terms-viewer'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'asset-attributes-viewer',
@@ -149,9 +151,17 @@ export default {
     EmailGetter,
   },
   props: {
-    asset: { type: Asset, required: true },
+    asset: { type: AssetRecord, required: true },
     kycRequiredAssetType: { type: Number, required: true },
     securityAssetType: { type: Number, required: true },
+  },
+  computed: {
+    ...mapGetters({
+      getAssetByCode: vuexTypes.assetByCode,
+    }),
+    balance () {
+      return this.getAssetByCode(this.asset.code).balance
+    },
   },
 }
 </script>

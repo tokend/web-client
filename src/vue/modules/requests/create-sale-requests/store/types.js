@@ -4,7 +4,6 @@ const mutations = {
 }
 
 const actions = {
-  LOAD_ASSET_BY_ID: 'LOAD_ASSET_BY_ID',
   LOAD_REQUESTS: 'LOAD_REQUESTS',
   CANCEL_REQUEST: 'CANCEL_REQUEST',
 }
