@@ -14,18 +14,18 @@
 </template>
 
 <script>
-import { Asset } from '../wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 
 export default {
   name: 'terms-viewer',
   props: {
-    asset: { type: Asset, required: true },
+    asset: { type: AssetRecord, required: true },
   },
   computed: {
     href () {
-      return this.asset.termsUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(this.asset.termsKey)
     },
   },
 }

@@ -68,6 +68,7 @@ import TranslationFiltersMixin from '../mixins/translation-filters.mixin'
 
 import MovementAttributesViewer from './movement-attributes-viewer'
 import MovementDirectionMark from './movement-direction-mark'
+import { MathUtil } from '@/js/utils'
 
 export default {
   name: 'movement-table-row',
@@ -78,7 +79,17 @@ export default {
   filters: {
     movementAmount (movement) {
       let currency = movement.assetCode
-      let value = movement.effect.amount
+      let value
+      if (movement.effect.calculatedPercentFee > 0 ||
+          movement.effect.fixedFee > 0) {
+        const fee = MathUtil.add(
+          movement.effect.calculatedPercentFee,
+          movement.effect.fixedFee
+        )
+        value = MathUtil.add(movement.effect.amount, fee)
+      } else {
+        value = movement.effect.amount
+      }
 
       if (movement.isOutgoing || movement.isLocked) {
         value = -value

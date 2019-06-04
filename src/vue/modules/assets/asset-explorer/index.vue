@@ -29,6 +29,7 @@ import AssetsRenderer from './components/assets-renderer'
 
 import { mapActions } from 'vuex'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -72,8 +73,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     ...mapActions('asset-explorer', {
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
       loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),
