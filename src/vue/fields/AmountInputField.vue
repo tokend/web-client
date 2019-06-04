@@ -7,6 +7,8 @@
       v-on="listeners"
       autocomplete="off"
       :label="label"
+      :min="min"
+      :max="max"
       :step="minAmount"
       :error-message="getFieldErrorMessage('value', {
         from: minAmount,
@@ -15,6 +17,15 @@
       :disabled="disabled"
       @blur="touchField('value')"
     />
+
+    <button
+      v-if="isMaxButtonShown"
+      class="amount-input-field__max-btn"
+      type="button"
+      @click="$emit(EVENTS.input, maxIncomingAmount)"
+    >
+      <i class="mdi mdi-arrow-up-bold amount-input-field__max-icon" />
+    </button>
   </div>
 </template>
 
@@ -55,7 +66,13 @@ export default {
     disabled: { type: Boolean, default: false },
     value: { type: [Number, String], default: undefined },
     validationType: { type: String, required: true },
+    isMaxButtonShown: { type: Boolean, default: false },
+    min: { type: [Number, String], default: config.MIN_AMOUNT },
+    max: { type: [Number, String], default: config.MAX_AMOUNT },
   },
+  data: _ => ({
+    EVENTS,
+  }),
   validations () {
     let validations = {
       value: {
@@ -92,16 +109,28 @@ export default {
         : Math.pow(10, (-1) * config.DECIMAL_POINTS)
     },
     maxIncomingAmount () {
+      let maxAvailableAmount
+
       switch (this.validationType) {
         case AMOUNT_VALIDATION_TYPE.incoming:
-          return MathUtil.subtract(config.MAX_AMOUNT, this.balance)
+          maxAvailableAmount = MathUtil.subtract(
+            config.MAX_AMOUNT, this.balance
+          )
+          break
         case AMOUNT_VALIDATION_TYPE.outgoing:
-          return this.balance
+          maxAvailableAmount = this.balance
+          break
         case AMOUNT_VALIDATION_TYPE.issuance:
-          return this.asset.availableForIssuance
+          maxAvailableAmount = this.asset.availableForIssuance
+          break
         default:
-          return config.MAX_AMOUNT
+          maxAvailableAmount = config.MAX_AMOUNT
+          break
       }
+
+      return MathUtil.compare(this.max, maxAvailableAmount) >= 0
+        ? maxAvailableAmount
+        : this.max
     },
     balance () {
       return this.accountBalanceByCode(this.asset.code).balance || 0
@@ -117,3 +146,20 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.amount-input-field {
+  display: flex;
+}
+
+.amount-input-field__max-btn {
+  margin-top: 1.4rem;
+  margin-left: 0.6rem;
+  max-width: 2.4rem;
+  max-height: 2.4rem;
+}
+
+.amount-input-field__max-icon {
+  font-size: 2.4rem;
+}
+</style>
