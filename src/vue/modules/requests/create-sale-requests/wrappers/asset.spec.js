@@ -22,27 +22,6 @@ describe('Asset', () => {
     })
   })
 
-  describe('methods', () => {
-    describe('logoUrl', () => {
-      it('returns storage logo URL if logo key is present', () => {
-        const asset = new Asset({
-          details: {
-            logo: { key: 'logo-key' },
-          },
-        })
-
-        expect(asset.logoUrl('https://storage.com'))
-          .to.equal('https://storage.com/logo-key')
-      })
-
-      it('returns empty string if logo key is absent', () => {
-        const asset = new Asset({})
-
-        expect(asset.logoUrl('https://storage.com')).to.equal('')
-      })
-    })
-  })
-
   describe('getters', () => {
     describe('nameAndCode', () => {
       it('returns asset code and name in the format [name (code)] if name is present', () => {

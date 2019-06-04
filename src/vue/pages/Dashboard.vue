@@ -83,7 +83,7 @@
             {{ 'transfer-form.form-heading' | globalize }}
           </template>
           <transfer
-            @operation-submitted="updateBalancesAndList()"
+            @operation-submitted="closeDrawerAndUpdateList()"
             :asset-to-transfer="currentAsset"
           />
         </template>
@@ -171,7 +171,7 @@ export default {
       if (value) {
         this.currentAsset = value.code
       } else {
-        const keys = this.accountBalances.map(i => i.asset)
+        const keys = this.accountBalances.map(i => i.asset.code)
         this.currentAsset =
           keys.find(a => a === this.$route.query.asset) || keys[0] || ''
       }
@@ -185,7 +185,12 @@ export default {
       return this.$refs[REFS.movementsHistory].$children[0]
         .reloadCollectionLoader()
     },
-
+    closeDrawerAndUpdateList () {
+      this.showDrawer = false
+      setTimeout(() => {
+        this.updateBalancesAndList()
+      }, 1000)
+    },
     updateBalancesAndList () {
       return Promise.all([
         this.loadBalances(),

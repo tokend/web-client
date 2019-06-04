@@ -12,7 +12,6 @@
             :request="request"
             :base-assets="baseAssets"
             :owned-assets="ownedAssets"
-            :default-quote-asset="defaultQuoteAsset"
             @submit="setInformationStepForm($event) || moveToNextStep()"
           />
 

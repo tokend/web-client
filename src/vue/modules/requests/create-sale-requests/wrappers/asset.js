@@ -13,8 +13,4 @@ export class Asset {
     const name = this.name || this.code
     return `${name} (${this.code})`
   }
-
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
 }

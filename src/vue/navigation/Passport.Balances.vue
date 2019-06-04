@@ -6,11 +6,12 @@
     <span class="passport-balances__label">
       {{ 'passport.balances-subheading' | globalize }}
     </span>
+
     <span
-      v-for="(item, index) in baseAssets"
+      v-for="(item, index) in filteredBalances"
       :key="index"
     >
-      {{ { value: item.balance, currency: item.asset } | formatMoney }}
+      {{ { value: item.balance, currency: item.asset.code } | formatMoney }}
     </span>
     <router-link
       class="passport-balances__more-link"
@@ -26,34 +27,42 @@
 import { vuexTypes } from '@/vuex'
 import { mapGetters, mapActions } from 'vuex'
 import { vueRoutes } from '@/vue-router/routes'
-import { ASSET_POLICIES } from '@tokend/js-sdk'
+
+const MAX_BALANCES_COUNT = 3
+const EVENTS = {
+  moreLinkFollowed: 'more-link-followed',
+}
 
 export default {
   name: 'passport-balances',
+
   data: () => ({
     vueRoutes,
-    assetsPerPage: 3,
   }),
+
   computed: {
     ...mapGetters({
       accountBalances: vuexTypes.accountBalances,
     }),
-    baseAssets () {
+
+    filteredBalances () {
       return this.accountBalances
-        .filter(asset => {
-          return asset.assetDetails.policies.includes(ASSET_POLICIES.baseAsset)
-        }).slice(0, this.assetsPerPage)
+        .filter(item => item.asset.isBaseAsset)
+        .slice(0, MAX_BALANCES_COUNT)
     },
   },
+
   async created () {
     await this.loadBalances()
   },
+
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
+
     showMoreBalances () {
-      this.$emit('more-link-followed')
+      this.$emit(EVENTS.moreLinkFollowed)
     },
   },
 }

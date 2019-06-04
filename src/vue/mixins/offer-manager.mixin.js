@@ -1,12 +1,10 @@
-import { base, PAYMENT_FEE_SUBTYPES } from '@tokend/js-sdk'
+import { base } from '@tokend/js-sdk'
 import { api } from '@/api'
 
 import { SECONDARY_MARKET_ORDER_BOOK_ID } from '@/js/const/offers'
 
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
-
-const OFFER_FEE_TYPE = 'offerFee'
 
 export default {
   computed: {
@@ -22,7 +20,7 @@ export default {
     }),
 
     getAssetDetails (assetCode) {
-      return this.accountBalances.find(i => i.asset === assetCode)
+      return this.accountBalances.find(i => i.asset.code === assetCode)
     },
 
     /**
@@ -51,13 +49,14 @@ export default {
      * @param {string} opts.baseAmount
      * @param {string} opts.quoteAmount
      * @param {string} opts.price
+     * @param {object} opts.fee
+     * @param {string} opts.fee.calculatedPercent
      * @param {boolean} opts.isBuy
      * @returns {Promise<void>}
      */
     async createOffer (opts) {
       await this.createAssetPairBalances(opts.pair)
 
-      const fee = await this.getOfferFee(opts.pair.quote, opts.quoteAmount)
       const operationOpts = {
         amount: opts.baseAmount,
         price: opts.price,
@@ -68,7 +67,7 @@ export default {
         // For this operation, back-end creates a "calculated fee", that
         // calculates as amount * percent fee. We can ignore the fixed fee
         // because of this is a back-end business
-        fee: fee.calculatedPercent,
+        fee: opts.fee.calculatedPercent,
       }
       const operation = base.ManageOfferBuilder.manageOffer(operationOpts)
 
@@ -95,22 +94,6 @@ export default {
         await api.postOperations(operation)
         await this.loadBalances()
       }
-    },
-
-    async getOfferFee (asset, amount) {
-      const feeType = base.xdr.FeeType.fromName(OFFER_FEE_TYPE).value
-
-      const endpoint = `/v3/accounts/${this.accountId}/calculated_fees`
-      const query = {
-        asset,
-        fee_type: feeType,
-        subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-        amount,
-      }
-
-      const { data: fee } = await api.get(endpoint, query)
-
-      return fee
     },
   },
 }

@@ -182,9 +182,9 @@ export default {
     assetPairBalances () {
       return {
         base: (this.accountBalances
-          .find(i => i.asset === this.assetPair.base) || {}).balance,
+          .find(i => i.asset.code === this.assetPair.base) || {}).balance,
         quote: (this.accountBalances
-          .find(i => i.asset === this.assetPair.quote) || {}).balance,
+          .find(i => i.asset.code === this.assetPair.quote) || {}).balance,
       }
     },
   },

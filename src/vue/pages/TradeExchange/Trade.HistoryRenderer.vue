@@ -40,7 +40,7 @@
                 <td>{{ item.createdAt | formatCalendar }}</td>
               </tr>
             </tbody>
-            <empty-list-placeholder
+            <empty-tbody-placeholder
               v-else-if="!tradeHistory.length && !isLoading"
               :message="'trade-history.no-data-message' | globalize({
                 base: assetPair.base,
@@ -60,14 +60,14 @@
 </template>
 
 <script>
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
   name: 'trade-history-renderer',
   components: {
-    EmptyListPlaceholder,
     SkeletonLoaderTableBody,
+    EmptyTbodyPlaceholder,
   },
   props: {
     assetPair: {

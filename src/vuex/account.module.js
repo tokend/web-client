@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
 import { vuexTypes } from './types'
 import { api } from '../api'
-import { AssetRecord } from '../js/records/entities/asset.record'
+import { BalanceRecord } from '@/js/records/entities/balance.record'
 
 export const state = {
   account: {},
@@ -21,26 +21,29 @@ export const mutations = {
 export const actions = {
   async [vuexTypes.LOAD_ACCOUNT] ({ commit }, accountId) {
     const response = await api.getWithSignature(`/v3/accounts/${accountId}`, {
-      include: ['external_system_ids', 'balances', 'balances.state'],
+      include: ['external_system_ids', 'balances', 'balances.state', 'balances.asset'],
     })
     commit(vuexTypes.SET_ACCOUNT, response.data)
   },
 
-  async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] ({ commit, getters }) {
+  async [vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS] (
+    { commit, rootGetters, getters }
+  ) {
     const accountId = getters[vuexTypes.accountId]
-    const endpoint = `/v3/accounts/${accountId}`
-    const { data: account } = await api.getWithSignature(endpoint, {
-      include: ['balances.asset', 'balances.state'],
+    const defaultQuoteAsset = rootGetters[vuexTypes.defaultQuoteAsset]
+
+    const endpoint = `/v3/accounts/${accountId}/converted_balances/${defaultQuoteAsset}`
+    const { data } = await api.getWithSignature(endpoint, {
+      include: ['states', 'balance', 'balance.state', 'balance.asset'],
     })
 
-    const balances = account.balances
-      .map(item => {
-        item.assetDetails = new AssetRecord(item.asset)
-        item.asset = item.assetDetails.code
-        item.balance = item.state.available
-        return item
-      })
-      .sort((a, b) => b.convertedBalance - a.convertedBalance)
+    const balances = data.states.map(state => state.balance)
+
+    commit(
+      vuexTypes.UPDATE_ASSETS,
+      balances.map(b => b.asset),
+      { root: true }
+    )
     commit(vuexTypes.SET_ACCOUNT_BALANCES_DETAILS, balances)
   },
 }
@@ -48,7 +51,11 @@ export const actions = {
 export const getters = {
   [vuexTypes.account]: state => state.account,
   [vuexTypes.accountId]: state => state.account.id,
-  [vuexTypes.accountBalances]: state => state.balancesDetails,
+  [vuexTypes.accountBalances]: state => state.balancesDetails
+    .map(item => new BalanceRecord(item)),
+  [vuexTypes.accountBalanceByCode]: state => code => state.balancesDetails
+    .map(item => new BalanceRecord(item))
+    .find(i => i.asset.code === code) || {},
   [vuexTypes.accountRoleId]: state => Number(
     _get(state.account, 'role.id')
   ),

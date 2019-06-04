@@ -108,7 +108,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { api } from '@/api'
+import { api, documentsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 import SkeletonLoader from '@/vue/common/skeleton-loader/SkeletonLoader'
@@ -144,19 +144,16 @@ export default {
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
-      const balancesAssetCodes = this.balances.map(i => i.asset)
-      const assets = this.assets
-        .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
       // correcty in the list of all assets: baseAssets should be displayed at
       // the beginning and otherAssets after baseAssets
 
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
-      const baseAssets = assets
+      const baseAssets = this.assets
         .filter(asset => asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
-      const otherAssets = assets
+      const otherAssets = this.assets
         .filter(asset => !asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
@@ -169,13 +166,14 @@ export default {
     },
     currentAssetBalanceDetails () {
       return this.balances
-        .find(i => i.asset === this.currentAsset) || {}
+        .find(i => i.asset.code === this.currentAsset) || {}
     },
     imgUrl () {
-      if (this.balances.length > 0 && this.currentAsset) {
+      if (this.balances.length && this.currentAsset) {
         try {
-          const balance = this.balances.find(i => i.asset === this.currentAsset)
-          return balance.assetDetails.logoUrl(config.FILE_STORAGE)
+          const balance = this.balances
+            .find(i => i.asset.code === this.currentAsset)
+          return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
         } catch {
           return null
         }

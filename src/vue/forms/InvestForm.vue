@@ -4,7 +4,6 @@
     <template v-if="isLoaded && isAllowedAccountType">
       <form
         novalidate
-        id="invest-form"
         class="app__form"
         @submit.prevent="processInvestment"
       >
@@ -30,7 +29,7 @@
             <vue-markdown
               class="app__form-field-description invest-form__amount-hint"
               :source="'invest-form.balance-hint' | globalize({
-                amount: availableAmount
+                amount: availableBalance
               })"
             />
           </div>
@@ -51,7 +50,7 @@
                 'form.amount',
                 {
                   from: MIN_AMOUNT,
-                  to: availableAmount.value,
+                  to: availableBalance.value,
                   saleCap: {
                     value: investedCap,
                     currency: sale.defaultQuoteAsset
@@ -94,102 +93,70 @@
             }
           })"
         />
-      </form>
 
-      <transition name="app__fade-in">
-        <div
-          class="invest-form__fee-box"
-          v-if="isFeesLoaded">
-          <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.transaction-fees-heading' | globalize }}
-          </h3>
-          <template v-if="+fees.fixed || +fees.percent">
-            <p
-              class="invest-form__fee"
-              v-if="fees.fixed">
-              - {{ fees.fixed | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.fixed-fee-label' | globalize }}
-              </span>
-            </p>
+        <transition name="app__fade-in">
+          <div
+            class="invest-form__fee-box"
+            v-if="isFeesLoaded"
+          >
+            <fees-renderer :fees-collection="fees" />
 
-            <p
-              class="invest-form__fee"
-              v-if="fees.percent">
-              - {{ fees.percent | formatNumber }}
-              {{ form.asset.code }}
-              <span class="invest-form__fee-type">
-                {{ 'invest-form.percent-fee-label' | globalize }}
-              </span>
-            </p>
+            <form-confirmation
+              v-if="view.mode === VIEW_MODES.confirm"
+              :message="'invest-form.recheck-form-msg' | globalize"
+              :ok-button="'invest-form.invest-btn' | globalize"
+              :is-pending="isSubmitting"
+              @cancel="updateView(VIEW_MODES.submit)"
+              @ok="submit"
+            />
+          </div>
+        </transition>
+
+        <div class="app__form-actions">
+          <template
+            v-if="currentInvestment.id &&
+              view.mode === VIEW_MODES.submit">
+            <button
+              v-ripple
+              type="button"
+              @click="processInvestment"
+              class="app__button-raised invest-form__submit-btn"
+              :disabled="formMixin.isDisabled || !canSubmit"
+            >
+              {{ 'invest-form.update-offer-btn' | globalize }}
+            </button>
+            <button
+              v-ripple
+              type="button"
+              @click="cancelOffer"
+              class="app__button-flat"
+              :disabled="formMixin.isDisabled || !canUpdateOffer"
+            >
+              {{ 'invest-form.cancel-offer-btn' | globalize }}
+            </button>
           </template>
-
           <template v-else>
-            <p class="invest-form__no-fee-msg">
-              {{ 'invest-form.no-transaction-fees-msg' | globalize }}
-            </p>
+            <button
+              v-ripple
+              v-if="view.mode === VIEW_MODES.submit"
+              click="submit"
+              class="app__button-raised"
+              :disabled="formMixin.isDisabled || !canSubmit"
+              form="invest-form">
+              {{ 'invest-form.continue-btn' | globalize }}
+            </button>
           </template>
 
-          <h3 class="invest-form__fee-box-heading">
-            {{ 'invest-form.total-fee-label' | globalize }}
-          </h3>
-
-          <p class="invest-form__fee">
-            - {{
-              { value: totalAmount, currency: form.asset.code } | formatMoney
-            }}
-            <span class="invest-form__fee-type">
-              {{ 'invest-form.total-amount-label' | globalize }}
-            </span>
-          </p>
+          <form-confirmation
+            v-if="view.mode === VIEW_MODES.confirm"
+            :message="'invest-form.recheck-form-msg' | globalize"
+            :ok-button="'invest-form.invest-btn' | globalize"
+            :is-pending="isSubmitting"
+            @cancel="updateView(VIEW_MODES.submit) || (isFeesLoaded = false)"
+            @ok="submit()"
+          />
         </div>
-      </transition>
-
-      <div class="app__form-actions">
-        <template
-          v-if="currentInvestment.id &&
-            view.mode === VIEW_MODES.submit">
-          <button
-            v-ripple
-            type="button"
-            @click="processInvestment"
-            class="app__button-raised invest-form__submit-btn"
-            :disabled="formMixin.isDisabled || !canSubmit"
-          >
-            {{ 'invest-form.update-offer-btn' | globalize }}
-          </button>
-          <button
-            v-ripple
-            type="button"
-            @click="cancelOffer"
-            class="app__button-flat"
-            :disabled="formMixin.isDisabled || !canUpdateOffer"
-          >
-            {{ 'invest-form.cancel-offer-btn' | globalize }}
-          </button>
-        </template>
-        <template v-else>
-          <button
-            v-ripple
-            v-if="view.mode === VIEW_MODES.submit"
-            click="submit"
-            class="app__button-raised"
-            :disabled="formMixin.isDisabled || !canSubmit"
-            form="invest-form">
-            {{ 'invest-form.continue-btn' | globalize }}
-          </button>
-        </template>
-
-        <form-confirmation
-          v-if="view.mode === VIEW_MODES.confirm"
-          :message="'invest-form.recheck-form-msg' | globalize"
-          :ok-button="'invest-form.invest-btn' | globalize"
-          :is-pending="isSubmitting"
-          @cancel="updateView(VIEW_MODES.submit)"
-          @ok="submit()"
-        />
-      </div>
+      </form>
     </template>
 
     <template v-else-if="isLoadingFailed && isAllowedAccountType">
@@ -225,11 +192,14 @@
 </template>
 
 <script>
-import FormMixin from '@/vue/mixins/form.mixin'
 import VueMarkdown from 'vue-markdown'
 import NoDataMessage from '@/vue/common/NoDataMessage'
 import MessageBox from '@/vue/common/MessageBox'
 import InvestFormSkeletonLoader from './InvestFormSkeletonLoader'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer'
+
+import FormMixin from '@/vue/mixins/form.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
 
 import config from '@/config'
 
@@ -240,7 +210,6 @@ import { api } from '@/api'
 import { base, FEE_TYPES } from '@tokend/js-sdk'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { required, amountRange } from '@validators'
 
@@ -262,6 +231,7 @@ const VIEW_MODES = {
 const OFFER_CREATE_ID = '0'
 const CANCEL_OFFER_FEE = '0'
 const DEFAULT_QUOTE_PRICE = '1'
+const INGEST_TIMEOUT_MS = 5000
 
 export default {
   name: 'invest-form',
@@ -270,8 +240,9 @@ export default {
     NoDataMessage,
     MessageBox,
     InvestFormSkeletonLoader,
+    FeesRenderer,
   },
-  mixins: [FormMixin],
+  mixins: [FormMixin, FeesMixin],
 
   props: {
     sale: { type: SaleRecord, required: true },
@@ -309,7 +280,10 @@ export default {
         asset: { required },
         amount: {
           required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.availableAmount.value),
+          amountRange: amountRange(
+            this.MIN_AMOUNT,
+            this.availableBalance.value
+          ),
           noMoreThanSaleCap: _ => !this.isCapExceeded,
         },
       },
@@ -327,6 +301,7 @@ export default {
       isAccountUsAccredited: vuexTypes.isAccountUsAccredited,
       isAccountUsVerified: vuexTypes.isAccountUsVerified,
       balances: vuexTypes.accountBalances,
+      assets: vuexTypes.assets,
     }),
 
     convertedAmount () {
@@ -342,7 +317,7 @@ export default {
 
       this.sale.quoteAssets.forEach(quote => {
         const balance = this.balances.find(balanceItem => {
-          return balanceItem.asset === quote.asset.id
+          return balanceItem.asset.code === quote.asset.id
         })
 
         if (balance) {
@@ -354,17 +329,30 @@ export default {
     },
 
     quoteAssetListValues () {
-      return this.quoteAssetBalances.map(balance => balance.assetDetails)
+      return this.quoteAssetBalances.map(balance => balance.asset)
     },
 
-    availableAmount () {
+    // Available balance is (currentBalance + currentOffer + currentOfferFee),
+    // 'cause when user updates his offer, it's canceling firstly, so
+    // the old offer amount and fees come back to the user's balance, and
+    // he can spend them again.
+    availableBalance () {
       const quoteBalance = this.quoteAssetBalances
-        .find(balance => balance.asset === this.form.asset.code)
+        .find(balance => balance.asset.code === this.form.asset.code)
 
-      const availableBalance = this.currentInvestment.quoteAmount
-        ? Number(quoteBalance.balance) +
-        Number(this.currentInvestment.quoteAmount)
-        : quoteBalance.balance
+      let availableBalance
+      if (this.currentInvestment.quoteAmount) {
+        const convertedAmount = MathUtil.add(
+          this.currentInvestment.quoteAmount,
+          this.currentInvestment.fee.calculatedPercent
+        )
+        availableBalance = MathUtil.add(
+          convertedAmount,
+          quoteBalance.balance,
+        )
+      } else {
+        availableBalance = quoteBalance.balance
+      }
 
       return {
         value: availableBalance,
@@ -414,8 +402,10 @@ export default {
     },
 
     totalAmount () {
-      const fees = MathUtil
-        .add(this.fees.fixed, this.fees.percent)
+      const fees = MathUtil.add(
+        this.fees.totalFee.fixed,
+        this.fees.totalFee.calculatedPercent
+      )
       return MathUtil.add(fees, this.form.amount)
     },
 
@@ -452,7 +442,9 @@ export default {
 
   async created () {
     try {
-      await this.loadSaleBaseAsset()
+      await this.loadAssets()
+      this.saleBaseAsset = this.assets
+        .find(item => item.code === this.sale.baseAsset)
       await this.loadBalances()
       if (this.quoteAssetListValues.length) {
         this.form.asset = this.quoteAssetListValues[0]
@@ -470,14 +462,8 @@ export default {
   methods: {
     ...mapActions({
       loadBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+      loadAssets: vuexTypes.LOAD_ASSETS,
     }),
-
-    async loadSaleBaseAsset () {
-      const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await api.get(endpoint)
-
-      this.saleBaseAsset = new AssetRecord(data)
-    },
 
     async loadCurrentInvestment () {
       const { data: offers } = await api.getWithSignature('/v3/offers', {
@@ -514,19 +500,20 @@ export default {
 
     async submit () {
       if (!this.isFormValid()) return
-      this.updateView(VIEW_MODES.submit)
       this.disableForm()
       this.isSubmitting = true
 
       try {
         const baseBalance = this.balances
-          .find(balance => balance.asset === this.sale.baseAsset)
+          .find(balance => balance.asset.code === this.sale.baseAsset)
         if (!baseBalance) {
           await this.createBalance(this.sale.baseAsset)
         }
 
         const operations = await this.getOfferOperations()
         await api.postOperations(...operations)
+        // eslint-disable-next-line
+        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
         await this.loadBalances()
 
         Bus.success({
@@ -541,6 +528,7 @@ export default {
       }
       this.isSubmitting = false
       this.enableForm()
+      this.updateView(VIEW_MODES.submit)
       this.hideConfirmation()
     },
 
@@ -556,8 +544,6 @@ export default {
     },
 
     async getOfferOperations () {
-      const fee = await this.getOfferFee()
-
       let operations = []
 
       if (this.currentInvestment.id) {
@@ -570,34 +556,23 @@ export default {
       }
       operations.push(
         base.ManageOfferBuilder.manageOffer(
-          this.getOfferOpts(OFFER_CREATE_ID, fee.calculatedPercent)
+          this.getOfferOpts(
+            OFFER_CREATE_ID,
+            this.fees.totalFee.calculatedPercent
+          )
         ),
       )
 
       return operations
     },
 
-    async getOfferFee () {
-      const baseEndpoint = `/v3/accounts/${this.accountId}/calculated_fees`
-      const params = [
-        `asset=${this.form.asset.code}`,
-        `fee_type=${FEE_TYPES.investFee}`,
-        `amount=${this.form.amount}`,
-      ]
-
-      const endpoint = `${baseEndpoint}?${params.join('&')}`
-      const { data: fee } = await api.get(endpoint)
-
-      return fee
-    },
-
     getOfferOpts (id, offerFee) {
       return {
         offerID: id,
         baseBalance: this.balances
-          .find(balance => balance.asset === this.sale.baseAsset).id,
+          .find(balance => balance.asset.code === this.sale.baseAsset).id,
         quoteBalance: this.balances
-          .find(balance => balance.asset === this.form.asset.code).id,
+          .find(balance => balance.asset.code === this.form.asset.code).id,
         isBuy: true,
         amount: MathUtil.divide(
           this.form.amount,
@@ -624,6 +599,8 @@ export default {
           )
         )
         await api.postOperations(operation)
+        // eslint-disable-next-line
+        await new Promise(resolve => setTimeout(resolve, INGEST_TIMEOUT_MS))
         await this.loadBalances()
 
         Bus.success('invest-form.offer-canceled-msg')
@@ -638,9 +615,13 @@ export default {
       if (!await this.isFormValid()) return
       this.disableForm()
       try {
-        const fee = await this.getOfferFee()
-        this.fees.fixed = fee.fixed
-        this.fees.percent = fee.calculatedPercent
+        this.fees = await this.calculateFees({
+          assetCode: this.form.asset.code,
+          amount: this.form.amount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.investFee,
+        })
+
         this.isFeesLoaded = true
         this.updateView(VIEW_MODES.confirm)
       } catch (error) {
@@ -736,6 +717,17 @@ export default {
 
 .invest-form__fee-type {
   color: $col-details-label;
+}
+
+.invest-form__total-amount {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.invest-form__total-amount-text {
+  font-size: 1.6rem;
+  font-weight: 700;
 }
 
 .invest-form__no-fee-msg {

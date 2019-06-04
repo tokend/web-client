@@ -112,14 +112,14 @@ export default {
   }),
 
   computed: {
+    ...mapGetters({
+      assets: vuexTypes.balancesAssets,
+      accountId: vuexTypes.accountId,
+    }),
     ...mapGetters('balance-explorer', {
-      assets: types.assets,
       kycRequiredAssetType: types.kycRequiredAssetType,
       securityAssetType: types.securityAssetType,
     }),
-    ...mapGetters([
-      vuexTypes.accountId,
-    ]),
   },
 
   async created () {
@@ -127,8 +127,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
+    }),
     ...mapActions('balance-explorer', {
-      loadAccountBalances: types.LOAD_ACCOUNT_BALANCES,
       loadKycRequiredAssetType: types.LOAD_KYC_REQUIRED_ASSET_TYPE,
       loadSecurityAssetType: types.LOAD_SECURITY_ASSET_TYPE,
     }),

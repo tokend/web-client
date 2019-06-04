@@ -86,8 +86,8 @@ export default {
   },
 
   async created () {
-    await this.loadAssetTypes()
     this.initFirstPageLoader()
+    await this.loadAssetTypes()
   },
 
   methods: {

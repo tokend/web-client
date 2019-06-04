@@ -61,4 +61,8 @@ export class AssetRecord {
   get isDepositable () {
     return !!this.externalSystemType
   }
+
+  get isTransferable () {
+    return !!(this.policy & ASSET_POLICIES.transferable)
+  }
 }

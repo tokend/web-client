@@ -39,13 +39,14 @@ import SaleOverviewSkeletonLoader from './SaleOverviewSkeletonLoader'
 
 import SaleOverviewDetails from './SaleOverviewDetails'
 
-import { api } from '@/api'
 import config from '@/config'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
+
+import { mapGetters, mapActions } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'sale-overview',
@@ -60,23 +61,31 @@ export default {
   },
 
   data: _ => ({
-    asset: {},
     config,
     isLoaded: false,
     isLoadingFailed: false,
   }),
-
+  computed: {
+    ...mapGetters([
+      vuexTypes.assets,
+    ]),
+    asset () {
+      return this.assets.find(item => item.code === this.sale.baseAsset) || {}
+    },
+  },
   async created () {
     try {
-      const endpoint = `/v3/assets/${this.sale.baseAsset}`
-      const { data } = await api.get(endpoint)
-
-      this.asset = new AssetRecord(data)
+      await this.loadAssets()
       this.isLoaded = true
     } catch (e) {
       this.isLoadingFailed = true
       ErrorHandler.processWithoutFeedback(e)
     }
+  },
+  methods: {
+    ...mapActions({
+      loadAssets: vuexTypes.LOAD_ASSETS,
+    }),
   },
 }
 </script>

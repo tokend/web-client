@@ -63,7 +63,7 @@
             </td>
           </tr>
         </tbody>
-        <empty-list-placeholder
+        <empty-tbody-placeholder
           v-else-if="!requests.length && isLoaded"
           :colspan="6"
           :message="'create-sale-requests.no-request-history-desc' | globalize"
@@ -80,8 +80,8 @@
 
 <script>
 import RequestStateViewer from '../../shared/components/request-state-viewer'
-import EmptyListPlaceholder from '@/vue/common/EmptyListPlaceholder'
 import SkeletonLoaderTableBody from '@/vue/common/skeleton-loader/SkeletonLoaderTableBody'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 const EVENTS = {
   select: 'select',
@@ -91,8 +91,8 @@ export default {
   name: 'requests-table',
   components: {
     RequestStateViewer,
-    EmptyListPlaceholder,
     SkeletonLoaderTableBody,
+    EmptyTbodyPlaceholder,
   },
 
   props: {

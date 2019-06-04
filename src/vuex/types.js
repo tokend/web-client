@@ -30,6 +30,10 @@ const mutations = {
   SET_KYC_RELATED_REQUEST: 'SET_KYC_RELATED_REQUEST',
   SET_KYC_LATEST_DATA: 'SET_KYC_LATEST_DATA',
   SET_ACCOUNT_ROLE_RESETED: 'SET_ACCOUNT_ROLE_RESETED',
+
+  // assets
+  SET_ASSETS: 'SET_ASSETS',
+  UPDATE_ASSETS: 'UPDATE_ASSETS',
 }
 
 const actions = {
@@ -37,7 +41,6 @@ const actions = {
   LOAD_KV_ENTRIES: 'LOAD_KV_ENTRIES',
   LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
   LOAD_KV_KYC_REQUIRED: 'LOAD_KV_KYC_REQUIRED',
-  LOAD_DEFAULT_QUOTE_ASSET: 'LOAD_DEFAULT_QUOTE_ASSET',
   LOAD_KV_ASSET_TYPE_SECURITY: 'LOAD_KV_ASSET_TYPE_SECURITY',
 
   // account
@@ -56,6 +59,9 @@ const actions = {
   LOAD_KYC_LATEST_REQUEST: 'LOAD_KYC_LATEST_REQUEST',
   LOAD_KYC_RELATED_REQUEST: 'LOAD_KYC_RELATED_REQUEST',
   LOAD_KYC_DATA: 'LOAD_KYC_DATA',
+
+  // assets
+  LOAD_ASSETS: 'LOAD_ASSETS',
 }
 
 const getters = {
@@ -77,6 +83,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
 
@@ -115,6 +122,17 @@ const getters = {
   kycLatestData: 'kycLatestData',
   kycAvatarKey: 'kycAvatarKey',
   isAccountRoleReseted: 'isAccountRoleReseted',
+
+  // assets
+  assets: 'assets',
+  assetByCode: 'assetByCode',
+  balancesAssets: 'balancesAssets',
+  fiatAssets: 'fiatAssets',
+  depositableAssets: 'depositableAssets',
+  coinpaymentsAssets: 'coinpaymentsAssets',
+  transferableBalancesAssets: 'transferableBalancesAssets',
+  withdrawableBalancesAssets: 'withdrawableBalancesAssets',
+  statsQuoteAsset: 'statsQuoteAsset',
 }
 
 export const vuexTypes = {

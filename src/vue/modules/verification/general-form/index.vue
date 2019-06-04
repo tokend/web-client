@@ -50,8 +50,8 @@
           :disabled="formMixin.isDisabled"
         >
           {{ (Number(requestId) > 0
-            ? 'verification-form.create-btn'
-            : 'verification-form.update-btn'
+            ? 'verification-form.update-btn'
+            : 'verification-form.create-btn'
           ) | globalize }}
         </button>
       </div>
@@ -170,7 +170,7 @@ export default {
     async submit () {
       this.disableForm()
       try {
-        await this.uploadDocuments(this.accountId)
+        await this.uploadDocuments()
         const blobId = await this.createBlob(this.accountId)
         await this.createRequest(blobId)
         // we duplicating enabling form in try/catch blocks to prevent race

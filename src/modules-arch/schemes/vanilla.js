@@ -226,6 +226,7 @@ export default {
                 isUserSales: true,
               },
             },
+            isCorporateOnly: true,
           }),
           new CreateSaleFormModule({
             isCorporateOnly: true,
@@ -251,11 +252,7 @@ export default {
               props: true,
             },
             submodules: [
-              new SaleStateWidgetModule({
-                submodules: [
-                  new DashboardChartPseudoModule(),
-                ],
-              }),
+              new SaleStateWidgetModule(),
             ],
           }),
         ],

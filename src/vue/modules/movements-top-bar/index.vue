@@ -22,11 +22,15 @@
         slot="extra"
       >
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule) && asset.isWithdrawable">
+        <template v-if="getModule().canRenderSubmodule(WithdrawalDrawerPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isWithdrawalDrawerShown = true"
+            :disabled="!asset.isWithdrawable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isWithdrawable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-download movements-top-bar__btn-icon" />
             {{ 'op-pages.withdraw' | globalize }}
@@ -34,11 +38,15 @@
         </template>
 
         <!-- eslint-disable-next-line max-len -->
-        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule) && asset.isDepositable">
+        <template v-if="getModule().canRenderSubmodule(DepositFormPseudoModule)">
           <button
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isDepositDrawerShown = true"
+            :disabled="!asset.isDepositable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isDepositable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i class="mdi mdi-upload movements-top-bar__btn-icon" />
             {{ 'op-pages.deposit' | globalize }}
@@ -51,6 +59,10 @@
             v-ripple
             class="app__button-raised movements-top-bar__actions-btn"
             @click="isTransferDrawerShown = true"
+            :disabled="!asset.isTransferable"
+            :title="getMessageIdForPolicy(ASSET_POLICIES_STR.isTransferable) |
+              globalize({ asset: asset.code })
+            "
           >
             <i
               class="
@@ -98,7 +110,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
@@ -115,6 +127,12 @@ import { TransferDrawerPseudoModule } from '@/modules-arch/pseudo-modules/transf
 const EVENTS = {
   assetUpdated: 'asset-updated',
   movementsUpdateRequired: 'movements-update-required',
+}
+
+const ASSET_POLICIES_STR = {
+  isDepositable: 'isDepositable',
+  isWithdrawable: 'isWithdrawable',
+  isTransferable: 'isTransferable',
 }
 
 export default {
@@ -138,11 +156,11 @@ export default {
     TransferDrawerPseudoModule,
     asset: {},
     EVENTS,
+    ASSET_POLICIES_STR,
   }),
   computed: {
-    ...mapGetters('movements-top-bar', {
-      balances: types.balances,
-      assets: types.assets,
+    ...mapGetters({
+      assets: vuexTypes.balancesAssets,
     }),
   },
   watch: {
@@ -157,20 +175,31 @@ export default {
     },
   },
   async created () {
-    await this.loadBalances()
-    await this.loadAssets()
+    await this.loadAccountBalancesDetails()
     this.setDefaultAsset()
     this.isInitialized = true
   },
   methods: {
-    ...mapActions('movements-top-bar', {
-      loadBalances: types.LOAD_BALANCES,
-      loadAssets: types.LOAD_ASSETS,
+    ...mapActions({
+      loadAccountBalancesDetails: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
     setDefaultAsset () {
       this.asset = this.assets
         .find(item => item.code === this.$route.query.asset) ||
         this.assets[0]
+    },
+    getMessageIdForPolicy (policy) {
+      let messageId = ''
+      if (!this.asset[policy]) {
+        if (policy === ASSET_POLICIES_STR.isDepositable) {
+          messageId = 'op-pages.not-depositable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isWithdrawable) {
+          messageId = 'op-pages.not-withdrawable-msg'
+        } else if (policy === ASSET_POLICIES_STR.isTransferable) {
+          messageId = 'op-pages.not-transferable-msg'
+        }
+      }
+      return messageId
     },
   },
 }
