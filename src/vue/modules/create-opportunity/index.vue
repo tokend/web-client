@@ -417,7 +417,7 @@ import OpportunityCard from './components/opportunity-card'
 
 import moment from 'moment'
 
-import { DocumentUploader } from '@/js/helpers/document-uploader'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 import { DOCUMENT_TYPES } from '@/js/const/document-types.const'
 
 import {
@@ -434,6 +434,7 @@ import { DateUtil } from '@/js/utils'
 import { mapActions, mapGetters } from 'vuex'
 import { MathUtil } from '@/js/utils/math.util'
 import { types } from './store/types'
+import { vuexTypes } from '@/vuex'
 import {
   required,
   amountRange,
@@ -643,11 +644,13 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      baseAssets: vuexTypes.balancesAssets,
+      assets: vuexTypes.assets,
+      statsQuoteAsset: vuexTypes.statsQuoteAsset,
+    }),
     ...mapGetters('create-opportunity', {
-      assets: types.assets,
       pairs: types.pairs,
-      baseAssets: types.baseAssets,
-      statsQuoteAsset: types.statsQuoteAsset,
     }),
     assetTypes () {
       return [
@@ -711,7 +714,10 @@ export default {
       this.disableForm()
       this.isSubmitting = true
       try {
-        await this.uploadDocuments()
+        await uploadDocuments([
+          this.form.shortBlurb.saleLogo,
+          this.form.information.terms,
+        ])
         const blobId = await this.getBlobId({
           type: BLOB_TYPES.saleOverview,
           attributes: {
@@ -812,19 +818,6 @@ export default {
         operation.creatorDetails.logoUrl = ASSET_SUBTYPE_IMG_URL.shareLogo
       }
       return base.ManageAssetBuilder.assetCreationRequest(operation)
-    },
-    async uploadDocuments () {
-      const documents = [
-        this.form.shortBlurb.saleLogo,
-        this.form.information.terms,
-      ]
-      for (let document of documents) {
-        if (document && !document.key) {
-          document = await DocumentUploader.uploadSingleDocument(
-            document, this.accountId
-          )
-        }
-      }
     },
     formatSaleQuoteAssets () {
       if (this.isBond) {

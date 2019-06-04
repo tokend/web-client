@@ -1,6 +1,5 @@
 import { vuexTypes } from '@/vuex/types'
 import { api } from '@/api'
-import { ASSET_POLICIES } from '@tokend/js-sdk'
 
 const KEY_VALUE_ENTRY_KEYS = Object.freeze({
   general: 'account_role:general',
@@ -104,15 +103,6 @@ export const actions = {
     const { data } = await api.get('/v3/key_values/asset_type:security')
     commit(vuexTypes.SET_KV_ASSET_TYPE_SECURITY, data.value.u32)
   },
-  async [vuexTypes.LOAD_DEFAULT_QUOTE_ASSET] ({ commit }) {
-    const { data } = await api.get('/v3/assets', {
-      filter: {
-        policy: ASSET_POLICIES.statsQuoteAsset,
-      },
-    })
-
-    commit(vuexTypes.SET_DEFAULT_QUOTE_ASSET, data[0].id)
-  },
 }
 
 export const getters = {
@@ -125,7 +115,8 @@ export const getters = {
   [vuexTypes.kvEntryBlockedRoleId]: state => state.defaultRoleIds.blocked,
   [vuexTypes.kvAssetTypeKycRequired]: state => state.kvAssetTypeKycRequired,
   [vuexTypes.kvAssetTypeSecurity]: state => state.kvAssetTypeSecurity,
-  [vuexTypes.defaultQuoteAsset]: state => state.defaultQuoteAsset,
+  [vuexTypes.defaultQuoteAsset]: (a, getters, b, rootGetters) =>
+    rootGetters[vuexTypes.statsQuoteAsset].code,
 }
 
 export default {

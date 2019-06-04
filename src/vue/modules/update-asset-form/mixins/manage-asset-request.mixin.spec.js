@@ -1,5 +1,4 @@
 import ManageAssetRequestMixin from './manage-asset-request.mixin'
-import UploadDocumentsMixin from './upload-documents.mixin'
 
 import { Wallet, base } from '@tokend/js-sdk'
 import { REQUEST_STATES } from '@/js/const/request-states.const'
@@ -7,6 +6,7 @@ import { REQUEST_STATES } from '@/js/const/request-states.const'
 import { mount, createLocalVue } from '@vue/test-utils'
 
 import { api, useWallet } from '@/api'
+import * as DocumentUploader from '@/js/helpers/upload-documents'
 
 import { UpdateAssetRequest } from '../wrappers/update-asset-request'
 import { DocumentContainer } from '@/js/helpers/DocumentContainer'
@@ -36,7 +36,7 @@ describe('Manage asset request mixin', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox()
     wrapper = mount(Component, {
-      mixins: [ManageAssetRequestMixin, UploadDocumentsMixin],
+      mixins: [ManageAssetRequestMixin],
       localVue,
     })
   })
@@ -201,17 +201,14 @@ describe('Manage asset request mixin', () => {
             advancedStepForm: { terms },
           })
 
-          sandbox.stub(wrapper.vm, 'uploadDocuments').resolves()
+          sandbox.stub(DocumentUploader, 'uploadDocuments').resolves()
           sandbox.stub(base.ManageAssetBuilder, 'assetUpdateRequest')
           sandbox.stub(api, 'postOperations').resolves()
 
           await wrapper.vm.submitUpdateAssetRequest()
 
-          expect(wrapper.vm.uploadDocuments)
-            .to.have.been.calledOnceWithExactly([
-              logo,
-              terms,
-            ])
+          expect(DocumentUploader.uploadDocuments)
+            .to.have.been.calledOnceWithExactly([logo, terms])
           expect(base.ManageAssetBuilder.assetUpdateRequest)
             .to.have.been.calledOnce
           expect(api.postOperations)

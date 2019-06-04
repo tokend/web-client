@@ -7,18 +7,13 @@
           novalidate
         >
           <div class="app__form-row">
-            <input-field
-              white-autofill
+            <amount-input-field
+              v-model="form.amount"
               class="app__form-field"
-              v-model.trim="form.amount"
               name="coinpayments-amount"
-              @blur="touchField('form.amount')"
-              :error-message="getFieldErrorMessage(
-                'form.amount',
-                { from: MIN_AMOUNT, to: MAX_AMOUNT }
-              )"
+              validation-type="incoming"
               :label="'coinpayments-deposit.amount-lbl' | globalize"
-              :monospaced="true"
+              :asset="asset"
               :disabled="formMixin.isDisabled"
             />
           </div>
@@ -67,10 +62,6 @@ import FormMixin from '@/vue/mixins/form.mixin'
 
 import { api } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
-import {
-  required,
-  amountRange,
-} from '@validators'
 
 const EVENTS = {
   submitted: 'submitted',
@@ -97,16 +88,6 @@ export default {
       },
       isFailed: false,
       depositDetails: null,
-    }
-  },
-  validations () {
-    return {
-      form: {
-        amount: {
-          required,
-          amountRange: amountRange(this.MIN_AMOUNT, this.MAX_AMOUNT),
-        },
-      },
     }
   },
   methods: {
