@@ -23,6 +23,7 @@ for further information about branching and tagging conventions.
 - Rotation of status message close icon on hovering
 - `assets.module`
 - `AmountInputField`
+- Cap asset field to the create sale form
 
 #### Changed
 - Now loading account converted balances in
@@ -38,6 +39,10 @@ for further information about branching and tagging conventions.
 - Now getting document URL using documentsManager
 - Now using light background for status messages with the type
   "success" of "info"
+- Now using cap asset as default quote asset for create sale request
+- Now creating quote asset balances on create sale form if they don't exist
+- Now displaying accepted investment assets as base assets of pairs where
+  cap asset is quote asset on create sale form
 
 #### Removed
 - Cursor pointer on disabled select
