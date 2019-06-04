@@ -1002,19 +1002,7 @@
       "insufficient-sales": "Insufficient balance",
       "recipient-lbl": "Recipient email or account ID",
       "subject-lbl": "Add note (under {{length}} symbols)",
-      "sender-fees": "Sender fees",
-      "sender-fixed-fee": "sender’s fixed fee",
-      "sender-percent-fee": "sender’s percent fee",
-      "recipient-fixed-fee": "recipient’s fixed fee",
-      "recipient-percent-fee": "recipient’s percent fee",
-      "source-no-fees": "Sender won’t pay any fees for this transaction.",
-      "recipient-fees": "Recipient fees",
-      "recipient-no-fees": "Recipient won’t pay any fees for this transaction.",
-      "total": "Total",
-      "total-sender-fee": "Total sender fee",
-      "total-receiver-fee": "Total receiver fee",
       "total-amount": "Total amount",
-      "pay-fees-for-recipient": "Pay fees for recipient",
       "continue-btn": "Continue",
       "recheck-form": "Please recheck the form before proceeding",
       "submit-btn": "Send",
@@ -1028,13 +1016,14 @@
       "upload-pre-issuance": "Upload pre-issuance"
     },
     "issuance-form": {
-      "loading-msg": "Loading your assets…",
-      "load-failed-msg": "There was an error while loading your assets. Please, try again later",
+      "loading-msg": "Loading…",
+      "load-failed-msg": "There was an error while loading. Please, try again later",
       "asset-lbl": "Asset",
       "amount-lbl": "Amount",
       "reference-lbl": "Reference",
       "available-for-issuance-hint": "Available for issuance: {{amount, money}}",
       "receiver-lbl": "Email or account ID",
+      "amount-to-receive-msg": "Amount to receive",
       "issue-btn": "Issue",
       "no-owned-assets-title": "No owned assets yet",
       "no-owned-assets-msg": "Please create an asset to make an issuance",
@@ -1445,7 +1434,8 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-created-msg": "Your order was successfully created"
+      "order-created-msg": "Your order was successfully created",
+      "loading-msg": "Loading…"
     },
     "submit-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1455,7 +1445,8 @@
       "asset-to-sell-lbl": "Asset to sell",
       "buy-btn": "Buy",
       "sell-btn": "Sell",
-      "order-submitted-msg": "Your order was successfully submitted"
+      "order-submitted-msg": "Your order was successfully submitted",
+      "loading-msg": "Loading…"
     },
     "your-trade-offer-form": {
       "price-lbl": "Price per 1 {{baseAsset}} (in {{quoteAsset}})",
@@ -1466,8 +1457,8 @@
       "update-order-btn": "Update order",
       "cancel-order-btn": "Cancel order",
       "order-updated-msg": "Your order was successfully updated",
-      "order-canceled-msg": "Your order was successfully cancelled"
-
+      "order-canceled-msg": "Your order was successfully cancelled",
+      "loading-msg": "Loading…"
     },
     "trade-exchange": {
       "offers-section-title": "Open orders"
@@ -1692,12 +1683,7 @@
       "asset": "Asset",
       "balance": "Balance: {{balance, money}}",
       "amount": "Amount ({{asset}})",
-      "network-fee-hint": "External network fee",
-      "network-fee-unknown": "Unknown",
-      "fixed-fee": "Fixed fee",
-      "percent-fee": "Percent fee",
       "destination-address": "Destination {{asset}} address",
-      "total-amount-account": "Total fee",
       "withdraw-success": "Withdrawal request successfully created",
       "failed-load-fees": "Failed to load fees. Try again later",
       "no-assets-heading": "Ops!",
@@ -1705,10 +1691,24 @@
       "discover-assets-btn": "Discover assets",
       "can-not-load-assets": "There was an error while loading assets. Please try again later",
       "loading-msg": "Loading…",
-      "fee-loading-msg": "Loading…",
       "reviewer": "Reviewer:",
       "comment": "Comment",
       "withdraw-btn": "Withdraw"
+    },
+    "fees-renderer": {
+      "network-fee-msg": "External network fee",
+      "network-fee-unknown-msg": "Unknown",
+      "fixed-fee-msg": "Fixed fee",
+      "calculated-percent-fee-msg": "Calculated percent fee",
+      "sender-fee-msg": "Sender fee",
+      "recipient-fee-msg": "Recipient fee",
+      "order-fee-msg": "Order fee",
+      "withdrawal-fee-msg": "Withdrawal fee",
+      "invest-fee-msg": "Invest fee",
+      "issuance-fee-msg": "Issuance fee",
+      "unknown-fee-msg": "Unknown fee",
+      "pay-for-recipient-lbl": "Pay fees for recipient",
+      "view-fees-link": "View all fees"
     },
     "deposit-form": {
       "deposit": "Deposit",
