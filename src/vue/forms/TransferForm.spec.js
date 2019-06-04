@@ -6,20 +6,19 @@ import Vuelidate from 'vuelidate'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { MockHelper } from '@/test'
-import { globalize } from '@/vue/filters/globalize'
-import accountModule from '@/vuex/account.module'
-import { ErrorHandler } from '@/js/helpers/error-handler'
+
 import { vuexTypes } from '@/vuex'
-import {
-  errors,
-  base,
-  PAYMENT_FEE_SUBTYPES,
-  ASSET_POLICIES,
-} from '@tokend/js-sdk'
-import { Bus } from '@/js/helpers/event-bus'
-import { TestHelper } from '@/test/test-helper'
-import { AssetRecord } from '@/js/records/entities/asset.record'
+import accountModule from '@/vuex/account.module'
+
 import { api } from '@/api'
+import { errors, base, ASSET_POLICIES } from '@tokend/js-sdk'
+
+import { ErrorHandler } from '@/js/helpers/error-handler'
+import { Bus } from '@/js/helpers/event-bus'
+
+import { TestHelper } from '@/test/test-helper'
+
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 // HACK: https://github.com/vuejs/vue-test-utils/issues/532, waiting for
 // Vue 2.6 so everything get fixed
@@ -28,7 +27,6 @@ Vue.config.silent = true
 const localVue = createLocalVue()
 localVue.use(Vuelidate)
 localVue.use(Vuex)
-localVue.filter('globalize', globalize)
 
 describe('TransferForm component', () => {
   let mockHelper
@@ -83,8 +81,6 @@ describe('TransferForm component', () => {
         }),
       },
     ]
-    sinon.stub(accountModule.getters, vuexTypes.accountBalances)
-      .returns(mockedAccountBalances)
     sinon.stub(accountModule.actions, vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
       .resolves(mockedAccountBalances)
 
@@ -92,49 +88,14 @@ describe('TransferForm component', () => {
       getters: accountModule.getters,
       actions: accountModule.actions,
     })
-    wrapper = shallowMount(TransferForm, {
-      store,
-      localVue,
-    })
-  })
-
-  describe('loadPaymentFee()', () => {
-    const paymentDetails = {
-      asset: 'BTC',
-      subtype: PAYMENT_FEE_SUBTYPES.outgoing,
-      account: 'SOME_ACCOUNT_ID',
-      amount: 10,
-    }
-    let feesStub
-
-    beforeEach(() => {
-      feesStub = sinon.stub(api, 'get')
-    })
-
-    it('fetches fees', async () => {
-      const expectedResult = { someKey: 'someData' }
-      feesStub.resolves({ data: expectedResult })
-
-      const result = await wrapper.vm.loadPaymentFee(paymentDetails)
-
-      expect(feesStub.calledOnce).to.be.true
-      expect(result).to.deep.equal(expectedResult)
-    })
-
-    it('handle errors', async () => {
-      feesStub.rejects(TestHelper.getError(errors.NotFoundError))
-      sinon.stub(ErrorHandler, 'process')
-
-      await wrapper.vm.loadPaymentFee(paymentDetails)
-
-      expect(feesStub.calledOnce).to.be.true
-      expect(ErrorHandler.process.calledOnce).to.be.true
-    })
+    wrapper = shallowMount(TransferForm, { store, localVue })
   })
 
   describe('getCounterparty()', () => {
     beforeEach(() => {
-      sinon.stub(wrapper.vm, 'getAccountIdByEmail').resolves(mockHelper.getDefaultAccountId)
+      sinon
+        .stub(wrapper.vm, 'getAccountIdByEmail')
+        .resolves(mockHelper.getDefaultAccountId)
     })
 
     it('check that handles email as argument', async () => {
@@ -216,20 +177,18 @@ describe('TransferForm component', () => {
   })
 
   describe('processTransfer()', () => {
-    function stubFeesWithValidResult () {
-      const expectedFees = {
-        destination: {
-          fixed: '0.000001',
-          percent: '0.01',
-          feeAsset: 'BTC',
-        },
-        source: {
-          fixed: '0.000001',
-          percent: '0.01',
-          feeAsset: 'BTC',
-        },
-      }
-      sinon.stub(wrapper.vm, 'getFees').resolves(expectedFees)
+    const expectedFees = {
+      destinationFee: {
+        fixed: '0.000001',
+        calculatedPercent: '0.01',
+        feeAsset: 'BTC',
+      },
+      sourceFee: {
+        fixed: '0.000001',
+        calculatedPercent: '0.01',
+        feeAsset: 'BTC',
+      },
+      type: 0,
     }
 
     beforeEach(() => {
@@ -263,31 +222,11 @@ describe('TransferForm component', () => {
       sinon.stub(ErrorHandler, 'process')
     })
 
-    it('do not try to process transfer if form is not valid', async () => {
-      stubFeesWithValidResult()
+    it('try to process transfer if the form is valid', async () => {
+      sinon.stub(wrapper.vm, 'calculateFees')
+        .resolves(expectedFees)
+      sinon.stub(wrapper.vm.isFeesLoaded)
 
-      wrapper.vm.form = {
-        asset: {},
-        amount: '',
-        recipient: '',
-        subject: '',
-        isPaidForRecipient: false,
-      }
-
-      await wrapper.vm.processTransfer()
-
-      expect(wrapper.vm.disableForm.calledOnce).to.be.false
-      expect(wrapper.vm.getCounterparty.called).to.be.false
-      expect(wrapper.vm.getFees.called).to.be.false
-      expect(wrapper.vm.updateView.called).to.be.false
-      expect(wrapper.vm.enableForm.calledOnce).to.be.false
-      expect(ErrorHandler.process.calledOnce).to.be.false
-    })
-
-    it('try to process transfer if form is valid', async () => {
-      stubFeesWithValidResult()
-
-      // make form valid to pass isFormValid()
       wrapper.vm.form = {
         asset: { code: 'BTC' },
         amount: '1',
@@ -298,16 +237,15 @@ describe('TransferForm component', () => {
 
       await wrapper.vm.processTransfer()
 
-      expect(wrapper.vm.disableForm.calledOnce).to.be.true
       expect(wrapper.vm.getCounterparty.calledOnce).to.be.true
-      expect(wrapper.vm.getFees.calledOnce).to.be.true
-      expect(wrapper.vm.updateView.calledOnce).to.be.true
-      expect(wrapper.vm.enableForm.calledOnce).to.be.true
+      expect(wrapper.vm.isFeesLoaded).equal(true)
+      expect(wrapper.vm.calculateFees.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.false
     })
 
-    it('handle errors', async () => {
-      sinon.stub(wrapper.vm, 'getFees').rejects()
+    it('calculateFees handle error', async () => {
+      sinon.stub(wrapper.vm, 'calculateFees')
+        .rejects()
 
       // make form valid to pass isFormValid()
       wrapper.vm.form = {
@@ -320,46 +258,8 @@ describe('TransferForm component', () => {
 
       await wrapper.vm.processTransfer()
 
+      expect(wrapper.vm.calculateFees.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
-    })
-  })
-
-  describe('computed properties', () => {
-    it('userTransferableAssets()', () => {
-      const expectUserTransferableAssets = [
-        mockedAccountBalances[0],
-        mockedAccountBalances[1],
-      ]
-      expect(wrapper.vm.userTransferableAssets)
-        .to.deep.equal(expectUserTransferableAssets)
-    })
-
-    it('assets()', () => {
-      const expectUserTransferableAssets = [
-        mockedAccountBalances[0],
-        mockedAccountBalances[1],
-      ]
-      wrapper = shallowMount(TransferForm, {
-        store,
-        localVue,
-        computed: {
-          userTransferableAssets () {
-            return expectUserTransferableAssets
-          },
-        },
-      })
-
-      expect(wrapper.vm.assets)
-        .to.deep.equal([
-          mockedAccountBalances[0].asset,
-          mockedAccountBalances[1].asset,
-        ])
-    })
-
-    it('balance()', () => {
-      wrapper.vm.form.asset = { code: 'USD' }
-
-      expect(wrapper.vm.balance).to.equal(mockedAccountBalances[1])
     })
   })
 
@@ -368,10 +268,9 @@ describe('TransferForm component', () => {
       sinon.stub(wrapper.vm, 'disableForm')
       sinon.stub(wrapper.vm, 'enableForm')
       sinon.stub(wrapper.vm, 'buildPaymentOperation').returns(true)
-
-      sinon.stub(api, 'postOperations')
-        .resolves()
       sinon.stub(wrapper.vm, 'rerenderForm')
+
+      sinon.stub(api, 'postOperations').resolves()
       sinon.stub(Bus, 'success')
 
       await wrapper.vm.submit()

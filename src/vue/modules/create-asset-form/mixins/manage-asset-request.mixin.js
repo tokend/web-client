@@ -1,4 +1,4 @@
-import UploadDocumentsMixin from './upload-documents.mixin'
+import { uploadDocuments } from '@/js/helpers/upload-documents'
 
 import { base } from '@tokend/js-sdk'
 
@@ -15,8 +15,6 @@ const EMPTY_DOCUMENT = {
 }
 
 export default {
-  mixins: [UploadDocumentsMixin],
-
   computed: {
     preIssuanceAssetSigner () {
       return this.advancedStepForm.isPreissuanceDisabled
@@ -65,12 +63,12 @@ export default {
       return new CreateAssetRequest(record)
     },
 
-    async submitCreateAssetRequest (accountId) {
+    async submitCreateAssetRequest () {
       const assetDocuments = [
         this.informationStepForm.logo,
         this.advancedStepForm.terms,
       ]
-      await this.uploadDocuments(assetDocuments, accountId)
+      await uploadDocuments(assetDocuments)
       const operation =
         base.ManageAssetBuilder.assetCreationRequest(this.assetRequestOpts)
       await api.postOperations(operation)
