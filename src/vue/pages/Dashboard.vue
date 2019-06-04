@@ -83,7 +83,7 @@
             {{ 'transfer-form.form-heading' | globalize }}
           </template>
           <transfer
-            @operation-submitted="updateBalancesAndList()"
+            @operation-submitted="closeDrawerAndUpdateList()"
             :asset-to-transfer="currentAsset"
           />
         </template>
@@ -191,7 +191,12 @@ export default {
       return this.$refs[REFS.movementsHistory].$children[0]
         .reloadCollectionLoader()
     },
-
+    closeDrawerAndUpdateList () {
+      this.showDrawer = false
+      setTimeout(() => {
+        this.updateBalancesAndList()
+      }, 1000)
+    },
     updateBalancesAndList () {
       return Promise.all([
         this.loadBalances(),

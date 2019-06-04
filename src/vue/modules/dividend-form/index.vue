@@ -181,7 +181,7 @@ import { api } from '@/api'
 import {
   amount,
   maxDecimalDigitsCount,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   required,
 } from '@validators'
 import { MathUtil } from '@/js/utils/math.util'
@@ -251,7 +251,7 @@ export default {
         amount: {
           required,
           amount,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
+          noMoreThanAvailableOnBalance: lessThenMax(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(

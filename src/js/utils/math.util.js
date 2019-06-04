@@ -1,4 +1,4 @@
-const BigNumber = require('bignumber.js')
+import BigNumber from 'bignumber.js'
 
 const ROUNDING_MODES = Object.freeze({
   ROUND_UP: 0,

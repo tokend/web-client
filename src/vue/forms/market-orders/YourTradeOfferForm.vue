@@ -68,25 +68,36 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
-        <readonly-field
-          :label="
-            'your-trade-offer-form.total-amount-lbl' | globalize({
-              asset: assetPair.quote
-            })
-          "
-          :value="{
-            value: quoteAmount,
-            currency: assetPair.quote,
-          } | formatMoney"
-          :error-message="getFieldErrorMessage(
-            'quoteAmount',
-            {
-              available: quoteAssetBalance,
-              from: config.MIN_AMOUNT,
-              to: config.MAX_AMOUNT,
-            }
-          )"
-        />
+        <template v-if="isFeesLoaded">
+          <readonly-field
+            :label="
+              'your-trade-offer-form.total-amount-lbl' | globalize({
+                asset: assetPair.quote
+              })
+            "
+            :value="{
+              value: quoteAmount,
+              currency: assetPair.quote,
+            } | formatMoney"
+            :error-message="getFieldErrorMessage(
+              'quoteAmount',
+              {
+                available: quoteAssetBalance,
+                from: config.MIN_AMOUNT,
+                to: config.MAX_AMOUNT,
+              }
+            )"
+          />
+
+          <fees-renderer
+            class="your-trade-offer-form__fees"
+            :fees-collection="fees"
+          />
+        </template>
+
+        <template v-else>
+          <loader message-id="your-trade-offer-form.loading-msg" />
+        </template>
       </div>
     </div>
 
@@ -106,7 +117,7 @@
           type="submit"
           @click="setUpdateSubmitMode"
           class="app__button-raised your-trade-offer-form__btn"
-          :disabled="formMixin.isDisabled"
+          :disabled="formMixin.isDisabled || !isFeesLoaded"
         >
           {{ 'your-trade-offer-form.update-order-btn' | globalize }}
         </button>
@@ -123,13 +134,22 @@
       </div>
     </template>
   </form>
+
+  <loader v-else message-id="your-trade-offer-form.loading-msg" />
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+
 import ReadonlyField from '@/vue/fields/ReadonlyField'
+import FeesRenderer from '@/vue/common/fees/FeesRenderer'
+import Loader from '@/vue/common/Loader'
 
 import FormMixin from '@/vue/mixins/form.mixin'
 import OfferManagerMixin from '@/vue/mixins/offer-manager.mixin'
+import FeesMixin from '@/vue/common/fees/fees.mixin'
+
+import { FEE_TYPES } from '@tokend/js-sdk'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
@@ -140,7 +160,7 @@ import config from '@/config'
 import {
   required,
   amountRange,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   decimal,
 } from '@validators'
 
@@ -154,12 +174,19 @@ const SUBMIT_MODES = {
   update: 'update',
 }
 
+const FEES_LOADING_DELAY_MS = 300
+
 export default {
   name: 'your-trade-offer-form',
-  components: { ReadonlyField },
+  components: {
+    ReadonlyField,
+    FeesRenderer,
+    Loader,
+  },
   mixins: [
     FormMixin,
     OfferManagerMixin,
+    FeesMixin,
   ],
 
   props: {
@@ -173,6 +200,10 @@ export default {
       price: '',
       baseAmount: '',
     },
+    fees: {},
+    feesDebouncedRequest: null,
+    isFeesLoaded: false,
+    isFeesLoadFailed: false,
     isLoaded: false,
     submitMode: '',
     isFormSubmitting: false,
@@ -191,14 +222,14 @@ export default {
           required,
           decimal,
           noMoreThanAvailableOnBalance: this.isBuy ||
-            noMoreThanAvailableOnBalance(this.baseAssetBalance),
+            lessThenMax(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
       },
 
       quoteAmount: {
         noMoreThanAvailableOnBalance: !this.isBuy ||
-          noMoreThanAvailableOnBalance(this.quoteAssetBalance),
+          lessThenMax(this.quoteAssetBalance),
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
     }
@@ -261,6 +292,7 @@ export default {
         quoteAmount: this.quoteAmount,
         price: this.form.price,
         isBuy: this.isBuy,
+        fee: this.fees.totalFee,
       }
     },
 
@@ -274,10 +306,21 @@ export default {
     },
   },
 
+  watch: {
+    'form.baseAmount' () {
+      this.tryLoadFees()
+    },
+
+    'form.price' () {
+      this.tryLoadFees()
+    },
+  },
+
   async created () {
     try {
       await this.loadBalances()
       this.populateForm()
+      await this.loadFees()
       this.isLoaded = true
     } catch (e) {
       ErrorHandler.processWithoutFeedback(e)
@@ -288,6 +331,35 @@ export default {
     populateForm () {
       this.form.baseAmount = this.offer.baseAmount
       this.form.price = this.offer.price
+    },
+
+    tryLoadFees () {
+      this.isFeesLoaded = false
+      this.isFeesLoadFailed = false
+
+      if (!this.feesDebouncedRequest) {
+        this.feesDebouncedRequest = debounce(
+          () => this.loadFees(),
+          FEES_LOADING_DELAY_MS
+        )
+      }
+      return this.feesDebouncedRequest()
+    },
+
+    async loadFees () {
+      try {
+        this.fees = await this.calculateFees({
+          assetCode: this.assetPair.quote,
+          amount: this.quoteAmount || 0,
+          senderAccountId: this.accountId,
+          type: FEE_TYPES.offerFee,
+        })
+
+        this.isFeesLoaded = true
+      } catch (e) {
+        this.isFeesLoadFailed = true
+        ErrorHandler.processWithoutFeedback(e)
+      }
     },
 
     setUpdateSubmitMode () {
@@ -335,5 +407,9 @@ export default {
 .your-trade-offer-form__btn {
   max-width: 16rem;
   width: 100%;
+}
+
+.your-trade-offer-form__fees {
+  margin-top: 1rem;
 }
 </style>

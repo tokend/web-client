@@ -201,7 +201,7 @@ import { api } from '@/api'
 import {
   required,
   bankBIC,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   maxDecimalDigitsCount,
   maxLength,
   ibanValidator,
@@ -276,7 +276,7 @@ export default {
         asset: { required },
         amount: {
           required,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
+          noMoreThanAvailableOnBalance: lessThenMax(
             this.form.asset.balance.value
           ),
           maxDecimalDigitsCount: maxDecimalDigitsCount(

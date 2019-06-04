@@ -34,6 +34,21 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <select-field
+          v-model="form.capAsset"
+          :values="baseAssets"
+          name="create-sale-base-asset"
+          key-as-value-text="nameAndCode"
+          :label="'create-sale-form.cap-asset-lbl' | globalize"
+          :error-message="!isQuoteAssetsLoaded || availableQuoteAssets.length
+            ? ''
+            : 'create-sale-form.no-investable-assets-err' | globalize"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <input-field
           white-autofill
           v-model="form.assetsToSell"
@@ -120,7 +135,7 @@
           @blur="touchField('form.softCap')"
           name="create-sale-soft-cap"
           :label="'create-sale-form.soft-cap-lbl' | globalize({
-            asset: defaultQuoteAsset
+            asset: form.capAsset.code
           })"
           :error-message="getFieldErrorMessage(
             'form.softCap',
@@ -142,7 +157,7 @@
           @blur="touchField('form.hardCap')"
           name="create-sale-hard-cap"
           :label="'create-sale-form.hard-cap-lbl' | globalize({
-            asset: defaultQuoteAsset
+            asset: form.capAsset.code
           })"
           :error-message="getFieldErrorMessage(
             'form.hardCap',
@@ -158,7 +173,7 @@
           {{
             'create-sale-form.price-for-asset-hint' | globalize({
               base: form.baseAsset.code,
-              quote: defaultQuoteAsset,
+              quote: form.capAsset.code,
               value: priceForAsset
             })
           }}
@@ -166,28 +181,33 @@
       </div>
     </div>
 
-    <div class="app__form-row">
-      {{ 'create-sale-form.accept-investments-msg' | globalize }}
-    </div>
-
     <div
-      class="app__form-row"
-      v-for="item in baseAssets"
-      :key="item.code"
+      v-if="availableQuoteAssets.length"
+      class="information-step-form__quote-assets"
     >
-      <div class="app__form-field">
-        <tick-field
-          :name="`create-sale-tick-${item.code}`"
-          v-model="form.quoteAssets"
-          :cb-value="item.code"
-        >
-          {{ item.nameAndCode }}
-        </tick-field>
-      </div>
-    </div>
+      <p class="information-step-form__quote-assets-title">
+        {{ 'create-sale-form.accept-investments-msg' | globalize }}
+      </p>
 
-    <div class="information-step-form__error-text">
-      {{ getFieldErrorMessage('form.quoteAssets') }}
+      <div
+        class="app__form-row"
+        v-for="item in availableQuoteAssets"
+        :key="item.code"
+      >
+        <div class="app__form-field">
+          <tick-field
+            :name="`create-sale-tick-${item.code}`"
+            v-model="form.quoteAssets"
+            :cb-value="item.code"
+          >
+            {{ item.nameAndCode }}
+          </tick-field>
+        </div>
+      </div>
+
+      <div class="information-step-form__error-text">
+        {{ getFieldErrorMessage('form.quoteAssets') }}
+      </div>
     </div>
 
     <div class="app__form-actions">
@@ -204,6 +224,7 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import LoadAssetPairsMixin from '../mixins/load-asset-pairs.mixin'
 
 import moment from 'moment'
 
@@ -218,7 +239,7 @@ import {
   hardCapLessThanSoftCap,
   requiredAtLeastOne,
   minDate,
-  noMoreThanAvailableForIssuance,
+  lessThenMax,
 } from '@validators'
 
 import config from '@/config'
@@ -232,18 +253,18 @@ const NAME_MAX_LENGTH = 255
 
 export default {
   name: 'information-step-form',
-  mixins: [FormMixin],
+  mixins: [FormMixin, LoadAssetPairsMixin],
   props: {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
-    defaultQuoteAsset: { type: String, required: true },
   },
 
   data: _ => ({
     form: {
       name: '',
       baseAsset: {},
+      capAsset: {},
       startTime: '',
       endTime: '',
       softCap: '',
@@ -252,6 +273,8 @@ export default {
       quoteAssets: [],
       isWhitelisted: false,
     },
+    isQuoteAssetsLoaded: false,
+    availableQuoteAssets: [],
     MIN_AMOUNT: config.MIN_AMOUNT,
     MAX_AMOUNT: config.MAX_AMOUNT,
     CODE_MAX_LENGTH,
@@ -266,6 +289,7 @@ export default {
           maxLength: maxLength(NAME_MAX_LENGTH),
         },
         baseAsset: { required },
+        capAsset: { required },
         startTime: {
           required,
         },
@@ -287,7 +311,7 @@ export default {
         },
         assetsToSell: {
           required,
-          noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
+          noMoreThanAvailableForIssuance: lessThenMax(
             this.availableForIssuance
           ),
         },
@@ -303,7 +327,7 @@ export default {
           this.form.hardCap,
           this.form.assetsToSell
         ),
-        currency: this.defaultQuoteAsset,
+        currency: this.form.capAsset.code,
       }
     },
 
@@ -318,11 +342,24 @@ export default {
     },
   },
 
+  watch: {
+    'form.capAsset.code': async function (value) {
+      if (this.isQuoteAssetsLoaded) {
+        this.isQuoteAssetsLoaded = false
+        this.form.quoteAssets = []
+      }
+
+      this.availableQuoteAssets = await this.loadBaseAssetsByQuote(value)
+      this.isQuoteAssetsLoaded = true
+    },
+  },
+
   created () {
     if (this.request) {
       this.populateForm()
     } else {
       this.form.baseAsset = this.ownedAssets[0] || {}
+      this.form.capAsset = this.baseAssets[0] || {}
     }
   },
 
@@ -332,18 +369,18 @@ export default {
     },
 
     populateForm () {
-      this.form = {
-        name: this.request.name,
-        baseAsset: this.ownedAssets
-          .find(item => item.code === this.request.baseAsset),
-        startTime: this.request.startTime,
-        endTime: this.request.endTime,
-        softCap: this.request.softCap,
-        hardCap: this.request.hardCap,
-        assetsToSell: this.request.assetsToSell,
-        quoteAssets: this.request.quoteAssets,
-        isWhitelisted: this.request.isWhitelisted,
-      }
+      this.form.name = this.request.name
+      this.form.baseAsset = this.ownedAssets
+        .find(item => item.code === this.request.baseAsset)
+      this.form.capAsset = this.baseAssets
+        .find(item => item.code === this.request.defaultQuoteAsset)
+      this.form.startTime = this.request.startTime
+      this.form.endTime = this.request.endTime
+      this.form.softCap = this.request.softCap
+      this.form.hardCap = this.request.hardCap
+      this.form.assetsToSell = this.request.assetsToSell
+      this.form.quoteAssets = this.request.quoteAssets
+      this.form.isWhitelisted = this.request.isWhitelisted
     },
 
     submit () {
@@ -371,5 +408,9 @@ export default {
 
 .information-step-form__price {
   font-size: 1.4rem;
+}
+
+.information-step-form__quote-assets {
+  margin-top: 2.4rem;
 }
 </style>
