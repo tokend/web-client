@@ -142,7 +142,7 @@ for further information about branching and tagging conventions.
 - Optimized fonts, images, SVGs
 - Now using `moment().toISOString()` value instead of `moment().toString()
 - Now performing actions with wallets & factors using relevant managers
-- Now using @tokend/js-sdk@1.7.0-rc.0
+- Moved horizon resources to "/v3" endpoints
 - .babelrc: babel target to allowed browsers
 - Now loading converted balances on the balances page
 - Moved exceeding sale cap message to vuelidate error messages
