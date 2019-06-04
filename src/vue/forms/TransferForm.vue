@@ -56,6 +56,7 @@
                 validation-type="outgoing"
                 :label="'transfer-form.amount-lbl' | globalize"
                 :asset="form.asset"
+                is-max-button-shown
               />
             </div>
           </div>
