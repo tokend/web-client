@@ -3,12 +3,14 @@ import AssetActions from './asset-actions'
 import Vuex from 'vuex'
 
 import { assetExplorerModule } from '../store/index'
-import { Asset } from '../../shared/wrappers/asset'
+import { AssetRecord } from '@/js/records/entities/asset.record'
 
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
+
+import { vuexTypes } from '@/vuex'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -21,9 +23,16 @@ describe('Asset actions', () => {
     sandbox = sinon.createSandbox()
     wrapper = shallowMount(AssetActions, {
       store: new Vuex.Store({
+        getters: {
+          [vuexTypes.assetByCode]: a => {
+            return function (a) {
+              return {}
+            }
+          },
+        },
         modules: { 'asset-explorer': assetExplorerModule },
       }),
-      propsData: { asset: new Asset({}) },
+      propsData: { asset: new AssetRecord({}) },
       localVue,
     })
   })
@@ -35,7 +44,7 @@ describe('Asset actions', () => {
   describe('method', () => {
     it('creates new balance, reloads all of them, and emit proper event if balance creation was successfull', async () => {
       wrapper.setProps({
-        asset: new Asset({ id: 'USD' }),
+        asset: new AssetRecord({ id: 'USD' }),
       })
 
       sandbox.stub(wrapper.vm, 'createBalance').resolves()

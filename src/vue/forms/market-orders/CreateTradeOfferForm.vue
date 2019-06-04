@@ -146,7 +146,7 @@ import config from '@/config'
 import {
   required,
   amountRange,
-  noMoreThanAvailableOnBalance,
+  lessThenMax,
   decimal,
 } from '@validators'
 
@@ -201,14 +201,14 @@ export default {
           required,
           decimal,
           noMoreThanAvailableOnBalance: this.isBuy ||
-            noMoreThanAvailableOnBalance(this.baseAssetBalance),
+            lessThenMax(this.baseAssetBalance),
           amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
         },
       },
 
       quoteAmount: {
         noMoreThanAvailableOnBalance: !this.isBuy ||
-          noMoreThanAvailableOnBalance(this.quoteAssetBalance),
+          lessThenMax(this.quoteAssetBalance),
         amountRange: amountRange(config.MIN_AMOUNT, config.MAX_AMOUNT),
       },
     }

@@ -209,7 +209,7 @@ import {
   hardCapLessThanSoftCap,
   requiredAtLeastOne,
   minDate,
-  noMoreThanAvailableForIssuance,
+  lessThenMax,
 } from '@validators'
 
 import config from '@/config'
@@ -228,7 +228,6 @@ export default {
     request: { type: CreateSaleRequest, default: null },
     ownedAssets: { type: Array, default: _ => [] },
     baseAssets: { type: Array, default: _ => [] },
-    defaultQuoteAsset: { type: String, required: true },
   },
 
   data: _ => ({
@@ -278,7 +277,7 @@ export default {
         },
         assetsToSell: {
           required,
-          noMoreThanAvailableForIssuance: noMoreThanAvailableForIssuance(
+          noMoreThanAvailableForIssuance: lessThenMax(
             this.availableForIssuance
           ),
         },

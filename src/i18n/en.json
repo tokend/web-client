@@ -64,7 +64,7 @@
       "field-error_password": "Password should contain minimum 6 symbols",
       "field-error_sameAsPassword": "Passwords don't match",
       "field-error_requiredAtLeastOne": "Choose at least one of the options",
-      "field-error_amount": "Amount must be a number, greater than 0",
+      "field-error_amount": "Amount must be a number, greater than {{ minValue }}",
       "field-error_maxValue": "Value should be less than {{maxValue, number}}",
       "field-error_decimal": "Allowed integer or decimal numbers only",
       "field-error_amountRange": "Amount should be in the range from {{from, money}} to {{to, money}}",
@@ -84,7 +84,9 @@
       "field-error_bankBIC": "Make sure the BIC/SWIFT code is correct",
       "field-error_softCapMoreThanHardCap": "Soft cap should be between zero and \"Hard cap\" value. Hard cap: {{hardCap}}",
       "field-error_hardCapLessThanSoftCap": "Hard cap cannot be less than \"Soft cap\" value. Soft cap: {{softCap}}",
-      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}"
+      "field-error_noMoreThanSaleCap": "Investing amount has exceeded the sale cap {{saleCap, money}}",
+      "field-error_maxForIssuance": "Max amount for issuance: {{to, money}}",
+      "field-error_minForIssuance": "Min amount for issuance: {{from, money}}"
     },
     "errors": {
       "default": "Something bad happened. Please try again later",
@@ -2016,6 +2018,10 @@
     },
     "clipboard-field": {
       "copied": "Copied"
+    },
+    "asset-select-field": {
+      "failed-loading-msg": "Assets loading failed!",
+      "no-assets-for-select": "No assets for select"
     }
   }
 }

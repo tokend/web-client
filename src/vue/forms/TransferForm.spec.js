@@ -81,8 +81,6 @@ describe('TransferForm component', () => {
         }),
       },
     ]
-    sinon.stub(accountModule.getters, vuexTypes.accountBalances)
-      .returns(mockedAccountBalances)
     sinon.stub(accountModule.actions, vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS)
       .resolves(mockedAccountBalances)
 
@@ -262,45 +260,6 @@ describe('TransferForm component', () => {
 
       expect(wrapper.vm.calculateFees.calledOnce).to.be.true
       expect(ErrorHandler.process.calledOnce).to.be.true
-    })
-  })
-
-  describe('computed properties', () => {
-    it('userTransferableAssets()', () => {
-      const expectUserTransferableAssets = [
-        mockedAccountBalances[0],
-        mockedAccountBalances[1],
-      ]
-      expect(wrapper.vm.userTransferableAssets)
-        .to.deep.equal(expectUserTransferableAssets)
-    })
-
-    it('assets()', () => {
-      const expectUserTransferableAssets = [
-        mockedAccountBalances[0],
-        mockedAccountBalances[1],
-      ]
-      wrapper = shallowMount(TransferForm, {
-        store,
-        localVue,
-        computed: {
-          userTransferableAssets () {
-            return expectUserTransferableAssets
-          },
-        },
-      })
-
-      expect(wrapper.vm.assets)
-        .to.deep.equal([
-          mockedAccountBalances[0].asset,
-          mockedAccountBalances[1].asset,
-        ])
-    })
-
-    it('balance()', () => {
-      wrapper.vm.form.asset = { code: 'USD' }
-
-      expect(wrapper.vm.balance).to.equal(mockedAccountBalances[1])
     })
   })
 

@@ -21,6 +21,8 @@ for further information about branching and tagging conventions.
 - Displaying fees on issuance form & trade forms
 - State icon to the status message
 - Rotation of status message close icon on hovering
+- `assets.module`
+- `AmountInputField`
 
 #### Changed
 - Now loading account converted balances in

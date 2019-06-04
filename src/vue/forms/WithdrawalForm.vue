@@ -1,7 +1,7 @@
 <template>
   <div class="withdrawal">
     <template v-if="isLoaded">
-      <template v-if="assets.length">
+      <template v-if="withdrawableBalancesAssets.length">
         <form
           @submit.prevent="isFormValid() && showConfirmation()"
           novalidate
@@ -11,7 +11,7 @@
               <select-field
                 name="withdrawal-asset"
                 v-model="form.asset"
-                :values="assets"
+                :values="withdrawableBalancesAssets"
                 key-as-value-text="nameAndCode"
                 :disabled="formMixin.isDisabled"
                 :label="'withdrawal-form.asset' | globalize"
@@ -38,23 +38,16 @@
           </div>
 
           <div class="app__form-row withdrawal__form-row">
-            <input-field
-              white-autofill
+            <amount-input-field
               class="app__form-field"
-              v-model.trim="form.amount"
-              type="number"
+              v-model="form.amount"
               name="withdrawal-amount"
-              @blur="touchField('form.amount')"
+              validation-type="outgoing"
               :label="'withdrawal-form.amount' | globalize({
                 asset: form.asset.code
               })"
-              :step="selectedAssetStep"
+              :asset="form.asset"
               :disabled="formMixin.isDisabled"
-              :error-message="getFieldErrorMessage('form.amount', {
-                available: form.asset.balance.value,
-                maxDecimalDigitsCount: DECIMAL_POINTS,
-                minValue: selectedAssetStep
-              })"
             />
           </div>
 
@@ -149,9 +142,7 @@ import FeesMixin from '@/vue/common/fees/fees.mixin'
 import Loader from '@/vue/common/Loader'
 import EmailGetter from '@/vue/common/EmailGetter'
 
-import { inputStepByDigitsCount } from '@/js/helpers/input-trailing-digits-count'
 import IdentityGetterMixin from '@/vue/mixins/identity-getter'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 import { FEE_TYPES, base } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex/types'
@@ -162,10 +153,7 @@ import { Bus } from '@/js/helpers/event-bus'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import {
   required,
-  noMoreThanAvailableOnBalance,
   address,
-  minValue,
-  maxDecimalDigitsCount,
 } from '@validators'
 
 const EVENTS = {
@@ -188,7 +176,6 @@ export default {
       address: '',
     },
     fees: {},
-    assets: [],
     MIN_AMOUNT: config.MIN_AMOUNT,
     feesDebouncedRequest: null,
     isFeesLoaded: false,
@@ -205,14 +192,6 @@ export default {
     return {
       form: {
         asset: { required },
-        amount: {
-          required,
-          noMoreThanAvailableOnBalance: noMoreThanAvailableOnBalance(
-            this.form.asset.balance.value
-          ),
-          maxDecimalDigitsCount: maxDecimalDigitsCount(config.DECIMAL_POINTS),
-          minValue: minValue(this.selectedAssetStep),
-        },
         address: this.isMasterAssetOwner ? addressRules : {},
       },
     }
@@ -221,15 +200,11 @@ export default {
     ...mapGetters({
       accountId: vuexTypes.accountId,
       balances: vuexTypes.accountBalances,
+      withdrawableBalancesAssets: vuexTypes.withdrawableBalancesAssets,
     }),
 
     isMasterAssetOwner () {
       return this.form.asset.owner === api.networkDetails.adminAccountId
-    },
-
-    selectedAssetStep () {
-      // eslint-disable-next-line
-      return inputStepByDigitsCount(this.form.asset.trailingDigitsCount) || config.MIN_AMOUNT
     },
   },
   watch: {
@@ -320,30 +295,16 @@ export default {
       }
     },
     async initAssetSelector () {
-      await this.loadAssets()
-      if (this.assets.length) {
-        this.form.asset = this.assets[0]
+      if (this.withdrawableBalancesAssets.length) {
+        this.form.asset = this.withdrawableBalancesAssets[0]
       }
     },
     async reinitAssetSelector () {
-      await this.loadAssets()
-      if (this.assets.length) {
-        const updatedAsset = this.assets
+      if (this.withdrawableBalancesAssets.length) {
+        const updatedAsset = this.withdrawableBalancesAssets
           .find(item => item.code === this.form.asset.code)
-        this.form.asset = updatedAsset || this.assets[0]
+        this.form.asset = updatedAsset || this.withdrawableBalancesAssets[0]
       }
-    },
-    async loadAssets () {
-      await this.loadBalances()
-      const endpoint = `/v3/accounts/${this.accountId}`
-      const { data: account } = await api.get(endpoint, {
-        include: ['balances.asset'],
-      })
-
-      this.assets = account.balances
-        .map(b => b.asset)
-        .map(item => new AssetRecord(item, this.balances))
-        .filter(item => item.isWithdrawable && item.balance.id)
     },
   },
 }
