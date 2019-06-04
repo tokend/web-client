@@ -37,8 +37,8 @@
               <email-getter :account-id="request.requestor" />
             </td>
 
-            <td :title="request.asset.code">
-              {{ request.asset.code }}
+            <td :title="request.assetCode">
+              {{ request.assetCode }}
             </td>
 
             <td :title="request.amount | formatMoney">

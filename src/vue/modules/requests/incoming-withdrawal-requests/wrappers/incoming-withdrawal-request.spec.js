@@ -18,7 +18,7 @@ describe('Incoming withdrawal request', () => {
       const result = new IncomingWithdrawalRequest(record)
 
       expect(result.amount).to.equal('10.000000')
-      expect(result.asset.code).to.equal('USD')
+      expect(result.assetCode).to.equal('USD')
       expect(result.fixedFee).to.equal('1.000000')
       expect(result.calculatedPercentFee).to.equal('3.000000')
 

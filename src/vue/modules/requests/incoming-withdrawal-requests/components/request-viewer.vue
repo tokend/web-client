@@ -1,8 +1,8 @@
 <template>
   <div class="request-viewer">
     <asset-summary-viewer
-      :asset-code="request.asset.code"
-      :asset-name="request.asset.name"
+      :asset-code="requestAsset.code"
+      :asset-name="requestAsset.name"
       :asset-logo-url="assetLogoUrl"
     />
 
@@ -33,7 +33,10 @@ import RequestActions from './request-actions'
 
 import { IncomingWithdrawalRequest } from '../wrappers/incoming-withdrawal-request'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 const EVENTS = {
   requestUpdated: 'request-updated',
@@ -57,9 +60,16 @@ export default {
   }),
 
   computed: {
+    ...mapGetters({
+      assetByCode: vuexTypes.assetByCode,
+    }),
+    requestAsset () {
+      return this.assetByCode(this.request.assetCode)
+    },
+
     assetLogoUrl () {
-      if (this.request.asset) {
-        return this.request.asset.logoUrl(config.FILE_STORAGE)
+      if (this.requestAsset) {
+        return documentsManager.getDocumentUrlByKey(this.requestAsset.logoKey)
       } else {
         return ''
       }
