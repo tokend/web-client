@@ -157,11 +157,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getAssetByCode: vuexTypes.assetByCode
+      getAssetByCode: vuexTypes.assetByCode,
     }),
     balance () {
       return this.getAssetByCode(this.asset.code).balance
-    }
+    },
   },
 }
 </script>
