@@ -173,8 +173,12 @@ export default {
     },
     imgUrl () {
       if (this.balances.length > 0 && this.currentAsset) {
-        const balance = this.balances.find(i => i.asset === this.currentAsset)
-        return balance.assetDetails.logoUrl(config.FILE_STORAGE)
+        try {
+          const balance = this.balances.find(i => i.asset === this.currentAsset)
+          return balance.assetDetails.logoUrl(config.FILE_STORAGE)
+        } catch {
+          return null
+        }
       } else {
         return null
       }

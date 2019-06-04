@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <template>
+    <template v-if="isLoaded">
       <div class="dashboard__toolbar">
         <asset-selector
           class="dashboard__asset-selector"
