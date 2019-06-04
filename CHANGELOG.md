@@ -16,6 +16,8 @@ for further information about branching and tagging conventions.
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
 - Password toggle button for input fields with type="password"
+- Fees mixin, renderer & wrappers for unified displaying fees
+- Displaying fees on issuance form & trade forms
 
 #### Changed
 - Now loading account converted balances in
