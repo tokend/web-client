@@ -41,7 +41,6 @@ const actions = {
   LOAD_KV_ENTRIES: 'LOAD_KV_ENTRIES',
   LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS: 'LOAD_KV_ENTRIES_ACCOUNT_ROLE_IDS',
   LOAD_KV_KYC_REQUIRED: 'LOAD_KV_KYC_REQUIRED',
-  LOAD_DEFAULT_QUOTE_ASSET: 'LOAD_DEFAULT_QUOTE_ASSET',
   LOAD_KV_ASSET_TYPE_SECURITY: 'LOAD_KV_ASSET_TYPE_SECURITY',
 
   // account
@@ -84,6 +83,7 @@ const getters = {
   account: 'account',
   accountId: 'accountId',
   accountBalances: 'accountBalances',
+  accountBalanceByCode: 'accountBalanceByCode',
   accountRoleId: 'accountRoleId',
   accountDepositAddresses: 'accountDepositAddresses',
 
@@ -126,6 +126,13 @@ const getters = {
   // assets
   assets: 'assets',
   assetByCode: 'assetByCode',
+  balancesAssets: 'balancesAssets',
+  fiatAssets: 'fiatAssets',
+  depositableAssets: 'depositableAssets',
+  coinpaymentsAssets: 'coinpaymentsAssets',
+  transferableBalancesAssets: 'transferableBalancesAssets',
+  withdrawableBalancesAssets: 'withdrawableBalancesAssets',
+  statsQuoteAsset: 'statsQuoteAsset',
 }
 
 export const vuexTypes = {

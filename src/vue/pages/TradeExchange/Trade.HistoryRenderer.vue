@@ -7,7 +7,7 @@
       class="trade-history__data-wrapper"
       :class="{'trade-history__data-wrapper--loading': isLoading}"
     >
-      <template v-if="tradeHistory.length">
+      <template>
         <div class="app__table app__table--with-shadow">
           <table>
             <thead>
@@ -29,7 +29,9 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              v-if="tradeHistory.length"
+            >
               <tr
                 v-for="(item, i) in tradeHistory"
                 :key="`trade-history-row-${i}`">
@@ -39,31 +41,28 @@
                 <td>{{ item.createdAt | formatCalendar }}</td>
               </tr>
             </tbody>
+            <empty-tbody-placeholder
+              v-else
+              :message="'trade-history.no-data-message' | globalize({
+                base: assetPair.base,
+                quote: assetPair.quote
+              })"
+              :colspan="4"
+            />
           </table>
         </div>
-      </template>
-
-      <template v-else>
-        <no-data-message
-          class="trade-history__no-data-message-wrapper"
-          :title="'trade-history.no-data-title' | globalize"
-          :message="'trade-history.no-data-message' | globalize({
-            base: assetPair.base,
-            quote: assetPair.quote
-          })"
-        />
       </template>
     </div>
   </div>
 </template>
 
 <script>
-import NoDataMessage from '@/vue/common/NoDataMessage'
+import EmptyTbodyPlaceholder from '@/vue/common/EmptyTbodyPlaceholder'
 
 export default {
   name: 'trade-history-renderer',
   components: {
-    NoDataMessage,
+    EmptyTbodyPlaceholder,
   },
   props: {
     assetPair: {

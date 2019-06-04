@@ -49,10 +49,6 @@ export class SaleRecord {
     }
   }
 
-  logoUrl (storageUrl) {
-    return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-  }
-
   /** quote assets: **/
 
   get quoteAssetCodes () {

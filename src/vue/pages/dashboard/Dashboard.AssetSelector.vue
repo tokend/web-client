@@ -87,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { api } from '@/api'
+import { api, documentsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -122,19 +122,16 @@ export default {
       defaultQuoteAsset: vuexTypes.defaultQuoteAsset,
     }),
     assetsList () {
-      const balancesAssetCodes = this.balances.map(i => i.asset.code)
-      const assets = this.assets
-        .filter(asset => balancesAssetCodes.includes(asset.code))
       // this separation on baseAssets and otherAssets needed to display them
       // correcty in the list of all assets: baseAssets should be displayed at
       // the beginning and otherAssets after baseAssets
 
       // String.localeCompare() compare two strings and returns
       // them in alphabet order
-      const baseAssets = assets
+      const baseAssets = this.assets
         .filter(asset => asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
-      const otherAssets = assets
+      const otherAssets = this.assets
         .filter(asset => !asset.isBaseAsset)
         .sort((a, b) => a.code.localeCompare(b.code))
       return [
@@ -152,7 +149,7 @@ export default {
     imgUrl () {
       const balance = this.balances
         .find(i => i.asset.code === this.currentAsset)
-      return balance.asset.logoUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
     },
   },
   async created () {

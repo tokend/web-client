@@ -119,7 +119,6 @@ import { BuyBackFormModule } from '@/vue/modules/buy-back-form/module'
 import SubmoduleImporter from '@/modules-arch/submodule-importer'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
-import { AssetRecord } from '@/js/records/entities/asset.record'
 import { ASSET_SUBTYPE } from '@/js/const/asset-subtypes.const'
 
 import { api } from '@/api'
@@ -172,6 +171,7 @@ export default {
   computed: {
     ...mapGetters({
       accountId: vuexTypes.accountId,
+      assetByCode: vuexTypes.assetByCode,
     }),
     isOpportunityOwner () {
       return this.opportunity.owner === this.accountId
@@ -183,7 +183,7 @@ export default {
 
   async created () {
     await this.loadOpportunity(this.id)
-    await this.loadAsset(this.opportunity.baseAsset)
+    this.asset = this.assetByCode(this.opportunity.baseAsset)
     this.setDefaultDividendAssetCode()
     this.setDefaultBuyBackAssetCode()
   },
@@ -202,16 +202,6 @@ export default {
           this.isLoadingFailed = true
           ErrorHandler.processWithoutFeedback(e)
         }
-      }
-    },
-
-    async loadAsset (assetCode) {
-      try {
-        const endpoint = `/v3/assets/${assetCode}`
-        const { data } = await api.get(endpoint)
-        this.asset = new AssetRecord(data)
-      } catch (e) {
-        ErrorHandler.processWithoutFeedback(e)
       }
     },
 
