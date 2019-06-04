@@ -19,6 +19,8 @@ for further information about branching and tagging conventions.
 - Password toggle button for input fields with type="password"
 - Fees mixin, renderer & wrappers for unified displaying fees
 - Displaying fees on issuance form & trade forms
+- State icon to the status message
+- Rotation of status message close icon on hovering
 
 #### Changed
 - Now loading account converted balances in
@@ -32,6 +34,8 @@ for further information about branching and tagging conventions.
 - Now including offer fees to account's balance on invest form
 - Now using `DocumentsManager` from SDK to upload documents to the storage
 - Now getting document URL using documentsManager
+- Now using light background for status messages with the type
+  "success" of "info"
 
 #### Removed
 - Cursor pointer on disabled select
