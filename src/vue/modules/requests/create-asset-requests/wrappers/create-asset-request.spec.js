@@ -40,50 +40,6 @@ describe('Create asset request', () => {
     })
   })
 
-  describe('methods', () => {
-    describe('logoUrl', () => {
-      it('returns storage logo URL if logo key is present', () => {
-        const request = new CreateAssetRequest({
-          requestDetails: {
-            creatorDetails: {
-              logo: { key: 'logo-key' },
-            },
-          },
-        })
-
-        expect(request.logoUrl('https://storage.com'))
-          .to.equal('https://storage.com/logo-key')
-      })
-
-      it('returns empty string if logo key is absent', () => {
-        const request = new CreateAssetRequest({})
-
-        expect(request.logoUrl('https://storage.com')).to.equal('')
-      })
-    })
-
-    describe('termsUrl', () => {
-      it('returns storage terms URL if logo key is present', () => {
-        const request = new CreateAssetRequest({
-          requestDetails: {
-            creatorDetails: {
-              terms: { key: 'terms-key' },
-            },
-          },
-        })
-
-        expect(request.termsUrl('https://storage.com'))
-          .to.equal('https://storage.com/terms-key')
-      })
-
-      it('returns empty string if logo key is absent', () => {
-        const request = new CreateAssetRequest({})
-
-        expect(request.termsUrl('https://storage.com')).to.equal('')
-      })
-    })
-  })
-
   describe('getters', () => {
     describe('isTransferable', () => {
       it('returns true if the request has transferable policy', () => {

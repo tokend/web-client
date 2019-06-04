@@ -6,7 +6,7 @@
     <div class="sale-card__header">
       <img
         class="sale-card__logo"
-        :src="sale.logoUrl(config.FILE_STORAGE)"
+        :src="saleLogoUrl"
       >
     </div>
 
@@ -96,7 +96,7 @@ import VueMarkdown from 'vue-markdown'
 
 import { SaleRecord } from '@/js/records/entities/sale.record'
 
-import config from '@/config'
+import { documentsManager } from '@/api'
 import { vueRoutes } from '@/vue-router/routes'
 import { SALE_STATES } from '@/js/const/sale-states'
 
@@ -111,12 +111,15 @@ export default {
   },
 
   data: _ => ({
-    config,
     vueRoutes,
     SALE_STATES,
   }),
 
   computed: {
+    saleLogoUrl () {
+      return documentsManager.getDocumentUrlByKey(this.sale.logoKey)
+    },
+
     capProgress () {
       const capPercentage = (this.sale.currentCap / this.sale.hardCap) * 100
       const progress = Math.round(capPercentage * 100) / 100

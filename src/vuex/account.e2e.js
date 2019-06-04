@@ -26,7 +26,7 @@ describe('account.module', () => {
       modules: { account },
     })
 
-    mockHelper.mockEndpoint(`/v3/accounts/${id}?include=external_system_ids%2Cbalances%2Cbalances.state`, accountJSON)
+    mockHelper.mockEndpoint(`/v3/accounts/${id}?include=external_system_ids%2Cbalances%2Cbalances.state%2Cbalances.asset`, accountJSON)
 
     await store.dispatch(vuexTypes.LOAD_ACCOUNT, id)
   })
