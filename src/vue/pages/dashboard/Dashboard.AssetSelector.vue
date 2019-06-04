@@ -87,7 +87,7 @@ import NoDataMessage from '@/vue/common/NoDataMessage'
 import { ASSET_POLICIES } from '@tokend/js-sdk'
 import { mapGetters, mapActions } from 'vuex'
 import { vuexTypes } from '@/vuex'
-import { api } from '@/api'
+import { api, documentsManager } from '@/api'
 import { ErrorHandler } from '@/js/helpers/error-handler'
 import { AssetRecord } from '@/js/records/entities/asset.record'
 
@@ -152,7 +152,7 @@ export default {
     imgUrl () {
       const balance = this.balances
         .find(i => i.asset.code === this.currentAsset)
-      return balance.asset.logoUrl(config.FILE_STORAGE)
+      return documentsManager.getDocumentUrlByKey(balance.asset.logoKey)
     },
   },
   async created () {

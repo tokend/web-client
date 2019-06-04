@@ -17,6 +17,8 @@ for further information about branching and tagging conventions.
 - Usage of Unix line endings rule
 - Browser compatibiility check and unsupported browser page
 - Password toggle button for input fields with type="password"
+- Fees mixin, renderer & wrappers for unified displaying fees
+- Displaying fees on issuance form & trade forms
 
 #### Changed
 - Now loading account converted balances in
@@ -28,6 +30,8 @@ for further information about branching and tagging conventions.
 - Now hiding "My Sales" tab for non-corporate accounts
 - Update "Learn more about pre-issuance" link style on sale creation form
 - Now including offer fees to account's balance on invest form
+- Now using `DocumentsManager` from SDK to upload documents to the storage
+- Now getting document URL using documentsManager
 
 #### Removed
 - Cursor pointer on disabled select

@@ -4,7 +4,7 @@
       <div class="sale-overview__asset">
         <asset-logo
           :asset-code="asset.code"
-          :logo-url="asset.logoUrl(config.FILE_STORAGE)"
+          :logo-url="assetLogoUrl"
         />
         <div class="sale-overview__asset-info">
           <p class="sale-overview__asset-code">
@@ -120,9 +120,7 @@
 import AssetLogo from '@/vue/common/assets/AssetLogo'
 import Loader from '@/vue/common/Loader'
 
-import { api } from '@/api'
-
-import config from '@/config'
+import { api, documentsManager } from '@/api'
 
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
@@ -143,10 +141,14 @@ export default {
   },
   data: _ => ({
     asset: {},
-    config,
     isLoaded: false,
     isLoadingFailed: false,
   }),
+  computed: {
+    assetLogoUrl () {
+      return documentsManager.getDocumentUrlByKey(this.asset.logoKey)
+    },
+  },
   async created () {
     try {
       const endpoint = `/v3/assets/${this.sale.baseAsset}`

@@ -97,30 +97,4 @@ describe('Asset', () => {
       })
     })
   })
-
-  describe('method', () => {
-    describe('logoUrl', () => {
-      it('returns proper asset logo URL', () => {
-        const storageUrl = 'https://storage.com'
-        const key = 'logo-key'
-
-        const asset = new Asset({ details: { logo: { key } } })
-
-        expect(asset.logoUrl(storageUrl))
-          .to.equal('https://storage.com/logo-key')
-      })
-    })
-
-    describe('termsUrl', () => {
-      it('returns proper asset terms URL', () => {
-        const storageUrl = 'https://storage.com'
-        const key = 'terms-key'
-
-        const asset = new Asset({ details: { terms: { key } } })
-
-        expect(asset.termsUrl(storageUrl))
-          .to.equal('https://storage.com/terms-key')
-      })
-    })
-  })
 })

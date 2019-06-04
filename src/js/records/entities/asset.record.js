@@ -43,18 +43,6 @@ export class AssetRecord {
     this.convertedBalance = this._getConvertedBalance(balances)
   }
 
-  logoUrl (storageUrl) {
-    if (safeGet(this.details, 'logoUrl')) {
-      return this.details.logoUrl
-    } else {
-      return this.logoKey ? `${storageUrl}/${this.logoKey}` : ''
-    }
-  }
-
-  termsUrl (storageUrl) {
-    return this.termsKey ? `${storageUrl}/${this.termsKey}` : ''
-  }
-
   _getBalance (balances) {
     const balance = balances.find(balance => balance.asset.code === this.code)
     if (balance) {
