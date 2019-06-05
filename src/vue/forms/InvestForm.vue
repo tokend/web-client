@@ -342,7 +342,6 @@ export default {
     availableBalance () {
       const quoteBalance = this.quoteAssetBalances
         .find(balance => balance.asset.code === this.form.asset.code)
-
       let availableBalance
       if (this.currentInvestment.quoteAmount) {
         const convertedAmount = MathUtil.add(
