@@ -91,6 +91,7 @@
         {{ 'withdrawal-form.withdrawal' | globalize }}
       </template>
       <withdrawal-form
+        :asset-code="asset.code"
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
       />
     </drawer>
@@ -101,6 +102,7 @@
       </template>
       <submodule-importer
         :submodule="getModule().getSubmodule(DepositFormPseudoModule)"
+        :asset-code="asset.code"
       />
     </drawer>
 
@@ -110,6 +112,7 @@
       </template>
       <transfer-form
         @operation-submitted="$emit(EVENTS.movementsUpdateRequired)"
+        :asset-to-transfer="asset.code"
       />
     </drawer>
   </div>

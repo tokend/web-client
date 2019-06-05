@@ -175,6 +175,9 @@ export default {
     EmailGetter,
   },
   mixins: [FormMixin, FeesMixin, IdentityGetterMixin],
+  props: {
+    assetCode: { type: String, default: '' },
+  },
   data: () => ({
     isLoaded: false,
     isFailed: false,
@@ -308,7 +311,9 @@ export default {
     },
     async initAssetSelector () {
       if (this.withdrawableBalancesAssets.length) {
-        this.form.asset = this.withdrawableBalancesAssets[0]
+        const selectedAsset = this.withdrawableBalancesAssets
+          .find(a => a.code === this.assetCode)
+        this.form.asset = selectedAsset || this.withdrawableBalancesAssets[0]
       }
     },
     async reinitAssetSelector () {

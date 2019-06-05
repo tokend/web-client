@@ -71,6 +71,7 @@ for further information about branching and tagging conventions.
 - Disabling invest form while submitting
 - Different borders with attribute of readonly on the field
 - Close transfer drawer on Dashboard after submitting form
+- Displaying selected asset in drawers on movements page
 
 ## [1.7.0-rc.2] - 2019-05-21
 ### "Under the hood" changes
