@@ -68,16 +68,6 @@ describe('balance explorer module', () => {
         ],
       })
     })
-
-    it('SET_KYC_REQUIRED_ASSET_TYPE should properly modify state', () => {
-      const state = {
-        kycRequiredAssetType: null,
-      }
-
-      mutations[types.SET_KYC_REQUIRED_ASSET_TYPE](state, 1)
-
-      expect(state).to.deep.equal({ kycRequiredAssetType: 1 })
-    })
   })
 
   describe('actions', () => {
@@ -150,25 +140,6 @@ describe('balance explorer module', () => {
         api.getWithSignature.restore()
       })
     })
-
-    describe('LOAD_KYC_REQUIRED_ASSET_TYPE', () => {
-      it('properly commit its set of mutations', async () => {
-        sinon.stub(api, 'get').resolves({
-          data: { value: { u32: 1 } },
-        })
-
-        const expectedMutations = {
-          [types.SET_KYC_REQUIRED_ASSET_TYPE]: 1,
-        }
-
-        await actions[types.LOAD_KYC_REQUIRED_ASSET_TYPE](store)
-
-        expect(store.commit.args)
-          .to.deep.equal(Object.entries(expectedMutations))
-
-        api.get.restore()
-      })
-    })
   })
 
   describe('getters', () => {
@@ -195,13 +166,6 @@ describe('balance explorer module', () => {
           new Asset({ id: 'USD' }, '10.000000'),
           new Asset({ id: 'BTC' }, '100.000000'),
         ])
-    })
-
-    it('kycRequiredAssetType', () => {
-      const state = { kycRequiredAssetType: 1 }
-
-      expect(getters[types.kycRequiredAssetType](state))
-        .to.equal(1)
     })
   })
 })

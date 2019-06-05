@@ -61,13 +61,10 @@ describe('Balance explorer module', () => {
       describe('load', () => {
         it('calls load methods and sets isLoaded property to true if loading succeded', async () => {
           sandbox.stub(wrapper.vm, 'loadAccountBalances').resolves()
-          sandbox.stub(wrapper.vm, 'loadKycRequiredAssetType').resolves()
-          sandbox.stub(wrapper.vm, 'loadSecurityAssetType').resolves()
 
           await wrapper.vm.load()
 
           expect(wrapper.vm.loadAccountBalances).to.have.been.calledOnce
-          expect(wrapper.vm.loadKycRequiredAssetType).to.have.been.calledOnce
           expect(wrapper.vm.isLoaded).to.be.true
         })
 
